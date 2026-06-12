@@ -9,12 +9,7 @@
   },
   "navigation": {
     "pages": [
-      {
-        "group": "Getting Started",
-        "pages": ["index", "quickstart"]
-      },
-      "quickstart",
-      "index",
+      "",
       "specification"
     ]
   },
