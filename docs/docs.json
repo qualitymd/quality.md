@@ -31,5 +31,9 @@
       "x": "https://x.com/qualitydotmd",
       "github": "https://github.com/qualitymd/quality.md"
     }
+  },
+  "favicon": {
+    "light": "/favicon.svg",
+    "dark": "/favicon.svg"
   }
 }
