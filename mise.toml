@@ -1,35 +1,39 @@
 [tools]
-node = "24"
-pnpm = "10"
+go = "1.26"
+goreleaser = "latest"
 
-[env]
-# Use the project-local pnpm store and keep node_modules tidy.
-COREPACK_ENABLE_STRICT = "0"
+[tasks.build]
+description = "Build the qualitymd binary into ./dist"
+run = "go build -o dist/qualitymd ./cmd/qualitymd"
 
-[tasks.install]
-description = "Install workspace dependencies"
-run = "pnpm install"
-
-[tasks.cli]
+[tasks.run]
 description = "Run the quality.md CLI"
-run = "pnpm exec qualitymd"
+run = "go run ./cmd/qualitymd"
 
-[tasks.typecheck]
-description = "Type-check the workspace"
-run = "pnpm -r typecheck"
+[tasks.test]
+description = "Run the test suite"
+run = "go test ./..."
 
-[tasks.format]
-description = "Format the workspace with Prettier"
-run = "pnpm format"
+[tasks.vet]
+description = "Vet the codebase"
+run = "go vet ./..."
 
-[tasks.format-check]
-description = "Check formatting with Prettier"
-run = "pnpm format:check"
+[tasks.fmt]
+description = "Format the codebase"
+run = "gofmt -w ."
 
-[tasks.lint]
-description = "Lint the workspace with ESLint"
-run = "pnpm lint"
+[tasks.tidy]
+description = "Tidy module dependencies"
+run = "go mod tidy"
 
-[tasks.lint-fix]
-description = "Lint and auto-fix with ESLint"
-run = "pnpm lint:fix"
+[tasks.snapshot]
+description = "Build a local goreleaser snapshot (no publish)"
+run = "goreleaser release --snapshot --clean"
+
+[tasks.npm-build]
+description = "Cross-compile and assemble the npm packages (no publish)"
+run = "node scripts/build-npm.mjs {{arg(name='version', default='0.0.0-dev')}}"
+
+[tasks.npm-publish]
+description = "Cross-compile, assemble, and publish the npm packages"
+run = "node scripts/build-npm.mjs {{arg(name='version')}} --publish"

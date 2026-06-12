@@ -1,7 +1,19 @@
+# Build output
+/dist/
+/qualitymd
+
+# Go
+*.test
+*.out
+coverage.*
+
+# npm distribution artifacts (binaries are injected at release time)
+/npm/**/bin/qualitymd
+/npm/**/bin/qualitymd.exe
 node_modules/
-dist/
-*.tsbuildinfo
-.DS_Store
+
+# Env / OS
 .env
 .env.*
 !.env.example
+.DS_Store
