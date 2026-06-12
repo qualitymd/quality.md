@@ -1,0 +1,35 @@
+[tools]
+node = "24"
+pnpm = "10"
+
+[env]
+# Use the project-local pnpm store and keep node_modules tidy.
+COREPACK_ENABLE_STRICT = "0"
+
+[tasks.install]
+description = "Install workspace dependencies"
+run = "pnpm install"
+
+[tasks.cli]
+description = "Run the quality.md CLI"
+run = "pnpm exec qualitymd"
+
+[tasks.typecheck]
+description = "Type-check the workspace"
+run = "pnpm -r typecheck"
+
+[tasks.format]
+description = "Format the workspace with Prettier"
+run = "pnpm format"
+
+[tasks.format-check]
+description = "Check formatting with Prettier"
+run = "pnpm format:check"
+
+[tasks.lint]
+description = "Lint the workspace with ESLint"
+run = "pnpm lint"
+
+[tasks.lint-fix]
+description = "Lint and auto-fix with ESLint"
+run = "pnpm lint:fix"

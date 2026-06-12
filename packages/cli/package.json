@@ -1,0 +1,33 @@
+{
+  "name": "quality.md",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "quality.md CLI",
+  "bin": {
+    "qualitymd": "./src/bin.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "node ./src/bin.ts",
+    "typecheck": "tsc --build"
+  },
+  "dependencies": {
+    "@effect/platform-node": "4.0.0-beta.80",
+    "effect": "4.0.0-beta.80"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "typescript": "^6.0.3"
+  }
+}
