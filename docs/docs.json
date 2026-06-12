@@ -35,5 +35,9 @@
   "favicon": {
     "light": "/favicon.svg",
     "dark": "/favicon.svg"
+  },
+  "logo": {
+    "light": "/favicon.svg",
+    "dark": "/favicon.svg"
   }
 }
