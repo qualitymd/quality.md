@@ -8,10 +8,7 @@
     "dark": "#15803D"
   },
   "navigation": {
-    "pages": [
-      "index",
-      "specification"
-    ]
+    "pages": ["index", "specification"]
   },
   "navbar": {
     "links": [
