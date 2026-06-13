@@ -131,3 +131,69 @@ ratings:
   D: { displayName: "Poor" }
   E: { displayName: "Unacceptable", description: "Does not satisfy the assessment" }
 ```
+
+## Markdown Body
+
+Below the frontmatter is a Markdown body that documents the model in prose. Where
+the frontmatter is the machine-readable summary — the factors and the requirements
+under them — the body is the reasoning that justifies it: what the system is, what
+"good" means for it, and why these are the right requirements. A reader with only
+the frontmatter knows *what* is checked; a reader with the body knows *why*.
+
+The body also carries what the frontmatter cannot. Quality is not intrinsic: "fast
+enough" or "reliable enough" mean nothing until you say for whom, doing what, and
+under what assumptions. Capturing that context is the body's purpose — and it is
+also the grounding a `prompt` assessment needs in order to be judged consistently.
+
+The body is a flat sequence of named sections. The recommended sections are:
+
+| Section | What it captures |
+| --- | --- |
+| **Overview** | What the system or component is, who depends on it, what "good" means here, and what the model covers — its target and boundary, including dependencies it relies on but does not own. |
+| **Needs** | What matters, and to whom — the plain-language statements the requirements answer to. |
+| **Risks** | What goes wrong, and for whom, if a need is not met. |
+| **Factors** | One subsection per factor, mirroring the frontmatter: what each factor means for this system, how you would know it is met, and any trade-offs it carries against other factors. |
+| **Known gaps** | Quality concerns known to matter but deliberately not addressed yet, each with a brief reason. |
+
+**Overview**, **Needs**, and **Factors** are the recommended minimum — together
+they make the file a quality *model* rather than a bare list of checks. **Risks**
+and **Known gaps** are recommended where they apply. Every section is optional and
+should stay short: the body is for shared understanding, not exhaustive
+documentation. The format does not restrict the body to these sections — add your
+own where a system needs them.
+
+### Example
+
+```markdown
+# Quality model — Acme API
+
+## Overview
+The Acme API is the public HTTP interface our customers integrate against. It is
+maintained by the platform team and depended on by every client app. "Good" here
+means it behaves predictably under load and never silently corrupts data. This
+model covers the API service and its data layer; the third-party auth provider and
+the client SDKs are dependencies, not part of it.
+
+## Needs
+- Integrators can trust that a successful response means the data was saved.
+- On-call engineers can find the cause of an incident from logs and metrics alone.
+
+## Risks
+A silent data-corruption bug is the worst outcome — it erodes customer trust and is
+expensive to detect after the fact. A slow endpoint is a lesser problem with clear
+workarounds.
+
+## Factors
+### Reliability
+Customers build on our responses, so a confirmed write must be durable. You would
+know it is reliable if a write is acknowledged only after it is committed, and
+failures surface as errors rather than false successes.
+
+### Security
+The API handles customer data, so access must be authenticated and least-privilege.
+When security and convenience conflict, security wins.
+
+## Known gaps
+- We do not yet test behavior under sustained peak load.
+- Rate-limiting is enforced but not covered by an automated check.
+```
