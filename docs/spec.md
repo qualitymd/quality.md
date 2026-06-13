@@ -10,7 +10,7 @@ The quality model is embedded in the YAML front matter at the beginning of the f
 
 The model keeps three concerns separate:
 
-- **Requirement** — *what* must be true. A requirement is self-contained: a name, an optional target, and a single assessment. It holds nothing about scoring, so it can be lifted out of QUALITY.md and reused on its own — for example, referenced from an agent skill.
+- **Requirement** — *what* must be true. A requirement is self-contained: a name, an optional target, and a single assessment. It names no rating level, so it can be lifted out of QUALITY.md and reused on its own — for example, referenced from an agent skill. It may optionally override the scale's *conditions* for its own result, an escape hatch for when one shared condition cannot fit every requirement.
 - **Evaluation** — *how* a requirement is assessed. Either inferential (`prompt`) or computational (`bash`); the key you choose is the declaration of method.
 - **Rating** — *how the result is classified*. A single, requirement-agnostic scale (`ratings`) names the levels an evaluation can land on.
 
@@ -65,6 +65,8 @@ factors:
         # exactly one assessment — a single prompt OR a single bash command:
         prompt: <text | path>     # inferential (judged by a model/reviewer)
         bash: <command>           # computational (shell exit status)
+        ratings:                  # optional; override the scale's conditions for this requirement
+          <level-name>: <condition>   # CEL boolean (bash) or judging criterion (prompt); level from the scale
     factors:                      # sub-factors, nested to any depth
       <factor-name>: <Factor>
 ```
@@ -110,9 +112,11 @@ recommendations, not rules):
 **Requirements.** `requirements` is a map of requirement name → requirement,
 where the name states the expectation (for example `"unit tests pass"`). A
 requirement names an optional `target` and declares exactly one assessment. It
-holds nothing about rating levels, which keeps it portable — a requirement, or
-the file its assessment points to, can be referenced and evaluated on its own,
-outside QUALITY.md.
+names no rating level, which keeps it portable — a requirement, or the file its
+assessment points to, can be referenced and evaluated on its own, outside
+QUALITY.md. A requirement may optionally override the scale's conditions for
+itself (see [Per-requirement rating overrides](#per-requirement-rating-overrides));
+doing so trades some of that portability for a per-requirement signal.
 
 A requirement carries a *single* assessment — one `prompt` or one `bash`
 command, never several and never a list. A `prompt` is one body of criteria
@@ -155,10 +159,16 @@ classified differently, and a level carries one register for each:
   levels are tested best to worst and the result takes the first level whose
   `bashCondition` is true (see [Computational rating](#computational-rating)).
 
-The rating is produced by evaluation; it is never declared on the requirement,
-which carries a single assessment and names no level. Per-level criteria live on
-the scale — a level's `promptCondition` and `bashCondition` — never as a map
-keyed on level names hung on the requirement, which would couple it to one scale.
+The rating is produced by evaluation; the *outcome* is never declared on the
+requirement — you never pin a result to a level. Per-level criteria live on the
+scale by default — a level's `promptCondition` and `bashCondition`. A requirement
+may, however, **override** those criteria with its own `ratings` map keyed on the
+scale's level names (see [Per-requirement rating overrides](#per-requirement-rating-overrides)).
+The override changes only the conditions by which *this* requirement lands on a
+level; the levels themselves — their names, order, and `displayName` — still come
+from the shared scale. Because the override names the scale's levels, it couples
+that requirement to the scale, so reach for it only when a shared condition
+genuinely cannot classify the requirement's result.
 
 **Rating scale.** The optional top-level `ratings` map defines the single scale
 shared by every requirement. Each entry is a level name carrying an optional
@@ -179,6 +189,54 @@ ratings:
   E: { displayName: "Unacceptable", promptCondition: "Does not satisfy the assessment" }
 ```
 
+### Per-requirement rating overrides
+
+The shared scale is written generically so one set of conditions applies to every
+requirement. That works when requirements meet their assessments in comparable
+ways, but some do not — most often a `bash` requirement whose command emits a
+signal the scale's condition cannot interpret. For these, a requirement may carry
+an optional `ratings` map that overrides the scale's conditions for itself alone.
+
+The map is keyed on the **scale's** level names; each value is a single condition,
+in the register implied by the requirement's assessment:
+
+- under a `bash` requirement, a value is a [CEL](https://cel.dev) boolean over
+  `result`, classified exactly as a `bashCondition` (see below);
+- under a `prompt` requirement, a value is a judging criterion, applied exactly as
+  a `promptCondition`.
+
+Only the conditions are overridden. The level set, its order, and each level's
+`displayName` still come from the shared scale, and classification proceeds as it
+otherwise would — best to worst, first match wins, worst level as the fallback. A
+level the override omits keeps the scale's condition for that level, if any. A
+level name not present in the scale is a configuration error.
+
+For example, a scale bands a coverage percentage one command prints, while a
+second `bash` requirement reports a different signal and overrides the bands for
+itself:
+
+```yaml
+ratings:
+  A: { bashCondition: "double(result.stdout.trim()) >= 90" }
+  B: { bashCondition: "double(result.stdout.trim()) >= 80" }
+  C: { bashCondition: "double(result.stdout.trim()) >= 70" }
+  fail: {}
+factors:
+  maintainability:
+    requirements:
+      "line coverage":
+        bash: "pnpm coverage:lines --print"   # uses the scale's bands as-is
+      "mutation score":
+        bash: "pnpm mutation --print"          # a different signal; rebands for itself
+        ratings:
+          A: "double(result.stdout.trim()) >= 75"
+          B: "double(result.stdout.trim()) >= 60"
+          C: "double(result.stdout.trim()) >= 50"
+```
+
+This keeps a requirement portable by default — it names no level until it opts
+into an override — and confines the coupling to the requirements that need it.
+
 ### Computational rating
 
 A `bash` requirement is classified by running its command and evaluating the
@@ -195,24 +253,28 @@ boolean, evaluated against a single `result` describing the command run:
 | `result.stdout` | string | captured standard output |
 | `result.stderr` | string | captured standard error |
 
-Because CEL does not coerce between types, a few helpers bridge a command's raw
-text output to the value a condition tests:
+Because CEL does not coerce between types, a command's raw text output is bridged
+to the value a condition tests through CEL's standard library, written
+receiver-style:
 
-- `json(s)` — parse a JSON string into a value
-- `trim(s)` — strip surrounding whitespace (command output carries trailing
-  newlines)
-- `number(s)` / `int(s)` — parse a number from a string
-- standard CEL string operators are available — `contains`, `startsWith`,
-  `endsWith`, `matches` (regex), `size`
+- **String operations** come from CEL's strings extension as member calls —
+  `result.stdout.trim()` (command output carries trailing newlines),
+  `.lowerAscii()`, `.contains(s)`, `.startsWith(s)`, `.endsWith(s)`,
+  `.matches(re)` (regex), `.size()`.
+- **Numeric parsing** uses CEL's standard conversions, which parse from a string —
+  `double(result.stdout.trim())`, `int(result.stdout.trim())`.
+- **JSON** has no standard parse in CEL, so the evaluator provides one convenience,
+  receiver-style: `result.stdout.json()` parses the output into a value (map, list,
+  number, …) for further indexing.
 
 **Classification.** The levels are tested in order, best to worst; the result
 takes the **first** level whose `bashCondition` is true. If no level matches, the
 result takes the **worst** level — the scale denies by default. A level with no
 `bashCondition` is never selected by computation; it is reachable only as that
 worst-level fallback (which is why the default `fail` needs none). A
-`bashCondition` that fails to evaluate — `json()` on output that is not JSON, say
-— is a configuration error in the model, surfaced as such rather than silently
-scored.
+`bashCondition` that fails to evaluate — `.json()` on output that is not JSON, or
+`double()` on output that is not a number, say — is a configuration error in the
+model, surfaced as such rather than silently scored.
 
 **The default scale, made explicit.** Omitting `ratings` is equivalent to:
 
@@ -236,15 +298,16 @@ or band a numeric signal a command prints on stdout:
 
 ```yaml
 ratings:
-  A: { bashCondition: "number(trim(result.stdout)) >= 90" }
-  B: { bashCondition: "number(trim(result.stdout)) >= 80" }
-  C: { bashCondition: "number(trim(result.stdout)) >= 70" }
+  A: { bashCondition: "double(result.stdout.trim()) >= 90" }
+  B: { bashCondition: "double(result.stdout.trim()) >= 80" }
+  C: { bashCondition: "double(result.stdout.trim()) >= 70" }
   fail: {}
 ```
 
 A scale that bands on `result.stdout` like this assumes every `bash` requirement
-under it emits a comparable value. Letting each requirement extract its own
-signal for a shared scale is a planned extension.
+under it emits a comparable value. When one does not, that requirement can supply
+its own bands with a [per-requirement rating override](#per-requirement-rating-overrides)
+rather than forcing every command onto one signal.
 
 Classification yields the rating; whether a given rating should *gate* — fail a
 build, block a change — is the evaluating tool's concern, not the format's.
