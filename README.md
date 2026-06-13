@@ -11,7 +11,7 @@ quality model, and a **Markdown body** documenting it.
 
 ```sh
 # npm / npx (no toolchain required)
-npx quality.md check
+npx quality.md lint
 
 # Homebrew
 brew install qualitymd/tap/qualitymd
@@ -23,17 +23,20 @@ go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ## Usage
 
 ```sh
-qualitymd check            # evaluate ./QUALITY.md
-qualitymd check path.md    # evaluate a specific file
+qualitymd init             # scaffold a starter ./QUALITY.md to fill in
+qualitymd lint             # validate the file's structure (fast, deterministic)
+qualitymd evaluate         # deep evaluation of the subject against the model
 qualitymd --help
 ```
 
-`check` evaluates every requirement and prints a grouped pass/fail report. It
-exits non-zero if any requirement fails, so it drops straight into CI.
+`lint` checks that the file is a well-formed `QUALITY.md` — it parses, conforms
+to the schema, and its references resolve — and exits non-zero on errors, so it
+drops straight into CI. `evaluate` runs the deep, judgment-based audit of the
+subject against the model's requirements.
 
 ## Spec format
 
-> 🚧 The `QUALITY.md` format is still in flux. See [`docs/spec.md`](docs/spec.md)
+> 🚧 The `QUALITY.md` format is still in flux. See [`SPECIFICATION.md`](SPECIFICATION.md)
 > for the current draft schema.
 
 ## Conceptual model

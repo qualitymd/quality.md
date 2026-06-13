@@ -140,6 +140,10 @@ compare:
   comparison.md     # the primary human-facing artifact — ranking, deltas, winner
 ```
 
+As in [`evaluate`](./cli-evaluate.md#output-the-evaluation-bundle), `<factor>` in
+the directory name is the dotted factor path selected, or `all` when the whole
+model is compared (the positional `factor` omitted).
+
 Each `targets/<label>/results.json` is exactly a single-target
 [`results.json`](./cli-evaluate.md#resultsjson-illustrative-shape), so a
 comparison is fully decomposable into the individual evaluations that produced
@@ -208,13 +212,22 @@ target identically. Comparison-specific:
   blocks on *new* shortfalls without failing on pre-existing debt. Off by default
   (report-only), opt-in, and requires `--baseline`.
 
-Exit codes:
+Exit codes follow the shared three-code convention (see
+[`cli.md`](./cli.md#machine-readable-result-contract)), exactly as
+[`evaluate`](./cli-evaluate.md#flags-exit-codes):
 
-- **Report-only by default** (exit `0` unless the run errors), as with
-  [`evaluate`](./cli-evaluate.md#flags-exit-codes).
-- **`--fail-on-regression`** opts into a regression gate, for the automated-PR
-  use case. Opt-in for the same reason `evaluate --fail-on` is: the run is
-  non-reproducible, so gating is a team's explicit choice, never imposed.
+- **`0`** — the comparison completed. **The default, report-only outcome** even
+  when targets diverge sharply: without `--fail-on-regression` a ranking is never
+  a gate.
+- **`1`** — **gate verdict failure:** `--fail-on-regression` was passed and at
+  least one requirement rated **worse** in a non-baseline target than in the
+  `--baseline` target. The run succeeded; a regression was found. Opt-in for the
+  same reason `evaluate --fail-on` is: the run is non-reproducible, so gating is a
+  team's explicit choice, never imposed. Requires `--baseline`.
+- **`2`** — **tool failure:** the comparison could not be produced — a bad flag,
+  an unresolvable target, `--fail-on-regression` without `--baseline`, a
+  `QUALITY.md` that does not parse, or an internal error. Never means "a target is
+  worse."
 
 ## Open questions
 

@@ -11,7 +11,7 @@ body** (its documentation). The CLI evaluates a `QUALITY.md` file
 failure so it drops straight into CI.
 
 See [`README.md`](README.md) for the overview, [`CONTRIBUTING.md`](CONTRIBUTING.md)
-for dev setup and the release process, [`docs/spec.md`](docs/spec.md) for the
+for dev setup and the release process, [`SPECIFICATION.md`](SPECIFICATION.md) for the
 draft format spec, and [`specs/`](specs/) for the CLI specification.
 
 ## Conventions

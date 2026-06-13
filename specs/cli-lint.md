@@ -19,8 +19,8 @@ cat QUALITY.md | qualitymd lint -
 
 `lint` answers one question, deterministically: **is this a well-formed
 `QUALITY.md`?** It validates the file against the format spec
-(`../quality.md/docs/spec.md`) without any judgment about whether the
-requirements are *good* — that is `evaluate-model`' job (see
+(`../SPECIFICATION.md`) without any judgment about whether the
+requirements are *good* — that is `evaluate-model`'s job (see
 [`cli-evaluate.md`](./cli-evaluate.md#one-engine-two-targets)). Because it is
 pure parsing and static checks, it is cheap enough to run on every save, in a
 pre-commit hook, and as the structural CI gate.
@@ -57,7 +57,8 @@ well-formed file still passes CI**: only unambiguous violations are errors.
 | `broken-prompt-ref` | error | A `prompt` given as a path (rather than inline text) points to a file that does not exist. |
 | `broken-target` | warning | A `target` path or glob resolves to no files on disk. Warning, not error — a glob may legitimately match nothing yet. |
 | `empty-collection` | warning | A `requirements` or `factors` map is present but empty. |
-| `ratings-shape` | warning | `ratings` is present but malformed: an entry missing `displayName`, or fewer than two levels defined (a scale needs at least two). |
+| `ratings-shape` | warning | `ratings` is present but malformed: fewer than two levels defined (a scale needs at least two). |
+| `unknown-rating-level` | error | A per-requirement `ratings` override names a level not defined in the scale. The spec treats this as a configuration error: an override may only re-state conditions for levels the scale already declares. |
 | `unknown-key` | warning | A key looks like a typo of a known schema key (`factor:` → `factors:`, `requirement:` → `requirements:`, `prompts:` → `prompt:`, `rating:` → `ratings:`). Genuinely custom extension keys stay silent — the format grows through users, like design.md. |
 | `model-summary` | info | Summary counts: factors, leaf requirements, and the split of assessment types (`prompt` vs `bash`). |
 
@@ -71,7 +72,7 @@ well-formed file still passes CI**: only unambiguous violations are errors.
 
 The linter parses the body only far enough to extract its `##`/`###` headings — it
 never judges prose. The recommended body sections and what each captures are
-defined in the format spec (`../quality.md/docs/spec.md#markdown-body`); these rules
+defined in the format spec (`../SPECIFICATION.md#markdown-body`); these rules
 check their *shape*. All of them mirror a `design.md lint` shape except
 `factor-without-prose` (see [The one rule past precedent](#the-one-rule-past-precedent)).
 
@@ -114,10 +115,15 @@ model/prose drift nudges without blocking the gate.
 
 ## Output
 
-JSON by default — agent-consumable, the same contract as `design.md lint`.
+JSON by default — agent-consumable, the same contract as `design.md lint`, and
+carrying the two fields [`cli.md`](./cli.md#machine-readable-result-contract)
+requires of *every* command: a `schemaVersion` (so an agent can parse results
+without screen-scraping) and a `nextActions` array (so the lint→fix→re-run loop
+is self-describing rather than tribal knowledge).
 
 ```json
 {
+  "schemaVersion": "1",
   "findings": [
     {
       "severity": "error",
@@ -137,13 +143,30 @@ JSON by default — agent-consumable, the same contract as `design.md lint`.
       "message": "3 factors, 6 requirements (4 prompt, 2 bash)."
     }
   ],
-  "summary": { "errors": 1, "warnings": 1, "info": 1 }
+  "summary": { "errors": 1, "warnings": 1, "info": 1 },
+  "nextActions": [
+    {
+      "command": "qualitymd lint",
+      "reason": "Fix `factors.security.requirements.\"no secrets committed to the repository\"`: declare exactly one of `prompt`/`bash`, then re-run.",
+      "priority": "required"
+    }
+  ]
 }
 ```
 
 Each finding carries `severity`, the `rule` that produced it, a `path` (a dotted
 locator into the model, quoting map keys that contain spaces), and a `message`.
 The `summary` tallies findings by severity.
+
+`schemaVersion` is the stable top-level version string from the shared contract.
+`nextActions` follows the shared
+[next-action shape](./cli.md#structured-next-action-suggestions): each error
+finding emits a `required` action naming the offending `path`, each warning a
+`recommended` one; a clean file emits a single `recommended` action — run
+`evaluate-model` to pressure-test the requirements. The `priority` of a
+finding-derived action tracks the finding's severity (`error → required`,
+`warning → recommended`, `info → optional`), as in
+[`cli.md`](./cli.md#structured-next-action-suggestions).
 
 ## Flags, exit codes
 
@@ -155,14 +178,22 @@ Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
   flag is a no-op for now; a human-readable text format is a possible later
   addition.
 
-Exit codes:
+Exit codes follow the shared three-code convention (see
+[`cli.md`](./cli.md#machine-readable-result-contract)):
 
-- **`1`** if any finding is an `error`.
-- **`0`** otherwise — warnings and info do not fail the gate.
+- **`0`** — no `error` findings. Warnings and info do not fail the gate.
+- **`1`** — **gate verdict failure:** at least one finding is an `error` (a real
+  spec violation, including `parse-error`). The file *was* read and checked; it
+  is simply not well-formed.
+- **`2`** — **tool failure:** `lint` could not run the checks at all — the file
+  is unreadable or absent, a bad flag was passed, or an internal error occurred.
+  This is distinct from `parse-error` (a malformed-but-readable file), which is a
+  finding and exits `1`.
 
 This makes `lint` the deterministic structural gate for CI and pre-commit: it
-fails the build only on real spec violations, while warnings surface
-lower-confidence issues without blocking.
+fails the build (`1`) only on real spec violations, while warnings surface
+lower-confidence issues without blocking — and an agent can still tell a bad file
+(`1`) from a broken invocation (`2`).
 
 ## Open questions
 

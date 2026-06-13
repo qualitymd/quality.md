@@ -110,8 +110,11 @@ That is the reason `evaluate-model` exists as a first-class sibling.
 
 The CLI **ships this diagnostic model built-in** as `QUALITY-META-MODEL.md` — a normal
 QUALITY.md-schema file whose subject is another `QUALITY.md`. The bundled meta
-model is a framework of *what a good quality requirement is*, grounded in **ISO
-25030 (Quality Requirements Framework)** plus the QUALITY.md spec. It is
+model is a framework of *what a good quality model is* — its factors are
+product-quality attributes of the model-as-artifact (the **ISO/IEC 25000
+(SQuaRE)** vocabulary, ISO/IEC 25010 style), while its requirement-quality
+criteria follow **ISO/IEC/IEEE 29148** (§5.2.5–5.2.6, the characteristics of a
+well-formed requirement and requirement set) — plus the QUALITY.md spec. It is
 overridable (`replace`) or extendable (`extend`) per project via the
 `requirementsDiagnosticModel` config block (see
 [`cli.md`](./cli.md#configuration--quality)).
@@ -195,9 +198,22 @@ bundle. Only the `(target, criteria, context)` triple differs.
 
 ### Assessment paths
 
-- **`bash` requirements** bypass the agentic harness entirely — run the command,
-  exit status is the verdict. Deterministic.
-- **`prompt` requirements** go through the adversarial harness below.
+- **`bash` requirements** bypass the agentic harness entirely. The engine runs the
+  command once and **classifies the result against the `ratings` scale's
+  `bashCondition`s**, exactly as the format spec defines it
+  (`../SPECIFICATION.md#computational-rating`): the levels are tested best
+  to worst over a single `result` (`success`, `exit`, `stdout`, `stderr`) and the
+  first matching level wins, with the worst level as the default fallback. So the
+  verdict is *not* simply "exit zero" — a scale may band a numeric value the
+  command prints on stdout (`double(result.stdout.trim()) >= 90`), and a
+  requirement may carry a [per-requirement override](../SPECIFICATION.md#per-requirement-rating-overrides)
+  for its own bands. Only the default `pass`/`fail` scale reduces to "best on a
+  zero exit." Either way the path is **deterministic** — no model judgment, no
+  adversarial loop — and a `bashCondition` that fails to evaluate (e.g. `.json()`
+  on non-JSON output) is a model configuration error, surfaced as a tool failure
+  (exit `2`), not silently scored.
+- **`prompt` requirements** go through the adversarial harness below, judged
+  against the scale's `promptCondition`s.
 
 ### Saturation: adversarial loop-until-dry
 
@@ -267,7 +283,9 @@ voters, and partition granularity. Default is configurable in `./.quality/`
 
 `report.md` is the usable output; the other three exist for inspection,
 auditing, and improving the process. The mode in the directory name
-(`subject` / `model`) keeps the two evaluation modes from colliding.
+(`subject` / `model`) keeps the two evaluation modes from colliding. `<factor>`
+is the dotted factor path that was selected, or `all` when the whole model is
+evaluated (the positional `factor` omitted).
 
 ### `report.md`
 
@@ -374,18 +392,31 @@ Flags specific to the deep commands (shared flags are in
   codes below.
 - `--name <name>` — override the derived bundle name.
 
-Exit codes:
+Exit codes follow the shared three-code convention (see
+[`cli.md`](./cli.md#machine-readable-result-contract)):
 
-- **Default is report-only** — `evaluate` / `evaluate-model` exit `0`
-  unless the run itself errors, because a non-deterministic deep audit is a poor
-  *implicit* hard gate. `lint` remains the deterministic structural gate (see
+- **`0`** — the run completed. **This is the default**, report-only outcome
+  *regardless of rating*: without `--fail-on`, even an all-`fail` evaluation exits
+  `0`, because a non-deterministic deep audit is a poor *implicit* hard gate.
+  `lint` remains the deterministic structural gate (see
   [`cli-lint.md`](./cli-lint.md)).
-- **`--fail-on <rating>` opts into a semantic gate** — the automated-PR use case
-  (post a deep evaluation on a pull request and block on a bad rating) is its
-  concrete motivation. It is opt-in precisely because the run is
-  non-reproducible: a team chooses to accept that trade-off, the tool never
-  imposes it. Pair with a machine-readable output sink (see
-  [`cli.md`](./cli.md#shared-conventions)) when wiring into CI.
+- **`1`** — **gate verdict failure:** `--fail-on <rating>` was passed and the
+  overall rating landed at or below `<rating>`. The run succeeded; the subject (or,
+  for `evaluate-model`, the model) just did not clear the bar. This is the opt-in
+  semantic gate — the automated-PR use case (post a deep evaluation on a pull
+  request and block on a bad rating) is its concrete motivation. It is opt-in
+  precisely because the run is non-reproducible: a team chooses to accept that
+  trade-off, the tool never imposes it. Pair with a machine-readable output sink
+  (see [`cli.md`](./cli.md#shared-conventions)) when wiring into CI.
+- **`2`** — **tool failure:** the run could not produce a trustworthy verdict — a
+  bad flag, an unresolvable `--ref`/target, a `QUALITY.md` that does not parse
+  (run `lint` first), or an internal error. A `2` never means "quality is bad,"
+  so `--fail-on` and a broken run stay distinguishable.
+
+> **`--fail-on` and `evaluate-model`.** For `evaluate`, the gated value is the
+> subject's overall rating. For `evaluate-model`, it is the model's overall rating
+> against the meta-model — defects and gaps roll up to a rating on the same scale,
+> so `--fail-on` reads identically (e.g. "block if the model rates `fail`").
 
 ## Open questions
 

@@ -173,8 +173,18 @@ to ignore them. They encode the recommended path, not a mandate.
   (findings that fail the gate) is distinct from a non-zero exit caused by the
   tool itself failing to run (bad flags, unreadable file, internal error), so an
   agent can tell "the quality is bad" from "the command broke" and react
-  differently. Exact codes are fixed per command in the detail docs; the
-  invariant is that the two cases never share a code.
+  differently. The two cases never share a code. Every command uses one shared
+  three-code convention:
+
+  | Code | Meaning |
+  | --- | --- |
+  | `0` | Success — the command ran and the gate (if any) passed. Report-only runs that complete also exit `0`. |
+  | `1` | **Gate verdict failure** — the command ran fine, but the quality bar was not met: `lint` found an `error`, `evaluate --fail-on` tripped, `compare --fail-on-regression` tripped. "The quality is bad." |
+  | `2` | **Tool failure** — the command could not produce a trustworthy verdict: bad flags, unreadable/absent file, parse-of-CLI-input error, internal error. "The command broke." |
+
+  An agent keys off this split: `1` means *act on the findings*; `2` means *fix
+  the invocation*. Detail docs restate the codes a command actually emits, but
+  never reassign these meanings.
 - **Non-blocking and idempotent in automation.** Whenever a command is on the
   non-interactive path (see [Shared conventions](#shared-conventions) — not a TTY,
   `--non-interactive`, or `--json`), it never prompts, so every scripted or agent

@@ -54,7 +54,7 @@ A single `QUALITY.md` with commented frontmatter and a short body skeleton:
 
 ```markdown
 ---
-# QUALITY.md — quality model for <project>. See docs/spec.md.
+# QUALITY.md — quality model for <project>. See SPECIFICATION.md.
 # Each factor has `requirements`, nested `factors`, or both.
 # Each requirement declares exactly one assessment: `prompt` or `bash`.
 # Ratings default to pass / fail; add a `ratings:` block to customize.
@@ -147,9 +147,11 @@ Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
 
 - `--config` — also scaffold `./.quality/config.yaml`.
 
-Exit codes:
+Exit codes follow the shared three-code convention (see
+[`cli.md`](./cli.md#machine-readable-result-contract)). `init` has no gate, so it
+never emits the gate-verdict code `1`:
 
 - **`0`** on a successful write.
-- **`1`** if `./QUALITY.md` already exists — `init` never clobbers an existing
-  model.
-- **`1`** on a write error.
+- **`2`** — **tool failure:** `init` could not complete the write. Either
+  `./QUALITY.md` already exists (`init` never clobbers an existing model) or the
+  write itself failed (permissions, unwritable directory).
