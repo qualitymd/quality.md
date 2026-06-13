@@ -42,8 +42,46 @@ It checks four things, in order:
 The linter runs a fixed set of rules against a parsed `QUALITY.md` — over the
 frontmatter and the Markdown body. Each rule produces findings at a fixed severity.
 Rule identifiers are illustrative and
-expected to be tuned during implementation. Severities are chosen so a **minimal,
-well-formed file still passes CI**: only unambiguous violations are errors.
+expected to be tuned during implementation. All rules share one shape and one
+severity philosophy, stated next.
+
+### Rule idiom
+
+Every lint rule follows one shape, borrowed from `design.md lint`'s rule
+descriptor. Stating it once keeps the rule set uniform: a new rule is read
+against this contract, not invented fresh. The rule tables below are this
+descriptor in tabular form — the **Rule** column is `name`, **Severity** is the
+default `severity`, and **What it checks** is `description`.
+
+- **One rule, one defect, pure.** A rule is a named unit `{ name, severity,
+  description, run }`. `run` is a pure function of the *parsed model* — parsed
+  frontmatter and extracted body headings in, findings out. Its only I/O is the
+  on-disk existence checks for `prompt`/`target` references; it never mutates the
+  model, rewrites the file, or judges prose.
+- **Names name the fault, kebab-case.** A rule reads as the thing it flags —
+  either the defect directly (`missing-factors`, `broken-target`,
+  `duplicate-section`) or the element-and-aspect it validates
+  (`assessment-count`, `factor-shape`, `section-order`). Never the verb of the
+  check. The `-summary` suffix is reserved for the `info` rule that *reports*
+  rather than flags (`model-summary`).
+- **Three severities, gate-safe by default.** `error` — an unambiguous spec
+  violation; fails the gate (exit `1`). `warning` — lower-confidence, or
+  legitimately fine sometimes (a forward-declared glob, an empty collection);
+  surfaced, never blocking. `info` — a summary, never a defect. The ladder is set
+  so a **minimal, well-formed file passes CI**: when in doubt, a rule is a
+  warning, not an error.
+- **Findings are `{ severity, path, message }`.** `path` is the dotted locator
+  into the model (quoting map keys that contain spaces; see [Output](#output));
+  body-level rules may omit it. `message` is one complete sentence stating the
+  violation and, where the rule checks against a closed set, naming the valid
+  alternatives. A finding may carry its own severity, overriding the rule's
+  default — the descriptor allows one rule to span severities (as design.md's
+  `broken-ref` does), though no current QUALITY.md rule needs it. The related
+  discretion every rule does exercise is *whether to emit at all*: `unknown-key`
+  warns on a typo-shaped key but stays silent on a genuinely custom one.
+- **The format grows through users.** Unrecognized keys and body sections are
+  preserved silently; only typo-shaped ones warn. A rule never errors on
+  extension it does not understand.
 
 ### Frontmatter rules
 
