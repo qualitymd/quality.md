@@ -35,7 +35,7 @@ The surface splits cleanly into two tiers that answer different questions:
 
 - **Structural tier — `lint`.** *Is this a well-formed `QUALITY.md`?* A
   deterministic check that the file conforms to the format spec: frontmatter
-  parses, every factor has exactly one of `requirements`/`factors`, every
+  parses, every factor has `requirements`, `factors`, or both, every
   requirement declares exactly one assessment, `prompt`/`target` paths resolve,
   the `ratings` scale is well-shaped. Cheap enough to run on every save and in a
   pre-commit hook. Modeled on Google's `design.md lint` (see

@@ -10,7 +10,7 @@ The quality model is embedded in the YAML front matter at the beginning of the f
 
 The model keeps three concerns separate:
 
-- **Requirement** — *what* must be true. A requirement is self-contained: a name, an optional target, and one assessment. It holds nothing about scoring, so it can be lifted out of QUALITY.md and reused on its own — for example, referenced from an agent skill.
+- **Requirement** — *what* must be true. A requirement is self-contained: a name, an optional target, and a single assessment. It holds nothing about scoring, so it can be lifted out of QUALITY.md and reused on its own — for example, referenced from an agent skill.
 - **Evaluation** — *how* a requirement is assessed. Either inferential (`prompt`) or computational (`bash`); the key you choose is the declaration of method.
 - **Rating** — *how the result is classified*. A single, requirement-agnostic scale (`ratings`) names the levels an evaluation can land on.
 
@@ -57,11 +57,11 @@ ratings:                          # optional; defaults to pass / fail
     displayName: <string>
     description: <string>         # optional
 factors:
-  <factor-name>:                  # a factor has requirements OR nested sub-factors
+  <factor-name>:                  # a factor has requirements, sub-factors, or both
     requirements:
       <requirement-name>:
         target: <path | glob>     # optional; the artifact under evaluation
-        # exactly one assessment:
+        # exactly one assessment — a single prompt OR a single bash command:
         prompt: <text | path>     # inferential (judged by a model/reviewer)
         bash: <command>           # computational (shell exit status)
     factors:                      # sub-factors, nested to any depth
@@ -72,11 +72,39 @@ The frontmatter is a single mapping. `factors` is required; `ratings` is an
 optional sibling that customizes the rating scale.
 
 **Factors.** `factors` is a map of factor name → factor. A factor is a named
-quality attribute (for example `security` or `maintainability`). A factor
-either lists `requirements` directly, or nests sub-`factors` to decompose into
-finer attributes — exactly one of the two, not both. Sub-factors nest to any
-depth, forming a tree whose leaves carry requirements. Names are the map keys
-and must be unique among siblings.
+quality attribute (for example `security` or `maintainability`). A factor may
+list `requirements`, nest sub-`factors` to decompose into finer attributes, or
+both — `requirements` assess the attribute directly while sub-`factors` break it
+down further; a factor must carry at least one of the two. Sub-factors nest to
+any depth, forming a tree, and requirements may hang off any factor in it, not
+only the leaves. Names are the map keys and must be unique among siblings.
+
+**Naming and describing factors.** The format does not constrain how you name or
+describe a factor, but a few conventions keep a model legible (these are
+recommendations, not rules):
+
+- **A factor names a quality attribute, not a part of the system.** It captures
+  one dimension of what *good* means — reliability, security, maintainability —
+  not a component (*the API*, *the database*) or an activity (*testing*,
+  *review*). A factor that names a thing or a task is miscast.
+- **Draw factors from a recognizable vocabulary, and keep only the ones that
+  matter here.** Familiar quality attributes — often the "-ilities": reliability,
+  usability, maintainability, performance, security, portability — make a model's
+  intent legible at a glance. Choose them because the subject's needs and risks
+  call for them, not by adopting a standard list wholesale; record concerns you
+  deliberately leave out under **Known gaps** rather than dropping them silently.
+- **Pin the name down in prose.** The same attribute name means different things
+  across systems, so a familiar label alone does not carry a definition. The
+  factor's body section is where you say what it means for *this* subject, how you
+  would know it is met, and what it trades off against its siblings.
+- **Keep sibling factors distinct.** Factors under one parent should cover
+  different concerns; substantial overlap is a sign that two factors are really
+  one, or are cut along the wrong axis. Add sub-factors only to sharpen an
+  attribute too broad to assess directly — not for tidiness.
+- **Give every factor requirements.** A factor is operational only when
+  requirements hang off it — directly or through its sub-factors — whose failure
+  would reveal a real deficiency in that attribute. A factor with no requirements
+  is a heading, not a part of the model.
 
 **Requirements.** `requirements` is a map of requirement name → requirement,
 where the name states the expectation (for example `"unit tests pass"`). A
@@ -84,6 +112,13 @@ requirement names an optional `target` and declares exactly one assessment. It
 holds nothing about rating levels, which keeps it portable — a requirement, or
 the file its assessment points to, can be referenced and evaluated on its own,
 outside QUALITY.md.
+
+A requirement carries a *single* assessment — one `prompt` or one `bash`
+command, never several and never a list. A `prompt` is one body of criteria
+(inline text or a single referenced document), not a collection of separate
+prompts. When an expectation feels like it needs more than one prompt, that is
+the signal to split it into separate requirements, each with its own single
+assessment — keeping every requirement singular and independently evaluable.
 
 The optional `target` is a path or glob pattern (relative to the QUALITY.md
 file) identifying the file or directory the requirement is evaluated against. A
@@ -93,11 +128,13 @@ omitted, the requirement applies to the QUALITY.md file's directory.
 The assessment is exactly one of:
 
 - `prompt: <text | path>` — an *inferential* assessment, judged by a model (or
-  a human reviewer). Either inline text stating what the target must satisfy,
-  or a path (relative to the QUALITY.md file) to a Markdown document holding the
-  same — a checklist, a style guide, a specification to conform to. A path is
-  the seam for reuse: the standard lives in its own file that both QUALITY.md
-  and, say, an agent skill can load.
+  a human reviewer). A single value: either inline text stating what the target
+  must satisfy, or a path (relative to the QUALITY.md file) to a Markdown
+  document holding the same — a checklist, a style guide, a specification to
+  conform to. A path is the seam for reuse: the standard lives in its own file
+  that both QUALITY.md and, say, an agent skill can load. A document referenced
+  by `prompt` may be as long as it needs to be, but it is still one prompt for
+  one requirement.
 - `bash: <command>` — a *computational* assessment. A shell command whose exit
   status is the verdict.
 

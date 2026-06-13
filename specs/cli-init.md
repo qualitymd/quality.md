@@ -57,7 +57,7 @@ A single `QUALITY.md` with commented frontmatter and a short body skeleton:
 ```markdown
 ---
 # QUALITY.md — quality model for <project>. See docs/spec.md.
-# Each factor has either `requirements` OR nested `factors`, not both.
+# Each factor has `requirements`, nested `factors`, or both.
 # Each requirement declares exactly one assessment: `prompt` or `bash`.
 ratings:                  # optional; omit to default to pass / fail
   pass: { displayName: "Pass" }

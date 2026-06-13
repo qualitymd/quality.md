@@ -29,8 +29,9 @@ It checks four things, in order:
 
 1. **Parse** — the frontmatter exists, is fenced by `---`, and is valid YAML.
 2. **Schema** — the parsed model conforms to the spec: `factors` present; every
-   factor has exactly one of `requirements`/`factors`; every requirement
-   declares exactly one assessment; `ratings` (if present) is well-shaped.
+   factor carries at least one of `requirements`/`factors` (either, or both);
+   every requirement declares exactly one assessment; `ratings` (if present) is
+   well-shaped.
 3. **References** — `prompt` paths and `target` paths/globs resolve on disk
    (model-relative; see [`cli.md`](./cli.md#shared-conventions)).
 4. **Body** — the Markdown body carries the spine sections and each factor has
@@ -50,8 +51,9 @@ well-formed file still passes CI**: only unambiguous violations are errors.
 | --- | --- | --- |
 | `parse-error` | error | Frontmatter missing, unterminated, or not valid YAML (no opening/closing `---`, malformed YAML). Aborts the run — no later rules can run. |
 | `missing-factors` | error | The required top-level `factors` key is absent or empty. |
-| `factor-shape` | error | A factor declares **both** `requirements` and `factors`, or **neither** — the spec requires exactly one. |
+| `factor-shape` | error | A factor declares **neither** `requirements` nor `factors` — the spec requires at least one. |
 | `assessment-count` | error | A requirement does not declare exactly one assessment: zero, or both `prompt` and `bash`. |
+| `assessment-shape` | error | A `prompt` or `bash` value is not a single scalar string — e.g. a YAML list/sequence or a map. A requirement carries one prompt or one command, never a list of them. |
 | `broken-prompt-ref` | error | A `prompt` given as a path (rather than inline text) points to a file that does not exist. |
 | `broken-target` | warning | A `target` path or glob resolves to no files on disk. Warning, not error — a glob may legitimately match nothing yet. |
 | `empty-collection` | warning | A `requirements` or `factors` map is present but empty. |
