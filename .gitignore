@@ -17,3 +17,7 @@ node_modules/
 .env.*
 !.env.example
 .DS_Store
+
+# Agent guidance symlinks (edit AGENTS.md)
+/CLAUDE.md
+/GEMINI.md

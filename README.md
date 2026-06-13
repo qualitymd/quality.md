@@ -36,6 +36,17 @@ exits non-zero if any requirement fails, so it drops straight into CI.
 > 🚧 The `QUALITY.md` format is still in flux. See [`docs/spec.md`](docs/spec.md)
 > for the current draft schema.
 
+## Conceptual model
+
+The way `QUALITY.md` frames quality is informed by the **ISO/IEC 25000 (SQuaRE)**
+family of software-quality standards — particularly ISO/IEC 25010 — and, for the
+shape of a well-formed requirement, **ISO/IEC/IEEE 29148**. We acknowledge these
+standards as the conceptual lineage for the format. `QUALITY.md` is not intended
+to strictly conform to them, however: it borrows ideas and vocabulary where they
+help, diverges where they don't (for example, it uses *Factors* and *Subfactors*
+where ISO says *characteristics*), and optimizes first for being a practical,
+readable format.
+
 ## Contributing
 
 Development setup, tasks, and the release process live in
