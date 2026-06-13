@@ -54,8 +54,9 @@ factors:
 ```yaml
 ratings:                          # optional; defaults to pass / fail
   <level-name>:                   # listed best to worst
-    displayName: <string>
-    description: <string>         # optional
+    displayName: <string>         # optional; human label for the level
+    promptCondition: <string>     # optional; criterion a `prompt` is judged against
+    bashCondition: <CEL boolean>  # optional; predicate a `bash` result is classified against
 factors:
   <factor-name>:                  # a factor has requirements, sub-factors, or both
     requirements:
@@ -135,39 +136,118 @@ The assessment is exactly one of:
   that both QUALITY.md and, say, an agent skill can load. A document referenced
   by `prompt` may be as long as it needs to be, but it is still one prompt for
   one requirement.
-- `bash: <command>` — a *computational* assessment. A shell command whose exit
-  status is the verdict.
+- `bash: <command>` — a *computational* assessment. A shell command whose result
+  is classified against the rating scale; by default a zero exit earns the best
+  level (see [Computational rating](#computational-rating)).
 
 The key is the declaration of method: `prompt` says "assess this by judgment,"
 `bash` says "assess this by running a command." There is no separate field
 naming the criteria — the criteria *are* the prompt or the command.
 
 **Rating.** Evaluating a requirement produces a rating: the level its result
-lands on, drawn from the `ratings` scale below. A `prompt` is judged against the
-scale — the target earns the best level when it fully satisfies the prompt, and
-lower levels as it falls short. A `bash` assessment earns the best level on a
-zero exit and the worst otherwise. The rating is produced by evaluation; it is
-never declared on the requirement. When a requirement needs graded expectations
-(for example coverage bands), state the gradations in the `prompt` prose itself
-— never as a map keyed on level names — so the requirement stays self-contained
-and scale-independent.
+lands on, drawn from the `ratings` scale below. The two assessment methods are
+classified differently, and a level carries one register for each:
+
+- A `prompt` is **judged** against the scale's `promptCondition`s — the target
+  earns the best level when it fully satisfies the requirement's prompt, and lower
+  levels as it falls short.
+- A `bash` result is **classified** against the scale's `bashCondition`s — the
+  levels are tested best to worst and the result takes the first level whose
+  `bashCondition` is true (see [Computational rating](#computational-rating)).
+
+The rating is produced by evaluation; it is never declared on the requirement,
+which carries a single assessment and names no level. Per-level criteria live on
+the scale — a level's `promptCondition` and `bashCondition` — never as a map
+keyed on level names hung on the requirement, which would couple it to one scale.
 
 **Rating scale.** The optional top-level `ratings` map defines the single scale
-shared by every requirement. Each entry is a level name carrying a `displayName`
-and an optional `description`. Write the descriptions generically — in terms of
-how fully an evaluation meets its assessment — so the one scale applies to every
-requirement. List levels best to worst; the order defines their ranking. When
-`ratings` is omitted, the scale defaults to `pass` then `fail`. A custom scale
-might read:
+shared by every requirement. Each entry is a level name carrying an optional
+`displayName`, an optional `promptCondition` (the criterion a `prompt` is judged
+against), and an optional `bashCondition` (a CEL boolean a `bash` result is
+classified against). Write the conditions generically — in terms of how fully an
+evaluation meets its assessment — so the one scale applies to every requirement.
+List levels best to worst; the order defines their ranking. When `ratings` is
+omitted, the scale defaults to `pass` then `fail`, with `pass` defined as
+`bashCondition: "result.success"` (a zero exit). A custom scale might read:
 
 ```yaml
 ratings:
-  A: { displayName: "Excellent",    description: "Fully satisfies the assessment; no gaps" }
+  A: { displayName: "Excellent",    promptCondition: "Fully satisfies the assessment; no gaps" }
   B: { displayName: "Good" }
-  C: { displayName: "Acceptable",   description: "Satisfies the core of the assessment; minor gaps" }
+  C: { displayName: "Acceptable",   promptCondition: "Satisfies the core of the assessment; minor gaps" }
   D: { displayName: "Poor" }
-  E: { displayName: "Unacceptable", description: "Does not satisfy the assessment" }
+  E: { displayName: "Unacceptable", promptCondition: "Does not satisfy the assessment" }
 ```
+
+### Computational rating
+
+A `bash` requirement is classified by running its command and evaluating the
+scale's `bashCondition` expressions against the result. It is deterministic — no
+model judgment is involved.
+
+Each `bashCondition` is a [CEL](https://cel.dev) (Common Expression Language)
+boolean, evaluated against a single `result` describing the command run:
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `result.success` | bool | the command exited zero |
+| `result.exit` | int | exit status |
+| `result.stdout` | string | captured standard output |
+| `result.stderr` | string | captured standard error |
+
+Because CEL does not coerce between types, a few helpers bridge a command's raw
+text output to the value a condition tests:
+
+- `json(s)` — parse a JSON string into a value
+- `trim(s)` — strip surrounding whitespace (command output carries trailing
+  newlines)
+- `number(s)` / `int(s)` — parse a number from a string
+- standard CEL string operators are available — `contains`, `startsWith`,
+  `endsWith`, `matches` (regex), `size`
+
+**Classification.** The levels are tested in order, best to worst; the result
+takes the **first** level whose `bashCondition` is true. If no level matches, the
+result takes the **worst** level — the scale denies by default. A level with no
+`bashCondition` is never selected by computation; it is reachable only as that
+worst-level fallback (which is why the default `fail` needs none). A
+`bashCondition` that fails to evaluate — `json()` on output that is not JSON, say
+— is a configuration error in the model, surfaced as such rather than silently
+scored.
+
+**The default scale, made explicit.** Omitting `ratings` is equivalent to:
+
+```yaml
+ratings:
+  pass: { bashCondition: "result.success" }   # zero exit
+  fail: {}                                    # the fallback
+```
+
+So the default `bash` behavior — best level on a zero exit, worst otherwise — is
+just this scale. An author can refine the pass condition on the scale without
+touching any requirement:
+
+```yaml
+ratings:
+  pass: { bashCondition: "result.success && result.stderr == ''" }
+  fail: {}
+```
+
+or band a numeric signal a command prints on stdout:
+
+```yaml
+ratings:
+  A: { bashCondition: "number(trim(result.stdout)) >= 90" }
+  B: { bashCondition: "number(trim(result.stdout)) >= 80" }
+  C: { bashCondition: "number(trim(result.stdout)) >= 70" }
+  fail: {}
+```
+
+A scale that bands on `result.stdout` like this assumes every `bash` requirement
+under it emits a comparable value. Letting each requirement extract its own
+signal for a shared scale is a planned extension.
+
+Classification yields the rating; whether a given rating should *gate* — fail a
+build, block a change — is the evaluating tool's concern, not the format's.
 
 ## Markdown Body
 
