@@ -11,7 +11,7 @@
 
 ```bash
 qualitymd lint QUALITY.md
-qualitymd lint --format json QUALITY.md
+qualitymd lint --json QUALITY.md
 cat QUALITY.md | qualitymd lint -
 ```
 
@@ -151,8 +151,9 @@ Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
 
 - `file` — positional path to the `QUALITY.md` file, or `-` for stdin. Defaults
   to `./QUALITY.md` / `-f`.
-- `--format json` — output format. JSON only in v1; a human-readable text format
-  is a possible later addition.
+- `--json` — emit JSON output. JSON only in v1 (and the `lint` default), so the
+  flag is a no-op for now; a human-readable text format is a possible later
+  addition.
 
 Exit codes:
 

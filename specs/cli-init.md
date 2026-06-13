@@ -7,8 +7,6 @@
 
 ```bash
 qualitymd init                       # write a starter ./QUALITY.md
-qualitymd init docs/QUALITY.md       # write to a chosen path
-qualitymd init -                     # print to stdout, write nothing
 ```
 
 ## Purpose
@@ -18,8 +16,8 @@ qualitymd init -                     # print to stdout, write nothing
 `evaluate-model` all take an existing model as input; `init` produces one.
 
 `init` is **deterministic and offline**: it writes a minimal, schema-commented
-starter `QUALITY.md` — a few example factors, the default `pass`/`fail` scale,
-and a Markdown body skeleton — that the author then fills in. It has no opinion
+starter `QUALITY.md` — a few example factors and a Markdown body skeleton, on
+the default `pass`/`fail` scale — that the author then fills in. It has no opinion
 about your codebase and does no agentic work; it gives you a well-formed file to
 edit and a clear next step.
 
@@ -59,9 +57,7 @@ A single `QUALITY.md` with commented frontmatter and a short body skeleton:
 # QUALITY.md — quality model for <project>. See docs/spec.md.
 # Each factor has `requirements`, nested `factors`, or both.
 # Each requirement declares exactly one assessment: `prompt` or `bash`.
-ratings:                  # optional; omit to default to pass / fail
-  pass: { displayName: "Pass" }
-  fail: { displayName: "Fail" }
+# Ratings default to pass / fail; add a `ratings:` block to customize.
 factors:
   functionality:
     requirements:
@@ -74,16 +70,35 @@ factors:
         bash: "<your test command>"
 ---
 
-# Quality model
+# Quality model — <project>
 
-Document the rationale here — why these factors, what "good" means for this
-system, what is deliberately out of scope. Prose is the heart of the model;
-the frontmatter is the machine-readable summary of it.
+## Overview
+<!-- What this system or component is, who depends on it, what "good" means
+     here, and what the model covers — its target and boundary. -->
+
+## Needs
+<!-- What matters, and to whom — the plain-language statements the requirements
+     answer to. -->
+
+## Risks
+<!-- What goes wrong, and for whom, if a need is not met. -->
+
+## Factors
+<!-- One subsection per factor, mirroring the frontmatter. -->
+### Functionality
+<!-- What this factor means here, how you would know it is met, any trade-offs. -->
+### Testability
+
+## Known gaps
+<!-- Quality concerns known to matter but deliberately not addressed yet, each
+     with a brief reason. -->
 ```
 
-The template leans on prose, matching the project's "prose over tokens" bet:
-placeholders prompt the author to *write the reasoning*, not just fill in token
-values.
+The skeleton seeds the body with the spec's recommended sections (Overview,
+Needs, Risks, Factors, Known gaps), leaning on prose to match the project's
+"prose over tokens" bet: the comments prompt the author to *write the
+reasoning*, not just fill in token values. The factor subsections mirror the
+example factors in the frontmatter.
 
 ### Optional config (`--config`)
 
@@ -97,36 +112,44 @@ Also scaffold the project quality home (see
 
 Off by default — `init` writes only `QUALITY.md` unless `--config` is passed.
 
+## Interactive by default
+
+`init` is the one human-facing, human-authored entry point in the CLI, so it
+**prompts by default** when run in a terminal — matching the convention of
+scaffolding commands like `npm init` and `gh repo create`. The prompts ask for a
+few fields (project name, an initial factor or two, a test command) and weave the
+answers into the scaffold in place of the placeholders; everything not asked about
+(the body skeleton, the remaining placeholders) is still seeded for the author to
+edit.
+
+Interactivity follows the CLI's shared rule (see
+[`cli.md`](./cli.md#shared-conventions)): `init` runs the **non-interactive** path
+— no prompts, the fixed placeholder scaffold, never blocking — whenever stdin/stdout
+is **not a TTY** (piped, redirected, or in CI), or `--non-interactive` or `--json`
+is passed. So `qualitymd init` on a terminal is interactive, while an agent, a
+pipe, or a CI step gets the deterministic file with no prompt and no hang. Prompts
+are written to stderr, so `--json` result output on stdout is never contaminated.
+
+Both paths produce the same well-formed file on the default `pass`/`fail` scale
+and emit the same next-action ("edit the placeholders, then run `qualitymd lint`").
+
 ## Flags, exit codes
+
+`init` always writes `./QUALITY.md` in the current directory — there is no path
+argument and no stdout mode. This keeps the bootstrapping step a single,
+predictable action.
+
+`init` writes one fixed starter scaffold (see [What it writes](#what-it-writes)):
+the example factors above, relying on the default `pass`/`fail` scale. There is
+no template or rating-scale choice — the author edits the file afterward.
 
 Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
 
-- `path` — positional output path, or `-` for stdout. Defaults to `./QUALITY.md`
-  / `-f`.
-- `--template minimal|example` — starter content: `minimal` (a near-empty
-  scaffold) or `example` (a few illustrative factors, the default).
-- `--ratings pass-fail|letter` — which rating scale to seed (`pass-fail` default;
-  `letter` writes the A–E scale from `docs/spec.md`).
 - `--config` — also scaffold `./.quality/config.yaml`.
-- `--force` — overwrite an existing target file (see below).
 
 Exit codes:
 
 - **`0`** on a successful write.
-- **`1`** if the target file already exists and `--force` was not given — `init`
-  never clobbers a model by default. (Writing to `-`/stdout never touches disk
-  and so never trips this.)
+- **`1`** if `./QUALITY.md` already exists — `init` never clobbers an existing
+  model.
 - **`1`** on a write error.
-
-## Open questions
-
-- **Interactivity.** Pure flags-only (current assumption, agent-friendly and
-  scriptable) vs. an interactive prompt that asks for project name, factors, and
-  test command. Interactive is friendlier for humans but cuts against the
-  agent-consumable, non-interactive grain of the rest of the CLI.
-- **Body skeleton vs. frontmatter only.** Whether template mode emits the
-  Markdown body skeleton (current) or just the frontmatter, leaving prose
-  entirely to the author. The "prose over tokens" philosophy argues for seeding
-  the body.
-- **Template registry.** `--template` is a fixed enum in v1. Whether to support
-  user/shared templates (e.g. a `web-service` or `library` starter) is deferred.
