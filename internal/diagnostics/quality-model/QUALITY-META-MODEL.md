@@ -33,9 +33,6 @@ factors:
           - operationalized: it carries requirements — directly or through its
             sub-factors — that genuinely assess it; it is not left as a vague
             heading whose failure no requirement would surface.
-          - described: the Markdown body explains what the attribute means for
-            this subject, how one would know it is met, and the trade-offs it
-            carries against other factors.
       "the factor set is well-formed as a whole":
         prompt: >
           The full set of factors across the model exhibits these set-level
@@ -116,6 +113,53 @@ factors:
             achieve the subject's needs within constraints — a subject that passes
             every requirement is genuinely good enough for the needs the model
             declares.
+      "the Overview body section frames the subject and its scope":
+        prompt: >
+          Where present, the Overview section establishes the context the rest of
+          the model depends on: what the subject is, who depends on it, what
+          "good" means for it, and the model's target and boundary — including
+          dependencies the subject relies on but does not own. It frames the
+          subject concretely enough that a reader can tell what is in and out of
+          scope and judge the model's prompt assessments consistently, rather
+          than restating the factors or trailing off into generic description.
+      "the Needs body section states what matters and to whom":
+        prompt: >
+          Where present, the Needs section states, in plain language, what matters
+          about the subject and to whom — the stakeholder expectations the
+          requirements answer to. Each need is a genuine expectation expressed
+          from the stakeholder's standpoint, not a paraphrase of a requirement or
+          a factor name, and together they give the requirements something
+          concrete to realize. The section has considered the subject's full range
+          of stakeholders rather than defaulting to end users alone — including,
+          where they apply to this subject, the developers who build, review, and
+          maintain it and the AI assistants or coding agents that build, operate,
+          or consume it. These classes need not all appear, but a subject they
+          plainly serve should not be silently overlooked.
+      "the Risks body section states what failure costs and to whom":
+        prompt: >
+          Where the subject's needs carry material failure modes, the Risks
+          section says what goes wrong, and for whom, if a need is not met, and
+          conveys the relative severity that should shape the model's priorities —
+          distinguishing the outcomes the model must guard against most from
+          lesser, recoverable ones. A subject with no material risks may omit the
+          section; when present it adds this consequence framing rather than
+          restating the needs.
+      "the Factors body section explains every declared factor":
+        prompt: >
+          The Factors section gives every factor and sub-factor declared in the
+          frontmatter matching body prose that does its prescribed job: it says
+          what the attribute means for this subject, how one would know it is met,
+          and the trade-offs it carries against its siblings. The section mirrors
+          the frontmatter's structure and reads as the rationale for why these are
+          the right factors, not a restatement of their names.
+      "the Known gaps body section records deferred concerns with reasons":
+        prompt: >
+          Where the model leaves quality concerns deliberately unaddressed, the
+          Known gaps section records each one with a brief reason, so scoped-out
+          concerns are explicit and intentional rather than silent omissions a
+          reader would mistake for oversights. A model that addresses every
+          concern it should may omit the section; when concerns are knowingly
+          deferred, they appear here.
     factors:
       correctness:
         requirements:
@@ -145,11 +189,13 @@ factors:
               nothing the format calls for left out. The required `factors`
               frontmatter is present and non-empty; the Markdown body carries the
               recommended spine — at minimum Overview, Needs, and Factors — and
-              every factor and sub-factor declared in the frontmatter has matching
-              body prose explaining what it means for this subject. The structured
-              model and its human-readable rationale are both present, so the file
-              delivers the whole of what the format intends rather than only its
-              machine-readable half.
+              every factor and sub-factor declared in the frontmatter has a
+              matching body subsection. The structured model and its
+              human-readable rationale are both present, so the file delivers the
+              whole of what the format intends rather than only its
+              machine-readable half. Whether each present section is well-written
+              is judged by the per-section body requirements, not here; this asks
+              only that nothing prescribed is missing.
   usability:
     factors:
       agent usability:
@@ -261,8 +307,9 @@ the dimensions along which it frames quality:
 
 - *each factor is individually well-formed* rolls up the characteristics of an
   individual factor — a quality attribute (not a component or activity), relevant,
-  distinct, grounded, operationalized, described — applied to each factor the
-  model declares.
+  distinct, grounded, operationalized — applied to each factor the model declares.
+  (Whether the factor's body prose explains it is judged by the Factors
+  body-section requirement below, not here.)
 - *the factor set is well-formed as a whole* rolls up the set-level
   characteristics — complete coverage, non-overlapping, coherent, appropriately
   decomposed — applied to the full set of factors, catching gaps and overlaps that
@@ -284,6 +331,28 @@ own requirements:
 Both pairs live under Functionality rather than as standalone factors because
 well-formed factors and requirements are a precondition for the model
 functioning, not a separate product-quality attribute of it.
+
+A further set of Functionality requirements covers the model's Markdown body —
+the documentation half the format prescribes. The body is where quality is made
+concrete: it frames what "good" means for the subject and supplies the grounding
+a `prompt` assessment needs to be judged consistently, so a thin or generic body
+undermines the model's functionality even when the frontmatter is sound. One
+requirement per prescribed body section — *the Overview body section frames the
+subject and its scope*, *the Needs body section states what matters and to whom*,
+*the Risks body section states what failure costs and to whom*, *the Factors body
+section explains every declared factor*, and *the Known gaps body section records
+deferred concerns with reasons* — asks not whether the section is present (the
+Completeness sub-factor checks that) but whether, when present, it does the job
+the spec assigns it. Risks and Known gaps apply only where the subject warrants
+them, so each passes when appropriately absent. The Needs requirement in
+particular checks that the section has considered the subject's full range of
+stakeholders — including, where they apply, the developers who build and maintain
+it and the AI agents that build, operate, or consume it — rather than defaulting
+to end users alone; software is increasingly worked on and consumed by both, and
+a model that overlooks a class of stakeholder it plainly serves will miss the
+needs that class carries. These requirements own the quality of the body's prose,
+which is why the factor and requirement well-formedness requirements above are
+scoped to the structured model rather than its documentation.
 
 Functionality also decomposes into two sub-factors that judge the model's
 conformance to the QUALITY.md spec itself — its *format*, not its subject. Where
