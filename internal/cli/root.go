@@ -1,5 +1,12 @@
 // Package cli wires the quality.md command tree (Cobra) and runs it through
 // Fang for styled help, errors, version, and shell completion.
+//
+// STUB: This is an early scaffold and does NOT reflect the current CLI
+// specification under specs/. The spec (see specs/cli.md) defines a five-command
+// surface across two tiers — `init`, `lint`, `evaluate`, `evaluate-model`, and
+// `compare` — whereas this tree exposes only a single `check` command that does
+// not exist in the spec. Treat everything here as a placeholder to be replaced,
+// not as the intended command surface.
 package cli
 
 import (

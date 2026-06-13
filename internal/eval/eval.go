@@ -1,4 +1,13 @@
 // Package eval scores the requirements in a quality.md spec.
+//
+// STUB: This evaluator does not implement the evaluation model described in
+// specs/cli-evaluate.md. The spec defines an agentic, judgment-based audit that
+// reads the subject codebase and scores each requirement against a ratings
+// scale, producing an evaluation bundle. What lives here instead is a flat
+// pass/fail/skip runner over inline `bash`/`cel`/`rules` evaluators: `bash`
+// shells out on exit code, `cel` runs against an empty environment, and `rules`
+// (the LLM tier) is unimplemented. None of this matches the spec's two-tier
+// design and is expected to be replaced wholesale.
 package eval
 
 import (

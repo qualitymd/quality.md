@@ -1,5 +1,15 @@
 // Package spec loads and models a QUALITY.md specification. The spec lives in
 // the YAML frontmatter of a Markdown file.
+//
+// STUB: This data model is a simplification that does not track the current
+// format spec (SPECIFICATION.md and specs/). It models factors as a bare map of
+// requirement name to a single `rules`/`bash`/`cel` evaluator plus a pass/fail
+// `rating`. The real format is richer: factors nest `subfactors` and carry
+// `requirements`, each requirement declares exactly one assessment and is scored
+// against a multi-level `ratings` scale (not a binary pass/fail), assessments
+// reference `prompt`/`target` paths, and the Markdown body has structural
+// requirements of its own. The loader here also ignores the body entirely. Do
+// not treat these types as the canonical schema.
 package spec
 
 import (
