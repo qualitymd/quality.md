@@ -37,6 +37,11 @@ It checks four things, in order:
 4. **Body** — the Markdown body carries the spine sections and each factor has
    matching prose (see [Body rules](#body-rules)).
 
+When the working tree holds more than one `QUALITY.md`, `lint` discovers and
+validates the whole [federation](./cli-federation.md) by default: the rules below
+run per model, and a small set of [cross-file rules](#federation-rules) run over
+the set.
+
 ## Linting rules
 
 The linter runs a fixed set of rules against a parsed `QUALITY.md` — over the
@@ -93,7 +98,9 @@ default `severity`, and **What it checks** is `description`.
 | `assessment-count` | error | A requirement does not declare exactly one assessment: zero, or both `prompt` and `bash`. |
 | `assessment-shape` | error | A `prompt` or `bash` value is not a single scalar string — e.g. a YAML list/sequence or a map. A requirement carries one prompt or one command, never a list of them. |
 | `broken-prompt-ref` | error | A `prompt` given as a path (rather than inline text) points to a file that does not exist. |
+| `broken-ratings-ref` | error | A `ratings` value given as a path (a shared scale file) points to a file that does not exist or does not parse as a rating scale. |
 | `broken-target` | warning | A `target` path or glob resolves to no files on disk. Warning, not error — a glob may legitimately match nothing yet. |
+| `target-escapes-scope` | warning | A `target` resolves outside the model's own directory subtree (e.g. climbs above it with `../`), re-governing code another model owns. Federation keeps a requirement's reach local; an outward target is a smell, not always a mistake. |
 | `empty-collection` | warning | A `requirements` or `factors` map is present but empty. |
 | `ratings-shape` | warning | `ratings` is present but malformed: fewer than two levels defined (a scale needs at least two). |
 | `unknown-rating-level` | error | A per-requirement `ratings` override names a level not defined in the scale. The spec treats this as a configuration error: an override may only re-state conditions for levels the scale already declares. |
@@ -105,6 +112,11 @@ default `severity`, and **What it checks** is `description`.
 > the spec's "text \| path" union. `broken-prompt-ref` only fires for values that
 > *look* like a path (e.g. start with `./`, `../`, or `/`, or end in `.md`) but
 > do not exist, so inline prose is never mistaken for a broken reference.
+
+> **`ratings` inline vs path.** Likewise, a `ratings` value is treated as a
+> shared-scale file reference when it is a path string and as an inline scale map
+> otherwise; `broken-ratings-ref` fires only for a path-shaped value that does not
+> resolve or parse as a scale.
 
 ### Body rules
 
@@ -150,6 +162,24 @@ YAML against YAML). We cross that line on purpose: this rule is what enforces th
 "prose version of the model," and it stays low-risk by comparing only heading text
 to factor keys (case-insensitive), never parsing prose. It is a **warning**, so
 model/prose drift nudges without blocking the gate.
+
+### Federation rules
+
+When `lint` runs over a [federation](./cli-federation.md) — more than one
+`QUALITY.md` discovered — most rules above run per model. A few defects are only
+visible across the *set*, so they run once over the discovered models; unlike the
+single-model rules, these take the whole set as input rather than one parsed
+model.
+
+| Rule | Severity | What it checks |
+| --- | --- | --- |
+| `mixed-rating-scales` | warning | Models in one federation define or reference **different** rating scales. A tree report is only commensurable on a shared scale; share one by reference (see [`cli-federation.md`](./cli-federation.md#shared-rating-scale)). Sometimes a subtree deliberately rates on its own scale, hence a warning. |
+| `target-overlap` | warning | An ancestor and a descendant requirement's `target` globs resolve to overlapping files, so the same code is governed two ways. Often intentional for a cross-cutting ancestor requirement, hence a warning, not an error. |
+
+Coverage ("does every significant component have a model?") and the cross-file
+*consistency of meaning* between requirements are judgments, not structural
+facts, so they belong to `evaluate-model`'s set-level pass (see
+[`cli-evaluate.md`](./cli-evaluate.md#set-level-evaluation)), not `lint`.
 
 ## Output
 
@@ -211,7 +241,9 @@ finding-derived action tracks the finding's severity (`error → required`,
 Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
 
 - `file` — positional path to the `QUALITY.md` file, or `-` for stdin. Defaults
-  to `./QUALITY.md` / `-f`.
+  to `./QUALITY.md` / `-f`. With no `file`/`-f` and more than one `QUALITY.md`
+  present, `lint` validates the whole [federation](./cli-federation.md) (see
+  [Federation rules](#federation-rules)).
 - `--json` — emit JSON output. JSON only in v1 (and the `lint` default), so the
   flag is a no-op for now; a human-readable text format is a possible later
   addition.

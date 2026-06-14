@@ -29,7 +29,7 @@ func newRootCmd() *cobra.Command {
 		Use:   "qualitymd",
 		Short: "Evaluate quality.md specifications",
 		Long: "quality.md evaluates a QUALITY.md specification: a Markdown file whose " +
-			"frontmatter declares factors and requirements, each scored by rules, a bash " +
+			"frontmatter declares factors and requirements, each scored by a prompt, a bash " +
 			"command, or a CEL expression.",
 		SilenceUsage:  true,
 		SilenceErrors: true,

@@ -3,7 +3,7 @@
 //
 // STUB: This data model is a simplification that does not track the current
 // format spec (SPECIFICATION.md and specs/). It models factors as a bare map of
-// requirement name to a single `rules`/`bash`/`cel` evaluator plus a pass/fail
+// requirement name to a single `prompt`/`bash`/`cel` evaluator plus a pass/fail
 // `rating`. The real format is richer: factors nest `subfactors` and carry
 // `requirements`, each requirement declares exactly one assessment and is scored
 // against a multi-level `ratings` scale (not a binary pass/fail), assessments
@@ -32,11 +32,11 @@ type Spec struct {
 type Factor map[string]Requirement
 
 // Requirement is a single scored expectation. Exactly one evaluator
-// (Rules, Bash, or CEL) is expected; Rating supplies pass/fail criteria.
+// (Prompt, Bash, or CEL) is expected; Rating supplies pass/fail criteria.
 type Requirement struct {
-	// Rules holds inferential conditions, either inline text or a path to a
-	// Markdown guide. Evaluated by an LLM (not yet implemented).
-	Rules string `yaml:"rules,omitempty"`
+	// Prompt holds inferential assessment conditions, either inline text or a
+	// path to a Markdown guide. Evaluated by an LLM (not yet implemented).
+	Prompt string `yaml:"prompt,omitempty"`
 	// Bash is a shell command; a zero exit status means pass.
 	Bash string `yaml:"bash,omitempty"`
 	// CEL is a Common Expression Language predicate; a true result means pass.

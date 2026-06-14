@@ -67,12 +67,12 @@ func evalRequirement(ctx context.Context, factor, name string, req spec.Requirem
 		return evalBash(ctx, factor, name, req.Bash)
 	case req.CEL != "":
 		return evalCEL(factor, name, req.CEL)
-	case req.Rules != "":
+	case req.Prompt != "":
 		return Result{
 			Factor:      factor,
 			Requirement: name,
 			Status:      StatusSkip,
-			Detail:      "rule-based (LLM) evaluation not yet implemented",
+			Detail:      "prompt (LLM) evaluation not yet implemented",
 		}
 	default:
 		return Result{

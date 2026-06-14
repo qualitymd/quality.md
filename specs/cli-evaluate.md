@@ -1,446 +1,585 @@
-# CLI: `evaluate` / `evaluate-model`
+# CLI: the evaluation lifecycle (`evaluation` / `result`)
 
-> Detail doc for the deep, agentic **semantic tier**. See [`cli.md`](./cli.md)
-> for the full command surface and shared conventions, and
-> [`cli-lint.md`](./cli-lint.md) for the fast structural tier.
+> **Status:** rewritten for the **deterministic evaluation lifecycle**. This doc
+> replaces the superseded "CLI compiles a prompt and runs a coding agent" model
+> (the inversion — see [`cli.md`](./cli.md) and [`skills.md`](./skills.md)). It is
+> the detail doc for the `evaluation` (alias `eval`) and `result` resources: their
+> data model, on-disk layout, per-command behavior, the `bash` execution path, and
+> the report rollup. Field names and the staleness hash are illustrative and
+> expected to firm up in implementation; genuinely open items are marked `TODO` or
+> collected under [Open questions](#open-questions).
 
-| Command | Purpose | Cost / determinism | Output |
+This document covers the two resources that manage a recorded evaluation:
+
+| Resource | What it is | Where detail lives |
+| --- | --- | --- |
+| `evaluation` (`eval`) | A **living per-target run** — one per (model, target), re-run in place. | here |
+| `result` | A **requirement-result within a run** — one per selected requirement. | here |
+
+It is a sibling of [`cli.md`](./cli.md) (the umbrella command surface),
+[`skills.md`](./skills.md) (the judgment/orchestration layer that drives these
+resources), and [`cli-compare.md`](./cli-compare.md) (the fuller, pending-rewrite
+treatment of `evaluation compare`).
+
+## The boundary this doc lives on
+
+`qualitymd` draws one hard line (see [`cli.md`](./cli.md#the-split-deterministic-cli-judgment-in-skills)):
+**the CLI is deterministic and never calls a model.** Everything in this doc is
+that deterministic surface — it parses the model, resolves targets, runs `bash`
+assessments and classifies them, persists the run, rolls up factors, renders the
+report, and diffs runs. The **judgment** — composing prompts, judging `prompt`
+assessments, deciding when evidence is sufficient — belongs to the skill layer
+([`skills.md`](./skills.md)) and is cross-linked, never duplicated, here.
+
+The line falls on the format's two assessment kinds. A `bash` requirement is
+*computational*: the CLI runs it and classifies the result (`result run`). A
+`prompt` requirement is *inferential*: a skill judges it and records the verdict
+(`result set`). A model made **entirely of `bash` requirements is evaluable with
+no skill and no model calls** — pure, reproducible CI.
+
+## Data model
+
+### The run
+
+A run is the durable record of evaluating **one model against one target**. There
+is exactly one *living* run per (model, target); re-running re-enters it in place
+rather than forking a new one. Git history — not a chain of immutable run objects
+— is the timeline (see [Why no finalize](#why-no-finalize-git-is-the-audit-layer)).
+
+A run carries:
+
+- its **identity** — the (model, target) pair, and a derived `slug` (the on-disk
+  directory name);
+- the **selected requirement set** — every requirement enumerated at
+  `evaluation create`, each with a `result`;
+- a derived **status** and **rollup** (computed, not stored as truth — see
+  [Run states](#run-states)).
+
+### The result
+
+A result is the record for **one requirement within a run**. It carries:
+
+- the requirement's full **path** (factor → … → requirement);
+- its **assessment kind** (`bash` / `prompt`), carried from the model;
+- a **state** (see [Result states](#result-states));
+- once assessed, a **rating** (a level from the model's `ratings` scale) and
+  **evidence** — for `bash`, the captured `result` fields and which `bashCondition`
+  matched; for `prompt`, the skill's structured evidence;
+- **provenance** for staleness: the hash inputs captured when the rating was
+  recorded (see [Staleness](#staleness)).
+
+The result is the diffable artifact. Its rating + evidence are what a PR reviewer
+reads; volatile metadata is segregated out (see [On-disk layout](#on-disk-layout)).
+
+## Run states
+
+A run's status is **derived**, never authored:
+
+| Status | Meaning | How reached |
+| --- | --- | --- |
+| `open` | At least one result is still `pending`. | `evaluation create`; any result returned to `pending`. |
+| `complete` | Nothing is `pending` — every result is `recorded`, `skipped`, or `errored`. | derived once the last `pending` clears. |
+| `archived` | A frozen snapshot. | `evaluation archive --as <name>`. |
+
+`complete` is a watermark, not a seal — a complete run stays fully mutable, and a
+re-run that marks results `stale` (then `pending`) drops it back to `open`. There
+is no `finalize`.
+
+## Result states
+
+| State | Meaning | Entered from | Via |
 | --- | --- | --- | --- |
-| `qualitymd evaluate [factor]` | Deep ISO 25040 evaluation of the **subject** against the model's requirements. | Expensive, non-reproducible. | Evaluation bundle on disk. |
-| `qualitymd evaluate-model [factor]` | Deep evaluation of the **quality model itself** — are these the right requirements, well-specified, and complete against the real subject? | Expensive, non-reproducible. | Evaluation bundle on disk. |
+| `pending` | Enumerated, not yet assessed. | (initial); `stale`; `result reset` | `evaluation create`, `result reset` |
+| `recorded` | Assessed, carries a rating + evidence. | `pending` | `result run` (bash), `result set` (prompt) |
+| `skipped` | Deliberately not assessed, carries a reason. | `pending` | `result skip` |
+| `errored` | A `bash` command **could not run** (or its `bashCondition` failed to evaluate). Not a low rating. | `pending` | `result run` |
+| `stale` | Was `recorded`, but the model subtree or target it was judged against has changed. | `recorded` | detected on `evaluation create` / re-run |
 
-`evaluate` and `evaluate-model` are **one engine with the target
-swapped** (see below) — two verbs over the same pipeline, differing only in which
-`(target, criteria, context)` triple they run.
+Two transition rules carry weight:
 
-## Factor
-
-The optional positional `factor` names the factor or sub-factor subtree to
-evaluate, by dotted path — `security`, `maintainability.testability`. Omitted =
-the whole model. It scopes *which requirements* are evaluated, not which files.
-(As an axis it is the **requirement selector**; the argument is named for its
-value — a factor path.)
-
-## Target source & scope
-
-An evaluation is parameterized on **three independent axes**, not one:
-
-| Axis | What it varies | Controlled by |
-| --- | --- | --- |
-| **What's evaluated** | the subject vs. the quality model | `evaluate` / `evaluate-model` |
-| **Requirement selector** | *which requirements* (vertical slice of the model) | the positional `factor` |
-| **Target source & scope** | *which instance of the subject, and which files within it* (horizontal slice) | the flags below |
-
-The selector and the target scope are orthogonal: the selector slices the
-*model*, the target scope slices the *code*. Both can be applied at once
-(evaluate `security` over the current diff).
-
-### Target source
-
-Where the code under evaluation comes from. The **criteria source stays fixed**
-(the resolved `QUALITY.md`); only the target moves.
-
-| Flag | Target | Use case |
-| --- | --- | --- |
-| *(none)* | **Working tree**, as-is — including uncommitted changes. The default. | Point-in-time audit of what's on disk. |
-| `--ref <git-ref>` | A **clean checkout** of a committed ref (branch, tag, SHA). Ignores the dirty working tree. | "Evaluate `main` as committed," reproducible-as-possible runs. |
-
-These resolve what "the codebase" means — a plain implicit `.` conflates
-"the working tree" with "the committed state." They are kept distinct.
-
-### Target scope
-
-Which files within the target the finders attend to. Independent of source.
-
-| Flag | Scope | Use case |
-| --- | --- | --- |
-| *(none)* | Whole tree. | Default. |
-| `--diff [<base>..<head>]` / `--since <ref>` | **Changed-files scope** — findings are prioritized and attributed to the changed region. | "What's the quality impact of this change?" — local edit, PR. |
-
-`--diff` does **not** turn whole-system requirements ("no secrets committed,"
-"coverage ≥ X") into diff-local ones — those are still evaluated against the
-whole target. The report states which requirements were evaluated whole vs.
-scoped to the change, so a clean diff is never mistaken for a clean system.
-
-> **"Did this change make quality *worse*?" is not a scope — it's a
-> comparison.** Regression ("don't fail the PR for pre-existing debt, only for
-> what this change introduces") is a base-vs-head run of the **same model over
-> two targets**, which is [`compare`](./cli-compare.md), not a `--diff` flag.
-> `--diff` answers "what did I touch"; `compare base head` answers "what got
-> worse." See [`cli-compare.md`](./cli-compare.md).
-
-## Conceptual model
-
-### ISO 25040 process, one-shot
-
-The engine follows the ISO/IEC 25040:2024 quality-evaluation process reference
-model — **Define → Design → Plan → Execute → Conclude** — adapted for an agentic
-coding context: no human "staffing & scheduling" (5.4.3.2) and no
-"gain consensus" / human results review (5.4.3.4, 5.6.3.1). The run is one-shot.
-
-Removing the human review steps has a consequence the design must honor: **the
-adversarial machinery is the load-bearing replacement for human review.** It
-carries the rigor ISO normally gets from people.
-
-### One engine, two targets
-
-`evaluate` and `evaluate-model` are the same pipeline with the
-`(target, criteria)` pair swapped. ISO names both modes:
-
-| | `evaluate` | `evaluate-model` |
-| --- | --- | --- |
-| ISO type | **T3** — checking requirements satisfaction | **T2** — qualification to a quality standard (diagnostic model) |
-| Target entity | the subject | the `QUALITY.md` + its referenced prompts/standards |
-| Criteria | the model's requirements | a diagnostic model of *what a good quality requirement is* |
-| Context | the requirements | **the subject** |
-| Findings | ways the subject falls short | requirement **defects** + coverage **gaps** |
-
-The **T1–T4** labels are ISO's "four types of quality evaluation," defined in
-ISO/IEC 25040:2024 §5.2.3.1 ("Establish the purpose"): T1 — suitability to a
-specific context of use; T2 — qualification to a quality standard; T3 — checking
-requirements satisfaction; T4 — suitability to the market. Each type fixes the
-*source* of evaluation criteria — Table 2 maps T3 to a requirements
-specification and T2 to a diagnostic model, which is precisely the criteria swap
-in the table above.
-
-ISO 25040 (§5.2.3.3 NOTE 2, and Table 3) explicitly notes that
-requirements-conformity evaluation alone cannot *score* quality or tell you
-whether your requirements are any *good* — for that you need a diagnostic model.
-That is the reason `evaluate-model` exists as a first-class sibling.
-
-The CLI **ships this diagnostic model built-in** as `QUALITY-META-MODEL.md` — a normal
-QUALITY.md-schema file whose subject is another `QUALITY.md`. The bundled meta
-model is a framework of *what a good quality model is* — its factors are
-product-quality attributes of the model-as-artifact (the **ISO/IEC 25000
-(SQuaRE)** vocabulary, ISO/IEC 25010 style), while its requirement-quality
-criteria follow **ISO/IEC/IEEE 29148** (§5.2.5–5.2.6, the characteristics of a
-well-formed requirement and requirement set) — plus the QUALITY.md spec. It is
-overridable (`replace`) or extendable (`extend`) per project via the
-`requirementsDiagnosticModel` config block (see
-[`cli.md`](./cli.md#configuration--quality)).
-
-`QUALITY-META-MODEL.md` is an implementation asset, not a second public root-file
-convention. Users normally author `QUALITY.md`; the CLI loads its bundled
-`QUALITY-META-MODEL.md` when running `evaluate-model`.
-
-`evaluate-model` yields two finding types:
-
-- **Defects** — an existing requirement is vague, unmeasurable, mis-targeted, or
-  lacks gradation.
-- **Gaps** — a requirement that *should* exist given the real codebase (e.g.
-  "there is an auth module but nothing covers session fixation"), grounded in
-  code evidence rather than generic best practice.
-
-It is also QUALITY.md dogfooding its own format on itself.
-
-### `QUALITY-META-MODEL.md` target binding
-
-Although `QUALITY-META-MODEL.md` is parsed with the same schema as any other quality
-model, `evaluate-model` binds its target specially:
+- **On re-run, only `stale` results return to `pending`.** `recorded`, `skipped`,
+  and `errored` results are left intact unless their hash inputs changed — that is
+  what keeps re-running cheap and the diff small. A fresh `evaluation create`
+  re-hashes every result; any whose inputs moved become `stale → pending`.
+- **`errored` is not a rating.** It means the command itself failed — non-existent
+  binary, a `bashCondition` that does not evaluate (e.g. `.json()` on non-JSON
+  output, a CEL type error). It is a *model/environment* problem, distinct from a
+  command that **ran and matched a low level** (that is a legitimate `recorded`
+  result with a poor rating). See [The bash path](#the-bash-path-execution--classification).
 
 ```text
-target   = the resolved project QUALITY.md + referenced prompts/standards
-criteria = the bundled or configured QUALITY-META-MODEL.md requirements
-context  = the subject code selected by --ref / --diff / --since
+                         result run (ran, classified)
+            ┌──────────────────────────────────────────────┐
+            ▼                                               │
+        recorded ──── result reset ───► pending ◄───────────┤
+            │                              ▲                │
+   inputs changed                          │ result run / set
+       (re-hash)                           │ (skipped/errored too)
+            ▼                              │
+          stale ──── on re-run ────────────┘
 ```
 
-The bundled meta model should therefore avoid literal `target` paths that point
-beside the bundled file. Its requirements describe properties of the project
-model, while the command invocation supplies the concrete project model and code
-context being evaluated. This is what lets the same engine evaluate a subject
-against `QUALITY.md` and evaluate `QUALITY.md` against `QUALITY-META-MODEL.md`.
+## On-disk layout
 
-### T2 is also a requirement flavor, not just a command mode
-
-The `evaluate` ⇒ T3 / `evaluate-model` ⇒ T2 mapping above is each
-*command's* dominant evaluation type — not an exhaustive one. In ISO, the type
-is a property of a *requirement* (it determines that requirement's criteria
-source, per Table 2), so a single `QUALITY.md` can legitimately mix flavors:
-
-- **T3-flavored requirement** — a concrete, agreed criterion the code must
-  *satisfy*, with the criteria stated inline (e.g. "no secrets committed to the
-  repository"). The requirement *is* its own criteria source.
-- **T2-flavored requirement** — a requirement that says *qualify against this
-  standard* (e.g. "conform to OWASP ASVS L2", "meet our org's API-design
-  checklist") rather than spelling out every criterion. Its criteria source is
-  the referenced standard / diagnostic model.
-
-So `evaluate` over the codebase is *predominantly* T3 but may carry T2
-requirements; ISO explicitly anticipates the combination (§5.2.3.1 EXAMPLE: T2
-and T3 are combined in one evaluation when agreed requirements alone don't yield
-sufficient criteria). When a requirement is T2-flavored, the engine resolves its
-criteria from the named standard using the **same diagnostic-model machinery**
-`evaluate-model` uses on the whole model — applied here to a single
-requirement. This is the symmetry worth keeping: the diagnostic model is a
-first-class input to the engine, consumed both as the *subject's criteria*
-(`evaluate-model`) and as a *requirement's criteria source* (a T2
-requirement inside `evaluate`).
-
-> **Relationship to `lint`.** `lint` (see [`cli-lint.md`](./cli-lint.md)) and
-> `evaluate-model` both scrutinize the `QUALITY.md` file, but at different
-> depths. `lint` checks *form* deterministically — does it parse and conform to
-> the spec. `evaluate-model` checks *substance* by judgment — are these
-> the right requirements, well-stated, complete against the code. A file should
-> pass `lint` before `evaluate-model` is worth running.
-
-## The evaluation engine (shared)
-
-Both deep commands run the same five steps and emit the same four-artifact
-bundle. Only the `(target, criteria, context)` triple differs.
-
-| Step | ISO | Artifact | Contents |
-| --- | --- | --- | --- |
-| Define | 5.2 | *(report header)* | purpose, mode, factor, criteria source, rigor — all fixed by the invocation |
-| Design | 5.3 | `design.md` | decomposition of the selected subtree into requirements → *information needs*; the rating module per requirement (how it's assessed, evidence sources, how findings map to ratings); analysis/rollup method; planned outputs |
-| Plan | 5.4 | `plan.md` | the concrete task graph: partitions, finder lenses, saturation strategy + stop criteria, verification strategy. No staffing/consensus. |
-| Execute | 5.5 | `results.json` | per-requirement rating + findings + evidence/locations + verification verdicts + saturation stats |
-| Conclude | 5.6 | `report.md` | overall rating, per-factor rollup, strengths/weaknesses, unsatisfied requirements, prioritized recommendations, limitations |
-
-### Assessment paths
-
-- **`bash` requirements** bypass the agentic harness entirely. The engine runs the
-  command once and **classifies the result against the `ratings` scale's
-  `bashCondition`s**, exactly as the format spec defines it
-  (`../SPECIFICATION.md#computational-rating`): the levels are tested best
-  to worst over a single `result` (`success`, `exit`, `stdout`, `stderr`) and the
-  first matching level wins, with the worst level as the default fallback. So the
-  verdict is *not* simply "exit zero" — a scale may band a numeric value the
-  command prints on stdout (`double(result.stdout.trim()) >= 90`), and a
-  requirement may carry a [per-requirement override](../SPECIFICATION.md#per-requirement-rating-overrides)
-  for its own bands. Only the default `pass`/`fail` scale reduces to "best on a
-  zero exit." Either way the path is **deterministic** — no model judgment, no
-  adversarial loop — and a `bashCondition` that fails to evaluate (e.g. `.json()`
-  on non-JSON output) is a model configuration error, surfaced as a tool failure
-  (exit `2`), not silently scored.
-- **`prompt` requirements** go through the adversarial harness below, judged
-  against the scale's `promptCondition`s.
-
-### Saturation: adversarial loop-until-dry
-
-Findings have two independent failure axes, handled by different mechanisms:
-
-- **Recall (saturation)** — *did we find everything?* Driven by: partitioning the
-  search space, an independent ensemble of finder "lenses" per partition, a
-  loop that runs until findings dry up, and a completeness critic.
-- **Precision (verification)** — *are the findings real?* Driven by independent
-  refuters that vote on each candidate. Contested findings are **surfaced with a
-  confidence level, not silently dropped** — for a quality gate, a missed real
-  problem is worse than a flagged borderline one.
-
-Per requirement (or per partition), Execute runs:
+A living run is stored under a slug directory; archives live beside it. Everything
+under `.quality/` is committed (see [`cli.md`](./cli.md#the-quality-home)).
 
 ```text
-seen = {}            # semantically deduped findings
-confirmed = []
-dryRounds = 0
-while dryRounds < K:
-    # ensemble of independent finders, each a different lens (by file/dir,
-    # by category, by sub-requirement), over target ∩ partition
-    fresh = finders() - seen
-    if fresh is empty:
-        dryRounds += 1
-        continue
-    dryRounds = 0
-    seen += fresh
-    for f in fresh:
-        # independent refuters each try to DISPROVE f; majority vote
-        f.confidence = vote(refuters(f))   # confirmed | contested | refuted
-    confirmed += [f for f in fresh if f.confidence != refuted]
-# completeness critic: name any category/area/modality never examined;
-# if any, enqueue as new partitions and resume the loop
+.quality/
+  config.yaml
+  evaluations/
+    <slug>/                  # the living run for one (model, target)
+      evaluation.json        # manifest: identity, selected set, rollup, verdict
+      results/
+        <req-id>.json        # one per result — rating + evidence (the diffable artifact)
+      report.md              # rendered human-facing report (deterministic)
+      .run/                  # SEGREGATED volatile metadata — see below
+        meta.json            # timestamps, durations, host, tool version
+    archive/
+      <name>/                # frozen snapshot (evaluation archive --as <name>)
 ```
 
-Each requirement's **rating** is then derived from its confirmed findings
-against the model's `ratings` scale: the best level when there are no confirmed
-shortfalls, lower levels as severity/count grow. Ratings roll up to factor and
-overall via the analysis method recorded in `design.md`.
+The `<slug>` derives from the (model, target) pair so the same pair always
+re-enters the same directory. `<req-id>` derives deterministically from the
+requirement's full path (so renaming a requirement is a visible add/remove in the
+diff, not an in-place edit).
 
-### Rigor ladder
+### Segregating volatile metadata for clean diffs
 
-`--rigor` scales the harness; it maps to ISO's notion of evaluation rigor
-(coverage of information needs, objectivity, transparency).
+The **primary design goal is that the evaluation is a reviewable PR artifact** —
+a diff should show *only* what a reviewer cares about: which ratings and evidence
+changed. To get that:
 
-| Level | Behavior |
-| --- | --- |
-| `low` | Single finder pass per requirement; no adversarial loop. Lightest CI-gate setting. |
-| `medium` | Bounded finder ensemble + one refutation pass + one completeness-critic round. |
-| `high` *(default)* | Full loop-until-dry, `K=2` dry rounds, multi-vote refutation. |
-| `max` | Loop-until-dry with higher `K`, more finders/voters, finer partitioning. |
+- `evaluation.json` and `results/<req-id>.json` hold **verdicts only** — rating,
+  evidence, the matched condition, the staleness provenance. Their serialization
+  is **deterministic** (stable key order, normalized whitespace, sorted
+  collections) so re-running an unchanged result produces a byte-identical file
+  and an empty diff.
+- All **volatile metadata** — wall-clock timestamps, command durations, host,
+  tool version — is written to `.run/meta.json`, *segregated* from the verdicts.
+  A reviewer can ignore `.run/` in review; a re-run touches it every time without
+  noising up the verdict diff.
 
-Rigor scales four knobs: finders per round, dry-round threshold `K`, refutation
-voters, and partition granularity. Default is configurable in `./.quality/`
-(see [`cli.md`](./cli.md#configuration--quality)).
+`TODO`: whether `.run/` is committed alongside verdicts (full audit, noisier
+history) or gitignored (cleanest diffs, weaker provenance) — the design leans
+toward committed-but-ignored-in-review, but this is not finally settled.
 
-## Output: the evaluation bundle
+## `evaluation` commands
 
-```text
-./.quality/evaluations/<YYYYMMDD-HHMMSS>-<mode>-<factor>/
-  design.md      # Design step — how the evaluation will be conducted
-  plan.md        # Plan step  — the concrete task graph that was run
-  results.json   # Execute step — structured ratings, findings, verdicts
-  report.md      # Conclude step — the primary human-facing artifact
-```
+All commands default to the **living run for the current model + target**; an
+explicit `<id>` is only needed for historical, archive, or compare operations
+(see [`cli.md`](./cli.md#conventions)).
 
-`report.md` is the usable output; the other three exist for inspection,
-auditing, and improving the process. The mode in the directory name
-(`subject` / `model`) keeps the two evaluation modes from colliding. `<factor>`
-is the dotted factor path that was selected, or `all` when the whole model is
-evaluated (the positional `factor` omitted).
+### `evaluation create [--model <path>] [--target <path>] [--from <id>]`
 
-### `report.md`
+Create or re-enter the living per-target run and enumerate its requirements.
 
-Follows ISO 25040 Table 3 outputs:
+- Parses the model, resolves targets, and **enumerates every selected requirement
+  as a `result`**. A first run starts every result `pending`.
+- On an **existing** run, it re-enters in place: it re-hashes each `recorded`
+  result and marks any whose inputs changed `stale → pending`. Untouched results
+  keep their state. This is the re-run path; it never forks a new directory.
+- `--from <id>` **carries forward** still-valid results from another run (an
+  archive, or a prior run for a different target): for each requirement present in
+  both, if the source result's hash inputs still match, its rating + evidence are
+  copied in as `recorded`; otherwise the requirement is left `pending`. Carry-forward
+  is how a new target run reuses still-applicable verdicts instead of re-judging
+  from scratch.
 
-- **Definition** — what was evaluated (mode, factor, criteria source,
-  rigor, timestamp).
-- **Verdict** — overall pass/fail + rating.
-- **Per-factor rollup** — rating per factor/sub-factor.
-- **Strengths & weaknesses.**
-- **Unsatisfied requirements** — with evidence and `path:line` locations.
-- **Recommendations** — prioritized corrective matters. For
-  `evaluate-model`, these include concrete, ready-to-apply YAML edits and
-  additions to `QUALITY.md`.
-- **Limitations** — rigor used, saturation achieved, contested findings, and the
-  non-reproducibility caveat.
+Transition: → **open** (or → **complete** if `--from` carried forward a full set).
 
-### `results.json` (illustrative shape)
+### `evaluation list`
+
+List runs — the active run plus archived snapshots — with status and verdict. No
+transition.
+
+### `evaluation show [<id>] [--json]`
+
+The run manifest: status, the selected requirement set with each result's state
+and rating, and the rolled-up verdict (see [Report rollup](#report-rollup)). Read-only.
+
+### `evaluation report [<id>] [--fail-on <level>] [--json]`
+
+Render the report from the recorded results and, when `--fail-on` is set, gate.
+
+- Renders `report.md` (the deterministic human-facing artifact — see
+  [The report](#the-report)) and, under `--json`, the machine-readable rollup.
+- `--fail-on <level>` exits **non-zero** when the overall rolled-up rating lands
+  **at or below** `<level>` on the model's scale. **Off by default** — without it,
+  `report` is inspection and exits `0` regardless of rating. This is the **single
+  gate** in the lifecycle (see [Exit codes](#exit-codes)).
+
+### `evaluation archive [<id>] --as <name>`
+
+Snapshot the run's current state to `.quality/evaluations/archive/<name>/`. The
+living run is untouched and stays mutable; the archive is a frozen copy for
+comparison or record. Transition: → **archived** (the snapshot; the live run stays
+`open`/`complete`).
+
+### `evaluation delete <id>`
+
+Discard a run (living or archived). Transition: → abandoned.
+
+### `evaluation compare <a> <b> [--json]`
+
+A **deterministic diff of two stored runs** — see [Compare](#compare).
+
+## `result` commands
+
+A requirement is addressed by its full dotted path (`<req>`). Commands default to
+the current living run.
+
+### `result list [--status pending,stale,…] [--json]`
+
+Query results by state. `--status` takes a comma-separated set
+(`pending,stale,recorded,skipped,errored`). There is **no `next` cursor** — the
+CLI never orders the work or composes a prompt; the skill does
+(see [`skills.md`](./skills.md#orchestration-contract)). No transition.
+
+### `result show <req> [--json]`
+
+The **resolved data** for one requirement — everything a skill needs to judge a
+`prompt` requirement, with the CLI emitting no prompt of its own. No transition.
+
+This payload is the **authoritative CLI ↔ skill contract**; the schema below is
+*illustrative — field names are provisional* and expected to be tuned in
+implementation (see [Interface payloads](#the-interface-payloads-cli--skill-contract)).
+`cli.md` and `skills.md` cross-reference this section rather than re-specifying it.
+
+### `result run <req | --all>`
+
+Execute and classify `bash` assessment(s). **`bash` only** — pointing it at a
+`prompt` requirement is a usage error (exit `2`). For each target requirement, the
+CLI runs the command and classifies the captured `result` against the scale's
+`bashCondition`s (see [The bash path](#the-bash-path-execution--classification)).
+
+Transition: `pending → recorded` (command ran, a level matched) **or**
+`pending → errored` (command could not run, or a `bashCondition` failed to
+evaluate). A poor-but-legitimate rating is `recorded`, **not** a gate trip — it
+exits `0` (the gate is `evaluation report --fail-on`).
+
+### `result set <req> --rating <level> --evidence …`
+
+Record a **`prompt` verdict** — the skill's judgment. Writes the rating level (a
+declared scale level) and structured evidence to the result file. This is the
+**diffable artifact** whose schema *is* the PR-review experience; the input
+schema is defined authoritatively below
+([Interface payloads](#the-interface-payloads-cli--skill-contract)).
+Transition: `pending → recorded`.
+
+### `result skip <req> --reason …`
+
+Deliberately mark a requirement not-assessed, with a recorded reason. Counts as
+non-`pending` for run completeness. Transition: `pending → skipped`.
+
+### `result reset <req>`
+
+Return a result to `pending`, discarding its rating/evidence, to be re-judged or
+re-run. Transition: → **pending**.
+
+## The interface payloads (CLI ↔ skill contract)
+
+Three payloads constitute the open contract between the deterministic CLI and the
+judging skill: the **`result show` output** a skill consumes to judge a `prompt`
+requirement, the **`result set` input** that records its verdict, and the
+**staleness hash** that decides when a recorded verdict is re-opened. These are
+specified **authoritatively here**; [`cli.md`](./cli.md#open-questions) and
+[`skills.md`](./skills.md#the-cli--skill-interface) cross-reference this section
+rather than restate it.
+
+The schemas below are **illustrative — field names are provisional** and expected
+to firm up in implementation, consistent with this spec's stance on field naming.
+What is contractual is the *information* each payload carries, not the exact keys.
+
+### `result show` output
+
+Everything a skill needs to judge one `prompt` requirement, fully resolved by the
+CLI so the skill performs no model parsing or glob expansion of its own:
+
+- **`requirementPath`** — the full dotted requirement path, and **`factorPath`** —
+  the factor → … chain it sits under (for grouping and rollup context).
+- **`assessmentKind`** — `prompt` or `bash`. (`result show` resolves both; a skill
+  judges only `prompt`, and routes `bash` to `result run`.)
+- **`assessment`** — the resolved assessment text: the loaded **`prompt`** text
+  for a `prompt` requirement, *or* the **`bash`** command for a `bash` requirement
+  (whichever the kind selects).
+- **`target`** — the **resolved target manifest**: the list of files the target
+  glob expands to, each with its model-relative `path`. File **contents are
+  optional / by reference** — included only when the CLI is asked to inline them;
+  otherwise the skill reads the listed paths itself (keeps the payload small and
+  the skill in control of what it loads).
+- **`ratings`** — the in-scope rating **scale**: its levels ordered **best → worst**,
+  each with the `promptCondition` (for `prompt`) or `bashCondition` (for `bash`)
+  that defines it.
+- **`ratingOverrides`** — any
+  [per-requirement rating overrides](../SPECIFICATION.md#per-requirement-rating-overrides)
+  that replace the default scale's bands for this requirement (absent when none).
+- **`state`** — the result's current [state](#result-states) (`pending`, `stale`, …).
+- **`sufficiency`** — **"done" guidance for `prompt` judging**: how to decide when
+  evidence is sufficient to rate (saturation). Provisionally a short prose note
+  plus any model-supplied hints; the judging methodology that fills this in is the
+  skill's (see [`skills.md`](./skills.md#the-cli--skill-interface)).
+
+Illustrative JSON:
 
 ```json
 {
-  "definition": {
-    "mode": "subject",
-    "factor": "security",
-    "rigor": "high",
-    "criteriaSource": "./QUALITY.md",
-    "target": "."
+  "schemaVersion": 1,
+  "requirementPath": "security.input-validation.rejects-malformed-input",
+  "factorPath": ["security", "input-validation"],
+  "assessmentKind": "prompt",
+  "assessment": "Assess whether the request handler rejects malformed input before it reaches business logic, with a clear error and no partial side effects.",
+  "target": {
+    "glob": "./src/handlers/**/*.ts",
+    "files": [
+      { "path": "src/handlers/intake.ts" },
+      { "path": "src/handlers/validate.ts" }
+    ]
   },
-  "ratings": { "pass": {}, "fail": {} },
-  "factors": {
-    "security": {
-      "requirements": {
-        "no secrets committed to the repository": {
-          "assessment": "prompt",
-          "rating": "fail",
-          "findings": [
-            {
-              "id": "sec-001",
-              "summary": "AWS key hard-coded in test fixture",
-              "locations": ["test/fixtures/config.json:12"],
-              "severity": "high",
-              "confidence": "confirmed",
-              "verification": { "voters": 3, "refuted": 0 }
-            }
-          ],
-          "saturation": { "rounds": 4, "dryRounds": 2, "findersPerRound": 3 }
-        }
-      }
-    }
+  "ratings": {
+    "levels": [
+      { "level": "pass", "promptCondition": "All untrusted inputs are validated at the boundary and rejected with a clear error." },
+      { "level": "weak", "promptCondition": "Most inputs are validated, but at least one path reaches logic unchecked." },
+      { "level": "fail", "promptCondition": "Inputs are not systematically validated at the boundary." }
+    ],
+    "order": "bestToWorst"
   },
-  "summary": { "overall": "fail", "byFactor": { "security": "fail" } }
+  "ratingOverrides": null,
+  "state": "pending",
+  "sufficiency": "Rate once you have traced every handler in the target manifest; do not rate from a single file if others remain unread."
 }
 ```
 
-For `evaluate-model`, each finding additionally carries a `kind`
-(`defect` | `gap`) and an optional `proposedChange` holding the YAML
-snippet/diff to apply to `QUALITY.md`.
+### `result set` input
 
-### Finding severity & next-action priority
+The verdict a skill records for a `prompt` requirement — **this is the diffable
+artifact**, so its on-disk serialization has a **stable field order** and carries
+**no volatile metadata inline** (timestamps, durations, and host live in `.run/`;
+see [Segregating volatile metadata](#segregating-volatile-metadata-for-clean-diffs)).
+It carries:
 
-A deep-command finding carries a `severity` on a three-level scale —
-**`high` / `medium` / `low`** — reflecting how badly the shortfall (or, for
-`evaluate-model`, the defect/gap) undermines the requirement. This is the
-deep-command analogue of `lint`'s `error` / `warning` / `info`.
+- **`requirement`** — the requirement ref (full dotted path) being recorded.
+- **`rating`** — the chosen **level**, which MUST be one of the scale's declared
+  levels (validated against the scale resolved in `result show`).
+- **`evidence`** — structured support for the rating: a **`summary`** (one- or
+  two-line justification) plus an **`items`** array, each item either a
+  `file:line` **location** (a citation into the target) or a free-text **note**.
+- **`rationale`** *(optional)* — longer reasoning beyond the summary, when the call
+  is non-obvious.
 
-Each finding emits a corresponding entry in the run's `nextActions` (see
-[`cli.md`](./cli.md#structured-next-action-suggestions)), and the finding's
-severity sets that action's `priority` on the same ladder:
+Illustrative JSON (the recorded artifact; field order is stable):
 
-| Finding `severity` | Next-action `priority` |
-| --- | --- |
-| `high` | `required` |
-| `medium` | `recommended` |
-| `low` | `optional` |
+```json
+{
+  "schemaVersion": 1,
+  "requirement": "security.input-validation.rejects-malformed-input",
+  "rating": "weak",
+  "evidence": {
+    "summary": "Boundary validation covers JSON bodies but query params reach logic unchecked.",
+    "items": [
+      { "location": "src/handlers/intake.ts:42", "note": "validates and rejects malformed JSON body" },
+      { "location": "src/handlers/validate.ts:17", "note": "query params parsed but never validated before use" },
+      { "note": "no shared validation middleware across handlers" }
+    ]
+  },
+  "rationale": "Bodies are guarded but the unvalidated query-param path is a real gap, so this rates weak rather than pass."
+}
+```
 
-Two refinements specific to the deep commands:
+On the command line the same payload is supplied via `--rating <level>` and
+repeated `--evidence` flags (or `--evidence-file` for the structured form); the
+CLI normalizes it into the stable on-disk shape above.
 
-- **Confidence caps priority.** A finding whose `confidence` is `contested` (the
-  refuters did not agree it is real — see
-  [Saturation](#saturation-adversarial-loop-until-dry)) is capped at
-  `recommended`, never `required`: an agent should not be told a *disputed*
-  finding blocks progress. `confirmed` findings map by severity as above.
-- **The action depends on the verb.** For `evaluate`, the next-action is "address
-  this requirement," carrying the finding's `path:line` evidence. For
-  `evaluate-model`, it is "apply this `proposedChange` to `QUALITY.md`,"
-  carrying the YAML snippet — then re-`lint` and re-evaluate.
+### Staleness hash
 
-As in `cli.md`, these suggestions are advisory: severity drives `priority`, but
-the *gate* verdict is carried by the exit code (`--fail-on`), never by
-`nextActions`.
+A recorded result becomes [`stale`](#result-states) when what it was judged
+against changes. The hash is computed over **two inputs**, and a recorded result
+goes `stale` if **either** changes:
 
-## Flags, exit codes
+1. **The requirement's resolved definition** — its name / full path, the
+   **resolved target glob set** (the patterns, so a manifest-changing glob edit
+   counts), the **assessment text** (`prompt` or `bash`), and the **applicable
+   rating conditions** (the in-scope scale levels plus any per-requirement
+   overrides). If the *requirement itself* moves, the prior verdict no longer
+   describes the same question.
+2. **The resolved target contents** — a hash over the **expanded file set** the
+   target glob resolves to (the manifest from [`result show`](#result-show-output)
+   and the bytes of those files). If the code under the requirement changes, the
+   prior verdict no longer describes the current subject.
 
-Flags specific to the deep commands (shared flags are in
-[`cli.md`](./cli.md#shared-conventions)):
+`evaluation create` re-computes both on re-entry; a mismatch on either marks the
+result `stale` (and, on re-run, `stale → pending`). A non-`stale` `recorded`
+result is left untouched — this is what keeps re-running cheap (see
+[Staleness](#staleness)).
 
-- `--rigor low|medium|high|max` — coverage/cost dial (default `high`).
-- `--ref <git-ref>` — evaluate a clean checkout of a committed ref instead of the
-  working tree (see [Target source](#target-source)).
-- `--diff [<base>..<head>]` / `--since <ref>` — scope findings to the changed
-  region (see [Target scope](#target-scope)).
-- `--fail-on <rating>` — exit non-zero when the overall rating is at or below
-  `<rating>`. **Off by default** (report-only); opt-in for a CI gate. See exit
-  codes below.
-- `--name <name>` — override the derived bundle name.
+`TODO`: the **precise serialization / canonicalization** is unsettled — the exact
+byte-level normalization of input (1) (key ordering, whitespace), and whether the
+target contribution (2) hashes raw file *contents* (precise, but a whitespace edit
+re-opens everything) or a coarser signal (manifest + revision/mtime). It is also
+open whether a `prompt` result should hash anything the skill saw beyond the
+resolved target. Tracked under [Open questions](#open-questions).
 
-Exit codes follow the shared three-code convention (see
-[`cli.md`](./cli.md#machine-readable-result-contract)):
+`result run` is the whole deterministic computational tier. For a `bash`
+requirement it:
 
-- **`0`** — the run completed. **This is the default**, report-only outcome
-  *regardless of rating*: without `--fail-on`, even an all-`fail` evaluation exits
-  `0`, because a non-deterministic deep audit is a poor *implicit* hard gate.
-  `lint` remains the deterministic structural gate (see
-  [`cli-lint.md`](./cli-lint.md)).
-- **`1`** — **gate verdict failure:** `--fail-on <rating>` was passed and the
-  overall rating landed at or below `<rating>`. The run succeeded; the subject (or,
-  for `evaluate-model`, the model) just did not clear the bar. This is the opt-in
-  semantic gate — the automated-PR use case (post a deep evaluation on a pull
-  request and block on a bad rating) is its concrete motivation. It is opt-in
-  precisely because the run is non-reproducible: a team chooses to accept that
-  trade-off, the tool never imposes it. Pair with a machine-readable output sink
-  (see [`cli.md`](./cli.md#shared-conventions)) when wiring into CI.
-- **`2`** — **tool failure:** the run could not produce a trustworthy verdict — a
-  bad flag, an unresolvable `--ref`/target, a `QUALITY.md` that does not parse
-  (run `lint` first), or an internal error. A `2` never means "quality is bad,"
-  so `--fail-on` and a broken run stay distinguishable.
+1. **Runs the command** in the model's directory (paths are model-relative — see
+   [`cli.md`](./cli.md#conventions)), capturing the `result` fields the format
+   defines: `result.success` (zero exit), `result.exit`, `result.stdout`,
+   `result.stderr` (see `../SPECIFICATION.md#computational-rating`).
+2. **Classifies** the `result` against the scale's `bashCondition`s — CEL booleans
+   evaluated best-to-worst; the **first** matching level wins; if none match, the
+   **worst** level is the fallback (the scale denies by default). A requirement may
+   carry a [per-requirement override](../SPECIFICATION.md#per-requirement-rating-overrides)
+   supplying its own bands. So a verdict is **not** merely "exit zero" — a scale may
+   band a numeric value the command prints (`double(result.stdout.trim()) >= 90`);
+   only the default `pass`/`fail` scale reduces to "best on a zero exit."
+3. **Records** the matched level as the result's rating, with the captured
+   `result` fields and the matched condition as evidence.
 
-> **`--fail-on` and `evaluate-model`.** For `evaluate`, the gated value is the
-> subject's overall rating. For `evaluate-model`, it is the model's overall rating
-> against the meta-model — defects and gaps roll up to a rating on the same scale,
-> so `--fail-on` reads identically (e.g. "block if the model rates `fail`").
+### `errored` vs. a legitimate low rating
+
+This distinction is the crux of the bash path:
+
+| Outcome | State | Meaning |
+| --- | --- | --- |
+| Command ran; a level matched (even the worst). | `recorded` | A real classification. A `fail` here is the subject genuinely failing the condition — a valid verdict, exit `0`. |
+| Command **could not run** (binary not found, non-zero from the runner itself, timeout). | `errored` | No trustworthy verdict — an environment problem. |
+| A `bashCondition` **could not evaluate** (`.json()` on non-JSON, `double()` on non-numeric, CEL type error). | `errored` | A **model configuration** error, surfaced as such — never silently scored. |
+
+The first row is the common, intended case: `bash` assessments are *supposed* to
+produce ratings, including bad ones. `errored` is reserved for "the measurement
+itself broke." A `result run` that produces a low rating still exits `0`; the gate
+is separate.
+
+## Staleness
+
+When `evaluation create` re-enters a run, each `recorded` result is re-hashed; if
+its hash inputs changed, it becomes `stale` (and on re-run, `stale → pending`).
+Staleness is what keeps a re-run from re-judging unchanged work while catching work
+the change invalidated.
+
+The hash inputs — the requirement's resolved definition and the resolved target
+contents — and the open question of their precise serialization are specified
+authoritatively under
+[The interface payloads → Staleness hash](#staleness-hash). This section is the
+*behavioral* view (when re-hashing happens and what it does to state); that one is
+the *contract* view (what is hashed).
+
+## `--from` carry-forward
+
+`--from <id>` (on `evaluation create`) seeds a new or re-entered run from another
+run's results. For every requirement common to both, the source's rating + evidence
+are copied in as `recorded` **iff** the source result's staleness hash still holds
+against the new run's model/target; otherwise the requirement starts `pending`.
+This makes a new-target run reuse still-valid verdicts rather than re-judging from
+scratch — the carry-forward analogue of in-place re-running, across runs.
+
+## Report rollup
+
+`evaluation report` rolls per-requirement ratings up to factors, sub-factors, and
+an overall verdict, **deterministically** — no judgment. Each requirement
+contributes its recorded rating (a level on the model's scale); a factor's rating
+is the rollup of its requirements and sub-factors.
+
+- The rollup method is **worst-wins by default** (a factor is no better than its
+  weakest requirement), matching a quality *gate*'s intent.
+- `skipped` results are excluded from the rollup but reported as gaps in coverage.
+- `pending` / `stale` / `errored` results mean the rollup is **incomplete**; the
+  report states this rather than scoring around it, so a partial run is never
+  mistaken for a clean one.
+
+`TODO`: whether the rollup is configurable (e.g. weighted, or "any-fail-fails" vs.
+a banded average) — for now, worst-wins, deterministic, stated in the report.
+
+### The report
+
+`report.md` is the deterministic human-facing artifact, rendered from recorded
+results (no model authoring it — the inversion). It carries:
+
+- **Definition** — model, target, scope, requirement set, timestamp (the timestamp
+  comes from `.run/`, not the verdict files).
+- **Verdict** — overall rolled-up rating, and whether a `--fail-on` gate would trip.
+- **Per-factor rollup** — rating per factor / sub-factor.
+- **Per-requirement results** — rating, the matched `bashCondition` or the skill's
+  evidence, and `path`/location where applicable.
+- **Coverage** — `skipped` requirements (with reasons) and any `pending` / `stale`
+  / `errored` results that leave the run incomplete.
+
+It is rendered, deterministic prose; under `--json`, `evaluation report` emits the
+same rollup as a schema-stable object.
+
+## Compare
+
+`evaluation compare <a> <b>` is a **deterministic diff of two stored runs** — no
+re-evaluation, no model calls. It reads both runs' recorded results and reports,
+per requirement, what differs:
+
+- rating changes (`a → b`), and the **direction** (improved / regressed / same on
+  the scale's ordering);
+- requirements present in one run but not the other (model or target drift);
+- state differences (e.g. `recorded` in one, `skipped`/`errored`/`pending` in the
+  other).
+
+Either side may be the living run, an archive (`archive/<name>`), or a git revision
+of the run files — git history *is* the timeline, so "compare against last week" is
+"compare against that revision."
+
+This section is intentionally light: `evaluation compare` is the **same-model,
+two-run** diff. The fuller comparison story — **multiple targets against one shared
+model**, the requirements × targets matrix, A/B and regression gating — lives in
+[`cli-compare.md`](./cli-compare.md). Treat that doc as authoritative for compare;
+this section specifies only the minimal two-run diff the `evaluation` resource
+exposes.
+
+## Why no finalize: git is the audit layer
+
+There is deliberately **no `finalize`/`seal`** transition. A run is **always
+mutable**; correctness of the record is provided by **git commits**, not an
+immutable in-tool state:
+
+- **Commit everything** under `.quality/` — the manifest, the per-result verdicts,
+  the rendered report. The commit history is the audit trail.
+- Because verdict serialization is deterministic and volatile metadata is
+  segregated, a commit's diff is exactly the rating/evidence changes a reviewer
+  should see — the run **is** a reviewable PR artifact.
+- `evaluation archive --as <name>` exists for the cases where a *named*, frozen
+  snapshot is wanted independent of git (a labeled baseline to compare against),
+  not as a finalize step.
+
+## Exit codes
+
+The lifecycle reuses the shared three-code convention verbatim in meaning (see
+[`cli.md`](./cli.md#exit-codes)):
+
+| Code | Meaning | In this lifecycle |
+| --- | --- | --- |
+| `0` | Success — ran, and the gate (if any) passed. | Inspection (`show`, `list`), `result run`/`set`/`skip` (even when the recorded rating is poor), and `evaluation report` *without* `--fail-on`. |
+| `1` | **Gate verdict failure** — ran fine, the bar was not met. | `evaluation report --fail-on <level>` and the overall rating landed at or below `<level>`. The *only* `1` in this lifecycle. |
+| `2` | **Tool failure** — the command broke. | Bad flags, an unresolvable model/target, a `QUALITY.md` that does not parse (run `lint` first), `result run` on a `prompt` requirement, an `errored` measurement surfaced as a tool problem, internal error. |
+
+The load-bearing point: **a poorly-rated `result run` exits `0`.** Running a `bash`
+assessment that classifies to a low level is a *successful* measurement — it ran
+and recorded a verdict. The quality gate is `evaluation report --fail-on`,
+separately, so "the command broke" (`2`), "the quality is bad" (`1`, opt-in), and
+"recorded a low rating" (`0`) stay distinguishable.
 
 ## Open questions
 
-- **Semantic CI gate.** *Resolved:* default stays report-only; `--fail-on
-  <rating>` is the opt-in semantic gate, motivated by the automated-PR use case
-  (see [Flags, exit codes](#flags-exit-codes)). Still open: the **output sink** a
-  CI gate writes to — stdout JSON and/or a postable PR-comment/check-annotation
-  summary, vs. only the on-disk bundle. The bundle is the wrong primary output in
-  CI; the sink format is a shared concern (see
-  [`cli.md`](./cli.md#open-questions)).
-- **Define step surfacing.** Folded into the `report.md`/`design.md` header
-  (current plan) vs. a fifth `define.md` artifact.
-- **Factor-selector grammar.** *Partly resolved:* file/target scoping is now its own axis
-  (`--diff`/`--since`/`--ref`, see [Target source &
-  scope](#target-source--scope)), separate from the requirement selector. Still
-  open: whether the selector also gains glob/target scoping for the
-  *non-diff* case (e.g. evaluate `security` only over `./src/api`).
-- **Expressing a T2 requirement in the format.** A requirement that says
-  "qualify against standard X" instead of stating its criteria inline is a
-  distinct flavor (see [T2 is also a requirement
-  flavor](#t2-is-also-a-requirement-flavor-not-just-a-command-mode)). How a
-  `QUALITY.md` requirement references an external standard / diagnostic model as
-  its criteria source — and how that interacts with the `prompt`/`bash`
-  assessment split — is a spec question, not yet settled.
-- **Cross-run diffing.** Should `report.md` reference the previous bundle for the
-  same `(mode, factor)` to show what changed? Out of scope for v1. (See also
-  the `diff` verb candidate in [`cli.md`](./cli.md#open-questions).)
+- **Staleness hash serialization** — the precise canonicalization of the hash
+  inputs, the contents-vs-coarse target signal, and what a `prompt` result hashes
+  beyond the resolved target (see [Staleness hash](#staleness-hash)). The
+  authoritative definition lives here; [`cli.md`](./cli.md#open-questions) and
+  [`skills.md`](./skills.md#the-cli--skill-interface) cross-reference it.
+- **`.run/` commit policy** — committed-but-ignored-in-review vs. gitignored (see
+  [Segregating volatile metadata](#segregating-volatile-metadata-for-clean-diffs)).
+- **Rollup method** — whether worst-wins is configurable
+  (see [Report rollup](#report-rollup)).
+- **Interface payload field names** — the `result show` / `result set` schemas are
+  defined [here](#the-interface-payloads-cli--skill-contract) but their field names
+  are provisional and expected to be tuned in implementation.
+- **Compare depth** — how much of the multi-target / matrix story `evaluation
+  compare` carries vs. defers to [`cli-compare.md`](./cli-compare.md) once that is
+  rewritten.
+- **Federation** — how `evaluation` / `result` address a federated tree of models
+  (one run per model, a tree-shaped report); needs the federation rewrite (see
+  [`cli-federation.md`](./cli-federation.md)).

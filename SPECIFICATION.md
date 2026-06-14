@@ -2,17 +2,19 @@
 
 QUALITY.md is a plain text representation of a quality model. It can be used to specify and evaluate the quality requirements for a software system or component.
 
-A QUALITY.md file contains two parts: YAML frontmatter with the structured quality model and the markdown body.
+A QUALITY.md file contains two parts: YAML frontmatter with the structured quality model and the Markdown body.
+
+Throughout this document, **must** marks a hard rule that a conforming file or reader has to obey, **should** a recommendation that may be departed from with good reason, and **may** an option left to the author. Prose that explains or motivates a rule is rationale, not an additional rule, and examples illustrate rules without extending them.
 
 ## Quality Model
 
-The quality model is embedded in the YAML front matter at the beginning of the file. The front matter block must begin with a line containing exactly --- and end with a line containing exactly ---. The YAML content between these delimiters is parsed according to the schema defined below.
+The quality model is embedded in the YAML frontmatter at the beginning of the file. The frontmatter block must begin with a line containing exactly --- and end with a line containing exactly ---. The YAML content between these delimiters is parsed according to the schema defined below.
 
 The model keeps three concerns separate:
 
 - **Requirement** — *what* must be true. A requirement is self-contained: a name, an optional target, and a single assessment. It names no rating level, so it can be lifted out of QUALITY.md and reused on its own — for example, referenced from an agent skill. It may optionally override the scale's *conditions* for its own result, an escape hatch for when one shared condition cannot fit every requirement.
-- **Evaluation** — *how* a requirement is assessed. Either inferential (`prompt`) or computational (`bash`); the key you choose is the declaration of method.
-- **Rating** — *how the result is classified*. A single, requirement-agnostic scale (`ratings`) names the levels an evaluation can land on.
+- **Assessment** — *how* the requirement is checked. Either inferential (`prompt`) or computational (`bash`); the key you choose is the declaration of method.
+- **Rating** — *how the result is classified*. A single, requirement-agnostic scale (`ratings`) names the levels a result can land on.
 
 Example:
 ```yaml
@@ -52,7 +54,7 @@ factors:
 ### Schema
 
 ```yaml
-ratings:                          # optional; defaults to pass / fail
+ratings:                          # optional; an inline scale (below) OR a path to a shared scale file; defaults to pass / fail
   <level-name>:                   # listed best to worst
     displayName: <string>         # optional; human label for the level
     promptCondition: <string>     # optional; criterion a `prompt` is judged against
@@ -61,7 +63,7 @@ factors:
   <factor-name>:                  # a factor has requirements, sub-factors, or both
     requirements:
       <requirement-name>:
-        target: <path | glob>     # optional; the artifact under evaluation
+        target: <path | glob | list>  # optional; artifact(s) under evaluation; a list narrows, a "!"-prefixed entry excludes
         # exactly one assessment — a single prompt OR a single bash command:
         prompt: <text | path>     # inferential (judged by a model/reviewer)
         bash: <command>           # computational (shell exit status)
@@ -96,10 +98,14 @@ recommendations, not rules):
   intent legible at a glance. Choose them because the subject's needs and risks
   call for them, not by adopting a standard list wholesale; record concerns you
   deliberately leave out under **Known gaps** rather than dropping them silently.
-- **Pin the name down in prose.** The same attribute name means different things
-  across systems, so a familiar label alone does not carry a definition. The
-  factor's body section is where you say what it means for *this* subject, how you
-  would know it is met, and what it trades off against its siblings.
+- **Define the attribute, not its requirements.** The same attribute name means
+  different things across systems, so a familiar label alone does not carry a
+  definition. The factor's body section says what the characteristic is, why it
+  matters, and what distinguishes it from its siblings — describing the attribute
+  itself, not restating the requirements you hang off it. A good description still
+  reads true if those requirements change or the factor is pointed at a different
+  target; the subject-specific grounding belongs in Overview, Needs, and Risks and
+  in the requirements.
 - **Keep sibling factors distinct.** Factors under one parent should cover
   different concerns; substantial overlap is a sign that two factors are really
   one, or are cut along the wrong axis. Add sub-factors only to sharpen an
@@ -125,10 +131,30 @@ prompts. When an expectation feels like it needs more than one prompt, that is
 the signal to split it into separate requirements, each with its own single
 assessment — keeping every requirement singular and independently evaluable.
 
+A requirement **should** state its concern concisely, and **should not** restate
+an expectation that is self-evident or already guaranteed by the subject's
+context — a requirement whose verdict is a foregone conclusion discriminates
+nothing and only dilutes the set.
+
 The optional `target` is a path or glob pattern (relative to the QUALITY.md
 file) identifying the file or directory the requirement is evaluated against. A
 glob (for example `./src/**/*.ts`) selects a set of files. When `target` is
-omitted, the requirement applies to the QUALITY.md file's directory.
+omitted, the requirement applies to the QUALITY.md file's directory (and, when
+models compose, its subtree — see [Federation](#federation)).
+
+`target` may also be a **list** of patterns, applied in order, where an entry
+prefixed with `!` **excludes** previously matched files (the gitignore
+convention). This is how a requirement narrows itself — by selection (a positive
+glob) or by exclusion:
+
+```yaml
+target:
+  - "./**"                      # everything under this model…
+  - "!./packages/sandbox/**"    # …except the sandbox package
+```
+
+An explicit `target` only ever *narrows* a requirement's reach, and stays within
+the model's own directory subtree.
 
 The assessment is exactly one of:
 
@@ -176,7 +202,14 @@ shared by every requirement. Each entry is a level name carrying an optional
 against), and an optional `bashCondition` (a CEL boolean a `bash` result is
 classified against). Write the conditions generically — in terms of how fully an
 evaluation meets its assessment — so the one scale applies to every requirement.
-List levels best to worst; the order defines their ranking. When `ratings` is
+List levels best to worst; the order defines their ranking. A level's conditions
+are optional, and the two registers are reached differently: for a `prompt`, the
+evaluator reads the levels as an ordered ladder and assigns the highest one the
+target satisfies, so a level with no `promptCondition` is an intermediate band —
+assigned when a result clearly does better than the level below it but does not
+meet the labeled level above; for a `bash` result, a level with no `bashCondition`
+is never matched directly and is reachable only as the worst-level fallback (see
+[Computational rating](#computational-rating)). When `ratings` is
 omitted, the scale defaults to `pass` then `fail`, with `pass` defined as
 `bashCondition: "result.success"` (a zero exit). A custom scale might read:
 
@@ -188,6 +221,12 @@ ratings:
   D: { displayName: "Poor" }
   E: { displayName: "Unacceptable", promptCondition: "Does not satisfy the assessment" }
 ```
+
+The `ratings` value may be given **inline** (the map above) or as a **path** to a
+YAML file holding that same map. The path resolves relative to the QUALITY.md
+file, like a `prompt` or `target` path, and is the seam for sharing one scale
+across files so that composing models rate on a common scale (see
+[Federation](#federation)).
 
 ### Per-requirement rating overrides
 
@@ -312,6 +351,42 @@ rather than forcing every command onto one signal.
 Classification yields the rating; whether a given rating should *gate* — fail a
 build, block a change — is the evaluating tool's concern, not the format's.
 
+### Invalid examples
+
+The constructs above are easier to pin down against cases that fall just outside
+them. Each requirement below is malformed for the reason its comment gives.
+
+```yaml
+factors:
+  security:
+    requirements:
+      "no secrets committed":
+        prompt: "No credentials appear in source."
+        bash: "git secrets --scan"   # ✗ two assessments — declare exactly one of prompt/bash
+      "dependencies are current": {}  # ✗ no assessment — every requirement needs exactly one
+      "input is validated":
+        prompt:                       # ✗ a list — an assessment is a single value, never a list
+          - "Query parameters are validated."
+          - "Request bodies are validated."
+  performance: {}                     # ✗ a factor with neither requirements nor sub-factors
+```
+
+A per-requirement `ratings` override may only re-state levels the scale already
+declares; naming one it does not is a configuration error, not a new level:
+
+```yaml
+ratings:
+  pass: { bashCondition: "result.success" }
+  fail: {}
+factors:
+  maintainability:
+    requirements:
+      "line coverage":
+        bash: "pnpm coverage:lines --print"
+        ratings:
+          gold: "double(result.stdout.trim()) >= 90"   # ✗ "gold" is not a level in the scale
+```
+
 ## Markdown Body
 
 Below the frontmatter is a Markdown body that documents the model in prose. Where
@@ -332,7 +407,7 @@ The body is a flat sequence of named sections. The recommended sections are:
 | **Overview** | What the system or component is, who depends on it, what "good" means here, and what the model covers — its target and boundary, including dependencies it relies on but does not own. |
 | **Needs** | What matters, and to whom — the plain-language statements the requirements answer to. |
 | **Risks** | What goes wrong, and for whom, if a need is not met. |
-| **Factors** | One subsection per factor, mirroring the frontmatter: what each factor means for this system, how you would know it is met, and any trade-offs it carries against other factors. |
+| **Factors** | One subsection per factor, mirroring the frontmatter: what each factor's quality attribute is and why it matters, and how it differs from sibling factors — describing the attribute itself, not restating the requirements attached to it. |
 | **Known gaps** | Quality concerns known to matter but deliberately not addressed yet, each with a brief reason. |
 
 **Overview**, **Needs**, and **Factors** are the recommended minimum — together
@@ -377,3 +452,80 @@ When security and convenience conflict, security wins.
 - We do not yet test behavior under sustained peak load.
 - Rate-limiting is enforced but not covered by an automated check.
 ```
+
+## Federation
+
+A repository may contain more than one `QUALITY.md`. Rather than one file growing
+to cover an entire system, each component can carry its own model, and the files
+**compose**. This is the same nesting convention as `AGENTS.md`: place a model
+where it applies, and the nearest one carries the local detail. It suits
+monorepos, and lets a large model be decomposed into per-component models that are
+each legible on their own.
+
+Composition follows four rules:
+
+- **Ownership stays at the defining file.** Each `QUALITY.md` is a complete,
+  standalone model; no file's content is merged into another. Composition is a
+  reading of the set, not a rewrite of any file.
+- **Scope spans downward.** A model's requirements apply to its whole directory
+  subtree, *including the subtrees of nested models*. A nested model **adds**
+  requirements for its part of the tree; it does not remove what an enclosing
+  model already requires there.
+- **`target` narrows.** A requirement with no `target` spans the model's whole
+  subtree; an explicit `target` narrows it to the files it matches — by selection
+  or by exclusion (above). A model exempts part of its subtree from a requirement
+  by excluding those paths from that requirement's `target`, so the exemption is
+  visible on the requirement that owns it.
+- **Scales are shared by reference, not inherited.** A nested model that omits
+  `ratings` uses the default `pass`/`fail` scale, not the enclosing model's; to
+  rate on a common scale, models reference one shared scale file (above).
+
+So two levers compose a system's quality model, each with one job: **placement
+adds** (a nested model contributes requirements for its subtree) and **`target`
+narrows** (a requirement limits or exempts its reach). A conforming tool
+discovers the set, evaluates each model over its scope, and reports the result as
+a tree; that operational detail is specified with the CLI in
+[`specs/cli-federation.md`](specs/cli-federation.md).
+
+## Conformance, extensibility, and versioning
+
+### Minimal core
+
+Every QUALITY.md needs only one thing: frontmatter containing a `factors` map
+with at least one factor, each factor carrying at least one `requirements` entry
+or sub-`factor`. The `ratings` scale and the whole Markdown body are optional.
+That minimal core is the stable contract; everything else is additive.
+
+### Unrecognized content
+
+The format is meant to grow through use, so a conforming reader **ignores content
+it does not recognize** rather than rejecting it: unknown frontmatter keys and
+unknown body sections are preserved and skipped, never errors. Recognizing a
+genuinely custom extension is not optional — ignore, don't reject — though a tool
+*may* warn about a key that looks like a typo of a known one (`factor:` for
+`factors:`). Malformed *known* content is the opposite case: it is an error, not
+an extension (see below).
+
+### Edge cases
+
+A conforming reader resolves these the same way:
+
+| Case | Treatment |
+| --- | --- |
+| **No frontmatter, or no closing `---`** | Invalid — there is no model to read. A QUALITY.md must carry a fenced frontmatter block. |
+| **Empty top-level `factors`** | Invalid — a model with no factors declares nothing. |
+| **Empty `requirements` / `factors` under a factor** | A degenerate branch with nothing to assess: permitted but meaningless, and a tool may warn. A factor whose collections are all empty fails the "at least one" rule. |
+| **Empty assessment value** (`prompt:` or `bash:` with no value) | Invalid — the assessment *is* its own criteria, so it must be non-empty. |
+| **Duplicate keys among siblings** (factors, requirements, or levels sharing a name) | Invalid — names must be unique among siblings; a reader rejects duplicates rather than silently choosing one. |
+| **Ordering** | Significant only within `ratings`, where levels are listed best to worst. The order of factors, sub-factors, and requirements does not affect evaluation; a tool may preserve authoring order for display. |
+| **Case** | Schema keys are lower-case and case-sensitive (`factors`, not `Factors`). Author-defined names — factors, requirements, and rating levels — are case-sensitive and matched exactly, so a per-requirement override must name a level using the same case as the scale. |
+
+### Versioning
+
+The format evolves **additively**. The minimal core above is fixed, and new
+capability arrives as new *optional* keys and sections. Because a reader ignores
+content it does not recognize, a file written against a newer revision still reads
+under an older tool — the unknown parts are skipped — and a file written against
+an older revision stays valid under a newer one. A change that would invalidate an
+existing conforming file is a breaking change, reserved for a new major version of
+the format: the aim is to grow through use, not to churn the files already written.

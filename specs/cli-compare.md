@@ -1,247 +1,284 @@
-# CLI: `compare`
+# CLI: `evaluation compare`
 
-> Detail doc for the **comparison** mode of the semantic tier. See
-> [`cli.md`](./cli.md) for the full command surface and shared conventions, and
-> [`cli-evaluate.md`](./cli-evaluate.md) for the single-target evaluation engine
-> this verb is built on.
+> **Status:** rewritten for the **deterministic compare** model. This doc replaces
+> the superseded "CLI compiles a prompt and runs a coding agent over N targets"
+> design (the inversion — see [`cli.md`](./cli.md) and [`skills.md`](./skills.md)).
+> `evaluation compare` is now a **pure diff of already-stored evaluation runs**: it
+> reads recorded results and reports what differs. It never re-judges, never runs
+> `bash`, and never calls a model. Field names and output shapes are illustrative
+> and expected to firm up in implementation; genuinely open items are under
+> [Open questions](#open-questions).
 
-| Command | Purpose | Cost / determinism | Output |
-| --- | --- | --- | --- |
-| `qualitymd compare <target> <target> [<target>...] [factor]` | Evaluate **multiple targets against one shared quality model** and rank/diff them per requirement. | Expensive, non-reproducible (× N targets). | Comparison bundle on disk. |
+This is the detail doc for `evaluation compare`. It is a sibling of
+[`cli.md`](./cli.md) (the umbrella command surface),
+[`cli-evaluate.md`](./cli-evaluate.md) (the evaluation lifecycle that produces the
+runs being compared — its [Compare](./cli-evaluate.md#compare) section introduces
+the verb and **defers here** for the fuller story), and
+[`skills.md`](./skills.md) (the judgment layer, which compare does **not** touch).
 
-`compare` answers a **relative** question — *how do these targets rank against
-the model, and what differs between them?* — where [`evaluate`](./cli-evaluate.md)
-answers an **absolute** one — *how good is this subject?* That difference in
-output contract (a requirements × targets **matrix**, not a single verdict) is
-why it is a distinct verb rather than a flag on `evaluate`.
+## What compare is — and is not
 
-## Why this is a distinct mode of use
+`evaluation compare <a> <b>` answers a **relative** question — *what changed
+between these two recorded runs?* — where
+[`evaluation report`](./cli-evaluate.md#evaluation-report-id---fail-on-level---json)
+answers an **absolute** one — *how does this run rate?* Compare produces a
+requirements × runs **diff**, not a fresh verdict.
 
-QUALITY.md projects tend to fall into one of three usage modes, and a single
-`QUALITY.md` is unlikely to serve more than one of them at a time:
-
-- **Single codebase** — the ordinary case. One subject, an absolute verdict →
-  [`evaluate`](./cli-evaluate.md).
-- **A/B comparison** — two instances of "the same" subject: `base` vs. `head`
-  of a PR, old vs. new implementation, ours vs. a competitor. → `compare` with
-  N = 2.
-- **N-way analysis** — a benchmarking/selection effort: several candidate
-  implementations, vendor packages, or forks measured against one rubric. →
-  `compare` with N ≥ 2.
-
-> **Subject vs. target.** A **target** is a concrete source the engine measures
-> — a path or a git ref (see [target source](./cli-evaluate.md#target-source)). A
-> **subject** is the system-under-study a target is an *instance* of. They are
-> 1:1 in N-way analysis (each target is a different subject), but 1:many in A/B
-> (one subject, two targets — `base` and `head`). `compare` always operates on
-> **targets**; "subject" is reserved for the system those targets instantiate.
-
-The A/B and N-way modes are the **same machinery** — the only difference is the
-count of targets and how the result is framed. Crucially, the **regression
-gate** ("did this PR make any requirement *worse* than base?") is just
-`compare base head` with gate framing; it is not a separate feature and not a
-`--diff` flag on `evaluate` (see
-[`cli-evaluate.md`](./cli-evaluate.md#target-scope)).
-
-## Conceptual model
-
-Comparison is the [single-target engine](./cli-evaluate.md#the-evaluation-engine-shared)
-run **N times with the target varied**, under **identical conditions**, plus a
-final synthesis step. Formally: one criteria source, N `(target, criteria,
-context)` triples sharing `criteria`, then a roll-up across targets.
+The load-bearing property is **determinism**. Compare is a function of two
+*already-recorded* runs:
 
 ```text
-shared:  criteria  = resolved QUALITY.md (the ruler)
-         factor    = same requirement subtree for every target
-         rigor     = same level for every target
-         design    = one design.md, applied to all targets
-
-for each target T in targets:
-    results[T] = engine(target=T, criteria, context)   # cli-evaluate.md pipeline
-
-comparison = synthesize(results)   # matrix + ranking + per-requirement winner + deltas
+compare(a, b) = diff(read(a), read(b))     # no evaluation, no model call, no bash
 ```
 
-### Validity rests on a shared ruler
+Both operands are stored evaluations — each a set of per-requirement `result`s
+with ratings and evidence, produced earlier by the lifecycle in
+[`cli-evaluate.md`](./cli-evaluate.md). Compare opens them, lines requirements up,
+and reports per-requirement rating **deltas**. It is as deterministic and as cheap
+as a text diff, and it is reproducible: the same two runs always diff the same way.
 
-A comparison is only meaningful if every target is measured the same way. Two
-invariants are therefore load-bearing — violating either makes the ranking
-meaningless rather than merely imprecise:
+This is the whole inversion applied to comparison. In the superseded model, the
+CLI compiled one orchestration prompt and an agent re-evaluated every target. Now
+the *evaluation* of each target happens first, separately, through the normal
+lifecycle and skill loop; **compare only diffs the records they leave behind.**
 
-1. **One criteria source.** The same resolved `QUALITY.md`, the same `factor`,
-   the same `ratings` scale across all targets. The model file is **subject-
-   agnostic**: it declares requirements, never which code they apply to. That
-   agnosticism is what lets one model rank many subjects.
-2. **One evaluation regime.** The same `--rigor`, the same partitioning strategy,
-   the same finder/refuter ensemble, the same saturation stop criteria for every
-   target. `compare` builds **one `design.md`** and applies it to all targets,
-   rather than designing each independently.
+## What comparison answers
 
-### Non-reproducibility is *amplified* — handle it explicitly
+Two usage modes, the same machinery — the difference is only which two runs are
+named and how the diff is framed:
 
-The single-target engine is already non-reproducible
-([`cli-evaluate.md`](./cli-evaluate.md#iso-25040-process-one-shot)). Comparison
-makes this worse: a rank difference between target A and target B may be
-**finder noise, not a real quality difference.** A comparison that hides its own
-noise floor is worse than no comparison. So `compare`:
+- **A/B across targets sharing one model.** Two instances of "the same" subject
+  measured against one `QUALITY.md`: old implementation vs. new, ours vs. a
+  competitor, candidate A vs. candidate B. Each is a separate run (one per
+  `(model, target)` — see [`cli-evaluate.md`](./cli-evaluate.md#the-run)); compare
+  diffs the two records.
+- **Base-vs-head regression gating.** The PR question — *did this change make any
+  requirement worse than the baseline?* This is `compare <baseline> <head>` with
+  the [`--fail-on-regression`](#regression-gating) gate turned on. It is not a
+  separate feature: it is the A/B diff with a gate framing.
 
-- runs every target under the identical regime above;
-- **surfaces per-requirement confidence** in the matrix, not just a winner;
-- marks a per-requirement delta as **`tie` / `inconclusive`** when the rating
-  gap is within the noise the confidence levels imply, rather than forcing a
-  spurious winner;
-- at `--rigor max`, *may* run each target more than once to report **variance**,
-  so a reported difference can be distinguished from run-to-run jitter.
+> **Subject vs. target.** A **target** is a concrete source a run was evaluated
+> against (a path or a git ref — see
+> [target](./cli-evaluate.md#evaluation-create---model-path---target-path---from-id)).
+> A **subject** is the system-under-study a target is an *instance* of. They are
+> 1:1 when comparing two distinct subjects (A/B selection), and 1:many in
+> regression gating (one subject, base and head are two targets of it). Compare
+> always operates on **runs**; "subject" is reserved for the system those runs
+> evaluated.
 
-## Targets
+### Validity rests on a shared model
 
-Each positional `<target>` is a [target source](./cli-evaluate.md#target-source)
-in its own right. A target may be:
+A diff is only meaningful if both runs were evaluated against the **same resolved
+`QUALITY.md`** — the same factors, the same requirements, the same `ratings` scale.
+The model file is **subject-agnostic** (it declares requirements, never which code
+they apply to — see
+[`cli-evaluate.md`](./cli-evaluate.md#evaluation-create---model-path---target-path---from-id)),
+which is exactly what lets one model rate many targets comparably.
 
-- a **path** to a working tree (`./impl-a`, `../competitor`),
-- a **git ref** of the current repo (`main`, `v1.2.0`, a SHA) — the A/B and
-  regression cases, and
-- *(candidate)* a remote repo reference, for cross-repo analysis.
+Compare therefore checks model agreement as part of the diff rather than assuming
+it: requirements present in one run but not the other are reported as
+[newly-present / dropped](#per-requirement-deltas) (model or target drift), not
+silently aligned. A regression gate that straddled two different models would be
+meaningless, so a model mismatch beyond a tolerable set of added/removed
+requirements is surfaced, not scored around.
 
-The optional trailing `factor` (a dotted factor path, as in
-[`evaluate`](./cli-evaluate.md#factor)) applies identically to every target.
+> Compare does **not** re-impose a shared *evaluation regime* across the runs — it
+> cannot, because the judging already happened. Two runs are comparable to the
+> extent the skill judged them consistently (same rigor, same evidence standard);
+> compare reports the recorded ratings as found. Keeping the judging consistent
+> across the two runs is the skill's job ([`skills.md`](./skills.md)); compare's
+> job is to diff faithfully and to flag the structural mismatches it *can* detect.
 
-Targets may be named for the report with `name=path` syntax
-(`compare baseline=main candidate=feature-x`); otherwise a label is derived from
-the path/ref.
+## Operands: what you can compare
 
-### Declaring targets in config
+Each operand `<a>` / `<b>` resolves to a stored set of recorded results. Because
+**everything under `.quality/` is committed and git is the timeline** (see
+[`cli-evaluate.md`](./cli-evaluate.md#why-no-finalize-git-is-the-audit-layer)),
+compare leans on existing storage rather than a separate "comparison run" concept.
+An operand may be:
 
-A project whose *purpose* is comparison (an analysis/benchmarking effort) can
-declare its default targets in `./.quality/config.yaml` so `compare` needs no
-positional targets — matching the observation that comparison projects and
-single-codebase projects are different projects with different ergonomics. The
-`QUALITY.md` model file itself stays subject-agnostic regardless.
+- the **living run** for the current `(model, target)` — the working state under
+  `.quality/evaluations/<slug>/`;
+- a **named archive** — `archive/<name>`, a frozen snapshot taken with
+  [`evaluation archive --as <name>`](./cli-evaluate.md#evaluation-archive-id---as-name);
+- a **git revision** of the same run's files — e.g. `HEAD~1`, a tag, or a branch,
+  resolving the committed `evaluations/<slug>/` tree at that rev.
 
-```yaml
-# ./.quality/config.yaml  (illustrative)
-compare:
-  targets:
-    - name: baseline
-      ref: main
-    - name: candidate
-      path: ../candidate-impl
-```
+The two canonical shapes both fall out of this:
 
-## Output: the comparison bundle
+- **Working vs. archived snapshot** — `compare archive/baseline .` diffs the
+  current working run against a deliberately-named baseline. Use when you want a
+  stable, labeled reference independent of git history (a release baseline, a
+  "known good").
+- **Working vs. a git rev of the same run** — `compare HEAD~1 .` or
+  `compare main HEAD` diffs the run as committed at one revision against the run
+  now. This is the regression-gate shape on a PR: the base branch's committed
+  evaluation vs. the head's. It needs **no archive** — the commit history already
+  holds the baseline, which is the point of committing everything.
+
+Operands may be labeled for the report with `name=ref` syntax
+(`compare base=main head=. ...`); otherwise a label is derived from the ref/path.
+Compare resolves a single model (`-f`, default `./QUALITY.md`); comparing whole
+*federations* of models is out of scope for v1 (see [Open questions](#open-questions)).
+
+## The requirements × runs matrix
+
+Compare lines the two runs up by requirement — keyed on the requirement's full
+dotted path (the same key the result files derive their `<req-id>` from, see
+[`cli-evaluate.md`](./cli-evaluate.md#on-disk-layout)) — and emits a two-column
+matrix: requirements as rows, the two runs (`a`, `b`) as columns, each cell the
+recorded rating (or the absence of one).
 
 ```text
-./.quality/comparisons/<YYYYMMDD-HHMMSS>-<factor>/
-  design.md         # the single shared Design step applied to every target
-  plan.md           # the concrete task graph, per target
-  targets/
-    <label>/results.json   # full single-target Execute output per target
-  comparison.json   # the matrix: ratings & confidence per (requirement × target)
-  comparison.md     # the primary human-facing artifact — ranking, deltas, winner
+requirement (row)                          a            b           delta
+-------------------------------------------------------------------------------
+secrets.no-committed-secrets               fail         pass        improved
+secrets.tokens-short-lived                 pass         pass        unchanged
+secrets.vault-loaded                       pass         fail        regressed
+secrets.rotation-audited                   —            pass        newly-present
+secrets.legacy-key-check                   pass         —           dropped
 ```
 
-As in [`evaluate`](./cli-evaluate.md#output-the-evaluation-bundle), `<factor>` in
-the directory name is the dotted factor path selected, or `all` when the whole
-model is compared (the positional `factor` omitted).
+The matrix generalizes to more than two runs in principle, but the v1 verb is
+**two operands** (`<a> <b>`): the regression gate is inherently base-vs-head, and a
+two-column diff is what reads cleanly as a PR artifact. Wider N-way matrices are an
+[open question](#open-questions).
 
-Each `targets/<label>/results.json` is exactly a single-target
-[`results.json`](./cli-evaluate.md#resultsjson-illustrative-shape), so a
-comparison is fully decomposable into the individual evaluations that produced
-it. `comparison.json`/`comparison.md` add only the cross-target synthesis.
+### Per-requirement deltas
 
-### `comparison.md`
+For each requirement, compare classifies the change against the model's **ordered**
+`ratings` scale (worst → best is defined by the model, the same ordering
+[`evaluation report`](./cli-evaluate.md#report-rollup) rolls up against):
 
-- **Definition** — the shared model, factor, rigor, the target set with labels
-  and resolved sources, timestamp.
-- **Ranking** — overall ordering of targets, with the overall rating each
-  achieved and a confidence/variance note.
-- **Matrix** — requirements (rows) × targets (columns), each cell a rating +
-  confidence; per-row winner highlighted, ties marked.
-- **Notable deltas** — requirements where targets diverge most, with evidence and
-  `path:line` locations per target.
-- **Per-target strengths & weaknesses** — a brief absolute read of each, so the
-  comparison doesn't erase the standalone verdict.
-- **Limitations** — rigor used, saturation achieved per target, contested/tied
-  findings, variance if measured, and the amplified non-reproducibility caveat.
+| Delta | Meaning |
+| --- | --- |
+| `improved` | The requirement rates **better** in `b` than in `a` on the scale's ordering. |
+| `unchanged` | Same rating in both. |
+| `regressed` | The requirement rates **worse** in `b` than in `a`. The gate-relevant case. |
+| `newly-present` | Recorded in `b`, absent from `a` (added requirement, or `a` left it `pending`/`skipped`). |
+| `dropped` | Recorded in `a`, absent from `b` (removed requirement, or `b` left it `pending`/`skipped`). |
 
-### `comparison.json` (illustrative shape)
+Two refinements keep the diff honest:
 
-```json
-{
-  "definition": {
-    "factor": "security",
-    "rigor": "high",
-    "criteriaSource": "./QUALITY.md",
-    "targets": [
-      { "label": "baseline",  "source": { "ref": "main" } },
-      { "label": "candidate", "source": { "path": "../candidate-impl" } }
-    ]
-  },
-  "ranking": [
-    { "label": "candidate", "overall": "pass", "confidence": "high" },
-    { "label": "baseline",  "overall": "fail", "confidence": "high" }
-  ],
-  "matrix": {
-    "no secrets committed to the repository": {
-      "baseline":  { "rating": "fail", "confidence": "confirmed" },
-      "candidate": { "rating": "pass", "confidence": "confirmed" },
-      "winner": "candidate"
-    },
-    "secrets are loaded from a vault": {
-      "baseline":  { "rating": "pass", "confidence": "contested" },
-      "candidate": { "rating": "pass", "confidence": "contested" },
-      "winner": "tie"
-    }
-  }
-}
+- **State, not just rating.** A result that is `pending`, `skipped`, or `errored`
+  on one side has **no comparable rating** (see
+  [result states](./cli-evaluate.md#result-states)). Compare reports the
+  state-vs-rating asymmetry explicitly — e.g. `skipped → pass` is
+  `newly-present`, `recorded → pending` is `dropped` — rather than treating a
+  missing rating as a low one. It never invents a rating to diff against.
+- **Direction comes from the scale, not from string comparison.** `improved` /
+  `regressed` are defined purely by the requirement's position on the in-scope
+  `ratings` scale. A per-requirement scale override
+  ([`cli-evaluate.md`](./cli-evaluate.md#the-bash-path-execution--classification))
+  is honored per requirement.
+
+A roll-up summary accompanies the per-requirement deltas: counts of each delta
+class, and — for the gate — **whether any `regressed` rows exist**.
+
+## Output: a reviewable PR artifact
+
+Compare's output is built to read like a **diff in a pull request**: a reviewer
+scanning it should see, at a glance, what got better and what got worse. The
+primary human-facing artifact frames regressions as **diff-like lines**, worst
+news first:
+
+```text
+Comparison: base (main) → head (working)
+Model: ./QUALITY.md   |   2 regressed, 1 improved, 1 unchanged, 1 added, 1 dropped
+
+  REGRESSED
+  - secrets.vault-loaded                 pass → fail
+  - auth.tokens-short-lived              pass → fail
+
+  IMPROVED
+  + secrets.no-committed-secrets         fail → pass
+
+  CHANGED COVERAGE
+  ~ secrets.rotation-audited             (added)    — → pass
+  ~ secrets.legacy-key-check             (dropped)  pass → —
+
+  UNCHANGED  secrets.tokens-short-lived  pass
 ```
 
-## Flags, exit codes
+The `-`/`+`/`~` gutter and "base → head" framing are deliberate: a regression
+reads exactly like a removed line in a code diff, so a reviewer's diff-reading
+instincts transfer. The same content is available structured under `--json` (a
+schema-stable object carrying the matrix, the per-requirement deltas with from/to
+ratings and states, and the roll-up counts) for a CI harness to post as a PR
+comment or check annotation. Whether the CLI posts that comment itself or leaves
+it to the harness is shared with the
+[`cli.md` open questions](./cli.md#open-questions).
 
-Shared flags are in [`cli.md`](./cli.md#shared-conventions); the deep-command
-flags (`--rigor`, `--name`) carry over from
-[`cli-evaluate.md`](./cli-evaluate.md#flags-exit-codes) and apply to **every**
-target identically. Comparison-specific:
+Because both operands are committed records and the diff is deterministic, the
+comparison itself is reproducible from the two refs — there is no bundle to seal
+and nothing volatile to segregate. Compare reads; it does not write a run.
 
-- `--baseline <label>` — treat one target as the reference and express the others
-  as **deltas against it** (the A/B / regression framing). Without it, all targets
-  are peers and the output is a symmetric ranking.
-- `--fail-on-regression` — exit non-zero if any requirement rates **worse** in a
-  non-baseline target than in the `--baseline` target. The comparison analogue of
-  [`evaluate --fail-on`](./cli-evaluate.md#flags-exit-codes): a PR gate that
-  blocks on *new* shortfalls without failing on pre-existing debt. Off by default
-  (report-only), opt-in, and requires `--baseline`.
+## Regression gating
 
-Exit codes follow the shared three-code convention (see
-[`cli.md`](./cli.md#machine-readable-result-contract)), exactly as
-[`evaluate`](./cli-evaluate.md#flags-exit-codes):
+Regression gating is `compare <baseline> <head>` with one flag:
 
-- **`0`** — the comparison completed. **The default, report-only outcome** even
-  when targets diverge sharply: without `--fail-on-regression` a ranking is never
-  a gate.
-- **`1`** — **gate verdict failure:** `--fail-on-regression` was passed and at
-  least one requirement rated **worse** in a non-baseline target than in the
-  `--baseline` target. The run succeeded; a regression was found. Opt-in for the
-  same reason `evaluate --fail-on` is: the run is non-reproducible, so gating is a
-  team's explicit choice, never imposed. Requires `--baseline`.
-- **`2`** — **tool failure:** the comparison could not be produced — a bad flag,
-  an unresolvable target, `--fail-on-regression` without `--baseline`, a
-  `QUALITY.md` that does not parse, or an internal error. Never means "a target is
-  worse."
+- **`--fail-on-regression`** — exit **non-zero** if **any** requirement is
+  `regressed` (rates worse in `b`/head than in `a`/baseline). This is the
+  comparison analogue of
+  [`evaluation report --fail-on`](./cli-evaluate.md#evaluation-report-id---fail-on-level---json):
+  a PR gate that blocks on **new** shortfalls without failing on pre-existing debt
+  (a requirement already `fail` in the baseline and still `fail` is `unchanged`,
+  not a trip). **Off by default** — without it, compare is report-only and a diff
+  is never a gate. Opt-in for the same reason `--fail-on` is: the underlying
+  ratings were produced by a non-reproducible judging process, so gating is a
+  team's explicit choice.
+
+By default `--fail-on-regression` trips on **any** `regressed` row. Whether
+`newly-present`/`dropped` (coverage drift) can also be made to trip, and whether
+the gate can be scoped to a factor subtree, are
+[open questions](#open-questions). The direction is fixed by operand order:
+`<a>` is the baseline, `<b>` is the candidate, so put base first, head second.
+
+## Exit codes
+
+Compare reuses the shared three-code convention verbatim (see
+[`cli.md`](./cli.md#exit-codes)):
+
+| Code | Meaning | In compare |
+| --- | --- | --- |
+| `0` | Success — ran, and the gate (if any) passed. | The default, report-only outcome: the diff was produced. Exits `0` even when runs diverge sharply, *unless* `--fail-on-regression` is set and a regression was found. A clean diff and a divergent-but-ungated diff both exit `0`. |
+| `1` | **Gate verdict failure** — ran fine, the bar was not met. | `--fail-on-regression` was passed and at least one requirement `regressed`. The comparison ran successfully; a regression was found. The *only* `1` in compare. |
+| `2` | **Tool failure** — the command broke. | An operand that does not resolve (unknown ref/archive, absent run), a `QUALITY.md` that does not parse, `--fail-on-regression` with operands evaluated against **incompatible models**, a malformed stored result, or an internal error. Never means "a run is worse." |
+
+The load-bearing distinction is the same one the lifecycle draws: **a found
+regression is `1`, not `2`.** Finding that head is worse than base is a successful
+comparison reporting bad news (gate trip); only a *broken invocation* — an
+unresolvable operand, a model mismatch the gate can't reason over — is `2`. A
+report-only run that surfaces regressions still exits `0`.
+
+## Relationship to `evaluation compare` in the lifecycle doc
+
+[`cli-evaluate.md`](./cli-evaluate.md#compare) introduces `evaluation compare` as
+the minimal two-run diff the `evaluation` resource exposes and defers here for the
+fuller story. The two are the **same verb**, not two: this doc is the authoritative
+specification of its semantics (deltas, the matrix, gating, output, exit codes);
+that section specifies only the minimal diff and points here. They must stay
+consistent — in particular, both describe a **deterministic diff of recorded
+results that never re-judges or calls a model**, and both allow either operand to
+be the living run, a named archive, or a git revision.
 
 ## Open questions
 
-- **Remote/cross-repo targets.** Whether a target may be a remote repo reference
-  (clone-and-evaluate) for cross-repo analysis, or whether v1 limits targets to
-  local paths and refs of the current repo.
-- **Variance budget at `max`.** Whether repeated-run variance reporting is
-  in-scope for v1, and how many runs is enough to call a delta real without
-  blowing up cost (N targets × R runs).
-- **Tie threshold.** How the "within the noise floor → `tie`" decision is made —
-  a fixed rating-distance rule, a confidence-overlap rule, or variance-derived.
-- **Shared vs. per-target partitioning.** Comparable targets (two refs of one
-  repo) can share a partitioning; structurally different targets (two unrelated
-  codebases) may not. How much of the "one evaluation regime" invariant can hold
-  when targets aren't structurally comparable.
-- **Single-target `--diff` over a comparison.** Whether `compare` accepts a
-  `--diff`-style scope per target, or comparison is always whole-target.
+- **N-way compare.** Whether the verb accepts more than two operands (a true
+  requirements × N-runs matrix for selection/benchmarking), or stays strictly
+  two-operand (base-vs-head) for v1 with N-way left to the harness.
+- **Coverage-drift gating.** Whether `--fail-on-regression` can be configured to
+  also trip on `dropped` (a requirement that lost its rating) or
+  `newly-present`-as-fail, vs. trip on rating regressions only.
+- **Factor-scoped compare/gate.** Whether compare accepts a trailing `factor` path
+  to diff/gate a single factor subtree, mirroring the model's factor scoping, or
+  is always whole-model.
+- **Model-mismatch tolerance.** How much model drift between the two runs is
+  tolerable before the diff is `2` rather than reported as added/dropped
+  requirements — the exact boundary between "comparable with coverage drift" and
+  "incomparable."
+- **Federated operands.** Comparing two runs that are each a whole *federation* of
+  models (see [`cli-federation.md`](./cli-federation.md)) — a tree-shaped diff —
+  is out of scope for v1; compare resolves a single model for now.
+- **Three-way / merge-base compare.** Whether a `base...head` (merge-base) form is
+  useful for PR gating the way `git diff` three-dot range is, vs. plain two-operand.
