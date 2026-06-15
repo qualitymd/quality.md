@@ -16,18 +16,17 @@ This document covers the two resources that manage a recorded evaluation:
 | `evaluation` (`eval`) | A **living per-target run** — one per (model, target), re-run in place. | here |
 | `result` | A **requirement-result within a run** — one per selected requirement. | here |
 
-It is a sibling of [`cli.md`](./cli.md) (the umbrella command surface),
+It is a sibling of [`cli.md`](./cli.md) (the umbrella command surface) and
 [`skills.md`](./skills.md) (the judgment/orchestration layer that drives these
-resources), and [`cli-compare.md`](./cli-compare.md) (the fuller, pending-rewrite
-treatment of `evaluation compare`).
+resources).
 
 ## The boundary this doc lives on
 
 `qualitymd` draws one hard line (see [`cli.md`](./cli.md#the-split-deterministic-cli-judgment-in-skills)):
 **the CLI is deterministic and never calls a model.** Everything in this doc is
 that deterministic surface — it parses the model, resolves targets, runs `bash`
-assessments and classifies them, persists the run, rolls up factors, renders the
-report, and diffs runs. The **judgment** — composing prompts, judging `prompt`
+assessments and classifies them, persists the run, rolls up factors, and renders
+the report. The **judgment** — composing prompts, judging `prompt`
 assessments, deciding when evidence is sufficient — belongs to the skill layer
 ([`skills.md`](./skills.md)) and is cross-linked, never duplicated, here.
 
@@ -167,7 +166,7 @@ toward committed-but-ignored-in-review, but this is not finally settled.
 ## `evaluation` commands
 
 All commands default to the **living run for the current model + target**; an
-explicit `<id>` is only needed for historical, archive, or compare operations
+explicit `<id>` is only needed for historical or archive operations
 (see [`cli.md`](./cli.md#conventions)).
 
 ### `evaluation create [--model <path>] [--target <path>] [--from <id>]`
@@ -219,10 +218,6 @@ comparison or record. Transition: → **archived** (the snapshot; the live run s
 ### `evaluation delete <id>`
 
 Discard a run (living or archived). Transition: → abandoned.
-
-### `evaluation compare <a> <b> [--json]`
-
-A **deterministic diff of two stored runs** — see [Compare](#compare).
 
 ## `result` commands
 
@@ -508,29 +503,6 @@ results (no model authoring it — the inversion). It carries:
 It is rendered, deterministic prose; under `--json`, `evaluation report` emits the
 same rollup as a schema-stable object.
 
-## Compare
-
-`evaluation compare <a> <b>` is a **deterministic diff of two stored runs** — no
-re-evaluation, no model calls. It reads both runs' recorded results and reports,
-per requirement, what differs:
-
-- rating changes (`a → b`), and the **direction** (improved / regressed / same on
-  the scale's ordering);
-- requirements present in one run but not the other (model or target drift);
-- state differences (e.g. `recorded` in one, `skipped`/`errored`/`pending` in the
-  other).
-
-Either side may be the living run, an archive (`archive/<name>`), or a git revision
-of the run files — git history *is* the timeline, so "compare against last week" is
-"compare against that revision."
-
-This section is intentionally light: `evaluation compare` is the **same-model,
-two-run** diff. The fuller comparison story — **multiple targets against one shared
-model**, the requirements × targets matrix, A/B and regression gating — lives in
-[`cli-compare.md`](./cli-compare.md). Treat that doc as authoritative for compare;
-this section specifies only the minimal two-run diff the `evaluation` resource
-exposes.
-
 ## Why no finalize: git is the audit layer
 
 There is deliberately **no `finalize`/`seal`** transition. A run is **always
@@ -577,9 +549,6 @@ separately, so "the command broke" (`2`), "the quality is bad" (`1`, opt-in), an
 - **Interface payload field names** — the `result show` / `result set` schemas are
   defined [here](#the-interface-payloads-cli--skill-contract) but their field names
   are provisional and expected to be tuned in implementation.
-- **Compare depth** — how much of the multi-target / matrix story `evaluation
-  compare` carries vs. defers to [`cli-compare.md`](./cli-compare.md) once that is
-  rewritten.
 - **Federation** — how `evaluation` / `result` address a federated tree of models
   (one run per model, a tree-shaped report); needs the federation rewrite (see
   [`cli-federation.md`](./cli-federation.md)).

@@ -322,6 +322,6 @@ would suggest. It is the attribute a visitor meets first.
   `bashCondition: result.success` for it — mirroring the built-in meta-model.
 - **Implementation conformance is judged against the umbrella `specs/cli.md`**,
   which references the per-document specs (`cli-init.md`, `cli-lint.md`,
-  `cli-evaluate.md`, `cli-compare.md`, `cli-federation.md`, and `skills.md`)
+  `cli-evaluate.md`, `cli-federation.md`, and `skills.md`)
   rather than restating them; deep per-command and per-skill conformance is not
   yet a separate requirement.

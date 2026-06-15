@@ -202,14 +202,26 @@ reaches into.
 
 ### Output
 
-There is no single federation run directory; the per-model runs **are** the
-storage, each under its own model's `.quality/evaluations/<slug>/`. The federation
-report is an aggregating **view** over them:
+The on-disk layout follows one principle — **runs decentralize; configuration
+centralizes.** There is no single federation run directory: each model's runs live
+in its **own** `.quality/`, resolved relative to that model's directory, so a
+node's home *is* the single-model layout
+([`cli-evaluate.md`](./cli-evaluate.md#on-disk-layout)) and a component's
+evaluation travels with the component. What stays at the **scan root** is
+federation-level configuration — `config.yaml` (the `ignore` globs, `defaults`)
+and any [shared rating scale](#shared-rating-scale) — resolved once for the tree.
+The scan-root `.quality/` therefore does double duty: the federation's config home
+and, when a root model sits there, that root model's own runs — the same
+`.quality/` a lone model already keeps. The federation report is an aggregating
+**view** over the per-model runs:
 
 ```text
 repo/
   QUALITY.md
-  .quality/evaluations/<slug>/        # the root model's living run
+  .quality/
+    config.yaml                       # federation-level config (ignore, defaults)
+    ratings.yaml                      # the shared rating scale, referenced by every model
+    evaluations/<slug>/               # the root model's own living run
   packages/api/
     QUALITY.md
     .quality/evaluations/<slug>/      # packages/api's living run
@@ -239,16 +251,6 @@ ancestor/descendant `target` globs that **overlap** on the same files. `lint`
 stays the cheap structural gate; it forms no opinion on whether the composed model
 is *good*.
 
-## `evaluation compare` over a federation
-
-`evaluation compare <a> <b>` is the **same-model, two-run** deterministic diff
-([`cli-evaluate.md`](./cli-evaluate.md#compare)). Over a federation it is applied
-**per model** — comparing a node's living run against its own archive or a git
-revision of that node's run — since each model owns its own run history. The
-broader "compare whole federations as units" story (a federation-vs-federation
-matrix) is **out of scope for v1**; see
-[`cli-compare.md`](./cli-compare.md) once rewritten.
-
 ## Shared rating scale
 
 A federation's tree report is only commensurable when its models share a rating
@@ -277,13 +279,6 @@ inheritance. `lint` warns when models in one federation use different scales (se
 - **Scan root and multi-root.** Whether the scan root is always the invocation
   directory or resolves to the repository root, and whether a federation may span
   more than one root, is unsettled.
-- **Per-model `.quality/` vs. a single home.** Whether each node truly carries its
-  own `.quality/evaluations/` (runs travel with the component, assumed above) or a
-  federation centralizes runs under the scan root's `.quality/` keyed by model
-  path. The component-local layout is the working assumption; reconcile with
-  [`cli.md`](./cli.md#the-quality-home), which describes a single project home.
-- **`compare` × federation.** Comparing federated targets as units — deferred to
-  the [`compare`](./cli-compare.md) rewrite.
 - **Cross-file `target` overlap severity.** Whether overlapping ancestor/
   descendant globs are a `warning` (current lean) or sometimes plainly legitimate
   (a cross-cutting ancestor requirement *intends* to overlap node scopes).

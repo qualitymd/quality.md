@@ -2,11 +2,12 @@
 // Fang for styled help, errors, version, and shell completion.
 //
 // STUB: This is an early scaffold and does NOT reflect the current CLI
-// specification under specs/. The spec (see specs/cli.md) defines a five-command
-// surface across two tiers — `init`, `lint`, `evaluate`, `evaluate-model`, and
-// `compare` — whereas this tree exposes only a single `check` command that does
-// not exist in the spec. Treat everything here as a placeholder to be replaced,
-// not as the intended command surface.
+// specification under specs/. The spec (see specs/cli.md) defines a
+// deterministic, resource-based surface — `init`, `lint`, and the `model`,
+// `evaluation`, and `result` resource trees, with judgment living in skills —
+// whereas this tree exposes only a single `check` command that does not exist in
+// the spec. Treat everything here as a placeholder to be replaced, not as the
+// intended command surface.
 package cli
 
 import (

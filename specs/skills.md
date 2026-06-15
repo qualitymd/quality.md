@@ -208,8 +208,6 @@ whether any are marked internal.
   against.
 - [`cli-evaluate.md`](./cli-evaluate.md) — the deterministic evaluation lifecycle
   and the **authoritative CLI ↔ skill interface payloads** this contract leans on.
-- [`cli-compare.md`](./cli-compare.md) — `evaluation compare` as a deterministic
-  diff of stored runs (A/B and base-vs-head regression gating).
 - [`cli-lint.md`](./cli-lint.md), [`cli-init.md`](./cli-init.md) — the
   deterministic commands; largely unaffected.
 - [`../SPECIFICATION.md`](../SPECIFICATION.md) — the format itself, including the

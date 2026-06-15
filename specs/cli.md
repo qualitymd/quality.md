@@ -9,7 +9,7 @@ Functional specification for the `qualitymd` CLI surface.
 > genuinely open are collected under [Open questions](#open-questions).
 >
 > This document was rewritten around a **resource-based** surface. The deep
-> agentic commands (`evaluate`, `evaluate-model`, `compare`) are no longer CLI
+> agentic commands (`evaluate`, `evaluate-model`) are no longer CLI
 > commands — they are **skills** that orchestrate the deterministic surface below
 > (see [`skills.md`](./skills.md)).
 
@@ -26,8 +26,6 @@ This is the umbrella document. Per-command and per-layer detail lives in:
   lifecycle** (the `evaluation` and `result` resources): data model, on-disk
   layout, the `bash` execution path, the report rollup, and the **authoritative
   CLI ↔ skill interface payloads**.
-- [`cli-compare.md`](./cli-compare.md) — `evaluation compare` as a deterministic
-  diff of stored runs (A/B and base-vs-head regression gating), not an agent run.
 - [`cli-federation.md`](./cli-federation.md) — how multiple `QUALITY.md` models in
   one repository compose: discovery, ownership and scope, one run per model, the
   per-model-gated tree report. Cross-cutting rather than per-command.
@@ -38,7 +36,7 @@ This is the umbrella document. Per-command and per-layer detail lives in:
 
 - **The CLI is deterministic and never calls a model.** It parses and inspects
   the model, resolves targets, runs `bash` assessments, classifies results,
-  persists evaluations, rolls up factors, renders reports, and diffs runs.
+  persists evaluations, rolls up factors, and renders reports.
 - **Skills carry judgment and orchestration** (see [`skills.md`](./skills.md)).
   A skill drives the evaluation loop, judges `prompt` assessments, gathers
   evidence, and writes verdicts back through the CLI.
@@ -82,7 +80,6 @@ nouns are **singular**; the verb carries the cardinality.
 | `evaluation report [<id>] [--fail-on <level>]` | Render the report; non-zero exit when `--fail-on` is tripped. | — |
 | `evaluation archive [<id>] --as <name>` | Snapshot current state to `archive/<name>/`. | → **archived** |
 | `evaluation delete <id>` | Discard a run. | → abandoned |
-| `evaluation compare <a> <b>` | Diff two runs (active, archived, or git rev). | — |
 
 ### `qualitymd result` — a requirement-result within a run
 
@@ -164,7 +161,7 @@ These apply across all commands; per-command flags live in the detail docs.
   (`.quality/evaluations/`).
 - **Implicit current run.** `evaluation` and `result` commands default to the
   living run for the current model + target; an `<id>` is only needed for
-  historical, archive, or compare operations.
+  historical or archive operations.
 - **Strictly resource-based.** The CLI exposes state; it never emits a prompt and
   never assumes an iteration order. Prompt composition and ordering are the
   skill's job — there is no `next` cursor.
@@ -211,8 +208,9 @@ raw output has a hint, not so the CLI drives a workflow.
 
 ## The `.quality/` home
 
-`./.quality/` is the project's quality home: configuration plus the committed
-evaluation runs.
+`./.quality/` is a model's quality home: the committed evaluation runs, plus
+project configuration. A project with a single `QUALITY.md` has exactly one,
+beside that file — the layout below.
 
 ```
 .quality/
@@ -228,6 +226,15 @@ evaluation runs.
 defaults:
   failOn: fail
 ```
+
+**In a federation** this layout repeats per model — each `QUALITY.md` keeps its
+own `.quality/` holding *its* runs, resolved relative to that model's directory,
+so a component's evaluation travels with the component. Configuration does **not**
+repeat: `config.yaml` and any shared rating scale are federation-level, resolved
+once at the **scan root**'s `.quality/`. That scan-root home does double duty —
+federation config plus, when a root model sits there, that root model's own runs —
+exactly as a lone model's `.quality/` already carries both. *Runs decentralize;
+configuration centralizes* (see [`cli-federation.md`](./cli-federation.md#output)).
 
 The **meta-model** — the built-in `QUALITY.md` whose subject is a project's *own*
 `QUALITY.md` — ships bundled with the CLI as a normal `QUALITY.md`-schema file. It
@@ -255,10 +262,6 @@ policy — manages history.
   consuming `--json`. Relevant to `evaluation report --fail-on`.
 - **`spec` verb (design.md prior art).** Printing the format spec for injection
   into agent/skill prompts is a plausible ergonomic addition. Out of scope for v1.
-- **Federation on-disk layout.** Whether federated runs live in one central
-  `.quality/` keyed by model path or in per-model `.quality/` homes that travel
-  with each component — see [`cli-federation.md`](./cli-federation.md). Load-bearing
-  for the on-disk layout and the tree report; still open.
 - **Configurable meta-model.** The diagnostic meta-model is fixed and bundled for
   now. Whether to later allow a project-local model to replace or extend it (and
   how — append vs. deep-merge) is deferred.
