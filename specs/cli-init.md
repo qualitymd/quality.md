@@ -17,7 +17,8 @@ qualitymd init                       # write a starter ./QUALITY.md
 
 `init` is **deterministic and offline**: it writes a minimal, schema-commented
 starter `QUALITY.md` — a few example factors and a Markdown body skeleton, on
-the default `pass`/`fail` scale — that the author then fills in. It has no opinion
+the default Outstanding/Target/Minimum/Unacceptable scale — that the author then
+fills in. It has no opinion
 about your codebase and does no agentic work; it gives you a well-formed file to
 edit and a clear next step.
 
@@ -57,7 +58,7 @@ A single `QUALITY.md` with commented frontmatter and a short body skeleton:
 # QUALITY.md — quality model for <project>. See SPECIFICATION.md.
 # Each factor has `requirements`, nested `factors`, or both.
 # Each requirement declares exactly one assessment: `prompt` or `bash`.
-# Ratings default to pass / fail; add a `ratings:` block to customize.
+# Ratings default to outstanding / target / minimum / unacceptable; add a `ratings:` block to customize.
 factors:
   functionality:
     requirements:
@@ -73,8 +74,12 @@ factors:
 # Quality model — <project>
 
 ## Overview
-<!-- What this system or component is, who depends on it, what "good" means
-     here, and what the model covers — its target and boundary. -->
+<!-- What this system or component is, who depends on it, and what "good" means
+     here. -->
+
+## Scope
+<!-- What the model covers and what it deliberately leaves out (out of scope),
+     including dependencies it relies on but does not own. -->
 
 ## Needs
 <!-- What matters, and to whom — the plain-language statements the requirements
@@ -95,7 +100,7 @@ factors:
 ```
 
 The skeleton seeds the body with the spec's recommended sections (Overview,
-Needs, Risks, Factors, Known gaps), leaning on prose to match the project's
+Scope, Needs, Risks, Factors, Known gaps), leaning on prose to match the project's
 "prose over tokens" bet: the comments prompt the author to *write the
 reasoning*, not just fill in token values. The factor subsections mirror the
 example factors in the frontmatter.
@@ -130,8 +135,8 @@ is passed. So `qualitymd init` on a terminal is interactive, while an agent, a
 pipe, or a CI step gets the deterministic file with no prompt and no hang. Prompts
 are written to stderr, so `--json` result output on stdout is never contaminated.
 
-Both paths produce the same well-formed file on the default `pass`/`fail` scale
-and emit the same next-action ("edit the placeholders, then run `qualitymd lint`").
+Both paths produce the same well-formed file on the default
+Outstanding/Target/Minimum/Unacceptable scale and emit the same next-action ("edit the placeholders, then run `qualitymd lint`").
 
 ## Flags, exit codes
 
@@ -140,7 +145,8 @@ argument and no stdout mode. This keeps the bootstrapping step a single,
 predictable action.
 
 `init` writes one fixed starter scaffold (see [What it writes](#what-it-writes)):
-the example factors above, relying on the default `pass`/`fail` scale. There is
+the example factors above, relying on the default
+Outstanding/Target/Minimum/Unacceptable scale. There is
 no template or rating-scale choice — the author edits the file afterward.
 
 Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):

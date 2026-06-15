@@ -1,15 +1,18 @@
 ---
 ratings:
-  pass:
-    displayName: "Pass"
-    promptCondition: "Fully satisfies the diagnostic requirement; no material gaps."
+  - level: outstanding
+    displayName: "Outstanding"
+    promptCondition: "Exceeds the diagnostic requirement; satisfies it with margin to spare."
+  - level: target
+    displayName: "Target"
+    promptCondition: "Satisfies the diagnostic requirement; no material gaps."
     bashCondition: "result.success"
-  partial:
-    displayName: "Partial"
-    promptCondition: "Satisfies the core of the requirement; minor or scoped gaps remain."
-  fail:
-    displayName: "Fail"
-    promptCondition: "Does not satisfy the diagnostic requirement."
+  - level: minimum
+    displayName: "Minimum"
+    promptCondition: "Satisfies the core of the requirement but falls short of the goal; minor or scoped gaps remain at the acceptable floor."
+  - level: unacceptable
+    displayName: "Unacceptable"
+    promptCondition: "Does not satisfy the diagnostic requirement; falls below the acceptable floor."
 factors:
   functionality:
     factors:
@@ -24,9 +27,14 @@ factors:
               well-formed.
           "requirements collectively realize the model's declared needs":
             prompt: >
-              The requirements, taken together, address every need and risk the
-              model declares as its purpose. No declared need is left without at
-              least one requirement whose failure would surface a violation of it.
+              Every need and risk the model declares is realized by the
+              requirements: each is guarded by at least one requirement whose
+              failure would surface a violation of it, so no declared need is left
+              unguarded. Conversely, no requirement stands without a need behind
+              it. The set traces to the declared purpose in both directions — needs
+              to requirements and back. (Whether the requirement set is internally
+              sound — consistent, lean, free of placeholders — is judged under "the
+              requirement set is well-formed as a whole", not here.)
           "the model yields correct, trustworthy verdicts":
             prompt: >
               For a subject that does or does not satisfy a requirement, the
@@ -55,13 +63,21 @@ factors:
               - operationalized: it carries requirements — directly or through its
                 sub-factors — that genuinely assess it; it is not left as a vague
                 heading whose failure no requirement would surface.
+              Rate on the scale: a single unmet characteristic caps the verdict at
+              `minimum`; a factor that is not a quality attribute at all — a
+              component, feature, or activity — is `unacceptable`. Localize the verdict:
+              name each factor that falls short and the characteristic it misses,
+              so the result points at a specific factor to fix rather than only
+              that something is off.
           "the factor set is well-formed as a whole":
             prompt: >
               The full set of factors across the model exhibits these set-level
               characteristics:
               - complete: the factors together cover the quality concerns the
                 subject's declared needs and risks imply; concerns intentionally left
-                out are recorded as explicit known gaps rather than silent omissions.
+                out are recorded explicitly — as out-of-scope in the Scope section, or
+                as deferred in Known gaps — rather than silent omissions. A concern
+                the model declares out of scope does not count against completeness.
               - non-overlapping: factors are mutually distinct and do not
                 substantially overlap; the set partitions the subject's quality
                 cleanly rather than double-counting one concern across several factors.
@@ -70,6 +86,9 @@ factors:
               - appropriately decomposed: nesting depth suits the subject —
                 sub-factors break an attribute too broad to assess directly into
                 assessable parts, rather than being added gratuitously.
+              Rate on the scale: any unmet characteristic caps the verdict at
+              `minimum`. Localize the verdict: name the specific gap, overlap, or
+              incoherence in the set rather than only a bare rating.
           "each requirement is individually well-formed":
             prompt: >
               Each requirement the model declares exhibits these
@@ -109,15 +128,25 @@ factors:
                 derived from.
               - conforming: it follows a consistent template and style for
                 requirements in this model, where an applicable convention exists.
+              Treat individual well-formedness as the single concern these
+              characteristics jointly define — they are the conditions it must
+              meet, not separate requirements. Rate on the scale: a single unmet
+              characteristic caps the verdict at `minimum`; a requirement with no
+              real assessment is `unacceptable`. Localize the verdict: name each
+              requirement that falls short and the characteristic it misses, so a
+              `minimum` says what to fix.
           "the requirement set is well-formed as a whole":
             prompt: >
               The full collection of requirements across the model's factors exhibits
               these set-level characteristics:
-              - complete: the set stands alone, sufficiently describing the quality
-                factors needed to meet the subject's needs without further
-                information, with no unresolved TBD/TBS/TBR placeholders; concerns
-                intentionally left out are recorded as explicit known gaps rather
-                than silent omissions.
+              - complete: the set stands alone — self-contained, free of unresolved
+                TBD/TBS/TBR placeholders and of dangling references that would need
+                further information to resolve; concerns intentionally left out are
+                recorded explicitly — as out-of-scope in the Scope section, or as
+                deferred in Known gaps — rather than silent omissions. A concern the
+                model declares out of scope does not count against completeness.
+                (Whether the requirements actually realize the model's declared
+                needs is judged under Fitness for purpose, not here.)
               - consistent: requirements are unique and do not conflict with or
                 overlap one another, and terminology, units, and measurement are used
                 consistently throughout, with the same term meaning the same thing
@@ -136,25 +165,42 @@ factors:
                 achieve the subject's needs within constraints — a subject that passes
                 every requirement is genuinely good enough for the needs the model
                 declares.
+              Rate on the scale: any unmet characteristic caps the verdict at
+              `minimum`. Localize the verdict: name the specific conflict,
+              redundancy, gap, or inconsistency rather than only a bare rating.
       documentation:
         requirements:
-          "the Overview body section frames the subject and its scope":
+          "the Overview body section frames the subject":
             prompt: >
               Where present, the Overview section establishes the context the rest of
-              the model depends on: what the subject is, who depends on it, what
-              "good" means for it, and the model's target and boundary — including
-              dependencies the subject relies on but does not own. It frames the
-              subject concretely enough that a reader can tell what is in and out of
-              scope and judge the model's prompt assessments consistently, rather
+              the model depends on: what the subject is, who depends on it, and what
+              "good" means for it. It frames the subject concretely enough that a
+              reader can judge the model's prompt assessments consistently, rather
               than restating the factors or trailing off into generic description.
+              The model's boundary — what it covers and deliberately excludes — is
+              the Scope section's job, not the Overview's.
+          "the Scope body section draws the model's boundary":
+            prompt: >
+              Where present, the Scope section states what the model covers and what
+              it deliberately leaves out, including dependencies the subject relies on
+              but does not own. Out-of-scope items are framed as exclusions by design
+              — concerns outside the model's remit — not as deferred work that belongs
+              here later; that distinction keeps Scope separate from Known gaps, and
+              an item recorded as out of scope is not treated as a coverage gap. A
+              subject whose boundary is unremarkable may omit the section; when
+              present it draws the in/out line clearly rather than restating the
+              Overview or duplicating Known gaps.
           "the Needs body section states what matters and to whom":
             prompt: >
-              Where present, the Needs section states, in plain language, what matters
-              about the subject and to whom — the stakeholder expectations the
-              requirements answer to. Each need is a genuine expectation expressed
-              from the stakeholder's standpoint, not a paraphrase of a requirement or
-              a factor name, and together they give the requirements something
-              concrete to realize. The section has considered the subject's full range
+              Where present, the Needs section states, in plain language, the outcomes
+              stakeholders depend on the subject for — the progress each group is trying
+              to make — and to whom each matters. Each need is expressed from the
+              stakeholder's standpoint as a desired outcome, not as a feature, activity,
+              want, or request, and not as a paraphrase of a requirement or a factor
+              name; the test is consequence — for a genuine need you can name who
+              suffers, and how, if it goes unmet or is met poorly. Together the needs
+              give the requirements something concrete to realize. The section has
+              considered the subject's full range
               of stakeholders rather than defaulting to end users alone — including,
               where they apply to this subject, the developers who build, review, and
               maintain it and the AI assistants or coding agents that build, operate,
@@ -188,12 +234,14 @@ factors:
               their names or their requirements.
           "the Known gaps body section records deferred concerns with reasons":
             prompt: >
-              Where the model leaves quality concerns deliberately unaddressed, the
-              Known gaps section records each one with a brief reason, so scoped-out
-              concerns are explicit and intentional rather than silent omissions a
-              reader would mistake for oversights. A model that addresses every
-              concern it should may omit the section; when concerns are knowingly
-              deferred, they appear here.
+              Where the model defers quality concerns that lie *inside* its scope —
+              concerns it should answer but has not yet — the Known gaps section
+              records each one with a brief reason, so the omission is explicit and
+              intentional rather than a silent oversight. These are in-scope
+              deferrals, distinct from the by-design exclusions the Scope section
+              carries: a concern outside the model's remit belongs in Scope and is
+              not a known gap. A model that addresses every in-scope concern may omit
+              the section; when concerns are knowingly deferred, they appear here.
           "the Markdown body earns its length":
             prompt: >
               Across its sections, the Markdown body says what the model needs and
@@ -311,9 +359,20 @@ The model carries two **factors**, the product-quality attributes of a quality
 model treated as a working artifact: **Functionality** — does the model do its
 job — and **Usability** — can the people and agents who must work with it
 actually do so. A model can be functionally sound yet hard to use, so the two
-are kept apart. Each requirement lands on the shared **pass / partial / fail**
-scale, so a model with a minor, scoped gap is graded `partial` rather than
-forced onto a blunt pass-or-fail.
+are kept apart. Each requirement lands on the shared **outstanding / target /
+minimum / unacceptable** scale, so a model with a minor, scoped gap is graded
+`minimum` rather than forced onto a blunt pass-or-fail.
+
+## Scope
+
+The subject is the `QUALITY.md` artifact set out in the Overview. What this model
+deliberately leaves **out** is the quality of the subject that `QUALITY.md`
+*governs*: whether the underlying system is reliable, secure, or fast is the job
+of evaluating that model against its subject, not of this one. The tools that run
+an evaluation — the CLI and skills that execute and record assessments — are
+likewise out of scope: this model relies on them but does not judge them. An item
+placed out of scope here is excluded by design, not a coverage gap; in-scope
+concerns deferred for now live under **Known gaps**.
 
 ## Needs
 
@@ -327,12 +386,13 @@ forced onto a blunt pass-or-fail.
 This model governs whether a `QUALITY.md` can be trusted, so its own verdicts
 carry cost:
 
-- A **false pass** is the worst outcome — blessing a deficient quality model
+- A **false acceptance** is the worst outcome — blessing a deficient quality model
   lets that model go on to govern its subject, so every evaluation run through
   it inherits the blind spot and the project gains false confidence. This is
   what the model must guard against most.
-- A **false fail** — flagging a sound model as deficient — is less damaging but
-  erodes trust in the diagnostic and sends authors chasing non-defects.
+- A **false rejection** — flagging a sound model as deficient — is less
+  damaging but erodes trust in the diagnostic and sends authors chasing
+  non-defects.
 - A **verdict that does not localize the defect** leaves a developer or agent
   unable to act, turning a failing result into a dead end rather than a next
   step.
@@ -356,12 +416,17 @@ format.
 #### Fitness for purpose
 
 Does the model, taken as a whole, fulfill the purpose it declares? This is the
-functional core: the requirements must collectively realize the needs the model
-sets out (functional completeness), and its assessments and rating scale must
-yield the verdict a knowledgeable reviewer would reach (functional
-correctness), so that evaluating the model drives a real accept, reject, or
-improve decision about the subject rather than only confirming the file is
-well-formed.
+functional core, and it judges the *emergent whole* rather than the soundness of
+the parts: a model can have well-formed factors, requirements, and prose and
+still not hang together into something that drives a decision. The requirements
+must collectively realize the needs the model sets out — every declared need
+guarded by a requirement, and every requirement earning a need (functional
+completeness) — and its assessments and rating scale must yield the verdict a
+knowledgeable reviewer would reach (functional correctness), so that evaluating
+the model drives a real accept, reject, or improve decision about the subject
+rather than only confirming the file is well-formed. Whether each factor and
+requirement is *individually* sound is judged under **Model well-formedness**,
+not here.
 
 #### Model well-formedness
 
@@ -375,11 +440,13 @@ characteristics of the *set as a whole* — the latter catching gaps, overlaps,
 conflicts, and inconsistent terminology that no single-element check would
 surface. The specific characteristics each one rolls up are spelled out in the
 requirement prompts themselves. Because each requirement rolls many
-characteristics into one verdict, the graded scale carries the nuance: any
-unmet characteristic caps the verdict at `partial`, while a structural
-breakdown — a factor that is not a quality attribute, a requirement with no real
-assessment — is a `fail`. (Whether a factor's *body prose* explains it is judged
-under **Documentation**, not here.)
+characteristics into one verdict, each prompt grades on the shared scale and asks
+the evaluator to localize the shortfall — naming the specific factor or
+requirement and the characteristic it misses — so a `minimum` still says what to
+fix rather than only that something is wrong. A structural breakdown — a factor
+that is not a quality attribute, a requirement with no real assessment — is
+`unacceptable`. (Whether a factor's *body prose* explains it is judged under
+**Documentation**, not here.)
 
 #### Documentation
 
@@ -390,7 +457,11 @@ undermines the model's functionality even when the frontmatter is sound. One
 requirement per prescribed body section asks not whether the section is present
 — **Format completeness** checks that — but whether, when present, it does the
 job the spec assigns it; sections that apply only where the subject warrants
-them pass when appropriately absent. A final requirement runs across the body
+them — Scope, Risks, Known gaps — pass when appropriately absent. The **Scope**
+and **Known gaps** requirements between them hold the in/out boundary: a concern
+declared out of scope is judged as a by-design exclusion there, not a coverage
+gap, which is what keeps the completeness checks above from flagging it. A final
+requirement runs across the body
 rather than singling out a section, asking that it earn its length — supplying
 the subject-specific reasoning a reader lacks and no more, neither narrating the
 obvious nor padding to appear thorough. What each section must do is defined in

@@ -60,8 +60,9 @@ the spec as authoritative — this doc does not re-derive them as if normative.
   exemption is exactly this: an ancestor requirement excludes a subtree from its
   own `target`, so the exemption is visible on the requirement that owns it.
 - **Scales are shared by reference, not inherited.** A model that omits `ratings`
-  uses the built-in `pass`/`fail` scale, not the nearest ancestor's; a tree reads
-  commensurably only when its models point `ratings` at one shared scale file.
+  uses the built-in default four-level scale, not the nearest ancestor's; a tree
+  reads commensurably only when its models point `ratings` at one shared scale
+  file.
 
 The **effective model at a path** is the union of every ancestor requirement
 whose scope still covers that path and the node's own requirements. The two
@@ -258,9 +259,9 @@ scale. Sharing is **by reference, not inheritance**: a model's `ratings` may be 
 path to a shared scale file (see
 [`../SPECIFICATION.md#federation`](../SPECIFICATION.md#federation)), so a
 repository defines its scale once (e.g. `./.quality/ratings.yaml`) and every model
-points at it. Omitting `ratings` falls back to the built-in `pass`/`fail` scale —
-it does **not** inherit the nearest ancestor's scale; federation adds no implicit
-inheritance. `lint` warns when models in one federation use different scales (see
+points at it. Omitting `ratings` falls back to the built-in default four-level
+scale — it does **not** inherit the nearest ancestor's scale; federation adds no
+implicit inheritance. `lint` warns when models in one federation use different scales (see
 [`lint` over a federation](#lint-over-a-federation)).
 
 ## Open questions

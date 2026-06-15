@@ -7,7 +7,7 @@ CLI, the format spec, and the docs shipped to users.
 the quality requirements for a software system or component and scores them. Each
 file pairs **YAML frontmatter** (the structured quality model) with a **Markdown
 body** (its documentation). The CLI evaluates a `QUALITY.md` file
-(`qualitymd check`), printing a grouped pass/fail report and exiting non-zero on
+(`qualitymd check`), printing a grouped report and exiting non-zero on
 failure so it drops straight into CI.
 
 See [`README.md`](README.md) for the overview, [`CONTRIBUTING.md`](CONTRIBUTING.md)

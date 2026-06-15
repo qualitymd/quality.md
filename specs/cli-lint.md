@@ -84,6 +84,17 @@ default `severity`, and **What it checks** is `description`.
   `broken-ref` does), though no current QUALITY.md rule needs it. The related
   discretion every rule does exercise is *whether to emit at all*: `unknown-key`
   warns on a typo-shaped key but stays silent on a genuinely custom one.
+- **A rule may be fixable.** A rule whose remedy is mechanical and
+  behavior-preserving — reordering levels or sections that carry no semantic
+  weight — may carry an optional `fix` alongside `run`: also a *pure* function
+  (parsed model → corrected model), so the rule stays side-effect-free and only
+  the command layer writes. `lint --fix` applies these in place, and the finding
+  carries the patch so an agent can apply it straight from the JSON. Only
+  **canonical-order** rules qualify — `section-order` and `rating-level-order` —
+  because their fix cannot change any evaluation result. A rule that flags a
+  *semantic* violation (a duplicate, an unreachable level, an unknown level) is
+  never auto-fixed: choosing the remedy needs author intent, so it stays a
+  `nextActions` suggestion.
 - **The format grows through users.** Unrecognized keys and body sections are
   preserved silently; only typo-shaped ones warn. A rule never errors on
   extension it does not understand.
@@ -104,6 +115,9 @@ default `severity`, and **What it checks** is `description`.
 | `empty-collection` | warning | A `requirements` or `factors` map is present but empty. |
 | `ratings-shape` | warning | `ratings` is present but malformed: fewer than two levels defined (a scale needs at least two). |
 | `unknown-rating-level` | error | A per-requirement `ratings` override names a level not defined in the scale. The spec treats this as a configuration error: an override may only re-state conditions for levels the scale already declares. |
+| `duplicate-rating-level` | error | Two entries in the `ratings` sequence — inline or shared file — declare the same `level` name. As an ordered sequence the scale no longer gets duplicate-key rejection from YAML, so the linter enforces level-name uniqueness (mirrors `duplicate-section`). |
+| `unreachable-rating-level` | warning | A `ratings` level can never be selected because an earlier, better-ranked level's `bashCondition` subsumes it under first-match-wins (e.g. a looser numeric threshold sitting above a stricter one). Best-effort over recognizable numeric comparisons; silent when conditions are not statically comparable, and never fired on a condition-less intermediate band a `prompt` scale legitimately uses. |
+| `rating-level-order` | warning | A per-requirement `ratings` override lists its levels in a different order than the scale (the configured frontmatter scale, or the default `outstanding`/`target`/`minimum`/`unacceptable`, best to worst). The override is a by-name patch, so order is cosmetic — matching scale order keeps it scannable. **Fixable** (`lint --fix` reorders to scale order); mirrors `section-order`. |
 | `unknown-key` | warning | A key looks like a typo of a known schema key (`factor:` → `factors:`, `requirement:` → `requirements:`, `prompts:` → `prompt:`, `rating:` → `ratings:`). Genuinely custom extension keys stay silent — the format grows through users, like design.md. |
 | `model-summary` | info | Summary counts: factors, leaf requirements, and the split of assessment types (`prompt` vs `bash`). |
 
@@ -114,7 +128,7 @@ default `severity`, and **What it checks** is `description`.
 > do not exist, so inline prose is never mistaken for a broken reference.
 
 > **`ratings` inline vs path.** Likewise, a `ratings` value is treated as a
-> shared-scale file reference when it is a path string and as an inline scale map
+> shared-scale file reference when it is a path string and as an inline scale sequence
 > otherwise; `broken-ratings-ref` fires only for a path-shaped value that does not
 > resolve or parse as a scale.
 
@@ -130,7 +144,7 @@ check their *shape*. All of them mirror a `design.md lint` shape except
 | --- | --- | --- |
 | `missing-overview` | warning | The body has no **Overview** section (or leading prose). |
 | `missing-factors-section` | warning | The body has no **Factors** section. |
-| `section-order` | warning | Recognized `##` sections appear out of canonical order. |
+| `section-order` | warning | Recognized `##` sections appear out of canonical order. **Fixable** (`lint --fix` reorders to canonical order). |
 | `duplicate-section` | error | A `##` heading appears more than once. |
 | `factor-without-prose` | warning | A frontmatter factor has no matching `###` subsection under **Factors**. |
 
@@ -148,6 +162,7 @@ format grows through users.
 | Canonical | Aliases |
 | --- | --- |
 | Overview | Summary |
+| Scope | Boundary, In scope, Out of scope |
 | Needs | Quality needs |
 | Risks | Risk, Stakes, What's at stake |
 | Factors | The quality model, The model, Quality factors |
@@ -247,6 +262,12 @@ Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
 - `--json` — emit JSON output. JSON only in v1 (and the `lint` default), so the
   flag is a no-op for now; a human-readable text format is a possible later
   addition.
+- `--fix` — apply the auto-fixable findings (the canonical-order rules
+  `section-order` and `rating-level-order`) in place, then re-run the checks and
+  report what remains. Behavior-preserving by construction — it only reorders
+  levels or sections that carry no evaluation weight — so it never changes a
+  verdict and never touches a semantic finding. Without `--fix`, `lint` only
+  reports.
 
 Exit codes follow the shared three-code convention (see
 [`cli.md`](./cli.md#machine-readable-result-contract)):

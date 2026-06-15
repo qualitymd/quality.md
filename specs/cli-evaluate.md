@@ -199,14 +199,17 @@ and rating, and the rolled-up verdict (see [Report rollup](#report-rollup)). Rea
 
 ### `evaluation report [<id>] [--fail-on <level>] [--json]`
 
-Render the report from the recorded results and, when `--fail-on` is set, gate.
+Render the report from the recorded results and gate on the rolled-up verdict.
 
 - Renders `report.md` (the deterministic human-facing artifact — see
   [The report](#the-report)) and, under `--json`, the machine-readable rollup.
 - `--fail-on <level>` exits **non-zero** when the overall rolled-up rating lands
-  **at or below** `<level>` on the model's scale. **Off by default** — without it,
-  `report` is inspection and exits `0` regardless of rating. This is the **single
-  gate** in the lifecycle (see [Exit codes](#exit-codes)).
+  **at or below** `<level>` on the model's scale. It **defaults to `unacceptable`**
+  — so under the default scale `report` gates only on `unacceptable` (a rating
+  below the acceptable floor), treating anything at or above `minimum` as releasable
+  ("at or above Minimum is acceptable"). `--fail-on <level>` tightens the bar (e.g.
+  `--fail-on minimum`). This is the **single gate** in the lifecycle (see
+  [Exit codes](#exit-codes)).
 
 ### `evaluation archive [<id>] --as <name>`
 
@@ -333,9 +336,10 @@ Illustrative JSON:
   },
   "ratings": {
     "levels": [
-      { "level": "pass", "promptCondition": "All untrusted inputs are validated at the boundary and rejected with a clear error." },
-      { "level": "weak", "promptCondition": "Most inputs are validated, but at least one path reaches logic unchecked." },
-      { "level": "fail", "promptCondition": "Inputs are not systematically validated at the boundary." }
+      { "level": "outstanding", "promptCondition": "Exceeds the requirement; meets it with margin to spare" },
+      { "level": "target", "promptCondition": "Meets the requirement" },
+      { "level": "minimum", "promptCondition": "Falls short of the goal but stays at the acceptable floor" },
+      { "level": "unacceptable", "promptCondition": "Falls below the acceptable floor" }
     ],
     "order": "bestToWorst"
   },
@@ -368,7 +372,7 @@ Illustrative JSON (the recorded artifact; field order is stable):
 {
   "schemaVersion": 1,
   "requirement": "security.input-validation.rejects-malformed-input",
-  "rating": "weak",
+  "rating": "minimum",
   "evidence": {
     "summary": "Boundary validation covers JSON bodies but query params reach logic unchecked.",
     "items": [
@@ -377,7 +381,7 @@ Illustrative JSON (the recorded artifact; field order is stable):
       { "note": "no shared validation middleware across handlers" }
     ]
   },
-  "rationale": "Bodies are guarded but the unvalidated query-param path is a real gap, so this rates weak rather than pass."
+  "rationale": "Bodies are guarded but the unvalidated query-param path is a real gap, so this rates minimum rather than target."
 }
 ```
 
@@ -426,8 +430,12 @@ requirement it:
    **worst** level is the fallback (the scale denies by default). A requirement may
    carry a [per-requirement override](../SPECIFICATION.md#per-requirement-rating-overrides)
    supplying its own bands. So a verdict is **not** merely "exit zero" — a scale may
-   band a numeric value the command prints (`double(result.stdout.trim()) >= 90`);
-   only the default `pass`/`fail` scale reduces to "best on a zero exit."
+   band a numeric value the command prints (`double(result.stdout.trim()) >= 90`).
+   For a `bash` requirement under the **default scale**, only `target` carries a
+   `bashCondition`, so a bare command — one with no per-level overrides — lands on
+   **`target`** on a zero exit and **`unacceptable`** on any non-zero exit;
+   `outstanding` and `minimum` have no `bashCondition` and are never auto-awarded by
+   a bare check.
 3. **Records** the matched level as the result's rating, with the captured
    `result` fields and the matched condition as evidence.
 
@@ -437,7 +445,7 @@ This distinction is the crux of the bash path:
 
 | Outcome | State | Meaning |
 | --- | --- | --- |
-| Command ran; a level matched (even the worst). | `recorded` | A real classification. A `fail` here is the subject genuinely failing the condition — a valid verdict, exit `0`. |
+| Command ran; a level matched (even the worst). | `recorded` | A real classification. An `unacceptable` here is the subject genuinely failing the condition — a valid verdict, exit `0`. |
 | Command **could not run** (binary not found, non-zero from the runner itself, timeout). | `errored` | No trustworthy verdict — an environment problem. |
 | A `bashCondition` **could not evaluate** (`.json()` on non-JSON, `double()` on non-numeric, CEL type error). | `errored` | A **model configuration** error, surfaced as such — never silently scored. |
 
@@ -525,15 +533,16 @@ The lifecycle reuses the shared three-code convention verbatim in meaning (see
 
 | Code | Meaning | In this lifecycle |
 | --- | --- | --- |
-| `0` | Success — ran, and the gate (if any) passed. | Inspection (`show`, `list`), `result run`/`set`/`skip` (even when the recorded rating is poor), and `evaluation report` *without* `--fail-on`. |
-| `1` | **Gate verdict failure** — ran fine, the bar was not met. | `evaluation report --fail-on <level>` and the overall rating landed at or below `<level>`. The *only* `1` in this lifecycle. |
+| `0` | Success — ran, and the gate passed. | Inspection (`show`, `list`), `result run`/`set`/`skip` (even when the recorded rating is poor), and `evaluation report` whose rolled-up rating cleared the `--fail-on` bar (by default, anything at or above `minimum`). |
+| `1` | **Gate verdict failure** — ran fine, the bar was not met. | `evaluation report` and the overall rating landed at or below `--fail-on <level>` (by default `unacceptable`). The *only* `1` in this lifecycle. |
 | `2` | **Tool failure** — the command broke. | Bad flags, an unresolvable model/target, a `QUALITY.md` that does not parse (run `lint` first), `result run` on a `prompt` requirement, an `errored` measurement surfaced as a tool problem, internal error. |
 
 The load-bearing point: **a poorly-rated `result run` exits `0`.** Running a `bash`
 assessment that classifies to a low level is a *successful* measurement — it ran
-and recorded a verdict. The quality gate is `evaluation report --fail-on`,
-separately, so "the command broke" (`2`), "the quality is bad" (`1`, opt-in), and
-"recorded a low rating" (`0`) stay distinguishable.
+and recorded a verdict. The quality gate is `evaluation report` (which gates on
+the rolled-up rating, by default `unacceptable`), separately, so "the command
+broke" (`2`), "the quality is bad" (`1`, at `report`), and "recorded a low rating"
+(`0`, at `result run`) stay distinguishable.
 
 ## Open questions
 

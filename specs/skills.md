@@ -157,7 +157,8 @@ user; the handoff to `improve-quality-md`.
   when evidence is sufficient (saturation), write structured evidence back.
 - **Excludes:** authoring/fixing the model; judging the model's well-formedness.
 - **Outcome:** a complete, committed evaluation under `.quality/evaluations/<slug>/`
-  with per-requirement ratings + evidence, a rendered report, and a CI pass/fail.
+  with per-requirement ratings + evidence, a rendered report, and a CI gate verdict
+  (releasable at or above `minimum`; the gate trips on `unacceptable`).
 
 `TODO`: judging methodology (evidence standards, saturation, rigor levels).
 

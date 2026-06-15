@@ -1,15 +1,4 @@
 ---
-ratings:
-  met:
-    displayName: "Met"
-    promptCondition: "Fully satisfies the requirement; no material gaps."
-    bashCondition: "result.success"
-  partial:
-    displayName: "Partial"
-    promptCondition: "Satisfies the core of the requirement; minor or scoped gaps remain."
-  unmet:
-    displayName: "Unmet"
-    promptCondition: "Does not satisfy the requirement."
 factors:
   functionality:
     requirements:
@@ -173,11 +162,25 @@ can tell from the README what QUALITY.md is and reach a first result. The format
 spec carries the most weight: it is the contract every reader, author,
 implementation, and file depends on.
 
-Out of scope by design: the CLI's runtime product quality — reliability,
-performance, packaging, and test coverage — deferred while the implementation is
-still nascent (see **Known gaps**). Dependencies the project relies on but does
-not own (the Go toolchain, Cobra/Fang, the CEL evaluator, release tooling) are
-likewise out of scope.
+## Scope
+
+This model covers the three deliverables the project owns: the **format**
+([`SPECIFICATION.md`](./SPECIFICATION.md)), the **`qualitymd` CLI** (specified
+under [`specs/`](./specs/), implemented under `internal/` and `cmd/`), and the
+**skills** (specified under [`specs/`](./specs/)). Its weight is deliberately
+uneven — the format spec is the contract every reader, author, implementation,
+and file depends on, so it carries the most; the CLI and skill specs are held to
+functional completeness alone at this stage (see **Known gaps**).
+
+Out of scope by design — not deferred work that belongs here later:
+
+- **Dependencies the project relies on but does not own** — the Go toolchain,
+  Cobra/Fang, the CEL evaluator, and release tooling. Their quality is their
+  upstreams' concern, not this model's.
+
+The CLI's own runtime product quality — reliability, performance, packaging, test
+coverage — is *not* out of scope; it is in-scope work deferred while the
+implementation is nascent, recorded under **Known gaps**.
 
 ## Needs
 
@@ -192,6 +195,10 @@ likewise out of scope.
 - **Maintainers and contributors** can evolve the format, the CLI, and the skills
   without silently breaking existing files, because the core and its extension
   and versioning rules are written down.
+- **Newcomers** can decide whether QUALITY.md is for them from the README alone —
+  grasping what it is and who it's for, seeing the format work on a concrete
+  example, reaching a first result of their own, and trusting that what they were
+  shown is real.
 
 ## Risks
 
@@ -207,7 +214,10 @@ The format is the project's foundation, so its defects are the costliest:
   documentation does not, eroding trust in the tool.
 
 Prose and structure defects in the spec (a confusing order, a missing example)
-are real but recoverable, and rank below these.
+are real but recoverable, and rank below these. So too a **README that fails to
+land, or overstates what exists** — it turns newcomers away before the internals
+are ever seen, and erodes trust when its claims outrun the tool, but the cost is
+recoverable, not foundational.
 
 ## Factors
 
@@ -295,14 +305,15 @@ would suggest. It is the attribute a visitor meets first.
 ## Known gaps
 
 - **The CLI's runtime quality is not modeled** — reliability, performance,
-  packaging, and test coverage are out of scope while the implementation is
+  packaging, and test coverage are deferred while the implementation is
   nascent. The one command built today, `check`, is an off-spec placeholder that
   predates the current spec and implements none of its surface (`init`, `lint`,
   and the `model` / `evaluation` / `result` resources); the spec has since
   settled `check` away entirely, gating on `lint` and `evaluation report
   --fail-on` instead. So *the CLI implementation conforms to its specification*
-  is expected to rate Unmet until that surface lands — a not-yet-built gap, not
-  spec drift the model failed to catch. These come into scope as the CLI matures.
+  is expected to rate Unacceptable until that surface lands — a not-yet-built
+  gap, not spec drift the model failed to catch. These come into scope as the CLI
+  matures.
 - **The skills are specified but not yet built, so only their spec is modeled.**
   *The skill specification is complete* holds `specs/skills.md` to functional
   completeness, but no requirement yet judges a skill *implementation* against it
@@ -318,8 +329,9 @@ would suggest. It is the attribute a visitor meets first.
   that weight.
 - **No structural self-lint requirement yet.** Once `qualitymd lint` ships, add a
   `bash: qualitymd lint` requirement under *Functionality* so this file is held
-  to the structural floor it describes; the scale's `met` level already carries
-  `bashCondition: result.success` for it — mirroring the built-in meta-model.
+  to the structural floor it describes; the default scale's `target` level already
+  carries `bashCondition: result.success` for it — mirroring the built-in
+  meta-model.
 - **Implementation conformance is judged against the umbrella `specs/cli.md`**,
   which references the per-document specs (`cli-init.md`, `cli-lint.md`,
   `cli-evaluate.md`, `cli-federation.md`, and `skills.md`)

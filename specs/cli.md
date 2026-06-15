@@ -146,10 +146,10 @@ The canonical skill loop and the bash-only, skill-free CI path:
 qualitymd evaluation create
 qualitymd result list --status pending,stale --json     # skill orders + composes prompts
 #   per result: qualitymd result show <req> --json → judge → qualitymd result set <req> …
-qualitymd evaluation report --fail-on fail
+qualitymd evaluation report --fail-on unacceptable
 
 # Bash-only, no skill, no model calls
-qualitymd evaluation create && qualitymd result run --all && qualitymd evaluation report --fail-on fail
+qualitymd evaluation create && qualitymd result run --all && qualitymd evaluation report --fail-on unacceptable
 ```
 
 ## Conventions
@@ -224,7 +224,7 @@ beside that file — the layout below.
 ```yaml
 # ./.quality/config.yaml  (illustrative)
 defaults:
-  failOn: fail
+  failOn: unacceptable
 ```
 
 **In a federation** this layout repeats per model — each `QUALITY.md` keeps its
