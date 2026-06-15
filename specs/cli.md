@@ -24,8 +24,8 @@ This is the umbrella document. Per-command and per-layer detail lives in:
   `model` / `evaluation` / `result` resources, and the CLI ↔ skill interface.
 - [`cli-evaluate.md`](./cli-evaluate.md) — the deterministic **evaluation
   lifecycle** (the `evaluation` and `result` resources): data model, on-disk
-  layout, the `bash` execution path, the report rollup, and the **authoritative
-  CLI ↔ skill interface payloads**.
+  layout, the report rollup, and the **authoritative CLI ↔ skill interface
+  payloads**.
 - [`cli-federation.md`](./cli-federation.md) — how multiple `QUALITY.md` models in
   one repository compose: discovery, ownership and scope, one run per model, the
   per-model-gated tree report. Cross-cutting rather than per-command.
@@ -35,21 +35,16 @@ This is the umbrella document. Per-command and per-layer detail lives in:
 `qualitymd` draws one hard line:
 
 - **The CLI is deterministic and never calls a model.** It parses and inspects
-  the model, resolves targets, runs `bash` assessments, classifies results,
-  persists evaluations, rolls up factors, and renders reports.
+  the model, resolves targets, persists evaluations, records verdicts, rolls up
+  factors, and renders reports.
 - **Skills carry judgment and orchestration** (see [`skills.md`](./skills.md)).
-  A skill drives the evaluation loop, judges `prompt` assessments, gathers
-  evidence, and writes verdicts back through the CLI.
+  A skill drives the evaluation loop, judges every requirement's `prompt`,
+  gathers evidence, and writes verdicts back through the CLI.
 
-The line falls exactly on the format's two assessment kinds:
-
-| Assessment | Kind | Who runs it | Recorded via |
-| --- | --- | --- | --- |
-| `bash` | computational | **CLI** executes and classifies it | `result run` |
-| `prompt` | inferential | **Skill** judges it | `result set` |
-
-A consequence worth stating: a model made **entirely of `bash` requirements is
-evaluable with no skill and no model calls at all** — pure, reproducible CI.
+The line is the **mechanics / judgment** boundary. Every assessment in the format
+is an inferential `prompt`, so all judgment lives in the skill; the CLI does the
+deterministic work around it — resolving what is to be judged, then recording,
+rolling up, and reporting the verdicts the skill produces.
 
 ## Command surface
 
@@ -68,7 +63,7 @@ nouns are **singular**; the verb carries the cardinality.
 
 | Command | Purpose | Output |
 | --- | --- | --- |
-| `model show [--requirement <path>] [--json]` | The parsed model: factor tree, requirements by full path, **resolved** targets (globs expanded), loaded `prompt`/`bash` text, the rating scale. `--requirement` narrows to one fully-resolved requirement. | JSON |
+| `model show [--requirement <path>] [--json]` | The parsed model: factor tree, requirements by full path, **resolved** targets (globs expanded), loaded `prompt` text, the rating scale. `--requirement` narrows to one fully-resolved requirement. | JSON |
 
 ### `qualitymd evaluation` — the run (alias `eval`)
 
@@ -87,8 +82,7 @@ nouns are **singular**; the verb carries the cardinality.
 | --- | --- | --- |
 | `result list [--status pending,stale,…] [--json]` | Query results by state. There is **no `next` cursor** — the skill orders the work. | — |
 | `result show <req> [--json]` | The resolved data for one requirement (prompt text, target manifest, scale). The skill composes the prompt; the CLI emits none. | — |
-| `result run <req\|--all>` | Execute `bash` assessment(s), classify, record. `bash` only. | pending → **recorded** / **errored** |
-| `result set <req> --rating <level> --evidence …` | Record a `prompt` verdict (the skill's judgment). The diffable artifact. | pending → **recorded** |
+| `result set <req> --rating <level> --evidence …` | Record a verdict (the skill's judgment). The diffable artifact. | pending → **recorded** |
 | `result skip <req> --reason …` | Deliberately not assessed. | pending → **skipped** |
 | `result reset <req>` | Return to pending, to re-judge. | → **pending** |
 
@@ -103,9 +97,8 @@ The deterministic surface answers two different questions:
   Modeled on Google's `design.md lint` (see [`cli-lint.md`](./cli-lint.md)).
 - **Management — `model` / `evaluation` / `result`.** *What is the recorded state
   of evaluating this subject?* Deterministic inspection of the model and CRUD over
-  the evaluation lifecycle, including running `bash` assessments. The *judgment*
-  over `prompt` requirements is not here — it is the skill layer
-  ([`skills.md`](./skills.md)).
+  the evaluation lifecycle. The *judgment* over the requirements is not here — it
+  is the skill layer ([`skills.md`](./skills.md)).
 
 The tiers are complementary. `lint` proves the *file* is correct without an
 opinion on whether the requirements are any good; the `improve-quality-md`
@@ -136,20 +129,17 @@ per-target run**. Full detail lives in
 - **Manual archive** — `evaluation archive --as <name>` snapshots to
   `.quality/evaluations/archive/<name>/`.
 - Run states: `open → complete` (derived) `→ archived`. Result states:
-  `pending / recorded / skipped / errored / stale`. On re-run, only `stale`
-  results return to `pending`.
+  `pending / recorded / skipped / stale`. On re-run, only `stale` results return
+  to `pending`.
 
-The canonical skill loop and the bash-only, skill-free CI path:
+The canonical skill loop:
 
 ```sh
-# Skill loop (judgment over prompt requirements)
+# Skill loop (judgment over the requirements)
 qualitymd evaluation create
 qualitymd result list --status pending,stale --json     # skill orders + composes prompts
 #   per result: qualitymd result show <req> --json → judge → qualitymd result set <req> …
 qualitymd evaluation report --fail-on unacceptable
-
-# Bash-only, no skill, no model calls
-qualitymd evaluation create && qualitymd result run --all && qualitymd evaluation report --fail-on unacceptable
 ```
 
 ## Conventions
@@ -193,10 +183,10 @@ broke." One shared three-code convention:
 | `1` | **Gate verdict failure** — the command ran fine, but the bar was not met: `lint` found an `error`, or `evaluation report --fail-on` tripped. "The quality is bad." |
 | `2` | **Tool failure** — bad flags, unreadable/absent file, internal error. "The command broke." |
 
-`result run` rating a requirement poorly is **not** a gate trip — it ran fine and
-records a low rating, exiting `0`. The gate is `evaluation report --fail-on`,
-separately. Detail docs restate the codes a command emits but never reassign
-these meanings.
+Recording a low rating via `result set` is **not** a gate trip — the command ran
+fine and records the verdict, exiting `0`. The gate is `evaluation report
+--fail-on`, separately. Detail docs restate the codes a command emits but never
+reassign these meanings.
 
 ### Advisory output (optional)
 

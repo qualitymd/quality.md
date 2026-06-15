@@ -144,14 +144,14 @@ of them:
   [`cli-evaluate.md`](./cli-evaluate.md#on-disk-layout)). A node's run lives beside
   the node it evaluates, so a component's evaluation travels with the component.
 - The full lifecycle is per model and unchanged: `evaluation create` enumerates
-  the model's owned requirements, `result run` / `result set` record verdicts,
-  staleness and `--from` carry-forward work per run, and git history is each run's
-  timeline (see [`cli-evaluate.md`](./cli-evaluate.md#run-states)).
+  the model's owned requirements, `result set` records verdicts, staleness and
+  `--from` carry-forward work per run, and git history is each run's timeline (see
+  [`cli-evaluate.md`](./cli-evaluate.md#run-states)).
 - **Skills orchestrate per model.** A skill (`evaluate-quality`,
   `improve-quality-md`) runs the canonical loop
   ([`skills.md`](./skills.md#orchestration-contract)) **once per discovered
   model** — `evaluation create` → `result list --status pending,stale` →
-  judge/`set` or `run` → `evaluation report`. Across a federation the skill walks
+  judge/`set` → `evaluation report`. Across a federation the skill walks
   the model set (typically root-down so spanning context is loaded before node
   detail), driving one loop per node. There is no special federation loop; there
   is the per-model loop, repeated, plus the aggregating report.
@@ -159,11 +159,6 @@ of them:
   subtree loads the **nearest** model and its run; it pulls in an ancestor only
   for the spanning context the report attributes upward. Context cost stays
   proportional to the work, never the size of the whole tree.
-
-The bash-only, skill-free CI path composes the same way — `evaluation create &&
-result run --all && evaluation report` per model — so a federation of
-`bash`-only models is evaluable with no skill and no model calls at all (see
-[`cli.md`](./cli.md#the-split-deterministic-cli-judgment-in-skills)).
 
 ## The per-model-gated tree report
 

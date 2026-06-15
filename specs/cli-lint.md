@@ -106,8 +106,8 @@ default `severity`, and **What it checks** is `description`.
 | `parse-error` | error | Frontmatter missing, unterminated, or not valid YAML (no opening/closing `---`, malformed YAML). Aborts the run — no later rules can run. |
 | `missing-factors` | error | The required top-level `factors` key is absent or empty. |
 | `factor-shape` | error | A factor declares **neither** `requirements` nor `factors` — the spec requires at least one. |
-| `assessment-count` | error | A requirement does not declare exactly one assessment: zero, or both `prompt` and `bash`. |
-| `assessment-shape` | error | A `prompt` or `bash` value is not a single scalar string — e.g. a YAML list/sequence or a map. A requirement carries one prompt or one command, never a list of them. |
+| `assessment-count` | error | A requirement does not declare its `prompt` assessment — the requirement is empty or carries only non-assessment keys (e.g. just a `target`). |
+| `assessment-shape` | error | A `prompt` value is not a single scalar string — e.g. a YAML list/sequence or a map. A requirement carries one prompt, never a list of them. |
 | `broken-prompt-ref` | error | A `prompt` given as a path (rather than inline text) points to a file that does not exist. |
 | `broken-ratings-ref` | error | A `ratings` value given as a path (a shared scale file) points to a file that does not exist or does not parse as a rating scale. |
 | `broken-target` | warning | A `target` path or glob resolves to no files on disk. Warning, not error — a glob may legitimately match nothing yet. |
@@ -116,10 +116,9 @@ default `severity`, and **What it checks** is `description`.
 | `ratings-shape` | warning | `ratings` is present but malformed: fewer than two levels defined (a scale needs at least two). |
 | `unknown-rating-level` | error | A per-requirement `ratings` override names a level not defined in the scale. The spec treats this as a configuration error: an override may only re-state conditions for levels the scale already declares. |
 | `duplicate-rating-level` | error | Two entries in the `ratings` sequence — inline or shared file — declare the same `level` name. As an ordered sequence the scale no longer gets duplicate-key rejection from YAML, so the linter enforces level-name uniqueness (mirrors `duplicate-section`). |
-| `unreachable-rating-level` | warning | A `ratings` level can never be selected because an earlier, better-ranked level's `bashCondition` subsumes it under first-match-wins (e.g. a looser numeric threshold sitting above a stricter one). Best-effort over recognizable numeric comparisons; silent when conditions are not statically comparable, and never fired on a condition-less intermediate band a `prompt` scale legitimately uses. |
 | `rating-level-order` | warning | A per-requirement `ratings` override lists its levels in a different order than the scale (the configured frontmatter scale, or the default `outstanding`/`target`/`minimum`/`unacceptable`, best to worst). The override is a by-name patch, so order is cosmetic — matching scale order keeps it scannable. **Fixable** (`lint --fix` reorders to scale order); mirrors `section-order`. |
 | `unknown-key` | warning | A key looks like a typo of a known schema key (`factor:` → `factors:`, `requirement:` → `requirements:`, `prompts:` → `prompt:`, `rating:` → `ratings:`). Genuinely custom extension keys stay silent — the format grows through users, like design.md. |
-| `model-summary` | info | Summary counts: factors, leaf requirements, and the split of assessment types (`prompt` vs `bash`). |
+| `model-summary` | info | Summary counts: factors and leaf requirements. |
 
 > **`prompt` vs path.** A `prompt` value is treated as a file reference when it
 > resolves to an existing path and as inline criteria text otherwise — matching
@@ -212,7 +211,7 @@ is self-describing rather than tribal knowledge).
       "severity": "error",
       "rule": "assessment-count",
       "path": "factors.security.requirements.\"no secrets committed to the repository\"",
-      "message": "Requirement declares both `prompt` and `bash`; exactly one assessment is required."
+      "message": "Requirement declares no `prompt`; a requirement must declare its `prompt` assessment."
     },
     {
       "severity": "warning",
@@ -223,14 +222,14 @@ is self-describing rather than tribal knowledge).
     {
       "severity": "info",
       "rule": "model-summary",
-      "message": "3 factors, 6 requirements (4 prompt, 2 bash)."
+      "message": "3 factors, 6 requirements."
     }
   ],
   "summary": { "errors": 1, "warnings": 1, "info": 1 },
   "nextActions": [
     {
       "command": "qualitymd lint",
-      "reason": "Fix `factors.security.requirements.\"no secrets committed to the repository\"`: declare exactly one of `prompt`/`bash`, then re-run.",
+      "reason": "Fix `factors.security.requirements.\"no secrets committed to the repository\"`: declare a `prompt`, then re-run.",
       "priority": "required"
     }
   ]
@@ -294,9 +293,6 @@ lower-confidence issues without blocking — and an agent can still tell a bad f
 - **Text output format.** JSON is the v1 contract for agents; whether to add a
   pretty/grouped text renderer (like `qualitymd check`'s original report) for
   human terminal use is open.
-- **`bash` command sanity.** Should `lint` do any static check on `bash`
-  assessment strings (e.g. non-empty), or leave all command validity to
-  `evaluate`? Currently out of scope — `lint` validates structure, not commands.
 - **Subfactor heading depth.** `factor-without-prose` assumes factors map to `###`
   subsections. How deep nested subfactors are expected to go in prose (`####` and
   beyond) before the coverage check stops insisting is unsettled.

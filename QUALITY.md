@@ -148,10 +148,10 @@ factors:
 This model governs the quality of the **QUALITY.md project itself**: the
 **format** — the plain-text quality-model format defined by
 [`SPECIFICATION.md`](./SPECIFICATION.md) — the deterministic **`qualitymd` CLI**
-that scaffolds, validates, and runs the `bash` machinery of evaluation, and the
-**skills** that carry the judgment the CLI deliberately does not. The CLI and
-skills are specified under [`specs/`](./specs/); the CLI is implemented under
-`internal/` and `cmd/`.
+that scaffolds and validates a model and records, rolls up, and reports
+evaluation results, and the **skills** that carry the judgment the CLI
+deliberately does not. The CLI and skills are specified under
+[`specs/`](./specs/); the CLI is implemented under `internal/` and `cmd/`.
 
 At this pre-1.0 stage the project's quality rests on its **design**, so the model
 is scoped to the maturity of its specifications, the CLI's conformance to its
@@ -175,8 +175,8 @@ functional completeness alone at this stage (see **Known gaps**).
 Out of scope by design — not deferred work that belongs here later:
 
 - **Dependencies the project relies on but does not own** — the Go toolchain,
-  Cobra/Fang, the CEL evaluator, and release tooling. Their quality is their
-  upstreams' concern, not this model's.
+  Cobra/Fang, and release tooling. Their quality is their upstreams' concern, not
+  this model's.
 
 The CLI's own runtime product quality — reliability, performance, packaging, test
 coverage — is *not* out of scope; it is in-scope work deferred while the
@@ -328,10 +328,9 @@ would suggest. It is the attribute a visitor meets first.
   oversight; the other specs come under those attributes as they earn more of
   that weight.
 - **No structural self-lint requirement yet.** Once `qualitymd lint` ships, add a
-  `bash: qualitymd lint` requirement under *Functionality* so this file is held
-  to the structural floor it describes; the default scale's `target` level already
-  carries `bashCondition: result.success` for it — mirroring the built-in
-  meta-model.
+  requirement under *Functionality* whose `prompt` asks that `qualitymd lint`
+  report no errors, so this file is held to the structural floor it describes —
+  mirroring the built-in meta-model.
 - **Implementation conformance is judged against the umbrella `specs/cli.md`**,
   which references the per-document specs (`cli-init.md`, `cli-lint.md`,
   `cli-evaluate.md`, `cli-federation.md`, and `skills.md`)

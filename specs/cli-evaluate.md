@@ -4,8 +4,8 @@
 > replaces the superseded "CLI compiles a prompt and runs a coding agent" model
 > (the inversion — see [`cli.md`](./cli.md) and [`skills.md`](./skills.md)). It is
 > the detail doc for the `evaluation` (alias `eval`) and `result` resources: their
-> data model, on-disk layout, per-command behavior, the `bash` execution path, and
-> the report rollup. Field names and the staleness hash are illustrative and
+> data model, on-disk layout, per-command behavior, and the report rollup. Field
+> names and the staleness hash are illustrative and
 > expected to firm up in implementation; genuinely open items are marked `TODO` or
 > collected under [Open questions](#open-questions).
 
@@ -24,17 +24,16 @@ resources).
 
 `qualitymd` draws one hard line (see [`cli.md`](./cli.md#the-split-deterministic-cli-judgment-in-skills)):
 **the CLI is deterministic and never calls a model.** Everything in this doc is
-that deterministic surface — it parses the model, resolves targets, runs `bash`
-assessments and classifies them, persists the run, rolls up factors, and renders
-the report. The **judgment** — composing prompts, judging `prompt`
-assessments, deciding when evidence is sufficient — belongs to the skill layer
-([`skills.md`](./skills.md)) and is cross-linked, never duplicated, here.
+that deterministic surface — it parses the model, resolves targets, persists the
+run, records verdicts, rolls up factors, and renders the report. The
+**judgment** — composing prompts, judging the requirements, deciding when
+evidence is sufficient — belongs to the skill layer ([`skills.md`](./skills.md))
+and is cross-linked, never duplicated, here.
 
-The line falls on the format's two assessment kinds. A `bash` requirement is
-*computational*: the CLI runs it and classifies the result (`result run`). A
-`prompt` requirement is *inferential*: a skill judges it and records the verdict
-(`result set`). A model made **entirely of `bash` requirements is evaluable with
-no skill and no model calls** — pure, reproducible CI.
+The line is the mechanics / judgment boundary. Every assessment is an inferential
+`prompt`: a skill judges it and records the verdict (`result set`), while the CLI
+does the deterministic work around that — resolving the requirement, persisting
+the verdict, and rolling it up.
 
 ## Data model
 
@@ -59,11 +58,9 @@ A run carries:
 A result is the record for **one requirement within a run**. It carries:
 
 - the requirement's full **path** (factor → … → requirement);
-- its **assessment kind** (`bash` / `prompt`), carried from the model;
 - a **state** (see [Result states](#result-states));
-- once assessed, a **rating** (a level from the model's `ratings` scale) and
-  **evidence** — for `bash`, the captured `result` fields and which `bashCondition`
-  matched; for `prompt`, the skill's structured evidence;
+- once assessed, a **rating** (a level from the model's `ratings` scale) and the
+  skill's structured **evidence**;
 - **provenance** for staleness: the hash inputs captured when the rating was
   recorded (see [Staleness](#staleness)).
 
@@ -77,7 +74,7 @@ A run's status is **derived**, never authored:
 | Status | Meaning | How reached |
 | --- | --- | --- |
 | `open` | At least one result is still `pending`. | `evaluation create`; any result returned to `pending`. |
-| `complete` | Nothing is `pending` — every result is `recorded`, `skipped`, or `errored`. | derived once the last `pending` clears. |
+| `complete` | Nothing is `pending` — every result is `recorded` or `skipped`. | derived once the last `pending` clears. |
 | `archived` | A frozen snapshot. | `evaluation archive --as <name>`. |
 
 `complete` is a watermark, not a seal — a complete run stays fully mutable, and a
@@ -89,31 +86,29 @@ is no `finalize`.
 | State | Meaning | Entered from | Via |
 | --- | --- | --- | --- |
 | `pending` | Enumerated, not yet assessed. | (initial); `stale`; `result reset` | `evaluation create`, `result reset` |
-| `recorded` | Assessed, carries a rating + evidence. | `pending` | `result run` (bash), `result set` (prompt) |
+| `recorded` | Assessed, carries a rating + evidence. | `pending` | `result set` |
 | `skipped` | Deliberately not assessed, carries a reason. | `pending` | `result skip` |
-| `errored` | A `bash` command **could not run** (or its `bashCondition` failed to evaluate). Not a low rating. | `pending` | `result run` |
 | `stale` | Was `recorded`, but the model subtree or target it was judged against has changed. | `recorded` | detected on `evaluation create` / re-run |
 
 Two transition rules carry weight:
 
-- **On re-run, only `stale` results return to `pending`.** `recorded`, `skipped`,
-  and `errored` results are left intact unless their hash inputs changed — that is
+- **On re-run, only `stale` results return to `pending`.** `recorded` and
+  `skipped` results are left intact unless their hash inputs changed — that is
   what keeps re-running cheap and the diff small. A fresh `evaluation create`
   re-hashes every result; any whose inputs moved become `stale → pending`.
-- **`errored` is not a rating.** It means the command itself failed — non-existent
-  binary, a `bashCondition` that does not evaluate (e.g. `.json()` on non-JSON
-  output, a CEL type error). It is a *model/environment* problem, distinct from a
-  command that **ran and matched a low level** (that is a legitimate `recorded`
-  result with a poor rating). See [The bash path](#the-bash-path-execution--classification).
+- **A low rating is still a `recorded` result.** A requirement the skill judges to
+  land at the worst level is a legitimate verdict — `recorded` with a poor rating —
+  not a separate failure state. The gate is `evaluation report --fail-on`, applied
+  separately to the rollup.
 
 ```text
-                         result run (ran, classified)
+                          result set (judged, recorded)
             ┌──────────────────────────────────────────────┐
             ▼                                               │
         recorded ──── result reset ───► pending ◄───────────┤
             │                              ▲                │
-   inputs changed                          │ result run / set
-       (re-hash)                           │ (skipped/errored too)
+   inputs changed                          │ result set
+       (re-hash)                           │ (skipped too)
             ▼                              │
           stale ──── on re-run ────────────┘
 ```
@@ -230,7 +225,7 @@ the current living run.
 ### `result list [--status pending,stale,…] [--json]`
 
 Query results by state. `--status` takes a comma-separated set
-(`pending,stale,recorded,skipped,errored`). There is **no `next` cursor** — the
+(`pending,stale,recorded,skipped`). There is **no `next` cursor** — the
 CLI never orders the work or composes a prompt; the skill does
 (see [`skills.md`](./skills.md#orchestration-contract)). No transition.
 
@@ -244,24 +239,12 @@ This payload is the **authoritative CLI ↔ skill contract**; the schema below i
 implementation (see [Interface payloads](#the-interface-payloads-cli--skill-contract)).
 `cli.md` and `skills.md` cross-reference this section rather than re-specifying it.
 
-### `result run <req | --all>`
-
-Execute and classify `bash` assessment(s). **`bash` only** — pointing it at a
-`prompt` requirement is a usage error (exit `2`). For each target requirement, the
-CLI runs the command and classifies the captured `result` against the scale's
-`bashCondition`s (see [The bash path](#the-bash-path-execution--classification)).
-
-Transition: `pending → recorded` (command ran, a level matched) **or**
-`pending → errored` (command could not run, or a `bashCondition` failed to
-evaluate). A poor-but-legitimate rating is `recorded`, **not** a gate trip — it
-exits `0` (the gate is `evaluation report --fail-on`).
-
 ### `result set <req> --rating <level> --evidence …`
 
-Record a **`prompt` verdict** — the skill's judgment. Writes the rating level (a
-declared scale level) and structured evidence to the result file. This is the
-**diffable artifact** whose schema *is* the PR-review experience; the input
-schema is defined authoritatively below
+Record a **verdict** — the skill's judgment. Writes the rating level (a declared
+scale level) and structured evidence to the result file. This is the **diffable
+artifact** whose schema *is* the PR-review experience; the input schema is defined
+authoritatively below
 ([Interface payloads](#the-interface-payloads-cli--skill-contract)).
 Transition: `pending → recorded`.
 
@@ -296,19 +279,14 @@ CLI so the skill performs no model parsing or glob expansion of its own:
 
 - **`requirementPath`** — the full dotted requirement path, and **`factorPath`** —
   the factor → … chain it sits under (for grouping and rollup context).
-- **`assessmentKind`** — `prompt` or `bash`. (`result show` resolves both; a skill
-  judges only `prompt`, and routes `bash` to `result run`.)
-- **`assessment`** — the resolved assessment text: the loaded **`prompt`** text
-  for a `prompt` requirement, *or* the **`bash`** command for a `bash` requirement
-  (whichever the kind selects).
+- **`assessment`** — the resolved **`prompt`** text the skill judges against.
 - **`target`** — the **resolved target manifest**: the list of files the target
   glob expands to, each with its model-relative `path`. File **contents are
   optional / by reference** — included only when the CLI is asked to inline them;
   otherwise the skill reads the listed paths itself (keeps the payload small and
   the skill in control of what it loads).
 - **`ratings`** — the in-scope rating **scale**: its levels ordered **best → worst**,
-  each with the `promptCondition` (for `prompt`) or `bashCondition` (for `bash`)
-  that defines it.
+  each with the `promptCondition` that defines it.
 - **`ratingOverrides`** — any
   [per-requirement rating overrides](../SPECIFICATION.md#per-requirement-rating-overrides)
   that replace the default scale's bands for this requirement (absent when none).
@@ -325,7 +303,6 @@ Illustrative JSON:
   "schemaVersion": 1,
   "requirementPath": "security.input-validation.rejects-malformed-input",
   "factorPath": ["security", "input-validation"],
-  "assessmentKind": "prompt",
   "assessment": "Assess whether the request handler rejects malformed input before it reaches business logic, with a clear error and no partial side effects.",
   "target": {
     "glob": "./src/handlers/**/*.ts",
@@ -351,7 +328,7 @@ Illustrative JSON:
 
 ### `result set` input
 
-The verdict a skill records for a `prompt` requirement — **this is the diffable
+The verdict a skill records for a requirement — **this is the diffable
 artifact**, so its on-disk serialization has a **stable field order** and carries
 **no volatile metadata inline** (timestamps, durations, and host live in `.run/`;
 see [Segregating volatile metadata](#segregating-volatile-metadata-for-clean-diffs)).
@@ -397,10 +374,10 @@ goes `stale` if **either** changes:
 
 1. **The requirement's resolved definition** — its name / full path, the
    **resolved target glob set** (the patterns, so a manifest-changing glob edit
-   counts), the **assessment text** (`prompt` or `bash`), and the **applicable
-   rating conditions** (the in-scope scale levels plus any per-requirement
-   overrides). If the *requirement itself* moves, the prior verdict no longer
-   describes the same question.
+   counts), the **assessment text** (the `prompt`), and the **applicable rating
+   conditions** (the in-scope scale levels plus any per-requirement overrides). If
+   the *requirement itself* moves, the prior verdict no longer describes the same
+   question.
 2. **The resolved target contents** — a hash over the **expanded file set** the
    target glob resolves to (the manifest from [`result show`](#result-show-output)
    and the bytes of those files). If the code under the requirement changes, the
@@ -415,44 +392,8 @@ result is left untouched — this is what keeps re-running cheap (see
 byte-level normalization of input (1) (key ordering, whitespace), and whether the
 target contribution (2) hashes raw file *contents* (precise, but a whitespace edit
 re-opens everything) or a coarser signal (manifest + revision/mtime). It is also
-open whether a `prompt` result should hash anything the skill saw beyond the
-resolved target. Tracked under [Open questions](#open-questions).
-
-`result run` is the whole deterministic computational tier. For a `bash`
-requirement it:
-
-1. **Runs the command** in the model's directory (paths are model-relative — see
-   [`cli.md`](./cli.md#conventions)), capturing the `result` fields the format
-   defines: `result.success` (zero exit), `result.exit`, `result.stdout`,
-   `result.stderr` (see `../SPECIFICATION.md#computational-rating`).
-2. **Classifies** the `result` against the scale's `bashCondition`s — CEL booleans
-   evaluated best-to-worst; the **first** matching level wins; if none match, the
-   **worst** level is the fallback (the scale denies by default). A requirement may
-   carry a [per-requirement override](../SPECIFICATION.md#per-requirement-rating-overrides)
-   supplying its own bands. So a verdict is **not** merely "exit zero" — a scale may
-   band a numeric value the command prints (`double(result.stdout.trim()) >= 90`).
-   For a `bash` requirement under the **default scale**, only `target` carries a
-   `bashCondition`, so a bare command — one with no per-level overrides — lands on
-   **`target`** on a zero exit and **`unacceptable`** on any non-zero exit;
-   `outstanding` and `minimum` have no `bashCondition` and are never auto-awarded by
-   a bare check.
-3. **Records** the matched level as the result's rating, with the captured
-   `result` fields and the matched condition as evidence.
-
-### `errored` vs. a legitimate low rating
-
-This distinction is the crux of the bash path:
-
-| Outcome | State | Meaning |
-| --- | --- | --- |
-| Command ran; a level matched (even the worst). | `recorded` | A real classification. An `unacceptable` here is the subject genuinely failing the condition — a valid verdict, exit `0`. |
-| Command **could not run** (binary not found, non-zero from the runner itself, timeout). | `errored` | No trustworthy verdict — an environment problem. |
-| A `bashCondition` **could not evaluate** (`.json()` on non-JSON, `double()` on non-numeric, CEL type error). | `errored` | A **model configuration** error, surfaced as such — never silently scored. |
-
-The first row is the common, intended case: `bash` assessments are *supposed* to
-produce ratings, including bad ones. `errored` is reserved for "the measurement
-itself broke." A `result run` that produces a low rating still exits `0`; the gate
-is separate.
+open whether a result should hash anything the skill saw beyond the resolved
+target. Tracked under [Open questions](#open-questions).
 
 ## Staleness
 
@@ -487,9 +428,9 @@ is the rollup of its requirements and sub-factors.
 - The rollup method is **worst-wins by default** (a factor is no better than its
   weakest requirement), matching a quality *gate*'s intent.
 - `skipped` results are excluded from the rollup but reported as gaps in coverage.
-- `pending` / `stale` / `errored` results mean the rollup is **incomplete**; the
-  report states this rather than scoring around it, so a partial run is never
-  mistaken for a clean one.
+- `pending` / `stale` results mean the rollup is **incomplete**; the report states
+  this rather than scoring around it, so a partial run is never mistaken for a
+  clean one.
 
 `TODO`: whether the rollup is configurable (e.g. weighted, or "any-fail-fails" vs.
 a banded average) — for now, worst-wins, deterministic, stated in the report.
@@ -503,10 +444,10 @@ results (no model authoring it — the inversion). It carries:
   comes from `.run/`, not the verdict files).
 - **Verdict** — overall rolled-up rating, and whether a `--fail-on` gate would trip.
 - **Per-factor rollup** — rating per factor / sub-factor.
-- **Per-requirement results** — rating, the matched `bashCondition` or the skill's
-  evidence, and `path`/location where applicable.
+- **Per-requirement results** — rating, the skill's evidence, and `path`/location
+  where applicable.
 - **Coverage** — `skipped` requirements (with reasons) and any `pending` / `stale`
-  / `errored` results that leave the run incomplete.
+  results that leave the run incomplete.
 
 It is rendered, deterministic prose; under `--json`, `evaluation report` emits the
 same rollup as a schema-stable object.
@@ -533,16 +474,16 @@ The lifecycle reuses the shared three-code convention verbatim in meaning (see
 
 | Code | Meaning | In this lifecycle |
 | --- | --- | --- |
-| `0` | Success — ran, and the gate passed. | Inspection (`show`, `list`), `result run`/`set`/`skip` (even when the recorded rating is poor), and `evaluation report` whose rolled-up rating cleared the `--fail-on` bar (by default, anything at or above `minimum`). |
+| `0` | Success — ran, and the gate passed. | Inspection (`show`, `list`), `result set`/`skip` (even when the recorded rating is poor), and `evaluation report` whose rolled-up rating cleared the `--fail-on` bar (by default, anything at or above `minimum`). |
 | `1` | **Gate verdict failure** — ran fine, the bar was not met. | `evaluation report` and the overall rating landed at or below `--fail-on <level>` (by default `unacceptable`). The *only* `1` in this lifecycle. |
-| `2` | **Tool failure** — the command broke. | Bad flags, an unresolvable model/target, a `QUALITY.md` that does not parse (run `lint` first), `result run` on a `prompt` requirement, an `errored` measurement surfaced as a tool problem, internal error. |
+| `2` | **Tool failure** — the command broke. | Bad flags, an unresolvable model/target, a `QUALITY.md` that does not parse (run `lint` first), internal error. |
 
-The load-bearing point: **a poorly-rated `result run` exits `0`.** Running a `bash`
-assessment that classifies to a low level is a *successful* measurement — it ran
-and recorded a verdict. The quality gate is `evaluation report` (which gates on
-the rolled-up rating, by default `unacceptable`), separately, so "the command
-broke" (`2`), "the quality is bad" (`1`, at `report`), and "recorded a low rating"
-(`0`, at `result run`) stay distinguishable.
+The load-bearing point: **recording a low rating exits `0`.** A requirement the
+skill judges to land at a low level is a *successful* record — it ran and recorded
+a verdict. The quality gate is `evaluation report` (which gates on the rolled-up
+rating, by default `unacceptable`), separately, so "the command broke" (`2`), "the
+quality is bad" (`1`, at `report`), and "recorded a low rating" (`0`, at
+`result set`) stay distinguishable.
 
 ## Open questions
 

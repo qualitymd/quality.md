@@ -15,10 +15,10 @@ written; this spec defines the contract they orchestrate against.
 `qualitymd` splits responsibility along one boundary:
 
 - **The CLI is deterministic.** It parses and inspects the model, resolves
-  targets, runs `bash` assessments, classifies results, persists evaluations,
-  rolls up factors, renders reports, and diffs runs. It **never calls a model.**
+  targets, persists evaluations, records verdicts, rolls up factors, renders
+  reports, and diffs runs. It **never calls a model.**
 - **Skills carry judgment and orchestration.** A skill drives the evaluation
-  loop, judges `prompt` assessments, gathers evidence, decides scope and
+  loop, judges every requirement's `prompt`, gathers evidence, decides scope and
   saturation, and writes verdicts back through the CLI.
 
 This is the inversion from earlier drafts, where the agentic engine lived *inside*
@@ -28,19 +28,19 @@ deterministic management (`init`, `lint`, and the `model` / `evaluation` /
 `result` resource trees). Authoring — scaffolding a first model and fixing an
 existing one — is also skill work (`setup-quality-md`, `improve-quality-md`).
 
-### The boundary is the Assessment dichotomy
+### The boundary is mechanics vs. judgment
 
-The split is not arbitrary — it falls exactly on the distinction the format
-already draws between the two kinds of assessment:
+The split is not arbitrary. Every assessment in the format is an inferential
+`prompt`, so all judgment lives in the skill and the CLI does the deterministic
+mechanics around it:
 
-| Assessment | Kind | Who runs it | How it is recorded |
-| --- | --- | --- | --- |
-| `bash` | computational | **CLI** executes it, applies the rating condition | `result run` |
-| `prompt` | inferential | **Skill** judges it | `result set` |
+| Concern | Who | How it is recorded |
+| --- | --- | --- |
+| Judging a requirement's `prompt` against its target | **Skill** | `result set` |
+| Resolving, persisting, rolling up, and reporting verdicts | **CLI** | the `evaluation` / `result` resources |
 
-A consequence worth stating: a model made **entirely of `bash` requirements is
-checkable with no skill and no model calls at all** — pure CI. Skills are required
-only where `prompt` requirements exist.
+Because judgment is inferential, every evaluation runs through a skill; the CLI
+never reaches a verdict on its own.
 
 ## The skill set
 
@@ -75,15 +75,8 @@ The canonical loop a skill runs:
 3. For each result:
    - `result show <req> --json` — fetch the **resolved data** (prompt text,
      target manifest, rating scale). The skill composes this into a prompt.
-   - Judge it, then `result set <req> --rating <level> --evidence …` — *or*, for
-     a `bash` assessment, `result run <req>` (the CLI executes and classifies).
+   - Judge it, then `result set <req> --rating <level> --evidence …`.
 4. `evaluation report [--fail-on …]` — render the report and gate.
-
-The bash-only, skill-free path collapses to:
-
-```sh
-qualitymd evaluation create && qualitymd result run --all && qualitymd evaluation report --fail-on …
-```
 
 ### The CLI ↔ skill interface
 
@@ -94,11 +87,11 @@ names are provisional and expected to be tuned. This section summarizes what eac
 carries and links to the authoritative schema rather than re-specifying it.
 
 - **[`result show` output](./cli-evaluate.md#result-show-output)** — what the skill
-  needs to judge a `prompt` requirement: full requirement path + factor path,
-  assessment kind, resolved prompt text, the resolved target file manifest (paths;
-  contents optional/by reference), the rating scale with its `promptCondition`s
-  (and any per-requirement overrides), the result's current state, and the
-  sufficiency ("done") guidance for judging.
+  needs to judge a requirement: full requirement path + factor path, resolved
+  prompt text, the resolved target file manifest (paths; contents optional/by
+  reference), the rating scale with its `promptCondition`s (and any
+  per-requirement overrides), the result's current state, and the sufficiency
+  ("done") guidance for judging.
 - **[`result set` input](./cli-evaluate.md#result-set-input)** — the verdict shape:
   requirement ref, rating level, structured evidence (summary + evidence items),
   and optional rationale. This becomes the diffable artifact, so its serialization
@@ -126,7 +119,7 @@ Summary, with links to the authoritative sections:
   `.quality/evaluations/archive/<name>/`.
 - [**Run states**](./cli-evaluate.md#run-states): `open → complete` (derived)
   `→ archived`. [**Result states**](./cli-evaluate.md#result-states):
-  `pending / recorded / skipped / errored / stale` — on re-run, only `stale`
+  `pending / recorded / skipped / stale` — on re-run, only `stale`
   results return to `pending`.
 
 ## Per-skill detail

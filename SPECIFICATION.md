@@ -13,7 +13,7 @@ The quality model is embedded in the YAML frontmatter at the beginning of the fi
 The model keeps three concerns separate:
 
 - **Requirement** — *what* must be true. A requirement is self-contained: a name, an optional target, and a single assessment. It names no rating level, so it can be lifted out of QUALITY.md and reused on its own — for example, referenced from an agent skill. It may optionally override the scale's *conditions* for its own result, an escape hatch for when one shared condition cannot fit every requirement.
-- **Assessment** — *how* the requirement is checked. Either inferential (`prompt`) or computational (`bash`); the key you choose is the declaration of method.
+- **Assessment** — *how* the requirement is checked. A single inferential `prompt` — criteria judged by a model or a reviewer.
 - **Rating** — *how the result is classified*. A single, requirement-agnostic scale (`ratings`) names the levels a result can land on.
 
 Example:
@@ -45,10 +45,12 @@ factors:
               duplicates of a shared type are not allowed.
       testability:
         requirements:
-          "unit tests pass":
-            bash: "pnpm test:unit"
-          "critical paths meet 80% line coverage":
-            bash: "pnpm test:coverage --min 80"
+          "critical paths are covered by automated tests":
+            target: "./src/**/*.ts"
+            prompt: >
+              Every critical path through a module is exercised by an automated
+              test that would fail if the path regressed. Coverage gaps on
+              critical paths are not acceptable.
 ```
 
 ### Schema
@@ -58,17 +60,14 @@ ratings:                          # optional; an inline scale (a sequence, below
   - level: <level-name>           # levels listed best to worst — a level's position is its rank
     displayName: <string>         # optional; human label for the level
     promptCondition: <string>     # optional; criterion a `prompt` is judged against
-    bashCondition: <CEL boolean>  # optional; predicate a `bash` result is classified against
 factors:
   <factor-name>:                  # a factor has requirements, sub-factors, or both
     requirements:
       <requirement-name>:
         target: <path | glob | list>  # optional; artifact(s) under evaluation; a list narrows, a "!"-prefixed entry excludes
-        # exactly one assessment — a single prompt OR a single bash command:
-        prompt: <text | path>     # inferential (judged by a model/reviewer)
-        bash: <command>           # computational (shell exit status)
-        ratings:                  # optional; override the scale's conditions for this requirement (a by-name map, not a sequence)
-          <level-name>: <condition>   # CEL boolean (bash) or judging criterion (prompt); level from the scale
+        prompt: <text | path>     # the single assessment — inferential, judged by a model/reviewer
+        ratings:                  # optional; override the scale's promptConditions for this requirement (a by-name map, not a sequence)
+          <level-name>: <judging-criterion>   # criterion for this level; level from the scale
     factors:                      # sub-factors, nested to any depth
       <factor-name>: <Factor>
 ```
@@ -126,12 +125,12 @@ QUALITY.md. A requirement may optionally override the scale's conditions for
 itself (see [Per-requirement rating overrides](#per-requirement-rating-overrides));
 doing so trades some of that portability for a per-requirement signal.
 
-A requirement carries a *single* assessment — one `prompt` or one `bash`
-command, never several and never a list. A `prompt` is one body of criteria
-(inline text or a single referenced document), not a collection of separate
-prompts. When an expectation feels like it needs more than one prompt, that is
-the signal to split it into separate requirements, each with its own single
-assessment — keeping every requirement singular and independently evaluable.
+A requirement carries a *single* assessment — one `prompt`, never several and
+never a list. A `prompt` is one body of criteria (inline text or a single
+referenced document), not a collection of separate prompts. When an expectation
+feels like it needs more than one prompt, that is the signal to split it into
+separate requirements, each with its own single assessment — keeping every
+requirement singular and independently evaluable.
 
 A requirement **should** state its concern concisely, and **should not** restate
 an expectation that is self-evident or already guaranteed by the subject's
@@ -158,7 +157,7 @@ target:
 An explicit `target` only ever *narrows* a requirement's reach, and stays within
 the model's own directory subtree.
 
-The assessment is exactly one of:
+The assessment is a single `prompt`:
 
 - `prompt: <text | path>` — an *inferential* assessment, judged by a model (or
   a human reviewer). A single value: either inline text stating what the target
@@ -168,29 +167,19 @@ The assessment is exactly one of:
   that both QUALITY.md and, say, an agent skill can load. A document referenced
   by `prompt` may be as long as it needs to be, but it is still one prompt for
   one requirement.
-- `bash: <command>` — a *computational* assessment. A shell command whose result
-  is classified against the rating scale; under the default scale a zero exit lands
-  on `target` and a non-zero exit on `unacceptable` (see
-  [Computational rating](#computational-rating)).
 
-The key is the declaration of method: `prompt` says "assess this by judgment,"
-`bash` says "assess this by running a command." There is no separate field
-naming the criteria — the criteria *are* the prompt or the command.
+The `prompt` *is* the criteria — there is no separate field naming what the
+target must satisfy.
 
 **Rating.** Evaluating a requirement produces a rating: the level its result
-lands on, drawn from the `ratings` scale below. The two assessment methods are
-classified differently, and a level carries one register for each:
-
-- A `prompt` is **judged** against the scale's `promptCondition`s — the target
-  earns a higher level the more fully it satisfies the requirement's prompt, the
-  top level when it satisfies it best and lower levels as it falls short.
-- A `bash` result is **classified** against the scale's `bashCondition`s — the
-  levels are tested best to worst and the result takes the first level whose
-  `bashCondition` is true (see [Computational rating](#computational-rating)).
+lands on, drawn from the `ratings` scale below. A `prompt` is **judged** against
+the scale's `promptCondition`s — the target earns a higher level the more fully
+it satisfies the requirement's prompt, the top level when it satisfies it best
+and lower levels as it falls short.
 
 The rating is produced by evaluation; the *outcome* is never declared on the
 requirement — you never pin a result to a level. Per-level criteria live on the
-scale by default — a level's `promptCondition` and `bashCondition`. A requirement
+scale by default — a level's `promptCondition`. A requirement
 may, however, **override** those criteria with its own `ratings` map keyed on the
 scale's level names (see [Per-requirement rating overrides](#per-requirement-rating-overrides)).
 The override changes only the conditions by which *this* requirement lands on a
@@ -202,24 +191,18 @@ genuinely cannot classify the requirement's result.
 **Rating scale.** The optional top-level `ratings` is a **sequence** of levels
 defining the single scale shared by every requirement, **ordered best to worst —
 a level's position in the sequence is its rank**. Each entry carries a `level`
-name and an optional `displayName`, an optional `promptCondition` (the criterion
-a `prompt` is judged against), and an optional `bashCondition` (a CEL boolean a
-`bash` result is classified against). Write the conditions generically — in terms
-of how fully an evaluation meets its assessment — so the one scale applies to
-every requirement. Because the scale is a sequence, ranking is read from position,
-not inferred from a mapping's key order. A level's conditions
-are optional, and the two registers are reached differently: for a `prompt`, the
-evaluator reads the levels as an ordered ladder and assigns the highest one the
-target satisfies, so a level with no `promptCondition` is an intermediate band —
-assigned when a result clearly does better than the level below it but does not
-meet the labeled level above; for a `bash` result, a level with no `bashCondition`
-is never matched directly and is reachable only as the worst-level fallback (see
-[Computational rating](#computational-rating)). When `ratings` is
+name and an optional `displayName`, and an optional `promptCondition` (the
+criterion a `prompt` is judged against). Write the conditions generically — in
+terms of how fully an evaluation meets its assessment — so the one scale applies
+to every requirement. Because the scale is a sequence, ranking is read from
+position, not inferred from a mapping's key order. A level's `promptCondition` is
+optional: the evaluator reads the levels as an ordered ladder and assigns the
+highest one the target satisfies, so a level with no `promptCondition` is an
+intermediate band — assigned when a result clearly does better than the level
+below it but does not meet the labeled level above. When `ratings` is
 omitted, the scale defaults to four ordinal levels — `outstanding`, `target`,
-`minimum`, `unacceptable` — with `target` (the level that meets the goal) defined
-as `bashCondition: "result.success"` (a zero exit) and `unacceptable` the
-condition-less worst-level fallback; the four levels and their conditions are
-given in full under [Computational rating](#computational-rating). The
+`minimum`, `unacceptable`, best to worst — given in full under
+[The default scale](#the-default-scale). The
 vocabulary and best-to-worst framing of the default levels are adapted from the
 Agile Landing Zone pattern (Yoder & Wirfs-Brock, *QA to AQ*), which in turn draws
 on Tom Gilb's landing zones; QUALITY.md borrows the framing as a shared,
@@ -246,17 +229,13 @@ across files so that composing models rate on a common scale (see
 
 The shared scale is written generically so one set of conditions applies to every
 requirement. That works when requirements meet their assessments in comparable
-ways, but some do not — most often a `bash` requirement whose command emits a
-signal the scale's condition cannot interpret. For these, a requirement may carry
-an optional `ratings` map that overrides the scale's conditions for itself alone.
+ways, but some do not — a requirement may turn on an axis the scale's generic
+wording does not capture, so a level means something more specific for it than the
+shared condition states. For these, a requirement may carry an optional `ratings`
+map that overrides the scale's `promptCondition`s for itself alone.
 
-The map is keyed on the **scale's** level names; each value is a single condition,
-in the register implied by the requirement's assessment:
-
-- under a `bash` requirement, a value is a [CEL](https://cel.dev) boolean over
-  `result`, classified exactly as a `bashCondition` (see below);
-- under a `prompt` requirement, a value is a judging criterion, applied exactly as
-  a `promptCondition`.
+The map is keyed on the **scale's** level names; each value is a single judging
+criterion, applied exactly as a `promptCondition` for this requirement.
 
 Only the conditions are overridden. The level set, its order, and each level's
 `displayName` still come from the shared scale: the override is a **by-name map**
@@ -266,70 +245,32 @@ otherwise would — best to worst, first match wins, worst level as the fallback
 level the override omits keeps the scale's condition for that level, if any. A
 level name not present in the scale is a configuration error.
 
-For example, a scale bands a coverage percentage one command prints, while a
-second `bash` requirement reports a different signal and overrides the bands for
-itself:
+For example, a scale states each level generically, while one requirement whose
+notion of "good" is more specific overrides the bands for itself:
 
 ```yaml
 ratings:
-  - { level: A, bashCondition: "double(result.stdout.trim()) >= 90" }
-  - { level: B, bashCondition: "double(result.stdout.trim()) >= 80" }
-  - { level: C, bashCondition: "double(result.stdout.trim()) >= 70" }
+  - { level: A, promptCondition: "Fully satisfies the assessment; no gaps" }
+  - { level: B, promptCondition: "Satisfies the core of the assessment; minor gaps" }
+  - { level: C, promptCondition: "Significant gaps but minimally acceptable" }
   - { level: fail }
 factors:
-  maintainability:
+  security:
     requirements:
-      "line coverage":
-        bash: "pnpm coverage:lines --print"   # uses the scale's bands as-is
-      "mutation score":
-        bash: "pnpm mutation --print"          # a different signal; rebands for itself
+      "input is validated at the boundary":
+        prompt: "All external input is validated before it reaches business logic."   # uses the scale's bands as-is
+      "secrets are kept out of the repository":
+        prompt: "No credentials, keys, or tokens appear in source, config, or fixtures."
         ratings:                               # override: a by-name map, listed in scale order
-          A: "double(result.stdout.trim()) >= 75"
-          B: "double(result.stdout.trim()) >= 60"
-          C: "double(result.stdout.trim()) >= 50"
+          A: "No secrets present and a scanner enforces it in CI"
+          B: "No secrets present; enforcement is by review, not tooling"
+          C: "No secrets present but nothing prevents a regression"
 ```
 
 This keeps a requirement portable by default — it names no level until it opts
 into an override — and confines the coupling to the requirements that need it.
 
-### Computational rating
-
-A `bash` requirement is classified by running its command and evaluating the
-scale's `bashCondition` expressions against the result. It is deterministic — no
-model judgment is involved.
-
-Each `bashCondition` is a [CEL](https://cel.dev) (Common Expression Language)
-boolean, evaluated against a single `result` describing the command run:
-
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `result.success` | bool | the command exited zero |
-| `result.exit` | int | exit status |
-| `result.stdout` | string | captured standard output |
-| `result.stderr` | string | captured standard error |
-
-Because CEL does not coerce between types, a command's raw text output is bridged
-to the value a condition tests through CEL's standard library, written
-receiver-style:
-
-- **String operations** come from CEL's strings extension as member calls —
-  `result.stdout.trim()` (command output carries trailing newlines),
-  `.lowerAscii()`, `.contains(s)`, `.startsWith(s)`, `.endsWith(s)`,
-  `.matches(re)` (regex), `.size()`.
-- **Numeric parsing** uses CEL's standard conversions, which parse from a string —
-  `double(result.stdout.trim())`, `int(result.stdout.trim())`.
-- **JSON** has no standard parse in CEL, so the evaluator provides one convenience,
-  receiver-style: `result.stdout.json()` parses the output into a value (map, list,
-  number, …) for further indexing.
-
-**Classification.** The levels are tested in order, best to worst; the result
-takes the **first** level whose `bashCondition` is true. If no level matches, the
-result takes the **worst** level — the scale denies by default. A level with no
-`bashCondition` is never selected by computation; it is reachable only as that
-worst-level fallback (which is why the default `unacceptable` needs none). A
-`bashCondition` that fails to evaluate — `.json()` on output that is not JSON, or
-`double()` on output that is not a number, say — is a configuration error in the
-model, surfaced as such rather than silently scored.
+### The default scale
 
 **The default scale, made explicit.** Omitting `ratings` is equivalent to the
 four-level ordinal scale below, ordered best to worst:
@@ -337,58 +278,22 @@ four-level ordinal scale below, ordered best to worst:
 ```yaml
 ratings:
   - { level: outstanding,  displayName: Outstanding, promptCondition: "Exceeds the requirement; meets it with margin to spare" }
-  - { level: target,       displayName: Target,      promptCondition: "Meets the requirement",                bashCondition: "result.success" }
+  - { level: target,       displayName: Target,      promptCondition: "Meets the requirement" }
   - { level: minimum,      displayName: Minimum,      promptCondition: "Falls short of the goal but stays at the acceptable floor" }
-  - { level: unacceptable, displayName: Unacceptable, promptCondition: "Falls below the acceptable floor" }   # the fallback
+  - { level: unacceptable, displayName: Unacceptable, promptCondition: "Falls below the acceptable floor" }
 ```
 
 The level meanings, adapted from the Agile Landing Zone pattern, run from best to
 worst: **outstanding** exceeds the goal (aspirational / stretch); **target** meets
 the goal; **minimum** is the acceptable floor — the result one is willing to live
-with; and **unacceptable** is below that floor, the condition-less worst-level
-fallback.
+with; and **unacceptable** is below that floor. The evaluator judges the target
+against the four `promptCondition`s and assigns the highest level it satisfies.
 
-For a `bash` requirement under this scale, only `target` carries a `bashCondition`,
-so a bare command — one with no per-level overrides — lands on **`target`** on a
-zero exit and **`unacceptable`** on any non-zero exit. `outstanding` and `minimum`
-have no `bashCondition` and are **never** auto-awarded by a bare check; reaching
-them takes an explicit per-level `bashCondition` (on the scale or via a
-[per-requirement override](#per-requirement-rating-overrides)) or a `prompt`
-judgment. For a `prompt` requirement, the evaluator judges the target against the
-four `promptCondition`s and assigns the highest level it satisfies.
-
-An author can refine the `target` condition on the scale without touching any
-requirement:
-
-```yaml
-ratings:
-  - { level: outstanding,  displayName: Outstanding }
-  - { level: target,       displayName: Target, bashCondition: "result.success && result.stderr == ''" }
-  - { level: minimum,      displayName: Minimum }
-  - { level: unacceptable, displayName: Unacceptable }
-```
-
-A wholly **custom** scale can replace the levels outright — for instance, banding a
-numeric signal a command prints on stdout:
-
-```yaml
-ratings:
-  - { level: A, bashCondition: "double(result.stdout.trim()) >= 90" }
-  - { level: B, bashCondition: "double(result.stdout.trim()) >= 80" }
-  - { level: C, bashCondition: "double(result.stdout.trim()) >= 70" }
-  - { level: fail }
-```
-
-A scale that bands on `result.stdout` like this assumes every `bash` requirement
-under it emits a comparable value. When one does not, that requirement can supply
-its own bands with a [per-requirement rating override](#per-requirement-rating-overrides)
-rather than forcing every command onto one signal.
-
-Classification yields the rating; whether a given rating should *gate* — fail a
-build, block a change — is the evaluating tool's concern, not the format's. As a
-default, a tool **should** treat a result as releasable when it lands at or above
-**minimum**, gating only on **unacceptable** (below the acceptable floor); a stricter
-bar (gate at `minimum`, or higher) is the evaluating tool's to offer.
+The rating a requirement earns is one thing; whether a given rating should *gate* —
+fail a build, block a change — is the evaluating tool's concern, not the format's.
+As a default, a tool **should** treat a result as releasable when it lands at or
+above **minimum**, gating only on **unacceptable** (below the acceptable floor); a
+stricter bar (gate at `minimum`, or higher) is the evaluating tool's to offer.
 
 ### Invalid examples
 
@@ -400,9 +305,7 @@ factors:
   security:
     requirements:
       "no secrets committed":
-        prompt: "No credentials appear in source."
-        bash: "git secrets --scan"   # ✗ two assessments — declare exactly one of prompt/bash
-      "dependencies are current": {}  # ✗ no assessment — every requirement needs exactly one
+        target: "./src"               # ✗ no assessment — a requirement must declare a prompt
       "input is validated":
         prompt:                       # ✗ a list — an assessment is a single value, never a list
           - "Query parameters are validated."
@@ -416,16 +319,16 @@ declares; naming one it does not is a configuration error, not a new level:
 ```yaml
 ratings:
   - { level: outstanding,  displayName: Outstanding }
-  - { level: target,       displayName: Target, bashCondition: "result.success" }
+  - { level: target,       displayName: Target, promptCondition: "Meets the requirement" }
   - { level: minimum,      displayName: Minimum }
   - { level: unacceptable, displayName: Unacceptable }
 factors:
   maintainability:
     requirements:
-      "line coverage":
-        bash: "pnpm coverage:lines --print"
+      "code is covered by tests":
+        prompt: "Critical paths are covered by automated tests."
         ratings:
-          gold: "double(result.stdout.trim()) >= 90"   # ✗ "gold" is not a level in the scale
+          gold: "Exceptional coverage, with mutation testing"   # ✗ "gold" is not a level in the scale
 ```
 
 ## Markdown Body
@@ -579,7 +482,7 @@ A conforming reader resolves these the same way:
 | **No frontmatter, or no closing `---`** | Invalid — there is no model to read. A QUALITY.md must carry a fenced frontmatter block. |
 | **Empty top-level `factors`** | Invalid — a model with no factors declares nothing. |
 | **Empty `requirements` / `factors` under a factor** | A degenerate branch with nothing to assess: permitted but meaningless, and a tool may warn. A factor whose collections are all empty fails the "at least one" rule. |
-| **Empty assessment value** (`prompt:` or `bash:` with no value) | Invalid — the assessment *is* its own criteria, so it must be non-empty. |
+| **Empty assessment value** (`prompt:` with no value) | Invalid — the assessment *is* its own criteria, so it must be non-empty. |
 | **Duplicate names among siblings** (factors or requirements sharing a key, or two `ratings` levels sharing a `level` name) | Invalid — names must be unique among siblings; a reader rejects duplicates rather than silently choosing one. For factors and requirements the duplicate is a repeated mapping key; for the `ratings` sequence it is two entries with the same `level`, caught by structural validation rather than by YAML. |
 | **Ordering** | Significant within `ratings`, a sequence ordered best to worst whose positions define the level ranking. The order of factors, sub-factors, and requirements does not affect evaluation; a tool may preserve authoring order for display. |
 | **Case** | Schema keys are lower-case and case-sensitive (`factors`, not `Factors`). Author-defined names — factors, requirements, and rating levels — are case-sensitive and matched exactly, so a per-requirement override must name a level using the same case as the scale. |

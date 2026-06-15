@@ -57,7 +57,7 @@ A single `QUALITY.md` with commented frontmatter and a short body skeleton:
 ---
 # QUALITY.md — quality model for <project>. See SPECIFICATION.md.
 # Each factor has `requirements`, nested `factors`, or both.
-# Each requirement declares exactly one assessment: `prompt` or `bash`.
+# Each requirement declares a single `prompt` assessment.
 # Ratings default to outstanding / target / minimum / unacceptable; add a `ratings:` block to customize.
 factors:
   functionality:
@@ -67,8 +67,8 @@ factors:
         prompt: "<inline criteria, or ./path/to/standard.md>"
   testability:
     requirements:
-      "unit tests pass":
-        bash: "<your test command>"
+      "<what good testing looks like here>":
+        prompt: "<inline criteria, or ./path/to/standard.md>"
 ---
 
 # Quality model — <project>
@@ -122,7 +122,7 @@ Off by default — `init` writes only `QUALITY.md` unless `--config` is passed.
 `init` is the one human-facing, human-authored entry point in the CLI, so it
 **prompts by default** when run in a terminal — matching the convention of
 scaffolding commands like `npm init` and `gh repo create`. The prompts ask for a
-few fields (project name, an initial factor or two, a test command) and weave the
+few fields (project name, an initial factor or two) and weave the
 answers into the scaffold in place of the placeholders; everything not asked about
 (the body skeleton, the remaining placeholders) is still seeded for the author to
 edit.

@@ -6,7 +6,6 @@ ratings:
   - level: target
     displayName: "Target"
     promptCondition: "Satisfies the diagnostic requirement; no material gaps."
-    bashCondition: "result.success"
   - level: minimum
     displayName: "Minimum"
     promptCondition: "Satisfies the core of the requirement but falls short of the goal; minor or scoped gaps remain at the acceptable floor."
@@ -115,15 +114,14 @@ factors:
                 self-evident, not the substantive — it serves clarity without costing
                 completeness.
               - singular: it states a single concern and is captured by a single
-                assessment — one prompt or one bash command, never several and never
-                a list. Multiple conditions under which that concern must hold are
-                acceptable; bundling distinct concerns into one requirement is not.
+                assessment — one prompt, never several and never a list. Multiple
+                conditions under which that concern must hold are acceptable;
+                bundling distinct concerns into one requirement is not.
               - feasible: it can be satisfied by the subject within its constraints
                 (cost, schedule, technical) at acceptable risk.
               - verifiable: it is worded so its satisfaction can be proven and is
-                paired with an assessment method that delivers that proof — bash when
-                the verdict is deterministic and cheaply computable, prompt when it
-                needs judgment; measurable, observable expectations are preferred.
+                paired with a prompt assessment that delivers that proof;
+                measurable, observable expectations are preferred.
               - correct: it accurately represents the stakeholder need or risk it was
                 derived from.
               - conforming: it follows a consistent template and style for
@@ -255,19 +253,23 @@ factors:
       format conformance:
         requirements:
           "the model passes structural lint":
-            bash: qualitymd lint
+            prompt: >
+              Running `qualitymd lint` on the model reports no `error`-level
+              findings: the frontmatter parses, every factor carries requirements
+              or sub-factors, every requirement declares its single `prompt`, and
+              the referenced `prompt`/`target` paths and the `ratings` scale are
+              well-shaped. The structural floor is met before any deeper judgment.
           "the model correctly applies the QUALITY.md format spec":
             prompt: >
               The model is a correct application of the QUALITY.md format as the
               spec defines it, not merely a file that parses. Factors are declared
               under `factors`, each carrying requirements and/or sub-factors;
-              every requirement names a single assessment — one `prompt` or one
-              `bash`, never several; `target` and `prompt` references point at
+              every requirement names a single `prompt` assessment, never several;
+              `target` and `prompt` references point at
               artifacts that exist and that the requirement is genuinely meant to
               judge; and the `ratings` scale is well-shaped and ordered best to
               worst. Each format construct is used for its intended purpose: the
-              assessment method suits the nature of the check (deterministic and
-              cheaply computable → `bash`, judgment → `prompt`), `target` scopes
+              `prompt` states what must be judged, `target` scopes
               the right artifact, and graded expectations live in the rating scale
               rather than being baked into requirement statements. Where the model
               departs from the spec it does so through the format's own extension
@@ -303,11 +305,10 @@ factors:
           "an agent can execute every assessment the model declares":
             prompt: >
               Each assessment can be carried out by an agent as written. Every
-              `bash` command is runnable in the subject's environment and its
-              result maps cleanly to a verdict; every `prompt` gives the agent the
-              instruction and scope it needs, and any `target` or referenced
-              artifact it must read can be located and retrieved. No assessment
-              requires a capability, input, or access the agent cannot obtain.
+              `prompt` gives the agent the instruction and scope it needs, and any
+              `target` or referenced artifact it must read can be located and
+              retrieved. No assessment requires a capability, input, or access the
+              agent cannot obtain.
           "an agent can use the model as working context":
             prompt: >
               Beyond formal evaluation, an agent can read the model and build an
@@ -471,16 +472,15 @@ model rather than its documentation.
 
 #### Format conformance
 
-Does the model use the QUALITY.md format correctly? The deterministic floor is
-structural lint (`qualitymd lint`), captured as its own `bash` requirement: the
+Does the model use the QUALITY.md format correctly? The structural floor is
+structural lint (`qualitymd lint`), captured as its own requirement: the
 file must parse and satisfy the structural schema before any judgment is worth
 making. Above that floor, conformance asks whether the model applies the format
-as the spec defines it — single assessments, resolvable `target` and `prompt`
-references, a well-ordered rating scale — and whether each construct is used for
-its intended purpose rather than bent to another (method matched to the kind of
-check, `target` scoping the right artifact, graded expectations carried by the
-rating scale). A conforming model is a faithful application of the format, not
-merely a file that lints clean.
+as the spec defines it — a single `prompt` per requirement, resolvable `target`
+and `prompt` references, a well-ordered rating scale — and whether each construct
+is used for its intended purpose rather than bent to another (`target` scoping the
+right artifact, graded expectations carried by the rating scale). A conforming
+model is a faithful application of the format, not merely a file that lints clean.
 
 #### Format completeness
 
@@ -532,6 +532,7 @@ and worked on by a person rather than an agent.
   extend and maintain the model*; a separate factor would add structure without
   adding signal.
 - **The structural-lint floor depends on an unbuilt command.** *The model passes
-  structural lint* invokes `qualitymd lint`, which is specified but not yet
-  implemented. Until it ships, that requirement cannot run and the structural
-  floor rests on the format-conformance prompt and manual review.
+  structural lint* asks whether `qualitymd lint` reports no errors, but that
+  command is specified and not yet implemented. Until it ships, the requirement
+  cannot be judged against real lint output and the structural floor rests on the
+  format-conformance prompt and manual review.

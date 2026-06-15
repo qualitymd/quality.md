@@ -31,8 +31,10 @@ factors:
           A write is acknowledged to the client only after it is committed
           to durable storage. Failures surface as errors, never as false
           successes.
-      "integration tests pass":
-        bash: "make test"
+      "the write path is covered end-to-end":
+        prompt: >
+          The write path is exercised by automated tests that would fail if a
+          write were lost or acknowledged before it was durable.
   security:
     requirements:
       "no secrets are committed":
@@ -64,17 +66,16 @@ The API handles customer data, so access is authenticated and least-privilege.
 
 The **frontmatter** is the structured model: **factors** (quality attributes
 like *reliability* and *security*) and the **requirements** under them. Each
-requirement carries exactly one assessment — a **`bash`** command, checked by
-its exit status, or a **`prompt`**, judged against the requirement's intent —
-and an optional **`target`** narrowing what it applies to (here, the storage
-layer). The **body** holds the reasoning the frontmatter cannot: what the system
-is, what *good* means for it, and why these are the right requirements — the same
-context a `prompt` is judged against.
+requirement carries exactly one assessment — a **`prompt`**, judged against the
+requirement's intent — and an optional **`target`** narrowing what it applies to
+(here, the storage layer). The **body** holds the reasoning the frontmatter
+cannot: what the system is, what *good* means for it, and why these are the right
+requirements — the same context a `prompt` is judged against.
 
 A coding agent reads this file to evaluate the Orders API against it — judging
-each `prompt` against the body and running each `bash` check, then reporting
-where the subject falls short. The `qualitymd` CLI runs and records the `bash`
-checks deterministically; judging the `prompt`s is the agent's part.
+each `prompt` against the body, then reporting where the subject falls short. The
+`qualitymd` CLI records and rolls up those verdicts deterministically; the
+judging is the agent's part.
 
 ## The CLI
 
@@ -83,11 +84,9 @@ checks deterministically; judging the `prompt`s is the agent's part.
 > is specified under [`specs/`](specs/) but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
-model** — it scaffolds and validates a `QUALITY.md`, resolves targets, runs the
-`bash` assessments, records and rolls up results, and gates CI — while **skills
-carry the judgment**, driving the evaluation loop and judging each `prompt`
-against the model. A model made entirely of `bash` requirements is evaluable with
-no skill at all.
+model** — it scaffolds and validates a `QUALITY.md`, resolves targets, records
+and rolls up results, and gates CI — while **skills carry the judgment**, driving
+the evaluation loop and judging each `prompt` against the model.
 
 The deterministic CLI:
 
@@ -95,8 +94,8 @@ The deterministic CLI:
 - **`qualitymd lint`** *(planned)* — validate a file's structure, fast and
   deterministic, exiting non-zero on errors so it drops into CI.
 - **`qualitymd model` / `evaluation` / `result`** *(planned)* — inspect the
-  model, manage a per-target evaluation run, run the `bash` assessments, and gate
-  on the outcome with `evaluation report --fail-on`.
+  model, manage a per-target evaluation run, record verdicts, and gate on the
+  outcome with `evaluation report --fail-on`.
 
 The deep, judgment-based evaluation of a subject against its model is carried by
 **skills** that orchestrate those resources — not by a CLI command.

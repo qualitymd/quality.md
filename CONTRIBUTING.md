@@ -33,7 +33,7 @@ Please run `mise run fmt` and `mise run vet` before opening a pull request.
 cmd/qualitymd        entry point
 internal/cli         Cobra commands, run through Charm Fang
 internal/spec        QUALITY.md frontmatter parser
-internal/eval        bash + cel-go evaluators
+internal/eval        result rollup and rating
 internal/report      Lip Gloss terminal output
 scripts/build-npm.mjs   assembles the npm distribution
 ```
