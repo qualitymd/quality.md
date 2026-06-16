@@ -41,28 +41,26 @@ runs:
    - record the finding and rating with `qualitymd result set <address> ...`.
 4. `qualitymd evaluation report --fail-on unacceptable`
 
-The result address is the target-tree address specified in
-[`cli-evaluate.md`](./cli-evaluate.md#addressing).
+The result address is the target-tree address, to be specified in a forthcoming
+evaluation-lifecycle spec.
 
 ## CLI To Skill Interface
 
-The payloads are specified authoritatively in
-[`cli-evaluate.md`](./cli-evaluate.md#interface-payloads):
+The payloads will be specified authoritatively in a forthcoming
+evaluation-lifecycle spec:
 
-- [`result show`](./cli-evaluate.md#result-show-output) gives the target-tree
-  address, resolved `assessment`, target `source` manifest, primary and secondary
-  factor context, active rating criteria, result state, and sufficiency guidance.
-- [`result set`](./cli-evaluate.md#result-set-input) records the chosen rating and
-  structured finding evidence.
-- [Staleness hash](./cli-evaluate.md#staleness-hash) defines when a recorded
-  result reopens because the model, assessment, criteria, source selection, or
-  source contents changed.
+- `result show` gives the target-tree address, resolved `assessment`, target
+  `source` manifest, primary and secondary factor context, active rating
+  criteria, result state, and sufficiency guidance.
+- `result set` records the chosen rating and structured finding evidence.
+- A staleness hash defines when a recorded result reopens because the model,
+  assessment, criteria, source selection, or source contents changed.
 
 ## Per-Skill Detail
 
 ### `setup-quality-md`
 
-Owns authoring judgment for the first model: what target nodes the project
+Owns authoring judgment for the first model: what Targets the project
 needs, which factors belong on which target subtrees, which direct and lensed
 requirements answer the project's needs, and what body context explains it.
 It uses `init` and `lint` but does not evaluate the subject.
@@ -80,7 +78,7 @@ Diagnose phase:
 - uses the built-in meta-model at
   `internal/diagnostics/quality-model/QUALITY-META-MODEL.md`;
 - evaluates the user's `QUALITY.md` as the subject;
-- inspects whether target nodes, factors, requirements, rating criteria, and body
+- inspects whether Targets, factors, requirements, rating criteria, and body
   sections form a useful model.
 
 Improve phase:
@@ -93,10 +91,9 @@ Improve phase:
 ## Relationship To Other Specs
 
 - [`cli.md`](./cli.md) - resource command surface.
-- [`cli-evaluate.md`](./cli-evaluate.md) - evaluation lifecycle and payload
-  contract.
-- [`cli-lint.md`](./cli-lint.md) and [`cli-init.md`](./cli-init.md) - changed by
-  the schema revision; both now operate on recursive target nodes.
+- [`cli-init.md`](./cli-init.md) - operates on the recursive Target type.
+- Forthcoming: an evaluation-lifecycle spec (lifecycle and payload contract) and
+  a structural-validator (`lint`) spec.
 - [`../SPECIFICATION.md`](../SPECIFICATION.md) - the format: targets, scoped
   factors, requirements, assessment/finding/result, and rating criteria.
 

@@ -25,26 +25,27 @@ deterministically checkable and correspond to what `qualitymd lint` enforces.
 **File — frontmatter and body**
 
 - **F1.** A conforming file begins with a fenced YAML frontmatter block
-  (`---` … `---`) whose content is a single mapping: the apex **target node**. A
-  file with no frontmatter or no closing fence is not a conforming `QUALITY.md`.
-- **F2.** An optional Markdown body may follow the closing fence. A `ratings`
-  key, when present, appears only on the apex node.
+  (`---` … `---`) whose content is a single mapping: the **Model**. The Model is
+  the apex **Target** extended with model-level keys. A file with no frontmatter
+  or no closing fence is not a conforming `QUALITY.md`.
+- **F2.** An optional Markdown body may follow the closing fence. `ratings` is a
+  Model key, not a Target key: it appears only on the root mapping, never on a
+  nested target.
 
-**File — target node**
+**File — target**
 
-- **F3.** A target node is a mapping. Its recognized keys are `source`,
-  `requirements`, `factors`, and `targets` (and `ratings` on the apex). All are
-  optional; a node declares only what it adds. Target and factor names are an
-  open, case-sensitive vocabulary.
-- **F4.** Key types: `source` is a string or a list of strings; `requirements`
-  is a map of statement → requirement entry; `factors` is a map of name → factor
-  entry; `targets` is a map of name → target node (recursively the same shape).
+- **F3.** A Target is a mapping. Its recognized keys are `source`,
+  `requirements`, `factors`, and `targets`; the Model adds `ratings` to that set
+  on the root mapping. All are optional; a target declares only what it adds.
+  Target and factor names are an open, case-sensitive vocabulary.
+- **F4.** Key types: `source` is a string; `requirements`
+  is a map of statement → Requirement; `factors` is a map of name → Factor;
+  `targets` is a map of name → Target (recursively the same shape).
 
 **File — requirement**
 
 - **F5.** A requirement entry declares exactly one `assessment`: a non-empty
-  scalar, either inline criteria text or a path to a document of criteria. A
-  missing, empty, or list-valued `assessment` is invalid.
+  scalar. A missing, empty, or list-valued `assessment` is invalid.
 - **F6.** A requirement's optional secondary `factors` list names factors in
   scope; each name must resolve to a factor declared on the same target or one
   of its ancestors.
@@ -54,9 +55,9 @@ deterministically checkable and correspond to what `qualitymd lint` enforces.
 **File — rating scale**
 
 - **F8.** A scale is an ordered sequence of levels listed best to worst; each
-  `level` name is unique within the scale. The apex `ratings` may give the
+  `level` name is unique within the scale. The Model's `ratings` may give the
   sequence inline or as a path to a YAML file holding it.
-- **F9.** When the apex declares no `ratings`, the default scale — Outstanding /
+- **F9.** When the Model declares no `ratings`, the default scale — Outstanding /
   Target / Minimum / Unacceptable — is the active scale.
 
 **Reader obligations**
@@ -70,48 +71,82 @@ deterministically checkable and correspond to what `qualitymd lint` enforces.
 
 ### Schema
 
-The normative type contract for a target node:
+The frontmatter is a **Model**: an apex **Target** extended with model-level keys.
+The types below are the normative contract; each `<TypeName>` reference resolves to
+the type of that name. All keys are optional unless noted.
+
+A **Model** is the file's root mapping — an apex `Target` plus the keys that belong
+to the file as a whole rather than to any one target. `ratings` is the only such
+key, and it appears only here (F2, F8):
 
 ```yaml
-ratings:                          # optional, apex only; inline scale sequence or path to a shared YAML scale
-  - level: <level-name>           # levels listed best to worst; position is rank
-    displayName: <string>         # optional human label
-    criterion: <string>           # optional criterion for this rating level
+# Model = Target + model-level keys. Appears once, as the root mapping.
+ratings: <RatingScale>            # optional; the scale shared by all requirements
+# ...plus every Target key below, applied to the apex target.
+```
 
-source: <path | glob | URL | list> # optional; material this target is assessed from
-requirements:
-  <requirement-statement>:
-    assessment: <text | path>     # required, single non-empty scalar
-    factors:                      # optional secondary factor names in scope
-      - <factor-name>
-    ratings:                      # optional per-requirement criteria, keyed by scale level name
-      <level-name>: <criterion>
-factors:
-  <factor-name>:
-    description: <string>         # recommended
-    requirements:
-      <requirement-statement>: <Requirement>
-targets:
+A **Target** is the recursive node type. `targets` nests Targets to any depth;
+none of them carry `ratings`:
+
+```yaml
+# Target — the recursive node type.
+source: <string>                    # material this target is assessed from
+requirements:                       # map of statement -> Requirement
+  <requirement-statement>: <Requirement>
+factors:                            # map of name -> Factor
+  <factor-name>: <Factor>
+targets:                            # map of name -> Target (recursively)
   <target-name>: <Target>
 ```
 
-The root mapping itself is the apex target. `source`, `requirements`, `factors`,
-and `targets` are all optional on any target node.
+A **Requirement** declares exactly one `assessment` (F5):
+
+```yaml
+# Requirement
+assessment: <string>                # required; single non-empty scalar
+factors:                            # optional secondary factor names in scope (F6)
+  - <factor-name>
+ratings:                            # optional per-requirement criteria (F7)
+  <level-name>: <criterion>         #   keyed by a level name of the active scale
+```
+
+A **Factor** is a quality lens carrying its own requirements:
+
+```yaml
+# Factor
+description: <string>               # recommended
+requirements:                       # map of statement -> Requirement
+  <requirement-statement>: <Requirement>
+```
+
+A **RatingScale** is an ordered sequence of levels, best to worst, or a path to a
+YAML file holding that sequence (F8):
+
+```yaml
+# RatingScale = list of RatingLevel | <path>
+- level: <level-name>               # required; unique within the scale; position is rank
+  displayName: <string>             # optional human label
+  criterion: <string>              # optional criterion for this level
+```
+
+The apex `Target` carries the file's requirements, factors, and source directly, so
+a Model both *is* the top target and *contains* the target tree. `ratings` is the
+sole key that distinguishes a Model from any other `Target`.
 
 ## Model Semantics
 
 *Informative.* This section explains what the structured model means; it restates
 no F-rule.
 
-The frontmatter is a single recursive **target** node. The file itself is the
-apex target, and every child under `targets:` is another target node with the
-same shape. The model keeps three concepts separate:
+The frontmatter is a **Model**: the apex **Target** plus the file-level `ratings`
+scale. The file itself is the apex target, and every child under `targets:` is
+another Target with the same shape. The Model keeps three concepts separate:
 
 - **Target** — a thing evaluated, bound to the material it is assessed from by
   `source`. Target names are open, user-chosen identifiers such as `source-code`,
   `payment-flows`, or `documentation`.
 - **Factor** — a quality lens, such as `reliability` or `maintainability`,
-  declared on a target node and visible to that node and its descendants only.
+  declared on a Target and visible to that target and its descendants only.
 - **Requirement** — an assessable expectation. Its `assessment` is performed
   against the target's `source`, producing a **finding**. The rating criteria are
   then applied to that finding to produce a **result**, whose recorded value is a
@@ -162,24 +197,18 @@ long as its descendants carry requirements.
 
 ### Targets And Source
 
-*Informative.* `targets` is a map of target name to target node. Position is
+*Informative.* `targets` is a map of target name to Target. Position is
 lineage: a child inherits all applicable declarations from its ancestors. A
 catalog may seed names or baseline assessments, but a name with no catalog match
 is valid and simply starts with no baseline content.
 
-`source` identifies the material evaluated for that target. It may be a path, a
-glob, a URL, or a list. Paths and globs resolve relative to the containing
-`QUALITY.md` file. A list is applied in order; an entry beginning with `!`
-excludes files matched earlier:
-
-```yaml
-source:
-  - ./src/**
-  - "!./src/generated/**"
-```
+`source` identifies the material evaluated for that target. It is a single
+string, conventionally interpreted as a path, a glob, or a URL; a reader is free
+to support whatever forms suit it. Paths and globs resolve relative to the
+containing `QUALITY.md` file.
 
 When `source` is omitted, it defaults to the `QUALITY.md` file's directory and
-all subdirectories, recursively. A grouping node may leave `source` implicit and
+all subdirectories, recursively. A grouping target may leave `source` implicit and
 let children narrow it.
 
 ### Factors
@@ -262,7 +291,7 @@ declaration altitude is assessment altitude.
 *Informative.* The structural rules for scales are F8 and F9; this section
 explains how a scale is written and applied.
 
-The optional apex `ratings` value defines the scale shared by requirements. It
+The Model's optional `ratings` value defines the scale shared by requirements. It
 may be an inline sequence of levels or a path to a YAML file holding that
 sequence. The sequence is ordered best to worst; position defines rank.
 
@@ -388,7 +417,7 @@ targets:
 ```
 
 An empty `targets: {}` map is valid but meaningless and a tool may warn. An empty
-target node is structurally valid as a grouping node, but a useful model should
+Target is structurally valid as a grouping target, but a useful model should
 eventually declare `source`, `requirements`, `factors`, or child `targets`.
 
 ## Markdown Body
@@ -462,25 +491,25 @@ grafts models into one target tree using the same containment rule as in-file
    visible only to that target and descendants. Descendants may refine inherited
    factors by adding requirements, not redefine them.
 3. **Containment inheritance.** A target inherits ancestor factors and
-   requirements. Requirements declared on a node apply there and flow down.
+   requirements. Requirements declared on a target apply there and flow down.
    Inheritance is additive: a descendant adds factors and requirements but does
    not remove inherited ones.
 4. **Baseline is the rolling root ancestor.** Shipped baseline assessments are
    the outermost target tree. Improved baseline assessments reach everyone; they
    are always evaluated and visible rather than version-pinned away.
-5. **Nest vs. federate.** Nest sub-targets when parts share the node's factors.
+5. **Nest vs. federate.** Nest sub-targets when parts share the target's factors.
    Federate into a separate model when a part warrants its own ownership or
    factors. Federation grafts that model as a target subtree.
 
-Operational discovery, evaluation runs, and reports are specified in
-[`specs/cli-federation.md`](specs/cli-federation.md).
+Operational discovery, evaluation runs, and reports will be specified in a
+forthcoming federation spec.
 
 ## Extensibility And Versioning
 
 The minimal structural core is a fenced YAML frontmatter block whose content is a
-target node mapping (F1). Because all target fields are optional, `---\n{}\n---`
-is structurally valid but not useful; tools should warn when a model declares no
-requirements, factors, or child targets. The Markdown body and a custom `ratings`
+Model mapping — an apex Target with optional `ratings` (F1). Because all Target
+fields are optional, `---\n{}\n---` is structurally valid but not useful; tools
+should warn when a Model declares no requirements, factors, or child targets. The Markdown body and a custom `ratings`
 scale are optional.
 
 The format grows through use. A conforming reader ignores and preserves unknown
@@ -495,7 +524,7 @@ Malformed recognized content is an error, not an extension (R2).
 | --- | --- |
 | **No frontmatter, or no closing `---`** | Invalid (F1): there is no model to read. |
 | **Empty `targets`** | Valid but usually a warning; it declares no child targets. |
-| **Empty target node** | Valid as a grouping placeholder; a tool may warn if it contributes nothing. |
+| **Empty Target** | Valid as a grouping placeholder; a tool may warn if it contributes nothing. |
 | **Factor refinement that changes description incompatibly** | Discouraged, not invalid; a tool may warn. Adding requirements or compatible detail is fine. |
 | **Secondary `factors` entry outside visible scope** | Invalid (F6): the factor name must resolve on the current target or an ancestor. |
 | **Empty assessment value** | Invalid (F5): the assessment is the criteria and must be non-empty. |

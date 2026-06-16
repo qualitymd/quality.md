@@ -3,8 +3,8 @@
 Functional specification for the `qualitymd` CLI surface.
 
 > **Status:** high-level functional spec. Exact JSON field names and payload
-> details are illustrative; the authoritative payload contract lives in
-> [`cli-evaluate.md`](./cli-evaluate.md).
+> details are illustrative; the authoritative payload contract will live in a
+> forthcoming evaluation-lifecycle spec.
 
 The CLI is deterministic. It never calls a model. Skills carry judgment and
 orchestration (see [`skills.md`](./skills.md)).
@@ -12,12 +12,14 @@ orchestration (see [`skills.md`](./skills.md)).
 Detail docs:
 
 - [`cli-init.md`](./cli-init.md) - scaffold a starter target-tree `QUALITY.md`.
-- [`cli-lint.md`](./cli-lint.md) - deterministic structural validator.
-- [`cli-evaluate.md`](./cli-evaluate.md) - `evaluation` and `result` lifecycle,
-  report rollup, and CLI-to-skill payloads.
-- [`cli-federation.md`](./cli-federation.md) - multiple models as one grafted
-  target tree.
 - [`skills.md`](./skills.md) - skill-layer orchestration.
+
+Forthcoming (not yet written):
+
+- A deterministic structural validator (`lint`) spec.
+- An `evaluation` and `result` lifecycle spec: report rollup and CLI-to-skill
+  payloads.
+- A federation spec: multiple models as one grafted target tree.
 
 ## Split
 
@@ -41,7 +43,7 @@ assessment -> finding -> rating criteria -> result (rating)
 | Command | Purpose | Output |
 | --- | --- | --- |
 | `qualitymd init` | Scaffold a starter `QUALITY.md` target tree. | `./QUALITY.md` |
-| `qualitymd lint [file]` | Validate structure: target nodes, scoped factors, requirements, references, body shape. | JSON findings |
+| `qualitymd lint [file]` | Validate structure: Targets, scoped factors, requirements, references, body shape. | JSON findings |
 
 ### `qualitymd model`
 
@@ -73,14 +75,14 @@ assessment -> finding -> rating criteria -> result (rating)
 ## Two Meanings Of Target
 
 The CLI has a run-selection flag named `--target <path>`: it selects the subject
-path for an evaluation run. The schema has `targets:`: recursive target nodes
+path for an evaluation run. The schema has `targets:`: recursive **Targets**
 inside a `QUALITY.md`. The CLI run target selects which subject tree is being
-evaluated; schema target nodes describe how the model decomposes that subject.
-Docs use **CLI run target** for the flag and **target node** for the schema.
+evaluated; schema Targets describe how the model decomposes that subject.
+Docs use **CLI run target** for the flag and **Target** for the schema type.
 
 ## Structural Tier vs. Management Tier
 
-- **`lint`** asks whether the file is structurally valid: target-node shape,
+- **`lint`** asks whether the file is structurally valid: Target shape,
   scoped factor identity, requirement `assessment`s, `source` and referenced
   assessment paths, rating scales, and body headings.
 - **`model` / `evaluation` / `result`** manage the recorded state of evaluation.
@@ -103,13 +105,14 @@ a placeholder predating this surface.
 
 ## Evaluation Lifecycle
 
-The run model is specified in [`cli-evaluate.md`](./cli-evaluate.md). In brief:
+The run model will be specified in a forthcoming evaluation-lifecycle spec. In
+brief:
 
 - one living run per `(model, CLI run target)`, re-entered in place;
 - stored under `.quality/evaluations/<slug>/`;
 - always mutable; git history is the audit layer;
 - result states are `pending`, `recorded`, `skipped`, and `stale`;
-- reports roll requirements through factors and target nodes to an overall
+- reports roll requirements through factors and Targets to an overall
   verdict.
 
 ## Conventions
@@ -148,7 +151,7 @@ Recording a low rating with `result set` exits `0`; the gate is
 Everything under `.quality/` is committed unless a later policy says otherwise.
 In a federation, runs live beside each model and shared configuration lives at the
 scan root. The built-in quality meta-model ships as a normal recursive
-target-node `QUALITY.md` file and is used by `improve-quality-md`.
+Target-tree `QUALITY.md` file and is used by `improve-quality-md`.
 
 ## Open Questions
 
