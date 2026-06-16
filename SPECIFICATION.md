@@ -4,65 +4,48 @@
 structured model, followed by a Markdown body that explains the model's context
 and rationale.
 
-Throughout this document, **must** marks a hard rule for a conforming file or
-reader, **should** marks a recommendation that may be departed from with good
-reason, and **may** marks an option.
-
-This specification is **normative in its entirety**. Normative strength is carried
-by those keywords — not by a section's placement — and a passage that states the
-meaning of the format is binding even when it uses none of them. Three things carry
-no conformance force, and each is marked as such: **examples**, which illustrate
-rules stated elsewhere and add none; passages and sections labeled *Non-normative*,
-which a conforming tool may wholly ignore; and latitude granted explicitly with
-**may**.
+Throughout, **must** marks a hard rule, **should** a recommendation that may be
+departed from with good reason, and **may** an option. This specification is
+normative in its entirety: a passage that states the meaning of the format binds
+even when it uses none of those keywords. Only three things carry no conformance
+force, each marked as such — **examples**, which illustrate rules stated elsewhere
+and add none; passages labeled *Non-normative*; and latitude granted with **may**.
 
 Conformance has two subjects. A conforming **file** satisfies the file rules
-(F-rules); a conforming **reader** — a validator, evaluator, or any tool that
-consumes a file — satisfies the reader rules (R-rules) and the evaluation
-semantics. The F- and R-rules in the **Conformance** section below are the subset a
-tool can check mechanically, gathered so independent validators agree on one floor.
-The sections after it are equally normative: they fix the meaning of the model and
-the behavior of an evaluator — the shared semantics that make findings and ratings
-portable between tools — but cannot be reduced to a mechanical file check.
+(F-rules); a conforming **reader** — any validator, evaluator, or tool that consumes
+a file — satisfies the reader rules (R-rules) and the evaluation semantics. The
+**Conformance** section gathers the rules a tool can check mechanically, the floor
+that lets independent validators agree; the sections after it fix the meaning of the
+model and the behavior of an evaluator — equally binding, but not reducible to a
+mechanical check.
 
 ## Conformance
 
-This section gathers the **mechanically checkable** rules — those a tool can decide
-by inspecting a file or its own behavior, without judgment. A conforming **file**
-satisfies the file rules (F-rules); a conforming **reader** — a validator,
-evaluator, or any tool that consumes the file — satisfies the reader rules
-(R-rules). They are the floor that lets independent validators agree. The semantic
-and evaluation rules in the sections that follow are equally normative but cannot be
-reduced to a mechanical check; together they form the full contract.
-
-Conformance is the floor, not the ceiling. A tool may layer additional checks
-on top of these rules — warnings, suggestions, stylistic opinions, even errors
-under a stricter local policy — and the sections below point to many such
-opportunities. What a tool must not do is contradict them: it must not treat a
-conforming file as malformed, nor accept as valid what the F-rules forbid. The
-format prescribes the contract, not the tool; this document names tools only by
-way of example.
+These are the **mechanically checkable** rules — those a tool can decide by
+inspecting a file or its own behavior, without judgment. They are the floor, not the
+ceiling: a tool may layer more on top — warnings, house style, a stricter local
+policy, even errors — and the sections below point to many such openings. What it
+must not do is contradict them, treating a conforming file as malformed or accepting
+what the F-rules forbid. The format prescribes the contract, not the tool; tools are
+named here only by way of example.
 
 **File — frontmatter and body**
 
 - **F1.** A conforming file begins with a fenced YAML frontmatter block
-  (`---` … `---`) whose content is a single mapping: the **Model**. The Model is
-  the apex **Target** extended with model-level keys. A file with no frontmatter
-  or no closing fence is not a conforming `QUALITY.md`.
-- **F2.** An optional Markdown body may follow the closing fence. `ratings` is a
-  Model key, not a Target key: it appears only on the root mapping, never on a
-  nested target.
+  (`---` … `---`) whose content is a single mapping: the **Model**. A file with no
+  frontmatter or no closing fence is not a conforming `QUALITY.md`.
+- **F2.** An optional Markdown body may follow the closing fence.
 
 **File — target**
 
-- **F3.** A Target is a mapping. Its recognized keys are `source`,
-  `requirements`, `factors`, and `targets`; the Model adds `ratings` to that set
-  on the root mapping. The Target keys are optional and a target declares only
-  what it adds; `ratings` is required on the Model (F8). Target and factor names
-  are an open, case-sensitive vocabulary.
-- **F4.** Key types: `source` is a string; `requirements`
-  is a map of statement → Requirement; `factors` is a map of name → Factor;
-  `targets` is a map of name → Target (recursively the same shape).
+- **F3.** A Target is a mapping. Its recognized keys are `source`, `requirements`,
+  `factors`, and `targets`; the Model adds `ratings` on the root mapping and only
+  there. All are optional and a target declares only what it adds, except that
+  `ratings` is required on the Model (F8). Target and factor names are an open,
+  case-sensitive vocabulary.
+- **F4.** Key types: `source` is a string; `requirements` is a map of statement →
+  Requirement; `factors` is a map of name → Factor; `targets` is a map of name →
+  Target (recursively the same shape).
 
 **File — requirement**
 
@@ -77,7 +60,7 @@ way of example.
 **File — rating scale**
 
 - **F8.** The Model must declare `ratings`: a non-empty scale of at least two
-  levels listed best to worst, given inline. Each level has a unique `level` name
+  levels, listed best to worst, given inline. Each level has a unique `level` name
   and a `criterion` the evaluator judges against. A Model with no `ratings`, or a
   scale of fewer than two levels, is invalid. The format prescribes no default
   scale; an author chooses one to fit the subject.
@@ -86,20 +69,17 @@ way of example.
 
 - **R1.** A conforming reader preserves and ignores unknown frontmatter keys and
   unknown body sections; it must not reject a file for containing them.
-- **R2.** Malformed *recognized* content is an error, not an extension —
-  including a wrong key type, duplicate sibling keys, duplicate scale level
-  names, a secondary factor outside visible scope, or an empty assessment. A
-  reader may warn when an unknown key looks like a typo of a recognized one.
+- **R2.** Malformed *recognized* content is an error, not an extension — a wrong key
+  type, duplicate sibling keys, duplicate scale level names, a secondary factor
+  outside visible scope, or an empty assessment. A reader may warn when an unknown
+  key looks like a typo of a recognized one.
 
 ### Schema
 
-The frontmatter is a **Model**: an apex **Target** extended with model-level keys.
-The types below are the normative contract; each `<TypeName>` reference resolves to
-the type of that name. All keys are optional unless noted.
-
-A **Model** is the file's root mapping — an apex `Target` plus the keys that belong
-to the file as a whole rather than to any one target. `ratings` is the only such
-key, and it appears only here (F2, F8):
+The frontmatter is a **Model**: the file's root mapping, an apex **Target** plus the
+one key that belongs to the file as a whole rather than to any single target —
+`ratings`. The types below are the normative contract; each `<TypeName>` reference
+resolves to the type of that name, and all keys are optional unless noted.
 
 ```yaml
 # Model = Target + model-level keys. Appears once, as the root mapping.
@@ -107,7 +87,7 @@ ratings: <RatingScale>            # required (F8); the scale shared by all requi
 # ...plus every Target key below, applied to the apex target.
 ```
 
-A **Target** is the recursive node type. `targets` nests Targets to any depth;
+A **Target** is the recursive node type; `targets` nests Targets to any depth, and
 none of them carry `ratings`:
 
 ```yaml
@@ -150,19 +130,13 @@ A **RatingScale** is an ordered sequence of levels, best to worst (F8):
   criterion: <string>               # required; the criterion the evaluator judges against
 ```
 
-The apex `Target` carries the file's requirements, factors, and source directly, so
-a Model both *is* the top target and *contains* the target tree. `ratings` is the
-sole key that distinguishes a Model from any other `Target`.
-
 ## Model Semantics
 
 This section fixes what the structured model *means*. It states no new F-rule, but
-the meaning it gives to targets, factors, and requirements is normative: an
-evaluator that reads these elements differently does not interoperate.
+an evaluator that reads these elements differently does not interoperate.
 
-The frontmatter is a **Model**: the apex **Target** plus the file-level `ratings`
-scale. The file itself is the apex target, and every child under `targets:` is
-another Target with the same shape. The Model keeps three concepts separate:
+The file itself is the apex target; every child under `targets:` is another Target of
+the same shape. The model keeps three concepts separate:
 
 - **Target** — a thing evaluated, bound to the material it is assessed from by
   `source`. Target names are open, user-chosen identifiers such as `source-code`,
@@ -174,10 +148,10 @@ another Target with the same shape. The Model keeps three concepts separate:
   then applied to that finding to produce a **result**, whose recorded value is a
   **rating**.
 
-A requirement may be placed directly under a target, where it is unlensed, or
-under a factor, where it is assessed through that lens. A requirement may also
-name secondary `factors` it supports so one result can contribute to several
-factor views without repeating the requirement.
+A requirement may sit directly under a target, where it is unlensed, or under a
+factor, where it is assessed through that lens. It may also name secondary `factors`
+it supports, so one result contributes to several factor views without repeating the
+requirement.
 
 ```yaml
 ---
@@ -217,127 +191,102 @@ targets:
 ---
 ```
 
-A target should lead to at least one requirement — declared on it, carried by one
-of its factors, or contributed by a descendant target. A target whose subtree
-holds no requirement assesses nothing. A pure grouping target stays meaningful as
-long as its descendants carry requirements.
+A target should lead to at least one requirement — its own, one carried by a factor,
+or one contributed by a descendant. A target whose subtree holds none assesses
+nothing, though a pure grouping target stays meaningful as long as its descendants
+carry requirements.
 
 ### Targets And Source
 
-`targets` is a map of target name to Target. Position is
-lineage: a child inherits all applicable declarations from its ancestors. A
-catalog may seed names or baseline assessments, but a name with no catalog match
-is valid and simply starts with no baseline content.
+`targets` maps a target name to a Target. Position is lineage: a child inherits every
+applicable declaration from its ancestors. Names are open and user-chosen, drawn
+from no fixed set.
 
-`source` identifies the material evaluated for that target. It is a single
-string, conventionally interpreted as a path, a glob, or a URL; a reader is free
-to support whatever forms suit it. Paths and globs resolve relative to the
-containing `QUALITY.md` file.
+`source` identifies the material evaluated for that target — a single string,
+conventionally a path, a glob, or a URL, though a reader may support whatever forms
+suit it. Paths and globs resolve relative to the containing `QUALITY.md` file.
 
-When `source` is omitted, it defaults to the `QUALITY.md` file's directory and
-all subdirectories, recursively. A grouping target may leave `source` implicit and
-let children narrow it.
+When `source` is omitted, it defaults to the file's own directory and all
+subdirectories, recursively; a grouping target may leave it implicit and let
+children narrow it.
 
 ### Factors
 
-`factors` is a map of factor name to factor entry. A factor is a
-quality attribute scoped to the declaring target's subtree. A factor declared at
-the apex is project-wide; a factor declared on `targets.docs` applies only to
-that target and its descendants.
+`factors` maps a factor name to a factor entry. A factor is a quality attribute
+scoped to the declaring target's subtree: declared at the apex it is project-wide;
+declared on `targets.docs` it applies only to that target and its descendants.
 
-Factor identity is local to its scope. The same factor name declared on two
-unrelated targets denotes two distinct factors. Within a scope, a descendant may
-refine an inherited factor by adding requirements under the same factor name. It
-should not redefine an inherited factor with a contradictory meaning; because
-"contradictory" is a judgment, this is guidance a tool may warn on rather than a
-deterministic rule.
+Factor identity is local to its scope — the same name on two unrelated targets
+denotes two distinct factors. Within a scope a descendant may *refine* an inherited
+factor by adding requirements under the same name; it should not *redefine* it with a
+contradictory meaning. Because "contradictory" is a judgment, this is guidance a tool
+may warn on rather than a deterministic rule.
 
-A factor should carry at least one requirement — declared under it, added by a
-descendant refinement, or named as a secondary factor by a requirement in its
-scope. A factor that no requirement contributes to is a lens over nothing.
+A factor should carry at least one requirement — its own, one added by a refinement,
+or one that names it as a secondary factor. A factor that nothing contributes to is a
+lens over nothing.
 
-A factor should have a `description` explaining the quality attribute itself:
-what it means here, why it matters, and how it differs from sibling factors. The
-description should not merely restate the requirements attached to it.
+A factor should have a `description` of the attribute itself: what it means here, why
+it matters, and how it differs from its siblings. The description should not merely
+restate the requirements attached to it.
 
 ### Requirements
 
-`requirements` is a map of requirement statement to requirement
-entry. The key is the requirement's identity in reports and results. Each
-requirement produces exactly one result, recorded against the target that
-declares it.
+`requirements` maps a requirement statement to a requirement entry. The key is the
+requirement's identity in reports and results, and each requirement produces exactly
+one result, recorded against the target that declares it.
 
-A direct requirement under a target is assessed against that target's `source`
-without a primary factor. A requirement under a factor is assessed against the
-same target source, but is also part of that factor's rollup.
+A direct requirement is assessed against the target's `source` with no primary
+factor. A requirement under a factor is assessed against the same source but also
+joins that factor's rollup.
 
-`assessment` is the instruction that produces a finding — inline criteria text or
-a path to a document of criteria. It is never a list of separate assessments
-(F5). If one statement needs several independent assessments, split it into
-several requirements.
+`assessment` is the instruction that produces a finding — inline criteria text or a
+path to a document of criteria. It is never a list (F5); if one statement needs
+several independent assessments, split it into several requirements.
 
-The optional `factors` list names secondary factors the requirement supports;
-each name must be in visible scope (F6). Secondary factors do not change the
-requirement's primary placement; they let one result appear in additional factor
-views.
-
-A requirement may optionally set its own rating criteria with a `ratings` map
-keyed by the scale's level names (F7). It changes only the criteria for this
-requirement; it does not define levels, order, or display names.
+The optional secondary `factors` list (F6) lets one result appear in additional
+factor views without changing the requirement's primary placement. The optional
+`ratings` map sets this requirement's own criteria, keyed by the scale's level names
+(F7); it changes only the criteria, not the levels, their order, or their display
+names.
 
 ### Containment And Evaluation
 
 Containment describes how an evaluator treats the tree. These are **evaluator
-obligations**, not file rules: they bind any conforming reader that evaluates a
-model, even though no file can be checked against them. An evaluator records and
-rolls up results, while each individual assessment is performed by a judge — a
-person or a model. Tools that disagree here produce results that cannot be compared.
+obligations**, not file rules: they bind any reader that evaluates a model, even
+though no file can be checked against them. An evaluator records and rolls up
+results, while each individual assessment is performed by a judge — a person or a
+model. Tools that disagree here produce results that cannot be compared.
 
-Containment is the only inheritance primitive. A target owns what it declares and
-inherits applicable ancestor factors, requirements, and baseline content.
+Containment is the only inheritance primitive: a target owns what it declares and
+inherits its ancestors' applicable factors and requirements. A requirement is
+**assessed once, at the target that declares it**, against that target's `source` —
+one assessment, one finding, one result. Containment then makes it *govern* every
+descendant: the requirement joins their inherited context and its single result
+covers their subtree, but it is never re-assessed against a descendant's narrower
+source and never yields a second result.
 
-A requirement is **assessed once, at the target that declares it**, against that
-target's `source` — one assessment, one finding, one result. Containment then
-makes the requirement *govern* every descendant target: it joins their inherited
-context and its result covers their subtree. Governing a subtree is not
-re-assessment — an inherited requirement is never evaluated again against a
-descendant's narrower source and never produces a second result.
+Because a target's `source` ordinarily spans its descendants', that one assessment
+routinely inspects artifacts that also belong to sub-targets. That is expected: a
+finding may cite material anywhere in the declaring target's source — including files
+a descendant also selects — without splitting into multiple results.
 
-Because a target's `source` ordinarily spans its descendants', that single
-assessment routinely inspects artifacts that also belong to sub-targets. That is
-expected: a finding may cite material anywhere in the declaring target's source,
-including files a descendant target also selects, without splitting into multiple
-results.
-
-Inheritance is purely additive: a descendant may add factors and requirements,
-but it cannot remove an inherited requirement and does not re-assess it. To assess
-a concern at a finer grain, declare a requirement at that lower target;
-declaration altitude is assessment altitude.
+Inheritance is purely additive. A descendant may add factors and requirements but
+cannot remove an inherited one. To assess a concern at a finer grain, declare a
+requirement at that lower target: declaration altitude is assessment altitude.
 
 ## Rating Scale
 
-The structural rule for scales is F8; this section fixes how a scale is written and
+The structural rule for scales is F8; this section fixes how one is written and
 applied.
 
-The Model's required `ratings` value defines the scale shared by requirements. It
-is an inline sequence of levels, ordered best to worst; position defines rank.
-The format prescribes no default — the author picks a scale that fits the
-subject, whether a binary gate, a graded rubric, or a maturity ladder.
+The Model's `ratings` is an inline sequence of levels ordered best to worst, where
+position defines rank. Each level pairs a unique `level` identifier with the
+`criterion` the evaluator judges against, plus an optional `title` for display. The
+evaluator applies the criteria top-down and records the best level whose criterion
+the finding satisfies.
 
-```yaml
-ratings:
-  - { level: A, title: Excellent, criterion: "Fully satisfies the assessment; no material gaps." }
-  - { level: B, title: Good, criterion: "Satisfies the assessment with only trivial gaps." }
-  - { level: C, title: Acceptable, criterion: "Satisfies the core assessment with minor gaps." }
-  - { level: D, title: Poor, criterion: "Partly satisfies the assessment; significant gaps remain." }
-  - { level: E, title: Unacceptable, criterion: "Does not satisfy the assessment." }
-```
-
-The evaluator applies criteria top-down and records the best level whose
-criterion the finding satisfies.
-
-A scale need not be elaborate. The minimum is two levels — a plain pass/fail
-gate:
+A scale need not be elaborate. The minimum is two levels — a plain pass/fail gate:
 
 ```yaml
 ratings:
@@ -347,12 +296,12 @@ ratings:
 
 ### A suggested scale: the landing zone
 
-*Non-normative.* The format prescribes no default scale (F8). When a graded scale
-fits but you have no strong preference, the following four-level scale is a
-reasonable starting point, and a scaffolding tool may seed it. Its vocabulary and
-best-to-worst framing are adapted from the Agile Landing Zone pattern —
-**outstanding** exceeds the goal, **target** meets it, **minimum** is the acceptable
-floor, and **unacceptable** is below that floor:
+*Non-normative.* The format prescribes no default (F8), but when a graded scale fits
+and you have no strong preference, this four-level scale is a reasonable starting
+point, and a scaffolding tool may seed it. Its vocabulary and best-to-worst framing
+are adapted from the Agile Landing Zone pattern — **outstanding** exceeds the goal,
+**target** meets it, **minimum** holds the acceptable floor, and **unacceptable**
+falls below it:
 
 ```yaml
 ratings:
@@ -364,10 +313,9 @@ ratings:
 
 ### Custom Rating Criteria
 
-Set `ratings` on a requirement when the default criteria cannot
-express the gradient that matters. The custom criteria should name ordered,
-mutually distinct levels of the active scale (F7), and the evaluator assigns the
-best level met.
+Set `ratings` on a requirement when the scale's shared criteria cannot express the
+gradient that matters. The custom criteria should name ordered, mutually distinct
+levels of the active scale (F7), and the evaluator assigns the best level met.
 
 A measured-bound example:
 
@@ -399,8 +347,8 @@ requirements:
       unacceptable: "A critical behavior is untested, or the suite cannot be trusted."
 ```
 
-Do not customize `ratings` merely to restate "met" and "not met"; spend that text
-on the `assessment` instead.
+Do not customize `ratings` merely to restate "met" and "not met"; spend that text on
+the `assessment` instead.
 
 ## Invalid Examples
 
@@ -439,39 +387,15 @@ requirements:
       gold: "Exceptional coverage." # invalid (F7): `gold` is not a scale level
 ```
 
-A descendant that re-declares an inherited factor with a contradictory meaning is
-discouraged rather than invalid; a tool may warn:
-
-```yaml
-targets:
-  source-code:
-    factors:
-      maintainability:
-        description: How readily code can be changed.
-    targets:
-      generated:
-        factors:
-          maintainability:
-            description: How quickly generated code can be regenerated.
-            # discouraged: redefines an inherited factor instead of refining it
-```
-
-An empty `targets: {}` map is valid but meaningless and a tool may warn. An empty
-Target is structurally valid as a grouping target, but a useful model should
-eventually declare `source`, `requirements`, `factors`, or child `targets`.
-
 ## Markdown Body
 
-The Markdown body documents why the structured model is the right
-one. It gives the context an evaluator needs to interpret assessments
-consistently. The body is optional, and the format does not restrict it to any
-fixed set of sections.
+The Markdown body documents *why* this is the right model — the context an evaluator
+needs to interpret assessments consistently. It is optional, and the format does not
+restrict it to any fixed set of sections.
 
-*Non-normative.* The sections below are a recommended starting point, not a
-required structure; teams and tools may use, rename, or replace them. A reader
-preserves sections it does not recognize (R1).
-
-Recommended sections:
+*Non-normative.* The sections below are a recommended starting point, not a required
+structure; teams and tools may use, rename, or replace them, and a reader preserves
+sections it does not recognize (R1).
 
 | Section | What it captures |
 | --- | --- |
@@ -482,10 +406,10 @@ Recommended sections:
 | **Targets and factors** | A prose mirror of the target tree: each target's role, the scoped factors declared there, and why those lenses belong there. |
 | **Known gaps** | In-scope quality concerns deliberately deferred, each with a brief reason. |
 
-Applicability is structural: if a factor is declared on `targets.docs`, it applies
-there and below, not to unrelated targets. The body should explain that structure
-rather than argue exceptions in prose. **Scope** is for concerns outside the
-model's remit; **Known gaps** is for concerns inside the model that are deferred.
+Applicability is structural: a factor declared on `targets.docs` applies there and
+below, not to unrelated targets. The body should explain that structure rather than
+argue exceptions in prose. **Scope** is for concerns outside the model's remit;
+**Known gaps** is for in-scope concerns deliberately deferred.
 
 ```markdown
 # Quality model - Orders platform
@@ -521,57 +445,25 @@ visible first through operational signals.
 - Sustained peak-load behavior is in scope but not modeled yet.
 ```
 
-Unknown sections are allowed and preserved by tools (R1).
-
-## Federation
-
-A repository may contain more than one `QUALITY.md`. Federation
-grafts models into one target tree using the same containment rule as in-file
-`targets:`. The composition rule below is normative; it is a composition
-convention, not a new file rule.
-
-1. **Open target vocabulary.** Target names are user-driven. A catalog may seed
-   names or baseline assessments; it is not a closed enum.
-2. **Factor identity is scoped.** A factor is defined where it is declared and is
-   visible only to that target and descendants. Descendants may refine inherited
-   factors by adding requirements, not redefine them.
-3. **Containment inheritance.** A target inherits ancestor factors and
-   requirements. Requirements declared on a target apply there and flow down.
-   Inheritance is additive: a descendant adds factors and requirements but does
-   not remove inherited ones.
-4. **Baseline is the rolling root ancestor.** Shipped baseline assessments are
-   the outermost target tree. Improved baseline assessments reach everyone; they
-   are always evaluated and visible rather than version-pinned away.
-5. **Nest vs. federate.** Nest sub-targets when parts share the target's factors.
-   Federate into a separate model when a part warrants its own ownership or
-   factors. Federation grafts that model as a target subtree.
-
-How a tool discovers, evaluates, and reports across federated models is left to
-the tool; the format fixes only the composition rule above.
-
 ## Extensibility And Versioning
 
-The minimal structural core is a fenced YAML frontmatter block whose content is a
-Model mapping — an apex Target plus its required `ratings` scale (F1, F8). Because
-the Target fields are optional, a Model carrying only `ratings` is structurally
-valid but not useful; tools should warn when a Model declares no requirements,
-factors, or child targets. The Markdown body is optional.
-
-The format grows through use. A conforming reader ignores and preserves unknown
-frontmatter keys and unknown body sections (R1) rather than rejecting them.
-Malformed recognized content is an error, not an extension (R2).
+The minimal structural core is a frontmatter Model with its required `ratings` scale
+(F1, F8). Because the Target fields are optional, a Model carrying only `ratings` is
+structurally valid but not useful; tools should warn when one declares no
+requirements, factors, or child targets. The body is optional. The format grows
+through use: a reader preserves unknown frontmatter keys and unknown body sections
+(R1) rather than rejecting them, while malformed recognized content is an error, not
+an extension (R2).
 
 ### Extending The Format
 
-*Non-normative.* The rules above are what make extension safe; this is guidance on
-using them. Target and factor names are an open vocabulary — a catalog may seed
-names without closing the set. A tool may layer checks on top of conformance:
-warnings, house style, or a stricter local policy that rejects what the format
-merely discourages, provided it never treats a conforming file as malformed
-(Conformance). Producers may add frontmatter keys and body sections for their own
-tooling; keep them additive so other readers can ignore them (R1). A scaffolder may
-seed opinionated defaults — the landing-zone scale, the recommended body sections —
-as a starting point an author is free to replace.
+*Non-normative.* Target and factor names are an open vocabulary, so producers may
+extend freely: add frontmatter keys and body sections for your own tooling, kept
+additive so other readers can ignore them (R1). A tool may enforce a stricter local
+policy that rejects what the format merely discourages, provided it never treats a
+conforming file as malformed (Conformance). A scaffolder may seed opinionated
+defaults — the landing-zone scale, the recommended body sections — as a starting
+point an author is free to replace.
 
 ### Edge Cases
 
