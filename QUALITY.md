@@ -1,4 +1,18 @@
 ---
+title: QUALITY.md
+ratingScale:
+  - level: outstanding
+    title: Outstanding
+    criterion: "Exceeds the requirement; satisfies it with margin to spare."
+  - level: target
+    title: Target
+    criterion: "Satisfies the requirement."
+  - level: minimum
+    title: Minimum
+    criterion: "Falls short of the goal but holds the acceptable floor."
+  - level: unacceptable
+    title: Unacceptable
+    criterion: "Falls below the acceptable floor."
 targets:
   format-spec:
     source: ./SPECIFICATION.md

@@ -17,7 +17,7 @@ commands below map to plain `go` invocations.
 ## Development tasks
 
 ```sh
-mise run run -- check   # run the CLI (go run ./cmd/qualitymd)
+mise run run -- check   # run the placeholder CLI (go run ./cmd/qualitymd)
 mise run build          # build ./dist/qualitymd
 mise run test           # go test ./...
 mise run vet            # go vet ./...
@@ -32,8 +32,8 @@ Please run `mise run fmt` and `mise run vet` before opening a pull request.
 ```
 cmd/qualitymd        entry point
 internal/cli         Cobra commands, run through Charm Fang
-internal/spec        QUALITY.md frontmatter parser
-internal/eval        result rollup and rating
+internal/spec        current QUALITY.md frontmatter model loader
+internal/eval        placeholder assessment traversal
 internal/report      Lip Gloss terminal output
 scripts/build-npm.mjs   assembles the npm distribution
 ```

@@ -8,7 +8,7 @@ the quality requirements for a software system or component and scores them. Eac
 file pairs **YAML frontmatter** (the recursive target-tree quality model) with a
 **Markdown body** (its documentation). The specified CLI is deterministic: it
 scaffolds, lints, resolves, records, rolls up, and reports; skills perform the
-judgment and write ratings back through the CLI.
+judgment and record rating results through the CLI.
 
 See [`README.md`](README.md) for the overview, [`CONTRIBUTING.md`](CONTRIBUTING.md)
 for dev setup and the release process, and [`SPECIFICATION.md`](SPECIFICATION.md) for

@@ -1,4 +1,4 @@
-// Package report renders evaluation results to the terminal.
+// Package report renders placeholder assessment traversal results to the terminal.
 package report
 
 import (
@@ -12,28 +12,30 @@ import (
 )
 
 var (
-	passStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("2")).Bold(true)
-	failStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("1")).Bold(true)
-	skipStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("3")).Bold(true)
-	factorStyle = lipgloss.NewStyle().Bold(true).Underline(true)
-	detailStyle = lipgloss.NewStyle().Faint(true)
+	notAssessedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("3")).Bold(true)
+	groupStyle       = lipgloss.NewStyle().Bold(true).Underline(true)
+	detailStyle      = lipgloss.NewStyle().Faint(true)
 )
 
 // Print writes a grouped, styled summary of results to w.
 func Print(w io.Writer, results eval.Results) {
-	byFactor := map[string][]eval.Result{}
-	var factors []string
+	byGroup := map[string][]eval.Result{}
+	var groups []string
 	for _, it := range results.Items {
-		if _, seen := byFactor[it.Factor]; !seen {
-			factors = append(factors, it.Factor)
+		group := it.Target
+		if it.Factor != "" {
+			group += " / " + it.Factor
 		}
-		byFactor[it.Factor] = append(byFactor[it.Factor], it)
+		if _, seen := byGroup[group]; !seen {
+			groups = append(groups, group)
+		}
+		byGroup[group] = append(byGroup[group], it)
 	}
-	sort.Strings(factors)
+	sort.Strings(groups)
 
-	for _, f := range factors {
-		fmt.Fprintln(w, factorStyle.Render(f))
-		for _, it := range byFactor[f] {
+	for _, group := range groups {
+		fmt.Fprintln(w, groupStyle.Render(group))
+		for _, it := range byGroup[group] {
 			fmt.Fprintf(w, "  %s  %s\n", icon(it.Status), it.Requirement)
 			if it.Detail != "" {
 				fmt.Fprintf(w, "       %s\n", detailStyle.Render(it.Detail))
@@ -45,11 +47,9 @@ func Print(w io.Writer, results eval.Results) {
 
 func icon(s eval.Status) string {
 	switch s {
-	case eval.StatusPass:
-		return passStyle.Render("✓ pass")
-	case eval.StatusFail:
-		return failStyle.Render("✗ fail")
+	case eval.StatusRated:
+		return "rated"
 	default:
-		return skipStyle.Render("• skip")
+		return notAssessedStyle.Render("not assessed")
 	}
 }

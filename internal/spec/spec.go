@@ -1,15 +1,4 @@
-// Package spec loads and models a QUALITY.md specification. The spec lives in
-// the YAML frontmatter of a Markdown file.
-//
-// STUB: This data model is a simplification that does not track the current
-// format spec (SPECIFICATION.md and specs/). It models factors as a bare map of
-// requirement name to a single `prompt`/`bash`/`cel` evaluator plus a pass/fail
-// `rating`. The real format is richer: factors nest `subfactors` and carry
-// `requirements`, each requirement declares exactly one assessment and is scored
-// against a multi-level `ratings` scale (not a binary pass/fail), assessments
-// reference `prompt`/`target` paths, and the Markdown body has structural
-// requirements of its own. The loader here also ignores the body entirely. Do
-// not treat these types as the canonical schema.
+// Package spec loads and models QUALITY.md frontmatter.
 package spec
 
 import (
@@ -22,33 +11,44 @@ import (
 
 // Spec is a parsed QUALITY.md document.
 type Spec struct {
-	Factors map[string]Factor `yaml:"factors"`
+	Title        string                 `yaml:"title,omitempty"`
+	RatingScale  []RatingLevel          `yaml:"ratingScale"`
+	Factors      map[string]Factor      `yaml:"factors,omitempty"`
+	Requirements map[string]Requirement `yaml:"requirements,omitempty"`
+	Targets      map[string]Target      `yaml:"targets,omitempty"`
+	Source       string                 `yaml:"source,omitempty"`
 
 	// Path is the source file; not part of the YAML.
 	Path string `yaml:"-"`
 }
 
-// Factor groups related requirements (e.g. "reliability") by name.
-type Factor map[string]Requirement
-
-// Requirement is a single scored expectation. Exactly one evaluator
-// (Prompt, Bash, or CEL) is expected; Rating supplies pass/fail criteria.
-type Requirement struct {
-	// Prompt holds inferential assessment conditions, either inline text or a
-	// path to a Markdown guide. Evaluated by an LLM (not yet implemented).
-	Prompt string `yaml:"prompt,omitempty"`
-	// Bash is a shell command; a zero exit status means pass.
-	Bash string `yaml:"bash,omitempty"`
-	// CEL is a Common Expression Language predicate; a true result means pass.
-	CEL string `yaml:"cel,omitempty"`
-	// Rating describes the pass/fail criteria.
-	Rating *Rating `yaml:"rating,omitempty"`
+// RatingLevel is one level in a model's rating scale.
+type RatingLevel struct {
+	Level     string `yaml:"level"`
+	Title     string `yaml:"title,omitempty"`
+	Criterion string `yaml:"criterion"`
 }
 
-// Rating describes the conditions under which a requirement passes or fails.
-type Rating struct {
-	Pass string `yaml:"pass,omitempty"`
-	Fail string `yaml:"fail,omitempty"`
+// Target is a recursive target node in the quality model.
+type Target struct {
+	Factors      map[string]Factor      `yaml:"factors,omitempty"`
+	Requirements map[string]Requirement `yaml:"requirements,omitempty"`
+	Targets      map[string]Target      `yaml:"targets,omitempty"`
+	Source       string                 `yaml:"source,omitempty"`
+}
+
+// Factor is a quality lens scoped to the target where it is declared.
+type Factor struct {
+	Description  string                 `yaml:"description,omitempty"`
+	Factors      map[string]Factor      `yaml:"factors,omitempty"`
+	Requirements map[string]Requirement `yaml:"requirements,omitempty"`
+}
+
+// Requirement is one assessable expectation.
+type Requirement struct {
+	Assessment string            `yaml:"assessment"`
+	Factors    []string          `yaml:"factors,omitempty"`
+	Ratings    map[string]string `yaml:"ratings,omitempty"`
 }
 
 // Load reads the spec at path (defaulting to QUALITY.md) and parses its
@@ -68,11 +68,99 @@ func Load(path string) (*Spec, error) {
 	}
 
 	var s Spec
-	if err := yaml.Unmarshal(fm, &s); err != nil {
+	decoder := yaml.NewDecoder(bytes.NewReader(fm))
+	decoder.KnownFields(true)
+	if err := decoder.Decode(&s); err != nil {
 		return nil, fmt.Errorf("%s: parsing spec: %w", path, err)
 	}
 	s.Path = path
+	if err := validate(s); err != nil {
+		return nil, fmt.Errorf("%s: invalid QUALITY.md: %w", path, err)
+	}
 	return &s, nil
+}
+
+func validate(s Spec) error {
+	if len(s.RatingScale) < 2 {
+		return fmt.Errorf("ratingScale must declare at least two levels")
+	}
+	levels := map[string]bool{}
+	for i, level := range s.RatingScale {
+		if level.Level == "" {
+			return fmt.Errorf("ratingScale[%d].level is required", i)
+		}
+		if levels[level.Level] {
+			return fmt.Errorf("ratingScale level %q is duplicated", level.Level)
+		}
+		levels[level.Level] = true
+		if level.Criterion == "" {
+			return fmt.Errorf("ratingScale[%d].criterion is required", i)
+		}
+	}
+	if len(s.Factors) == 0 && len(s.Requirements) == 0 && len(s.Targets) == 0 {
+		return fmt.Errorf("one of factors, requirements, or targets is required")
+	}
+	for name, req := range s.Requirements {
+		if err := validateRequirement(name, req, levels); err != nil {
+			return err
+		}
+	}
+	for name, factor := range s.Factors {
+		if err := validateFactor("factor "+name, factor, levels); err != nil {
+			return err
+		}
+	}
+	for name, target := range s.Targets {
+		if err := validateTarget("target "+name, target, levels); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateTarget(path string, target Target, levels map[string]bool) error {
+	for name, req := range target.Requirements {
+		if err := validateRequirement(path+" requirement "+name, req, levels); err != nil {
+			return err
+		}
+	}
+	for name, factor := range target.Factors {
+		if err := validateFactor(path+" factor "+name, factor, levels); err != nil {
+			return err
+		}
+	}
+	for name, child := range target.Targets {
+		if err := validateTarget(path+" target "+name, child, levels); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateFactor(path string, factor Factor, levels map[string]bool) error {
+	for name, req := range factor.Requirements {
+		if err := validateRequirement(path+" requirement "+name, req, levels); err != nil {
+			return err
+		}
+	}
+	for name, child := range factor.Factors {
+		if err := validateFactor(path+" factor "+name, child, levels); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateRequirement(path string, req Requirement, levels map[string]bool) error {
+	if req.Assessment == "" {
+		return fmt.Errorf("%s: assessment is required", path)
+	}
+	for level := range req.Ratings {
+		if !levels[level] {
+			return fmt.Errorf("%s: ratings override names unknown level %q", path, level)
+		}
+	}
+	return nil
 }
 
 // frontmatter extracts the YAML block delimited by a leading and trailing

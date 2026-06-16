@@ -12,17 +12,15 @@ import (
 
 // newCheckCmd builds the `check` command.
 //
-// STUB: `check` is placeholder behavior that predates the current spec and has
-// no counterpart in specs/cli.md. It collapses what the spec splits into two
-// distinct tiers — the deterministic structural `lint` and the agentic
-// `evaluate` — into one undifferentiated pass/fail run. It is kept only to give
-// the binary something to do; expect it to be removed in favor of the spec'd
-// commands.
+// STUB: `check` is placeholder behavior that predates the final CLI surface. It
+// loads the current frontmatter shape, traverses assessments, and records them as
+// not assessed rather than performing the judgment-based evaluation described in
+// SPECIFICATION.md.
 func newCheckCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "check [path]",
-		Short: "Evaluate a QUALITY.md specification",
-		Long:  "Loads a QUALITY.md spec, evaluates every requirement, and prints a report.",
+		Short: "Traverse a QUALITY.md file with placeholder results",
+		Long:  "Loads a QUALITY.md file, traverses every requirement assessment, and prints placeholder results.",
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path, _ := cmd.Flags().GetString("file")

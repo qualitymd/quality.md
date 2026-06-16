@@ -22,6 +22,20 @@ against, and **CI** gates on the result.
 
 ```markdown
 ---
+title: Orders API
+ratingScale:
+  - level: outstanding
+    title: Outstanding
+    criterion: "Exceeds the requirement; satisfies it with margin to spare."
+  - level: target
+    title: Target
+    criterion: "Satisfies the requirement."
+  - level: minimum
+    title: Minimum
+    criterion: "Falls short of the goal but holds the acceptable floor."
+  - level: unacceptable
+    title: Unacceptable
+    criterion: "Falls below the acceptable floor."
 targets:
   api:
     source: ./internal/api
@@ -45,7 +59,13 @@ targets:
             assessment: >
               No credentials, API keys, or tokens appear in source, config, or
               fixtures; secrets are loaded from the environment at runtime.
-  docs: ./docs
+  docs:
+    source: ./docs
+    requirements:
+      "integration docs describe the order lifecycle":
+        assessment: >
+          The documentation explains how an order moves from request to durable
+          acknowledgement, including failure responses and retry guidance.
 ---
 
 # Quality model — Orders API
@@ -82,8 +102,8 @@ material assessed, and child `targets:` decompose or narrow the subject. The
 **body** holds the reasoning the frontmatter cannot: what the system is, what
 *good* means for it, and why these are the right requirements.
 
-A coding agent reads this file to evaluate the Orders API against it — judging
-each `prompt` against the body, then reporting where the subject falls short. The
+A coding agent reads this file to evaluate the Orders API against it — performing
+each `assessment` against the target source, then reporting where the subject falls short. The
 `qualitymd` CLI records and rolls up those verdicts deterministically; the
 judging is the agent's part.
 

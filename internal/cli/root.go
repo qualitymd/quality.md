@@ -1,13 +1,10 @@
 // Package cli wires the quality.md command tree (Cobra) and runs it through
 // Fang for styled help, errors, version, and shell completion.
 //
-// STUB: This is an early scaffold and does NOT reflect the current CLI
-// specification under specs/. The spec (see specs/cli.md) defines a
-// deterministic, resource-based surface — `init`, `lint`, and the `model`,
-// `evaluation`, and `result` resource trees, with judgment living in skills —
-// whereas this tree exposes only a single `check` command that does not exist in
-// the spec. Treat everything here as a placeholder to be replaced, not as the
-// intended command surface.
+// STUB: This is an early scaffold. SPECIFICATION.md defines the current file
+// format and evaluation semantics; the intended CLI surface is still being
+// implemented. Treat the single `check` command here as placeholder behavior,
+// not as the final command surface.
 package cli
 
 import (
@@ -28,10 +25,10 @@ var (
 func newRootCmd() *cobra.Command {
 	root := &cobra.Command{
 		Use:   "qualitymd",
-		Short: "Evaluate quality.md specifications",
-		Long: "quality.md evaluates a QUALITY.md specification: a Markdown file whose " +
-			"frontmatter declares factors and requirements, each scored by a prompt, a bash " +
-			"command, or a CEL expression.",
+		Short: "Work with QUALITY.md files",
+		Long: "qualitymd works with QUALITY.md files: Markdown documents whose YAML " +
+			"frontmatter declares a quality model with a ratingScale, targets, factors, " +
+			"requirements, and one assessment per requirement.",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}

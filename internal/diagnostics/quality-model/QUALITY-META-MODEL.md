@@ -1,17 +1,18 @@
 ---
+title: Quality meta-model
 source: ./QUALITY.md
-ratings:
+ratingScale:
   - level: outstanding
-    title: "Outstanding"
+    title: Outstanding
     criterion: "Exceeds the diagnostic requirement; satisfies it with margin to spare."
   - level: target
-    title: "Target"
+    title: Target
     criterion: "Satisfies the diagnostic requirement; no material gaps."
   - level: minimum
-    title: "Minimum"
+    title: Minimum
     criterion: "Satisfies the core of the requirement but falls short of the goal; minor or scoped gaps remain at the acceptable floor."
   - level: unacceptable
-    title: "Unacceptable"
+    title: Unacceptable
     criterion: "Does not satisfy the diagnostic requirement; falls below the acceptable floor."
 factors:
   functionality:

@@ -1,18 +1,13 @@
-// Package eval scores the requirements in a quality.md spec.
+// Package eval traverses QUALITY.md requirements.
 //
-// STUB: This evaluator does not implement the evaluation model described in
-// the specs. The intended model is an agentic, judgment-based audit that
-// reads the subject codebase and scores each requirement against a ratings
-// scale, producing an evaluation bundle. What lives here instead is a flat
-// pass/fail/skip runner over inline `bash`/`cel`/`rules` evaluators: `bash`
-// shells out on exit code, `cel` runs against an empty environment, and `rules`
-// (the LLM tier) is unimplemented. None of this matches the spec's two-tier
-// design and is expected to be replaced wholesale.
+// STUB: The current specification describes judgment-based assessment and
+// rating. This package does not perform that judgment yet; it records each
+// requirement as not assessed so the placeholder CLI can exercise the current
+// frontmatter shape without claiming a conforming evaluation.
 package eval
 
 import (
 	"context"
-	"os/exec"
 	"strings"
 
 	"github.com/qualitymd/quality.md/internal/spec"
@@ -22,13 +17,13 @@ import (
 type Status int
 
 const (
-	StatusPass Status = iota
-	StatusFail
-	StatusSkip
+	StatusRated Status = iota
+	StatusNotAssessed
 )
 
 // Result is the outcome for a single requirement.
 type Result struct {
+	Target      string
 	Factor      string
 	Requirement string
 	Status      Status
@@ -42,58 +37,59 @@ type Results struct {
 
 // Failed reports whether any requirement failed.
 func (r Results) Failed() bool {
-	for _, it := range r.Items {
-		if it.Status == StatusFail {
-			return true
-		}
-	}
 	return false
 }
 
-// Run evaluates every requirement in the spec.
-func Run(ctx context.Context, s *spec.Spec) Results {
+// Run traverses every requirement in the spec.
+func Run(_ context.Context, s *spec.Spec) Results {
 	var res Results
+	for reqName, req := range s.Requirements {
+		res.Items = append(res.Items, result("(root)", "", reqName, req))
+	}
 	for factorName, factor := range s.Factors {
-		for reqName, req := range factor {
-			res.Items = append(res.Items, evalRequirement(ctx, factorName, reqName, req))
-		}
+		walkFactor(&res, "(root)", factorName, factor)
+	}
+	for targetName, target := range s.Targets {
+		walkTarget(&res, targetName, target)
 	}
 	return res
 }
 
-func evalRequirement(ctx context.Context, factor, name string, req spec.Requirement) Result {
-	switch {
-	case req.Bash != "":
-		return evalBash(ctx, factor, name, req.Bash)
-	case req.CEL != "":
-		return evalCEL(factor, name, req.CEL)
-	case req.Prompt != "":
-		return Result{
-			Factor:      factor,
-			Requirement: name,
-			Status:      StatusSkip,
-			Detail:      "prompt (LLM) evaluation not yet implemented",
-		}
-	default:
-		return Result{
-			Factor:      factor,
-			Requirement: name,
-			Status:      StatusSkip,
-			Detail:      "no evaluator specified",
-		}
+func walkTarget(res *Results, targetName string, target spec.Target) {
+	for reqName, req := range target.Requirements {
+		res.Items = append(res.Items, result(targetName, "", reqName, req))
+	}
+	for factorName, factor := range target.Factors {
+		walkFactor(res, targetName, factorName, factor)
+	}
+	for childName, child := range target.Targets {
+		walkTarget(res, targetName+"/"+childName, child)
 	}
 }
 
-func evalBash(ctx context.Context, factor, name, script string) Result {
-	out, err := exec.CommandContext(ctx, "bash", "-c", script).CombinedOutput()
-	r := Result{Factor: factor, Requirement: name, Detail: strings.TrimSpace(string(out))}
-	if err != nil {
-		r.Status = StatusFail
-		if r.Detail == "" {
-			r.Detail = err.Error()
-		}
-		return r
+func walkFactor(res *Results, targetName, factorName string, factor spec.Factor) {
+	for reqName, req := range factor.Requirements {
+		res.Items = append(res.Items, result(targetName, factorName, reqName, req))
 	}
-	r.Status = StatusPass
-	return r
+	for childName, child := range factor.Factors {
+		walkFactor(res, targetName, factorName+"/"+childName, child)
+	}
+}
+
+func result(targetName, factorName, reqName string, req spec.Requirement) Result {
+	return Result{
+		Target:      targetName,
+		Factor:      factorName,
+		Requirement: reqName,
+		Status:      StatusNotAssessed,
+		Detail:      summarizeAssessment(req.Assessment),
+	}
+}
+
+func summarizeAssessment(assessment string) string {
+	assessment = strings.Join(strings.Fields(assessment), " ")
+	if len(assessment) <= 96 {
+		return "assessment not run: " + assessment
+	}
+	return "assessment not run: " + assessment[:93] + "..."
 }
