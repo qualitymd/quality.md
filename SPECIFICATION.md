@@ -6,30 +6,42 @@ and rationale.
 
 Throughout this document, **must** marks a hard rule for a conforming file or
 reader, **should** marks a recommendation that may be departed from with good
-reason, and **may** marks an author option. Examples illustrate rules without
-adding new rules.
+reason, and **may** marks an option.
 
-The **Normative Core** below is the entire conformance contract. Every section
-after it is *informative*: it explains the concepts, the evaluation model, and
-how to author a good file, but it adds no new conformance requirements. Where an
-informative section uses **should** or **may**, it is offering guidance, not
-extending the core.
+This specification is **normative in its entirety**. Normative strength is carried
+by those keywords — not by a section's placement — and a passage that states the
+meaning of the format is binding even when it uses none of them. Three things carry
+no conformance force, and each is marked as such: **examples**, which illustrate
+rules stated elsewhere and add none; passages and sections labeled *Non-normative*,
+which a conforming tool may wholly ignore; and latitude granted explicitly with
+**may**.
 
-## Normative Core
+Conformance has two subjects. A conforming **file** satisfies the file rules
+(F-rules); a conforming **reader** — a validator, evaluator, or any tool that
+consumes a file — satisfies the reader rules (R-rules) and the evaluation
+semantics. The F- and R-rules in the **Conformance** section below are the subset a
+tool can check mechanically, gathered so independent validators agree on one floor.
+The sections after it are equally normative: they fix the meaning of the model and
+the behavior of an evaluator — the shared semantics that make findings and ratings
+portable between tools — but cannot be reduced to a mechanical file check.
 
-This section is the conformance contract. A conforming **file** satisfies the
-file rules (F-rules); a conforming **reader** — a validator or any tool that
-consumes the file — satisfies the reader rules (R-rules). The file rules are
-deterministically checkable: a tool can decide mechanically whether a file
-satisfies them.
+## Conformance
+
+This section gathers the **mechanically checkable** rules — those a tool can decide
+by inspecting a file or its own behavior, without judgment. A conforming **file**
+satisfies the file rules (F-rules); a conforming **reader** — a validator,
+evaluator, or any tool that consumes the file — satisfies the reader rules
+(R-rules). They are the floor that lets independent validators agree. The semantic
+and evaluation rules in the sections that follow are equally normative but cannot be
+reduced to a mechanical check; together they form the full contract.
 
 Conformance is the floor, not the ceiling. A tool may layer additional checks
-on top of the core — warnings, suggestions, stylistic opinions, even errors
-under a stricter local policy — and the informative sections below point to many
-such opportunities. What a tool must not do is contradict the core: it must not
-treat a conforming file as malformed, nor accept as valid what the F-rules
-forbid. The format prescribes the contract, not the tool; this document names
-tools only by way of example.
+on top of these rules — warnings, suggestions, stylistic opinions, even errors
+under a stricter local policy — and the sections below point to many such
+opportunities. What a tool must not do is contradict them: it must not treat a
+conforming file as malformed, nor accept as valid what the F-rules forbid. The
+format prescribes the contract, not the tool; this document names tools only by
+way of example.
 
 **File — frontmatter and body**
 
@@ -144,8 +156,9 @@ sole key that distinguishes a Model from any other `Target`.
 
 ## Model Semantics
 
-*Informative.* This section explains what the structured model means; it restates
-no F-rule.
+This section fixes what the structured model *means*. It states no new F-rule, but
+the meaning it gives to targets, factors, and requirements is normative: an
+evaluator that reads these elements differently does not interoperate.
 
 The frontmatter is a **Model**: the apex **Target** plus the file-level `ratings`
 scale. The file itself is the apex target, and every child under `targets:` is
@@ -211,7 +224,7 @@ long as its descendants carry requirements.
 
 ### Targets And Source
 
-*Informative.* `targets` is a map of target name to Target. Position is
+`targets` is a map of target name to Target. Position is
 lineage: a child inherits all applicable declarations from its ancestors. A
 catalog may seed names or baseline assessments, but a name with no catalog match
 is valid and simply starts with no baseline content.
@@ -227,7 +240,7 @@ let children narrow it.
 
 ### Factors
 
-*Informative.* `factors` is a map of factor name to factor entry. A factor is a
+`factors` is a map of factor name to factor entry. A factor is a
 quality attribute scoped to the declaring target's subtree. A factor declared at
 the apex is project-wide; a factor declared on `targets.docs` applies only to
 that target and its descendants.
@@ -249,7 +262,7 @@ description should not merely restate the requirements attached to it.
 
 ### Requirements
 
-*Informative.* `requirements` is a map of requirement statement to requirement
+`requirements` is a map of requirement statement to requirement
 entry. The key is the requirement's identity in reports and results. Each
 requirement produces exactly one result, recorded against the target that
 declares it.
@@ -274,11 +287,11 @@ requirement; it does not define levels, order, or display names.
 
 ### Containment And Evaluation
 
-*Informative.* Containment describes how an evaluator treats the tree. It is
-evaluator behavior, not file conformance: an evaluator records and rolls up
-results, while each individual assessment is performed by a judge — a person or a
-model. This section documents the shared model those tools follow; it imposes no
-F-rule on the file.
+Containment describes how an evaluator treats the tree. These are **evaluator
+obligations**, not file rules: they bind any conforming reader that evaluates a
+model, even though no file can be checked against them. An evaluator records and
+rolls up results, while each individual assessment is performed by a judge — a
+person or a model. Tools that disagree here produce results that cannot be compared.
 
 Containment is the only inheritance primitive. A target owns what it declares and
 inherits applicable ancestor factors, requirements, and baseline content.
@@ -303,8 +316,8 @@ declaration altitude is assessment altitude.
 
 ## Rating Scale
 
-*Informative.* The structural rule for scales is F8; this section explains how a
-scale is written and applied.
+The structural rule for scales is F8; this section fixes how a scale is written and
+applied.
 
 The Model's required `ratings` value defines the scale shared by requirements. It
 is an inline sequence of levels, ordered best to worst; position defines rank.
@@ -334,11 +347,12 @@ ratings:
 
 ### A suggested scale: the landing zone
 
-*Informative.* When a graded scale fits but you have no strong preference, the
-following four-level scale is a reasonable starting point, and a scaffolding tool
-may seed it. Its vocabulary and best-to-worst framing are adapted from the Agile
-Landing Zone pattern — **outstanding** exceeds the goal, **target** meets it,
-**minimum** is the acceptable floor, and **unacceptable** is below that floor:
+*Non-normative.* The format prescribes no default scale (F8). When a graded scale
+fits but you have no strong preference, the following four-level scale is a
+reasonable starting point, and a scaffolding tool may seed it. Its vocabulary and
+best-to-worst framing are adapted from the Agile Landing Zone pattern —
+**outstanding** exceeds the goal, **target** meets it, **minimum** is the acceptable
+floor, and **unacceptable** is below that floor:
 
 ```yaml
 ratings:
@@ -350,7 +364,7 @@ ratings:
 
 ### Custom Rating Criteria
 
-*Informative.* Set `ratings` on a requirement when the default criteria cannot
+Set `ratings` on a requirement when the default criteria cannot
 express the gradient that matters. The custom criteria should name ordered,
 mutually distinct levels of the active scale (F7), and the evaluator assigns the
 best level met.
@@ -390,7 +404,7 @@ on the `assessment` instead.
 
 ## Invalid Examples
 
-*Informative.* Each example illustrates a Normative Core rule it violates.
+Each example illustrates a rule it violates and adds none of its own.
 
 ```yaml
 requirements:
@@ -448,10 +462,14 @@ eventually declare `source`, `requirements`, `factors`, or child `targets`.
 
 ## Markdown Body
 
-*Informative.* The Markdown body documents why the structured model is the right
+The Markdown body documents why the structured model is the right
 one. It gives the context an evaluator needs to interpret assessments
 consistently. The body is optional, and the format does not restrict it to any
 fixed set of sections.
+
+*Non-normative.* The sections below are a recommended starting point, not a
+required structure; teams and tools may use, rename, or replace them. A reader
+preserves sections it does not recognize (R1).
 
 Recommended sections:
 
@@ -507,9 +525,10 @@ Unknown sections are allowed and preserved by tools (R1).
 
 ## Federation
 
-*Informative.* A repository may contain more than one `QUALITY.md`. Federation
+A repository may contain more than one `QUALITY.md`. Federation
 grafts models into one target tree using the same containment rule as in-file
-`targets:`. It is a composition convention, not a new file rule.
+`targets:`. The composition rule below is normative; it is a composition
+convention, not a new file rule.
 
 1. **Open target vocabulary.** Target names are user-driven. A catalog may seed
    names or baseline assessments; it is not a closed enum.
@@ -542,9 +561,21 @@ The format grows through use. A conforming reader ignores and preserves unknown
 frontmatter keys and unknown body sections (R1) rather than rejecting them.
 Malformed recognized content is an error, not an extension (R2).
 
+### Extending The Format
+
+*Non-normative.* The rules above are what make extension safe; this is guidance on
+using them. Target and factor names are an open vocabulary — a catalog may seed
+names without closing the set. A tool may layer checks on top of conformance:
+warnings, house style, or a stricter local policy that rejects what the format
+merely discourages, provided it never treats a conforming file as malformed
+(Conformance). Producers may add frontmatter keys and body sections for their own
+tooling; keep them additive so other readers can ignore them (R1). A scaffolder may
+seed opinionated defaults — the landing-zone scale, the recommended body sections —
+as a starting point an author is free to replace.
+
 ### Edge Cases
 
-*Informative.* How the rules above resolve specific cases:
+How the rules above resolve specific cases; each row applies a rule already stated:
 
 | Case | Treatment |
 | --- | --- |
