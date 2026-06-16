@@ -1,507 +1,386 @@
 # QUALITY.md Specification
 
-`QUALITY.md` is a plain-text **quality model**: a file that declares the quality
-requirements for a software system or component and records how it scores against
-them. It pairs **YAML frontmatter** — the structured model — with a **Markdown
-body** that explains the model's context and rationale. One file gives people and
-agents a shared, persistent, machine-readable account of what *good* means for a
-subject and how that judgment is reached, so the same standard can be read in
-review, enforced in CI, and revisited as the subject evolves.
+**Version 0.1 — Draft**
 
-This specification defines the format: the shape of the frontmatter and what each
-part means, the evaluation semantics a tool must honor to produce comparable
-results, and the conventions of the Markdown body. Its purpose is interoperability —
-so that independent files and the tools that read them agree on what a `QUALITY.md`
-says and how it is judged.
-
-The specification is organized around the format's concepts. After the
-**Conformance** section — which fixes the reading conventions and gathers the
-mechanically checkable rules — the **Frontmatter** sections introduce the model one
-concept at a time, working from the whole file inward: the quality model, the
-recursive target, the factor that lenses a target, the single assessable
-requirement, and the scale a requirement's result is rated against. The **Markdown
-Body** and **Extensibility and Versioning** sections close.
+This is the specification for the `QUALITY.md` standard: a file format and set of conventions to help model, evaluate, and improve quality. This specification uses terminology from the software development, but the `QUALITY.md` standard can work in any context.
 
 ## Conformance
 
-Throughout, **must** marks a hard rule, **should** a recommendation that may be
-departed from with good reason, and **may** an option. This specification is
-normative in its entirety: a passage that states the meaning of the format binds
-even when it uses none of those keywords. Only three things carry no conformance
-force, each marked as such — **examples**, which illustrate rules stated elsewhere
-and add none; passages labeled *Non-normative*; and latitude granted with **may**.
+Conforming use and applications of the standard must fulfill all normative requirements. Conformance requirements are described in this document via both descriptive assertions and key words with clearly defined meanings.
 
-Conformance has two subjects. A conforming **file** satisfies the file rules
-(F-rules); a conforming **reader** — any validator, evaluator, or tool that consumes
-a file — satisfies the reader rules (R-rules) and the evaluation semantics. The
-F-rules and R-rules are the **mechanically checkable** floor: rules a tool can
-decide by inspecting a file or its own behavior, without judgment. They are the
-floor, not the ceiling — a tool may layer more on top (warnings, house style, a
-stricter local policy, even errors) without ever contradicting them by treating a
-conforming file as malformed or accepting what the F-rules forbid. The passages that
-fix the *meaning* of the model and the *behavior* of an evaluator are equally
-binding, but not reducible to a mechanical check.
+The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative portions of this document are to be interpreted as described in IETF RFC 2119. These key words may appear in lowercase and still retain their meaning unless explicitly declared as non-normative.
 
-Each F-rule is stated in context, in the concept section it governs, under a stable
-label. This section indexes them and states the two reader obligations that belong
-to no single concept.
+A conforming use or application of QUALITY.md may provide additional functionality, but must not do so where explicitly disallowed or where doing so would result in non-conformance.
 
-| Rule   | What it requires                                                 | Stated under  |
-| ------ | ---------------------------------------------------------------- | ------------- |
-| **F1** | Frontmatter is a fenced YAML block whose content is the Model    | Quality Model |
-| **F2** | An optional Markdown body may follow the closing fence           | Quality Model |
-| **F3** | A Target is a mapping with recognized, optional keys             | Target        |
-| **F4** | Target key types                                                 | Target        |
-| **F5** | A requirement declares exactly one non-empty `assessment`        | Requirement   |
-| **F6** | A requirement's secondary `factors` resolve in visible scope     | Requirement   |
-| **F7** | A requirement's `ratings` keys name defined scale levels         | Requirement   |
-| **F8** | The Model declares a `ratings` scale of ≥2 levels, best to worst | Rating Scale  |
+## Key Terms
 
-**Reader obligations**
+- **Quality Model**: a structured, declarative description of what quality means for a given entity.
+- **Entity**: a thing that is evaluated for quality.
+- **Subject**: the entity a quality model as a whole describes — the system, component, or artifact a `QUALITY.md` file is about, named by the model's `title` when set.
+- **Factor**: a quality (sub)characteristic or attribute — a lens such as reliability or security — through which an entity's quality is described; it groups the requirements assessed through it and may be decomposed into sub-factors.
+- **Requirement**: a quality requirement for assessing and rating the quality of an entity.
+- **Finding**: a single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
+- **Assessment**: the means for assessing an entity — measurement, specifications, inspection, checklists, diagnostics, etc.
+- **Rating Scale**: a defined set of rating levels for a quality model.
+- **Rating Level**: a single level on a rating scale, providing the default criterion for rating a requirement's findings.
+- **Rating Result**: the outcome of rating a requirement's findings against the rating scale — a single rating level (or a *not assessed* outcome) assigned to the requirement, considering all of its findings together.
+- **Target**: an entity or set of entities with quality requirements subject to evaluation.
+- **Source**: the scope of entities defined by a target.
 
-- **R1.** A conforming reader preserves and ignores unknown frontmatter keys and
-  unknown body sections; it must not reject a file for containing them.
-- **R2.** Malformed *recognized* content is an error, not an extension — a wrong key
-  type, duplicate sibling keys, duplicate scale level names, a secondary factor
-  outside visible scope, or an empty assessment. A reader may warn when an unknown
-  key looks like a typo of a recognized one.
+## QUALITY.md File
 
-## Frontmatter
+A `QUALITY.md` file is a markdown file with YAML frontmatter with a structured quality model and a markdown body.
 
-The file begins with a fenced YAML frontmatter block (`---` … `---`) whose content
-is the structured quality model, and an optional Markdown body may follow the
-closing fence. The sections below introduce the model from the whole file inward:
-the **Quality Model** (the frontmatter as a whole), the **Target** (its recursive
-backbone), the **Factor** (a lens on a target), the **Requirement** (the single
-assessable unit), and the **Rating Scale** (what a requirement's result is rated
-against).
+The presence of a `QUALITY.md` file in a directory implies that the directory and all its sub-directories and their contents are the implicit source of any quality evaluation for the contained quality model. Exceptions to this are when a different entity (or set of entities) is selected by setting a custom `source` property on the model or by special tooling.
 
-### Quality Model
+### YAML Frontmatter
 
-- **F1.** A conforming file begins with a fenced YAML frontmatter block
-  (`---` … `---`) whose content is a single mapping: the **Model**. A file with no
-  frontmatter or no closing fence is not a conforming `QUALITY.md`.
-- **F2.** An optional Markdown body may follow the closing fence.
+`QUALITY.md` files MUST begin with a valid YAML frontmatter block containing the required **Model** properties specified below.
 
-The **Model** is the frontmatter's root mapping, and it is two things at once: the
-**apex Target** of the model — so every Target key (next section) applies to it —
-and the carrier of the one key that belongs to the file as a whole rather than to
-any single target, `ratings` (the [Rating Scale](#rating-scale), F8). `ratings` is
-the only key that distinguishes the root from any other target.
+When authoring `QUALITY.md` frontmatter, null or empty optional properties SHOULD be omitted.
+
+#### Model
+
+The model represents a quality model: what things (**Targets**) are evaluated for quality, their important quality characteristics (**Factors**), measurable quality **Requirements**, assessment criteria, and **Rating** criteria for determining the level of quality.
 
 ```yaml
-# Model = Target + model-level keys. Appears once, as the root mapping.
-ratings: <RatingScale>            # required (F8); the scale shared by all requirements
-# ...plus every Target key, applied to the apex target.
-```
-
-The whole frontmatter, then, is a tree of Targets sharing a single Rating Scale at
-its root. The named types are **Target**, **Factor**, **Requirement**, and
-**RatingScale**, each defined in its own section below. The Target keys are optional,
-so a Model carrying only `ratings` is structurally valid but assesses nothing; the
-apex target should lead to at least one requirement somewhere in its subtree (see
-[Target](#target)).
-
-### Target
-
-A **Target** is a thing evaluated, bound to the material it is assessed from by
-`source`. It is the recursive node of the model: the apex Target is the Model
-itself, and every child under `targets:` is another Target of the same shape, nested
-to any depth. Target names are open, user-chosen identifiers such as `source-code`,
-`payment-flows`, or `documentation`.
-
-- **F3.** A Target is a mapping. Its recognized keys are `source`, `requirements`,
-  `factors`, and `targets`; the Model adds `ratings` on the root mapping and only
-  there. All are optional and a target declares only what it adds, except that
-  `ratings` is required on the Model (F8). Target and factor names are an open,
-  case-sensitive vocabulary.
-- **F4.** Key types: `source` is a string; `requirements` is a map of statement →
-  Requirement; `factors` is a map of name → Factor; `targets` is a map of name →
-  Target (recursively the same shape).
-
-```yaml
-# Target — the recursive node type.
-source: <string>                    # material this target is assessed from
-requirements:                       # map of statement -> Requirement
-  <requirement-statement>: <Requirement>
-factors:                            # map of name -> Factor
+title: <string>                 # Optional; title of the entity whose quality is modeled
+ratingScale:                    # Required; the rating scale
+  - level: <level-name>         #   Required; unique within the scale
+    title: <string>             #   Optional; human-readable label
+    criterion: <string>         #   Required; used to rate a requirement's findings
+factors:                        # Optional*
   <factor-name>: <Factor>
-targets:                            # map of name -> Target (recursively)
-  <target-name>: <Target>
-```
-
-**Source.** `source` identifies the material evaluated for a target — a single
-string, conventionally a path, a glob, or a URL, though a reader may support
-whatever forms suit it. Paths and globs resolve relative to the containing
-`QUALITY.md` file. When `source` is omitted, it defaults to the file's own directory
-and all subdirectories, recursively; a grouping target may leave it implicit and let
-children narrow it.
-
-**Lineage and inheritance.** Position in `targets` is lineage: a child inherits
-every applicable declaration from its ancestors. Containment is the only inheritance
-primitive — a target owns what it declares and inherits its ancestors' applicable
-factors and requirements. Inheritance is purely additive: a descendant may add
-factors and requirements but cannot remove an inherited one. To assess a concern at
-a finer grain, declare a requirement at that lower target — declaration altitude is
-assessment altitude. (How a single requirement is assessed once yet governs every
-descendant is fixed under [Requirement](#requirement).)
-
-A target should lead to at least one requirement — its own, one carried by a factor,
-or one contributed by a descendant. A target whose subtree holds none assesses
-nothing, though a pure grouping target stays meaningful as long as its descendants
-carry requirements.
-
-### Factor
-
-A **Factor** is a quality lens — such as `reliability` or `maintainability` —
-declared on a Target and scoped to that target's subtree: declared at the apex it is
-project-wide; declared on `targets.docs` it applies only to that target and its
-descendants. A factor carries its own requirements, which are assessed through that
-lens.
-
-```yaml
-# Factor
-description: <string>               # recommended
-requirements:                       # map of statement -> Requirement
+requirements:                   # Optional*
   <requirement-statement>: <Requirement>
+targets:                        # Optional*
+  <target-name>: <Target>
+source: <string>                # Optional
 ```
 
-Factor identity is local to its scope — the same name on two unrelated targets
-denotes two distinct factors. Within a scope a descendant may *refine* an inherited
-factor by adding requirements under the same name; it should not *redefine* it with a
-contradictory meaning. Because "contradictory" is a judgment, this is guidance a tool
-may warn on rather than a deterministic rule.
+*An entry on either factors, requirements, or targets MUST be supplied.
 
-A factor should carry at least one requirement — its own, one added by a refinement,
-or one that names it as a secondary factor (F6). A factor that nothing contributes to
-is a lens over nothing.
+**Title**: An optional human-readable name for the entity whose quality is modeled. For software projects, this is typically the name of the product, system, or library. A `title` is RECOMMENDED for readable reports but MAY be omitted.
 
-A factor should have a `description` of the attribute itself: what it means here, why
-it matters, and how it differs from its siblings. The description should not merely
-restate the requirements attached to it.
+**Rating Scale**: This is the rating scale that provides the default criterion for how requirement assessments should be judged to arrive at a rating level result. Each **Rating Level** MUST declare a `level` name, unique within the scale, and a `criterion` used to rate a requirement's findings; a **title** for improved readability is OPTIONAL. Rating levels MUST be ordered from best (first) to worst (last). At least two rating levels MUST be supplied.
 
-### Requirement
-
-A **Requirement** is an assessable expectation — the single unit the model is built
-to judge. Its `assessment` is performed against the target's `source`, producing a
-**finding**; the active rating criteria are then applied to that finding to produce a
-**result**, whose recorded value is a **rating**. Each requirement produces exactly
-one result, recorded against the target that declares it, and the requirement
-statement (the map key) is its identity in reports and results.
-
-A requirement may sit directly under a target, where it is **unlensed**, or under a
-factor, where it is assessed through that lens and joins that factor's rollup. It is
-assessed against the target's `source` either way.
-
-- **F5.** A requirement entry declares exactly one `assessment`: a non-empty scalar.
-  A missing, empty, or list-valued `assessment` is invalid.
-- **F6.** A requirement's optional secondary `factors` list names factors in scope;
-  each name must resolve to a factor declared on the same target or one of its
-  ancestors.
-- **F7.** A requirement's optional `ratings` map is keyed by level names; every key
-  must name a level defined by the Model's scale.
+**A suggested scale (non-normative).** When a graded scale fits and an author has no strong preference, the following four-level scale is a reasonable starting point, and a scaffolding tool MAY seed it. Its vocabulary names four best-to-worst bands — **outstanding** exceeds the goal, **target** meets it, **minimum** holds the acceptable floor, and **unacceptable** falls below it:
 
 ```yaml
-# Requirement
-assessment: <string>                # required; single non-empty scalar
-factors:                            # optional secondary factor names in scope (F6)
-  - <factor-name>
-ratings:                            # optional per-requirement criteria (F7)
-  <level-name>: <criterion>         #   keyed by a level name of the active scale
-```
-
-`assessment` is the instruction that produces a finding — inline criteria text or a
-path to a document of criteria. It is never a list (F5); if one statement needs
-several independent assessments, split it into several requirements.
-
-The optional secondary `factors` list (F6) lets one result appear in additional
-factor views without changing the requirement's primary placement, so one result can
-contribute to several factor rollups without repeating the requirement. The optional
-`ratings` map sets this requirement's own criteria (F7); it changes only the
-criteria, not the levels, their order, or their display names. See
-[Custom rating criteria](#custom-rating-criteria) for when and how to use it.
-
-**Assessed once.** A requirement is **assessed once, at the target that declares
-it**, against that target's `source` — one assessment, one finding, one result.
-Containment then makes it *govern* every descendant: the requirement joins their
-inherited context and its single result covers their subtree, but it is never
-re-assessed against a descendant's narrower source and never yields a second result.
-Because a target's `source` ordinarily spans its descendants', that one assessment
-routinely inspects artifacts that also belong to sub-targets; that is expected — a
-finding may cite material anywhere in the declaring target's source, including files
-a descendant also selects, without splitting into multiple results.
-
-These are **evaluator obligations**: they bind any reader that evaluates a model,
-even though no file can be checked against them. An evaluator records and rolls up
-results, while each individual assessment is performed by a judge — a person or a
-model. Tools that disagree here produce results that cannot be compared.
-
-**Invalid examples.** Each illustrates the rule it violates and adds none of its own.
-
-```yaml
-requirements:
-  "input is validated":
-    assessment:
-      - "Query parameters are validated." # invalid (F5): assessment must be one scalar
-      - "Request bodies are validated."
-```
-
-```yaml
-targets:
-  docs:
-    factors:
-      clarity:
-        description: Documentation is understandable.
-  api:
-    requirements:
-      "errors are readable":
-        assessment: Errors explain what happened.
-        factors:
-          - clarity # invalid (F6): sibling target's factor is out of scope
-```
-
-```yaml
-ratings:
-  - { level: target, criterion: "Meets the requirement." }
-  - { level: unacceptable, criterion: "Does not meet the requirement." }
-requirements:
-  "tests cover critical paths":
-    assessment: Critical paths are covered.
-    ratings:
-      gold: "Exceptional coverage." # invalid (F7): `gold` is not a scale level
-```
-
-**A worked example.** The pieces together — a target with a direct requirement, two
-scoped factors each carrying a requirement, and one requirement that names a
-secondary factor:
-
-```yaml
----
-ratings:
-  - { level: outstanding,  criterion: "Exceeds the requirement with margin to spare." }
-  - { level: target,       criterion: "Satisfies the requirement." }
-  - { level: minimum,      criterion: "Falls short of the goal but holds the floor." }
-  - { level: unacceptable, criterion: "Falls below the acceptable floor." }
-targets:
-  api:
-    source: ./internal/api
-    requirements:
-      "the API preserves accepted orders":
-        assessment: >
-          Accepted orders are durably stored before a success is returned; failures
-          surface as errors rather than false success responses.
-    factors:
-      reliability:
-        description: >
-          The API behaves predictably under ordinary and failure conditions.
-        requirements:
-          "the write path is covered end-to-end":
-            assessment: >
-              Automated tests exercise a successful write, a storage failure, and a
-              retry path, and would fail if an acknowledged order could be lost.
-      security:
-        description: >
-          Customer data and privileged operations are protected from unauthorized use.
-        requirements:
-          "no secrets are committed":
-            assessment: >
-              No credentials, API keys, private keys, or tokens appear in source,
-              config, or fixtures; secrets are loaded from the runtime environment or
-              a secrets manager.
-            factors:
-              - reliability
----
-```
-
-### Rating Scale
-
-A **RatingScale** is the shared yardstick every requirement's result is rated
-against. The Model declares it once, at the root, in `ratings`.
-
-- **F8.** The Model must declare `ratings`: a non-empty scale of at least two
-  levels, listed best to worst, given inline. Each level has a unique `level` name
-  and a `criterion` the evaluator judges against. A Model with no `ratings`, or a
-  scale of fewer than two levels, is invalid. The format prescribes no default
-  scale; an author chooses one to fit the subject.
-
-```yaml
-# RatingScale = list of RatingLevel, best to worst (F8)
-- level: <level-name>               # required; unique within the scale; position is rank
-  title: <string>                   # optional human label
-  criterion: <string>               # required; the criterion the evaluator judges against
-```
-
-`ratings` is an inline sequence of levels ordered best to worst, where position
-defines rank. The evaluator applies the criteria top-down and records the best level
-whose criterion the finding satisfies.
-
-A scale need not be elaborate. The minimum is two levels — a plain pass/fail gate:
-
-```yaml
-ratings:
-  - { level: pass, criterion: "Satisfies the assessment." }
-  - { level: fail, criterion: "Does not satisfy the assessment." }
-```
-
-#### A suggested scale: the landing zone
-
-*Non-normative.* The format prescribes no default (F8), but when a graded scale fits
-and you have no strong preference, this four-level scale is a reasonable starting
-point, and a scaffolding tool may seed it. Its vocabulary and best-to-worst framing
-are adapted from the Agile Landing Zone pattern — **outstanding** exceeds the goal,
-**target** meets it, **minimum** holds the acceptable floor, and **unacceptable**
-falls below it:
-
-```yaml
-ratings:
+ratingScale:
   - { level: outstanding,  title: Outstanding,  criterion: "Exceeds the requirement; satisfies it with margin to spare." }
   - { level: target,       title: Target,       criterion: "Satisfies the requirement." }
-  - { level: minimum,      title: Minimum,      criterion: "Falls short of the goal but stays at the acceptable floor." }
+  - { level: minimum,      title: Minimum,      criterion: "Falls short of the goal but holds the acceptable floor." }
   - { level: unacceptable, title: Unacceptable, criterion: "Falls below the acceptable floor." }
 ```
 
-#### Custom rating criteria
+**Factors**: quality characteristics or attributes that matter most for evaluating the overall quality of the entity.
 
-Set `ratings` on a requirement (F7) when the scale's shared criteria cannot express
-the gradient that matters. The custom criteria should name ordered, mutually distinct
-levels of the active scale, and the evaluator assigns the best level met.
+**Requirements**: quality requirements that will be used to assess the quality of the entity. These are typically nested under a factor or target, but may be defined at the model root level when it is simpler to define a single requirement at the root and cross reference to multiple quality attributes.
 
-A measured-bound example:
+**Targets**: more focused quality modeling for possible target entities. Not required but useful when a distinct set of factors or requirements would be more cohesively defined around a narrower target of evaluation than the scope implied by the source of the entire quality model.
+
+**Source**: the location of the target entity subject to this quality model. This SHOULD be omitted on the top-level model to assume the default convention.
+
+#### Target
+
+A target is an entity, or set of entities, with quality requirements subject to evaluation. It is the recursive node of the quality model: the model root is itself the apex target, and every entry under `targets` is another target of the same shape, nested to any depth.
+
+```yaml
+factors:                        # Optional*
+  <factor-name>: <Factor>
+requirements:                   # Optional*
+  <requirement-statement>: <Requirement>
+targets:                        # Optional*
+  <target-name>: <Target>
+source: <string>                # Optional
+```
+
+*A target MAY declare no factors or requirements of its own and serve purely as a grouping node (holding only child targets), but each target SHOULD lead to at least one requirement somewhere in its subtree — its own, one carried by a factor, or one contributed by a descendant. A target whose subtree contains no requirements evaluates nothing.
+
+A target shares the structure of the model root but for two keys — `title` and `ratingScale` — which are declared only on the model root (see [Model](#model)).
+
+**Factors**: quality characteristics scoped to this target's subtree. A factor declared on a target applies to that target and its descendants, not to unrelated targets.
+
+**Requirements**: quality requirements assessed against this target's source. A requirement is assessed once, at the target that declares it, against that target's source.
+
+**Targets**: more focused child targets, nested to any depth. Child targets do not inherit their parent's requirements. However, an ancestor target's source selector may select entities that overlap with its descendant child target selectors, resulting in the ancestor's requirements also being evaluated on the same entities targeted by the child's source selector.
+
+**Source**: the location of the entities this target evaluates. Paths and globs resolve relative to the containing `QUALITY.md` file. When a target omits `source`, it inherits the source scope of its nearest ancestor that declares one; a grouping target MAY leave it implicit and let its child targets narrow it.
+
+#### Factor
+
+A factor is a quality characteristic — such as `reliability`, `security`, or `maintainability` — through which a target's quality is described. A factor MAY be decomposed into **sub-factors**: finer characteristics that together make up the parent — for example `reliability` into `availability`, `fault tolerance`, and `recoverability`. A sub-factor is itself a Factor of the same shape, nested to any depth.
+
+```yaml
+description: <string>           # Recommended
+factors:                        # Optional; sub-factors, recursively Factor
+  <factor-name>: <Factor>
+requirements:                   # Optional
+  <requirement-statement>: <Requirement>
+```
+
+**Description**: a concise statement of the quality characteristic as it applies to this entity. A factor SHOULD declare a `description`, and that description SHOULD:
+
+- **define the characteristic operationally** — what it means here, phrased as the degree or capability to achieve some end under the conditions that matter, not merely an adjective or a synonym for the factor name;
+- **convey why it matters and to whom** — the stakeholder concern the factor answers; and
+- **distinguish it from its sibling factors**, so the factors on a target read as a non-overlapping set.
+
+A description SHOULD NOT restate, enumerate, or stand in for the factor's requirements: the measurable expectations belong in `requirements` and are judged through the rating scale. The description fixes *what the lens is*; the requirements fix *what is assessed through it*.
+
+A useful shape is one or two sentences — "*\<Factor\> is the degree to which \<entity\> \<achieves some end\> under \<relevant conditions\>; it matters here because \<stakeholder concern\>.*" For example: *Reliability is the degree to which the orders API continues to accept and durably record orders under load and partial failure; it matters because an acknowledged order that is later lost is unrecoverable for the customer.*
+
+**Requirements**: the quality requirements assessed through this factor's lens, each evaluated against the source of the target on which it is declared. A factor SHOULD lead to at least one requirement — one nested directly beneath it, one added by a refinement on a descendant target, or one declared elsewhere that tags this factor as a secondary factor (see [Requirement](#requirement)). A factor that nothing contributes to is a lens over nothing.
+
+**Sub-factors**: a map of finer characteristics that decompose this factor, each a Factor of the same shape. Decompose a factor when it carries more than one distinct concern that is clearer assessed apart than together — but only as far as it aids understanding; a factor whose requirements already speak for themselves needs no sub-factors. The guidance above applies at every level: a sub-factor SHOULD carry its own `description`, SHOULD be distinguishable from its siblings, and SHOULD lead to at least one requirement. A sub-factor's requirements are assessed through its lens, and an evaluation infers a rating for the sub-factor that rolls up into the parent factor's rating (see [Analyze](#analyze)). A factor MAY hold both its own direct requirements and sub-factors.
+
+Factor identity is local to its target. Factors of the same name declared on two different targets are distinct factors. Child targets that declare factors the same as an ancestor target's should be refinements of the ancestor target's factor tailored to the child target.
+
+#### Requirement
+
+A requirement is an assessable quality expectation — the single unit the model is built to judge. It pairs a **statement** (its map key, and its identity in reports) with an `assessment` that produces the findings; those findings are rated together to yield the requirement's **Rating Result**.
+
+A requirement's placement sets the factors it informs. Nested under a factor or sub-factor, that factor is its **primary** lens and the requirement joins the factor's roll-up. Placed directly under a target with no `factors`, it is **unlensed**, informing only that target's local rating. In any placement a requirement MAY name **secondary** factors under `factors` to inform additional lenses, so one result can feed several factor views at once — and a directly-placed requirement MAY use this to attach itself to one or more factors with no primary among them. However it is placed, a requirement always contributes to its target's local rating (counted once) and is assessed once, against the source of the target on which it is declared.
+
+```yaml
+assessment: <string>            # Required; the means of assessing the source, producing findings
+factors:                        # Optional; additional factors in scope this result also informs
+  - <factor-name>
+ratings:                        # Optional; per-requirement criterion overrides
+  <level-name>: <criterion>     #   keyed by a level of the model's rating scale
+```
+
+**Assessment**: the means of assessing the target's source for this requirement — inline criteria, a measurement procedure, an inspection checklist, a diagnostic, or a path to a document describing one. A requirement MUST declare exactly one `assessment` as a single non-empty scalar; a missing, empty, or list-valued `assessment` is invalid. The assessment produces the requirement's **findings** — one or more observations, each recording *what was observed* and not itself rated (see [Assess and Rate](#assess-and-rate)). When a single statement needs several independent assessments, split it into several requirements rather than listing assessments under one.
+
+**Factors (secondary)**: an optional list of factor names this requirement's result should also inform, beyond the factor it is nested under (its **primary** factor). Each name MUST resolve to a factor in scope — one declared on the target where the requirement sits, or on an ancestor target. A secondary factor lets one result appear in additional factor roll-ups without duplicating the requirement; the result is still counted once in the target's local rating (see [Analyze](#analyze)). A requirement declared directly under a target, with no nesting factor, MAY use this list to attach itself to one or more factors.
+
+**Ratings (criterion overrides)**: an optional map that overrides the rating-scale criteria for this requirement, for use when the scale's shared criteria cannot express the gradient that matters. Each key MUST name a level of the model's rating scale; its value replaces that level's criterion for this requirement only. Overrides change the criteria, not the levels, their order, or their titles. Use them when a requirement has a natural measured threshold or a distinct qualitative spectrum:
 
 ```yaml
 requirements:
-  "evaluation completes fast enough to sit in a pre-commit hook":
+  "p99 request latency stays within budget":
     assessment: >
-      Wall-clock time to evaluate a typical model, measured cold on CI hardware,
-      p95 over 20 runs.
+      Measure p99 request latency over a representative production window.
     ratings:
-      outstanding: "p95 under 100 ms."
-      target: "p95 under 250 ms."
-      minimum: "p95 under 500 ms."
-      unacceptable: "p95 at or above 500 ms, or it cannot run in the hook."
+      outstanding: "p99 at or under 150 ms."
+      target: "p99 at or under 300 ms."
+      minimum: "p99 at or under 500 ms."
+      unacceptable: "p99 above 500 ms."
 ```
 
-A judged-spectrum example:
+### Markdown Body
 
-```yaml
-requirements:
-  "the suite covers what matters and is pyramid-balanced":
-    assessment: >
-      Taken as a whole, the suite exercises the behavior that matters, with most
-      checks at the unit level and fewer, broader tests above.
-    ratings:
-      outstanding: "Every critical path is covered; the suite is fast and unit-dominant."
-      target: "Important behavior is covered and the shape is roughly pyramidal."
-      minimum: "Important paths are partly covered, but notable gaps or slowness remain."
-      unacceptable: "A critical behavior is untested, or the suite cannot be trusted."
-```
+The Markdown body documents *why* this is the right quality model — the context a reader needs to interpret the requirements and an evaluator needs to weigh them. Where the frontmatter fixes *what* is assessed and *how it is rated*, the body explains *why these factors, why these requirements, and what matters most*. The [Analyze](#analyze) and [Advise](#advise) phases draw on it: when an evaluator weighs requirements by importance or names the key gaps behind a held-down rating, the stakeholder context that justifies those judgments lives here.
 
-Do not customize `ratings` merely to restate "met" and "not met"; spend that text on
-the `assessment` instead.
+The body is OPTIONAL, and the format fixes no required section set. An author MAY use, rename, reorder, or replace the sections below. A conforming tool MUST preserve body content it does not recognize rather than dropping or rejecting it.
 
-## Markdown Body
+The sections below are RECOMMENDED, non-normative starting points:
 
-The Markdown body documents *why* this is the right model — the context an evaluator
-needs to interpret assessments consistently. It is optional (F2), and the format does
-not restrict it to any fixed set of sections.
+| Section        | What it captures                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Overview**   | What the subject is, who depends on it, and what "good" means here.                                                               |
+| **Scope**      | The model boundary: what it covers and deliberately leaves out. Out-of-scope concerns are exclusions by design, not deficiencies. |
+| **Needs**      | Stakeholder outcomes the requirements answer to — the source of how much each requirement matters.                                |
+| **Risks**      | What goes wrong, and for whom, if a need is not met.                                                                              |
+| **Known gaps** | In-scope quality concerns deliberately deferred, each with a brief reason.                                                        |
 
-*Non-normative.* The sections below are a recommended starting point, not a required
-structure; teams and tools may use, rename, or replace them, and a reader preserves
-sections it does not recognize (R1).
+Two distinctions keep the body and the evaluation from blurring. **Scope** is for concerns outside the model's remit; **Known gaps** is for in-scope concerns deliberately deferred. And **Known gaps** is the author's standing declaration, distinct from a *not assessed* outcome, which an evaluator determines per run when evidence is missing (see [Assess and Rate](#assess-and-rate)).
 
-| Section                 | What it captures                                                                                                                  |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Overview**            | What the subject is, who depends on it, and what "good" means here.                                                               |
-| **Scope**               | The model boundary: what it covers and deliberately leaves out. Out-of-scope concerns are exclusions by design, not deficiencies. |
-| **Needs**               | Stakeholder outcomes the requirements answer to.                                                                                  |
-| **Risks**               | What goes wrong, and for whom, if a need is not met.                                                                              |
-| **Targets and factors** | A prose mirror of the target tree: each target's role, the scoped factors declared there, and why those lenses belong there.      |
-| **Known gaps**          | In-scope quality concerns deliberately deferred, each with a brief reason.                                                        |
+The body MAY open with a top-level heading; when present it SHOULD name the model's subject — matching the `title`, when set.
 
-Applicability is structural: a factor declared on `targets.docs` applies there and
-below, not to unrelated targets. The body should explain that structure rather than
-argue exceptions in prose. **Scope** is for concerns outside the model's remit;
-**Known gaps** is for in-scope concerns deliberately deferred.
+#### Example
 
 ```markdown
-# Quality model - Orders platform
+# Acme Checkout API — Quality model
 
 ## Overview
 
-The Orders platform receives, stores, and exposes customer orders. Good means an
-accepted order is durable, observable, and protected from unauthorized access.
+The Acme Checkout API accepts and settles customer payments. Good means every charge
+is authenticated, charged exactly once, and protected from unauthorized access to
+cardholder data.
 
 ## Scope
 
-This model covers the API service, worker, and storage layer. The external payment
-provider is out of scope because this project does not own it.
+This model covers the API service and its payment-processor integration
+(`./payments`). The upstream card network and the bank settlement system are out of
+scope — Acme does not own them.
 
 ## Needs
 
-- Customers can trust that an accepted order will not disappear.
-- On-call engineers can diagnose an incident from logs and metrics.
+- Customers are charged exactly once for what they bought.
+- Cardholder data is never exposed to an unauthorized party.
+- On-call engineers can confirm whether a charge settled.
 
 ## Risks
 
-Silent order loss is the worst outcome because customers cannot repair it
-themselves and support cannot reconstruct intent reliably.
-
-## Targets and factors
-
-### api
-
-The API target covers the request boundary and declares Reliability and Security.
-Reliability matters here because success responses create customer commitments;
-Security matters because this boundary receives customer data.
-
-### worker
-
-The worker target carries Operability because delayed or stuck asynchronous work is
-visible first through operational signals.
+A double charge or a leaked card number is the worst outcome: both are unrecoverable
+for the customer and carry regulatory exposure. An unpatched dependency is the most
+likely path to the latter.
 
 ## Known gaps
 
-- Sustained peak-load behavior is in scope but not modeled yet.
+- Sustained peak-load behavior is in scope but not yet modeled.
+- Failed-charge reconciliation evidence is not yet produced, so that requirement
+  currently evaluates as *not assessed*.
 ```
 
-## Extensibility and Versioning
+## Evaluation
 
-The minimal structural core is a frontmatter Model with its required `ratings` scale
-(F1, F8). Because the Target fields are optional, a Model carrying only `ratings` is
-structurally valid but not useful; tools should warn when one declares no
-requirements, factors, or child targets. The body is optional. The format grows
-through use: a reader preserves unknown frontmatter keys and unknown body sections
-(R1) rather than rejecting them, while malformed recognized content is an error, not
-an extension (R2).
+Evaluation assesses a model's targets against their requirements, rates the evidence, rolls the results up the target tree, and advises on what to improve. It proceeds in five phases: **Define**, **Assess and Rate**, **Analyze**, **Advise**, and **Report**.
 
-### Extending the format
+### Define
 
-*Non-normative.* Target and factor names are an open vocabulary, so producers may
-extend freely: add frontmatter keys and body sections for your own tooling, kept
-additive so other readers can ignore them (R1). A tool may enforce a stricter local
-policy that rejects what the format merely discourages, provided it never treats a
-conforming file as malformed (Conformance). A scaffolder may seed opinionated
-defaults — the landing-zone scale, the recommended body sections — as a starting
-point an author is free to replace.
+Determine the scope of the evaluation. By default the scope is the whole model: every target, and within each target every requirement. The scope MAY be narrowed by a filter:
 
-### Edge cases
+- by **target** — restrict evaluation to a given target and its subtree;
+- by **factor** — restrict evaluation to the requirements tied to a given factor (including those that tag it as a secondary factor); or
+- both.
 
-How the rules above resolve specific cases; each row applies a rule already stated:
+For every target in scope, resolve the **source** entities to be evaluated from the target's `source`. A narrowed scope qualifies every result that follows: ratings are understood within the scope, and a scoped evaluation MUST NOT be presented as a whole-model verdict.
 
-| Case                                                        | Treatment                                                                                                                             |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **No frontmatter, or no closing `---`**                     | Invalid (F1): there is no model to read.                                                                                              |
-| **Empty `targets`**                                         | Valid but usually a warning; it declares no child targets.                                                                            |
-| **Empty Target**                                            | Valid as a grouping placeholder; a tool may warn if it contributes nothing.                                                           |
-| **Factor refinement that changes description incompatibly** | Discouraged, not invalid; a tool may warn. Adding requirements or compatible detail is fine.                                          |
-| **Secondary `factors` entry outside visible scope**         | Invalid (F6): the factor name must resolve on the current target or an ancestor.                                                      |
-| **Empty assessment value**                                  | Invalid (F5): the assessment is the criteria and must be non-empty.                                                                   |
-| **Duplicate sibling names**                                 | Invalid (R2): YAML duplicate keys and duplicate `ratings[].level` names are rejected structurally.                                    |
-| **Ordering**                                                | Significant within `ratings` (F8); otherwise evaluation does not depend on authoring order, though tools may preserve it for display. |
-| **Case**                                                    | Schema keys and author-defined names are case-sensitive.                                                                              |
+### Assess and Rate
 
-### Versioning
+For each requirement in scope, evaluated against its target node:
 
-The format evolves additively. New optional keys and sections may be introduced
-without invalidating existing conforming files. A change that would invalidate an
-existing conforming file is breaking and reserved for a new major format version.
+1. **Assess** the source entities using the requirement's **assessment**, producing the **findings** — the evidence for this requirement. Each finding records an observation (e.g., a measured value, inspection note, or diagnostic result) and is not itself rated.
+2. **Rate** the findings *together* against the rating scale criterion (or the requirement's criterion overrides), producing the requirement's **Rating Result**: a single rating level. When there are no findings or the evidence is insufficient to rate against the scale, the requirement MUST be recorded as **not assessed** rather than assigned a rating level.
+
+This produces one Rating Result per requirement in scope.
+
+### Analyze
+
+Roll the requirement results up the model tree (requirement → factor → target → root, with sub-factors rolling up into their parent factor) by inference. Roll-up is not computed; an evaluator infers it by judgment against the rating scale. For each target — child targets first — the evaluator infers:
+
+- a **factor rating**, for each of the target's factors — its sub-factors first, deepest first: the level that best characterizes the factor considering, together, the rating results of every requirement tied to it (both those nested under it and those that tag it as a secondary factor) and the ratings of its sub-factors. A sub-factor is rated the same way, and its rating rolls up into its parent factor — as a child target's aggregate rolls up into its parent;
+- a **local rating**: the level that best characterizes the target considering all of its own requirement results together (each requirement counted once, whatever factors it touches); and
+- an **aggregate rating**: the level that best characterizes the target considering its local rating together with the aggregate ratings of its child targets.
+
+Factor ratings and the local rating are two reads over a target's requirements, but not always of the same set: the local rating is the whole-set verdict over the target's *own* requirements (each counted once, whatever factors it touches), while a factor rating is a cross-cutting lens over every requirement tied to that factor (a requirement may tag several) — including any declared on a descendant target that tags it as a secondary factor. A factor rating therefore MAY range wider than the local rating. A target with no requirements of its own (a grouping target) has no local rating; its aggregate considers only its child targets. A leaf target's aggregate rating equals its local rating.
+
+Roll-up considerations (guidance for inference, not computation):
+
+- The rolled-up level SHOULD reflect the target's overall state, but a serious shortfall in an important requirement SHOULD NOT be masked by many satisfactory ones — weigh requirements by how much each matters to the target's quality.
+- Requirements, factors, or targets recorded as *not assessed* are excluded from the rating but MUST be noted. When too little has been assessed to responsibly infer a level, the roll-up is itself recorded as *not assessed*.
+- Each roll-up SHOULD record a brief **rationale** naming what most determined the level (its binding constraints).
+
+Tools MAY extend roll-up with explicit weights, thresholds, or computed aggregation; this standard prescribes only inferential judgment.
+
+### Advise
+
+From the analysis, the evaluator advises on improvement:
+
+- **Key gaps** — the shortcomings most responsible for held-down ratings (the binding constraints surfaced during Analyze), together with any *not assessed* areas material to the verdict.
+- **Options** — for each key gap, the available options for remediation.
+- **Recommendation** — for each key gap, a recommended option and the rationale for it.
+
+Advice is inferential and advisory; it informs the report but does not change any rating.
+
+### Report
+
+Produce the **Evaluation Report**: the structured result of the evaluation, suitable for rendering to a person, a gate, or a tool. A report presents at least:
+
+- the **Rating** — the in-scope root target's aggregate rating — and its **rationale**;
+- the **Scope** the rating was produced under;
+- for each target in scope (root first, recursively): each requirement's findings summary, rating, and rationale; each factor's rating and rationale — including each sub-factor's rating and rationale at every depth; and the target's local and aggregate ratings, each with rationale; and
+- the **Advice** — key gaps, options, and recommendations.
+
+*Not assessed* outcomes MUST be shown wherever they occur, distinct from rated outcomes, at every level of the report.
+
+Note: a factor's rating MAY draw on requirements declared on descendant targets that tag it as a secondary factor (see [Analyze](#analyze)). When it does, the report SHOULD make those contributing requirements identifiable under the factor, even though each is listed in full under the target that declares it.
+
+## Appendix A: Sample Evaluation Report
+
+This appendix is **non-normative**. It illustrates one rendering — for a human reader — of the Evaluation Report defined in **Report**. A tool MAY render the same underlying result differently (e.g., as JSON for a gate).
+
+### The model evaluated
+
+A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating scale is the suggested four-level scale — **Outstanding** > **Target** > **Minimum** > **Unacceptable** — ordered best to worst.
+
+- **Acme Checkout API** (root target, source `./`)
+  - Factors:
+    - **Security**, decomposed into sub-factors **Access control** and **Dependency integrity**
+    - **Reliability**
+  - Requirements:
+    - *Every public endpoint requires authentication* (Security → Access control)
+    - *No dependencies with known critical or high vulnerabilities* (Security → Dependency integrity)
+    - *p99 request latency ≤ 300 ms* (Reliability)
+    - *Automated tests cover the checkout flow end to end* (Reliability)
+  - **Payment Processor** (child target, source `./payments`)
+    - Factors: **Security**, **Reliability**
+    - Requirements:
+      - *Cardholder data is encrypted at rest* (Security)
+      - *Gateway calls are idempotent on retry* (Security; tags **Reliability** as a secondary factor)
+      - *Failed charges reconcile within 24 hours* (Reliability)
+
+### The report
+
+---
+
+**Rating: Minimum** *(Acme Checkout API — aggregate, whole model)*
+
+**Rationale.** Held at **Minimum** by a single binding constraint: an unpatched high-severity dependency vulnerability at the root. Every other area meets **Target** or better, and the Payment Processor subtree meets **Target** — so lifting the one Security gap would raise the overall rating.
+
+**Scope.** Whole model; no target or factor filter applied. Source resolved from `./` (root) and `./payments` (Payment Processor). One requirement *not assessed* (see below).
+
+---
+
+#### Target: Acme Checkout API *(root)*
+
+**Aggregate: Minimum** — the root's own local rating binds; the Payment Processor subtree (**Target**) does not pull it down further.
+**Local: Minimum** — four root requirements; the dependency-vulnerability shortfall is security-critical and is not offset by the three meeting Target or better.
+
+Factors:
+
+- **Security — Minimum.** Bound by the **Dependency integrity** sub-factor; **Access control** is solid. Sub-factors:
+  - **Access control — Target.** Every public endpoint sits behind authentication, with no exceptions; no evidence of the defense-in-depth Outstanding would require.
+  - **Dependency integrity — Minimum.** One unpatched high-severity dependency advisory holds this sub-factor — and so the parent Security factor — below Target.
+- **Reliability — Target.** Latency is well within budget; end-to-end test coverage meets but does not exceed the bar.
+
+Requirements:
+
+- *Every public endpoint requires authentication* — **Target**
+  - *Findings:* 42 of 42 public routes sit behind the auth middleware; 0 unauthenticated routes found.
+  - *Rationale:* Full coverage with no exceptions meets the Target criterion; no evidence of the defense-in-depth that Outstanding would require.
+- *No dependencies with known critical or high vulnerabilities* — **Minimum**
+  - *Findings:* 0 critical, 1 high-severity advisory in a transitive dependency; a patched release is available.
+  - *Rationale:* No critical vulnerabilities clears Unacceptable, but an open high-severity advisory keeps it at Minimum.
+- *p99 request latency ≤ 300 ms* — **Outstanding**
+  - *Findings:* p99 measured at 180 ms over a 7-day window under production load.
+  - *Rationale:* Comfortably inside the threshold with sustained margin.
+- *Automated tests cover the checkout flow end to end* — **Target**
+  - *Findings:* End-to-end suite covers the happy path and three failure paths; the partial-refund path is uncovered.
+  - *Rationale:* Core flow is covered (Target); a known coverage gap keeps it short of Outstanding.
+
+#### Target: Payment Processor
+
+**Aggregate: Target** — a leaf target, so its aggregate equals its local rating.
+**Local: Target** — both assessed requirements meet Target; one requirement is *not assessed* and is noted but excluded from the rating.
+
+Factors:
+
+- **Security — Target.** Encryption at rest and idempotent gateway calls both meet the bar.
+- **Reliability — Target.** Idempotent gateway retries guard against double-charging on replay; the failed-charge reconciliation requirement is *not assessed*, so this rating rests on the idempotency evidence alone and is noted as incomplete.
+
+Requirements:
+
+- *Cardholder data is encrypted at rest* — **Target**
+  - *Findings:* Card fields encrypted with AES-256; keys held in the managed KMS, rotated quarterly.
+  - *Rationale:* Meets the encryption-at-rest criterion; no field-level exceptions found.
+- *Gateway calls are idempotent on retry* — **Target** *(Security; also lensed under Reliability)*
+  - *Findings:* Idempotency keys present on all charge calls; a replay test confirmed no double-charge.
+  - *Rationale:* Meets the criterion. Counts once in the local rating while informing both the Security and Reliability lenses.
+- *Failed charges reconcile within 24 hours* — **Not assessed**
+  - *Findings:* None — no reconciliation report or job output was available to assess against.
+  - *Rationale:* Insufficient evidence to rate; recorded as *not assessed* rather than assigned a level.
+
+---
+
+#### Advice
+
+- **Key gap — open high-severity dependency vulnerability (root → Security).** The single constraint holding the whole model at Minimum.
+  - *Options:* (a) upgrade the dependency to the patched release; (b) replace it with an unaffected library; (c) accept the risk with a compensating control and a tracked exception.
+  - *Recommended:* **(a) upgrade to the patched release** — lowest effort, removes the binding constraint, and is expected to lift root Security and the overall rating to Target.
+- **Coverage gap — reconciliation requirement not assessed (Payment Processor → Reliability).** The Payment Processor rating is incomplete until this is evaluated.
+  - *Options:* (a) stand up the reconciliation report so the requirement can be assessed; (b) narrow or retire the requirement if reconciliation is out of scope.
+  - *Recommended:* **(a) produce the reconciliation evidence** so the requirement can be rated and the subtree's rating reflects full coverage.
+- **Minor — partial-refund path uncovered (root → Reliability).** Not rating-binding today; addressing it would move the end-to-end test requirement toward Outstanding.

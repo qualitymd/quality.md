@@ -79,37 +79,6 @@ targets:
               make structure scannable; prose is plain; and the document carries
               minimal and realistic examples.
 
-  cli-spec:
-    source: ./specs/cli.md
-    requirements:
-      "the CLI specification is complete":
-        assessment: >
-          The CLI spec defines the qualitymd command surface well enough to
-          implement and test against: commands, arguments, flags, inputs, output,
-          exit codes, and the deterministic CLI / skill-layer split.
-
-  skill-spec:
-    source: ./specs/skills.md
-    requirements:
-      "the skill specification is complete":
-        assessment: >
-          The skill spec defines each skill's purpose, the loop it runs over
-          model/evaluation/result resources, the CLI-to-skill interface, and
-          where judgment lives.
-
-  cli-implementation:
-    source:
-      - ./internal
-      - ./cmd
-    requirements:
-      "the CLI implementation conforms to its specification":
-        assessment: ./specs/cli.md
-        ratings:
-          outstanding: "Every specified command, flag, and exit code behaves as written; no divergence."
-          target: "The specified surface is implemented; divergences are minor and documented."
-          minimum: "Core commands work, but parts of the surface are missing or diverge silently."
-          unacceptable: "The specified surface is largely unimplemented, or behavior contradicts the spec."
-
   readme:
     source: ./README.md
     factors:
@@ -144,21 +113,17 @@ targets:
 ## Overview
 
 This model governs the QUALITY.md project itself: the format
-([`SPECIFICATION.md`](./SPECIFICATION.md)), the deterministic `qualitymd` CLI
-(specified under [`specs/`](./specs/), implemented under `internal/` and `cmd/`),
-and the skills that carry the judgment the CLI deliberately does not. At this
-pre-1.0 stage quality rests on the project's design, so the model covers the
-maturity of its specifications, the CLI's conformance to its own spec, and the
-README that introduces it.
+([`SPECIFICATION.md`](./SPECIFICATION.md)) and the README that introduces it. At
+this pre-1.0 stage quality rests on the project's design, so the model covers the
+maturity of the format specification and the README's job of orienting newcomers.
 
 ## Scope
 
-The deliverables are modeled as target nodes: `format-spec`, `cli-spec`,
-`skill-spec`, `cli-implementation`, and `readme`. Each deliverable carries a
-direct "does it do its job" requirement where appropriate. Only the format spec
-declares Clarity, Consistency, Verifiability, Extensibility, and Usability
-factors; only the README declares Approachability. Applicability is structural:
-factors apply where they are declared and below.
+The deliverables are modeled as target nodes: `format-spec` and `readme`. Each
+deliverable carries a direct "does it do its job" requirement where appropriate.
+Only the format spec declares Clarity, Consistency, Verifiability, Extensibility,
+and Usability factors; only the README declares Approachability. Applicability is
+structural: factors apply where they are declared and below.
 
 Out of scope by design: dependencies the project does not own, including the Go
 toolchain, Cobra/Fang, and release tooling.
@@ -167,16 +132,14 @@ toolchain, Cobra/Fang, and release tooling.
 
 - Format implementers can build a parser and evaluator from the specification.
 - Authors can write a valid model without reverse-engineering implementation.
-- Coding agents can evaluate a subject from the model and specs.
-- CLI users get behavior that matches the documented surface.
+- Coding agents can evaluate a subject from the model alone.
 - Newcomers can tell from the README what QUALITY.md is and reach a first result.
 
 ## Risks
 
 An ambiguous or incomplete format spec is the worst outcome because
-implementations diverge and the format stops being portable. A CLI or skill that
-drifts from its spec erodes trust. A README that overstates what exists turns
-newcomers away or misleads them.
+implementations diverge and the format stops being portable. A README that
+overstates what exists turns newcomers away or misleads them.
 
 ## Targets and factors
 
@@ -186,22 +149,6 @@ The format spec is the contract for every reader, author, implementation, and
 file. It carries the most detailed factors: Clarity, Consistency, Verifiability,
 Extensibility, and Usability.
 
-### cli-spec
-
-The CLI spec is judged for completeness: whether the deterministic surface is
-specified well enough to implement and test.
-
-### skill-spec
-
-The skill spec is judged for completeness: whether it defines the judgment layer
-and CLI-to-skill contract clearly enough to implement.
-
-### cli-implementation
-
-The implementation is judged against the CLI spec. Its conformance requirement
-uses custom rating criteria because partial implementation is expected during
-pre-1.0 development.
-
 ### readme
 
 The README is the project's front door. Approachability is scoped here because
@@ -209,8 +156,8 @@ the README's job is newcomer orientation, not format precision.
 
 ## Known gaps
 
-- The CLI's runtime quality is not modeled: reliability, performance, packaging,
-  and test coverage are deferred while the implementation is nascent.
-- The skills are specified but not built, so only `skill-spec` is modeled.
+- The CLI and skills are not modeled. Their specifications have been removed from
+  the repo, and the implementation's runtime quality — reliability, performance,
+  packaging, and test coverage — is deferred while the implementation is nascent.
 - No structural self-lint requirement yet. Once `qualitymd lint` ships, add a
   direct apex requirement asking that this model lint cleanly.

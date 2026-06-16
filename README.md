@@ -90,8 +90,8 @@ judging is the agent's part.
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships a single
-> placeholder `check` command that predates the current spec. The surface below
-> is specified under [`specs/`](specs/) but not yet built.
+> placeholder `check` command that predates the current design. The surface
+> below is planned but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
@@ -113,17 +113,15 @@ The deep, judgment-based evaluation of a subject against its model is carried by
 
 The only command in the shipping binary today is the placeholder
 **`qualitymd check`**; the surface above fails with "unknown command" until it
-lands. The full CLI and skill surface is specified under [`specs/`](specs/) — see
-[`specs/cli.md`](specs/cli.md) and [`specs/skills.md`](specs/skills.md).
+lands.
 
 ## Install
 
-> **Status.** The format spec and CLI design are settled — see
-> [`SPECIFICATION.md`](SPECIFICATION.md) and [`specs/`](specs/) — but
-> implementation is in progress. Of the documented surface, only the placeholder
-> **`check`** is currently built; **`init`**, **`lint`**, and the
-> **`model`/`evaluation`/`result`** resources are planned. Don't expect the
-> planned commands to run yet.
+> **Status.** The format spec is settled — see
+> [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress. Of
+> the documented surface, only the placeholder **`check`** is currently built;
+> **`init`**, **`lint`**, and the **`model`/`evaluation`/`result`** resources are
+> planned. Don't expect the planned commands to run yet.
 
 `qualitymd` has no tagged release yet; build the current binary from source with
 Go 1.26+:
@@ -138,8 +136,7 @@ Pre-built binaries via npm (`npx quality.md`) and Homebrew
 ## Specification
 
 The `QUALITY.md` format is specified in [`SPECIFICATION.md`](SPECIFICATION.md),
-and the `qualitymd` CLI under [`specs/`](specs/). These are the source of truth
-for the format and the tool.
+the source of truth for the format.
 
 ## Conceptual model
 

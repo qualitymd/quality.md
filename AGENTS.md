@@ -11,8 +11,8 @@ scaffolds, lints, resolves, records, rolls up, and reports; skills perform the
 judgment and write ratings back through the CLI.
 
 See [`README.md`](README.md) for the overview, [`CONTRIBUTING.md`](CONTRIBUTING.md)
-for dev setup and the release process, [`SPECIFICATION.md`](SPECIFICATION.md) for the
-draft format spec, and [`specs/`](specs/) for the CLI specification.
+for dev setup and the release process, and [`SPECIFICATION.md`](SPECIFICATION.md) for
+the draft format spec.
 
 ## Conventions
 
@@ -28,8 +28,8 @@ schemas) unless the user explicitly requests it, or surfacing the standard is th
 specific purpose of that file. Prefer QUALITY.md's own vocabulary (Targets,
 Factors, Requirements) over ISO terminology.
 
-ISO standards **may** be referenced in the specs under [`specs/`](specs/), where
-the provenance of a design decision is relevant.
+ISO standards **may** be referenced in [`SPECIFICATION.md`](SPECIFICATION.md),
+where the provenance of a design decision is relevant.
 
 ### Agent guidance files
 
