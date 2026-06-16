@@ -63,6 +63,16 @@ source: <string>                # Optional
 
 **Rating Scale**: This is the rating scale that provides the default criterion for how requirement assessments should be judged to arrive at a rating level result. Each **Rating Level** contains a level name which MUST be unique within the scale and an optional **title** for improved readability. Rating levels MUST be ordered from best (first) to worst (last). At least two rating levels MUST be supplied.
 
+**A suggested scale (non-normative).** When a graded scale fits and an author has no strong preference, the following four-level scale is a reasonable starting point, and a scaffolding tool MAY seed it. Its vocabulary names four best-to-worst bands — **outstanding** exceeds the goal, **target** meets it, **minimum** holds the acceptable floor, and **unacceptable** falls below it:
+
+```yaml
+ratings:
+  - { level: outstanding,  title: Outstanding,  criterion: "Exceeds the requirement; satisfies it with margin to spare." }
+  - { level: target,       title: Target,       criterion: "Satisfies the requirement." }
+  - { level: minimum,      title: Minimum,      criterion: "Falls short of the goal but holds the acceptable floor." }
+  - { level: unacceptable, title: Unacceptable, criterion: "Falls below the acceptable floor." }
+```
+
 **Factors**: quality characteristics or attributes that matter most for evaluating the overall quality of the entity.
 
 **Requirements**: quality requirements that will be used to assess the quality of the entity. These are typically nested under a factor or target, but may be defined at the model root level when it is simpler to define a single requirement at the root and cross reference to multiple quality attributes.
@@ -127,11 +137,91 @@ Factor identity is local to its target. The same factor declared on two differen
 
 #### Requirement
 
-#### Rating Scale
+A requirement is an assessable quality expectation — the single unit the model is built to judge. It pairs a **statement** (its map key, and its identity in reports) with an `assessment` that produces the findings; those findings are rated together to yield the requirement's **Rating Result**.
+
+A requirement MAY sit directly under a target, where it is **unlensed** and contributes only to that target's local rating; under a factor or sub-factor, where it is assessed through that lens and joins the factor's roll-up; or under a factor while tagging further factors as **secondary**, so one result informs several factor views. However it is placed, a requirement is assessed once, against the source of the target on which it is declared.
+
+```yaml
+assessment: <string>            # Required; the means of assessing the source, producing findings
+factors:                        # Optional; secondary factors in scope this result also informs
+  - <factor-name>
+ratings:                        # Optional; per-requirement criterion overrides
+  <level-name>: <criterion>     #   keyed by a level of the model's rating scale
+```
+
+**Assessment**: the means of assessing the target's source for this requirement — inline criteria, a measurement procedure, an inspection checklist, a diagnostic, or a path to a document describing one. A requirement MUST declare exactly one `assessment` as a single non-empty scalar; a missing, empty, or list-valued `assessment` is invalid. The assessment produces the requirement's **findings** — one or more observations, each recording *what was observed* and not itself rated (see [Assess and Rate](#assess-and-rate)). When a single statement needs several independent assessments, split it into several requirements rather than listing assessments under one.
+
+**Factors (secondary)**: an optional list of factor names this requirement's result should also inform, beyond the factor it is nested under (its **primary** factor). Each name MUST resolve to a factor in scope — one declared on the target where the requirement sits, or on an ancestor target. A secondary factor lets one result appear in additional factor roll-ups without duplicating the requirement; the result is still counted once in the target's local rating (see [Analyze](#analyze)). A requirement declared directly under a target, with no nesting factor, MAY use this list to attach itself to one or more factors.
+
+**Ratings (criterion overrides)**: an optional map that overrides the rating-scale criteria for this requirement, for use when the scale's shared criteria cannot express the gradient that matters. Each key MUST name a level of the model's rating scale; its value replaces that level's criterion for this requirement only. Overrides change the criteria, not the levels, their order, or their titles. Use them when a requirement has a natural measured threshold or a distinct qualitative spectrum:
+
+```yaml
+requirements:
+  "p99 request latency stays within budget":
+    assessment: >
+      Measure p99 request latency over a representative production window.
+    ratings:
+      outstanding: "p99 at or under 150 ms."
+      target: "p99 at or under 300 ms."
+      minimum: "p99 at or under 500 ms."
+      unacceptable: "p99 above 500 ms."
+```
 
 ### Markdown Body
 
-## Discovery
+The Markdown body documents *why* this is the right quality model — the context a reader needs to interpret the requirements and an evaluator needs to weigh them. Where the frontmatter fixes *what* is assessed and *how it is rated*, the body explains *why these factors, why these requirements, and what matters most*. The [Analyze](#analyze) and [Advise](#advise) phases draw on it: when an evaluator weighs requirements by importance or names the key gaps behind a held-down rating, the stakeholder context that justifies those judgments lives here.
+
+The body is OPTIONAL, and the format fixes no required section set. An author MAY use, rename, reorder, or replace the sections below. A conforming tool MUST preserve body content it does not recognize rather than dropping or rejecting it.
+
+The sections below are RECOMMENDED, non-normative starting points:
+
+| Section        | What it captures                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Overview**   | What the subject is, who depends on it, and what "good" means here.                                                               |
+| **Scope**      | The model boundary: what it covers and deliberately leaves out. Out-of-scope concerns are exclusions by design, not deficiencies. |
+| **Needs**      | Stakeholder outcomes the requirements answer to — the source of how much each requirement matters.                                |
+| **Risks**      | What goes wrong, and for whom, if a need is not met.                                                                              |
+| **Known gaps** | In-scope quality concerns deliberately deferred, each with a brief reason.                                                        |
+
+Two distinctions keep the body and the evaluation from blurring. **Scope** is for concerns outside the model's remit; **Known gaps** is for in-scope concerns deliberately deferred. And **Known gaps** is the author's standing declaration, distinct from a *not assessed* outcome, which an evaluator determines per run when evidence is missing (see [Assess and Rate](#assess-and-rate)).
+
+The body MAY open with a top-level heading; when present it SHOULD name the same subject as the model's `title`.
+
+#### Example
+
+```markdown
+# Acme Checkout API — Quality model
+
+## Overview
+
+The Acme Checkout API accepts and settles customer payments. Good means every charge
+is authenticated, charged exactly once, and protected from unauthorized access to
+cardholder data.
+
+## Scope
+
+This model covers the API service and its payment-processor integration
+(`./payments`). The upstream card network and the bank settlement system are out of
+scope — Acme does not own them.
+
+## Needs
+
+- Customers are charged exactly once for what they bought.
+- Cardholder data is never exposed to an unauthorized party.
+- On-call engineers can confirm whether a charge settled.
+
+## Risks
+
+A double charge or a leaked card number is the worst outcome: both are unrecoverable
+for the customer and carry regulatory exposure. An unpatched dependency is the most
+likely path to the latter.
+
+## Known gaps
+
+- Sustained peak-load behavior is in scope but not yet modeled.
+- Failed-charge reconciliation evidence is not yet produced, so that requirement
+  currently evaluates as *not assessed*.
+```
 
 ## Evaluation
 
@@ -201,7 +291,7 @@ This appendix is **non-normative**. It illustrates one rendering — for a human
 
 ### The model evaluated
 
-A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating scale is the four-level default — **Outstanding** > **Target** > **Minimum** > **Unacceptable** — ordered best to worst.
+A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating scale is the suggested four-level scale (see [Rating Scale](#rating-scale)) — **Outstanding** > **Target** > **Minimum** > **Unacceptable** — ordered best to worst.
 
 - **Acme Checkout API** (root target, source `./`)
   - Factors: **Security**, **Reliability**
