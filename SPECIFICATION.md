@@ -55,8 +55,8 @@ deterministically checkable and correspond to what `qualitymd lint` enforces.
 **File — rating scale**
 
 - **F8.** A scale is an ordered sequence of levels listed best to worst; each
-  `level` name is unique within the scale. The Model's `ratings` may give the
-  sequence inline or as a path to a YAML file holding it.
+  level has a unique `level` name and a `criterion` the evaluator judges against.
+  The Model's `ratings` gives the sequence inline.
 - **F9.** When the Model declares no `ratings`, the default scale — Outstanding /
   Target / Minimum / Unacceptable — is the active scale.
 
@@ -119,14 +119,13 @@ requirements:                       # map of statement -> Requirement
   <requirement-statement>: <Requirement>
 ```
 
-A **RatingScale** is an ordered sequence of levels, best to worst, or a path to a
-YAML file holding that sequence (F8):
+A **RatingScale** is an ordered sequence of levels, best to worst (F8):
 
 ```yaml
-# RatingScale = list of RatingLevel | <path>
+# RatingScale = list of RatingLevel
 - level: <level-name>               # required; unique within the scale; position is rank
-  displayName: <string>             # optional human label
-  criterion: <string>              # optional criterion for this level
+  title: <string>                   # optional human label
+  criterion: <string>              # required; the criterion the evaluator judges against
 ```
 
 The apex `Target` carries the file's requirements, factors, and source directly, so
@@ -292,31 +291,28 @@ declaration altitude is assessment altitude.
 explains how a scale is written and applied.
 
 The Model's optional `ratings` value defines the scale shared by requirements. It
-may be an inline sequence of levels or a path to a YAML file holding that
-sequence. The sequence is ordered best to worst; position defines rank.
+is an inline sequence of levels, ordered best to worst; position defines rank.
 
 ```yaml
 ratings:
-  - { level: A, displayName: Excellent, criterion: "Fully satisfies the assessment; no material gaps." }
-  - { level: B, displayName: Good }
-  - { level: C, displayName: Acceptable, criterion: "Satisfies the core assessment with minor gaps." }
-  - { level: D, displayName: Poor }
-  - { level: E, displayName: Unacceptable, criterion: "Does not satisfy the assessment." }
+  - { level: A, title: Excellent, criterion: "Fully satisfies the assessment; no material gaps." }
+  - { level: B, title: Good, criterion: "Satisfies the assessment with only trivial gaps." }
+  - { level: C, title: Acceptable, criterion: "Satisfies the core assessment with minor gaps." }
+  - { level: D, title: Poor, criterion: "Partly satisfies the assessment; significant gaps remain." }
+  - { level: E, title: Unacceptable, criterion: "Does not satisfy the assessment." }
 ```
 
 The evaluator applies criteria top-down and records the best level whose
-criterion the finding satisfies. A level without a criterion is an intermediate
-band: it may be assigned when the finding clearly does better than the level below
-but does not meet the stated criterion above.
+criterion the finding satisfies.
 
 When `ratings` is omitted, the default scale (F9) is:
 
 ```yaml
 ratings:
-  - { level: outstanding,  displayName: Outstanding,  criterion: "Exceeds the requirement; satisfies it with margin to spare." }
-  - { level: target,       displayName: Target,       criterion: "Satisfies the requirement." }
-  - { level: minimum,      displayName: Minimum,      criterion: "Falls short of the goal but stays at the acceptable floor." }
-  - { level: unacceptable, displayName: Unacceptable, criterion: "Falls below the acceptable floor." }
+  - { level: outstanding,  title: Outstanding,  criterion: "Exceeds the requirement; satisfies it with margin to spare." }
+  - { level: target,       title: Target,       criterion: "Satisfies the requirement." }
+  - { level: minimum,      title: Minimum,      criterion: "Falls short of the goal but stays at the acceptable floor." }
+  - { level: unacceptable, title: Unacceptable, criterion: "Falls below the acceptable floor." }
 ```
 
 The default vocabulary and best-to-worst framing are adapted from the Agile

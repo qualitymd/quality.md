@@ -2,16 +2,16 @@
 source: ./QUALITY.md
 ratings:
   - level: outstanding
-    displayName: "Outstanding"
+    title: "Outstanding"
     criterion: "Exceeds the diagnostic requirement; satisfies it with margin to spare."
   - level: target
-    displayName: "Target"
+    title: "Target"
     criterion: "Satisfies the diagnostic requirement; no material gaps."
   - level: minimum
-    displayName: "Minimum"
+    title: "Minimum"
     criterion: "Satisfies the core of the requirement but falls short of the goal; minor or scoped gaps remain at the acceptable floor."
   - level: unacceptable
-    displayName: "Unacceptable"
+    title: "Unacceptable"
     criterion: "Does not satisfy the diagnostic requirement; falls below the acceptable floor."
 factors:
   functionality:
@@ -136,7 +136,7 @@ factors:
           developer knows what to change.
       "a developer can extend and maintain the model":
         assessment: >
-          A developer can add, refine, or remove target nodes, factors, and
+          A developer can add, refine, or remove Targets, factors, and
           requirements through the format's extension points while keeping the model
           coherent.
 ---
@@ -187,7 +187,7 @@ that artifact and any referenced assessment or source material needed to judge i
 Functionality covers purpose fit, model well-formedness, body-section quality,
 format conformance, and format completeness. These concerns are expressed as
 requirements under the Functionality factor because decomposition now happens
-through target nodes.
+through Targets.
 
 ### Usability
 
