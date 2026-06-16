@@ -36,8 +36,9 @@ deterministically checkable and correspond to what `qualitymd lint` enforces.
 
 - **F3.** A Target is a mapping. Its recognized keys are `source`,
   `requirements`, `factors`, and `targets`; the Model adds `ratings` to that set
-  on the root mapping. All are optional; a target declares only what it adds.
-  Target and factor names are an open, case-sensitive vocabulary.
+  on the root mapping. The Target keys are optional and a target declares only
+  what it adds; `ratings` is required on the Model (F8). Target and factor names
+  are an open, case-sensitive vocabulary.
 - **F4.** Key types: `source` is a string; `requirements`
   is a map of statement → Requirement; `factors` is a map of name → Factor;
   `targets` is a map of name → Target (recursively the same shape).
@@ -50,15 +51,15 @@ deterministically checkable and correspond to what `qualitymd lint` enforces.
   scope; each name must resolve to a factor declared on the same target or one
   of its ancestors.
 - **F7.** A requirement's optional `ratings` map is keyed by level names; every
-  key must name a level defined by the active scale.
+  key must name a level defined by the Model's scale.
 
 **File — rating scale**
 
-- **F8.** A scale is an ordered sequence of levels listed best to worst; each
-  level has a unique `level` name and a `criterion` the evaluator judges against.
-  The Model's `ratings` gives the sequence inline.
-- **F9.** When the Model declares no `ratings`, the default scale — Outstanding /
-  Target / Minimum / Unacceptable — is the active scale.
+- **F8.** The Model must declare `ratings`: a non-empty scale of at least two
+  levels listed best to worst, given inline. Each level has a unique `level` name
+  and a `criterion` the evaluator judges against. A Model with no `ratings`, or a
+  scale of fewer than two levels, is invalid. The format prescribes no default
+  scale; an author chooses one to fit the subject.
 
 **Reader obligations**
 
@@ -81,7 +82,7 @@ key, and it appears only here (F2, F8):
 
 ```yaml
 # Model = Target + model-level keys. Appears once, as the root mapping.
-ratings: <RatingScale>            # optional; the scale shared by all requirements
+ratings: <RatingScale>            # required (F8); the scale shared by all requirements
 # ...plus every Target key below, applied to the apex target.
 ```
 
@@ -125,7 +126,7 @@ A **RatingScale** is an ordered sequence of levels, best to worst (F8):
 # RatingScale = list of RatingLevel
 - level: <level-name>               # required; unique within the scale; position is rank
   title: <string>                   # optional human label
-  criterion: <string>              # required; the criterion the evaluator judges against
+  criterion: <string>               # required; the criterion the evaluator judges against
 ```
 
 The apex `Target` carries the file's requirements, factors, and source directly, so
@@ -158,6 +159,11 @@ factor views without repeating the requirement.
 
 ```yaml
 ---
+ratings:
+  - { level: outstanding,  criterion: "Exceeds the requirement with margin to spare." }
+  - { level: target,       criterion: "Satisfies the requirement." }
+  - { level: minimum,      criterion: "Falls short of the goal but holds the floor." }
+  - { level: unacceptable, criterion: "Falls below the acceptable floor." }
 targets:
   api:
     source: ./internal/api
@@ -287,11 +293,13 @@ declaration altitude is assessment altitude.
 
 ## Rating Scale
 
-*Informative.* The structural rules for scales are F8 and F9; this section
-explains how a scale is written and applied.
+*Informative.* The structural rule for scales is F8; this section explains how a
+scale is written and applied.
 
-The Model's optional `ratings` value defines the scale shared by requirements. It
+The Model's required `ratings` value defines the scale shared by requirements. It
 is an inline sequence of levels, ordered best to worst; position defines rank.
+The format prescribes no default — the author picks a scale that fits the
+subject, whether a binary gate, a graded rubric, or a maturity ladder.
 
 ```yaml
 ratings:
@@ -305,7 +313,22 @@ ratings:
 The evaluator applies criteria top-down and records the best level whose
 criterion the finding satisfies.
 
-When `ratings` is omitted, the default scale (F9) is:
+A scale need not be elaborate. The minimum is two levels — a plain pass/fail
+gate:
+
+```yaml
+ratings:
+  - { level: pass, criterion: "Satisfies the assessment." }
+  - { level: fail, criterion: "Does not satisfy the assessment." }
+```
+
+### A suggested scale: the landing zone
+
+*Informative.* When a graded scale fits but you have no strong preference, the
+following four-level scale is a reasonable starting point; `qualitymd init`
+scaffolds it. Its vocabulary and best-to-worst framing are adapted from the Agile
+Landing Zone pattern — **outstanding** exceeds the goal, **target** meets it,
+**minimum** is the acceptable floor, and **unacceptable** is below that floor:
 
 ```yaml
 ratings:
@@ -314,10 +337,6 @@ ratings:
   - { level: minimum,      title: Minimum,      criterion: "Falls short of the goal but stays at the acceptable floor." }
   - { level: unacceptable, title: Unacceptable, criterion: "Falls below the acceptable floor." }
 ```
-
-The default vocabulary and best-to-worst framing are adapted from the Agile
-Landing Zone pattern: **outstanding** exceeds the goal, **target** meets it,
-**minimum** is the acceptable floor, and **unacceptable** is below that floor.
 
 ### Custom Rating Criteria
 
@@ -388,6 +407,7 @@ targets:
 ```yaml
 ratings:
   - { level: target, criterion: "Meets the requirement." }
+  - { level: unacceptable, criterion: "Does not meet the requirement." }
 requirements:
   "tests cover critical paths":
     assessment: Critical paths are covered.
@@ -503,10 +523,10 @@ forthcoming federation spec.
 ## Extensibility And Versioning
 
 The minimal structural core is a fenced YAML frontmatter block whose content is a
-Model mapping — an apex Target with optional `ratings` (F1). Because all Target
-fields are optional, `---\n{}\n---` is structurally valid but not useful; tools
-should warn when a Model declares no requirements, factors, or child targets. The Markdown body and a custom `ratings`
-scale are optional.
+Model mapping — an apex Target plus its required `ratings` scale (F1, F8). Because
+the Target fields are optional, a Model carrying only `ratings` is structurally
+valid but not useful; tools should warn when a Model declares no requirements,
+factors, or child targets. The Markdown body is optional.
 
 The format grows through use. A conforming reader ignores and preserves unknown
 frontmatter keys and unknown body sections (R1) rather than rejecting them.

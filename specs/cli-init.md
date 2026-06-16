@@ -8,7 +8,7 @@ qualitymd init
 
 ## Purpose
 
-`init` is deterministic and offline. It writes a starter recursive target-node
+`init` is deterministic and offline. It writes a starter recursive Target-tree
 model plus a Markdown body skeleton. It does not inspect the codebase and does
 not call a model; tailoring the model belongs to the authoring skills and normal
 edit/lint loop.
@@ -28,7 +28,7 @@ The scaffold is a starting point, not a finished quality model.
 ```markdown
 ---
 # QUALITY.md - quality model for <project>. See SPECIFICATION.md.
-# The frontmatter root is the apex target node.
+# The frontmatter root is the Model (the apex Target).
 # `source` defaults to this file's directory recursively when omitted.
 # Child `targets:` narrow or decompose the subject; position is lineage.
 # Requirements use one `assessment`; ratings default to Outstanding/Target/Minimum/Unacceptable.
