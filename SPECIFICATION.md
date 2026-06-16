@@ -1,8 +1,28 @@
-# QUALITY.md Format
+# QUALITY.md Specification
 
-`QUALITY.md` is a plain-text quality model: YAML frontmatter containing the
-structured model, followed by a Markdown body that explains the model's context
-and rationale.
+`QUALITY.md` is a plain-text **quality model**: a file that declares the quality
+requirements for a software system or component and records how it scores against
+them. It pairs **YAML frontmatter** — the structured model — with a **Markdown
+body** that explains the model's context and rationale. One file gives people and
+agents a shared, persistent, machine-readable account of what *good* means for a
+subject and how that judgment is reached, so the same standard can be read in
+review, enforced in CI, and revisited as the subject evolves.
+
+This specification defines the format: the shape of the frontmatter and what each
+part means, the evaluation semantics a tool must honor to produce comparable
+results, and the conventions of the Markdown body. Its purpose is interoperability —
+so that independent files and the tools that read them agree on what a `QUALITY.md`
+says and how it is judged.
+
+The specification is organized around the format's concepts. After the
+**Conformance** section — which fixes the reading conventions and gathers the
+mechanically checkable rules — the **Frontmatter** sections introduce the model one
+concept at a time, working from the whole file inward: the quality model, the
+recursive target, the factor that lenses a target, the single assessable
+requirement, and the scale a requirement's result is rated against. The **Markdown
+Body** and **Extensibility and Versioning** sections close.
+
+## Conformance
 
 Throughout, **must** marks a hard rule, **should** a recommendation that may be
 departed from with good reason, and **may** an option. This specification is
@@ -14,56 +34,28 @@ and add none; passages labeled *Non-normative*; and latitude granted with **may*
 Conformance has two subjects. A conforming **file** satisfies the file rules
 (F-rules); a conforming **reader** — any validator, evaluator, or tool that consumes
 a file — satisfies the reader rules (R-rules) and the evaluation semantics. The
-**Conformance** section gathers the rules a tool can check mechanically, the floor
-that lets independent validators agree; the sections after it fix the meaning of the
-model and the behavior of an evaluator — equally binding, but not reducible to a
-mechanical check.
+F-rules and R-rules are the **mechanically checkable** floor: rules a tool can
+decide by inspecting a file or its own behavior, without judgment. They are the
+floor, not the ceiling — a tool may layer more on top (warnings, house style, a
+stricter local policy, even errors) without ever contradicting them by treating a
+conforming file as malformed or accepting what the F-rules forbid. The passages that
+fix the *meaning* of the model and the *behavior* of an evaluator are equally
+binding, but not reducible to a mechanical check.
 
-## Conformance
+Each F-rule is stated in context, in the concept section it governs, under a stable
+label. This section indexes them and states the two reader obligations that belong
+to no single concept.
 
-These are the **mechanically checkable** rules — those a tool can decide by
-inspecting a file or its own behavior, without judgment. They are the floor, not the
-ceiling: a tool may layer more on top — warnings, house style, a stricter local
-policy, even errors — and the sections below point to many such openings. What it
-must not do is contradict them, treating a conforming file as malformed or accepting
-what the F-rules forbid. The format prescribes the contract, not the tool; tools are
-named here only by way of example.
-
-**File — frontmatter and body**
-
-- **F1.** A conforming file begins with a fenced YAML frontmatter block
-  (`---` … `---`) whose content is a single mapping: the **Model**. A file with no
-  frontmatter or no closing fence is not a conforming `QUALITY.md`.
-- **F2.** An optional Markdown body may follow the closing fence.
-
-**File — target**
-
-- **F3.** A Target is a mapping. Its recognized keys are `source`, `requirements`,
-  `factors`, and `targets`; the Model adds `ratings` on the root mapping and only
-  there. All are optional and a target declares only what it adds, except that
-  `ratings` is required on the Model (F8). Target and factor names are an open,
-  case-sensitive vocabulary.
-- **F4.** Key types: `source` is a string; `requirements` is a map of statement →
-  Requirement; `factors` is a map of name → Factor; `targets` is a map of name →
-  Target (recursively the same shape).
-
-**File — requirement**
-
-- **F5.** A requirement entry declares exactly one `assessment`: a non-empty
-  scalar. A missing, empty, or list-valued `assessment` is invalid.
-- **F6.** A requirement's optional secondary `factors` list names factors in
-  scope; each name must resolve to a factor declared on the same target or one
-  of its ancestors.
-- **F7.** A requirement's optional `ratings` map is keyed by level names; every
-  key must name a level defined by the Model's scale.
-
-**File — rating scale**
-
-- **F8.** The Model must declare `ratings`: a non-empty scale of at least two
-  levels, listed best to worst, given inline. Each level has a unique `level` name
-  and a `criterion` the evaluator judges against. A Model with no `ratings`, or a
-  scale of fewer than two levels, is invalid. The format prescribes no default
-  scale; an author chooses one to fit the subject.
+| Rule   | What it requires                                                 | Stated under  |
+| ------ | ---------------------------------------------------------------- | ------------- |
+| **F1** | Frontmatter is a fenced YAML block whose content is the Model    | Quality Model |
+| **F2** | An optional Markdown body may follow the closing fence           | Quality Model |
+| **F3** | A Target is a mapping with recognized, optional keys             | Target        |
+| **F4** | Target key types                                                 | Target        |
+| **F5** | A requirement declares exactly one non-empty `assessment`        | Requirement   |
+| **F6** | A requirement's secondary `factors` resolve in visible scope     | Requirement   |
+| **F7** | A requirement's `ratings` keys name defined scale levels         | Requirement   |
+| **F8** | The Model declares a `ratings` scale of ≥2 levels, best to worst | Rating Scale  |
 
 **Reader obligations**
 
@@ -74,21 +66,58 @@ named here only by way of example.
   outside visible scope, or an empty assessment. A reader may warn when an unknown
   key looks like a typo of a recognized one.
 
-### Schema
+## Frontmatter
 
-The frontmatter is a **Model**: the file's root mapping, an apex **Target** plus the
-one key that belongs to the file as a whole rather than to any single target —
-`ratings`. The types below are the normative contract; each `<TypeName>` reference
-resolves to the type of that name, and all keys are optional unless noted.
+The file begins with a fenced YAML frontmatter block (`---` … `---`) whose content
+is the structured quality model, and an optional Markdown body may follow the
+closing fence. The sections below introduce the model from the whole file inward:
+the **Quality Model** (the frontmatter as a whole), the **Target** (its recursive
+backbone), the **Factor** (a lens on a target), the **Requirement** (the single
+assessable unit), and the **Rating Scale** (what a requirement's result is rated
+against).
+
+### Quality Model
+
+- **F1.** A conforming file begins with a fenced YAML frontmatter block
+  (`---` … `---`) whose content is a single mapping: the **Model**. A file with no
+  frontmatter or no closing fence is not a conforming `QUALITY.md`.
+- **F2.** An optional Markdown body may follow the closing fence.
+
+The **Model** is the frontmatter's root mapping, and it is two things at once: the
+**apex Target** of the model — so every Target key (next section) applies to it —
+and the carrier of the one key that belongs to the file as a whole rather than to
+any single target, `ratings` (the [Rating Scale](#rating-scale), F8). `ratings` is
+the only key that distinguishes the root from any other target.
 
 ```yaml
 # Model = Target + model-level keys. Appears once, as the root mapping.
 ratings: <RatingScale>            # required (F8); the scale shared by all requirements
-# ...plus every Target key below, applied to the apex target.
+# ...plus every Target key, applied to the apex target.
 ```
 
-A **Target** is the recursive node type; `targets` nests Targets to any depth, and
-none of them carry `ratings`:
+The whole frontmatter, then, is a tree of Targets sharing a single Rating Scale at
+its root. The named types are **Target**, **Factor**, **Requirement**, and
+**RatingScale**, each defined in its own section below. The Target keys are optional,
+so a Model carrying only `ratings` is structurally valid but assesses nothing; the
+apex target should lead to at least one requirement somewhere in its subtree (see
+[Target](#target)).
+
+### Target
+
+A **Target** is a thing evaluated, bound to the material it is assessed from by
+`source`. It is the recursive node of the model: the apex Target is the Model
+itself, and every child under `targets:` is another Target of the same shape, nested
+to any depth. Target names are open, user-chosen identifiers such as `source-code`,
+`payment-flows`, or `documentation`.
+
+- **F3.** A Target is a mapping. Its recognized keys are `source`, `requirements`,
+  `factors`, and `targets`; the Model adds `ratings` on the root mapping and only
+  there. All are optional and a target declares only what it adds, except that
+  `ratings` is required on the Model (F8). Target and factor names are an open,
+  case-sensitive vocabulary.
+- **F4.** Key types: `source` is a string; `requirements` is a map of statement →
+  Requirement; `factors` is a map of name → Factor; `targets` is a map of name →
+  Target (recursively the same shape).
 
 ```yaml
 # Target — the recursive node type.
@@ -101,7 +130,76 @@ targets:                            # map of name -> Target (recursively)
   <target-name>: <Target>
 ```
 
-A **Requirement** declares exactly one `assessment` (F5):
+**Source.** `source` identifies the material evaluated for a target — a single
+string, conventionally a path, a glob, or a URL, though a reader may support
+whatever forms suit it. Paths and globs resolve relative to the containing
+`QUALITY.md` file. When `source` is omitted, it defaults to the file's own directory
+and all subdirectories, recursively; a grouping target may leave it implicit and let
+children narrow it.
+
+**Lineage and inheritance.** Position in `targets` is lineage: a child inherits
+every applicable declaration from its ancestors. Containment is the only inheritance
+primitive — a target owns what it declares and inherits its ancestors' applicable
+factors and requirements. Inheritance is purely additive: a descendant may add
+factors and requirements but cannot remove an inherited one. To assess a concern at
+a finer grain, declare a requirement at that lower target — declaration altitude is
+assessment altitude. (How a single requirement is assessed once yet governs every
+descendant is fixed under [Requirement](#requirement).)
+
+A target should lead to at least one requirement — its own, one carried by a factor,
+or one contributed by a descendant. A target whose subtree holds none assesses
+nothing, though a pure grouping target stays meaningful as long as its descendants
+carry requirements.
+
+### Factor
+
+A **Factor** is a quality lens — such as `reliability` or `maintainability` —
+declared on a Target and scoped to that target's subtree: declared at the apex it is
+project-wide; declared on `targets.docs` it applies only to that target and its
+descendants. A factor carries its own requirements, which are assessed through that
+lens.
+
+```yaml
+# Factor
+description: <string>               # recommended
+requirements:                       # map of statement -> Requirement
+  <requirement-statement>: <Requirement>
+```
+
+Factor identity is local to its scope — the same name on two unrelated targets
+denotes two distinct factors. Within a scope a descendant may *refine* an inherited
+factor by adding requirements under the same name; it should not *redefine* it with a
+contradictory meaning. Because "contradictory" is a judgment, this is guidance a tool
+may warn on rather than a deterministic rule.
+
+A factor should carry at least one requirement — its own, one added by a refinement,
+or one that names it as a secondary factor (F6). A factor that nothing contributes to
+is a lens over nothing.
+
+A factor should have a `description` of the attribute itself: what it means here, why
+it matters, and how it differs from its siblings. The description should not merely
+restate the requirements attached to it.
+
+### Requirement
+
+A **Requirement** is an assessable expectation — the single unit the model is built
+to judge. Its `assessment` is performed against the target's `source`, producing a
+**finding**; the active rating criteria are then applied to that finding to produce a
+**result**, whose recorded value is a **rating**. Each requirement produces exactly
+one result, recorded against the target that declares it, and the requirement
+statement (the map key) is its identity in reports and results.
+
+A requirement may sit directly under a target, where it is **unlensed**, or under a
+factor, where it is assessed through that lens and joins that factor's rollup. It is
+assessed against the target's `source` either way.
+
+- **F5.** A requirement entry declares exactly one `assessment`: a non-empty scalar.
+  A missing, empty, or list-valued `assessment` is invalid.
+- **F6.** A requirement's optional secondary `factors` list names factors in scope;
+  each name must resolve to a factor declared on the same target or one of its
+  ancestors.
+- **F7.** A requirement's optional `ratings` map is keyed by level names; every key
+  must name a level defined by the Model's scale.
 
 ```yaml
 # Requirement
@@ -112,46 +210,70 @@ ratings:                            # optional per-requirement criteria (F7)
   <level-name>: <criterion>         #   keyed by a level name of the active scale
 ```
 
-A **Factor** is a quality lens carrying its own requirements:
+`assessment` is the instruction that produces a finding — inline criteria text or a
+path to a document of criteria. It is never a list (F5); if one statement needs
+several independent assessments, split it into several requirements.
+
+The optional secondary `factors` list (F6) lets one result appear in additional
+factor views without changing the requirement's primary placement, so one result can
+contribute to several factor rollups without repeating the requirement. The optional
+`ratings` map sets this requirement's own criteria (F7); it changes only the
+criteria, not the levels, their order, or their display names. See
+[Custom rating criteria](#custom-rating-criteria) for when and how to use it.
+
+**Assessed once.** A requirement is **assessed once, at the target that declares
+it**, against that target's `source` — one assessment, one finding, one result.
+Containment then makes it *govern* every descendant: the requirement joins their
+inherited context and its single result covers their subtree, but it is never
+re-assessed against a descendant's narrower source and never yields a second result.
+Because a target's `source` ordinarily spans its descendants', that one assessment
+routinely inspects artifacts that also belong to sub-targets; that is expected — a
+finding may cite material anywhere in the declaring target's source, including files
+a descendant also selects, without splitting into multiple results.
+
+These are **evaluator obligations**: they bind any reader that evaluates a model,
+even though no file can be checked against them. An evaluator records and rolls up
+results, while each individual assessment is performed by a judge — a person or a
+model. Tools that disagree here produce results that cannot be compared.
+
+**Invalid examples.** Each illustrates the rule it violates and adds none of its own.
 
 ```yaml
-# Factor
-description: <string>               # recommended
-requirements:                       # map of statement -> Requirement
-  <requirement-statement>: <Requirement>
+requirements:
+  "input is validated":
+    assessment:
+      - "Query parameters are validated." # invalid (F5): assessment must be one scalar
+      - "Request bodies are validated."
 ```
-
-A **RatingScale** is an ordered sequence of levels, best to worst (F8):
 
 ```yaml
-# RatingScale = list of RatingLevel
-- level: <level-name>               # required; unique within the scale; position is rank
-  title: <string>                   # optional human label
-  criterion: <string>               # required; the criterion the evaluator judges against
+targets:
+  docs:
+    factors:
+      clarity:
+        description: Documentation is understandable.
+  api:
+    requirements:
+      "errors are readable":
+        assessment: Errors explain what happened.
+        factors:
+          - clarity # invalid (F6): sibling target's factor is out of scope
 ```
 
-## Model Semantics
+```yaml
+ratings:
+  - { level: target, criterion: "Meets the requirement." }
+  - { level: unacceptable, criterion: "Does not meet the requirement." }
+requirements:
+  "tests cover critical paths":
+    assessment: Critical paths are covered.
+    ratings:
+      gold: "Exceptional coverage." # invalid (F7): `gold` is not a scale level
+```
 
-This section fixes what the structured model *means*. It states no new F-rule, but
-an evaluator that reads these elements differently does not interoperate.
-
-The file itself is the apex target; every child under `targets:` is another Target of
-the same shape. The model keeps three concepts separate:
-
-- **Target** — a thing evaluated, bound to the material it is assessed from by
-  `source`. Target names are open, user-chosen identifiers such as `source-code`,
-  `payment-flows`, or `documentation`.
-- **Factor** — a quality lens, such as `reliability` or `maintainability`,
-  declared on a Target and visible to that target and its descendants only.
-- **Requirement** — an assessable expectation. Its `assessment` is performed
-  against the target's `source`, producing a **finding**. The rating criteria are
-  then applied to that finding to produce a **result**, whose recorded value is a
-  **rating**.
-
-A requirement may sit directly under a target, where it is unlensed, or under a
-factor, where it is assessed through that lens. It may also name secondary `factors`
-it supports, so one result contributes to several factor views without repeating the
-requirement.
+**A worked example.** The pieces together — a target with a direct requirement, two
+scoped factors each carrying a requirement, and one requirement that names a
+secondary factor:
 
 ```yaml
 ---
@@ -191,100 +313,27 @@ targets:
 ---
 ```
 
-A target should lead to at least one requirement — its own, one carried by a factor,
-or one contributed by a descendant. A target whose subtree holds none assesses
-nothing, though a pure grouping target stays meaningful as long as its descendants
-carry requirements.
+### Rating Scale
 
-### Targets And Source
+A **RatingScale** is the shared yardstick every requirement's result is rated
+against. The Model declares it once, at the root, in `ratings`.
 
-`targets` maps a target name to a Target. Position is lineage: a child inherits every
-applicable declaration from its ancestors. Names are open and user-chosen, drawn
-from no fixed set.
+- **F8.** The Model must declare `ratings`: a non-empty scale of at least two
+  levels, listed best to worst, given inline. Each level has a unique `level` name
+  and a `criterion` the evaluator judges against. A Model with no `ratings`, or a
+  scale of fewer than two levels, is invalid. The format prescribes no default
+  scale; an author chooses one to fit the subject.
 
-`source` identifies the material evaluated for that target — a single string,
-conventionally a path, a glob, or a URL, though a reader may support whatever forms
-suit it. Paths and globs resolve relative to the containing `QUALITY.md` file.
+```yaml
+# RatingScale = list of RatingLevel, best to worst (F8)
+- level: <level-name>               # required; unique within the scale; position is rank
+  title: <string>                   # optional human label
+  criterion: <string>               # required; the criterion the evaluator judges against
+```
 
-When `source` is omitted, it defaults to the file's own directory and all
-subdirectories, recursively; a grouping target may leave it implicit and let
-children narrow it.
-
-### Factors
-
-`factors` maps a factor name to a factor entry. A factor is a quality attribute
-scoped to the declaring target's subtree: declared at the apex it is project-wide;
-declared on `targets.docs` it applies only to that target and its descendants.
-
-Factor identity is local to its scope — the same name on two unrelated targets
-denotes two distinct factors. Within a scope a descendant may *refine* an inherited
-factor by adding requirements under the same name; it should not *redefine* it with a
-contradictory meaning. Because "contradictory" is a judgment, this is guidance a tool
-may warn on rather than a deterministic rule.
-
-A factor should carry at least one requirement — its own, one added by a refinement,
-or one that names it as a secondary factor. A factor that nothing contributes to is a
-lens over nothing.
-
-A factor should have a `description` of the attribute itself: what it means here, why
-it matters, and how it differs from its siblings. The description should not merely
-restate the requirements attached to it.
-
-### Requirements
-
-`requirements` maps a requirement statement to a requirement entry. The key is the
-requirement's identity in reports and results, and each requirement produces exactly
-one result, recorded against the target that declares it.
-
-A direct requirement is assessed against the target's `source` with no primary
-factor. A requirement under a factor is assessed against the same source but also
-joins that factor's rollup.
-
-`assessment` is the instruction that produces a finding — inline criteria text or a
-path to a document of criteria. It is never a list (F5); if one statement needs
-several independent assessments, split it into several requirements.
-
-The optional secondary `factors` list (F6) lets one result appear in additional
-factor views without changing the requirement's primary placement. The optional
-`ratings` map sets this requirement's own criteria, keyed by the scale's level names
-(F7); it changes only the criteria, not the levels, their order, or their display
-names.
-
-### Containment And Evaluation
-
-Containment describes how an evaluator treats the tree. These are **evaluator
-obligations**, not file rules: they bind any reader that evaluates a model, even
-though no file can be checked against them. An evaluator records and rolls up
-results, while each individual assessment is performed by a judge — a person or a
-model. Tools that disagree here produce results that cannot be compared.
-
-Containment is the only inheritance primitive: a target owns what it declares and
-inherits its ancestors' applicable factors and requirements. A requirement is
-**assessed once, at the target that declares it**, against that target's `source` —
-one assessment, one finding, one result. Containment then makes it *govern* every
-descendant: the requirement joins their inherited context and its single result
-covers their subtree, but it is never re-assessed against a descendant's narrower
-source and never yields a second result.
-
-Because a target's `source` ordinarily spans its descendants', that one assessment
-routinely inspects artifacts that also belong to sub-targets. That is expected: a
-finding may cite material anywhere in the declaring target's source — including files
-a descendant also selects — without splitting into multiple results.
-
-Inheritance is purely additive. A descendant may add factors and requirements but
-cannot remove an inherited one. To assess a concern at a finer grain, declare a
-requirement at that lower target: declaration altitude is assessment altitude.
-
-## Rating Scale
-
-The structural rule for scales is F8; this section fixes how one is written and
-applied.
-
-The Model's `ratings` is an inline sequence of levels ordered best to worst, where
-position defines rank. Each level pairs a unique `level` identifier with the
-`criterion` the evaluator judges against, plus an optional `title` for display. The
-evaluator applies the criteria top-down and records the best level whose criterion
-the finding satisfies.
+`ratings` is an inline sequence of levels ordered best to worst, where position
+defines rank. The evaluator applies the criteria top-down and records the best level
+whose criterion the finding satisfies.
 
 A scale need not be elaborate. The minimum is two levels — a plain pass/fail gate:
 
@@ -294,7 +343,7 @@ ratings:
   - { level: fail, criterion: "Does not satisfy the assessment." }
 ```
 
-### A suggested scale: the landing zone
+#### A suggested scale: the landing zone
 
 *Non-normative.* The format prescribes no default (F8), but when a graded scale fits
 and you have no strong preference, this four-level scale is a reasonable starting
@@ -311,11 +360,11 @@ ratings:
   - { level: unacceptable, title: Unacceptable, criterion: "Falls below the acceptable floor." }
 ```
 
-### Custom Rating Criteria
+#### Custom rating criteria
 
-Set `ratings` on a requirement when the scale's shared criteria cannot express the
-gradient that matters. The custom criteria should name ordered, mutually distinct
-levels of the active scale (F7), and the evaluator assigns the best level met.
+Set `ratings` on a requirement (F7) when the scale's shared criteria cannot express
+the gradient that matters. The custom criteria should name ordered, mutually distinct
+levels of the active scale, and the evaluator assigns the best level met.
 
 A measured-bound example:
 
@@ -350,48 +399,11 @@ requirements:
 Do not customize `ratings` merely to restate "met" and "not met"; spend that text on
 the `assessment` instead.
 
-## Invalid Examples
-
-Each example illustrates a rule it violates and adds none of its own.
-
-```yaml
-requirements:
-  "input is validated":
-    assessment:
-      - "Query parameters are validated." # invalid (F5): assessment must be one scalar
-      - "Request bodies are validated."
-```
-
-```yaml
-targets:
-  docs:
-    factors:
-      clarity:
-        description: Documentation is understandable.
-  api:
-    requirements:
-      "errors are readable":
-        assessment: Errors explain what happened.
-        factors:
-          - clarity # invalid (F6): sibling target's factor is out of scope
-```
-
-```yaml
-ratings:
-  - { level: target, criterion: "Meets the requirement." }
-  - { level: unacceptable, criterion: "Does not meet the requirement." }
-requirements:
-  "tests cover critical paths":
-    assessment: Critical paths are covered.
-    ratings:
-      gold: "Exceptional coverage." # invalid (F7): `gold` is not a scale level
-```
-
 ## Markdown Body
 
 The Markdown body documents *why* this is the right model — the context an evaluator
-needs to interpret assessments consistently. It is optional, and the format does not
-restrict it to any fixed set of sections.
+needs to interpret assessments consistently. It is optional (F2), and the format does
+not restrict it to any fixed set of sections.
 
 *Non-normative.* The sections below are a recommended starting point, not a required
 structure; teams and tools may use, rename, or replace them, and a reader preserves
@@ -452,7 +464,7 @@ visible first through operational signals.
 - Sustained peak-load behavior is in scope but not modeled yet.
 ```
 
-## Extensibility And Versioning
+## Extensibility and Versioning
 
 The minimal structural core is a frontmatter Model with its required `ratings` scale
 (F1, F8). Because the Target fields are optional, a Model carrying only `ratings` is
@@ -462,7 +474,7 @@ through use: a reader preserves unknown frontmatter keys and unknown body sectio
 (R1) rather than rejecting them, while malformed recognized content is an error, not
 an extension (R2).
 
-### Extending The Format
+### Extending the format
 
 *Non-normative.* Target and factor names are an open vocabulary, so producers may
 extend freely: add frontmatter keys and body sections for your own tooling, kept
@@ -472,7 +484,7 @@ conforming file as malformed (Conformance). A scaffolder may seed opinionated
 defaults — the landing-zone scale, the recommended body sections — as a starting
 point an author is free to replace.
 
-### Edge Cases
+### Edge cases
 
 How the rules above resolve specific cases; each row applies a rule already stated:
 
