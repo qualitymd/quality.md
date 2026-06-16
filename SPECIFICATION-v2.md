@@ -14,7 +14,7 @@ A conforming use or application of QUALITY.md may provide additional functionali
 
 - **Quality Model**: a structured, declarative description of what quality means for a given entity.
 - **Entity**: a thing that is evaluated for quality.
-- **Factor**: a quality (sub)characteristic or attribute for describing the quality of an entity.
+- **Factor**: a quality (sub)characteristic or attribute — a lens such as reliability or security — through which an entity's quality is described; it groups the requirements assessed through it and may be decomposed into sub-factors.
 - **Requirement**: a quality requirement for assessing and rating the quality of an entity.
 - **Finding**: a single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
 - **Assessment**: the means for assessing an entity — measurement, specifications, inspection, checklists, diagnostics, etc.
@@ -73,7 +73,57 @@ source: <string>                # Optional
 
 #### Target
 
+A target is an entity, or set of entities, with quality requirements subject to evaluation. It is the recursive node of the quality model: the model root is itself the apex target, and every entry under `targets` is another target of the same shape, nested to any depth.
+
+```yaml
+factors:                        # Optional*
+  <factor-name>: <Factor>
+requirements:                   # Optional*
+  <requirement-statement>: <Requirement>
+targets:                        # Optional*
+  <target-name>: <Target>
+source: <string>                # Optional
+```
+
+*A target MAY declare none of these and serve purely as a grouping node, but each target SHOULD lead to at least one requirement somewhere in its subtree — its own, one carried by a factor, or one contributed by a descendant. A target whose subtree contains no requirements evaluates nothing.
+
+A target shares the structure of the model root but for two keys: `title` and `ratings` belong to the model alone (see [Model](#model)). `ratings` is the single key that distinguishes the root target from any other.
+
+**Factors**: quality characteristics scoped to this target's subtree. A factor declared on a target applies to that target and its descendants, not to unrelated targets.
+
+**Requirements**: quality requirements assessed against this target's source. A requirement is assessed once, at the target that declares it, against that target's source.
+
+**Targets**: more focused child targets, nested to any depth. Child targets do not inherit their parent's requirements. However, an ancestor's target's source selector may select entities that overlap of its descenant child target selectors, resulting in the ancestors requriements also being evaluated on the same entities targeted by the child's source selector.
+
+**Source**: the location of the entities this target evaluates. Paths and globs resolve relative to the containing `QUALITY.md` file. When a target omits `source`, it inherits the source scope of its nearest ancestor that declares one; a grouping target MAY leave it implicit and let its child targets narrow it.
+
 #### Factor
+
+A factor is a quality characteristic — such as `reliability`, `security`, or `maintainability` — through which a target's quality is described. A factor MAY be decomposed into **sub-factors**: finer characteristics that together make up the parent — for example `reliability` into `availability`, `fault tolerance`, and `recoverability`. A sub-factor is itself a Factor of the same shape, nested to any depth.
+
+```yaml
+description: <string>           # Recommended
+factors:                        # Optional; sub-factors, recursively Factor
+  <factor-name>: <Factor>
+requirements:                   # Optional
+  <requirement-statement>: <Requirement>
+```
+
+**Description**: a concise statement of the quality characteristic as it applies to this entity. A factor SHOULD declare a `description`, and that description SHOULD:
+
+- **define the characteristic operationally** — what it means here, phrased as the degree or capability to achieve some end under the conditions that matter, not merely an adjective or a synonym for the factor name;
+- **convey why it matters and to whom** — the stakeholder concern the factor answers; and
+- **distinguish it from its sibling factors**, so the factors on a target read as a non-overlapping set.
+
+A description SHOULD NOT restate, enumerate, or stand in for the factor's requirements: the measurable expectations belong in `requirements` and are judged through the rating scale. The description fixes *what the lens is*; the requirements fix *what is assessed through it*.
+
+A useful shape is one or two sentences — "*\<Factor\> is the degree to which \<entity\> \<achieves some end\> under \<relevant conditions\>; it matters here because \<stakeholder concern\>.*" For example: *Reliability is the degree to which the orders API continues to accept and durably record orders under load and partial failure; it matters because an acknowledged order that is later lost is unrecoverable for the customer.*
+
+**Requirements**: the quality requirements assessed through this factor's lens, each evaluated against the source of the target on which it is declared. A factor SHOULD lead to at least one requirement — one nested directly beneath it, one added by a refinement on a descendant target, or one declared elsewhere that tags this factor as a secondary factor (see [Requirement](#requirement)). A factor that nothing contributes to is a lens over nothing.
+
+**Sub-factors**: a map of finer characteristics that decompose this factor, each a Factor of the same shape. Decompose a factor when it carries more than one distinct concern that is clearer assessed apart than together — but only as far as it aids understanding; a factor whose requirements already speak for themselves needs no sub-factors. The guidance above applies at every level: a sub-factor SHOULD carry its own `description`, SHOULD be distinguishable from its siblings, and SHOULD lead to at least one requirement. A sub-factor's requirements are assessed through its lens, and an evaluation infers a rating for the sub-factor that rolls up into the parent factor's rating (see [Analyze](#analyze)). A factor MAY hold both its own direct requirements and sub-factors.
+
+Factor identity is local to its target. The same factor declared on two different targets are distinct factors. Child targets that declare factors the same as an ancestors target should be refinements of the ancestor target's factor tailored to its target.
 
 #### Requirement
 
