@@ -92,13 +92,62 @@ source: <string>                # Optional
 
 ## Evaluation
 
-Evaluation assesses a target's source entities against each requirement and rates the resulting evidence against the rating scale.
+Evaluation assesses a model's targets against their requirements, rates the evidence, rolls the results up the target tree, and advises on what to improve. It proceeds in five phases: **Define**, **Assess and Rate**, **Analyze**, **Advise**, and **Report**.
 
-For every target:
+### Define
 
-1. Resolve the **source** entities to be evaluated from the target's `source`.
-2. For each requirement:
-   1. **Assess** the source entities using the requirement's **assessment**, producing the **findings** — the evidence for this requirement. Each finding records an observation (e.g., a measured value, inspection note, or diagnostic result) and is not itself rated.
-   2. **Rate** the findings *together* against the rating scale criterion (or the requirement's criterion overrides), producing the requirement's **Rating Result**: a single rating level. When there are no findings or the evidence is insufficient to rate against the scale, the requirement MUST be recorded as **not assessed** rather than assigned a rating level.
+Determine the scope of the evaluation. By default the scope is the whole model: every target, and within each target every requirement. The scope MAY be narrowed by a filter:
 
-> The steps above produce one Rating Result per requirement. Aggregating those results up the model tree (requirement → factor → target → root), including weighting, pass thresholds, and how *not assessed* propagates, is specified separately in **Roll-up** (TODO).
+- by **target** — restrict evaluation to a given target and its subtree;
+- by **factor** — restrict evaluation to the requirements tied to a given factor (including those that tag it as a secondary factor); or
+- both.
+
+For every target in scope, resolve the **source** entities to be evaluated from the target's `source` (see Discovery). A narrowed scope qualifies every result that follows: ratings are understood within the scope, and a scoped evaluation MUST NOT be presented as a whole-model verdict.
+
+### Assess and Rate
+
+For each requirement in scope, evaluated against its target node:
+
+1. **Assess** the source entities using the requirement's **assessment**, producing the **findings** — the evidence for this requirement. Each finding records an observation (e.g., a measured value, inspection note, or diagnostic result) and is not itself rated.
+2. **Rate** the findings *together* against the rating scale criterion (or the requirement's criterion overrides), producing the requirement's **Rating Result**: a single rating level. When there are no findings or the evidence is insufficient to rate against the scale, the requirement MUST be recorded as **not assessed** rather than assigned a rating level.
+
+This produces one Rating Result per requirement in scope.
+
+### Analyze
+
+Roll the requirement results up the model tree (requirement → factor → target → root) by inference. Roll-up is not computed; an evaluator infers it by judgment against the rating scale. For each target — child targets first — the evaluator infers:
+
+- a **factor rating**, for each of the target's factors: the level that best characterizes the factor considering, together, the rating results of every requirement tied to it — both those nested under the factor and those that tag it as a secondary factor;
+- a **local rating**: the level that best characterizes the target considering all of its own requirement results together (each requirement counted once, whatever factors it touches); and
+- an **aggregate rating**: the level that best characterizes the target considering its local rating together with the aggregate ratings of its child targets.
+
+Factor ratings and the local rating are two reads of the same requirement set: factors are a cross-cutting lens (a requirement may tag several), while the local rating is the whole-set verdict (each requirement counted once). A target with no requirements of its own (a grouping target) has no local rating; its aggregate considers only its child targets. A leaf target's aggregate rating equals its local rating.
+
+Roll-up considerations (guidance for inference, not computation):
+
+- The rolled-up level SHOULD reflect the target's overall state, but a serious shortfall in an important requirement SHOULD NOT be masked by many satisfactory ones — weigh requirements by how much each matters to the target's quality.
+- Requirements, factors, or targets recorded as *not assessed* are excluded from the rating but MUST be noted. When too little has been assessed to responsibly infer a level, the roll-up is itself recorded as *not assessed*.
+- Each roll-up SHOULD record a brief **rationale** naming what most determined the level (its binding constraints).
+
+Tools MAY extend roll-up with explicit weights, thresholds, or computed aggregation; this standard prescribes only inferential judgment.
+
+### Advise
+
+From the analysis, the evaluator advises on improvement:
+
+- **Key gaps** — the shortcomings most responsible for held-down ratings (the binding constraints surfaced during Analyze), together with any *not assessed* areas material to the verdict.
+- **Options** — for each key gap, the available options for remediation.
+- **Recommendation** — for each key gap, a recommended option and the rationale for it.
+
+Advice is inferential and advisory; it informs the report but does not change any rating.
+
+### Report
+
+Produce the **Evaluation Report**: the structured result of the evaluation, suitable for rendering to a person, a gate, or a tool. A report presents at least:
+
+- the **Rating** — the in-scope root target's aggregate rating — and its **rationale**;
+- the **Scope** the rating was produced under;
+- for each target in scope (root first, recursively): each requirement's findings summary, rating, and rationale; each factor's rating and rationale; and the target's local and aggregate ratings, each with rationale; and
+- the **Advice** — key gaps, options, and recommendations.
+
+*Not assessed* outcomes MUST be shown wherever they occur, distinct from rated outcomes, at every level of the report.
