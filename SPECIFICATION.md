@@ -91,24 +91,19 @@ factors:
     description: <string>         # recommended
     requirements:
       <requirement-statement>: <Requirement>
-overrides:
-  <inherited-requirement-statement>:
-    rationale: <string>           # required explanation
-    suppress: <boolean>           # optional; suppress inherited requirement here
-    replacement: <Requirement>    # optional; replace inherited requirement here
 targets:
   <target-name>: <Target | source-shorthand>
 ```
 
 The root mapping itself is the apex target. `source`, `requirements`, `factors`,
-`overrides`, and `targets` are all optional on a target node; a node declares only
+and `targets` are all optional on a target node; a node declares only
 what it adds.
 
 ### Targets And Source
 
 `targets` is a map of target name to target node. Position is lineage: a child
-inherits declarations from its ancestors unless it overrides them with rationale.
-Target names are open vocabulary. A catalog may seed names or baseline
+inherits all applicable declarations from its ancestors. Target names are open
+vocabulary. A catalog may seed names or baseline
 assessments, but a name with no catalog match is valid and simply starts with no
 baseline content.
 
@@ -147,7 +142,7 @@ description should not merely restate the requirements attached to it.
 ### Requirements
 
 `requirements` is a map of requirement statement to requirement entry. The key is
-the requirement's identity in reports, results, and overrides. A requirement must
+the requirement's identity in reports and results. A requirement must
 declare exactly one non-empty `assessment`.
 
 A direct requirement under a target is assessed against that target's `source`
@@ -165,22 +160,17 @@ ancestors. A name outside that visible scope is a structural diagnostic. Seconda
 factors do not change the requirement's primary placement; they let one result
 appear in additional factor views.
 
-A requirement may optionally override rating criteria with a `ratings` map keyed
-by the scale's level names. It changes only the criteria for this requirement; it
-does not define levels, order, or display names.
+A requirement may optionally set its own rating criteria with a `ratings` map
+keyed by the scale's level names. It changes only the criteria for this
+requirement; it does not define levels, order, or display names.
 
-### Containment And Overrides
+### Containment
 
 Containment is the only inheritance primitive. A target owns what it declares and
 inherits applicable ancestor factors, requirements, and baseline content. Every
 requirement declared on a node applies to that node and flows down to descendant
-targets.
-
-An override suppresses or replaces an inherited requirement at the node where the
-local exception begins. Overrides must carry `rationale`, because that record is
-where local quality knowledge accumulates. An override that matches no inherited
-requirement is stale and must surface as a diagnostic, like an unused
-expect-error.
+targets. Inheritance is purely additive: a descendant may add factors and
+requirements, but an inherited requirement always applies down its subtree.
 
 ## Rating Scale
 
@@ -218,9 +208,9 @@ Landing Zone pattern: **outstanding** exceeds the goal, **target** meets it,
 
 ### Custom Rating Criteria
 
-Override `ratings` on a requirement when the default criteria cannot express the
-gradient that matters. The override should name ordered, mutually distinct
-criteria and the evaluator assigns the best level met.
+Set `ratings` on a requirement when the default criteria cannot express the
+gradient that matters. The custom criteria should name ordered, mutually distinct
+levels and the evaluator assigns the best level met.
 
 A measured-bound example:
 
@@ -252,8 +242,8 @@ requirements:
       unacceptable: "A critical behavior is untested, or the suite cannot be trusted."
 ```
 
-Do not override merely to restate "met" and "not met"; spend that text on the
-`assessment` instead.
+Do not customize `ratings` merely to restate "met" and "not met"; spend that text
+on the `assessment` instead.
 
 ## Invalid Examples
 
@@ -291,15 +281,6 @@ targets:
           maintainability:
             description: How quickly generated code can be regenerated.
             # invalid: redefines inherited factor meaning instead of refining it
-```
-
-```yaml
-targets:
-  api:
-    overrides:
-      "a requirement no ancestor declares":
-        rationale: "No longer relevant."
-        suppress: true # invalid: stale override, matches no inherited requirement
 ```
 
 ```yaml
@@ -390,13 +371,12 @@ The rules are:
    factors by adding requirements, not redefine them.
 3. **Containment inheritance.** A target inherits ancestor factors and
    requirements. Requirements declared on a node apply there and flow down.
-4. **Overrides carry rationale.** Suppressing or replacing an inherited
-   requirement records why. An override that no longer matches an inherited
-   requirement is stale and diagnostic.
-5. **Baseline is the rolling root ancestor.** Shipped baseline assessments are
+   Inheritance is additive: a descendant adds factors and requirements but does
+   not remove inherited ones.
+4. **Baseline is the rolling root ancestor.** Shipped baseline assessments are
    the outermost target tree. Improved baseline assessments reach everyone; they
    are always evaluated and visible rather than version-pinned away.
-6. **Nest vs. federate.** Nest sub-targets when parts share the node's factors.
+5. **Nest vs. federate.** Nest sub-targets when parts share the node's factors.
    Federate into a separate model when a part warrants its own ownership or
    factors. Federation grafts that model as a target subtree.
 
@@ -429,7 +409,6 @@ is an error, not an extension.
 | **Empty target node** | Valid as a grouping placeholder; a tool may warn if it contributes nothing. |
 | **Factor refinement that changes description incompatibly** | Invalid redefinition when it contradicts the inherited meaning; valid refinement when it adds requirements or compatible detail. |
 | **Secondary `factors` entry outside visible scope** | Invalid: the factor name must resolve on the current target or an ancestor. |
-| **Override matching no inherited requirement** | Invalid stale override. |
 | **Empty assessment value** | Invalid: the assessment is the criteria and must be non-empty. |
 | **Duplicate sibling names** | Invalid: YAML duplicate keys are rejected, and duplicate `ratings[].level` names are rejected structurally. |
 | **Ordering** | Significant within `ratings`; otherwise evaluation does not depend on authoring order, though tools may preserve it for display. |

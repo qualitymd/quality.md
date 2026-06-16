@@ -21,10 +21,10 @@ It checks, in order:
 
 1. **Parse** - fenced frontmatter exists and is valid YAML.
 2. **Schema** - the root is a target node; every target, factor, requirement,
-   override, and rating scale is well-shaped.
+   and rating scale is well-shaped.
 3. **References** - `assessment`, `source`, and shared `ratings` paths resolve
    when they are path-shaped.
-4. **Inheritance** - factor refinement, secondary-factor references, overrides,
+4. **Inheritance** - factor refinement, secondary-factor references,
    and federation/baseline inheritance are structurally coherent.
 5. **Body** - recommended sections and target-scoped factor prose are present in
    a parseable shape.
@@ -64,27 +64,23 @@ known keys.
 | `assessment-shape` | error | `assessment` is not a single scalar string. A requirement has one assessment, never a list or map. |
 | `broken-assessment-ref` | error | A path-shaped `assessment` points to a file that does not exist. |
 | `secondary-factor-scope` | error | A requirement's secondary `factors` entry names no factor visible on the current target or an ancestor. |
-| `override-rationale` | error | An override suppresses or replaces an inherited requirement without a rationale. |
-| `stale-override` | error | An override matches no inherited requirement. |
 | `containment-resolution` | error | The inherited target/factor/requirement set cannot be resolved deterministically. |
 | `baseline-resolution` | warning | A configured rolling baseline cannot be loaded. Baseline content must be visible when configured. |
 | `broken-ratings-ref` | error | A path-shaped top-level `ratings` value does not exist or does not parse as a rating scale. |
 | `ratings-shape` | error | A rating scale is not a sequence with at least two unique `level` entries ordered best to worst. |
-| `unknown-rating-level` | error | A per-requirement `ratings` override names a level not in the active scale. |
+| `unknown-rating-level` | error | A per-requirement `ratings` map names a level not in the active scale. |
 | `rating-level-order` | warning | A per-requirement `ratings` map is written in an order different from the active scale. Fixable. |
-| `empty-collection` | warning | `targets`, `requirements`, `factors`, or `overrides` is present but empty. |
+| `empty-collection` | warning | `targets`, `requirements`, or `factors` is present but empty. |
 | `unknown-key` | warning | A key looks like a typo of a known schema key: `target` -> `targets`, `sources` -> `source`, `prompt`/`prompts` -> `assessment`, `factor` -> `factors`, `requirement` -> `requirements`, `rating` -> `ratings`. |
-| `model-summary` | info | Summary counts: targets, factors, direct requirements, lensed requirements, overrides, and secondary-factor links. |
+| `model-summary` | info | Summary counts: targets, factors, direct requirements, lensed requirements, and secondary-factor links. |
 
-The table names every condition in the six schema rules:
+The table names every condition in the five schema rules:
 
 - Rule 1, open target vocabulary: `open-target-vocabulary`.
 - Rule 2, scoped factor identity/refinement: `factor-refinement`.
 - Rule 3, containment inheritance: `containment-resolution`.
-- Rule 4, overrides with rationale/staleness: `override-rationale`,
-  `stale-override`.
-- Rule 5, rolling baseline: `baseline-resolution`.
-- Rule 6, nest vs. federate: federation rules below plus
+- Rule 4, rolling baseline: `baseline-resolution`.
+- Rule 5, nest vs. federate: federation rules below plus
   `target-node-shape`.
 
 `assessment` and `ratings` values are treated as file references only when they
@@ -129,7 +125,6 @@ run over the set:
 | `mixed-rating-scales` | warning | Models in one federation use different active rating scales. A tree report is commensurable only on a shared scale. |
 | `federation-graft` | error | A child model cannot be grafted as a target subtree because its root target address conflicts with an ancestor target address. |
 | `cross-file-factor-redefinition` | error | A federated child redefines an inherited factor meaning instead of refining it. |
-| `cross-file-stale-override` | error | A federated override names no inherited requirement from the graft point. |
 | `source-overlap` | warning | Ancestor and descendant `source` globs overlap in a way that may double-govern the same files. |
 
 Coverage and semantic consistency are judgment, not lint; they belong to the

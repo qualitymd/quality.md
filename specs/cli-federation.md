@@ -24,12 +24,10 @@ doc applies them to CLI behavior:
 - **Ownership stays at the defining file.** Each model owns its own declarations
   and result files. Federation is a reading of the set, not a merge written back.
 - **Containment spans downward.** Ancestor target nodes and ancestor models apply
-  to descendants unless overridden with rationale.
+  to descendants. Inheritance is additive: a descendant adds declarations but does
+  not remove inherited ones.
 - **Factor identity is scoped.** A factor declared by an ancestor is visible in
   descendants. A child may refine it by adding requirements, not redefine it.
-- **Overrides cross file boundaries.** A child model may suppress or replace an
-  inherited requirement at its graft point only with rationale. A stale override
-  is diagnostic.
 - **Baseline is the rolling root ancestor.** Shipped baseline target trees sit
   outside the repository tree. They are always visible and evaluated; projects do
   not pin away improvements.
@@ -58,7 +56,7 @@ point it inherits ancestor factors and requirements, plus any rolling baseline
 content.
 
 The graft is not a physical merge. Commands can always report which file owns a
-target, factor, requirement, override, result, and rating scale.
+target, factor, requirement, result, and rating scale.
 
 ## Runs
 
@@ -116,9 +114,8 @@ own `.quality/` holds its runs.
 ## `lint` Over A Federation
 
 `lint` without `-f` validates every discovered model, then runs cross-file rules:
-mixed rating scales, graft conflicts, cross-file factor redefinitions,
-cross-file stale overrides, and source overlap. See
-[`cli-lint.md`](./cli-lint.md#federation-rules).
+mixed rating scales, graft conflicts, cross-file factor redefinitions, and source
+overlap. See [`cli-lint.md`](./cli-lint.md#federation-rules).
 
 ## Open Questions
 

@@ -94,14 +94,13 @@ factors:
         assessment: >
           Running `qualitymd lint` on the model reports no error-level findings:
           the target tree parses, sources and assessment references resolve, scoped
-          factor references are valid, overrides are current, and the rating scale
-          is well-shaped.
+          factor references are valid, and the rating scale is well-shaped.
       "the model correctly applies the QUALITY.md format spec":
         assessment: >
           The model is a correct application of the QUALITY.md format, not merely a
           file that parses. Target nodes, scoped factors, direct and lensed
           requirements, assessment fields, source bindings, secondary factors,
-          overrides, and rating criteria are used for their intended purposes.
+          and rating criteria are used for their intended purposes.
       "the model includes everything the QUALITY.md spec prescribes":
         assessment: >
           The model includes the structured target tree and the recommended

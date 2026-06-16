@@ -103,7 +103,7 @@ Improve phase:
 ## Open Questions
 
 - Shared judging methodology: evidence standards, saturation, and rigor levels.
-- Exact meta-model wiring and how users override or extend it, if ever.
+- Exact meta-model wiring and how users replace or extend it, if ever.
 - Improve-phase edit protocol.
 - How much setup infers from the codebase versus asking the user.
 - Skill packaging and repository home.

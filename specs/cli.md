@@ -41,7 +41,7 @@ assessment -> finding -> rating criteria -> result (rating)
 | Command | Purpose | Output |
 | --- | --- | --- |
 | `qualitymd init` | Scaffold a starter `QUALITY.md` target tree. | `./QUALITY.md` |
-| `qualitymd lint [file]` | Validate structure: target nodes, scoped factors, requirements, references, overrides, body shape. | JSON findings |
+| `qualitymd lint [file]` | Validate structure: target nodes, scoped factors, requirements, references, body shape. | JSON findings |
 
 ### `qualitymd model`
 
@@ -82,7 +82,7 @@ Docs use **CLI run target** for the flag and **target node** for the schema.
 
 - **`lint`** asks whether the file is structurally valid: target-node shape,
   scoped factor identity, requirement `assessment`s, `source` and referenced
-  assessment paths, rating scales, overrides, and body headings.
+  assessment paths, rating scales, and body headings.
 - **`model` / `evaluation` / `result`** manage the recorded state of evaluation.
   They do not judge requirements; skills do.
 

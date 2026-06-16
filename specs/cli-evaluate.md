@@ -196,7 +196,7 @@ provisional, but the information is required.
       { "level": "unacceptable", "criterion": "Falls below the acceptable floor." }
     ]
   },
-  "ratingOverrides": null,
+  "customRatings": null,
   "state": "pending",
   "sufficiency": "Rate after inspecting every file in the resolved source manifest that can handle input."
 }
