@@ -397,14 +397,14 @@ restrict it to any fixed set of sections.
 structure; teams and tools may use, rename, or replace them, and a reader preserves
 sections it does not recognize (R1).
 
-| Section | What it captures |
-| --- | --- |
-| **Overview** | What the subject is, who depends on it, and what "good" means here. |
-| **Scope** | The model boundary: what it covers and deliberately leaves out. Out-of-scope concerns are exclusions by design, not deficiencies. |
-| **Needs** | Stakeholder outcomes the requirements answer to. |
-| **Risks** | What goes wrong, and for whom, if a need is not met. |
-| **Targets and factors** | A prose mirror of the target tree: each target's role, the scoped factors declared there, and why those lenses belong there. |
-| **Known gaps** | In-scope quality concerns deliberately deferred, each with a brief reason. |
+| Section                 | What it captures                                                                                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Overview**            | What the subject is, who depends on it, and what "good" means here.                                                               |
+| **Scope**               | The model boundary: what it covers and deliberately leaves out. Out-of-scope concerns are exclusions by design, not deficiencies. |
+| **Needs**               | Stakeholder outcomes the requirements answer to.                                                                                  |
+| **Risks**               | What goes wrong, and for whom, if a need is not met.                                                                              |
+| **Targets and factors** | A prose mirror of the target tree: each target's role, the scoped factors declared there, and why those lenses belong there.      |
+| **Known gaps**          | In-scope quality concerns deliberately deferred, each with a brief reason.                                                        |
 
 Applicability is structural: a factor declared on `targets.docs` applies there and
 below, not to unrelated targets. The body should explain that structure rather than
@@ -415,33 +415,40 @@ argue exceptions in prose. **Scope** is for concerns outside the model's remit;
 # Quality model - Orders platform
 
 ## Overview
+
 The Orders platform receives, stores, and exposes customer orders. Good means an
 accepted order is durable, observable, and protected from unauthorized access.
 
 ## Scope
+
 This model covers the API service, worker, and storage layer. The external payment
 provider is out of scope because this project does not own it.
 
 ## Needs
+
 - Customers can trust that an accepted order will not disappear.
 - On-call engineers can diagnose an incident from logs and metrics.
 
 ## Risks
+
 Silent order loss is the worst outcome because customers cannot repair it
 themselves and support cannot reconstruct intent reliably.
 
 ## Targets and factors
 
 ### api
+
 The API target covers the request boundary and declares Reliability and Security.
 Reliability matters here because success responses create customer commitments;
 Security matters because this boundary receives customer data.
 
 ### worker
+
 The worker target carries Operability because delayed or stuck asynchronous work is
 visible first through operational signals.
 
 ## Known gaps
+
 - Sustained peak-load behavior is in scope but not modeled yet.
 ```
 
@@ -469,17 +476,17 @@ point an author is free to replace.
 
 How the rules above resolve specific cases; each row applies a rule already stated:
 
-| Case | Treatment |
-| --- | --- |
-| **No frontmatter, or no closing `---`** | Invalid (F1): there is no model to read. |
-| **Empty `targets`** | Valid but usually a warning; it declares no child targets. |
-| **Empty Target** | Valid as a grouping placeholder; a tool may warn if it contributes nothing. |
-| **Factor refinement that changes description incompatibly** | Discouraged, not invalid; a tool may warn. Adding requirements or compatible detail is fine. |
-| **Secondary `factors` entry outside visible scope** | Invalid (F6): the factor name must resolve on the current target or an ancestor. |
-| **Empty assessment value** | Invalid (F5): the assessment is the criteria and must be non-empty. |
-| **Duplicate sibling names** | Invalid (R2): YAML duplicate keys and duplicate `ratings[].level` names are rejected structurally. |
-| **Ordering** | Significant within `ratings` (F8); otherwise evaluation does not depend on authoring order, though tools may preserve it for display. |
-| **Case** | Schema keys and author-defined names are case-sensitive. |
+| Case                                                        | Treatment                                                                                                                             |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **No frontmatter, or no closing `---`**                     | Invalid (F1): there is no model to read.                                                                                              |
+| **Empty `targets`**                                         | Valid but usually a warning; it declares no child targets.                                                                            |
+| **Empty Target**                                            | Valid as a grouping placeholder; a tool may warn if it contributes nothing.                                                           |
+| **Factor refinement that changes description incompatibly** | Discouraged, not invalid; a tool may warn. Adding requirements or compatible detail is fine.                                          |
+| **Secondary `factors` entry outside visible scope**         | Invalid (F6): the factor name must resolve on the current target or an ancestor.                                                      |
+| **Empty assessment value**                                  | Invalid (F5): the assessment is the criteria and must be non-empty.                                                                   |
+| **Duplicate sibling names**                                 | Invalid (R2): YAML duplicate keys and duplicate `ratings[].level` names are rejected structurally.                                    |
+| **Ordering**                                                | Significant within `ratings` (F8); otherwise evaluation does not depend on authoring order, though tools may preserve it for display. |
+| **Case**                                                    | Schema keys and author-defined names are case-sensitive.                                                                              |
 
 ### Versioning
 

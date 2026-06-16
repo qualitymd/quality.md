@@ -40,37 +40,37 @@ assessment -> finding -> rating criteria -> result (rating)
 
 ### Top-Level
 
-| Command | Purpose | Output |
-| --- | --- | --- |
-| `qualitymd init` | Scaffold a starter `QUALITY.md` target tree. | `./QUALITY.md` |
-| `qualitymd lint [file]` | Validate structure: Targets, scoped factors, requirements, references, body shape. | JSON findings |
+| Command                 | Purpose                                                                            | Output         |
+| ----------------------- | ---------------------------------------------------------------------------------- | -------------- |
+| `qualitymd init`        | Scaffold a starter `QUALITY.md` target tree.                                       | `./QUALITY.md` |
+| `qualitymd lint [file]` | Validate structure: Targets, scoped factors, requirements, references, body shape. | JSON findings  |
 
 ### `qualitymd model`
 
-| Command | Purpose | Output |
-| --- | --- | --- |
-| `model show [--requirement <address>] [--json]` | Parsed model: recursive target tree, requirements by target-tree address, resolved `source` manifests, loaded `assessment` text, active rating scale. | JSON |
+| Command                                         | Purpose                                                                                                                                               | Output |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| `model show [--requirement <address>] [--json]` | Parsed model: recursive target tree, requirements by target-tree address, resolved `source` manifests, loaded `assessment` text, active rating scale. | JSON   |
 
 ### `qualitymd evaluation` (`eval`)
 
-| Command | Purpose | Transition |
-| --- | --- | --- |
-| `evaluation create [--model <path>] [--target <path>] [--from <id>]` | Create or re-enter the living run for one model and CLI run target; enumerate selected target-tree requirements. | open |
-| `evaluation list` | List active and archived runs. | - |
-| `evaluation show [<id>]` | Run manifest: status, result set, rollup, verdict. | - |
-| `evaluation report [<id>] [--fail-on <level>]` | Render report and fail when the rollup trips the gate. | - |
-| `evaluation archive [<id>] --as <name>` | Snapshot a run. | archived |
-| `evaluation delete <id>` | Remove a run. | abandoned |
+| Command                                                              | Purpose                                                                                                          | Transition |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------- |
+| `evaluation create [--model <path>] [--target <path>] [--from <id>]` | Create or re-enter the living run for one model and CLI run target; enumerate selected target-tree requirements. | open       |
+| `evaluation list`                                                    | List active and archived runs.                                                                                   | -          |
+| `evaluation show [<id>]`                                             | Run manifest: status, result set, rollup, verdict.                                                               | -          |
+| `evaluation report [<id>] [--fail-on <level>]`                       | Render report and fail when the rollup trips the gate.                                                           | -          |
+| `evaluation archive [<id>] --as <name>`                              | Snapshot a run.                                                                                                  | archived   |
+| `evaluation delete <id>`                                             | Remove a run.                                                                                                    | abandoned  |
 
 ### `qualitymd result`
 
-| Command | Purpose | Transition |
-| --- | --- | --- |
-| `result list [--status pending,stale,...] [--json]` | Query results by state. There is no `next` cursor; skills order work. | - |
-| `result show <address> [--json]` | Resolved target-tree requirement payload for a skill. | - |
-| `result set <address> --rating <level> --evidence ...` | Record the skill's finding and rating. | recorded |
-| `result skip <address> --reason ...` | Mark deliberately not assessed. | skipped |
-| `result reset <address>` | Return to pending. | pending |
+| Command                                                | Purpose                                                               | Transition |
+| ------------------------------------------------------ | --------------------------------------------------------------------- | ---------- |
+| `result list [--status pending,stale,...] [--json]`    | Query results by state. There is no `next` cursor; skills order work. | -          |
+| `result show <address> [--json]`                       | Resolved target-tree requirement payload for a skill.                 | -          |
+| `result set <address> --rating <level> --evidence ...` | Record the skill's finding and rating.                                | recorded   |
+| `result skip <address> --reason ...`                   | Mark deliberately not assessed.                                       | skipped    |
+| `result reset <address>`                               | Return to pending.                                                    | pending    |
 
 ## Two Meanings Of Target
 
@@ -128,11 +128,11 @@ brief:
 
 ## Exit Codes
 
-| Code | Meaning |
-| --- | --- |
-| `0` | Command ran and any gate passed. |
-| `1` | Gate failure: lint errors or `evaluation report --fail-on` tripped. |
-| `2` | Tool failure: bad flags, unreadable files, parse failure, or internal error. |
+| Code | Meaning                                                                      |
+| ---- | ---------------------------------------------------------------------------- |
+| `0`  | Command ran and any gate passed.                                             |
+| `1`  | Gate failure: lint errors or `evaluation report --fail-on` tripped.          |
+| `2`  | Tool failure: bad flags, unreadable files, parse failure, or internal error. |
 
 Recording a low rating with `result set` exits `0`; the gate is
 `evaluation report`.

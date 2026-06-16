@@ -18,11 +18,11 @@ agentic work lives in skills; the CLI exposes `init`, `lint`, `model`,
 
 ## Skill Set
 
-| Skill | What it does | Model used |
-| --- | --- | --- |
-| `setup-quality-md` | Onboards a project: runs/scaffolds `qualitymd init`, drafts a first target-tree `QUALITY.md` grounded in real needs and risks, and sets up `.quality/`. | none; authors the model |
-| `evaluate-quality` | Evaluates the subject against its `QUALITY.md`. | the project's `QUALITY.md` |
-| `improve-quality-md` | Diagnoses then improves the `QUALITY.md` artifact itself. | the built-in quality meta-model |
+| Skill                | What it does                                                                                                                                            | Model used                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `setup-quality-md`   | Onboards a project: runs/scaffolds `qualitymd init`, drafts a first target-tree `QUALITY.md` grounded in real needs and risks, and sets up `.quality/`. | none; authors the model         |
+| `evaluate-quality`   | Evaluates the subject against its `QUALITY.md`.                                                                                                         | the project's `QUALITY.md`      |
+| `improve-quality-md` | Diagnoses then improves the `QUALITY.md` artifact itself.                                                                                               | the built-in quality meta-model |
 
 `improve-quality-md` diagnose mode is the same evaluation loop with the bundled
 meta-model as model and the user's `QUALITY.md` as the CLI run target, followed

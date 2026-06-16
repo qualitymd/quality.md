@@ -50,27 +50,35 @@ targets:
 # Quality model - <project>
 
 ## Overview
+
 <!-- What this system or component is, who depends on it, and what "good" means here. -->
 
 ## Scope
+
 <!-- What this model covers and deliberately leaves out. -->
 
 ## Needs
+
 <!-- Stakeholder outcomes the requirements answer to. -->
 
 ## Risks
+
 <!-- What goes wrong, and for whom, if a need is not met. -->
 
 ## Targets and factors
+
 <!-- Mirror the target tree and explain the factors declared on each target. -->
 
 ### source-code
+
 <!-- Why this target exists and why Maintainability is the right lens here. -->
 
 ### docs
+
 <!-- What quality concerns belong to documentation, if any. -->
 
 ## Known gaps
+
 <!-- In-scope concerns intentionally deferred, each with a reason. -->
 ```
 
