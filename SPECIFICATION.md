@@ -20,7 +20,16 @@ extending the core.
 This section is the conformance contract. A conforming **file** satisfies the
 file rules (F-rules); a conforming **reader** — a validator or any tool that
 consumes the file — satisfies the reader rules (R-rules). The file rules are
-deterministically checkable and correspond to what `qualitymd lint` enforces.
+deterministically checkable: a tool can decide mechanically whether a file
+satisfies them.
+
+Conformance is the floor, not the ceiling. A tool may layer additional checks
+on top of the core — warnings, suggestions, stylistic opinions, even errors
+under a stricter local policy — and the informative sections below point to many
+such opportunities. What a tool must not do is contradict the core: it must not
+treat a conforming file as malformed, nor accept as valid what the F-rules
+forbid. The format prescribes the contract, not the tool; this document names
+tools only by way of example.
 
 **File — frontmatter and body**
 
@@ -266,9 +275,10 @@ requirement; it does not define levels, order, or display names.
 ### Containment And Evaluation
 
 *Informative.* Containment describes how an evaluator treats the tree. It is
-evaluator behavior, not file conformance: the deterministic CLI records and rolls
-up results, while a skill performs each assessment. This section documents the
-shared model those tools follow; it imposes no F-rule on the file.
+evaluator behavior, not file conformance: an evaluator records and rolls up
+results, while each individual assessment is performed by a judge — a person or a
+model. This section documents the shared model those tools follow; it imposes no
+F-rule on the file.
 
 Containment is the only inheritance primitive. A target owns what it declares and
 inherits applicable ancestor factors, requirements, and baseline content.
@@ -325,8 +335,8 @@ ratings:
 ### A suggested scale: the landing zone
 
 *Informative.* When a graded scale fits but you have no strong preference, the
-following four-level scale is a reasonable starting point; `qualitymd init`
-scaffolds it. Its vocabulary and best-to-worst framing are adapted from the Agile
+following four-level scale is a reasonable starting point, and a scaffolding tool
+may seed it. Its vocabulary and best-to-worst framing are adapted from the Agile
 Landing Zone pattern — **outstanding** exceeds the goal, **target** meets it,
 **minimum** is the acceptable floor, and **unacceptable** is below that floor:
 
@@ -351,8 +361,8 @@ A measured-bound example:
 requirements:
   "evaluation completes fast enough to sit in a pre-commit hook":
     assessment: >
-      Wall-clock time for `qualitymd lint` on a typical model, measured cold on CI
-      hardware, p95 over 20 runs.
+      Wall-clock time to evaluate a typical model, measured cold on CI hardware,
+      p95 over 20 runs.
     ratings:
       outstanding: "p95 under 100 ms."
       target: "p95 under 250 ms."
@@ -517,8 +527,8 @@ grafts models into one target tree using the same containment rule as in-file
    Federate into a separate model when a part warrants its own ownership or
    factors. Federation grafts that model as a target subtree.
 
-Operational discovery, evaluation runs, and reports will be specified in a
-forthcoming federation spec.
+How a tool discovers, evaluates, and reports across federated models is left to
+the tool; the format fixes only the composition rule above.
 
 ## Extensibility And Versioning
 
