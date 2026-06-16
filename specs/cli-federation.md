@@ -68,7 +68,11 @@ defines.
 - A run records results for requirements owned by that model, addressed by
   target-tree locators.
 - Inherited ancestor requirements are recorded under their owning model, not
-  duplicated into descendants.
+  duplicated into descendants. This is the same single-assessment rule that
+  governs in-file containment (SPECIFICATION.md, Containment; addressing in
+  [`cli-evaluate.md`](./cli-evaluate.md#addressing)) applied one altitude up: a
+  requirement is assessed once, at the node that declares it, and governs its
+  subtree without a second result.
 - Skills orchestrate the normal loop once per discovered model.
 
 This keeps component evaluations reviewable on their own while the report can

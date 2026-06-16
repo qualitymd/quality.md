@@ -87,8 +87,9 @@ reviewable artifacts. Volatile metadata such as timestamps and durations lives i
 
 Create or re-enter the living run. It parses the model, resolves the recursive
 target tree, applies the CLI run target selection, and enumerates every selected
-direct and lensed requirement as a result. On an existing run it re-hashes
-recorded results and marks changed ones `stale`.
+direct and lensed requirement as a result - each requirement once, at the target
+that declares it. On an existing run it re-hashes recorded results and marks
+changed ones `stale`.
 
 ### `evaluation list`
 
@@ -142,6 +143,14 @@ A requirement address is a stable target-tree locator:
   "requirement": "malformed input is rejected"
 }
 ```
+
+A requirement is enumerated and recorded **once**, addressed at the target that
+declares it (`targetPath`). Inherited requirements are not re-addressed under
+descendant target paths: containment makes an ancestor requirement *govern* a
+descendant subtree, but the single result stays at the owning target. This is the
+in-file form of the federation rule that ancestor requirements are recorded under
+their owning model, not duplicated into descendants (see
+[`cli-federation.md`](./cli-federation.md#runs)).
 
 `targetPath` is empty for the apex target. `factorPath` is empty for direct
 unlensed requirements. A string form may use dotted segments with quoted map keys,
@@ -286,6 +295,11 @@ secondary-factor appearances, and coverage gaps.
 
 - Exact staleness serialization and whether source contents hash raw bytes or a
   coarser content signal.
+- When a CLI run target narrows to a descendant subtree, how ancestor-owned
+  requirements behave. To preserve single assessment they must keep their
+  ancestor-source assessment rather than be re-scoped to the narrow source;
+  whether they appear in the narrowed run as inherited context or are assessed
+  only in the ancestor's own run is undecided.
 - Whether `.run/` is committed or gitignored.
 - Whether rollup remains fixed worst-wins or gains configured strategies.
 - Final field names for the interface payloads.

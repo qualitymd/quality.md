@@ -143,7 +143,8 @@ description should not merely restate the requirements attached to it.
 
 `requirements` is a map of requirement statement to requirement entry. The key is
 the requirement's identity in reports and results. A requirement must
-declare exactly one non-empty `assessment`.
+declare exactly one non-empty `assessment`. It produces exactly one result,
+recorded against the target that declares it.
 
 A direct requirement under a target is assessed against that target's `source`
 without a primary factor. A requirement under a factor is assessed against the
@@ -167,10 +168,25 @@ requirement; it does not define levels, order, or display names.
 ### Containment
 
 Containment is the only inheritance primitive. A target owns what it declares and
-inherits applicable ancestor factors, requirements, and baseline content. Every
-requirement declared on a node applies to that node and flows down to descendant
-targets. Inheritance is purely additive: a descendant may add factors and
-requirements, but an inherited requirement always applies down its subtree.
+inherits applicable ancestor factors, requirements, and baseline content.
+
+A requirement is **assessed once, at the target that declares it**, against that
+target's `source` - one assessment, one finding, one result. Containment then
+makes the requirement *govern* every descendant target: it joins their inherited
+context and its result covers their subtree. Governing a subtree is not
+re-assessment - an inherited requirement is never evaluated again against a
+descendant's narrower source and never produces a second result.
+
+Because a target's `source` ordinarily spans its descendants', that single
+assessment routinely inspects artifacts that also belong to sub-targets. That is
+expected: a finding may cite material anywhere in the declaring target's source,
+including files a descendant target also selects, without splitting into multiple
+results.
+
+Inheritance is purely additive: a descendant may add factors and requirements,
+but it cannot remove an inherited requirement and does not re-assess it. To assess
+a concern at a finer grain, declare a requirement at that lower target;
+declaration altitude is assessment altitude.
 
 ## Rating Scale
 
