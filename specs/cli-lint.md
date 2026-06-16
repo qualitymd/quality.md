@@ -53,7 +53,7 @@ known keys.
 | Rule | Severity | What it checks |
 | --- | --- | --- |
 | `parse-error` | error | Missing, unterminated, or invalid YAML frontmatter. Aborts later rules. |
-| `target-node-shape` | error | The root and every `targets.*` entry is a mapping target node or the scalar `source` shorthand. Known target-node fields have the right shapes. |
+| `target-node-shape` | error | The root and every `targets.*` entry is a mapping target node. Known target-node fields have the right shapes. |
 | `open-target-vocabulary` | info | Target names are user vocabulary. A catalog miss may be reported as context, never as a warning or error. |
 | `source-shape` | error | `source` is a scalar path/glob/URL or a list of scalar entries. |
 | `broken-source` | warning | A path/glob `source` resolves to no files. A forward-declared glob may be valid, so this is not an error. |
@@ -71,6 +71,7 @@ known keys.
 | `unknown-rating-level` | error | A per-requirement `ratings` map names a level not in the active scale. |
 | `rating-level-order` | warning | A per-requirement `ratings` map is written in an order different from the active scale. Fixable. |
 | `empty-collection` | warning | `targets`, `requirements`, or `factors` is present but empty. |
+| `assesses-nothing` | warning | A target's subtree holds no requirement, or a factor has no requirement contributing to it (directly, by descendant refinement, or as a named secondary factor). The node is well-formed but assesses nothing. |
 | `unknown-key` | warning | A key looks like a typo of a known schema key: `target` -> `targets`, `sources` -> `source`, `prompt`/`prompts` -> `assessment`, `factor` -> `factors`, `requirement` -> `requirements`, `rating` -> `ratings`. |
 | `model-summary` | info | Summary counts: targets, factors, direct requirements, lensed requirements, and secondary-factor links. |
 

@@ -64,11 +64,8 @@ targets:
               a secrets manager.
             factors:
               - reliability
-  docs: ./docs
 ---
 ```
-
-The `docs: ./docs` entry is shorthand for `docs: { source: ./docs }`.
 
 ### Schema
 
@@ -92,12 +89,17 @@ factors:
     requirements:
       <requirement-statement>: <Requirement>
 targets:
-  <target-name>: <Target | source-shorthand>
+  <target-name>: <Target>
 ```
 
 The root mapping itself is the apex target. `source`, `requirements`, `factors`,
 and `targets` are all optional on a target node; a node declares only
 what it adds.
+
+A target should lead to at least one requirement - declared on it, carried by one
+of its factors, or contributed by a descendant target. A target whose subtree holds
+no requirement assesses nothing. A pure grouping target stays meaningful as long as
+its descendants carry requirements.
 
 ### Targets And Source
 
@@ -120,8 +122,7 @@ source:
 
 When `source` is omitted, it defaults to the `QUALITY.md` file's directory and
 all subdirectories, recursively. A grouping node may leave `source` implicit and
-let children narrow it. A scalar child target is shorthand for a target node whose
-only field is `source`.
+let children narrow it.
 
 ### Factors
 
@@ -134,6 +135,11 @@ Factor identity is local to its scope. The same factor name declared on two
 unrelated targets denotes two distinct factors. Within a scope, a descendant may
 refine an inherited factor by adding requirements under the same factor name, but
 must not redefine it with a contradictory meaning.
+
+A factor exists to group requirements. A factor should carry at least one
+requirement - declared under it, added by a descendant refinement, or named as a
+secondary factor by a requirement in its scope. A factor that no requirement
+contributes to is a lens over nothing.
 
 A factor should have a `description` explaining the quality attribute itself:
 what it means here, why it matters, and how it differs from sibling factors. The
