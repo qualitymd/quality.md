@@ -28,9 +28,7 @@ A conforming use or application of QUALITY.md may provide additional functionali
 
 A `QUALITY.md` file is a markdown file with YAML frontmatter with a structured quality model and a markdown body.
 
-The presence of a `QUALITY.md` file in a directory MUST imply that the directory and all its sub-directories and their contents are the implied source of any quality evaluation for the contained quality model (unless the optional root `source` defines otherwise.)
-
-> **TODO** (move these to Evaluation): nested `QUALITY.md` files within a sub-directory; parent `QUALITY.md` files.
+The presence of a `QUALITY.md` file in a directory implies that the directory and all its sub-directories and their contents are the implicit source of any quality evaluation for the contained quality model. Exceptions to this are when a different entity (or set of entities) is selected by setting a custom `source` property on the model or by special tooling.
 
 ### YAML Frontmatter
 
@@ -77,9 +75,9 @@ ratings:
 
 **Requirements**: quality requirements that will be used to assess the quality of the entity. These are typically nested under a factor or target, but may be defined at the model root level when it is simpler to define a single requirement at the root and cross reference to multiple quality attributes.
 
-**Targets**: more focused quality modeling for possible target entities. Not required but useful when a distinct set of factors or requirements would be more cohesively defined around a narrower target of evaluation than scope implied by the source of the entire quality model.
+**Targets**: more focused quality modeling for possible target entities. Not required but useful when a distinct set of factors or requirements would be more cohesively defined around a narrower target of evaluation than the scope implied by the source of the entire quality model.
 
-**Source**: the location of the target entity subject to this quality model. This SHOULD be omitted at top-level model to assume the default convention. Tools and agents SHOULD adhere to the convention that "./**/*" (the current directory and all sub-directory contents) is the implicit root source in the typical use case of defining a quality model for a project workspace (or workspace sub-directory), but MAY supply a different implicit source (e.g. having a single `QUALITY.md` that can be dynamically directed at different targets).
+**Source**: the location of the target entity subject to this quality model. This SHOULD be omitted on the top-level model to assume the default convention.
 
 #### Target
 
@@ -103,7 +101,7 @@ A target shares the structure of the model root but for two keys: `title` and `r
 
 **Requirements**: quality requirements assessed against this target's source. A requirement is assessed once, at the target that declares it, against that target's source.
 
-**Targets**: more focused child targets, nested to any depth. Child targets do not inherit their parent's requirements. However, an ancestor's target's source selector may select entities that overlap of its descenant child target selectors, resulting in the ancestors requriements also being evaluated on the same entities targeted by the child's source selector.
+**Targets**: more focused child targets, nested to any depth. Child targets do not inherit their parent's requirements. However, an ancestor target's source selector may select entities that overlap with its descendant child target selectors, resulting in the ancestor's requirements also being evaluated on the same entities targeted by the child's source selector.
 
 **Source**: the location of the entities this target evaluates. Paths and globs resolve relative to the containing `QUALITY.md` file. When a target omits `source`, it inherits the source scope of its nearest ancestor that declares one; a grouping target MAY leave it implicit and let its child targets narrow it.
 
@@ -133,7 +131,7 @@ A useful shape is one or two sentences — "*\<Factor\> is the degree to which \
 
 **Sub-factors**: a map of finer characteristics that decompose this factor, each a Factor of the same shape. Decompose a factor when it carries more than one distinct concern that is clearer assessed apart than together — but only as far as it aids understanding; a factor whose requirements already speak for themselves needs no sub-factors. The guidance above applies at every level: a sub-factor SHOULD carry its own `description`, SHOULD be distinguishable from its siblings, and SHOULD lead to at least one requirement. A sub-factor's requirements are assessed through its lens, and an evaluation infers a rating for the sub-factor that rolls up into the parent factor's rating (see [Analyze](#analyze)). A factor MAY hold both its own direct requirements and sub-factors.
 
-Factor identity is local to its target. The same factor declared on two different targets are distinct factors. Child targets that declare factors the same as an ancestors target should be refinements of the ancestor target's factor tailored to its target.
+Factor identity is local to its target. Factors of the same name declared on two different targets are distinct factors. Child targets that declare factors the same as an ancestor target's should be refinements of the ancestor target's factor tailored to the child target.
 
 #### Requirement
 
@@ -235,7 +233,7 @@ Determine the scope of the evaluation. By default the scope is the whole model: 
 - by **factor** — restrict evaluation to the requirements tied to a given factor (including those that tag it as a secondary factor); or
 - both.
 
-For every target in scope, resolve the **source** entities to be evaluated from the target's `source` (see Discovery). A narrowed scope qualifies every result that follows: ratings are understood within the scope, and a scoped evaluation MUST NOT be presented as a whole-model verdict.
+For every target in scope, resolve the **source** entities to be evaluated from the target's `source`. A narrowed scope qualifies every result that follows: ratings are understood within the scope, and a scoped evaluation MUST NOT be presented as a whole-model verdict.
 
 ### Assess and Rate
 
@@ -291,7 +289,7 @@ This appendix is **non-normative**. It illustrates one rendering — for a human
 
 ### The model evaluated
 
-A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating scale is the suggested four-level scale (see [Rating Scale](#rating-scale)) — **Outstanding** > **Target** > **Minimum** > **Unacceptable** — ordered best to worst.
+A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating scale is the suggested four-level scale — **Outstanding** > **Target** > **Minimum** > **Unacceptable** — ordered best to worst.
 
 - **Acme Checkout API** (root target, source `./`)
   - Factors: **Security**, **Reliability**
