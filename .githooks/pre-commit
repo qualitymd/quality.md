@@ -1,0 +1,23 @@
+#!/bin/sh
+# Auto-format staged Markdown with dprint before commit, then re-stage.
+# Enable in a fresh clone with: mise run hooks  (sets core.hooksPath=.githooks)
+
+# Staged Markdown files (added/copied/modified/renamed).
+files=$(git diff --cached --name-only --diff-filter=ACMR -- '*.md' '*.markdown')
+[ -z "$files" ] && exit 0
+
+# Prefer the mise-pinned dprint; fall back to dprint on PATH.
+if command -v mise >/dev/null 2>&1; then
+  run_dprint() { mise exec -- dprint "$@"; }
+elif command -v dprint >/dev/null 2>&1; then
+  run_dprint() { dprint "$@"; }
+else
+  echo "pre-commit: dprint not found (run 'mise install'); skipping Markdown format." >&2
+  exit 0
+fi
+
+echo "$files" | while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  run_dprint fmt "$f" >/dev/null || exit 1
+  git add -- "$f"
+done

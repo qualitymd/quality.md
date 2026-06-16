@@ -1,0 +1,17 @@
+{
+  "markdown": {
+    "textWrap": "maintain",
+    "emphasisKind": "asterisks",
+    "strongKind": "asterisks"
+  },
+  "includes": ["**/*.md"],
+  "excludes": [
+    "**/node_modules",
+    "dist",
+    "**/CLAUDE.md",
+    "**/GEMINI.md"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/markdown-0.22.1.wasm"
+  ]
+}

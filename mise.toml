@@ -1,4 +1,5 @@
 [tools]
+dprint = "0.54.0"
 go = "1.26"
 goreleaser = "latest"
 
@@ -19,8 +20,20 @@ description = "Vet the codebase"
 run = "go vet ./..."
 
 [tasks.fmt]
-description = "Format the codebase"
-run = "gofmt -w ."
+description = "Format the codebase (Go + Markdown)"
+run = ["gofmt -w .", "dprint fmt"]
+
+[tasks.fmt-md]
+description = "Format Markdown files with dprint"
+run = "dprint fmt"
+
+[tasks.fmt-md-check]
+description = "Check Markdown formatting without writing (CI-friendly)"
+run = "dprint check"
+
+[tasks.hooks]
+description = "Install the repo's git hooks (run once after clone)"
+run = "git config core.hooksPath .githooks"
 
 [tasks.tidy]
 description = "Tidy module dependencies"
