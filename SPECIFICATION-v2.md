@@ -2,28 +2,27 @@
 
 This is the specification for the `QUALITY.md` standard: a file format and set of conventions to help humans and agents model, evaluate, and improve quality. This specification uses terminology from the software development context, but the `QUALITY.md` standard can work in any operational context.
 
-### Conformance
+## Conformance
 
 Conforming tools and agents must fulfill all normative requirements. Conformance requirements are described in this document via both descriptive assertions and key words with clearly defined meanings.
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative portions of this document are to be interpreted as described in IETF RFC 2119. These key words may appear in lowercase and still retain their meaning unless explicitly declared as non-normative.
 
-A conforming use or application of QUALITY.md may provide additional functionality, but must not where explicitly disallowed or would otherwise result in non-conformance.
+A conforming use or application of QUALITY.md may provide additional functionality, but must not do so where explicitly disallowed or where doing so would result in non-conformance.
 
-### Key Terms
+## Key Terms
 
-**Quality Model**: a structured, declarative description of what
-quality means for a given entity.
-**Entity** a thing that is evaluated for quality.
-**Factor** a quality (sub)characteristic or attribute for describing the quality of an entity.
-**Requirement**: a quality requirement for assesing and rating the quality of an entity.
-**Finding**: A single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
-**Assessment**: The means for assessing an entity - measurement, specifications, inspection, checklists, diagnostics, etc.
-**Rating Scale**: A defined set of rating levels for a quality model
-**Rating Level**: A single level on a rating scale, providing the default criterion for rating a requirement's findings
-**Rating Result**: The outcome of rating a requirement's findings against the rating scale — a single rating level (or a *not assessed* outcome) assigned to the requirement, considering all of its findings together.
-**Target**: An entity or set of entities with quality requirements subject to evaluatioe
-**Source**: The scope of entities defined by a target
+- **Quality Model**: a structured, declarative description of what quality means for a given entity.
+- **Entity**: a thing that is evaluated for quality.
+- **Factor**: a quality (sub)characteristic or attribute for describing the quality of an entity.
+- **Requirement**: a quality requirement for assessing and rating the quality of an entity.
+- **Finding**: a single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
+- **Assessment**: the means for assessing an entity — measurement, specifications, inspection, checklists, diagnostics, etc.
+- **Rating Scale**: a defined set of rating levels for a quality model.
+- **Rating Level**: a single level on a rating scale, providing the default criterion for rating a requirement's findings.
+- **Rating Result**: the outcome of rating a requirement's findings against the rating scale — a single rating level (or a *not assessed* outcome) assigned to the requirement, considering all of its findings together.
+- **Target**: an entity or set of entities with quality requirements subject to evaluation.
+- **Source**: the scope of entities defined by a target.
 
 ## QUALITY.md File
 
@@ -31,32 +30,30 @@ A `QUALITY.md` file is a markdown file with YAML frontmatter with a structured q
 
 The presence of a `QUALITY.md` file in a directory MUST imply that the directory and all its sub-directories and their contents are the implied source of any quality evaluation for the contained quality model (unless the optional root `source` defines otherwise.)
 
-TODO (move these to evaluation)
-The presence of a `QUALITY.md` within sub-directory
-parent quality mds
+> **TODO** (move these to Evaluation): nested `QUALITY.md` files within a sub-directory; parent `QUALITY.md` files.
 
 ### YAML Frontmatter
 
 `QUALITY.md` files MUST begin with a valid YAML frontmatter block containing the required **Model** properties specified below.
 
-When authoring `QUALITY.md` front-matter, null or empty optional properties SHOULD be omitted.
+When authoring `QUALITY.md` frontmatter, null or empty optional properties SHOULD be omitted.
 
 #### Model
 
 The model represents a quality model: what things (**Targets**) are evaluated for quality, their important quality characteristics (**Factors**), measurable quality **Requirements**, assessment criteria, and **Rating** criteria for determining the level of quality.
 
 ```yaml
-title: <string>                   # Required, the title of the entity whose quality is being modeled
-ratings:                    # Required, the rating scale 
-- level: <level-name>               # required; 
-  title: <string>                   # optional human label
-  criterion: <string>               # required; used to rate requirement assessment findings
-factors:                          # Optional*  
+title: <string>                 # Required; title of the entity whose quality is modeled
+ratings:                        # Required; the rating scale
+  - level: <level-name>         #   Required; unique within the scale
+    title: <string>             #   Optional; human-readable label
+    criterion: <string>         #   Required; used to rate a requirement's findings
+factors:                        # Optional*
   <factor-name>: <Factor>
-requirements:                     # Optional*
+requirements:                   # Optional*
   <requirement-statement>: <Requirement>
-targets: 
-  <target-name>: <Target>         # Optional*
+targets:                        # Optional*
+  <target-name>: <Target>
 source: <string>                # Optional
 ```
 
@@ -72,11 +69,7 @@ source: <string>                # Optional
 
 **Targets**: more focused quality modeling for possible target entities. Not required but useful when a distinct set of factors or requirements would be more cohesively defined around a narrower target of evaluation than scope implied by the source of the entire quality model.
 
-**Source**:
-
-- Authors SHOULD specify factors for critical quality characteristics required to satisfy the needs of stakeholders factoring in their needs (e.g. Security, Safety)
-- Authors SHOULD NOT specify factors that would be irrelevant for the purpose of the project (e.g. Maintainability for a spike/POC)
-- Authors SHOULD NOT specify factors
+**Source**: the location of the target entity subject to this quality model. This SHOULD be omitted at top-level model to assume the default convention. Tools and agents SHOULD adhere to the convention that "./**/*" (the current directory and all sub-directory contents) is the implicit root source in the typical use case of defining a quality model for a project workspace (or workspace sub-directory), but MAY supply a different implicit source (e.g. having a single `QUALITY.md` that can be dynamically directed at different targets).
 
 #### Target
 
@@ -151,3 +144,95 @@ Produce the **Evaluation Report**: the structured result of the evaluation, suit
 - the **Advice** — key gaps, options, and recommendations.
 
 *Not assessed* outcomes MUST be shown wherever they occur, distinct from rated outcomes, at every level of the report.
+
+## Appendix A: Sample Evaluation Report
+
+This appendix is **non-normative**. It illustrates one rendering — for a human reader — of the Evaluation Report defined in **Report**. A tool MAY render the same underlying result differently (e.g., as JSON for a gate).
+
+### The model evaluated
+
+A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating scale is the four-level default — **Outstanding** > **Target** > **Minimum** > **Unacceptable** — ordered best to worst.
+
+- **Acme Checkout API** (root target, source `./`)
+  - Factors: **Security**, **Reliability**
+  - Requirements:
+    - *Every public endpoint requires authentication* (Security)
+    - *No dependencies with known critical or high vulnerabilities* (Security)
+    - *p99 request latency ≤ 300 ms* (Reliability)
+    - *Automated tests cover the checkout flow end to end* (Reliability)
+  - **Payment Processor** (child target, source `./payments`)
+    - Factor: **Security**
+    - Requirements:
+      - *Cardholder data is encrypted at rest* (Security)
+      - *Gateway calls are idempotent on retry* (Security; tags **Reliability** as a secondary factor)
+      - *Failed charges reconcile within 24 hours* (Reliability)
+
+### The report
+
+---
+
+**Rating: Minimum** *(Acme Checkout API — aggregate, whole model)*
+
+**Rationale.** Held at **Minimum** by a single binding constraint: an unpatched high-severity dependency vulnerability at the root. Every other area meets **Target** or better, and the Payment Processor subtree meets **Target** — so lifting the one Security gap would raise the overall rating.
+
+**Scope.** Whole model; no target or factor filter applied. Source resolved from `./` (root) and `./payments` (Payment Processor). One requirement *not assessed* (see below).
+
+---
+
+#### Target: Acme Checkout API *(root)*
+
+**Aggregate: Minimum** — the root's own local rating binds; the Payment Processor subtree (**Target**) does not pull it down further.
+**Local: Minimum** — four root requirements; the dependency-vulnerability shortfall is security-critical and is not offset by the three meeting Target or better.
+
+Factors:
+
+- **Security — Minimum.** Authentication is comprehensive, but one unpatched high-severity dependency vulnerability holds the factor below Target.
+- **Reliability — Target.** Latency is well within budget; end-to-end test coverage meets but does not exceed the bar.
+
+Requirements:
+
+- *Every public endpoint requires authentication* — **Target**
+  - *Findings:* 42 of 42 public routes sit behind the auth middleware; 0 unauthenticated routes found.
+  - *Rationale:* Full coverage with no exceptions meets the Target criterion; no evidence of the defense-in-depth that Outstanding would require.
+- *No dependencies with known critical or high vulnerabilities* — **Minimum**
+  - *Findings:* 0 critical, 1 high-severity advisory in a transitive dependency; a patched release is available.
+  - *Rationale:* No critical vulnerabilities clears Unacceptable, but an open high-severity advisory keeps it at Minimum.
+- *p99 request latency ≤ 300 ms* — **Outstanding**
+  - *Findings:* p99 measured at 180 ms over a 7-day window under production load.
+  - *Rationale:* Comfortably inside the threshold with sustained margin.
+- *Automated tests cover the checkout flow end to end* — **Target**
+  - *Findings:* End-to-end suite covers the happy path and three failure paths; the partial-refund path is uncovered.
+  - *Rationale:* Core flow is covered (Target); a known coverage gap keeps it short of Outstanding.
+
+#### Target: Payment Processor
+
+**Aggregate: Target** — a leaf target, so its aggregate equals its local rating.
+**Local: Target** — both assessed requirements meet Target; one requirement is *not assessed* and is noted but excluded from the rating.
+
+Factors:
+
+- **Security — Target.** Encryption at rest and idempotent gateway calls both meet the bar.
+
+Requirements:
+
+- *Cardholder data is encrypted at rest* — **Target**
+  - *Findings:* Card fields encrypted with AES-256; keys held in the managed KMS, rotated quarterly.
+  - *Rationale:* Meets the encryption-at-rest criterion; no field-level exceptions found.
+- *Gateway calls are idempotent on retry* — **Target** *(Security; also lensed under Reliability)*
+  - *Findings:* Idempotency keys present on all charge calls; a replay test confirmed no double-charge.
+  - *Rationale:* Meets the criterion. Counts once in the local rating while informing both the Security and Reliability lenses.
+- *Failed charges reconcile within 24 hours* — **Not assessed**
+  - *Findings:* None — no reconciliation report or job output was available to assess against.
+  - *Rationale:* Insufficient evidence to rate; recorded as *not assessed* rather than assigned a level.
+
+---
+
+#### Advice
+
+- **Key gap — open high-severity dependency vulnerability (root → Security).** The single constraint holding the whole model at Minimum.
+  - *Options:* (a) upgrade the dependency to the patched release; (b) replace it with an unaffected library; (c) accept the risk with a compensating control and a tracked exception.
+  - *Recommended:* **(a) upgrade to the patched release** — lowest effort, removes the binding constraint, and is expected to lift root Security and the overall rating to Target.
+- **Coverage gap — reconciliation requirement not assessed (Payment Processor → Reliability).** The Payment Processor rating is incomplete until this is evaluated.
+  - *Options:* (a) stand up the reconciliation report so the requirement can be assessed; (b) narrow or retire the requirement if reconciliation is out of scope.
+  - *Recommended:* **(a) produce the reconciliation evidence** so the requirement can be rated and the subtree's rating reflects full coverage.
+- **Minor — partial-refund path uncovered (root → Reliability).** Not rating-binding today; addressing it would move the end-to-end test requirement toward Outstanding.
