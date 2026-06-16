@@ -27,9 +27,9 @@ timestamp: 2026-06-16T00:00:00Z  # optional — ISO 8601 last-modified
 ---
 ```
 
-`type` is a free-form string — pick something descriptive (`Specification`,
-`Command Specification`, `Reference`). There is no central registry. You MAY add
-any other keys you need.
+`type` is a free-form string — pick something descriptive. OKF has no central
+registry, but as a project convention each bundle records the types it uses in
+its own `schema.md` (see below). You MAY add any other keys you need.
 
 ## Reserved files
 
@@ -55,6 +55,31 @@ any other keys you need.
 
   - **Initialization**: Created the bundle.
   ```
+
+## Bundle schema (our convention)
+
+OKF deliberately defines no taxonomy of `type` values. As a lightweight project
+convention, each bundle carries a root **`schema.md`** that registers the types
+that bundle uses. It is an ordinary OKF concept (`type: Schema`) whose `types`
+frontmatter is the registry:
+
+```yaml
+---
+type: Schema
+title: specs/ concept types
+description: Concept types used in the specs/ OKF bundle.
+types:
+  - name: Schema
+    description: This file — the registry of concept types used in a bundle.
+  - name: Functional Specification
+    description: A spec for what the qualitymd tooling must do.
+---
+```
+
+This keeps each bundle self-describing: its vocabulary travels with it. The list
+is a *recommendation, not enforcement* — consumers still tolerate unknown types.
+Reuse a listed type when it fits, or coin a new descriptive one and add it to
+`schema.md` in the same change.
 
 ## Links
 

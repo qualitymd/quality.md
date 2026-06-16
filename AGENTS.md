@@ -31,6 +31,23 @@ Factors, Requirements) over ISO terminology.
 ISO standards **may** be referenced in [`SPECIFICATION.md`](SPECIFICATION.md),
 where the provenance of a design decision is relevant.
 
+### Open Knowledge Format (OKF) bundles
+
+Some directories are authored as **OKF** bundles — Markdown concepts with YAML
+frontmatter, plus reserved `index.md` (listing) and `log.md` (history). See
+[`docs/guides/okf.md`](docs/guides/okf.md) for the editing contract. Each bundle
+also carries a root `schema.md` (`type: Schema`) whose `types` frontmatter
+registers the concept types that bundle uses — a recommended vocabulary, not a
+closed schema. When you add or edit a concept, keep its `type` non-empty, reuse a
+listed type (or add a new descriptive one to `schema.md`), and update the
+enclosing `index.md` and `log.md` in the same change.
+
+**Bundles in this repo:**
+
+| Folder   | What it holds                                             | Types                                    |
+| -------- | --------------------------------------------------------- | ---------------------------------------- |
+| `specs/` | Specifications for the deterministic `qualitymd` surface. | see [`specs/schema.md`](specs/schema.md) |
+
 ### Agent guidance files
 
 - `CLAUDE.md` and `GEMINI.md` are symlinks to this file — edit `AGENTS.md` only.

@@ -8,7 +8,7 @@ requirements it must meet — not how it's implemented. Our specs live in the
 
 Keep specs prose-first and skimmable. A typical spec has:
 
-- **A title and a one-line draft version** — e.g. `**Version 0.1 — Draft**`.
+- **A title.**
 - **A companion note** — what this spec governs, and a link to the source of
   truth it defers to (the format itself lives in
   [`SPECIFICATION.md`](../../SPECIFICATION.md)).
@@ -36,7 +36,38 @@ Declare the keyword convention once near the top:
 - **Specify behavior, not implementation.** Say *what* must hold; leave *how* to
   the code.
 - **One source of truth.** Don't restate the format spec — link to it.
+- **Don't invent requirements (YAGNI).** Specify only what's actually asked for
+  or genuinely needed now. A spec is not the place to anticipate features,
+  hedge against hypothetical needs, or add flags, formats, and edge cases
+  "while we're here." Every MUST/SHOULD is a constraint someone has to implement
+  and uphold — speculative ones cost more than they save. When a need is real
+  but not yet, record it under **deferred** rather than specifying it.
+- **Say it once.** This applies *within* a spec too: each requirement gets one
+  home. An overview or principles list should *name* a property and link to the
+  section that enforces it, not re-assert the requirement in full. A spec that
+  introduces its properties up front and then repeats each as its own normative
+  section is saying everything twice — collapse the overview to links.
+- **Motivation in asides, not paragraphs.** Rationale earns its place (see
+  [Shape](#shape)), but keep it to a clause or a `Note:` next to the requirement
+  it justifies. When the *why* grows past a sentence or two, it's usually a sign
+  the *what* has been buried.
 - **Draft openly.** Mark early specs `Draft`; placeholders are fine — stub the
   sections to be filled and link back to the parent.
 - **Keep OKF tidy.** New spec → add a `type` to its frontmatter and update the
   enclosing `index.md` and `log.md` (see the [OKF guide](okf.md)).
+
+## Smells
+
+If a spec feels bloated, look for these — each is over-specification, not
+thoroughness:
+
+- **The same requirement in two sections** — e.g. a "Design requirements"
+  overview *and* an "Agent accessibility" section both asserting the JSON-output
+  rule. Pick one home; link from the other.
+- **A principles list that's really a second copy** of the normative body. If
+  every bullet maps to a section that says the same thing, the list should be
+  links.
+- **Rationale that outweighs the rule** — a paragraph of justification wrapped
+  around a one-line MUST.
+- **Implementation detail leaking in** — exact env-var names, escape sequences,
+  binary-naming arguments. State the behavior; let the code carry the mechanics.

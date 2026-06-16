@@ -1,5 +1,5 @@
 ---
-type: Command Specification
+type: Functional Specification
 title: qualitymd init
 description: Scaffold a starter QUALITY.md to fill in.
 tags: [cli, command, init]
@@ -8,12 +8,10 @@ timestamp: 2026-06-16T00:00:00Z
 
 # qualitymd init
 
-**Version 0.1 — Draft · Placeholder**
-
 > 🚧 **Placeholder.** This sub-spec is a stub. The cross-cutting CLI contract
 > that `init` inherits — invocation, global flags, output formats, exit codes,
-> and agent accessibility — is specified in the [CLI spec](../cli.md). This file
-> will specify only what is particular to `init`.
+> and agent accessibility — will be specified in the [CLI spec](../cli.md). This
+> file will specify only what is particular to `init`.
 
 `qualitymd init` scaffolds a starter `QUALITY.md` for an author to fill in.
 
@@ -25,4 +23,5 @@ timestamp: 2026-06-16T00:00:00Z
 - Target path and the rule for refusing to overwrite an existing file (and the
   explicit flag that permits it).
 - Emitting to stdout for piping (`-`).
-- `init`-specific flags beyond the [global flags](../cli.md#global-flags).
+- `init`-specific flags beyond the cross-cutting flags in the
+  [CLI spec](../cli.md).

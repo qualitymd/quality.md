@@ -13,6 +13,10 @@ format and evaluation semantics.
 
 - [qualitymd CLI](cli.md) - high-level requirements for the deterministic command-line surface.
 
+# Bundle
+
+- [schema.md](schema.md) - the concept types used in this bundle.
+
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs (`init`, `lint`, `spec`).
