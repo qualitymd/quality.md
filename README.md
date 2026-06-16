@@ -6,12 +6,12 @@ and how each is checked. Where a test suite pins down behavior, a `QUALITY.md`
 pins down quality — reliability, security, maintainability, and the rest —
 stated explicitly instead of living in reviewers' heads.
 
-The file has two parts: **YAML frontmatter** holding the structured model —
-*factors* and the *requirements* under them — and a **Markdown body** documenting
-what the system is, what *good* means for it, and why those are the right
-requirements. It is written for whoever decides quality: **authors** declare the
-model, **coding agents** read it to build and evaluate against, and **CI** gates
-on the result.
+The file has two parts: **YAML frontmatter** holding the structured model — a
+recursive tree of *targets*, scoped *factors*, and *requirements* — and a
+**Markdown body** documenting what the system is, what *good* means for it, and
+why those are the right requirements. It is written for whoever decides quality:
+**authors** declare the model, **coding agents** read it to build and evaluate
+against, and **CI** gates on the result.
 
 > 🚧 **Alpha.** The `QUALITY.md` format and the `qualitymd` CLI are early and
 > under active development. The format is specified in
@@ -22,25 +22,30 @@ on the result.
 
 ```markdown
 ---
-factors:
-  reliability:
+targets:
+  api:
+    source: ./internal/api
     requirements:
-      "acknowledged writes are durable":
-        target: "./internal/storage"
-        prompt: >
-          A write is acknowledged to the client only after it is committed
-          to durable storage. Failures surface as errors, never as false
-          successes.
-      "the write path is covered end-to-end":
-        prompt: >
-          The write path is exercised by automated tests that would fail if a
-          write were lost or acknowledged before it was durable.
-  security:
-    requirements:
-      "no secrets are committed":
-        prompt: >
-          No credentials, API keys, or tokens appear in source, config, or
-          fixtures; secrets are loaded from the environment at runtime.
+      "accepted orders are durable":
+        assessment: >
+          A write is acknowledged to the client only after it is committed to
+          durable storage. Failures surface as errors, never as false successes.
+    factors:
+      reliability:
+        description: The API behaves predictably under ordinary and failure conditions.
+        requirements:
+          "the write path is covered end-to-end":
+            assessment: >
+              The write path is exercised by automated tests that would fail if a
+              write were lost or acknowledged before it was durable.
+      security:
+        description: Customer data and privileged operations are protected.
+        requirements:
+          "no secrets are committed":
+            assessment: >
+              No credentials, API keys, or tokens appear in source, config, or
+              fixtures; secrets are loaded from the environment at runtime.
+  docs: ./docs
 ---
 
 # Quality model — Orders API
@@ -52,25 +57,30 @@ maintained by the platform team. "Good" here means it never silently loses or
 corrupts an order. This model covers the service and its data layer; the
 third-party payment provider is a dependency, not part of it.
 
-## Factors
+## Targets and factors
 
-### Reliability
+### api
+
+The API target covers the HTTP boundary and storage path.
+
+#### Reliability
 
 Customers build on our acknowledgements, so a confirmed write must be durable.
 When durability and latency conflict, durability wins.
 
-### Security
+#### Security
 
 The API handles customer data, so access is authenticated and least-privilege.
 ```
 
-The **frontmatter** is the structured model: **factors** (quality attributes
-like *reliability* and *security*) and the **requirements** under them. Each
-requirement carries exactly one assessment — a **`prompt`**, judged against the
-requirement's intent — and an optional **`target`** narrowing what it applies to
-(here, the storage layer). The **body** holds the reasoning the frontmatter
-cannot: what the system is, what *good* means for it, and why these are the right
-requirements — the same context a `prompt` is judged against.
+The **frontmatter** is the structured model: **targets** (things evaluated),
+**factors** (quality lenses scoped to the target where they are declared), and
+**requirements** under either a target or a factor. Each requirement carries one
+**`assessment`**; the evaluator turns that assessment into a finding, then rates
+the finding against the scale criteria. A target's **`source`** identifies the
+material assessed, and child `targets:` decompose or narrow the subject. The
+**body** holds the reasoning the frontmatter cannot: what the system is, what
+*good* means for it, and why these are the right requirements.
 
 A coding agent reads this file to evaluate the Orders API against it — judging
 each `prompt` against the body, then reporting where the subject falls short. The
@@ -84,9 +94,10 @@ judging is the agent's part.
 > is specified under [`specs/`](specs/) but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
-model** — it scaffolds and validates a `QUALITY.md`, resolves targets, records
-and rolls up results, and gates CI — while **skills carry the judgment**, driving
-the evaluation loop and judging each `prompt` against the model.
+model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
+their `source` manifests, records and rolls up results, and gates CI — while
+**skills carry the judgment**, driving the evaluation loop and performing each
+`assessment` against the model.
 
 The deterministic CLI:
 
@@ -137,8 +148,8 @@ family of software-quality standards — particularly ISO/IEC 25010 — and, for
 shape of a well-formed requirement, **ISO/IEC/IEEE 29148**. We acknowledge these
 as the conceptual lineage, not a conformance target: `QUALITY.md` borrows their
 ideas and vocabulary where they help and diverges where they don't (it uses
-*Factors* and *Subfactors* where ISO says *characteristics*), optimizing first
-for a practical, readable format.
+*Factors* where ISO says *characteristics*), optimizing first for a practical,
+readable format.
 
 ## Contributing
 

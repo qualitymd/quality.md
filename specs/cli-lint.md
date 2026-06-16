@@ -1,13 +1,8 @@
 # CLI: `lint`
 
-> Detail doc for the fast, deterministic **structural tier**. See
-> [`cli.md`](./cli.md) for the full command surface and shared conventions, and
-> [`cli-evaluate.md`](./cli-evaluate.md) for the deep semantic tier.
->
-> This command is modeled on Google's `design.md lint` — the closest prior art
-> for QUALITY.md. The shape is deliberately the
-> same: parse the file, run a fixed set of rules, emit structured JSON findings
-> an agent can act on, exit non-zero on errors.
+Detail doc for the fast, deterministic structural tier. See [`cli.md`](./cli.md)
+for the full command surface and [`../SPECIFICATION.md`](../SPECIFICATION.md) for
+the normative format.
 
 ```bash
 qualitymd lint QUALITY.md
@@ -17,146 +12,99 @@ cat QUALITY.md | qualitymd lint -
 
 ## Purpose
 
-`lint` answers one question, deterministically: **is this a well-formed
-`QUALITY.md`?** It validates the file against the format spec
-(`../SPECIFICATION.md`) without any judgment about whether the
-requirements are *good* — that is `evaluate-model`'s job (see
-[`cli-evaluate.md`](./cli-evaluate.md#one-engine-two-targets)). Because it is
-pure parsing and static checks, it is cheap enough to run on every save, in a
-pre-commit hook, and as the structural CI gate.
+`lint` answers one question: **is this a well-formed `QUALITY.md`?** It parses
+the target-node frontmatter, validates the recursive schema, resolves local
+references, checks body shape, and exits non-zero only on structural errors. It
+does not judge whether the requirements are good; skills do that.
 
-It checks four things, in order:
+It checks, in order:
 
-1. **Parse** — the frontmatter exists, is fenced by `---`, and is valid YAML.
-2. **Schema** — the parsed model conforms to the spec: `factors` present; every
-   factor carries at least one of `requirements`/`factors` (either, or both);
-   every requirement declares exactly one assessment; `ratings` (if present) is
-   well-shaped.
-3. **References** — `prompt` paths and `target` paths/globs resolve on disk
-   (model-relative; see [`cli.md`](./cli.md#shared-conventions)).
-4. **Body** — the Markdown body carries the spine sections and each factor has
-   matching prose (see [Body rules](#body-rules)).
+1. **Parse** - fenced frontmatter exists and is valid YAML.
+2. **Schema** - the root is a target node; every target, factor, requirement,
+   override, and rating scale is well-shaped.
+3. **References** - `assessment`, `source`, and shared `ratings` paths resolve
+   when they are path-shaped.
+4. **Inheritance** - factor refinement, secondary-factor references, overrides,
+   and federation/baseline inheritance are structurally coherent.
+5. **Body** - recommended sections and target-scoped factor prose are present in
+   a parseable shape.
 
-When the working tree holds more than one `QUALITY.md`, `lint` discovers and
-validates the whole [federation](./cli-federation.md) by default: the rules below
-run per model, and a small set of [cross-file rules](#federation-rules) run over
-the set.
+When more than one `QUALITY.md` is discovered, lint validates each model and then
+runs federation rules over the discovered target tree.
 
-## Linting rules
+## Rule Idiom
 
-The linter runs a fixed set of rules against a parsed `QUALITY.md` — over the
-frontmatter and the Markdown body. Each rule produces findings at a fixed severity.
-Rule identifiers are illustrative and
-expected to be tuned during implementation. All rules share one shape and one
-severity philosophy, stated next.
+Rules are pure checks over the parsed model plus on-disk reference existence. A
+finding has `severity`, `rule`, `path`, and `message`. Paths are dotted locators
+into the target tree, quoting map keys that contain spaces, for example
+`targets.api.factors.security.requirements."no secrets are committed"`.
 
-### Rule idiom
+Severities:
 
-Every lint rule follows one shape, borrowed from `design.md lint`'s rule
-descriptor. Stating it once keeps the rule set uniform: a new rule is read
-against this contract, not invented fresh. The rule tables below are this
-descriptor in tabular form — the **Rule** column is `name`, **Severity** is the
-default `severity`, and **What it checks** is `description`.
+- `error` - definite spec violation; exits `1`.
+- `warning` - likely issue or low-confidence issue; does not fail the gate.
+- `info` - summary or non-blocking context.
 
-- **One rule, one defect, pure.** A rule is a named unit `{ name, severity,
-  description, run }`. `run` is a pure function of the *parsed model* — parsed
-  frontmatter and extracted body headings in, findings out. Its only I/O is the
-  on-disk existence checks for `prompt`/`target` references; it never mutates the
-  model, rewrites the file, or judges prose.
-- **Names name the fault, kebab-case.** A rule reads as the thing it flags —
-  either the defect directly (`missing-factors`, `broken-target`,
-  `duplicate-section`) or the element-and-aspect it validates
-  (`assessment-count`, `factor-shape`, `section-order`). Never the verb of the
-  check. The `-summary` suffix is reserved for the `info` rule that *reports*
-  rather than flags (`model-summary`).
-- **Three severities, gate-safe by default.** `error` — an unambiguous spec
-  violation; fails the gate (exit `1`). `warning` — lower-confidence, or
-  legitimately fine sometimes (a forward-declared glob, an empty collection);
-  surfaced, never blocking. `info` — a summary, never a defect. The ladder is set
-  so a **minimal, well-formed file passes CI**: when in doubt, a rule is a
-  warning, not an error.
-- **Findings are `{ severity, path, message }`.** `path` is the dotted locator
-  into the model (quoting map keys that contain spaces; see [Output](#output));
-  body-level rules may omit it. `message` is one complete sentence stating the
-  violation and, where the rule checks against a closed set, naming the valid
-  alternatives. A finding may carry its own severity, overriding the rule's
-  default — the descriptor allows one rule to span severities (as design.md's
-  `broken-ref` does), though no current QUALITY.md rule needs it. The related
-  discretion every rule does exercise is *whether to emit at all*: `unknown-key`
-  warns on a typo-shaped key but stays silent on a genuinely custom one.
-- **A rule may be fixable.** A rule whose remedy is mechanical and
-  behavior-preserving — reordering levels or sections that carry no semantic
-  weight — may carry an optional `fix` alongside `run`: also a *pure* function
-  (parsed model → corrected model), so the rule stays side-effect-free and only
-  the command layer writes. `lint --fix` applies these in place, and the finding
-  carries the patch so an agent can apply it straight from the JSON. Only
-  **canonical-order** rules qualify — `section-order` and `rating-level-order` —
-  because their fix cannot change any evaluation result. A rule that flags a
-  *semantic* violation (a duplicate, an unreachable level, an unknown level) is
-  never auto-fixed: choosing the remedy needs author intent, so it stays a
-  `nextActions` suggestion.
-- **The format grows through users.** Unrecognized keys and body sections are
-  preserved silently; only typo-shaped ones warn. A rule never errors on
-  extension it does not understand.
+Unknown extension keys are preserved silently unless they look like typos of
+known keys.
 
-### Frontmatter rules
+## Frontmatter Rules
 
 | Rule | Severity | What it checks |
 | --- | --- | --- |
-| `parse-error` | error | Frontmatter missing, unterminated, or not valid YAML (no opening/closing `---`, malformed YAML). Aborts the run — no later rules can run. |
-| `missing-factors` | error | The required top-level `factors` key is absent or empty. |
-| `factor-shape` | error | A factor declares **neither** `requirements` nor `factors` — the spec requires at least one. |
-| `assessment-count` | error | A requirement does not declare its `prompt` assessment — the requirement is empty or carries only non-assessment keys (e.g. just a `target`). |
-| `assessment-shape` | error | A `prompt` value is not a single scalar string — e.g. a YAML list/sequence or a map. A requirement carries one prompt, never a list of them. |
-| `broken-prompt-ref` | error | A `prompt` given as a path (rather than inline text) points to a file that does not exist. |
-| `broken-ratings-ref` | error | A `ratings` value given as a path (a shared scale file) points to a file that does not exist or does not parse as a rating scale. |
-| `broken-target` | warning | A `target` path or glob resolves to no files on disk. Warning, not error — a glob may legitimately match nothing yet. |
-| `target-escapes-scope` | warning | A `target` resolves outside the model's own directory subtree (e.g. climbs above it with `../`), re-governing code another model owns. Federation keeps a requirement's reach local; an outward target is a smell, not always a mistake. |
-| `empty-collection` | warning | A `requirements` or `factors` map is present but empty. |
-| `ratings-shape` | warning | `ratings` is present but malformed: fewer than two levels defined (a scale needs at least two). |
-| `unknown-rating-level` | error | A per-requirement `ratings` override names a level not defined in the scale. The spec treats this as a configuration error: an override may only re-state conditions for levels the scale already declares. |
-| `duplicate-rating-level` | error | Two entries in the `ratings` sequence — inline or shared file — declare the same `level` name. As an ordered sequence the scale no longer gets duplicate-key rejection from YAML, so the linter enforces level-name uniqueness (mirrors `duplicate-section`). |
-| `rating-level-order` | warning | A per-requirement `ratings` override lists its levels in a different order than the scale (the configured frontmatter scale, or the default `outstanding`/`target`/`minimum`/`unacceptable`, best to worst). The override is a by-name patch, so order is cosmetic — matching scale order keeps it scannable. **Fixable** (`lint --fix` reorders to scale order); mirrors `section-order`. |
-| `unknown-key` | warning | A key looks like a typo of a known schema key (`factor:` → `factors:`, `requirement:` → `requirements:`, `prompts:` → `prompt:`, `rating:` → `ratings:`). Genuinely custom extension keys stay silent — the format grows through users, like design.md. |
-| `model-summary` | info | Summary counts: factors and leaf requirements. |
+| `parse-error` | error | Missing, unterminated, or invalid YAML frontmatter. Aborts later rules. |
+| `target-node-shape` | error | The root and every `targets.*` entry is a mapping target node or the scalar `source` shorthand. Known target-node fields have the right shapes. |
+| `open-target-vocabulary` | info | Target names are user vocabulary. A catalog miss may be reported as context, never as a warning or error. |
+| `source-shape` | error | `source` is a scalar path/glob/URL or a list of scalar entries. |
+| `broken-source` | warning | A path/glob `source` resolves to no files. A forward-declared glob may be valid, so this is not an error. |
+| `source-escapes-scope` | warning | A local path/glob `source` resolves outside the model's directory subtree. |
+| `factor-shape` | error | A factor entry is not a mapping, or known factor fields have the wrong shape. |
+| `factor-refinement` | error | A descendant factor with an inherited name redefines the inherited lens instead of only adding compatible detail or requirements. |
+| `requirement-shape` | error | A requirement entry is not a mapping or declares no non-empty `assessment`. |
+| `assessment-shape` | error | `assessment` is not a single scalar string. A requirement has one assessment, never a list or map. |
+| `broken-assessment-ref` | error | A path-shaped `assessment` points to a file that does not exist. |
+| `secondary-factor-scope` | error | A requirement's secondary `factors` entry names no factor visible on the current target or an ancestor. |
+| `override-rationale` | error | An override suppresses or replaces an inherited requirement without a rationale. |
+| `stale-override` | error | An override matches no inherited requirement. |
+| `containment-resolution` | error | The inherited target/factor/requirement set cannot be resolved deterministically. |
+| `baseline-resolution` | warning | A configured rolling baseline cannot be loaded. Baseline content must be visible when configured. |
+| `broken-ratings-ref` | error | A path-shaped top-level `ratings` value does not exist or does not parse as a rating scale. |
+| `ratings-shape` | error | A rating scale is not a sequence with at least two unique `level` entries ordered best to worst. |
+| `unknown-rating-level` | error | A per-requirement `ratings` override names a level not in the active scale. |
+| `rating-level-order` | warning | A per-requirement `ratings` map is written in an order different from the active scale. Fixable. |
+| `empty-collection` | warning | `targets`, `requirements`, `factors`, or `overrides` is present but empty. |
+| `unknown-key` | warning | A key looks like a typo of a known schema key: `target` -> `targets`, `sources` -> `source`, `prompt`/`prompts` -> `assessment`, `factor` -> `factors`, `requirement` -> `requirements`, `rating` -> `ratings`. |
+| `model-summary` | info | Summary counts: targets, factors, direct requirements, lensed requirements, overrides, and secondary-factor links. |
 
-> **`prompt` vs path.** A `prompt` value is treated as a file reference when it
-> resolves to an existing path and as inline criteria text otherwise — matching
-> the spec's "text \| path" union. `broken-prompt-ref` only fires for values that
-> *look* like a path (e.g. start with `./`, `../`, or `/`, or end in `.md`) but
-> do not exist, so inline prose is never mistaken for a broken reference.
+The table names every condition in the six schema rules:
 
-> **`ratings` inline vs path.** Likewise, a `ratings` value is treated as a
-> shared-scale file reference when it is a path string and as an inline scale sequence
-> otherwise; `broken-ratings-ref` fires only for a path-shaped value that does not
-> resolve or parse as a scale.
+- Rule 1, open target vocabulary: `open-target-vocabulary`.
+- Rule 2, scoped factor identity/refinement: `factor-refinement`.
+- Rule 3, containment inheritance: `containment-resolution`.
+- Rule 4, overrides with rationale/staleness: `override-rationale`,
+  `stale-override`.
+- Rule 5, rolling baseline: `baseline-resolution`.
+- Rule 6, nest vs. federate: federation rules below plus
+  `target-node-shape`.
 
-### Body rules
+`assessment` and `ratings` values are treated as file references only when they
+are path-shaped (`./`, `../`, `/`, URL, or a recognized file extension);
+otherwise they are inline text.
 
-The linter parses the body only far enough to extract its `##`/`###` headings — it
-never judges prose. The recommended body sections and what each captures are
-defined in the format spec (`../SPECIFICATION.md#markdown-body`); these rules
-check their *shape*. All of them mirror a `design.md lint` shape except
-`factor-without-prose` (see [The one rule past precedent](#the-one-rule-past-precedent)).
+## Body Rules
+
+The linter extracts headings only. It never judges prose.
 
 | Rule | Severity | What it checks |
 | --- | --- | --- |
-| `missing-overview` | warning | The body has no **Overview** section (or leading prose). |
-| `missing-factors-section` | warning | The body has no **Factors** section. |
-| `section-order` | warning | Recognized `##` sections appear out of canonical order. **Fixable** (`lint --fix` reorders to canonical order). |
-| `duplicate-section` | error | A `##` heading appears more than once. |
-| `factor-without-prose` | warning | A frontmatter factor has no matching `###` subsection under **Factors**. |
+| `missing-overview` | warning | The body has no **Overview** section or leading prose. |
+| `missing-targets-factors-section` | warning | The body has no **Targets and factors** or **Factors** section. |
+| `section-order` | warning | Recognized `##` sections appear out of canonical order. Fixable. |
+| `duplicate-section` | error | A recognized `##` heading appears more than once. |
+| `target-without-prose` | warning | A frontmatter target has no matching subsection under **Targets and factors**. |
+| `factor-without-prose` | warning | A factor has no matching prose under the target where it is declared. |
 
-Only **Overview** and **Factors** are presence-checked, and only as warnings; every
-other section is optional and never warned for absence. The sole body-level error is
-`duplicate-section`, an unambiguous mistake.
-
-#### Recognized sections
-
-Canonical section names and their aliases, in canonical order, resolved before
-`section-order` and the presence rules run — the same mechanism as design.md's
-`spec-config.yaml` + `resolveAlias()`. Unknown sections are preserved silently; the
-format grows through users.
+Canonical body sections, in order:
 
 | Canonical | Aliases |
 | --- | --- |
@@ -164,44 +112,32 @@ format grows through users.
 | Scope | Boundary, In scope, Out of scope |
 | Needs | Quality needs |
 | Risks | Risk, Stakes, What's at stake |
-| Factors | The quality model, The model, Quality factors |
+| Targets and factors | Factors, The quality model, The model, Quality factors |
 | Known gaps | Accepted risks, Limitations |
 
-#### The one rule past precedent
+`factor-without-prose` is target-scoped: `targets.api.factors.security` is matched
+against prose for the `api` target, not against an unrelated `security` factor on
+another target.
 
-`factor-without-prose` is the single rule that steps beyond `design.md lint`. It
-matches frontmatter factor *names* against body *headings* — a frontmatter↔prose
-cross-reference, which design.md deliberately never does (it cross-references only
-YAML against YAML). We cross that line on purpose: this rule is what enforces the
-"prose version of the model," and it stays low-risk by comparing only heading text
-to factor keys (case-insensitive), never parsing prose. It is a **warning**, so
-model/prose drift nudges without blocking the gate.
+## Federation Rules
 
-### Federation rules
-
-When `lint` runs over a [federation](./cli-federation.md) — more than one
-`QUALITY.md` discovered — most rules above run per model. A few defects are only
-visible across the *set*, so they run once over the discovered models; unlike the
-single-model rules, these take the whole set as input rather than one parsed
-model.
+When a federation is discovered, single-model rules run per file and these rules
+run over the set:
 
 | Rule | Severity | What it checks |
 | --- | --- | --- |
-| `mixed-rating-scales` | warning | Models in one federation define or reference **different** rating scales. A tree report is only commensurable on a shared scale; share one by reference (see [`cli-federation.md`](./cli-federation.md#shared-rating-scale)). Sometimes a subtree deliberately rates on its own scale, hence a warning. |
-| `target-overlap` | warning | An ancestor and a descendant requirement's `target` globs resolve to overlapping files, so the same code is governed two ways. Often intentional for a cross-cutting ancestor requirement, hence a warning, not an error. |
+| `mixed-rating-scales` | warning | Models in one federation use different active rating scales. A tree report is commensurable only on a shared scale. |
+| `federation-graft` | error | A child model cannot be grafted as a target subtree because its root target address conflicts with an ancestor target address. |
+| `cross-file-factor-redefinition` | error | A federated child redefines an inherited factor meaning instead of refining it. |
+| `cross-file-stale-override` | error | A federated override names no inherited requirement from the graft point. |
+| `source-overlap` | warning | Ancestor and descendant `source` globs overlap in a way that may double-govern the same files. |
 
-Coverage ("does every significant component have a model?") and the cross-file
-*consistency of meaning* between requirements are judgments, not structural
-facts, so they belong to `evaluate-model`'s set-level pass (see
-[`cli-evaluate.md`](./cli-evaluate.md#set-level-evaluation)), not `lint`.
+Coverage and semantic consistency are judgment, not lint; they belong to the
+`improve-quality-md` and `evaluate-quality` skills.
 
 ## Output
 
-JSON by default — agent-consumable, the same contract as `design.md lint`, and
-carrying the two fields [`cli.md`](./cli.md#machine-readable-result-contract)
-requires of *every* command: a `schemaVersion` (so an agent can parse results
-without screen-scraping) and a `nextActions` array (so the lint→fix→re-run loop
-is self-describing rather than tribal knowledge).
+JSON is the v1 contract:
 
 ```json
 {
@@ -209,96 +145,61 @@ is self-describing rather than tribal knowledge).
   "findings": [
     {
       "severity": "error",
-      "rule": "assessment-count",
-      "path": "factors.security.requirements.\"no secrets committed to the repository\"",
-      "message": "Requirement declares no `prompt`; a requirement must declare its `prompt` assessment."
+      "rule": "requirement-shape",
+      "path": "targets.api.requirements.\"accepted orders are durable\"",
+      "message": "Requirement declares no `assessment`."
     },
     {
       "severity": "warning",
-      "rule": "broken-target",
-      "path": "factors.maintainability.factors.reusability.requirements.\"shared domain types come from the common package\".target",
-      "message": "target glob \"./src/**/*.ts\" matched no files."
+      "rule": "broken-source",
+      "path": "targets.web.source",
+      "message": "source glob \"./web/**/*.ts\" matched no files."
+    },
+    {
+      "severity": "error",
+      "rule": "secondary-factor-scope",
+      "path": "targets.api.factors.security.requirements.\"no secrets are committed\".factors[0]",
+      "message": "Secondary factor \"reliability\" is not declared on this target or an ancestor."
     },
     {
       "severity": "info",
       "rule": "model-summary",
-      "message": "3 factors, 6 requirements."
+      "message": "3 targets, 4 factors, 2 direct requirements, 5 lensed requirements."
     }
   ],
-  "summary": { "errors": 1, "warnings": 1, "info": 1 },
+  "summary": { "errors": 2, "warnings": 1, "info": 1 },
   "nextActions": [
     {
       "command": "qualitymd lint",
-      "reason": "Fix `factors.security.requirements.\"no secrets committed to the repository\"`: declare a `prompt`, then re-run.",
+      "reason": "Fix `targets.api.requirements.\"accepted orders are durable\"`: declare an `assessment`, then re-run.",
       "priority": "required"
     }
   ]
 }
 ```
 
-Each finding carries `severity`, the `rule` that produced it, a `path` (a dotted
-locator into the model, quoting map keys that contain spaces), and a `message`.
-The `summary` tallies findings by severity.
+## Flags And Exit Codes
 
-`schemaVersion` is the stable top-level version string from the shared contract.
-`nextActions` follows the shared
-[next-action shape](./cli.md#structured-next-action-suggestions): each error
-finding emits a `required` action naming the offending `path`, each warning a
-`recommended` one; a clean file emits a single `recommended` action — run
-`evaluate-model` to pressure-test the requirements. The `priority` of a
-finding-derived action tracks the finding's severity (`error → required`,
-`warning → recommended`, `info → optional`), as in
-[`cli.md`](./cli.md#structured-next-action-suggestions).
+Flags:
 
-## Flags, exit codes
+- `file` - positional `QUALITY.md` path, or `-` for stdin. Defaults to
+  `./QUALITY.md`. With no explicit file and multiple discovered models, validates
+  the federation.
+- `--json` - emit JSON. JSON is the default v1 output.
+- `--fix` - apply canonical-order fixes (`section-order`, `rating-level-order`)
+  and re-run. It never changes semantic findings.
 
-Flags (shared flags are in [`cli.md`](./cli.md#shared-conventions)):
+Exit codes:
 
-- `file` — positional path to the `QUALITY.md` file, or `-` for stdin. Defaults
-  to `./QUALITY.md` / `-f`. With no `file`/`-f` and more than one `QUALITY.md`
-  present, `lint` validates the whole [federation](./cli-federation.md) (see
-  [Federation rules](#federation-rules)).
-- `--json` — emit JSON output. JSON only in v1 (and the `lint` default), so the
-  flag is a no-op for now; a human-readable text format is a possible later
-  addition.
-- `--fix` — apply the auto-fixable findings (the canonical-order rules
-  `section-order` and `rating-level-order`) in place, then re-run the checks and
-  report what remains. Behavior-preserving by construction — it only reorders
-  levels or sections that carry no evaluation weight — so it never changes a
-  verdict and never touches a semantic finding. Without `--fix`, `lint` only
-  reports.
+- `0` - no `error` findings.
+- `1` - at least one `error` finding.
+- `2` - the command could not run: bad flags, unreadable file, or internal error.
 
-Exit codes follow the shared three-code convention (see
-[`cli.md`](./cli.md#machine-readable-result-contract)):
+## Open Questions
 
-- **`0`** — no `error` findings. Warnings and info do not fail the gate.
-- **`1`** — **gate verdict failure:** at least one finding is an `error` (a real
-  spec violation, including `parse-error`). The file *was* read and checked; it
-  is simply not well-formed.
-- **`2`** — **tool failure:** `lint` could not run the checks at all — the file
-  is unreadable or absent, a bad flag was passed, or an internal error occurred.
-  This is distinct from `parse-error` (a malformed-but-readable file), which is a
-  finding and exits `1`.
-
-This makes `lint` the deterministic structural gate for CI and pre-commit: it
-fails the build (`1`) only on real spec violations, while warnings surface
-lower-confidence issues without blocking — and an agent can still tell a bad file
-(`1`) from a broken invocation (`2`).
-
-## Open questions
-
-- **`broken-target` severity.** Warning (current) vs. error. A glob matching
-  nothing is sometimes intentional (forward-declared paths) and sometimes a
-  typo; warning is the safer default but loses gate strength.
-- **Text output format.** JSON is the v1 contract for agents; whether to add a
-  pretty/grouped text renderer (like `qualitymd check`'s original report) for
-  human terminal use is open.
-- **Subfactor heading depth.** `factor-without-prose` assumes factors map to `###`
-  subsections. How deep nested subfactors are expected to go in prose (`####` and
-  beyond) before the coverage check stops insisting is unsettled.
-- **`owner:` frontmatter field.** Research favored recording *who is accountable*
-  for the model (routing CI failures, codeowners-style automation) — the one
-  structured field clean enough to consider. Deferred: it overlaps the Overview/Needs
-  prose and risks staleness. Other proposed enums (`priority`, `criticality`,
-  `severity`, `source`) are deliberately *not* adopted — they invite box-ticking and
-  false precision, and `--fail-on` already carries that weight.
+- Whether `broken-source` should remain a warning or become an error in stricter
+  modes.
+- Whether to persist a pretty text output in addition to JSON.
+- Whether target/factor prose matching should require nested heading depth or only
+  normalized names.
+- Whether an `owner:` extension becomes a first-class target-node field later.

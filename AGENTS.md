@@ -5,10 +5,10 @@ CLI, the format spec, and the docs shipped to users.
 
 `QUALITY.md` is a plain-text format for a *quality model* — a file that declares
 the quality requirements for a software system or component and scores them. Each
-file pairs **YAML frontmatter** (the structured quality model) with a **Markdown
-body** (its documentation). The CLI evaluates a `QUALITY.md` file
-(`qualitymd check`), printing a grouped report and exiting non-zero on
-failure so it drops straight into CI.
+file pairs **YAML frontmatter** (the recursive target-tree quality model) with a
+**Markdown body** (its documentation). The specified CLI is deterministic: it
+scaffolds, lints, resolves, records, rolls up, and reports; skills perform the
+judgment and write ratings back through the CLI.
 
 See [`README.md`](README.md) for the overview, [`CONTRIBUTING.md`](CONTRIBUTING.md)
 for dev setup and the release process, [`SPECIFICATION.md`](SPECIFICATION.md) for the
@@ -25,8 +25,8 @@ kept in the background.
 **Do not cite or refer to specific ISO standards in public source code or
 artifacts** (READMEs, user-facing docs, CLI output, code comments, templates,
 schemas) unless the user explicitly requests it, or surfacing the standard is the
-specific purpose of that file. Prefer QUALITY.md's own vocabulary (Factors,
-Subfactors, Requirements) over ISO terminology.
+specific purpose of that file. Prefer QUALITY.md's own vocabulary (Targets,
+Factors, Requirements) over ISO terminology.
 
 ISO standards **may** be referenced in the specs under [`specs/`](specs/), where
 the provenance of a design decision is relevant.
