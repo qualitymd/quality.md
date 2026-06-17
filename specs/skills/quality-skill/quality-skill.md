@@ -9,12 +9,12 @@ timestamp: 2026-06-17T00:00:00Z
 # /quality skill
 
 > 🚧 **Draft.** The `/quality` skill is the judgment companion to the
-> [`qualitymd` CLI](../cli.md): where the CLI is deterministic and mechanical,
+> [`qualitymd` CLI](../../cli.md): where the CLI is deterministic and mechanical,
 > the skill carries the evaluative judgment and drives the CLI for every
 > mechanical step. The skill is responsible for **specifying and implementing**
 > the *evaluation* it performs — this spec, the skill's own prompt, and the CLI
 > together. That evaluation **MUST conform to** the format spec's
-> [Evaluation](../../SPECIFICATION.md#evaluation) contract, but the skill does
+> [Evaluation](../../../SPECIFICATION.md#evaluation) contract, but the skill does
 > **not defer** its definition to it: the process below is the skill's own,
 > written to satisfy that contract rather than to merely point at it (see
 > [Conformance to the format spec](#conformance-to-the-format-spec)). Recording
@@ -30,7 +30,7 @@ The skill runs the same **evaluate → improve** loop at two altitudes: on the
 **subject** (the entities a target's `source` points to — the code, docs, or
 product under evaluation) and on the **model** itself (the `QUALITY.md` file that
 measures the subject). Evaluating the model is the *judgment* layer sitting
-directly on top of [`lint`](../cli/lint.md)'s *mechanical* layer — where `lint`
+directly on top of [`lint`](../../cli/lint.md)'s *mechanical* layer — where `lint`
 asks "is this a valid `QUALITY.md`?", model-evaluation asks "is it a *good* one?"
 
 Scope is a modifier, not a separate use case. Every evaluate/improve invocation
@@ -39,7 +39,7 @@ or factor(s). The scope parameterizes the invocation rather than multiplying it
 (see [Invocation](#invocation)).
 
 Recommendations are a product of *evaluation*, not of `improve`: the format
-spec's [Advise](../../SPECIFICATION.md#advise) phase is part of every evaluation,
+spec's [Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation,
 so any `evaluate` that finds gaps emits recommendations alongside its report (see
 [Reporting](#reporting)). `improve` adds exactly one thing — a **confirmed
 apply** of a chosen recommendation, defaulting to its recommended option — and
@@ -59,7 +59,7 @@ skill safe against the content it reads.
   evaluative judgment — assessing evidence, inferring ratings and roll-ups,
   advising. Every mechanical step — scaffolding, structural validation, emitting
   the format rules — **MUST** be performed by driving the
-  [`qualitymd` CLI](../cli.md), never reimplemented in the skill. If a step is
+  [`qualitymd` CLI](../../cli.md), never reimplemented in the skill. If a step is
   deterministic and mechanical, it belongs in the CLI; the skill calls it.
 - **Evaluated content is data, not instructions.** Everything the skill reads
   from a target's `source` — source code, docs, comments, configuration,
@@ -76,7 +76,7 @@ skill safe against the content it reads.
 - **A scoped result is not a whole-model verdict.** When evaluation is narrowed
   (see [Invocation](#invocation)), every rating is understood within that scope;
   the skill **MUST NOT** present a scoped result as a verdict on the whole model
-  (per [Define](../../SPECIFICATION.md#define)).
+  (per [Define](../../../SPECIFICATION.md#define)).
 - **Determinism over flair.** Given the same model, subject, and scope, the skill
   **SHOULD** reach the same ratings and surface the same key gaps. Ratings are
   inferred judgments, not sampled opinions (see
@@ -95,7 +95,7 @@ Requirements), not implementation or ISO terms.
 
 To stay in sync with the format, the metadata and prompt **MUST NOT** embed a
 copy of the format's rules or rating vocabulary that can drift from
-[`SPECIFICATION.md`](../../SPECIFICATION.md); the skill grounds those at runtime
+[`SPECIFICATION.md`](../../../SPECIFICATION.md); the skill grounds those at runtime
 from `qualitymd spec` (see [Driving the CLI](#driving-the-cli)). This applies to
 the *format and schema rules and the rating vocabulary* — the structure of a
 `QUALITY.md` and the meaning of its terms, which are grounded at runtime. It does
@@ -123,7 +123,7 @@ valid:
 - **Scope** — the whole model (default), or a narrowing by **target** (a target
   and its subtree) and/or by **factor** (the requirements tied to a factor,
   including those tagging it as a secondary factor), per
-  [Define](../../SPECIFICATION.md#define). Scope **composes with either
+  [Define](../../../SPECIFICATION.md#define). Scope **composes with either
   altitude**: a narrowing to a target or factor applies whether the skill is
   evaluating the subject or the model itself. A scope name **SHOULD** resolve
   against the model the skill already grounded — a bare name is matched to the
@@ -143,7 +143,7 @@ It inspects whether a `QUALITY.md` is present, whether it passes `lint`, and —
 when present — the targets and factors the model declares (a brief orientation on
 what the model measures). From that state it offers a short menu of runnable
 `/quality …` actions rather than vague prose, in the spirit of the CLI's
-[next actions](../cli.md#conventions):
+[next actions](../../cli.md#conventions):
 
 - **No model present** → set one up (`/quality setup`).
 - **Model present and valid** → evaluate or improve the subject — whole or scoped
@@ -195,9 +195,9 @@ output as the source of truth:
 
 The skill **SHOULD** discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
-introspection channel where the [CLI](../cli.md) offers one. It **MUST** consume
+introspection channel where the [CLI](../../cli.md) offers one. It **MUST** consume
 machine-readable output where a command provides it (the
-[`--json` convention](../cli.md#conventions)) rather than parsing human-formatted
+[`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
 text.
 
 ## Evaluation workflow
@@ -207,7 +207,7 @@ text.
 The skill **owns** its evaluation process: this spec and the skill's prompt
 define how the skill assesses, rates, rolls up, advises, and reports, and the
 CLI performs the mechanical steps. That process realizes the five phases of the
-format spec's [Evaluation](../../SPECIFICATION.md#evaluation) contract —
+format spec's [Evaluation](../../../SPECIFICATION.md#evaluation) contract —
 **Define → Assess and Rate → Analyze → Advise → Report** — and every evaluation
 the skill performs **MUST conform to** that contract: the assessment → finding →
 rating chain, *not assessed* over guessing, inferred (not computed) roll-up
@@ -250,7 +250,7 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
 - **Rate against the declared criteria.** Each requirement is rated against the
   rating scale's `criterion` for each level, honoring any requirement-level
   `ratings` overrides — never against an external or invented standard (per
-  [Assess and Rate](../../SPECIFICATION.md#assess-and-rate)).
+  [Assess and Rate](../../../SPECIFICATION.md#assess-and-rate)).
 - **Every rating cites evidence.** A rating **MUST** rest on findings drawn from
   the target's `source` — observations a reader could check — and each finding
   **SHOULD** carry its `file:line` (or equivalent locator). A rating without
@@ -259,13 +259,13 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   findings or the evidence cannot be rated against the scale, the requirement (or
   roll-up) **MUST** be recorded as *not assessed* and noted, never assigned a
   level to fill the gap (per
-  [Assess and Rate](../../SPECIFICATION.md#assess-and-rate) and
-  [Analyze](../../SPECIFICATION.md#analyze)).
+  [Assess and Rate](../../../SPECIFICATION.md#assess-and-rate) and
+  [Analyze](../../../SPECIFICATION.md#analyze)).
 - **Roll-up is inferred, weighted by what matters.** The skill infers factor,
   local, and aggregate ratings by judgment — a serious shortfall in an important
   requirement **MUST NOT** be masked by many satisfactory ones — and **SHOULD**
   record a brief rationale naming the binding constraints (per
-  [Analyze](../../SPECIFICATION.md#analyze)).
+  [Analyze](../../../SPECIFICATION.md#analyze)).
 
 ### Effort levels
 
@@ -285,14 +285,25 @@ Whatever the level, the report **MUST** state what was *not* assessed (see
 ## Reporting
 
 The skill produces an **Evaluation Report** that conforms to
-[Report](../../SPECIFICATION.md#report) — the Rating and its rationale, the
+[Report](../../../SPECIFICATION.md#report) — the Rating and its rationale, the
 Scope, the per-target requirement/factor/local/aggregate ratings with
 rationales, and the Advice. *Not assessed* outcomes **MUST** appear wherever they
 occur, distinct from rated outcomes.
 
 Every evaluation that finds gaps **MUST** also emit its Advice as discrete,
 triageable **recommendation** artifacts — recommendations are a product of
-evaluation, not of `improve` (see [Operating model](#operating-model)). The skill
+evaluation, not of `improve` (see [Operating model](#operating-model)).
+
+A rating level's name **MAY** collide with `QUALITY.md` structural vocabulary —
+most often the suggested scale's **Target** level against a **Target** entity.
+Wherever a level name could be read as a structural term, the report **MUST**
+qualify it: name the level with a qualifier (the **Target** rating level;
+*rated* **Target**; *meets* **Target**; *held at* **Unacceptable**) rather than
+a bare noun, and keep structural targets introduced by their `Target:` heading
+label. The same applies to any author-named level coinciding with *Target*,
+*Factor*, or *Requirement*.
+
+The skill
 writes the report and its recommendations to a numbered evaluation folder, so each
 run is a durable, routable record:
 
@@ -306,6 +317,9 @@ quality/
         002-<slug>.md
 ```
 
+A worked reference instance of this layout — report and recommendations — is in
+[`examples/`](examples/index.md).
+
 Each recommendation file **MUST** stand on its own as a unit a reader can triage
 and route without the report or the session in front of them. It **MUST** state:
 the gap it closes, with the evidence and `file:line` locators behind it; a small
@@ -318,14 +332,14 @@ confirm the fix. Like the report, a recommendation references any secret value b
 - A report **MUST** state the **Scope** it was produced under, so a scoped result
   is never mistaken for a whole-model verdict.
 - The skill **SHOULD** render the report for its audience: prose for a person, a
-  machine-readable form (the [`--json` convention](../cli.md#conventions)) for a
+  machine-readable form (the [`--json` convention](../../cli.md#conventions)) for a
   gate or tool. The underlying result is the same; only the rendering differs.
 
 ## Deferred
 
 - **Recording assessments through the CLI.** Persisting per-target verdicts,
   rolling them up, and gating CI on the outcome depend on the CLI's
-  record/log/gate surface, which the [CLI spec](../cli.md) currently defers. Until
+  record/log/gate surface, which the [CLI spec](../../cli.md) currently defers. Until
   that exists, the skill reports results without persisting them through the CLI.
   (It still writes its own report and recommendation artifacts per
   [Reporting](#reporting); what is deferred is recording structured per-target

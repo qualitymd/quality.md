@@ -7,4 +7,4 @@ The companion **skills** that carry the judgment-based work around a
 
 # Skills
 
-- [/quality](quality-skill.md) - the companion evaluation skill: evaluate a `QUALITY.md` and record results through the CLI.
+- [/quality](quality-skill/index.md) - the companion evaluation skill: evaluate a `QUALITY.md` and record results through the CLI. Spec and reference artifacts live in [`quality-skill/`](quality-skill/index.md).

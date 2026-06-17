@@ -35,7 +35,9 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-No open changes.
+- [0008 — Describe targets with title and description](0008-target-display-fields.md)
+  (`status: Draft`) — give every target an optional `title` and recommended
+  `description`, narrowing the root-only constraint to `ratingScale`.
 
 Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

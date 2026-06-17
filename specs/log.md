@@ -2,6 +2,34 @@
 
 ## 2026-06-17
 
+- **Restructure + Creation**: Gave the [`/quality`](skills/quality-skill/quality-skill.md)
+  skill its own OKF folder — moved the spec into
+  [`skills/quality-skill/`](skills/quality-skill/index.md) (as a named concept
+  beside a new folder `index.md`, keeping `index.md` a frontmatter-free listing
+  per OKF) and rewrote its relative links for the new depth. Added an
+  [`examples/`](skills/quality-skill/examples/index.md) subfolder with the first
+  worked reference instance of the skill's [Reporting](skills/quality-skill/quality-skill.md#reporting)
+  contract: a whole-model **subject** evaluation of a fictional "Sparrow
+  Payments" service held at **Unacceptable** by a committed live gateway
+  credential — a [report](skills/quality-skill/examples/0001-payments-quality-eval/report.md)
+  plus two standalone
+  [recommendations](skills/quality-skill/examples/0001-payments-quality-eval/recommendations/001-rotate-committed-gateway-key.md)
+  with done-criteria, plus the
+  [model evaluated](skills/quality-skill/examples/0001-payments-quality-eval/model.md)
+  reproduced alongside (an `Example Model` concept embedding the fictional
+  `QUALITY.md` — root **Security** with **Secrets handling**/**Access control**
+  sub-factors and **Reliability**, a **Ledger** child target with
+  **Correctness**, and a `ratings` override on the secrets requirement the
+  report's rationale and done-criterion lean on) so every finding traces to a
+  declared requirement and `source`. The example exercises `file:line`
+  evidence, the
+  secret-by-reference rule (credential cited by location and type, value
+  withheld, rotation recommended), a prompt-injection comment recorded as a
+  finding and treated as data, and a *not assessed* requirement excluded from
+  the roll-up but noted. Registered `Evaluation Report` and `Recommendation`
+  concept types in [`schema.md`](schema.md) and linked the example from the
+  skill's Reporting section.
+
 - **Revision**: Reconciled the structural schema source of truth with
   [`SPECIFICATION.md`](../SPECIFICATION.md) and [`lint`](cli/lint.md): the public
   format spec now notes the typed schema declaration consumed by lint and the
@@ -19,7 +47,7 @@
   verbatim-artifact carve-out and result receipts for side-effecting commands;
   and updated [`init`](cli/init.md) to specify its JSON receipt, `--json -`
   usage error, and JSON overwrite-refusal object.
-- **Revision**: Reframed the [`/quality`](skills/quality-skill.md) skill's
+- **Revision**: Reframed the [`/quality`](skills/quality-skill/quality-skill.md) skill's
   relationship to the format spec's evaluation from **deference** to
   **conformance**: the skill now *owns and specifies* its evaluation process
   (this spec, its prompt, and the CLI together) rather than pointing at
@@ -58,7 +86,7 @@
   `Fixable rationale` columns. The initial inventory marks only `empty-property`
   as fixable; placeholder insertion remains scaffold behavior owned by
   [`init`](cli/init.md), not a lint repair.
-- **Revision**: Fleshed out the stub [`/quality`](skills/quality-skill.md) skill
+- **Revision**: Fleshed out the stub [`/quality`](skills/quality-skill/quality-skill.md) skill
   spec into a draft, working through the unblocked TODOs (inspired by the
   basecamp and shadcn/improve `SKILL.md` patterns). Promoted the use-case sketch
   to normative requirements — resolving the open question as *evaluate is
@@ -95,7 +123,7 @@
   `empty-model`/`empty-factor`/`empty-target` entries, and recorded the body
   heading under "Not checked".
 - **Creation**: Added the [`skills/`](skills/index.md) subfolder with a stub
-  [`/quality`](skills/quality-skill.md) functional spec — the companion
+  [`/quality`](skills/quality-skill/quality-skill.md) functional spec — the companion
   evaluation skill that carries judgment against a `QUALITY.md` and records
   results through the deterministic CLI. The concrete workflow, inputs, and
   recorded-assessment shape remain deferred (in step with the CLI's deferred
