@@ -3,12 +3,10 @@
 This is the public repository for the **QUALITY.md** project: the `qualitymd`
 CLI, the format spec, and the docs shipped to users.
 
-`QUALITY.md` is a plain-text format for a *quality model* — a file that declares
-the quality requirements for a software system or component and scores them. Each
-file pairs **YAML frontmatter** (the recursive target-tree quality model) with a
-**Markdown body** (its documentation). The specified CLI is deterministic: it
-scaffolds, lints, resolves, records, rolls up, and reports; skills perform the
-judgment and record rating results through the CLI.
+A `QUALITY.md` file pairs **YAML frontmatter** (the recursive target-tree quality
+model) with a **Markdown body** (its documentation). The `qualitymd` CLI is
+deterministic and mechanical; skills perform the judgment and record results
+through it.
 
 See [`README.md`](README.md) for the overview, [`CONTRIBUTING.md`](CONTRIBUTING.md)
 for dev setup and the release process, and [`SPECIFICATION.md`](SPECIFICATION.md) for
@@ -33,22 +31,26 @@ where the provenance of a design decision is relevant.
 
 ### Open Knowledge Format (OKF) bundles
 
-Some directories are authored as **OKF** bundles — Markdown concepts with YAML
-frontmatter, plus reserved `index.md` (listing) and `log.md` (history). See
-[`docs/guides/work-with-okf.md`](docs/guides/work-with-okf.md) for the editing contract. Each bundle
-also carries a root `schema.md` (`type: Schema`) whose `types` frontmatter
-registers the concept types that bundle uses — a recommended vocabulary, not a
-closed schema. When you add or edit a concept, keep its `type` non-empty, reuse a
-listed type (or add a new descriptive one to `schema.md`), and update the
-enclosing `index.md` and `log.md` in the same change.
+Several directories are authored as **OKF** bundles, each registering its concept
+types in a root `schema.md`:
 
-**Bundles in this repo:**
+| Folder     | What it holds                                                |
+| ---------- | ------------------------------------------------------------ |
+| `specs/`   | Specifications for the deterministic `qualitymd` surface.    |
+| `docs/`    | Project documentation, organized by the four Diátaxis modes. |
+| `changes/` | Incremental work items — a spec and design doc per change.   |
 
-| Folder     | What it holds                                                | Types                                        |
-| ---------- | ------------------------------------------------------------ | -------------------------------------------- |
-| `specs/`   | Specifications for the deterministic `qualitymd` surface.    | see [`specs/schema.md`](specs/schema.md)     |
-| `docs/`    | Project documentation, organized by the four Diátaxis modes. | see [`docs/schema.md`](docs/schema.md)       |
-| `changes/` | Incremental work items — a spec and design doc per change.   | see [`changes/schema.md`](changes/schema.md) |
+### Guides
+
+Before working in this repo, consult the relevant how-to guide in
+[`docs/guides/`](docs/guides/index.md). Each is task-oriented:
+
+| When you are…                                   | Read                                                              |
+| ----------------------------------------------- | ----------------------------------------------------------------- |
+| Proposing or tracking a unit of work            | [Proposing a change](docs/guides/propose-a-change.md)             |
+| Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md) |
+| Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)           |
+| Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                  |
 
 ### Agent guidance files
 
