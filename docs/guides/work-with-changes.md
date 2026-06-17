@@ -1,19 +1,19 @@
 ---
 type: How-to Guide
-title: Proposing a change
-description: How to propose and track a unit of incremental work in the changes/ bundle.
+title: Working with changes
+description: How to create a change and move it through its lifecycle in the changes/ bundle.
 tags: [changes, contributing]
 timestamp: 2026-06-17T00:00:00Z
 ---
 
-# Proposing a change
+# Working with changes
 
 Incremental work on the repo is tracked in the
 [`changes/`](../../changes/index.md) OKF bundle. A **Change** is one unit of work:
 a parent concept that records *why*, *what state* it's in, and *which durable
 specs and docs it touches*, over a [functional spec](write-functional-specs.md)
 (the *what*) and an optional [design doc](write-design-docs.md) (the *how*). This
-guide covers proposing one and moving it through to done.
+guide covers creating one and moving it through its full lifecycle to done.
 
 ## Create the change
 
@@ -76,6 +76,22 @@ A Change's `status` frontmatter advances, in order:
   (the *what*); **Design** while you work out the
   [design doc](write-design-docs.md) (the *how*); **In-Progress** while it's
   being implemented.
+- **Modify nothing outside what the current phase authorizes.** This is a
+  whitelist, not a blacklist: the question is never "is this file on the Affected
+  list?" but "does this phase permit changing it?" Before **In-Progress**, all
+  work stays inside the change's own folder, `changes/NNNN-<slug>/` — **Draft**
+  produces its `spec.md`, **Design** produces its `design.md`, and either MAY add
+  supplementary files (sketches, examples, data fixtures) that support those, so
+  long as they live within that folder. **In-Progress** is the first phase that
+  authorizes touching anything *outside* the change folder — the code and the
+  durable specs and docs. The change's parent concept, its `index.md`, and the
+  bundle [`log.md`](../../changes/log.md)/`index.md` are updated in every phase to
+  record the step. Everything else — all code, every durable spec and doc,
+  whether or not it appears in
+  [Affected specs & docs](#account-for-the-specs-and-docs-it-touches) — stays
+  untouched until the phase that authorizes it. **Implementation does not begin
+  until the change is In-Progress**: advance the `status` first, then implement.
+  This is what keeps *what* and *how* settled before any code is written.
 - Before setting **Done**, create or update every durable spec and doc listed in
   the change's [Affected specs & docs](#account-for-the-specs-and-docs-it-touches)
   section, so the enduring source of truth reflects the landed work.

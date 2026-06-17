@@ -2,6 +2,56 @@
 
 ## 2026-06-17
 
+- **Design**: Refined change
+  [0008 — Describe targets with title and description](0008-target-display-fields.md):
+  made `Model.description` **Optional** (was `Recommended`), matching
+  `Target.description`, so `description` reads uniformly across the tree. Updated
+  the [functional spec](0008-target-display-fields/spec.md) (Model schema now shows
+  `description` as Optional) and the
+  [design doc](0008-target-display-fields/design.md): the `OptionalPresence`
+  addition, the `# Optional` Model snippet, the composition alternative (now closer
+  since `title`/`description` presence matches, still rejected on the `model-content`
+  `RequiredAny` group and the mid-list `ratingScale` splice), and the trade-off note.
+
+- **Design**: Advanced change
+  [0008 — Describe targets with title and description](0008-target-display-fields.md)
+  from `Draft` to `Design` and added its
+  [design doc](0008-target-display-fields/design.md). Reading the code showed the
+  change is almost entirely schema + prose: three property additions in
+  [`internal/schema`](../internal/schema/schema.go) (`Target` gains `title`/
+  `description`, `Model` gains `description`) drive everything, because
+  `misplaced-root-key` already fires on "a key valid on `Model` but not on this
+  target" and so **self-narrows** to `ratingScale` with no rule-logic change, and
+  the data-driven spec↔schema consistency test passes once the declarations and
+  `SPECIFICATION.md` snippets move in lockstep. The only test edit flips
+  `rules_test.go`'s "nested target title" case from a finding to a valid model.
+  Recorded the decisions: keep `Model`/`Target` as explicit property lists rather
+  than composing `Model` from `Target` (their `title` presence diverges —
+  `Recommended` on the root, `Optional` on a target — and the consistency test
+  already guards drift); and **not** add a `missing-target-description` warning
+  (`RecommendedPresence` is documentary, not auto-enforced), leaving it as a noted
+  follow-up. Updated the change [index](0008-target-display-fields/index.md) and
+  bundle [index](index.md).
+
+- **Creation**: Added change
+  [0008 — Describe targets with title and description](0008-target-display-fields.md)
+  (`status: Draft`) with its
+  [functional spec](0008-target-display-fields/spec.md). A target's only
+  human-facing label today is its map key; the change lets every target carry an
+  optional `title` (display name) and a recommended `description` (what the target
+  *is*), and adds `description` to the model root. It also reframes the root as a
+  **Model** — the model-wide `ratingScale` plus all **Target** properties — so
+  the difference from a nested target is a type distinction (`ratingScale` is the
+  one Model-only property) rather than the awkward "a non-root target MUST NOT
+  declare …" prohibition, matching how `internal/schema` already models the two
+  as distinct nodes. Records the
+  [`SPECIFICATION.md`](../SPECIFICATION.md) and
+  [`lint` sub-spec](../specs/cli/lint.md) deltas plus the `internal/schema` and
+  `internal/lint` conformance (the `misplaced-root-key` rule and its
+  "nested target title" test case) as affected. Updated the bundle
+  [index](index.md). A design doc follows at **Design** for how
+  `misplaced-root-key` narrows to `ratingScale` alone.
+
 - **Completion**: Implemented and archived
   [0007 — Delightful human CLI output](archive/0007-delightful-cli-output.md),
   giving the human surface a single brand palette shared with the Fang harness, a
@@ -230,7 +280,7 @@
 - **Archival**: Retired the placeholder [0001 — Example change](archive/0001-example-change.md)
   into [`archive/`](archive/) now that the bundle has real changes to follow,
   keeping it as the reference template the
-  [propose-a-change guide](../docs/guides/propose-a-change.md) points to. Set its
+  [propose-a-change guide](../docs/guides/work-with-changes.md) points to. Set its
   status to `Done`, fixed the relative links for the deeper path, and updated the
   bundle [index](index.md) and the [archive index](archive/index.md).
 

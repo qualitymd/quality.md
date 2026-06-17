@@ -43,7 +43,7 @@ Before work, read relevant [`docs/guides/`](docs/guides/index.md):
 
 | When you are…                                   | Read                                                              |
 | ----------------------------------------------- | ----------------------------------------------------------------- |
-| Proposing or tracking a unit of work            | [Proposing a change](docs/guides/propose-a-change.md)             |
+| Creating or advancing a unit of work            | [Working with changes](docs/guides/work-with-changes.md)          |
 | Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md) |
 | Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)           |
 | Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                  |
