@@ -10,9 +10,16 @@ motivation and status and links to its **Functional Specification** (what to
 build) and **Design Doc** (how, and why that way). A change that needs no design
 doc simply omits it.
 
-This bundle is **independent** of the enduring [`specs/`](../specs/index.md)
-bundle for now; the relationship between the two may be revisited. Completed
-changes move into [`archive/`](archive/).
+The `changes/` and enduring [`specs/`](../specs/index.md) bundles play different
+roles. A change's **Functional Specification** states the *delta* — what this one
+unit of work must do — and is archived with the change once it lands. The
+enduring `specs/` bundle and the repository-root
+[`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of truth
+for the tool's current behavior. A change bridges the two: it records the durable
+specs and docs it creates or updates in an **Affected specs & docs** section, and
+those enduring artifacts are brought into sync **before** the change reaches
+**Done**. Completed changes then move into [`archive/`](archive/); the enduring
+specs carry the result forward.
 
 ## Status lifecycle
 

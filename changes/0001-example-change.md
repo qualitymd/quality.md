@@ -4,7 +4,7 @@ title: Example change
 description: Placeholder change demonstrating the Change concept shape. Replace with a real change.
 status: Draft
 tags: [example]
-timestamp: 2026-06-16T00:00:00Z
+timestamp: 2026-06-17T00:00:00Z
 ---
 
 # Example change
@@ -28,6 +28,18 @@ Why this change is worth making — the problem it solves or the value it adds.
 ## Scope
 
 What's covered, and what's intentionally deferred.
+
+## Affected specs & docs
+
+The durable specs and docs this change creates or updates — the enduring
+[`specs/`](../specs/index.md) bundle, the repository-root
+[`SPECIFICATION.md`](../SPECIFICATION.md), the [`README.md`](../README.md), and
+the [`docs/`](../docs/index.md) guides. Decide this up front, alongside the
+motivation and scope. List each artifact with what changes; an empty list must
+read as a deliberate "no durable changes," not an oversight. Every listed
+artifact is created or updated **before** this change reaches `Done`.
+
+- [ ] `path/to/spec.md` — *what changes, and why*.
 
 ## Status
 

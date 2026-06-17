@@ -5,6 +5,11 @@
 - **Creation**: Added the [Proposing a change](guides/propose-a-change.md)
   `How-to Guide` covering the `changes/` workflow — numbering, the
   Change-plus-spec-plus-design shape, the status lifecycle, and archiving.
+- **Revision**: Extended [Proposing a change](guides/propose-a-change.md) to
+  account for the durable specs and docs a change touches — a new
+  "Account for the specs and docs it touches" section, the **Affected specs &
+  docs** step in the parent concept, and a Done gate requiring the listed
+  enduring specs/docs be brought into sync before archiving.
 
 ## 2026-06-16
 
