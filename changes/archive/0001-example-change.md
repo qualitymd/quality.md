@@ -1,17 +1,17 @@
 ---
 type: Change
 title: Example change
-description: Placeholder change demonstrating the Change concept shape. Replace with a real change.
-status: Draft
+description: Placeholder change demonstrating the Change concept shape, retired as a reference template.
+status: Done
 tags: [example]
 timestamp: 2026-06-17T00:00:00Z
 ---
 
 # Example change
 
-> 🚧 **Placeholder.** This change exists to show the intended shape of a `Change`
-> concept. Replace it with a real change, or delete it once the bundle has real
-> content.
+> 🗂️ **Reference template.** This placeholder showed the intended shape of a
+> `Change` concept. It's archived now that the bundle has real changes — copy it
+> and its folder as the starting point for a new change.
 
 A **Change** is a unit of incremental work on the repo. This parent concept
 captures the *why* and the *status*; the detail lives in its children:
@@ -32,9 +32,9 @@ What's covered, and what's intentionally deferred.
 ## Affected specs & docs
 
 The durable specs and docs this change creates or updates — the enduring
-[`specs/`](../specs/index.md) bundle, the repository-root
-[`SPECIFICATION.md`](../SPECIFICATION.md), the [`README.md`](../README.md), and
-the [`docs/`](../docs/index.md) guides. Decide this up front, alongside the
+[`specs/`](../../specs/index.md) bundle, the repository-root
+[`SPECIFICATION.md`](../../SPECIFICATION.md), the [`README.md`](../../README.md),
+and the [`docs/`](../../docs/index.md) guides. Decide this up front, alongside the
 motivation and scope. List each artifact with what changes; an empty list must
 read as a deliberate "no durable changes," not an oversight. Every listed
 artifact is created or updated **before** this change reaches `Done`.
@@ -43,6 +43,5 @@ artifact is created or updated **before** this change reaches `Done`.
 
 ## Status
 
-`Draft`. See the [status lifecycle](index.md#status-lifecycle). When this change
-reaches **Done**, move it and its [child folder](0001-example-change/) into
-[`archive/`](archive/).
+`Done`. See the [status lifecycle](../index.md#status-lifecycle). Retired as a
+reference template once the bundle had real changes to follow.

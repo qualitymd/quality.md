@@ -2,6 +2,13 @@
 
 ## 2026-06-17
 
+- **Archival**: Retired the placeholder [0001 — Example change](archive/0001-example-change.md)
+  into [`archive/`](archive/) now that the bundle has real changes to follow,
+  keeping it as the reference template the
+  [propose-a-change guide](../docs/guides/propose-a-change.md) points to. Set its
+  status to `Done`, fixed the relative links for the deeper path, and updated the
+  bundle [index](index.md) and the [archive index](archive/index.md).
+
 - **Completion**: Implemented and archived
   [0002 — Specify the init command](archive/0002-init-command.md), adding
   `qualitymd init`, replacing the durable [`init` sub-spec](../specs/cli/init.md),
@@ -37,7 +44,7 @@
   note) — a change states a *delta* and is archived, while `specs/` and
   [`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of
   truth. Added an **Affected specs & docs** section to the
-  [Change concept](0001-example-change.md) so each change records the durable
+  [Change concept](archive/0001-example-change.md) so each change records the durable
   specs and docs it creates or updates, brought into sync before `Done`.
 
 ## 2026-06-16
@@ -47,6 +54,6 @@
   [index](index.md), [`schema.md`](schema.md) (`type: Schema`) registering the
   `Change`, `Functional Specification`, and `Design Doc` types, and an
   [`archive/`](archive/) folder for completed changes.
-- **Creation**: Added a placeholder [Example change](0001-example-change.md)
-  (`status: Draft`) with child [spec](0001-example-change/spec.md) and
-  [design](0001-example-change/design.md) concepts showing the intended shape.
+- **Creation**: Added a placeholder [Example change](archive/0001-example-change.md)
+  (`status: Draft`) with child [spec](archive/0001-example-change/spec.md) and
+  [design](archive/0001-example-change/design.md) concepts showing the intended shape.

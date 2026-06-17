@@ -9,7 +9,7 @@ timestamp: 2026-06-16T00:00:00Z
 # Example change — functional spec
 
 > 🚧 **Placeholder.** Illustrates the spec shape for a change. See the
-> [Writing functional specs](../../docs/guides/write-functional-specs.md) guide.
+> [Writing functional specs](../../../docs/guides/write-functional-specs.md) guide.
 
 Companion to the [Example change](../0001-example-change.md). This spec states
 *what* the change must do; the [design doc](design.md) covers *how*.

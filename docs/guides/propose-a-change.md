@@ -29,8 +29,8 @@ guide covers proposing one and moving it through to done.
    the detail concepts (below). The parent-concept-plus-folder shape mirrors the
    rest of the repo (e.g. `specs/cli.md` + `specs/cli/`).
 
-Copy [`0001-example-change`](../../changes/0001-example-change.md) and its folder
-as a starting template.
+Copy [`0001-example-change`](../../changes/archive/0001-example-change.md) and its
+folder as a starting template.
 
 ## Write the spec, then the design
 

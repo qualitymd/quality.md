@@ -35,7 +35,9 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-- [0001 — Example change](0001-example-change.md) - placeholder showing the intended shape (`Draft`).
+None. Completed changes live in [`archive/`](archive/); copy
+[`archive/0001-example-change`](archive/0001-example-change.md) as a starting
+template for a new one.
 
 # Bundle
 
