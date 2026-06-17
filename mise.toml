@@ -2,6 +2,7 @@
 dprint = "0.54.0"
 go = "1.26"
 goreleaser = "latest"
+golangci-lint = "2"
 
 [tasks.build]
 description = "Build the qualitymd binary into ./dist"
@@ -18,6 +19,14 @@ run = "go test ./..."
 [tasks.vet]
 description = "Vet the codebase"
 run = "go vet ./..."
+
+[tasks.lint]
+description = "Lint the Go codebase with golangci-lint"
+run = "golangci-lint run"
+
+[tasks.check]
+description = "Run the full CI gate locally (vet, lint, test, format check)"
+depends = ["vet", "lint", "test", "fmt-md-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"

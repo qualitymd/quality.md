@@ -1,0 +1,15 @@
+version: "2"
+
+linters:
+  # The standard set (errcheck, govet, ineffassign, staticcheck, unused)
+  # plus a few low-noise additions.
+  default: standard
+  enable:
+    - misspell
+    - unconvert
+    - unparam
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
