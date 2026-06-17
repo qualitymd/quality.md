@@ -59,5 +59,8 @@ The requirement *No credentials are committed to the repository* reaches
 **Target** against its criterion — no live credential is present in the working
 tree, and the previously exposed key has been revoked at the gateway so it can no
 longer be used. A later `improve` re-evaluates this scope to confirm the rating
-moved off Unacceptable; clearing this single constraint is expected to lift root
-Security and the whole-model rating to **Target**.
+moved off Unacceptable; clearing this constraint is expected to lift root
+Security to **Target** and the whole-model rating off the floor to **Minimum**,
+where the webhook-delivery deduplication gap (see
+[003](003-bound-webhook-dedup-window.md)) becomes the binding constraint until it
+too is closed.

@@ -8,15 +8,14 @@ timestamp: 2026-06-17T00:00:00Z
 
 > **Reference instance — non-normative.** This illustrates one human rendering of
 > the Evaluation Report the [`/quality` skill](../../quality-skill.md) produces.
-> At runtime the skill writes this file as
-> `quality/evaluations/0001-payments-quality-eval/report.md` inside the
-> **evaluated** repository, with its recommendations in the sibling
-> [`recommendations/`](recommendations/) folder; the frontmatter above is only
-> the OKF wrapper that lets this bundle catalogue the example. The subject
-> ("Sparrow Payments") is fictional and the `file:line` locators are
-> illustrative. The model uses the suggested four-level scale —
-> **Outstanding** > **Target** > **Minimum** > **Unacceptable**. The
-> [model evaluated](model.md) is reproduced alongside this report.
+> At runtime the skill writes it as
+> `quality/evaluations/0001-payments-quality-eval/report.md` in the **evaluated**
+> repository, with its recommendations in the sibling
+> [`recommendations/`](recommendations/) folder. The
+> [model evaluated](model.md) — including the suggested four-level rating scale
+> (**Outstanding** > **Target** > **Minimum** > **Unacceptable**) the ratings
+> below use — is reproduced alongside. See the [examples index](../index.md) for
+> the facts shared across this bundle.
 
 ---
 
@@ -25,20 +24,34 @@ timestamp: 2026-06-17T00:00:00Z
 **Rationale.** Held at **Unacceptable** by a single binding constraint: a live
 payment-gateway credential is committed to the repository (root → Security →
 Secrets handling). One committed live secret is security-critical and is not
-offset by the requirements *rated* **Target** or better elsewhere. The Ledger
-subtree is *rated* **Target**, so removing and rotating the credential is
-expected to lift the root — and the overall rating — to **Target**.
+offset by the requirements *rated* **Target** or better elsewhere. Removing and
+rotating the credential lifts the root off the floor, but not all the way: the
+Webhooks subtree is *rated* **Minimum** (a webhook-delivery deduplication gap),
+so it would then be the binding constraint and the root would rise only to
+**Minimum** — reaching **Target** once that gap is closed too. The Ledger
+subtree is *rated* **Target**.
 
 **Scope.** Whole model; **subject** altitude; no target or factor narrowing.
-Source resolved from `./` (root) and `./ledger` (Ledger). Effort: `standard`.
-One requirement *not assessed* (see Ledger). This is a whole-model verdict.
+Source resolved from `./` (root), `./ledger` (Ledger), `./webhooks` (Webhooks),
+and `./webhooks/delivery` (Delivery). Effort: `standard`. One requirement *not
+assessed* (see Ledger). This is a whole-model verdict.
+
+**Evaluated.** Source `sparrow-payments` at commit `9f2c1ab`, with the
+`./QUALITY.md` model at the same revision. Evaluator: the `/quality` skill — the
+deterministic `qualitymd` surface for structure and source resolution, agent
+assessment for the findings — on 2026-06-17. Assessment inputs: a tracked-source
+secret scan, HTTP route enumeration from `cmd/api/routes.go`, and the
+per-requirement test runs cited in the findings below. This provenance is what
+lets a reader reproduce the verdict.
 
 ---
 
 ## Target: Sparrow Payments API *(root)*
 
-**Aggregate: Unacceptable** — the root's own local rating binds; the Ledger
-subtree (*rated* **Target**) does not lift it.
+**Aggregate: Unacceptable** — the root's own local rating binds; neither the
+Ledger subtree (*rated* **Target**) nor the Webhooks subtree (*rated*
+**Minimum**) changes it. Were the local rating cleared, the Webhooks subtree
+would be the next binding constraint, at **Minimum**.
 **Local: Unacceptable** — three root requirements; the committed-credential
 shortfall is security-critical and a single such finding holds the local rating
 at the floor regardless of the two requirements *rated* **Target**.
@@ -53,8 +66,12 @@ at the floor regardless of the two requirements *rated* **Target**.
   - **Access control — Target.** Every money-moving endpoint sits behind the
     auth middleware, with no exceptions found; no evidence of the step-up
     controls Outstanding would require.
-- **Reliability — Target.** Transfer idempotency holds against retries; no
-  evidence of the broader failure-injection coverage Outstanding would require.
+- **Reliability — Target.** Transfer idempotency holds against retries, and the
+  Ledger's *double-entry invariant* — declared on the Ledger target, which tags
+  Reliability as a secondary factor — adds evidence that money is neither lost
+  nor duplicated in the books. This factor lens therefore ranges into the Ledger
+  subtree even though the root's local rating does not; no evidence of the
+  broader failure-injection coverage Outstanding would require.
 
 ### Requirements
 
@@ -66,11 +83,16 @@ at the floor regardless of the two requirements *rated* **Target**.
     A second match, a **test publishable key** at
     `internal/gateway/client_test.go:12`, is non-secret by design and is not
     counted against this requirement.
-  - *Rationale:* A single committed live secret meets the Unacceptable
-    criterion. Reported by `file:line` and credential type only; the value is
-    not reproduced anywhere in this report. See recommendation
-    [001](recommendations/001-rotate-committed-gateway-key.md) — rotation is
-    required, not merely removal, because the key is already exposed in history.
+  - *Rationale:* Rated against this requirement's `ratings` overrides, not the
+    scale's default criteria — Unacceptable: "a live credential is present in the
+    working tree"; Minimum and Target both require a clean tree (Target also
+    requires any prior exposure rotated). The one committed live key satisfies the
+    Unacceptable criterion, and a single live secret is sufficient to land there
+    regardless of the clean findings elsewhere. Reported by `file:line` and
+    credential type only; the value is not reproduced anywhere in this report. See
+    recommendation [001](recommendations/001-rotate-committed-gateway-key.md) —
+    rotation is required, not merely removal, because the key is already exposed in
+    history.
 - *Every money-moving endpoint enforces authentication* — **Target**
   - *Findings:* 18 of 18 transfer/refund routes registered in
     `cmd/api/routes.go` resolve through the `RequireAuth` middleware; 0
@@ -109,13 +131,14 @@ reconciliation is unevaluated.
 ### Requirements
 
 - *Every transfer debits and credits to a net zero (double-entry invariant)* —
-  **Target**
+  **Target** *(Correctness; also lensed under the root Reliability factor)*
   - *Findings:* The posting routine enforces `sum(entries) == 0` before commit
     (`ledger/posting.go:64`); a property test over 10k generated transfers
     (`ledger/posting_test.go:210`) found 0 imbalanced postings.
   - *Rationale:* The invariant is enforced and tested on the happy and observed
     failure paths (Target); multi-currency rounding paths were not exercised, so
-    short of Outstanding.
+    short of Outstanding. Counts once in the Ledger's local rating while also
+    informing the root **Reliability** lens it tags as a secondary factor.
 - *Reconciliation runs daily and flags drift* — **Not assessed**
   - *Findings:* None — no reconciliation job output, log, or report was
     available to assess against. A `reconcile` entrypoint exists
@@ -126,11 +149,114 @@ reconciliation is unevaluated.
 
 ---
 
+## Target: Webhooks *(child of root)*
+
+**Aggregate: Minimum** — the Webhooks target's own work is solid, but its
+**Delivery** child subtree (*rated* **Minimum**) pulls the aggregate below the
+target's own local rating.
+**Local: Target** — one own requirement (webhook signing), met at Target.
+
+### Factors
+
+- **Security — Target.** A refinement of the root Security factor for the
+  outbound-delivery context: the concern is proving to a merchant that an event
+  came from Sparrow, not authorizing inbound callers. Every emit path signs and
+  no unsigned path was found; no evidence of the enforced signing-secret
+  rotation Outstanding would require.
+
+### Requirements
+
+- *Every outbound webhook is signed so merchants can verify its origin* —
+  **Target**
+  - *Findings:* All 6 webhook emit paths registered in `webhooks/emit.go` sign
+    through `webhooks/sign.go:24`; the signature covers the body and a
+    timestamp, and a test (`webhooks/sign_test.go:48`) confirms a tampered or
+    unsigned payload is rejected. 0 unsigned emit paths found.
+  - *Rationale:* Full signing coverage with origin and replay protection meets
+    the Target criterion; per-merchant signing-secret rotation is not enforced,
+    so short of Outstanding.
+
+---
+
+## Target: Delivery *(child of Webhooks)*
+
+**Aggregate: Minimum** — a leaf target, so its aggregate equals its local
+rating.
+**Local: Minimum** — two requirements assessed; retry is *rated* **Target**, but
+the deduplication requirement is *rated* **Minimum**, and that shortfall sets the
+whole-set verdict at the floor — acceptable to ship, but short of the target.
+
+### Factors
+
+- **Reliability — Minimum.** A refinement of the root Reliability factor for the
+  delivery context. Retry-with-backoff holds, so no transient failure silently
+  drops an event; but redelivery deduplication is only best-effort within a
+  bounded window, which holds the factor at Minimum.
+
+### Requirements
+
+- *Failed deliveries retry with exponential backoff until acknowledged or the
+  retry window expires* — **Target**
+  - *Findings:* Failed deliveries re-enqueue on an exponential backoff schedule
+    (`webhooks/delivery/retry.go:37`) within a bounded 24-hour window, after
+    which the delivery is recorded as `failed` and surfaced rather than dropped;
+    a test (`webhooks/delivery/retry_test.go:91`) confirms a transiently failing
+    endpoint is retried and no event is silently lost.
+  - *Rationale:* No transient failure results in a silently lost event, meeting
+    the Target criterion; the broader failure-injection coverage Outstanding
+    would require was not in evidence at `standard` effort.
+- *A redelivery of an already-acknowledged event is suppressed for that
+  endpoint* — **Minimum**
+  - *Findings:* Each event carries a stable delivery id, and the engine
+    suppresses a redelivery to an endpoint that already acknowledged it
+    (`webhooks/delivery/dedup.go:52`) — but suppression state is retained for
+    only 24 hours, the same as the retry window, so a delivery re-enqueued late
+    in that window can fire after its dedup record has expired and reach the
+    merchant a second time. The merchant docs note "consume events
+    idempotently", confirming duplicates are possible by design.
+  - *Rationale:* Deduplication exists and covers the common case but is bounded
+    and best-effort, so a duplicate is reachable on a known path — short of the
+    target's "not delivered again" intent, yet a consciously-bounded floor
+    rather than a failure. *Rated* **Minimum**. See recommendation
+    [003](recommendations/003-bound-webhook-dedup-window.md).
+
+---
+
+## Limitations
+
+These qualify the ratings above; none changes a rating, but each bounds how far
+the verdict should be trusted or reused. They are distinct from **Scope**
+exclusions (the gateway, the banks, and merchant endpoints — out of the model's
+remit by design) and from the *not assessed* reconciliation requirement (no
+evidence this run).
+
+- *Effort ceiling.* The run was `standard` effort, so the broader
+  failure-injection and step-up-control evidence Outstanding would require was not
+  sought for the idempotency, authentication, signing, and retry requirements.
+  Their **Target** ratings reflect that ceiling; a deeper run could revise them
+  upward with no change to the source.
+- *Point-in-time secret scan.* The committed-credential finding reflects the
+  tracked working tree at the evaluated commit. A live secret on an unscanned
+  branch, or one added after this revision, would not appear; and the rotation
+  status that separates Target from Minimum is inferred from the tree, not
+  confirmed against the gateway.
+- *Single-test confidence.* Transfer idempotency and webhook deduplication each
+  rest on one replay/redelivery test, not a sustained concurrency or
+  fault-injection soak; their behavior under high-volume real traffic is inferred,
+  not measured.
+
+---
+
 ## Advice
 
 - **Key gap — committed live gateway credential (root → Security → Secrets
   handling).** The single constraint holding the whole model at Unacceptable.
   See [001](recommendations/001-rotate-committed-gateway-key.md).
+- **Next constraint — webhook-delivery deduplication is bounded (Webhooks →
+  Delivery → Reliability).** Not binding today only because the committed
+  credential outranks it; once that is cleared, this *rated*-**Minimum** gap is
+  what holds the root below **Target**. See
+  [003](recommendations/003-bound-webhook-dedup-window.md).
 - **Coverage gap — reconciliation requirement not assessed (Ledger →
   Correctness).** The Ledger rating is incomplete until this is evaluated. See
   [002](recommendations/002-produce-reconciliation-evidence.md).

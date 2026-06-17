@@ -8,16 +8,55 @@ timestamp: 2026-06-17T00:00:00Z
 
 > **Reference instance — non-normative.** This reproduces the `QUALITY.md` the
 > [0001 report](report.md) evaluates, so its findings trace to declared
-> requirements and `source` selectors. At runtime this file lives at the
-> **evaluated** repository root as `./QUALITY.md` — *not* inside the skill's
-> `quality/evaluations/…` output folder; it is bundled here only so the example
-> is self-contained. The subject ("Sparrow Payments") and its `file:line`
-> locators are fictional. The model uses the suggested four-level scale.
+> requirements and `source` selectors. At runtime it lives at the **evaluated**
+> repository root as `./QUALITY.md` — not in the skill's `quality/evaluations/…`
+> output folder; it is bundled here only so the example is self-contained. See
+> the [examples index](../index.md) for the facts shared across this bundle.
 
 # The model evaluated
 
-A whole view of the `QUALITY.md` the report assesses. Frontmatter and body below
+A whole view of the `QUALITY.md` the report assesses — first as a condensed tree
+for orientation, then reproduced verbatim. The frontmatter and body below
 together form the single file `./QUALITY.md`.
+
+## At a glance
+
+The model's shape, in the style of the specification's sample report. The rating
+scale is the suggested four-level scale — **Outstanding** > **Target** >
+**Minimum** > **Unacceptable**, ordered best to worst.
+
+- **Sparrow Payments API** (root target, source `./`)
+  - Factors:
+    - **Security**, decomposed into sub-factors **Secrets handling** and
+      **Access control**
+    - **Reliability**
+  - Requirements:
+    - *No credentials are committed to the repository* (Security → Secrets
+      handling; carries per-requirement `ratings` overrides)
+    - *Every money-moving endpoint enforces authentication* (Security → Access
+      control)
+    - *Transfers are idempotent on retry* (Reliability)
+  - **Ledger** (child target, source `./ledger`)
+    - Factors: **Correctness**
+    - Requirements:
+      - *Every transfer debits and credits to a net zero (double-entry
+        invariant)* (Correctness; tags the root **Reliability** as a secondary
+        factor)
+      - *Reconciliation runs daily and flags drift* (Correctness)
+  - **Webhooks** (child target, source `./webhooks`)
+    - Factors: **Security** (a refinement of the root **Security** factor for
+      outbound delivery — authenticating Sparrow *to* the merchant)
+    - Requirements:
+      - *Every outbound webhook is signed so merchants can verify its origin*
+        (Security)
+    - **Delivery** (sub-target, source `./webhooks/delivery`)
+      - Factors: **Reliability** (a refinement of the root **Reliability**
+        factor for delivery)
+      - Requirements:
+        - *Failed deliveries retry with exponential backoff until acknowledged
+          or the retry window expires* (Reliability)
+        - *A redelivery of an already-acknowledged event is suppressed for that
+          endpoint* (Reliability)
 
 ## Frontmatter
 
@@ -108,6 +147,11 @@ factors:
 
 targets:
   ledger:
+    title: Ledger
+    description: >
+      The double-entry accounting ledger under `./ledger` — the system of
+      record that books every customer money movement, evaluated as its own
+      subtree distinct from the API service that writes to it.
     source: ./ledger
     factors:
       correctness:
@@ -123,6 +167,8 @@ targets:
               entries sum to zero before commit, and confirm by test that no
               imbalanced posting is accepted. The requirement is met when the
               double-entry invariant holds on every observed path.
+            factors:
+              - reliability
           "Reconciliation runs daily and flags drift":
             assessment: >
               Confirm a reconciliation job runs on a daily schedule and emits a
@@ -131,6 +177,70 @@ targets:
               that report's output; if no run, log, or report is available,
               record the requirement as not assessed rather than assigning a
               level.
+  webhooks:
+    title: Webhooks
+    description: >
+      The outbound webhook subsystem under `./webhooks` — the service that
+      notifies merchants of events affecting them (a completed transfer, a
+      settled payout) through signed HTTP callbacks, evaluated as its own
+      subtree distinct from the API that emits the events and the ledger that
+      records them.
+    source: ./webhooks
+    factors:
+      security:
+        description: >
+          Security here is the degree to which a merchant can trust that a
+          received webhook genuinely originated from Sparrow and was not forged;
+          it matters because a merchant that acts on a spoofed event ships goods
+          or releases funds against money that never moved. A refinement of the
+          root Security factor for the outbound-delivery context — the concern
+          is authenticating Sparrow to the merchant, not authenticating callers
+          to Sparrow.
+        requirements:
+          "Every outbound webhook is signed so merchants can verify its origin":
+            assessment: >
+              Confirm every outbound webhook path signs the payload with the
+              recipient merchant's signing secret before send, and that the
+              signature covers the body and a timestamp so a merchant can verify
+              origin and reject replays. The requirement is met when no code
+              path emits an unsigned webhook; report any unsigned path by
+              location.
+    targets:
+      delivery:
+        title: Delivery
+        description: >
+          The delivery engine under `./webhooks/delivery` — the queue, retry,
+          and acknowledgement machinery that gets a signed webhook to the
+          merchant's endpoint, evaluated as its own subtree distinct from the
+          signing concern on the parent target.
+        source: ./webhooks/delivery
+        factors:
+          reliability:
+            description: >
+              Reliability here is the degree to which an event that should reach
+              a merchant does reach it, exactly once in effect; it matters
+              because a silently dropped event leaves a merchant's view of money
+              movement stale, and a duplicate event can trigger a double
+              fulfillment. A refinement of the root Reliability factor for the
+              delivery context — retry on failure and suppression of duplicate
+              redeliveries.
+            requirements:
+              "Failed deliveries retry with exponential backoff until acknowledged or the retry window expires":
+                assessment: >
+                  Confirm a failed delivery is retried on an exponential backoff
+                  schedule until the endpoint acknowledges or a bounded retry
+                  window expires, and that an exhausted delivery is recorded as
+                  failed rather than dropped silently. The requirement is met
+                  when no transient failure results in a silently lost event.
+              "A redelivery of an already-acknowledged event is suppressed for that endpoint":
+                assessment: >
+                  Confirm each event carries a stable delivery id and that the
+                  engine suppresses a redelivery to an endpoint that has already
+                  acknowledged that id, so retries do not surface as duplicate
+                  events at the merchant. The requirement is met when an
+                  acknowledged event is not delivered again to the same
+                  endpoint; note the bound on any dedup-retention window within
+                  which this holds.
 ```
 
 ## Body
@@ -141,15 +251,17 @@ targets:
 ## Overview
 
 Sparrow Payments moves money between customer accounts and an external payment
-gateway, and records every movement in a double-entry ledger. Good means money
-moves only on authenticated requests, never duplicates on retry, and the ledger
-stays balanced and reconcilable.
+gateway, records every movement in a double-entry ledger, and notifies merchants
+of those movements through signed webhooks. Good means money moves only on
+authenticated requests, never duplicates on retry, the ledger stays balanced and
+reconcilable, and merchants are notified verifiably and exactly once.
 
 ## Scope
 
-This model covers the API service (`./`) and the ledger (`./ledger`). The
-external payment gateway and the banks behind it are out of scope — Sparrow does
-not own them.
+This model covers the API service (`./`), the ledger (`./ledger`), and the
+outbound webhook subsystem (`./webhooks`). The external payment gateway and the
+banks behind it are out of scope — Sparrow does not own them — and neither are
+the merchant endpoints that receive webhooks.
 
 ## Needs
 
@@ -157,13 +269,16 @@ not own them.
 - A retried transfer never moves money twice.
 - The ledger stays balanced and can be reconciled against actual settlement.
 - Credentials never leak through the source repository.
+- Merchants are notified of events affecting them, verifiably and exactly once.
 
 ## Risks
 
 A leaked gateway credential or an unauthenticated money-moving endpoint is the
 worst outcome: either lets an attacker move customer funds. A double-debit on
 retry, or a ledger that silently drifts, is unrecoverable without manual
-investigation.
+investigation. A spoofed or unsigned webhook can make a merchant act on money
+that never moved; a silently dropped notification leaves the merchant's view
+stale.
 
 ## Known gaps
 
