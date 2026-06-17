@@ -35,9 +35,6 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-- [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md) -
-  extract the QUALITY.md structural schema into one authoritative definition the
-  linter derives from, so the format spec and the linter can't drift (`Draft`).
 - [0006 — Specify and implement the spec command](0006-spec-command.md) -
   settle the durable `spec` sub-spec and land `qualitymd spec`, emitting the
   bundled format specification to stdout (`Draft`).

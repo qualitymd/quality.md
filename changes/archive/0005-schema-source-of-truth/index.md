@@ -7,3 +7,5 @@ change.
 # Concepts
 
 - [Functional spec](spec.md) - what the change must do.
+- [Design doc](design.md) - how the linter derives structural checks from one
+  typed schema declaration.

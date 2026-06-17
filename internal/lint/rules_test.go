@@ -583,3 +583,75 @@ targets:
 		t.Fatalf("findings = %#v, ancestor factor should resolve", result.Findings)
 	}
 }
+
+func TestSchemaDrivenUnknownKeys(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		model string
+	}{
+		{
+			name: "root",
+			model: validFrontmatter(`unexpected: true
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`),
+		},
+		{
+			name: "rating level",
+			model: `---
+title: Example
+ratingScale:
+  - level: target
+    criterion: Meets it.
+    unexpected: true
+  - level: unacceptable
+    description: Unacceptable.
+    criterion: Does not meet it.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+---
+`,
+		},
+		{
+			name: "target",
+			model: validFrontmatter(`targets:
+  api:
+    unexpected: true
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+		{
+			name: "factor",
+			model: validFrontmatter(`factors:
+  reliability:
+    description: Reliability.
+    unexpected: true
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+		{
+			name: "requirement",
+			model: validFrontmatter(`requirements:
+  "has an assessment":
+    assessment: Inspect it.
+    unexpected: true
+`),
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Check(writeModel(t, tc.model))
+			if err != nil {
+				t.Fatalf("Check() error = %v", err)
+			}
+			if !hasRule(result, RuleInvalidFrontmatter) {
+				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidFrontmatter)
+			}
+		})
+	}
+}

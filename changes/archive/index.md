@@ -11,3 +11,4 @@ Completed changes, moved here from the bundle root when they reach **Done**.
 - [0003 — Implement the lint command](0003-implement-lint-command.md) - built
   `qualitymd lint` from the completed durable lint sub-spec (`Done`).
 - [0004 — Specify and enforce agent accessibility](0004-specify-agent-accessibility.md) - added the CLI agent-accessibility contract, broadened `--json`, and enforced categorized exit codes plus `init --json` (`Done`).
+- [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md) - extracted the structural schema into one typed declaration consumed by `lint` (`Done`).

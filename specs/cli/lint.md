@@ -63,6 +63,11 @@ when **all four** of the following hold:
    override key). A rule MUST NOT resolve a target's `source` or read the
    entities a target evaluates; that is beyond format conformance.
 
+Structural validation — valid keys, required/recommended/optional properties,
+YAML value shapes, the model-content group, and the rating-scale minimum — MUST
+derive from the single structural schema declaration that the linter consumes.
+Rule logic MUST NOT maintain a second valid-key list independent of that schema.
+
 ### Severity
 
 Every rule carries a fixed **severity** that governs how its finding surfaces:

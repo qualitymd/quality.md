@@ -39,12 +39,14 @@ The presence of a `QUALITY.md` file in a directory implies that the directory an
 
 When authoring `QUALITY.md` frontmatter, null or empty optional properties SHOULD be omitted. A required property is not satisfied by a null or empty value — such a value is treated as absent.
 
+The linter's authoritative structural schema is a typed declaration in the implementation: valid keys, value shapes, presence level, the model-content group, and the rating-scale minimum are defined once there and consumed by structural lint rules. Tests compare that declaration against the YAML schemas in this section so the implementation and this public format specification stay in lockstep; if they disagree, reconcile in favor of the documented format here.
+
 #### Model
 
 The model represents a quality model: what things (**Targets**) are evaluated for quality, their important quality characteristics (**Factors**), measurable quality **Requirements**, assessment criteria, and **Rating** criteria for determining the level of quality.
 
 ```yaml
-title: <string>                 # Optional; title of the entity whose quality is modeled
+title: <string>                 # Recommended; title of the entity whose quality is modeled
 ratingScale:                    # Required; the rating scale
   - level: <level-name>         #   Required; unique within the scale
     title: <string>             #   Optional; human-readable label

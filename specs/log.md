@@ -2,6 +2,13 @@
 
 ## 2026-06-17
 
+- **Revision**: Reconciled the structural schema source of truth with
+  [`SPECIFICATION.md`](../SPECIFICATION.md) and [`lint`](cli/lint.md): the public
+  format spec now notes the typed schema declaration consumed by lint and the
+  drift test that compares it to the YAML schema snippets; the model `title`
+  snippet now matches its recommended status; and the lint sub-spec records that
+  structural validation derives from the single schema declaration rather than a
+  second valid-key list.
 - **Revision**: Added the [CLI spec](cli.md)'s **Agent accessibility** section:
   a non-opt-in baseline for in-scope commands (non-interactivity,
   stdout-is-payload/stderr-is-diagnostics, determinism, plain non-TTY output,

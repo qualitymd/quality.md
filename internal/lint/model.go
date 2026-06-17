@@ -2,6 +2,7 @@ package lint
 
 import (
 	"github.com/qualitymd/quality.md/internal/document"
+	qschema "github.com/qualitymd/quality.md/internal/schema"
 	"gopkg.in/yaml.v3"
 )
 
@@ -40,13 +41,13 @@ func (s *runState) walkModel() {
 }
 
 func (s *runState) walkTargets(parent *targetRef, node *yaml.Node, base []PathSegment) []*targetRef {
-	_, targets, _ := document.MapEntry(node, "targets")
+	_, targets, _ := document.MapEntry(node, qschema.PropertyTargets)
 	if targets == nil || targets.Kind != yaml.MappingNode {
 		return nil
 	}
 	var out []*targetRef
 	for key, value := range document.MapEntries(targets) {
-		path := appendPath(base, "targets", key.Value)
+		path := appendPath(base, qschema.PropertyTargets, key.Value)
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The target `"+key.Value+"` has the wrong YAML shape; each target must be a map.")
 			continue
@@ -62,13 +63,13 @@ func (s *runState) walkTargets(parent *targetRef, node *yaml.Node, base []PathSe
 }
 
 func (s *runState) walkFactors(target *targetRef, parent *factorRef, node *yaml.Node, base []PathSegment) []*factorRef {
-	_, factors, _ := document.MapEntry(node, "factors")
+	_, factors, _ := document.MapEntry(node, qschema.PropertyFactors)
 	if factors == nil || factors.Kind != yaml.MappingNode {
 		return nil
 	}
 	var out []*factorRef
 	for key, value := range document.MapEntries(factors) {
-		path := appendPath(base, "factors", key.Value)
+		path := appendPath(base, qschema.PropertyFactors, key.Value)
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The factor `"+key.Value+"` has the wrong YAML shape; each factor must be a map.")
 			continue
@@ -83,13 +84,13 @@ func (s *runState) walkFactors(target *targetRef, parent *factorRef, node *yaml.
 }
 
 func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *yaml.Node, base []PathSegment) []*requirementRef {
-	_, requirements, _ := document.MapEntry(node, "requirements")
+	_, requirements, _ := document.MapEntry(node, qschema.PropertyRequirements)
 	if requirements == nil || requirements.Kind != yaml.MappingNode {
 		return nil
 	}
 	var out []*requirementRef
 	for key, value := range document.MapEntries(requirements) {
-		path := appendPath(base, "requirements", key.Value)
+		path := appendPath(base, qschema.PropertyRequirements, key.Value)
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The requirement `"+key.Value+"` has the wrong YAML shape; each requirement must be a map.")
 			continue
@@ -102,7 +103,7 @@ func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *
 }
 
 func (s *runState) secondaryFactors(req *requirementRef) []*factorRef {
-	_, factors, _ := document.MapEntry(req.node, "factors")
+	_, factors, _ := document.MapEntry(req.node, qschema.PropertyFactors)
 	if factors == nil || factors.Kind != yaml.SequenceNode {
 		return nil
 	}

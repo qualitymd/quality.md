@@ -2,6 +2,16 @@
 
 ## 2026-06-17
 
+- **Completion**: Implemented and archived
+  [0005 — Single source of truth for the structural schema](archive/0005-schema-source-of-truth.md),
+  adding `internal/schema` as the typed structural schema declaration, deriving
+  lint's unknown-key, shape, required-property, model-content, and rating-scale
+  minimum checks from it, and adding tests that compare the declaration against
+  [`SPECIFICATION.md`](../SPECIFICATION.md). Reconciled the public format
+  snippet's `title` presence to `Recommended`, updated
+  [`lint`](../specs/cli/lint.md) to record schema-derived structural validation,
+  and added the [design doc](archive/0005-schema-source-of-truth/design.md).
+
 - **Refinement**: Added a human-readable rendering to change
   [0006 — Specify and implement the spec command](0006-spec-command.md). `spec`
   now **SHOULD** render the specification formatted (via the stack's terminal
@@ -30,7 +40,7 @@
   the root-level specification is embedded. Updated the bundle [index](index.md).
 
 - **Refinement**: Recorded the schema-source direction for change
-  [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md):
+  [0005 — Single source of truth for the structural schema](archive/0005-schema-source-of-truth.md):
   a **typed Go declaration** the linter derives from directly (over an embedded
   data file or a `specs/` concept), with spec/linter consistency enforced by a
   test checking [`SPECIFICATION.md`](../SPECIFICATION.md) against it rather than by
@@ -40,9 +50,9 @@
   the design doc at **Design**.
 
 - **Creation**: Added change
-  [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md)
+  [0005 — Single source of truth for the structural schema](archive/0005-schema-source-of-truth.md)
   (`status: Draft`) with its
-  [functional spec](0005-schema-source-of-truth/spec.md). Prompted by reviewing
+  [functional spec](archive/0005-schema-source-of-truth/spec.md). Prompted by reviewing
   design.md's linter, which derives its structural rules from one schema artifact:
   our structural schema is encoded twice — implicitly in `internal/lint/rules.go`
   and again in prose in [`SPECIFICATION.md`](../SPECIFICATION.md) and

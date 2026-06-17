@@ -11,7 +11,7 @@ timestamp: 2026-06-17T00:00:00Z
 Companion to the
 [Single source of truth for the structural schema](../0005-schema-source-of-truth.md)
 change. This spec states *what* the change must do; a design doc covers *how*. The
-format itself is defined in [`SPECIFICATION.md`](../../SPECIFICATION.md); this spec
+format itself is defined in [`SPECIFICATION.md`](../../../SPECIFICATION.md); this spec
 does not restate it.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be interpreted
@@ -36,8 +36,8 @@ membership. See the [change's scope](../0005-schema-source-of-truth.md#scope).
   hand-maintained copy of the valid-key set **MUST NOT** exist.
 - Adding, removing, or renaming a valid key **MUST** require editing only the
   schema definition, not the rule logic.
-- The durable format spec ([`SPECIFICATION.md`](../../SPECIFICATION.md) and the
-  relevant [`specs/`](../../specs/index.md) concepts) **MUST** be reconciled to
+- The durable format spec ([`SPECIFICATION.md`](../../../SPECIFICATION.md) and the
+  relevant [`specs/`](../../../specs/index.md) concepts) **MUST** be reconciled to
   agree with the definition, and the project **SHOULD** make that consistency
   mechanically checkable rather than maintained by hand.
 - The change **MUST** be behavior-preserving: for any document, the linter's
