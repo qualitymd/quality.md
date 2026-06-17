@@ -2,21 +2,35 @@
 
 ## 2026-06-17
 
+- **Completion**: Implemented and archived
+  [0008 — Describe targets with title and description](archive/0008-target-display-fields.md),
+  adding `title` and `description` to Target, `description` to Model, and the
+  matching durable [`SPECIFICATION.md`](../SPECIFICATION.md) prose and
+  [`lint`](../specs/cli/lint.md) rule row. The structural schema now accepts
+  target display fields, `misplaced-root-key` flags only nested `ratingScale`,
+  and focused tests cover accepted nested target `title`/`description` plus the
+  still-rejected nested `ratingScale`.
+
+- **Implementation**: Advanced change
+  [0008 — Describe targets with title and description](archive/0008-target-display-fields.md)
+  from `Design` to `In-Progress` so the schema, linter, and durable
+  specification updates can land.
+
 - **Design**: Refined change
-  [0008 — Describe targets with title and description](0008-target-display-fields.md):
+  [0008 — Describe targets with title and description](archive/0008-target-display-fields.md):
   made `Model.description` **Optional** (was `Recommended`), matching
   `Target.description`, so `description` reads uniformly across the tree. Updated
-  the [functional spec](0008-target-display-fields/spec.md) (Model schema now shows
+  the [functional spec](archive/0008-target-display-fields/spec.md) (Model schema now shows
   `description` as Optional) and the
-  [design doc](0008-target-display-fields/design.md): the `OptionalPresence`
+  [design doc](archive/0008-target-display-fields/design.md): the `OptionalPresence`
   addition, the `# Optional` Model snippet, the composition alternative (now closer
   since `title`/`description` presence matches, still rejected on the `model-content`
   `RequiredAny` group and the mid-list `ratingScale` splice), and the trade-off note.
 
 - **Design**: Advanced change
-  [0008 — Describe targets with title and description](0008-target-display-fields.md)
+  [0008 — Describe targets with title and description](archive/0008-target-display-fields.md)
   from `Draft` to `Design` and added its
-  [design doc](0008-target-display-fields/design.md). Reading the code showed the
+  [design doc](archive/0008-target-display-fields/design.md). Reading the code showed the
   change is almost entirely schema + prose: three property additions in
   [`internal/schema`](../internal/schema/schema.go) (`Target` gains `title`/
   `description`, `Model` gains `description`) drive everything, because
@@ -30,13 +44,13 @@
   `Recommended` on the root, `Optional` on a target — and the consistency test
   already guards drift); and **not** add a `missing-target-description` warning
   (`RecommendedPresence` is documentary, not auto-enforced), leaving it as a noted
-  follow-up. Updated the change [index](0008-target-display-fields/index.md) and
+  follow-up. Updated the change [index](archive/0008-target-display-fields/index.md) and
   bundle [index](index.md).
 
 - **Creation**: Added change
-  [0008 — Describe targets with title and description](0008-target-display-fields.md)
+  [0008 — Describe targets with title and description](archive/0008-target-display-fields.md)
   (`status: Draft`) with its
-  [functional spec](0008-target-display-fields/spec.md). A target's only
+  [functional spec](archive/0008-target-display-fields/spec.md). A target's only
   human-facing label today is its map key; the change lets every target carry an
   optional `title` (display name) and a recommended `description` (what the target
   *is*), and adds `description` to the model root. It also reframes the root as a

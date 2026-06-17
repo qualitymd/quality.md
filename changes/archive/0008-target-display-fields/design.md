@@ -40,7 +40,7 @@ properties + `ratingScale`*, with `ratingScale` named the one Model-only
 property. The evaluation prose's "root target" wording (the top of the target
 tree) stays — it remains true under the new framing.
 
-Two consequences fall out **without further code**:
+Two consequences fall out without changing rule logic:
 
 - **`misplaced-root-key` self-narrows.** The rule
   ([`rules.go`](../../../internal/lint/rules.go)) fires in `checkSchemaProperties`
@@ -49,8 +49,9 @@ Two consequences fall out **without further code**:
   Target properties, the only key in `Model` and not in `Target` is
   `ratingScale`, so the branch fires for `ratingScale` alone. The diagnostic
   already interpolates the key name, so it reads "…declares `ratingScale`;
-  `ratingScale` is only valid on the model root." No rule logic and no catalog
-  description (`result.go`) change.
+  `ratingScale` is only valid on the model root." The rule catalog description
+  (`result.go`) still changes so the static rule text names `ratingScale` rather
+  than a generic root-only key.
 - **The consistency test needs no edit.** `schema_test.TestSpecificationSchemaSnippetsMatchDeclaration`
   is data-driven: it parses each `#### Heading` YAML snippet into a key→presence
   map and compares it to the `Node` declaration in both directions. Adding the
@@ -61,9 +62,11 @@ So the only test change is in
 [`rules_test.go`](../../../internal/lint/rules_test.go): the "nested target
 title" case currently *expects* `misplaced-root-key` and must flip to a valid
 model (no findings), joined by a case covering `description` on a nested target.
-The "nested target rating scale" case stays as the surviving root-only assertion.
+The "nested target rating scale" case stays as the surviving root-only assertion,
+with a second `ratingScale` fixture kept for the catalog's fixture-count guard.
 Lastly, [`specs/cli/lint.md`](../../../specs/cli/lint.md)'s `misplaced-root-key`
-row changes "`title` or `ratingScale`" to `ratingScale`.
+row and the rule catalog description change from root-only-key wording to
+`ratingScale`.
 
 ## Alternatives
 

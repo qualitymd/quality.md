@@ -63,7 +63,7 @@ var Rules = []Rule{
 	{RuleMissingCriterion, SeverityError, false, "A rating level declares no criterion."},
 	{RuleMissingLevelDescription, SeverityWarning, false, "A rating level declares no description."},
 	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or targets."},
-	{RuleMisplacedRootKey, SeverityError, false, "A root-only key appears on a nested target."},
+	{RuleMisplacedRootKey, SeverityError, false, "The `ratingScale` key appears on a nested target."},
 	{RuleEmptyTarget, SeverityWarning, false, "A target reaches no requirements in its subtree."},
 	{RuleEmptyFactor, SeverityWarning, false, "A factor leads to no requirements."},
 	{RuleMissingFactorDescription, SeverityWarning, false, "A factor declares no description."},

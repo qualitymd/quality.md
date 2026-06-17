@@ -98,6 +98,7 @@ var Model = Node{
 	Kind: ModelKind,
 	Properties: []Property{
 		{Name: PropertyTitle, Shape: ScalarShape, Presence: RecommendedPresence},
+		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
 		{Name: PropertyRatingScale, Shape: SequenceShape, Presence: RequiredPresence, ElementKind: RatingLevelKind, MinItems: 2},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
@@ -113,6 +114,8 @@ var Model = Node{
 var Target = Node{
 	Kind: TargetKind,
 	Properties: []Property{
+		{Name: PropertyTitle, Shape: ScalarShape, Presence: RecommendedPresence},
+		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
 		{Name: PropertyTargets, Shape: MapShape, Presence: OptionalPresence, ElementKind: TargetKind},

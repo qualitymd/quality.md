@@ -19,3 +19,7 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   human surface a shared brand palette, styled `lint` and `init` output, `--help`
   examples, `spec` paging, and an informative `--version`, all behind the
   TTY/`NO_COLOR` gate so the plain and JSON paths are untouched (`Done`).
+- [0008 — Describe targets with title and description](0008-target-display-fields.md) -
+  lets every target carry a recommended `title` and optional `description`, and
+  reframes the root as a Model (`ratingScale` + Target properties) so
+  `ratingScale` is the one Model-only key (`Done`).

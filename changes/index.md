@@ -35,10 +35,7 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-- [0008 — Describe targets with title and description](0008-target-display-fields.md)
-  (`status: Design`) — give every target a recommended `title` and optional
-  `description`, and reframe the root as a Model (`ratingScale` + Target
-  properties) so `ratingScale` is the one Model-only key by type.
+No open changes.
 
 Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

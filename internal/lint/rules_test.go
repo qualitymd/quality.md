@@ -236,17 +236,6 @@ targets: {}
 	},
 	{
 		ruleID: RuleMisplacedRootKey,
-		name:   "nested target title",
-		model: validFrontmatter(`targets:
-  api:
-    title: API
-    requirements:
-      "has an assessment":
-        assessment: Inspect it.
-`),
-	},
-	{
-		ruleID: RuleMisplacedRootKey,
 		name:   "nested target rating scale",
 		model: validFrontmatter(`targets:
   api:
@@ -256,6 +245,21 @@ targets: {}
     requirements:
       "has an assessment":
         assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleMisplacedRootKey,
+		name:   "deep nested target rating scale",
+		model: validFrontmatter(`targets:
+  api:
+    targets:
+      handlers:
+        ratingScale:
+          - level: target
+            criterion: Meets it.
+        requirements:
+          "has an assessment":
+            assessment: Inspect it.
 `),
 	},
 	{
@@ -581,6 +585,97 @@ targets:
 	}
 	if hasRule(result, RuleUnknownFactor) {
 		t.Fatalf("findings = %#v, ancestor factor should resolve", result.Findings)
+	}
+}
+
+func TestTargetDisplayFieldsAreValid(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		model string
+	}{
+		{
+			name: "title",
+			model: validFrontmatter(`targets:
+  api:
+    title: API
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+		{
+			name: "description",
+			model: validFrontmatter(`targets:
+  api:
+    description: Functional specifications for the API.
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+		{
+			name: "title and description",
+			model: validFrontmatter(`targets:
+  api:
+    title: API
+    description: Functional specifications for the API.
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Check(writeModel(t, tc.model))
+			if err != nil {
+				t.Fatalf("Check() error = %v", err)
+			}
+			if hasRule(result, RuleMisplacedRootKey) || hasRule(result, RuleInvalidFrontmatter) {
+				t.Fatalf("findings = %#v, target display fields should be valid", result.Findings)
+			}
+		})
+	}
+}
+
+func TestTargetDisplayFieldShapesAreValidated(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		model string
+	}{
+		{
+			name: "title list",
+			model: validFrontmatter(`targets:
+  api:
+    title: [API]
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+		{
+			name: "description map",
+			model: validFrontmatter(`targets:
+  api:
+    description:
+      text: Functional specifications for the API.
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Check(writeModel(t, tc.model))
+			if err != nil {
+				t.Fatalf("Check() error = %v", err)
+			}
+			if !hasRule(result, RuleInvalidFrontmatter) {
+				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidFrontmatter)
+			}
+			if hasRule(result, RuleMisplacedRootKey) {
+				t.Fatalf("findings = %#v, target display fields should not be root-key findings", result.Findings)
+			}
+		})
 	}
 }
 

@@ -43,10 +43,11 @@ The linter's authoritative structural schema is a typed declaration in the imple
 
 #### Model
 
-The model represents a quality model: what things (**Targets**) are evaluated for quality, their important quality characteristics (**Factors**), measurable quality **Requirements**, assessment criteria, and **Rating** criteria for determining the level of quality.
+The Model is the root node of a `QUALITY.md` file: the model-wide `ratingScale` together with all properties of a **Target** — `title`, `description`, `factors`, `requirements`, `targets`, and `source`. Because it carries the Target properties, the Model root tops the target tree. `ratingScale` is the only property unique to the Model; a Target does not declare it.
 
 ```yaml
 title: <string>                 # Recommended; title of the entity whose quality is modeled
+description: <string>           # Optional
 ratingScale:                    # Required; the rating scale
   - level: <level-name>         #   Required; unique within the scale
     title: <string>             #   Optional; human-readable label
@@ -64,6 +65,8 @@ source: <string>                # Optional
 *An entry on either factors, requirements, or targets MUST be supplied.
 
 **Title**: An optional human-readable name for the entity whose quality is modeled. For software projects, this is typically the name of the product, system, or library. A `title` is RECOMMENDED for readable reports but MAY be omitted.
+
+**Description**: an optional concise statement of what the model's target is — the entity or scope it covers.
 
 **Rating Scale**: This is the rating scale that provides the default criterion for how requirement assessments should be judged to arrive at a rating level result. Each **Rating Level** MUST declare a `level` name, unique within the scale, and a `criterion` used to rate a requirement's findings; a `description` of the level is RECOMMENDED, and a **title** for improved readability is OPTIONAL. Rating levels MUST be ordered from best (first) to worst (last). At least two rating levels MUST be supplied.
 
@@ -101,9 +104,11 @@ ratingScale:
 
 #### Target
 
-A target is an entity, or set of entities, with quality requirements subject to evaluation. It is the recursive node of the quality model: the model root is itself the apex target, and every entry under `targets` is another target of the same shape, nested to any depth.
+A target is an entity, or set of entities, with quality requirements subject to evaluation. It is the recursive node of the quality model: the Model root carries the Target properties and tops the target tree, and every entry under `targets` is another Target, nested to any depth.
 
 ```yaml
+title: <string>                 # Recommended
+description: <string>           # Optional
 factors:                        # Optional*
   <factor-name>: <Factor>
 requirements:                   # Optional*
@@ -115,7 +120,17 @@ source: <string>                # Optional
 
 *A target MAY declare no factors or requirements of its own and serve purely as a grouping node (holding only child targets), but each target SHOULD lead to at least one requirement somewhere in its subtree — its own, one carried by a factor, or one contributed by a descendant. A target whose subtree contains no requirements evaluates nothing.
 
-A target shares the structure of the model root but for two keys — `title` and `ratingScale` — which are declared only on the model root: a non-root target MUST NOT declare either (see [Model](#model)).
+The Model root has all Target properties plus `ratingScale`; `ratingScale` is a Model property, not a Target property.
+
+**Title**: a human-readable display name for the target. A target SHOULD declare a `title` for readable reports. When present, the `title` overrides the target's map key for display; the map key remains the target identifier.
+
+**Description**: a concise statement of what the target is — the entity or scope it covers. A target MAY declare a `description`, and that description SHOULD:
+
+- distinguish the target from its siblings or parent;
+- state the entity, subsystem, artifact, or scope being evaluated; and
+- remain stable enough to guide readers across evaluations.
+
+A description SHOULD NOT restate, enumerate, or stand in for the target's factors or requirements: the measurable expectations belong in `factors` and `requirements`. The description fixes *what is evaluated*; the factors and requirements fix *what is assessed about it*.
 
 **Factors**: quality characteristics scoped to this target's subtree. A factor declared on a target applies to that target and its descendants, not to unrelated targets.
 

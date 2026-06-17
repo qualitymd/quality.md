@@ -2,6 +2,11 @@
 
 ## 2026-06-17
 
+- **Revision**: Updated [`lint`](cli/lint.md) for target display fields:
+  `misplaced-root-key` now documents only `ratingScale` on a Target, matching the
+  format spec's Model/Target distinction after target `title` and `description`
+  became valid Target properties.
+
 - **Restructure + Creation**: Gave the [`/quality`](skills/quality-skill/quality-skill.md)
   skill its own OKF folder — moved the spec into
   [`skills/quality-skill/`](skills/quality-skill/index.md) (as a named concept
