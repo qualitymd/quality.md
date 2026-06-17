@@ -12,3 +12,6 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   `qualitymd lint` from the completed durable lint sub-spec (`Done`).
 - [0004 — Specify and enforce agent accessibility](0004-specify-agent-accessibility.md) - added the CLI agent-accessibility contract, broadened `--json`, and enforced categorized exit codes plus `init --json` (`Done`).
 - [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md) - extracted the structural schema into one typed declaration consumed by `lint` (`Done`).
+- [0006 — Specify and implement the spec command](0006-spec-command.md) -
+  settled and shipped `qualitymd spec`, emitting the bundled format specification
+  from the binary (`Done`).

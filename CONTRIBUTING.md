@@ -24,11 +24,24 @@ mise run vet             # go vet ./...
 mise run fmt             # gofmt -w . and dprint fmt
 mise run fmt-md-check    # dprint check
 mise run tidy            # go mod tidy
+mise run hooks           # install repo-managed git hooks
 ```
 
 Please run `mise run fmt`, `mise run test`, and `mise run vet` before opening a
 pull request. For docs-only changes, `mise run fmt-md-check` is the quick
 formatting gate.
+
+### Git hooks
+
+Run this once after cloning if you want Git to run the repo's pre-commit checks:
+
+```sh
+mise run hooks
+```
+
+The pre-commit hook checks staged Go files with `gofmt`, staged Markdown files
+with `dprint`, verifies `go mod tidy` leaves `go.mod` and `go.sum` unchanged,
+and runs `go test ./...`.
 
 ### Testing the CLI from another directory
 

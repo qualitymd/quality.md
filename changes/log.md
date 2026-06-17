@@ -3,6 +3,15 @@
 ## 2026-06-17
 
 - **Completion**: Implemented and archived
+  [0006 — Specify and implement the spec command](archive/0006-spec-command.md),
+  replacing the placeholder [`spec` sub-spec](../specs/cli/spec.md), adding the
+  [design doc](archive/0006-spec-command/design.md), registering
+  `qualitymd spec`, embedding [`SPECIFICATION.md`](../SPECIFICATION.md) in the
+  binary, rendering Markdown for TTY output with Glamour while preserving
+  byte-for-byte Markdown for redirected/plain output, and updating the
+  [`README.md`](../README.md) command status.
+
+- **Completion**: Implemented and archived
   [0005 — Single source of truth for the structural schema](archive/0005-schema-source-of-truth.md),
   adding `internal/schema` as the typed structural schema declaration, deriving
   lint's unknown-key, shape, required-property, model-content, and rating-scale

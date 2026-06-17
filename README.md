@@ -110,8 +110,8 @@ judging is the agent's part.
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init` and `qualitymd lint`. The rest of the surface below is
-> planned but not yet built.
+> `qualitymd init`, `qualitymd lint`, and `qualitymd spec`. The rest of the
+> surface below is planned but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
@@ -124,6 +124,7 @@ The deterministic CLI:
 - **`qualitymd init`** — scaffold a starter `QUALITY.md` to fill in.
 - **`qualitymd lint`** — validate a file's structure, fast and deterministic,
   exiting non-zero on errors so it drops into CI.
+- **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
 - **`qualitymd model` / `evaluation` / `result`** *(planned)* — inspect the
   model, manage a per-target evaluation run, record verdicts, and gate on the
   outcome with `evaluation report --fail-on`.
@@ -138,8 +139,8 @@ command" until they land.
 
 > **Status.** The format spec is settled — see
 > [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress.
-> Of the documented surface, **`init`** and **`lint`** are currently built; the
-> **`model`/`evaluation`/`result`** resources are planned.
+> Of the documented surface, **`init`**, **`lint`**, and **`spec`** are currently
+> built; the **`model`/`evaluation`/`result`** resources are planned.
 
 `qualitymd` has no tagged release yet; build the current binary from source with
 Go 1.26+:

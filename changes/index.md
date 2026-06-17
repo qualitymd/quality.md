@@ -35,9 +35,7 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-- [0006 — Specify and implement the spec command](0006-spec-command.md) -
-  settle the durable `spec` sub-spec and land `qualitymd spec`, emitting the
-  bundled format specification to stdout (`Draft`).
+No open changes.
 
 Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
