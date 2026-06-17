@@ -14,9 +14,17 @@ Shared across this bundle, so the individual files need not repeat it: the
 subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
 `file:line` locator are fictional and illustrative; the model uses the suggested
 four-level rating scale
-(**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`
-reproduces the evaluated `QUALITY.md` itself — not a runtime output — so the
-report's findings trace to declared requirements.
+(**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
+`design.md`, `plan.md`, and the `assessments/` and `analysis/` records are the
+snapshot, inputs, method, and write-once evidence trail the skill writes alongside
+the report (see [Reporting](../quality-skill.md#reporting)), so the report's
+findings trace to the model, parameters, coverage, and per-requirement and
+per-target records in force at evaluation time. A full run records one assessment
+per in-scope requirement and one analysis per target node; the folders here keep a
+**representative subset** — `assessments/` the committed-key **Unacceptable**, the
+*not assessed* reconciliation, and the **Minimum** deduplication (of eight); and
+`analysis/` the root (bound by its own local rating) and Webhooks (whose aggregate
+falls below its local rating because the Delivery child binds) of four.
 
 # Examples
 
@@ -34,6 +42,10 @@ report's findings trace to declared requirements.
 
   **Read it in order:** the
   [model evaluated](0001-payments-quality-eval/model.md) →
+  the [design](0001-payments-quality-eval/design.md) and
+  [plan](0001-payments-quality-eval/plan.md) →
+  the [assessment records](0001-payments-quality-eval/assessments/) →
+  the [analysis records](0001-payments-quality-eval/analysis/) →
   the [report](0001-payments-quality-eval/report.md) → its recommendations
   ([001 — rotate the committed key](0001-payments-quality-eval/recommendations/001-rotate-committed-gateway-key.md),
   [002 — produce reconciliation evidence](0001-payments-quality-eval/recommendations/002-produce-reconciliation-evidence.md),

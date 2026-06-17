@@ -225,15 +225,40 @@ diverge, the contract governs and the skill **MUST** be corrected to conform.
 For an `evaluate` or `improve` invocation the skill's process interleaves the
 judgment phases above with mechanical steps it drives through the CLI:
 
+```mermaid
+flowchart TD
+    Read[Read resolved target file] --> Lint{lint valid?}
+    Lint -->|errors| Stop([Stop: resolve structural errors first])
+    Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
+    Ground --> Plan[Capture design &amp; plan artifacts:<br/>resolved parameters, model snapshot, coverage approach]
+    Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise<br/>write-once assessment per requirement, analysis per target]
+    Eval --> Report[Report result &amp; write recommendations]
+    Report --> Mode{Mode?}
+    Mode -->|evaluate| Done([Done])
+    Mode -->|improve| Confirm{User confirms a<br/>recommendation + option?}
+    Confirm -->|no| Done
+    Confirm -->|yes| Apply[Apply chosen option<br/>to subject or model]
+    Apply --> ReEval[Re-evaluate affected scope]
+    ReEval --> Criterion{Reached<br/>done-criterion?}
+    Criterion -->|yes| Done
+    Criterion -->|no| Report
+```
+
 1. **Read** the resolved target file.
 2. **Validate** it with `lint`, stopping on errors (see
    [Driving the CLI](#driving-the-cli)).
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
-4. **Evaluate** — run the skill's evaluation process (the five conformant phases
+4. **Plan** — capture the evaluation's **design** (the resolved parameters and
+   the `model.md` snapshot it is bound to) and its **execution plan** (how the
+   in-scope `source` will be covered at the chosen effort), writing both as
+   artifacts (see [Reporting](#reporting)).
+5. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope targets, resolving each target's `source` to the
-   entities to assess.
-5. **Report** the result and write its recommendations (see
+   entities to assess, recording each requirement's assessment and each target
+   node's analysis as **write-once** artifacts as they are produced (see
+   [Reporting](#reporting)).
+6. **Report** the result and write its recommendations (see
    [Reporting](#reporting)). Under `improve`, the skill then **applies a chosen
    recommendation** — defaulting to its recommended option — only on explicit
    confirmation, and **re-evaluates the affected scope** to confirm the rating
@@ -304,20 +329,92 @@ label. The same applies to any author-named level coinciding with *Target*,
 *Factor*, or *Requirement*.
 
 The skill
-writes the report and its recommendations to a numbered evaluation folder, so each
-run is a durable, routable record:
+writes a numbered evaluation folder per run, so each run is a durable, routable
+record. Alongside the report and its recommendations it captures three further
+artifacts that make the run auditable and reproducible — a snapshot of the model
+evaluated, the run's **design** (its inputs), and its execution **plan** (its
+method):
 
 ```
 quality/
   evaluations/
     0001-<scope>-quality-eval/   # <scope> names the altitude and narrowing, e.g. payments, security, model
-      report.md
+      model.md                   # snapshot of the QUALITY.md as evaluated
+      design.md                  # resolved parameters and inputs the run is bound to
+      plan.md                    # how the in-scope source will be covered
+      assessments/               # write-once, one per in-scope requirement
+        001-<target>-<requirement>.md
+        002-<target>-<requirement>.md
+      analysis/                  # write-once, one per target node
+        <target>.md
+        <child-target>.md
+      report.md                  # the Evaluation Report
       recommendations/
         001-<slug>.md
         002-<slug>.md
 ```
 
-A worked reference instance of this layout — report and recommendations — is in
+Together these separate the three things an audit must tell apart — the *inputs*
+(design), the *method* (plan), and the *result* (report) traced to a fixed model
+(snapshot):
+
+- The folder **MUST** include a **snapshot of the `QUALITY.md` as evaluated** —
+  the model state the ratings were produced against. A rating is only meaningful
+  against the model that defined its criteria, and that model may change after the
+  run; the snapshot makes the report a self-contained, reproducible record whose
+  findings trace to the exact requirements and `source` selectors in force at
+  evaluation time. It is a verbatim capture, not a runtime judgment, and
+  **SHOULD** record the revision (e.g. commit) of the subject it was taken
+  against.
+- The folder **MUST** include a **design** artifact recording the evaluation's
+  resolved parameters — mode, altitude, target file, scope, and effort (see
+  [Arguments](#arguments)) — and a citation of the `model.md` snapshot the run is
+  bound to. It is the authoritative record of *what* was evaluated and *under what
+  inputs*, so a later reader or re-run can reproduce the setup. The report's
+  **Scope** statement is the reader-facing summary of this; the full
+  parameterization lives here, stated once.
+- The folder **MUST** include a **plan** artifact recording the run's *method* —
+  how the skill covers each in-scope target's `source` at the chosen effort (per
+  [Effort levels](#effort-levels)): the entities or hotspots to assess, their
+  order, and any diagnostics to run. The report's statement of what was *not
+  assessed* (see [Effort levels](#effort-levels)) **MUST** reconcile actual
+  coverage against this plan, so divergence between intended and achieved coverage
+  is visible rather than silent.
+- The folder **MUST** capture the **assessment records** the Evaluate phase
+  produces — one artifact per in-scope requirement, holding its findings (each
+  with its `file:line` locator), the rating inferred against the requirement's
+  `criterion`, and a brief rationale: the assess → finding → rating chain of
+  [Grounding judgment](#grounding-judgment). A *not assessed* requirement gets a
+  record too, stating the absent evidence. Each record is **written atomically and
+  never mutated** — a re-assessment (e.g. under `improve`) produces a new
+  evaluation folder rather than editing an existing record. This makes the
+  evidence trail immutable, and means an interrupted run leaves each record either
+  complete or absent, so a resumed run can skip the requirements already recorded.
+- The folder **MUST** capture the **analysis records** the Analyze phase produces
+  — one write-once artifact per target node — holding that node's inferred
+  **local** and **aggregate** ratings and its **factor** ratings, each with a brief
+  rationale naming the binding constraints (the inferred, weighted roll-up of
+  [Grounding judgment](#grounding-judgment)). Each record **MUST cite the records
+  it derives from**: the in-scope **assessment records** behind its local rating,
+  and its **children's analysis records** behind its aggregate — so the chain leaf
+  → node → root is explicit and a *not assessed* outcome is visible wherever it
+  propagates. Like the assessment records, analysis records are written atomically
+  and never mutated.
+
+The report is the **render over these records**, not an independent copy: the
+assessment records are the source of record for Assess-and-Rate and the analysis
+records for Analyze, and the report's per-requirement and per-target sections
+derive from them (the report adds the Advise and Report layers and the
+reader-facing framing). This keeps the report from drifting and makes every rating
+in it traceable — leaf finding → assessment record → analysis record → report — to
+the immutable records that produced it.
+
+Like the report, the design, plan, assessment, and analysis records reference any
+secret value by `file:line` and type only (see
+[Boundaries](#boundaries-and-hard-rules)).
+
+A worked reference instance of this layout — model snapshot, design, plan,
+assessment records, analysis records, report, and recommendations — is in
 [`examples/`](examples/index.md).
 
 Each recommendation file **MUST** stand on its own as a unit a reader can triage
@@ -341,9 +438,12 @@ confirm the fix. Like the report, a recommendation references any secret value b
   rolling them up, and gating CI on the outcome depend on the CLI's
   record/log/gate surface, which the [CLI spec](../../cli.md) currently defers. Until
   that exists, the skill reports results without persisting them through the CLI.
-  (It still writes its own report and recommendation artifacts per
-  [Reporting](#reporting); what is deferred is recording structured per-target
-  verdicts *through the CLI*, where they can roll up and gate CI.)
+  (It still writes its own report, recommendation, and write-once assessment and
+  analysis artifacts per [Reporting](#reporting); what is deferred is recording
+  structured per-target verdicts *through the CLI*, where they can roll up and gate
+  CI mechanically. The skill's assessment and analysis records are its own inferred
+  evidence trail, not that structured store — when the CLI surface lands, the skill
+  records *through* it and the records remain the audit trail behind each verdict.)
 - **Bundled `references/` assets.** Which reference files the skill ships (e.g. an
   evaluation playbook or report template) and when it reads them, once the
   workflow above settles.

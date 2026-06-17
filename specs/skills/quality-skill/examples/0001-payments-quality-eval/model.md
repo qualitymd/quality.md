@@ -6,12 +6,13 @@ tags: [skill, quality, evaluation, example, model]
 timestamp: 2026-06-17T00:00:00Z
 ---
 
-> **Reference instance — non-normative.** This reproduces the `QUALITY.md` the
-> [0001 report](report.md) evaluates, so its findings trace to declared
-> requirements and `source` selectors. At runtime it lives at the **evaluated**
-> repository root as `./QUALITY.md` — not in the skill's `quality/evaluations/…`
-> output folder; it is bundled here only so the example is self-contained. See
-> the [examples index](../index.md) for the facts shared across this bundle.
+> **Reference instance — non-normative.** This is the snapshot of the
+> `QUALITY.md` the [0001 report](report.md) evaluates — the model state its
+> findings trace to. At runtime the skill captures it into the evaluation folder
+> (`quality/evaluations/NNNN-<scope>-quality-eval/model.md`) as a verbatim copy of
+> the `./QUALITY.md` in force at evaluation time (see
+> [Reporting](../quality-skill.md#reporting)). See the
+> [examples index](../index.md) for the facts shared across this bundle.
 
 # The model evaluated
 
