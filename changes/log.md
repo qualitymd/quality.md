@@ -2,6 +2,25 @@
 
 ## 2026-06-17
 
+- **Creation**: Added change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md)
+  (`status: Draft`) with its
+  [functional spec](0010-implement-quality-skill/spec.md) to build the
+  specified-but-unimplemented
+  [`/quality` skill](../specs/skills/quality-skill/quality-skill.md). The spec
+  **defers the behavioral contract** to the durable skill spec and states only the
+  delta — package an invocable skill that conforms to it and drives the `qualitymd`
+  CLI for every mechanical step — plus the open items and gaps a review of the
+  skill spec surfaced for this change to settle: where the skill is packaged; where the
+  **model** altitude draws its criteria (the built-in
+  [meta-model](../internal/diagnostics/quality-model/QUALITY-META-MODEL.md) is
+  neither referenced nor CLI-exposed); what `setup` does beyond `init`; how the
+  default target file resolves (a CLI convention still "to be specified"); and
+  whether `improve`'s post-apply re-evaluation writes a new evaluation folder.
+  Records [`quality-skill.md`](../specs/skills/quality-skill/quality-skill.md) and
+  user docs as affected durable artifacts, to sync once the questions resolve.
+  Updated the bundle [index](index.md).
+
 - **Completion**: Implemented and archived
   [0009 — Diagnose rating-scale soundness in the meta-model](archive/0009-rating-scale-diagnostic.md),
   adding the *rating scale and any overrides are well-formed and meaningful*
