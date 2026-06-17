@@ -21,7 +21,6 @@ builds:
       - -s -w
       - -X github.com/qualitymd/quality.md/internal/cli.version={{ .Version }}
       - -X github.com/qualitymd/quality.md/internal/cli.commit={{ .Commit }}
-      - -X github.com/qualitymd/quality.md/internal/cli.date={{ .Date }}
     goos:
       - linux
       - darwin

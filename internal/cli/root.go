@@ -14,7 +14,6 @@ import (
 var (
 	version = "dev"
 	commit  = "none"
-	date    = "unknown"
 )
 
 func newRootCmd() *cobra.Command {

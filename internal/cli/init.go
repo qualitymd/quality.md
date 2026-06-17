@@ -28,8 +28,8 @@ func newInitCmd() *cobra.Command {
 			if err := scaffold.Create(path, force); err != nil {
 				return err
 			}
-			fmt.Fprintf(cmd.ErrOrStderr(), "Created %s\n\nNext: qualitymd lint %s\n", path, path)
-			return nil
+			_, err := fmt.Fprintf(cmd.ErrOrStderr(), "Created %s\n\nNext: qualitymd lint %s\n", path, path)
+			return err
 		},
 	}
 	cmd.Flags().BoolVar(&force, "force", false, "overwrite an existing file")
