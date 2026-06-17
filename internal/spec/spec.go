@@ -22,11 +22,15 @@ type Spec struct {
 	Path string `yaml:"-"`
 }
 
-// RatingLevel is one level in a model's rating scale.
+// RatingLevel is one level in a model's rating scale. Description states what
+// the level means across the whole model and is never overridden; Criterion is
+// the default rule for rating a requirement's findings and MAY be overridden per
+// requirement via Requirement.Ratings.
 type RatingLevel struct {
-	Level     string `yaml:"level"`
-	Title     string `yaml:"title,omitempty"`
-	Criterion string `yaml:"criterion"`
+	Level       string `yaml:"level"`
+	Title       string `yaml:"title,omitempty"`
+	Description string `yaml:"description,omitempty"`
+	Criterion   string `yaml:"criterion"`
 }
 
 // Target is a recursive target node in the quality model.

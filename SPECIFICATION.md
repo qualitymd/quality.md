@@ -22,7 +22,7 @@ A conforming use or application of QUALITY.md may provide additional functionali
 - **Finding**: a single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
 - **Assessment**: the means for assessing an entity — measurement, specifications, inspection, checklists, diagnostics, etc.
 - **Rating Scale**: a defined set of rating levels for a quality model.
-- **Rating Level**: a single level on a rating scale, providing the default criterion for rating a requirement's findings.
+- **Rating Level**: a single level on a rating scale, with a fixed `description` of what the level means across the model and a default `criterion` for rating a requirement's findings against it.
 - **Rating Result**: the outcome of rating a requirement's findings against the rating scale — a single rating level (or a *not assessed* outcome) assigned to the requirement, considering all of its findings together.
 - **Target**: an entity or set of entities with quality requirements subject to evaluation.
 - **Source**: the scope of entities defined by a target.
@@ -48,7 +48,8 @@ title: <string>                 # Optional; title of the entity whose quality is
 ratingScale:                    # Required; the rating scale
   - level: <level-name>         #   Required; unique within the scale
     title: <string>             #   Optional; human-readable label
-    criterion: <string>         #   Required; used to rate a requirement's findings
+    description: <string>       #   Recommended; what the level means across the model
+    criterion: <string>         #   Required; default for rating a requirement's findings
 factors:                        # Optional*
   <factor-name>: <Factor>
 requirements:                   # Optional*
@@ -62,16 +63,30 @@ source: <string>                # Optional
 
 **Title**: An optional human-readable name for the entity whose quality is modeled. For software projects, this is typically the name of the product, system, or library. A `title` is RECOMMENDED for readable reports but MAY be omitted.
 
-**Rating Scale**: This is the rating scale that provides the default criterion for how requirement assessments should be judged to arrive at a rating level result. Each **Rating Level** MUST declare a `level` name, unique within the scale, and a `criterion` used to rate a requirement's findings; a **title** for improved readability is OPTIONAL. Rating levels MUST be ordered from best (first) to worst (last). At least two rating levels MUST be supplied.
+**Rating Scale**: This is the rating scale that provides the default criterion for how requirement assessments should be judged to arrive at a rating level result. Each **Rating Level** MUST declare a `level` name, unique within the scale, and a `criterion` used to rate a requirement's findings; a `description` of the level is RECOMMENDED, and a **title** for improved readability is OPTIONAL. Rating levels MUST be ordered from best (first) to worst (last). At least two rating levels MUST be supplied.
 
-**A suggested scale (non-normative).** When a graded scale fits and an author has no strong preference, the following four-level scale is a reasonable starting point, and a scaffolding tool MAY seed it. Its vocabulary names four best-to-worst bands — **outstanding** exceeds the goal, **target** meets it, **minimum** holds the acceptable floor, and **unacceptable** falls below it:
+A level's `description` and its `criterion` do different jobs. The **description** states what the level *means* — its standing in the scale and its intent — and is fixed for the whole model. The **criterion** is the default rule for deciding whether a requirement's findings *land at* that level, and a requirement MAY replace it for its own findings (see [Requirement](#requirement)). The description is never overridden; only the criterion is.
+
+**A suggested scale (non-normative).** When a graded scale fits and an author has no strong preference, the following four-level scale is a reasonable starting point, and a scaffolding tool MAY seed it. Its vocabulary names four best-to-worst bands: **outstanding**, **target**, and **minimum** are three acceptable levels — a stretch, the level to aim for, and the floor you have agreed to live with — while **unacceptable** falls below that floor. Each level pairs a `description` (what the level means, fixed across the model) with a `criterion` (the default rule for rating findings, which a requirement MAY override):
 
 ```yaml
 ratingScale:
-  - { level: outstanding,  title: Outstanding,  criterion: "Exceeds the requirement; satisfies it with margin to spare." }
-  - { level: target,       title: Target,       criterion: "Satisfies the requirement." }
-  - { level: minimum,      title: Minimum,      criterion: "Falls short of the goal but holds the acceptable floor." }
-  - { level: unacceptable, title: Unacceptable, criterion: "Falls below the acceptable floor." }
+  - level: outstanding
+    title: Outstanding
+    description: "The stretch band — reached only with significant extra effort."
+    criterion: "Exceeds the requirement; satisfies it with margin to spare."
+  - level: target
+    title: Target
+    description: "The level to aim for — achievable at reasonable cost and effort."
+    criterion: "Satisfies the requirement."
+  - level: minimum
+    title: Minimum
+    description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to ship."
+    criterion: "Falls short of the target but remains acceptable."
+  - level: unacceptable
+    title: Unacceptable
+    description: "Below the floor — not good enough to ship."
+    criterion: "Does not meet the requirement to an acceptable degree."
 ```
 
 **Factors**: quality characteristics or attributes that matter most for evaluating the overall quality of the entity.
@@ -154,7 +169,7 @@ ratings:                        # Optional; per-requirement criterion overrides
 
 **Factors (secondary)**: an optional list of factor names this requirement's result should also inform, beyond the factor it is nested under (its **primary** factor). Each name MUST resolve to a factor in scope — one declared on the target where the requirement sits, or on an ancestor target. A secondary factor lets one result appear in additional factor roll-ups without duplicating the requirement; the result is still counted once in the target's local rating (see [Analyze](#analyze)). A requirement declared directly under a target, with no nesting factor, MAY use this list to attach itself to one or more factors.
 
-**Ratings (criterion overrides)**: an optional map that overrides the rating-scale criteria for this requirement, for use when the scale's shared criteria cannot express the gradient that matters. Each key MUST name a level of the model's rating scale; its value replaces that level's criterion for this requirement only. Overrides change the criteria, not the levels, their order, or their titles. Use them when a requirement has a natural measured threshold or a distinct qualitative spectrum:
+**Ratings (criterion overrides)**: an optional map that overrides the rating-scale criteria for this requirement, for use when the scale's shared criteria cannot express the gradient that matters. Each key MUST name a level of the model's rating scale; its value replaces that level's `criterion` for this requirement only. Overrides change the criterion alone — never the level's `description`, order, or `title`, which stay fixed across the model. Use them when a requirement has a natural measured threshold or a distinct qualitative spectrum:
 
 ```yaml
 requirements:

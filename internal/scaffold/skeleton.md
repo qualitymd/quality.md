@@ -1,18 +1,29 @@
 ---
 title: "<the system, component, or artifact this model is about>"
 ratingScale:
+  # Each level carries a description and a criterion. The description fixes what
+  # the level *means* across the whole model — its standing and intent — and is
+  # never overridden. The criterion is the default rule for rating a
+  # requirement's findings at that level; an individual requirement may replace
+  # it under its own `ratings` (e.g. a measured threshold) without changing what
+  # the level means. Outstanding, Target, and Minimum are all acceptable; only
+  # Unacceptable falls below the floor.
   - level: outstanding
     title: Outstanding
+    description: "The stretch band — reached only with significant extra effort."
     criterion: "Exceeds the requirement; satisfies it with margin to spare."
   - level: target
     title: Target
+    description: "The level to aim for — achievable at reasonable cost and effort."
     criterion: "Satisfies the requirement."
   - level: minimum
     title: Minimum
-    criterion: "Falls short of the goal but holds the acceptable floor."
+    description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to ship."
+    criterion: "Falls short of the target but remains acceptable."
   - level: unacceptable
     title: Unacceptable
-    criterion: "Falls below the acceptable floor."
+    description: "Below the floor — not good enough to ship."
+    criterion: "Does not meet the requirement to an acceptable degree."
 factors:
   # Factors here hang off the model root, so they describe the whole artifact —
   # the qualities that matter most across all of it. This is the usual starting
