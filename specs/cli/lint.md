@@ -28,7 +28,8 @@ model; that judgment lives in the evaluation skills, not the deterministic CLI.
   `factors`/`requirements`/`targets`; every requirement has exactly one non-empty
   scalar `assessment`; secondary factor names resolve in scope; `ratings`
   override keys name real scale levels; `title`/`ratingScale` only on the root.
-- The finding schema (rule id, severity, message, location) for `--format json`.
+- The finding schema (rule id, severity, message, location) for `--json` output
+  (the cross-cutting machine-readable flag defined in the [CLI spec](../cli.md)).
 - Severity levels and which map to a non-zero exit code.
 - `lint`-specific flags beyond the cross-cutting flags in the
   [CLI spec](../cli.md).
