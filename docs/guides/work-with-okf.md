@@ -1,3 +1,11 @@
+---
+type: How-to Guide
+title: Working with OKF
+description: How to read and edit the OKF bundles in this repo.
+tags: [okf, contributing]
+timestamp: 2026-06-16T00:00:00Z
+---
+
 # Working with OKF
 
 Some of our docs — notably the [`specs/`](../../specs/index.md) bundle — are

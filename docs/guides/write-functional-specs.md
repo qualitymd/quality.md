@@ -1,8 +1,16 @@
+---
+type: How-to Guide
+title: Writing functional specs
+description: How to write a functional spec for the qualitymd tooling.
+tags: [specs, contributing]
+timestamp: 2026-06-16T00:00:00Z
+---
+
 # Writing functional specs
 
 A **functional spec** describes *what* a piece of `qualitymd` does and the
 requirements it must meet — not how it's implemented. Our specs live in the
-[`specs/`](../../specs/index.md) bundle, authored as [OKF](okf.md) concepts.
+[`specs/`](../../specs/index.md) bundle, authored as [OKF](work-with-okf.md) concepts.
 
 ## Shape
 
@@ -54,7 +62,7 @@ Declare the keyword convention once near the top:
 - **Draft openly.** Mark early specs `Draft`; placeholders are fine — stub the
   sections to be filled and link back to the parent.
 - **Keep OKF tidy.** New spec → add a `type` to its frontmatter and update the
-  enclosing `index.md` and `log.md` (see the [OKF guide](okf.md)).
+  enclosing `index.md` and `log.md` (see the [OKF guide](work-with-okf.md)).
 
 ## Smells
 

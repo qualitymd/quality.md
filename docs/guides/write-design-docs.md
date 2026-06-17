@@ -1,7 +1,15 @@
+---
+type: How-to Guide
+title: Writing design docs
+description: How to write a design doc for a piece of qualitymd.
+tags: [design, contributing]
+timestamp: 2026-06-16T00:00:00Z
+---
+
 # Writing design docs
 
 A **design doc** describes *how* a piece of `qualitymd` is built — the technical
-approach behind a [functional spec](functional-specs.md). Where a spec says what
+approach behind a [functional spec](write-functional-specs.md). Where a spec says what
 must hold, a design doc says how the code makes it so, and why that way.
 
 ## Shape
@@ -19,7 +27,7 @@ Keep it short and decision-focused:
 ## Conventions
 
 - **Design, not spec.** Behavior and requirements belong in the
-  [functional spec](functional-specs.md) — link to it, don't restate it.
+  [functional spec](write-functional-specs.md) — link to it, don't restate it.
 - **Record the why.** The durable value is the rationale and rejected
   alternatives, not a re-description of the final code.
 - **Match the scope.** A one-paragraph note for a small change; a fuller doc for

@@ -35,7 +35,7 @@ where the provenance of a design decision is relevant.
 
 Some directories are authored as **OKF** bundles — Markdown concepts with YAML
 frontmatter, plus reserved `index.md` (listing) and `log.md` (history). See
-[`docs/guides/okf.md`](docs/guides/okf.md) for the editing contract. Each bundle
+[`docs/guides/work-with-okf.md`](docs/guides/work-with-okf.md) for the editing contract. Each bundle
 also carries a root `schema.md` (`type: Schema`) whose `types` frontmatter
 registers the concept types that bundle uses — a recommended vocabulary, not a
 closed schema. When you add or edit a concept, keep its `type` non-empty, reuse a
@@ -44,9 +44,11 @@ enclosing `index.md` and `log.md` in the same change.
 
 **Bundles in this repo:**
 
-| Folder   | What it holds                                             | Types                                    |
-| -------- | --------------------------------------------------------- | ---------------------------------------- |
-| `specs/` | Specifications for the deterministic `qualitymd` surface. | see [`specs/schema.md`](specs/schema.md) |
+| Folder     | What it holds                                                | Types                                        |
+| ---------- | ------------------------------------------------------------ | -------------------------------------------- |
+| `specs/`   | Specifications for the deterministic `qualitymd` surface.    | see [`specs/schema.md`](specs/schema.md)     |
+| `docs/`    | Project documentation, organized by the four Diátaxis modes. | see [`docs/schema.md`](docs/schema.md)       |
+| `changes/` | Incremental work items — a spec and design doc per change.   | see [`changes/schema.md`](changes/schema.md) |
 
 ### Agent guidance files
 
