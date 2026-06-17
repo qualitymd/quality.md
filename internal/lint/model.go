@@ -1,7 +1,7 @@
 package lint
 
 import (
-	"github.com/qualitymd/quality.md/internal/spec"
+	"github.com/qualitymd/quality.md/internal/document"
 	"gopkg.in/yaml.v3"
 )
 
@@ -40,12 +40,12 @@ func (s *runState) walkModel() {
 }
 
 func (s *runState) walkTargets(parent *targetRef, node *yaml.Node, base []PathSegment) []*targetRef {
-	_, targets, _ := spec.MapEntry(node, "targets")
+	_, targets, _ := document.MapEntry(node, "targets")
 	if targets == nil || targets.Kind != yaml.MappingNode {
 		return nil
 	}
 	var out []*targetRef
-	for key, value := range spec.MapEntries(targets) {
+	for key, value := range document.MapEntries(targets) {
 		path := appendPath(base, "targets", key.Value)
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The target `"+key.Value+"` has the wrong YAML shape; each target must be a map.")
@@ -62,12 +62,12 @@ func (s *runState) walkTargets(parent *targetRef, node *yaml.Node, base []PathSe
 }
 
 func (s *runState) walkFactors(target *targetRef, parent *factorRef, node *yaml.Node, base []PathSegment) []*factorRef {
-	_, factors, _ := spec.MapEntry(node, "factors")
+	_, factors, _ := document.MapEntry(node, "factors")
 	if factors == nil || factors.Kind != yaml.MappingNode {
 		return nil
 	}
 	var out []*factorRef
-	for key, value := range spec.MapEntries(factors) {
+	for key, value := range document.MapEntries(factors) {
 		path := appendPath(base, "factors", key.Value)
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The factor `"+key.Value+"` has the wrong YAML shape; each factor must be a map.")
@@ -83,12 +83,12 @@ func (s *runState) walkFactors(target *targetRef, parent *factorRef, node *yaml.
 }
 
 func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *yaml.Node, base []PathSegment) []*requirementRef {
-	_, requirements, _ := spec.MapEntry(node, "requirements")
+	_, requirements, _ := document.MapEntry(node, "requirements")
 	if requirements == nil || requirements.Kind != yaml.MappingNode {
 		return nil
 	}
 	var out []*requirementRef
-	for key, value := range spec.MapEntries(requirements) {
+	for key, value := range document.MapEntries(requirements) {
 		path := appendPath(base, "requirements", key.Value)
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The requirement `"+key.Value+"` has the wrong YAML shape; each requirement must be a map.")
@@ -102,7 +102,7 @@ func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *
 }
 
 func (s *runState) secondaryFactors(req *requirementRef) []*factorRef {
-	_, factors, _ := spec.MapEntry(req.node, "factors")
+	_, factors, _ := document.MapEntry(req.node, "factors")
 	if factors == nil || factors.Kind != yaml.SequenceNode {
 		return nil
 	}

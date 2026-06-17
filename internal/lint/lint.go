@@ -7,7 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/qualitymd/quality.md/internal/spec"
+	"github.com/qualitymd/quality.md/internal/document"
+	"github.com/qualitymd/quality.md/internal/model"
 )
 
 // Check parses and lints path, defaulting to QUALITY.md.
@@ -51,11 +52,11 @@ func Fix(path string) (Result, error) {
 		repairRecords = append(repairRecords, repair.record)
 	}
 	if len(repairs) > 0 {
-		rendered, err := spec.Render(doc)
+		rendered, err := document.Render(doc)
 		if err != nil {
 			return Result{}, err
 		}
-		if err := spec.WriteAtomic(doc.Path, rendered); err != nil {
+		if err := document.WriteAtomic(doc.Path, rendered); err != nil {
 			return Result{}, err
 		}
 		doc, early, err = parse(doc.Path)
@@ -74,7 +75,7 @@ func Fix(path string) (Result, error) {
 
 // Load returns the typed model only when the shared lint rule catalog finds no
 // error-severity findings.
-func Load(path string) (*spec.Spec, error) {
+func Load(path string) (*model.Spec, error) {
 	doc, early, err := parse(path)
 	if err != nil {
 		return nil, err
@@ -88,7 +89,7 @@ func Load(path string) (*spec.Spec, error) {
 	if !result.Valid {
 		return nil, lintError{result: result}
 	}
-	return spec.Decode(doc)
+	return model.Decode(doc)
 }
 
 type lintError struct {
@@ -104,16 +105,16 @@ func (e lintError) Error() string {
 
 // parse reads and parses path. A non-nil *Result means the document could not be
 // parsed and the returned result should be emitted as-is without running rules.
-func parse(path string) (*spec.Document, *Result, error) {
+func parse(path string) (*document.Document, *Result, error) {
 	if path == "" {
 		path = "QUALITY.md"
 	}
-	doc, err := spec.Parse(path)
+	doc, err := document.Parse(path)
 	if err == nil {
 		return doc, nil, nil
 	}
 
-	var parseErr *spec.ParseError
+	var parseErr *document.ParseError
 	if errors.As(err, &parseErr) {
 		finding := Finding{
 			RuleID:   RuleInvalidFrontmatter,

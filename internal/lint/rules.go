@@ -3,7 +3,7 @@ package lint
 import (
 	"strconv"
 
-	"github.com/qualitymd/quality.md/internal/spec"
+	"github.com/qualitymd/quality.md/internal/document"
 	"gopkg.in/yaml.v3"
 )
 
@@ -28,7 +28,7 @@ func (s *runState) checkRoot() {
 		"title": true, "ratingScale": true, "factors": true,
 		"requirements": true, "targets": true, "source": true,
 	}
-	for key, value := range spec.MapEntries(s.doc.Frontmatter) {
+	for key, value := range document.MapEntries(s.doc.Frontmatter) {
 		if !allowed[key.Value] {
 			s.invalid(key, appendPath(nil, key.Value), key.Value, "The frontmatter declares an unknown root key `"+key.Value+"`; a QUALITY.md model may only use the specified model properties.")
 			continue
@@ -48,13 +48,13 @@ func (s *runState) checkRoot() {
 			}
 		}
 	}
-	if _, value, _ := spec.MapEntry(s.doc.Frontmatter, "title"); value == nil {
+	if _, value, _ := document.MapEntry(s.doc.Frontmatter, "title"); value == nil {
 		s.add(RuleMissingTitle, "The model root declares no `title`; a title is recommended for readable reports.", s.locForMissing([]PathSegment{"title"}, "title"), nil)
 	}
 }
 
 func (s *runState) checkRatingScale() {
-	key, scale, _ := spec.MapEntry(s.doc.Frontmatter, "ratingScale")
+	key, scale, _ := document.MapEntry(s.doc.Frontmatter, "ratingScale")
 	if scale == nil || isEmpty(scale) {
 		s.add(RuleMissingRatingScale, "The model root declares no `ratingScale`; a QUALITY.md model requires one rating scale.", s.locForMissing([]PathSegment{"ratingScale"}, "ratingScale"), nil)
 		return
@@ -78,7 +78,7 @@ func (s *runState) checkRatingScale() {
 
 func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index int, seen map[string]Location) {
 	allowed := map[string]bool{"level": true, "title": true, "description": true, "criterion": true}
-	for key, value := range spec.MapEntries(level) {
+	for key, value := range document.MapEntries(level) {
 		if !allowed[key.Value] {
 			s.invalid(key, appendPath(path, key.Value), label(appendPath(path, key.Value)), "A rating level declares an unknown key `"+key.Value+"`; rating levels may only use `level`, `title`, `description`, and `criterion`.")
 			continue
@@ -92,7 +92,7 @@ func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index 
 			}
 		}
 	}
-	if _, value, _ := spec.MapEntry(level, "level"); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
+	if _, value, _ := document.MapEntry(level, "level"); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
 		s.add(RuleMissingLevelName, "A rating level declares no `level` name; each rating level requires a non-empty `level`.", s.locForNodeOrMissing(value, appendPath(path, "level"), "ratingScale["+strconv.Itoa(index)+"].level"), nil)
 	} else {
 		name := value.Value
@@ -104,10 +104,10 @@ func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index 
 			s.levels[name] = true
 		}
 	}
-	if _, value, _ := spec.MapEntry(level, "criterion"); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
+	if _, value, _ := document.MapEntry(level, "criterion"); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
 		s.add(RuleMissingCriterion, "A rating level declares no `criterion`; each rating level requires a non-empty criterion.", s.locForNodeOrMissing(value, appendPath(path, "criterion"), "ratingScale["+strconv.Itoa(index)+"].criterion"), nil)
 	}
-	if _, value, _ := spec.MapEntry(level, "description"); value == nil {
+	if _, value, _ := document.MapEntry(level, "description"); value == nil {
 		s.add(RuleMissingLevelDescription, "A rating level declares no `description`; a description is recommended for each level.", s.locForMissing(appendPath(path, "description"), "ratingScale["+strconv.Itoa(index)+"].description"), nil)
 	}
 }
@@ -120,7 +120,7 @@ func (s *runState) checkEmptyModel() {
 
 func (s *runState) checkTargetShape(target *targetRef) {
 	allowed := map[string]bool{"factors": true, "requirements": true, "targets": true, "source": true, "title": true, "ratingScale": true}
-	for key, value := range spec.MapEntries(target.node) {
+	for key, value := range document.MapEntries(target.node) {
 		path := appendPath(target.path, key.Value)
 		switch {
 		case key.Value == "title" || key.Value == "ratingScale":
@@ -141,7 +141,7 @@ func (s *runState) checkTargetShape(target *targetRef) {
 
 func (s *runState) checkFactorShape(factor *factorRef) {
 	allowed := map[string]bool{"description": true, "factors": true, "requirements": true}
-	for key, value := range spec.MapEntries(factor.node) {
+	for key, value := range document.MapEntries(factor.node) {
 		path := appendPath(factor.path, key.Value)
 		switch {
 		case !allowed[key.Value]:
@@ -156,14 +156,14 @@ func (s *runState) checkFactorShape(factor *factorRef) {
 			}
 		}
 	}
-	if _, value, _ := spec.MapEntry(factor.node, "description"); value == nil {
+	if _, value, _ := document.MapEntry(factor.node, "description"); value == nil {
 		s.add(RuleMissingFactorDescription, "The factor `"+factor.name+"` declares no `description`; a description is recommended for each factor.", s.locForMissing(appendPath(factor.path, "description"), label(appendPath(factor.path, "description"))), nil)
 	}
 }
 
 func (s *runState) checkRequirementShape(req *requirementRef) {
 	allowed := map[string]bool{"assessment": true, "factors": true, "ratings": true}
-	for key, value := range spec.MapEntries(req.node) {
+	for key, value := range document.MapEntries(req.node) {
 		path := appendPath(req.path, key.Value)
 		switch {
 		case !allowed[key.Value]:
@@ -190,7 +190,7 @@ func (s *runState) checkRequirementShape(req *requirementRef) {
 			} else if value.Kind != yaml.MappingNode {
 				s.invalid(key, path, label(path), "The requirement `"+req.statement+"` has the wrong `ratings` shape; ratings overrides must be a map.")
 			} else {
-				for ratingKey, ratingValue := range spec.MapEntries(value) {
+				for ratingKey, ratingValue := range document.MapEntries(value) {
 					if ratingValue.Kind != yaml.ScalarNode || isEmpty(ratingValue) {
 						s.invalid(ratingValue, appendPath(path, ratingKey.Value), label(appendPath(path, ratingKey.Value)), "The rating override `"+ratingKey.Value+"` has the wrong YAML shape; override criteria must be non-empty scalars.")
 					}
@@ -198,7 +198,7 @@ func (s *runState) checkRequirementShape(req *requirementRef) {
 			}
 		}
 	}
-	if _, value, _ := spec.MapEntry(req.node, "assessment"); value == nil {
+	if _, value, _ := document.MapEntry(req.node, "assessment"); value == nil {
 		s.add(RuleInvalidAssessment, "The requirement `"+req.statement+"` has no `assessment`; a requirement must declare exactly one non-empty scalar assessment.", s.locForMissing(appendPath(req.path, "assessment"), label(appendPath(req.path, "assessment"))), nil)
 	}
 }
@@ -272,15 +272,15 @@ func (s *runState) checkFactorRequirements(factor *factorRef) {
 }
 
 func (s *runState) checkRequirementRefs(req *requirementRef) {
-	if _, ratings, _ := spec.MapEntry(req.node, "ratings"); ratings != nil && ratings.Kind == yaml.MappingNode {
-		for key := range spec.MapEntries(ratings) {
+	if _, ratings, _ := document.MapEntry(req.node, "ratings"); ratings != nil && ratings.Kind == yaml.MappingNode {
+		for key := range document.MapEntries(ratings) {
 			if !s.levels[key.Value] {
 				path := appendPath(req.path, "ratings", key.Value)
 				s.add(RuleUnknownRatingKey, "The requirement `"+req.statement+"` has a `ratings` override for unknown level `"+key.Value+"`; override keys must name a rating-scale level.", s.loc(key, path, label(path)), nil)
 			}
 		}
 	}
-	if _, factors, _ := spec.MapEntry(req.node, "factors"); factors != nil && factors.Kind == yaml.SequenceNode {
+	if _, factors, _ := document.MapEntry(req.node, "factors"); factors != nil && factors.Kind == yaml.SequenceNode {
 		for i, item := range factors.Content {
 			if item.Kind != yaml.ScalarNode || isEmpty(item) {
 				continue

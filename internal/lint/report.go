@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/qualitymd/quality.md/internal/spec"
+	"github.com/qualitymd/quality.md/internal/document"
 	"gopkg.in/yaml.v3"
 )
 
@@ -16,14 +16,14 @@ type repairOp struct {
 }
 
 type runState struct {
-	doc      *spec.Document
+	doc      *document.Document
 	root     *targetRef
 	findings []Finding
 	repairs  []repairOp
 	levels   map[string]bool
 }
 
-func newRunState(doc *spec.Document) *runState {
+func newRunState(doc *document.Document) *runState {
 	return &runState{
 		doc:    doc,
 		levels: map[string]bool{},
@@ -83,7 +83,7 @@ func (s *runState) emptyProperty(parent, key *yaml.Node, path []PathSegment, loc
 			Location: location,
 		},
 		apply: func() error {
-			if !spec.RemoveMapEntry(parent, key.Value) {
+			if !document.RemoveMapEntry(parent, key.Value) {
 				return fmt.Errorf("property no longer exists")
 			}
 			return nil

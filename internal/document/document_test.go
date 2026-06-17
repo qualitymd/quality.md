@@ -1,4 +1,4 @@
-package spec
+package document
 
 import (
 	"errors"
@@ -11,46 +11,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func TestParseAndDecodeCurrentSchema(t *testing.T) {
-	path := writeModel(t, `---
-title: Example
-ratingScale:
-  - level: target
-    criterion: Meets the requirement.
-  - level: unacceptable
-    criterion: Does not meet the requirement.
-targets:
-  api:
-    source: ./internal/api
-    factors:
-      reliability:
-        description: The API continues to behave under expected failure modes.
-        requirements:
-          "writes are durable":
-            assessment: Inspect the write path and tests for durable commits.
----
-
-# Example quality model
-`)
-
-	doc, err := Parse(path)
-	if err != nil {
-		t.Fatalf("Parse() error = %v", err)
-	}
-	model, err := Decode(doc)
-	if err != nil {
-		t.Fatalf("Decode() error = %v", err)
-	}
-	if len(model.RatingScale) != 2 {
-		t.Fatalf("len(RatingScale) = %d, want 2", len(model.RatingScale))
-	}
-	if got := model.Targets["api"].Factors["reliability"].Requirements["writes are durable"].Assessment; got == "" {
-		t.Fatal("assessment was not loaded")
-	}
-}
-
 func TestParseRequiresFrontmatterFence(t *testing.T) {
-	path := writeModel(t, `title: Example
+	path := writeDocument(t, `title: Example
 ratingScale: []
 `)
 
@@ -68,7 +30,7 @@ ratingScale: []
 }
 
 func TestRenderPreservesMarkdownBody(t *testing.T) {
-	path := writeModel(t, `---
+	path := writeDocument(t, `---
 title: Example
 ratingScale:
   - level: target
@@ -135,7 +97,7 @@ func TestMapEntries(t *testing.T) {
 	}
 }
 
-func writeModel(t *testing.T, content string) string {
+func writeDocument(t *testing.T, content string) string {
 	t.Helper()
 	path := filepath.Join(t.TempDir(), "QUALITY.md")
 	if err := os.WriteFile(path, []byte(content), 0o600); err != nil {
