@@ -36,7 +36,6 @@ When a change reaches **Done**, move it (and its child folder) into
 # Open changes
 
 - [0001 — Example change](0001-example-change.md) - placeholder showing the intended shape (`Draft`).
-- [0002 — Specify the init command](0002-init-command.md) - settle what `qualitymd init` scaffolds and how it behaves (`Design`).
 
 # Bundle
 

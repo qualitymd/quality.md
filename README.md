@@ -1,4 +1,4 @@
-# quality.md
+# QUALITY.md
 
 **`QUALITY.md`** is a plain-text *quality model*: one checked-in file that
 declares what *good* means for a software system — its quality requirements —
@@ -109,9 +109,8 @@ judging is the agent's part.
 
 ## The CLI
 
-> **The CLI is an early work in progress.** Today the binary ships a single
-> placeholder `check` command that predates the current design. The surface
-> below is planned but not yet built.
+> **The CLI is an early work in progress.** Today the binary ships
+> `qualitymd init`. The rest of the surface below is planned but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
@@ -121,7 +120,7 @@ their `source` manifests, records and rolls up results, and gates CI — while
 
 The deterministic CLI:
 
-- **`qualitymd init`** *(planned)* — scaffold a starter `QUALITY.md` to fill in.
+- **`qualitymd init`** — scaffold a starter `QUALITY.md` to fill in.
 - **`qualitymd lint`** *(planned)* — validate a file's structure, fast and
   deterministic, exiting non-zero on errors so it drops into CI.
 - **`qualitymd model` / `evaluation` / `result`** *(planned)* — inspect the
@@ -131,17 +130,15 @@ The deterministic CLI:
 The deep, judgment-based evaluation of a subject against its model is carried by
 **skills** that orchestrate those resources — not by a CLI command.
 
-The only command in the shipping binary today is the placeholder
-**`qualitymd check`**; the surface above fails with "unknown command" until it
-lands.
+The planned commands above other than `init` fail with "unknown command" until
+they land.
 
 ## Install
 
 > **Status.** The format spec is settled — see
-> [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress. Of
-> the documented surface, only the placeholder **`check`** is currently built;
-> **`init`**, **`lint`**, and the **`model`/`evaluation`/`result`** resources are
-> planned. Don't expect the planned commands to run yet.
+> [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress.
+> Of the documented surface, **`init`** is currently built; **`lint`** and the
+> **`model`/`evaluation`/`result`** resources are planned.
 
 `qualitymd` has no tagged release yet; build the current binary from source with
 Go 1.26+:

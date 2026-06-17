@@ -1,4 +1,4 @@
-# quality.md
+# QUALITY.md
 
 This is the public repository for the **QUALITY.md** project: the `qualitymd`
 CLI, the format spec, and the docs shipped to users.

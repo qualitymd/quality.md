@@ -4,4 +4,5 @@ Completed changes, moved here from the bundle root when they reach **Done**.
 
 # Changes
 
-*None yet.*
+- [0002 — Specify the init command](0002-init-command.md) - settled and shipped
+  `qualitymd init` (`Done`).

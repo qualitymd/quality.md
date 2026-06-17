@@ -166,7 +166,7 @@ moment an edit to `skeleton.md` drifts out of conformance.
 ## Open questions
 
 - **Shared next-actions machinery.** The footer is a hand-rolled stderr line for
-  now. The [CLI spec](../../specs/cli.md#conventions) defines a richer next-actions
+  now. The [CLI spec](../../../specs/cli.md#conventions) defines a richer next-actions
   convention (stable `id`/`label`/`command`, suppressible via a quiet flag) that
   is not yet built. `init` should migrate to that shared mechanism when it lands
   rather than entrenching the ad-hoc footer.

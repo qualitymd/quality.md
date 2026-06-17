@@ -1,9 +1,9 @@
-# quality.md
+# QUALITY.md
 
 Run the early `qualitymd` command-line wrapper for `QUALITY.md` files.
 
 ```sh
-npx quality.md check
+npx quality.md init -
 ```
 
 This package ships a small launcher that runs a prebuilt, native Go binary

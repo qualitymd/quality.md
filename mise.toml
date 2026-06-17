@@ -8,7 +8,7 @@ description = "Build the qualitymd binary into ./dist"
 run = "go build -o dist/qualitymd ./cmd/qualitymd"
 
 [tasks.run]
-description = "Run the quality.md CLI"
+description = "Run the QUALITY.md CLI"
 run = "go run ./cmd/qualitymd"
 
 [tasks.test]

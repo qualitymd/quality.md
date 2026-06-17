@@ -1,40 +1,63 @@
 # Contributing
 
-Thanks for your interest in improving quality.md.
+Thanks for your interest in improving QUALITY.md.
 
 ## Prerequisites
 
-The project uses [mise](https://mise.jdx.dev) to pin tools (Go, goreleaser) and
-define tasks. With mise installed:
+The project uses [mise](https://mise.jdx.dev) to pin tools (Go, dprint,
+goreleaser) and define tasks. With mise installed:
 
 ```sh
 mise install        # install pinned tool versions
 ```
 
-If you prefer not to use mise, install Go 1.26+ yourself; the `mise run …`
-commands below map to plain `go` invocations.
+If you prefer not to use mise, install Go 1.26+ and dprint yourself; the
+`mise run …` commands below map to plain `go` and `dprint` invocations.
 
 ## Development tasks
 
 ```sh
-mise run run -- check   # run the placeholder CLI (go run ./cmd/qualitymd)
-mise run build          # build ./dist/qualitymd
-mise run test           # go test ./...
-mise run vet            # go vet ./...
-mise run fmt            # gofmt -w .
-mise run tidy           # go mod tidy
+mise run run -- init -   # run the current CLI scaffold command to stdout
+mise run build           # build ./dist/qualitymd
+mise run test            # go test ./...
+mise run vet             # go vet ./...
+mise run fmt             # gofmt -w . and dprint fmt
+mise run fmt-md-check    # dprint check
+mise run tidy            # go mod tidy
 ```
 
-Please run `mise run fmt` and `mise run vet` before opening a pull request.
+Please run `mise run fmt`, `mise run test`, and `mise run vet` before opening a
+pull request. For docs-only changes, `mise run fmt-md-check` is the quick
+formatting gate.
+
+### Testing the CLI from another directory
+
+Some commands are sensitive to the current working directory. For example,
+`qualitymd init` writes `QUALITY.md` to the process's current directory when no
+path is supplied.
+
+When testing that behavior against the latest local source, build a temporary
+binary from the repo, then run that binary from the directory you want to test:
+
+```sh
+go build -o /tmp/qualitymd-dev ./cmd/qualitymd
+
+mkdir -p /tmp/qualitymd-init-test
+cd /tmp/qualitymd-init-test
+/tmp/qualitymd-dev init
+```
+
+Avoid `go run ./cmd/qualitymd init` from the repo root for this case: the command
+would run with the repo as its working directory, so `init` would target the repo
+root rather than your test directory.
 
 ## Project layout
 
 ```
 cmd/qualitymd        entry point
 internal/cli         Cobra commands, run through Charm Fang
+internal/scaffold    embedded starter QUALITY.md used by qualitymd init
 internal/spec        current QUALITY.md frontmatter model loader
-internal/eval        placeholder assessment traversal
-internal/report      Lip Gloss terminal output
 scripts/build-npm.mjs   assembles the npm distribution
 ```
 

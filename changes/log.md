@@ -2,24 +2,29 @@
 
 ## 2026-06-17
 
-- **Refinement**: Tightened change [0002 — Specify the init command](0002-init-command.md)
+- **Completion**: Implemented and archived
+  [0002 — Specify the init command](archive/0002-init-command.md), adding
+  `qualitymd init`, replacing the durable [`init` sub-spec](../specs/cli/init.md),
+  and updating the README status.
+
+- **Refinement**: Tightened change [0002 — Specify the init command](archive/0002-init-command.md)
   after review: framed implementation as the change's own **In-Progress** phase
   rather than deferred work, specified that a successful `init` writes its
   confirmation to standard error (keeping stdout clean for `-` piping), recorded
-  the non-atomic `--force` overwrite as a [design](0002-init-command/design.md)
+  the non-atomic `--force` overwrite as a [design](archive/0002-init-command/design.md)
   risk, and trimmed the `--json` note in the
-  [functional spec](0002-init-command/spec.md) to a pointer to the
+  [functional spec](archive/0002-init-command/spec.md) to a pointer to the
   [CLI spec](../specs/cli.md) convention.
 
-- **Design**: Advanced change [0002 — Specify the init command](0002-init-command.md)
-  from `Draft` to `Design` and added its [design doc](0002-init-command/design.md):
+- **Design**: Advanced change [0002 — Specify the init command](archive/0002-init-command.md)
+  from `Draft` to `Design` and added its [design doc](archive/0002-init-command/design.md):
   the scaffold ships as a static `//go:embed` asset (comments and body prose can't
   round-trip through YAML struct marshalling), overwrite protection rides on an
   atomic `O_CREATE|O_EXCL` open, and a conformance test runs the embedded skeleton
-  through `spec.Load`. Updated the change [index](0002-init-command/index.md).
+  through `spec.Load`. Updated the change [index](archive/0002-init-command/index.md).
 
-- **Creation**: Added change [0002 — Specify the init command](0002-init-command.md)
-  (`status: Draft`) with its [functional spec](0002-init-command/spec.md), settling
+- **Creation**: Added change [0002 — Specify the init command](archive/0002-init-command.md)
+  (`status: Draft`) with its [functional spec](archive/0002-init-command/spec.md), settling
   the "To be specified" list on the [`init` sub-spec](../specs/cli/init.md): the
   scaffold contents (seeded rating scale, a commented target → factor → requirement
   skeleton, recommended body sections as headed stubs), the output target and

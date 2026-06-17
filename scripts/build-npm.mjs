@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds the npm distribution for quality.md.
+// Builds the npm distribution for QUALITY.md.
 //
 // For each supported platform it cross-compiles the Go binary into a
 // per-platform package (@qualitymd/cli-<os>-<arch>) gated by npm `os`/`cpu`
@@ -45,7 +45,7 @@ function run(cmd, cmdArgs, { env, cwd } = {}) {
   });
 }
 
-console.log(`Building quality.md npm packages @ ${version}`);
+console.log(`Building QUALITY.md npm packages @ ${version}`);
 
 for (const t of TARGETS) {
   const key = `${t.os}-${t.arch}`;
@@ -84,7 +84,7 @@ for (const t of TARGETS) {
       {
         name: pkgName,
         version,
-        description: `quality.md native binary for ${key}`,
+        description: `QUALITY.md native binary for ${key}`,
         license: "MIT",
         repository: { type: "git", url: "https://github.com/qualitymd/quality.md.git" },
         os: [t.os],

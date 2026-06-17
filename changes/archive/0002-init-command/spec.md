@@ -10,14 +10,14 @@ timestamp: 2026-06-17T00:00:00Z
 
 Companion to the [Specify the init command](../0002-init-command.md) change.
 This spec states *what* `qualitymd init` must do; it is the delta that the
-durable [`specs/cli/init.md`](../../specs/cli/init.md) sub-spec absorbs when the
+durable [`specs/cli/init.md`](../../../specs/cli/init.md) sub-spec absorbs when the
 change lands.
 
 `init` inherits the cross-cutting CLI contract — invocation, global flags,
 output conventions, and exit-code semantics — from the
-[CLI spec](../../specs/cli.md); this spec covers only what is particular to
+[CLI spec](../../../specs/cli.md); this spec covers only what is particular to
 `init`. The shape of a valid `QUALITY.md` is fixed by the
-[format specification](../../SPECIFICATION.md) and is not restated here.
+[format specification](../../../SPECIFICATION.md) and is not restated here.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119.
@@ -26,10 +26,10 @@ interpreted as described in IETF RFC 2119.
 
 Covered: the output target and stdout piping, overwrite protection, and the
 contents of the scaffold `init` produces. Cross-cutting CLI behavior is deferred
-to the [CLI spec](../../specs/cli.md); further `init`-specific behavior is listed
+to the [CLI spec](../../../specs/cli.md); further `init`-specific behavior is listed
 under [Deferred](#deferred).
 
-Per the [CLI spec's `--json` convention](../../specs/cli.md#conventions), `init`
+Per the [CLI spec's `--json` convention](../../../specs/cli.md#conventions), `init`
 offers no `--json` output.
 
 ## Requirements
@@ -55,12 +55,12 @@ offers no `--json` output.
 ### Scaffold contents
 
 - The scaffold **MUST** be a structurally valid `QUALITY.md` per the
-  [format specification](../../SPECIFICATION.md): a freshly initialized file
-  **MUST** pass [`qualitymd lint`](../../specs/cli/lint.md) with no errors,
+  [format specification](../../../SPECIFICATION.md): a freshly initialized file
+  **MUST** pass [`qualitymd lint`](../../../specs/cli/lint.md) with no errors,
   placeholder text and all.
 - The frontmatter **MUST** seed the suggested four-level rating scale
   (`outstanding` / `target` / `minimum` / `unacceptable`) from the
-  [format spec](../../SPECIFICATION.md#model), which a scaffolding tool MAY seed.
+  [format spec](../../../SPECIFICATION.md#model), which a scaffolding tool MAY seed.
 - The frontmatter **MUST** include a minimal skeleton that leads to at least one
   requirement — a placeholder factor carrying a `description`, and beneath it a
   placeholder requirement carrying a single non-empty `assessment` — so the
@@ -69,7 +69,7 @@ offers no `--json` output.
   tell the author what to replace, so the file reads as a guided skeleton rather
   than a filled-in example.
 - The Markdown body **MUST** include the
-  [recommended body sections](../../SPECIFICATION.md#markdown-body) — Overview,
+  [recommended body sections](../../../SPECIFICATION.md#markdown-body) — Overview,
   Scope, Needs, Risks, and Known gaps — as headed stubs, each with a brief prompt
   of what it captures.
 - The scaffold **SHOULD** seed a placeholder `title`, and the body **SHOULD**
@@ -80,14 +80,14 @@ offers no `--json` output.
 - On successfully writing a file, `init` **MUST** report the created path. This
   confirmation is written to standard error, so that standard output carries only
   the scaffold itself when piping with `-`.
-- `init` **SHOULD** close with [next actions](../../specs/cli.md#conventions)
+- `init` **SHOULD** close with [next actions](../../../specs/cli.md#conventions)
   pointing the author to validate and then edit the new file — for example
   `qualitymd lint QUALITY.md`.
 
 ## Deferred
 
 - **Cross-cutting CLI behavior** — global flags, exit-code semantics, and quiet
-  verbosity — specified in the [CLI spec](../../specs/cli.md).
+  verbosity — specified in the [CLI spec](../../../specs/cli.md).
 - **Interactive prompting** for the title, factors, or requirements: the scaffold
   is produced non-interactively in this phase.
 - **Selectable scaffold templates** — alternate rating scales or domain profiles

@@ -2,6 +2,9 @@
 
 ## 2026-06-17
 
+- **Revision**: Replaced the placeholder [`init`](cli/init.md) command sub-spec
+  with the durable requirements for scaffold contents, output target handling,
+  stdout piping, overwrite protection, `--force`, and stderr reporting.
 - **Revision**: Added a "Technical requirements" section to the
   [CLI spec](cli.md) requiring that every functional requirement be satisfiable
   through the idiomatic capabilities of the chosen stack (Go + Cobra + Charm

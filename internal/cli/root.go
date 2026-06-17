@@ -1,10 +1,5 @@
-// Package cli wires the quality.md command tree (Cobra) and runs it through
+// Package cli wires the QUALITY.md command tree (Cobra) and runs it through
 // Fang for styled help, errors, version, and shell completion.
-//
-// STUB: This is an early scaffold. SPECIFICATION.md defines the current file
-// format and evaluation semantics; the intended CLI surface is still being
-// implemented. Treat the single `check` command here as placeholder behavior,
-// not as the final command surface.
 package cli
 
 import (
@@ -32,7 +27,7 @@ func newRootCmd() *cobra.Command {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
-	root.AddCommand(newCheckCmd())
+	root.AddCommand(newInitCmd())
 	return root
 }
 
