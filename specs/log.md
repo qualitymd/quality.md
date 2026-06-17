@@ -2,6 +2,20 @@
 
 ## 2026-06-17
 
+- **Revision**: Reframed the [`/quality`](skills/quality-skill.md) skill's
+  relationship to the format spec's evaluation from **deference** to
+  **conformance**: the skill now *owns and specifies* its evaluation process
+  (this spec, its prompt, and the CLI together) rather than pointing at
+  [`SPECIFICATION.md`](../SPECIFICATION.md) to "run." Added a **Conformance to
+  the format spec** subsection stating that every evaluation MUST conform to the
+  spec's Evaluation contract (assessment → finding → rating, *not assessed* over
+  guessing, inferred weighted roll-up, required report contents) while the skill
+  remains one *implementation* free to specify its own workflow, ordering,
+  heuristics, effort levels, and artifacts — with the spec as the **conformance
+  target** that governs on divergence. Scoped the existing "don't embed the
+  format" rule to the *format/schema rules and rating vocabulary* (still grounded
+  at runtime from `qualitymd spec`), explicitly excluding the *evaluation
+  process*, which the skill carries.
 - **Revision**: Tightened [`lint --fix`](cli/lint.md)'s in-place write contract
   to avoid ambiguous symbolic-link replacement: repair should refuse a linted
   symlink path until symlink write semantics are specified.

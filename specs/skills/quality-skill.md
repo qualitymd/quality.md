@@ -11,11 +11,15 @@ timestamp: 2026-06-17T00:00:00Z
 > 🚧 **Draft.** The `/quality` skill is the judgment companion to the
 > [`qualitymd` CLI](../cli.md): where the CLI is deterministic and mechanical,
 > the skill carries the evaluative judgment and drives the CLI for every
-> mechanical step. The *evaluation* it performs is defined by the format spec's
-> [Evaluation](../../SPECIFICATION.md#evaluation) section — this spec does not
-> redefine it; it specifies the skill that runs it. Recording assessments
-> *through the CLI* is **deferred** in step with the CLI's deferred record/gate
-> surface (see [Deferred](#deferred)).
+> mechanical step. The skill is responsible for **specifying and implementing**
+> the *evaluation* it performs — this spec, the skill's own prompt, and the CLI
+> together. That evaluation **MUST conform to** the format spec's
+> [Evaluation](../../SPECIFICATION.md#evaluation) contract, but the skill does
+> **not defer** its definition to it: the process below is the skill's own,
+> written to satisfy that contract rather than to merely point at it (see
+> [Conformance to the format spec](#conformance-to-the-format-spec)). Recording
+> assessments *through the CLI* is **deferred** in step with the CLI's deferred
+> record/gate surface (see [Deferred](#deferred)).
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, **RECOMMENDED**, and **MAY**
 are to be interpreted as described in IETF RFC 2119.
@@ -92,7 +96,13 @@ Requirements), not implementation or ISO terms.
 To stay in sync with the format, the metadata and prompt **MUST NOT** embed a
 copy of the format's rules or rating vocabulary that can drift from
 [`SPECIFICATION.md`](../../SPECIFICATION.md); the skill grounds those at runtime
-from `qualitymd spec` (see [Driving the CLI](#driving-the-cli)).
+from `qualitymd spec` (see [Driving the CLI](#driving-the-cli)). This applies to
+the *format and schema rules and the rating vocabulary* — the structure of a
+`QUALITY.md` and the meaning of its terms, which are grounded at runtime. It does
+**not** apply to the skill's *evaluation process*, which the skill owns and
+specifies here and carries in its prompt (see
+[Conformance to the format spec](#conformance-to-the-format-spec)); that process
+conforms to the spec's Evaluation contract rather than being fetched from it.
 
 ### Arguments
 
@@ -178,7 +188,10 @@ output as the source of truth:
   **MUST NOT** proceed to judgment on a file with `lint` errors (an invalid
   `QUALITY.md` has no well-defined model to evaluate). Warnings do not block.
 - **`spec`** emits the format specification; the skill **MUST** ground its
-  understanding of the format in this output rather than a hard-coded copy.
+  understanding of the *format and schema rules and rating vocabulary* in this
+  output rather than a hard-coded copy. Its *evaluation process* is the skill's
+  own (see [Evaluation workflow](#evaluation-workflow)) and **conforms to**,
+  rather than is fetched from, the spec.
 
 The skill **SHOULD** discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
@@ -189,18 +202,37 @@ text.
 
 ## Evaluation workflow
 
-For an `evaluate` or `improve` invocation the skill runs the format spec's
-five-phase [Evaluation](../../SPECIFICATION.md#evaluation) —
-**Define → Assess and Rate → Analyze → Advise → Report** — which this spec does
-not restate. The skill wraps that judgment with mechanical steps it drives
-through the CLI:
+### Conformance to the format spec
+
+The skill **owns** its evaluation process: this spec and the skill's prompt
+define how the skill assesses, rates, rolls up, advises, and reports, and the
+CLI performs the mechanical steps. That process realizes the five phases of the
+format spec's [Evaluation](../../SPECIFICATION.md#evaluation) contract —
+**Define → Assess and Rate → Analyze → Advise → Report** — and every evaluation
+the skill performs **MUST conform to** that contract: the assessment → finding →
+rating chain, *not assessed* over guessing, inferred (not computed) roll-up
+weighted by what matters, and the required report contents.
+
+Conformance is the binding relationship, not deference. The skill is **not** a
+mere executor of the spec text; it is one *implementation* of an evaluator, free
+to specify its own concrete workflow, ordering, heuristics, effort levels, and
+artifacts so long as the result satisfies the contract. The format spec remains
+the **conformance target**: where the skill's process and the contract would
+diverge, the contract governs and the skill **MUST** be corrected to conform.
+
+### Workflow
+
+For an `evaluate` or `improve` invocation the skill's process interleaves the
+judgment phases above with mechanical steps it drives through the CLI:
 
 1. **Read** the resolved target file.
 2. **Validate** it with `lint`, stopping on errors (see
    [Driving the CLI](#driving-the-cli)).
-3. **Ground** the format rules from `qualitymd spec`.
-4. **Evaluate** — run the five phases over the in-scope targets, resolving each
-   target's `source` to the entities to assess.
+3. **Ground** the format and schema rules and rating vocabulary from
+   `qualitymd spec`.
+4. **Evaluate** — run the skill's evaluation process (the five conformant phases
+   above) over the in-scope targets, resolving each target's `source` to the
+   entities to assess.
 5. **Report** the result and write its recommendations (see
    [Reporting](#reporting)). Under `improve`, the skill then **applies a chosen
    recommendation** — defaulting to its recommended option — only on explicit
@@ -252,7 +284,7 @@ Whatever the level, the report **MUST** state what was *not* assessed (see
 
 ## Reporting
 
-The skill produces the **Evaluation Report** defined in
+The skill produces an **Evaluation Report** that conforms to
 [Report](../../SPECIFICATION.md#report) — the Rating and its rationale, the
 Scope, the per-target requirement/factor/local/aggregate ratings with
 rationales, and the Advice. *Not assessed* outcomes **MUST** appear wherever they
