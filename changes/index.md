@@ -35,7 +35,10 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-None. Completed changes live in [`archive/`](archive/); copy
+- [0003 — Implement the lint command](0003-implement-lint-command.md) - build
+  `qualitymd lint` from the completed durable lint sub-spec.
+
+Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
 template for a new one.
 

@@ -25,3 +25,4 @@ before it lands.
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs (`init`, `lint`, `spec`).
+- [skills/](skills/) - companion skills that carry judgment around a `QUALITY.md` (`/quality`).

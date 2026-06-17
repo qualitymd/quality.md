@@ -2,6 +2,43 @@
 
 ## 2026-06-17
 
+- **Revision**: Worked down the open questions and risks in
+  [0003's design doc](0003-implement-lint-command/design.md): kept the shared
+  document/model code in `internal/spec`, assigned rule-level repair operations
+  to `internal/lint` and rendering/atomic replacement to `internal/spec`,
+  resolved unknown frontmatter keys as `invalid-frontmatter` in this phase,
+  confirmed `lint [path]` as the local invocation shape, and added mitigations
+  for YAML round-tripping, deterministic ordering, atomic replacement, and
+  symlink paths.
+- **Revision**: Scoped `--fix` into change
+  [0003 — Implement the lint command](0003-implement-lint-command.md) after
+  reviewing fixable-rule behavior. The durable lint spec, implementation spec,
+  and design now require deterministic in-place repair of fixable findings,
+  transactional per-file writes, post-repair linting, and JSON repair reporting,
+  while keeping suppression, rule selection, and patch/full-file repair output
+  modes deferred.
+- **Design**: Advanced change
+  [0003 — Implement the lint command](0003-implement-lint-command.md) from
+  `Draft` to `Design` and added its
+  [design doc](0003-implement-lint-command/design.md): `lint` parses once into a
+  shared document/model graph with stable `modelPath` locations and optional
+  source positions, runs narrow rule visitors from `internal/lint`, exposes the
+  traversal primitives needed by current rules and future query commands, and
+  adds a narrow repair writer for `lint --fix`. The design uses `lint [path]`,
+  defaulting to `QUALITY.md`, as the minimum invocation shape while the parent
+  CLI spec continues to own the broader file/stdin convention. Updated the
+  change [index](0003-implement-lint-command/index.md).
+
+- **Creation**: Added change
+  [0003 — Implement the lint command](0003-implement-lint-command.md)
+  (`status: Draft`) with a child
+  [functional spec](0003-implement-lint-command/spec.md). The change defers
+  command-specific behavior to the completed durable
+  [`lint` sub-spec](../specs/cli/lint.md), records README status updates as the
+  durable docs work before Done, and calls out the remaining cross-cutting CLI
+  invocation/file-argument convention as a dependency to settle before Design.
+  Updated the bundle [index](index.md).
+
 - **Archival**: Retired the placeholder [0001 — Example change](archive/0001-example-change.md)
   into [`archive/`](archive/) now that the bundle has real changes to follow,
   keeping it as the reference template the

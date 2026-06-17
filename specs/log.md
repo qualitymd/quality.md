@@ -2,6 +2,15 @@
 
 ## 2026-06-17
 
+- **Revision**: Tightened [`lint --fix`](cli/lint.md)'s in-place write contract
+  to avoid ambiguous symbolic-link replacement: repair should refuse a linted
+  symlink path until symlink write semantics are specified.
+- **Revision**: Scoped in [`lint --fix`](cli/lint.md) for deterministic in-place
+  repair of fixable findings. The durable lint spec now defines the `--fix`
+  flag, transactional per-file repair behavior, preservation requirements,
+  post-repair linting, exit-status semantics, and JSON repair reporting through
+  `summary.fixed` and `repairs`, while leaving patch/full-file repair output
+  modes deferred.
 - **Revision**: Closed the lint-specific open items in
   [`lint`](cli/lint.md): added scope/deferred boundaries, specified that this
   phase has no command-specific flags beyond inherited `--json`, defined the
@@ -18,6 +27,32 @@
   `Fixable rationale` columns. The initial inventory marks only `empty-property`
   as fixable; placeholder insertion remains scaffold behavior owned by
   [`init`](cli/init.md), not a lint repair.
+- **Revision**: Fleshed out the stub [`/quality`](skills/quality-skill.md) skill
+  spec into a draft, working through the unblocked TODOs (inspired by the
+  basecamp and shadcn/improve `SKILL.md` patterns). Promoted the use-case sketch
+  to normative requirements — resolving the open question as *evaluate is
+  read-only; improve recommends and applies only on explicit confirmation* — and
+  added: a **Boundaries and hard rules** section (judgment-vs-CLI division,
+  evaluated content is untrusted data not instructions, never reproduce secrets,
+  scoped-result-is-not-a-whole-model-verdict, determinism); **Invocation**
+  (skill frontmatter/metadata kept in sync with the format via `qualitymd spec`
+  rather than hard-coded, plus five resolved arguments — mode
+  `evaluate`/`improve`/`setup`/`wizard`, subject-vs-model altitude, target file,
+  target/factor scope that composes with either altitude and resolves bare names
+  against the grounded model, and effort — where a bare `/quality` runs a
+  read-only `wizard` mode that inspects model state and suggests concrete next
+  invocations);
+  **Driving the CLI** (`init`/`lint`/`spec` for every mechanical step, introspect
+  rather than hard-code the surface); an **Evaluation workflow** that wraps the
+  format spec's five Evaluation phases with mechanical read → lint → ground →
+  evaluate → report steps; **Grounding judgment** (rate against declared
+  criteria, evidence per rating, *not assessed* over guessing, inferred weighted
+  roll-up); **Effort levels** (`quick`/`standard`/`deep` coverage); and
+  **Reporting** (the Evaluation Report, scoped, human or `--json`), plus an
+  illustrative (non-normative) commented-examples block sketching invocation
+  patterns in the style of the shadcn/improve README. Recording
+  assessments through the CLI and bundled `references/` remain deferred in step
+  with the CLI's deferred record/gate surface.
 - **Revision**: Firmed up [`SPECIFICATION.md`](../SPECIFICATION.md) to fully
   ground the [`lint`](cli/lint.md) rules — made the per-property YAML shapes
   normative, defined a null/empty *required* value as absent, and stated the
@@ -28,6 +63,12 @@
   keywords, corrected the rule `description` guidance and the
   `empty-model`/`empty-factor`/`empty-target` entries, and recorded the body
   heading under "Not checked".
+- **Creation**: Added the [`skills/`](skills/index.md) subfolder with a stub
+  [`/quality`](skills/quality-skill.md) functional spec — the companion
+  evaluation skill that carries judgment against a `QUALITY.md` and records
+  results through the deterministic CLI. The concrete workflow, inputs, and
+  recorded-assessment shape remain deferred (in step with the CLI's deferred
+  record/log surface).
 - **Revision**: Fleshed out the [`lint`](cli/lint.md) sub-spec with a "Rule
   scope" section (four inclusion criteria — conformance-grounded, deterministic,
   format-not-goodness, self-contained — plus the error/warning/info severity

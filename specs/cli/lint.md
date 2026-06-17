@@ -27,12 +27,22 @@ interpreted as described in IETF RFC 2119.
 
 Covered: the rule boundary for mechanical format validation, rule metadata,
 finding messages, finding locations, human and JSON output, deterministic
-ordering, and the initial rule set.
+ordering, in-place repair of fixable findings, and the initial rule set.
 
-Deferred: automatic repair, suppression directives, rule selection or severity
-overrides, and emitting a rule catalog from `lint` itself. For this phase,
-`lint` defines no command-specific flags beyond the cross-cutting flags it
-inherits from the [CLI spec](../cli.md), including `--json`.
+Deferred: suppression directives, rule selection or severity overrides, emitting
+a rule catalog from `lint` itself, and repair output modes other than in-place
+writes (for example patch output or emitting a full rewritten file to stdout).
+
+## Flags
+
+`lint` inherits the cross-cutting flags from the [CLI spec](../cli.md), including
+`--json`, and adds one command-specific flag:
+
+- `--fix` — apply every fixable finding that can be repaired deterministically,
+  writing the repaired `QUALITY.md` back to the same path.
+
+`--fix` **MAY** be combined with `--json`; the JSON output then reports the
+post-repair findings and the repairs that were applied.
 
 ## Rule scope
 
@@ -169,6 +179,44 @@ A rule **MUST NOT** be marked fixable merely because a placeholder could be
 inserted. Placeholders are scaffold content owned by [`init`](./init.md), not a
 lint repair for missing model semantics.
 
+### Repair behavior
+
+When `--fix` is passed, `lint` **MUST** apply every emitted finding whose
+`fixable` value is `true`, then lint the repaired file again and report the
+post-repair findings. Non-fixable findings remain findings; they are never
+silently changed or suppressed.
+
+Repairs are **transactional per file**:
+
+- `lint` **MUST** compute repairs from the original parsed document.
+- If two repairs cannot be applied together, `lint` **MUST** leave the file
+  unchanged and report a repair failure rather than applying a partial set.
+- If a write fails, `lint` **MUST** report the failure and **MUST NOT** report the
+  file as repaired.
+- Applying `--fix` twice **MUST** have the same effect as applying it once.
+
+When repair fails before a post-repair lint result exists, `lint` **MUST** exit
+non-zero and report the failure through the CLI's error-reporting path. It
+**MUST NOT** emit a successful lint result for a file it did not repair.
+
+In-place writes **MUST** preserve authored content outside the repaired
+frontmatter nodes:
+
+- Markdown body content **MUST** be preserved byte-for-byte.
+- YAML map order, comments, scalar style, and whitespace outside repaired nodes
+  **SHOULD** be preserved where the parser and emitter make that possible.
+- Unrelated YAML keys **MUST NOT** be reordered or rewritten unless the rewrite is
+  necessary to apply the repair deterministically.
+- The write **SHOULD** be atomic from the caller's perspective: write a complete
+  replacement and then replace the target path, rather than truncating the
+  original before the replacement is ready.
+- To avoid ambiguous replacement behavior, `lint --fix` **SHOULD** refuse to
+  repair a linted path that is a symbolic link until symlink write semantics are
+  specified.
+
+This phase defines only in-place repair through `--fix`. `lint` **MUST NOT** emit
+patches or full rewritten files as alternate repair output modes in this phase.
+
 ## Findings and output
 
 `lint` emits zero or more **findings**. Human-readable output and JSON output
@@ -188,7 +236,8 @@ Under `--json`, `lint` MUST emit one JSON document on stdout with this shape:
     "errors": 1,
     "warnings": 0,
     "info": 0,
-    "fixable": 0
+    "fixable": 0,
+    "fixed": 0
   },
   "findings": [
     {
@@ -203,6 +252,7 @@ Under `--json`, `lint` MUST emit one JSON document on stdout with this shape:
       "fixable": false
     }
   ],
+  "repairs": [],
   "nextActions": []
 }
 ```
@@ -217,7 +267,11 @@ Fields are stable public API:
   number of findings at each severity.
 - `summary.fixable` **MUST** equal the number of findings whose `fixable` value
   is `true`.
+- `summary.fixed` **MUST** equal the number of repairs applied during this run;
+  it is `0` when `--fix` is not passed.
 - `findings` **MUST** contain every emitted finding in deterministic order.
+- `repairs` **MUST** contain every applied repair in deterministic order. It is
+  an empty array when `--fix` is not passed or no repairs were applied.
 - `nextActions` follows the [CLI spec's convention](../cli.md#conventions).
 
 Each finding object **MUST** contain:
@@ -228,6 +282,12 @@ Each finding object **MUST** contain:
 - `location` — the location object described in [Locations](#locations).
 - `fixable` — whether this finding has a deterministic repair under
   [Fixability](#fixability).
+
+Each repair object **MUST** contain:
+
+- `ruleId` — the rule id whose finding was repaired.
+- `message` — a deterministic description of the edit that was applied.
+- `location` — the location object for the repaired finding.
 
 The JSON object **MUST NOT** include human styling, terminal control sequences,
 or implementation-only fields. Additional documented fields MAY be added later
@@ -263,12 +323,23 @@ location.
 
 Human-readable output **MUST** include, for each finding, the severity, rule id,
 message, and location label. It **SHOULD** summarize the total errors and
-warnings. Styling and exact layout are governed by the CLI's output conventions
-and are not part of this sub-spec.
+warnings. When `--fix` applies repairs, human-readable output **MUST** also
+report how many repairs were applied. Styling and exact layout are governed by
+the CLI's output conventions and are not part of this sub-spec.
 
 When there are no findings, human-readable output **SHOULD** report that the file
 is valid. Under `--json`, a valid file is represented by `"valid": true`, zero
-counts in `summary`, and an empty `findings` array.
+counts in `summary.errors`, `summary.warnings`, and `summary.info`, and an empty
+`findings` array.
+
+### Exit status
+
+Without `--fix`, `lint` exits non-zero when it emits one or more `error`
+findings. Warnings and info findings do not affect the exit code.
+
+With `--fix`, `lint` exits non-zero when repair fails or when the post-repair
+lint result still contains one or more `error` findings. A run that fixes all
+errors and leaves only warnings exits zero.
 
 ### Ordering and blocking
 
