@@ -3,6 +3,32 @@
 ## 2026-06-17
 
 - **Completion**: Implemented and archived
+  [0009 — Diagnose rating-scale soundness in the meta-model](archive/0009-rating-scale-diagnostic.md),
+  adding the *rating scale and any overrides are well-formed and meaningful*
+  requirement to the [meta-model](../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)'s
+  Functionality factor. The meta-model previously assessed the rating scale only
+  structurally (lint's "well-shaped" check) and as one clause in a conformance
+  list, despite the scale being what turns assessments into verdicts and despite
+  per-requirement `ratings` overrides giving authors room to miscalibrate a
+  threshold or quietly redefine a level. Synced the Functionality summary and the
+  diagnostic coverage checklist, and confirmed `qualitymd lint` still reports the
+  model valid. No durable specs/docs were affected — the requirement traces to the
+  rating-scale semantics already in [`SPECIFICATION.md`](../SPECIFICATION.md),
+  which is unchanged.
+
+- **Creation**: Added change
+  [0009 — Diagnose rating-scale soundness in the meta-model](archive/0009-rating-scale-diagnostic.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0009-rating-scale-diagnostic/spec.md). Prompted by the
+  meta-model's coverage asymmetry — six requirements for the Markdown body
+  sections, but the rating scale assessed only for structural shape. The change
+  adds a single Functionality requirement covering level meaning, band
+  separability, floor placement against the model's needs and risks, and sound
+  per-requirement criterion overrides, written to pass trivially for a model that
+  inherits the suggested scale unchanged. Omits a design doc as a one-requirement
+  content change; records no affected durable specs/docs.
+
+- **Completion**: Implemented and archived
   [0008 — Describe targets with title and description](archive/0008-target-display-fields.md),
   adding `title` and `description` to Target, `description` to Model, and the
   matching durable [`SPECIFICATION.md`](../SPECIFICATION.md) prose and

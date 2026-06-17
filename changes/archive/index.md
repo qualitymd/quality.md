@@ -23,3 +23,7 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   lets every target carry a recommended `title` and optional `description`, and
   reframes the root as a Model (`ratingScale` + Target properties) so
   `ratingScale` is the one Model-only key (`Done`).
+- [0009 — Diagnose rating-scale soundness in the meta-model](0009-rating-scale-diagnostic.md) -
+  adds a meta-model Functionality requirement that judges a model's rating scale
+  and per-requirement criterion overrides for meaning, not only structure
+  (`Done`).

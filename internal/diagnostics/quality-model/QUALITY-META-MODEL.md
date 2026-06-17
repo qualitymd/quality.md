@@ -61,6 +61,16 @@ factors:
           The requirement set is complete, consistent, lean, feasible,
           comprehensible, and able to be validated; it has no unresolved
           placeholders, dangling references, conflicts, or redundant checks.
+      "the rating scale and any overrides are well-formed and meaningful":
+        assessment: >
+          The scale's levels are ordered best-to-worst, and each level's
+          description fixes a distinct, coherent standing for the whole model.
+          The bands are separable for this subject — an evaluator can tell where
+          findings land — and the acceptable floor sits where the model's needs
+          and risks put it. Where a requirement supplies its own `ratings`, each
+          override names a real level and replaces only that level's criterion —
+          never its meaning, order, or title — and appears only where the shared
+          criterion cannot express the gradient that matters.
       "the Overview body section frames the subject":
         assessment: >
           Where present, the Overview section establishes what the subject is, who
@@ -189,10 +199,10 @@ that artifact and any referenced assessment or source material needed to judge i
 
 ### Functionality
 
-Functionality covers purpose fit, model well-formedness, body-section quality,
-format conformance, and format completeness. These concerns are expressed as
-requirements under the Functionality factor because decomposition now happens
-through Targets.
+Functionality covers purpose fit, model well-formedness, rating-scale soundness,
+body-section quality, format conformance, and format completeness. These concerns
+are expressed as requirements under the Functionality factor because decomposition
+now happens through Targets.
 
 ### Usability
 
@@ -202,7 +212,8 @@ as nested factors.
 
 ## Diagnostic coverage checklist
 
-The schema migration preserves the previous diagnostic requirement set:
+The schema migration preserved the previous diagnostic requirement set, since
+extended with rating-scale soundness:
 
 - model fulfills its declared functional purpose
 - requirements collectively realize the model's declared needs
@@ -211,6 +222,7 @@ The schema migration preserves the previous diagnostic requirement set:
 - the factor set is well-formed as a whole
 - each requirement is individually well-formed
 - the requirement set is well-formed as a whole
+- the rating scale and any overrides are well-formed and meaningful
 - the Overview / Scope / Needs / Risks / Factors / Known gaps body sections do
   their prescribed jobs
 - the Markdown body earns its length
