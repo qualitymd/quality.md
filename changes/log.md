@@ -2,7 +2,15 @@
 
 ## 2026-06-17
 
-- **Revision**: Hardened [0003's design doc](0003-implement-lint-command/design.md)
+- **Completion**: Implemented and archived
+  [0003 — Implement the lint command](archive/0003-implement-lint-command.md),
+  adding `qualitymd lint`, the shared lint rule catalog, JSON and human output,
+  deterministic finding ordering, in-place `--fix` repair for fixable findings,
+  parser/render/write support in `internal/spec`, and focused tests for the rule
+  set, output shape, exit behavior, and repair behavior. Updated the README
+  status and moved the change into [`archive/`](archive/).
+
+- **Revision**: Hardened [0003's design doc](archive/0003-implement-lint-command/design.md)
   after review. Gave `internal/spec` a one-way dependency — it owns the document
   layer and no longer imports `internal/lint`, which now owns the rule catalog and
   the valid-model convenience (`lint.Load` replacing `spec.Load`) — removing a
@@ -15,9 +23,9 @@
   `fixable`) reflect the re-lint; and reframed Resolved Questions as Open
   questions with the parent-CLI invocation as the one genuinely-open item.
   Recorded the provisional `lint [path]` shape as deliberately not durably specced
-  in the [change](0003-implement-lint-command.md).
+  in the [change](archive/0003-implement-lint-command.md).
 - **Revision**: Worked down the open questions and risks in
-  [0003's design doc](0003-implement-lint-command/design.md): kept the shared
+  [0003's design doc](archive/0003-implement-lint-command/design.md): kept the shared
   document/model code in `internal/spec`, assigned rule-level repair operations
   to `internal/lint` and rendering/atomic replacement to `internal/spec`,
   resolved unknown frontmatter keys as `invalid-frontmatter` in this phase,
@@ -25,28 +33,28 @@
   for YAML round-tripping, deterministic ordering, atomic replacement, and
   symlink paths.
 - **Revision**: Scoped `--fix` into change
-  [0003 — Implement the lint command](0003-implement-lint-command.md) after
+  [0003 — Implement the lint command](archive/0003-implement-lint-command.md) after
   reviewing fixable-rule behavior. The durable lint spec, implementation spec,
   and design now require deterministic in-place repair of fixable findings,
   transactional per-file writes, post-repair linting, and JSON repair reporting,
   while keeping suppression, rule selection, and patch/full-file repair output
   modes deferred.
 - **Design**: Advanced change
-  [0003 — Implement the lint command](0003-implement-lint-command.md) from
+  [0003 — Implement the lint command](archive/0003-implement-lint-command.md) from
   `Draft` to `Design` and added its
-  [design doc](0003-implement-lint-command/design.md): `lint` parses once into a
+  [design doc](archive/0003-implement-lint-command/design.md): `lint` parses once into a
   shared document/model graph with stable `modelPath` locations and optional
   source positions, runs narrow rule visitors from `internal/lint`, exposes the
   traversal primitives needed by current rules and future query commands, and
   adds a narrow repair writer for `lint --fix`. The design uses `lint [path]`,
   defaulting to `QUALITY.md`, as the minimum invocation shape while the parent
   CLI spec continues to own the broader file/stdin convention. Updated the
-  change [index](0003-implement-lint-command/index.md).
+  change [index](archive/0003-implement-lint-command/index.md).
 
 - **Creation**: Added change
-  [0003 — Implement the lint command](0003-implement-lint-command.md)
+  [0003 — Implement the lint command](archive/0003-implement-lint-command.md)
   (`status: Draft`) with a child
-  [functional spec](0003-implement-lint-command/spec.md). The change defers
+  [functional spec](archive/0003-implement-lint-command/spec.md). The change defers
   command-specific behavior to the completed durable
   [`lint` sub-spec](../specs/cli/lint.md), records README status updates as the
   durable docs work before Done, and calls out the remaining cross-cutting CLI

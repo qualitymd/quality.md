@@ -1,13 +1,17 @@
 package spec
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+
+	"gopkg.in/yaml.v3"
 )
 
-func TestLoadCurrentSchema(t *testing.T) {
+func TestParseAndDecodeCurrentSchema(t *testing.T) {
 	path := writeModel(t, `---
 title: Example
 ratingScale:
@@ -29,9 +33,13 @@ targets:
 # Example quality model
 `)
 
-	model, err := Load(path)
+	doc, err := Parse(path)
 	if err != nil {
-		t.Fatalf("Load() error = %v", err)
+		t.Fatalf("Parse() error = %v", err)
+	}
+	model, err := Decode(doc)
+	if err != nil {
+		t.Fatalf("Decode() error = %v", err)
 	}
 	if len(model.RatingScale) != 2 {
 		t.Fatalf("len(RatingScale) = %d, want 2", len(model.RatingScale))
@@ -41,9 +49,28 @@ targets:
 	}
 }
 
-func TestLoadRejectsRootRatings(t *testing.T) {
+func TestParseRequiresFrontmatterFence(t *testing.T) {
+	path := writeModel(t, `title: Example
+ratingScale: []
+`)
+
+	_, err := Parse(path)
+	if err == nil {
+		t.Fatal("Parse() error = nil, want error")
+	}
+	var parseErr *ParseError
+	if !errors.As(err, &parseErr) {
+		t.Fatalf("Parse() error = %T, want ParseError", err)
+	}
+	if !strings.Contains(err.Error(), "frontmatter") {
+		t.Fatalf("Parse() error = %v, want frontmatter message", err)
+	}
+}
+
+func TestRenderPreservesMarkdownBody(t *testing.T) {
 	path := writeModel(t, `---
-ratings:
+title: Example
+ratingScale:
   - level: target
     criterion: Meets the requirement.
   - level: unacceptable
@@ -52,63 +79,59 @@ requirements:
   "has an assessment":
     assessment: Inspect it.
 ---
+
+# Example
+
+Keep this body exactly.
 `)
 
-	_, err := Load(path)
-	if err == nil {
-		t.Fatal("Load() error = nil, want error")
+	doc, err := Parse(path)
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
 	}
-	if !strings.Contains(err.Error(), "field ratings not found") {
-		t.Fatalf("Load() error = %v, want unknown ratings field", err)
+	rendered, err := Render(doc)
+	if err != nil {
+		t.Fatalf("Render() error = %v", err)
+	}
+	if !strings.Contains(string(rendered), "---\n\n# Example\n\nKeep this body exactly.\n") {
+		t.Fatalf("rendered body changed:\n%s", rendered)
 	}
 }
 
-func TestLoadRejectsOldPromptRequirement(t *testing.T) {
-	path := writeModel(t, `---
-ratingScale:
-  - level: target
-    criterion: Meets the requirement.
-  - level: unacceptable
-    criterion: Does not meet the requirement.
-requirements:
-  "has an assessment":
-    prompt: Inspect it.
----
-`)
-
-	_, err := Load(path)
-	if err == nil {
-		t.Fatal("Load() error = nil, want error")
+func TestMapEntries(t *testing.T) {
+	mapping := &yaml.Node{
+		Kind: yaml.MappingNode,
+		Content: []*yaml.Node{
+			{Kind: yaml.ScalarNode, Value: "first"},
+			{Kind: yaml.ScalarNode, Value: "1"},
+			{Kind: yaml.ScalarNode, Value: "second"},
+			{Kind: yaml.ScalarNode, Value: "2"},
+		},
 	}
-	if !strings.Contains(err.Error(), "field prompt not found") {
-		t.Fatalf("Load() error = %v, want unknown prompt field", err)
-	}
-}
 
-func TestLoadRejectsRatingScaleBelowRoot(t *testing.T) {
-	path := writeModel(t, `---
-ratingScale:
-  - level: target
-    criterion: Meets the requirement.
-  - level: unacceptable
-    criterion: Does not meet the requirement.
-targets:
-  api:
-    ratingScale:
-      - level: target
-        criterion: Meets the requirement.
-    requirements:
-      "has an assessment":
-        assessment: Inspect it.
----
-`)
-
-	_, err := Load(path)
-	if err == nil {
-		t.Fatal("Load() error = nil, want error")
+	var keys []string
+	for key, value := range MapEntries(mapping) {
+		keys = append(keys, key.Value+"="+value.Value)
 	}
-	if !strings.Contains(err.Error(), "field ratingScale not found") {
-		t.Fatalf("Load() error = %v, want unknown nested ratingScale field", err)
+	if want := []string{"first=1", "second=2"}; !reflect.DeepEqual(keys, want) {
+		t.Fatalf("MapEntries() = %v, want %v", keys, want)
+	}
+
+	count := 0
+	for range MapEntries(nil) {
+		count++
+	}
+	if count != 0 {
+		t.Fatalf("MapEntries(nil) yielded %d pairs, want 0", count)
+	}
+
+	scalar := &yaml.Node{Kind: yaml.ScalarNode, Value: "not a mapping"}
+	count = 0
+	for range MapEntries(scalar) {
+		count++
+	}
+	if count != 0 {
+		t.Fatalf("MapEntries(scalar) yielded %d pairs, want 0", count)
 	}
 }
 

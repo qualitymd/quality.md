@@ -110,7 +110,8 @@ judging is the agent's part.
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init`. The rest of the surface below is planned but not yet built.
+> `qualitymd init` and `qualitymd lint`. The rest of the surface below is
+> planned but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
@@ -121,8 +122,8 @@ their `source` manifests, records and rolls up results, and gates CI — while
 The deterministic CLI:
 
 - **`qualitymd init`** — scaffold a starter `QUALITY.md` to fill in.
-- **`qualitymd lint`** *(planned)* — validate a file's structure, fast and
-  deterministic, exiting non-zero on errors so it drops into CI.
+- **`qualitymd lint`** — validate a file's structure, fast and deterministic,
+  exiting non-zero on errors so it drops into CI.
 - **`qualitymd model` / `evaluation` / `result`** *(planned)* — inspect the
   model, manage a per-target evaluation run, record verdicts, and gate on the
   outcome with `evaluation report --fail-on`.
@@ -130,14 +131,14 @@ The deterministic CLI:
 The deep, judgment-based evaluation of a subject against its model is carried by
 **skills** that orchestrate those resources — not by a CLI command.
 
-The planned commands above other than `init` fail with "unknown command" until
-they land.
+The planned commands above other than `init` and `lint` fail with "unknown
+command" until they land.
 
 ## Install
 
 > **Status.** The format spec is settled — see
 > [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress.
-> Of the documented surface, **`init`** is currently built; **`lint`** and the
+> Of the documented surface, **`init`** and **`lint`** are currently built; the
 > **`model`/`evaluation`/`result`** resources are planned.
 
 `qualitymd` has no tagged release yet; build the current binary from source with

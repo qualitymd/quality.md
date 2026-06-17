@@ -10,7 +10,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 Design behind the [Implement the lint command](../0003-implement-lint-command.md)
 change and its [functional spec](spec.md). The durable
-[`qualitymd lint` sub-spec](../../specs/cli/lint.md) fixes the command-specific
+[`qualitymd lint` sub-spec](../../../specs/cli/lint.md) fixes the command-specific
 behavior; this doc covers how the code should make it so while leaving room for
 future deterministic model queries and writes.
 
@@ -229,7 +229,7 @@ defaulting to `QUALITY.md`. Stdin is deferred: `init` already uses `-` as a
 stdout sentinel, but the shared file/stdin convention is parent-CLI work, so
 `lint` does not add `-` handling yet. To avoid a confusing failure — a literal
 attempt to open a file named `-` — `lint` rejects a bare `-` with a clear error
-this phase, reserving the token for the parent [CLI spec](../../specs/cli.md).
+this phase, reserving the token for the parent [CLI spec](../../../specs/cli.md).
 
 The command owns only argument parsing, `--json`, `--fix`, output routing, and
 exit status. Parsing, linting, repair, sorting, and JSON document construction
@@ -322,7 +322,7 @@ the same `Result`, not rerun lint or use a separate finding shape.
 - **Parent CLI invocation contract** *(open).* This change implements
   `lint [path]`, defaulting to `QUALITY.md`, as a provisional shape and leaves
   stdin and the shared file-argument convention to the parent
-  [CLI spec](../../specs/cli.md), where they remain "To be specified." `lint` may
+  [CLI spec](../../../specs/cli.md), where they remain "To be specified." `lint` may
   need a small follow-up if that contract settles different stdin semantics. The
   shape is deliberately not recorded in a durable spec by this change (see the
   [change's affected-specs note](../0003-implement-lint-command.md)).

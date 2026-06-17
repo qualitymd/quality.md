@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/qualitymd/quality.md/internal/spec"
+	"github.com/qualitymd/quality.md/internal/lint"
 )
 
 func TestSkeletonConformsToCurrentSpec(t *testing.T) {
@@ -15,9 +15,9 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 		t.Fatalf("os.WriteFile() error = %v", err)
 	}
 
-	model, err := spec.Load(path)
+	model, err := lint.Load(path)
 	if err != nil {
-		t.Fatalf("spec.Load() error = %v", err)
+		t.Fatalf("lint.Load() error = %v", err)
 	}
 	if model.Title == "" {
 		t.Fatal("skeleton title is empty")

@@ -8,3 +8,5 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   reference template for the Change concept shape (`Done`).
 - [0002 — Specify the init command](0002-init-command.md) - settled and shipped
   `qualitymd init` (`Done`).
+- [0003 — Implement the lint command](0003-implement-lint-command.md) - built
+  `qualitymd lint` from the completed durable lint sub-spec (`Done`).

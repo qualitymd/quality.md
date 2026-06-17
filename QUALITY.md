@@ -3,15 +3,19 @@ title: QUALITY.md
 ratingScale:
   - level: outstanding
     title: Outstanding
+    description: "The stretch band: the artifact exceeds the quality requirement with meaningful margin."
     criterion: "Exceeds the requirement; satisfies it with margin to spare."
   - level: target
     title: Target
+    description: "The expected good state: the artifact satisfies the quality requirement."
     criterion: "Satisfies the requirement."
   - level: minimum
     title: Minimum
+    description: "The acceptable floor: the artifact falls short of the goal but remains good enough to proceed."
     criterion: "Falls short of the goal but holds the acceptable floor."
   - level: unacceptable
     title: Unacceptable
+    description: "Below the floor: the artifact does not satisfy the quality requirement acceptably."
     criterion: "Falls below the acceptable floor."
 targets:
   format-spec:

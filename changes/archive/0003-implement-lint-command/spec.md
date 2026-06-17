@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 # lint command implementation — functional spec
 
 Companion to the [Implement the lint command](../0003-implement-lint-command.md)
-change. The durable [`qualitymd lint` sub-spec](../../specs/cli/lint.md) is the
+change. The durable [`qualitymd lint` sub-spec](../../../specs/cli/lint.md) is the
 complete functional contract for command-specific behavior; this change spec
 states the implementation delta and does not restate the rule catalog or output
 schema.
@@ -20,7 +20,7 @@ interpreted as described in IETF RFC 2119.
 ## Scope
 
 Covered: add an executable `qualitymd lint` command that validates a
-`QUALITY.md` file according to [`specs/cli/lint.md`](../../specs/cli/lint.md),
+`QUALITY.md` file according to [`specs/cli/lint.md`](../../../specs/cli/lint.md),
 including the initial rule set, findings, locations, human output, `--json`
 output, `--fix` repair behavior, deterministic ordering, and
 blocked-downstream-rule behavior.
@@ -32,7 +32,7 @@ repair output modes, and a lint-emitted rule catalog.
 ## Requirements
 
 - The implementation **MUST** satisfy the command-specific behavior in the
-  durable [`qualitymd lint` sub-spec](../../specs/cli/lint.md).
+  durable [`qualitymd lint` sub-spec](../../../specs/cli/lint.md).
 - `lint` **MUST** be wired into the `qualitymd` CLI as a first-class command
   using the established Cobra/Fang stack.
 - `lint` **MUST** validate the same structural model that other local tooling
@@ -54,7 +54,7 @@ repair output modes, and a lint-emitted rule catalog.
 ## Cross-cutting dependency
 
 The lint sub-spec is complete for lint-specific behavior. The parent
-[`qualitymd` CLI spec](../../specs/cli.md) still has the shared invocation form
+[`qualitymd` CLI spec](../../../specs/cli.md) still has the shared invocation form
 and file/stdin argument convention in its "To be specified" list. This change
 settles only the minimum invocation shape needed to implement `lint` now:
 `qualitymd lint [path]`, defaulting to `QUALITY.md`. Stdin handling and the
@@ -69,4 +69,4 @@ shared file argument convention remain parent-CLI work.
 - Human-readable output and `--json` output are covered by tests.
 - The README no longer describes `lint` as planned.
 - The change is moved to **Done** and archived according to the
-  [changes process](../index.md#status-lifecycle).
+  [changes process](../../index.md#status-lifecycle).

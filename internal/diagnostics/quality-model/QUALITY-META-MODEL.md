@@ -4,15 +4,19 @@ source: ./QUALITY.md
 ratingScale:
   - level: outstanding
     title: Outstanding
+    description: "The diagnostic subject exceeds the requirement with meaningful margin."
     criterion: "Exceeds the diagnostic requirement; satisfies it with margin to spare."
   - level: target
     title: Target
+    description: "The diagnostic subject satisfies the requirement with no material gaps."
     criterion: "Satisfies the diagnostic requirement; no material gaps."
   - level: minimum
     title: Minimum
+    description: "The diagnostic subject satisfies the core requirement while leaving minor or scoped gaps."
     criterion: "Satisfies the core of the requirement but falls short of the goal; minor or scoped gaps remain at the acceptable floor."
   - level: unacceptable
     title: Unacceptable
+    description: "The diagnostic subject falls below the acceptable floor for the requirement."
     criterion: "Does not satisfy the diagnostic requirement; falls below the acceptable floor."
 factors:
   functionality:
@@ -220,5 +224,3 @@ The schema migration preserves the previous diagnostic requirement set:
 
 - The model's own maintainability is judged through Developer usability rather
   than as a standalone factor.
-- The structural-lint floor depends on `qualitymd lint`, which is specified but
-  not yet implemented.
