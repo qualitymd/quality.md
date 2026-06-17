@@ -35,9 +35,9 @@ The presence of a `QUALITY.md` file in a directory implies that the directory an
 
 ### YAML Frontmatter
 
-`QUALITY.md` files MUST begin with a valid YAML frontmatter block containing the required **Model** properties specified below.
+`QUALITY.md` files MUST begin with a valid YAML frontmatter block containing the required **Model** properties specified below. Every property that is present MUST use the YAML shape shown for it in the schemas below — for example `ratingScale` as a list of rating levels, and `factors`, `requirements`, and `targets` as maps; frontmatter that parses as YAML but does not conform to these shapes is not a valid `QUALITY.md`.
 
-When authoring `QUALITY.md` frontmatter, null or empty optional properties SHOULD be omitted.
+When authoring `QUALITY.md` frontmatter, null or empty optional properties SHOULD be omitted. A required property is not satisfied by a null or empty value — such a value is treated as absent.
 
 #### Model
 
@@ -113,7 +113,7 @@ source: <string>                # Optional
 
 *A target MAY declare no factors or requirements of its own and serve purely as a grouping node (holding only child targets), but each target SHOULD lead to at least one requirement somewhere in its subtree — its own, one carried by a factor, or one contributed by a descendant. A target whose subtree contains no requirements evaluates nothing.
 
-A target shares the structure of the model root but for two keys — `title` and `ratingScale` — which are declared only on the model root (see [Model](#model)).
+A target shares the structure of the model root but for two keys — `title` and `ratingScale` — which are declared only on the model root: a non-root target MUST NOT declare either (see [Model](#model)).
 
 **Factors**: quality characteristics scoped to this target's subtree. A factor declared on a target applies to that target and its descendants, not to unrelated targets.
 
