@@ -2,6 +2,138 @@
 
 ## 2026-06-17
 
+- **Refinement**: Added a human-readable rendering to change
+  [0006 — Specify and implement the spec command](0006-spec-command.md). `spec`
+  now **SHOULD** render the specification formatted (via the stack's terminal
+  renderer) when stdout is a terminal, while still writing **verbatim Markdown**
+  when output must be plain (non-terminal or `NO_COLOR`) — so a redirect still
+  reproduces the artifact byte-for-byte and the `--json` carve-out is unaffected.
+  The rendered/verbatim split needs no flag: it rides the
+  [baseline](../specs/cli.md#baseline)'s existing terminal-detection rule, exactly
+  as color does. Updated the [functional spec](0006-spec-command/spec.md) and the
+  change's scope.
+
+- **Creation**: Added change
+  [0006 — Specify and implement the spec command](0006-spec-command.md)
+  (`status: Draft`) with its
+  [functional spec](0006-spec-command/spec.md). Picks up the `spec` command that
+  [0004](archive/0004-specify-agent-accessibility.md) deferred as "a separate
+  change that inherits this baseline." The change settles the still-stub
+  [`specs/cli/spec.md`](../specs/cli/spec.md) — whose open questions predate and
+  now conflict with the agent-accessibility work (it floats a `--format json`
+  form the settled [`--json` convention](../specs/cli.md#conventions) forbids) —
+  and lands the command: emit the bundled format specification verbatim as
+  Markdown to stdout, no arguments, no `--json` (the verbatim-artifact carve-out),
+  full baseline conformance. Records [`specs/cli/spec.md`](../specs/cli/spec.md)
+  and [`README.md`](../README.md) as affected; structured forms, sub-views, and
+  `spec`-specific flags are deferred. A design doc follows at **Design** for how
+  the root-level specification is embedded. Updated the bundle [index](index.md).
+
+- **Refinement**: Recorded the schema-source direction for change
+  [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md):
+  a **typed Go declaration** the linter derives from directly (over an embedded
+  data file or a `specs/` concept), with spec/linter consistency enforced by a
+  test checking [`SPECIFICATION.md`](../SPECIFICATION.md) against it rather than by
+  generating docs — lowest-machinery path that meets the spec's requirements, with
+  data-file/generation revisited only if a second consumer appears. Left
+  unknown-key typo suggestions as a deferred follow-up, untouched. Detail lands in
+  the design doc at **Design**.
+
+- **Creation**: Added change
+  [0005 — Single source of truth for the structural schema](0005-schema-source-of-truth.md)
+  (`status: Draft`) with its
+  [functional spec](0005-schema-source-of-truth/spec.md). Prompted by reviewing
+  design.md's linter, which derives its structural rules from one schema artifact:
+  our structural schema is encoded twice — implicitly in `internal/lint/rules.go`
+  and again in prose in [`SPECIFICATION.md`](../SPECIFICATION.md) and
+  [`specs/`](../specs/index.md) — so the two can drift. The change requires a
+  single authoritative definition of valid keys, required properties, and the
+  rating-scale shape that the linter derives from, as a behavior-preserving
+  refactor; records [`SPECIFICATION.md`](../SPECIFICATION.md) and
+  [`specs/cli/lint.md`](../specs/cli/lint.md) as affected durable docs; and defers
+  doc generation, runtime configuration, and unknown-key typo suggestions. Updated
+  the bundle [index](index.md).
+
+- **Completion**: Implemented and archived
+  [0004 — Specify and enforce agent accessibility](archive/0004-specify-agent-accessibility.md),
+  adding the durable [CLI spec](../specs/cli.md) agent-accessibility contract,
+  categorized exit codes (`0`/`1`/`2`/`70`), the broadened `--json` convention,
+  and the [`init --json`](../specs/cli/init.md) receipt contract. The
+  implementation maps exit categories through Fang, suppresses duplicate stderr
+  for already-reported lint findings, adds the neutral `internal/receipt` action
+  type, and tests the exit categories plus receipt and overwrite-refusal shapes.
+- **Design**: Advanced change
+  [0004 — Specify and enforce agent accessibility](archive/0004-specify-agent-accessibility.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0004-specify-agent-accessibility/design.md). Reading
+  `fang@v1.0.0` confirmed `fang.Execute` returns the command error and never
+  exits, so categorized exit codes ride Fang's intended model: a thin boundary
+  mapping in `cli.Execute` (`errors.As` → category, default `ExitInternal`), a
+  `CodedError` carrying the category plus a `Silent` flag, a `WithErrorHandler`
+  that suppresses the already-reported `lint` found-problems error, and
+  Cobra-native `FlagErrorFunc`/`Args` hooks to tag usage errors at their source —
+  with only an unknown-subcommand string fallback left as an explicit open
+  decision. Picked `0`/`1`/`2`/`70` for success / found-problems / usage /
+  internal, broadened *internal error* to "could not complete the requested
+  action" so guarded refusals (e.g. `init` overwrite without `--force`) have a
+  home, and ruled `-` plus `--json` a usage error. Settled the one open
+  design decision — keep a thin, owned prefix check so an unknown subcommand maps
+  to `ExitUsage` (option a), failing safe to `ExitInternal` and pinned by a test.
+  Reconciled the
+  [functional spec](archive/0004-specify-agent-accessibility/spec.md)'s internal-error
+  definition with that broadening, and updated the change
+  [index](archive/0004-specify-agent-accessibility/index.md) and bundle
+  [index](index.md).
+
+- **Scope**: Broadened the `--json` convention within change
+  [0004 — Specify and enforce agent accessibility](archive/0004-specify-agent-accessibility.md)
+  after comparing against agent-first CLIs (e.g. Basecamp, where nearly every
+  command accepts `--json`). The change now revises the
+  [CLI spec](../specs/cli.md)'s `--json` convention from a narrow should-offer
+  gate to a SHOULD-by-default: commands SHOULD offer `--json`, human rendering
+  stays the default (no auto-JSON), a command MAY omit it only when its output is
+  a verbatim artifact that is the payload (e.g. `spec`), and under `--json` a
+  side-effecting command emits a **result receipt** rather than human prose. The
+  conformance work gains `init --json` (a receipt of the written path / created
+  flag / `nextActions`), and [`specs/cli/init.md`](../specs/cli/init.md) joins
+  the affected durable docs — its "offers no `--json`" statement is replaced by
+  the receipt contract. `spec` stays the deliberate carve-out. Updated the
+  functional [spec](archive/0004-specify-agent-accessibility/spec.md), the change
+  [index](archive/0004-specify-agent-accessibility/index.md), and the bundle
+  [index](index.md).
+
+- **Scope**: Expanded change
+  [0004 — Specify and enforce agent accessibility](archive/0004-specify-agent-accessibility.md)
+  from a spec-only change to spec **plus** conformance after auditing the shipped
+  commands. `internal/cli` exits `1` on every error path, so a `lint` that *found
+  problems* is indistinguishable from a usage or internal error — a baseline
+  violation. The change now settles the **exit-code categories** (success,
+  ran-but-found-problems, usage error, internal error) concretely, removes both
+  *Agent-accessibility and CI requirements* and *Exit-code semantics* from the
+  [CLI spec](../specs/cli.md)'s "To be specified" list, and brings `init` and
+  `lint` into compliance with tests. Threading distinct codes through Fang is a
+  real design question, so the change now carries a forthcoming
+  [design doc](archive/0004-specify-agent-accessibility/design.md) (added at **Design**);
+  the unimplemented [`spec`](../specs/cli/spec.md) command is scoped out as a
+  separate change that inherits the baseline. Retitled accordingly and updated
+  the change [index](archive/0004-specify-agent-accessibility/index.md) and bundle
+  [index](index.md).
+
+- **Creation**: Added change
+  [0004 — Specify agent accessibility](archive/0004-specify-agent-accessibility.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0004-specify-agent-accessibility/spec.md). The change settles
+  the *Agent-accessibility and CI requirements* item on the
+  [CLI spec](../specs/cli.md)'s "To be specified" list by adding an **Agent
+  accessibility** section framed as two tiers: a baseline every in-scope command
+  owes (non-interactivity, stdout-is-payload/stderr-is-everything-else,
+  determinism, categorized exit codes, plain non-TTY output) and the opt-in
+  capabilities (`--json`, `nextActions`, quiet/verbosity) gated by criteria and
+  cross-referenced to the existing conventions. Records
+  [`specs/cli.md`](../specs/cli.md) as the only affected durable doc; no command
+  behavior changes. Omits a design doc as spec-only work. Updated the bundle
+  [index](index.md).
+
 - **Completion**: Implemented and archived
   [0003 — Implement the lint command](archive/0003-implement-lint-command.md),
   adding `qualitymd lint`, the shared lint rule catalog, JSON and human output,

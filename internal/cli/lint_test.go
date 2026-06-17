@@ -30,6 +30,9 @@ requirements:
 	if err == nil {
 		t.Fatal("Execute() error = nil, want lint error")
 	}
+	if got := codeFor(err); got != ExitProblems {
+		t.Fatalf("codeFor(error) = %d, want %d", got, ExitProblems)
+	}
 	if !strings.Contains(out.String(), `"valid": false`) || !strings.Contains(out.String(), `"ruleId": "too-few-levels"`) {
 		t.Fatalf("stdout = %s, want JSON lint result", out.String())
 	}
@@ -62,6 +65,9 @@ requirements:
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
+	if got := codeFor(nil); got != ExitOK {
+		t.Fatalf("codeFor(nil) = %d, want %d", got, ExitOK)
+	}
 	if !strings.Contains(out.String(), path+" is valid.") {
 		t.Fatalf("stdout = %q, want valid message", out.String())
 	}
@@ -78,6 +84,42 @@ func TestLintRejectsStdinSentinel(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "does not read from stdin") {
 		t.Fatalf("Execute() error = %v, want stdin message", err)
+	}
+}
+
+func TestLintMissingFileMapsToInternal(t *testing.T) {
+	cmd := newRootCmd()
+	cmd.SetOut(&bytes.Buffer{})
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"lint", filepath.Join(t.TempDir(), "missing.md")})
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("Execute() error = nil, want missing-file error")
+	}
+	if got := codeFor(err); got != ExitInternal {
+		t.Fatalf("codeFor(error) = %d, want %d", got, ExitInternal)
+	}
+}
+
+func TestMalformedInvocationsMapToUsage(t *testing.T) {
+	for name, args := range map[string][]string{
+		"unknown flag":    {"lint", "--bogus"},
+		"too many args":   {"lint", "one.md", "two.md"},
+		"unknown command": {"bogus"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			cmd := newRootCmd()
+			cmd.SetOut(&bytes.Buffer{})
+			cmd.SetErr(&bytes.Buffer{})
+			cmd.SetArgs(args)
+			err := cmd.Execute()
+			if err == nil {
+				t.Fatal("Execute() error = nil, want usage error")
+			}
+			if got := codeFor(err); got != ExitUsage {
+				t.Fatalf("codeFor(error) = %d, want %d; err = %v", got, ExitUsage, err)
+			}
+		})
 	}
 }
 

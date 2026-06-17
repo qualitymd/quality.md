@@ -4,11 +4,35 @@ package cli
 
 import (
 	"context"
+	"errors"
+	"io"
 	"os"
+	"strings"
 
 	"github.com/charmbracelet/fang"
 	"github.com/spf13/cobra"
 )
+
+const (
+	ExitOK       = 0
+	ExitProblems = 1
+	ExitUsage    = 2
+	ExitInternal = 70
+)
+
+type codedError struct {
+	code   int
+	silent bool
+	err    error
+}
+
+func (e *codedError) Error() string {
+	return e.err.Error()
+}
+
+func (e *codedError) Unwrap() error {
+	return e.err
+}
 
 // Build-time metadata. goreleaser overrides these via -ldflags.
 var (
@@ -26,6 +50,9 @@ func newRootCmd() *cobra.Command {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
+	root.SetFlagErrorFunc(func(_ *cobra.Command, err error) error {
+		return usageError(err)
+	})
 	root.AddCommand(newInitCmd())
 	root.AddCommand(newLintCmd())
 	return root
@@ -34,12 +61,71 @@ func newRootCmd() *cobra.Command {
 // Execute builds the command tree and runs it. It exits non-zero on error;
 // Fang renders the error.
 func Execute() {
-	if err := fang.Execute(
-		context.Background(),
-		newRootCmd(),
+	os.Exit(execute(context.Background(), newRootCmd()))
+}
+
+func execute(ctx context.Context, root *cobra.Command) int {
+	err := fang.Execute(
+		ctx,
+		root,
 		fang.WithVersion(version),
 		fang.WithCommit(commit),
-	); err != nil {
-		os.Exit(1)
+		fang.WithErrorHandler(errorHandler),
+	)
+	return codeFor(err)
+}
+
+func codeFor(err error) int {
+	if err == nil {
+		return ExitOK
 	}
+	var coded *codedError
+	if errors.As(err, &coded) {
+		return coded.code
+	}
+	if isUsageError(err) {
+		return ExitUsage
+	}
+	return ExitInternal
+}
+
+func errorHandler(w io.Writer, styles fang.Styles, err error) {
+	var coded *codedError
+	if errors.As(err, &coded) && coded.silent {
+		return
+	}
+	fang.DefaultErrorHandler(w, styles, err)
+}
+
+func usage(validator cobra.PositionalArgs) cobra.PositionalArgs {
+	return func(cmd *cobra.Command, args []string) error {
+		if err := validator(cmd, args); err != nil {
+			return usageError(err)
+		}
+		return nil
+	}
+}
+
+func usageError(err error) error {
+	return &codedError{code: ExitUsage, err: err}
+}
+
+func silentProblems(err error) error {
+	return &codedError{code: ExitProblems, silent: true, err: err}
+}
+
+func isUsageError(err error) bool {
+	s := err.Error()
+	for _, prefix := range []string{
+		"flag needs an argument:",
+		"unknown flag:",
+		"unknown shorthand flag:",
+		"unknown command",
+		"invalid argument",
+	} {
+		if strings.HasPrefix(s, prefix) {
+			return true
+		}
+	}
+	return false
 }

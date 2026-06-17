@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/qualitymd/quality.md/internal/document"
+	"github.com/qualitymd/quality.md/internal/receipt"
 	"gopkg.in/yaml.v3"
 )
 
@@ -59,7 +60,7 @@ func (s *runState) result(repairs []RepairRecord) Result {
 		Summary:       summary,
 		Findings:      findings,
 		Repairs:       repairs,
-		NextActions:   []Action{},
+		NextActions:   []receipt.Action{},
 	}
 }
 

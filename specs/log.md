@@ -2,6 +2,16 @@
 
 ## 2026-06-17
 
+- **Revision**: Added the [CLI spec](cli.md)'s **Agent accessibility** section:
+  a non-opt-in baseline for in-scope commands (non-interactivity,
+  stdout-is-payload/stderr-is-diagnostics, determinism, plain non-TTY output,
+  and categorized exit codes) plus opt-in capabilities (`--json`, `nextActions`,
+  and deferred quiet/verbosity). Documented exit codes `0` success, `1`
+  ran-but-found-problems, `2` usage error, and `70` internal/could-not-complete
+  error; revised the `--json` convention to a SHOULD-by-default with a
+  verbatim-artifact carve-out and result receipts for side-effecting commands;
+  and updated [`init`](cli/init.md) to specify its JSON receipt, `--json -`
+  usage error, and JSON overwrite-refusal object.
 - **Revision**: Reframed the [`/quality`](skills/quality-skill.md) skill's
   relationship to the format spec's evaluation from **deference** to
   **conformance**: the skill now *owns and specifies* its evaluation process

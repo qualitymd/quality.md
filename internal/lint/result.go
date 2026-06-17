@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
 const schemaVersion = 1
@@ -86,13 +88,13 @@ type PathSegment = any
 
 // Result is the JSON contract emitted by qualitymd lint.
 type Result struct {
-	SchemaVersion int            `json:"schemaVersion"`
-	Path          string         `json:"path"`
-	Valid         bool           `json:"valid"`
-	Summary       Summary        `json:"summary"`
-	Findings      []Finding      `json:"findings"`
-	Repairs       []RepairRecord `json:"repairs"`
-	NextActions   []Action       `json:"nextActions"`
+	SchemaVersion int              `json:"schemaVersion"`
+	Path          string           `json:"path"`
+	Valid         bool             `json:"valid"`
+	Summary       Summary          `json:"summary"`
+	Findings      []Finding        `json:"findings"`
+	Repairs       []RepairRecord   `json:"repairs"`
+	NextActions   []receipt.Action `json:"nextActions"`
 }
 
 // Summary counts findings and repairs in a lint result.
@@ -127,13 +129,6 @@ type RepairRecord struct {
 	RuleID   RuleID   `json:"ruleId"`
 	Message  string   `json:"message"`
 	Location Location `json:"location"`
-}
-
-// Action is a suggested next action.
-type Action struct {
-	ID      string `json:"id"`
-	Label   string `json:"label"`
-	Command string `json:"command,omitempty"`
 }
 
 // JSON formats the result as the lint JSON document.

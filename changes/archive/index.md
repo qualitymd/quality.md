@@ -10,3 +10,4 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   `qualitymd init` (`Done`).
 - [0003 — Implement the lint command](0003-implement-lint-command.md) - built
   `qualitymd lint` from the completed durable lint sub-spec (`Done`).
+- [0004 — Specify and enforce agent accessibility](0004-specify-agent-accessibility.md) - added the CLI agent-accessibility contract, broadened `--json`, and enforced categorized exit codes plus `init --json` (`Done`).

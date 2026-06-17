@@ -18,10 +18,7 @@ interpreted as described in IETF RFC 2119.
 ## Scope
 
 Covered: the output target and stdout piping, overwrite protection, and the
-contents of the scaffold `init` produces.
-
-Per the [CLI spec's `--json` convention](../cli.md#conventions), `init` offers
-no `--json` output.
+contents of the scaffold `init` produces, including its `--json` result receipt.
 
 ## Requirements
 
@@ -34,6 +31,8 @@ no `--json` output.
 - A path argument of `-` **MUST** write the scaffold to standard output rather
   than a file. When emitting to standard output, overwrite protection does not
   apply; nothing on disk is read or replaced.
+- `init --json -` **MUST** fail with a usage error because `-` selects the raw
+  scaffold on stdout while `--json` selects a receipt on stdout.
 
 ### Overwrite protection
 
@@ -71,6 +70,18 @@ no `--json` output.
 - `init` **SHOULD** close with
   [next actions](../cli.md#conventions) pointing the author to validate and then
   edit the new file, for example `qualitymd lint QUALITY.md`.
+- Under `--json`, `init` **MUST** emit a single result receipt on stdout instead
+  of the human confirmation. The receipt **MUST** include:
+  - `schemaVersion` — `1` until the receipt shape changes incompatibly;
+  - `path` — the file path written;
+  - `created` — `true` when a new file was created and `false` when `--force`
+    overwrote an existing file; and
+  - `nextActions` — the same next-action data that would render as the human
+    footer.
+- When `init --json` refuses to overwrite an existing file, it **MUST NOT** emit
+  a success receipt. It **SHOULD** emit a JSON error object on stderr with
+  `schemaVersion`, `path`, and `reason`; the exit code remains the CLI spec's
+  internal-error category.
 
 ## Deferred
 

@@ -9,6 +9,7 @@ import (
 
 	"github.com/qualitymd/quality.md/internal/document"
 	"github.com/qualitymd/quality.md/internal/model"
+	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
 // Check parses and lints path, defaulting to QUALITY.md.
@@ -134,7 +135,7 @@ func parse(path string) (*document.Document, *Result, error) {
 			Summary:       Summary{Errors: 1},
 			Findings:      []Finding{finding},
 			Repairs:       []RepairRecord{},
-			NextActions:   []Action{},
+			NextActions:   []receipt.Action{},
 		}
 		return nil, &result, nil
 	}

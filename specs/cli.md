@@ -8,15 +8,17 @@ timestamp: 2026-06-16T00:00:00Z
 
 # qualitymd CLI
 
-> 🚧 **Placeholder.** This spec is a stub. It will specify the cross-cutting
-> contract every `qualitymd` command shares — invocation, flags, output, exit
-> codes, and agent accessibility — independent of any one command's behavior.
-> Per-command behavior lives in the command sub-specs under [Commands](#commands).
+This document specifies the high-level requirements for the `qualitymd`
+command-line interface — invocation-wide behavior, output conventions, exit
+codes, and agent accessibility independent of any one command's behavior.
+Per-command behavior lives in the command sub-specs under [Commands](#commands).
 
-This document will specify the high-level requirements for the `qualitymd`
-command-line interface. It is a companion to the
+It is a companion to the
 [`QUALITY.md` format specification](../SPECIFICATION.md): where this document
 constrains the *tool*, the format spec constrains the *file*.
+
+The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
+interpreted as described in IETF RFC 2119.
 
 ## Scope
 
@@ -57,33 +59,89 @@ help and error rendering, or reimplementing what the harness already provides �
 is a signal to reshape the requirement, not the stack. Where a command
 deliberately diverges from a stack default, its sub-spec should say so and why.
 
+## Agent accessibility
+
+Agent accessibility is the property that lets a non-interactive caller — an
+agent, CI, or another tool — drive a command reliably. This is the CLI's role in
+`qualitymd`: the deterministic, mechanical surface that skills and automation
+evaluate through.
+
+The contract has two tiers:
+
+- **Baseline.** Every command within this spec's [Scope](#scope) owes these
+  invariants. The baseline is not opt-in and has no per-command exemption.
+- **Opt-in capabilities.** A caller activates these per invocation, when a
+  command offers them: `--json`, `nextActions`, and the still-to-be-specified
+  quiet/verbosity control.
+
+### Baseline
+
+Every in-scope command:
+
+- **MUST** run non-interactively. It never blocks on a prompt and never assumes a
+  TTY. When required input is absent, it fails with a diagnostic and a usage exit
+  code rather than waiting.
+- **MUST** keep stdout as the payload and stderr for diagnostics, progress, and
+  human next-action footers, so redirecting or piping stdout is never polluted.
+- **MUST** be deterministic: the same input and file state produce the same
+  output, with no timestamps, ordering jitter, or sampling in the payload.
+- **MUST** signal its outcome through the exit-code categories below.
+- **MUST** emit plain output with no color or terminal escape sequences when
+  stdout is not a terminal, honoring `NO_COLOR`. The Fang / Lip Gloss stack's
+  idiomatic non-TTY behavior is the expected mechanism for this.
+
+### Exit Codes
+
+`qualitymd` exits `0` only on success. Non-zero outcomes use these stable,
+documented categories so callers can branch without parsing output:
+
+| Code | Category               | Meaning                                                                                                                           |
+| ---- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `0`  | Success                | The command did its job and found nothing to report.                                                                              |
+| `1`  | Ran but found problems | The command completed normally but its result is a reportable negative, such as `lint` finding error-severity findings.           |
+| `2`  | Usage error            | The invocation was malformed: unknown flag, bad argument, incompatible options, or unknown command.                               |
+| `70` | Internal error         | The command could not complete the requested action: I/O failure, unmet precondition such as guarded overwrite refusal, or a bug. |
+
+### Opt-in Capabilities
+
+Agent-facing enrichments are opt-in per invocation and do not weaken the
+baseline. `--json` is a near-universal SHOULD across commands, with the detailed
+rules in [Conventions](#conventions). `nextActions` are offered only when a
+command has a useful follow-up; their rendering is also defined in
+[Conventions](#conventions). The quiet/verbosity control that governs human
+noise remains deferred.
+
+A command that omits `--json` because its output is a verbatim artifact still
+owes the full baseline, including categorized exit codes and stderr diagnostics
+on failure.
+
 ## Conventions
 
 Conventions that hold wherever they apply, so flags and output behave the same
-across commands. They do not force a behavior onto every command — they fix the
-form a behavior takes once a command opts into it.
+across commands.
 
-**`--json` for machine-readable output.** Not every command offers a
-machine-readable form, but where one does, it is spelled `--json` — never
-`--format json` or a per-command variant. Commands default to human-readable
-terminal output; passing `--json` switches the command to emitting a single JSON
-document on stdout, the form agents and CI consume.
+**`--json` for machine-readable output.** Commands **SHOULD** offer
+machine-readable output, spelled `--json` — never `--format json` or a
+per-command variant. Machine-readable output is the broad default wherever it is
+meaningful, so an agent can reach for `--json` without reasoning per command
+about whether the flag exists.
 
-A command should offer `--json` when all of the following hold:
+Commands default to human-readable terminal output. There is no format
+auto-detection: passing `--json` is the only way to switch a command to emitting
+a JSON document on stdout, the form agents and CI consume.
 
-- Its primary job is to *produce results a caller reads*, rather than to perform
-  a side effect or emit a verbatim artifact.
-- Those results have, or can have, a stable documented schema worth committing to.
-- A non-interactive consumer — an agent, CI, another tool — would plausibly
-  branch on the *contents* of the output, not just the exit code.
+A command **MAY** omit `--json` only when its output is a verbatim artifact that
+*is* the payload and is meant to be redirected, so wrapping it adds nothing. For
+example, [`spec`](./cli/spec.md) emits the format specification itself.
 
-A command should not offer `--json` when its output is already a
-machine-consumable artifact that *is* the payload (so wrapping it in JSON adds
-nothing), when the command is purely side-effecting and its outcome is fully
-carried by the exit code, or when the output is free-form human guidance with no
-stable schema worth freezing. Among the current commands, [`lint`](./cli/lint.md)
-offers `--json` (its findings); [`spec`](./cli/spec.md) and [`init`](./cli/init.md)
-do not — the spec text and the scaffolded file are themselves the payload.
+Under `--json`, a side-effecting command **MUST** emit a result receipt — a JSON
+document describing what it did and carrying its `nextActions` in-band — rather
+than its human prose. This makes `--json` meaningful for commands whose human
+output is a confirmation rather than a result.
+
+Among the current commands, [`init`](./cli/init.md) offers a receipt,
+[`lint`](./cli/lint.md) offers its finding result, and [`spec`](./cli/spec.md)
+is the verbatim-artifact carve-out.
 
 **Suggested next actions.** A command may close its response with a short list of
 *next actions* — the commands a caller would most plausibly run next, given what
@@ -123,6 +181,4 @@ command has next actions to offer.
 - The shared invocation form and the file / stdin argument convention.
 - Global flags common to every command.
 - Output formats (human and machine-readable) and their stability.
-- Exit-code semantics.
-- Agent-accessibility and CI requirements.
 - Versioning of the binary and the format spec it targets.

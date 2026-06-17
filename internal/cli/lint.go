@@ -14,7 +14,7 @@ func newLintCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "lint [path]",
 		Short: "Validate a QUALITY.md file",
-		Args:  cobra.MaximumNArgs(1),
+		Args:  usage(cobra.MaximumNArgs(1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := "QUALITY.md"
 			if len(args) == 1 {
@@ -48,7 +48,10 @@ func newLintCmd() *cobra.Command {
 			} else if err := renderLintHuman(cmd, result); err != nil {
 				return err
 			}
-			return result.Err()
+			if err := result.Err(); err != nil {
+				return silentProblems(err)
+			}
+			return nil
 		},
 	}
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable JSON lint result")
