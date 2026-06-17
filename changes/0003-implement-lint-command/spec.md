@@ -1,12 +1,12 @@
 ---
 type: Functional Specification
-title: lint command implementation - functional spec
+title: lint command implementation — functional spec
 description: Implement qualitymd lint according to the durable lint sub-spec.
 tags: [cli, command, lint]
 timestamp: 2026-06-17T00:00:00Z
 ---
 
-# lint command implementation - functional spec
+# lint command implementation — functional spec
 
 Companion to the [Implement the lint command](../0003-implement-lint-command.md)
 change. The durable [`qualitymd lint` sub-spec](../../specs/cli/lint.md) is the

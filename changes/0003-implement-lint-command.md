@@ -50,6 +50,16 @@ Updated before this change reaches **Done**:
 - [ ] [`README.md`](../README.md) - drop the *(planned)* marker on `lint` and
       update the implementation-status note once the command ships.
 
+The `lint [path]` invocation shape (defaulting to `QUALITY.md`) is **deliberately
+not recorded in a durable spec by this change.** Invocation and the shared
+file/stdin argument convention are parent-CLI concerns, still on the
+[CLI spec](../specs/cli.md)'s "To be specified" list; recording a provisional
+`[path]` shape in `specs/cli/lint.md` now would pre-empt that decision and risk a
+second source of truth. The shape is provisional and tracked by that open
+parent-CLI item, which the
+[design doc](0003-implement-lint-command/design.md#open-questions) carries as a
+follow-up.
+
 If implementation reveals another functional gap, update the durable sub-spec
 before marking this change done.
 

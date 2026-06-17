@@ -1,12 +1,12 @@
 ---
 type: Design Doc
-title: lint command implementation - design doc
+title: lint command implementation — design doc
 description: How qualitymd lint parses, traverses, and reports findings against a shared model.
 tags: [cli, command, lint, design]
 timestamp: 2026-06-17T00:00:00Z
 ---
 
-# lint command implementation - design doc
+# lint command implementation — design doc
 
 Design behind the [Implement the lint command](../0003-implement-lint-command.md)
 change and its [functional spec](spec.md). The durable
@@ -52,16 +52,25 @@ before query/write commands exist. Split `internal/spec`'s responsibilities:
 - `WriteAtomic(path, bytes, mode)` writes a complete replacement through a temp
   file in the target directory, preserves the original file mode where possible,
   and renames it over the target path.
-- `Load(path)` remains the convenience API for callers that need a valid model;
-  it calls `Parse`, runs lint-style structural validation, and returns an error
-  when any error-severity finding exists.
-- `internal/lint` owns the lint rule catalog and reporting. It consumes the
-  parsed document model instead of reparsing YAML, and owns rule-level
-  `RepairOp`s.
 
-This keeps parser behavior shared: `lint`, future query commands, and callers of
-`Load` all look at the same model instead of drifting into separate YAML
-interpretations.
+`internal/spec` owns the document layer only — parsing, rendering, and atomic
+writes — and holds **no rule logic and does not import `internal/lint`**.
+
+`internal/lint` owns the lint rule catalog, reporting, and the "valid model"
+convenience. It consumes the parsed `spec.Document` instead of reparsing YAML,
+and owns rule-level `RepairOp`s:
+
+- `lint.Load(path)` replaces the old `spec.Load`: it calls `spec.Parse`, runs the
+  rule catalog, and returns an error when any error-severity finding exists. This
+  is the convenience API for callers that need a valid model (today only the
+  scaffold conformance test); they import `lint` rather than keep a second
+  validator.
+
+The dependency runs one way — `internal/lint` imports `internal/spec`, never the
+reverse — so there is a single rule implementation and no `spec`↔`lint` import
+cycle. Routing the valid-model check through the same rule catalog is what keeps
+parser and rule behavior from drifting: `lint`, future query commands, and
+callers that need a valid model all share one model and one set of rules.
 
 ### Preserve YAML identity beside typed values
 
@@ -71,6 +80,7 @@ The parsed document should retain both semantic values and source identity:
 type Document struct {
 	Path        string
 	Frontmatter *yaml.Node
+	Body        []byte // original Markdown body, preserved verbatim
 	Model       *Model
 }
 
@@ -88,6 +98,9 @@ The exact Go types can vary, but every target, factor, requirement, rating level
 and relevant property needs a stable `modelPath` plus optional YAML source
 position. `modelPath` is the machine contract from the lint spec; line and column
 are advisory. Missing-key findings attach to the path where the key would appear.
+The body is not a type detail to leave to the implementer: `Document` retains the
+original Markdown body bytes so `Render` can reattach them byte-for-byte, as the
+repair contract requires.
 
 Build the model from `yaml.Node` rather than only from struct decoding. Struct
 decoding is still useful once shapes are known, but lint rules need to distinguish
@@ -147,8 +160,10 @@ The repair flow is:
 5. Write a complete replacement to a temporary file in the same directory, then
    replace the target path.
 6. Parse and lint the repaired file again.
-7. Render the post-repair result, with `summary.fixed` and `repairs` populated
-   from the repairs applied in step 3.
+7. Render the post-repair result. The `findings` array and every `summary` count
+   except `fixed` — including `fixable` — reflect the post-repair lint from step
+   6; only `summary.fixed` and `repairs` come from the repairs applied in step 3.
+   A clean `--fix` therefore reports `fixable: 0` and `fixed: N`.
 
 This gives `lint --fix` transactional behavior per file: either every compatible
 repair is written, or the original file is left alone. It also avoids inventing
@@ -195,18 +210,26 @@ model rules blocked. Shape failures inside a parent node block only rules that
 need that malformed shape; they do not suppress unrelated checks elsewhere in
 the document.
 
-Unknown frontmatter keys are treated as model-shape failures under
-`invalid-frontmatter` for this change. Do not add a narrower unknown-key rule
-until the durable lint sub-spec calls for one.
+Genuinely unrecognized keys and wrong YAML shapes are treated as model-shape
+failures under `invalid-frontmatter` for this change; do not add a narrower
+unknown-key rule until the durable lint sub-spec calls for one. Known root-only
+keys are the exception: `title` or `ratingScale` on a non-root target is not an
+unknown key but a named defect, and the model must route it to
+`misplaced-root-key` — located at the offending key, non-blocking — rather than
+fold it into `invalid-frontmatter`. Build shape detection from the `yaml.Node`
+model, not from struct decoding with known-field enforcement, so that a condition
+with its own rule stays a locatable finding instead of a blocking decode error.
 
 ### Wire the CLI thinly
 
 Add `newLintCmd()` under `internal/cli` and register it from `root.go`.
 
-For this change, use the minimal invocation shape already used by `init`:
-`qualitymd lint [path]`, defaulting to `QUALITY.md`. Do not add stdin handling
-for `-` until the parent [CLI spec](../../specs/cli.md) settles the shared file
-argument convention.
+For this change, use a minimal invocation shape: `qualitymd lint [path]`,
+defaulting to `QUALITY.md`. Stdin is deferred: `init` already uses `-` as a
+stdout sentinel, but the shared file/stdin convention is parent-CLI work, so
+`lint` does not add `-` handling yet. To avoid a confusing failure — a literal
+attempt to open a file named `-` — `lint` rejects a bare `-` with a clear error
+this phase, reserving the token for the parent [CLI spec](../../specs/cli.md).
 
 The command owns only argument parsing, `--json`, `--fix`, output routing, and
 exit status. Parsing, linting, repair, sorting, and JSON document construction
@@ -281,20 +304,42 @@ the same `Result`, not rerun lint or use a separate finding shape.
   careful handling. Keep temp files in the target directory, preserve the
   original file mode where possible, and refuse `--fix` when the target path is a
   symlink until symlink semantics are specified.
+- **`Load`'s acceptance tightens.** Today's loader treats a fence-less file as
+  YAML in its entirety; `Parse` requires a frontmatter block, so fence-less input
+  now reports `invalid-frontmatter`. This is the intended direction — the lint
+  spec requires a leading frontmatter block — but it changes the existing load
+  path. The scaffold conformance test that runs the embedded skeleton through the
+  loader must stay clean under both the stricter parser and the full error-rule
+  set (it must not, for example, trip `empty-model`).
 - **The input convention is still not a durable CLI-wide contract.** This design
   uses `lint [path]` with a default of `QUALITY.md` so implementation can move.
   The parent CLI spec still needs to settle the shared file/stdin convention, and
   `lint` may need a small follow-up if that contract chooses different stdin
   semantics.
 
-## Resolved Questions
+## Open questions
+
+- **Parent CLI invocation contract** *(open).* This change implements
+  `lint [path]`, defaulting to `QUALITY.md`, as a provisional shape and leaves
+  stdin and the shared file-argument convention to the parent
+  [CLI spec](../../specs/cli.md), where they remain "To be specified." `lint` may
+  need a small follow-up if that contract settles different stdin semantics. The
+  shape is deliberately not recorded in a durable spec by this change (see the
+  [change's affected-specs note](../0003-implement-lint-command.md)).
+
+Settled during design:
 
 - **Package name.** Keep the shared document/model code in `internal/spec` for
   this change. Revisit `internal/model` only when a second command needs the same
   APIs and the package boundary becomes misleading.
+- **Package boundary.** `internal/spec` is the document layer and does not import
+  `internal/lint`. `internal/lint` imports `spec` and owns the rule catalog plus
+  the valid-model convenience (`lint.Load`). The dependency is one-way, so there
+  is a single rule implementation and no import cycle.
 - **Repair ownership.** `internal/lint` owns rule-level repair operations;
   `internal/spec` owns rendering and atomic file replacement.
-- **Unknown keys.** Report unknown-key shape failures as `invalid-frontmatter` in
-  this phase.
-- **Parent CLI invocation contract.** Implement `lint [path]`, defaulting to
-  `QUALITY.md`, and leave stdin handling to the parent CLI spec.
+- **Unknown keys.** Report genuinely unrecognized keys and wrong YAML shapes as
+  `invalid-frontmatter` in this phase. Known root-only keys (`title`,
+  `ratingScale`) on a non-root target are not unknown keys: they are reported as
+  `misplaced-root-key`, located at the offending key, not folded into
+  `invalid-frontmatter`.

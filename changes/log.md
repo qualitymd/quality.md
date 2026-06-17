@@ -2,6 +2,20 @@
 
 ## 2026-06-17
 
+- **Revision**: Hardened [0003's design doc](0003-implement-lint-command/design.md)
+  after review. Gave `internal/spec` a one-way dependency — it owns the document
+  layer and no longer imports `internal/lint`, which now owns the rule catalog and
+  the valid-model convenience (`lint.Load` replacing `spec.Load`) — removing a
+  `spec`↔`lint` import cycle and a duplicate validator. Routed misplaced root-only
+  keys (`title`/`ratingScale` on a non-root target) to `misplaced-root-key`
+  instead of `invalid-frontmatter`; added the original Markdown body to the
+  `Document` model so `Render` preserves it byte-for-byte; noted that `Load`'s
+  acceptance tightens under the required-frontmatter parser; had `lint` reject a
+  bare `-` this phase; clarified that post-repair `summary` counts (including
+  `fixable`) reflect the re-lint; and reframed Resolved Questions as Open
+  questions with the parent-CLI invocation as the one genuinely-open item.
+  Recorded the provisional `lint [path]` shape as deliberately not durably specced
+  in the [change](0003-implement-lint-command.md).
 - **Revision**: Worked down the open questions and risks in
   [0003's design doc](0003-implement-lint-command/design.md): kept the shared
   document/model code in `internal/spec`, assigned rule-level repair operations
