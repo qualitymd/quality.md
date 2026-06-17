@@ -176,9 +176,34 @@ Suppressing the footer rides on the global verbosity/quiet convention (still to
 be specified); the `nextActions` data under `--json` is always present when a
 command has next actions to offer.
 
+**Human output styling.** A command's default human output is styled for the
+terminal — color, weight, and a leading status glyph — drawn from a single brand
+palette shared with the harness's help, error, and version rendering, so the
+whole tool reads as one program. Styling is a terminal-only convenience layered
+over a canonical plain form:
+
+- The plain form is the source of truth. Styling **MUST NOT** change the words,
+  order, or facts the plain form carries; it only adds color and glyphs.
+- Styling applies **only** when the destination stream is a terminal and
+  `NO_COLOR` is unset, per the [baseline](#baseline). Piped, redirected, and
+  agent-driven output is the plain form, byte-for-byte.
+- A command **MAY** render a long verbatim artifact through the user's pager
+  (`$PAGER`, else a system default) when stdout is a terminal. Paging is never
+  load-bearing: it is skipped when stdout is not a terminal or no pager is
+  available, and the artifact is written directly instead.
+
+**Binary version.** `qualitymd --version` reports the version stamped into the
+binary at release. For a binary built without that stamp — `go install` or a
+local build — it **MUST** fall back to the module build information the Go
+toolchain embeds (the module version for an installed release, otherwise a
+development label carrying the VCS revision), so the reported version is never a
+bare placeholder.
+
 ## To be specified
 
 - The shared invocation form and the file / stdin argument convention.
 - Global flags common to every command.
-- Output formats (human and machine-readable) and their stability.
-- Versioning of the binary and the format spec it targets.
+- Machine-readable output stability across commands, and the verbosity/quiet
+  control that governs human noise.
+- The version of the format spec the binary targets and how it relates to the
+  binary version above.

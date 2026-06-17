@@ -7,6 +7,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"runtime/debug"
 	"strings"
 
 	"github.com/charmbracelet/fang"
@@ -66,14 +67,41 @@ func Execute() {
 }
 
 func execute(ctx context.Context, root *cobra.Command) int {
+	v, c := buildInfo()
 	err := fang.Execute(
 		ctx,
 		root,
-		fang.WithVersion(version),
-		fang.WithCommit(commit),
+		fang.WithVersion(v),
+		fang.WithCommit(c),
+		fang.WithColorSchemeFunc(brandColorScheme),
 		fang.WithErrorHandler(errorHandler),
 	)
 	return codeFor(err)
+}
+
+// buildInfo resolves the version and commit Fang reports. goreleaser stamps
+// both via -ldflags for releases; otherwise we recover what we can from the
+// embedded module build info so a `go install module@v1.2.3` shows its tag and
+// a local build inside the repo shows "dev (<short-sha>)" rather than a bare,
+// uninformative placeholder.
+func buildInfo() (string, string) {
+	if version != "dev" {
+		return version, commit
+	}
+	info, ok := debug.ReadBuildInfo()
+	if !ok {
+		return version, commit
+	}
+	var revision string
+	for _, setting := range info.Settings {
+		if setting.Key == "vcs.revision" {
+			revision = setting.Value
+		}
+	}
+	if v := info.Main.Version; v != "" && v != "(devel)" {
+		return v, revision
+	}
+	return "dev", revision
 }
 
 func codeFor(err error) int {

@@ -64,8 +64,8 @@ func TestSpecRejectsArguments(t *testing.T) {
 
 func TestSpecNoColorForcesPlainOutput(t *testing.T) {
 	t.Setenv("NO_COLOR", "1")
-	if shouldRenderSpec(panicFDWriter{}) {
-		t.Fatal("shouldRenderSpec() = true, want false when NO_COLOR is set")
+	if colorEnabled(panicFDWriter{}) {
+		t.Fatal("colorEnabled() = true, want false when NO_COLOR is set")
 	}
 }
 

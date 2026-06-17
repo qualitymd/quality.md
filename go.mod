@@ -5,15 +5,16 @@ go 1.26
 toolchain go1.26.4
 
 require (
+	charm.land/lipgloss/v2 v2.0.0-beta.3.0.20251106193318-19329a3e8410
 	github.com/charmbracelet/fang v1.0.0
 	github.com/charmbracelet/glamour v1.0.0
+	github.com/charmbracelet/x/exp/charmtone v0.0.0-20250603201427-c31516f43444
 	github.com/charmbracelet/x/term v0.2.2
 	github.com/spf13/cobra v1.10.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
-	charm.land/lipgloss/v2 v2.0.0-beta.3.0.20251106193318-19329a3e8410 // indirect
 	github.com/alecthomas/chroma/v2 v2.20.0 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
@@ -22,7 +23,6 @@ require (
 	github.com/charmbracelet/ultraviolet v0.0.0-20251106190538-99ea45596692 // indirect
 	github.com/charmbracelet/x/ansi v0.11.5 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.15 // indirect
-	github.com/charmbracelet/x/exp/charmtone v0.0.0-20250603201427-c31516f43444 // indirect
 	github.com/charmbracelet/x/exp/slice v0.0.0-20250327172914-2fdc97757edf // indirect
 	github.com/charmbracelet/x/termios v0.1.1 // indirect
 	github.com/charmbracelet/x/windows v0.2.2 // indirect

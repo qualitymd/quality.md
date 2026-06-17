@@ -3,6 +3,21 @@
 ## 2026-06-17
 
 - **Completion**: Implemented and archived
+  [0007 — Delightful human CLI output](archive/0007-delightful-cli-output.md),
+  giving the human surface a single brand palette shared with the Fang harness, a
+  styled [`lint`](../specs/cli/lint.md) finding list (severity glyphs, color,
+  clickable `file:line`, colored summary) and [`init`](../specs/cli/init.md)
+  confirmation, runnable `--help` examples on all three commands,
+  [`spec`](../specs/cli/spec.md) paging through `$PAGER`/`less`, and an
+  informative `--version` recovered from the Go toolchain's embedded build info.
+  All of it sits behind the TTY/`NO_COLOR` gate, so the agent-facing plain and
+  `--json` paths are byte-for-byte unchanged. Added the **Human output styling**
+  and **Binary version** conventions to the [CLI spec](../specs/cli.md), the
+  paging clause to the [`spec` sub-spec](../specs/cli/spec.md), the shared
+  `internal/cli/style.go`, and focused tests; the styling consolidates onto one
+  `colorEnabled` gate, retiring `spec`'s bespoke `shouldRenderSpec`.
+
+- **Completion**: Implemented and archived
   [0006 — Specify and implement the spec command](archive/0006-spec-command.md),
   replacing the placeholder [`spec` sub-spec](../specs/cli/spec.md), adding the
   [design doc](archive/0006-spec-command/design.md), registering

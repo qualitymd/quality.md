@@ -15,3 +15,7 @@ Completed changes, moved here from the bundle root when they reach **Done**.
 - [0006 — Specify and implement the spec command](0006-spec-command.md) -
   settled and shipped `qualitymd spec`, emitting the bundled format specification
   from the binary (`Done`).
+- [0007 — Delightful human CLI output](0007-delightful-cli-output.md) - gave the
+  human surface a shared brand palette, styled `lint` and `init` output, `--help`
+  examples, `spec` paging, and an informative `--version`, all behind the
+  TTY/`NO_COLOR` gate so the plain and JSON paths are untouched (`Done`).

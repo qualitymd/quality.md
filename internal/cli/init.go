@@ -3,6 +3,7 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -11,13 +12,29 @@ import (
 	"github.com/qualitymd/quality.md/internal/scaffold"
 )
 
+// renderInitHuman writes the post-scaffold confirmation and next-action footer
+// to w (stderr), styled when w is a terminal and plain otherwise.
+func renderInitHuman(w io.Writer, path, next string) error {
+	if !colorEnabled(w) {
+		_, err := fmt.Fprintf(w, "Created %s\n\nNext: %s\n", path, next)
+		return err
+	}
+	_, err := fmt.Fprintf(w, "%s Created %s\n\nNext: %s\n",
+		styleSuccess.Render(glyphSuccess), path, styleCommand.Render(next))
+	return err
+}
+
 func newInitCmd() *cobra.Command {
 	var force bool
 	var jsonOutput bool
 	cmd := &cobra.Command{
 		Use:   "init [path]",
 		Short: "Scaffold a starter QUALITY.md",
-		Args:  usage(cobra.MaximumNArgs(1)),
+		Example: "  qualitymd init\n" +
+			"  qualitymd init docs/QUALITY.md\n" +
+			"  qualitymd init - > QUALITY.md\n" +
+			"  qualitymd init --force",
+		Args: usage(cobra.MaximumNArgs(1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := "QUALITY.md"
 			if len(args) == 1 {
@@ -55,8 +72,7 @@ func newInitCmd() *cobra.Command {
 					NextActions:   actions,
 				})
 			}
-			_, err := fmt.Fprintf(cmd.ErrOrStderr(), "Created %s\n\nNext: %s\n", path, actions[0].Command)
-			return err
+			return renderInitHuman(cmd.ErrOrStderr(), path, actions[0].Command)
 		},
 	}
 	cmd.Flags().BoolVar(&force, "force", false, "overwrite an existing file")

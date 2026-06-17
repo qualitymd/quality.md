@@ -64,6 +64,29 @@ func TestExecuteMapsUsageAndInternalErrors(t *testing.T) {
 	}
 }
 
+func TestBuildInfoPrefersLdflagsVersion(t *testing.T) {
+	savedVersion, savedCommit := version, commit
+	t.Cleanup(func() { version, commit = savedVersion, savedCommit })
+
+	version, commit = "v1.2.3", "abc1234"
+	if v, c := buildInfo(); v != "v1.2.3" || c != "abc1234" {
+		t.Fatalf("buildInfo() = (%q, %q), want stamped (v1.2.3, abc1234)", v, c)
+	}
+}
+
+func TestBuildInfoFallsBackForDevVersion(t *testing.T) {
+	savedVersion, savedCommit := version, commit
+	t.Cleanup(func() { version, commit = savedVersion, savedCommit })
+
+	// With the placeholder version, buildInfo recovers what it can from the
+	// embedded build info; under `go test` that yields a revision but no tag,
+	// so the friendly "dev" label is kept rather than emitted verbatim.
+	version, commit = "dev", "none"
+	if v, _ := buildInfo(); v == "none" || v == "unknown (built from source)" {
+		t.Fatalf("buildInfo() version = %q, want a dev or recovered version", v)
+	}
+}
+
 func TestExecuteMapsSuccess(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "QUALITY.md")
 	if err := os.WriteFile(path, []byte(`---

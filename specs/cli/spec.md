@@ -42,6 +42,10 @@ Deferred:
 - When stdout is a terminal, `spec` **SHOULD** render the Markdown formatted for
   readability using the stack's terminal renderer. This rendering is a human
   convenience; it **MUST NOT** change the bytes written when output must be plain.
+- When stdout is a terminal, `spec` **MAY** display the rendered specification
+  through the user's pager per the [paging convention](../cli.md#conventions), so
+  a long spec scrolls. Paging is skipped when stdout is not a terminal, so a
+  redirect still reproduces the artifact byte-for-byte.
 - `spec` **MUST NOT** require any argument, and **MUST** treat an unexpected
   argument or flag as a usage error.
 - `spec` **MUST NOT** offer `--json`. It is the verbatim-artifact carve-out named
