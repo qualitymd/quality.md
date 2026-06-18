@@ -24,3 +24,7 @@ node_modules/
 # Agent guidance symlinks (edit AGENTS.md)
 /CLAUDE.md
 /GEMINI.md
+
+# Local skill dogfooding symlinks
+/.agents/skills/quality
+/.claude/skills/quality
