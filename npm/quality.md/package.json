@@ -1,6 +1,6 @@
 {
   "name": "quality.md",
-  "version": "0.0.0",
+  "version": "0.0.0-dev",
   "description": "Evaluate QUALITY.md specifications from the command line.",
   "homepage": "https://github.com/qualitymd/quality.md",
   "repository": {
