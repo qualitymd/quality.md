@@ -22,8 +22,27 @@ func TestModelsListHuman(t *testing.T) {
 	if !strings.Contains(out.String(), "NAME") || !strings.Contains(out.String(), "quality-meta-model") {
 		t.Fatalf("stdout = %q, want catalog table", out.String())
 	}
+	if hasTerminalEscape(out.String()) {
+		t.Fatalf("stdout = %q, want plain table for non-terminal writer", out.String())
+	}
 	if stderr.Len() != 0 {
 		t.Fatalf("stderr = %q, want empty", stderr.String())
+	}
+}
+
+func TestRenderModelsListStyledUsesSharedPalette(t *testing.T) {
+	var out bytes.Buffer
+	if err := renderModelsListStyled(&out, models.Catalog()); err != nil {
+		t.Fatalf("renderModelsListStyled() error = %v", err)
+	}
+	got := out.String()
+	for _, want := range []string{"NAME", "TITLE", "quality-meta-model"} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("styled table = %q, want substring %q", got, want)
+		}
+	}
+	if !hasTerminalEscape(got) {
+		t.Fatalf("styled table = %q, want terminal styling", got)
 	}
 }
 
@@ -43,6 +62,9 @@ func TestModelsListJSON(t *testing.T) {
 	}
 	if len(got) != 1 || got[0].Name != "quality-meta-model" {
 		t.Fatalf("decoded catalog = %#v, want quality-meta-model", got)
+	}
+	if hasTerminalEscape(out.String()) {
+		t.Fatalf("stdout = %q, want JSON without terminal escapes", out.String())
 	}
 }
 

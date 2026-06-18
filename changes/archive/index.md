@@ -31,3 +31,6 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   the `/quality` skill artifact, the `qualitymd models` bundled-model surface,
   skill-first onboarding docs, raw JSON evaluation example artifacts, and durable
   spec sync (`Done`).
+- [0011 — CLI human output polish](0011-cli-human-output-polish.md) - finishes
+  the remaining styled-output, lint next-action, dev-version, and gate-coverage
+  work (`Done`).

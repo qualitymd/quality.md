@@ -88,9 +88,10 @@ Every in-scope command:
 - **MUST** be deterministic: the same input and file state produce the same
   output, with no timestamps, ordering jitter, or sampling in the payload.
 - **MUST** signal its outcome through the exit-code categories below.
-- **MUST** emit plain output with no color or terminal escape sequences when
-  stdout is not a terminal, honoring `NO_COLOR`. The Fang / Lip Gloss stack's
-  idiomatic non-TTY behavior is the expected mechanism for this.
+- **MUST** emit plain human output with no color or terminal escape sequences
+  when the destination stream is not a terminal, honoring `NO_COLOR` across
+  stdout and stderr human surfaces. The Fang / Lip Gloss stack's idiomatic
+  non-TTY behavior is the expected mechanism for this.
 
 ### Exit Codes
 
@@ -199,8 +200,10 @@ over a canonical plain form:
 binary at release. For a binary built without that stamp — `go install` or a
 local build — it **MUST** fall back to the module build information the Go
 toolchain embeds (the module version for an installed release, otherwise a
-development label carrying the VCS revision), so the reported version is never a
-bare placeholder.
+development label carrying the VCS revision). If a local development invocation
+does not expose the revision through embedded build information but can resolve
+it from the local VCS checkout, it **SHOULD** use that revision rather than
+reporting a bare placeholder.
 
 ## To be specified
 

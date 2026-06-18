@@ -1,5 +1,20 @@
 # Changes Update Log
 
+## 2026-06-18
+
+- **Done**: Archived change
+  [0011 — CLI human output polish](archive/0011-cli-human-output-polish.md)
+  after styling `models list`, adding lint next actions to JSON and human
+  output, making dev version output include a short VCS revision when available,
+  syncing the durable CLI specs, and adding focused output-gate tests.
+
+- **Implementation**: Created and advanced change
+  [0011 — CLI human output polish](archive/0011-cli-human-output-polish.md) to
+  `In-Progress`. The change covers terminal styling for `models list`, lint
+  next actions in JSON and human output, dev version output that includes a VCS
+  revision, and broader output-gate tests, with durable CLI specs to be synced
+  during implementation.
+
 ## 2026-06-17
 
 - **Done**: Archived change

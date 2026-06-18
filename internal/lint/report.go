@@ -60,8 +60,30 @@ func (s *runState) result(repairs []RepairRecord) Result {
 		Summary:       summary,
 		Findings:      findings,
 		Repairs:       repairs,
-		NextActions:   []receipt.Action{},
+		NextActions:   nextActions(s.doc.Path, summary),
 	}
+}
+
+func nextActions(path string, summary Summary) []receipt.Action {
+	if summary.Fixable > 0 {
+		return []receipt.Action{
+			{
+				ID:      "fix",
+				Label:   "Apply deterministic lint repairs",
+				Command: "qualitymd lint --fix " + path,
+			},
+		}
+	}
+	if summary.Errors > 0 {
+		return []receipt.Action{
+			{
+				ID:      "rerun-lint",
+				Label:   "Re-run validation",
+				Command: "qualitymd lint " + path,
+			},
+		}
+	}
+	return []receipt.Action{}
 }
 
 func (s *runState) checkOptionalScalar(parent, key, value *yaml.Node, path []PathSegment, locationLabel string) {

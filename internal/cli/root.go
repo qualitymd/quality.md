@@ -5,8 +5,10 @@ package cli
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"runtime/debug"
 	"strings"
 
@@ -99,10 +101,36 @@ func buildInfo() (string, string) {
 			revision = setting.Value
 		}
 	}
-	if v := info.Main.Version; v != "" && v != "(devel)" {
-		return v, revision
+	if revision == "" {
+		revision = gitRevision()
 	}
-	return "dev", revision
+	return fallbackBuildInfoVersion(info.Main.Version, revision)
+}
+
+func fallbackBuildInfoVersion(moduleVersion, revision string) (string, string) {
+	short := shortRevision(revision)
+	if moduleVersion != "" && moduleVersion != "(devel)" {
+		return moduleVersion, short
+	}
+	if short != "" {
+		return fmt.Sprintf("dev (%s)", short), ""
+	}
+	return "dev", ""
+}
+
+func shortRevision(revision string) string {
+	if len(revision) > 7 {
+		return revision[:7]
+	}
+	return revision
+}
+
+func gitRevision() string {
+	out, err := exec.Command("git", "rev-parse", "HEAD").Output()
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(out))
 }
 
 func codeFor(err error) int {

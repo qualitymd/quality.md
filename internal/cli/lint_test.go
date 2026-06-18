@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -36,8 +37,83 @@ requirements:
 	if !strings.Contains(out.String(), `"valid": false`) || !strings.Contains(out.String(), `"ruleId": "too-few-levels"`) {
 		t.Fatalf("stdout = %s, want JSON lint result", out.String())
 	}
+	if !strings.Contains(out.String(), `"command": "qualitymd lint `+path+`"`) {
+		t.Fatalf("stdout = %s, want rerun next action", out.String())
+	}
+	if hasTerminalEscape(out.String()) {
+		t.Fatalf("stdout = %q, want JSON without terminal escapes", out.String())
+	}
 	if stderr.Len() != 0 {
 		t.Fatalf("stderr = %q, want empty", stderr.String())
+	}
+}
+
+func TestLintHumanInvalidWritesNextActionToStderr(t *testing.T) {
+	path := writeLintModel(t, `---
+title: Example
+ratingScale:
+  - level: target
+    description: Target.
+    criterion: Meets it.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+---
+`)
+
+	var out, stderr bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+	cmd.SetArgs([]string{"lint", path})
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("Execute() error = nil, want lint error")
+	}
+	if !strings.Contains(out.String(), "too-few-levels") {
+		t.Fatalf("stdout = %q, want lint findings", out.String())
+	}
+	if !strings.Contains(stderr.String(), "Next: qualitymd lint "+path) {
+		t.Fatalf("stderr = %q, want next-action footer", stderr.String())
+	}
+}
+
+func TestLintJSONFixableFindingPrefersFixAction(t *testing.T) {
+	path := writeLintModel(t, `---
+title: Example
+description: ""
+ratingScale:
+  - level: target
+    description: Target.
+    criterion: Meets it.
+  - level: unacceptable
+    description: Unacceptable.
+    criterion: Does not meet it.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+---
+`)
+
+	var out bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"lint", "--json", path})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+	var result struct {
+		NextActions []struct {
+			ID      string `json:"id"`
+			Command string `json:"command"`
+		} `json:"nextActions"`
+	}
+	if err := json.Unmarshal(out.Bytes(), &result); err != nil {
+		t.Fatalf("json.Unmarshal() error = %v; stdout = %s", err, out.String())
+	}
+	if len(result.NextActions) != 1 || result.NextActions[0].ID != "fix" || result.NextActions[0].Command != "qualitymd lint --fix "+path {
+		t.Fatalf("nextActions = %#v, want fix action", result.NextActions)
 	}
 }
 

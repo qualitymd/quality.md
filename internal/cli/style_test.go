@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/qualitymd/quality.md/internal/lint"
+	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
 func TestColorEnabledOffForNonTerminalWriter(t *testing.T) {
@@ -109,6 +110,18 @@ func TestRenderInitHumanPlainIsStable(t *testing.T) {
 	}
 }
 
+func TestRenderNextActionsPlainIsStable(t *testing.T) {
+	var out bytes.Buffer
+	actions := []receipt.Action{{ID: "rerun-lint", Label: "Re-run validation", Command: "qualitymd lint QUALITY.md"}}
+	if err := renderNextActions(&out, actions); err != nil {
+		t.Fatalf("renderNextActions() error = %v", err)
+	}
+	want := "\nNext: qualitymd lint QUALITY.md\n"
+	if out.String() != want {
+		t.Fatalf("renderNextActions() = %q, want %q", out.String(), want)
+	}
+}
+
 func TestLintSummaryPluralizesAndOmitsZeroNotes(t *testing.T) {
 	got := lintSummary(lint.Summary{Errors: 1, Warnings: 2})
 	for _, want := range []string{"1 error", "2 warnings"} {
@@ -122,4 +135,8 @@ func TestLintSummaryPluralizesAndOmitsZeroNotes(t *testing.T) {
 	if withNotes := lintSummary(lint.Summary{Info: 3}); !strings.Contains(withNotes, "3 notes") {
 		t.Fatalf("lintSummary() = %q, want 3 notes", withNotes)
 	}
+}
+
+func hasTerminalEscape(s string) bool {
+	return strings.Contains(s, "\x1b[") || strings.Contains(s, "\x1b]")
 }

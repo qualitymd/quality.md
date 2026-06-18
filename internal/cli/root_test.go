@@ -78,12 +78,23 @@ func TestBuildInfoFallsBackForDevVersion(t *testing.T) {
 	savedVersion, savedCommit := version, commit
 	t.Cleanup(func() { version, commit = savedVersion, savedCommit })
 
-	// With the placeholder version, buildInfo recovers what it can from the
-	// embedded build info; under `go test` that yields a revision but no tag,
-	// so the friendly "dev" label is kept rather than emitted verbatim.
 	version, commit = "dev", "none"
 	if v, _ := buildInfo(); v == "none" || v == "unknown (built from source)" {
 		t.Fatalf("buildInfo() version = %q, want a dev or recovered version", v)
+	}
+}
+
+func TestFallbackBuildInfoVersionUsesModuleVersion(t *testing.T) {
+	v, c := fallbackBuildInfoVersion("v1.2.3", "abcdef123456")
+	if v != "v1.2.3" || c != "abcdef1" {
+		t.Fatalf("fallbackBuildInfoVersion() = (%q, %q), want module version and short commit", v, c)
+	}
+}
+
+func TestFallbackBuildInfoVersionIncludesDevRevision(t *testing.T) {
+	v, c := fallbackBuildInfoVersion("(devel)", "abcdef123456")
+	if v != "dev (abcdef1)" || c != "" {
+		t.Fatalf("fallbackBuildInfoVersion() = (%q, %q), want dev short revision and empty commit", v, c)
 	}
 }
 

@@ -3,8 +3,11 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"strings"
 	"text/tabwriter"
 
+	"charm.land/lipgloss/v2"
 	"github.com/spf13/cobra"
 
 	"github.com/qualitymd/quality.md/internal/models"
@@ -76,7 +79,15 @@ func newModelsViewCmd() *cobra.Command {
 }
 
 func renderModelsList(cmd *cobra.Command, entries []models.Entry) error {
-	table := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
+	out := cmd.OutOrStdout()
+	if colorEnabled(out) {
+		return renderModelsListStyled(out, entries)
+	}
+	return renderModelsListPlain(out, entries)
+}
+
+func renderModelsListPlain(out io.Writer, entries []models.Entry) error {
+	table := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
 	if _, err := fmt.Fprintln(table, "NAME\tTITLE\tDESCRIPTION"); err != nil {
 		return err
 	}
@@ -86,4 +97,38 @@ func renderModelsList(cmd *cobra.Command, entries []models.Entry) error {
 		}
 	}
 	return table.Flush()
+}
+
+func renderModelsListStyled(out io.Writer, entries []models.Entry) error {
+	nameWidth, titleWidth := len("NAME"), len("TITLE")
+	for _, entry := range entries {
+		nameWidth = max(nameWidth, lipgloss.Width(entry.Name))
+		titleWidth = max(titleWidth, lipgloss.Width(entry.Title))
+	}
+
+	if _, err := fmt.Fprintf(out, "%s  %s  %s\n",
+		styleHeader.Render(padRight("NAME", nameWidth)),
+		styleHeader.Render(padRight("TITLE", titleWidth)),
+		styleHeader.Render("DESCRIPTION"),
+	); err != nil {
+		return err
+	}
+	for _, entry := range entries {
+		if _, err := fmt.Fprintf(out, "%s  %s  %s\n",
+			styleCommand.Render(padRight(entry.Name, nameWidth)),
+			padRight(entry.Title, titleWidth),
+			entry.Description,
+		); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func padRight(s string, width int) string {
+	padding := width - lipgloss.Width(s)
+	if padding <= 0 {
+		return s
+	}
+	return s + strings.Repeat(" ", padding)
 }

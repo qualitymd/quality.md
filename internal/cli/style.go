@@ -51,6 +51,7 @@ var (
 	styleRule    = lipgloss.NewStyle().Foreground(charmtone.Squid)
 	styleDim     = lipgloss.NewStyle().Foreground(charmtone.Squid)
 	styleCommand = lipgloss.NewStyle().Foreground(charmtone.Malibu)
+	styleHeader  = lipgloss.NewStyle().Foreground(charmtone.Squid).Bold(true)
 )
 
 const (

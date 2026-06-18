@@ -1,5 +1,13 @@
 # Specs Update Log
 
+## 2026-06-18
+
+- **CLI output polish**: Updated the CLI baseline to apply the `NO_COLOR` and
+  non-terminal plain-output gate across stdout and stderr human surfaces. Updated
+  `qualitymd lint` to require deterministic next actions for invalid results and
+  a matching stderr footer, and updated `qualitymd models list` to allow
+  terminal-only styling over the unchanged plain table.
+
 ## 2026-06-17
 
 - **Revision**: Synced the [`/quality` skill spec](skills/quality-skill/quality-skill.md)

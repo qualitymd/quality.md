@@ -332,6 +332,12 @@ warnings. When `--fix` applies repairs, human-readable output **MUST** also
 report how many repairs were applied. Styling and exact layout are governed by
 the CLI's output conventions and are not part of this sub-spec.
 
+When the result is invalid, human-readable output **MUST** render a
+deterministic next-action footer on stderr using the same action data emitted in
+the JSON result. The footer **SHOULD** prefer `qualitymd lint --fix <path>` when
+at least one remaining finding is fixable, and otherwise **SHOULD** point to
+rerunning `qualitymd lint <path>`.
+
 When there are no findings, human-readable output **SHOULD** report that the file
 is valid. Under `--json`, a valid file is represented by `"valid": true`, zero
 counts in `summary.errors`, `summary.warnings`, and `summary.info`, and an empty

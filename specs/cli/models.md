@@ -34,7 +34,10 @@ SHOULD be top-level commands, such as a future `qualitymd outline`.
 `qualitymd models list` **MUST** emit the bundled catalog in deterministic order.
 
 Default output is a human-readable table with each model's `name`, `title`, and
-`description`.
+`description`. When stdout is a terminal and color is enabled, the command
+**SHOULD** style the table with the shared CLI palette while preserving the same
+facts. When stdout is redirected, piped, or `NO_COLOR` is set, stdout **MUST**
+remain the plain table with no terminal control sequences.
 
 With `--json`, stdout **MUST** be a stable JSON array:
 

@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/qualitymd/quality.md/internal/lint"
+	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
 func newLintCmd() *cobra.Command {
@@ -69,9 +70,13 @@ func newLintCmd() *cobra.Command {
 func renderLintHuman(cmd *cobra.Command, result lint.Result) error {
 	out := cmd.OutOrStdout()
 	if !colorEnabled(out) {
-		return renderLintPlain(out, result)
+		if err := renderLintPlain(out, result); err != nil {
+			return err
+		}
+	} else if err := renderLintStyled(out, result); err != nil {
+		return err
 	}
-	return renderLintStyled(out, result)
+	return renderNextActions(cmd.ErrOrStderr(), result.NextActions)
 }
 
 // renderLintPlain is the non-terminal rendering: no color or glyphs, stable
@@ -168,4 +173,20 @@ func count(n int, noun string) string {
 		return fmt.Sprintf("1 %s", noun)
 	}
 	return fmt.Sprintf("%d %ss", n, noun)
+}
+
+func renderNextActions(w io.Writer, actions []receipt.Action) error {
+	if len(actions) == 0 {
+		return nil
+	}
+	command := actions[0].Command
+	if command == "" {
+		return nil
+	}
+	if !colorEnabled(w) {
+		_, err := fmt.Fprintf(w, "\nNext: %s\n", command)
+		return err
+	}
+	_, err := fmt.Fprintf(w, "\nNext: %s\n", styleCommand.Render(command))
+	return err
 }
