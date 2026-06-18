@@ -13,7 +13,8 @@ Incremental work on the repo is tracked in the
 a parent concept that records *why*, *what state* it's in, and *which durable
 specs and docs it touches*, over a [functional spec](write-functional-specs.md)
 (the *what*) and an optional [design doc](write-design-docs.md) (the *how*). This
-guide covers creating one and moving it through its full lifecycle to done.
+guide covers creating one and moving it through its full lifecycle to review and
+landing.
 
 ## Create the change
 
@@ -63,19 +64,20 @@ List the durable specs and docs the change creates or updates in the parent
 concept's **Affected specs & docs** section, decided up front alongside the
 motivation and scope — not discovered at the end. Keep it honest: an empty list
 must read as a deliberate "no durable changes," and every listed artifact is
-created or updated *as part of the change*, before it reaches **Done**. This is
-what keeps the enduring specs from drifting as the change's own spec is archived.
+created or updated *as part of the change*, before it reaches **In-Review**. This
+is what keeps the enduring specs from drifting while the change waits for review.
 
 ## Move it through the lifecycle
 
 A Change's `status` frontmatter advances, in order:
 
-**Draft → Design → In-Progress → Done**
+**Draft → Design → In-Progress → In-Review → Done**
 
 - **Draft** while you write up the [functional spec](write-functional-specs.md)
   (the *what*); **Design** while you work out the
   [design doc](write-design-docs.md) (the *how*); **In-Progress** while it's
-  being implemented.
+  being implemented; **In-Review** after implementation is complete and ready for
+  review; **Done** only after the work lands.
 - **Modify nothing outside what the current phase authorizes.** This is a
   whitelist, not a blacklist: the question is never "is this file on the Affected
   list?" but "does this phase permit changing it?" Before **In-Progress**, all
@@ -92,10 +94,16 @@ A Change's `status` frontmatter advances, in order:
   untouched until the phase that authorizes it. **Implementation does not begin
   until the change is In-Progress**: advance the `status` first, then implement.
   This is what keeps *what* and *how* settled before any code is written.
-- Before setting **Done**, create or update every durable spec and doc listed in
+- Before setting **In-Review**, create or update every durable spec and doc listed in
   the change's [Affected specs & docs](#account-for-the-specs-and-docs-it-touches)
-  section, so the enduring source of truth reflects the landed work.
-- When the work lands, set **Done** and **move the change into
+  section, so the enduring source of truth is ready for review with the
+  implementation.
+- When implementation is complete, set **In-Review**. Do **not** archive the
+  change at this point, and agents must not commit the changes. Leave the parent
+  concept and child folder in [`changes/`](../../changes/index.md), and update
+  the bundle-root [index](../../changes/index.md) and
+  [`log.md`](../../changes/log.md).
+- When the work lands after review, set **Done** and **move the change into
   [`archive/`](../../changes/archive/index.md)** — both the
   `NNNN-<slug>.md` parent and its `NNNN-<slug>/` folder — in the same change.
   Update the archive's `index.md` and remove the entry from the bundle-root
