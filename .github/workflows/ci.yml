@@ -9,15 +9,20 @@ on:
 permissions:
   contents: read
 
+# Cancel superseded runs on the same ref (e.g. rapid PR pushes).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # Installs the tools pinned in mise.toml (go, golangci-lint, dprint, …)
       # so CI and `mise run check` stay in lockstep.
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v4
 
       # Fails if any Go file is not gofmt-clean.
       - name: Check Go formatting
