@@ -175,15 +175,23 @@ Install the `/quality` skill with Agent Skills tooling:
 npx skills add qualitymd/quality.md
 ```
 
-`qualitymd` has no tagged release yet; build the current binary from source with
-Go 1.26+:
+Install the `qualitymd` CLI with a pre-built binary — via npm:
+
+```sh
+npm install -g quality.md
+```
+
+or Homebrew:
+
+```sh
+brew install qualitymd/tap/qualitymd
+```
+
+Or build from source with Go 1.26+:
 
 ```sh
 go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ```
-
-Pre-built binaries via npm (`npx quality.md`) and Homebrew
-(`brew install qualitymd/tap/qualitymd`) arrive with the first tagged release.
 
 ## Specification
 

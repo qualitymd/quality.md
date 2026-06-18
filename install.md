@@ -27,14 +27,24 @@ qualitymd --version
 qualitymd models list --json
 ```
 
-If it is missing or does not expose `models`, build the current CLI from source:
+If it is missing or does not expose `models`, install a pre-built binary — via
+npm:
+
+```sh
+npm install -g quality.md
+```
+
+or Homebrew:
+
+```sh
+brew install qualitymd/tap/qualitymd
+```
+
+Or build the current CLI from source:
 
 ```sh
 go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ```
-
-Pre-built npm and Homebrew install commands will replace this source-build step
-after the first tagged release.
 
 ## 3. Bootstrap a project
 
