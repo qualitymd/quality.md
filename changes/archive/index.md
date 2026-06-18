@@ -27,3 +27,7 @@ Completed changes, moved here from the bundle root when they reach **Done**.
   adds a meta-model Functionality requirement that judges a model's rating scale
   and per-requirement criterion overrides for meaning, not only structure
   (`Done`).
+- [0010 — Implement the /quality skill](0010-implement-quality-skill.md) - ships
+  the `/quality` skill artifact, the `qualitymd models` bundled-model surface,
+  skill-first onboarding docs, raw JSON evaluation example artifacts, and durable
+  spec sync (`Done`).

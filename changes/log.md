@@ -2,8 +2,15 @@
 
 ## 2026-06-17
 
+- **Done**: Archived change
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md)
+  after landing the skill artifact, `qualitymd models` CLI surface, durable
+  specs/docs, raw runtime example bundle, and verification. Removed it from the
+  open-changes index and added it to the archive index.
+
 - **Implementation**: Implemented change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md): added
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md):
+  added
   `skills/quality/SKILL.md`, implemented `qualitymd models list/view` with Markdown
   and JSON output plus `--source`, moved the bundled quality meta-model under
   `internal/models`, added skill-first install/docs, synced the durable CLI and
@@ -12,7 +19,7 @@
   `quality/evaluations/`, and verified the skill/CLI surfaces locally.
 
 - **Implementation**: Advanced change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) from
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md) from
   `Design` to `In-Progress`. The functional spec and design doc are settled, so
   implementation files and durable specs/docs can now be updated: the
   `skills/quality/SKILL.md` artifact, `qualitymd models` CLI surface,
@@ -20,7 +27,7 @@
   documentation.
 
 - **Refinement**: Added a comprehensive acceptance checklist to change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md), covering
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md), covering
   skill packaging/install, CLI prerequisite handling including dev builds,
   `qualitymd models` Markdown/JSON behavior, `.quality/config.yaml` validation,
   default dogfood-output ignoring, quick model-altitude dogfooding, JSON artifact
@@ -30,7 +37,7 @@
   docs require it.
 
 - **Refinement**: Settled the final `SKILL.md` description text for change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md): "Use when
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md): "Use when
   a user wants setup, wizard guidance, evaluation, or improvement for quality
   management of a project/entity or one of its components/targets. Trigger for
   requests about quality factors, characteristics, attributes, criteria, Targets,
@@ -39,7 +46,7 @@
   evaluating/improving the QUALITY.md model itself."
 
 - **Refinement**: Added evaluation-directory configuration to change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The skill
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md). The skill
   now reads repository-local `.quality/config.yaml` with `evaluationDir` to choose
   the parent directory for numbered evaluation runs, defaulting to
   `quality/evaluations/` when absent; the config is framed as shared qualitymd
@@ -50,7 +57,7 @@
   until they have a concrete need.
 
 - **Refinement**: Added trigger-description requirements for change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The skill
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md). The skill
   description must now cover quality management/evaluation/improvement prompts even
   when the user does not mention `QUALITY.md` (for example, improving security
   quality), include mode trigger terms (`setup`, `wizard`, `evaluate`, `improve`)
@@ -64,7 +71,7 @@
   criteria into `quality-skill.md`'s Frontmatter and metadata section.
 
 - **Refinement**: Added dogfooding guidance to change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The design
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md). The design
   now requires an In-Progress verification pass that installs the skill from the
   working tree, accepts a local development `qualitymd` binary when it exposes the
   required commands, runs a quick model-altitude evaluation against this repo's
@@ -73,7 +80,7 @@
   example.
 
 - **Refinement**: Resolved the remaining open questions for change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). Root
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md). Root
   `install.md` now uses a verification-first install flow (`qualitymd --version`,
   documented CLI install/upgrade, verify again, `npx skills add qualitymd/quality.md`,
   `npx skills list`) with the exact package-manager command filled in when the first
@@ -85,7 +92,7 @@
   questions.
 
 - **Refinement**: Generalized the structured finding shape for change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). Replaced
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md). Replaced
   the sample's bespoke top-level `credentialType` with a generic finding object:
   `locator`, `observation`, open `category`, optional `severity`, supporting
   `evidence`, and optional `attributes` for domain-specific metadata. Added the
@@ -94,7 +101,7 @@
   `attributes`.
 
 - **Refinement**: Updated change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) so
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md) so
   `qualitymd models view <name>` supports `--json`. The default output remains
   Markdown with the same terminal-rendered vs plain/verbatim split as
   `qualitymd spec`, preserving byte-for-byte `model.md` snapshots while giving
@@ -104,7 +111,7 @@
   design log wording.
 
 - **Refinement**: Corrected the onboarding model for change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The skill
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md). The skill
   is now the primary entry point, installed from this repo with
   `npx skills add qualitymd/quality.md`; the `qualitymd` CLI is a prerequisite that
   `setup` and `wizard` detect, version-check, and help install or upgrade before
@@ -114,9 +121,9 @@
   possible secondary channel rather than this change's primary distribution path.
 
 - **Design**: Advanced change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) from
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md) from
   `Draft` to `Design` and added its
-  [design doc](0010-implement-quality-skill/design.md). Confirmed the three
+  [design doc](archive/0010-implement-quality-skill/design.md). Confirmed the three
   **blocking** open items at their recommended resolutions and worked out the *how*:
   the skill ships from `skills/quality/SKILL.md` as an Agent Skills artifact
   installable with `npx skills add qualitymd/quality.md`, while `setup`/`wizard`
@@ -131,11 +138,11 @@
   folder naming, and `improve`'s new-folder re-evaluation. Recorded the alternatives
   (plugin-marketplace-first/CLI-installer distribution, inline vs referencing
   `report.json`, meta-model embed home) and planned the In-Progress durable sync.
-  Updated the change [index](0010-implement-quality-skill/index.md), bundle
+  Updated the change [index](archive/0010-implement-quality-skill/index.md), bundle
   [index](index.md), and the parent concept's status.
 
 - **Refinement**: Tightened change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) after
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md) after
   review. Reconciled the open items' conflicting lifecycle timing — they are now
   **surfaced in Draft**, with the **blocking** ones resolved before **Design** and
   the rest during **In-Progress**, all before **Done** (replacing contradictory
@@ -150,9 +157,9 @@
   spec's item numbering. Updated the [log](log.md).
 
 - **Creation**: Added change
-  [0010 — Implement the /quality skill](0010-implement-quality-skill.md)
+  [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md)
   (`status: Draft`) with its
-  [functional spec](0010-implement-quality-skill/spec.md) to build the
+  [functional spec](archive/0010-implement-quality-skill/spec.md) to build the
   specified-but-unimplemented
   [`/quality` skill](../specs/skills/quality-skill/quality-skill.md). The spec
   **defers the behavioral contract** to the durable skill spec and states only the

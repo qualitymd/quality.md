@@ -7,7 +7,7 @@ Children of the
 
 - [Functional spec](spec.md) - what the change must do; defers the behavioral
   contract to the
-  [`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md) and
+  [`/quality` skill spec](../../../specs/skills/quality-skill/quality-skill.md) and
   records the open items and gaps to settle.
 - [Design doc](design.md) - how the change is built: the skill packaged for Agent
   Skills installation, the CLI prerequisite check in `setup`/`wizard`, the

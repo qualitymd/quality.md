@@ -12,15 +12,15 @@ How the [Implement the /quality skill](../0010-implement-quality-skill.md) chang
 is built — the technical approach behind its
 [functional spec](spec.md). Where the spec says *what* must hold (and defers the
 behavioral contract to the durable
-[`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md)), this
+[`/quality` skill spec](../../../specs/skills/quality-skill/quality-skill.md)), this
 doc says *how* the implementation makes it so, and why that way.
 
 ## Context
 
 The skill is fully specified but unbuilt: the
-[durable skill spec](../../specs/skills/quality-skill/quality-skill.md) owns the
+[durable skill spec](../../../specs/skills/quality-skill/quality-skill.md) owns the
 operating model, invocation, evaluation workflow, and reporting contract, and a
-[worked example bundle](../../specs/skills/quality-skill/examples/index.md) shows
+[worked example bundle](../../../specs/skills/quality-skill/examples/index.md) shows
 its output. This change packages an invocable skill that **conforms to** that
 contract, adds the one CLI surface the contract leans on (`qualitymd models`), and
 settles the [open items and gaps](spec.md#open-items-and-gaps) the durable spec
@@ -30,7 +30,7 @@ Three things shape every decision below:
 
 - **Judgment in the skill; determinism in the CLI.** The skill never reimplements
   scaffolding, structural validation, or the format rules — it drives the
-  [`qualitymd` CLI](../../specs/cli.md) for each and treats its output as the
+  [`qualitymd` CLI](../../../specs/cli.md) for each and treats its output as the
   source of truth. Anything mechanical that the skill needs and the CLI lacks is
   CLI work this change must also deliver (that is `qualitymd models`).
 - **The durable spec is the conformance target, not a script.** The skill is one
@@ -55,7 +55,7 @@ The blocking items resolve as the spec recommends, confirmed here:
   possible secondary channel, not the main onboarding path.
 - **Item 2 — the `model` altitude's criteria.** Meta-evaluation is ordinary
   evaluation with the bundled
-  [quality meta-model](../../internal/models/quality-meta-model.md)
+  [quality meta-model](../../../internal/models/quality-meta-model.md)
   as the active model and the user's `QUALITY.md` as its subject, reached through a
   new `qualitymd models` surface ([§4](#4-the-qualitymd-models-command)).
 - **Item 3 — `setup`.** A minimal bootstrap after skill installation — verify or
@@ -134,7 +134,7 @@ self-describing; its body carries the **evaluation process** the skill owns.
   ```
   Model-invocation stays **enabled** (no
   `disable-model-invocation`) so "evaluate this against its `QUALITY.md`" can reach
-  the skill, while the read-only [`wizard`](../../specs/skills/quality-skill/quality-skill.md#wizard)
+  the skill, while the read-only [`wizard`](../../../specs/skills/quality-skill/quality-skill.md#wizard)
   default and the confirm-before-apply rule keep that safe.
 - **Description criteria.** The text above follows criteria that must be carried
   into the durable skill spec's Frontmatter and metadata section: optimize for
@@ -168,15 +168,15 @@ self-describing; its body carries the **evaluation process** the skill owns.
   or the `QUALITY.md`; under `improve` those go through normal permissioning after
   the explicit confirmation the spec requires, so an apply is never silent.
 - **Body.** The process the skill owns, carried in the prompt: the operating model
-  and boundaries, the [workflow](../../specs/skills/quality-skill/quality-skill.md#workflow),
+  and boundaries, the [workflow](../../../specs/skills/quality-skill/quality-skill.md#workflow),
   effort levels, and the artifact contract. It **MUST NOT** embed the format/schema
   rules or rating vocabulary — those are grounded at runtime from `qualitymd spec`
   (§6) — keeping the prompt from drifting out of sync with
-  [`SPECIFICATION.md`](../../SPECIFICATION.md).
+  [`SPECIFICATION.md`](../../../SPECIFICATION.md).
 - **Modes.** One skill branches on mode. `setup` (item 3) is the bootstrap path:
   confirm `qualitymd` is installed and compatible, facilitate install/upgrade when
-  needed, drive [`init`](../../specs/cli/init.md), validate with
-  [`lint`](../../specs/cli/lint.md), then hand to `wizard` for guided population —
+  needed, drive [`init`](../../../specs/cli/init.md), validate with
+  [`lint`](../../../specs/cli/lint.md), then hand to `wizard` for guided population —
   reimplementing none of scaffolding, validation, CLI installation tooling, or
   authoring judgment. `wizard` performs the same prerequisite check before any
   CLI-dependent action, then owns the cursory repository assessment: read the model
@@ -194,7 +194,7 @@ rather than carrying meta-model criteria in its prompt.
     a stable array of `{ name, title, description }` so the skill can discover what
     is available rather than embedding a list.
   - `qualitymd models view <name>` — emits one bundled model. By default it follows
-    the same Markdown rendering split as [`qualitymd spec`](../../specs/cli/spec.md):
+    the same Markdown rendering split as [`qualitymd spec`](../../../specs/cli/spec.md):
     formatted Markdown through the terminal renderer and pager when stdout is a
     TTY, and **verbatim Markdown** byte-for-byte when output must be plain (redirect,
     pipe, or `NO_COLOR`). With `--json`, it emits a stable JSON document for
@@ -202,7 +202,7 @@ rather than carrying meta-model criteria in its prompt.
     `--source <path>` flag re-points the emitted model's apex `source` to the
     user's file (item 2's "re-point at runtime"), a deterministic single-node
     rewrite reusing the frontmatter-edit primitive
-    [`lint --fix`](../../specs/cli/lint.md#repair-behavior) already has. Without it,
+    [`lint --fix`](../../../specs/cli/lint.md#repair-behavior) already has. Without it,
     the model is emitted as authored. The `--source` rewrite applies before either
     Markdown or JSON rendering, so the two forms describe the same active model.
     Representative JSON shape:
@@ -227,7 +227,7 @@ rather than carrying meta-model criteria in its prompt.
   `Catalog()`, `Get(name)`, a source-rewrite helper, and a structured view that
   parses through `internal/document` and decodes through `internal/model`.
   `internal/cli/models.go` adds `newModelsCmd()` (with `list`/`view` children),
-  registered in [`root.go`](../../internal/cli/root.go) beside `init`/`lint`/`spec`.
+  registered in [`root.go`](../../../internal/cli/root.go) beside `init`/`lint`/`spec`.
   It inherits the CLI baseline — determinism, stdout-is-payload, exit categories,
   and `--json` where meaningful.
 - **How the `model` altitude uses it.** The skill runs
@@ -317,7 +317,7 @@ quality/evaluations/                    # default parent; configurable via .qual
   `attributes.credentialType`, but **never** the secret value; a prompt-injection
   observation may set `category: "prompt-injection"` and is recorded, not followed
   (per
-  [Boundaries](../../specs/skills/quality-skill/quality-skill.md#boundaries-and-hard-rules)).
+  [Boundaries](../../../specs/skills/quality-skill/quality-skill.md#boundaries-and-hard-rules)).
 
   *analysis* — one per target node, the inferred weighted roll-up, citing what it
   derives from:
@@ -392,9 +392,9 @@ quality/evaluations/                    # default parent; configurable via .qual
   / `qualitymd <cmd> --help` rather than embedding a list that drifts.
 - **Default target file (item 4).** `QUALITY.md` in the current working directory,
   an explicit path overriding it, a clear error when neither resolves — matching
-  [`init`](../../specs/cli/init.md)'s output target. No tree walk or multi-file
+  [`init`](../../../specs/cli/init.md)'s output target. No tree walk or multi-file
   discovery; the skill defers to the CLI's file convention once
-  [`cli.md`](../../specs/cli.md#to-be-specified) lands one.
+  [`cli.md`](../../../specs/cli.md#to-be-specified) lands one.
 - **Model outline (item 7).** The `wizard`'s and the workflow's orientation comes
   from the **single-file read** the *Read the resolved target file* step already
   performs — parsing the declared target/factor outline is a judgment-free
@@ -403,7 +403,7 @@ quality/evaluations/                    # default parent; configurable via .qual
   preferred once it lands.
 - **Source resolution.** Resolving each in-scope target's `source` to the entities
   to assess is the skill's judgment-adjacent read of the repository; no CLI
-  record/resolve surface exists yet (it stays [deferred](../../specs/skills/quality-skill/quality-skill.md#deferred)).
+  record/resolve surface exists yet (it stays [deferred](../../../specs/skills/quality-skill/quality-skill.md#deferred)).
 
 ### 7. Durable-spec sync (In-Progress)
 
@@ -412,7 +412,7 @@ plans the durable edits the spec's
 [Affected specs & docs](../0010-implement-quality-skill.md#affected-specs--docs)
 already commit to, so nothing outside this change folder is touched yet:
 
-- [`quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) — fold in
+- [`quality-skill.md`](../../../specs/skills/quality-skill/quality-skill.md) — fold in
   the resolutions: model-altitude criteria via `models`, `setup`, the
   trigger-description criteria in Frontmatter and metadata, default-file rule,
   `.quality/config.yaml` with `evaluationDir`, the `improve` new-folder re-eval
@@ -420,15 +420,15 @@ already commit to, so nothing outside this change folder is touched yet:
   naming, the **Limitations vs *not assessed*** distinction (item 10), the *not
   assessed* done-criterion (item 11), and the *say-it-once* consolidation of the
   conformance point (item 12).
-- the [example bundle](../../specs/skills/quality-skill/examples/index.md) and
-  [`specs/schema.md`](../../specs/schema.md) — re-capture assessments/analysis as
+- the [example bundle](../../../specs/skills/quality-skill/examples/index.md) and
+  [`specs/schema.md`](../../../specs/schema.md) — re-capture assessments/analysis as
   JSON, add `report.json`, drop OKF frontmatter, re-slug to
   `0001-subject-quality-eval`, and retire the now-unused `Assessment Record` /
   `Analysis Record` / `Evaluation Report` / `Recommendation` types.
-- new [`specs/cli/models.md`](../../specs/cli.md) plus
-  [`cli.md`](../../specs/cli.md)/[`cli/index.md`](../../specs/cli/index.md) — specify
+- new [`specs/cli/models.md`](../../../specs/cli/models.md) plus
+  [`cli.md`](../../../specs/cli.md)/[`cli/index.md`](../../../specs/cli/index.md) — specify
   the `models` surface.
-- [`README.md`](../../README.md), root `install.md`, and `docs/` — introduce
+- [`README.md`](../../../README.md), root `install.md`, and `docs/` — introduce
   skill-first onboarding with `npx skills add qualitymd/quality.md`, the CLI
   prerequisite and setup verification, `/quality` modes/altitudes,
   `.quality/config.yaml` / `evaluationDir` as shared qualitymd system config, and
@@ -566,7 +566,7 @@ Before **Done**, the implementation satisfies this checklist:
   shared schema.
 - **Skill correctness is prompt-bound.** Unlike the CLI, the skill's ratings can't
   be pinned by a unit test. The mitigation is structural: every mechanical step is
-  the deterministic CLI's, and the [worked example](../../specs/skills/quality-skill/examples/index.md)
+  the deterministic CLI's, and the [worked example](../../../specs/skills/quality-skill/examples/index.md)
   is the acceptance reference for artifact shape.
 - **Skill cadence can outrun docs.** Because the skill can be updated independently
   from the CLI, a prompt-only fix can ship quickly. The cost is compatibility

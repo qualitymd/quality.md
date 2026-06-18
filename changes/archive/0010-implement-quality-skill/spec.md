@@ -16,9 +16,9 @@ This change **implements an existing durable spec** rather than authoring a new
 behavioral contract. The *what* — operating model, invocation, evaluation
 workflow, grounding, effort levels, and the reporting and artifact contract —
 already lives in the
-[`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md) and its
-[worked example bundle](../../specs/skills/quality-skill/examples/index.md). Per
-[one source of truth](../../docs/guides/write-functional-specs.md), this spec does
+[`/quality` skill spec](../../../specs/skills/quality-skill/quality-skill.md) and its
+[worked example bundle](../../../specs/skills/quality-skill/examples/index.md). Per
+[one source of truth](../../../docs/guides/write-functional-specs.md), this spec does
 **not** restate that contract; it states only the **delta** this change owns and
 the **open items and gaps** the durable spec leaves for the change to settle.
 
@@ -28,26 +28,26 @@ in IETF RFC 2119.
 ## Scope
 
 Covered: packaging and wiring an invocable `/quality` skill that **conforms to**
-the [durable skill spec](../../specs/skills/quality-skill/quality-skill.md); the
+the [durable skill spec](../../../specs/skills/quality-skill/quality-skill.md); the
 runtime evaluation artifacts it writes; and resolving the
 [open items and gaps](#open-items-and-gaps) below, syncing the
 durable spec to the resolution.
 
 Deferred: everything the skill spec's own
-[Deferred](../../specs/skills/quality-skill/quality-skill.md#deferred) section
+[Deferred](../../../specs/skills/quality-skill/quality-skill.md#deferred) section
 defers — recording verdicts *through the CLI*, `improve` apply-staging mechanics,
 and bundled `references/` assets — none of which this change introduces.
 
 ## Requirements
 
 - The implementation **MUST** conform to the
-  [`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md) in
+  [`/quality` skill spec](../../../specs/skills/quality-skill/quality-skill.md) in
   full: its
-  [operating model](../../specs/skills/quality-skill/quality-skill.md#operating-model),
-  [boundaries and hard rules](../../specs/skills/quality-skill/quality-skill.md#boundaries-and-hard-rules),
-  [invocation](../../specs/skills/quality-skill/quality-skill.md#invocation),
-  [evaluation workflow](../../specs/skills/quality-skill/quality-skill.md#evaluation-workflow),
-  and [reporting](../../specs/skills/quality-skill/quality-skill.md#reporting)
+  [operating model](../../../specs/skills/quality-skill/quality-skill.md#operating-model),
+  [boundaries and hard rules](../../../specs/skills/quality-skill/quality-skill.md#boundaries-and-hard-rules),
+  [invocation](../../../specs/skills/quality-skill/quality-skill.md#invocation),
+  [evaluation workflow](../../../specs/skills/quality-skill/quality-skill.md#evaluation-workflow),
+  and [reporting](../../../specs/skills/quality-skill/quality-skill.md#reporting)
   contract. Where this change and that spec would diverge, the spec governs and is
   corrected (by resolving an open item) rather than silently departed from.
 - It **MUST** be an **invocable skill** installable from this repository through
@@ -68,7 +68,7 @@ and bundled `references/` assets — none of which this change introduces.
   quality criteria, assessment, or management.
 - It **MUST** drive the deterministic CLI for every mechanical step and treat its
   output as the source of truth, per
-  [Driving the CLI](../../specs/skills/quality-skill/quality-skill.md#driving-the-cli);
+  [Driving the CLI](../../../specs/skills/quality-skill/quality-skill.md#driving-the-cli);
   it **MUST NOT** reimplement scaffolding, structural validation, or the format
   rules.
 - Its `setup` and `wizard` flows **MUST** detect whether the `qualitymd` CLI is
@@ -81,9 +81,9 @@ and bundled `references/` assets — none of which this change introduces.
   commands land. When the file or setting is absent, the default **MUST** remain
   `quality/evaluations/`.
 - Its runtime artifacts **MUST** satisfy the
-  [Reporting](../../specs/skills/quality-skill/quality-skill.md#reporting) contract
+  [Reporting](../../../specs/skills/quality-skill/quality-skill.md#reporting) contract
   and **SHOULD** match the shape of the
-  [worked example bundle](../../specs/skills/quality-skill/examples/index.md),
+  [worked example bundle](../../../specs/skills/quality-skill/examples/index.md),
   which serves as the acceptance reference.
 - Before the change reaches **Done**, every
   [open item](#open-items-and-gaps) **MUST** be resolved and
@@ -98,7 +98,7 @@ stays visible rather than discovered mid-implementation — with a **recommended
 resolution** to confirm or revise. They resolve on the schedule their grouping
 names: the **blocking** items before **Design**, the rest during **In-Progress**,
 and all of them before **Done**. On resolution, each is carried into
-[`quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) (and the
+[`quality-skill.md`](../../../specs/skills/quality-skill/quality-skill.md) (and the
 example where affected); see the parent's
 [Affected specs & docs](../0010-implement-quality-skill.md#affected-specs--docs).
 
@@ -118,7 +118,7 @@ example where affected); see the parent's
    criteria for what makes a `QUALITY.md` *good*, but the spec never says where
    they come from; grounding (`qualitymd spec`) supplies only the **format** rules.
    The repo already ships a built-in
-   [quality meta-model](../../internal/models/quality-meta-model.md)
+   [quality meta-model](../../../internal/models/quality-meta-model.md)
    — itself a `QUALITY.md` whose subject is a `QUALITY.md` — for exactly this, yet
    the skill spec neither references it nor is there a CLI command that emits it
    (only `spec`, which emits the format specification).
@@ -140,9 +140,9 @@ example where affected); see the parent's
    - **Resolution:** specify `setup` as the minimal bootstrap path after the skill
      is installed: check whether the `qualitymd` CLI is available, verify its
      version is compatible with the skill, facilitate install or upgrade when it is
-     missing or too old, then drive [`init`](../../specs/cli/init.md) to create a
+     missing or too old, then drive [`init`](../../../specs/cli/init.md) to create a
      deterministic, `lint`-valid `QUALITY.md` skeleton, validate it with
-     [`lint`](../../specs/cli/lint.md), and defer to `wizard` for guided population
+     [`lint`](../../../specs/cli/lint.md), and defer to `wizard` for guided population
      and refinement. `setup` **MUST NOT** reimplement scaffolding, validation, CLI
      installation tooling, or source-driven authoring judgment. `wizard` owns the
      cursory repository assessment: infer and confirm suggested targets/factors,
@@ -154,10 +154,10 @@ example where affected); see the parent's
 
 4. **Default target-file resolution.** The spec says the skill resolves a default
    file "the way the CLI does," but the CLI's file-argument convention is itself
-   listed under *To be specified* in [`cli.md`](../../specs/cli.md).
+   listed under *To be specified* in [`cli.md`](../../../specs/cli.md).
    - **Resolution:** adopt the one concrete CLI precedent now — default to
      `QUALITY.md` in the current working directory (as
-     [`init`](../../specs/cli/init.md)'s output target does), accept an explicit
+     [`init`](../../../specs/cli/init.md)'s output target does), accept an explicit
      path override, and error clearly when none is found. No directory-tree walk or
      multi-file discovery. When the CLI's convention lands, the skill defers to it;
      until then this is the skill's rule.
@@ -178,7 +178,7 @@ example where affected); see the parent's
    write-once artifacts without fixing whether their source-of-record form is prose
    or structured data. Separately, the worked example stores each artifact as an
    **OKF concept** — a `type:`-bearing Markdown file registered in
-   [`specs/schema.md`](../../specs/schema.md) — conflating a runtime output with an
+   [`specs/schema.md`](../../../specs/schema.md) — conflating a runtime output with an
    entry in this knowledge bundle.
    - **Resolution:** evaluation artifacts are **raw runtime outputs written into
      the evaluated repository, not OKF concepts** — none carries OKF frontmatter or
@@ -190,11 +190,11 @@ example where affected); see the parent's
      through `/quality`. `report.md`, the recommendations, `design`, and `plan` stay
      Markdown; `model.md` stays a verbatim snapshot. The worked example is
      re-captured in this raw form and its now-unused concept types are retired from
-     [`specs/schema.md`](../../specs/schema.md) (see the parent's
+     [`specs/schema.md`](../../../specs/schema.md) (see the parent's
      [Affected specs & docs](../0010-implement-quality-skill.md#affected-specs--docs)).
 
 7. **The wizard's model-outline source.** The wizard inspects "the targets and
-   factors the model declares," but [`lint`](../../specs/cli/lint.md) emits
+   factors the model declares," but [`lint`](../../../specs/cli/lint.md) emits
    findings, not a model outline, and no command emits one (`lint.md` only
    *reserves* a future `model-summary` info rule) — in tension with "every
    mechanical step driven through the CLI."
@@ -224,7 +224,7 @@ example where affected); see the parent's
 ### Durable-spec corrections to apply during the sync
 
 Consistency fixes, not new behavior — applied to
-[`quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) (and the
+[`quality-skill.md`](../../../specs/skills/quality-skill/quality-skill.md) (and the
 example) when the durable spec is brought into sync.
 
 9. **Folder `<scope>` naming.** The example's old `0001-payments-quality-eval`
@@ -265,4 +265,4 @@ example) when the durable spec is brought into sync.
       repeats with links. Leave *Frontmatter and metadata* its one distinct rule —
       format rules and vocabulary are grounded at runtime while the evaluation
       process is owned — stated once, linking to Conformance for the rest. Per
-      [the spec-writing guide](../../docs/guides/write-functional-specs.md).
+      [the spec-writing guide](../../../docs/guides/write-functional-specs.md).

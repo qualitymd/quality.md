@@ -35,14 +35,7 @@ When a change reaches **Done**, move it (and its child folder) into
 
 # Open changes
 
-- [0010 — Implement the /quality skill](0010-implement-quality-skill.md)
-  (`status: In-Progress`) — build the specified-but-unimplemented `/quality`
-  evaluation skill; its spec defers the behavioral contract to
-  [`specs/skills/quality-skill/`](../specs/skills/quality-skill/quality-skill.md),
-  and its [design doc](0010-implement-quality-skill/design.md) packages it for
-  `npx skills add qualitymd/quality.md`, makes the `qualitymd` CLI a verified
-  prerequisite, adds the `qualitymd models` CLI surface, and settles the raw JSON
-  evaluation artifacts. Implementation and durable spec/doc sync are underway.
+No open changes.
 
 Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
