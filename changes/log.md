@@ -2,6 +2,26 @@
 
 ## 2026-06-18
 
+- **Design**: Advanced change
+  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  from `Draft` to `Design` and added its
+  [design doc](0028-require-characterized-requirements/design.md). The design
+  keeps `factors` structurally optional, adds a context-sensitive
+  `uncharacterized-requirement` lint error for direct target-level requirements
+  without listed factors, renames secondary-factor internals to neutral
+  listed-factor wording, and records why `missing-factor` and a schema-level
+  required `factors` property were rejected.
+
+- **Creation**: Added change
+  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  in `Draft` with its
+  [functional spec](0028-require-characterized-requirements/spec.md). The change
+  makes requirements invalid unless they are characterized by at least one
+  factor, keeps "lens" available as shorthand while preferring "characterized by"
+  for the mechanics, and distinguishes direct target-level `factors` from
+  secondary factors on requirements already nested under a factor. Updated the
+  bundle [index](index.md).
+
 - **Schema migration**: Renamed the `changes/` parent concept type from
   `Change` to `Change Case`, updated existing parent concepts and the
   [changes schema](schema.md), renamed the contributor guide to

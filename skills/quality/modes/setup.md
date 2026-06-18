@@ -3,6 +3,18 @@
 Use setup to create the minimal valid `QUALITY.md` skeleton and then route the
 user toward guided population.
 
+## Decision Tree
+
+```text
+Resolve target file
+- missing? run qualitymd init [path]
+- present? do not overwrite; validate it
+
+Run qualitymd lint
+- errors? stop and report lint findings
+- valid? route to wizard for population or next action
+```
+
 ## Procedure
 
 1. Verify the CLI prerequisite from `SKILL.md`.

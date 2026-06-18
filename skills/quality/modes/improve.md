@@ -3,6 +3,22 @@
 Use improve to evaluate, recommend, apply an explicitly approved change, and
 verify the result.
 
+## Decision Tree
+
+```text
+Run evaluation first
+- recommendations produced?
+  - no? report no apply step
+  - yes? ask for recommendation and option confirmation
+
+User confirms specific option?
+- no? stop after reporting evaluation and recommendations
+- yes? apply only that option
+
+After applying confirmed option
+- create a new run and re-evaluate affected scope
+```
+
 ## Procedure
 
 1. Read and follow [`evaluate.md`](evaluate.md) for the evaluation and

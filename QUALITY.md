@@ -173,9 +173,3 @@ The README is the project's front door. Approachability is scoped here because
 the README's job is newcomer orientation, not format precision.
 
 ## Known gaps
-
-- The CLI and skills are not modeled. Their specifications have been removed from
-  the repo, and the implementation's runtime quality — reliability, performance,
-  packaging, and test coverage — is deferred while the implementation is nascent.
-- No structural self-lint requirement yet. Once `qualitymd lint` ships, add a
-  direct apex requirement asking that this model lint cleanly.

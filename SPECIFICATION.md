@@ -17,9 +17,9 @@ A conforming use or application of QUALITY.md may provide additional functionali
 - **Quality Model**: a structured, declarative description of what quality means for a given entity.
 - **Entity**: a thing that is evaluated for quality.
 - **Target**: the entitie(s) to be evaluated by quality requirements
-- **Source**: a description of where to locate or select the target entitie(s)
+- **Source**: a description of where to locate or select the target entitie(s) that will be evaluated by the target's quality requirements
 - **Factor**: a quality (sub)characteristic or attribute — a lens such as reliability or security — through which an entity's quality is described; it groups the requirements assessed through it and may be decomposed into sub-factors.
-- **Requirement**: a quality requirement for assessing and rating the quality of an entity.
+- **Requirement**: used for assessing and rating the quality of an target or factor.
 - **Finding**: a single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
 - **Assessment**: the means for assessing an entity — measurement, specifications, inspection, checklists, diagnostics, etc.
 - **Rating Scale**: a defined set of rating levels for a quality model.

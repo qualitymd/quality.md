@@ -48,6 +48,9 @@ edit.
 - [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md)
   - splits setup, wizard, evaluation, and improve procedures into separate skill
     reference files while keeping `SKILL.md` as the router.
+- [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  - requires every requirement to be characterized by at least one factor and
+    aligns terminology for direct versus secondary factor associations.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
@@ -61,4 +64,5 @@ template for a new one.
 
 - [0026-authoring-guide-remove-meta-model/](0026-authoring-guide-remove-meta-model/) - spec and design for replacing the meta-model workflow.
 - [0027-modularize-quality-skill/](0027-modularize-quality-skill/) - spec for the skill mode-file refactor.
+- [0028-require-characterized-requirements/](0028-require-characterized-requirements/) - spec for mandatory requirement characterization.
 - [archive/](archive/) - completed change cases.
