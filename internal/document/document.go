@@ -47,7 +47,12 @@ func Parse(path string) (*Document, error) {
 	if err != nil {
 		return nil, fmt.Errorf("reading %s: %w", path, err)
 	}
+	return ParseBytes(path, raw)
+}
 
+// ParseBytes parses a QUALITY.md document from raw bytes. Path is used only for
+// diagnostics and the returned Document's Path field.
+func ParseBytes(path string, raw []byte) (*Document, error) {
 	frontmatter, body, err := splitFrontmatter(raw)
 	if err != nil {
 		return nil, &ParseError{Path: path, Err: err}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "target": "Webhooks",
+  "targetPath": ["webhooks"],
+  "localRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "The Webhooks node's own signing requirement is rated target."
+  },
+  "factorRatings": [
+    {
+      "factor": "Security",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Every emit path signs webhook payloads and no unsigned path was found."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "The node's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
+  },
+  "assessmentRecords": [
+    "assessments/006-webhooks-signing.json"
+  ],
+  "childAnalysisRecords": [
+    "analysis/delivery.json"
+  ],
+  "bindingConstraints": [
+    {
+      "record": "assessments/008-delivery-redelivery-dedup.json",
+      "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
+      "rating": "minimum"
+    }
+  ]
+}

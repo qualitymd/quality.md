@@ -12,6 +12,9 @@ coverage.*
 /npm/**/bin/qualitymd.exe
 node_modules/
 
+# Local /quality skill evaluation runs
+/quality/evaluations/
+
 # Env / OS
 .env
 .env.*

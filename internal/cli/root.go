@@ -56,6 +56,7 @@ func newRootCmd() *cobra.Command {
 	})
 	root.AddCommand(newInitCmd())
 	root.AddCommand(newLintCmd())
+	root.AddCommand(newModelsCmd())
 	root.AddCommand(newSpecCmd())
 	return root
 }

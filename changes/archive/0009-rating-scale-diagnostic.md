@@ -10,7 +10,7 @@ timestamp: 2026-06-17T00:00:00Z
 # Diagnose rating-scale soundness in the meta-model
 
 A **Change** to the CLI's built-in
-[quality meta-model](../../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)
+[quality meta-model](../../internal/models/quality-meta-model.md)
 — the model it uses to judge whether a project's `QUALITY.md` is a good quality
 model. It adds one Functionality requirement so the rating scale, the instrument
 that turns assessments into verdicts, is assessed for *meaning* and not only

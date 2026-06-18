@@ -1,20 +1,3 @@
----
-type: Evaluation Design
-title: Sparrow Payments — Evaluation Design (0001)
-description: Reference Evaluation Design — the resolved parameters and inputs the 0001 whole-model subject evaluation was run under.
-tags: [skill, quality, evaluation, example]
-timestamp: 2026-06-17T00:00:00Z
----
-
-> **Reference instance — non-normative.** A captured example of the **design**
-> artifact the [`/quality` skill](../../quality-skill.md) writes alongside its
-> [report](report.md) (see [Reporting](../quality-skill.md#reporting)). It records
-> *what* was evaluated and *under what inputs*, so the run can be reproduced. At
-> runtime the skill writes it as
-> `quality/evaluations/0001-payments-quality-eval/design.md` in the **evaluated**
-> repository. See the [examples index](../index.md) for the facts shared across
-> this bundle.
-
 # Evaluation design
 
 The resolved inputs this run is bound to. The [report](report.md) states the

@@ -1,24 +1,3 @@
----
-type: Evaluation Report
-title: Sparrow Payments — Evaluation Report (0001)
-description: Reference Evaluation Report — a whole-model subject evaluation of a fictional payments service, held at Unacceptable by a committed live credential.
-tags: [skill, quality, evaluation, example]
-timestamp: 2026-06-17T00:00:00Z
----
-
-> **Reference instance — non-normative.** This illustrates one human rendering of
-> the Evaluation Report the [`/quality` skill](../../quality-skill.md) produces.
-> At runtime the skill writes it as
-> `quality/evaluations/0001-payments-quality-eval/report.md` in the **evaluated**
-> repository, with its recommendations in the sibling
-> [`recommendations/`](recommendations/) folder. The
-> [model evaluated](model.md) — including the suggested four-level rating scale
-> (**Outstanding** > **Target** > **Minimum** > **Unacceptable**) the ratings
-> below use — is reproduced alongside. See the [examples index](../index.md) for
-> the facts shared across this bundle.
-
----
-
 **Rating: Unacceptable** *(Sparrow Payments API — aggregate, whole model)*
 
 **Rationale.** Held at **Unacceptable** by a single binding constraint: a live

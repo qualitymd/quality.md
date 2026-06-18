@@ -7,4 +7,5 @@ The format-tooling commands specified for this phase. See the parent
 
 - [qualitymd init](init.md) - scaffold a starter `QUALITY.md` to fill in.
 - [qualitymd lint](lint.md) - validate a file's structure against the format spec.
+- [qualitymd models](models.md) - list and view bundled `QUALITY.md` models.
 - [qualitymd spec](spec.md) - emit the `QUALITY.md` format specification.

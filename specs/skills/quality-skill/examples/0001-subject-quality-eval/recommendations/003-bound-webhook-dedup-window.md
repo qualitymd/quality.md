@@ -1,16 +1,3 @@
----
-type: Recommendation
-title: Bound the webhook redelivery-deduplication window
-description: Reference Recommendation — close the bounded-deduplication gap that becomes the binding constraint on Sparrow Payments once the committed credential is rotated.
-tags: [skill, quality, evaluation, example, reliability]
-timestamp: 2026-06-17T00:00:00Z
----
-
-> **Reference instance — non-normative.** A captured example of a single
-> recommendation artifact the [`/quality` skill](../../../quality-skill.md)
-> emits alongside its [report](../report.md). It is written to stand on its own:
-> a reader can triage and route it without the report or the session.
-
 # Bound the webhook redelivery-deduplication window
 
 **Target / factor:** Webhooks → Delivery → Reliability

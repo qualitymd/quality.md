@@ -1,16 +1,3 @@
----
-type: Recommendation
-title: Rotate and remove the committed gateway credential
-description: Reference Recommendation — close the committed live-credential gap holding Sparrow Payments at Unacceptable.
-tags: [skill, quality, evaluation, example, security]
-timestamp: 2026-06-17T00:00:00Z
----
-
-> **Reference instance — non-normative.** A captured example of a single
-> recommendation artifact the [`/quality` skill](../../../quality-skill.md)
-> emits alongside its [report](../report.md). It is written to stand on its own:
-> a reader can triage and route it without the report or the session.
-
 # Rotate and remove the committed gateway credential
 
 **Target / factor:** Sparrow Payments API (root) → Security → Secrets handling

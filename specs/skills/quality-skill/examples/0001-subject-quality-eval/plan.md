@@ -1,20 +1,3 @@
----
-type: Evaluation Plan
-title: Sparrow Payments — Evaluation Plan (0001)
-description: Reference Evaluation Plan — how the 0001 whole-model subject evaluation covered the in-scope source at standard effort.
-tags: [skill, quality, evaluation, example]
-timestamp: 2026-06-17T00:00:00Z
----
-
-> **Reference instance — non-normative.** A captured example of the **plan**
-> artifact the [`/quality` skill](../../quality-skill.md) writes alongside its
-> [report](report.md) (see [Reporting](../quality-skill.md#reporting)). It records
-> the run's *method* — how the in-scope `source` is covered — distinct from its
-> inputs ([design](design.md)) and its result ([report](report.md)). The report's
-> statement of what was *not assessed* reconciles actual coverage against this
-> plan. See the [examples index](../index.md) for the facts shared across this
-> bundle.
-
 # Evaluation plan
 
 How this run covers the in-scope `source` at `standard` effort: representative

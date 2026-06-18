@@ -27,18 +27,22 @@ func newSpecCmd() *cobra.Command {
 }
 
 func writeSpec(w io.Writer, markdown []byte) error {
+	return writeMarkdown(w, markdown)
+}
+
+func writeMarkdown(w io.Writer, markdown []byte) error {
 	if !colorEnabled(w) {
 		_, err := w.Write(markdown)
 		return err
 	}
-	rendered, err := renderSpec(markdown)
+	rendered, err := renderMarkdown(markdown)
 	if err != nil {
 		return err
 	}
 	return page(w, rendered)
 }
 
-func renderSpec(markdown []byte) ([]byte, error) {
+func renderMarkdown(markdown []byte) ([]byte, error) {
 	renderer, err := glamour.NewTermRenderer(
 		glamour.WithAutoStyle(),
 		glamour.WithWordWrap(100),

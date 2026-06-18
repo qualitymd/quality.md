@@ -11,7 +11,7 @@ timestamp: 2026-06-17T00:00:00Z
 Companion to the
 [Diagnose rating-scale soundness in the meta-model](../0009-rating-scale-diagnostic.md)
 change. This spec states the delta the CLI's built-in
-[quality meta-model](../../../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)
+[quality meta-model](../../../internal/models/quality-meta-model.md)
 must absorb so its Functionality factor assesses the rating scale's meaning, not
 only its structure.
 

@@ -2,7 +2,7 @@
 type: Change
 title: Implement the /quality skill
 description: Build the specified-but-unimplemented /quality evaluation skill, conforming to the format spec's Evaluation contract and driving the qualitymd CLI for every mechanical step.
-status: Design
+status: In-Progress
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-17T00:00:00Z
 ---
@@ -22,10 +22,10 @@ implementation exists yet. This change implements it. Detail lives in the child:
   [skill spec](../specs/skills/quality-skill/quality-skill.md) and states only the
   delta plus the open items and gaps that spec leaves for this change to settle.
 - [Design doc](0010-implement-quality-skill/design.md) — how the change is built,
-  now that the spec is settled and the change is in **Design**: the skill packaged
-  for Agent Skills installation, the CLI prerequisite check in `setup`/`wizard`,
-  the `qualitymd models` CLI surface, the raw JSON evaluation artifacts, and how
-  the open items resolve into the durable spec.
+  now that the spec is settled and the change is in **In-Progress**: the skill
+  packaged for Agent Skills installation, the CLI prerequisite check in
+  `setup`/`wizard`, the `qualitymd models` CLI surface, the raw JSON evaluation
+  artifacts, and how the open items resolve into the durable spec.
 
 ## Motivation
 
@@ -54,7 +54,7 @@ Covered:
   every mechanical step.
 - The deterministic **`qualitymd models`** CLI command that emits the bundled
   models — including the built-in
-  [quality meta-model](../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)
+  [quality meta-model](../internal/models/quality-meta-model.md)
   the **model** altitude evaluates against. The skill drives the CLI for every
   mechanical step and must not reimplement it, so emitting a bundled model is CLI
   work this otherwise skill-focused change also delivers; its surface is
@@ -116,12 +116,9 @@ the durable spec/doc deltas that accompany it are:
 
 ## Status
 
-`Design`. See the [status lifecycle](index.md#status-lifecycle). The
+`In-Progress`. See the [status lifecycle](index.md#status-lifecycle). The
 [functional spec](0010-implement-quality-skill/spec.md) is settled and the
-**blocking** open items confirmed at their recommended resolutions, so the
-[design doc](0010-implement-quality-skill/design.md) now works out the *how* — the
-skill packaged for Agent Skills installation, `setup`/`wizard` CLI prerequisite
-verification, the `qualitymd models` surface, and the raw JSON evaluation
-artifacts. Work still stays inside this change's folder: the
-remaining items resolve during **In-Progress**, when the durable spec/doc and
-implementation files are first touched, all settled and synced before **Done**.
+[design doc](0010-implement-quality-skill/design.md) resolves the technical
+approach. Implementation is now authorized: add the skill artifact, add the
+`qualitymd models` CLI surface, sync the durable specs/docs and example bundle,
+and verify the result before advancing the change to **Done**.

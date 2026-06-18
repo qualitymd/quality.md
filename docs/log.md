@@ -2,6 +2,12 @@
 
 ## 2026-06-17
 
+- **Creation**: Added [Use the /quality skill](guides/use-quality-skill.md), a
+  how-to guide for installing the skill with `npx skills add
+  qualitymd/quality.md`, verifying the `qualitymd` CLI prerequisite, running
+  setup/wizard/evaluation modes, and configuring `.quality/config.yaml`
+  `evaluationDir`.
+
 - **Rename**: Renamed the changes-workflow guide from *Proposing a change*
   (`propose-a-change.md`) to [Working with changes](guides/work-with-changes.md)
   (`work-with-changes.md`), because the old title named only the first step while

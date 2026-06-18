@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "run": {
+    "id": "0001-subject-quality-eval",
+    "mode": "evaluate",
+    "altitude": "subject",
+    "targetFile": "./QUALITY.md",
+    "scope": "whole model",
+    "effort": "standard",
+    "sourceRevision": "9f2c1ab"
+  },
+  "rating": {
+    "rating": "unacceptable",
+    "notAssessed": false,
+    "subject": "Sparrow Payments API",
+    "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+  },
+  "targets": [
+    {
+      "target": "Sparrow Payments API",
+      "targetPath": [],
+      "localRating": "unacceptable",
+      "aggregateRating": "unacceptable",
+      "analysisRecord": "analysis/root-sparrow-payments.json"
+    },
+    {
+      "target": "Ledger",
+      "targetPath": ["ledger"],
+      "localRating": "target",
+      "aggregateRating": "target",
+      "analysisRecord": "analysis/ledger.json",
+      "notAssessed": ["Reconciliation runs daily and flags drift"]
+    },
+    {
+      "target": "Webhooks",
+      "targetPath": ["webhooks"],
+      "localRating": "target",
+      "aggregateRating": "minimum",
+      "analysisRecord": "analysis/webhooks.json"
+    },
+    {
+      "target": "Delivery",
+      "targetPath": ["webhooks", "delivery"],
+      "localRating": "minimum",
+      "aggregateRating": "minimum",
+      "analysisRecord": "analysis/delivery.json"
+    }
+  ],
+  "findingSummaries": [
+    {
+      "assessmentRecord": "assessments/001-root-no-committed-credentials.json",
+      "locator": "internal/gateway/client.go:48",
+      "category": "secret",
+      "severity": "critical",
+      "summary": "A live gateway secret key is committed in plaintext; value withheld."
+    },
+    {
+      "assessmentRecord": "assessments/005-ledger-reconciliation.json",
+      "locator": "ledger/reconcile.go:31",
+      "category": "missing-evidence",
+      "summary": "A reconcile entrypoint exists, but no scheduled run output, log, or report was available."
+    },
+    {
+      "assessmentRecord": "assessments/008-delivery-redelivery-dedup.json",
+      "locator": "webhooks/delivery/dedup.go:52",
+      "category": "bounded-deduplication",
+      "severity": "medium",
+      "summary": "Deduplication state is retained for the same 24-hour window as retries, so late re-enqueue can duplicate delivery."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "001-rotate-committed-gateway-key",
+      "path": "recommendations/001-rotate-committed-gateway-key.md",
+      "priority": "key-gap",
+      "doneCriterion": "The committed-credentials requirement reaches target: no live credential is present in the working tree and the previously exposed key has been revoked."
+    },
+    {
+      "id": "002-produce-reconciliation-evidence",
+      "path": "recommendations/002-produce-reconciliation-evidence.md",
+      "priority": "coverage-gap",
+      "doneCriterion": "The reconciliation requirement becomes assessable and reaches at least the acceptable floor."
+    },
+    {
+      "id": "003-bound-webhook-dedup-window",
+      "path": "recommendations/003-bound-webhook-dedup-window.md",
+      "priority": "next-constraint",
+      "doneCriterion": "The webhook-delivery deduplication requirement reaches target within the declared retry window."
+    }
+  ],
+  "limitations": [
+    "Standard effort did not seek broader failure-injection and step-up-control evidence required for outstanding ratings.",
+    "The committed-credential finding reflects the tracked working tree at the evaluated commit.",
+    "Transfer idempotency and webhook deduplication each rest on one replay/redelivery test, not sustained concurrency or fault-injection soak."
+  ]
+}

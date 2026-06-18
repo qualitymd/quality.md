@@ -1,16 +1,3 @@
----
-type: Recommendation
-title: Produce reconciliation evidence so the requirement can be rated
-description: Reference Recommendation — close the not-assessed reconciliation gap in the Sparrow Payments Ledger subtree.
-tags: [skill, quality, evaluation, example, correctness]
-timestamp: 2026-06-17T00:00:00Z
----
-
-> **Reference instance — non-normative.** A captured example of a single
-> recommendation artifact the [`/quality` skill](../../../quality-skill.md)
-> emits alongside its [report](../report.md). It is written to stand on its own:
-> a reader can triage and route it without the report or the session.
-
 # Produce reconciliation evidence so the requirement can be rated
 
 **Target / factor:** Ledger → Correctness

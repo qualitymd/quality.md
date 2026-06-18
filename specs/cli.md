@@ -22,15 +22,16 @@ interpreted as described in IETF RFC 2119.
 
 ## Scope
 
-This phase covers three commands — the **format-tooling layer**: commands that
-operate on a single `QUALITY.md` file, hold no evaluation state, and never call a
-model.
+This phase covers four commands — the **format-tooling layer**: commands that
+operate on a single `QUALITY.md` file or bundled model, hold no evaluation state,
+and never call a model.
 
-| Command                 | Purpose                                              |
-| ----------------------- | ---------------------------------------------------- |
-| [`init`](./cli/init.md) | Scaffold a starter `QUALITY.md` to fill in.          |
-| [`lint`](./cli/lint.md) | Validate a file's structure against the format spec. |
-| [`spec`](./cli/spec.md) | Emit the `QUALITY.md` format specification.          |
+| Command                     | Purpose                                                |
+| --------------------------- | ------------------------------------------------------ |
+| [`init`](./cli/init.md)     | Scaffold a starter `QUALITY.md` to fill in.            |
+| [`lint`](./cli/lint.md)     | Validate a file's structure against the format spec.   |
+| [`models`](./cli/models.md) | Emit bundled `QUALITY.md` models for agents and tools. |
+| [`spec`](./cli/spec.md)     | Emit the `QUALITY.md` format specification.            |
 
 **Deferred.** The deeper surface that records per-target verdicts, rolls them up
 the target tree, and gates CI on the outcome is out of scope for this phase. The
@@ -42,6 +43,7 @@ the model, not by these commands.
 
 - [`init`](./cli/init.md) — scaffold a starter `QUALITY.md`.
 - [`lint`](./cli/lint.md) — validate a file's structure.
+- [`models`](./cli/models.md) — list and view bundled `QUALITY.md` models.
 - [`spec`](./cli/spec.md) — emit the format specification.
 
 ## Technical requirements
@@ -140,8 +142,9 @@ than its human prose. This makes `--json` meaningful for commands whose human
 output is a confirmation rather than a result.
 
 Among the current commands, [`init`](./cli/init.md) offers a receipt,
-[`lint`](./cli/lint.md) offers its finding result, and [`spec`](./cli/spec.md)
-is the verbatim-artifact carve-out.
+[`lint`](./cli/lint.md) offers its finding result,
+[`models`](./cli/models.md) offers machine-readable catalog and model views, and
+[`spec`](./cli/spec.md) is the verbatim-artifact carve-out.
 
 **Suggested next actions.** A command may close its response with a short list of
 *next actions* — the commands a caller would most plausibly run next, given what

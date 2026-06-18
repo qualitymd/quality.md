@@ -2,6 +2,23 @@
 
 ## 2026-06-17
 
+- **Implementation**: Implemented change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md): added
+  `skills/quality/SKILL.md`, implemented `qualitymd models list/view` with Markdown
+  and JSON output plus `--source`, moved the bundled quality meta-model under
+  `internal/models`, added skill-first install/docs, synced the durable CLI and
+  skill specs, re-captured the example as raw runtime artifacts with JSON
+  assessment/analysis/report files, ignored default dogfood runs under
+  `quality/evaluations/`, and verified the skill/CLI surfaces locally.
+
+- **Implementation**: Advanced change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) from
+  `Design` to `In-Progress`. The functional spec and design doc are settled, so
+  implementation files and durable specs/docs can now be updated: the
+  `skills/quality/SKILL.md` artifact, `qualitymd models` CLI surface,
+  `.quality/config.yaml` behavior, raw JSON example artifacts, and related durable
+  documentation.
+
 - **Refinement**: Added a comprehensive acceptance checklist to change
   [0010 — Implement the /quality skill](0010-implement-quality-skill.md), covering
   skill packaging/install, CLI prerequisite handling including dev builds,
@@ -143,7 +160,7 @@
   CLI for every mechanical step — plus the open items and gaps a review of the
   skill spec surfaced for this change to settle: where the skill is packaged; where the
   **model** altitude draws its criteria (the built-in
-  [meta-model](../internal/diagnostics/quality-model/QUALITY-META-MODEL.md) is
+  [meta-model](../internal/models/quality-meta-model.md) is
   neither referenced nor CLI-exposed); what `setup` does beyond `init`; how the
   default target file resolves (a CLI convention still "to be specified"); and
   whether `improve`'s post-apply re-evaluation writes a new evaluation folder.
@@ -154,7 +171,7 @@
 - **Completion**: Implemented and archived
   [0009 — Diagnose rating-scale soundness in the meta-model](archive/0009-rating-scale-diagnostic.md),
   adding the *rating scale and any overrides are well-formed and meaningful*
-  requirement to the [meta-model](../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)'s
+  requirement to the [meta-model](../internal/models/quality-meta-model.md)'s
   Functionality factor. The meta-model previously assessed the rating scale only
   structurally (lint's "well-shaped" check) and as one clause in a conformance
   list, despite the scale being what turns assessments into verdicts and despite

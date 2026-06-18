@@ -2,7 +2,21 @@
 
 ## 2026-06-17
 
-- **Revision**: Strengthened the [`0001` evaluation report](skills/quality-skill/examples/0001-payments-quality-eval/report.md)
+- **Revision**: Synced the [`/quality` skill spec](skills/quality-skill/quality-skill.md)
+  with its implementation path and raw runtime artifact contract. The spec now
+  points to [`skills/quality/SKILL.md`](../skills/quality/SKILL.md), uses the
+  finalized trigger description, defines setup and model-altitude evaluation via
+  `qualitymd models view quality-meta-model --source`, adds `.quality/config.yaml`
+  `evaluationDir`, requires JSON assessment/analysis records plus `report.json`,
+  and removes runtime artifact concept types from [`schema.md`](schema.md).
+
+- **Creation**: Added the [`qualitymd models`](cli/models.md) command spec and
+  listed it in the [CLI spec](cli.md). The command exposes bundled models through
+  `models list` and `models view <name>`, with JSON forms for agents/tools and a
+  `--source` rewrite for model-altitude evaluation with the bundled
+  `quality-meta-model`.
+
+- **Revision**: Strengthened the [`0001` evaluation report](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
   against the elements ISO/IEC 25040:2024 §5.6.3.2 lists for an evaluation
   report, while staying within the format spec's "presents at least" Report
   contract. Added an **Evaluated** provenance line (source commit, model
@@ -14,32 +28,32 @@
   `ratings` overrides. Declared the new `9f2c1ab` commit as a shared fictional
   locator in the [examples index](skills/quality-skill/examples/index.md).
 
-- **Revision**: Extended the [`0001` example bundle](skills/quality-skill/examples/0001-payments-quality-eval/report.md)
+- **Revision**: Extended the [`0001` example bundle](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
   with a **two-level nested target** to exercise multi-level roll-up: a
   **Webhooks** child target (sibling of Ledger, source `./webhooks`, a signing
   requirement under a refined **Security** factor) with a **Delivery**
   sub-target (`./webhooks/delivery`, retry + redelivery-suppression under a
   refined **Reliability** factor) in
-  [`model.md`](skills/quality-skill/examples/0001-payments-quality-eval/model.md).
+  [`model.md`](skills/quality-skill/examples/0001-subject-quality-eval/model.md).
   The Delivery deduplication requirement is *rated* **Minimum**, so the Webhooks
   aggregate (**Minimum**) falls below its own local rating (**Target**) — the
   bundle's first intermediate aggregate that differs from its local — and the
   root's counterfactual now layers: rotating the committed credential lifts the
   root only to **Minimum** (the webhook gap then binds), reaching **Target**
   once that closes too. Updated the
-  [report](skills/quality-skill/examples/0001-payments-quality-eval/report.md)
+  [report](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
   rationale/scope/advice, revised recommendation
-  [001](skills/quality-skill/examples/0001-payments-quality-eval/recommendations/001-rotate-committed-gateway-key.md)'s
+  [001](skills/quality-skill/examples/0001-subject-quality-eval/recommendations/001-rotate-committed-gateway-key.md)'s
   done-criterion to match, added recommendation
-  [003](skills/quality-skill/examples/0001-payments-quality-eval/recommendations/003-bound-webhook-dedup-window.md),
+  [003](skills/quality-skill/examples/0001-subject-quality-eval/recommendations/003-bound-webhook-dedup-window.md),
   and refreshed the [examples index](skills/quality-skill/examples/index.md).
 
-- **Revision**: Polished the [`0001` example bundle](skills/quality-skill/examples/0001-payments-quality-eval/report.md)
+- **Revision**: Polished the [`0001` example bundle](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
   for readability and to track the format spec's new **target display fields**:
   gave the **Ledger** child target a `title` and `description` (the report
   already displayed "Ledger", which the bare map key did not provide); added an
   "At a glance" condensed model tree above the verbatim YAML in
-  [`model.md`](skills/quality-skill/examples/0001-payments-quality-eval/model.md),
+  [`model.md`](skills/quality-skill/examples/0001-subject-quality-eval/model.md),
   mirroring the specification's sample-report tree; centralized the facts shared
   across the bundle (fictional subject/locators, the suggested four-level scale,
   and that `model.md` is the evaluated file rather than a runtime output) into
@@ -65,11 +79,11 @@
   worked reference instance of the skill's [Reporting](skills/quality-skill/quality-skill.md#reporting)
   contract: a whole-model **subject** evaluation of a fictional "Sparrow
   Payments" service held at **Unacceptable** by a committed live gateway
-  credential — a [report](skills/quality-skill/examples/0001-payments-quality-eval/report.md)
+  credential — a [report](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
   plus two standalone
-  [recommendations](skills/quality-skill/examples/0001-payments-quality-eval/recommendations/001-rotate-committed-gateway-key.md)
+  [recommendations](skills/quality-skill/examples/0001-subject-quality-eval/recommendations/001-rotate-committed-gateway-key.md)
   with done-criteria, plus the
-  [model evaluated](skills/quality-skill/examples/0001-payments-quality-eval/model.md)
+  [model evaluated](skills/quality-skill/examples/0001-subject-quality-eval/model.md)
   reproduced alongside (an `Example Model` concept embedding the fictional
   `QUALITY.md` — root **Security** with **Secrets handling**/**Access control**
   sub-factors and **Reliability**, a **Ledger** child target with

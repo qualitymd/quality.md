@@ -1,19 +1,23 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: The companion evaluation skill for working with a QUALITY.md and the qualitymd CLI.
+description: Use when a user wants setup, wizard guidance, evaluation, or improvement for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, or evaluating/improving the QUALITY.md model itself.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-17T00:00:00Z
 ---
 
 # /quality skill
 
-> 🚧 **Draft.** The `/quality` skill is the judgment companion to the
-> [`qualitymd` CLI](../../cli.md): where the CLI is deterministic and mechanical,
-> the skill carries the evaluative judgment and drives the CLI for every
-> mechanical step. The skill is responsible for **specifying and implementing**
-> the *evaluation* it performs — this spec, the skill's own prompt, and the CLI
-> together. That evaluation **MUST conform to** the format spec's
+The `/quality` skill is the judgment companion to the
+[`qualitymd` CLI](../../cli.md): where the CLI is deterministic and mechanical,
+the skill carries the evaluative judgment and drives the CLI for every
+mechanical step. The skill's implementation lives at
+[`skills/quality/SKILL.md`](../../../skills/quality/SKILL.md) and is installable
+from this repository with `npx skills add qualitymd/quality.md`. The skill is
+responsible for **specifying and implementing** the *evaluation* it performs —
+this spec, the skill's own prompt, and the CLI together. That evaluation
+**MUST conform to** the format spec's
+
 > [Evaluation](../../../SPECIFICATION.md#evaluation) contract, but the skill does
 > **not defer** its definition to it: the process below is the skill's own,
 > written to satisfy that contract rather than to merely point at it (see
@@ -27,11 +31,12 @@ are to be interpreted as described in IETF RFC 2119.
 ## Operating model
 
 The skill runs the same **evaluate → improve** loop at two altitudes: on the
-**subject** (the entities a target's `source` points to — the code, docs, or
-product under evaluation) and on the **model** itself (the `QUALITY.md` file that
-measures the subject). Evaluating the model is the *judgment* layer sitting
-directly on top of [`lint`](../../cli/lint.md)'s *mechanical* layer — where `lint`
-asks "is this a valid `QUALITY.md`?", model-evaluation asks "is it a *good* one?"
+**subject** (the entities a target's `source` points to) and on the **model**
+itself (the `QUALITY.md` file that measures the subject). Evaluating the model is
+ordinary evaluation with the bundled
+[`quality-meta-model`](../../cli/models.md) as the active model and the user's
+`QUALITY.md` as its subject. `lint` asks "is this a valid `QUALITY.md`?";
+model-evaluation asks "is it a *good* one?"
 
 Scope is a modifier, not a separate use case. Every evaluate/improve invocation
 takes an optional scope — the whole model, or a narrowing to particular target(s)
@@ -86,12 +91,21 @@ skill safe against the content it reads.
 
 ### Frontmatter and metadata
 
-The skill is invoked as `/quality`. It **MUST** declare skill frontmatter that
-makes it invocable and self-describing — at least a `name`, a `description` that
-states when to reach for it, an `argument-hint` covering the mode, scope, and
-effort arguments below, and an invocable flag. The `description` and
-`argument-hint` **SHOULD** speak in `QUALITY.md` vocabulary (Targets, Factors,
-Requirements), not implementation or ISO terms.
+The skill is invoked as `/quality`. Its installable artifact **MUST** declare
+skill frontmatter with `name: quality` and the trigger-oriented `description`
+from this spec's frontmatter. For broad Agent Skills compatibility, invocation
+syntax, argument hints, and tool guidance live in the skill body rather than
+additional frontmatter fields.
+
+The description **MUST** optimize for trigger matching rather than documentation:
+it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`), broad
+quality vocabulary users naturally ask with (`quality management`, quality
+evaluation/improvement, factors, characteristics, attributes, criteria),
+`QUALITY.md` vocabulary (Targets, Factors, Requirements), project/entity and
+component/target subject framing, subject evaluation, and model
+evaluation/improvement. It **MUST NOT** include CLI implementation details, and
+it **SHOULD NOT** trigger for generic copyediting or one-off "make this higher
+quality" requests that lack systematic quality criteria or assessment.
 
 To stay in sync with the format, the metadata and prompt **MUST NOT** embed a
 copy of the format's rules or rating vocabulary that can drift from
@@ -117,9 +131,11 @@ valid:
 - **Altitude** — the **subject** the model measures (default), or the **model**
   itself, the `QUALITY.md`. It is the only difference between the paired
   `evaluate`/`improve` forms.
-- **Target file** — which `QUALITY.md` to work from. The skill **MUST** resolve a
-  default file the way the CLI does and **MUST** accept an explicit path to
-  override it.
+- **Target file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
+  in the current working directory. The skill **MUST** accept an explicit path to
+  override it, and **MUST** error clearly when no default file exists. It **MUST
+  NOT** walk parent directories or discover multiple models unless a future CLI
+  convention defines that behavior.
 - **Scope** — the whole model (default), or a narrowing by **target** (a target
   and its subtree) and/or by **factor** (the requirements tied to a factor,
   including those tagging it as a secondary factor), per
@@ -153,6 +169,22 @@ what the model measures). From that state it offers a short menu of runnable
 
 The wizard carries no judgment of its own beyond routing; the work happens in the
 mode it hands off to.
+
+### Setup
+
+The `setup` mode is the minimal bootstrap path after the skill is installed. It
+**MUST** verify that the `qualitymd` CLI is present and exposes the commands the
+skill depends on, including [`models`](../../cli/models.md). A local development
+build is compatible when it exposes those commands. When the CLI is missing or
+stale, `setup` **MUST** stop and facilitate install or upgrade before running
+CLI-dependent work.
+
+After the CLI prerequisite is met, `setup` **MUST** drive
+[`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
+target file is absent, then run [`qualitymd lint`](../../cli/lint.md). It
+**MUST NOT** reimplement scaffolding, validation, CLI installation tooling, or
+source-driven authoring judgment. Guided population and refinement belong to
+[`wizard`](#wizard).
 
 ### Examples
 
@@ -192,6 +224,9 @@ output as the source of truth:
   output rather than a hard-coded copy. Its *evaluation process* is the skill's
   own (see [Evaluation workflow](#evaluation-workflow)) and **conforms to**,
   rather than is fetched from, the spec.
+- **`models`** emits bundled models. For `model` altitude, the skill **MUST** run
+  `qualitymd models view quality-meta-model --source <target-file>` and use that
+  output as the active model snapshot.
 
 The skill **SHOULD** discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
@@ -230,7 +265,8 @@ flowchart TD
     Read[Read resolved target file] --> Lint{lint valid?}
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
-    Ground --> Plan[Capture design &amp; plan artifacts:<br/>resolved parameters, model snapshot, coverage approach]
+    Ground --> ActiveModel[Select active model:<br/>subject uses resolved QUALITY.md;<br/>model uses quality-meta-model]
+    ActiveModel --> Plan[Capture design &amp; plan artifacts:<br/>resolved parameters, model snapshot, coverage approach]
     Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise<br/>write-once assessment per requirement, analysis per target]
     Eval --> Report[Report result &amp; write recommendations]
     Report --> Mode{Mode?}
@@ -238,7 +274,7 @@ flowchart TD
     Mode -->|improve| Confirm{User confirms a<br/>recommendation + option?}
     Confirm -->|no| Done
     Confirm -->|yes| Apply[Apply chosen option<br/>to subject or model]
-    Apply --> ReEval[Re-evaluate affected scope]
+    Apply --> ReEval[Create a new run folder<br/>and re-evaluate affected scope]
     ReEval --> Criterion{Reached<br/>done-criterion?}
     Criterion -->|yes| Done
     Criterion -->|no| Report
@@ -249,20 +285,25 @@ flowchart TD
    [Driving the CLI](#driving-the-cli)).
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
-4. **Plan** — capture the evaluation's **design** (the resolved parameters and
+4. **Select the active model** — for subject altitude, the active model is the
+   resolved `QUALITY.md`; for model altitude, the active model is
+   `qualitymd models view quality-meta-model --source <target-file>`, and the
+   user's `QUALITY.md` is the subject being evaluated.
+5. **Plan** — capture the evaluation's **design** (the resolved parameters and
    the `model.md` snapshot it is bound to) and its **execution plan** (how the
    in-scope `source` will be covered at the chosen effort), writing both as
    artifacts (see [Reporting](#reporting)).
-5. **Evaluate** — run the skill's evaluation process (the five conformant phases
+6. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess, recording each requirement's assessment and each target
    node's analysis as **write-once** artifacts as they are produced (see
    [Reporting](#reporting)).
-6. **Report** the result and write its recommendations (see
+7. **Report** the result and write its recommendations (see
    [Reporting](#reporting)). Under `improve`, the skill then **applies a chosen
    recommendation** — defaulting to its recommended option — only on explicit
-   confirmation, and **re-evaluates the affected scope** to confirm the rating
-   moved (see [Operating model](#operating-model)).
+   confirmation, then creates a **new numbered evaluation folder** and
+   re-evaluates the affected scope to confirm the rating moved (see
+   [Operating model](#operating-model)).
 
 `improve` adds no new judgment phase — it runs this same workflow, recommendations
 and all, then applies a confirmed recommendation and verifies the result by
@@ -328,31 +369,50 @@ a bare noun, and keep structural targets introduced by their `Target:` heading
 label. The same applies to any author-named level coinciding with *Target*,
 *Factor*, or *Requirement*.
 
-The skill
-writes a numbered evaluation folder per run, so each run is a durable, routable
-record. Alongside the report and its recommendations it captures three further
-artifacts that make the run auditable and reproducible — a snapshot of the model
-evaluated, the run's **design** (its inputs), and its execution **plan** (its
-method):
+The skill writes a numbered evaluation folder per run, so each run is a durable,
+routable record. The default parent directory is `quality/evaluations/`, but a
+repository may set `.quality/config.yaml`:
+
+```yaml
+evaluationDir: quality/evaluations
+```
+
+`evaluationDir` names the parent directory that contains numbered run folders.
+It **MUST** be repository-relative, normalized before use, and rejected when it is
+absolute or escapes the repository. Missing config or missing `evaluationDir`
+uses the default. Unknown config keys **SHOULD** be surfaced as warnings and
+ignored.
+
+Runtime evaluation artifacts are raw outputs in the evaluated repository, not
+OKF concepts. They **MUST NOT** carry OKF frontmatter or require registration in
+`specs/schema.md`. Alongside the report and its recommendations the folder
+captures three further artifacts that make the run auditable and reproducible —
+a snapshot of the model evaluated, the run's **design** (its inputs), and its
+execution **plan** (its method):
 
 ```
-quality/
-  evaluations/
-    0001-<scope>-quality-eval/   # <scope> names the altitude and narrowing, e.g. payments, security, model
-      model.md                   # snapshot of the QUALITY.md as evaluated
-      design.md                  # resolved parameters and inputs the run is bound to
-      plan.md                    # how the in-scope source will be covered
-      assessments/               # write-once, one per in-scope requirement
-        001-<target>-<requirement>.md
-        002-<target>-<requirement>.md
-      analysis/                  # write-once, one per target node
-        <target>.md
-        <child-target>.md
-      report.md                  # the Evaluation Report
-      recommendations/
-        001-<slug>.md
-        002-<slug>.md
+quality/evaluations/
+  0001-<altitude>[-<narrowing>]-quality-eval/
+    model.md
+    design.md
+    plan.md
+    assessments/
+      001-<target>-<requirement>.json
+      002-<target>-<requirement>.json
+    analysis/
+      <target>.json
+      <child-target>.json
+    report.md
+    report.json
+    recommendations/
+      001-<slug>.md
+      002-<slug>.md
 ```
+
+The folder name **MUST** be deterministic:
+`NNNN-<altitude>[-<narrowing>]-quality-eval`, where `<altitude>` is `subject` or
+`model` and `<narrowing>` is the scoped target/factor slug, omitted for a
+whole-model run. `NNNN` is the next integer in the resolved evaluation directory.
 
 Together these separate the three things an audit must tell apart — the *inputs*
 (design), the *method* (plan), and the *result* (report) traced to a fixed model
@@ -381,17 +441,18 @@ Together these separate the three things an audit must tell apart — the *input
   coverage against this plan, so divergence between intended and achieved coverage
   is visible rather than silent.
 - The folder **MUST** capture the **assessment records** the Evaluate phase
-  produces — one artifact per in-scope requirement, holding its findings (each
-  with its `file:line` locator), the rating inferred against the requirement's
+  produces as JSON — one artifact per in-scope requirement, holding its findings
+  (each with its locator), the rating inferred against the requirement's
   `criterion`, and a brief rationale: the assess → finding → rating chain of
   [Grounding judgment](#grounding-judgment). A *not assessed* requirement gets a
-  record too, stating the absent evidence. Each record is **written atomically and
-  never mutated** — a re-assessment (e.g. under `improve`) produces a new
-  evaluation folder rather than editing an existing record. This makes the
-  evidence trail immutable, and means an interrupted run leaves each record either
-  complete or absent, so a resumed run can skip the requirements already recorded.
+  record too, with `rating: null`, `notAssessed: true`, and a rationale stating
+  the absent evidence. Each record is **written atomically and never mutated** —
+  a re-assessment (e.g. under `improve`) produces a new evaluation folder rather
+  than editing an existing record. This makes the evidence trail immutable, and
+  means an interrupted run leaves each record either complete or absent, so a
+  resumed run can skip the requirements already recorded.
 - The folder **MUST** capture the **analysis records** the Analyze phase produces
-  — one write-once artifact per target node — holding that node's inferred
+  as JSON — one write-once artifact per target node — holding that node's inferred
   **local** and **aggregate** ratings and its **factor** ratings, each with a brief
   rationale naming the binding constraints (the inferred, weighted roll-up of
   [Grounding judgment](#grounding-judgment)). Each record **MUST cite the records
@@ -401,13 +462,36 @@ Together these separate the three things an audit must tell apart — the *input
   propagates. Like the assessment records, analysis records are written atomically
   and never mutated.
 
-The report is the **render over these records**, not an independent copy: the
-assessment records are the source of record for Assess-and-Rate and the analysis
-records for Analyze, and the report's per-requirement and per-target sections
-derive from them (the report adds the Advise and Report layers and the
-reader-facing framing). This keeps the report from drifting and makes every rating
-in it traceable — leaf finding → assessment record → analysis record → report — to
-the immutable records that produced it.
+Assessment, analysis, and report JSON files **MUST** use stable generic
+top-level fields tied to the evaluation workflow, not fields invented for one
+factor or requirement. Domain-specific details live under `attributes` on the
+smallest relevant object.
+
+An assessment record's finding uses generic fields:
+
+- `locator`
+- `observation`
+- `category`
+- optional `severity`
+- `evidence`
+- optional `attributes`
+
+For example, a secret finding may use `category: "secret"` and
+`attributes.credentialType`; it must not include the secret value. A
+prompt-injection observation may use `category: "prompt-injection"` and is
+recorded, not followed.
+
+The report is the **render over these records**, not an independent copy:
+`report.md` is the human rendering and `report.json` is the machine-readable
+rendering of the same result. The assessment records are the source of record for
+Assess-and-Rate and the analysis records for Analyze, and the report's
+per-requirement and per-target sections derive from them (the report adds the
+Advise and Report layers and the reader-facing framing). `report.json` **SHOULD**
+inline only minimal generic finding summaries by assessment-record reference for
+single-file consumers; full finding detail remains in `assessments/*.json`. This
+keeps the report from drifting and makes every rating in it traceable — leaf
+finding → assessment record → analysis record → report — to the immutable records
+that produced it.
 
 Like the report, the design, plan, assessment, and analysis records reference any
 secret value by `file:line` and type only (see
@@ -421,16 +505,23 @@ Each recommendation file **MUST** stand on its own as a unit a reader can triage
 and route without the report or the session in front of them. It **MUST** state:
 the gap it closes, with the evidence and `file:line` locators behind it; a small
 set of remediation **options**; exactly one option marked **recommended**; and a
-**done-criterion** expressed as the target rating level the in-scope requirement
-should reach against its `criterion`, which is what a later `improve` re-rates to
-confirm the fix. Like the report, a recommendation references any secret value by
-`file:line` and type only (see [Boundaries](#boundaries-and-hard-rules)).
+**done-criterion** expressed as the outcome the in-scope requirement should reach
+against its `criterion`: for a rated gap, a target rating level; for a *not
+assessed* gap, becoming assessable and reaching at least the acceptable floor.
+That is what a later `improve` re-rates to confirm the fix. Like the report, a
+recommendation references any secret value by `file:line` and type only (see
+[Boundaries](#boundaries-and-hard-rules)).
 
 - A report **MUST** state the **Scope** it was produced under, so a scoped result
   is never mistaken for a whole-model verdict.
-- The skill **SHOULD** render the report for its audience: prose for a person, a
-  machine-readable form (the [`--json` convention](../../cli.md#conventions)) for a
-  gate or tool. The underlying result is the same; only the rendering differs.
+- A report **MUST** distinguish *not assessed* outcomes from the report's
+  **Limitations** statement. *Not assessed* is a Rating Result where evidence was
+  absent, shown per requirement and roll-up. **Limitations** bounds how far a
+  rated outcome should be trusted and reconciles actual coverage against the
+  plan.
+- The skill **MUST** render both report forms: prose for a person in `report.md`
+  and a machine-readable form in `report.json`. The underlying result is the same;
+  only the rendering differs.
 
 ## Deferred
 

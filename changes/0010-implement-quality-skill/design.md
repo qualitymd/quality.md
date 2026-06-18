@@ -55,7 +55,7 @@ The blocking items resolve as the spec recommends, confirmed here:
   possible secondary channel, not the main onboarding path.
 - **Item 2 — the `model` altitude's criteria.** Meta-evaluation is ordinary
   evaluation with the bundled
-  [quality meta-model](../../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)
+  [quality meta-model](../../internal/models/quality-meta-model.md)
   as the active model and the user's `QUALITY.md` as its subject, reached through a
   new `qualitymd models` surface ([§4](#4-the-qualitymd-models-command)).
 - **Item 3 — `setup`.** A minimal bootstrap after skill installation — verify or
@@ -116,18 +116,19 @@ quality.md/                       # repo root = Agent Skills source
 assets stay deferred per the durable spec). Its frontmatter makes it invocable and
 self-describing; its body carries the **evaluation process** the skill owns.
 
-- **Frontmatter.** `name`, a trigger-oriented `description`, and an `argument-hint`
-  covering mode, altitude, scope, effort, and path. The description is deliberately
-  broader than literal `QUALITY.md` mentions: it should trigger for quality
-  management, setup, wizard, evaluation, and improvement requests such as "improve
-  security quality" or "evaluate this component's reliability characteristic," then
-  route through `wizard`/`setup` when no model exists. It uses broad quality
-  vocabulary (factors, characteristics, attributes, criteria) plus `QUALITY.md`
-  terms (Targets, Factors, Requirements — not ISO or implementation terms), frames
-  the subject as a project/entity or component/target instead of a closed list of
-  types, mentions subject evaluation and model evaluation/improvement, avoids
-  generic copyediting triggers, and leaves CLI implementation details to the skill
-  body. Final description text:
+- **Frontmatter.** `name` and a trigger-oriented `description`. Argument hints,
+  invocation parsing, and tool guidance live in the body rather than additional
+  frontmatter fields, matching current Agent Skills authoring guidance. The
+  description is deliberately broader than literal `QUALITY.md` mentions: it should
+  trigger for quality management, setup, wizard, evaluation, and improvement
+  requests such as "improve security quality" or "evaluate this component's
+  reliability characteristic," then route through `wizard`/`setup` when no model
+  exists. It uses broad quality vocabulary (factors, characteristics, attributes,
+  criteria) plus `QUALITY.md` terms (Targets, Factors, Requirements — not ISO or
+  implementation terms), frames the subject as a project/entity or
+  component/target instead of a closed list of types, mentions subject evaluation
+  and model evaluation/improvement, avoids generic copyediting triggers, and leaves
+  CLI implementation details to the skill body. Final description text:
   ```yaml
   description: Use when a user wants setup, wizard guidance, evaluation, or improvement for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, or evaluating/improving the QUALITY.md model itself.
   ```
@@ -158,14 +159,14 @@ self-describing; its body carries the **evaluation process** the skill owns.
   name, a `--effort` value, a path); a free-form parse fits it better than fixed
   positional `arguments:` slots. A bare name resolves against the already-grounded
   model to a target or factor, with `target`/`factor` keywords to disambiguate.
-- **Tools.** `allowed-tools` pre-grants the read-and-drive surface the workflow
-  always needs — `Bash(qualitymd …)`, CLI-presence/version checks, `Read`, `Grep`,
-  `Glob`, and `Write` for the resolved evaluation directory. Install or upgrade
-  commands for a missing/stale CLI use normal agent permissioning and platform
-  detection rather than being silently pre-granted. The skill deliberately does
-  **not** pre-grant edits to the *subject* or the `QUALITY.md`; under `improve`
-  those go through normal permissioning after the explicit confirmation the spec
-  requires, so an apply is never silent.
+- **Tools.** The skill body names the read-and-drive surface the workflow always
+  needs — `qualitymd` invocations, CLI-presence/version checks, file reads/searches,
+  and writes under the resolved evaluation directory. It does not rely on
+  frontmatter tool grants. Install or upgrade commands for a missing/stale CLI use
+  normal agent permissioning and platform detection rather than being silently
+  pre-granted. The skill deliberately does **not** pre-grant edits to the *subject*
+  or the `QUALITY.md`; under `improve` those go through normal permissioning after
+  the explicit confirmation the spec requires, so an apply is never silent.
 - **Body.** The process the skill owns, carried in the prompt: the operating model
   and boundaries, the [workflow](../../specs/skills/quality-skill/quality-skill.md#workflow),
   effort levels, and the artifact contract. It **MUST NOT** embed the format/schema
@@ -465,8 +466,8 @@ handling.
 Before **Done**, the implementation satisfies this checklist:
 
 - The repository contains `skills/quality/SKILL.md` with the final description text
-  from [§3](#3-the-quality-skill-artifact), an argument hint for mode/altitude/path
-  scope/effort, and the prompt body for the required modes.
+  from [§3](#3-the-quality-skill-artifact), body-level argument guidance for
+  mode/altitude/path/scope/effort, and the prompt body for the required modes.
 - The skill installs from the published repo path (`npx skills add
   qualitymd/quality.md`) and from the working tree for dogfooding when the installer
   supports a local path.
@@ -540,7 +541,7 @@ Before **Done**, the implementation satisfies this checklist:
   home for a bundled-model catalog meant to grow).
 - **Skill vs slash command.** A `commands/quality.md` slash command would work
   identically for invocation, but an Agent Skill (`skills/quality/SKILL.md`) is the
-  right primitive: it supports `argument-hint`, tool restriction, and future bundled
+  right primitive: it supports broad Agent Skills installation and future bundled
   `references/` assets in the skill directory.
 
 ## Trade-offs & risks

@@ -118,7 +118,7 @@ example where affected); see the parent's
    criteria for what makes a `QUALITY.md` *good*, but the spec never says where
    they come from; grounding (`qualitymd spec`) supplies only the **format** rules.
    The repo already ships a built-in
-   [quality meta-model](../../internal/diagnostics/quality-model/QUALITY-META-MODEL.md)
+   [quality meta-model](../../internal/models/quality-meta-model.md)
    — itself a `QUALITY.md` whose subject is a `QUALITY.md` — for exactly this, yet
    the skill spec neither references it nor is there a CLI command that emits it
    (only `spec`, which emits the format specification).
@@ -227,8 +227,8 @@ Consistency fixes, not new behavior — applied to
 [`quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) (and the
 example) when the durable spec is brought into sync.
 
-9. **Folder `<scope>` naming.** The example's `0001-payments-quality-eval` is a
-   whole-model **subject** run, yet `payments` is the subject's name, not the
+9. **Folder `<scope>` naming.** The example's old `0001-payments-quality-eval`
+   slug is a whole-model **subject** run, yet `payments` is the subject's name, not the
    "altitude and narrowing" the spec says `<scope>` encodes — the default
    whole-model case has no derivable slug.
    - **Resolution:** make the slug deterministic and altitude-first —

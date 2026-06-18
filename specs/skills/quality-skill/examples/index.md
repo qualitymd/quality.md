@@ -2,13 +2,13 @@
 
 Worked reference artifacts that make the skill's
 [Reporting](../quality-skill.md#reporting) contract concrete. Each is a captured
-instance of what the skill writes at runtime, stored here as OKF concepts so the
-spec can point at a real example.
+instance of what the skill writes at runtime.
 
 At runtime the skill writes these into the **evaluated** repository under
-`quality/evaluations/NNNN-<scope>-quality-eval/` (see
-[Reporting](../quality-skill.md#reporting)); the only difference here is the OKF
-frontmatter wrapper that lets the bundle catalogue them.
+`quality/evaluations/NNNN-<altitude>[-<narrowing>]-quality-eval/` (see
+[Reporting](../quality-skill.md#reporting)). These example files intentionally
+match that raw runtime shape: no OKF frontmatter, JSON assessment/analysis
+records, and both `report.md` and `report.json`.
 
 Shared across this bundle, so the individual files need not repeat it: the
 subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
@@ -28,7 +28,7 @@ falls below its local rating because the Delivery child binds) of four.
 
 # Examples
 
-- **[0001 — Sparrow Payments, whole model](0001-payments-quality-eval/report.md)**
+- **[0001 — Sparrow Payments, whole model](0001-subject-quality-eval/report.md)**
   — a subject evaluation of a small fictional payments service, held at
   **Unacceptable** by a committed live credential. Exercises `file:line`
   evidence, the secret-by-reference rule, a prompt-injection finding treated as
@@ -41,12 +41,13 @@ falls below its local rating because the Delivery child binds) of four.
   gap then binds), and standalone recommendation artifacts with done-criteria.
 
   **Read it in order:** the
-  [model evaluated](0001-payments-quality-eval/model.md) →
-  the [design](0001-payments-quality-eval/design.md) and
-  [plan](0001-payments-quality-eval/plan.md) →
-  the [assessment records](0001-payments-quality-eval/assessments/) →
-  the [analysis records](0001-payments-quality-eval/analysis/) →
-  the [report](0001-payments-quality-eval/report.md) → its recommendations
-  ([001 — rotate the committed key](0001-payments-quality-eval/recommendations/001-rotate-committed-gateway-key.md),
-  [002 — produce reconciliation evidence](0001-payments-quality-eval/recommendations/002-produce-reconciliation-evidence.md),
-  [003 — bound the webhook dedup window](0001-payments-quality-eval/recommendations/003-bound-webhook-dedup-window.md)).
+  [model evaluated](0001-subject-quality-eval/model.md) →
+  the [design](0001-subject-quality-eval/design.md) and
+  [plan](0001-subject-quality-eval/plan.md) →
+  the [assessment records](0001-subject-quality-eval/assessments/) →
+  the [analysis records](0001-subject-quality-eval/analysis/) →
+  the [human report](0001-subject-quality-eval/report.md) and
+  [JSON report](0001-subject-quality-eval/report.json) → its recommendations
+  ([001 — rotate the committed key](0001-subject-quality-eval/recommendations/001-rotate-committed-gateway-key.md),
+  [002 — produce reconciliation evidence](0001-subject-quality-eval/recommendations/002-produce-reconciliation-evidence.md),
+  [003 — bound the webhook dedup window](0001-subject-quality-eval/recommendations/003-bound-webhook-dedup-window.md)).

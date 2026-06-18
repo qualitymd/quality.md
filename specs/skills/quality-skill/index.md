@@ -3,12 +3,15 @@
 The companion evaluation skill for a `QUALITY.md`: it carries the evaluative
 judgment and drives the deterministic [CLI](../../cli.md) for every mechanical
 step. This folder holds the skill's functional spec and the reference artifacts
-that make it concrete.
+that make it concrete. The installable skill artifact lives at
+[`../../../skills/quality/SKILL.md`](../../../skills/quality/SKILL.md).
 
 # Spec
 
 - [/quality skill](quality-skill.md) - the functional spec: operating model,
   invocation, evaluation workflow, and reporting contract.
+- [Installable skill artifact](../../../skills/quality/SKILL.md) - the prompt
+  distributed by Agent Skills tooling.
 
 # Subfolders
 

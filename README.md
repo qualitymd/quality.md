@@ -13,10 +13,10 @@ why those are the right requirements. It is written for whoever decides quality:
 **authors** declare the model, **coding agents** read it to build and evaluate
 against, and **CI** gates on the result.
 
-> 🚧 **Alpha.** The `QUALITY.md` format and the `qualitymd` CLI are early and
-> under active development. The format is specified in
-> [`SPECIFICATION.md`](SPECIFICATION.md); the CLI is still a work in progress
-> (see [The CLI](#the-cli)). Expect the format to change as it matures.
+> 🚧 **Alpha.** The `QUALITY.md` format, `qualitymd` CLI, and `/quality` skill
+> are early and under active development. The format is specified in
+> [`SPECIFICATION.md`](SPECIFICATION.md). Expect the format and tooling to change
+> as they mature.
 
 ## What a QUALITY.md looks like
 
@@ -102,16 +102,40 @@ material assessed, and child `targets:` decompose or narrow the subject. The
 **body** holds the reasoning the frontmatter cannot: what the system is, what
 *good* means for it, and why these are the right requirements.
 
-A coding agent reads this file to evaluate the Orders API against it — performing
-each `assessment` against the target source, then reporting where the subject falls short. The
-`qualitymd` CLI records and rolls up those verdicts deterministically; the
-judging is the agent's part.
+A coding agent with the `/quality` skill reads this file to evaluate the Orders
+API against it — performing each `assessment` against the target source, then
+reporting where the subject falls short. The `qualitymd` CLI owns deterministic
+mechanical steps such as scaffolding, linting, spec grounding, and bundled model
+access; judging is the skill's part.
+
+## Skill-first onboarding
+
+Install the skill first, then make sure the CLI prerequisite is available:
+
+```sh
+npx skills add qualitymd/quality.md
+qualitymd --version
+```
+
+Then use the skill in your agent:
+
+```text
+/quality setup
+/quality wizard
+/quality evaluate
+/quality evaluate model
+```
+
+`setup` and `wizard` verify that the `qualitymd` CLI is installed and exposes the
+commands the skill depends on. If it is missing or stale, they stop and help you
+install or upgrade it before continuing. See [`install.md`](install.md) for the
+full bootstrap flow.
 
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init`, `qualitymd lint`, and `qualitymd spec`. The rest of the
-> surface below is planned but not yet built.
+> `qualitymd init`, `qualitymd lint`, `qualitymd models`, and `qualitymd spec`.
+> The evaluation record/gate surface is planned but not yet built.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
@@ -124,10 +148,12 @@ The deterministic CLI:
 - **`qualitymd init`** — scaffold a starter `QUALITY.md` to fill in.
 - **`qualitymd lint`** — validate a file's structure, fast and deterministic,
   exiting non-zero on errors so it drops into CI.
+- **`qualitymd models`** — list and view bundled `QUALITY.md` models, including
+  the quality meta-model used to evaluate a `QUALITY.md` itself.
 - **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
-- **`qualitymd model` / `evaluation` / `result`** *(planned)* — inspect the
-  model, manage a per-target evaluation run, record verdicts, and gate on the
-  outcome with `evaluation report --fail-on`.
+- **`qualitymd evaluation` / `result`** *(planned)* — manage a per-target
+  evaluation run, record verdicts, and gate on the outcome with
+  `evaluation report --fail-on`.
 
 The deep, judgment-based evaluation of a subject against its model is carried by
 **skills** that orchestrate those resources — not by a CLI command.
@@ -139,8 +165,15 @@ command" until they land.
 
 > **Status.** The format spec is settled — see
 > [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress.
-> Of the documented surface, **`init`**, **`lint`**, and **`spec`** are currently
-> built; the **`model`/`evaluation`/`result`** resources are planned.
+> Of the documented CLI surface, **`init`**, **`lint`**, **`models`**, and
+> **`spec`** are currently built; the **`evaluation`/`result`** resources are
+> planned.
+
+Install the `/quality` skill with Agent Skills tooling:
+
+```sh
+npx skills add qualitymd/quality.md
+```
 
 `qualitymd` has no tagged release yet; build the current binary from source with
 Go 1.26+:
