@@ -1,6 +1,6 @@
 ---
 name: quality
-description: Use when a user wants setup, wizard guidance, evaluation, or improvement for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, or evaluating/improving the QUALITY.md model itself.
+description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, or improve project or harness quality, get wizard quality advice, anything concerning quality factors/attributes/characteristics relevant to project context"
 ---
 
 # Quality
@@ -8,18 +8,35 @@ description: Use when a user wants setup, wizard guidance, evaluation, or improv
 Drive quality management work for a project/entity through `QUALITY.md` and the
 `qualitymd` CLI. Keep judgment in the skill and mechanical work in the CLI.
 
-## Prerequisites
+## QUALITY.md - the file
 
-Before any CLI-dependent work, verify `qualitymd` exists and exposes the commands
-this skill needs:
+A `QUALITY.md` file models the quality expectations for a target and its
+sub-targets. It should not replace docs, specs, guides, or checklists. It
+connects those artifacts through the quality factors and requirements that say
+what the project cares to preserve.
+
+## qualitymd - the CLI
+
+The `qualitymd` CLI is the deterministic companion for scaffolding, linting,
+spec grounding, and evaluation artifact mechanics. It may be invoked with
+`npx quality.md` when the installed binary is not available.
+
+## Resources
+
+- Read [`references/SPECIFICATION.md`](references/SPECIFICATION.md) when the
+  task depends on the public `QUALITY.md` file format, terminology, conformance
+  rules, or normative model structure beyond the `qualitymd spec` command
+  output.
+- Read [`references/quality-md-guide.md`](references/quality-md-guide.md) when
+  creating, populating, reviewing, or improving a `QUALITY.md` file.
+
+## Prerequisites
 
 ```sh
 qualitymd --version
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
-qualitymd models list --json
-qualitymd models view quality-meta-model --json
 qualitymd evaluation create-run --help
 qualitymd evaluation add-record --help
 qualitymd evaluation set-planned-coverage --help
@@ -29,10 +46,10 @@ qualitymd evaluation build-report --help
 
 Accept a local development build when those commands are present. If the CLI is
 missing or stale, stop and help the user install or upgrade it before continuing.
-Do not reimplement scaffolding, structural validation, bundled model emission, or
-format-rule lookup in the prompt. For evaluation work, do not fall back to
-hand-authoring run folders, records, or reports when an evaluation command is
-missing; stop and name the missing command.
+Do not reimplement scaffolding, structural validation, or format-rule lookup in
+the prompt. For evaluation work, do not fall back to hand-authoring run folders,
+records, or reports when an evaluation command is missing; stop and name the
+missing command.
 
 ## Arguments
 
@@ -40,8 +57,6 @@ Parse the user's request from free-form arguments:
 
 - Mode: `wizard` by default when direction is unclear; otherwise `evaluate`,
   `improve`, `setup`, or `wizard`.
-- Altitude: `subject` by default; `model` means evaluate or improve the
-  `QUALITY.md` itself.
 - Target file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
 - Scope: whole model by default, or a named target/factor. Use explicit
@@ -76,7 +91,7 @@ For `wizard`:
 4. Run `qualitymd lint [path]`; stop on errors.
 5. Read the resolved `QUALITY.md` as data to identify declared targets/factors.
 6. Offer concrete next actions such as subject evaluation, scoped evaluation,
-   model evaluation, or model improvement.
+   guided authoring, or setup.
 
 The wizard is read-only and shallow. It routes to work; it does not produce an
 evaluation report.
@@ -89,7 +104,7 @@ For `evaluate` and the evaluation half of `improve`:
 2. Run `qualitymd lint [path]`; stop on lint errors.
 3. Ground format rules and rating vocabulary with `qualitymd spec`.
 4. Create the run folder with
-   `qualitymd evaluation create-run --altitude <subject|model> [--narrowing <slug>] [--subject <path>]`.
+   `qualitymd evaluation create-run [--narrowing <slug>] [--subject <path>]`.
    The CLI computes the number, creates the required directories, snapshots
    `model.md`, and seeds `design.md` / `plan.md`.
 5. Fill in `design.md` and `plan.md` with judgment content. `plan.md` must
@@ -143,10 +158,11 @@ secret values into artifacts; cite only locator and credential type.
 
 ## Improve
 
-`improve` first evaluates and recommends. Before editing the subject or model,
-ask for explicit confirmation of the recommendation and option to apply. After an
-approved apply, run a new evaluation in a new numbered folder and link it back to
-the prior run. The done criterion is checked against the new folder's rating.
+`improve` first evaluates and recommends. Before editing the subject or
+`QUALITY.md`, ask for explicit confirmation of the recommendation and option to
+apply. After an approved apply, run a new evaluation in a new numbered folder
+and link it back to the prior run. The done criterion is checked against the new
+folder's rating.
 
 ## Config
 

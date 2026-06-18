@@ -2,6 +2,13 @@
 
 ## 2026-06-18
 
+- **Revision**: Removed the public bundled-model workflow. Deleted the
+  `qualitymd models` command spec, removed it from the CLI command catalog,
+  made `evaluation create-run` subject-only with no `--altitude` flag, and
+  updated the evaluation record contract to treat `model` altitude as historical
+  only. Synced the durable `/quality` skill spec around subject evaluation plus
+  guide-backed `QUALITY.md` authoring.
+
 - **Rationale capture**: Made durable the motivating learnings behind the
   in-review evaluation changes (0012–0024), so the *why* survives when the change
   records are archived. Added inline rationale to

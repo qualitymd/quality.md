@@ -50,7 +50,6 @@ func newEvaluationCreateRunCmd() *cobra.Command {
 			return renderNextActions(cmd.ErrOrStderr(), result.NextActions)
 		},
 	}
-	cmd.Flags().StringVar(&opts.Altitude, "altitude", "", "evaluation altitude: subject or model")
 	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional scope slug for the run folder")
 	cmd.Flags().StringVar(&opts.Subject, "subject", "", "QUALITY.md file to snapshot")
 	cmd.Flags().StringVar(&opts.EvaluationDir, "evaluation-dir", "", "override the evaluation directory")

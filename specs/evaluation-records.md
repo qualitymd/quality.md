@@ -54,15 +54,16 @@ Each run folder is named:
 NNNN-<altitude>[-<narrowing>]-quality-eval
 ```
 
-`<altitude>` is `subject` or `model`. `NNNN` is one zero-padded sequence shared
-across all altitudes in the evaluation directory, computed by directory scan
-immediately before creation (one past the highest present). An existing folder
-at the computed name **MUST** fail rather than be overwritten or silently
-retried at the next number: under a deterministic shared sequence a collision
-signals concurrent or corrupt state that must surface, not be papered over. The
-scan-then-create step is safe but not serializable — concurrent invocations are
-resolved by the loser failing on an existing-folder error — and a lock is
-deferred until concurrent use is a real requirement.
+`<altitude>` is `subject`. Historical runs may use `model`, but new run creation
+is subject-only. `NNNN` is one zero-padded sequence across the evaluation
+directory, computed by directory scan immediately before creation (one past the
+highest present). An existing folder at the computed name **MUST** fail rather
+than be overwritten or silently retried at the next number: under a deterministic
+shared sequence a collision signals concurrent or corrupt state that must
+surface, not be papered over. The scan-then-create step is safe but not
+serializable — concurrent invocations are resolved by the loser failing on an
+existing-folder error — and a lock is deferred until concurrent use is a real
+requirement.
 
 A run folder contains:
 

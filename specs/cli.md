@@ -23,15 +23,14 @@ interpreted as described in IETF RFC 2119.
 ## Scope
 
 This phase covers the deterministic CLI surface: format-tooling commands that
-operate on `QUALITY.md` files or bundled models, plus evaluation-run commands
-that scaffold, validate, and render runtime records. The CLI never calls a model;
-skills carry judgment and pass judgment payloads to the deterministic surface.
+operate on `QUALITY.md` files, plus evaluation-run commands that scaffold,
+validate, and render runtime records. The CLI never calls a model; skills carry
+judgment and pass judgment payloads to the deterministic surface.
 
 | Command                                                                       | Purpose                                                   |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [`init`](./cli/init.md)                                                       | Scaffold a starter `QUALITY.md` to fill in.               |
 | [`lint`](./cli/lint.md)                                                       | Validate a file's structure against the format spec.      |
-| [`models`](./cli/models.md)                                                   | Emit bundled `QUALITY.md` models for agents and tools.    |
 | [`spec`](./cli/spec.md)                                                       | Emit the `QUALITY.md` format specification.               |
 | [`evaluation create-run`](./cli/evaluation-create-run.md)                     | Create a numbered evaluation run folder.                  |
 | [`evaluation add-record`](./cli/evaluation-add-record.md)                     | Write one assessment, analysis, or recommendation record. |
@@ -43,7 +42,6 @@ skills carry judgment and pass judgment payloads to the deterministic surface.
 
 - [`init`](./cli/init.md) — scaffold a starter `QUALITY.md`.
 - [`lint`](./cli/lint.md) — validate a file's structure.
-- [`models`](./cli/models.md) — list and view bundled `QUALITY.md` models.
 - [`spec`](./cli/spec.md) — emit the format specification.
 - [`evaluation create-run`](./cli/evaluation-create-run.md) — create a numbered
   evaluation run folder.
@@ -153,9 +151,8 @@ than its human prose. This makes `--json` meaningful for commands whose human
 output is a confirmation rather than a result.
 
 Among the current commands, [`init`](./cli/init.md) offers a receipt,
-[`lint`](./cli/lint.md) offers its finding result,
-[`models`](./cli/models.md) offers machine-readable catalog and model views, and
-[`spec`](./cli/spec.md) is the verbatim-artifact carve-out.
+[`lint`](./cli/lint.md) offers its finding result, and [`spec`](./cli/spec.md)
+is the verbatim-artifact carve-out.
 
 **Suggested next actions.** A command may close its response with a short list of
 *next actions* — the commands a caller would most plausibly run next, given what

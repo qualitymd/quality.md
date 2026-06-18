@@ -12,7 +12,7 @@ import (
 
 func TestEvaluationSetPlannedCoverageCommand(t *testing.T) {
 	repo := testEvaluationRepo(t)
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}

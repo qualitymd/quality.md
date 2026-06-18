@@ -2,6 +2,21 @@
 
 ## 2026-06-18
 
+- **Status**: Advanced change
+  [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
+  to `In-Review` after replacing the skill-facing meta-model reference with
+  [quality-md-guide.md](../skills/quality/references/quality-md-guide.md),
+  removing the bundled `models` CLI/package, making evaluation run creation
+  subject-only, syncing durable specs and docs, and verifying the Go test suite.
+
+- **Implementation**: Added change
+  [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
+  in `In-Progress` with its [functional spec](0026-authoring-guide-remove-meta-model/spec.md)
+  and [design doc](0026-authoring-guide-remove-meta-model/design.md). The change
+  replaces the skill-facing meta-model reference with a `quality-md-guide.md`
+  authoring guide, removes the public `qualitymd models` / model-altitude
+  workflow, and syncs durable specs and docs around subject-only evaluation.
+
 - **Done**: Set status `Done` and archived the full in-review set —
   [0012 — Evaluation record format](archive/0012-evaluation-record-format.md),
   [0013 — Evaluation run scaffold](archive/0013-evaluation-run-scaffold.md),

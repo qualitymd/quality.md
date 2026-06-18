@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants setup, wizard guidance, evaluation, or improvement for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, or evaluating/improving the QUALITY.md model itself.
+description: Use when a user wants setup, wizard guidance, evaluation, or improvement for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-17T00:00:00Z
 ---
@@ -30,13 +30,11 @@ are to be interpreted as described in IETF RFC 2119.
 
 ## Operating model
 
-The skill runs the same **evaluate → improve** loop at two altitudes: on the
-**subject** (the entities a target's `source` points to) and on the **model**
-itself (the `QUALITY.md` file that measures the subject). Evaluating the model is
-ordinary evaluation with the bundled
-[`quality-meta-model`](../../cli/models.md) as the active model and the user's
-`QUALITY.md` as its subject. `lint` asks "is this a valid `QUALITY.md`?";
-model-evaluation asks "is it a *good* one?"
+The skill runs the **evaluate → improve** loop on the **subject**: the entities a
+target's `source` points to. The `QUALITY.md` is the active model for that
+evaluation. `lint` asks "is this a valid `QUALITY.md`?"; authoring guidance asks
+"is this a useful and understandable model?" without turning that question into a
+second bundled evaluation model.
 
 Scope is a modifier, not a separate use case. Every evaluate/improve invocation
 takes an optional scope — the whole model, or a narrowing to particular target(s)
@@ -52,8 +50,8 @@ apply** of a chosen recommendation, defaulting to its recommended option — and
 entities or the `QUALITY.md` until the user explicitly confirms the recommendation
 and option to apply, and it **MUST** then re-evaluate the affected scope to
 confirm the change reached the recommendation's done-criterion (see
-[Reporting](#reporting)). Whether the subject or model is being touched **MUST**
-be unambiguous to the user before any edit.
+[Reporting](#reporting)). Whether the subject or the `QUALITY.md` file is being
+touched **MUST** be unambiguous to the user before any edit.
 
 ## Boundaries and hard rules
 
@@ -102,9 +100,9 @@ it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`), broad
 quality vocabulary users naturally ask with (`quality management`, quality
 evaluation/improvement, factors, characteristics, attributes, criteria),
 `QUALITY.md` vocabulary (Targets, Factors, Requirements), project/entity and
-component/target subject framing, subject evaluation, and model
-evaluation/improvement. It **MUST NOT** include CLI implementation details, and
-it **SHOULD NOT** trigger for generic copyediting or one-off "make this higher
+component/target subject framing, subject evaluation, and `QUALITY.md`
+authoring/improvement. It **MUST NOT** include CLI implementation details, and it
+**SHOULD NOT** trigger for generic copyediting or one-off "make this higher
 quality" requests that lack systematic quality criteria or assessment.
 
 To stay in sync with the format, the metadata and prompt **MUST NOT** embed a
@@ -120,7 +118,7 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 
 ### Arguments
 
-An invocation resolves five things, each with a default so a bare `/quality` is
+An invocation resolves four things, each with a default so a bare `/quality` is
 valid:
 
 - **Mode** — `evaluate`, `improve`, `setup`, or `wizard`. A bare `/quality` with
@@ -128,9 +126,6 @@ valid:
   run; `setup` is selected when no model file is present or the user asks to
   create one; otherwise the default action is `evaluate`, so naming only a scope
   still evaluates.
-- **Altitude** — the **subject** the model measures (default), or the **model**
-  itself, the `QUALITY.md`. It is the only difference between the paired
-  `evaluate`/`improve` forms.
 - **Target file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
   in the current working directory. The skill **MUST** accept an explicit path to
   override it, and **MUST** error clearly when no default file exists. It **MUST
@@ -139,9 +134,7 @@ valid:
 - **Scope** — the whole model (default), or a narrowing by **target** (a target
   and its subtree) and/or by **factor** (the requirements tied to a factor,
   including those tagging it as a secondary factor), per
-  [Define](../../../SPECIFICATION.md#define). Scope **composes with either
-  altitude**: a narrowing to a target or factor applies whether the skill is
-  evaluating the subject or the model itself. A scope name **SHOULD** resolve
+  [Define](../../../SPECIFICATION.md#define). A scope name **SHOULD** resolve
   against the model the skill already grounded — a bare name is matched to the
   target or factor that bears it, with an explicit `target`/`factor` keyword
   available to disambiguate the rare name that is both.
@@ -163,7 +156,8 @@ what the model measures). From that state it offers a short menu of runnable
 
 - **No model present** → set one up (`/quality setup`).
 - **Model present and valid** → evaluate or improve the subject — whole or scoped
-  to a named target or factor — or evaluate/improve the model itself.
+  to a named target or factor — or use the authoring guide to improve the
+  `QUALITY.md` before evaluation.
 - **Model present but failing `lint`** → resolve the structural errors first,
   since judgment needs a valid model.
 
@@ -174,10 +168,9 @@ mode it hands off to.
 
 The `setup` mode is the minimal bootstrap path after the skill is installed. It
 **MUST** verify that the `qualitymd` CLI is present and exposes the commands the
-skill depends on, including [`models`](../../cli/models.md). A local development
-build is compatible when it exposes those commands. When the CLI is missing or
-stale, `setup` **MUST** stop and facilitate install or upgrade before running
-CLI-dependent work.
+skill depends on. A local development build is compatible when it exposes those
+commands. When the CLI is missing or stale, `setup` **MUST** stop and facilitate
+install or upgrade before running CLI-dependent work.
 
 After the CLI prerequisite is met, `setup` **MUST** drive
 [`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
@@ -203,9 +196,6 @@ arguments, defaulting the ones left out:
 /quality improve               # evaluate, then recommend (applies only on confirmation)
 /quality improve reliability --effort quick   # recommend from a fast pass, scoped to one factor
 /quality improve --effort deep # exhaustive evaluate, then recommend
-/quality evaluate model        # judge the QUALITY.md itself, not the subject it measures
-/quality evaluate model security   # judge the model's treatment of the "security" factor
-/quality improve model payments    # recommend QUALITY.md improvements for the "payments" target
 /quality setup                 # author a new QUALITY.md (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
 ```
@@ -224,9 +214,6 @@ output as the source of truth:
   output rather than a hard-coded copy. Its *evaluation process* is the skill's
   own (see [Evaluation workflow](#evaluation-workflow)) and **conforms to**,
   rather than is fetched from, the spec.
-- **`models`** emits bundled models. For `model` altitude, the skill **MUST** run
-  `qualitymd models view quality-meta-model --source <target-file>` and use that
-  output as the active model snapshot.
 
 The skill **SHOULD** discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
@@ -269,8 +256,7 @@ flowchart TD
     Read[Read resolved target file] --> Lint{lint valid?}
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
-    Ground --> ActiveModel[Select active model:<br/>subject uses resolved QUALITY.md;<br/>model uses quality-meta-model]
-    ActiveModel --> Run[Create run folder through<br/>qualitymd evaluation create-run]
+    Ground --> Run[Create run folder through<br/>qualitymd evaluation create-run]
     Run --> Plan[Fill design.md and plan.md:<br/>resolved parameters, coverage approach]
     Plan --> Coverage[Optionally write planned coverage through<br/>qualitymd evaluation set-planned-coverage]
     Coverage --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
@@ -293,36 +279,32 @@ flowchart TD
    [Driving the CLI](#driving-the-cli)).
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
-4. **Select the active model** — for subject altitude, the active model is the
-   resolved `QUALITY.md`; for model altitude, the active model is
-   `qualitymd models view quality-meta-model --source <target-file>`, and the
-   user's `QUALITY.md` is the subject being evaluated.
-5. **Create the run** with `qualitymd evaluation create-run`, letting the CLI
+4. **Create the run** with `qualitymd evaluation create-run`, letting the CLI
    number the folder, create the layout, and snapshot `model.md`.
-6. **Plan** — fill the evaluation's **design** (the resolved parameters and the
+5. **Plan** — fill the evaluation's **design** (the resolved parameters and the
    `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
    `source` will be covered at the chosen effort). The plan **MUST** record the
    chosen effort and concrete requirement set covered.
-7. **Record planned coverage when useful** — after the plan is settled, the
+6. **Record planned coverage when useful** — after the plan is settled, the
    skill **SHOULD** write intended assessment and analysis coverage through
    `qualitymd evaluation set-planned-coverage` when resume diagnostics
    materially matter, especially for standard, deep, concurrent-write, or
    interruption-prone runs. The skill **MUST NOT** hand-author or hand-repair
    `planned-coverage.json` when the CLI command is available.
-8. **Evaluate** — run the skill's evaluation process (the five conformant phases
+7. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess.
-9. **Write records** with
+8. **Write records** with
    `qualitymd evaluation add-record assessment|analysis|recommendation <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
    `schemaVersion`.
-10. **Check and report** with `qualitymd evaluation show-status <run>` followed by
-    `qualitymd evaluation build-report <run>` when reportable. Under `improve`,
-    the skill then **applies a chosen
-    recommendation** — defaulting to its recommended option — only on explicit
-    confirmation, then creates a **new numbered evaluation folder** and
-    re-evaluates the affected scope to confirm the rating moved (see
-    [Operating model](#operating-model)).
+9. **Check and report** with `qualitymd evaluation show-status <run>` followed by
+   `qualitymd evaluation build-report <run>` when reportable. Under `improve`,
+   the skill then **applies a chosen
+   recommendation** — defaulting to its recommended option — only on explicit
+   confirmation, then creates a **new numbered evaluation folder** and
+   re-evaluates the affected scope to confirm the rating moved (see
+   [Operating model](#operating-model)).
 
 `improve` adds no new judgment phase — it runs this same workflow, recommendations
 and all, then applies a confirmed recommendation and verifies the result by
@@ -428,7 +410,7 @@ execution **plan** (its method):
 
 ```
 quality/evaluations/
-  0001-<altitude>[-<narrowing>]-quality-eval/
+  0001-subject[-<narrowing>]-quality-eval/
     model.md
     design.md
     plan.md
@@ -447,9 +429,9 @@ quality/evaluations/
 ```
 
 The folder name **MUST** be deterministic:
-`NNNN-<altitude>[-<narrowing>]-quality-eval`, where `<altitude>` is `subject` or
-`model` and `<narrowing>` is the scoped target/factor slug, omitted for a
-whole-model run. `NNNN` is the next integer in the resolved evaluation directory.
+`NNNN-subject[-<narrowing>]-quality-eval`, where `<narrowing>` is the scoped
+target/factor slug, omitted for a whole-model run. `NNNN` is the next integer in
+the resolved evaluation directory.
 
 Together these separate the three things an audit must tell apart — the *inputs*
 (design), the *method* (plan), and the *result* (report) traced to a fixed model
@@ -464,7 +446,7 @@ Together these separate the three things an audit must tell apart — the *input
   **SHOULD** record the revision (e.g. commit) of the subject it was taken
   against.
 - The folder **MUST** include a **design** artifact recording the evaluation's
-  resolved parameters — mode, altitude, target file, scope, and effort (see
+  resolved parameters — mode, target file, scope, and effort (see
   [Arguments](#arguments)) — and a citation of the `model.md` snapshot the run is
   bound to. It is the authoritative record of *what* was evaluated and *under what
   inputs*, so a later reader or re-run can reproduce the setup. The report's
@@ -479,9 +461,9 @@ Together these separate the three things an audit must tell apart — the *input
   is visible rather than silent. The plan **MUST** name the effort level and the
   concrete requirements selected by that effort. The design and plan together
   **MUST** record enough concise report context for the CLI-rendered summary
-  layer: altitude, effort, scope or narrowing, in-scope requirement set,
-  out-of-scope or deferred areas, headline evidence basis, and limitations that
-  constrain the rating.
+  layer: effort, scope or narrowing, in-scope requirement set, out-of-scope or
+  deferred areas, headline evidence basis, and limitations that constrain the
+  rating.
 - The folder **MAY** include optional **planned coverage** metadata when the run
   needs machine-checkable resume diagnostics. The skill supplies the intended
   assessment requirements and analysis targets after the plan is settled, but the

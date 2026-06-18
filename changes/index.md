@@ -40,12 +40,9 @@ move it (and its child folder) into [`archive/`](archive/) in the same change.
 
 # Open changes
 
-No changes are open right now. The coordinated evaluation-workflow set (the
-deterministic CLI writes the records, the skill judges — `0012`–`0016`), the
-independent skill rigor pass (`0017`), the experiment-backed report/status
-follow-ups (`0018`–`0024`), and the contributor-guide change teaching durable
-specs to carry their rationale (`0025`) have all landed and moved to
-[`archive/`](archive/).
+- [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
+  - replaces the bundled quality meta-model workflow with a practical
+    `QUALITY.md` authoring guide and removes the public model-altitude surfaces.
 
 Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
@@ -57,4 +54,5 @@ template for a new one.
 
 # Subfolders
 
+- [0026-authoring-guide-remove-meta-model/](0026-authoring-guide-remove-meta-model/) - spec and design for replacing the meta-model workflow.
 - [archive/](archive/) - completed changes.

@@ -2,6 +2,11 @@
 
 ## 2026-06-18
 
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  after removing the bundled model workflow. The CLI prerequisite check no
+  longer includes `qualitymd models`, and the runnable examples now show
+  subject evaluation rather than model-altitude evaluation.
+
 - **Revision**: Expanded [Writing functional specs](guides/write-functional-specs.md)
   with lessons adapted from Joel Spolsky's *Painless Functional Specifications*
   (parts 2 and 4). Added a **Scenario / use case** shape entry — the self-contained

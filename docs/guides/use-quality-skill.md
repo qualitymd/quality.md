@@ -29,13 +29,16 @@ Restart the target agent if it discovers skills only at session startup.
 ## Verify the CLI prerequisite
 
 The skill drives the deterministic `qualitymd` CLI for setup, linting, format
-grounding, bundled model access, and evaluation record/report mechanics:
+grounding, and evaluation record/report mechanics:
 
 ```sh
 qualitymd --version
-qualitymd models list --json
+qualitymd spec
+qualitymd lint --help
+qualitymd init --help
 qualitymd evaluation create-run --help
 qualitymd evaluation add-record --help
+qualitymd evaluation set-planned-coverage --help
 qualitymd evaluation show-status --help
 qualitymd evaluation build-report --help
 ```
@@ -55,7 +58,6 @@ In the repository you want to evaluate:
 /quality setup
 /quality wizard
 /quality evaluate
-/quality evaluate model
 ```
 
 `setup` creates and lints a skeleton `QUALITY.md`. `wizard` inspects the model

@@ -14,7 +14,6 @@ produces the layout defined by [Evaluation records](../evaluation-records.md).
 
 ## Flags
 
-- `--altitude <subject|model>` — required.
 - `--narrowing <slug>` — optional path-safe scope slug.
 - `--subject <path>` — repository-relative `QUALITY.md` file to snapshot;
   defaults to `QUALITY.md`.
@@ -43,14 +42,13 @@ failure touches no disk state; rolling back partially created folders was
 deliberately avoided to prevent deleting a directory a concurrent run created.
 
 The command **MUST** compute the next run number as one past the highest matching
-run folder across both altitudes, create the run directory, create
-`assessments/`, `analysis/`, and `recommendations/`, and seed `model.md`,
-`design.md`, and `plan.md`.
+evaluation run folder, create the run directory, create `assessments/`,
+`analysis/`, and `recommendations/`, and seed `model.md`, `design.md`, and
+`plan.md`.
 
-For subject altitude, `model.md` is the resolved subject file. For model
-altitude, `model.md` is the bundled `quality-meta-model` with its source pointed
-at the validated subject file.
+`model.md` is the resolved subject file.
 
 On success, human output **MUST** report the created path on stderr. Under
-`--json`, stdout **MUST** contain a receipt with `schemaVersion`, `path`,
-`altitude`, and `nextActions`.
+`--json`, stdout **MUST** contain a receipt with `schemaVersion`, `path`, and
+`nextActions`. The receipt **MAY** include `altitude: "subject"` for
+compatibility with existing evaluation consumers.

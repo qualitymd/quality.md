@@ -105,8 +105,8 @@ material assessed, and child `targets:` decompose or narrow the subject. The
 A coding agent with the `/quality` skill reads this file to evaluate the Orders
 API against it — performing each `assessment` against the target source, then
 reporting where the subject falls short. The `qualitymd` CLI owns deterministic
-mechanical steps such as scaffolding, linting, spec grounding, and bundled model
-access; judging is the skill's part.
+mechanical steps such as scaffolding, linting, spec grounding, and evaluation
+artifact mechanics; judging is the skill's part.
 
 ## Skill-first onboarding
 
@@ -123,7 +123,6 @@ Then use the skill in your agent:
 /quality setup
 /quality wizard
 /quality evaluate
-/quality evaluate model
 ```
 
 `setup` and `wizard` verify that the `qualitymd` CLI is installed and exposes the
@@ -134,8 +133,8 @@ full bootstrap flow.
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init`, `qualitymd lint`, `qualitymd models`, `qualitymd spec`, and
-> the `qualitymd evaluation` run-record surface.
+> `qualitymd init`, `qualitymd lint`, `qualitymd spec`, and the
+> `qualitymd evaluation` run-record surface.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
@@ -149,8 +148,6 @@ The deterministic CLI:
 - **`qualitymd init`** — scaffold a starter `QUALITY.md` to fill in.
 - **`qualitymd lint`** — validate a file's structure, fast and deterministic,
   exiting non-zero on errors so it drops into CI.
-- **`qualitymd models`** — list and view bundled `QUALITY.md` models, including
-  the quality meta-model used to evaluate a `QUALITY.md` itself.
 - **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
 - **`qualitymd evaluation create-run`** — create and number an evaluation run
   folder.
@@ -170,8 +167,8 @@ The deep, judgment-based evaluation of a subject against its model is carried by
 
 > **Status.** The format spec is settled — see
 > [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress.
-> The documented CLI surface includes **`init`**, **`lint`**, **`models`**,
-> **`spec`**, and **`evaluation`**.
+> The documented CLI surface includes **`init`**, **`lint`**, **`spec`**, and
+> **`evaluation`**.
 
 Install the `/quality` skill with Agent Skills tooling:
 

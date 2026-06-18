@@ -28,7 +28,7 @@ requirements:
 
 func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	repo := testRepo(t)
-	result, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	result, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -41,25 +41,29 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 		}
 	}
 
-	second, err := CreateRun(Options{RepoRoot: repo, Altitude: "model", Subject: "QUALITY.md"})
+	second, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("second CreateRun() error = %v", err)
 	}
-	if second.Path != "quality/evaluations/0002-model-quality-eval" {
-		t.Fatalf("second path = %q, want shared numbering across altitudes", second.Path)
+	if second.Path != "quality/evaluations/0002-subject-quality-eval" {
+		t.Fatalf("second path = %q, want next subject run", second.Path)
 	}
-	modelSnapshot, err := os.ReadFile(filepath.Join(repo, second.Path, "model.md"))
-	if err != nil {
-		t.Fatalf("reading model-altitude model.md: %v", err)
+}
+
+func TestCreateRunRejectsRemovedModelAltitude(t *testing.T) {
+	repo := testRepo(t)
+	_, err := CreateRun(Options{RepoRoot: repo, Altitude: "model", Subject: "QUALITY.md"})
+	if err == nil {
+		t.Fatal("CreateRun() error = nil, want removed model-altitude diagnostic")
 	}
-	if !strings.Contains(string(modelSnapshot), "source: QUALITY.md") {
-		t.Fatalf("model-altitude snapshot missing normalized source:\n%s", modelSnapshot)
+	if !strings.Contains(err.Error(), "model-altitude evaluation has been removed") {
+		t.Fatalf("CreateRun() error = %v, want removed model-altitude diagnostic", err)
 	}
 }
 
 func TestCreateRunValidatesSubjectBeforeCreatingRunFolder(t *testing.T) {
 	repo := testRepo(t)
-	_, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "."})
+	_, err := CreateRun(Options{RepoRoot: repo, Subject: "."})
 	if err == nil {
 		t.Fatal("CreateRun() error = nil, want invalid subject")
 	}
@@ -73,7 +77,7 @@ func TestCreateRunValidatesSubjectBeforeCreatingRunFolder(t *testing.T) {
 
 func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -185,7 +189,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 
 func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Narrowing: "child-quick", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Narrowing: "child-quick", Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -288,7 +292,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 
 func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -383,7 +387,7 @@ func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 
 func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -472,7 +476,7 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 
 func TestStatusRequiresRootAnalysis(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Narrowing: "child-only", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Narrowing: "child-only", Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -530,7 +534,7 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 
 func TestStatusRejectsDuplicateAssessments(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -598,7 +602,7 @@ func TestStatusRejectsDuplicateAssessments(t *testing.T) {
 
 func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -718,7 +722,7 @@ func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 
 func TestAssessmentSupersedingRejectsMissingOrDifferentRequirement(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -748,7 +752,7 @@ func TestAssessmentSupersedingRejectsMissingOrDifferentRequirement(t *testing.T)
 	}
 
 	repo = testRepo(t)
-	run, err = CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err = CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(second) error = %v", err)
 	}
@@ -799,7 +803,7 @@ func TestAssessmentSupersedingRejectsMissingOrDifferentRequirement(t *testing.T)
 
 func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -911,7 +915,7 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 
 func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -954,7 +958,7 @@ func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 
 func TestPlannedCoverageStatusGaps(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -1104,7 +1108,7 @@ func TestLimitationSentencesPreservesDottedPaths(t *testing.T) {
 
 func TestAddRecordRejectsCLIOwnedFields(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Altitude: "subject", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
