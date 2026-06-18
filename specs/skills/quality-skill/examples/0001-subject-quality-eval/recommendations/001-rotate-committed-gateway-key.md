@@ -1,3 +1,20 @@
+---
+schemaVersion: 1
+title: Rotate and remove the committed gateway credential
+gap: A live payment-gateway credential is committed to the repository in plaintext.
+evidenceLocators:
+  - internal/gateway/client.go:48
+  - internal/gateway/client_test.go:12
+assessmentRecords:
+  - assessments/001-root-no-committed-credentials.json
+remediationOptions:
+  - Rotate at the gateway, then move the secret to runtime configuration.
+  - Move the secret to configuration without rotating.
+  - Purge the key from git history without rotating.
+recommendedOption: Rotate at the gateway, then move the secret to runtime configuration.
+doneCriterion: The committed-credentials requirement reaches target; no live credential is present in the working tree and the previously exposed key has been revoked.
+---
+
 # Rotate and remove the committed gateway credential
 
 **Target / factor:** Sparrow Payments API (root) → Security → Secrets handling

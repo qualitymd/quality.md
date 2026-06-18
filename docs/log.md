@@ -1,5 +1,11 @@
 # Docs Update Log
 
+## 2026-06-18
+
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  so the CLI prerequisite check includes the evaluation commands the skill now
+  uses for run creation, record writes, status checks, and report rendering.
+
 ## 2026-06-17
 
 - **Creation**: Added [Use the /quality skill](guides/use-quality-skill.md), a

@@ -6,7 +6,7 @@ types:
   - name: Schema
     description: This file — the registry of concept types used in a bundle.
   - name: Functional Specification
-    description: A spec for what the qualitymd tooling must do — the surface as a whole or a single subcommand.
+    description: A spec for what the qualitymd tooling or runtime artifact contracts must do — the surface as a whole, a shared contract, or a single subcommand.
   - name: Example Model
     description: A worked reference instance of a QUALITY.md model, reproduced so an example evaluation's findings are traceable to declared requirements.
 ---

@@ -2,6 +2,23 @@
 
 ## 2026-06-18
 
+- **Creation**: Added the durable
+  [Evaluation records](evaluation-records.md) contract and the evaluation CLI
+  sub-specs for
+  [`create-run`](cli/evaluation-create-run.md),
+  [`add-record`](cli/evaluation-add-record.md),
+  [`show-status`](cli/evaluation-show-status.md), and
+  [`build-report`](cli/evaluation-build-report.md). Updated the CLI overview,
+  command index, and schema type description for the shared runtime record
+  contract.
+
+- **Revision**: Synced the durable
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md), installable
+  skill prompt, skill guide, and reference recommendation examples with the new
+  evaluation CLI surface. The skill now delegates run scaffolding, record writes,
+  renderability checks, and report rendering to `qualitymd evaluation ...`, while
+  retaining judgment and the stricter evidence/re-check/effort rules.
+
 - **CLI output polish**: Updated the CLI baseline to apply the `NO_COLOR` and
   non-terminal plain-output gate across stdout and stderr human surfaces. Updated
   `qualitymd lint` to require deterministic next actions for invalid results and

@@ -17,6 +17,8 @@ before it lands.
 # Specs
 
 - [qualitymd CLI](cli.md) - high-level requirements for the deterministic command-line surface.
+- [Evaluation records](evaluation-records.md) - runtime record contract for
+  evaluation run folders, assessment/analysis/recommendation records, and reports.
 
 # Bundle
 
@@ -24,5 +26,5 @@ before it lands.
 
 # Subfolders
 
-- [cli/](cli/) - per-command sub-specs (`init`, `lint`, `spec`).
+- [cli/](cli/) - per-command sub-specs.
 - [skills/](skills/) - companion skills that carry judgment around a `QUALITY.md` (`/quality`).

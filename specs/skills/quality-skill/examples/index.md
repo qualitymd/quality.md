@@ -8,7 +8,8 @@ At runtime the skill writes these into the **evaluated** repository under
 `quality/evaluations/NNNN-<altitude>[-<narrowing>]-quality-eval/` (see
 [Reporting](../quality-skill.md#reporting)). These example files intentionally
 match that raw runtime shape: no OKF frontmatter, JSON assessment/analysis
-records, and both `report.md` and `report.json`.
+records, recommendation Markdown with runtime YAML frontmatter, and both
+`report.md` and `report.json`.
 
 Shared across this bundle, so the individual files need not repeat it: the
 subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every

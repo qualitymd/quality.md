@@ -22,22 +22,21 @@ interpreted as described in IETF RFC 2119.
 
 ## Scope
 
-This phase covers four commands — the **format-tooling layer**: commands that
-operate on a single `QUALITY.md` file or bundled model, hold no evaluation state,
-and never call a model.
+This phase covers the deterministic CLI surface: format-tooling commands that
+operate on `QUALITY.md` files or bundled models, plus evaluation-run commands
+that scaffold, validate, and render runtime records. The CLI never calls a model;
+skills carry judgment and pass judgment payloads to the deterministic surface.
 
-| Command                     | Purpose                                                |
-| --------------------------- | ------------------------------------------------------ |
-| [`init`](./cli/init.md)     | Scaffold a starter `QUALITY.md` to fill in.            |
-| [`lint`](./cli/lint.md)     | Validate a file's structure against the format spec.   |
-| [`models`](./cli/models.md) | Emit bundled `QUALITY.md` models for agents and tools. |
-| [`spec`](./cli/spec.md)     | Emit the `QUALITY.md` format specification.            |
-
-**Deferred.** The deeper surface that records per-target verdicts, rolls them up
-the target tree, and gates CI on the outcome is out of scope for this phase. The
-judgment-based evaluation defined in the format spec's
-[Evaluation](../SPECIFICATION.md#evaluation) is carried by skills that orchestrate
-the model, not by these commands.
+| Command                                                       | Purpose                                                   |
+| ------------------------------------------------------------- | --------------------------------------------------------- |
+| [`init`](./cli/init.md)                                       | Scaffold a starter `QUALITY.md` to fill in.               |
+| [`lint`](./cli/lint.md)                                       | Validate a file's structure against the format spec.      |
+| [`models`](./cli/models.md)                                   | Emit bundled `QUALITY.md` models for agents and tools.    |
+| [`spec`](./cli/spec.md)                                       | Emit the `QUALITY.md` format specification.               |
+| [`evaluation create-run`](./cli/evaluation-create-run.md)     | Create a numbered evaluation run folder.                  |
+| [`evaluation add-record`](./cli/evaluation-add-record.md)     | Write one assessment, analysis, or recommendation record. |
+| [`evaluation show-status`](./cli/evaluation-show-status.md)   | Inspect whether a run can be rendered.                    |
+| [`evaluation build-report`](./cli/evaluation-build-report.md) | Render reports and optionally gate on the root rating.    |
 
 ## Commands
 
@@ -45,6 +44,14 @@ the model, not by these commands.
 - [`lint`](./cli/lint.md) — validate a file's structure.
 - [`models`](./cli/models.md) — list and view bundled `QUALITY.md` models.
 - [`spec`](./cli/spec.md) — emit the format specification.
+- [`evaluation create-run`](./cli/evaluation-create-run.md) — create a numbered
+  evaluation run folder.
+- [`evaluation add-record`](./cli/evaluation-add-record.md) — write evaluation
+  records.
+- [`evaluation show-status`](./cli/evaluation-show-status.md) — inspect
+  renderability.
+- [`evaluation build-report`](./cli/evaluation-build-report.md) — render
+  `report.md` and `report.json`.
 
 ## Technical requirements
 

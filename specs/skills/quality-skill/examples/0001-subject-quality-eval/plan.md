@@ -1,8 +1,9 @@
 # Evaluation plan
 
-How this run covers the in-scope `source` at `standard` effort: representative
-coverage of each in-scope target, enough evidence to rate every in-scope
-requirement (see [Effort levels](../quality-skill.md#effort-levels)).
+How this run covers the in-scope `source` at `standard` effort: every in-scope
+requirement is assessed with targeted evidence sufficient to bind each rating
+(see [Effort levels](../quality-skill.md#effort-levels)). The table below is the
+concrete requirement set selected by that effort.
 
 ## Coverage by target
 
@@ -20,6 +21,10 @@ requirement (see [Effort levels](../quality-skill.md#effort-levels)).
 - **Diagnostics.** A tracked-source secret scan, HTTP route enumeration from
   `cmd/api/routes.go`, and the per-requirement test runs cited in the report's
   findings.
+- **Rating-binding re-check.** The committed gateway credential finding binds
+  the headline rating, so the evaluator re-runs the tracked-source secret search
+  before report generation and records that verification in the assessment
+  evidence.
 - **Secrets.** Any credential surfaced is referenced by `file:line` and type
   only; the value is never reproduced (see
   [Boundaries](../quality-skill.md#boundaries-and-hard-rules)).

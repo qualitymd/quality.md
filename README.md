@@ -134,12 +134,13 @@ full bootstrap flow.
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init`, `qualitymd lint`, `qualitymd models`, and `qualitymd spec`.
-> The evaluation record/gate surface is planned but not yet built.
+> `qualitymd init`, `qualitymd lint`, `qualitymd models`, `qualitymd spec`, and
+> the `qualitymd evaluation` run-record surface.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
 model** — it scaffolds and validates a `QUALITY.md`, resolves target nodes and
-their `source` manifests, records and rolls up results, and gates CI — while
+their `source` manifests, records evaluation artifacts, renders reports, and
+gates CI — while
 **skills carry the judgment**, driving the evaluation loop and performing each
 `assessment` against the model.
 
@@ -151,23 +152,24 @@ The deterministic CLI:
 - **`qualitymd models`** — list and view bundled `QUALITY.md` models, including
   the quality meta-model used to evaluate a `QUALITY.md` itself.
 - **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
-- **`qualitymd evaluation` / `result`** *(planned)* — manage a per-target
-  evaluation run, record verdicts, and gate on the outcome with
-  `evaluation report --fail-on`.
+- **`qualitymd evaluation create-run`** — create and number an evaluation run
+  folder.
+- **`qualitymd evaluation add-record`** — write assessment, analysis, and
+  recommendation records from judgment payloads.
+- **`qualitymd evaluation show-status`** — inspect whether a run is ready to
+  render.
+- **`qualitymd evaluation build-report`** — derive `report.md` / `report.json`
+  and optionally gate with `--fail-at-or-below`.
 
 The deep, judgment-based evaluation of a subject against its model is carried by
 **skills** that orchestrate those resources — not by a CLI command.
-
-The planned commands above other than `init` and `lint` fail with "unknown
-command" until they land.
 
 ## Install
 
 > **Status.** The format spec is settled — see
 > [`SPECIFICATION.md`](SPECIFICATION.md) — but implementation is in progress.
-> Of the documented CLI surface, **`init`**, **`lint`**, **`models`**, and
-> **`spec`** are currently built; the **`evaluation`/`result`** resources are
-> planned.
+> The documented CLI surface includes **`init`**, **`lint`**, **`models`**,
+> **`spec`**, and **`evaluation`**.
 
 Install the `/quality` skill with Agent Skills tooling:
 

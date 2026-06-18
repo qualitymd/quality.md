@@ -29,11 +29,15 @@ Restart the target agent if it discovers skills only at session startup.
 ## Verify the CLI prerequisite
 
 The skill drives the deterministic `qualitymd` CLI for setup, linting, format
-grounding, and bundled model access:
+grounding, bundled model access, and evaluation record/report mechanics:
 
 ```sh
 qualitymd --version
 qualitymd models list --json
+qualitymd evaluation create-run --help
+qualitymd evaluation add-record --help
+qualitymd evaluation show-status --help
+qualitymd evaluation build-report --help
 ```
 
 If the CLI is missing or stale, build the current binary from source until a

@@ -1,3 +1,21 @@
+---
+schemaVersion: 1
+title: Bound the webhook redelivery-deduplication window
+gap: The delivery engine retains deduplication state only for the retry window, so late redelivery can duplicate an acknowledged event.
+evidenceLocators:
+  - webhooks/delivery/dedup.go:52
+  - webhooks/delivery/retry.go:37
+  - docs/merchants/webhooks.md
+assessmentRecords:
+  - assessments/008-delivery-redelivery-dedup.json
+remediationOptions:
+  - Tie the dedup-retention window to the retry window plus a margin.
+  - Make suppression durable and unbounded per event id.
+  - Leave dedup best-effort and document at-least-once.
+recommendedOption: Tie the dedup-retention window to the retry window plus a margin.
+doneCriterion: The webhook-delivery deduplication requirement reaches target for the full duration any retry could fire.
+---
+
 # Bound the webhook redelivery-deduplication window
 
 **Target / factor:** Webhooks → Delivery → Reliability

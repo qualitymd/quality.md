@@ -1,3 +1,19 @@
+---
+schemaVersion: 1
+title: Produce reconciliation evidence so the requirement can be rated
+gap: No reconciliation job output, log, or report was available, so the requirement could not be assessed.
+evidenceLocators:
+  - ledger/reconcile.go:31
+assessmentRecords:
+  - assessments/005-ledger-reconciliation.json
+remediationOptions:
+  - Stand up the scheduled reconciliation run and emit a durable report.
+  - Surface existing reconciliation output if it already runs elsewhere.
+  - Narrow or retire the requirement.
+recommendedOption: Stand up the scheduled reconciliation run and emit a durable report.
+doneCriterion: The reconciliation requirement becomes assessable and reaches at least the acceptable floor.
+---
+
 # Produce reconciliation evidence so the requirement can be rated
 
 **Target / factor:** Ledger → Correctness

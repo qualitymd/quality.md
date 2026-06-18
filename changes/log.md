@@ -2,6 +2,135 @@
 
 ## 2026-06-18
 
+- **Status**: Advanced changes
+  [0012](0012-evaluation-record-format.md),
+  [0013](0013-evaluation-run-scaffold.md),
+  [0014](0014-evaluation-record-write.md),
+  [0015](0015-evaluation-report-build.md),
+  [0016](0016-skill-consume-eval-cli.md), and
+  [0017](0017-skill-rigor-efficiency.md) from `In-Progress` to `In-Review`
+  after implementing the evaluation CLI surface and syncing the listed durable
+  specs/docs.
+
+- **Status**: Advanced changes
+  [0012](0012-evaluation-record-format.md),
+  [0013](0013-evaluation-run-scaffold.md),
+  [0014](0014-evaluation-record-write.md),
+  [0015](0015-evaluation-report-build.md),
+  [0016](0016-skill-consume-eval-cli.md), and
+  [0017](0017-skill-rigor-efficiency.md) from `Design` to `In-Progress` so code
+  and durable specs/docs are now phase-authorized.
+
+- **Refinement**: Adopted implementation-readiness review fixes across the open
+  changes. Updated lifecycle wording to gate durable spec/doc sync before
+  `In-Review`, aligned affected-doc sections with the current `Design` phase,
+  renamed the planned durable `show-status` spec path to
+  `specs/cli/evaluation-show-status.md`, clarified `show-status` gap semantics,
+  kept recommendation Markdown bodies CLI-rendered from structured payload fields,
+  expanded durable-doc coverage for the `/quality` skill spec and reference
+  examples, and fixed the design-guide link below.
+
+- **Design**: Advanced the evaluation-workflow set and the skill rigor pass from
+  `Draft` to `Design`, adding a
+  [design doc](../docs/guides/write-design-docs.md) to each (drafted in parallel,
+  one per change). The designs settle the *how* against the settled specs:
+  - [0012 — Evaluation record format](0012-evaluation-record-format.md) - the
+    contract lives as one enduring bundle-root concept `specs/evaluation-records.md`
+    (not under `cli/`), registered the normal OKF way; the skill's switch from
+    inlined prose to a reference is deferred to In-Progress.
+  - [0013 — Evaluation run scaffold](0013-evaluation-run-scaffold.md) - a new
+    `evaluation` Cobra group with `create-run`, a thin CLI over a new
+    `internal/evaluation` package, collision-fixing numbering by a single
+    directory scan (max+1, create-or-fail), and three-level
+    `--evaluation-dir` → `.quality/config.yaml` → `quality/evaluations/`
+    resolution.
+  - [0014 — Evaluation record write](0014-evaluation-record-write.md) - the
+    `internal/evaluation` package owns the record layer; three subcommands share
+    one decode→validate→place→write pipeline with strict `DisallowUnknownFields`
+    rejection of CLI-owned fields, stateless scan-based numbering with one retry,
+    and deterministic recommendation Markdown.
+  - [0015 — Evaluation status and report build](0015-evaluation-report-build.md) -
+    a typed run-read layer with a shared `Renderable` predicate so green
+    `show-status` guarantees `build-report`; one in-memory report renders both
+    byte-deterministic files (Glamour kept out of the write path), and
+    `--fail-at-or-below` reuses the existing coded-exit mechanism.
+  - [0016 — Skill consumes evaluation CLI](0016-skill-consume-eval-cli.md) - the
+    skill's evaluation flow maps onto the four commands, judgment JSON piped over
+    stdin (CLI stamps/numbers), the inlined Artifact Contract replaced by a
+    reference, and the prerequisite probe extended to the evaluation commands.
+  - [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md) - rigor
+    rules enforced as durable artifact constraints (applied breadth recorded in
+    `plan.md`, evidence/locator rigor on existing fields with no schema bump,
+    a rating-binding re-check that re-runs the verifying command, compute-then-batch
+    writes, and confined `deep` fan-out).
+    Updated the bundle [index](index.md). Durable `specs/`/skill/README sync still
+    happens per change at In-Progress.
+
+- **Refinement**: Adopted the full explicit verb-object evaluation command
+  surface and the CLI-guideline follow-ups. Renamed run creation to
+  `qualitymd evaluation create-run`, report rendering to
+  `qualitymd evaluation build-report`, added
+  `qualitymd evaluation show-status`, renamed the gate flag to
+  `--fail-at-or-below`, added `--evaluation-dir` to run creation, added `--file`
+  input support to `add-record`, specified atomic numbered writes with one
+  recompute retry, and fixed deterministic recommendation rendering order.
+
+- **Refinement**: Renamed the record writer command to
+  `qualitymd evaluation add-record assessment|analysis|recommendation`, keeping
+  record writes in the evaluation namespace while making the object explicit in
+  the command name. Updated dependent wording in
+  [0013](0013-evaluation-run-scaffold.md),
+  [0014](0014-evaluation-record-write.md),
+  [0015](0015-evaluation-report-build.md), and
+  [0016](0016-skill-consume-eval-cli.md), plus the bundle index.
+
+- **Refinement**: Kept recommendation artifacts as human-readable Markdown while
+  making them first-class CLI-written runtime records. The evaluation-record
+  contract now says `recommendations/*.md` carries runtime YAML frontmatter with
+  `schemaVersion: 1` and machine-readable metadata, without making the run folder
+  an OKF bundle. Change
+  [0014 — Evaluation record write](0014-evaluation-record-write.md) now includes
+  `qualitymd evaluation add-record recommendation <run>`, and dependent report/skill
+  wording reads recommendation records mechanically instead of hand-authoring
+  them.
+
+- **Refinement**: Revised change
+  [0014 — Evaluation record write](0014-evaluation-record-write.md) and its
+  dependents to place record writes under the evaluation namespace:
+  `qualitymd evaluation add-record assessment|analysis|recommendation` instead of a separate
+  `qualitymd result add` top-level command. Updated dependent wording in
+  [0013](0013-evaluation-run-scaffold.md),
+  [0015](0015-evaluation-report-build.md), and
+  [0016](0016-skill-consume-eval-cli.md), plus the bundle index.
+
+- **Creation**: Added a coordinated set of six changes to sharpen the evaluation
+  workflow, drafted in parallel and consolidated here. The seam: the
+  deterministic `qualitymd` CLI **writes** every evaluation record (numbering,
+  schema stamping, report rendering) while the skill supplies **judgment**.
+  - [0012 — Evaluation record format](0012-evaluation-record-format.md)
+    (`Draft`) - the keystone: move the artifact contract from the skill prompt
+    into an enduring `specs/` spec both the CLI and skill consume.
+  - [0013 — Evaluation run scaffold](0013-evaluation-run-scaffold.md) (`Draft`) -
+    `qualitymd evaluation create-run`, deterministic shared run numbering (fixes
+    a real collision), seeds `model.md`/`design.md`/`plan.md`.
+  - [0014 — Evaluation record write](0014-evaluation-record-write.md) (`Draft`) -
+    `qualitymd evaluation add-record assessment|analysis|recommendation`,
+    JSON judgment payload from `--file` or stdin, inherent validation, atomic
+    rejection.
+  - [0015 — Evaluation status and report build](0015-evaluation-report-build.md) (`Draft`) -
+    `qualitymd evaluation show-status` and `qualitymd evaluation build-report`,
+    idempotent rendering of `report.md`/`report.json` from records,
+    `--fail-at-or-below` CI gate; renders ratings, never infers them.
+  - [0016 — Skill consumes evaluation CLI](0016-skill-consume-eval-cli.md)
+    (`Draft`) - the skill drives the CLI instead of hand-authoring run folders,
+    records, or reports; replaces its inlined Artifact Contract with a reference.
+  - [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md)
+    (`Draft`) - operationalized effort levels, verified evidence and pinned
+    locators, rating-binding re-check, batched writes, optional deep fan-out;
+    independent of the CLI work.
+    Updated the bundle [index](index.md). Each spec is the change's *delta*;
+    durable `specs/`/skill/README sync happens per change at In-Progress.
+
 - **Done**: Archived change
   [0011 — CLI human output polish](archive/0011-cli-human-output-polish.md)
   after styling `models list`, adding lint next actions to JSON and human

@@ -57,6 +57,7 @@ func newRootCmd() *cobra.Command {
 		return usageError(err)
 	})
 	root.AddCommand(newInitCmd())
+	root.AddCommand(newEvaluationCmd())
 	root.AddCommand(newLintCmd())
 	root.AddCommand(newModelsCmd())
 	root.AddCommand(newSpecCmd())
