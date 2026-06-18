@@ -45,6 +45,8 @@ homebrew_casks:
     repository:
       owner: qualitymd
       name: homebrew-tap
+      # Use the tap-scoped PAT; the default GITHUB_TOKEN can't write to another repo.
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     homepage: "https://github.com/qualitymd/quality.md"
     description: "Evaluate QUALITY.md specifications"
     license: "MIT"
