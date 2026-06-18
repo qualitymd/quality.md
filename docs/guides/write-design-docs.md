@@ -29,7 +29,7 @@ Keep it short and decision-focused:
 - **Design, not spec.** Behavior and requirements belong in the
   [functional spec](write-functional-specs.md) — link to it, don't restate it.
 - **Record the why.** The durable value is the rationale and rejected
-  alternatives, not a re-description of the final code. When the change lands,
+  alternatives, not a re-description of the final code. When the Change Case lands,
   that value is *promoted*, not abandoned: the enduring rationale is lifted into
   the [functional spec](write-functional-specs.md)'s **Background / Motivation**
   and per-requirement annotations, while this doc stays in the archive as the

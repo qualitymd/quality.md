@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Assessment superseding
 description: Let corrected assessment records supersede stale assessments.
 status: Done

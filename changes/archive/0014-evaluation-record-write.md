@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Evaluation record write
 description: Specify the CLI command that takes skill-supplied judgment and writes one schema-conformant, correctly-numbered evaluation record.
 status: Done

@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Diagnose rating-scale soundness in the meta-model
 description: Add a meta-model Functionality requirement that assesses a subject model's rating scale and per-requirement criterion overrides for semantic soundness, not just structural shape.
 status: Done
@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 # Diagnose rating-scale soundness in the meta-model
 
-A **Change** to the CLI's built-in
+A **Change Case** to the CLI's built-in
 [quality meta-model](../../internal/models/quality-meta-model.md)
 — the model it uses to judge whether a project's `QUALITY.md` is a good quality
 model. It adds one Functionality requirement so the rating scale, the instrument

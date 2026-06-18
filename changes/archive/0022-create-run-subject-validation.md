@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Create-run subject validation
 description: Validate create-run subject paths before creating run folders.
 status: Done

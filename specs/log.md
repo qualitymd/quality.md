@@ -2,6 +2,12 @@
 
 ## 2026-06-18
 
+- **Revision**: Updated the durable
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) to allow the
+  installable skill to keep `SKILL.md` as the always-loaded router while moving
+  mode-specific procedures into `skills/quality/modes/` and supporting docs into
+  `skills/quality/resources/`.
+
 - **Revision**: Removed the public bundled-model workflow. Deleted the
   `qualitymd models` command spec, removed it from the CLI command catalog,
   made `evaluation create-run` subject-only with no `--altitude` flag, and
@@ -272,7 +278,7 @@
   **Reporting** (the Evaluation Report, scoped, human or `--json`), plus an
   illustrative (non-normative) commented-examples block sketching invocation
   patterns in the style of the shadcn/improve README. Recording
-  assessments through the CLI and bundled `references/` remain deferred in step
+  assessments through the CLI and bundled `resources/` remain deferred in step
   with the CLI's deferred record/gate surface.
 - **Revision**: Firmed up [`SPECIFICATION.md`](../SPECIFICATION.md) to fully
   ground the [`lint`](cli/lint.md) rules — made the per-property YAML shapes

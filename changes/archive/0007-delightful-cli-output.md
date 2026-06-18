@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Delightful human CLI output
 description: Give qualitymd's human surface a cohesive brand palette, styled lint and init output, runnable help examples, spec paging, and an informative --version, without touching the agent-facing plain and JSON paths.
 status: Done

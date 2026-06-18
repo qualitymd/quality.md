@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Skill consumes evaluation CLI
 description: Constrain the /quality skill to drive the evaluation CLI for run scaffolding, record writes, and report rendering instead of hand-authoring them.
 status: Done

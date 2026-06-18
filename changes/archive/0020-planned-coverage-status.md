@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Planned coverage status
 description: Let evaluation status compare optional planned coverage against written records.
 status: Done

@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Report regression coverage
 description: Add focused regression tests for high-risk evaluation report behavior.
 status: Done

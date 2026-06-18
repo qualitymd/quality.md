@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Recommendation superseding
 description: Let corrected recommendation records supersede stale recommendations.
 status: Done

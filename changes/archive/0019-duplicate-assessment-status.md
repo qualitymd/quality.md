@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Duplicate assessment status
 description: Make evaluation status reject duplicate assessment records for the same target requirement.
 status: Done

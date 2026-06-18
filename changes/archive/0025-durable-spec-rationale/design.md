@@ -14,11 +14,11 @@ guides must require; this doc covers *why that shape*, and what was rejected.
 
 ## Context
 
-The repo already separates the *delta* (a Change and its archived spec/design)
+The repo already separates the *delta* (a Change Case and its archived spec/design)
 from the *cumulative* source of truth (the enduring `specs/` bundle). The
 mechanism is sound for the *what* but lossy for the *why*: motivation lives in
-the Change, deeper rationale lives in the design doc, and both archive with the
-change — so the durable spec keeps the rule and loses the reason. The
+the Change Case, deeper rationale lives in the design doc, and both archive with
+the case — so the durable spec keeps the rule and loses the reason. The
 functional-spec guide compounds it by capping all rationale at a clause or
 `Note:`, leaving genuine durable intent no home in the spec.
 
@@ -44,11 +44,11 @@ alternatives stay in the design doc. A **say-it-once** rule keeps the two layers
 from restating each other, and authors supersede stale rationale rather than
 letting it pile up.
 
-The changes-workflow guide closes the loop: absorbing a landing change into the
-durable specs now includes promoting its *why* (the Change's motivation and the
-design doc's durable rationale) into the spec's Background and annotations.
-Because durable specs may be edited at any time — with or without a change — this
-promotion is a **SHOULD** encouraged whenever a change updates a spec, not a gate
+The change-cases guide closes the loop: absorbing a landing case into the
+durable specs now includes promoting its *why* (the Change Case's motivation and
+the design doc's durable rationale) into the spec's Background and annotations.
+Because durable specs may be edited at any time — with or without a case — this
+promotion is a **SHOULD** encouraged whenever a case updates a spec, not a gate
 on the **Before setting In-Review** step. The design-doc guide records the same
 promotion from its side, and keeps the design doc as the fuller archived record.
 

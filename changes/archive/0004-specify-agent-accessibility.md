@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Specify and enforce agent accessibility
 description: Add the cross-cutting agent-accessibility contract to the qualitymd CLI spec, broaden --json to a near-universal SHOULD, and bring the existing commands into conformance.
 status: Done

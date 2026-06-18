@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Authoring guide replaces meta-model workflow
 description: Replace the bundled quality meta-model workflow with a practical QUALITY.md authoring guide and remove public CLI/model-altitude compatibility surfaces.
 status: In-Review

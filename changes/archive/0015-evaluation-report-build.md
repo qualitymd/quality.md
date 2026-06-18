@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Evaluation status and report build
 description: Make evaluation run status and report rendering deterministic CLI surfaces, with a CI gate.
 status: Done

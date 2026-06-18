@@ -30,7 +30,10 @@ OKF bundles register concept types in root `schema.md`:
 | ---------- | ------------------------------------------------------------ |
 | `specs/`   | Specifications for the deterministic `qualitymd` surface.    |
 | `docs/`    | Project documentation, organized by the four Diátaxis modes. |
-| `changes/` | Incremental work items — a spec and design doc per change.   |
+| `changes/` | Change Cases — formal work records with spec/design history. |
+
+A Change Case records significant work: motivation, status, affected durable
+specs/docs, a functional spec, and optional design doc.
 
 ### Smoke testing
 
@@ -41,14 +44,20 @@ OKF bundles register concept types in root `schema.md`:
 
 Before work, read relevant [`docs/guides/`](docs/guides/index.md):
 
-| When you are…                                   | Read                                                              |
-| ----------------------------------------------- | ----------------------------------------------------------------- |
-| Creating or advancing a unit of work            | [Working with changes](docs/guides/work-with-changes.md)          |
-| Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md) |
-| Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)           |
-| Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                  |
-| Designing or reshaping a CLI command            | [Designing CLI interfaces](docs/guides/cli-design.md)             |
-| Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)        |
+| When you are…                                   | Read                                                               |
+| ----------------------------------------------- | ------------------------------------------------------------------ |
+| Creating or advancing a Change Case             | [Working with change cases](docs/guides/work-with-change-cases.md) |
+| Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md)  |
+| Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)            |
+| Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                   |
+| Designing or reshaping a CLI command            | [Designing CLI interfaces](docs/guides/cli-design.md)              |
+| Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)         |
+
+Routine prompted edits do not require a Change Case. Use `changes/` only when
+the user asks for a Change Case, when continuing an existing `changes/NNNN-*`
+item, or when the work needs durable spec/design/review history. Other
+changes/modifications follow the normal routine change guide: make the scoped
+edit, update directly relevant docs, tests, and specs, and verify.
 
 ### Agent guidance files
 

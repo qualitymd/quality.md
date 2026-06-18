@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Evaluation report UX
 description: Make generated evaluation reports summary-first, scoped, and easier to scan at larger target counts.
 status: Done

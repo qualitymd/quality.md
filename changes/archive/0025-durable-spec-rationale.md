@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Durable spec rationale
 description: Make functional specs capture durable rationale — big-picture and per-requirement — so the lessons that motivate requirements stop dying in archived change folders.
 status: Done
@@ -20,12 +20,12 @@ not just the requirements themselves. Detail lives in the children:
 
 ## Motivation
 
-A [Change](../../docs/guides/work-with-changes.md) states a *delta* and is archived
-once it lands; the enduring `specs/` bundle carries the *cumulative* source of
-truth forward. Today that hand-off keeps the *what* but drops the *why*: a
-change's motivation and its design doc's hard-won rationale go into
-[`archive/`](.) with the change, while the durable spec inherits only the
-bare requirement. A later editor reading the spec sees the rule but not the
+A [Change Case](../../docs/guides/work-with-change-cases.md) states a *delta*
+and is archived once it lands; the enduring `specs/` bundle carries the
+*cumulative* source of truth forward. Today that hand-off keeps the *what* but
+drops the *why*: a case's motivation and its design doc's hard-won rationale go
+into [`archive/`](.) with the case, while the durable spec inherits only the bare
+requirement. A later editor reading the spec sees the rule but not the
 failure-mode that produced it — so settled lessons get re-litigated, and rules
 that look arbitrary get "simplified" away, reintroducing the very bug they fixed.
 
@@ -42,9 +42,9 @@ functional-spec guide (a spec-level **Background / Motivation** section for the
 big-picture *why*, and a per-requirement subordinate annotation for the
 fine-grained *why*); rewrite the guide's "Motivation in asides" convention and
 its rationale-related smells to match; teach the changes-workflow guide to
-*absorb* a landing change's enduring *why* into the durable spec, not just its
+*absorb* a landing case's enduring *why* into the durable spec, not just its
 functional delta; and note in the design-doc guide that durable rationale is
-*promoted* into the spec when the change lands.
+*promoted* into the spec when the case lands.
 
 Deferred: any change to the `specs/` bundle contents themselves (the new
 convention is applied to existing specs as they are next touched, not in a sweep
@@ -61,8 +61,8 @@ Created or updated during `In-Progress`, before this change reaches
       - add the **Background / Motivation** shape entry and the per-requirement
       annotation convention; rewrite the "Motivation in asides" bullet as the
       two-whys split; refine the rationale smells.
-- [x] [`docs/guides/work-with-changes.md`](../../docs/guides/work-with-changes.md)
-      - require absorbing the change's enduring *why* (its motivation and the
+- [x] [`docs/guides/work-with-change-cases.md`](../../docs/guides/work-with-change-cases.md)
+      - require absorbing the case's enduring *why* (its motivation and the
       design doc's durable rationale) into the durable spec's Background and
       per-requirement annotations, tied to the existing **Before setting
       In-Review** gate.

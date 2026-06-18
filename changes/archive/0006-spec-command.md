@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Specify and implement the spec command
 description: Settle the durable spec sub-spec for `qualitymd spec` and implement the command, emitting the bundled QUALITY.md format specification to stdout.
 status: Done
@@ -11,7 +11,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 The [`qualitymd spec`](../../specs/cli/spec.md) sub-spec was still a placeholder
 stub, and the command was unimplemented — invoking it failed with "unknown
-command". [Change 0004](0004-specify-agent-accessibility.md) settled the
+command". [Change Case 0004](0004-specify-agent-accessibility.md) settled the
 cross-cutting CLI contract and named `spec` as the deliberate verbatim-artifact
 carve-out, deferring the command itself to "a separate change that inherits this
 baseline." This change settles the durable sub-spec and lands the command. The

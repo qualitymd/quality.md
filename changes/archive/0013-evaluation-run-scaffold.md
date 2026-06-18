@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Evaluation run scaffold
 description: Move evaluation run-folder scaffolding and numbering out of the skill into a deterministic qualitymd evaluation create-run command.
 status: Done

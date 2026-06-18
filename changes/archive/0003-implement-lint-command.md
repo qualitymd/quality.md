@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Implement the lint command
 description: Build `qualitymd lint` to validate QUALITY.md files according to the completed lint sub-spec.
 status: Done

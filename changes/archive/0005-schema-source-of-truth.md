@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Single source of truth for the structural schema
 description: Extract the QUALITY.md structural schema into one authoritative definition the linter derives from, so the format spec and the linter can't drift.
 status: Done

@@ -17,15 +17,16 @@ interpreted as described in IETF RFC 2119.
 
 ## Background
 
-A [Change](../../../docs/guides/work-with-changes.md) is archived once it lands,
-and the enduring [`specs/`](../../../specs/index.md) bundle carries the result
-forward. That hand-off has been lossy: the durable spec inherits the requirement
-but not the *why* — the change's motivation and the design doc's rationale stay
-in [`archive/`](../) with the change. Editors then meet rules stripped of
+A [Change Case](../../../docs/guides/work-with-change-cases.md) is archived once
+it lands, and the enduring [`specs/`](../../../specs/index.md) bundle carries
+the result forward. That hand-off has been lossy: the durable spec inherits the
+requirement but not the *why* — the case's motivation and the design doc's
+rationale stay in [`archive/`](../) with the case. Editors then meet rules
+stripped of
 the failure-modes that produced them, and re-introduce fixed bugs by
 "simplifying" rules that only looked arbitrary. The guides below are revised so
 the spec itself holds durable rationale at two grains — one big-picture, one
-per-requirement — and so a landing change deposits its *why* there instead of in
+per-requirement — and so a landing case deposits its *why* there instead of in
 the archive.
 
 ## Scope
@@ -94,10 +95,10 @@ design doc; only durable intent and lessons are promoted into the spec.
 
 ## Absorb the why on landing
 
-The [changes-workflow guide](../../../docs/guides/work-with-changes.md) **MUST**
+The [change-cases guide](../../../docs/guides/work-with-change-cases.md) **MUST**
 extend the existing "the enduring artifacts absorb [the delta]" account so that
-absorbing a change includes its **enduring *why***, not only its functional
-delta. When a change updates a durable spec, its motivation and its design doc's
+absorbing a case includes its **enduring *why***, not only its functional
+delta. When a case updates a durable spec, its motivation and its design doc's
 durable rationale **SHOULD** be promoted into that spec's **Background /
 Motivation** and per-requirement annotations. Durable specs **MAY** be edited at
 any time (with or without a change), so this promotion is encouraged whenever a
@@ -105,7 +106,7 @@ spec is touched rather than gated on the **Before setting In-Review** step.
 
 The [design-doc guide](../../../docs/guides/write-design-docs.md) **MUST** record
 the other side of that promotion: the design doc's enduring rationale is lifted
-into the functional spec when the change lands, while the design doc remains the
+into the functional spec when the Change Case lands, while the design doc remains the
 fuller, archived record of alternatives and trade-offs.
 
 ## Dogfooding

@@ -16,7 +16,8 @@ A conforming use or application of QUALITY.md may provide additional functionali
 
 - **Quality Model**: a structured, declarative description of what quality means for a given entity.
 - **Entity**: a thing that is evaluated for quality.
-- **Subject**: the entity a quality model as a whole describes — the system, component, or artifact a `QUALITY.md` file is about, named by the model's `title` when set.
+- **Target**: the entitie(s) to be evaluated by quality requirements
+- **Source**: a description of where to locate or select the target entitie(s)
 - **Factor**: a quality (sub)characteristic or attribute — a lens such as reliability or security — through which an entity's quality is described; it groups the requirements assessed through it and may be decomposed into sub-factors.
 - **Requirement**: a quality requirement for assessing and rating the quality of an entity.
 - **Finding**: a single observation produced by assessing the source entities against a requirement — a unit of evidence such as a measured value, an inspection note, or a diagnostic result. A finding records *what was observed* and is not itself rated; the **findings** of a requirement are rated together.
@@ -210,7 +211,7 @@ The sections below are RECOMMENDED, non-normative starting points:
 
 | Section        | What it captures                                                                                                                  |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Overview**   | What the subject is, who depends on it, and what "good" means here.                                                               |
+| **Overview**   | What the primary subject/entity for quality evaluation is, who depends on it, and what "good" means here.                         |
 | **Scope**      | The model boundary: what it covers and deliberately leaves out. Out-of-scope concerns are exclusions by design, not deficiencies. |
 | **Needs**      | Stakeholder outcomes the requirements answer to — the source of how much each requirement matters.                                |
 | **Risks**      | What goes wrong, and for whom, if a need is not met.                                                                              |

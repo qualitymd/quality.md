@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: CLI human output polish
 description: Finish the remaining human-output polish for models list, lint next actions, dev version reporting, and output-gate coverage.
 status: Done

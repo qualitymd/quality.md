@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Describe targets with title and description
 description: Let every target carry title and description, and reframe the root as a Model — Target properties plus the model-wide ratingScale — so ratingScale is the one root-only key by type, not by prohibition.
 status: Done
@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 # Describe targets with title and description
 
-A **Change** to give a target a human-readable identity, and to reframe the
+A **Change Case** to give a target a human-readable identity, and to reframe the
 root node so the difference between it and a nested target is a clean type
 distinction rather than a list of prohibited keys. Detail lives in the children:
 

@@ -95,6 +95,16 @@ from this spec's frontmatter. For broad Agent Skills compatibility, invocation
 syntax, argument hints, and tool guidance live in the skill body rather than
 additional frontmatter fields.
 
+The installable `SKILL.md` **MUST** remain the router and always-loaded global
+contract: argument parsing, shared CLI prerequisites, safety rules, config, and
+artifact-contract guidance live there. Supporting docs live under
+`skills/quality/resources/`. Mode-specific procedure details **MAY** live in
+separate mode files, and the current artifact keeps them under
+`skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`, and
+`improve.md`. When mode procedures live outside `SKILL.md`, the root prompt
+**MUST** instruct the agent to read the matching mode file before executing that
+mode.
+
 The description **MUST** optimize for trigger matching rather than documentation:
 it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`), broad
 quality vocabulary users naturally ask with (`quality management`, quality
@@ -583,7 +593,7 @@ unpaired with its analysis would let a roll-up silently rely on stale judgment.
 
 ## Deferred
 
-- **Bundled `references/` assets.** Which reference files the skill ships (e.g. an
+- **Bundled `resources/` assets.** Which resource files the skill ships (e.g. an
   evaluation playbook or report template) and when it reads them, once the
   workflow above settles.
 - **`improve` apply mechanics.** The shape of the apply step is settled — apply a

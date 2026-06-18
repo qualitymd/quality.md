@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Specify the init command
 description: Settle what `qualitymd init` scaffolds, where it writes, and how it refuses to clobber existing files.
 status: Done

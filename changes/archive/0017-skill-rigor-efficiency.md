@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Skill rigor and efficiency
 description: Upgrade the /quality skill prompt to make evaluations more rigorous, reliable, and efficient, independent of the CLI work.
 status: Done

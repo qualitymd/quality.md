@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Implement the /quality skill
 description: Build the specified-but-unimplemented /quality evaluation skill, conforming to the format spec's Evaluation contract and driving the qualitymd CLI for every mechanical step.
 status: Done
@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 # Implement the /quality skill
 
-A **Change** that builds the
+A **Change Case** that builds the
 [`/quality` skill](../../specs/skills/quality-skill/quality-skill.md) — the judgment
 companion to the deterministic [`qualitymd` CLI](../../specs/cli.md). The skill is
 fully specified (operating model, invocation, evaluation workflow, reporting and

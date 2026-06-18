@@ -2,10 +2,30 @@
 
 ## 2026-06-18
 
+- **Schema migration**: Renamed the `changes/` parent concept type from
+  `Change` to `Change Case`, updated existing parent concepts and the
+  [changes schema](schema.md), renamed the contributor guide to
+  [Working with change cases](../docs/guides/work-with-change-cases.md), and
+  narrowed `AGENTS.md` so routine prompted edits do not require a Change Case.
+
+- **Status**: Advanced change
+  [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md) to
+  `In-Review` after keeping `SKILL.md` as the root router/global contract,
+  adding setup, wizard, evaluate, and improve mode files under
+  `skills/quality/modes/`, renaming supporting skill docs to `resources/`,
+  syncing the durable skill spec, and verifying the test suite.
+
+- **Implementation**: Added change
+  [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md) in
+  `In-Progress` with its [functional spec](0027-modularize-quality-skill/spec.md).
+  The change keeps `SKILL.md` as the `/quality` router and moves setup, wizard,
+  evaluate, and improve procedures into separate files under
+  `skills/quality/modes/`, with supporting docs under `skills/quality/resources/`.
+
 - **Status**: Advanced change
   [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
   to `In-Review` after replacing the skill-facing meta-model reference with
-  [quality-md-guide.md](../skills/quality/references/quality-md-guide.md),
+  [quality-md-guide.md](../skills/quality/resources/quality-md-guide.md),
   removing the bundled `models` CLI/package, making evaluation run creation
   subject-only, syncing durable specs and docs, and verifying the Go test suite.
 
@@ -45,7 +65,7 @@
   [write-functional-specs.md](../docs/guides/write-functional-specs.md), the
   rewritten two-whys convention and refined rationale smells there, the
   absorb-the-why step gated on **Before setting In-Review** in
-  [work-with-changes.md](../docs/guides/work-with-changes.md), and the
+  [work-with-change-cases.md](../docs/guides/work-with-change-cases.md), and the
   rationale-is-promoted note in
   [write-design-docs.md](../docs/guides/write-design-docs.md). Recorded the guide
   edits in the [docs log](../docs/log.md).
@@ -54,7 +74,7 @@
   [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md) from `Design`
   to `In-Progress` so the three durable contributor guides
   ([write-functional-specs.md](../docs/guides/write-functional-specs.md),
-  [work-with-changes.md](../docs/guides/work-with-changes.md),
+  [work-with-change-cases.md](../docs/guides/work-with-change-cases.md),
   [write-design-docs.md](../docs/guides/write-design-docs.md)) can be edited from
   the settled spec and design.
 
@@ -73,7 +93,7 @@
   [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md) in `Draft`
   with its [functional spec](archive/0025-durable-spec-rationale/spec.md). The change
   targets the contributor guides: durable specs inherit a requirement when a
-  change archives but lose the change's motivation and the design doc's
+  case archives but lose the case's motivation and the design doc's
   rationale, so editors re-litigate settled lessons and "simplify" rules back
   into the bugs they fixed. The spec states a two-layer in-spec rationale
   convention — a spec-level Background/Motivation section and per-requirement
@@ -916,7 +936,7 @@
 - **Archival**: Retired the placeholder [0001 — Example change](archive/0001-example-change.md)
   into [`archive/`](archive/) now that the bundle has real changes to follow,
   keeping it as the reference template the
-  [propose-a-change guide](../docs/guides/work-with-changes.md) points to. Set its
+  [propose-a-change guide](../docs/guides/work-with-change-cases.md) points to. Set its
   status to `Done`, fixed the relative links for the deeper path, and updated the
   bundle [index](index.md) and the [archive index](archive/index.md).
 
@@ -952,10 +972,10 @@
 
 - **Process**: Defined the relationship between `changes/` and the enduring
   [`specs/`](../specs/index.md) bundle (replacing the "independent for now"
-  note) — a change states a *delta* and is archived, while `specs/` and
+  note) — a Change Case states a *delta* and is archived, while `specs/` and
   [`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of
   truth. Added an **Affected specs & docs** section to the
-  [Change concept](archive/0001-example-change.md) so each change records the durable
+  [Change Case concept](archive/0001-example-change.md) so each change records the durable
   specs and docs it creates or updates, brought into sync before `Done`.
 
 ## 2026-06-16
@@ -963,7 +983,7 @@
 - **Initialization**: Created the `changes/` OKF bundle — a home for incremental
   work, independent of [`specs/`](../specs/index.md) for now. Added the bundle
   [index](index.md), [`schema.md`](schema.md) (`type: Schema`) registering the
-  `Change`, `Functional Specification`, and `Design Doc` types, and an
+  `Change Case`, `Functional Specification`, and `Design Doc` types, and an
   [`archive/`](archive/) folder for completed changes.
 - **Creation**: Added a placeholder [Example change](archive/0001-example-change.md)
   (`status: Draft`) with child [spec](archive/0001-example-change/spec.md) and

@@ -164,10 +164,5 @@ thoroughness:
   carries the spec-scale *why*; an annotation carries one requirement's. Say each
   once, in its own place, and supersede stale rationale rather than letting it
   accrete.
-- **A scenario that's really background** — a "use case" that's only one step of a
-  larger process dressed up as the case the spec solves. If the spec isn't the
-  whole answer to the case, it's [Background / Motivation](#shape), not a
-  [Scenario](#shape). Name the self-contained case once, in its own place — or
-  fold it into background and move on.
 - **Implementation detail leaking in** — exact env-var names, escape sequences,
   binary-naming arguments. State the behavior; let the code carry the mechanics.

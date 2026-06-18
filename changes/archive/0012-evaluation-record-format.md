@@ -1,5 +1,5 @@
 ---
-type: Change
+type: Change Case
 title: Evaluation record format
 description: Make the evaluation artifact contract an enduring deterministic-surface spec the CLI writes and the skill consumes.
 status: Done
