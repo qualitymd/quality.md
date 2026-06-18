@@ -173,3 +173,12 @@ The README is the project's front door. Approachability is scoped here because
 the README's job is newcomer orientation, not format precision.
 
 ## Known gaps
+
+- The CLI design guide (`docs/guides/cli-design.md`) is not yet cited as an
+  assessment source for requirements on the appropriate CLI targets and quality
+  factors. It should inform requirements for command usability, automation
+  compatibility, consistency, determinism, and help/error behavior.
+- The RFC 2119 reference (`docs/reference/rfc2119.md`) is not yet cited as a
+  reference standard for requirements that depend on normative vocabulary. It
+  should inform requirements that assess correct use of requirement-level
+  keywords, local adaptation, and citation/provenance.
