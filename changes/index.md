@@ -15,11 +15,13 @@ roles. A change's **Functional Specification** states the *delta* — what this 
 unit of work must do — and is archived with the change once it lands. The
 enduring `specs/` bundle and the repository-root
 [`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of truth
-for the tool's current behavior. A change bridges the two: it records the durable
-specs and docs it creates or updates in an **Affected specs & docs** section, and
-those enduring artifacts are brought into sync **before** the change reaches
-**In-Review**. Completed changes then move into [`archive/`](archive/); the
-enduring specs carry the result forward.
+for the tool's current behavior. A change bridges the two: durable specs and docs
+**MAY** be edited at any time (within a change or on their own), but a change
+**MUST** record every durable spec or doc its work impacts in an **Affected specs
+& docs** section and **SHOULD** suggest any new durable specs worth creating. It
+**SHOULD** bring the durable docs it lists into sync **before** reaching
+**In-Review** so the source of truth is not left stale. Completed changes then
+move into [`archive/`](archive/); the enduring specs carry the result forward.
 
 ## Status lifecycle
 
@@ -31,15 +33,19 @@ A Change's `status` frontmatter moves through, in order:
 - **In-Review** — implementation complete and ready for review.
 - **Done** — landed.
 
-Before setting **In-Review**, update every durable spec and doc listed in the
-change's **Affected specs & docs** section. When a change reaches **Done**, move
-it (and its child folder) into [`archive/`](archive/) in the same change.
+Durable specs and docs **MAY** be edited at any time, with or without a change;
+before setting **In-Review**, a change **SHOULD** bring every durable spec and doc
+it listed in **Affected specs & docs** into sync. When a change reaches **Done**,
+move it (and its child folder) into [`archive/`](archive/) in the same change.
 
 # Open changes
 
 A coordinated set sharpening the evaluation workflow — the deterministic CLI
 writes the records, the skill judges (`0012`–`0016`) — plus an independent skill
-rigor pass (`0017`). All `In-Review`.
+rigor pass (`0017`), experiment-backed report/status follow-ups (`0018`–`0024`),
+correction/resume guards from the experiment program, and a contributor-guide
+change teaching durable specs to carry their rationale (`0025`). All
+`In-Review`.
 
 - [0012 — Evaluation record format](0012-evaluation-record-format.md) - lift the
   evaluation artifact contract out of the skill prompt into an enduring `specs/`
@@ -61,6 +67,32 @@ rigor pass (`0017`). All `In-Review`.
   operationalize effort levels, require verified evidence and pinned locators,
   re-check rating-binding findings, batch writes, allow deep fan-out. Independent
   of the CLI work.
+- [0018 — Evaluation report UX](0018-evaluation-report-ux.md) - make generated
+  reports summary-first, scoped, and easier to scan at larger target counts.
+  Follows from the experiment program's DataLoader and ESLint report-shape
+  findings.
+- [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) -
+  make duplicate assessments for the same target requirement a reportability
+  gap. Follows from the experiment program's correction-workflow trial.
+- [0020 — Planned coverage status](0020-planned-coverage-status.md) - compare
+  optional planned coverage metadata to written evaluation records so interrupted
+  or resumed runs can name missing planned work.
+- [0021 — Recommendation superseding](0021-recommendation-superseding.md) - let
+  corrected recommendation records supersede stale recommendations so reports
+  choose the active Next Action deterministically.
+- [0022 — Create-run subject validation](0022-create-run-subject-validation.md) -
+  validate `create-run --subject` before creating run folders so bad paths do
+  not leave partial evaluation artifacts.
+- [0023 — Assessment superseding](0023-assessment-superseding.md) - let
+  corrected assessment records supersede stale assessments while requiring
+  analyses to reference active records.
+- [0024 — Report regression coverage](0024-report-regression-coverage.md) -
+  add focused tests for high-risk generated report behavior found by the
+  experiment program.
+- [0025 — Durable spec rationale](0025-durable-spec-rationale.md) - teach the
+  contributor guides so durable specs carry their *why* — a spec-level
+  Background/Motivation section and per-requirement annotations — and so a
+  landing change absorbs its rationale instead of leaving it in the archive.
 
 Completed changes live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

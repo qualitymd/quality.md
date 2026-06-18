@@ -136,9 +136,10 @@ A run is renderable only when its records are complete enough to present the
 report the [Report phase](../../SPECIFICATION.md#report) requires:
 
 - When the run folder does not exist, or its record graph is not renderable — for
-  example the `analysis/` roll-up is absent or incomplete, a target referenced by
-  another record has no `analysis/<target>.json`, an analysis record references
-  an `assessments/*.json` that is not present, or an assessment references a
+  example the `analysis/` roll-up is absent or incomplete, no analysis record
+  has an empty `targetPath` for the in-scope root, a target referenced by another
+  record has no `analysis/<target>.json`, an analysis record references an
+  `assessments/*.json` that is not present, or an assessment references a
   `recommendations/*.md` record that is not present or lacks parseable runtime
   frontmatter — the command **MUST** fail with an internal-error exit (`70`),
   name the missing or inconsistent record on stderr, and **MUST NOT** write a

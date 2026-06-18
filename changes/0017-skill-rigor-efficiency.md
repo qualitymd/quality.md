@@ -40,6 +40,8 @@ Covered — requirements on the skill's evaluation behavior:
   or search; finding locators pinned to verifiable positions.
 - Re-check the one or two findings that bind the headline rating before they
   drive the report.
+- Recommendation actionability: include route hints when the owning path,
+  package, workflow, or maintainer surface is inferable from evidence.
 - Execution efficiency: batch independent artifact writes rather than emitting
   them serially.
 - Optional subagent fan-out at `deep` effort, with roll-up judgment retained by

@@ -2,6 +2,68 @@
 
 ## 2026-06-18
 
+- **Rationale capture**: Made durable the motivating learnings behind the
+  in-review evaluation changes (0012–0024), so the *why* survives when the change
+  records are archived. Added inline rationale to
+  [Evaluation records](evaluation-records.md) (standalone-spec reason; CLI-owned
+  scan-derived numbering and collision-as-error from the real run-number
+  collision; CLI `model.md` snapshot ownership; duplicate-assessment correction
+  hazard; assessment-vs-recommendation superseding asymmetry; explicit-intent
+  superseding; no-new-schema-field constraint for evidence/route hints),
+  [`build-report`](cli/evaluation-build-report.md) (renderer secret /
+  prompt-injection trust boundary; summary-first shape provenance; the bounded
+  `design.md`/`plan.md` summary-source contract; dotted-path and idempotency
+  rationale), [`add-record`](cli/evaluation-add-record.md) (input/decode rules,
+  CLI-owned-field rejection, exit-code mapping, run-snapshot rating validation,
+  collision retry, deterministic generated rendering, subcommand-per-kind),
+  [`create-run`](cli/evaluation-create-run.md) (partial-artifact prevalidation
+  reason and prevalidate-over-rollback), and the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) (re-run vs.
+  re-read re-check rationale; superseding correction rationale).
+
+- **Revision**: Added assessment superseding for evaluation runs. Corrected
+  assessment records may now carry `supersedes`; status reports dangling,
+  cross-requirement, and stale-analysis superseding references; reports
+  distinguish active from superseded assessments.
+
+- **Revision**: Tightened `evaluation create-run --subject` validation. Invalid
+  subject paths now fail before creating the evaluation directory or a numbered
+  run folder, and subject paths must resolve to files rather than directories.
+
+- **Revision**: Added recommendation superseding for evaluation runs. Corrected
+  recommendation records may now carry `supersedes`, status reports dangling
+  superseding references, and reports distinguish active from superseded advice
+  when choosing Next Action.
+
+- **Revision**: Added optional planned coverage metadata for evaluation runs.
+  `qualitymd evaluation set-planned-coverage` writes run-root
+  `planned-coverage.json`, and `show-status` now reports missing planned
+  assessments, missing planned analyses, and unexpected records when that
+  artifact exists.
+
+- **Revision**: Tightened evaluation reportability for duplicate assessment
+  records. Runs with more than one assessment for the same ordered `targetPath`
+  and `requirement` now report a `duplicate-assessment` gap in `show-status`,
+  and `build-report` refuses to render them.
+
+- **Revision**: Tightened evaluation reportability: `show-status` and
+  `build-report` now require exactly one in-scope root analysis record with an
+  empty `targetPath`, so a child target cannot silently become the report
+  headline.
+
+- **Revision**: Updated the evaluation report contract for change
+  [0018](../changes/0018-evaluation-report-ux.md). Generated reports are now
+  summary-first for human readers and expose non-null scope, target summaries,
+  evidence basis, limitations, empty recommendation arrays, explicit rating
+  objects, and structural grouping-target states in `report.json`.
+
+- **Refinement**: Clarified that equivalent summary limitations are
+  deterministically deduplicated across recorded context and rationale-derived
+  constraints while preserving the first displayed wording.
+
+- **Refinement**: Clarified that derived limitation summaries preserve
+  locator-like text such as dotted file paths.
+
 - **Creation**: Added the durable
   [Evaluation records](evaluation-records.md) contract and the evaluation CLI
   sub-specs for

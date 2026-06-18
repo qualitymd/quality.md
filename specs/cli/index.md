@@ -13,6 +13,8 @@ The format-tooling commands specified for this phase. See the parent
   numbered evaluation run folder.
 - [qualitymd evaluation add-record](evaluation-add-record.md) - write
   assessment, analysis, and recommendation records.
+- [qualitymd evaluation set-planned-coverage](evaluation-set-planned-coverage.md)
+  - write planned coverage metadata for a run.
 - [qualitymd evaluation show-status](evaluation-show-status.md) - inspect whether
   a run can be rendered.
 - [qualitymd evaluation build-report](evaluation-build-report.md) - derive

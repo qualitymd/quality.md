@@ -29,6 +29,10 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 			return nil, err
 		}
 	}
+	modelRaw, err := modelSnapshot(repoRoot, opts)
+	if err != nil {
+		return nil, err
+	}
 	evalDirValue, err := evaluationDirValue(repoRoot, opts.EvaluationDir)
 	if err != nil {
 		return nil, err
@@ -57,8 +61,8 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 			return nil, fmt.Errorf("creating %s: %w", subdir, err)
 		}
 	}
-	if err := seedModel(repoRoot, runAbs, opts); err != nil {
-		return nil, err
+	if err := os.WriteFile(filepath.Join(runAbs, "model.md"), modelRaw, 0o644); err != nil {
+		return nil, fmt.Errorf("writing model.md: %w", err)
 	}
 	for file, content := range map[string]string{
 		"design.md": "# Evaluation design\n",
@@ -102,30 +106,35 @@ func evaluationDirValue(repoRoot, override string) (string, error) {
 	return cfg.EvaluationDir, nil
 }
 
-func seedModel(repoRoot, runAbs string, opts Options) error {
+func modelSnapshot(repoRoot string, opts Options) ([]byte, error) {
 	subject := opts.Subject
 	if subject == "" {
 		subject = "QUALITY.md"
 	}
-	var raw []byte
-	var err error
+	if filepath.Clean(subject) == "." {
+		return nil, usagef("--subject %q must name a QUALITY.md file, not a directory", subject)
+	}
+	subjectAbs, subjectRel, err := ResolveRepoPath(repoRoot, subject)
+	if err != nil {
+		return nil, usagef("--subject %s", err)
+	}
+	info, err := os.Stat(subjectAbs)
+	if err != nil {
+		return nil, fmt.Errorf("reading subject %s: %w", subject, err)
+	}
+	if info.IsDir() {
+		return nil, usagef("--subject %q must name a QUALITY.md file, not a directory", subject)
+	}
 	if opts.Altitude == "model" {
-		raw, err = models.Markdown("quality-meta-model", subject)
+		raw, err := models.Markdown("quality-meta-model", subjectRel)
 		if err != nil {
-			return err
+			return nil, err
 		}
-	} else {
-		subjectAbs, _, err := ResolveRepoPath(repoRoot, subject)
-		if err != nil {
-			return err
-		}
-		raw, err = os.ReadFile(subjectAbs)
-		if err != nil {
-			return fmt.Errorf("reading subject %s: %w", subject, err)
-		}
+		return raw, nil
 	}
-	if err := os.WriteFile(filepath.Join(runAbs, "model.md"), raw, 0o644); err != nil {
-		return fmt.Errorf("writing model.md: %w", err)
+	raw, err := os.ReadFile(subjectAbs)
+	if err != nil {
+		return nil, fmt.Errorf("reading subject %s: %w", subject, err)
 	}
-	return nil
+	return raw, nil
 }

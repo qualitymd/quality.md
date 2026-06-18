@@ -146,7 +146,25 @@ This is a `SHOULD` for the compute-first ordering and a `MUST` for "not one
 serial write per round trip," matching the spec. No artifact contract change — it
 constrains the *emission* of the same files.
 
-### 5. Deep subagent fan-out
+### 5. Recommendation actionability
+
+The E49 real-repo recommendation audit found that the existing recommendation
+schema can carry actionable triage guidance, but route hints need to be explicit
+when evidence makes them inferable. The prompt should therefore treat ownership
+or route as judgment prose, not schema:
+
+- If the finding points at a package, directory, workflow, command, or owner-like
+  surface, name it in the gap, remediation option, recommended option, or done
+  criterion.
+- If the fix path depends on a runtime or support matrix, recommend isolating
+  the supported matrix before prescribing a code fix or support-boundary change.
+- Do not add a `route` field until repeated real-repo recommendations show
+  existing text fields are insufficient.
+
+This keeps recommendation records independently routable without expanding the
+record contract.
+
+### 6. Deep subagent fan-out
 
 At `deep` effort only, and only when the in-scope work justifies it, the skill
 may fan assessment out to subagents. The architecture is **orchestrator keeps
@@ -186,6 +204,10 @@ single small target need not spawn anything.
   bumps the public JSON contract and forces gates to learn new fields, when the
   existing `evidence` array and `locator` field already carry the information.
   Tightening their required meaning keeps `schemaVersion` stable.
+- **Dedicated route field vs. route hints in recommendation text (§5).** Adding
+  `route` or `owner` to recommendation records was rejected for now. E49 showed
+  the existing schema is enough when the skill names the affected package, path,
+  workflow, or verification route in ordinary recommendation fields.
 - **Re-read vs. re-run for the re-check (§3).** Re-reading the first observation
   was rejected outright — it cannot catch a stale or hallucinated first read,
   which is the whole failure mode. Re-running the verifying command/search is the

@@ -156,6 +156,8 @@ The deterministic CLI:
   folder.
 - **`qualitymd evaluation add-record`** — write assessment, analysis, and
   recommendation records from judgment payloads.
+- **`qualitymd evaluation set-planned-coverage`** — write optional planned
+  assessment and analysis coverage for resume diagnostics.
 - **`qualitymd evaluation show-status`** — inspect whether a run is ready to
   render.
 - **`qualitymd evaluation build-report`** — derive `report.md` / `report.json`

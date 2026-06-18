@@ -73,6 +73,7 @@ func addAssessment(runAbs string, raw []byte, levels map[string]bool) (*WriteRes
 		Findings:        payload.Findings,
 		Rationale:       payload.Rationale,
 		Recommendations: payload.Recommendations,
+		Supersedes:      payload.Supersedes,
 	}
 	data, err := marshalJSON(rec)
 	if err != nil {
@@ -146,6 +147,7 @@ func addRecommendation(runAbs string, raw []byte) (*WriteResult, error) {
 		RemediationOptions: payload.RemediationOptions,
 		RecommendedOption:  payload.RecommendedOption,
 		DoneCriterion:      payload.DoneCriterion,
+		Supersedes:         payload.Supersedes,
 	}
 	data, err := renderRecommendation(rec)
 	if err != nil {
@@ -228,6 +230,11 @@ func validateAssessment(p AssessmentPayload, levels map[string]bool) error {
 	if p.Recommendations == nil {
 		return usagef("recommendations is required")
 	}
+	for i, ref := range p.Supersedes {
+		if strings.TrimSpace(ref) == "" {
+			return usagef("supersedes[%d] is required", i)
+		}
+	}
 	return nil
 }
 
@@ -301,6 +308,11 @@ func validateRecommendation(p RecommendationPayload) error {
 	if len(p.RemediationOptions) == 0 {
 		return usagef("remediationOptions is required")
 	}
+	for i, ref := range p.Supersedes {
+		if strings.TrimSpace(ref) == "" {
+			return usagef("supersedes[%d] is required", i)
+		}
+	}
 	return nil
 }
 
@@ -316,6 +328,9 @@ func renderRecommendation(rec RecommendationRecord) ([]byte, error) {
 	addYAMLSeq(&node, "remediationOptions", rec.RemediationOptions)
 	addYAMLScalar(&node, "recommendedOption", rec.RecommendedOption, "!!str")
 	addYAMLScalar(&node, "doneCriterion", rec.DoneCriterion, "!!str")
+	if len(rec.Supersedes) > 0 {
+		addYAMLSeq(&node, "supersedes", rec.Supersedes)
+	}
 	enc := yaml.NewEncoder(&out)
 	enc.SetIndent(2)
 	if err := enc.Encode(&node); err != nil {
@@ -337,6 +352,12 @@ func renderRecommendation(rec RecommendationRecord) ([]byte, error) {
 	}
 	out.WriteString("\n## Recommended option\n\n" + rec.RecommendedOption + "\n\n")
 	out.WriteString("## Done criterion\n\n" + rec.DoneCriterion + "\n")
+	if len(rec.Supersedes) > 0 {
+		out.WriteString("\n## Supersedes\n\n")
+		for _, ref := range rec.Supersedes {
+			out.WriteString("- `" + ref + "`\n")
+		}
+	}
 	return out.Bytes(), nil
 }
 

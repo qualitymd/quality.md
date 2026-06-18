@@ -53,6 +53,27 @@ type WriteResult struct {
 	NextActions   []receipt.Action `json:"nextActions,omitempty"`
 }
 
+type PlannedCoverageResult struct {
+	SchemaVersion int              `json:"schemaVersion"`
+	Path          string           `json:"path"`
+	NextActions   []receipt.Action `json:"nextActions,omitempty"`
+}
+
+type PlannedCoverage struct {
+	SchemaVersion int                         `json:"schemaVersion"`
+	Assessments   []PlannedCoverageAssessment `json:"assessments"`
+	Analyses      []PlannedCoverageAnalysis   `json:"analyses"`
+}
+
+type PlannedCoverageAssessment struct {
+	TargetPath  []string `json:"targetPath"`
+	Requirement string   `json:"requirement"`
+}
+
+type PlannedCoverageAnalysis struct {
+	TargetPath []string `json:"targetPath"`
+}
+
 type Evidence struct {
 	Kind string `json:"kind"`
 	Ref  string `json:"ref"`
@@ -78,6 +99,7 @@ type AssessmentPayload struct {
 	Findings        []Finding `json:"findings"`
 	Rationale       string    `json:"rationale"`
 	Recommendations []string  `json:"recommendations"`
+	Supersedes      []string  `json:"supersedes,omitempty"`
 }
 
 type AssessmentRecord struct {
@@ -92,6 +114,7 @@ type AssessmentRecord struct {
 	Findings        []Finding `json:"findings"`
 	Rationale       string    `json:"rationale"`
 	Recommendations []string  `json:"recommendations"`
+	Supersedes      []string  `json:"supersedes,omitempty"`
 	File            string    `json:"-"`
 }
 
@@ -146,6 +169,7 @@ type RecommendationPayload struct {
 	RemediationOptions []string `json:"remediationOptions"`
 	RecommendedOption  string   `json:"recommendedOption"`
 	DoneCriterion      string   `json:"doneCriterion"`
+	Supersedes         []string `json:"supersedes,omitempty"`
 }
 
 type RecommendationRecord struct {
@@ -157,6 +181,7 @@ type RecommendationRecord struct {
 	RemediationOptions []string `json:"remediationOptions" yaml:"remediationOptions"`
 	RecommendedOption  string   `json:"recommendedOption" yaml:"recommendedOption"`
 	DoneCriterion      string   `json:"doneCriterion" yaml:"doneCriterion"`
+	Supersedes         []string `json:"supersedes,omitempty" yaml:"supersedes,omitempty"`
 	Body               string   `json:"-" yaml:"-"`
 	File               string   `json:"-" yaml:"-"`
 }

@@ -20,6 +20,7 @@ func newEvaluationCmd() *cobra.Command {
 	}
 	cmd.AddCommand(newEvaluationCreateRunCmd())
 	cmd.AddCommand(newEvaluationAddRecordCmd())
+	cmd.AddCommand(newEvaluationSetPlannedCoverageCmd())
 	cmd.AddCommand(newEvaluationShowStatusCmd())
 	cmd.AddCommand(newEvaluationBuildReportCmd())
 	return cmd
@@ -92,6 +93,36 @@ func newEvaluationAddRecordKindCmd(kind evaluation.WriteKind) *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVar(&file, "file", "", "read judgment JSON from path, or - for stdin")
+	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable write receipt")
+	return cmd
+}
+
+func newEvaluationSetPlannedCoverageCmd() *cobra.Command {
+	var file string
+	var jsonOutput bool
+	cmd := &cobra.Command{
+		Use:   "set-planned-coverage <run>",
+		Short: "Write planned coverage metadata for an evaluation run",
+		Args:  usage(cobra.ExactArgs(1)),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			raw, err := readPayload(cmd, file)
+			if err != nil {
+				return usageError(err)
+			}
+			result, err := evaluation.SetPlannedCoverage(args[0], raw)
+			if err != nil {
+				return mapEvaluationError(err)
+			}
+			if jsonOutput {
+				return writeJSON(cmd.OutOrStdout(), result)
+			}
+			if _, err := fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s\n", result.Path); err != nil {
+				return err
+			}
+			return renderNextActions(cmd.ErrOrStderr(), result.NextActions)
+		},
+	}
+	cmd.Flags().StringVar(&file, "file", "", "read planned coverage JSON from path, or - for stdin")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable write receipt")
 	return cmd
 }

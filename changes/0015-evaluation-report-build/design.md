@@ -129,6 +129,8 @@ record graph for the closure conditions the spec enumerates:
 
 - the `analysis/` roll-up is present and complete — every target referenced by
   another record has an `analysis/<target>.json`;
+- exactly one analysis record represents the in-scope root target, identified by
+  an empty `targetPath`;
 - every `assessmentRecords` reference in an analysis record resolves to a present
   `assessments/*.json`;
 - every `recommendations/*.md` referenced by an assessment is present and has

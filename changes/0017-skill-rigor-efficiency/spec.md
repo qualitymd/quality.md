@@ -58,6 +58,14 @@ re-check **MUST** re-run the verifying command or search rather than reuse the
 first observation, and the report **MUST NOT** assert a headline rating whose
 binding finding failed re-check.
 
+### Recommendation actionability
+
+Recommendation records **MUST** remain independently triageable without the
+conversation in front of the reader. When the affected package, path, workflow,
+maintainer surface, or verification route is inferable from the evidence, the
+skill **SHOULD** include that route hint in the recommendation's existing text
+fields rather than require a new schema field.
+
 ### Execution efficiency
 
 The skill **SHOULD** compute all judgments first, then emit artifacts. Independent

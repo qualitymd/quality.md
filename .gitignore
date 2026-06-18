@@ -12,9 +12,6 @@ coverage.*
 /npm/**/bin/qualitymd.exe
 node_modules/
 
-# Local /quality skill evaluation runs
-/quality/evaluations/
-
 # Env / OS
 .env
 .env.*
@@ -24,7 +21,3 @@ node_modules/
 # Agent guidance symlinks (edit AGENTS.md)
 /CLAUDE.md
 /GEMINI.md
-
-# Local skill dogfooding symlinks
-/.agents/skills/quality
-/.claude/skills/quality

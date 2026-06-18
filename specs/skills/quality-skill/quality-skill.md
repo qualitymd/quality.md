@@ -235,6 +235,7 @@ machine-readable output where a command provides it (the
 [`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
 text. Before evaluation work, it **MUST** verify that
 `qualitymd evaluation create-run`, `qualitymd evaluation add-record`,
+`qualitymd evaluation set-planned-coverage`,
 `qualitymd evaluation show-status`, and `qualitymd evaluation build-report` are
 available; if any is missing, it stops rather than hand-authoring the run.
 
@@ -271,7 +272,8 @@ flowchart TD
     Ground --> ActiveModel[Select active model:<br/>subject uses resolved QUALITY.md;<br/>model uses quality-meta-model]
     ActiveModel --> Run[Create run folder through<br/>qualitymd evaluation create-run]
     Run --> Plan[Fill design.md and plan.md:<br/>resolved parameters, coverage approach]
-    Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
+    Plan --> Coverage[Optionally write planned coverage through<br/>qualitymd evaluation set-planned-coverage]
+    Coverage --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
     Eval --> Records[Write records through<br/>qualitymd evaluation add-record]
     Records --> Status[Check qualitymd evaluation show-status]
     Status --> Report[Build reports through<br/>qualitymd evaluation build-report]
@@ -301,20 +303,26 @@ flowchart TD
    `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
    `source` will be covered at the chosen effort). The plan **MUST** record the
    chosen effort and concrete requirement set covered.
-7. **Evaluate** — run the skill's evaluation process (the five conformant phases
+7. **Record planned coverage when useful** — after the plan is settled, the
+   skill **SHOULD** write intended assessment and analysis coverage through
+   `qualitymd evaluation set-planned-coverage` when resume diagnostics
+   materially matter, especially for standard, deep, concurrent-write, or
+   interruption-prone runs. The skill **MUST NOT** hand-author or hand-repair
+   `planned-coverage.json` when the CLI command is available.
+8. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess.
-8. **Write records** with
+9. **Write records** with
    `qualitymd evaluation add-record assessment|analysis|recommendation <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
    `schemaVersion`.
-9. **Check and report** with `qualitymd evaluation show-status <run>` followed by
-   `qualitymd evaluation build-report <run>` when reportable. Under `improve`,
-   the skill then **applies a chosen
-   recommendation** — defaulting to its recommended option — only on explicit
-   confirmation, then creates a **new numbered evaluation folder** and
-   re-evaluates the affected scope to confirm the rating moved (see
-   [Operating model](#operating-model)).
+10. **Check and report** with `qualitymd evaluation show-status <run>` followed by
+    `qualitymd evaluation build-report <run>` when reportable. Under `improve`,
+    the skill then **applies a chosen
+    recommendation** — defaulting to its recommended option — only on explicit
+    confirmation, then creates a **new numbered evaluation folder** and
+    re-evaluates the affected scope to confirm the rating moved (see
+    [Operating model](#operating-model)).
 
 `improve` adds no new judgment phase — it runs this same workflow, recommendations
 and all, then applies a confirmed recommendation and verifies the result by
@@ -363,6 +371,11 @@ Whatever the level, the report **MUST** state what was *not* assessed (see
 The skill **MUST** re-run the verifying command or search for the one or two
 findings that bind the headline rating before building the report. If a binding
 finding fails re-check, the report **MUST NOT** assert the stale headline rating.
+The re-check *re-runs* the command rather than re-reading the earlier
+observation, because re-reading cannot catch a stale or hallucinated first read —
+the failure mode this guards against. It is scoped to the headline-binding
+findings, not every finding, because the headline is the highest-stakes output
+and a universal second pass is disproportionate at `standard` effort.
 
 At `deep` effort, the skill **MAY** fan out per-requirement or per-target
 assessment to subagents that return structured findings. Roll-up judgment and
@@ -427,6 +440,7 @@ quality/evaluations/
       <child-target>.json
     report.md
     report.json
+    planned-coverage.json
     recommendations/
       001-<slug>.md
       002-<slug>.md
@@ -463,7 +477,16 @@ Together these separate the three things an audit must tell apart — the *input
   assessed* (see [Effort levels](#effort-levels)) **MUST** reconcile actual
   coverage against this plan, so divergence between intended and achieved coverage
   is visible rather than silent. The plan **MUST** name the effort level and the
-  concrete requirements selected by that effort.
+  concrete requirements selected by that effort. The design and plan together
+  **MUST** record enough concise report context for the CLI-rendered summary
+  layer: altitude, effort, scope or narrowing, in-scope requirement set,
+  out-of-scope or deferred areas, headline evidence basis, and limitations that
+  constrain the rating.
+- The folder **MAY** include optional **planned coverage** metadata when the run
+  needs machine-checkable resume diagnostics. The skill supplies the intended
+  assessment requirements and analysis targets after the plan is settled, but the
+  CLI writes `planned-coverage.json` through
+  `qualitymd evaluation set-planned-coverage`.
 - The folder **MUST** capture the **assessment records** the Evaluate phase
   produces as JSON — one artifact per in-scope requirement, holding its findings
   (each with its locator), the rating inferred against the requirement's
@@ -519,6 +542,13 @@ keeps the report from drifting and makes every rating in it traceable — leaf
 finding → assessment record → analysis record → report — to the immutable records
 that produced it.
 
+The CLI-rendered report **MUST** be summary-first for human readers: Summary,
+Scope, Top Risks and Limitations, Evidence Basis, Next Action, and Target Summary
+come before the detailed target and requirement sections. The JSON report
+**MUST** expose the same summary-layer data with non-null scope, empty arrays for
+empty collections, explicit rating objects for null or not-assessed ratings, and
+a structural state for grouping targets with no local requirements.
+
 Like the report, the design, plan, assessment, and analysis records reference any
 secret value by `file:line` and type only (see
 [Boundaries](#boundaries-and-hard-rules)).
@@ -534,11 +564,29 @@ set of remediation **options**; exactly one option marked **recommended**; and a
 **done-criterion** expressed as the outcome the in-scope requirement should reach
 against its `criterion`: for a rated gap, a target rating level; for a *not
 assessed* gap, becoming assessable and reaching at least the acceptable floor.
-That is what a later `improve` re-rates to confirm the fix. Like the report, a
+That is what a later `improve` re-rates to confirm the fix. When the evidence
+or subject structure makes ownership inferable, the recommendation **SHOULD**
+name the route hint in existing text, such as the affected package, path,
+workflow, maintainer surface, or verification command. Like the report, a
 recommendation references any secret value by `file:line` and type only (see
 [Boundaries](#boundaries-and-hard-rules)). The skill writes recommendation
 records through `qualitymd evaluation add-record recommendation`; the CLI owns
 Markdown frontmatter, numbering, and stable rendering.
+
+When correcting an already written recommendation, the skill **SHOULD** write a
+new recommendation record with `supersedes` pointing at the stale
+recommendation, rather than appending ambiguous advice with no active-state
+signal. Appending a correction without `supersedes` leaves the run reportable and
+renders both files, so the report's primary Next Action can still point at the
+stale original — the ambiguity is silent. Superseding makes the active advice
+unambiguous while preserving the audit trail.
+
+When correcting an already written assessment, the skill **SHOULD** write a new
+assessment record with `supersedes` pointing at the stale assessment, then
+replace the affected analysis record so it references the active assessment. This
+analysis step is required for assessments — and not for recommendations — because
+analysis ratings bind to assessment references, so a corrected assessment left
+unpaired with its analysis would let a roll-up silently rely on stale judgment.
 
 - A report **MUST** state the **Scope** it was produced under, so a scoped result
   is never mistaken for a whole-model verdict.

@@ -2,6 +2,250 @@
 
 ## 2026-06-18
 
+- **Status**: Advanced change
+  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) to `In-Review`
+  after teaching the three durable contributor guides to keep rationale in the
+  spec: a **Background / Motivation** shape entry and per-requirement `Rationale:`
+  annotation convention (with litmus and say-it-once rule) in
+  [write-functional-specs.md](../docs/guides/write-functional-specs.md), the
+  rewritten two-whys convention and refined rationale smells there, the
+  absorb-the-why step gated on **Before setting In-Review** in
+  [work-with-changes.md](../docs/guides/work-with-changes.md), and the
+  rationale-is-promoted note in
+  [write-design-docs.md](../docs/guides/write-design-docs.md). Recorded the guide
+  edits in the [docs log](../docs/log.md).
+
+- **Implementation**: Advanced change
+  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) from `Design`
+  to `In-Progress` so the three durable contributor guides
+  ([write-functional-specs.md](../docs/guides/write-functional-specs.md),
+  [work-with-changes.md](../docs/guides/work-with-changes.md),
+  [write-design-docs.md](../docs/guides/write-design-docs.md)) can be edited from
+  the settled spec and design.
+
+- **Design**: Advanced change
+  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) from `Draft`
+  to `Design` and added its
+  [design doc](0025-durable-spec-rationale/design.md). The design settles a
+  two-layer, co-located in-spec rationale convention — a Background/Motivation
+  section plus subordinate per-requirement `Rationale:` annotations governed by
+  a litmus and a say-it-once rule — over the rejected alternatives (a separate
+  Diátaxis explanation doc, design-intent-only depth, and a full ADR embedded in
+  the spec), with spec bloat the headline risk mitigated by keeping the
+  requirement the lead sentence.
+
+- **Creation**: Added change
+  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) in `Draft`
+  with its [functional spec](0025-durable-spec-rationale/spec.md). The change
+  targets the contributor guides: durable specs inherit a requirement when a
+  change archives but lose the change's motivation and the design doc's
+  rationale, so editors re-litigate settled lessons and "simplify" rules back
+  into the bugs they fixed. The spec states a two-layer in-spec rationale
+  convention — a spec-level Background/Motivation section and per-requirement
+  `Rationale:` annotations — plus the litmus for when to annotate and an
+  absorb-the-why step on landing, and dogfoods the convention itself. Updated
+  the bundle [index](index.md).
+
+- **Refinement**: Folded the E49 TypeScript SDK recommendation-quality finding
+  into [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md):
+  recommendations should name inferable route hints such as affected package,
+  path, workflow, maintainer surface, or verification route in existing text
+  fields rather than adding a schema field.
+
+- **Status**: Advanced change
+  [0024 — Report regression coverage](0024-report-regression-coverage.md) to
+  `In-Review` after adding focused temp-run tests for secret-style,
+  prompt-injection-style, not-assessed, dotted-path, structural-root, and
+  empty-recommendation report behavior.
+
+- **Implementation**: Advanced change
+  [0024 — Report regression coverage](0024-report-regression-coverage.md) from
+  `Design` to `In-Progress` to turn repeated report-rendering experiment findings
+  into focused automated tests without committing benchmark fixture snapshots.
+
+- **Design**: Advanced change
+  [0024 — Report regression coverage](0024-report-regression-coverage.md) from
+  `Draft` to `Design` and added its
+  [design doc](0024-report-regression-coverage/design.md). The design builds
+  temporary evaluation runs in tests and asserts high-risk rendered `report.md`
+  and `report.json` properties without committing benchmark fixture snapshots.
+
+- **Creation**: Added change
+  [0024 — Report regression coverage](0024-report-regression-coverage.md) in
+  `Draft` after the experiment program repeatedly found report-rendering
+  regressions around seeded safety cases, prompt-injection handling,
+  not-assessed propagation, dotted-path limitation extraction, structural roots,
+  and empty recommendation arrays.
+
+- **Status**: Advanced change
+  [0023 — Assessment superseding](0023-assessment-superseding.md) to
+  `In-Review` after implementing assessment `supersedes` metadata,
+  superseding status gaps, active/superseded report rendering, durable specs,
+  and skill guidance.
+
+- **Implementation**: Advanced change
+  [0023 — Assessment superseding](0023-assessment-superseding.md) from `Design`
+  to `In-Progress` to close the remaining correction-workflow gap after
+  recommendation superseding. The change requires analyses to reference active
+  corrected assessments rather than superseded records.
+
+- **Design**: Advanced change
+  [0023 — Assessment superseding](0023-assessment-superseding.md) from `Draft`
+  to `Design` and added its
+  [design doc](0023-assessment-superseding/design.md). The design adds an
+  optional `supersedes` list to assessment records, validates superseding and
+  stale-analysis references in status, and renders active versus superseded
+  assessments while requiring analyses to reference active records.
+
+- **Creation**: Added change
+  [0023 — Assessment superseding](0023-assessment-superseding.md) in `Draft`
+  after recommendation superseding (E28) left no ergonomic way to correct an
+  assessment inside a run while keeping analysis roll-ups bound to active
+  judgment.
+
+- **Status**: Advanced change
+  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  to `In-Review` after validating subject paths before run-folder creation,
+  syncing the durable create-run spec, and verifying the failed `--subject .`
+  scenario leaves no partial evaluation artifacts.
+
+- **Implementation**: Advanced change
+  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  from `Design` to `In-Progress` after the E14/E29 CLI UX finding showed that
+  invalid `create-run --subject` values can fail after creating an empty run
+  skeleton.
+
+- **Design**: Advanced change
+  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  from `Draft` to `Design` and added its
+  [design doc](0022-create-run-subject-validation/design.md). The design
+  validates the subject path before creating the evaluation directory or run
+  folder so invalid subjects consume no run number and leave no partial
+  artifacts.
+
+- **Creation**: Added change
+  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  in `Draft` after the E14 improve/re-evaluate experiment found that `qualitymd
+  evaluation create-run --subject .` failed after creating an empty run
+  skeleton.
+
+- **Status**: Advanced change
+  [0021 — Recommendation superseding](0021-recommendation-superseding.md) to
+  `In-Review` after implementing recommendation `supersedes` metadata,
+  dangling-reference status gaps, active/superseded report rendering, durable
+  specs, and skill guidance.
+
+- **Implementation**: Advanced change
+  [0021 — Recommendation superseding](0021-recommendation-superseding.md) from
+  `Design` to `In-Progress` so the CLI record schema, status checks, report
+  rendering, durable specs, and skill guidance can be updated from the settled
+  spec and design.
+
+- **Design**: Advanced change
+  [0021 — Recommendation superseding](0021-recommendation-superseding.md) from
+  `Draft` to `Design` and added its
+  [design doc](0021-recommendation-superseding/design.md). The design uses an
+  optional `supersedes` list on recommendation records, validates dangling
+  references in status, and keeps superseded recommendations visible while
+  choosing Next Action from active recommendations.
+
+- **Creation**: Added change
+  [0021 — Recommendation superseding](0021-recommendation-superseding.md) in
+  `Draft` after the E15 recommendation-correction trial showed that append-only
+  correction records can leave the report's primary Next Action pointing at a
+  stale recommendation.
+
+- **Status**: Advanced change
+  [0020 — Planned coverage status](0020-planned-coverage-status.md) to
+  `In-Review` after implementing `qualitymd evaluation set-planned-coverage`,
+  planned-coverage status gaps, durable specs/docs, and skill prompt guidance.
+
+- **Implementation**: Advanced change
+  [0020 — Planned coverage status](0020-planned-coverage-status.md) from
+  `Design` to `In-Progress` so the CLI writer, status checks, durable specs,
+  and skill prompt can be implemented from the settled spec and design.
+
+- **Design**: Advanced change
+  [0020 — Planned coverage status](0020-planned-coverage-status.md) from
+  `Draft` to `Design` and added its
+  [design doc](0020-planned-coverage-status/design.md). The design uses an
+  optional CLI-owned `planned-coverage.json` artifact plus status set
+  comparisons so interrupted runs can identify missing planned assessments,
+  missing planned analyses, and unexpected records without changing current
+  behavior for runs that omit the artifact.
+
+- **Creation**: Added change
+  [0020 — Planned coverage status](0020-planned-coverage-status.md) in `Draft`
+  after the E11 interruption/resume experiment and planned-coverage prototype
+  showed that `show-status` can report missing analysis but cannot name missing
+  planned assessments without structured planned coverage metadata.
+
+- **Status**: Advanced change
+  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) to
+  `In-Review` after implementing duplicate-assessment renderability checks,
+  syncing durable specs, and verifying the command-boundary duplicate trial.
+
+- **Implementation**: Advanced change
+  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) from
+  `Design` to `In-Progress` to implement the `duplicate-assessment` renderability
+  gap, sync durable specs, and update skill guidance from the settled design.
+
+- **Design**: Advanced change
+  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) from
+  `Draft` to `Design` and added its
+  [design doc](0019-duplicate-assessment-status/design.md). The design detects
+  assessment records that share a target path and requirement, reports them as
+  `duplicate-assessment` gaps, and fails report rendering through the existing
+  renderability gate.
+
+- **Creation**: Added change
+  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) in
+  `Draft` after the experiment program found that re-adding a corrected
+  assessment appends a conflicting duplicate record while status still reports
+  the run as reportable.
+
+- **Refinement**: Tightened reportability for change
+  [0015 — Evaluation status and report build](0015-evaluation-report-build.md).
+  `show-status` now reports `missing-root-analysis` unless exactly one analysis
+  record has an empty `targetPath`, and `build-report` refuses to render instead
+  of silently using a child target as the headline.
+
+- **Refinement**: Extended change
+  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) to read report
+  context from bounded `design.md` and `plan.md` sections before falling back to
+  folder names or rationale text. This makes scope descriptions and planned
+  limitations populate `report.md` and `report.json` directly when the skill
+  records them.
+
+- **Refinement**: Updated change
+  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) after the ESLint
+  standard-run experiment to deduplicate equivalent summary limitations and
+  accept the skill's `Scope description` / `Narrowing` resolved-parameter
+  labels.
+
+- **Refinement**: Updated change
+  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) after seeded
+  stability repeats to preserve dotted file paths when deriving limitation
+  summaries from recorded rationales.
+
+- **Status**: Advanced change
+  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) from
+  `In-Progress` to `In-Review` after implementing summary-first report
+  rendering, syncing durable specs/docs and the skill prompt, and verifying the
+  renderer on copied ESLint and DataLoader runs.
+
+- **Implementation**: Advanced change
+  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) from `Design` to
+  `In-Progress` so the report renderer, durable specs/docs, and skill prompt can
+  be updated from the settled functional spec and design.
+
+- **Design**: Created change
+  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) in `Design`.
+  The change turns the experiment-backed V1 report-shape recommendation into a
+  functional spec and design doc for summary-first `report.md`, clearer
+  `report.json`, explicit scope/limitations/evidence basis, grouping-target
+  rendering, and stable empty recommendation arrays.
+
 - **Status**: Advanced changes
   [0012](0012-evaluation-record-format.md),
   [0013](0013-evaluation-run-scaffold.md),

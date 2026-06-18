@@ -39,10 +39,12 @@ Write them in order — settle *what* the change must do before working out *how
 The two stages line up with the `status` lifecycle below.
 
 1. **Functional spec first** (`spec.md`, `type: Functional Specification`), while
-   the change is **Draft**. Follow
-   [Writing functional specs](write-functional-specs.md): state requirements with
-   RFC 2119 keywords, specify behavior not implementation, and don't invent
-   requirements. Pin down the *what* before moving on.
+   the change is **Draft**. You **MUST** read
+   [Writing functional specs](write-functional-specs.md) before creating or
+   updating any change spec — it is required reading, not an optional reference.
+   Then follow it: state requirements with RFC 2119 keywords, specify behavior
+   not implementation, and don't invent requirements. Pin down the *what* before
+   moving on.
 2. **Design doc next** (`design.md`, `type: Design Doc`), once the spec is settled
    and the change moves to **Design**. Follow
    [Writing design docs](write-design-docs.md): it answers the spec, so don't
@@ -60,12 +62,39 @@ and the [`docs/`](../index.md) guides hold the *cumulative* source of truth for
 the tool's current behavior. A change is the bridge between them: it proposes a
 delta, and the enduring artifacts absorb it.
 
-List the durable specs and docs the change creates or updates in the parent
-concept's **Affected specs & docs** section, decided up front alongside the
-motivation and scope — not discovered at the end. Keep it honest: an empty list
-must read as a deliberate "no durable changes," and every listed artifact is
-created or updated *as part of the change*, before it reaches **In-Review**. This
-is what keeps the enduring specs from drifting while the change waits for review.
+Durable specs and docs are **not** locked to the change lifecycle. They **MAY**
+be edited at any time — within a change or on their own, with no change at all —
+whenever the current source of truth is wrong, stale, or incomplete. What a
+change owes is honest *accounting* for the durable impact of its work, not
+exclusive custody of the edits.
+
+So, up front — alongside the motivation and scope, not discovered at the end —
+record that impact in the parent concept's **Affected specs & docs** section:
+
+- A change **MUST** list every durable spec or doc its work impacts and that
+  needs updating. Keep it honest: an empty list must read as a deliberate "no
+  durable impact," not an oversight.
+- A change **SHOULD** raise suggestions for any *new* durable specs worth
+  creating — a contract its work reveals is under-specified or worth lifting out
+  of code. Suggesting is enough; actually creating the new spec is not a
+  precondition for the change to land.
+- A change **SHOULD** bring the durable docs it lists into sync before it reaches
+  **In-Review**, so the enduring source of truth matches the landed behavior.
+  Because durable docs may also be edited independently, the change is not the
+  only path to that update — but it must not leave a doc it listed silently stale.
+
+What gets absorbed is not only the *what* but the **enduring *why***. A change's
+**motivation** and its [design doc](write-design-docs.md)'s durable rationale are
+the reasons its requirements exist — and they archive with the change. Unless
+they are promoted into the durable spec, the spec inherits the rule and loses the
+reason, and a later editor re-litigates a settled lesson or "simplifies" a rule
+back into the bug it fixed. So when a change updates a durable spec, it
+**SHOULD** lift that rationale into the spec's **Background / Motivation** (the
+big-picture *why*) and its per-requirement **annotations** (the fine-grained
+*why*), exactly as the [functional-spec guide](write-functional-specs.md)
+describes — not just port the functional delta. The design doc stays in the
+archive as the fuller record of alternatives and trade-offs; the spec carries
+forward the intent and the lessons.
 
 ## Move it through the lifecycle
 
@@ -80,24 +109,32 @@ A Change's `status` frontmatter advances, in order:
   review; **Done** only after the work lands.
 - **Modify nothing outside what the current phase authorizes.** This is a
   whitelist, not a blacklist: the question is never "is this file on the Affected
-  list?" but "does this phase permit changing it?" Before **In-Progress**, all
-  work stays inside the change's own folder, `changes/NNNN-<slug>/` — **Draft**
-  produces its `spec.md`, **Design** produces its `design.md`, and either MAY add
-  supplementary files (sketches, examples, data fixtures) that support those, so
-  long as they live within that folder. **In-Progress** is the first phase that
-  authorizes touching anything *outside* the change folder — the code and the
-  durable specs and docs. The change's parent concept, its `index.md`, and the
-  bundle [`log.md`](../../changes/log.md)/`index.md` are updated in every phase to
-  record the step. Everything else — all code, every durable spec and doc,
-  whether or not it appears in
-  [Affected specs & docs](#account-for-the-specs-and-docs-it-touches) — stays
-  untouched until the phase that authorizes it. **Implementation does not begin
-  until the change is In-Progress**: advance the `status` first, then implement.
-  This is what keeps *what* and *how* settled before any code is written.
-- Before setting **In-Review**, create or update every durable spec and doc listed in
-  the change's [Affected specs & docs](#account-for-the-specs-and-docs-it-touches)
-  section, so the enduring source of truth is ready for review with the
-  implementation.
+  list?" but "does this phase permit changing it?" The gate governs **code**.
+  Before **In-Progress**, the change's own work stays inside its folder,
+  `changes/NNNN-<slug>/` — **Draft** produces its `spec.md`, **Design** produces
+  its `design.md`, and either MAY add supplementary files (sketches, examples,
+  data fixtures) that support those, so long as they live within that folder.
+  **In-Progress** is the first phase that authorizes touching the **code**; all
+  code stays untouched until then. **Implementation does not begin until the
+  change is In-Progress**: advance the `status` first, then implement. This is
+  what keeps *what* and *how* settled before any code is written. Durable specs
+  and docs are the exception to the gate — they track the *current* source of
+  truth, not this change's unimplemented delta, so they **MAY** be edited in any
+  phase (or with no change at all; see
+  [Account for the specs and docs it touches](#account-for-the-specs-and-docs-it-touches)).
+  The change's parent concept, its `index.md`, and the bundle
+  [`log.md`](../../changes/log.md)/`index.md` are updated in every phase to
+  record the step.
+- Before setting **In-Review**, reconcile the
+  [Affected specs & docs](#account-for-the-specs-and-docs-it-touches) list with
+  reality: every durable spec and doc the change listed should be updated (or
+  already independently up to date), so the enduring source of truth matches the
+  landed behavior and is ready for review with the implementation. When a change
+  updates a durable spec, it **SHOULD** also promote the
+  [enduring *why*](#account-for-the-specs-and-docs-it-touches) — the change's
+  motivation and the design doc's durable rationale — into the spec's
+  **Background / Motivation** and per-requirement annotations, so the reason a
+  requirement exists survives the change's archival rather than dying with it.
 - When implementation is complete, set **In-Review**. Do **not** archive the
   change at this point, and agents must not commit the changes. Leave the parent
   concept and child folder in [`changes/`](../../changes/index.md), and update
