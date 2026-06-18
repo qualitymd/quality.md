@@ -52,7 +52,7 @@
   headline.
 
 - **Revision**: Updated the evaluation report contract for change
-  [0018](../changes/0018-evaluation-report-ux.md). Generated reports are now
+  [0018](../changes/archive/0018-evaluation-report-ux.md). Generated reports are now
   summary-first for human readers and expose non-null scope, target summaries,
   evidence basis, limitations, empty recommendation arrays, explicit rating
   objects, and structural grouping-target states in `report.json`.

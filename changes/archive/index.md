@@ -34,3 +34,49 @@ Completed changes, moved here from the bundle root when they reach **Done**.
 - [0011 — CLI human output polish](0011-cli-human-output-polish.md) - finishes
   the remaining styled-output, lint next-action, dev-version, and gate-coverage
   work (`Done`).
+- [0012 — Evaluation record format](0012-evaluation-record-format.md) - lifted
+  the evaluation artifact contract out of the skill prompt into the enduring
+  `specs/evaluation-records.md` spec the CLI writes and the skill consumes
+  (`Done`).
+- [0013 — Evaluation run scaffold](0013-evaluation-run-scaffold.md) - added
+  `qualitymd evaluation create-run` with deterministic shared run numbering and
+  run-folder scaffolding (`Done`).
+- [0014 — Evaluation record write](0014-evaluation-record-write.md) - added
+  `qualitymd evaluation add-record assessment|analysis|recommendation` with
+  schema validation and atomic numbered writes (`Done`).
+- [0015 — Evaluation status and report build](0015-evaluation-report-build.md) -
+  added `qualitymd evaluation show-status` and `build-report` over a shared
+  renderability gate, with deterministic `report.md`/`report.json` and the
+  `--fail-at-or-below` CI gate (`Done`).
+- [0016 — Skill consumes evaluation CLI](0016-skill-consume-eval-cli.md) -
+  switched the `/quality` skill to drive the evaluation CLI for scaffolding,
+  record writes, and reports, replacing the inlined Artifact Contract with a
+  reference (`Done`).
+- [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md) -
+  operationalized effort levels, evidence and pinned-locator rigor, the
+  rating-binding re-check, batched writes, and confined deep fan-out (`Done`).
+- [0018 — Evaluation report UX](0018-evaluation-report-ux.md) - made generated
+  reports summary-first, scoped, and easier to scan, verified on copied ESLint
+  and DataLoader runs (`Done`).
+- [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) -
+  made duplicate assessments for the same target requirement a reportability
+  gap (`Done`).
+- [0020 — Planned coverage status](0020-planned-coverage-status.md) - added
+  `qualitymd evaluation set-planned-coverage` and planned-coverage status gaps so
+  interrupted or resumed runs can name missing planned work (`Done`).
+- [0021 — Recommendation superseding](0021-recommendation-superseding.md) - let
+  corrected recommendation records supersede stale recommendations so reports
+  choose the active Next Action deterministically (`Done`).
+- [0022 — Create-run subject validation](0022-create-run-subject-validation.md) -
+  validated `create-run --subject` before creating run folders so bad paths leave
+  no partial evaluation artifacts (`Done`).
+- [0023 — Assessment superseding](0023-assessment-superseding.md) - let corrected
+  assessment records supersede stale assessments while requiring analyses to
+  reference active records (`Done`).
+- [0024 — Report regression coverage](0024-report-regression-coverage.md) - added
+  focused tests for high-risk generated report behavior found by the experiment
+  program (`Done`).
+- [0025 — Durable spec rationale](0025-durable-spec-rationale.md) - taught the
+  contributor guides so durable specs carry their *why* — a spec-level
+  Background/Motivation section and per-requirement annotations — so a landing
+  change absorbs its rationale instead of leaving it in the archive (`Done`).

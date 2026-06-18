@@ -2,8 +2,28 @@
 
 ## 2026-06-18
 
+- **Done**: Set status `Done` and archived the full in-review set —
+  [0012 — Evaluation record format](archive/0012-evaluation-record-format.md),
+  [0013 — Evaluation run scaffold](archive/0013-evaluation-run-scaffold.md),
+  [0014 — Evaluation record write](archive/0014-evaluation-record-write.md),
+  [0015 — Evaluation status and report build](archive/0015-evaluation-report-build.md),
+  [0016 — Skill consumes evaluation CLI](archive/0016-skill-consume-eval-cli.md),
+  [0017 — Skill rigor and efficiency](archive/0017-skill-rigor-efficiency.md),
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md),
+  [0019 — Duplicate assessment status](archive/0019-duplicate-assessment-status.md),
+  [0020 — Planned coverage status](archive/0020-planned-coverage-status.md),
+  [0021 — Recommendation superseding](archive/0021-recommendation-superseding.md),
+  [0022 — Create-run subject validation](archive/0022-create-run-subject-validation.md),
+  [0023 — Assessment superseding](archive/0023-assessment-superseding.md),
+  [0024 — Report regression coverage](archive/0024-report-regression-coverage.md),
+  and [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md).
+  Moved each parent concept and its child folder into
+  [`archive/`](archive/), fixed their repo-relative links for the deeper path,
+  added them to the [archive index](archive/index.md), and emptied the
+  open-changes [index](index.md).
+
 - **Status**: Advanced change
-  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) to `In-Review`
+  [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md) to `In-Review`
   after teaching the three durable contributor guides to keep rationale in the
   spec: a **Background / Motivation** shape entry and per-requirement `Rationale:`
   annotation convention (with litmus and say-it-once rule) in
@@ -16,7 +36,7 @@
   edits in the [docs log](../docs/log.md).
 
 - **Implementation**: Advanced change
-  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) from `Design`
+  [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md) from `Design`
   to `In-Progress` so the three durable contributor guides
   ([write-functional-specs.md](../docs/guides/write-functional-specs.md),
   [work-with-changes.md](../docs/guides/work-with-changes.md),
@@ -24,9 +44,9 @@
   the settled spec and design.
 
 - **Design**: Advanced change
-  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) from `Draft`
+  [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md) from `Draft`
   to `Design` and added its
-  [design doc](0025-durable-spec-rationale/design.md). The design settles a
+  [design doc](archive/0025-durable-spec-rationale/design.md). The design settles a
   two-layer, co-located in-spec rationale convention — a Background/Motivation
   section plus subordinate per-requirement `Rationale:` annotations governed by
   a litmus and a say-it-once rule — over the rejected alternatives (a separate
@@ -35,8 +55,8 @@
   requirement the lead sentence.
 
 - **Creation**: Added change
-  [0025 — Durable spec rationale](0025-durable-spec-rationale.md) in `Draft`
-  with its [functional spec](0025-durable-spec-rationale/spec.md). The change
+  [0025 — Durable spec rationale](archive/0025-durable-spec-rationale.md) in `Draft`
+  with its [functional spec](archive/0025-durable-spec-rationale/spec.md). The change
   targets the contributor guides: durable specs inherit a requirement when a
   change archives but lose the change's motivation and the design doc's
   rationale, so editors re-litigate settled lessons and "simplify" rules back
@@ -47,222 +67,222 @@
   the bundle [index](index.md).
 
 - **Refinement**: Folded the E49 TypeScript SDK recommendation-quality finding
-  into [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md):
+  into [0017 — Skill rigor and efficiency](archive/0017-skill-rigor-efficiency.md):
   recommendations should name inferable route hints such as affected package,
   path, workflow, maintainer surface, or verification route in existing text
   fields rather than adding a schema field.
 
 - **Status**: Advanced change
-  [0024 — Report regression coverage](0024-report-regression-coverage.md) to
+  [0024 — Report regression coverage](archive/0024-report-regression-coverage.md) to
   `In-Review` after adding focused temp-run tests for secret-style,
   prompt-injection-style, not-assessed, dotted-path, structural-root, and
   empty-recommendation report behavior.
 
 - **Implementation**: Advanced change
-  [0024 — Report regression coverage](0024-report-regression-coverage.md) from
+  [0024 — Report regression coverage](archive/0024-report-regression-coverage.md) from
   `Design` to `In-Progress` to turn repeated report-rendering experiment findings
   into focused automated tests without committing benchmark fixture snapshots.
 
 - **Design**: Advanced change
-  [0024 — Report regression coverage](0024-report-regression-coverage.md) from
+  [0024 — Report regression coverage](archive/0024-report-regression-coverage.md) from
   `Draft` to `Design` and added its
-  [design doc](0024-report-regression-coverage/design.md). The design builds
+  [design doc](archive/0024-report-regression-coverage/design.md). The design builds
   temporary evaluation runs in tests and asserts high-risk rendered `report.md`
   and `report.json` properties without committing benchmark fixture snapshots.
 
 - **Creation**: Added change
-  [0024 — Report regression coverage](0024-report-regression-coverage.md) in
+  [0024 — Report regression coverage](archive/0024-report-regression-coverage.md) in
   `Draft` after the experiment program repeatedly found report-rendering
   regressions around seeded safety cases, prompt-injection handling,
   not-assessed propagation, dotted-path limitation extraction, structural roots,
   and empty recommendation arrays.
 
 - **Status**: Advanced change
-  [0023 — Assessment superseding](0023-assessment-superseding.md) to
+  [0023 — Assessment superseding](archive/0023-assessment-superseding.md) to
   `In-Review` after implementing assessment `supersedes` metadata,
   superseding status gaps, active/superseded report rendering, durable specs,
   and skill guidance.
 
 - **Implementation**: Advanced change
-  [0023 — Assessment superseding](0023-assessment-superseding.md) from `Design`
+  [0023 — Assessment superseding](archive/0023-assessment-superseding.md) from `Design`
   to `In-Progress` to close the remaining correction-workflow gap after
   recommendation superseding. The change requires analyses to reference active
   corrected assessments rather than superseded records.
 
 - **Design**: Advanced change
-  [0023 — Assessment superseding](0023-assessment-superseding.md) from `Draft`
+  [0023 — Assessment superseding](archive/0023-assessment-superseding.md) from `Draft`
   to `Design` and added its
-  [design doc](0023-assessment-superseding/design.md). The design adds an
+  [design doc](archive/0023-assessment-superseding/design.md). The design adds an
   optional `supersedes` list to assessment records, validates superseding and
   stale-analysis references in status, and renders active versus superseded
   assessments while requiring analyses to reference active records.
 
 - **Creation**: Added change
-  [0023 — Assessment superseding](0023-assessment-superseding.md) in `Draft`
+  [0023 — Assessment superseding](archive/0023-assessment-superseding.md) in `Draft`
   after recommendation superseding (E28) left no ergonomic way to correct an
   assessment inside a run while keeping analysis roll-ups bound to active
   judgment.
 
 - **Status**: Advanced change
-  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  [0022 — Create-run subject validation](archive/0022-create-run-subject-validation.md)
   to `In-Review` after validating subject paths before run-folder creation,
   syncing the durable create-run spec, and verifying the failed `--subject .`
   scenario leaves no partial evaluation artifacts.
 
 - **Implementation**: Advanced change
-  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  [0022 — Create-run subject validation](archive/0022-create-run-subject-validation.md)
   from `Design` to `In-Progress` after the E14/E29 CLI UX finding showed that
   invalid `create-run --subject` values can fail after creating an empty run
   skeleton.
 
 - **Design**: Advanced change
-  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  [0022 — Create-run subject validation](archive/0022-create-run-subject-validation.md)
   from `Draft` to `Design` and added its
-  [design doc](0022-create-run-subject-validation/design.md). The design
+  [design doc](archive/0022-create-run-subject-validation/design.md). The design
   validates the subject path before creating the evaluation directory or run
   folder so invalid subjects consume no run number and leave no partial
   artifacts.
 
 - **Creation**: Added change
-  [0022 — Create-run subject validation](0022-create-run-subject-validation.md)
+  [0022 — Create-run subject validation](archive/0022-create-run-subject-validation.md)
   in `Draft` after the E14 improve/re-evaluate experiment found that `qualitymd
   evaluation create-run --subject .` failed after creating an empty run
   skeleton.
 
 - **Status**: Advanced change
-  [0021 — Recommendation superseding](0021-recommendation-superseding.md) to
+  [0021 — Recommendation superseding](archive/0021-recommendation-superseding.md) to
   `In-Review` after implementing recommendation `supersedes` metadata,
   dangling-reference status gaps, active/superseded report rendering, durable
   specs, and skill guidance.
 
 - **Implementation**: Advanced change
-  [0021 — Recommendation superseding](0021-recommendation-superseding.md) from
+  [0021 — Recommendation superseding](archive/0021-recommendation-superseding.md) from
   `Design` to `In-Progress` so the CLI record schema, status checks, report
   rendering, durable specs, and skill guidance can be updated from the settled
   spec and design.
 
 - **Design**: Advanced change
-  [0021 — Recommendation superseding](0021-recommendation-superseding.md) from
+  [0021 — Recommendation superseding](archive/0021-recommendation-superseding.md) from
   `Draft` to `Design` and added its
-  [design doc](0021-recommendation-superseding/design.md). The design uses an
+  [design doc](archive/0021-recommendation-superseding/design.md). The design uses an
   optional `supersedes` list on recommendation records, validates dangling
   references in status, and keeps superseded recommendations visible while
   choosing Next Action from active recommendations.
 
 - **Creation**: Added change
-  [0021 — Recommendation superseding](0021-recommendation-superseding.md) in
+  [0021 — Recommendation superseding](archive/0021-recommendation-superseding.md) in
   `Draft` after the E15 recommendation-correction trial showed that append-only
   correction records can leave the report's primary Next Action pointing at a
   stale recommendation.
 
 - **Status**: Advanced change
-  [0020 — Planned coverage status](0020-planned-coverage-status.md) to
+  [0020 — Planned coverage status](archive/0020-planned-coverage-status.md) to
   `In-Review` after implementing `qualitymd evaluation set-planned-coverage`,
   planned-coverage status gaps, durable specs/docs, and skill prompt guidance.
 
 - **Implementation**: Advanced change
-  [0020 — Planned coverage status](0020-planned-coverage-status.md) from
+  [0020 — Planned coverage status](archive/0020-planned-coverage-status.md) from
   `Design` to `In-Progress` so the CLI writer, status checks, durable specs,
   and skill prompt can be implemented from the settled spec and design.
 
 - **Design**: Advanced change
-  [0020 — Planned coverage status](0020-planned-coverage-status.md) from
+  [0020 — Planned coverage status](archive/0020-planned-coverage-status.md) from
   `Draft` to `Design` and added its
-  [design doc](0020-planned-coverage-status/design.md). The design uses an
+  [design doc](archive/0020-planned-coverage-status/design.md). The design uses an
   optional CLI-owned `planned-coverage.json` artifact plus status set
   comparisons so interrupted runs can identify missing planned assessments,
   missing planned analyses, and unexpected records without changing current
   behavior for runs that omit the artifact.
 
 - **Creation**: Added change
-  [0020 — Planned coverage status](0020-planned-coverage-status.md) in `Draft`
+  [0020 — Planned coverage status](archive/0020-planned-coverage-status.md) in `Draft`
   after the E11 interruption/resume experiment and planned-coverage prototype
   showed that `show-status` can report missing analysis but cannot name missing
   planned assessments without structured planned coverage metadata.
 
 - **Status**: Advanced change
-  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) to
+  [0019 — Duplicate assessment status](archive/0019-duplicate-assessment-status.md) to
   `In-Review` after implementing duplicate-assessment renderability checks,
   syncing durable specs, and verifying the command-boundary duplicate trial.
 
 - **Implementation**: Advanced change
-  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) from
+  [0019 — Duplicate assessment status](archive/0019-duplicate-assessment-status.md) from
   `Design` to `In-Progress` to implement the `duplicate-assessment` renderability
   gap, sync durable specs, and update skill guidance from the settled design.
 
 - **Design**: Advanced change
-  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) from
+  [0019 — Duplicate assessment status](archive/0019-duplicate-assessment-status.md) from
   `Draft` to `Design` and added its
-  [design doc](0019-duplicate-assessment-status/design.md). The design detects
+  [design doc](archive/0019-duplicate-assessment-status/design.md). The design detects
   assessment records that share a target path and requirement, reports them as
   `duplicate-assessment` gaps, and fails report rendering through the existing
   renderability gate.
 
 - **Creation**: Added change
-  [0019 — Duplicate assessment status](0019-duplicate-assessment-status.md) in
+  [0019 — Duplicate assessment status](archive/0019-duplicate-assessment-status.md) in
   `Draft` after the experiment program found that re-adding a corrected
   assessment appends a conflicting duplicate record while status still reports
   the run as reportable.
 
 - **Refinement**: Tightened reportability for change
-  [0015 — Evaluation status and report build](0015-evaluation-report-build.md).
+  [0015 — Evaluation status and report build](archive/0015-evaluation-report-build.md).
   `show-status` now reports `missing-root-analysis` unless exactly one analysis
   record has an empty `targetPath`, and `build-report` refuses to render instead
   of silently using a child target as the headline.
 
 - **Refinement**: Extended change
-  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) to read report
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md) to read report
   context from bounded `design.md` and `plan.md` sections before falling back to
   folder names or rationale text. This makes scope descriptions and planned
   limitations populate `report.md` and `report.json` directly when the skill
   records them.
 
 - **Refinement**: Updated change
-  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) after the ESLint
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md) after the ESLint
   standard-run experiment to deduplicate equivalent summary limitations and
   accept the skill's `Scope description` / `Narrowing` resolved-parameter
   labels.
 
 - **Refinement**: Updated change
-  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) after seeded
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md) after seeded
   stability repeats to preserve dotted file paths when deriving limitation
   summaries from recorded rationales.
 
 - **Status**: Advanced change
-  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) from
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md) from
   `In-Progress` to `In-Review` after implementing summary-first report
   rendering, syncing durable specs/docs and the skill prompt, and verifying the
   renderer on copied ESLint and DataLoader runs.
 
 - **Implementation**: Advanced change
-  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) from `Design` to
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md) from `Design` to
   `In-Progress` so the report renderer, durable specs/docs, and skill prompt can
   be updated from the settled functional spec and design.
 
 - **Design**: Created change
-  [0018 — Evaluation report UX](0018-evaluation-report-ux.md) in `Design`.
+  [0018 — Evaluation report UX](archive/0018-evaluation-report-ux.md) in `Design`.
   The change turns the experiment-backed V1 report-shape recommendation into a
   functional spec and design doc for summary-first `report.md`, clearer
   `report.json`, explicit scope/limitations/evidence basis, grouping-target
   rendering, and stable empty recommendation arrays.
 
 - **Status**: Advanced changes
-  [0012](0012-evaluation-record-format.md),
-  [0013](0013-evaluation-run-scaffold.md),
-  [0014](0014-evaluation-record-write.md),
-  [0015](0015-evaluation-report-build.md),
-  [0016](0016-skill-consume-eval-cli.md), and
-  [0017](0017-skill-rigor-efficiency.md) from `In-Progress` to `In-Review`
+  [0012](archive/0012-evaluation-record-format.md),
+  [0013](archive/0013-evaluation-run-scaffold.md),
+  [0014](archive/0014-evaluation-record-write.md),
+  [0015](archive/0015-evaluation-report-build.md),
+  [0016](archive/0016-skill-consume-eval-cli.md), and
+  [0017](archive/0017-skill-rigor-efficiency.md) from `In-Progress` to `In-Review`
   after implementing the evaluation CLI surface and syncing the listed durable
   specs/docs.
 
 - **Status**: Advanced changes
-  [0012](0012-evaluation-record-format.md),
-  [0013](0013-evaluation-run-scaffold.md),
-  [0014](0014-evaluation-record-write.md),
-  [0015](0015-evaluation-report-build.md),
-  [0016](0016-skill-consume-eval-cli.md), and
-  [0017](0017-skill-rigor-efficiency.md) from `Design` to `In-Progress` so code
+  [0012](archive/0012-evaluation-record-format.md),
+  [0013](archive/0013-evaluation-run-scaffold.md),
+  [0014](archive/0014-evaluation-record-write.md),
+  [0015](archive/0015-evaluation-report-build.md),
+  [0016](archive/0016-skill-consume-eval-cli.md), and
+  [0017](archive/0017-skill-rigor-efficiency.md) from `Design` to `In-Progress` so code
   and durable specs/docs are now phase-authorized.
 
 - **Refinement**: Adopted implementation-readiness review fixes across the open
@@ -278,31 +298,31 @@
   `Draft` to `Design`, adding a
   [design doc](../docs/guides/write-design-docs.md) to each (drafted in parallel,
   one per change). The designs settle the *how* against the settled specs:
-  - [0012 — Evaluation record format](0012-evaluation-record-format.md) - the
+  - [0012 — Evaluation record format](archive/0012-evaluation-record-format.md) - the
     contract lives as one enduring bundle-root concept `specs/evaluation-records.md`
     (not under `cli/`), registered the normal OKF way; the skill's switch from
     inlined prose to a reference is deferred to In-Progress.
-  - [0013 — Evaluation run scaffold](0013-evaluation-run-scaffold.md) - a new
+  - [0013 — Evaluation run scaffold](archive/0013-evaluation-run-scaffold.md) - a new
     `evaluation` Cobra group with `create-run`, a thin CLI over a new
     `internal/evaluation` package, collision-fixing numbering by a single
     directory scan (max+1, create-or-fail), and three-level
     `--evaluation-dir` → `.quality/config.yaml` → `quality/evaluations/`
     resolution.
-  - [0014 — Evaluation record write](0014-evaluation-record-write.md) - the
+  - [0014 — Evaluation record write](archive/0014-evaluation-record-write.md) - the
     `internal/evaluation` package owns the record layer; three subcommands share
     one decode→validate→place→write pipeline with strict `DisallowUnknownFields`
     rejection of CLI-owned fields, stateless scan-based numbering with one retry,
     and deterministic recommendation Markdown.
-  - [0015 — Evaluation status and report build](0015-evaluation-report-build.md) -
+  - [0015 — Evaluation status and report build](archive/0015-evaluation-report-build.md) -
     a typed run-read layer with a shared `Renderable` predicate so green
     `show-status` guarantees `build-report`; one in-memory report renders both
     byte-deterministic files (Glamour kept out of the write path), and
     `--fail-at-or-below` reuses the existing coded-exit mechanism.
-  - [0016 — Skill consumes evaluation CLI](0016-skill-consume-eval-cli.md) - the
+  - [0016 — Skill consumes evaluation CLI](archive/0016-skill-consume-eval-cli.md) - the
     skill's evaluation flow maps onto the four commands, judgment JSON piped over
     stdin (CLI stamps/numbers), the inlined Artifact Contract replaced by a
     reference, and the prerequisite probe extended to the evaluation commands.
-  - [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md) - rigor
+  - [0017 — Skill rigor and efficiency](archive/0017-skill-rigor-efficiency.md) - rigor
     rules enforced as durable artifact constraints (applied breadth recorded in
     `plan.md`, evidence/locator rigor on existing fields with no schema bump,
     a rating-binding re-check that re-runs the verifying command, compute-then-batch
@@ -323,52 +343,52 @@
   `qualitymd evaluation add-record assessment|analysis|recommendation`, keeping
   record writes in the evaluation namespace while making the object explicit in
   the command name. Updated dependent wording in
-  [0013](0013-evaluation-run-scaffold.md),
-  [0014](0014-evaluation-record-write.md),
-  [0015](0015-evaluation-report-build.md), and
-  [0016](0016-skill-consume-eval-cli.md), plus the bundle index.
+  [0013](archive/0013-evaluation-run-scaffold.md),
+  [0014](archive/0014-evaluation-record-write.md),
+  [0015](archive/0015-evaluation-report-build.md), and
+  [0016](archive/0016-skill-consume-eval-cli.md), plus the bundle index.
 
 - **Refinement**: Kept recommendation artifacts as human-readable Markdown while
   making them first-class CLI-written runtime records. The evaluation-record
   contract now says `recommendations/*.md` carries runtime YAML frontmatter with
   `schemaVersion: 1` and machine-readable metadata, without making the run folder
   an OKF bundle. Change
-  [0014 — Evaluation record write](0014-evaluation-record-write.md) now includes
+  [0014 — Evaluation record write](archive/0014-evaluation-record-write.md) now includes
   `qualitymd evaluation add-record recommendation <run>`, and dependent report/skill
   wording reads recommendation records mechanically instead of hand-authoring
   them.
 
 - **Refinement**: Revised change
-  [0014 — Evaluation record write](0014-evaluation-record-write.md) and its
+  [0014 — Evaluation record write](archive/0014-evaluation-record-write.md) and its
   dependents to place record writes under the evaluation namespace:
   `qualitymd evaluation add-record assessment|analysis|recommendation` instead of a separate
   `qualitymd result add` top-level command. Updated dependent wording in
-  [0013](0013-evaluation-run-scaffold.md),
-  [0015](0015-evaluation-report-build.md), and
-  [0016](0016-skill-consume-eval-cli.md), plus the bundle index.
+  [0013](archive/0013-evaluation-run-scaffold.md),
+  [0015](archive/0015-evaluation-report-build.md), and
+  [0016](archive/0016-skill-consume-eval-cli.md), plus the bundle index.
 
 - **Creation**: Added a coordinated set of six changes to sharpen the evaluation
   workflow, drafted in parallel and consolidated here. The seam: the
   deterministic `qualitymd` CLI **writes** every evaluation record (numbering,
   schema stamping, report rendering) while the skill supplies **judgment**.
-  - [0012 — Evaluation record format](0012-evaluation-record-format.md)
+  - [0012 — Evaluation record format](archive/0012-evaluation-record-format.md)
     (`Draft`) - the keystone: move the artifact contract from the skill prompt
     into an enduring `specs/` spec both the CLI and skill consume.
-  - [0013 — Evaluation run scaffold](0013-evaluation-run-scaffold.md) (`Draft`) -
+  - [0013 — Evaluation run scaffold](archive/0013-evaluation-run-scaffold.md) (`Draft`) -
     `qualitymd evaluation create-run`, deterministic shared run numbering (fixes
     a real collision), seeds `model.md`/`design.md`/`plan.md`.
-  - [0014 — Evaluation record write](0014-evaluation-record-write.md) (`Draft`) -
+  - [0014 — Evaluation record write](archive/0014-evaluation-record-write.md) (`Draft`) -
     `qualitymd evaluation add-record assessment|analysis|recommendation`,
     JSON judgment payload from `--file` or stdin, inherent validation, atomic
     rejection.
-  - [0015 — Evaluation status and report build](0015-evaluation-report-build.md) (`Draft`) -
+  - [0015 — Evaluation status and report build](archive/0015-evaluation-report-build.md) (`Draft`) -
     `qualitymd evaluation show-status` and `qualitymd evaluation build-report`,
     idempotent rendering of `report.md`/`report.json` from records,
     `--fail-at-or-below` CI gate; renders ratings, never infers them.
-  - [0016 — Skill consumes evaluation CLI](0016-skill-consume-eval-cli.md)
+  - [0016 — Skill consumes evaluation CLI](archive/0016-skill-consume-eval-cli.md)
     (`Draft`) - the skill drives the CLI instead of hand-authoring run folders,
     records, or reports; replaces its inlined Artifact Contract with a reference.
-  - [0017 — Skill rigor and efficiency](0017-skill-rigor-efficiency.md)
+  - [0017 — Skill rigor and efficiency](archive/0017-skill-rigor-efficiency.md)
     (`Draft`) - operationalized effort levels, verified evidence and pinned
     locators, rating-binding re-check, batched writes, optional deep fan-out;
     independent of the CLI work.

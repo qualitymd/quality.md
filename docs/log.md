@@ -11,9 +11,9 @@
   is a decision delegated* (spec the divergent cases or hand the decision silently
   to the implementer), *sections are a palette, not a checklist* (against
   template-bloat), and *show, don't only tell* (a concrete example pins a contract).
-  Reframed the **Shape** intro to order a spec for a reader, and added a *scenario
-  that's really background* smell. Did not adopt Joel's humour or vivid personas —
-  they fight the brevity ethos and the deterministic-contract purpose.
+  Reframed the **Shape** intro to order a spec for a reader. Did not adopt Joel's
+  humour or vivid personas — they fight the brevity ethos and the
+  deterministic-contract purpose.
 - **Revision**: Decoupled durable-spec/doc edits from the change lifecycle in
   [Working with changes](guides/work-with-changes.md). Durable specs and docs
   **MAY** now be edited at any time, with or without a change (the lifecycle gate
@@ -27,7 +27,7 @@
   the [changes index](../changes/index.md).
 - **Revision**: Taught three how-to guides to keep durable rationale in the
   spec, for change
-  [0025 — Durable spec rationale](../changes/0025-durable-spec-rationale.md).
+  [0025 — Durable spec rationale](../changes/archive/0025-durable-spec-rationale.md).
   [Writing functional specs](guides/write-functional-specs.md) gains a
   **Background / Motivation** shape entry and a per-requirement `Rationale:`
   annotation convention (with form, the annotate-when litmus, and a say-it-once
