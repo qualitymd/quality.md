@@ -2,6 +2,12 @@
 
 ## 2026-06-18
 
+- **Template**: Added a required `## Durable spec changes` section (**To add** /
+  **To modify** / **To delete**, each a list or `None`) to the example template
+  [spec](archive/0001-example-change/spec.md), so copies account for the durable
+  specs a change rewrites. See
+  [Writing functional specs](../docs/guides/write-functional-specs.md#durable-spec-changes).
+
 - **Design**: Advanced change
   [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
   from `Draft` to `Design` and added its

@@ -3,7 +3,7 @@ type: How-to Guide
 title: Writing design docs
 description: How to write a design doc for a piece of qualitymd.
 tags: [design, contributing]
-timestamp: 2026-06-16T00:00:00Z
+timestamp: 2026-06-18T00:00:00Z
 ---
 
 # Writing design docs
@@ -28,6 +28,12 @@ Keep it short and decision-focused:
 
 - **Design, not spec.** Behavior and requirements belong in the
   [functional spec](write-functional-specs.md) — link to it, don't restate it.
+- **Durable impact is the spec's job.** Which durable specs the change rewrites —
+  and what they must say — go in the functional spec's
+  [Durable spec changes](write-functional-specs.md#durable-spec-changes) section;
+  durable docs go in the change case's parent **Affected specs & docs** index. A
+  design doc does **not** carry its own list of durable specs or docs to edit. It
+  says *how* the code delivers the change; the *what* stays out of it.
 - **Record the why.** The durable value is the rationale and rejected
   alternatives, not a re-description of the final code. When the Change Case lands,
   that value is *promoted*, not abandoned: the enduring rationale is lifted into

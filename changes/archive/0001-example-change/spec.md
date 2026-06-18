@@ -3,7 +3,7 @@ type: Functional Specification
 title: Example change — functional spec
 description: Placeholder functional spec for the example change.
 tags: [example]
-timestamp: 2026-06-16T00:00:00Z
+timestamp: 2026-06-18T00:00:00Z
 ---
 
 # Example change — functional spec
@@ -25,3 +25,23 @@ What this change covers, and what is intentionally **deferred**.
 
 - The implementation **MUST** … *(state a single, testable requirement)*.
 - It **SHOULD** … *(state a recommendation, with its escape hatch)*.
+
+## Durable spec changes
+
+Durable **specs** this change rewrites — the
+[`specs/`](../../../specs/index.md) bundle and
+[`SPECIFICATION.md`](../../../SPECIFICATION.md). Each subsection is required: list
+the changes, or write `None`. See
+[Writing functional specs](../../../docs/guides/write-functional-specs.md#durable-spec-changes).
+
+### To add
+
+None *(or a new durable spec, with what it covers)*.
+
+### To modify
+
+None *(or `path/to/spec.md` — what changes, per the requirement above)*.
+
+### To delete
+
+None *(or a durable spec being removed, and why)*.

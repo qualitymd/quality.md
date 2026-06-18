@@ -3,7 +3,7 @@ type: How-to Guide
 title: Working with change cases
 description: How to create a change case and move it through its lifecycle in the changes/ bundle.
 tags: [changes, contributing]
-timestamp: 2026-06-17T00:00:00Z
+timestamp: 2026-06-18T00:00:00Z
 ---
 
 # Working with change cases
@@ -89,6 +89,19 @@ record that impact in the parent concept's **Affected specs & docs** section:
   behavior. Because durable docs may also be edited independently, the case is
   not the only path to that update — but it must not leave a doc it listed
   silently stale.
+
+The parent's **Affected specs & docs** is the *index* — the skimmable list of
+every artifact the case touches, and the checklist reconciled before
+**In-Review**. The *substance* of a durable **spec** change lives one level down,
+in the [functional spec](write-functional-specs.md): which durable specs the
+change rewrites, and what they must say differently, belong with the requirements
+that drive them — not in the design doc, and not discovered at the end. So a
+change case's functional spec **MUST** carry a
+[`## Durable spec changes`](write-functional-specs.md#durable-spec-changes)
+section — **To add** / **To modify** / **To delete**, each reading a list or an
+explicit `None` — covering the [`specs/`](../../specs/index.md) bundle and the
+format spec [`SPECIFICATION.md`](../../SPECIFICATION.md). Durable *docs* (README,
+guides, scaffold) need no such breakdown; the parent's index is their only home.
 
 What gets absorbed is not only the *what* but the **enduring *why***. A Change
 Case's **motivation** and its [design doc](write-design-docs.md)'s durable

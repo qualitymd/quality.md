@@ -88,6 +88,52 @@ promoted onto the requirement. Background carries the spec-scale *why*; an
 annotation carries one requirement's — they must not restate each other, and
 stale rationale is superseded, not left to accrete.
 
+## Durable spec changes
+
+When a functional spec is a change case's `spec.md` (not a durable
+[`specs/`](../../specs/index.md) concept), it also accounts for the durable
+**specs** the change rewrites — the bridge from this delta to the cumulative
+source of truth. Unlike the [Shape](#shape) sections, which are a palette, this
+section is **required** for a change-case spec: a silent omission is how a
+contract change lands undocumented, and the *what* of a spec change belongs with
+the spec, not buried in the design doc. (See
+[Working with change cases](work-with-change-cases.md#account-for-the-specs-and-docs-it-touches)
+for how it divides labor with the parent's **Affected specs & docs** index.)
+
+Give it three subsections, in order — **To add** (new durable specs), **To
+modify**, **To delete** — and make each one present and explicit: a list, or the
+single word `None`. A subsection is never left blank or dropped; a written `None`
+is a deliberate "nothing of this kind," not an oversight.
+
+Each entry names the durable spec, says what changes, and links to the
+requirement above that drives it. It **MUST NOT** restate the normative text —
+that lives once, in [Requirements](#requirements); the entry only maps a
+requirement to the durable contract it lands in.
+
+```markdown
+## Durable spec changes
+
+### To add
+
+None
+
+### To modify
+
+- `specs/cli/lint.md` — add the `uncharacterized-requirement` error row (per the
+  lint requirement above).
+- `SPECIFICATION.md` — require factor characterization; reframe "secondary
+  factor" (per the characterization requirements above).
+
+### To delete
+
+None
+```
+
+Scope is durable **specs** only — the [`specs/`](../../specs/index.md) bundle and
+the format spec [`SPECIFICATION.md`](../../SPECIFICATION.md). Durable *docs*
+(README, guides, scaffold) are tracked in the change case's parent **Affected
+specs & docs** index, not here.
+
 ## Conventions
 
 - **Specify behavior, not implementation.** Say *what* must hold; leave *how* to

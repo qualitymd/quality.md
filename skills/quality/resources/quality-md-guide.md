@@ -8,6 +8,8 @@ Working with QUALITY.md files.
 
 The entire `QUALITY.md` file represents a single apex quality target (defined below).
 
+## Rating Scale
+
 ## Targets
 
 Targets are the entities subject to evaluation by quality requirements associated
@@ -46,3 +48,7 @@ assessment (such as docs, specs, checklists, etc.).
       or other possible assessments.
 
 ## Best Practices
+
+## When to update QUALITY.md
+
+- [ ] Discoveries are made that inform the context or content of the quality evaluation

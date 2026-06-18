@@ -2,6 +2,21 @@
 
 ## 2026-06-18
 
+- **Revision**: Made change cases account for durable-**spec** deltas in the
+  functional spec, not the design doc.
+  [Working with change cases](guides/work-with-change-cases.md) now requires a
+  change-case `spec.md` to carry a `## Durable spec changes` section and splits
+  the labor: the parent's **Affected specs & docs** is the index of every
+  artifact touched, while the functional spec carries the substance of each
+  durable-spec change (the `specs/` bundle and `SPECIFICATION.md`).
+  [Writing functional specs](guides/write-functional-specs.md) defines that
+  section's form — **To add** / **To modify** / **To delete**, each required to
+  read a list or an explicit `None`, with entries pointing to the driving
+  requirement rather than restating it.
+  [Writing design docs](guides/write-design-docs.md) records that a design doc
+  does not carry its own durable-spec/doc list; durable impact is the spec's job
+  and the design covers only *how*.
+
 - **Rename**: Renamed the change workflow guide to
   [Working with change cases](guides/work-with-change-cases.md), updated the
   `changes/` schema term to `Change Case`, and narrowed the `AGENTS.md` trigger:
