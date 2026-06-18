@@ -9,5 +9,7 @@ Children of the
   contract to the
   [`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md) and
   records the open items and gaps to settle.
-
-A design doc is added when the change advances to **Design**.
+- [Design doc](design.md) - how the change is built: the skill packaged for Agent
+  Skills installation, the CLI prerequisite check in `setup`/`wizard`, the
+  `qualitymd models` CLI surface, the raw JSON evaluation artifacts, and how the
+  open items resolve into the durable spec.

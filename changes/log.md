@@ -2,6 +2,136 @@
 
 ## 2026-06-17
 
+- **Refinement**: Added a comprehensive acceptance checklist to change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md), covering
+  skill packaging/install, CLI prerequisite handling including dev builds,
+  `qualitymd models` Markdown/JSON behavior, `.quality/config.yaml` validation,
+  default dogfood-output ignoring, quick model-altitude dogfooding, JSON artifact
+  parsing and shape, minimal `report.json` finding summaries, example re-capture,
+  and durable spec/doc sync before **Done**. Optional installer/UI metadata such as
+  `agents/openai.yaml` is explicitly deferred until the installer or target agent
+  docs require it.
+
+- **Refinement**: Settled the final `SKILL.md` description text for change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md): "Use when
+  a user wants setup, wizard guidance, evaluation, or improvement for quality
+  management of a project/entity or one of its components/targets. Trigger for
+  requests about quality factors, characteristics, attributes, criteria, Targets,
+  Factors, Requirements, improving a quality factor such as
+  security/reliability/usability, evaluating a subject against quality criteria, or
+  evaluating/improving the QUALITY.md model itself."
+
+- **Refinement**: Added evaluation-directory configuration to change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The skill
+  now reads repository-local `.quality/config.yaml` with `evaluationDir` to choose
+  the parent directory for numbered evaluation runs, defaulting to
+  `quality/evaluations/` when absent; the config is framed as shared qualitymd
+  system config that future CLI evaluation commands should also honor. The path must
+  be repository-relative, normalized, and unable to escape the repository; unknown
+  keys are warned and ignored. Broader configuration ideas (default target file,
+  effort, output formats, thresholds, retention, install commands) are deferred
+  until they have a concrete need.
+
+- **Refinement**: Added trigger-description requirements for change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The skill
+  description must now cover quality management/evaluation/improvement prompts even
+  when the user does not mention `QUALITY.md` (for example, improving security
+  quality), include mode trigger terms (`setup`, `wizard`, `evaluate`, `improve`)
+  and generic quality vocabulary (factors, characteristics, attributes, criteria),
+  and stay bounded away from generic copyediting or one-off "higher quality"
+  requests. The design records initial `SKILL.md` description text that names
+  Targets, Factors, Requirements, subject evaluation, model evaluation/improvement,
+  and broad project/entity plus component/target quality, while leaving CLI
+  implementation details to the skill body. The design now records the criteria
+  used to derive that description and the durable spec sync explicitly carries those
+  criteria into `quality-skill.md`'s Frontmatter and metadata section.
+
+- **Refinement**: Added dogfooding guidance to change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The design
+  now requires an In-Progress verification pass that installs the skill from the
+  working tree, accepts a local development `qualitymd` binary when it exposes the
+  required commands, runs a quick model-altitude evaluation against this repo's
+  `QUALITY.md`, checks the generated artifact shape, and avoids committing ad hoc
+  `quality/evaluations/` output unless deliberately re-captured as a durable
+  example.
+
+- **Refinement**: Resolved the remaining open questions for change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). Root
+  `install.md` now uses a verification-first install flow (`qualitymd --version`,
+  documented CLI install/upgrade, verify again, `npx skills add qualitymd/quality.md`,
+  `npx skills list`) with the exact package-manager command filled in when the first
+  public CLI release channel exists. `report.json` now inlines only minimal generic
+  finding summaries by reference for single-file gate/dashboard consumers, while
+  full finding detail remains in `assessments/*.json`. Future
+  `qualitymd outline QUALITY.md --json`, CLI evaluation record/gate commands,
+  and deep-run subagent fanout are explicitly deferred rather than open design
+  questions.
+
+- **Refinement**: Generalized the structured finding shape for change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). Replaced
+  the sample's bespoke top-level `credentialType` with a generic finding object:
+  `locator`, `observation`, open `category`, optional `severity`, supporting
+  `evidence`, and optional `attributes` for domain-specific metadata. Added the
+  broader JSON-shape rule that public top-level fields stay tied to the evaluation
+  workflow, while factor- or requirement-specific details live under
+  `attributes`.
+
+- **Refinement**: Updated change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) so
+  `qualitymd models view <name>` supports `--json`. The default output remains
+  Markdown with the same terminal-rendered vs plain/verbatim split as
+  `qualitymd spec`, preserving byte-for-byte `model.md` snapshots while giving
+  humans a readable TTY view. `--json` emits the same source-rewritten bundled model
+  as structured data (`model` plus `bodyMarkdown`) for agents and gates that should
+  not have to reparse Markdown/YAML. Updated the functional spec, design doc, and
+  design log wording.
+
+- **Refinement**: Corrected the onboarding model for change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md). The skill
+  is now the primary entry point, installed from this repo with
+  `npx skills add qualitymd/quality.md`; the `qualitymd` CLI is a prerequisite that
+  `setup` and `wizard` detect, version-check, and help install or upgrade before
+  running CLI-dependent work. Updated the functional spec, design doc, parent
+  change, and indexes to remove the plugin-first assumption, added root
+  `install.md` to affected docs, and kept Claude plugin/marketplace packaging as a
+  possible secondary channel rather than this change's primary distribution path.
+
+- **Design**: Advanced change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) from
+  `Draft` to `Design` and added its
+  [design doc](0010-implement-quality-skill/design.md). Confirmed the three
+  **blocking** open items at their recommended resolutions and worked out the *how*:
+  the skill ships from `skills/quality/SKILL.md` as an Agent Skills artifact
+  installable with `npx skills add qualitymd/quality.md`, while `setup`/`wizard`
+  verify the separate `qualitymd` CLI prerequisite before doing CLI-dependent work.
+  Specified the `qualitymd models` surface (`list` with `--json`; `view <name>
+  [--source]` as verbatim Markdown by default and structured JSON with `--json`,
+  reusing the `lint --fix` node-rewrite to re-point the meta-model's apex
+  `source`), homed in a new `internal/models` package for the bundled-model
+  catalog. Settled the raw, non-OKF evaluation
+  artifacts — JSON `assessments/`/`analysis/` source-of-record records and a
+  `report.json` rendered over them beside the human `report.md`, altitude-first
+  folder naming, and `improve`'s new-folder re-evaluation. Recorded the alternatives
+  (plugin-marketplace-first/CLI-installer distribution, inline vs referencing
+  `report.json`, meta-model embed home) and planned the In-Progress durable sync.
+  Updated the change [index](0010-implement-quality-skill/index.md), bundle
+  [index](index.md), and the parent concept's status.
+
+- **Refinement**: Tightened change
+  [0010 — Implement the /quality skill](0010-implement-quality-skill.md) after
+  review. Reconciled the open items' conflicting lifecycle timing — they are now
+  **surfaced in Draft**, with the **blocking** ones resolved before **Design** and
+  the rest during **In-Progress**, all before **Done** (replacing contradictory
+  "settle before Design" / "while Draft" / "before Done" wording across the spec and
+  parent). Settled that **evaluation artifacts are raw runtime outputs, not OKF
+  concepts**: JSON assessment/analysis records plus a `report.json`, with the worked
+  example re-captured raw and its now-unused concept types retired from
+  [`specs/schema.md`](../specs/schema.md). Brought the deterministic
+  `qualitymd models` command into the change's **Covered** scope, since the model
+  altitude depends on it and the skill drives the CLI rather than reimplementing it.
+  Renamed the open-items anchor and aligned the parent's `Q1` references to the
+  spec's item numbering. Updated the [log](log.md).
+
 - **Creation**: Added change
   [0010 — Implement the /quality skill](0010-implement-quality-skill.md)
   (`status: Draft`) with its
