@@ -2,6 +2,22 @@
 
 ## 2026-06-18
 
+- **Alignment**: Brought change
+  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  into alignment with the current change-case guides by adding the required
+  [Durable spec changes](0028-require-characterized-requirements/spec.md#durable-spec-changes)
+  section to its functional spec and moving durable-doc accounting out of its
+  design doc.
+
+- **Done**: Set status `Done` and archived
+  [0026 — Authoring guide replaces meta-model workflow](archive/0026-authoring-guide-remove-meta-model.md)
+  and [0027 — Modularize quality skill modes](archive/0027-modularize-quality-skill.md).
+  Moved each parent concept and child folder into [`archive/`](archive/),
+  updated repo-relative links for the deeper path, added both entries to the
+  [archive index](archive/index.md), and left
+  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  as the only open change case.
+
 - **Template**: Added a required `## Durable spec changes` section (**To add** /
   **To modify** / **To delete**, each a list or `None`) to the example template
   [spec](archive/0001-example-change/spec.md), so copies account for the durable
@@ -35,30 +51,32 @@
   narrowed `AGENTS.md` so routine prompted edits do not require a Change Case.
 
 - **Status**: Advanced change
-  [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md) to
+  [0027 — Modularize quality skill modes](archive/0027-modularize-quality-skill.md) to
   `In-Review` after keeping `SKILL.md` as the root router/global contract,
   adding setup, wizard, evaluate, and improve mode files under
   `skills/quality/modes/`, renaming supporting skill docs to `resources/`,
   syncing the durable skill spec, and verifying the test suite.
 
 - **Implementation**: Added change
-  [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md) in
-  `In-Progress` with its [functional spec](0027-modularize-quality-skill/spec.md).
+  [0027 — Modularize quality skill modes](archive/0027-modularize-quality-skill.md) in
+  `In-Progress` with its
+  [functional spec](archive/0027-modularize-quality-skill/spec.md).
   The change keeps `SKILL.md` as the `/quality` router and moves setup, wizard,
   evaluate, and improve procedures into separate files under
   `skills/quality/modes/`, with supporting docs under `skills/quality/resources/`.
 
 - **Status**: Advanced change
-  [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
+  [0026 — Authoring guide replaces meta-model workflow](archive/0026-authoring-guide-remove-meta-model.md)
   to `In-Review` after replacing the skill-facing meta-model reference with
   [quality-md-guide.md](../skills/quality/resources/quality-md-guide.md),
   removing the bundled `models` CLI/package, making evaluation run creation
   subject-only, syncing durable specs and docs, and verifying the Go test suite.
 
 - **Implementation**: Added change
-  [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
-  in `In-Progress` with its [functional spec](0026-authoring-guide-remove-meta-model/spec.md)
-  and [design doc](0026-authoring-guide-remove-meta-model/design.md). The change
+  [0026 — Authoring guide replaces meta-model workflow](archive/0026-authoring-guide-remove-meta-model.md)
+  in `In-Progress` with its
+  [functional spec](archive/0026-authoring-guide-remove-meta-model/spec.md) and
+  [design doc](archive/0026-authoring-guide-remove-meta-model/design.md). The change
   replaces the skill-facing meta-model reference with a `quality-md-guide.md`
   authoring guide, removes the public `qualitymd models` / model-altitude
   workflow, and syncs durable specs and docs around subject-only evaluation.

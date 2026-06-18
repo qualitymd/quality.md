@@ -42,12 +42,6 @@ edit.
 
 # Open change cases
 
-- [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md)
-  - replaces the bundled quality meta-model workflow with a practical
-    `QUALITY.md` authoring guide and removes the public model-altitude surfaces.
-- [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md)
-  - splits setup, wizard, evaluation, and improve procedures into separate skill
-    reference files while keeping `SKILL.md` as the router.
 - [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
   - requires every requirement to be characterized by at least one factor and
     aligns terminology for direct versus secondary factor associations.
@@ -62,7 +56,5 @@ template for a new one.
 
 # Subfolders
 
-- [0026-authoring-guide-remove-meta-model/](0026-authoring-guide-remove-meta-model/) - spec and design for replacing the meta-model workflow.
-- [0027-modularize-quality-skill/](0027-modularize-quality-skill/) - spec for the skill mode-file refactor.
 - [0028-require-characterized-requirements/](0028-require-characterized-requirements/) - spec for mandatory requirement characterization.
 - [archive/](archive/) - completed change cases.

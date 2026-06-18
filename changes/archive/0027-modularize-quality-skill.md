@@ -2,7 +2,7 @@
 type: Change Case
 title: Modularize quality skill modes
 description: Split mode-specific /quality skill procedures into separate mode files while keeping global routing and safety rules in SKILL.md.
-status: In-Review
+status: Done
 tags: [skill, authoring]
 timestamp: 2026-06-18T00:00:00Z
 ---
@@ -25,8 +25,8 @@ shared CLI prerequisites, config, and artifact contracts.
 
 ## Affected specs & docs
 
-- [specs/skills/quality-skill/quality-skill.md](../specs/skills/quality-skill/quality-skill.md)
-- [skills/quality/SKILL.md](../skills/quality/SKILL.md)
+- [specs/skills/quality-skill/quality-skill.md](../../specs/skills/quality-skill/quality-skill.md)
+- [skills/quality/SKILL.md](../../skills/quality/SKILL.md)
 
 ## Children
 

@@ -80,3 +80,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   contributor guides so durable specs carry their *why* — a spec-level
   Background/Motivation section and per-requirement annotations — so a landing
   change absorbs its rationale instead of leaving it in the archive (`Done`).
+- [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md) -
+  replaced the bundled quality meta-model workflow with a practical `QUALITY.md`
+  authoring guide, removed the public `qualitymd models` surface, and made
+  evaluation run creation subject-only (`Done`).
+- [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md) -
+  split setup, wizard, evaluate, and improve procedures into mode files while
+  keeping `SKILL.md` as the root router and global contract (`Done`).

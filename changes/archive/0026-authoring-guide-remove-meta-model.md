@@ -2,7 +2,7 @@
 type: Change Case
 title: Authoring guide replaces meta-model workflow
 description: Replace the bundled quality meta-model workflow with a practical QUALITY.md authoring guide and remove public CLI/model-altitude compatibility surfaces.
-status: In-Review
+status: Done
 tags: [skill, cli, docs, evaluation]
 timestamp: 2026-06-18T00:00:00Z
 ---
@@ -24,15 +24,15 @@ evaluation run creation so it no longer creates model-altitude runs.
 
 ## Affected specs & docs
 
-- [README.md](../README.md)
-- [specs/cli.md](../specs/cli.md)
-- [specs/cli/evaluation-create-run.md](../specs/cli/evaluation-create-run.md)
-- [specs/cli/index.md](../specs/cli/index.md)
-- [specs/evaluation-records.md](../specs/evaluation-records.md)
-- [specs/skills/index.md](../specs/skills/index.md)
-- [specs/skills/quality-skill/quality-skill.md](../specs/skills/quality-skill/quality-skill.md)
-- [docs/guides/use-quality-skill.md](../docs/guides/use-quality-skill.md)
-- [skills/quality/SKILL.md](../skills/quality/SKILL.md)
+- [README.md](../../README.md)
+- [specs/cli.md](../../specs/cli.md)
+- [specs/cli/evaluation-create-run.md](../../specs/cli/evaluation-create-run.md)
+- [specs/cli/index.md](../../specs/cli/index.md)
+- [specs/evaluation-records.md](../../specs/evaluation-records.md)
+- [specs/skills/index.md](../../specs/skills/index.md)
+- [specs/skills/quality-skill/quality-skill.md](../../specs/skills/quality-skill/quality-skill.md)
+- [docs/guides/use-quality-skill.md](../../docs/guides/use-quality-skill.md)
+- [skills/quality/SKILL.md](../../skills/quality/SKILL.md)
 
 ## Children
 

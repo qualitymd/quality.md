@@ -79,24 +79,13 @@ neutral such as `listedFactors` or `resolvedListedFactors`, because direct
 target-level lists are not secondary. `empty-factor` should use the renamed
 helper without behavior changes.
 
-## Durable Docs
+## Documentation Approach
 
-`SPECIFICATION.md` needs the main semantic rewrite:
-
-- Factor prose can still use "lens" as explanatory shorthand.
-- Requirement prose should lead with "characterized by" for the mechanics.
-- Direct target-level requirements must list factors.
-- Listed factors are "secondary" only when a requirement is already nested under
-  a factor.
-
-`specs/cli/lint.md` adds the `uncharacterized-requirement` error row and updates
-the `unknown-factor` row to refer to listed factors rather than only secondary
-factors.
-
-`README.md` and `internal/scaffold/skeleton.md` should nudge authored examples
-toward characterized requirements. The scaffold should keep its placeholder
-requirement under a factor, so it remains lint-valid without adding a direct
-target-level `factors` example.
+Keep durable spec accounting in the functional spec and durable doc accounting
+in the parent change case. Implementation should then make the recorded
+terminology pass mechanically: lead with "characterized by" for
+requirement-to-factor mechanics, keep "lens" only as explanatory shorthand, and
+ensure examples remain lint-valid under mandatory characterization.
 
 ## Tests
 

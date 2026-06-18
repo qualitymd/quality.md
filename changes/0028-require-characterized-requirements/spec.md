@@ -68,3 +68,24 @@ between requirements and factors.
 "Lens" and related wording **MAY** remain where they are useful shorthand for how
 a factor frames a quality concern, but they **SHOULD NOT** be the primary term
 for the requirement-to-factor association mechanics.
+
+## Durable spec changes
+
+### To add
+
+None
+
+### To modify
+
+- `SPECIFICATION.md` — require every requirement to be characterized by at least
+  one factor, retain "lens" only as helpful shorthand, and clarify that listed
+  factors are secondary only when a requirement is already nested under a factor
+  (per the characterization and terminology requirements above).
+- `specs/cli/lint.md` — add the `uncharacterized-requirement` error rule,
+  record that it is not fixable, and update `unknown-factor` wording to describe
+  listed factors rather than only secondary factors (per the lint requirements
+  above).
+
+### To delete
+
+None
