@@ -83,7 +83,9 @@ func TestUpgradeApplyRunsSupportedOwnerCommand(t *testing.T) {
 }
 
 func TestUpgradeApplyRefusesUnknownInstall(t *testing.T) {
-	os.Unsetenv("QUALITYMD_INSTALL_METHOD")
+	if err := os.Unsetenv("QUALITYMD_INSTALL_METHOD"); err != nil {
+		t.Fatalf("Unsetenv() error = %v", err)
+	}
 	withLatestVersion(t, func(_ context.Context, _ installMethod) (string, error) {
 		return "v9.9.9", nil
 	})

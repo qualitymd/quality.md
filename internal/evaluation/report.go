@@ -561,7 +561,7 @@ func renderReportSummaryMarkdown(report ReportJSON) []byte {
 		out.WriteString("None recorded.\n")
 	} else {
 		for i, finding := range risks {
-			out.WriteString(fmt.Sprintf("%d. ", i+1))
+			fmt.Fprintf(&out, "%d. ", i+1)
 			if finding.Severity != "" {
 				out.WriteString("**" + finding.Severity + "** - ")
 			}

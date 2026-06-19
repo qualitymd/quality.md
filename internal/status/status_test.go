@@ -24,7 +24,7 @@ func TestSnapshotMissingModelSucceeds(t *testing.T) {
 }
 
 func TestSnapshotInvalidModelCarriesLintFindings(t *testing.T) {
-	path := writeFile(t, t.TempDir(), "QUALITY.md", `---
+	path := writeFile(t, t.TempDir(), `---
 title: Invalid
 ---
 `)
@@ -45,7 +45,7 @@ title: Invalid
 
 func TestSnapshotValidModelShapeAndSourceCoverage(t *testing.T) {
 	repo := newRepo(t)
-	path := writeFile(t, repo, "QUALITY.md", validModel(`source: .
+	path := writeFile(t, repo, validModel(`source: .
 factors:
   reliability:
     title: Reliability
@@ -103,7 +103,7 @@ targets:
 
 func TestSnapshotEvaluationHistoryStaleAndLatestRun(t *testing.T) {
 	repo := newRepo(t)
-	path := writeFile(t, repo, "QUALITY.md", validModel(`requirements:
+	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
     assessment: Run it.
@@ -119,7 +119,7 @@ factors:
 	if !strings.Contains(first.Path, "0001-subject-quality-eval") {
 		t.Fatalf("first path = %q, want run 0001", first.Path)
 	}
-	writeFile(t, repo, "QUALITY.md", validModel(`requirements:
+	writeFile(t, repo, validModel(`requirements:
   "starts well":
     factors: [reliability]
     assessment: Run it again.
@@ -150,7 +150,7 @@ factors:
 
 func TestSnapshotMalformedRunDoesNotHideLaterRuns(t *testing.T) {
 	repo := newRepo(t)
-	path := writeFile(t, repo, "QUALITY.md", validModel(`requirements:
+	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
     assessment: Run it.
@@ -181,7 +181,7 @@ factors:
 
 func TestSnapshotActiveRecommendationCountHonorsSuperseding(t *testing.T) {
 	repo := newRepo(t)
-	path := writeFile(t, repo, "QUALITY.md", validModel(`requirements:
+	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
     assessment: Run it.
@@ -239,9 +239,9 @@ func newRepo(t *testing.T) string {
 	return repo
 }
 
-func writeFile(t *testing.T, dir, name, content string) string {
+func writeFile(t *testing.T, dir, content string) string {
 	t.Helper()
-	path := filepath.Join(dir, name)
+	path := filepath.Join(dir, "QUALITY.md")
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		t.Fatalf("MkdirAll() error = %v", err)
 	}
