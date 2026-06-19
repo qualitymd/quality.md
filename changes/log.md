@@ -2,6 +2,17 @@
 
 ## 2026-06-19
 
+- **Creation**: Queued change
+  [0030 — CLI status snapshot command](0030-cli-status-command.md) in `Draft`
+  with a placeholder [functional spec](0030-cli-status-command/spec.md). The case
+  proposes a read-only `qualitymd status [--json]` command that emits a
+  deterministic project-state snapshot (model validity and shape, evaluation run
+  history, open recommendation counts) so the `/quality` wizard routes from
+  structured data instead of hand-parsing `QUALITY.md` and reading report bodies —
+  restoring the CLI-owns-mechanical-work split. Records the affected CLI specs,
+  README, and `/quality` skill consumers. Spec is a placeholder until the case is
+  picked up. Updated the bundle [index](index.md).
+
 - **Status**: Advanced change
   [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
   to `In-Review` after extending `SPECIFICATION.md`'s **Assessment** terminology

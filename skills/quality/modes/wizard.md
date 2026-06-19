@@ -6,24 +6,30 @@ next useful workflow, and offers concrete alternatives. Use it when the user is
 unsure what to run next, asks for status/next steps, asks to review the model or
 history, or sends a bare `/quality`.
 
+Wizard must be **fast**. Its job is to route, not to audit: probe a handful of
+cheap signals in one shot, classify readiness, and offer concrete next steps.
+Do not hand-parse `QUALITY.md` frontmatter, read evaluation report bodies, count
+requirements, enumerate recommendations, or resolve build/install paths — all of
+that is deferred to the mode the user picks. Aim for one batched probe and a fast
+answer.
+
 ## Decision Tree
 
 ```text
-Probe state
+Probe state (one batched probe of cheap signals only)
 - CLI missing/stale? recommend install/upgrade
 - QUALITY.md missing? classify no setup; recommend setup
 - QUALITY.md present? run lint
   - lint errors? classify invalid model; recommend repair
-  - lint valid? inspect model shape and evaluation history
+  - lint valid? check only whether the evaluation dir has runs
 
-Classify readiness
-- no setup
-- invalid model
-- starter/skeleton model
-- usable but immature model
-- ready to evaluate
-- has evaluation history
-- mature but needs maintenance/reconciliation
+Classify readiness (from the cheap signals only)
+- no setup            (QUALITY.md missing)
+- invalid model       (lint fails)
+- ready to evaluate   (lint passes, no runs yet)
+- has evaluation history (lint passes, runs present)
+Finer maturity (skeleton vs. mature, stale runs, reconciliation needs) is judged
+in the mode the user hands off to, not eagerly here.
 
 Recommend one next step
 - name the workflow
@@ -40,30 +46,33 @@ Offer concrete alternatives
 
 ## Procedure
 
-1. Verify the CLI prerequisite from `SKILL.md`.
-2. Resolve the target file.
-3. Resolve `.quality/config.yaml` and the evaluation directory from `SKILL.md`.
-4. Probe state:
-   - CLI readiness.
-   - `QUALITY.md` presence.
-   - `qualitymd lint [path]` result when a model exists.
-   - model shape when lint passes: targets, factors, requirement count, and
-     visible source coverage.
-   - evaluation history when present: latest run, incomplete/stale-looking runs,
-     active recommendations, and report/status files already available.
-5. Classify readiness using the lifecycle states in the decision tree. This is a
-   readiness judgment, not an evaluation rating.
-6. If the model exists and the user asks for authoring/model help, or if the
-   readiness classification depends on model quality, read
-   [`../resources/quality-md-guide.md`](../resources/quality-md-guide.md).
-7. Report in this shape:
+1. Run **one batched probe** of cheap signals — prefer a single shell call that
+   collects all four at once:
+   - CLI version (`qualitymd --version`) and whether it satisfies the prerequisite
+     range from `SKILL.md`.
+   - `QUALITY.md` presence at the resolved target path (do not walk parents).
+   - `qualitymd lint [path]` pass/fail when the file exists.
+   - whether the evaluation directory (from `.quality/config.yaml`, default
+     `quality/evaluations/`) contains any run folders.
+
+   These four signals are sufficient to route. Do **not** open the model,
+   reports, or recommendation files to classify — defer that to the chosen mode.
+2. Classify readiness using the lifecycle states in the decision tree. This is a
+   readiness judgment from the probe signals, not an evaluation rating. When a
+   signal is genuinely needed to choose between options and is cheap, gather just
+   that one; otherwise state the open question and let the user's choice resolve
+   it.
+3. Only read [`../resources/quality-md-guide.md`](../resources/quality-md-guide.md)
+   if the user explicitly asks for authoring/model help — not to classify
+   readiness.
+4. Report in this shape:
 
    ```text
    Status
-   - CLI:
-   - QUALITY.md:
-   - Model:
-   - Evaluation history:
+   - CLI:                (version; in range or stale)
+   - QUALITY.md:         (present/absent at target path)
+   - Model:              (lint pass/fail — not a shape breakdown)
+   - Evaluation history: (runs present/absent; no body reads)
    - Readiness:
 
    Recommended next step
@@ -75,7 +84,7 @@ Offer concrete alternatives
    3. <concrete workflow>
    ```
 
-8. Offer only concrete workflows the user can choose next, such as setup, model
+5. Offer only concrete workflows the user can choose next, such as setup, model
    repair, model review/improvement, whole-subject evaluation, scoped
    target/factor evaluation, recommendation review/improvement, or evaluation
    history review.
