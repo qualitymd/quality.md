@@ -87,3 +87,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0027 — Modularize quality skill modes](0027-modularize-quality-skill.md) -
   split setup, wizard, evaluate, and improve procedures into mode files while
   keeping `SKILL.md` as the root router and global contract (`Done`).
+- [0028 — Require factor references](0028-require-characterized-requirements.md) -
+  requires every requirement to reference at least one factor and aligns
+  requirement-to-factor terminology (`Done`).
+- [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md) -
+  frames a requirement's assessment as inline or a reference to another entity,
+  reserves "source" for `Target.source`, and makes the model's traceability
+  graph an authoring concern (`Done`).

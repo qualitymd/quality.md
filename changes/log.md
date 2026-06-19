@@ -2,6 +2,16 @@
 
 ## 2026-06-19
 
+- **Done**: Set status `Done` and archived
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
+  and
+  [0029 — Sharpen assessment references and traceability](archive/0029-sharpen-assessment-references.md).
+  Moved each parent concept and child folder into [`archive/`](archive/),
+  fixed repo-relative links for the deeper path, added both entries to the
+  [archive index](archive/index.md), and left
+  [0030 — CLI status snapshot command](0030-cli-status-command.md) as the only
+  open change case.
+
 - **Creation**: Queued change
   [0030 — CLI status snapshot command](0030-cli-status-command.md) in `Draft`
   with a placeholder [functional spec](0030-cli-status-command/spec.md). The case
@@ -14,7 +24,7 @@
   picked up. Updated the bundle [index](index.md).
 
 - **Status**: Advanced change
-  [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  [0029 — Sharpen assessment references and traceability](archive/0029-sharpen-assessment-references.md)
   to `In-Review` after extending `SPECIFICATION.md`'s **Assessment** terminology
   and Requirement section with the inline-or-reference framing and a non-normative
   traceability note, applying the six authoring-guide edits (reserve "source" for
@@ -24,14 +34,14 @@
   Go test suite, vet, and Markdown formatting.
 
 - **Implementation**: Advanced change
-  [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  [0029 — Sharpen assessment references and traceability](archive/0029-sharpen-assessment-references.md)
   from `Draft` to `In-Progress` (no design doc) so the durable `SPECIFICATION.md`,
   authoring guide, and scaffold edits can be made from the settled spec.
 
 - **Creation**: Added change
-  [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  [0029 — Sharpen assessment references and traceability](archive/0029-sharpen-assessment-references.md)
   in `Draft` with its
-  [functional spec](0029-sharpen-assessment-references/spec.md). The change frames
+  [functional spec](archive/0029-sharpen-assessment-references/spec.md). The change frames
   a requirement's `assessment` as either stated inline or a reference to another
   entity, reserves "source" for `Target.source`, extends the "reference"
   terminology 0028 set for factors to the requirement→entity edge, and makes the
@@ -42,20 +52,20 @@
 ## 2026-06-18
 
 - **Status**: Advanced change
-  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   to `In-Review` after adding the `missing-factor-reference` lint error,
   updating factor-reference terminology, syncing durable specs/docs/scaffold, and
   verifying the Go test suite.
 
 - **Implementation**: Advanced change
-  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   from `Design` to `In-Progress` so the settled lint rule, terminology updates,
   durable specs, README, and scaffold guidance can be implemented.
 
 - **Alignment**: Brought change
-  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   into alignment with the current change-case guides by adding the required
-  [Durable spec changes](0028-require-characterized-requirements/spec.md#durable-spec-changes)
+  [Durable spec changes](archive/0028-require-characterized-requirements/spec.md#durable-spec-changes)
   section to its functional spec and moving durable-doc accounting out of its
   design doc.
 
@@ -65,7 +75,7 @@
   Moved each parent concept and child folder into [`archive/`](archive/),
   updated repo-relative links for the deeper path, added both entries to the
   [archive index](archive/index.md), and left
-  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   as the only open change case.
 
 - **Template**: Added a required `## Durable spec changes` section (**To add** /
@@ -75,9 +85,9 @@
   [Writing functional specs](../docs/guides/write-functional-specs.md#durable-spec-changes).
 
 - **Design**: Advanced change
-  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   from `Draft` to `Design` and added its
-  [design doc](0028-require-characterized-requirements/design.md). The design
+  [design doc](archive/0028-require-characterized-requirements/design.md). The design
   keeps `factors` structurally optional, adds a context-sensitive
   `missing-factor-reference` lint error for direct target-level requirements
   without factor references, renames secondary-factor internals to neutral
@@ -85,9 +95,9 @@
   required `factors` property were rejected.
 
 - **Creation**: Added change
-  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   in `Draft` with its
-  [functional spec](0028-require-characterized-requirements/spec.md). The change
+  [functional spec](archive/0028-require-characterized-requirements/spec.md). The change
   makes requirements invalid unless they reference at least one factor, keeps
   "lens" available as shorthand, and distinguishes direct target-level
   `factors` references from secondary factors on requirements already nested

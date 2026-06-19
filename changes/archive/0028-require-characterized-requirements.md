@@ -2,9 +2,9 @@
 type: Change Case
 title: Require factor references
 description: Require every requirement to be connected to at least one factor and align requirement-to-factor terminology.
-status: In-Review
+status: Done
 tags: [specification, lint, terminology]
-timestamp: 2026-06-18T00:00:00Z
+timestamp: 2026-06-19T00:00:00Z
 ---
 
 # Require factor references
@@ -32,14 +32,14 @@ Implementation begins only after the change advances to `In-Progress`.
 
 ## Affected specs & docs
 
-- [SPECIFICATION.md](../SPECIFICATION.md) — require every requirement to be
+- [SPECIFICATION.md](../../SPECIFICATION.md) — require every requirement to be
   connected to at least one factor, retain "lens" only as helpful shorthand, and
   clarify direct target requirements versus additional factor references.
-- [specs/cli/lint.md](../specs/cli/lint.md) — add the
+- [specs/cli/lint.md](../../specs/cli/lint.md) — add the
   `missing-factor-reference` error rule and sync rule descriptions/messages.
-- [README.md](../README.md) — sync public overview terminology where it explains
+- [README.md](../../README.md) — sync public overview terminology where it explains
   factors and requirement references.
-- [internal/scaffold/skeleton.md](../internal/scaffold/skeleton.md) — keep
+- [internal/scaffold/skeleton.md](../../internal/scaffold/skeleton.md) — keep
   scaffold guidance aligned with required factor references.
 
 ## Children

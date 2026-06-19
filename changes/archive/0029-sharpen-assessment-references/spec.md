@@ -11,7 +11,7 @@ timestamp: 2026-06-19T00:00:00Z
 Companion to the
 [Sharpen assessment references and traceability](../0029-sharpen-assessment-references.md)
 change case. This spec states *what* the change must do. The format it sharpens
-is defined by [`SPECIFICATION.md`](../../SPECIFICATION.md), the source of truth.
+is defined by [`SPECIFICATION.md`](../../../SPECIFICATION.md), the source of truth.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119 when, and only when, they appear in all
@@ -105,7 +105,7 @@ None
 
 ### To modify
 
-- [`SPECIFICATION.md`](../../SPECIFICATION.md) — extend the **Assessment**
+- [`SPECIFICATION.md`](../../../SPECIFICATION.md) — extend the **Assessment**
   terminology and the Requirement section to describe an `assessment` as inline
   or a reference, and add the non-normative traceability note (per the
   `SPECIFICATION.md` requirements above).
@@ -113,4 +113,3 @@ None
 ### To delete
 
 None
-</content>

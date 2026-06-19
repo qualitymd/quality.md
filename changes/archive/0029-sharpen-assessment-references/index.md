@@ -9,4 +9,3 @@ change case.
 - [Functional spec](spec.md) - what the change must do.
 
 A design doc is omitted; the change needs no separate design discussion.
-</content>

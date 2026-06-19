@@ -2,7 +2,7 @@
 type: Change Case
 title: Sharpen assessment references and traceability
 description: Clarify that a requirement's assessment is stated inline or as a reference to another entity, and make the model's traceability graph an explicit authoring concern.
-status: In-Review
+status: Done
 tags: [specification, terminology, guide]
 timestamp: 2026-06-19T00:00:00Z
 ---
@@ -55,21 +55,21 @@ Implementation begins only after the change advances to `In-Progress`.
 
 ## Affected specs & docs
 
-- [x] [`SPECIFICATION.md`](../SPECIFICATION.md) — describe an `assessment` as
+- [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) — describe an `assessment` as
       stated inline or as a reference to an entity that defines the means, and add a
       non-normative note that a referenced entity may itself be a Target reachable by
       its `source`. (Durable spec; detailed in the functional spec's
       [Durable spec changes](0029-sharpen-assessment-references/spec.md#durable-spec-changes).)
-- [x] [`skills/quality/resources/quality-md-guide.md`](../skills/quality/resources/quality-md-guide.md)
+- [x] [`skills/quality/resources/quality-md-guide.md`](../../skills/quality/resources/quality-md-guide.md)
       — reserve "source" for `Target.source`; add the inline/reference framing, the
       "Make the traceability graph visible" job, the entity gloss, the
       target/assessment-reference duality job, and the "Split by assessable claim,
       not by factor" job; rename "Reference assessment sources; don't copy them".
-- [x] [`internal/scaffold/skeleton.md`](../internal/scaffold/skeleton.md) — use
+- [x] [`internal/scaffold/skeleton.md`](../../internal/scaffold/skeleton.md) — use
       "reference" rather than "defer to" for the assessment, and note a referenced
       entity can be a target in its own right.
 - Reviewed, no change:
-  [`specs/skills/quality-skill/authoring-guide.md`](../specs/skills/quality-skill/authoring-guide.md)
+  [`specs/skills/quality-skill/authoring-guide.md`](../../specs/skills/quality-skill/authoring-guide.md)
   — its conformance and single-level "Working with…" structure already admit
   these as authoring jobs; the guide's conformance duty carries the new
   `SPECIFICATION.md` wording forward.
@@ -80,10 +80,9 @@ Implementation begins only after the change advances to `In-Progress`.
 
 ## Status
 
-`In-Review`. See the [status lifecycle](index.md#status-lifecycle). No design doc
-— the change advanced from `Draft` straight to implementation. All durable
+`Done`. No design doc was needed; the change advanced from `Draft` straight to
+implementation. All durable
 artifacts in **Affected specs & docs** are synced; the repo test suite, vet, and
 Markdown format checks pass. (Two unrelated pre-existing `golangci-lint` findings
 in `internal/evaluation/report.go` and `internal/cli/style.go` are untouched by
 this change.)
-</content>
