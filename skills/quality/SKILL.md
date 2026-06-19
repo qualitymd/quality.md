@@ -55,7 +55,9 @@ missing or stale, stop and help the user install or upgrade it before continuing
 Parse the user's request from free-form arguments:
 
 - Mode: `wizard` by default when direction is unclear; otherwise `evaluate`,
-  `improve`, `setup`, or `wizard`.
+  `improve`, `setup`, or `wizard`. Treat `status`, `next`, `review model`, and
+  `review history` as wizard intents unless the user clearly asks for another
+  mode.
 - Target file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
 - Scope: whole model by default, or a named target/factor. Use explicit
@@ -69,6 +71,11 @@ concrete runnable options, and ask the user which action to take.
 
 ```text
 /quality
+/quality wizard
+/quality status
+/quality next
+/quality review model
+/quality review history
 /quality setup
 /quality evaluate
 /quality evaluate target <name>

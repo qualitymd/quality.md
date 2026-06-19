@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Revision**: Reframed the durable
+  [`/quality` wizard](skills/quality-skill/quality-skill.md#wizard) contract as a
+  read-only quality wayfinder: it now probes setup/model/history state, classifies
+  lifecycle readiness, recommends one next workflow, and offers concrete
+  alternatives without producing ratings or editing files.
+
 - **Revision**: Updated the durable
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) to settle the
   skill's bundled runtime resources and require deep-evaluation subagent prompts

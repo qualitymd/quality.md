@@ -151,10 +151,12 @@ An invocation resolves four things, each with a default so a bare `/quality` is
 valid:
 
 - **Mode** — `evaluate`, `improve`, `setup`, or `wizard`. A bare `/quality` with
-  no direction runs the [`wizard`](#wizard) — a quick look that suggests what to
-  run; `setup` is selected when no model file is present or the user asks to
-  create one; otherwise the default action is `evaluate`, so naming only a scope
-  still evaluates.
+  no direction runs the [`wizard`](#wizard) — the quality wayfinder that inspects
+  state and suggests what to run. User intents such as `status`, `next`, `review
+  model`, and `review history` resolve to wizard unless the user clearly asks for
+  another mode. `setup` is selected when no model file is present or the user asks
+  to create one; otherwise the default action is `evaluate`, so naming only a
+  scope still evaluates.
 - **Target file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
   in the current working directory. The skill **MUST** accept an explicit path to
   override it, and **MUST** error clearly when no default file exists. It **MUST
@@ -172,26 +174,60 @@ valid:
 
 ### Wizard
 
-The `wizard` mode is a read-only entry point for a user who is not yet sure what
-to run. It **MUST NOT** evaluate deeply or modify anything: it takes a quick look
-at the state of the model and proposes concrete next invocations, then hands off
-to the one the user picks.
+The `wizard` mode is the quality wayfinder: a read-only coaching entry point for
+a user at any point in the `QUALITY.md` lifecycle. It **MUST NOT** modify
+anything, create evaluation records, build reports, or rate the subject. It can
+make readiness judgments — whether the project is set up, whether the model is
+valid or useful enough to evaluate, and whether prior evaluations or
+recommendations suggest a better next step — but those judgments are routing
+guidance, not Evaluation ratings.
 
-It inspects whether a `QUALITY.md` is present, whether it passes `lint`, and —
-when present — the targets and factors the model declares (a brief orientation on
-what the model measures). From that state it offers a short menu of runnable
-`/quality …` actions rather than vague prose, in the spirit of the CLI's
-[next actions](../../cli.md#conventions):
+The wizard **MUST** follow a probe → classify → recommend → offer flow:
 
-- **No model present** → set one up (`/quality setup`).
-- **Model present and valid** → evaluate or improve the subject — whole or scoped
-  to a named target or factor — or use the authoring guide to improve the
-  `QUALITY.md` before evaluation.
-- **Model present but failing `lint`** → resolve the structural errors first,
-  since judgment needs a valid model.
+1. **Probe state.** Check CLI readiness; resolve the target file; inspect whether
+   `QUALITY.md` exists; run `qualitymd lint` when it exists; summarize model
+   shape when valid (targets, factors, requirement count, and visible source
+   coverage); and inspect existing evaluation history when present, including the
+   latest run, incomplete or stale-looking runs, active recommendations, and
+   available report/status files.
+2. **Classify readiness.** Name the user's lifecycle state using the best match:
+   **no setup**, **invalid model**, **starter/skeleton model**, **usable but
+   immature model**, **ready to evaluate**, **has evaluation history**, or
+   **mature but needs maintenance/reconciliation**. A state can note a secondary
+   concern when useful, such as "ready to evaluate, but prior recommendations are
+   still open."
+3. **Recommend one next step.** Name the best next workflow and explain why it is
+   best from the observed state.
+4. **Offer concrete alternatives.** Present a short menu of runnable workflows,
+   not vague advice.
 
-The wizard carries no judgment of its own beyond routing; the work happens in the
-mode it hands off to.
+The wizard's output **MUST** be status-first and action-oriented:
+
+```text
+Status
+- CLI:
+- QUALITY.md:
+- Model:
+- Evaluation history:
+- Readiness:
+
+Recommended next step
+- <workflow> because <observed reason>
+
+Options
+1. <concrete workflow>
+2. <concrete workflow>
+3. <concrete workflow>
+```
+
+The options should be selected from the workflows the skill can route to:
+creating setup, repairing a model that fails lint, reviewing or improving
+`QUALITY.md` with the authoring guide, evaluating the subject whole or scoped,
+improving the subject from evaluation recommendations, or reviewing evaluation
+history. When the user asks to review or improve the `QUALITY.md` itself, the
+wizard uses the authoring guide as the model-quality reference and routes to a
+confirmed editing workflow rather than treating the `QUALITY.md` as the subject
+of an Evaluation report.
 
 ### Setup
 
@@ -211,11 +247,15 @@ source-driven authoring judgment. Guided population and refinement belong to
 ### Examples
 
 Illustrative, not normative — the prose above is the source of truth; the exact
-argument spelling is not fixed by this spec. Each line resolves the five
+argument spelling is not fixed by this spec. Each line resolves the four
 arguments, defaulting the ones left out:
 
 ```
 /quality                       # no direction → wizard: look at state and suggest what to run
+/quality status                # wizard: summarize setup/model/history readiness
+/quality next                  # wizard: recommend the next useful workflow
+/quality review model          # wizard: route to QUALITY.md model review/improvement
+/quality review history        # wizard: inspect prior runs and recommendations
 /quality evaluate              # evaluate the whole model — subject, standard depth
 /quality evaluate --effort quick   # fast evaluate: hotspots, high-confidence findings only
 /quality evaluate payments     # scope to a target named "payments" (resolved from the model)
