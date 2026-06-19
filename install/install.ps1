@@ -17,7 +17,7 @@ if ($Version -eq "latest") {
 if ([string]::IsNullOrWhiteSpace($Version)) { throw "could not resolve qualitymd version" }
 
 $arch = if ([Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture -eq "Arm64") { "arm64" } else { "amd64" }
-$archive = "qualitymd_$($Version.TrimStart('v'))_windows_$arch.zip"
+$archive = "qualitymd_windows_$arch.zip"
 $baseUrl = "https://github.com/$repo/releases/download/$Version"
 $tmp = Join-Path ([IO.Path]::GetTempPath()) ("qualitymd-install-" + [Guid]::NewGuid())
 $stage = Join-Path (Join-Path $InstallDir "releases") $Version

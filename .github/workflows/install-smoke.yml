@@ -1,0 +1,154 @@
+name: install-smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag/version for GitHub and npm installs, or latest"
+        required: true
+        default: "latest"
+      channel:
+        description: "Install channel to validate"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - github
+          - npm
+          - homebrew
+
+permissions:
+  contents: read
+
+concurrency:
+  group: install-smoke-${{ github.ref }}-${{ inputs.version }}-${{ inputs.channel }}
+  cancel-in-progress: false
+
+jobs:
+  github-installer:
+    if: ${{ inputs.channel == 'all' || inputs.channel == 'github' }}
+    name: GitHub installer (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install with managed shell installer
+        if: ${{ runner.os != 'Windows' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          install_dir="$RUNNER_TEMP/qualitymd-shell"
+          if [ "${{ inputs.version }}" = "latest" ]; then
+            sh install/install.sh --install-dir "$install_dir" --non-interactive
+          else
+            sh install/install.sh --version "${{ inputs.version }}" --install-dir "$install_dir" --non-interactive
+          fi
+
+          "$install_dir/bin/qualitymd" --version
+          "$install_dir/bin/qualitymd" lint --help >/dev/null
+          test -f "$install_dir/.qualitymd-managed-install"
+          grep -qx "channel=github" "$install_dir/.qualitymd-managed-install"
+          grep -Eq "^version=v?[0-9]+\\.[0-9]+\\.[0-9]+" "$install_dir/.qualitymd-managed-install"
+
+      - name: Install with managed PowerShell installer
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "qualitymd-pwsh"
+          if ("${{ inputs.version }}" -eq "latest") {
+            ./install/install.ps1 -InstallDir $installDir -NonInteractive
+          } else {
+            ./install/install.ps1 -Version "${{ inputs.version }}" -InstallDir $installDir -NonInteractive
+          }
+
+          & (Join-Path $installDir "bin/qualitymd.exe") --version
+          & (Join-Path $installDir "bin/qualitymd.exe") lint --help | Out-Null
+          $marker = Join-Path $installDir ".qualitymd-managed-install"
+          if (-not (Test-Path $marker)) { throw "missing managed install marker" }
+          $markerText = Get-Content $marker -Raw
+          if ($markerText -notmatch "(?m)^channel=github$") { throw "missing github channel marker" }
+          if ($markerText -notmatch "(?m)^version=v?[0-9]+\.[0-9]+\.[0-9]+") { throw "missing release version marker" }
+
+      - name: Install through Windows cmd shim
+        if: ${{ runner.os == 'Windows' }}
+        shell: cmd
+        run: |
+          if "${{ inputs.version }}"=="latest" (
+            install\install.cmd -InstallDir "%RUNNER_TEMP%\qualitymd-cmd" -NonInteractive
+          ) else (
+            install\install.cmd -Version "${{ inputs.version }}" -InstallDir "%RUNNER_TEMP%\qualitymd-cmd" -NonInteractive
+          )
+          "%RUNNER_TEMP%\qualitymd-cmd\bin\qualitymd.exe" --version
+          "%RUNNER_TEMP%\qualitymd-cmd\bin\qualitymd.exe" lint --help
+
+  npm:
+    if: ${{ inputs.channel == 'all' || inputs.channel == 'npm' }}
+    name: npm (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install npm package
+        if: ${{ runner.os != 'Windows' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          prefix="$RUNNER_TEMP/npm-global"
+          version="${{ inputs.version }}"
+          package="quality.md@latest"
+          if [ "$version" != "latest" ]; then
+            package="quality.md@${version#v}"
+          fi
+
+          npm install --global --prefix "$prefix" "$package"
+          "$prefix/bin/qualitymd" --version
+          "$prefix/bin/qualitymd" lint --help >/dev/null
+
+      - name: Install npm package
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $prefix = Join-Path $env:RUNNER_TEMP "npm-global"
+          $package = "quality.md@latest"
+          if ("${{ inputs.version }}" -ne "latest") {
+            $npmVersion = "${{ inputs.version }}".TrimStart("v")
+            $package = "quality.md@$npmVersion"
+          }
+
+          npm install --global --prefix $prefix $package
+          & (Join-Path $prefix "qualitymd.cmd") --version
+          & (Join-Path $prefix "qualitymd.cmd") lint --help | Out-Null
+
+  homebrew:
+    if: ${{ inputs.channel == 'all' || inputs.channel == 'homebrew' }}
+    name: Homebrew
+    runs-on: macos-latest
+    steps:
+      - name: Install Homebrew cask
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.version }}" != "latest" ]; then
+            echo "Homebrew smoke checks validate the tap's latest cask; ignoring requested version ${{ inputs.version }}."
+          fi
+
+          brew install --cask qualitymd/tap/qualitymd
+          qualitymd --version
+          qualitymd lint --help >/dev/null

@@ -50,7 +50,7 @@ if [ -z "$version" ]; then
   exit 70
 fi
 
-archive="qualitymd_${version#v}_${os}_${arch}.tar.gz"
+archive="qualitymd_${os}_${arch}.tar.gz"
 base_url="https://github.com/$repo/releases/download/$version"
 tmp="${TMPDIR:-/tmp}/qualitymd-install.$$"
 stage="$install_root/releases/$version"
