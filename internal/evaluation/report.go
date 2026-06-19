@@ -297,10 +297,7 @@ func (r *Run) Report() (ReportJSON, error) {
 					continue
 				}
 				evidenceSeen[key] = true
-				report.EvidenceBasis = append(report.EvidenceBasis, ReportEvidence{
-					Kind: evidence.Kind,
-					Ref:  evidence.Ref,
-				})
+				report.EvidenceBasis = append(report.EvidenceBasis, ReportEvidence(evidence))
 			}
 		}
 	}
