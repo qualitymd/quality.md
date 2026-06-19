@@ -9,6 +9,7 @@ coverage.*
 
 # npm distribution artifacts (binaries are injected at release time)
 /npm/quality.md/README.md
+/npm/platforms/
 /npm/**/bin/qualitymd
 /npm/**/bin/qualitymd.exe
 node_modules/

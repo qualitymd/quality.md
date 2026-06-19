@@ -95,9 +95,10 @@ Use the bundle logs as source material:
 Release notes are user-facing. Include outcomes and compatibility impact, not
 every internal process step.
 
-The target release-note shape is a root `CHANGELOG.md` with an `Unreleased`
-section and one section per tagged release. Until that file exists, write the
-same curated notes directly into the GitHub Release body.
+The root `CHANGELOG.md` is the canonical source for curated release notes. Keep
+an `Unreleased` section at the top and one section per tagged release. During
+release preparation, move the relevant `Unreleased` notes into a new tag section
+and use that tag section as the GitHub Release body.
 
 Suggested release-note groups:
 
@@ -112,6 +113,8 @@ Suggested release-note groups:
 
 ### Documentation
 
+### Packaging
+
 ### Compatibility / Migration
 ```
 
@@ -125,31 +128,11 @@ Compatibility:
 - /quality skill: compatible with qualitymd >=0.3.0 <0.4.0
 ```
 
-## Run Local Verification
-
-Run the normal gates:
+Preview the exact notes that the release workflow will publish:
 
 ```sh
-mise run fmt
-mise run test
-mise run vet
+mise run release-notes -- v0.3.0
 ```
-
-For docs-only release preparation, run:
-
-```sh
-mise run fmt-md-check
-```
-
-Run release dry runs:
-
-```sh
-mise run snapshot
-mise run npm-build
-```
-
-Inspect generated artifacts enough to catch packaging mistakes before pushing the
-tag.
 
 ## Commit Release Preparation
 
@@ -157,7 +140,7 @@ Commit the release-prep changes before tagging.
 
 Common release-prep changes include:
 
-- `CHANGELOG.md`, once adopted;
+- `CHANGELOG.md`;
 - `SPECIFICATION.md` version line, when applicable;
 - skill compatibility metadata or docs, when applicable;
 - install or release documentation, when applicable.
@@ -167,6 +150,28 @@ Use a direct message such as:
 ```sh
 git commit -m "Prepare v0.3.0 release"
 ```
+
+## Run Release Check
+
+After committing the release-prep change and before tagging, run:
+
+```sh
+mise run release-check -- v0.3.0
+```
+
+The release check:
+
+- requires a clean working tree before and after the check;
+- refuses to continue if the local or remote tag already exists;
+- verifies `CHANGELOG.md` has `Unreleased` and target release sections;
+- verifies the target release notes are substantive;
+- checks obvious compatibility-block drift against the tag and
+  `SPECIFICATION.md` version;
+- runs `mise run fmt`, `mise run test`, `mise run vet`, `mise run snapshot`, and
+  `mise run npm-build`.
+
+Inspect generated artifacts enough to catch packaging mistakes before pushing the
+tag.
 
 ## Tag and Publish
 
@@ -179,6 +184,7 @@ git push origin v0.3.0
 
 The release workflow runs from `.github/workflows/release.yml`. It publishes:
 
+- the curated GitHub Release body from the matching `CHANGELOG.md` section;
 - GitHub release archives through Goreleaser;
 - Homebrew cask updates through Goreleaser;
 - npm / npx packages through `scripts/build-npm.mjs`.
@@ -203,7 +209,7 @@ tag is still only local or clearly failed before publication.
 After the workflow finishes, verify:
 
 - The GitHub Release exists for the tag.
-- Release notes match the curated release-note entry.
+- Release notes match the curated `CHANGELOG.md` release-note entry.
 - Checksums are present.
 - The Homebrew tap updated.
 - npm packages published for the supported platforms.
@@ -234,7 +240,7 @@ version.
 
 After verifying the release:
 
-- Ensure `CHANGELOG.md` has a fresh `Unreleased` section, once adopted.
+- Ensure `CHANGELOG.md` has a fresh `Unreleased` section.
 - Check install docs still point to valid commands.
 - If the `/quality` skill compatibility range changed, check the skill guide and
   versioning reference are still aligned.
@@ -242,18 +248,11 @@ After verifying the release:
 
 ## Open Process Support Items
 
-The guide is enough to start a manual curated-release process. These follow-up
+The guide is enough to run a manual curated-release process. These follow-up
 items would make the process more reliable once the first release or two has
 exercised it:
 
-- Add root `CHANGELOG.md` with `Unreleased` and per-tag sections, then make it
-  the canonical source for curated release notes.
-- Decide whether GitHub Release bodies should be populated from the
-  `CHANGELOG.md` tag entry instead of Goreleaser's generated GitHub changelog.
-- Add a lightweight release-prep task that checks for a target changelog entry,
-  a fresh `Unreleased` section, version-surface consistency, and successful dry
-  runs.
+- Add a release-prep helper that moves substantive `Unreleased` notes into a
+  target release section and recreates the empty `Unreleased` section.
 - Add skill package metadata for the `/quality` skill version and supported
   `qualitymd` CLI range when the installer supports it.
-- Backfill old changelog entries only as far as useful; terse entries for older
-  tags are acceptable.

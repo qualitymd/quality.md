@@ -34,12 +34,12 @@
     "bin"
   ],
   "optionalDependencies": {
-    "@qualitymd/cli-darwin-arm64": "0.0.0",
-    "@qualitymd/cli-darwin-x64": "0.0.0",
-    "@qualitymd/cli-linux-arm64": "0.0.0",
-    "@qualitymd/cli-linux-x64": "0.0.0",
-    "@qualitymd/cli-win32-arm64": "0.0.0",
-    "@qualitymd/cli-win32-x64": "0.0.0"
+    "@qualitymd/cli-darwin-arm64": "0.0.0-dev",
+    "@qualitymd/cli-darwin-x64": "0.0.0-dev",
+    "@qualitymd/cli-linux-arm64": "0.0.0-dev",
+    "@qualitymd/cli-linux-x64": "0.0.0-dev",
+    "@qualitymd/cli-win32-arm64": "0.0.0-dev",
+    "@qualitymd/cli-win32-x64": "0.0.0-dev"
   },
   "publishConfig": {
     "access": "public"

@@ -37,6 +37,8 @@ mise run vet             # go vet ./...
 mise run fmt             # gofmt -w . and dprint fmt
 mise run fmt-md-check    # dprint check
 mise run npm-pack-check  # verify npm package README packaging
+mise run release-notes -- v0.3.0  # print curated release notes
+mise run release-check -- v0.3.0  # run pre-tag release checks
 mise run tidy            # go mod tidy
 mise run hooks           # install repo-managed git hooks
 ```
@@ -87,6 +89,8 @@ internal/document    QUALITY.md frontmatter parsing, rendering, and file writes
 internal/scaffold    embedded starter QUALITY.md used by qualitymd init
 internal/model       typed QUALITY.md frontmatter model
 scripts/build-npm.mjs   assembles the npm distribution
+scripts/extract-release-notes.mjs   extracts a tagged CHANGELOG.md section
+scripts/check-release.mjs   runs strict pre-tag release checks
 ```
 
 ## Distribution and releases
@@ -114,4 +118,6 @@ changelog guidance live in [Cut a release](docs/guides/cut-a-release.md).
 ```sh
 mise run snapshot                 # goreleaser build, no publish
 mise run npm-build                # assemble npm packages under npm/platforms, no publish
+mise run release-notes -- v0.3.0  # preview GitHub Release notes from CHANGELOG.md
+mise run release-check -- v0.3.0  # strict pre-tag release gate
 ```

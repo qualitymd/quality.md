@@ -55,7 +55,8 @@ run = "goreleaser release --snapshot --clean"
 
 [tasks.npm-build]
 description = "Cross-compile and assemble the npm packages (no publish)"
-run = "node scripts/build-npm.mjs {{arg(name='version', default='0.0.0-dev')}}"
+usage = 'arg "[version]" default="0.0.0-dev"'
+run = 'node scripts/build-npm.mjs "${usage_version?}"'
 
 [tasks.npm-pack-check]
 description = "Verify the npm launcher package includes the generated root README"
@@ -63,4 +64,27 @@ run = "node scripts/check-npm-package.mjs"
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"
-run = "node scripts/build-npm.mjs {{arg(name='version')}} --publish"
+usage = 'arg "<version>"'
+run = 'node scripts/build-npm.mjs "${usage_version?}" --publish'
+
+[tasks.release-notes]
+description = "Print the CHANGELOG.md section for a release tag"
+usage = 'arg "<tag>"'
+quiet = true
+run = 'node scripts/extract-release-notes.mjs "${usage_tag?}"'
+
+[tasks.release-check]
+description = "Run pre-tag release checks for a prepared release commit"
+usage = '''
+arg "<tag>"
+flag "--skip-clean"
+flag "--skip-tag-check"
+flag "--skip-gates"
+'''
+run = '''
+args="${usage_tag?}"
+if [ "${usage_skip_clean:-false}" = "true" ]; then args="$args --skip-clean"; fi
+if [ "${usage_skip_tag_check:-false}" = "true" ]; then args="$args --skip-tag-check"; fi
+if [ "${usage_skip_gates:-false}" = "true" ]; then args="$args --skip-gates"; fi
+node scripts/check-release.mjs $args
+'''

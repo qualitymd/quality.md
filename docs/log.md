@@ -2,6 +2,19 @@
 
 ## 2026-06-19
 
+- **Revision**: Adopted root [`CHANGELOG.md`](../CHANGELOG.md) as the canonical
+  curated release-note source. Updated
+  [Cut a release](guides/cut-a-release.md) to remove the temporary changelog
+  adoption language, require release prep to update the changelog, and keep only
+  the remaining automation and skill-metadata support items open.
+
+- **Automation**: Added release helpers for curated notes and pre-tag checks.
+  `mise run release-notes -- vX.Y.Z` extracts the matching
+  [`CHANGELOG.md`](../CHANGELOG.md) section, `mise run release-check -- vX.Y.Z`
+  validates a prepared release commit and runs the release dry-run gates, and the
+  release workflow now replaces Goreleaser's generated GitHub Release body with
+  the curated changelog section.
+
 - **Revision**: Made [Cut a release](guides/cut-a-release.md) the authoritative
   release runbook and narrowed [Contributing](../CONTRIBUTING.md) to contributor
   setup, local tasks, repo layout, and pointers to the release and versioning
