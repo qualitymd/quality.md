@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README reflects what the CLI and spec actually provide",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:212-221",
+      "observation": "The common-commands table matches shipped commands verified via 'qualitymd --help': spec, init, lint, lint --fix, status --json, version --json, upgrade --check, \u003ccommand\u003e --help all exist.",
+      "category": "accuracy"
+    },
+    {
+      "locator": "README.md:200-202",
+      "observation": "The CLI is clearly marked 'an early work in progress', but its 'Today the binary ships' sentence lists only init/lint/spec/status and the evaluation surface, omitting version and upgrade, which do ship and appear in the table below it (internal understatement, not an overstatement).",
+      "category": "accuracy",
+      "severity": "low"
+    },
+    {
+      "locator": "README.md:207-208",
+      "observation": "The claim that the CLI 'can fail CI when ratings fall below your chosen bar' matches the verified build-report --fail-at-or-below gate.",
+      "category": "accuracy"
+    }
+  ],
+  "rationale": "Every command and capability shown matches what the CLI provides today, planned/WIP state is marked, and the project's key risk (overstating what exists) is avoided. Satisfies the requirement; held below outstanding by the minor prose/table mismatch on version/upgrade.",
+  "recommendations": []
+}

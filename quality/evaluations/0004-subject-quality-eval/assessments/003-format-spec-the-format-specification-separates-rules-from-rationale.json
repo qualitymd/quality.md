@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification separates rules from rationale",
+  "factors": [
+    "clarity"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:33-37",
+      "observation": "An explicit normativity rule states all content is normative except passages marked non-normative; examples and notes are marked non-normative.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:258-261",
+      "observation": "Inline notes are explicitly flagged ('Note: This note is non-normative'), and appendices are marked 'This appendix is non-normative' (lines 448, 475).",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:176-181",
+      "observation": "Rationale ('A Rating Level's description and criterion have distinct semantics') is given alongside the binding rule without a rule appearing only inside an example.",
+      "category": "clarity"
+    }
+  ],
+  "rationale": "A reader can always tell a binding rule from explanation via the explicit normativity convention and marked notes/examples; no rule appears only in an example. Satisfies the requirement.",
+  "recommendations": []
+}

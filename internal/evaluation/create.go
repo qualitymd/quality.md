@@ -17,13 +17,9 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
 	}
-	repoRoot := opts.RepoRoot
-	var err error
-	if repoRoot == "" {
-		repoRoot, err = FindRepoRoot("")
-		if err != nil {
-			return nil, err
-		}
+	repoRoot, err := repoRootForCreate(opts)
+	if err != nil {
+		return nil, err
 	}
 	modelRaw, err := modelSnapshot(repoRoot, opts)
 	if err != nil {
@@ -40,34 +36,16 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 	if err := os.MkdirAll(evalDirAbs, 0o755); err != nil {
 		return nil, fmt.Errorf("creating evaluation directory: %w", err)
 	}
-	number, err := nextRunNumber(evalDirAbs)
+	number, name, err := nextRunName(evalDirAbs, opts.Narrowing)
 	if err != nil {
 		return nil, err
-	}
-	altitude := "subject"
-	name := fmt.Sprintf("%04d-%s-quality-eval", number, altitude)
-	if opts.Narrowing != "" {
-		name = fmt.Sprintf("%04d-%s-%s-quality-eval", number, altitude, opts.Narrowing)
 	}
 	runAbs := filepath.Join(evalDirAbs, name)
 	if err := os.Mkdir(runAbs, 0o755); err != nil {
 		return nil, fmt.Errorf("creating run folder %s: %w", filepath.ToSlash(filepath.Join(evalDirRel, name)), err)
 	}
-	for _, subdir := range []string{"assessments", "analysis", "recommendations"} {
-		if err := os.Mkdir(filepath.Join(runAbs, subdir), 0o755); err != nil {
-			return nil, fmt.Errorf("creating %s: %w", subdir, err)
-		}
-	}
-	if err := os.WriteFile(filepath.Join(runAbs, "model.md"), modelRaw, 0o644); err != nil {
-		return nil, fmt.Errorf("writing model.md: %w", err)
-	}
-	for file, content := range map[string]string{
-		"design.md": "# Evaluation design\n",
-		"plan.md":   "# Evaluation plan\n",
-	} {
-		if err := os.WriteFile(filepath.Join(runAbs, file), []byte(content), 0o644); err != nil {
-			return nil, fmt.Errorf("writing %s: %w", file, err)
-		}
+	if err := createRunSkeleton(runAbs, modelRaw); err != nil {
+		return nil, err
 	}
 	runRel := filepath.ToSlash(filepath.Join(evalDirRel, name))
 	return &CreateRunResult{
@@ -79,6 +57,45 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 			Command: "qualitymd evaluation assessment add " + runRel,
 		}},
 	}, nil
+}
+
+func repoRootForCreate(opts Options) (string, error) {
+	if opts.RepoRoot != "" {
+		return opts.RepoRoot, nil
+	}
+	return FindRepoRoot("")
+}
+
+func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
+	number, err := nextRunNumber(evalDirAbs)
+	if err != nil {
+		return 0, "", err
+	}
+	name := fmt.Sprintf("%04d-subject-quality-eval", number)
+	if narrowing != "" {
+		name = fmt.Sprintf("%04d-subject-%s-quality-eval", number, narrowing)
+	}
+	return number, name, nil
+}
+
+func createRunSkeleton(runAbs string, modelRaw []byte) error {
+	for _, subdir := range []string{"assessments", "analysis", "recommendations"} {
+		if err := os.Mkdir(filepath.Join(runAbs, subdir), 0o755); err != nil {
+			return fmt.Errorf("creating %s: %w", subdir, err)
+		}
+	}
+	if err := os.WriteFile(filepath.Join(runAbs, "model.md"), modelRaw, 0o644); err != nil {
+		return fmt.Errorf("writing model.md: %w", err)
+	}
+	for file, content := range map[string]string{
+		"design.md": "# Evaluation design\n",
+		"plan.md":   "# Evaluation plan\n",
+	} {
+		if err := os.WriteFile(filepath.Join(runAbs, file), []byte(content), 0o644); err != nil {
+			return fmt.Errorf("writing %s: %w", file, err)
+		}
+	}
+	return nil
 }
 
 func evaluationDirValue(repoRoot, override string) (string, error) {

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "target": "QUALITY.md",
+  "targetPath": [],
+  "localRating": null,
+  "factorRatings": [],
+  "aggregateRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Structural root with no local requirements (source missing by design). Aggregate over three child targets: format-spec at target (strongest), readme at minimum, cli at minimum. Two of three deliverables sit at the acceptable floor, so the whole-project aggregate is minimum: the format specification is solid, while the README does not demonstrate the tool working and the CLI has a confirmed determinism MUST-violation in its automation surface."
+  },
+  "assessmentRecords": [],
+  "childAnalysisRecords": [
+    "analysis/format-spec.json",
+    "analysis/readme.json",
+    "analysis/cli.json"
+  ]
+}

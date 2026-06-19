@@ -297,76 +297,142 @@ func (r *Run) Status() Status {
 
 func (r *Run) Renderable() []Gap {
 	var gaps []Gap
-	assessments := map[string]bool{}
 	supersededAssessments, supersedingGaps := r.assessmentSupersedingState()
 	gaps = append(gaps, supersedingGaps...)
-	assessmentRecordsByIdentity := map[string]string{}
-	assessmentIdentities := map[string]string{}
+	assessmentState := r.renderableAssessmentState(supersededAssessments)
+	gaps = append(gaps, assessmentState.Gaps...)
+	analysisState := r.renderableAnalysisState()
+	gaps = append(gaps, r.plannedCoverageGaps(assessmentState.RecordsByIdentity, analysisState.RecordsByIdentity, supersededAssessments)...)
+	recommendations := r.renderableRecommendationRefs()
+	gaps = append(gaps, r.recommendationReferenceGaps(recommendations)...)
+	gaps = append(gaps, r.analysisReferenceGaps(assessmentState, analysisState, supersededAssessments)...)
+	gaps = append(gaps, r.assessmentRecommendationGaps(recommendations)...)
+	return gaps
+}
+
+type renderableAssessmentState struct {
+	Known             map[string]bool
+	RecordsByIdentity map[string]string
+	Gaps              []Gap
+}
+
+type renderableAnalysisState struct {
+	Known             map[string]AnalysisRecord
+	RecordsByIdentity map[string]string
+}
+
+func (r *Run) renderableAssessmentState(superseded map[string]bool) renderableAssessmentState {
+	state := renderableAssessmentState{
+		Known:             map[string]bool{},
+		RecordsByIdentity: map[string]string{},
+	}
+	identities := map[string]string{}
 	for _, rec := range r.Assessments {
-		assessments[rec.File] = true
-		if supersededAssessments[rec.File] {
+		state.Known[rec.File] = true
+		if superseded[rec.File] {
 			continue
 		}
 		key := assessmentIdentity(rec)
-		assessmentRecordsByIdentity[key] = rec.File
-		if prior, ok := assessmentIdentities[key]; ok {
-			gaps = append(gaps, Gap{Kind: "duplicate-assessment", Ref: rec.File, Detail: "duplicates " + prior})
+		state.RecordsByIdentity[key] = rec.File
+		if prior, ok := identities[key]; ok {
+			state.Gaps = append(state.Gaps, Gap{Kind: "duplicate-assessment", Ref: rec.File, Detail: "duplicates " + prior})
 			continue
 		}
-		assessmentIdentities[key] = rec.File
+		identities[key] = rec.File
 	}
-	analyses := map[string]AnalysisRecord{}
-	analysisRecordsByIdentity := map[string]string{}
+	return state
+}
+
+func (r *Run) renderableAnalysisState() renderableAnalysisState {
+	state := renderableAnalysisState{
+		Known:             map[string]AnalysisRecord{},
+		RecordsByIdentity: map[string]string{},
+	}
 	for _, rec := range r.Analyses {
-		analyses[rec.File] = rec
-		analysisRecordsByIdentity[analysisIdentity(rec)] = rec.File
+		state.Known[rec.File] = rec
+		state.RecordsByIdentity[analysisIdentity(rec)] = rec.File
 	}
-	gaps = append(gaps, r.plannedCoverageGaps(assessmentRecordsByIdentity, analysisRecordsByIdentity, supersededAssessments)...)
+	return state
+}
+
+func (r *Run) renderableRecommendationRefs() map[string]bool {
 	recs := map[string]bool{}
 	for _, rec := range r.Recommendations {
 		recs[rec.File] = true
 		recs[strings.TrimSuffix(filepath.Base(rec.File), ".md")] = true
 	}
+	return recs
+}
+
+func (r *Run) recommendationReferenceGaps(recommendations map[string]bool) []Gap {
+	var gaps []Gap
 	for _, rec := range r.Recommendations {
 		for _, ref := range rec.Supersedes {
-			if recommendationRefExists(recs, ref) {
+			if recommendationRefExists(recommendations, ref) {
 				continue
 			}
 			gaps = append(gaps, Gap{Kind: "missing-superseded-recommendation", Ref: ref, Detail: "referenced by " + rec.File})
 		}
 	}
+	return gaps
+}
+
+func (r *Run) analysisReferenceGaps(assessments renderableAssessmentState, analyses renderableAnalysisState, superseded map[string]bool) []Gap {
 	if len(r.Analyses) == 0 {
-		gaps = append(gaps, Gap{Kind: "missing-analysis", Ref: "analysis/", Detail: "no analysis records are present"})
+		return []Gap{{Kind: "missing-analysis", Ref: "analysis/", Detail: "no analysis records are present"}}
 	}
+	var gaps []Gap
 	rootAnalyses := 0
 	for _, analysis := range r.Analyses {
 		if len(analysis.TargetPath) == 0 {
 			rootAnalyses++
 		}
-		for _, ref := range analysis.AssessmentRecords {
-			if !assessments[ref] {
-				gaps = append(gaps, Gap{Kind: "missing-assessment", Ref: ref, Detail: "referenced by " + analysis.File})
-				continue
-			}
-			if supersededAssessments[ref] {
-				gaps = append(gaps, Gap{Kind: "superseded-assessment-reference", Ref: ref, Detail: "referenced by " + analysis.File})
-			}
+		gaps = append(gaps, assessmentReferenceGaps(analysis, assessments.Known, superseded)...)
+		gaps = append(gaps, childAnalysisReferenceGaps(analysis, analyses.Known)...)
+	}
+	return append(gaps, rootAnalysisGaps(rootAnalyses)...)
+}
+
+func assessmentReferenceGaps(analysis AnalysisRecord, assessments, superseded map[string]bool) []Gap {
+	var gaps []Gap
+	for _, ref := range analysis.AssessmentRecords {
+		if !assessments[ref] {
+			gaps = append(gaps, Gap{Kind: "missing-assessment", Ref: ref, Detail: "referenced by " + analysis.File})
+			continue
 		}
-		for _, ref := range analysis.ChildAnalysisRecords {
-			if _, ok := analyses[ref]; !ok {
-				gaps = append(gaps, Gap{Kind: "missing-analysis", Ref: ref, Detail: "referenced by " + analysis.File})
-			}
+		if superseded[ref] {
+			gaps = append(gaps, Gap{Kind: "superseded-assessment-reference", Ref: ref, Detail: "referenced by " + analysis.File})
 		}
 	}
-	if len(r.Analyses) > 0 && rootAnalyses == 0 {
-		gaps = append(gaps, Gap{Kind: "missing-root-analysis", Ref: "analysis/", Detail: "no analysis record has an empty targetPath for the in-scope root"})
+	return gaps
+}
+
+func childAnalysisReferenceGaps(analysis AnalysisRecord, analyses map[string]AnalysisRecord) []Gap {
+	var gaps []Gap
+	for _, ref := range analysis.ChildAnalysisRecords {
+		if _, ok := analyses[ref]; !ok {
+			gaps = append(gaps, Gap{Kind: "missing-analysis", Ref: ref, Detail: "referenced by " + analysis.File})
+		}
 	}
-	if rootAnalyses > 1 {
-		gaps = append(gaps, Gap{Kind: "duplicate-root-analysis", Ref: "analysis/", Detail: "multiple analysis records have an empty targetPath"})
+	return gaps
+}
+
+func rootAnalysisGaps(rootAnalyses int) []Gap {
+	switch {
+	case rootAnalyses == 0:
+		return []Gap{{Kind: "missing-root-analysis", Ref: "analysis/", Detail: "no analysis record has an empty targetPath for the in-scope root"}}
+	case rootAnalyses > 1:
+		return []Gap{{Kind: "duplicate-root-analysis", Ref: "analysis/", Detail: "multiple analysis records have an empty targetPath"}}
+	default:
+		return nil
 	}
+}
+
+func (r *Run) assessmentRecommendationGaps(recommendations map[string]bool) []Gap {
+	var gaps []Gap
 	for _, assessment := range r.Assessments {
 		for _, ref := range assessment.Recommendations {
-			if recs[ref] || recs["recommendations/"+ref+".md"] {
+			if recommendations[ref] || recommendations["recommendations/"+ref+".md"] {
 				continue
 			}
 			gaps = append(gaps, Gap{Kind: "missing-recommendation", Ref: ref, Detail: "referenced by " + assessment.File})

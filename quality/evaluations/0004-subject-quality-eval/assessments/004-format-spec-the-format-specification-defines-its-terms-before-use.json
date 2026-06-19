@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification defines its terms before use",
+  "factors": [
+    "clarity"
+  ],
+  "rating": "outstanding",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:64-103",
+      "observation": "A dedicated Terminology section defines every model term (Quality Model, Entity, Model, Target, Source, Factor, Requirement, Assessment, Finding, Rating Scale, Rating Level, Rating Result, Evaluation Report) before any normative section uses them.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:123-282",
+      "observation": "The Frontmatter Schema, Evaluation Semantics, and Report Semantics sections that follow rely only on terms already defined in Terminology; no rule introduces an undefined technical term.",
+      "category": "clarity"
+    }
+  ],
+  "rationale": "A complete glossary precedes all normative use, exceeding a baseline of define-before-use by centralizing definitions ahead of every dependent section. Exceeds the requirement with margin.",
+  "recommendations": []
+}

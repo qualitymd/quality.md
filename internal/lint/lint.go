@@ -43,22 +43,11 @@ func Fix(path string) (Result, error) {
 
 	original := newRunState(doc)
 	original.run()
-	repairs := original.repairs
-	repairRecords := make([]RepairRecord, 0, len(repairs))
-	for _, repair := range repairs {
-		if err := repair.apply(); err != nil {
-			return Result{}, fmt.Errorf("applying repair %s at %s: %w", repair.record.RuleID, repair.record.Location.Label, err)
-		}
-		repairRecords = append(repairRecords, repair.record)
+	repairRecords, err := applyRepairs(doc, original.repairs)
+	if err != nil {
+		return Result{}, err
 	}
-	if len(repairs) > 0 {
-		rendered, err := document.Render(doc)
-		if err != nil {
-			return Result{}, err
-		}
-		if err := document.WriteAtomic(doc.Path, rendered); err != nil {
-			return Result{}, err
-		}
+	if len(repairRecords) > 0 {
 		doc, early, err = parse(doc.Path)
 		if err != nil {
 			return Result{}, err
@@ -71,6 +60,27 @@ func Fix(path string) (Result, error) {
 	repaired := newRunState(doc)
 	repaired.run()
 	return repaired.result(repairRecords), nil
+}
+
+func applyRepairs(doc *document.Document, repairs []repairOp) ([]RepairRecord, error) {
+	repairRecords := make([]RepairRecord, 0, len(repairs))
+	for _, repair := range repairs {
+		if err := repair.apply(); err != nil {
+			return nil, fmt.Errorf("applying repair %s at %s: %w", repair.record.RuleID, repair.record.Location.Label, err)
+		}
+		repairRecords = append(repairRecords, repair.record)
+	}
+	if len(repairRecords) == 0 {
+		return repairRecords, nil
+	}
+	rendered, err := document.Render(doc)
+	if err != nil {
+		return nil, err
+	}
+	if err := document.WriteAtomic(doc.Path, rendered); err != nil {
+		return nil, err
+	}
+	return repairRecords, nil
 }
 
 // Load returns the typed model only when the shared lint rule catalog finds no

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "localRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "Nine requirements: the target-level completeness requirement and Clarity/Extensibility/Usability all at target, define-terms-before-use at outstanding, with Consistency and Verifiability at minimum. The spec satisfies its core job of letting an implementer build a parser and an author write a valid file; the two minimum factors are bounded documentation gaps (one flawed non-normative example; invalid cases described in prose rather than shown)."
+  },
+  "factorRatings": [
+    {
+      "factor": "clarity",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Single interpretation and rules-vs-rationale at target; define-terms-before-use at outstanding via a dedicated glossary preceding all normative use."
+    },
+    {
+      "factor": "consistency",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Normative statements and terminology are mutually consistent, but the Appendix B minimal example omits required title fields, contradicting the rule it illustrates."
+    },
+    {
+      "factor": "verifiability",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Rules are observable/testable (target), but constructs are not shown with worked invalid counter-examples; invalidity is only described in prose."
+    },
+    {
+      "factor": "extensibility",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Core, extension rules, unrecognized-content handling, and forward versioning are all specified; versioning detail is delegated to an external policy doc."
+    },
+    {
+      "factor": "usability",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Logical ordering, scannable annotated schema blocks, plain prose, and copy-ready examples make the spec navigable."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "Leaf target: aggregate equals local rating. The strongest target in the model; complete, clear, extensible, and usable, with two bounded documentation gaps in consistency and verifiability."
+  },
+  "assessmentRecords": [
+    "assessments/001-format-spec-the-format-specification-is-complete.json",
+    "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+    "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+    "assessments/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+    "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+    "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+    "assessments/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+    "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+    "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json"
+  ],
+  "childAnalysisRecords": []
+}

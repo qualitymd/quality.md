@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is well-structured and readable",
+  "factors": [
+    "usability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:21-103",
+      "observation": "Sections introduce concepts before dependent detail: Conformance and Terminology precede Frontmatter Schema, Evaluation Semantics, and Report Semantics.",
+      "category": "usability"
+    },
+    {
+      "locator": "SPECIFICATION.md:137-248",
+      "observation": "Annotated YAML skeletons with inline Required/Optional/Recommended comments make field structure scannable in place of dense prose.",
+      "category": "usability"
+    },
+    {
+      "locator": "SPECIFICATION.md:446-498",
+      "observation": "The document carries minimal, realistic examples (suggested scale, minimal document) that a reader can copy and adapt; prose is plain.",
+      "category": "usability"
+    }
+  ],
+  "rationale": "Logical ordering, scannable annotated schema blocks, plain prose, and copy-ready examples make the spec navigable and readable. Satisfies the requirement.",
+  "recommendations": []
+}

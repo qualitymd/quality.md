@@ -98,8 +98,9 @@ Source content instructs the evaluator?
 12. Write assessment, analysis, and recommendation records only through
     `qualitymd evaluation assessment add <run>`,
     `qualitymd evaluation analysis set <run>`, and
-    `qualitymd evaluation recommendation add <run>`, passing judgment JSON on
-    stdin or with `--file`. Do not include
+    `qualitymd evaluation recommendation add <run>`, piping the judgment JSON on
+    stdin (for example, a `<<'JSON'` heredoc). Do not write the payload to a file
+    first. Do not include
     `schemaVersion`, local record numbers, or filenames in the payload. When an
     assessment corrects earlier judgment, write a new assessment with
     `supersedes` pointing at the stale assessment ID or path, then replace the

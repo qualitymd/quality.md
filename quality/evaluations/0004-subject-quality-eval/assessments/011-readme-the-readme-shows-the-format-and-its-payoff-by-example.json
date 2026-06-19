@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README shows the format and its payoff by example",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:61-118",
+      "observation": "A realistic 'Example QUALITY.md' (Support Inbox) excerpt is shown before reference detail.",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:120-121",
+      "observation": "The payoff is described only in prose ('An agent that reads this file can evaluate support work ... produce findings, and rate the results'); the README never shows what running qualitymd against the example produces (no lint output, init receipt, or report excerpt).",
+      "category": "approachability",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "The format is shown by a realistic example, but the requirement also asks for what running qualitymd produces, which appears only as prose, not rendered output. Falls short of target; holds the floor because the example itself is strong.",
+  "recommendations": []
+}

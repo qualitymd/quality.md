@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README says what QUALITY.md is and who it's for",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:3-5",
+      "observation": "The opening sentence states what it is: 'QUALITY.md is an agent-friendly file format and companion agent skill and CLI for continuously improving the quality of coding agent and AI assistant projects/harnesses.'",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:7-17",
+      "observation": "A 'Why QUALITY.md' section names the problem solved (technical, cognitive, and intent debt) in the opening lines.",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:3-17",
+      "observation": "The audience is identified (coding-agent/AI-assistant projects and software development teams).",
+      "category": "approachability"
+    }
+  ],
+  "rationale": "A first-time reader learns within the opening lines what a QUALITY.md file is, the problem it solves, and who it is for. Satisfies the requirement.",
+  "recommendations": []
+}

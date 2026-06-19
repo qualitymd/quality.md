@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format's constructs are shown with valid and invalid examples",
+  "factors": [
+    "verifiability"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:446-498",
+      "observation": "Valid worked examples are provided: Appendix A suggested rating scale and Appendix B a minimal complete document.",
+      "category": "verifiability"
+    },
+    {
+      "locator": "SPECIFICATION.md:250-278",
+      "observation": "Invalidity is described only in prose ('A missing, empty, null, or list-valued assessment is invalid'; 'Missing factors, factors: null, factors: [] ... do not satisfy'); there are no worked invalid counter-example blocks showing what a malformed construct looks like.",
+      "category": "verifiability",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "Constructs are shown with valid worked examples and invalidity is well-described in prose, but the requirement asks for worked examples that include invalid counter-examples, which the spec does not provide. Falls short of target; holds the floor because invalidity is at least specified textually.",
+  "recommendations": []
+}

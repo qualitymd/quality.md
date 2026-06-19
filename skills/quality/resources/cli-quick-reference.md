@@ -5,13 +5,13 @@ work.
 
 ## Output modes
 
-| Goal                                      | Command form                          |
-| ----------------------------------------- | ------------------------------------- |
-| Human-readable command help               | `qualitymd <command> --help`          |
-| Machine-readable state or receipts        | `qualitymd <command> --json`          |
-| Active format specification text          | `qualitymd spec`                      |
-| JSON payload from stdin                   | `--file -` on commands that accept it |
-| Version and compatibility facts for skill | `qualitymd version --json`            |
+| Goal                                      | Command form                     |
+| ----------------------------------------- | -------------------------------- |
+| Human-readable command help               | `qualitymd <command> --help`     |
+| Machine-readable state or receipts        | `qualitymd <command> --json`     |
+| Active format specification text          | `qualitymd spec`                 |
+| Record JSON into a write command          | pipe on stdin (heredoc); no file |
+| Version and compatibility facts for skill | `qualitymd version --json`       |
 
 Use `--json` when a command offers it and the agent must inspect, route from,
 or carry the result forward. Use human output for display or diagnostics only.
@@ -52,10 +52,10 @@ whether the install is in the skill's supported range.
 | Inspect project status     | `qualitymd status [path] --json`                                      |
 | Create evaluation run      | `qualitymd evaluation create [--subject <path>] [--narrowing <slug>]` |
 | List evaluation runs       | `qualitymd evaluation list [--json]`                                  |
-| Add assessment records     | `qualitymd evaluation assessment add <run> --file <path-or-->`        |
-| Set analysis records       | `qualitymd evaluation analysis set <run> --file <path-or-->`          |
-| Add recommendation records | `qualitymd evaluation recommendation add <run> --file <path-or-->`    |
-| List records               | `qualitymd evaluation assessment                                      |
+| Add assessment records     | pipe JSON \| `qualitymd evaluation assessment add <run>`              |
+| Set analysis records       | pipe JSON \| `qualitymd evaluation analysis set <run>`                |
+| Add recommendation records | pipe JSON \| `qualitymd evaluation recommendation add <run>`          |
+| List records               | `qualitymd evaluation <kind> list <run>`                              |
 | Check reportability        | `qualitymd evaluation status <run>`                                   |
 | Build report               | `qualitymd evaluation report build <run>`                             |
 | Gate report                | `qualitymd evaluation report gate <run> --at-or-below <level>`        |
@@ -80,7 +80,7 @@ Need to evaluate?
 - Check model first -> qualitymd lint [path]
 - Inspect current state -> qualitymd status [path] --json
 - Create run -> qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
-- Add judgment records -> qualitymd evaluation assessment add | analysis set | recommendation add <run> --file <path-or-->
+- Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
 ```
@@ -93,7 +93,7 @@ Run incomplete or stale?
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
 - Missing planned coverage? -> edit plan.md coverage frontmatter
-- Missing records? -> qualitymd evaluation assessment add | analysis set | recommendation add <run> --file <path-or-->
+- Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
@@ -128,9 +128,20 @@ qualitymd status [path] --json
 
 ```sh
 qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
-qualitymd evaluation assessment add <run> --file <path-or-->
-qualitymd evaluation analysis set <run> --file <path-or-->
-qualitymd evaluation recommendation add <run> --file <path-or-->
+
+# Write records by piping JSON on stdin — do not create a scratch file.
+qualitymd evaluation assessment add <run> <<'JSON'
+{ "assessments": [ … ] }
+JSON
+
+qualitymd evaluation analysis set <run> <<'JSON'
+{ "analyses": [ … ] }
+JSON
+
+qualitymd evaluation recommendation add <run> <<'JSON'
+{ "recommendations": [ … ] }
+JSON
+
 qualitymd evaluation status <run>
 qualitymd evaluation report build <run>
 ```
@@ -147,6 +158,8 @@ qualitymd evaluation report gate <run> --at-or-below <level>
 - Use `--json` when a command offers it and the agent must consume the result.
 - Prefer `qualitymd status [path] --json` for readiness, model shape, evaluation
   history, stale-run signals, and active recommendation counts.
-- Use `--file -` when passing JSON through stdin.
+- Pipe record JSON on stdin (a `<<'JSON'` heredoc works well); never write the
+  payload to a scratch file. `--file <path>` exists for human replay and
+  debugging only — agents should not use it.
 - Do not continue past missing evaluation commands by manually creating files.
 - Keep generated run paths exactly as the CLI reports them.

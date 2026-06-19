@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is complete",
+  "factors": [
+    "clarity",
+    "consistency",
+    "verifiability",
+    "extensibility",
+    "usability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:123-282",
+      "observation": "The Frontmatter Schema section gives annotated YAML skeletons for Model, Rating Scale, Target, Factor, and Requirement, each stating requiredness, uniqueness, conditional cardinality ('at least two', 'exactly one'), and defaults (source inheritance). An implementer could build a parser and an author write a valid file from these.",
+      "category": "completeness"
+    },
+    {
+      "locator": "SPECIFICATION.md:112-130",
+      "observation": "Malformed/omitted handling is stated: a document MUST begin with valid frontmatter containing a conforming Model; null/empty required values MUST be treated as absent; YAML that parses but does not conform is non-conforming.",
+      "category": "completeness"
+    },
+    {
+      "locator": "SPECIFICATION.md:284-291",
+      "observation": "The Markdown body is fully open (no required section names/order); recommended sections are non-normative, so a valid file may have an empty body.",
+      "category": "completeness"
+    },
+    {
+      "locator": "SPECIFICATION.md:137-152",
+      "observation": "Held below outstanding: scalar field types are abbreviated as \u003cstring\u003e/\u003clevel-name\u003e without character-set, whitespace, or length bounds, leaving some edge cases undefined.",
+      "category": "completeness",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Frontmatter and body are specified completely enough to parse and author from, including principal malformed/omitted handling, satisfying the requirement. Held below outstanding only by untyped scalar bounds.",
+  "recommendations": []
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "target": "cli",
+  "targetPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows the project CLI design guide",
+  "factors": [
+    "usability",
+    "automation-compatibility",
+    "consistency",
+    "determinism"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "internal/cli/root.go:19-24",
+      "observation": "Stable exit-code categories 0/1/2/70 match the design guide's binding table; payload goes to stdout and confirmations/footers/JSON errors to stderr across init, lint, status, and evaluation commands.",
+      "category": "usability"
+    },
+    {
+      "locator": "internal/cli/style.go:33-42",
+      "observation": "Styling is terminal-only and additive over a canonical plain form and honors NO_COLOR; --json is spelled identically everywhere with the documented 'spec' carve-out; commands hold a consistent noun-verb grammar (evaluation create-run, etc.).",
+      "category": "automation-compatibility"
+    },
+    {
+      "locator": "internal/cli/evaluation.go:198-210",
+      "observation": "Commands are non-interactive: readPayload fails with a usage diagnostic when stdin is a TTY and no --file is given, and '-' stdin is supported where applicable; help leads with examples on every leaf command.",
+      "category": "usability"
+    },
+    {
+      "locator": "docs/guides/cli-design.md:151",
+      "observation": "Deviations: no --no-color flag (only the NO_COLOR env var is honored) though the guide lists --no-color among conventional flags; the determinism principle (lines 224-232) is undercut by the show-status absolute-path payload noted in the functional-spec assessment.",
+      "category": "consistency",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "Stream separation, exit-code categories, conditional styling, non-interactivity, examples-first help, and consistent grammar follow the design guide closely. Satisfies the requirement; held below outstanding by a missing --no-color flag and the determinism deviation carried from the functional-spec finding.",
+  "recommendations": []
+}

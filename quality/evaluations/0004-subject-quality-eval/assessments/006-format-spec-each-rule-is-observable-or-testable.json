@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "each rule is observable or testable",
+  "factors": [
+    "verifiability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:44-62",
+      "observation": "Conformance Classes define observable behavior for documents, parsers, linters, evaluators, and report renderers, each phrased as a checkable acceptance/rejection criterion.",
+      "category": "verifiability"
+    },
+    {
+      "locator": "SPECIFICATION.md:250-282",
+      "observation": "Structural requirements (assessment must be a single non-empty scalar; direct-target requirements must declare resolvable factors) map to observable file properties a linter can decide.",
+      "category": "verifiability"
+    },
+    {
+      "locator": "SPECIFICATION.md:384-389",
+      "observation": "Some roll-up requirements are softer ('SHOULD include a rationale'), but they are recommendations, not normative obligations, so they do not undermine decidable conformance.",
+      "category": "verifiability"
+    }
+  ],
+  "rationale": "Each normative rule maps to something a reader or tool can observe or test about a file or implementation, so independent readers decide conformance the same way. Satisfies the requirement.",
+  "recommendations": []
+}

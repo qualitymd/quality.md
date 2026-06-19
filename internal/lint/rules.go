@@ -58,9 +58,7 @@ func (s *runState) checkSchemaProperties(node qschema.Node, owner *yaml.Node, ba
 
 func (s *runState) checkSchemaProperty(node qschema.Node, property qschema.Property, owner, key, value *yaml.Node, path []PathSegment, locationLabel string, context schemaContext) {
 	if node.Kind == qschema.RequirementKind && property.Name == qschema.PropertyAssessment {
-		if value.Kind != yaml.ScalarNode || isEmpty(value) {
-			s.add(RuleInvalidAssessment, "The requirement `"+context.requirement+"` has an invalid `assessment`; a requirement must declare exactly one non-empty scalar assessment.", s.loc(value, path, locationLabel), nil)
-		}
+		s.checkRequiredAssessment(value, path, locationLabel, context)
 		return
 	}
 
@@ -71,36 +69,45 @@ func (s *runState) checkSchemaProperty(node qschema.Node, property qschema.Prope
 
 	switch property.Shape {
 	case qschema.ScalarShape:
-		if property.Presence == qschema.RequiredPresence {
-			if value.Kind != yaml.ScalarNode && !isEmpty(value) {
-				s.invalid(key, path, locationLabel, "The `"+property.Name+"` property has the wrong YAML shape; it must be a scalar.")
-			}
-			return
+		if !s.checkRequiredScalar(property, key, value, path, locationLabel) {
+			s.checkOptionalScalar(owner, key, value, path, locationLabel)
 		}
-		s.checkOptionalScalar(owner, key, value, path, locationLabel)
 	case qschema.MapShape:
-		if isEmpty(value) {
-			return
-		}
-		if value.Kind != yaml.MappingNode {
-			s.invalid(key, path, locationLabel, wrongShapeMessage(property, context))
-			return
-		}
-		if property.ValueShape == qschema.ScalarShape {
+		if s.validContainerShape(property, key, value, path, locationLabel, context, yaml.MappingNode) && property.ValueShape == qschema.ScalarShape {
 			s.checkScalarMapValues(value, path)
 		}
 	case qschema.SequenceShape:
-		if isEmpty(value) {
-			return
-		}
-		if value.Kind != yaml.SequenceNode {
-			s.invalid(key, path, locationLabel, wrongShapeMessage(property, context))
-			return
-		}
-		if property.ElementShape == qschema.ScalarShape {
+		if s.validContainerShape(property, key, value, path, locationLabel, context, yaml.SequenceNode) && property.ElementShape == qschema.ScalarShape {
 			s.checkScalarSequenceItems(value, path, context)
 		}
 	}
+}
+
+func (s *runState) checkRequiredAssessment(value *yaml.Node, path []PathSegment, locationLabel string, context schemaContext) {
+	if value.Kind != yaml.ScalarNode || isEmpty(value) {
+		s.add(RuleInvalidAssessment, "The requirement `"+context.requirement+"` has an invalid `assessment`; a requirement must declare exactly one non-empty scalar assessment.", s.loc(value, path, locationLabel), nil)
+	}
+}
+
+func (s *runState) checkRequiredScalar(property qschema.Property, key, value *yaml.Node, path []PathSegment, locationLabel string) bool {
+	if property.Presence != qschema.RequiredPresence {
+		return false
+	}
+	if value.Kind != yaml.ScalarNode && !isEmpty(value) {
+		s.invalid(key, path, locationLabel, "The `"+property.Name+"` property has the wrong YAML shape; it must be a scalar.")
+	}
+	return true
+}
+
+func (s *runState) validContainerShape(property qschema.Property, key, value *yaml.Node, path []PathSegment, locationLabel string, context schemaContext, want yaml.Kind) bool {
+	if isEmpty(value) {
+		return false
+	}
+	if value.Kind != want {
+		s.invalid(key, path, locationLabel, wrongShapeMessage(property, context))
+		return false
+	}
+	return true
 }
 
 func (s *runState) checkScalarMapValues(value *yaml.Node, path []PathSegment) {

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "target": "cli",
+  "targetPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows its functional specifications",
+  "factors": [
+    "consistency",
+    "determinism",
+    "automation-compatibility"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "internal/cli/evaluation.go:129-149",
+      "observation": "'qualitymd evaluation show-status \u003crun\u003e --json' emits a machine-varying absolute path in the 'path' field and inside nextActions[].command even when given a repo-relative run path (verified: a relative input was echoed as /Users/craig/Code/qualitymd/quality.md/quality/evaluations/...). This violates payload determinism for a machine-consumed field.",
+      "category": "determinism",
+      "severity": "high"
+    },
+    {
+      "locator": "internal/cli/lint.go:31-33",
+      "observation": "'qualitymd lint -' returns a plain error and exits 70 (internal error), while the sibling 'qualitymd status -' uses usageError and exits 2 (verified by running both). A bad stdin argument should be a usage error per the exit-code table.",
+      "category": "consistency",
+      "severity": "medium"
+    },
+    {
+      "locator": "internal/cli/evaluation.go:60-127",
+      "observation": "Command behavior, flags, records, and exit codes otherwise match specs/cli.md and the specs/cli/ sub-specs across init, lint, spec, status, create-run, add-record, set-planned-coverage, show-status, build-report, version, and upgrade, with strong *_test.go coverage of stream separation, exit categories, and JSON shapes.",
+      "category": "automation-compatibility"
+    }
+  ],
+  "rationale": "The implementation follows the functional specs broadly and is well-tested, but a confirmed determinism MUST-violation in the show-status --json payload (machine-varying absolute path) plus an exit-code inconsistency for 'lint -' sit in the automation surface the specs govern. The verified determinism defect binds the rating to the floor.",
+  "recommendations": []
+}

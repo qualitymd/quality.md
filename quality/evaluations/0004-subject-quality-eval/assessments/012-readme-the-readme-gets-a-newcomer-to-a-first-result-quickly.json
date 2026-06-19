@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README gets a newcomer to a first result quickly",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:22-35",
+      "observation": "A short install sequence is given (npx skills add; npm install -g).",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:223-230",
+      "observation": "A 'Typical local loop' shows a copyable command sequence (spec, init, lint, status --json).",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:207-230",
+      "observation": "No representative output is shown for any command, and CI exit-code behavior is mentioned only in passing ('can fail CI when ratings fall below your chosen bar') without an example, so a newcomer runs commands blind to what success looks like.",
+      "category": "approachability",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "A newcomer gets a copyable install-then-command sequence, but the requirement also asks for representative output and CI exit-code behavior, which are absent. Falls short of target; holds the floor because the command path itself is short and correct.",
+  "recommendations": []
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specifies its core and how it extends and evolves",
+  "factors": [
+    "extensibility"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:154",
+      "observation": "The minimal core is named: an entry on factors, requirements, or targets MUST be supplied, with required fields marked throughout the schema.",
+      "category": "extensibility"
+    },
+    {
+      "locator": "SPECIFICATION.md:432-444",
+      "observation": "An Extensions section says applications may add frontmatter properties, report fields, filters, and formats, constrained so they MUST NOT change conforming meaning and SHOULD use non-conflicting names.",
+      "category": "extensibility"
+    },
+    {
+      "locator": "SPECIFICATION.md:442-444",
+      "observation": "Treatment of unrecognized content is defined: tools MUST preserve body content they do not understand and should preserve unrecognized extension fields.",
+      "category": "extensibility"
+    },
+    {
+      "locator": "SPECIFICATION.md:16-19",
+      "observation": "Forward versioning is addressed via the specification-version field referencing the versioning policy; held from outstanding because the versioning mechanics live in an external doc rather than the spec body.",
+      "category": "extensibility",
+      "severity": "low"
+    }
+  ],
+  "rationale": "The spec names the minimal core, how authors add factors/keys/sections, how readers treat unrecognized content, and how the format versions forward. Satisfies the requirement; held below outstanding because versioning detail is delegated to an external policy doc.",
+  "recommendations": []
+}

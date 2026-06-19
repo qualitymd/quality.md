@@ -268,29 +268,11 @@ func ratingLevels(path string) (map[string]bool, error) {
 }
 
 func validateAssessment(p AssessmentPayload, levels map[string]bool) error {
-	for name, value := range map[string]string{
-		"target":          p.Target,
-		"requirement":     p.Requirement,
-		"criterionSource": p.CriterionSource,
-		"rationale":       p.Rationale,
-	} {
-		if err := requiredString(name, value); err != nil {
-			return err
-		}
+	if err := validateAssessmentRequiredStrings(p); err != nil {
+		return err
 	}
-	if p.NotAssessed && p.Rating != nil {
-		return usagef("rating must be null when notAssessed is true")
-	}
-	if !p.NotAssessed && p.Rating == nil {
-		return usagef("rating is required unless notAssessed is true")
-	}
-	if p.Rating != nil && !levels[*p.Rating] {
-		return usagef("rating %q is not defined by the run model", *p.Rating)
-	}
-	for i, finding := range p.Findings {
-		if strings.TrimSpace(finding.Locator) == "" || strings.TrimSpace(finding.Observation) == "" || strings.TrimSpace(finding.Category) == "" {
-			return usagef("findings[%d] must include locator, observation, and category", i)
-		}
+	if err := validateAssessmentRating(p, levels); err != nil {
+		return err
 	}
 	if p.Factors == nil {
 		return usagef("factors is required")
@@ -301,9 +283,55 @@ func validateAssessment(p AssessmentPayload, levels map[string]bool) error {
 	if p.Recommendations == nil {
 		return usagef("recommendations is required")
 	}
-	for i, ref := range p.Supersedes {
-		if strings.TrimSpace(ref) == "" {
-			return usagef("supersedes[%d] is required", i)
+	if err := validateAssessmentFindings(p.Findings); err != nil {
+		return err
+	}
+	if err := validateRequiredStrings("supersedes", p.Supersedes); err != nil {
+		return err
+	}
+	return nil
+}
+
+func validateAssessmentRequiredStrings(p AssessmentPayload) error {
+	for name, value := range map[string]string{
+		"target":          p.Target,
+		"requirement":     p.Requirement,
+		"criterionSource": p.CriterionSource,
+		"rationale":       p.Rationale,
+	} {
+		if err := requiredString(name, value); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateAssessmentRating(p AssessmentPayload, levels map[string]bool) error {
+	if p.NotAssessed && p.Rating != nil {
+		return usagef("rating must be null when notAssessed is true")
+	}
+	if !p.NotAssessed && p.Rating == nil {
+		return usagef("rating is required unless notAssessed is true")
+	}
+	if p.Rating != nil && !levels[*p.Rating] {
+		return usagef("rating %q is not defined by the run model", *p.Rating)
+	}
+	return nil
+}
+
+func validateAssessmentFindings(findings []Finding) error {
+	for i, finding := range findings {
+		if strings.TrimSpace(finding.Locator) == "" || strings.TrimSpace(finding.Observation) == "" || strings.TrimSpace(finding.Category) == "" {
+			return usagef("findings[%d] must include locator, observation, and category", i)
+		}
+	}
+	return nil
+}
+
+func validateRequiredStrings(name string, values []string) error {
+	for i, value := range values {
+		if strings.TrimSpace(value) == "" {
+			return usagef("%s[%d] is required", name, i)
 		}
 	}
 	return nil

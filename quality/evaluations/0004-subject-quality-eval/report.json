@@ -1,0 +1,779 @@
+{
+  "schemaVersion": 1,
+  "summary": {
+    "run": "0004-subject-quality-eval",
+    "subject": "QUALITY.md",
+    "altitude": "subject",
+    "effort": "standard",
+    "narrowing": "",
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Structural root with no local requirements (source missing by design). Aggregate over three child targets: format-spec at target (strongest), readme at minimum, cli at minimum. Two of three deliverables sit at the acceptable floor, so the whole-project aggregate is minimum: the format specification is solid, while the README does not demonstrate the tool working and the CLI has a confirmed determinism MUST-violation in its automation surface."
+  },
+  "rating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "subject": "QUALITY.md",
+    "rationale": "Structural root with no local requirements (source missing by design). Aggregate over three child targets: format-spec at target (strongest), readme at minimum, cli at minimum. Two of three deliverables sit at the acceptable floor, so the whole-project aggregate is minimum: the format specification is solid, while the README does not demonstrate the tool working and the CLI has a confirmed determinism MUST-violation in its automation surface."
+  },
+  "scope": {
+    "recorded": true,
+    "description": "standard` — every in-scope Requirement assessed against targeted evidence, with the rating-binding findings re-checked before reporting.",
+    "narrowing": "",
+    "inScope": [
+      "QUALITY.md",
+      "cli",
+      "format-spec",
+      "readme"
+    ],
+    "outOfScope": [
+      "Dependencies the project does not own (Go toolchain, Cobra/Fang/Lip Gloss, release tooling) — excluded by the model's Scope section.",
+      "The `/quality` skill prompt and CLI internals beyond `internal/cli` behavior.",
+      "Deep adversarial fan-out (this is a `standard`-effort run, not `deep`)."
+    ],
+    "notRecorded": []
+  },
+  "evidenceBasis": [],
+  "limitations": [
+    "Structural root with no local requirements (source missing by design)",
+    "Normative statements and terminology are mutually consistent, but the requirement explicitly tests that every example agrees with the rule it illustrates, and the Appendix B minimal example violates required-field rules (missing title on rating levels and factor)",
+    "A newcomer gets a copyable install-then-command sequence, but the requirement also asks for representative output and CI exit-code behavior, which are absent",
+    "Satisfies the requirement; held below outstanding by a missing --no-color flag and the determinism deviation carried from the functional-spec finding"
+  ],
+  "nextAction": {
+    "kind": "recommendation",
+    "summary": "show-status --json emits a repo-relative path for both 'path' and nextActions[].command given a relative run argument, and the requirement 'the CLI follows its functional specifications' reaches at least target. Re-evaluate in a new numbered run.",
+    "recommendationId": "001-make-show-status-json-emit-repo-relative-paths",
+    "recommendationPath": "recommendations/001-make-show-status-json-emit-repo-relative-paths.md"
+  },
+  "targetSummary": [
+    {
+      "target": "QUALITY.md",
+      "targetPath": [],
+      "localRating": {
+        "kind": "structural",
+        "rating": null,
+        "notAssessed": false,
+        "rationale": "Structural grouping target; local rating does not apply."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Structural root with no local requirements (source missing by design). Aggregate over three child targets: format-spec at target (strongest), readme at minimum, cli at minimum. Two of three deliverables sit at the acceptable floor, so the whole-project aggregate is minimum: the format specification is solid, while the README does not demonstrate the tool working and the CLI has a confirmed determinism MUST-violation in its automation surface."
+      },
+      "coveredRequirements": 0,
+      "note": "structural grouping target"
+    },
+    {
+      "target": "cli",
+      "targetPath": [
+        "cli"
+      ],
+      "localRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Two requirements: 'follows its functional specifications' at minimum and 'follows the project CLI design guide' at target. Design-guide adherence (exit codes, stream separation, conditional styling, non-interactivity, consistent grammar, examples-first help) is strong, but a confirmed determinism MUST-violation (show-status --json absolute path) plus a 'lint -' exit-code inconsistency in the automation surface bind the local rating to the floor."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Leaf target: aggregate equals local rating. Strong design-guide adherence and automation ergonomics are pulled to the floor by one confirmed determinism MUST-violation and an exit-code consistency gap."
+      },
+      "coveredRequirements": 2
+    },
+    {
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "localRating": {
+        "kind": "rated",
+        "rating": "target",
+        "notAssessed": false,
+        "rationale": "Nine requirements: the target-level completeness requirement and Clarity/Extensibility/Usability all at target, define-terms-before-use at outstanding, with Consistency and Verifiability at minimum. The spec satisfies its core job of letting an implementer build a parser and an author write a valid file; the two minimum factors are bounded documentation gaps (one flawed non-normative example; invalid cases described in prose rather than shown)."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "target",
+        "notAssessed": false,
+        "rationale": "Leaf target: aggregate equals local rating. The strongest target in the model; complete, clear, extensible, and usable, with two bounded documentation gaps in consistency and verifiability."
+      },
+      "coveredRequirements": 9
+    },
+    {
+      "target": "readme",
+      "targetPath": [
+        "readme"
+      ],
+      "localRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Four Approachability requirements: what-it-is/who-for and reflects-CLI/spec at target, but shows-payoff-by-example and gets-to-first-result both at minimum. The README is a clear, accurate front door, but does not show what running qualitymd produces or representative output, so a newcomer cannot see the show-don't-tell payoff or what success looks like."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Leaf target: aggregate equals local rating. The model's weakest target; the front door explains itself well but never demonstrates the tool working."
+      },
+      "coveredRequirements": 4
+    }
+  ],
+  "targets": [
+    {
+      "target": "QUALITY.md",
+      "targetPath": [],
+      "localRating": {
+        "kind": "structural",
+        "rating": null,
+        "notAssessed": false,
+        "rationale": "Structural grouping target; local rating does not apply."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Structural root with no local requirements (source missing by design). Aggregate over three child targets: format-spec at target (strongest), readme at minimum, cli at minimum. Two of three deliverables sit at the acceptable floor, so the whole-project aggregate is minimum: the format specification is solid, while the README does not demonstrate the tool working and the CLI has a confirmed determinism MUST-violation in its automation surface."
+      },
+      "factorRatings": [],
+      "analysisRecord": "analysis/quality-md.json",
+      "notAssessed": [],
+      "structural": true
+    },
+    {
+      "target": "cli",
+      "targetPath": [
+        "cli"
+      ],
+      "localRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Two requirements: 'follows its functional specifications' at minimum and 'follows the project CLI design guide' at target. Design-guide adherence (exit codes, stream separation, conditional styling, non-interactivity, consistent grammar, examples-first help) is strong, but a confirmed determinism MUST-violation (show-status --json absolute path) plus a 'lint -' exit-code inconsistency in the automation surface bind the local rating to the floor."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Leaf target: aggregate equals local rating. Strong design-guide adherence and automation ergonomics are pulled to the floor by one confirmed determinism MUST-violation and an exit-code consistency gap."
+      },
+      "factorRatings": [
+        {
+          "factor": "consistency",
+          "rating": "minimum",
+          "notAssessed": false,
+          "rationale": "Command grammar, flags, and help are uniform, but sibling commands disagree on path form (show-status absolute vs create-run relative) and 'lint -' exits 70 where 'status -' exits 2."
+        },
+        {
+          "factor": "determinism",
+          "rating": "minimum",
+          "notAssessed": false,
+          "rationale": "build-report is byte-stable and ANSI-free, but show-status --json emits a machine-varying absolute path, a determinism MUST violation in a machine-consumed payload field (verified)."
+        },
+        {
+          "factor": "automation-compatibility",
+          "rating": "target",
+          "notAssessed": false,
+          "rationale": "Strict JSON decoding, --json everywhere, non-interactive stdin handling, stdout/stderr separation, and exit-code categories all hold."
+        },
+        {
+          "factor": "usability",
+          "rating": "target",
+          "notAssessed": false,
+          "rationale": "Help leads with examples, next-action footers and error categories are clear and recoverable."
+        }
+      ],
+      "analysisRecord": "analysis/cli.json",
+      "notAssessed": [],
+      "structural": false
+    },
+    {
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "localRating": {
+        "kind": "rated",
+        "rating": "target",
+        "notAssessed": false,
+        "rationale": "Nine requirements: the target-level completeness requirement and Clarity/Extensibility/Usability all at target, define-terms-before-use at outstanding, with Consistency and Verifiability at minimum. The spec satisfies its core job of letting an implementer build a parser and an author write a valid file; the two minimum factors are bounded documentation gaps (one flawed non-normative example; invalid cases described in prose rather than shown)."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "target",
+        "notAssessed": false,
+        "rationale": "Leaf target: aggregate equals local rating. The strongest target in the model; complete, clear, extensible, and usable, with two bounded documentation gaps in consistency and verifiability."
+      },
+      "factorRatings": [
+        {
+          "factor": "clarity",
+          "rating": "target",
+          "notAssessed": false,
+          "rationale": "Single interpretation and rules-vs-rationale at target; define-terms-before-use at outstanding via a dedicated glossary preceding all normative use."
+        },
+        {
+          "factor": "consistency",
+          "rating": "minimum",
+          "notAssessed": false,
+          "rationale": "Normative statements and terminology are mutually consistent, but the Appendix B minimal example omits required title fields, contradicting the rule it illustrates."
+        },
+        {
+          "factor": "verifiability",
+          "rating": "minimum",
+          "notAssessed": false,
+          "rationale": "Rules are observable/testable (target), but constructs are not shown with worked invalid counter-examples; invalidity is only described in prose."
+        },
+        {
+          "factor": "extensibility",
+          "rating": "target",
+          "notAssessed": false,
+          "rationale": "Core, extension rules, unrecognized-content handling, and forward versioning are all specified; versioning detail is delegated to an external policy doc."
+        },
+        {
+          "factor": "usability",
+          "rating": "target",
+          "notAssessed": false,
+          "rationale": "Logical ordering, scannable annotated schema blocks, plain prose, and copy-ready examples make the spec navigable."
+        }
+      ],
+      "analysisRecord": "analysis/format-spec.json",
+      "notAssessed": [],
+      "structural": false
+    },
+    {
+      "target": "readme",
+      "targetPath": [
+        "readme"
+      ],
+      "localRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Four Approachability requirements: what-it-is/who-for and reflects-CLI/spec at target, but shows-payoff-by-example and gets-to-first-result both at minimum. The README is a clear, accurate front door, but does not show what running qualitymd produces or representative output, so a newcomer cannot see the show-don't-tell payoff or what success looks like."
+      },
+      "aggregateRating": {
+        "kind": "rated",
+        "rating": "minimum",
+        "notAssessed": false,
+        "rationale": "Leaf target: aggregate equals local rating. The model's weakest target; the front door explains itself well but never demonstrates the tool working."
+      },
+      "factorRatings": [
+        {
+          "factor": "approachability",
+          "rating": "minimum",
+          "notAssessed": false,
+          "rationale": "Strong on what/why and accuracy, but two of four requirements fall to the floor because the README describes the payoff and first result in prose without showing any rendered command output."
+        }
+      ],
+      "analysisRecord": "analysis/readme.json",
+      "notAssessed": [],
+      "structural": false
+    }
+  ],
+  "assessments": [
+    {
+      "assessmentRecord": "assessments/001-format-spec-the-format-specification-is-complete.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is complete",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Frontmatter and body are specified completely enough to parse and author from, including principal malformed/omitted handling, satisfying the requirement. Held below outstanding only by untyped scalar bounds.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification admits a single interpretation",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Each rule admits a single reading: obligation strength is explicit, BCP 14 keywords are used consistently, and quantifiers are bounded. Satisfies the requirement.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification separates rules from rationale",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "A reader can always tell a binding rule from explanation via the explicit normativity convention and marked notes/examples; no rule appears only in an example. Satisfies the requirement.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification defines its terms before use",
+      "rating": "outstanding",
+      "notAssessed": false,
+      "rationale": "A complete glossary precedes all normative use, exceeding a baseline of define-before-use by centralizing definitions ahead of every dependent section. Exceeds the requirement with margin.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is internally consistent",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Normative statements and terminology are mutually consistent, but the requirement explicitly tests that every example agrees with the rule it illustrates, and the Appendix B minimal example violates required-field rules (missing title on rating levels and factor). Falls short of full satisfaction; holds the acceptable floor because the defect is confined to one non-normative example.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "each rule is observable or testable",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Each normative rule maps to something a reader or tool can observe or test about a file or implementation, so independent readers decide conformance the same way. Satisfies the requirement.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format's constructs are shown with valid and invalid examples",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Constructs are shown with valid worked examples and invalidity is well-described in prose, but the requirement asks for worked examples that include invalid counter-examples, which the spec does not provide. Falls short of target; holds the floor because invalidity is at least specified textually.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specifies its core and how it extends and evolves",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "The spec names the minimal core, how authors add factors/keys/sections, how readers treat unrecognized content, and how the format versions forward. Satisfies the requirement; held below outstanding because versioning detail is delegated to an external policy doc.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "target": "format-spec",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is well-structured and readable",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Logical ordering, scannable annotated schema blocks, plain prose, and copy-ready examples make the spec navigable and readable. Satisfies the requirement.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "target": "readme",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README says what QUALITY.md is and who it's for",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "A first-time reader learns within the opening lines what a QUALITY.md file is, the problem it solves, and who it is for. Satisfies the requirement.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+      "target": "readme",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README shows the format and its payoff by example",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "The format is shown by a realistic example, but the requirement also asks for what running qualitymd produces, which appears only as prose, not rendered output. Falls short of target; holds the floor because the example itself is strong.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "target": "readme",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README gets a newcomer to a first result quickly",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "A newcomer gets a copyable install-then-command sequence, but the requirement also asks for representative output and CI exit-code behavior, which are absent. Falls short of target; holds the floor because the command path itself is short and correct.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "target": "readme",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README reflects what the CLI and spec actually provide",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Every command and capability shown matches what the CLI provides today, planned/WIP state is marked, and the project's key risk (overstating what exists) is avoided. Satisfies the requirement; held below outstanding by the minor prose/table mismatch on version/upgrade.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/014-cli-the-cli-follows-its-functional-specifications.json",
+      "target": "cli",
+      "targetPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows its functional specifications",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "The implementation follows the functional specs broadly and is well-tested, but a confirmed determinism MUST-violation in the show-status --json payload (machine-varying absolute path) plus an exit-code inconsistency for 'lint -' sit in the automation surface the specs govern. The verified determinism defect binds the rating to the floor.",
+      "active": true
+    },
+    {
+      "assessmentRecord": "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "target": "cli",
+      "targetPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows the project CLI design guide",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Stream separation, exit-code categories, conditional styling, non-interactivity, examples-first help, and consistent grammar follow the design guide closely. Satisfies the requirement; held below outstanding by a missing --no-color flag and the determinism deviation carried from the functional-spec finding.",
+      "active": true
+    }
+  ],
+  "findingSummaries": [
+    {
+      "assessmentRecord": "assessments/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:123-282",
+      "category": "completeness",
+      "summary": "The Frontmatter Schema section gives annotated YAML skeletons for Model, Rating Scale, Target, Factor, and Requirement, each stating requiredness, uniqueness, conditional cardinality ('at least two', 'exactly one'), and defaults (source inheritance). An implementer could build a parser and an author write a valid file from these."
+    },
+    {
+      "assessmentRecord": "assessments/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:112-130",
+      "category": "completeness",
+      "summary": "Malformed/omitted handling is stated: a document MUST begin with valid frontmatter containing a conforming Model; null/empty required values MUST be treated as absent; YAML that parses but does not conform is non-conforming."
+    },
+    {
+      "assessmentRecord": "assessments/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:284-291",
+      "category": "completeness",
+      "summary": "The Markdown body is fully open (no required section names/order); recommended sections are non-normative, so a valid file may have an empty body."
+    },
+    {
+      "assessmentRecord": "assessments/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:137-152",
+      "category": "completeness",
+      "severity": "low",
+      "summary": "Held below outstanding: scalar field types are abbreviated as \u003cstring\u003e/\u003clevel-name\u003e without character-set, whitespace, or length bounds, leaving some edge cases undefined."
+    },
+    {
+      "assessmentRecord": "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:26-31",
+      "category": "clarity",
+      "summary": "BCP 14 keywords are defined once and used in all-caps only with normative force, per the RFC 2119/8174 convention; obligation strength is explicit (MUST/MUST NOT/SHOULD/MAY) throughout."
+    },
+    {
+      "assessmentRecord": "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:160-170",
+      "category": "clarity",
+      "summary": "Quantifiers are bounded ('at least two Rating Levels', 'exactly one assessment'), so rules do not lean on vague quantifiers without a stated bound."
+    },
+    {
+      "assessmentRecord": "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:199-213",
+      "category": "clarity",
+      "summary": "Permissive lowercase 'can'/'may' phrasing is used for non-normative latitude and is distinguishable from normative all-caps keywords; each rule reads one way."
+    },
+    {
+      "assessmentRecord": "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "locator": "SPECIFICATION.md:33-37",
+      "category": "clarity",
+      "summary": "An explicit normativity rule states all content is normative except passages marked non-normative; examples and notes are marked non-normative."
+    },
+    {
+      "assessmentRecord": "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "locator": "SPECIFICATION.md:258-261",
+      "category": "clarity",
+      "summary": "Inline notes are explicitly flagged ('Note: This note is non-normative'), and appendices are marked 'This appendix is non-normative' (lines 448, 475)."
+    },
+    {
+      "assessmentRecord": "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "locator": "SPECIFICATION.md:176-181",
+      "category": "clarity",
+      "summary": "Rationale ('A Rating Level's description and criterion have distinct semantics') is given alongside the binding rule without a rule appearing only inside an example."
+    },
+    {
+      "assessmentRecord": "assessments/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+      "locator": "SPECIFICATION.md:64-103",
+      "category": "clarity",
+      "summary": "A dedicated Terminology section defines every model term (Quality Model, Entity, Model, Target, Source, Factor, Requirement, Assessment, Finding, Rating Scale, Rating Level, Rating Result, Evaluation Report) before any normative section uses them."
+    },
+    {
+      "assessmentRecord": "assessments/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+      "locator": "SPECIFICATION.md:123-282",
+      "category": "clarity",
+      "summary": "The Frontmatter Schema, Evaluation Semantics, and Report Semantics sections that follow rely only on terms already defined in Terminology; no rule introduces an undefined technical term."
+    },
+    {
+      "assessmentRecord": "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "locator": "SPECIFICATION.md:165-170",
+      "category": "consistency",
+      "summary": "The schema marks Rating Level 'title' as MUST (a non-empty scalar human-readable label) and Factor 'title' as Required (line 220)."
+    },
+    {
+      "assessmentRecord": "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "locator": "SPECIFICATION.md:481-493",
+      "category": "consistency",
+      "severity": "medium",
+      "summary": "Appendix B's minimal example omits the required 'title' on both rating levels (target/unacceptable carry only level/description/criterion) and on the 'reliability' factor, contradicting the rule the example illustrates."
+    },
+    {
+      "assessmentRecord": "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "locator": "SPECIFICATION.md:64-103",
+      "category": "consistency",
+      "summary": "Outside that example, terminology is used consistently and no two normative statements contradict each other; the Appendix A suggested scale agrees with the schema."
+    },
+    {
+      "assessmentRecord": "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+      "locator": "SPECIFICATION.md:44-62",
+      "category": "verifiability",
+      "summary": "Conformance Classes define observable behavior for documents, parsers, linters, evaluators, and report renderers, each phrased as a checkable acceptance/rejection criterion."
+    },
+    {
+      "assessmentRecord": "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+      "locator": "SPECIFICATION.md:250-282",
+      "category": "verifiability",
+      "summary": "Structural requirements (assessment must be a single non-empty scalar; direct-target requirements must declare resolvable factors) map to observable file properties a linter can decide."
+    },
+    {
+      "assessmentRecord": "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+      "locator": "SPECIFICATION.md:384-389",
+      "category": "verifiability",
+      "summary": "Some roll-up requirements are softer ('SHOULD include a rationale'), but they are recommendations, not normative obligations, so they do not undermine decidable conformance."
+    },
+    {
+      "assessmentRecord": "assessments/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+      "locator": "SPECIFICATION.md:446-498",
+      "category": "verifiability",
+      "summary": "Valid worked examples are provided: Appendix A suggested rating scale and Appendix B a minimal complete document."
+    },
+    {
+      "assessmentRecord": "assessments/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+      "locator": "SPECIFICATION.md:250-278",
+      "category": "verifiability",
+      "severity": "medium",
+      "summary": "Invalidity is described only in prose ('A missing, empty, null, or list-valued assessment is invalid'; 'Missing factors, factors: null, factors: [] ... do not satisfy'); there are no worked invalid counter-example blocks showing what a malformed construct looks like."
+    },
+    {
+      "assessmentRecord": "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:154",
+      "category": "extensibility",
+      "summary": "The minimal core is named: an entry on factors, requirements, or targets MUST be supplied, with required fields marked throughout the schema."
+    },
+    {
+      "assessmentRecord": "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:432-444",
+      "category": "extensibility",
+      "summary": "An Extensions section says applications may add frontmatter properties, report fields, filters, and formats, constrained so they MUST NOT change conforming meaning and SHOULD use non-conflicting names."
+    },
+    {
+      "assessmentRecord": "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:442-444",
+      "category": "extensibility",
+      "summary": "Treatment of unrecognized content is defined: tools MUST preserve body content they do not understand and should preserve unrecognized extension fields."
+    },
+    {
+      "assessmentRecord": "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:16-19",
+      "category": "extensibility",
+      "severity": "low",
+      "summary": "Forward versioning is addressed via the specification-version field referencing the versioning policy; held from outstanding because the versioning mechanics live in an external doc rather than the spec body."
+    },
+    {
+      "assessmentRecord": "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "locator": "SPECIFICATION.md:21-103",
+      "category": "usability",
+      "summary": "Sections introduce concepts before dependent detail: Conformance and Terminology precede Frontmatter Schema, Evaluation Semantics, and Report Semantics."
+    },
+    {
+      "assessmentRecord": "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "locator": "SPECIFICATION.md:137-248",
+      "category": "usability",
+      "summary": "Annotated YAML skeletons with inline Required/Optional/Recommended comments make field structure scannable in place of dense prose."
+    },
+    {
+      "assessmentRecord": "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "locator": "SPECIFICATION.md:446-498",
+      "category": "usability",
+      "summary": "The document carries minimal, realistic examples (suggested scale, minimal document) that a reader can copy and adapt; prose is plain."
+    },
+    {
+      "assessmentRecord": "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "locator": "README.md:3-5",
+      "category": "approachability",
+      "summary": "The opening sentence states what it is: 'QUALITY.md is an agent-friendly file format and companion agent skill and CLI for continuously improving the quality of coding agent and AI assistant projects/harnesses.'"
+    },
+    {
+      "assessmentRecord": "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "locator": "README.md:7-17",
+      "category": "approachability",
+      "summary": "A 'Why QUALITY.md' section names the problem solved (technical, cognitive, and intent debt) in the opening lines."
+    },
+    {
+      "assessmentRecord": "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "locator": "README.md:3-17",
+      "category": "approachability",
+      "summary": "The audience is identified (coding-agent/AI-assistant projects and software development teams)."
+    },
+    {
+      "assessmentRecord": "assessments/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+      "locator": "README.md:61-118",
+      "category": "approachability",
+      "summary": "A realistic 'Example QUALITY.md' (Support Inbox) excerpt is shown before reference detail."
+    },
+    {
+      "assessmentRecord": "assessments/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+      "locator": "README.md:120-121",
+      "category": "approachability",
+      "severity": "medium",
+      "summary": "The payoff is described only in prose ('An agent that reads this file can evaluate support work ... produce findings, and rate the results'); the README never shows what running qualitymd against the example produces (no lint output, init receipt, or report excerpt)."
+    },
+    {
+      "assessmentRecord": "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "locator": "README.md:22-35",
+      "category": "approachability",
+      "summary": "A short install sequence is given (npx skills add; npm install -g)."
+    },
+    {
+      "assessmentRecord": "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "locator": "README.md:223-230",
+      "category": "approachability",
+      "summary": "A 'Typical local loop' shows a copyable command sequence (spec, init, lint, status --json)."
+    },
+    {
+      "assessmentRecord": "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "locator": "README.md:207-230",
+      "category": "approachability",
+      "severity": "medium",
+      "summary": "No representative output is shown for any command, and CI exit-code behavior is mentioned only in passing ('can fail CI when ratings fall below your chosen bar') without an example, so a newcomer runs commands blind to what success looks like."
+    },
+    {
+      "assessmentRecord": "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "locator": "README.md:212-221",
+      "category": "accuracy",
+      "summary": "The common-commands table matches shipped commands verified via 'qualitymd --help': spec, init, lint, lint --fix, status --json, version --json, upgrade --check, \u003ccommand\u003e --help all exist."
+    },
+    {
+      "assessmentRecord": "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "locator": "README.md:200-202",
+      "category": "accuracy",
+      "severity": "low",
+      "summary": "The CLI is clearly marked 'an early work in progress', but its 'Today the binary ships' sentence lists only init/lint/spec/status and the evaluation surface, omitting version and upgrade, which do ship and appear in the table below it (internal understatement, not an overstatement)."
+    },
+    {
+      "assessmentRecord": "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "locator": "README.md:207-208",
+      "category": "accuracy",
+      "summary": "The claim that the CLI 'can fail CI when ratings fall below your chosen bar' matches the verified build-report --fail-at-or-below gate."
+    },
+    {
+      "assessmentRecord": "assessments/014-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "internal/cli/evaluation.go:129-149",
+      "category": "determinism",
+      "severity": "high",
+      "summary": "'qualitymd evaluation show-status \u003crun\u003e --json' emits a machine-varying absolute path in the 'path' field and inside nextActions[].command even when given a repo-relative run path (verified: a relative input was echoed as /Users/craig/Code/qualitymd/quality.md/quality/evaluations/...). This violates payload determinism for a machine-consumed field."
+    },
+    {
+      "assessmentRecord": "assessments/014-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "internal/cli/lint.go:31-33",
+      "category": "consistency",
+      "severity": "medium",
+      "summary": "'qualitymd lint -' returns a plain error and exits 70 (internal error), while the sibling 'qualitymd status -' uses usageError and exits 2 (verified by running both). A bad stdin argument should be a usage error per the exit-code table."
+    },
+    {
+      "assessmentRecord": "assessments/014-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "internal/cli/evaluation.go:60-127",
+      "category": "automation-compatibility",
+      "summary": "Command behavior, flags, records, and exit codes otherwise match specs/cli.md and the specs/cli/ sub-specs across init, lint, spec, status, create-run, add-record, set-planned-coverage, show-status, build-report, version, and upgrade, with strong *_test.go coverage of stream separation, exit categories, and JSON shapes."
+    },
+    {
+      "assessmentRecord": "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "internal/cli/root.go:19-24",
+      "category": "usability",
+      "summary": "Stable exit-code categories 0/1/2/70 match the design guide's binding table; payload goes to stdout and confirmations/footers/JSON errors to stderr across init, lint, status, and evaluation commands."
+    },
+    {
+      "assessmentRecord": "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "internal/cli/style.go:33-42",
+      "category": "automation-compatibility",
+      "summary": "Styling is terminal-only and additive over a canonical plain form and honors NO_COLOR; --json is spelled identically everywhere with the documented 'spec' carve-out; commands hold a consistent noun-verb grammar (evaluation create-run, etc.)."
+    },
+    {
+      "assessmentRecord": "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "internal/cli/evaluation.go:198-210",
+      "category": "usability",
+      "summary": "Commands are non-interactive: readPayload fails with a usage diagnostic when stdin is a TTY and no --file is given, and '-' stdin is supported where applicable; help leads with examples on every leaf command."
+    },
+    {
+      "assessmentRecord": "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "docs/guides/cli-design.md:151",
+      "category": "consistency",
+      "severity": "medium",
+      "summary": "Deviations: no --no-color flag (only the NO_COLOR env var is honored) though the guide lists --no-color among conventional flags; the determinism principle (lines 224-232) is undercut by the show-status absolute-path payload noted in the functional-spec assessment."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "001-make-show-status-json-emit-repo-relative-paths",
+      "path": "recommendations/001-make-show-status-json-emit-repo-relative-paths.md",
+      "doneCriterion": "show-status --json emits a repo-relative path for both 'path' and nextActions[].command given a relative run argument, and the requirement 'the CLI follows its functional specifications' reaches at least target. Re-evaluate in a new numbered run.",
+      "active": true
+    },
+    {
+      "id": "002-map-lint-to-a-usage-error-exit-2",
+      "path": "recommendations/002-map-lint-to-a-usage-error-exit-2.md",
+      "doneCriterion": "qualitymd lint - exits 2 with a usage diagnostic, matching status; a test asserts the exit code. Re-evaluate in a new numbered run.",
+      "active": true
+    },
+    {
+      "id": "003-show-what-running-qualitymd-produces-not-just-the-model",
+      "path": "recommendations/003-show-what-running-qualitymd-produces-not-just-the-model.md",
+      "doneCriterion": "The requirement 'the README shows the format and its payoff by example' reaches at least target: the README displays representative qualitymd output produced from the shown example. Re-evaluate in a new numbered run.",
+      "active": true
+    },
+    {
+      "id": "004-get-a-newcomer-to-a-visible-first-result-with-output-and-ci-exit-codes",
+      "path": "recommendations/004-get-a-newcomer-to-a-visible-first-result-with-output-and-ci-exit-codes.md",
+      "doneCriterion": "The requirement 'the README gets a newcomer to a first result quickly' reaches at least target: representative output and CI exit-code behavior are shown. Re-evaluate in a new numbered run.",
+      "active": true
+    },
+    {
+      "id": "005-fix-the-appendix-b-minimal-example-to-satisfy-required-fields",
+      "path": "recommendations/005-fix-the-appendix-b-minimal-example-to-satisfy-required-fields.md",
+      "doneCriterion": "The Appendix B example includes all required title fields and would pass lint; the requirement 'the format specification is internally consistent' reaches at least target. Re-evaluate in a new numbered run.",
+      "active": true
+    },
+    {
+      "id": "006-add-worked-invalid-counter-examples-to-the-specification",
+      "path": "recommendations/006-add-worked-invalid-counter-examples-to-the-specification.md",
+      "doneCriterion": "The spec shows worked invalid counter-examples for its key constructs; the requirement 'the format's constructs are shown with valid and invalid examples' reaches at least target. Re-evaluate in a new numbered run.",
+      "active": true
+    }
+  ]
+}

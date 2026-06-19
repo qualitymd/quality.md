@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification admits a single interpretation",
+  "factors": [
+    "clarity"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:26-31",
+      "observation": "BCP 14 keywords are defined once and used in all-caps only with normative force, per the RFC 2119/8174 convention; obligation strength is explicit (MUST/MUST NOT/SHOULD/MAY) throughout.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:160-170",
+      "observation": "Quantifiers are bounded ('at least two Rating Levels', 'exactly one assessment'), so rules do not lean on vague quantifiers without a stated bound.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:199-213",
+      "observation": "Permissive lowercase 'can'/'may' phrasing is used for non-normative latitude and is distinguishable from normative all-caps keywords; each rule reads one way.",
+      "category": "clarity"
+    }
+  ],
+  "rationale": "Each rule admits a single reading: obligation strength is explicit, BCP 14 keywords are used consistently, and quantifiers are bounded. Satisfies the requirement.",
+  "recommendations": []
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is internally consistent",
+  "factors": [
+    "consistency"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:165-170",
+      "observation": "The schema marks Rating Level 'title' as MUST (a non-empty scalar human-readable label) and Factor 'title' as Required (line 220).",
+      "category": "consistency"
+    },
+    {
+      "locator": "SPECIFICATION.md:481-493",
+      "observation": "Appendix B's minimal example omits the required 'title' on both rating levels (target/unacceptable carry only level/description/criterion) and on the 'reliability' factor, contradicting the rule the example illustrates.",
+      "category": "consistency",
+      "severity": "medium"
+    },
+    {
+      "locator": "SPECIFICATION.md:64-103",
+      "observation": "Outside that example, terminology is used consistently and no two normative statements contradict each other; the Appendix A suggested scale agrees with the schema.",
+      "category": "consistency"
+    }
+  ],
+  "rationale": "Normative statements and terminology are mutually consistent, but the requirement explicitly tests that every example agrees with the rule it illustrates, and the Appendix B minimal example violates required-field rules (missing title on rating levels and factor). Falls short of full satisfaction; holds the acceptable floor because the defect is confined to one non-normative example.",
+  "recommendations": []
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "localRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Four Approachability requirements: what-it-is/who-for and reflects-CLI/spec at target, but shows-payoff-by-example and gets-to-first-result both at minimum. The README is a clear, accurate front door, but does not show what running qualitymd produces or representative output, so a newcomer cannot see the show-don't-tell payoff or what success looks like."
+  },
+  "factorRatings": [
+    {
+      "factor": "approachability",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Strong on what/why and accuracy, but two of four requirements fall to the floor because the README describes the payoff and first result in prose without showing any rendered command output."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Leaf target: aggregate equals local rating. The model's weakest target; the front door explains itself well but never demonstrates the tool working."
+  },
+  "assessmentRecords": [
+    "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+    "assessments/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+    "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+    "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json"
+  ],
+  "childAnalysisRecords": []
+}
