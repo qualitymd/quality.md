@@ -131,6 +131,52 @@ targets:
               Every command, flag, and capability shown matches what the CLI
               provides today; planned work is marked planned and placeholders
               are marked provisional.
+
+  cli:
+    title: qualitymd CLI
+    source: ./internal/cli
+    factors:
+      usability:
+        description: >
+          Can people discover, understand, and use commands from terminal help,
+          examples, output, and error messages? The CLI is a working interface,
+          so it must make the common path clear and recovery from mistakes
+          practical.
+      automation-compatibility:
+        description: >
+          Can agents, CI, and scripts drive commands without hidden human
+          assumptions? The CLI is the deterministic surface skills and
+          automation call, so streams, exit codes, prompts, and structured output
+          must remain safe to compose.
+      consistency:
+        description: >
+          Does the command tree feel like one program? Arguments, flags, output,
+          help, errors, and next actions should follow shared conventions so
+          users and callers can transfer expectations between commands.
+      determinism:
+        description: >
+          Does the same input and file state produce the same CLI result? Stable
+          output, ordering, and next actions let agents and CI diff, cache, and
+          assert against command behavior without flaky variation.
+    requirements:
+      "the CLI follows its functional specifications":
+        factors:
+          - consistency
+          - determinism
+          - automation-compatibility
+        assessment: >
+          Assess the implementation against specs/cli.md and the command
+          sub-specifications under specs/cli/. Commands provide the behavior,
+          flags, output, exit codes, and records those specifications require.
+      "the CLI follows the project CLI design guide":
+        factors:
+          - usability
+          - automation-compatibility
+          - consistency
+          - determinism
+        assessment: >
+          Assess command arguments, flags, help, output, errors, interactivity,
+          exit codes, and next actions against docs/guides/cli-design.md.
 ---
 
 # Quality model - QUALITY.md
@@ -138,17 +184,26 @@ targets:
 ## Overview
 
 This model governs the QUALITY.md project itself: the format
-([`SPECIFICATION.md`](./SPECIFICATION.md)) and the README that introduces it. At
+([`SPECIFICATION.md`](./SPECIFICATION.md)), the README that introduces it, and
+the deterministic `qualitymd` CLI that implements the mechanical surface. At
 this pre-1.0 stage quality rests on the project's design, so the model covers the
-maturity of the format specification and the README's job of orienting newcomers.
+maturity of the format specification, the README's job of orienting newcomers,
+and the CLI's ability to serve both humans and automation.
 
 ## Scope
 
-The deliverables are modeled as target nodes: `format-spec` and `readme`. Each
-deliverable carries a direct "does it do its job" requirement where appropriate.
-Only the format spec declares Clarity, Consistency, Verifiability, Extensibility,
-and Usability factors; only the README declares Approachability. Applicability is
-structural: factors apply where they are declared and below.
+The deliverables are modeled as target nodes: `format-spec`, `readme`, and
+`cli`. Each deliverable carries a direct "does it do its job" requirement where
+appropriate. The format spec declares Clarity, Consistency, Verifiability,
+Extensibility, and Usability factors; the README declares Approachability; and
+the CLI declares Usability, Automation Compatibility, Consistency, and
+Determinism. Applicability is structural: factors apply where they are declared
+and below.
+
+The CLI functional specs (`specs/cli.md` and `specs/cli/`) are binding for what
+commands do. The CLI design guide (`docs/guides/cli-design.md`) supplies the
+quality expectations for how command arguments, flags, help, output, errors,
+interactivity, exit codes, and next actions should work.
 
 Out of scope by design: dependencies the project does not own, including the Go
 toolchain, Cobra/Fang, and release tooling.
@@ -159,12 +214,18 @@ toolchain, Cobra/Fang, and release tooling.
 - Authors can write a valid model without reverse-engineering implementation.
 - Coding agents can evaluate a subject from the model alone.
 - Newcomers can tell from the README what QUALITY.md is and reach a first result.
+- Humans can understand and recover from CLI behavior through help, output, and
+  errors.
+- Agents, CI, and scripts can drive the CLI deterministically without prompts or
+  polluted streams.
 
 ## Risks
 
 An ambiguous or incomplete format spec is the worst outcome because
 implementations diverge and the format stops being portable. A README that
-overstates what exists turns newcomers away or misleads them.
+overstates what exists turns newcomers away or misleads them. A CLI that is
+inconsistent, noisy on the wrong stream, interactive by surprise, or
+non-deterministic undermines the automation role the project depends on.
 
 ## Targets and factors
 
@@ -179,12 +240,15 @@ Extensibility, and Usability.
 The README is the project's front door. Approachability is scoped here because
 the README's job is newcomer orientation, not format precision.
 
+### cli
+
+The CLI is the deterministic tool surface for humans, agents, and CI. Its
+quality depends on satisfying the binding CLI functional specs while following
+the CLI design guide's expectations for usable, scriptable, consistent, and
+deterministic command behavior.
+
 ## Known gaps
 
-- The CLI design guide (`docs/guides/cli-design.md`) is not yet cited as an
-  assessment source for requirements on the appropriate CLI targets and quality
-  factors. It should inform requirements for command usability, automation
-  compatibility, consistency, determinism, and help/error behavior.
 - The BCP 14 references (`docs/reference/rfc2119.md` and
   `docs/reference/rfc8174.md`) are not yet cited as reference standards for
   requirements that depend on normative vocabulary. They should inform
