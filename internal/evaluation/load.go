@@ -23,6 +23,7 @@ type Run struct {
 	Assessments     []AssessmentRecord
 	Analyses        []AnalysisRecord
 	Recommendations []RecommendationRecord
+	Model           *model.Spec
 	Scale           []model.RatingLevel
 }
 
@@ -60,7 +61,7 @@ func Load(path string) (*Run, error) {
 	if err != nil {
 		return nil, err
 	}
-	run := &Run{Path: filepath.ToSlash(runAbs), Scale: spec.RatingScale}
+	run := &Run{Path: filepath.ToSlash(runAbs), Model: spec, Scale: spec.RatingScale}
 	if raw, err := os.ReadFile(filepath.Join(runAbs, "design.md")); err != nil {
 		return nil, fmt.Errorf("reading design.md: %w", err)
 	} else {

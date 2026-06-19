@@ -115,6 +115,10 @@ An assessment record is one JSON file per assessed requirement. Required fields:
 - `recommendations`
 - `supersedes`, optional
 
+`target`, `targetPath`, `factors`, and `rating` values are stable model
+identifiers: target keys, ordered Target paths, factor keys, and rating `level`
+ids. They are not human display titles.
+
 When `notAssessed` is `true`, `rating` **MUST** be `null`. Each finding **MUST**
 carry `locator`, `observation`, and `category`; it **MAY** carry `severity`,
 `evidence`, and `attributes`. Evidence verification and locator rigor ride on
@@ -148,6 +152,8 @@ An analysis record is one JSON file per target. Required fields:
 - `childAnalysisRecords`
 
 Every rating result **MUST** record `notAssessed` distinctly from a rating level.
+`target`, `targetPath`, `factorRatings[].factor`, and rating values are stable
+model identifiers, not human display titles.
 
 ## Planned Coverage
 
@@ -242,6 +248,9 @@ Derived limitation summaries **MUST** preserve locator-like text such as dotted
 file paths.
 
 Target local and aggregate ratings **MUST** render as explicit rating objects.
+Human Markdown reports resolve Model, Target, Factor, and Rating Level display
+labels from the run's `model.md` snapshot. `report.json` preserves the stable
+identifiers from assessment and analysis records.
 
 ## report-summary.md
 

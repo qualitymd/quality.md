@@ -12,15 +12,15 @@ const testModel = `---
 title: Test model
 ratingScale:
   - level: target
-    title: Target
+    title: 🟢 Target
     description: Target.
     criterion: Meets it.
   - level: minimum
-    title: Minimum
+    title: 🟡 Minimum
     description: Minimum.
     criterion: Barely meets it.
   - level: unacceptable
-    title: Unacceptable
+    title: 🔴 Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
@@ -165,15 +165,18 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{"## Summary", "## Scope", "## Top Risks and Limitations", "## Evidence Basis", "## Next Action", "## Target Summary"} {
+	for _, want := range []string{"## Summary", "## Scope", "## Top Risks and Limitations", "## Evidence Basis", "## Next Action", "## Target Summary", "- **Rating:** 🟡 Minimum", "| Test model | 🟡 Minimum | 🟡 Minimum |"} {
 		if !strings.Contains(string(reportMD), want) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
 		}
 	}
-	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`} {
+	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`, `"rating": "minimum"`} {
 		if !strings.Contains(string(first), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, first)
 		}
+	}
+	if strings.Contains(string(first), "🟡 Minimum") {
+		t.Fatalf("report.json contains rating title:\n%s", first)
 	}
 	if _, err := BuildReport(runPath); err != nil {
 		t.Fatalf("second BuildReport() error = %v", err)
@@ -195,10 +198,13 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report-summary.md: %v", err)
 	}
-	for _, want := range []string{"# Quality Evaluation Summary", "**Run:**", "**Root rating:** minimum", "[report.md](report.md)", "[report.json](report.json)", "## Top Risks", "None recorded.", "## Rating Summary", "## Limitations", "## Next Action", "[001-fix-the-test-gap](recommendations/001-fix-the-test-gap.md)"} {
+	for _, want := range []string{"# Quality Evaluation Summary", "**Run:**", "**Root rating:** 🟡 Minimum", "[report.md](report.md)", "[report.json](report.json)", "## Top Risks", "None recorded.", "## Rating Summary", "## Limitations", "## Next Action", "[001-fix-the-test-gap](recommendations/001-fix-the-test-gap.md)"} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
+	}
+	if strings.Contains(string(summaryMD), "**Root rating:** minimum") {
+		t.Fatalf("report-summary.md rendered level id as root rating:\n%s", summaryMD)
 	}
 	for _, notWant := range []string{"## Requirements", "## Findings", "### Has tests"} {
 		if strings.Contains(string(summaryMD), notWant) {
@@ -215,6 +221,190 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	}
 	if string(beforeSummary) != string(afterSummary) {
 		t.Fatal("report-summary.md changed across idempotent render")
+	}
+}
+
+func TestBuildReportUsesModelTitlesForHumanTargetAndFactorLabels(t *testing.T) {
+	repo := testRepoWithModel(t, `---
+title: Root Quality Model
+ratingScale:
+  - level: target
+    title: Good
+    description: Good.
+    criterion: Meets it.
+  - level: unacceptable
+    title: Bad
+    description: Bad.
+    criterion: Does not meet it.
+factors:
+  reliability:
+    title: Operational reliability
+    description: Reliable operation.
+targets:
+  api-service:
+    title: API Service
+    factors:
+      automation-compatibility:
+        title: Automation compatibility
+        description: Automation-safe behavior.
+    requirements:
+      Handles API requests:
+        factors:
+          - automation-compatibility
+          - reliability
+        assessment: Inspect API handling.
+---
+`)
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
+  "target": "api-service",
+  "targetPath": ["api-service"],
+  "requirement": "Handles API requests",
+  "factors": ["automation-compatibility", "reliability"],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "rationale": "The assessed requirement reaches the target level.",
+  "recommendations": []
+}`)); err != nil {
+		t.Fatalf("AddRecord(assessment) error = %v", err)
+	}
+	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
+  "target": "api-service",
+  "targetPath": ["api-service"],
+  "localRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "The local requirement reaches the target level."
+  },
+  "factorRatings": [
+    {
+      "factor": "automation-compatibility",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "The automation factor reaches the target level."
+    },
+    {
+      "factor": "reliability",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "The inherited reliability factor reaches the target level."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "The local rating binds the aggregate."
+  },
+  "assessmentRecords": ["assessments/001-api-service-handles-api-requests.json"],
+  "childAnalysisRecords": []
+}`)); err != nil {
+		t.Fatalf("AddRecord(child analysis) error = %v", err)
+	}
+	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
+  "target": "root",
+  "targetPath": [],
+  "localRating": null,
+  "factorRatings": [
+    {
+      "factor": "reliability",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "The root reliability factor reaches the target level."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "The child aggregate rating binds the root."
+  },
+  "assessmentRecords": [],
+  "childAnalysisRecords": ["analysis/api-service.json"]
+}`)); err != nil {
+		t.Fatalf("AddRecord(root analysis) error = %v", err)
+	}
+
+	if _, err := BuildReport(runPath); err != nil {
+		t.Fatalf("BuildReport() error = %v", err)
+	}
+	reportMD, err := os.ReadFile(filepath.Join(runPath, "report.md"))
+	if err != nil {
+		t.Fatalf("reading report.md: %v", err)
+	}
+	summaryMD, err := os.ReadFile(filepath.Join(runPath, "report-summary.md"))
+	if err != nil {
+		t.Fatalf("reading report-summary.md: %v", err)
+	}
+	reportJSON, err := os.ReadFile(filepath.Join(runPath, "report.json"))
+	if err != nil {
+		t.Fatalf("reading report.json: %v", err)
+	}
+
+	for _, want := range []string{
+		"- **Subject:** Root Quality Model",
+		"| Root Quality Model | n/a (structural) | Good |",
+		"| API Service | Good | Good |",
+		"### API Service",
+		"- **Path:** api-service",
+		"- **Factor Automation compatibility:** Good",
+		"- **Factor Operational reliability:** Good",
+		"- **Target:** API Service",
+	} {
+		if !strings.Contains(string(reportMD), want) {
+			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
+		}
+	}
+	for _, notWant := range []string{
+		"| api-service |",
+		"### api-service",
+		"- **Factor automation-compatibility:**",
+		"- **Factor reliability:**",
+		"- **Target:** api-service",
+	} {
+		if strings.Contains(string(reportMD), notWant) {
+			t.Fatalf("report.md contains raw identifier label %q:\n%s", notWant, reportMD)
+		}
+	}
+	for _, want := range []string{
+		"**Subject:** `Root Quality Model`",
+		"| Root Quality Model | Good |",
+		"| API Service | Good |",
+	} {
+		if !strings.Contains(string(summaryMD), want) {
+			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
+		}
+	}
+	for _, want := range []string{`"target": "api-service"`, `"factor": "automation-compatibility"`, `"factor": "reliability"`, `"rating": "target"`} {
+		if !strings.Contains(string(reportJSON), want) {
+			t.Fatalf("report.json missing stable identifier %q:\n%s", want, reportJSON)
+		}
+	}
+	for _, notWant := range []string{"Root Quality Model", "API Service", "Automation compatibility", "Operational reliability", "Good"} {
+		if strings.Contains(string(reportJSON), notWant) {
+			t.Fatalf("report.json contains human display label %q:\n%s", notWant, reportJSON)
+		}
+	}
+}
+
+func TestDisplayRatingUsesTitleAndPreservesNonRatingStates(t *testing.T) {
+	rating := "minimum"
+	if got := displayRating(&rating, false, map[string]string{"minimum": "🟡 Minimum"}); got != "🟡 Minimum" {
+		t.Fatalf("displayRating() = %q, want title", got)
+	}
+	if got := displayRating(&rating, false, map[string]string{}); got != "minimum" {
+		t.Fatalf("displayRating() = %q, want level fallback", got)
+	}
+	if got := displayRating(&rating, true, map[string]string{"minimum": "🟡 Minimum"}); got != "not assessed" {
+		t.Fatalf("displayRating(not assessed) = %q", got)
+	}
+	if got := displayRatingResult(ReportRatingResult{Kind: "structural", Rating: &rating}, map[string]string{"minimum": "🟡 Minimum"}); got != "n/a (structural)" {
+		t.Fatalf("displayRatingResult(structural) = %q", got)
 	}
 }
 
@@ -1184,11 +1374,16 @@ func gapKinds(gaps []Gap) []string {
 
 func testRepo(t *testing.T) string {
 	t.Helper()
+	return testRepoWithModel(t, testModel)
+}
+
+func testRepoWithModel(t *testing.T, content string) string {
+	t.Helper()
 	repo := t.TempDir()
 	if err := os.Mkdir(filepath.Join(repo, ".git"), 0o755); err != nil {
 		t.Fatalf("mkdir .git: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repo, "QUALITY.md"), []byte(testModel), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(repo, "QUALITY.md"), []byte(content), 0o644); err != nil {
 		t.Fatalf("write QUALITY.md: %v", err)
 	}
 	return repo

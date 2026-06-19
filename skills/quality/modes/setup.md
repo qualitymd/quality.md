@@ -19,9 +19,33 @@ Run qualitymd lint
 
 1. Verify the CLI prerequisite from `SKILL.md`.
 2. Resolve the target file.
-3. If no target file exists, run `qualitymd init [path]`.
-4. Run `qualitymd lint [path]`; stop on errors and report the CLI findings.
-5. Hand off to `wizard` to guide model population and the next evaluation.
+3. Emit the run frame:
+
+   ```text
+   /quality run
+   - Mode: setup
+   - Target file: <resolved path>
+   - Scope: model skeleton/readiness
+   - Mutation: QUALITY.md when missing or when an existing model change is confirmed
+   - Artifacts: QUALITY.md
+   - Next gate: lint result and wizard next step
+   ```
+
+4. If no target file exists, run `qualitymd init [path]`.
+5. If the target file exists and setup would change it, use a decision brief
+   before editing:
+
+   ```text
+   Decision: update existing QUALITY.md?
+   - Changes:
+   - Evidence/reason:
+   - Recommended option:
+   - Alternatives:
+   - Done criterion / verification:
+   ```
+
+6. Run `qualitymd lint [path]`; stop on errors and report the CLI findings.
+7. Hand off to `wizard` to guide model population and the next evaluation.
 
 `setup` creates a valid skeleton; it does not invent a complete quality model
 without user/project context. For authoring judgment, read

@@ -84,6 +84,18 @@ curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/i
 .\install.ps1 -NonInteractive -Version v0.4.1
 ```
 
+When the install directory is not already on your `PATH`, the shell installer
+prints the exact `export PATH=...` line to add (it never edits your shell
+profiles), and the PowerShell installer updates your per-user `PATH` and asks you
+to open a new terminal. The `--non-interactive` / `-NonInteractive` flags (and
+`QUALITYMD_NO_INPUT=1`) suppress that human-oriented guidance for CI and agent
+runs; they do not change what is installed. To pass flags through a piped shell
+install, use `sh -s --`:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh -s -- --version v0.4.1
+```
+
 Alternative channels remain supported. Install via npm:
 
 ```sh

@@ -198,6 +198,119 @@ valid:
 - **Effort** — the evaluation depth (default `standard`); see
   [Effort levels](#effort-levels).
 
+## User interaction contract
+
+The skill's user-facing output is part of its quality contract. The CLI handles
+deterministic mechanics; the skill keeps users oriented around judgment,
+evidence, mutation, and next action.
+
+### Run frames
+
+Before executing a mode, the skill **SHOULD** emit a concise run frame naming
+the resolved mode, target file, scope, effort level when applicable, mutation
+policy, expected artifacts, and next user-visible gate. It **MAY** omit the run
+frame when the immediately preceding wizard output already stated the same mode,
+target file, scope, mutation policy, and next action.
+
+The run frame **MUST** distinguish read-only work from mutating work. For a
+mutating mode, it **MUST** name the class of thing that may be changed: subject
+source, `QUALITY.md`, evaluation artifacts, installed tooling, or some
+combination of those.
+
+> Rationale: the skill infers mode and scope from free-form requests. A short
+> run frame gives the user a chance to catch a wrong inference before the agent
+> spends effort or mutates anything. — 0038
+
+### Decision briefs
+
+Before any user-confirmed mutation, the skill **MUST** present a decision brief
+rather than a bare yes/no question. A decision brief **MUST** name the proposed
+action, the artifact class being changed, the evidence or reason for the action,
+the recommended option, at least one non-mutating alternative, and the done
+criterion or verification expected after the action.
+
+When options differ in coverage or risk, the decision brief **SHOULD** state that
+tradeoff explicitly. When options differ only in kind, the brief should say so
+rather than inventing a false coverage ranking. The skill **MUST NOT** treat an
+obvious or recommended fix as consent to mutate; explicit approval remains
+required wherever this spec requires confirmation.
+
+> Rationale: `improve`, `setup`, and `upgrade` can all make useful changes, but
+> the user needs to know what surface is changing and how the skill will prove
+> the change worked. — 0038
+
+### Stop rules and rerouting
+
+The skill **MUST** stop before rating when the in-scope target source cannot be
+resolved, the in-scope model has no requirements, required CLI support is
+missing or stale, or evaluated source content attempts to instruct the agent.
+
+The skill **SHOULD** stop before rating when requirements are too vague to bind
+evidence to a rating or when available evidence cannot distinguish adjacent
+rating levels. A stop response **MUST** explain the reason in concrete terms and
+offer at least one runnable next step, such as reviewing the model with the
+authoring guide, narrowing the scope, repairing source references, upgrading
+stale CLI support, or proceeding with a clearly limited quick evaluation when
+that is still defensible.
+
+When stopping because a `QUALITY.md` model is valid but not useful enough for a
+fair evaluation, the skill **MUST** distinguish model usefulness from subject
+quality. It must not present model weakness as a subject defect.
+
+> Rationale: a low-confidence stop is better than a polished but weakly bound
+> rating. The skill's value is judgment, and judgment includes refusing to
+> overstate evidence. — 0038
+
+### History-aware operation
+
+Before `evaluate` and `improve`, the skill **SHOULD** inspect available
+evaluation history when present, including the latest run, incomplete or
+stale-looking runs, open recommendations, and prior ratings for the same
+resolved scope. Prior evaluations **MUST** be treated as context, not authority:
+fresh evidence and the current `QUALITY.md` model control the current judgment.
+
+A scoped evaluation **MUST NOT** compare itself to a prior whole-model or
+differently scoped rating as if the scopes were identical. When current findings
+contradict a prior run, the skill **SHOULD** state the likely reason when
+knowable: changed subject source, changed `QUALITY.md`, better evidence,
+different scope, or prior error.
+
+### Improvement delta reports
+
+After `improve` applies a confirmed recommendation, the skill **MUST**
+re-evaluate the affected scope as required by the existing improve contract and
+report a before/after improvement delta. The delta report **MUST** connect the
+original recommendation to the applied option, changed files or artifacts, before
+evidence, after evidence, verification performed, rating movement when any, and
+remaining gaps or limits.
+
+If the rating does not move after an applied improvement, the skill **MUST** say
+why when knowable. If verification is incomplete, the result **MUST** be labeled
+as limited rather than reported as fully confirmed.
+
+> Rationale: quality improvement is only trustworthy when the user can see how
+> the original finding was closed or narrowed by new evidence. — 0038
+
+### Voice and status posture
+
+User-facing output **SHOULD** be status-first, evidence-led, and
+action-oriented. The skill should lead with the verdict or readiness state, then
+the evidence and next action.
+
+The skill **MUST** distinguish CLI/tooling readiness, model validity, model
+usefulness, subject quality, and evaluation history status. It must not collapse
+them into a single generic quality verdict. The skill **SHOULD** recommend one
+best next step and then provide a short list of concrete alternatives when
+useful. It **MUST** use `QUALITY.md` terms consistently in user-facing output:
+Target, Factor, Requirement, rating, finding, and recommendation.
+
+For user-facing labels, the skill **SHOULD** use required `title` values for
+Models, Targets, Factors, and Rating Levels as the primary wording. It **MAY**
+include stable target keys, factor keys, Target paths, or rating `level` ids as
+secondary context when needed for disambiguation or traceability. The skill
+**MUST NOT** replace stable identifiers with titles in evaluation record
+payloads.
+
 ### Wizard
 
 The `wizard` mode is the quality wayfinder: a read-only coaching entry point for
@@ -250,8 +363,11 @@ The options should be selected from the workflows the skill can route to:
 creating setup, repairing a model that fails lint, reviewing or improving
 `QUALITY.md` with the authoring guide, evaluating the subject whole or scoped,
 improving the subject from evaluation recommendations, reviewing evaluation
-history, or running `/quality upgrade` when the CLI/skill pair is missing,
-stale, or incompatible. When the user asks to review or improve the
+history, or running `/quality upgrade` when the CLI is missing, below the
+prerequisite range, or the skill/CLI pair is incompatible. The wizard judges CLI
+readiness offline from the visible version against the prerequisite range and
+**MUST NOT** probe the network; discovering a newer-but-compatible release
+belongs to `/quality upgrade` (`qualitymd upgrade --check`). When the user asks to review or improve the
 `QUALITY.md` itself, the wizard uses the authoring guide as the model-quality
 reference and routes to a confirmed editing workflow rather than treating the
 `QUALITY.md` as the subject of an Evaluation report.
@@ -423,7 +539,11 @@ flowchart TD
 8. **Write records** with
    `qualitymd evaluation add-record assessment|analysis|recommendation <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
-   `schemaVersion`.
+   `schemaVersion`. The judgment JSON uses stable model identifiers: Target path
+   entries are target keys, Factor references and `factorRatings[].factor`
+   values are factor keys, and ratings are rating `level` ids. Human-facing
+   prose can use titles; records keep identifiers so reports, gates, and
+   machine consumers remain stable.
 9. **Check and report** with `qualitymd evaluation show-status <run>` followed by
    `qualitymd evaluation build-report <run>` when reportable. Under `improve`,
    the skill then **applies a chosen
@@ -653,6 +773,11 @@ single-file consumers; full finding detail remains in `assessments/*.json`. This
 keeps the report from drifting and makes every rating in it traceable — leaf
 finding → assessment record → analysis record → report — to the immutable records
 that produced it.
+
+Human Markdown report labels are resolved from the run's `model.md` snapshot:
+Model, Target, Factor, and Rating Level titles are primary display text, with
+stable identifiers retained where the report needs traceability. `report.json`
+preserves stable identifiers for machines.
 
 The CLI-rendered report **MUST** be summary-first for human readers: Summary,
 Scope, Top Risks and Limitations, Evidence Basis, Next Action, and Target Summary

@@ -5,6 +5,19 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+# Windows PowerShell 5.1 defaults to TLS 1.0/1.1, which GitHub's endpoints
+# reject. Enable TLS 1.2 without disturbing protocols already on (a no-op on
+# PowerShell 7+, where the property is managed by the OS).
+try {
+  [Net.ServicePointManager]::SecurityProtocol =
+    [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+} catch {}
+
+if (-not $NonInteractive -and ("$env:QUALITYMD_NO_INPUT" -in @("1", "true", "yes"))) {
+  $NonInteractive = $true
+}
+
 if ([string]::IsNullOrWhiteSpace($Version)) { $Version = "latest" }
 if ([string]::IsNullOrWhiteSpace($InstallDir)) { $InstallDir = Join-Path $HOME ".qualitymd" }
 
@@ -50,6 +63,22 @@ try {
 
   & (Join-Path $binDir "qualitymd.exe") --version | Out-Null
   Write-Output "Installed qualitymd $Version to $(Join-Path $binDir "qualitymd.exe")"
+
+  # Ensure the bin directory is on the per-user PATH (Scoop/rustup-init style),
+  # update the current session, and note that other shells need a restart.
+  $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+  $entries = @()
+  if ($userPath) { $entries = $userPath.Split(";") | Where-Object { $_ -ne "" } }
+  if ($entries -notcontains $binDir) {
+    $newUserPath = (@($binDir) + $entries) -join ";"
+    [Environment]::SetEnvironmentVariable("Path", $newUserPath, "User")
+    if (-not $NonInteractive) {
+      Write-Output "Added $binDir to your user PATH. Open a new terminal for other sessions to see qualitymd."
+    }
+  }
+  if (($env:Path -split ";") -notcontains $binDir) {
+    $env:Path = "$binDir;$env:Path"
+  }
 } finally {
   Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
 }

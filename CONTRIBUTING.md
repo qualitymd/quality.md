@@ -99,7 +99,10 @@ scripts/check-release.mjs   runs strict pre-tag release checks
 Releases ship through three channels from a single git tag:
 
 - **GitHub release archives** and a **Homebrew cask** — built by goreleaser
-  (`.goreleaser.yaml`).
+  (`.goreleaser.yaml`). A cask (not a formula) is deliberate: it is the
+  GoReleaser-recommended path for a self-published pre-built binary (the formula
+  `brews` path was deprecated in v2.10 and is removed in v3), and the cask's
+  quarantine post-install hook is the documented pattern for an unsigned binary.
 - **npm / npx** — `scripts/build-npm.mjs` cross-compiles a native binary per
   platform into a `@qualitymd/cli-<os>-<arch>` package gated by npm `os`/`cpu`
   fields, with the `quality.md` launcher selecting the right one at runtime

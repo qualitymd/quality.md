@@ -64,16 +64,37 @@ stage="$install_root/releases/$version"
 mkdir -p "$tmp" "$stage" "$bin_dir"
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
+# Print the SHA-256 hex digest of "$1" using whichever tool is available, or
+# return non-zero when none is. Stock Linux ships sha256sum, macOS ships shasum,
+# and openssl is a common fallback; gating on shasum alone verified nothing on a
+# typical Linux host.
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$1" | awk '{print $1}'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 "$1" | awk '{print $NF}'
+  else
+    return 1
+  fi
+}
+
 curl -fsSL "$base_url/$archive" -o "$tmp/$archive"
 if curl -fsSL "$base_url/checksums.txt" -o "$tmp/checksums.txt"; then
-  if command -v shasum >/dev/null 2>&1; then
-    expected="$(grep " $archive\$" "$tmp/checksums.txt" | awk '{print $1}')"
-    actual="$(shasum -a 256 "$tmp/$archive" | awk '{print $1}')"
-    if [ -n "$expected" ] && [ "$expected" != "$actual" ]; then
+  expected="$(grep " $archive\$" "$tmp/checksums.txt" | awk '{print $1}')"
+  if [ -z "$expected" ]; then
+    echo "warning: $archive not listed in checksums.txt; skipping checksum verification" >&2
+  elif actual="$(sha256_of "$tmp/$archive")"; then
+    if [ "$expected" != "$actual" ]; then
       echo "checksum mismatch for $archive" >&2
       exit 70
     fi
+  else
+    echo "warning: no SHA-256 tool (sha256sum, shasum, or openssl) found; skipping checksum verification" >&2
   fi
+else
+  echo "warning: could not download checksums.txt; skipping checksum verification" >&2
 fi
 
 tar -xzf "$tmp/$archive" -C "$stage"
@@ -95,9 +116,15 @@ EOF
 
 "$bin_dir/qualitymd" --version >/dev/null
 
-if [ "$non_interactive" != "1" ]; then
-  echo "Installed qualitymd $version to $bin_dir/qualitymd"
-  echo "Add $bin_dir to PATH if qualitymd is not already visible."
-else
-  echo "Installed qualitymd $version to $bin_dir/qualitymd"
+echo "Installed qualitymd $version to $bin_dir/qualitymd"
+
+# Print the PATH line for interactive installs when the bin directory is not
+# already reachable. We never edit shell profiles from a piped install.
+case ":${PATH}:" in
+  *":$bin_dir:"*) on_path=1 ;;
+  *) on_path=0 ;;
+esac
+if [ "$non_interactive" != "1" ] && [ "$on_path" != "1" ]; then
+  echo "Add $bin_dir to your PATH (for example in ~/.profile or your shell rc):"
+  echo "  export PATH=\"$bin_dir:\$PATH\""
 fi

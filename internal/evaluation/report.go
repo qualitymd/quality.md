@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/qualitymd/quality.md/internal/model"
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
@@ -143,8 +144,9 @@ func BuildReport(path string) (*BuildResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	md := renderReportMarkdown(report)
-	summaryMD := renderReportSummaryMarkdown(report)
+	labels := reportDisplayLabelsFromModel(run.Model)
+	md := renderReportMarkdown(report, labels)
+	summaryMD := renderReportSummaryMarkdown(report, labels)
 	js, err := marshalJSON(report)
 	if err != nil {
 		return nil, err
@@ -386,11 +388,11 @@ func (r *Run) Report() (ReportJSON, error) {
 	return report, nil
 }
 
-func renderReportMarkdown(report ReportJSON) []byte {
+func renderReportMarkdown(report ReportJSON, labels reportDisplayLabels) []byte {
 	var out bytes.Buffer
 	out.WriteString("# Evaluation Report\n\n")
 	out.WriteString("## Summary\n\n")
-	out.WriteString("- **Subject:** " + report.Summary.Subject + "\n")
+	out.WriteString("- **Subject:** " + labels.Target(nil, report.Summary.Subject) + "\n")
 	if report.Summary.Altitude != "" {
 		out.WriteString("- **Altitude:** " + report.Summary.Altitude + "\n")
 	} else {
@@ -404,7 +406,7 @@ func renderReportMarkdown(report ReportJSON) []byte {
 	if report.Summary.Narrowing != "" {
 		out.WriteString("- **Narrowing:** " + report.Summary.Narrowing + "\n")
 	}
-	out.WriteString("- **Rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed) + "\n")
+	out.WriteString("- **Rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed, labels.Ratings) + "\n")
 	if report.Summary.Rationale != "" {
 		out.WriteString("- **Rationale:** " + report.Summary.Rationale + "\n")
 	}
@@ -415,7 +417,7 @@ func renderReportMarkdown(report ReportJSON) []byte {
 	} else {
 		out.WriteString("- **Narrowing:** whole recorded run\n")
 	}
-	out.WriteString("- **In scope:** " + displayList(report.Scope.InScope) + "\n")
+	out.WriteString("- **In scope:** " + displayScopeList(report.Scope.InScope, report.TargetSummary, labels) + "\n")
 	if len(report.Scope.OutOfScope) > 0 {
 		out.WriteString("- **Out of scope:** " + displayList(report.Scope.OutOfScope) + "\n")
 	} else {
@@ -466,22 +468,22 @@ func renderReportMarkdown(report ReportJSON) []byte {
 	out.WriteString("| Target | Local | Aggregate | Covered Requirements | Note |\n")
 	out.WriteString("| --- | --- | --- | --- | --- |\n")
 	for _, target := range report.TargetSummary {
-		out.WriteString("| " + tableCell(target.Target) + " | " + tableCell(displayRatingResult(target.LocalRating)) + " | " + tableCell(displayRatingResult(target.AggregateRating)) + " | " + fmt.Sprintf("%d", target.CoveredRequirements) + " | " + tableCell(target.Note) + " |\n")
+		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, target.Target)) + " | " + tableCell(displayRatingResult(target.LocalRating, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRating, labels.Ratings)) + " | " + fmt.Sprintf("%d", target.CoveredRequirements) + " | " + tableCell(target.Note) + " |\n")
 	}
 	out.WriteString("\n## Target Details\n\n")
 	for _, target := range report.Targets {
-		out.WriteString("### " + target.Target + "\n\n")
+		out.WriteString("### " + labels.Target(target.TargetPath, target.Target) + "\n\n")
 		out.WriteString("- **Path:** " + displayPath(target.TargetPath) + "\n")
-		out.WriteString("- **Local rating:** " + displayRatingResult(target.LocalRating) + "\n")
+		out.WriteString("- **Local rating:** " + displayRatingResult(target.LocalRating, labels.Ratings) + "\n")
 		if target.LocalRating.Rationale != "" {
 			out.WriteString("  - " + target.LocalRating.Rationale + "\n")
 		}
-		out.WriteString("- **Aggregate rating:** " + displayRatingResult(target.AggregateRating) + "\n")
+		out.WriteString("- **Aggregate rating:** " + displayRatingResult(target.AggregateRating, labels.Ratings) + "\n")
 		if target.AggregateRating.Rationale != "" {
 			out.WriteString("  - " + target.AggregateRating.Rationale + "\n")
 		}
 		for _, factor := range target.FactorRatings {
-			out.WriteString("- **Factor " + factor.Factor + ":** " + displayRating(factor.Rating, factor.NotAssessed) + "\n")
+			out.WriteString("- **Factor " + labels.Factor(target.TargetPath, factor.Factor) + ":** " + displayRating(factor.Rating, factor.NotAssessed, labels.Ratings) + "\n")
 			if factor.Rationale != "" {
 				out.WriteString("  - " + factor.Rationale + "\n")
 			}
@@ -500,8 +502,8 @@ func renderReportMarkdown(report ReportJSON) []byte {
 			state = "superseded"
 		}
 		out.WriteString("- **State:** " + state + "\n")
-		out.WriteString("- **Target:** " + assessment.Target + "\n")
-		out.WriteString("- **Rating:** " + displayRating(assessment.Rating, assessment.NotAssessed) + "\n")
+		out.WriteString("- **Target:** " + labels.Target(assessment.TargetPath, assessment.Target) + "\n")
+		out.WriteString("- **Rating:** " + displayRating(assessment.Rating, assessment.NotAssessed, labels.Ratings) + "\n")
 		out.WriteString("- **Assessment record:** `" + assessment.AssessmentRecord + "`\n")
 		if assessment.Rationale != "" {
 			out.WriteString("- **Rationale:** " + assessment.Rationale + "\n")
@@ -531,18 +533,18 @@ func renderReportMarkdown(report ReportJSON) []byte {
 	return out.Bytes()
 }
 
-func renderReportSummaryMarkdown(report ReportJSON) []byte {
+func renderReportSummaryMarkdown(report ReportJSON, labels reportDisplayLabels) []byte {
 	var out bytes.Buffer
 	out.WriteString("# Quality Evaluation Summary\n\n")
 	if report.Summary.Run != "" {
 		out.WriteString("**Run:** `" + report.Summary.Run + "`\n")
 	}
 	if report.Summary.Subject != "" {
-		out.WriteString("**Subject:** `" + report.Summary.Subject + "`\n")
+		out.WriteString("**Subject:** `" + labels.Target(nil, report.Summary.Subject) + "`\n")
 	}
 	out.WriteString("**Scope:** " + summaryScope(report) + "\n")
 	out.WriteString("**Effort:** " + summaryValue(report.Summary.Effort) + "\n")
-	out.WriteString("**Root rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed) + "\n")
+	out.WriteString("**Root rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed, labels.Ratings) + "\n")
 	out.WriteString("**Full report:** [report.md](report.md)\n")
 	out.WriteString("**Machine report:** [report.json](report.json)\n\n")
 
@@ -552,7 +554,7 @@ func renderReportSummaryMarkdown(report ReportJSON) []byte {
 	} else if report.Summary.NotAssessed {
 		out.WriteString("The root target was not assessed in this run.\n")
 	} else {
-		out.WriteString("The run completed with root rating " + displayRating(report.Summary.Rating, report.Summary.NotAssessed) + ".\n")
+		out.WriteString("The run completed with root rating " + displayRating(report.Summary.Rating, report.Summary.NotAssessed, labels.Ratings) + ".\n")
 	}
 
 	out.WriteString("\n## Top Risks\n\n")
@@ -584,7 +586,7 @@ func renderReportSummaryMarkdown(report ReportJSON) []byte {
 		out.WriteString("| Target | Aggregate rating | Reason |\n")
 		out.WriteString("| --- | --- | --- |\n")
 		for _, target := range report.TargetSummary {
-			out.WriteString("| " + tableCell(target.Target) + " | " + tableCell(displayRatingResult(target.AggregateRating)) + " | " + tableCell(target.AggregateRating.Rationale) + " |\n")
+			out.WriteString("| " + tableCell(labels.Target(target.TargetPath, target.Target)) + " | " + tableCell(displayRatingResult(target.AggregateRating, labels.Ratings)) + " | " + tableCell(target.AggregateRating.Rationale) + " |\n")
 		}
 	}
 
@@ -986,19 +988,93 @@ func looksLikeLimitation(text string) bool {
 	return false
 }
 
-func displayRating(rating *string, notAssessed bool) string {
+type reportDisplayLabels struct {
+	Ratings map[string]string
+	Targets map[string]string
+	Factors map[string]string
+}
+
+func reportDisplayLabelsFromModel(spec *model.Spec) reportDisplayLabels {
+	labels := reportDisplayLabels{
+		Ratings: map[string]string{},
+		Targets: map[string]string{},
+		Factors: map[string]string{},
+	}
+	if spec == nil {
+		return labels
+	}
+	labels.Ratings = ratingDisplayLabels(spec.RatingScale)
+	if strings.TrimSpace(spec.Title) != "" {
+		labels.Targets[targetLabelKey(nil)] = spec.Title
+	}
+	labels.addFactors(nil, spec.Factors)
+	labels.addTargets(nil, spec.Targets)
+	return labels
+}
+
+func (l reportDisplayLabels) addTargets(parentPath []string, targets map[string]model.Target) {
+	for key, target := range targets {
+		path := appendPathElement(parentPath, key)
+		if strings.TrimSpace(target.Title) != "" {
+			l.Targets[targetLabelKey(path)] = target.Title
+		}
+		l.addFactors(path, target.Factors)
+		l.addTargets(path, target.Targets)
+	}
+}
+
+func (l reportDisplayLabels) addFactors(targetPath []string, factors map[string]model.Factor) {
+	for key, factor := range factors {
+		if strings.TrimSpace(factor.Title) != "" {
+			l.Factors[factorLabelKey(targetPath, key)] = factor.Title
+		}
+		l.addFactors(targetPath, factor.Factors)
+	}
+}
+
+func (l reportDisplayLabels) Target(path []string, fallback string) string {
+	if title := l.Targets[targetLabelKey(path)]; title != "" {
+		return title
+	}
+	return fallback
+}
+
+func (l reportDisplayLabels) Factor(targetPath []string, fallback string) string {
+	for i := len(targetPath); i >= 0; i-- {
+		if title := l.Factors[factorLabelKey(targetPath[:i], fallback)]; title != "" {
+			return title
+		}
+	}
+	return fallback
+}
+
+func ratingDisplayLabels(scale []model.RatingLevel) map[string]string {
+	labels := map[string]string{}
+	for _, level := range scale {
+		if level.Level == "" || level.Title == "" {
+			continue
+		}
+		labels[level.Level] = level.Title
+	}
+	return labels
+}
+
+func displayRating(rating *string, notAssessed bool, ratingLabels map[string]string) string {
 	if notAssessed || rating == nil {
 		return "not assessed"
+	}
+	if title := ratingLabels[*rating]; title != "" {
+		return title
 	}
 	return *rating
 }
 
-func displayRatingResult(result ReportRatingResult) string {
+func displayRatingResult(result ReportRatingResult, ratingLabels map[string]string) string {
 	switch result.Kind {
 	case "structural":
 		return "n/a (structural)"
 	default:
-		return displayRating(result.Rating, result.NotAssessed)
+		return displayRating(result.Rating, result.NotAssessed, ratingLabels)
 	}
 }
 
@@ -1009,11 +1085,49 @@ func displayList(items []string) string {
 	return strings.Join(items, "; ")
 }
 
+func displayScopeList(items []string, targets []ReportTargetSummary, labels reportDisplayLabels) string {
+	if len(items) == 0 {
+		return "none"
+	}
+	targetLabels := map[string]string{}
+	for _, target := range targets {
+		if _, exists := targetLabels[target.Target]; exists {
+			targetLabels[target.Target] = ""
+			continue
+		}
+		targetLabels[target.Target] = labels.Target(target.TargetPath, target.Target)
+	}
+	display := make([]string, 0, len(items))
+	for _, item := range items {
+		if label := targetLabels[item]; label != "" {
+			display = append(display, label)
+			continue
+		}
+		display = append(display, item)
+	}
+	return strings.Join(display, "; ")
+}
+
 func displayPath(path []string) string {
 	if len(path) == 0 {
 		return "(root)"
 	}
 	return strings.Join(path, " / ")
+}
+
+func targetLabelKey(path []string) string {
+	return strings.Join(path, "\x00")
+}
+
+func factorLabelKey(targetPath []string, factor string) string {
+	return targetLabelKey(targetPath) + "\x00" + factor
+}
+
+func appendPathElement(path []string, value string) []string {
+	out := make([]string, 0, len(path)+1)
+	out = append(out, path...)
+	out = append(out, value)
+	return out
 }
 
 func tableCell(value string) string {

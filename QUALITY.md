@@ -2,19 +2,19 @@
 title: QUALITY.md
 ratingScale:
   - level: outstanding
-    title: Outstanding
+    title: 🟢 Outstanding
     description: "The stretch band: the artifact exceeds the quality requirement with meaningful margin."
     criterion: "Exceeds the requirement; satisfies it with margin to spare."
   - level: target
-    title: Target
+    title: 🔵 Target
     description: "The expected good state: the artifact satisfies the quality requirement."
     criterion: "Satisfies the requirement."
   - level: minimum
-    title: Minimum
+    title: 🟡 Minimum
     description: "The acceptable floor: the artifact falls short of the goal but remains good enough to proceed."
     criterion: "Falls short of the goal but holds the acceptable floor."
   - level: unacceptable
-    title: Unacceptable
+    title: 🔴 Unacceptable
     description: "Below the floor: the artifact does not satisfy the quality requirement acceptably."
     criterion: "Falls below the acceptable floor."
 targets:
@@ -222,6 +222,13 @@ toolchain, Cobra/Fang, and release tooling.
 
 ## Needs
 
+- Software development teams can hold the line against the three debts that
+  erode quality over time: technical debt (code drifting from where it should
+  be), cognitive debt (the mental burden of understanding complex or
+  under-documented systems), and intent debt (software diverging from what
+  stakeholders actually need) ([Storey][triple-debt]). QUALITY.md makes
+  those expectations explicit and checkable so the gaps stay visible and
+  addressable.
 - Format implementers can build a parser and evaluator from the specification.
 - Authors can write a valid model without reverse-engineering implementation.
 - Coding agents can evaluate a subject from the model alone.
@@ -266,3 +273,5 @@ deterministic command behavior.
   requirements that depend on normative vocabulary. They should inform
   requirements that assess sparse, correct use of requirement-level keywords,
   local adaptation, and citation/provenance.
+
+[triple-debt]: https://arxiv.org/abs/2603.22106 "Margaret-Anne Storey, The Triple Debt of Software Development (arXiv:2603.22106)"

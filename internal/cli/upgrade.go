@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/mod/semver"
 )
 
 type installMethod string
@@ -230,7 +231,17 @@ func getJSON(ctx context.Context, url string, target any) error {
 func updateAvailable(current, latest string) bool {
 	current = normalizeVersion(current)
 	latest = normalizeVersion(latest)
-	return current != "" && latest != "" && current != latest && !strings.HasPrefix(current, "dev")
+	if current == "" || latest == "" || strings.HasPrefix(current, "dev") {
+		return false
+	}
+	// Compare by SemVer precedence when both parse, so a downgrade or an older
+	// prerelease is not reported as an upgrade. semver wants a leading "v".
+	cv, lv := "v"+current, "v"+latest
+	if semver.IsValid(cv) && semver.IsValid(lv) {
+		return semver.Compare(lv, cv) > 0
+	}
+	// Fall back to a plain difference for version strings SemVer can't parse.
+	return current != latest
 }
 
 func normalizeVersion(value string) string {

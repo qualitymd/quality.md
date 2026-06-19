@@ -3,6 +3,22 @@
 **QUALITY.md** is an agent-friendly file format and companion agent skill and
 CLI for continuously improving the quality of coding agent and AI assistant projects/harnesses.
 
+## Why QUALITY.md
+
+As software — and the agents that write it — moves faster, quality erodes
+quietly through three accumulating debts:
+
+- **Technical debt** — code drifting from where it should be.
+- **Cognitive debt** — the mounting burden of understanding complex or
+  under-documented systems.
+- **Intent debt** — software diverging from what stakeholders actually need.
+
+QUALITY.md makes a team's quality expectations explicit and checkable, so those
+gaps stay visible and addressable instead of compounding.
+
+> The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
+> Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
+
 ## Install
 
 1. Install the agent skill:
@@ -185,35 +201,37 @@ assessment -> findings -> rating result
 > `qualitymd init`, `qualitymd lint`, `qualitymd spec`, `qualitymd status`, and the
 > `qualitymd evaluation` run-record surface.
 
-`qualitymd` draws one hard line: the **CLI is deterministic and never calls a
-model.** It scaffolds and validates a `QUALITY.md`, resolves target nodes and
-their `source` manifests, records evaluation artifacts, renders reports, and
-gates CI. The deep, judgment-based evaluation of a subject against its model is
-carried by **skills**, not by any CLI command.
+`qualitymd` draws one hard line: the **CLI never asks an AI model to judge your
+project.** It creates and checks `QUALITY.md` files, shows what the file covers,
+writes evaluation records for the `/quality` skill, renders reports, and can
+fail CI when ratings fall below your chosen bar. The judgment work happens in
+the skill, not in the CLI.
 
-The deterministic surface:
+### Common commands
 
-- **`qualitymd init`** — scaffold a starter `QUALITY.md` to fill in.
-- **`qualitymd lint`** — validate a file's structure, fast and deterministic,
-  exiting non-zero on errors so it drops into CI.
-- **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
-- **`qualitymd status`** — emit a deterministic project-state snapshot for
-  routing, automation, and agent use.
-- **`qualitymd version`** — show structured CLI and bundled specification
-  version metadata.
-- **`qualitymd upgrade --check`** — explicitly check the current install method,
-  latest version, and recommended upgrade action.
-- **`qualitymd evaluation create-run`** — create and number an evaluation run
-  folder.
-- **`qualitymd evaluation add-record`** — write assessment, analysis, and
-  recommendation records from judgment payloads.
-- **`qualitymd evaluation set-planned-coverage`** — write optional planned
-  assessment and analysis coverage for resume diagnostics.
-- **`qualitymd evaluation show-status`** — inspect whether a run is ready to
-  render.
-- **`qualitymd evaluation build-report`** — derive `report-summary.md`,
-  `report.md`, and `report.json`, and optionally gate with
-  `--fail-at-or-below`.
+| Goal                   | Command                          |
+| ---------------------- | -------------------------------- |
+| Show the format rules  | `qualitymd spec`                 |
+| Create a starter file  | `qualitymd init [path]`          |
+| Check a file           | `qualitymd lint [path]`          |
+| Fix simple lint issues | `qualitymd lint --fix [path]`    |
+| Show project status    | `qualitymd status [path] --json` |
+| Show version info      | `qualitymd version --json`       |
+| Check for updates      | `qualitymd upgrade --check`      |
+| Show command help      | `qualitymd <command> --help`     |
+
+Typical local loop:
+
+```sh
+qualitymd spec
+qualitymd init
+qualitymd lint
+qualitymd status --json
+```
+
+The `/quality` skill uses additional evaluation commands behind the scenes.
+The detailed command guide lives in the bundled
+[`CLI Quick Reference`](skills/quality/resources/cli-quick-reference.md).
 
 ## Conceptual model
 

@@ -212,9 +212,13 @@ The workflow requires two repository secrets:
 - `HOMEBREW_TAP_GITHUB_TOKEN` — token with write access to
   `qualitymd/homebrew-tap`.
 
-The Homebrew cask currently strips the macOS quarantine attribute because the
-binaries are unsigned. Remove that step from `.goreleaser.yaml` once the
-binaries are signed and notarized.
+Homebrew distribution uses a **cask**, not a formula: that is the
+GoReleaser-recommended path for a self-published pre-built binary (the formula
+`brews` path was deprecated in GoReleaser v2.10 and is removed in v3), so a
+binary-only formula is not the goal here. The cask currently strips the macOS
+quarantine attribute because the binaries are unsigned — the documented pattern
+for an unsigned cask. Remove that step from `.goreleaser.yaml` once the binaries
+are signed and notarized.
 
 Do not move a published tag to repair a release. If a published release is wrong,
 fix forward with a new patch release unless no artifacts were published and the

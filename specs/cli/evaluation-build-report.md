@@ -110,8 +110,16 @@ such as `docs/production-telemetry.md`, so the extraction normalizer must treat
 locators as content.
 
 Human-facing report renderers **SHOULD** use required model, target, factor, and
-rating-level `title` values as primary display labels while preserving stable
-paths, factor keys, and level ids where traceability or gates need them.
+rating-level `title` values from the run's `model.md` snapshot as primary
+display labels while preserving stable paths, factor keys, and level ids where
+traceability or gates need them. For target and factor labels in `report.md` and
+`report-summary.md`, this means rendering the `title` as the displayed label
+with a fallback to the stable identifier when an older run snapshot lacks the
+title. For rating cells, this means rendering the rating-level `title` as the
+displayed rating label, with a fallback to the `level` id when an older run
+snapshot lacks the title. `report.json`, `BuildResult`, and
+`--fail-at-or-below` **MUST** keep using stable identifiers and `level` ids for
+machine-readable ratings and gate comparisons.
 
 `--fail-at-or-below <level>` turns the command into a CI gate. The command still
 writes all report files on a successful render. It exits `1` when the root

@@ -114,3 +114,14 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   `/quality upgrade` mode that plans paired skill/CLI maintenance, delegates
   mutation to owner tools, and reports restart/reload needs after skill updates
   (`Done`).
+- [0036 — Harden install scripts and upgrade idiomatics](0036-harden-install-scripts.md) -
+  fixed portability/convention gaps in the shell/PowerShell installers and the
+  upgrade version check, and recorded why the Homebrew cask is the idiomatic path
+  (`Done`).
+- [0037 — Render display titles in evaluation reports](0037-report-rating-titles.md) -
+  made human reports display model, target, factor, and rating-level titles
+  while preserving stable ids for machine reports and gates (`Done`).
+- [0038 — /quality skill interaction UX](0038-quality-skill-interaction-ux.md) -
+  added a durable user interaction contract for the `/quality` skill covering run
+  frames, decision briefs, stop/reroute behavior, history-aware operation,
+  improvement delta reports, and status-first output (`Done`).

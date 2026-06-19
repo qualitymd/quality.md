@@ -100,6 +100,29 @@ func TestUpgradeApplyRefusesUnknownInstall(t *testing.T) {
 	}
 }
 
+func TestUpdateAvailableSemVer(t *testing.T) {
+	cases := []struct {
+		name            string
+		current, latest string
+		want            bool
+	}{
+		{"newer patch", "v0.4.0", "v0.4.1", true},
+		{"latest older", "v0.5.0", "v0.4.1", false},
+		{"equal", "v0.4.1", "v0.4.1", false},
+		{"release beats prerelease", "v0.4.1-rc.1", "v0.4.1", true},
+		{"prerelease loses to release", "v0.4.1", "v0.4.1-rc.1", false},
+		{"development build", "dev (abc1234)", "v9.9.9", false},
+		{"prefixed current", "qualitymd v0.4.0", "v0.4.1", true},
+		{"empty latest", "v0.4.0", "", false},
+		{"non-semver differ", "weird", "weirder", true},
+	}
+	for _, tc := range cases {
+		if got := updateAvailable(tc.current, tc.latest); got != tc.want {
+			t.Errorf("%s: updateAvailable(%q, %q) = %v, want %v", tc.name, tc.current, tc.latest, got, tc.want)
+		}
+	}
+}
+
 func withLatestVersion(t *testing.T, provider latestVersionProvider) {
 	t.Helper()
 	saved := fetchLatestVersion

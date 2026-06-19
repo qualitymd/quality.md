@@ -40,6 +40,10 @@ archives:
 checksum:
   name_template: checksums.txt
 
+# A Homebrew cask (not a formula) is the idiomatic path for a self-published,
+# pre-built binary: GoReleaser deprecated the formula (`brews`) path in v2.10
+# (removed in v3), and Homebrew steers binary distributions to casks. The
+# quarantine hook below is the documented pattern for an unsigned binary.
 homebrew_casks:
   - name: qualitymd
     repository:

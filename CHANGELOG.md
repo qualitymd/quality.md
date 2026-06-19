@@ -17,6 +17,53 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### Compatibility / Migration
 
+## v0.3.1 - 2026-06-19
+
+### CLI
+
+- Fixed `qualitymd upgrade --check` so update detection uses SemVer precedence
+  instead of treating any version difference as an upgrade.
+- `qualitymd evaluation build-report` human Markdown now uses Model, Target,
+  Factor, and Rating Level titles from the run's model snapshot as display
+  labels while preserving stable ids in `report.json` and gates.
+
+### /quality Skill
+
+- Added a durable interaction contract for run frames, decision briefs, stop and
+  reroute behavior, history-aware operation, improvement delta reports, and
+  status-first output.
+- Expanded the bundled CLI quick reference around structured version, status,
+  evaluation, and upgrade workflows.
+
+### Specification
+
+- Clarified that evaluation record payloads and `report.json` preserve stable
+  identifiers, while human Markdown reports resolve display labels from the
+  recorded model snapshot.
+
+### Documentation
+
+- Documented installer PATH guidance, `--non-interactive` behavior, and the
+  intentional Homebrew cask distribution path.
+- Clarified the release runbook's Homebrew cask rationale.
+
+### Packaging
+
+- Hardened the Unix installer checksum verification fallback across `sha256sum`,
+  `shasum`, and `openssl`, with explicit warnings when verification cannot run.
+- Hardened the Windows installer for Windows PowerShell TLS 1.2 and per-user
+  PATH setup.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.3.1`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.3.1`, requires `qualitymd >=0.3.0 <0.4.0`
+
+No migration is required from `v0.3.0`.
+
 ## v0.3.0 - 2026-06-19
 
 ### CLI

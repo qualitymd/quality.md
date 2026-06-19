@@ -3,6 +3,126 @@
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
+  [0038 — /quality skill interaction UX](archive/0038-quality-skill-interaction-ux.md).
+  Moved the parent concept and child folder into [`archive/`](archive/), fixed
+  repo-relative links for the deeper path, added the entry to the
+  [archive index](archive/index.md), and removed it from the open
+  [changes index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0038 — /quality skill interaction UX](archive/0038-quality-skill-interaction-ux.md).
+  Added the durable `User interaction contract` section to the `/quality` skill
+  spec, added compact shared interaction rules to root `SKILL.md`, and updated
+  wizard/evaluate/improve/setup/upgrade mode prompts for run frames, decision
+  briefs, stop/reroute behavior, history context, improvement delta reporting,
+  and status-first output. Verified targeted Markdown formatting with
+  `dprint check`. The case is ready to archive per the requested goal.
+
+- **Implementation**: Advanced change
+  [0038 — /quality skill interaction UX](archive/0038-quality-skill-interaction-ux.md)
+  from `Design` to `In-Progress` so the settled interaction contract can be
+  implemented in the durable `/quality` skill spec and runtime skill files.
+
+- **Design**: Advanced change
+  [0038 — /quality skill interaction UX](archive/0038-quality-skill-interaction-ux.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0038-quality-skill-interaction-ux/design.md). The design adds a
+  durable `User interaction contract` section to the `/quality` skill spec,
+  keeps shared run-frame and decision-brief shapes compact in root `SKILL.md`,
+  applies the behavior at mode boundaries, uses existing status/evaluation
+  history surfaces rather than new storage, and keeps improvement delta reports
+  as human output rather than a new evaluation artifact.
+
+- **Creation**: Added change
+  [0038 — /quality skill interaction UX](archive/0038-quality-skill-interaction-ux.md)
+  in `Draft` with its
+  [functional spec](archive/0038-quality-skill-interaction-ux/spec.md). The change
+  proposes a durable interaction contract for the `/quality` skill covering run
+  frames, decision briefs, stop/reroute behavior, history-aware operation,
+  improvement delta reports, and status-first output, while keeping the existing
+  skill/CLI boundary and evaluation artifact format intact. Updated the bundle
+  [index](index.md).
+
+- **Done**: Set status `Done` and archived
+  [0036 — Harden install scripts and upgrade idiomatics](archive/0036-harden-install-scripts.md)
+  and
+  [0037 — Render rating-level titles in evaluation reports](archive/0037-report-rating-titles.md).
+  Moved both parent concepts and child folders into [`archive/`](archive/),
+  fixed repo-relative links for the deeper path, added the entries to the
+  [archive index](archive/index.md), and removed them from the open
+  [changes index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0037 — Render rating-level titles in evaluation reports](archive/0037-report-rating-titles.md).
+  Human Markdown reports now resolve rating labels through the run's rating-scale
+  titles with a level-id fallback, while `report.json`, `BuildResult`, and
+  `--fail-at-or-below` continue using level ids. Added emoji rating titles to
+  `QUALITY.md`, clarified the durable build-report spec, and updated evaluation
+  tests for title rendering, JSON id preservation, fallback behavior, and
+  non-rating states. Verified `go test ./...`, `go vet ./...`, and
+  `dprint check`. The case remains open in [`changes/`](index.md) for review; it
+  is not archived until it lands.
+
+- **Implementation**: Advanced change
+  [0037 — Render rating-level titles in evaluation reports](archive/0037-report-rating-titles.md)
+  from `Draft` to `In-Progress`. No design doc is needed for this localized
+  renderer change, so implementation can begin from the settled
+  [functional spec](archive/0037-report-rating-titles/spec.md).
+
+- **Creation**: Added change
+  [0037 — Render rating-level titles in evaluation reports](archive/0037-report-rating-titles.md)
+  in `Draft` with its
+  [functional spec](archive/0037-report-rating-titles/spec.md). The change makes the human
+  reports (`report.md`, `report-summary.md`) display each rating level's `title`
+  instead of its `level` id — bringing the renderer into conformance with the
+  existing build-report SHOULD so emoji-bearing titles read in reports — while
+  keeping `level` ids in `report.json`, `BuildResult`, and the
+  `--fail-at-or-below` gate, and dogfoods emoji titles in `QUALITY.md`. Omits a
+  design doc. Updated the bundle [index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0036 — Harden install scripts and upgrade idiomatics](archive/0036-harden-install-scripts.md).
+  Added the three-tool checksum fallback with a non-silent skip and the
+  print-the-export-line PATH guidance to `install/install.sh`; added the TLS 1.2
+  shim, per-user PATH mutation, and `-NonInteractive` gating to
+  `install/install.ps1`; made `updateAvailable` SemVer-correct via
+  `golang.org/x/mod/semver` in `internal/cli/upgrade.go` with regression
+  coverage; commented the intentional Homebrew cask in `.goreleaser.yaml`; and
+  synced the durable upgrade spec, install docs, contributor guide, and release
+  guide. Verified `go test ./...`, `go vet`, `golangci-lint`, `gofmt`,
+  `shellcheck install/install.sh`, `dprint check`, and `goreleaser check`. The
+  case remains open in [`changes/`](index.md) for review; it is not archived
+  until it lands.
+
+- **Implementation**: Advanced change
+  [0036 — Harden install scripts and upgrade idiomatics](archive/0036-harden-install-scripts.md)
+  from `Design` to `In-Progress` so the settled installer and upgrade-check fixes
+  can be implemented and synced into the durable upgrade spec and install docs.
+
+- **Design**: Advanced change
+  [0036 — Harden install scripts and upgrade idiomatics](archive/0036-harden-install-scripts.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0036-harden-install-scripts/design.md). The design settles a
+  three-tool checksum fallback with a non-silent skip, a `-bor` TLS 1.2 shim for
+  PowerShell 5.1, a deliberately asymmetric PATH model (per-user PATH mutation on
+  Windows, print-the-export-line on Unix), `--non-interactive` as a verbosity
+  gate rather than a phantom prompt, SemVer-correct update detection via
+  `golang.org/x/mod/semver`, and keeping the Homebrew cask with documented
+  rationale (rejecting the deprecated formula path).
+
+- **Creation**: Added change
+  [0036 — Harden install scripts and upgrade idiomatics](archive/0036-harden-install-scripts.md)
+  in `Draft` with its
+  [functional spec](archive/0036-harden-install-scripts/spec.md). The change fixes five
+  portability/convention gaps surfaced by an install-surface review — dead
+  checksum verification on stock Linux, a missing TLS 1.2 pin on Windows
+  PowerShell, absent/asymmetric PATH integration, a string-compare standing in
+  for a SemVer update check, and a no-op `--non-interactive` flag — and records
+  that the Homebrew **cask** (not a formula) is the idiomatic distribution path
+  after the "convert to formula" review item was investigated and reversed.
+  Updated the bundle [index](index.md).
+
+- **Done**: Set status `Done` and archived
   [0035 — /quality upgrade mode](archive/0035-quality-skill-upgrade-mode.md).
   Moved the parent concept and child folder into [`archive/`](archive/), fixed
   repo-relative links for the deeper path, added the entry to the

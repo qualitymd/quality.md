@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Revision**: Updated [`evaluation build-report`](cli/evaluation-build-report.md),
+  [Evaluation records](evaluation-records.md), and the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) so human
+  reports and skill prose use required model titles as primary labels while
+  evaluation records, `report.json`, and gates preserve stable identifiers.
+
 - **Revision**: Updated the
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) for
   `/quality upgrade` as a first-class maintenance mode that plans paired

@@ -12,11 +12,23 @@ snapshot, classify readiness, and offer concrete next steps. Do not hand-parse
 enumerate recommendations, or resolve build/install paths. Use
 `qualitymd status --json` for those mechanical signals.
 
+Run frame:
+
+```text
+/quality run
+- Mode: wizard
+- Target file: <resolved path>
+- Scope: model/history readiness only
+- Mutation: read-only
+- Artifacts: none
+- Next gate: choose a concrete workflow
+```
+
 ## Decision Tree
 
 ```text
 Probe state (CLI version plus status JSON)
-- CLI missing/stale? recommend /quality upgrade
+- CLI missing or below the prerequisite range? recommend /quality upgrade
 - QUALITY.md missing? classify no setup; recommend setup
 - lint errors? classify invalid model; recommend repair
 - lint valid, no runs? classify ready to evaluate
@@ -67,8 +79,9 @@ Offer concrete alternatives
    Status
    - CLI:                (version; in range or stale)
    - QUALITY.md:         (present/absent at target path)
-   - Model:              (lint pass/fail — not a shape breakdown)
-   - Evaluation history: (runs present/absent; no body reads)
+   - Model:              (validity and usefulness/readiness; no shape audit)
+   - Subject:            (ready/blocked/unknown from source signals)
+   - Evaluation history: (runs/recommendations present; no body reads)
    - Readiness:
 
    Recommended next step
@@ -83,11 +96,15 @@ Offer concrete alternatives
 5. Offer only concrete workflows the user can choose next, such as setup, model
    repair, model review/improvement, whole-subject evaluation, scoped
    target/factor evaluation, recommendation review/improvement, or evaluation
-   history review. Include `/quality upgrade` when the CLI is missing, stale, or
-   outside the prerequisite range, or when the skill/CLI pair appears
-   incompatible.
+   history review. Include `/quality upgrade` when the CLI is missing, below the
+   prerequisite range, or the skill/CLI pair appears incompatible. Wizard stays
+   offline: it judges staleness from `qualitymd --version` against the
+   prerequisite range only and does not probe the network. `/quality upgrade`
+   owns the network check (`qualitymd upgrade --check`), so it is also the path
+   to discover a newer-but-compatible release — surface it when the user asks
+   whether a newer CLI is available.
 
-Wizard is read-only and shallow. It does not edit `QUALITY.md`, create
+Wizard is read-only, shallow, and status-first. It does not edit `QUALITY.md`, create
 evaluation records, build reports, or rate the subject. It may judge readiness
 and route to work; the work happens in the mode or confirmed workflow it hands
 off to.

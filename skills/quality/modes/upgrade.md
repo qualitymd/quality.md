@@ -57,7 +57,20 @@ Verify
    - exact owner command(s) that would be run, or manual commands when apply is
      unsupported;
    - restart/reload expectation if the skill changes.
-6. Ask for explicit confirmation before applying any upgrade action.
+6. Ask for explicit confirmation before applying any upgrade action using a
+   decision brief:
+
+   ```text
+   Decision: apply upgrade plan?
+   - Changes: <skill | CLI | both>
+   - Evidence/reason:
+   - Recommended option:
+   - Alternatives:
+   - Done criterion / verification:
+   ```
+
+   The brief must name which owner command performs each mutation and how
+   compatibility will be checked afterward.
 7. If confirmed, delegate only to owner commands:
    - CLI: `qualitymd upgrade --apply` when available and applicable, or the
      package-manager/install command recommended by `qualitymd upgrade --check`.
