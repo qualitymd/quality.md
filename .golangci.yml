@@ -2,12 +2,42 @@ version: "2"
 
 linters:
   # The standard set (errcheck, govet, ineffassign, staticcheck, unused)
-  # plus a few low-noise additions.
+  # plus a few low-noise additions and the complexity gate.
   default: standard
   enable:
     - misspell
     - unconvert
     - unparam
+    # Complexity gate. Thresholds follow the McCabe "moderate" ceiling (15)
+    # and the cognitive-complexity recommended range (20). New/changed code
+    # is held to this bar; existing hotspots are ratcheted down over time.
+    - cyclop
+    - gocognit
+    - nestif
+    - funlen
+  settings:
+    cyclop:
+      # Cyclomatic complexity. 15 = top of the "moderate" band; the
+      # package-average catches broadly-complex packages, not just spikes.
+      max-complexity: 15
+      package-average: 10
+    gocognit:
+      # Cognitive complexity (readability; nesting compounds the score).
+      min-complexity: 20
+    nestif:
+      # Deep nesting — the cheapest complexity win to flag.
+      min-complexity: 4
+    funlen:
+      lines: 80
+      statements: 50
+  exclusions:
+    rules:
+      # Table-driven tests are legitimately long and branchy.
+      - path: _test\.go
+        linters:
+          - cyclop
+          - gocognit
+          - funlen
 
 formatters:
   enable:
