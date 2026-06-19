@@ -13,6 +13,11 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### Documentation
 
+- Clarified the release runbook after the `v0.2.2` release: push `main` and
+  wait for hosted CI before tagging, treat pre-tag snapshot logs and trailing
+  newline-only release-note diffs as non-blocking, and keep release-prep manual
+  until repeated mistakes justify more mechanics.
+
 ### Packaging
 
 ### Compatibility / Migration

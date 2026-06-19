@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Revision**: Clarified [Cut a release](guides/cut-a-release.md) after the
+  `v0.2.2` release. The guide now makes hosted `main` CI an explicit pre-tag
+  gate, notes that pre-tag Goreleaser snapshots can mention the previous tag,
+  treats trailing-newline-only release-note diffs as equivalent, and keeps
+  release-prep manual unless repeated mistakes justify more mechanics.
+
 - **Revision**: Adopted root [`CHANGELOG.md`](../CHANGELOG.md) as the canonical
   curated release-note source. Updated
   [Cut a release](guides/cut-a-release.md) to remove the temporary changelog

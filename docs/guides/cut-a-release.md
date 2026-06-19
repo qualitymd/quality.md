@@ -173,6 +173,19 @@ The release check:
 Inspect generated artifacts enough to catch packaging mistakes before pushing the
 tag.
 
+Pre-tag Goreleaser snapshots can mention the latest existing tag in their log
+while `release-check` is validating the candidate tag. That is expected before
+the new tag exists; trust the final `release checks passed for <tag>` line and
+the release-note preview for the candidate version.
+
+After `release-check` passes, push the release-prep commit and wait for the
+hosted `main` CI run for that exact commit to pass before creating the tag:
+
+```sh
+git push origin main
+gh run list --branch main --limit 5
+```
+
 ## Tag and Publish
 
 Create and push the tag:
@@ -218,6 +231,8 @@ After the workflow finishes, verify:
 - `qualitymd spec` emits the expected bundled specification.
 
 Use fresh installs where practical rather than already-built local binaries.
+A release-note comparison that differs only by a final trailing newline is
+equivalent and does not require a release edit.
 
 ## Handle a Failed Release
 
@@ -248,11 +263,11 @@ After verifying the release:
 
 ## Open Process Support Items
 
-The guide is enough to run a manual curated-release process. These follow-up
-items would make the process more reliable once the first release or two has
-exercised it:
+The guide is enough to run a manual curated-release process. Keep release
+support small and add mechanics only when they remove repeated mistakes or
+manual comparison work:
 
-- Add a release-prep helper that moves substantive `Unreleased` notes into a
-  target release section and recreates the empty `Unreleased` section.
+- Keep release-prep manual unless repeated changelog mistakes show that a helper
+  would reduce errors without broadening the process.
 - Add skill package metadata for the `/quality` skill version and supported
   `qualitymd` CLI range when the installer supports it.
