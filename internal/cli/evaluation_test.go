@@ -10,7 +10,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/evaluation"
 )
 
-func TestEvaluationSetPlannedCoverageCommand(t *testing.T) {
+func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	repo := testEvaluationRepo(t)
 	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
@@ -22,29 +22,90 @@ func TestEvaluationSetPlannedCoverageCommand(t *testing.T) {
 	var out, stderr bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&stderr)
-	cmd.SetIn(strings.NewReader(`{
-  "schemaVersion": 1,
-  "assessments": [
-    { "targetPath": [], "requirement": "Has tests" }
-  ],
-  "analyses": [
-    { "targetPath": [] }
-  ]
-}`))
-	cmd.SetArgs([]string{"evaluation", "set-planned-coverage", "--file", "-", "--json", runPath})
+	cmd.SetIn(strings.NewReader(`[{
+  "target": "Root",
+  "targetPath": [],
+  "requirement": "Has tests",
+  "factors": [],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "rationale": "Tests cover the requirement.",
+  "recommendations": []
+}]`))
+	cmd.SetArgs([]string{"evaluation", "assessment", "add", "--file", "-", "--json", runPath})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
-	if !strings.Contains(out.String(), `"path": `) || !strings.Contains(out.String(), "planned-coverage.json") {
-		t.Fatalf("stdout = %s, want planned coverage write receipt", out.String())
+	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessments/001-root-has-tests.json") {
+		t.Fatalf("stdout = %s, want batched write receipt", out.String())
 	}
-	raw, err := os.ReadFile(filepath.Join(runPath, "planned-coverage.json"))
+	raw, err := os.ReadFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"))
 	if err != nil {
-		t.Fatalf("reading planned-coverage.json: %v", err)
+		t.Fatalf("reading assessment record: %v", err)
 	}
-	if !strings.Contains(string(raw), `"schemaVersion": 1`) || !strings.Contains(string(raw), `"assessments": [`) {
-		t.Fatalf("planned-coverage.json = %s, want canonical JSON", raw)
+	if !strings.Contains(string(raw), `"schemaVersion": 1`) || !strings.Contains(string(raw), `"requirement": "Has tests"`) {
+		t.Fatalf("assessment record = %s, want canonical JSON", raw)
+	}
+}
+
+func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
+	repo := testEvaluationRepo(t)
+	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"}); err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	oldwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Getwd() error = %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(oldwd); err != nil {
+			t.Fatalf("restore cwd: %v", err)
+		}
+	})
+	if err := os.Chdir(repo); err != nil {
+		t.Fatalf("chdir repo: %v", err)
+	}
+
+	cmd := newRootCmd()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "list", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("list Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"runs": [`) || !strings.Contains(out.String(), `"reportable": false`) {
+		t.Fatalf("list stdout = %s, want run list", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "status", "--latest", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("status Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"path": `) || !strings.Contains(out.String(), `"reportable": false`) {
+		t.Fatalf("status stdout = %s, want latest status", out.String())
+	}
+}
+
+func TestEvaluationOldCommandNamesAreRejected(t *testing.T) {
+	cmd := newRootCmd()
+	cmd.SetOut(&bytes.Buffer{})
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "create-run"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("Execute() error = nil, want usage error")
+	}
+	if !strings.Contains(err.Error(), `unknown command "create-run"`) {
+		t.Fatalf("Execute() error = %v, want unknown old command", err)
 	}
 }
 

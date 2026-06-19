@@ -7,9 +7,22 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### CLI
 
+- Reshaped the evaluation surface: `evaluation create`, `list`, `status`,
+  record resources (`assessment add`, `analysis set`, `recommendation add`),
+  and `report build` / `report gate` replace the older mixed verbs.
+- Folded planned coverage into `plan.md` frontmatter, added batched record
+  writes and explicit `--latest` run resolution, and removed the create receipt's
+  altitude field.
+
 ### /quality Skill
 
+- Updated evaluation workflows and CLI references for the new evaluation command
+  surface and `plan.md` coverage metadata.
+
 ### Specification
+
+- Replaced the durable evaluation CLI sub-specs with the new noun/verb surface
+  and updated the evaluation record contract to remove `planned-coverage.json`.
 
 ### Documentation
 

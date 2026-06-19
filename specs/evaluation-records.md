@@ -74,7 +74,6 @@ A run folder contains:
 model.md
 design.md
 plan.md
-planned-coverage.json
 assessments/
   NNN-<target>-<requirement>.json
 analysis/
@@ -88,12 +87,13 @@ report.json
 
 `assessments/` and `recommendations/` each use their own local `NNN` sequence.
 
-`planned-coverage.json` is optional.
+`plan.md` may be body-only, or it may carry YAML frontmatter with optional
+planned coverage metadata.
 
 ## Schema Version
 
-Every JSON record (`planned-coverage.json`, `assessments/*.json`,
-`analysis/*.json`, `report.json`) **MUST** carry top-level `schemaVersion: 1`.
+Every JSON record (`assessments/*.json`, `analysis/*.json`, `report.json`)
+**MUST** carry top-level `schemaVersion: 1`.
 
 Every CLI-written recommendation Markdown record **MUST** carry runtime YAML
 frontmatter with `schemaVersion: 1`.
@@ -157,30 +157,31 @@ model identifiers, not human display titles.
 
 ## Planned Coverage
 
-`planned-coverage.json` is an optional run-root JSON artifact that lists the
-assessment requirements and analysis targets intended for the run. It exists to
-support deterministic resume diagnostics; it **MUST NOT** replace `design.md` or
-`plan.md`.
+`plan.md` is a YAML-frontmatter + Markdown-body artifact. Its Markdown body is
+the run's prose plan. Optional frontmatter `coverage:` lists the assessment
+requirements and analysis targets intended for the run. Planned coverage exists
+to support deterministic resume diagnostics; it **MUST NOT** replace the prose
+plan or the evaluation design.
 
-When present, it **MUST** contain:
+When `coverage:` is present, it **MUST** contain:
 
-- `schemaVersion`
 - `assessments`
 - `analyses`
 
 Each assessment entry **MUST** contain ordered `targetPath` and `requirement`.
 Each analysis entry **MUST** contain ordered `targetPath`.
 
-The CLI **MUST** write `planned-coverage.json` through
-`qualitymd evaluation set-planned-coverage`; the skill **MUST NOT** hand-author
-or hand-repair it when that command is available.
+Coverage frontmatter is hand-authored as part of `plan.md`; there is no separate
+CLI write command for planned coverage.
 
 A planned assessment key is ordered `targetPath` plus `requirement`. A planned
 analysis key is ordered `targetPath`. Duplicate planned assessment or analysis
 keys are invalid.
 
-When `planned-coverage.json` is absent, the run keeps the same status and
-reportability behavior it would have without planned coverage metadata.
+When `coverage:` is absent, the run keeps the same status and reportability
+behavior it would have without planned coverage metadata. Malformed `coverage:`
+frontmatter makes the run non-reportable through an `invalid-plan-coverage`
+status gap rather than making the run unloadable.
 
 ## Recommendation Record
 
@@ -226,7 +227,7 @@ record; full finding detail stays in `assessments/*.json`. Referencing a finding
 by record (rather than inlining its raw `observation`/`evidence`) also keeps the
 deterministic renderer from echoing secret values or prompt-injection text into
 the report artifact, the same trust-boundary rule the
-[`build-report`](cli/evaluation-build-report.md) renderer follows.
+[`report build`](cli/evaluation-report.md) renderer follows.
 
 `report.json` **MUST** carry a summary layer equivalent to the leading sections
 of `report.md`: summary, scope, evidence basis, limitations, next action, and

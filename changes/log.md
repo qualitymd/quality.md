@@ -3,6 +3,46 @@
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
+  [0039 — Evaluation command surface redesign](archive/0039-evaluation-command-surface.md).
+  Moved the parent concept and child folder into [`archive/`](archive/), fixed
+  archive-relative links, added the entry to the [archive index](archive/index.md),
+  and removed it from the open [changes index](index.md). Verified `go test
+  ./...`, `go vet ./...`, targeted `dprint check`, and CLI smoke checks for the
+  new and removed evaluation command surfaces.
+
+- **Design**: Reconciled the
+  [0039 — Evaluation command surface redesign](archive/0039-evaluation-command-surface.md)
+  impact list and renamed its section from "Affected specs & docs" to **Affected
+  artifacts**. Added an **Affected code** subsection (the `internal/cli` command
+  tree, the `internal/evaluation/*` backends incl. `planned_coverage.go`, and
+  `internal/status`) and the previously-missing artifacts: the skill spec
+  `specs/skills/quality-skill/quality-skill.md`, plus `skills/quality/SKILL.md`,
+  `install.md`, `docs/guides/use-quality-skill.md`, `docs/guides/cli-design.md`,
+  `docs/guides/write-functional-specs.md`, and `CHANGELOG.md`.
+
+- **Design**: Advanced
+  [0039 — Evaluation command surface redesign](archive/0039-evaluation-command-surface.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0039-evaluation-command-surface/design.md): the cobra command
+  tree, shared `resolveRun`/payload-batching/output-stream helpers, the
+  `plan.md`-folded coverage with read-time validation, the report `build`/`gate`
+  split, and the altitude removal — with rejected alternatives and three open
+  design calls (flat vs subfolder specs, `list --state` scope, malformed-coverage
+  gap name). Updated the [changes index](index.md) and child
+  [index](archive/0039-evaluation-command-surface/index.md).
+
+- **Creation**: Opened
+  [0039 — Evaluation command surface redesign](archive/0039-evaluation-command-surface.md)
+  (`status: Draft`) with its child [index](archive/0039-evaluation-command-surface/index.md)
+  and [functional spec](archive/0039-evaluation-command-surface/spec.md). The spec sets a
+  single noun/verb rule for the `qualitymd evaluation` surface, renames the
+  run-lifecycle verbs, promotes the record kinds and the report to nouns with
+  honest verbs, adds run/record `list`, folds planned coverage into `plan.md`
+  frontmatter (deleting `set-planned-coverage` and `planned-coverage.json`),
+  separates `report gate` from `report build`, and removes the altitude residue.
+  Added the case to the open [changes index](index.md).
+
+- **Done**: Set status `Done` and archived
   [0038 — /quality skill interaction UX](archive/0038-quality-skill-interaction-ux.md).
   Moved the parent concept and child folder into [`archive/`](archive/), fixed
   repo-relative links for the deeper path, added the entry to the

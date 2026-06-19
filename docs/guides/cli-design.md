@@ -167,7 +167,7 @@ Once a tool grows past a handful of actions, it becomes a `noun verb` (or
 
 - **Be consistent across subcommands:** the same flag name means the same thing,
   output is formatted the same way, errors read the same.
-- **Pick one grammar and hold it.** `noun verb` (e.g. `evaluation create-run`) is
+- **Pick one grammar and hold it.** `noun verb` (e.g. `evaluation report build`) is
   the more common shape; whichever you choose, don't mix.
 - **No ambiguous or near-duplicate names,** and no catch-all subcommand that
   guesses an intent the user never stated.

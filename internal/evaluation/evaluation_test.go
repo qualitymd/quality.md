@@ -53,17 +53,6 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	}
 }
 
-func TestCreateRunRejectsRemovedModelAltitude(t *testing.T) {
-	repo := testRepo(t)
-	_, err := CreateRun(Options{RepoRoot: repo, Altitude: "model", Subject: "QUALITY.md"})
-	if err == nil {
-		t.Fatal("CreateRun() error = nil, want removed model-altitude diagnostic")
-	}
-	if !strings.Contains(err.Error(), "model-altitude evaluation has been removed") {
-		t.Fatalf("CreateRun() error = %v, want removed model-altitude diagnostic", err)
-	}
-}
-
 func TestCreateRunValidatesSubjectBeforeCreatingRunFolder(t *testing.T) {
 	repo := testRepo(t)
 	_, err := CreateRun(Options{RepoRoot: repo, Subject: "."})
@@ -1194,18 +1183,20 @@ func TestPlannedCoverageStatusGaps(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
-	if _, err := SetPlannedCoverage(runPath, []byte(`{
-  "schemaVersion": 1,
-  "assessments": [
-    { "targetPath": [], "requirement": "Has tests" },
-    { "targetPath": ["Child"], "requirement": "Has tests" }
-  ],
-  "analyses": [
-    { "targetPath": [] },
-    { "targetPath": ["Child"] }
-  ]
-}`)); err != nil {
-		t.Fatalf("SetPlannedCoverage() error = %v", err)
+	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte(`---
+coverage:
+  assessments:
+    - targetPath: []
+      requirement: Has tests
+    - targetPath: [Child]
+      requirement: Has tests
+  analyses:
+    - targetPath: []
+    - targetPath: [Child]
+---
+# Evaluation plan
+`), 0o644); err != nil {
+		t.Fatalf("write plan.md: %v", err)
 	}
 	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
   "target": "Root",

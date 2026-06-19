@@ -17,6 +17,17 @@ import (
 )
 
 func AddRecord(kind WriteKind, runPath string, raw []byte) (*WriteResult, error) {
+	result, err := WriteRecords(kind, runPath, raw)
+	if err != nil {
+		return nil, err
+	}
+	if len(result.Paths) == 1 && result.Path == "" {
+		result.Path = result.Paths[0]
+	}
+	return result, nil
+}
+
+func WriteRecords(kind WriteKind, runPath string, raw []byte) (*WriteResult, error) {
 	runAbs, err := verifyRun(runPath)
 	if err != nil {
 		return nil, err
@@ -27,11 +38,11 @@ func AddRecord(kind WriteKind, runPath string, raw []byte) (*WriteResult, error)
 	}
 	switch kind {
 	case KindAssessment:
-		return addAssessment(runAbs, raw, levels)
+		return addAssessments(runAbs, raw, levels)
 	case KindAnalysis:
-		return addAnalysis(runAbs, raw, levels)
+		return setAnalyses(runAbs, raw, levels)
 	case KindRecommendation:
-		return addRecommendation(runAbs, raw)
+		return addRecommendations(runAbs, raw)
 	default:
 		return nil, usagef("unknown record kind %q", kind)
 	}
@@ -53,111 +64,171 @@ func DecodeSingleJSON(raw []byte, dst any) error {
 	return nil
 }
 
-func addAssessment(runAbs string, raw []byte, levels map[string]bool) (*WriteResult, error) {
-	var payload AssessmentPayload
-	if err := DecodeSingleJSON(raw, &payload); err != nil {
-		return nil, err
+func DecodeJSONList[T any](raw []byte) ([]T, error) {
+	trimmed := bytes.TrimSpace(raw)
+	if len(trimmed) == 0 {
+		return nil, usagef("input is empty")
 	}
-	if err := validateAssessment(payload, levels); err != nil {
-		return nil, err
+	var values []T
+	switch trimmed[0] {
+	case '[':
+		if err := decodeJSONDocument(trimmed, &values); err != nil {
+			return nil, err
+		}
+	case '{':
+		var value T
+		if err := decodeJSONDocument(trimmed, &value); err != nil {
+			return nil, err
+		}
+		values = []T{value}
+	default:
+		return nil, usagef("input must be a JSON object or array")
 	}
-	rec := AssessmentRecord{
-		SchemaVersion:   SchemaVersion,
-		Target:          payload.Target,
-		TargetPath:      payload.TargetPath,
-		Requirement:     payload.Requirement,
-		Factors:         payload.Factors,
-		Rating:          payload.Rating,
-		NotAssessed:     payload.NotAssessed,
-		CriterionSource: payload.CriterionSource,
-		Findings:        payload.Findings,
-		Rationale:       payload.Rationale,
-		Recommendations: payload.Recommendations,
-		Supersedes:      payload.Supersedes,
+	return values, nil
+}
+
+func decodeJSONDocument(raw []byte, dst any) error {
+	dec := json.NewDecoder(bytes.NewReader(raw))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(dst); err != nil {
+		if errors.Is(err, io.EOF) {
+			return usagef("input is empty")
+		}
+		return usagef("invalid JSON payload: %w", err)
 	}
-	data, err := marshalJSON(rec)
+	var extra any
+	if err := dec.Decode(&extra); !errors.Is(err, io.EOF) {
+		return usagef("input must contain exactly one JSON document")
+	}
+	return nil
+}
+
+func addAssessments(runAbs string, raw []byte, levels map[string]bool) (*WriteResult, error) {
+	payloads, err := DecodeJSONList[AssessmentPayload](raw)
 	if err != nil {
 		return nil, err
 	}
-	dir := filepath.Join(runAbs, "assessments")
-	path, err := writeNumbered(dir, Slug(payload.Target)+"-"+Slug(payload.Requirement)+".json", data)
-	if err != nil {
-		return nil, err
+	var paths []string
+	for _, payload := range payloads {
+		if err := validateAssessment(payload, levels); err != nil {
+			return nil, err
+		}
+		rec := AssessmentRecord{
+			SchemaVersion:   SchemaVersion,
+			Target:          payload.Target,
+			TargetPath:      payload.TargetPath,
+			Requirement:     payload.Requirement,
+			Factors:         payload.Factors,
+			Rating:          payload.Rating,
+			NotAssessed:     payload.NotAssessed,
+			CriterionSource: payload.CriterionSource,
+			Findings:        payload.Findings,
+			Rationale:       payload.Rationale,
+			Recommendations: payload.Recommendations,
+			Supersedes:      payload.Supersedes,
+		}
+		data, err := marshalJSON(rec)
+		if err != nil {
+			return nil, err
+		}
+		path, err := writeNumbered(filepath.Join(runAbs, "assessments"), Slug(payload.Target)+"-"+Slug(payload.Requirement)+".json", data)
+		if err != nil {
+			return nil, err
+		}
+		paths = append(paths, filepath.ToSlash(path))
 	}
-	rel := filepath.ToSlash(path)
 	return &WriteResult{
 		SchemaVersion: SchemaVersion,
-		Path:          rel,
+		Path:          singlePath(paths),
+		Paths:         paths,
 		Kind:          KindAssessment,
 		NextActions: []receipt.Action{{
-			ID:      "show-status",
+			ID:      "evaluation-status",
 			Label:   "Inspect report readiness",
-			Command: "qualitymd evaluation show-status " + filepath.ToSlash(runAbs),
+			Command: "qualitymd evaluation status " + filepath.ToSlash(runAbs),
 		}},
 	}, nil
 }
 
-func addAnalysis(runAbs string, raw []byte, levels map[string]bool) (*WriteResult, error) {
-	var payload AnalysisPayload
-	if err := DecodeSingleJSON(raw, &payload); err != nil {
-		return nil, err
-	}
-	if err := validateAnalysis(payload, levels); err != nil {
-		return nil, err
-	}
-	rec := AnalysisRecord{
-		SchemaVersion:        SchemaVersion,
-		Target:               payload.Target,
-		TargetPath:           payload.TargetPath,
-		LocalRating:          payload.LocalRating,
-		FactorRatings:        payload.FactorRatings,
-		AggregateRating:      payload.AggregateRating,
-		AssessmentRecords:    payload.AssessmentRecords,
-		ChildAnalysisRecords: payload.ChildAnalysisRecords,
-		BindingConstraints:   payload.BindingConstraints,
-	}
-	data, err := marshalJSON(rec)
+func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteResult, error) {
+	payloads, err := DecodeJSONList[AnalysisPayload](raw)
 	if err != nil {
 		return nil, err
 	}
-	path := filepath.Join(runAbs, "analysis", Slug(payload.Target)+".json")
-	_, statErr := os.Stat(path)
-	created := os.IsNotExist(statErr)
-	if err := writeReplace(path, data); err != nil {
-		return nil, err
+	var paths []string
+	var createdPtr *bool
+	for _, payload := range payloads {
+		if err := validateAnalysis(payload, levels); err != nil {
+			return nil, err
+		}
+		rec := AnalysisRecord{
+			SchemaVersion:        SchemaVersion,
+			Target:               payload.Target,
+			TargetPath:           payload.TargetPath,
+			LocalRating:          payload.LocalRating,
+			FactorRatings:        payload.FactorRatings,
+			AggregateRating:      payload.AggregateRating,
+			AssessmentRecords:    payload.AssessmentRecords,
+			ChildAnalysisRecords: payload.ChildAnalysisRecords,
+			BindingConstraints:   payload.BindingConstraints,
+		}
+		data, err := marshalJSON(rec)
+		if err != nil {
+			return nil, err
+		}
+		path := filepath.Join(runAbs, "analysis", Slug(payload.Target)+".json")
+		_, statErr := os.Stat(path)
+		created := os.IsNotExist(statErr)
+		if len(payloads) == 1 {
+			createdPtr = &created
+		}
+		if err := writeReplace(path, data); err != nil {
+			return nil, err
+		}
+		paths = append(paths, filepath.ToSlash(path))
 	}
-	rel := filepath.ToSlash(path)
-	return &WriteResult{SchemaVersion: SchemaVersion, Path: rel, Kind: KindAnalysis, Created: &created}, nil
+	return &WriteResult{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindAnalysis, Created: createdPtr}, nil
 }
 
-func addRecommendation(runAbs string, raw []byte) (*WriteResult, error) {
-	var payload RecommendationPayload
-	if err := DecodeSingleJSON(raw, &payload); err != nil {
-		return nil, err
-	}
-	if err := validateRecommendation(payload); err != nil {
-		return nil, err
-	}
-	rec := RecommendationRecord{
-		SchemaVersion:      SchemaVersion,
-		Title:              payload.Title,
-		Gap:                payload.Gap,
-		EvidenceLocators:   payload.EvidenceLocators,
-		AssessmentRecords:  payload.AssessmentRecords,
-		RemediationOptions: payload.RemediationOptions,
-		RecommendedOption:  payload.RecommendedOption,
-		DoneCriterion:      payload.DoneCriterion,
-		Supersedes:         payload.Supersedes,
-	}
-	data, err := renderRecommendation(rec)
+func addRecommendations(runAbs string, raw []byte) (*WriteResult, error) {
+	payloads, err := DecodeJSONList[RecommendationPayload](raw)
 	if err != nil {
 		return nil, err
 	}
-	path, err := writeNumbered(filepath.Join(runAbs, "recommendations"), Slug(payload.Title)+".md", data)
-	if err != nil {
-		return nil, err
+	var paths []string
+	for _, payload := range payloads {
+		if err := validateRecommendation(payload); err != nil {
+			return nil, err
+		}
+		rec := RecommendationRecord{
+			SchemaVersion:      SchemaVersion,
+			Title:              payload.Title,
+			Gap:                payload.Gap,
+			EvidenceLocators:   payload.EvidenceLocators,
+			AssessmentRecords:  payload.AssessmentRecords,
+			RemediationOptions: payload.RemediationOptions,
+			RecommendedOption:  payload.RecommendedOption,
+			DoneCriterion:      payload.DoneCriterion,
+			Supersedes:         payload.Supersedes,
+		}
+		data, err := renderRecommendation(rec)
+		if err != nil {
+			return nil, err
+		}
+		path, err := writeNumbered(filepath.Join(runAbs, "recommendations"), Slug(payload.Title)+".md", data)
+		if err != nil {
+			return nil, err
+		}
+		paths = append(paths, filepath.ToSlash(path))
 	}
-	return &WriteResult{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(path), Kind: KindRecommendation}, nil
+	return &WriteResult{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindRecommendation}, nil
+}
+
+func singlePath(paths []string) string {
+	if len(paths) == 1 {
+		return paths[0]
+	}
+	return ""
 }
 
 func verifyRun(runPath string) (string, error) {

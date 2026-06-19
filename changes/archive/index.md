@@ -125,3 +125,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   added a durable user interaction contract for the `/quality` skill covering run
   frames, decision briefs, stop/reroute behavior, history-aware operation,
   improvement delta reports, and status-first output (`Done`).
+- [0039 — Evaluation command surface redesign](0039-evaluation-command-surface.md) -
+  reshaped the `qualitymd evaluation` surface around noun/verb resources, folded
+  planned coverage into `plan.md`, split report build from gate, added run and
+  record listing, batched writes, and removed create altitude residue (`Done`).

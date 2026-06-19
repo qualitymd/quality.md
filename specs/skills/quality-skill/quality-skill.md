@@ -463,9 +463,10 @@ machine-readable output where a command provides it (the
 [`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
 text. Before evaluation work, it **MUST** verify that
 `qualitymd version --json`, `qualitymd upgrade --check`,
-`qualitymd evaluation create-run`, `qualitymd evaluation add-record`,
-`qualitymd evaluation set-planned-coverage`,
-`qualitymd evaluation show-status`, and `qualitymd evaluation build-report` are
+`qualitymd evaluation create`, `qualitymd evaluation list`,
+`qualitymd evaluation status`, `qualitymd evaluation assessment`,
+`qualitymd evaluation analysis`, `qualitymd evaluation recommendation`, and
+`qualitymd evaluation report` are
 available; if any is missing, it stops rather than hand-authoring the run.
 
 ## Evaluation workflow
@@ -498,13 +499,12 @@ flowchart TD
     Read[Read resolved target file] --> Lint{lint valid?}
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
-    Ground --> Run[Create run folder through<br/>qualitymd evaluation create-run]
+    Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
     Run --> Plan[Fill design.md and plan.md:<br/>resolved parameters, coverage approach]
-    Plan --> Coverage[Optionally write planned coverage through<br/>qualitymd evaluation set-planned-coverage]
-    Coverage --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
-    Eval --> Records[Write records through<br/>qualitymd evaluation add-record]
-    Records --> Status[Check qualitymd evaluation show-status]
-    Status --> Report[Build reports through<br/>qualitymd evaluation build-report]
+    Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
+    Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
+    Records --> Status[Check qualitymd evaluation status]
+    Status --> Report[Build reports through<br/>qualitymd evaluation report build]
     Report --> Mode{Mode?}
     Mode -->|evaluate| Done([Done])
     Mode -->|improve| Confirm{User confirms a<br/>recommendation + option?}
@@ -521,31 +521,31 @@ flowchart TD
    [Driving the CLI](#driving-the-cli)).
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
-4. **Create the run** with `qualitymd evaluation create-run`, letting the CLI
+4. **Create the run** with `qualitymd evaluation create`, letting the CLI
    number the folder, create the layout, and snapshot `model.md`.
 5. **Plan** — fill the evaluation's **design** (the resolved parameters and the
    `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
    `source` will be covered at the chosen effort). The plan **MUST** record the
    chosen effort and concrete requirement set covered.
 6. **Record planned coverage when useful** — after the plan is settled, the
-   skill should write intended assessment and analysis coverage through
-   `qualitymd evaluation set-planned-coverage` when resume diagnostics
+   skill should add `coverage:` frontmatter to `plan.md` when resume diagnostics
    materially matter, especially for standard, deep, concurrent-write, or
-   interruption-prone runs. The skill **MUST NOT** hand-author or hand-repair
-   `planned-coverage.json` when the CLI command is available.
+   interruption-prone runs.
 7. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess.
 8. **Write records** with
-   `qualitymd evaluation add-record assessment|analysis|recommendation <run>`,
+   `qualitymd evaluation assessment add <run>`,
+   `qualitymd evaluation analysis set <run>`, and
+   `qualitymd evaluation recommendation add <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
    `schemaVersion`. The judgment JSON uses stable model identifiers: Target path
    entries are target keys, Factor references and `factorRatings[].factor`
    values are factor keys, and ratings are rating `level` ids. Human-facing
    prose can use titles; records keep identifiers so reports, gates, and
    machine consumers remain stable.
-9. **Check and report** with `qualitymd evaluation show-status <run>` followed by
-   `qualitymd evaluation build-report <run>` when reportable. Under `improve`,
+9. **Check and report** with `qualitymd evaluation status <run>` followed by
+   `qualitymd evaluation report build <run>` when reportable. Under `improve`,
    the skill then **applies a chosen
    recommendation** — defaulting to its recommended option — only on explicit
    confirmation, then creates a **new numbered evaluation folder** and
@@ -672,7 +672,6 @@ quality/evaluations/
     report-summary.md
     report.md
     report.json
-    planned-coverage.json
     recommendations/
       001-<slug>.md
       002-<slug>.md
@@ -716,9 +715,8 @@ Together these separate the three things an audit must tell apart — the *input
   rating.
 - The folder can include optional **planned coverage** metadata when the run
   needs machine-checkable resume diagnostics. The skill supplies the intended
-  assessment requirements and analysis targets after the plan is settled, but the
-  CLI writes `planned-coverage.json` through
-  `qualitymd evaluation set-planned-coverage`.
+  assessment requirements and analysis targets as `coverage:` frontmatter in
+  `plan.md` after the plan is settled.
 - The folder **MUST** capture the **assessment records** the Evaluate phase
   produces as JSON — one artifact per in-scope requirement, holding its findings
   (each with its locator), the rating inferred against the requirement's
@@ -728,7 +726,7 @@ Together these separate the three things an audit must tell apart — the *input
   the absent evidence. Each record is **written atomically and never mutated** —
   a re-assessment (e.g. under `improve`) produces a new evaluation folder rather
   than editing an existing record. The skill writes assessment records through
-  `qualitymd evaluation add-record assessment`; the CLI owns serialization,
+  `qualitymd evaluation assessment add`; the CLI owns serialization,
   numbering, and `schemaVersion`.
 - The folder **MUST** capture the **analysis records** the Analyze phase produces
   as JSON — one write-once artifact per target node — holding that node's inferred
@@ -739,7 +737,7 @@ Together these separate the three things an audit must tell apart — the *input
   and its **children's analysis records** behind its aggregate — so the chain leaf
   → node → root is explicit and a *not assessed* outcome is visible wherever it
   propagates. The skill writes analysis records through
-  `qualitymd evaluation add-record analysis`; the CLI owns serialization and
+  `qualitymd evaluation analysis set`; the CLI owns serialization and
   `schemaVersion`.
 
 Assessment, analysis, and report JSON files **MUST** use stable generic
@@ -764,7 +762,7 @@ recorded, not followed.
 The report is the **render over these records**, not an independent copy:
 `report-summary.md` is the concise human triage artifact, `report.md` is the
 full human rendering, and `report.json` is the machine-readable rendering of the
-same result, produced by `qualitymd evaluation build-report`. The assessment records are the source of record for
+same result, produced by `qualitymd evaluation report build`. The assessment records are the source of record for
 Assess-and-Rate and the analysis records for Analyze, and the report's
 per-requirement and per-target sections derive from them (the report adds the
 Advise and Report layers and the reader-facing framing). `report.json` should
@@ -807,7 +805,7 @@ name the route hint in existing text, such as the affected package, path,
 workflow, maintainer surface, or verification command. Like the report, a
 recommendation references any secret value by `file:line` and type only (see
 [Boundaries](#boundaries-and-hard-rules)). The skill writes recommendation
-records through `qualitymd evaluation add-record recommendation`; the CLI owns
+records through `qualitymd evaluation recommendation add`; the CLI owns
 Markdown frontmatter, numbering, and stable rendering.
 
 When correcting an already written recommendation, the skill should write a

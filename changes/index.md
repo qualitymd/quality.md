@@ -17,10 +17,11 @@ enduring `specs/` bundle and the repository-root
 [`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of truth
 for the tool's current behavior. A Change Case bridges the two: durable specs
 and docs **MAY** be edited at any time (within a case or on their own), but a
-Change Case **MUST** record every durable spec or doc its work impacts in an
-**Affected specs & docs** section and **SHOULD** suggest any new durable specs
-worth creating. It **SHOULD** bring the durable docs it lists into sync
-**before** reaching **In-Review** so the source of truth is not left stale.
+Change Case **MUST** record every artifact its work impacts — code, specs, docs,
+the bundled skill — in an **Affected artifacts** section and **SHOULD** suggest
+any new durable specs worth creating. It **SHOULD** bring the durable docs it
+lists into sync **before** reaching **In-Review** so the source of truth is not
+left stale.
 Completed cases then move into [`archive/`](archive/); the enduring specs carry
 the result forward.
 
@@ -36,7 +37,7 @@ A Change Case's `status` frontmatter moves through, in order:
 
 Durable specs and docs **MAY** be edited at any time, with or without a Change
 Case; before setting **In-Review**, a case **SHOULD** bring every durable spec
-and doc it listed in **Affected specs & docs** into sync. When a case reaches
+and doc it listed in **Affected artifacts** into sync. When a case reaches
 **Done**, move it (and its child folder) into [`archive/`](archive/) in the same
 edit.
 

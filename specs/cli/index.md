@@ -9,16 +9,19 @@ The format-tooling commands specified for this phase. See the parent
 - [qualitymd lint](lint.md) - validate a file's structure against the format spec.
 - [qualitymd spec](spec.md) - emit the `QUALITY.md` format specification.
 - [qualitymd status](status.md) - emit a deterministic project-state snapshot.
-- [qualitymd evaluation create-run](evaluation-create-run.md) - create a
-  numbered evaluation run folder.
-- [qualitymd evaluation add-record](evaluation-add-record.md) - write
-  assessment, analysis, and recommendation records.
-- [qualitymd evaluation set-planned-coverage](evaluation-set-planned-coverage.md)
-  - write planned coverage metadata for a run.
-- [qualitymd evaluation show-status](evaluation-show-status.md) - inspect whether
-  a run can be rendered.
-- [qualitymd evaluation build-report](evaluation-build-report.md) - derive
-  `report-summary.md`, `report.md`, and `report.json`, with an optional CI gate.
+- [qualitymd evaluation create](evaluation-create.md) - create a numbered
+  evaluation run folder.
+- [qualitymd evaluation list](evaluation-list.md) - list evaluation runs.
+- [qualitymd evaluation status](evaluation-status.md) - inspect whether a run can
+  be rendered.
+- [qualitymd evaluation assessment](evaluation-assessment.md) - add and list
+  assessment records.
+- [qualitymd evaluation analysis](evaluation-analysis.md) - set and list analysis
+  records.
+- [qualitymd evaluation recommendation](evaluation-recommendation.md) - add and
+  list recommendation records.
+- [qualitymd evaluation report](evaluation-report.md) - build and gate evaluation
+  reports.
 - [qualitymd version](version.md) - show structured CLI and bundled spec version
   metadata.
 - [qualitymd upgrade](upgrade.md) - explicitly check for and advise on CLI

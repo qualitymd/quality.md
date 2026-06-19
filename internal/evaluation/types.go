@@ -25,7 +25,6 @@ func usagef(format string, args ...any) error {
 type Options struct {
 	RepoRoot      string
 	EvaluationDir string
-	Altitude      string
 	Narrowing     string
 	Subject       string
 }
@@ -33,7 +32,6 @@ type Options struct {
 type CreateRunResult struct {
 	Path        string           `json:"path"`
 	Number      int              `json:"-"`
-	Altitude    string           `json:"altitude"`
 	NextActions []receipt.Action `json:"nextActions"`
 }
 
@@ -47,31 +45,25 @@ const (
 
 type WriteResult struct {
 	SchemaVersion int              `json:"schemaVersion"`
-	Path          string           `json:"path"`
+	Path          string           `json:"path,omitempty"`
+	Paths         []string         `json:"paths"`
 	Kind          WriteKind        `json:"kind"`
 	Created       *bool            `json:"created,omitempty"`
 	NextActions   []receipt.Action `json:"nextActions,omitempty"`
 }
 
-type PlannedCoverageResult struct {
-	SchemaVersion int              `json:"schemaVersion"`
-	Path          string           `json:"path"`
-	NextActions   []receipt.Action `json:"nextActions,omitempty"`
-}
-
 type PlannedCoverage struct {
-	SchemaVersion int                         `json:"schemaVersion"`
-	Assessments   []PlannedCoverageAssessment `json:"assessments"`
-	Analyses      []PlannedCoverageAnalysis   `json:"analyses"`
+	Assessments []PlannedCoverageAssessment `json:"assessments" yaml:"assessments"`
+	Analyses    []PlannedCoverageAnalysis   `json:"analyses" yaml:"analyses"`
 }
 
 type PlannedCoverageAssessment struct {
-	TargetPath  []string `json:"targetPath"`
-	Requirement string   `json:"requirement"`
+	TargetPath  []string `json:"targetPath" yaml:"targetPath"`
+	Requirement string   `json:"requirement" yaml:"requirement"`
 }
 
 type PlannedCoverageAnalysis struct {
-	TargetPath []string `json:"targetPath"`
+	TargetPath []string `json:"targetPath" yaml:"targetPath"`
 }
 
 type Evidence struct {

@@ -2,51 +2,11 @@ package evaluation
 
 import (
 	"fmt"
-	"path/filepath"
 	"slices"
 	"strings"
-
-	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
-const plannedCoverageFile = "planned-coverage.json"
-
-func SetPlannedCoverage(runPath string, raw []byte) (*PlannedCoverageResult, error) {
-	runAbs, err := verifyRun(runPath)
-	if err != nil {
-		return nil, err
-	}
-	var coverage PlannedCoverage
-	if err := DecodeSingleJSON(raw, &coverage); err != nil {
-		return nil, err
-	}
-	if err := validatePlannedCoverage(coverage); err != nil {
-		return nil, err
-	}
-	sortPlannedCoverage(&coverage)
-	data, err := marshalJSON(coverage)
-	if err != nil {
-		return nil, err
-	}
-	path := filepath.Join(runAbs, plannedCoverageFile)
-	if err := writeReplace(path, data); err != nil {
-		return nil, err
-	}
-	return &PlannedCoverageResult{
-		SchemaVersion: SchemaVersion,
-		Path:          filepath.ToSlash(path),
-		NextActions: []receipt.Action{{
-			ID:      "show-status",
-			Label:   "Inspect report readiness",
-			Command: "qualitymd evaluation show-status " + filepath.ToSlash(runAbs),
-		}},
-	}, nil
-}
-
 func validatePlannedCoverage(coverage PlannedCoverage) error {
-	if coverage.SchemaVersion != SchemaVersion {
-		return usagef("schemaVersion = %d, want %d", coverage.SchemaVersion, SchemaVersion)
-	}
 	if coverage.Assessments == nil {
 		return usagef("assessments is required")
 	}

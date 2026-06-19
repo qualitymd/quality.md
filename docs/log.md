@@ -2,6 +2,19 @@
 
 ## 2026-06-19
 
+- **Revision**: Broadened the change-case "Affected specs & docs" framing to
+  **Affected artifacts** across [Working with change cases](guides/work-with-change-cases.md),
+  [Writing functional specs](guides/write-functional-specs.md), and
+  [Writing design docs](guides/write-design-docs.md) (and the
+  [changes index](../changes/index.md)). A Change Case now accounts for every
+  artifact kind it touches — code, durable specs, durable docs, the bundled
+  skill, scaffold — so "specs and docs" no longer pre-narrows the list and leaves
+  code or skill files unaccounted; code stays gated to `In-Progress` while
+  durable specs/docs remain editable in any phase. Also added a "find them by
+  analysis, not recall" step: derive the list from a repo-wide sweep over changed
+  names/symbols/paths (and the names renamed away from) across all bundles, follow
+  inbound cross-references, and triage live artifacts from frozen historical ones.
+
 - **Revision**: Updated [Versioning](reference/versioning.md),
   [Use the /quality skill](guides/use-quality-skill.md), and the top-level
   [install guide](../install.md) for `/quality upgrade` as the paired

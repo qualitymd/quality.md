@@ -104,8 +104,8 @@ source of truth. Unlike the [Shape](#shape) sections, which are a palette, this
 section is **required** for a change-case spec: a silent omission is how a
 contract change lands undocumented, and the *what* of a spec change belongs with
 the spec, not buried in the design doc. (See
-[Working with change cases](work-with-change-cases.md#account-for-the-specs-and-docs-it-touches)
-for how it divides labor with the parent's **Affected specs & docs** index.)
+[Working with change cases](work-with-change-cases.md#account-for-the-artifacts-it-touches)
+for how it divides labor with the parent's **Affected artifacts** index.)
 
 Give it three subsections, in order — **To add** (new durable specs), **To
 modify**, **To delete** — and make each one present and explicit: a list, or the
@@ -137,9 +137,9 @@ None
 ```
 
 Scope is durable **specs** only — the [`specs/`](../../specs/index.md) bundle and
-the format spec [`SPECIFICATION.md`](../../SPECIFICATION.md). Durable *docs*
-(README, guides, scaffold) are tracked in the change case's parent **Affected
-specs & docs** index, not here.
+the format spec [`SPECIFICATION.md`](../../SPECIFICATION.md). The other artifact
+kinds — durable *docs* (README, guides, scaffold, the bundled skill) and *code* —
+are tracked in the change case's parent **Affected artifacts** index, not here.
 
 ## Conventions
 
@@ -165,7 +165,7 @@ specs & docs** index, not here.
   spec *may* need, not boxes every spec must fill. Take only what a spec earns: a
   cross-cutting spec may use them all; a single-command spec is often just its
   companion note and requirements (see
-  [`evaluation create-run`](../../specs/cli/evaluation-create-run.md)). Forcing
+  [`evaluation create`](../../specs/cli/evaluation-create.md)). Forcing
   every heading onto every spec is how specs bloat and authors stall. The OKF
   mechanics — frontmatter `type`, a tidy `index.md` and `log.md` — are the only
   non-negotiables.

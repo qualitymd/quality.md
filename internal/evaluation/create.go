@@ -14,9 +14,6 @@ type config struct {
 }
 
 func CreateRun(opts Options) (*CreateRunResult, error) {
-	if opts.Altitude != "" && opts.Altitude != "subject" {
-		return nil, usagef("model-altitude evaluation has been removed; create-run only supports subject evaluation")
-	}
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
 	}
@@ -74,13 +71,12 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 	}
 	runRel := filepath.ToSlash(filepath.Join(evalDirRel, name))
 	return &CreateRunResult{
-		Path:     runRel,
-		Number:   number,
-		Altitude: altitude,
+		Path:   runRel,
+		Number: number,
 		NextActions: []receipt.Action{{
-			ID:      "add-record",
+			ID:      "assessment-add",
 			Label:   "Record evaluation judgments",
-			Command: "qualitymd evaluation add-record assessment " + runRel,
+			Command: "qualitymd evaluation assessment add " + runRel,
 		}},
 	}, nil
 }

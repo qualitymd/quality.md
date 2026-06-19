@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: qualitymd evaluation create-run
+title: qualitymd evaluation create
 description: Create a numbered evaluation run folder.
 tags: [cli, command, evaluation]
-timestamp: 2026-06-18T00:00:00Z
+timestamp: 2026-06-19T00:00:00Z
 ---
 
-# qualitymd evaluation create-run
+# qualitymd evaluation create
 
-`qualitymd evaluation create-run` creates a numbered evaluation run folder. It
+`qualitymd evaluation create` creates a numbered evaluation run folder. It
 inherits the cross-cutting CLI contract from [qualitymd CLI](../cli.md) and
 produces the layout defined by [Evaluation records](../evaluation-records.md).
 
@@ -39,22 +39,14 @@ directory or run folder. The subject path **MUST** be repository-relative,
 directory. Invalid subject paths **MUST** fail without creating a numbered run
 folder.
 
-This prevalidation exists because creating the run folder before validating
-`--subject` could fail mid-write — leaving an empty run skeleton on disk and
-consuming a run number with no records. Validating first guarantees an invalid
-subject produces no on-disk artifacts and no run-number gap. The subject snapshot
-bytes are prepared before the evaluation directory is created so a validation
-failure touches no disk state; rolling back partially created folders was
-deliberately avoided to prevent deleting a directory a concurrent run created.
-
 The command **MUST** compute the next run number as one past the highest matching
 evaluation run folder, create the run directory, create `assessments/`,
 `analysis/`, and `recommendations/`, and seed `model.md`, `design.md`, and
-`plan.md`.
+body-only `plan.md`.
 
-`model.md` is the resolved subject file.
+`model.md` is the resolved subject file. New runs are subject-altitude. The
+command **MUST NOT** expose an altitude flag, option, or JSON receipt field.
 
 On success, human output **MUST** report the created path on stderr. Under
 `--json`, stdout **MUST** contain a receipt with `schemaVersion`, `path`, and
-`nextActions`. The receipt **MAY** include `altitude: "subject"` for
-compatibility with existing evaluation consumers.
+`nextActions`.

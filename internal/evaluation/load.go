@@ -16,15 +16,16 @@ import (
 )
 
 type Run struct {
-	Path            string
-	Design          string
-	Plan            string
-	PlannedCoverage *PlannedCoverage
-	Assessments     []AssessmentRecord
-	Analyses        []AnalysisRecord
-	Recommendations []RecommendationRecord
-	Model           *model.Spec
-	Scale           []model.RatingLevel
+	Path             string
+	Design           string
+	Plan             string
+	PlannedCoverage  *PlannedCoverage
+	PlanCoverageGaps []Gap
+	Assessments      []AssessmentRecord
+	Analyses         []AnalysisRecord
+	Recommendations  []RecommendationRecord
+	Model            *model.Spec
+	Scale            []model.RatingLevel
 }
 
 type Counts struct {
@@ -71,19 +72,7 @@ func Load(path string) (*Run, error) {
 		return nil, fmt.Errorf("reading plan.md: %w", err)
 	} else {
 		run.Plan = string(raw)
-	}
-	if raw, err := os.ReadFile(filepath.Join(runAbs, plannedCoverageFile)); err == nil {
-		var coverage PlannedCoverage
-		if err := DecodeSingleJSON(raw, &coverage); err != nil {
-			return nil, fmt.Errorf("reading %s: %w", plannedCoverageFile, err)
-		}
-		if err := validatePlannedCoverage(coverage); err != nil {
-			return nil, fmt.Errorf("reading %s: %w", plannedCoverageFile, err)
-		}
-		sortPlannedCoverage(&coverage)
-		run.PlannedCoverage = &coverage
-	} else if !os.IsNotExist(err) {
-		return nil, fmt.Errorf("reading %s: %w", plannedCoverageFile, err)
+		run.PlannedCoverage, run.PlanCoverageGaps = parsePlanCoverage(raw)
 	}
 	if err := loadJSONRecords(filepath.Join(runAbs, "assessments"), "*.json", func(path string, raw []byte) error {
 		var rec AssessmentRecord
@@ -186,6 +175,48 @@ func splitMarkdownFrontmatter(raw []byte) ([]byte, []byte, error) {
 	return rest[:end], rest[end+len("\n---\n"):], nil
 }
 
+type planFrontmatter struct {
+	Coverage *PlannedCoverage `yaml:"coverage"`
+}
+
+func parsePlanCoverage(raw []byte) (*PlannedCoverage, []Gap) {
+	front, _, ok, err := splitOptionalMarkdownFrontmatter(raw)
+	if err != nil {
+		return nil, []Gap{invalidPlanCoverageGap(err)}
+	}
+	if !ok {
+		return nil, nil
+	}
+	var fm planFrontmatter
+	if err := yaml.Unmarshal(front, &fm); err != nil {
+		return nil, []Gap{invalidPlanCoverageGap(fmt.Errorf("parsing frontmatter: %w", err))}
+	}
+	if fm.Coverage == nil {
+		return nil, nil
+	}
+	if err := validatePlannedCoverage(*fm.Coverage); err != nil {
+		return nil, []Gap{invalidPlanCoverageGap(err)}
+	}
+	sortPlannedCoverage(fm.Coverage)
+	return fm.Coverage, nil
+}
+
+func splitOptionalMarkdownFrontmatter(raw []byte) ([]byte, []byte, bool, error) {
+	if !bytes.HasPrefix(raw, []byte("---\n")) {
+		return nil, raw, false, nil
+	}
+	rest := raw[len("---\n"):]
+	end := bytes.Index(rest, []byte("\n---\n"))
+	if end < 0 {
+		return nil, raw, true, fmt.Errorf("unterminated frontmatter")
+	}
+	return rest[:end], rest[end+len("\n---\n"):], true, nil
+}
+
+func invalidPlanCoverageGap(err error) Gap {
+	return Gap{Kind: "invalid-plan-coverage", Ref: "plan.md", Detail: err.Error()}
+}
+
 func (r *Run) Counts() Counts {
 	return Counts{
 		Assessments:     len(r.Assessments),
@@ -244,21 +275,21 @@ func (r *Run) Status() Status {
 	}
 	if status.Reportable {
 		status.NextActions = []receipt.Action{{
-			ID:      "build-report",
+			ID:      "report-build",
 			Label:   "Build the evaluation report",
-			Command: "qualitymd evaluation build-report " + r.Path,
+			Command: "qualitymd evaluation report build " + r.Path,
 		}}
 	} else if hasReviewGap(gaps) {
 		status.NextActions = []receipt.Action{{
 			ID:      "review-gaps",
 			Label:   "Resolve evaluation record gaps",
-			Command: "qualitymd evaluation show-status " + r.Path,
+			Command: "qualitymd evaluation status " + r.Path,
 		}}
 	} else {
 		status.NextActions = []receipt.Action{{
-			ID:      "add-record",
+			ID:      "assessment-add",
 			Label:   "Add the missing evaluation records",
-			Command: "qualitymd evaluation add-record <kind> " + r.Path,
+			Command: "qualitymd evaluation assessment add " + r.Path,
 		}}
 	}
 	return status
@@ -410,8 +441,9 @@ func recommendationRefExists(recs map[string]bool, ref string) bool {
 }
 
 func (r *Run) plannedCoverageGaps(assessmentRecordsByIdentity, analysisRecordsByIdentity map[string]string, supersededAssessments map[string]bool) []Gap {
+	gaps := append([]Gap(nil), r.PlanCoverageGaps...)
 	if r.PlannedCoverage == nil {
-		return nil
+		return gaps
 	}
 	plannedAssessments := map[string]PlannedCoverageAssessment{}
 	for _, assessment := range r.PlannedCoverage.Assessments {
@@ -421,7 +453,6 @@ func (r *Run) plannedCoverageGaps(assessmentRecordsByIdentity, analysisRecordsBy
 	for _, analysis := range r.PlannedCoverage.Analyses {
 		plannedAnalyses[plannedAnalysisIdentity(analysis)] = analysis
 	}
-	var gaps []Gap
 	for _, assessment := range r.PlannedCoverage.Assessments {
 		key := plannedAssessmentIdentity(assessment)
 		if _, ok := assessmentRecordsByIdentity[key]; ok {
@@ -429,7 +460,7 @@ func (r *Run) plannedCoverageGaps(assessmentRecordsByIdentity, analysisRecordsBy
 		}
 		gaps = append(gaps, Gap{
 			Kind:   "missing-planned-assessment",
-			Ref:    plannedCoverageFile,
+			Ref:    "plan.md",
 			Detail: describePlannedAssessment(assessment),
 		})
 	}
@@ -440,7 +471,7 @@ func (r *Run) plannedCoverageGaps(assessmentRecordsByIdentity, analysisRecordsBy
 		}
 		gaps = append(gaps, Gap{
 			Kind:   "missing-planned-analysis",
-			Ref:    plannedCoverageFile,
+			Ref:    "plan.md",
 			Detail: describePlannedAnalysis(analysis),
 		})
 	}
@@ -474,7 +505,7 @@ func (r *Run) plannedCoverageGaps(assessmentRecordsByIdentity, analysisRecordsBy
 
 func hasReviewGap(gaps []Gap) bool {
 	for _, gap := range gaps {
-		if gap.Kind == "duplicate-assessment" || gap.Kind == "duplicate-root-analysis" || gap.Kind == "missing-superseded-recommendation" || gap.Kind == "missing-superseded-assessment" || gap.Kind == "invalid-assessment-supersedes" || gap.Kind == "superseded-assessment-reference" || strings.HasPrefix(gap.Kind, "unexpected-") {
+		if gap.Kind == "duplicate-assessment" || gap.Kind == "duplicate-root-analysis" || gap.Kind == "missing-superseded-recommendation" || gap.Kind == "missing-superseded-assessment" || gap.Kind == "invalid-assessment-supersedes" || gap.Kind == "invalid-plan-coverage" || gap.Kind == "superseded-assessment-reference" || strings.HasPrefix(gap.Kind, "unexpected-") {
 			return true
 		}
 	}

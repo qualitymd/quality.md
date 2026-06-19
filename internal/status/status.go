@@ -342,18 +342,18 @@ func nextActions(path string, history EvaluationHistory, state Readiness) []rece
 	switch state {
 	case ReadinessReadyToEvaluate:
 		return []receipt.Action{{
-			ID:      "create-run",
+			ID:      "evaluation-create",
 			Label:   "Create an evaluation run",
-			Command: "qualitymd evaluation create-run --subject " + path,
+			Command: "qualitymd evaluation create --subject " + path,
 		}}
 	case ReadinessNeedsEvaluationReconcile:
 		return reconciliationActions(path, history)
 	case ReadinessHasEvaluationHistory:
 		if history.Latest != nil && history.Latest.Reportable {
 			return []receipt.Action{{
-				ID:      "build-report",
+				ID:      "report-build",
 				Label:   "Build the latest evaluation report",
-				Command: "qualitymd evaluation build-report " + history.Latest.Path,
+				Command: "qualitymd evaluation report build " + history.Latest.Path,
 			}}
 		}
 	}
@@ -368,21 +368,21 @@ func reconciliationActions(path string, history EvaluationHistory) []receipt.Act
 	switch {
 	case latest.Problem != "" || !latest.Reportable:
 		return []receipt.Action{{
-			ID:      "show-latest-run-status",
+			ID:      "evaluation-status-latest",
 			Label:   "Inspect the latest evaluation run",
-			Command: "qualitymd evaluation show-status " + latest.Path,
+			Command: "qualitymd evaluation status " + latest.Path,
 		}}
 	case latest.Stale:
 		return []receipt.Action{{
-			ID:      "create-fresh-run",
+			ID:      "evaluation-create",
 			Label:   "Create a fresh evaluation run",
-			Command: "qualitymd evaluation create-run --subject " + path,
+			Command: "qualitymd evaluation create --subject " + path,
 		}}
 	case latest.ActiveRecommendations > 0:
 		return []receipt.Action{{
-			ID:      "build-report",
+			ID:      "report-build",
 			Label:   "Build the latest evaluation report",
-			Command: "qualitymd evaluation build-report " + latest.Path,
+			Command: "qualitymd evaluation report build " + latest.Path,
 		}}
 	default:
 		return nil

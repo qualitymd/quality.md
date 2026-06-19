@@ -50,11 +50,13 @@ qualitymd upgrade --check
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
-qualitymd evaluation create-run --help
-qualitymd evaluation add-record --help
-qualitymd evaluation set-planned-coverage --help
-qualitymd evaluation show-status --help
-qualitymd evaluation build-report --help
+qualitymd evaluation create --help
+qualitymd evaluation list --help
+qualitymd evaluation status --help
+qualitymd evaluation assessment --help
+qualitymd evaluation analysis --help
+qualitymd evaluation recommendation --help
+qualitymd evaluation report --help
 ```
 
 Released skill installs declare the `qualitymd` CLI SemVer range they support;

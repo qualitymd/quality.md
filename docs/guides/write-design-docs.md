@@ -31,7 +31,8 @@ Keep it short and decision-focused:
 - **Durable impact is the spec's job.** Which durable specs the change rewrites —
   and what they must say — go in the functional spec's
   [Durable spec changes](write-functional-specs.md#durable-spec-changes) section;
-  durable docs go in the change case's parent **Affected specs & docs** index. A
+  code and durable docs go in the change case's parent **Affected artifacts**
+  index. A
   design doc does **not** carry its own list of durable specs or docs to edit. It
   says *how* the code delivers the change; the *what* stays out of it.
 - **Record the why.** The durable value is the rationale and rejected

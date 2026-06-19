@@ -2,6 +2,19 @@
 
 ## 2026-06-19
 
+- **Revision**: Replaced the evaluation CLI command specs with
+  [`evaluation create`](cli/evaluation-create.md),
+  [`evaluation list`](cli/evaluation-list.md),
+  [`evaluation status`](cli/evaluation-status.md),
+  [`evaluation assessment`](cli/evaluation-assessment.md),
+  [`evaluation analysis`](cli/evaluation-analysis.md),
+  [`evaluation recommendation`](cli/evaluation-recommendation.md), and
+  [`evaluation report`](cli/evaluation-report.md). Updated the CLI overview,
+  command index, [Evaluation records](evaluation-records.md), and the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) for the
+  noun/verb evaluation surface, `plan.md` coverage frontmatter, batched writes,
+  `--latest`, and separate report gate.
+
 - **Revision**: Updated [`evaluation build-report`](cli/evaluation-build-report.md),
   [Evaluation records](evaluation-records.md), and the
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) so human

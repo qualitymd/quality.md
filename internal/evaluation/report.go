@@ -132,6 +132,15 @@ type BuildResult struct {
 	NextActions     []receipt.Action `json:"nextActions,omitempty"`
 }
 
+type GateResult struct {
+	SchemaVersion int     `json:"schemaVersion"`
+	Path          string  `json:"path"`
+	Threshold     string  `json:"threshold"`
+	Rating        *string `json:"rating"`
+	NotAssessed   bool    `json:"notAssessed"`
+	Pass          bool    `json:"pass"`
+}
+
 func BuildReport(path string) (*BuildResult, error) {
 	run, err := Load(path)
 	if err != nil {
@@ -1163,7 +1172,7 @@ func Gate(result *BuildResult, scale []string, threshold string) (bool, error) {
 		}
 	}
 	if thresholdIndex < 0 {
-		return false, usagef("--fail-at-or-below level %q is not in the run rating scale", threshold)
+		return false, usagef("--at-or-below level %q is not in the run rating scale", threshold)
 	}
 	if result.NotAssessed || result.Rating == nil {
 		return false, nil
@@ -1172,6 +1181,42 @@ func Gate(result *BuildResult, scale []string, threshold string) (bool, error) {
 		return false, fmt.Errorf("root rating %q is not in the run rating scale", *result.Rating)
 	}
 	return ratingIndex < thresholdIndex, nil
+}
+
+func GateReport(path, threshold string) (*GateResult, error) {
+	run, err := Load(path)
+	if err != nil {
+		return nil, err
+	}
+	reportPath := filepath.Join(run.Path, "report.json")
+	raw, err := os.ReadFile(reportPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, fmt.Errorf("report.json has not been built for %s", run.Path)
+		}
+		return nil, fmt.Errorf("reading report.json: %w", err)
+	}
+	var report ReportJSON
+	if err := DecodeSingleJSON(raw, &report); err != nil {
+		return nil, fmt.Errorf("reading report.json: %w", err)
+	}
+	levels := make([]string, 0, len(run.Scale))
+	for _, level := range run.Scale {
+		levels = append(levels, level.Level)
+	}
+	build := &BuildResult{Rating: report.Rating.Rating, NotAssessed: report.Rating.NotAssessed}
+	pass, err := Gate(build, levels, threshold)
+	if err != nil {
+		return nil, err
+	}
+	return &GateResult{
+		SchemaVersion: SchemaVersion,
+		Path:          filepath.ToSlash(reportPath),
+		Threshold:     threshold,
+		Rating:        report.Rating.Rating,
+		NotAssessed:   report.Rating.NotAssessed,
+		Pass:          pass,
+	}, nil
 }
 
 func ScaleLevels(path string) ([]string, error) {
