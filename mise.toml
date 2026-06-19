@@ -3,6 +3,7 @@ dprint = "0.54.0"
 go = "1.26"
 goreleaser = "latest"
 golangci-lint = "2"
+node = "22"
 
 [tasks.build]
 description = "Build the qualitymd binary into ./dist"
@@ -25,8 +26,8 @@ description = "Lint the Go codebase with golangci-lint"
 run = "golangci-lint run"
 
 [tasks.check]
-description = "Run the full CI gate locally (vet, lint, test, format check)"
-depends = ["vet", "lint", "test", "fmt-md-check"]
+description = "Run the full CI gate locally (vet, lint, test, format, npm package check)"
+depends = ["vet", "lint", "test", "fmt-md-check", "npm-pack-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"
@@ -55,6 +56,10 @@ run = "goreleaser release --snapshot --clean"
 [tasks.npm-build]
 description = "Cross-compile and assemble the npm packages (no publish)"
 run = "node scripts/build-npm.mjs {{arg(name='version', default='0.0.0-dev')}}"
+
+[tasks.npm-pack-check]
+description = "Verify the npm launcher package includes the generated root README"
+run = "node scripts/check-npm-package.mjs"
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"

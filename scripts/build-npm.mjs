@@ -45,7 +45,51 @@ function run(cmd, cmdArgs, { env, cwd } = {}) {
   });
 }
 
+function platformName(t) {
+  const osName = {
+    darwin: "macOS",
+    linux: "Linux",
+    win32: "Windows",
+  }[t.os];
+
+  return `${osName} ${t.arch}`;
+}
+
+function platformPackageDescription(t) {
+  return `Native qualitymd binary for ${platformName(t)}. Installed automatically by quality.md.`;
+}
+
+function platformPackageReadme(pkgName, t) {
+  return `# ${pkgName}
+
+Native \`qualitymd\` binary package for ${platformName(t)}.
+
+This package is installed automatically by the user-facing \`quality.md\` npm
+package. Most users should not install it directly.
+
+Install the CLI with:
+
+\`\`\`sh
+npm install -g quality.md
+\`\`\`
+
+or run it with:
+
+\`\`\`sh
+npx quality.md --version
+\`\`\`
+
+See the main package and project docs:
+
+- npm: https://www.npmjs.com/package/quality.md
+- GitHub: https://github.com/qualitymd/quality.md
+`;
+}
+
 console.log(`Building QUALITY.md npm packages @ ${version}`);
+run(process.execPath, [join(root, "scripts", "sync-npm-readme.mjs")], {
+  cwd: root,
+});
 
 for (const t of TARGETS) {
   const key = `${t.os}-${t.arch}`;
@@ -84,9 +128,12 @@ for (const t of TARGETS) {
       {
         name: pkgName,
         version,
-        description: `QUALITY.md native binary for ${key}`,
+        description: platformPackageDescription(t),
+        homepage: "https://getquality.md",
+        keywords: ["qualitymd", "quality.md", "cli", "native-binary"],
         license: "MIT",
         repository: { type: "git", url: "https://github.com/qualitymd/quality.md.git" },
+        bugs: { url: "https://github.com/qualitymd/quality.md/issues" },
         os: [t.os],
         cpu: [t.arch],
         files: ["bin"],
@@ -96,6 +143,7 @@ for (const t of TARGETS) {
       2,
     ) + "\n",
   );
+  writeFileSync(join(pkgDir, "README.md"), platformPackageReadme(pkgName, t));
 
   if (publish) {
     run("npm", ["publish", "--access", "public"], { cwd: pkgDir });

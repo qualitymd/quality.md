@@ -16,15 +16,16 @@ Thanks for your interest in improving QUALITY.md.
 
 ## Prerequisites
 
-The project uses [mise](https://mise.jdx.dev) to pin tools (Go, dprint,
+The project uses [mise](https://mise.jdx.dev) to pin tools (Go, Node, dprint,
 goreleaser) and define tasks. With mise installed:
 
 ```sh
 mise install        # install pinned tool versions
 ```
 
-If you prefer not to use mise, install Go 1.26+ and dprint yourself; the
-`mise run …` commands below map to plain `go` and `dprint` invocations.
+If you prefer not to use mise, install Go 1.26+, Node 22+, and dprint yourself;
+the `mise run …` commands below map to plain `go`, `npm`, and `dprint`
+invocations.
 
 ## Development tasks
 
@@ -35,6 +36,7 @@ mise run test            # go test ./...
 mise run vet             # go vet ./...
 mise run fmt             # gofmt -w . and dprint fmt
 mise run fmt-md-check    # dprint check
+mise run npm-pack-check  # verify npm package README packaging
 mise run tidy            # go mod tidy
 mise run hooks           # install repo-managed git hooks
 ```
@@ -97,6 +99,10 @@ Releases ship through three channels from a single git tag:
   platform into a `@qualitymd/cli-<os>-<arch>` package gated by npm `os`/`cpu`
   fields, with the `quality.md` launcher selecting the right one at runtime
   (the esbuild/Biome model — no postinstall download).
+  `npm/quality.md/README.md` is generated from the repository `README.md`
+  during package build/prepack so npm renders the same README as GitHub.
+  Generated platform package READMEs explain that direct installs should use the
+  `quality.md` package instead.
 
 Versioning policy for the separately distributed CLI, `/quality` skill, and
 `SPECIFICATION.md` lives in [Versioning](docs/reference/versioning.md). Release
