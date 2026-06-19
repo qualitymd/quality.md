@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Version 0.1 - Draft**
+**Specification version:** 0.1 (Draft)
 
 This document specifies the `QUALITY.md` standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -12,6 +12,11 @@ This specification defines the document structure, model vocabulary,
 frontmatter schema, evaluation semantics, and minimum report semantics of
 `QUALITY.md`. Authoring advice, examples, and notes are informative unless
 explicitly stated otherwise.
+
+The specification version identifies the `QUALITY.md` document format and
+evaluation semantics defined here. See
+[Versioning](docs/reference/versioning.md#specification-version) for the
+project's specification-version policy.
 
 ## Conformance
 

@@ -29,7 +29,9 @@ Restart the target agent if it discovers skills only at session startup.
 ## Verify the CLI prerequisite
 
 The skill drives the deterministic `qualitymd` CLI for setup, linting, format
-grounding, and evaluation record/report mechanics:
+grounding, and evaluation record/report mechanics. Released skill installs use
+the CLI SemVer range declared by that skill release; see
+[Versioning](../reference/versioning.md) for the compatibility policy.
 
 ```sh
 qualitymd --version

@@ -11,8 +11,9 @@ timestamp: 2026-06-19T00:00:00Z
 Use this guide when publishing a tagged release of the `qualitymd` CLI and any
 same-repo release notes for the `/quality` skill or `QUALITY.md` specification.
 
-This guide summarizes the release-facing version checks. For the mechanical
-tag-and-publish summary, see [Contributing](../../CONTRIBUTING.md).
+This guide is the authoritative release runbook. Other docs should link here
+instead of restating release-prep, tag-publish, verification, or failure-handling
+steps.
 
 ## Preconditions
 
@@ -182,6 +183,17 @@ The release workflow runs from `.github/workflows/release.yml`. It publishes:
 - Homebrew cask updates through Goreleaser;
 - npm / npx packages through `scripts/build-npm.mjs`.
 
+The workflow requires two repository secrets:
+
+- `NPM_TOKEN` — npm automation token with publish access to the `quality.md`
+  package and the `@qualitymd` scope.
+- `HOMEBREW_TAP_GITHUB_TOKEN` — token with write access to
+  `qualitymd/homebrew-tap`.
+
+The Homebrew cask currently strips the macOS quarantine attribute because the
+binaries are unsigned. Remove that step from `.goreleaser.yaml` once the
+binaries are signed and notarized.
+
 Do not move a published tag to repair a release. If a published release is wrong,
 fix forward with a new patch release unless no artifacts were published and the
 tag is still only local or clearly failed before publication.
@@ -245,5 +257,3 @@ exercised it:
   `qualitymd` CLI range when the installer supports it.
 - Backfill old changelog entries only as far as useful; terse entries for older
   tags are acceptable.
-- Keep the published-tag repair rule visible in contributor docs: once artifacts
-  are published, fix forward with a new version.

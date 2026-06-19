@@ -2,11 +2,25 @@
 
 ## 2026-06-19
 
+- **Revision**: Made [Cut a release](guides/cut-a-release.md) the authoritative
+  release runbook and narrowed [Contributing](../CONTRIBUTING.md) to contributor
+  setup, local tasks, repo layout, and pointers to the release and versioning
+  docs.
+
 - **Creation**: Added [Cut a release](guides/cut-a-release.md), a `How-to Guide`
   for choosing a release version, checking the CLI/skill/specification versioned
   surfaces, preparing curated release notes, running dry runs, publishing a tag,
   verifying artifacts, handling failed releases, and tracking open process
   support items such as `CHANGELOG.md` adoption and release-note automation.
+
+- **Creation**: Added [Versioning](reference/versioning.md), a `Reference`
+  concept defining the separately versioned `qualitymd` CLI, `/quality` skill,
+  and `QUALITY.md` specification surfaces, with CLI SemVer as the current
+  skill-compatibility boundary.
+
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  and the top-level [install guide](../install.md) to point CLI prerequisite
+  checks at the versioning policy and the current evaluation command surface.
 
 - **Revision**: Updated [Writing functional specs](guides/write-functional-specs.md)
   to use BCP 14 keywords sparingly: only where the keyword changes conformance

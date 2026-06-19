@@ -1,7 +1,8 @@
 # Install QUALITY.md
 
 Install the `/quality` skill first; the `qualitymd` CLI is its deterministic
-prerequisite for setup, linting, format grounding, and bundled model access.
+prerequisite for setup, linting, format grounding, and evaluation artifact
+mechanics.
 
 ## 1. Install the skill
 
@@ -24,11 +25,20 @@ Check whether `qualitymd` is available:
 
 ```sh
 qualitymd --version
-qualitymd models list --json
+qualitymd spec
+qualitymd lint --help
+qualitymd init --help
+qualitymd evaluation create-run --help
+qualitymd evaluation add-record --help
+qualitymd evaluation set-planned-coverage --help
+qualitymd evaluation show-status --help
+qualitymd evaluation build-report --help
 ```
 
-If it is missing or does not expose `models`, install a pre-built binary — via
-npm:
+Released skill installs declare the `qualitymd` CLI SemVer range they support;
+see [Versioning](docs/reference/versioning.md) for the compatibility policy.
+
+If the CLI is missing or stale, install a pre-built binary — via npm:
 
 ```sh
 npm install -g quality.md
@@ -57,8 +67,7 @@ In the repository to evaluate, ask the installed skill to set up or guide you:
 
 `setup` creates and lints a skeleton `QUALITY.md` through the CLI. `wizard`
 checks the model, identifies available targets/factors, and suggests concrete
-next actions such as `/quality evaluate`, `/quality evaluate model`, or scoped
-evaluations.
+next actions such as `/quality evaluate` or scoped evaluations.
 
 ## 4. Optional config
 

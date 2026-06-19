@@ -47,6 +47,7 @@ qualitymd evaluation show-status --help
 qualitymd evaluation build-report --help
 ```
 
+For released installs, use the CLI SemVer range declared by this skill release.
 Accept a local development build when those commands are present. If the CLI is
 missing or stale, stop and help the user install or upgrade it before continuing.
 

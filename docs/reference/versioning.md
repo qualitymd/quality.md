@@ -1,0 +1,102 @@
+---
+type: Reference
+title: Versioning
+description: Versioned surfaces and compatibility policy for the CLI, /quality skill, and QUALITY.md specification.
+tags: [versioning, release, cli, skill, specification]
+timestamp: 2026-06-19T00:00:00Z
+---
+
+# Versioning
+
+This project has three separately versioned surfaces:
+
+- the `qualitymd` CLI;
+- the `/quality` skill; and
+- the `QUALITY.md` format specification.
+
+The CLI and skill are distributed separately. They can be released from the same
+repository state, but the skill is not bundled with the CLI binary.
+
+## Where Versions Are Recorded
+
+- CLI release version: the git release tag and build metadata reported by
+  `qualitymd --version`.
+- Skill release version and supported CLI range: skill package metadata when the
+  installer supports it, mirrored in release notes or install documentation.
+- Specification version: the version line near the top of `SPECIFICATION.md`.
+
+## CLI Version
+
+The `qualitymd` CLI uses SemVer and reports its version through:
+
+```sh
+qualitymd --version
+```
+
+The CLI version is the runtime compatibility boundary for the skill. It covers
+the deterministic surface the skill depends on:
+
+- commands and subcommands;
+- flags and arguments;
+- exit-code categories;
+- machine-readable output shapes;
+- evaluation artifact mechanics; and
+- the `SPECIFICATION.md` version bundled into the binary and emitted by
+  `qualitymd spec`.
+
+While the CLI is in `0.x`, minor versions define compatibility lines. A breaking
+change to the skill-facing CLI surface should bump the minor version; patch
+versions should preserve compatibility within the same minor line. After `1.0`,
+normal SemVer major-version compatibility rules apply.
+
+## Skill Version
+
+The `/quality` skill has its own SemVer because it is installed and upgraded
+separately from the CLI.
+
+Each skill release declares the `qualitymd` CLI SemVer range it supports. At
+runtime, the skill checks the installed CLI with `qualitymd --version` and stops
+when the CLI is missing or outside the supported range.
+
+During the `0.x` phase, skill releases should usually depend on one compatible
+CLI minor line, for example:
+
+```yaml
+requires:
+  qualitymd: ">=0.4.0 <0.5.0"
+```
+
+Use a broader range only when the skill has been checked against every included
+CLI minor line.
+
+## Specification Version
+
+`SPECIFICATION.md` carries a specification version for the `QUALITY.md` document
+format, frontmatter schema, evaluation semantics, and required report semantics.
+
+The specification version changes when the meaning of conforming `QUALITY.md`
+documents or conforming evaluation/report behavior changes. Editorial fixes,
+clarifications that do not change conformance, and non-normative examples do not
+require a specification version change.
+
+Each CLI release embeds one specification version. `qualitymd spec` emits the
+specification bundled with that CLI release.
+
+## Release Tags
+
+Repository release tags coordinate the repository contents at release time. A
+tag can publish CLI binaries, npm packages, Homebrew artifacts, and skill
+contents from the same source state, but the tag does not make the skill part of
+the CLI distribution.
+
+When a release changes more than one versioned surface, update every affected
+version and compatibility declaration in the same change.
+
+## Compatibility Policy
+
+The project does not currently maintain fine-grained capability versions. The
+skill uses the CLI SemVer range as the compatibility contract.
+
+If that contract becomes too coarse, the project can add machine-readable
+capability reporting later. Until then, do not introduce per-command or
+per-artifact capability versions.

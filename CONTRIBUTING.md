@@ -2,6 +2,18 @@
 
 Thanks for your interest in improving QUALITY.md.
 
+## Where process lives
+
+- **Contributor setup, local tasks, pull request checks, and repo layout** live
+  in this file.
+- **Release operations** live in
+  [Cut a release](docs/guides/cut-a-release.md).
+- **Versioning and compatibility policy** lives in
+  [Versioning](docs/reference/versioning.md).
+- **Change Case workflow** lives in
+  [Working with change cases](docs/guides/work-with-change-cases.md).
+- **User install and bootstrap** lives in [Install QUALITY.md](install.md).
+
 ## Prerequisites
 
 The project uses [mise](https://mise.jdx.dev) to pin tools (Go, dprint,
@@ -75,7 +87,7 @@ internal/model       typed QUALITY.md frontmatter model
 scripts/build-npm.mjs   assembles the npm distribution
 ```
 
-## Distribution channels
+## Distribution and releases
 
 Releases ship through three channels from a single git tag:
 
@@ -86,33 +98,14 @@ Releases ship through three channels from a single git tag:
   fields, with the `quality.md` launcher selecting the right one at runtime
   (the esbuild/Biome model — no postinstall download).
 
+Versioning policy for the separately distributed CLI, `/quality` skill, and
+`SPECIFICATION.md` lives in [Versioning](docs/reference/versioning.md). Release
+preparation, tag publishing, verification, failure handling, release secrets, and
+changelog guidance live in [Cut a release](docs/guides/cut-a-release.md).
+
 ### Local dry runs
 
 ```sh
 mise run snapshot                 # goreleaser build, no publish
 mise run npm-build                # assemble npm packages under npm/platforms, no publish
 ```
-
-### Cutting a release
-
-For the full release-prep, verification, failure-handling, and changelog
-workflow, see [Cut a release](docs/guides/cut-a-release.md).
-
-Releases are automated by `.github/workflows/release.yml` on any `v*` tag:
-
-```sh
-git tag v1.2.3
-git push origin v1.2.3
-```
-
-The workflow runs goreleaser and publishes the npm packages. It requires two
-repository secrets:
-
-- `NPM_TOKEN` — npm automation token with publish access to the `quality.md`
-  package and the `@qualitymd` scope.
-- `HOMEBREW_TAP_GITHUB_TOKEN` — token with write access to
-  `qualitymd/homebrew-tap`.
-
-> The Homebrew cask strips the macOS quarantine attribute because the binaries
-> are currently unsigned. Remove that step once the binaries are signed and
-> notarized.

@@ -130,8 +130,9 @@ Then use the skill in your agent:
 /quality evaluate
 ```
 
-`setup` and `wizard` verify that the `qualitymd` CLI is installed and exposes the
-commands the skill depends on. If it is missing or stale, they stop and help you
+`setup` and `wizard` verify that the `qualitymd` CLI is installed and compatible
+with the skill. Released skill installs use the CLI SemVer range declared by
+that skill release. If the CLI is missing or stale, they stop and help you
 install or upgrade it before continuing. See [`install.md`](install.md) for the
 full bootstrap flow.
 
@@ -202,7 +203,10 @@ go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ## Specification
 
 The `QUALITY.md` format is specified in [`SPECIFICATION.md`](SPECIFICATION.md),
-the source of truth for the format.
+the source of truth for the format. The `qualitymd` CLI, `/quality` skill, and
+format specification are versioned separately; see
+[`docs/reference/versioning.md`](docs/reference/versioning.md) for the
+compatibility policy.
 
 ## Conceptual model
 
@@ -216,5 +220,6 @@ readable format.
 
 ## Contributing
 
-Development setup, tasks, and the release process live in
-[`CONTRIBUTING.md`](CONTRIBUTING.md).
+Contributor setup and local tasks live in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+The release runbook lives in
+[`docs/guides/cut-a-release.md`](docs/guides/cut-a-release.md).

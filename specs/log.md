@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Revision**: Updated the durable
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) to align CLI
+  prerequisite checks with the new versioning policy: released skill installs
+  use the declared `qualitymd` SemVer range, while local development builds can
+  still be accepted by command-surface probing.
+
 - **Revision**: Reframed the durable
   [`/quality` wizard](skills/quality-skill/quality-skill.md#wizard) contract as a
   read-only quality wayfinder: it now probes setup/model/history state, classifies

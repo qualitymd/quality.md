@@ -14,9 +14,12 @@ the skill carries the evaluative judgment and drives the CLI for every
 mechanical step. The skill's implementation lives at
 [`skills/quality/SKILL.md`](../../../skills/quality/SKILL.md) and is installable
 from this repository with `npx skills add qualitymd/quality.md`. The skill is
-responsible for **specifying and implementing** the *evaluation* it performs —
-this spec, the skill's own prompt, and the CLI together. That evaluation
-**MUST conform to** the format spec's
+distributed separately from the CLI and declares the supported `qualitymd`
+SemVer range for released installs (see
+[`Versioning`](../../../docs/reference/versioning.md)). The skill is responsible
+for **specifying and implementing** the *evaluation* it performs — this spec, the
+skill's own prompt, and the CLI together. That evaluation **MUST conform to** the
+format spec's
 
 > [Evaluation](../../../SPECIFICATION.md#evaluation) contract, but the skill does
 > **not defer** its definition to it: the process below is the skill's own,
@@ -232,10 +235,13 @@ of an Evaluation report.
 ### Setup
 
 The `setup` mode is the minimal bootstrap path after the skill is installed. It
-**MUST** verify that the `qualitymd` CLI is present and exposes the commands the
-skill depends on. A local development build is compatible when it exposes those
-commands. When the CLI is missing or stale, `setup` **MUST** stop and facilitate
-install or upgrade before running CLI-dependent work.
+**MUST** verify that the `qualitymd` CLI is present and compatible before
+running CLI-dependent work. For released installs, compatibility is the CLI
+SemVer range declared by the skill release. A local development build is
+compatible when it exposes the commands the skill depends on. When the CLI is
+missing or outside the supported release range, or when a local development
+build lacks required commands, `setup` **MUST** stop and facilitate install or
+upgrade before running CLI-dependent work.
 
 After the CLI prerequisite is met, `setup` **MUST** drive
 [`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
