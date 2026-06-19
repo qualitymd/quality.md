@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification defines its terms before use",
+  "factors": [
+    "clarity"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:64-103",
+      "observation": "A dedicated Terminology section front-loads the core terms (Model, Target, Source, Factor, Requirement, Assessment, Finding, Rating Scale/Level/Result) before the normative sections that use them.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:367-381",
+      "observation": "Factor rating, local rating, and aggregate rating are each defined inline immediately before/at their first normative use.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:99-100",
+      "observation": "'not assessed' is defined at first use as a Rating Result outcome and used consistently thereafter.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:49-62",
+      "observation": "Gap: conformance-class terms (parser/linter/evaluator/report renderer) are used in the Conformance section before Terminology, though each is characterized operationally in place.",
+      "category": "clarity",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Technical terms are defined before or at first use via a glossary plus point-of-use definitions, satisfying the requirement; a minor ordering wrinkle for the conformance-class terms keeps it from outstanding.",
+  "recommendations": []
+}

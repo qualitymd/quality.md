@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification admits a single interpretation",
+  "factors": [
+    "clarity"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:26-34",
+      "observation": "BCP 14 keywords are formally invoked and scoped to all-caps usage, with an explicit normative/non-normative split, anchoring obligation strength to a recognized convention.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:345-347,384-385",
+      "observation": "Gap: 'insufficient to rate' / 'too little has been assessed' qualifies the conformance-relevant not-assessed outcome (a MUST) with no stated bound, so different evaluators could draw the line differently.",
+      "category": "clarity",
+      "severity": "medium"
+    },
+    {
+      "locator": "SPECIFICATION.md:160-163",
+      "observation": "The two-level minimum is stated twice in adjacent sentences; consistent but a minor near-duplicate normative statement.",
+      "category": "clarity",
+      "severity": "low"
+    },
+    {
+      "locator": "SPECIFICATION.md:387-388",
+      "observation": "'most responsible' is a soft quantifier but sits under SHOULD (advisory), so it does not affect conformance and admits a reasonable single reading.",
+      "category": "clarity",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Rules generally admit one reading with disciplined BCP 14 usage; the one conformance-relevant soft term ('insufficient to rate') is inherently an evaluator judgment. Satisfies the requirement; held from outstanding by that imprecision.",
+  "recommendations": []
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "target": "QUALITY.md",
+  "targetPath": [],
+  "localRating": null,
+  "factorRatings": [],
+  "aggregateRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "The model root declares no own requirements, so its aggregate reflects only its three children: format-spec aggregates to target, while readme and cli both aggregate to minimum. Two distinct binding constraints hold the whole model at the floor — the README tells rather than shows (no rendered qualitymd output, no quick first result), and the CLI has two confirmed MUST-level spec divergences in the automation surface (a machine-varying absolute path in the show-status payload and an empty-run gap kind that contradicts the documented missing-root-analysis contract). Both map directly to the model's stated Risks (an overstating/under-demonstrating README, and non-deterministic CLI behavior). Closing the README payoff/first-result gaps and the two CLI conformance gaps would lift the whole-model rating to target."
+  },
+  "assessmentRecords": [],
+  "childAnalysisRecords": [
+    "analysis/format-spec.json",
+    "analysis/readme.json",
+    "analysis/cli.json"
+  ]
+}

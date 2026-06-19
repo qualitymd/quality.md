@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "target": "cli",
+  "targetPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows the project CLI design guide",
+  "factors": [
+    "usability",
+    "automation-compatibility",
+    "consistency",
+    "determinism"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "internal/cli/style.go:33-42",
+      "observation": "Color/glyphs are applied only when the writer is a real TTY and NO_COLOR is unset; piped/redirected output is the plain canonical form byte-for-byte, with no format auto-detection (docs/guides/cli-design.md:118-131).",
+      "category": "automation-compatibility",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "NO_COLOR=1 qualitymd lint QUALITY.md | cat -v ; qualitymd lint QUALITY.md 2\u003e/dev/null"
+        }
+      ]
+    },
+    {
+      "locator": "qualitymd frobnicate; qualitymd lint --bogus; qualitymd lint \u003cmissing\u003e",
+      "observation": "Exit-code categories match the binding table (docs/guides/cli-design.md:191-196): success 0, lint findings 1, unknown command/flag and usage validation 2, I/O and unmet preconditions 70.",
+      "category": "automation-compatibility"
+    },
+    {
+      "locator": "internal/cli/evaluation.go:16-27,71-97",
+      "observation": "Consistent 'noun verb' grammar (evaluation create-run / add-record \u003ckind\u003e \u003crun\u003e / show-status \u003crun\u003e), discoverable record subcommands, uniform --file/--json flags, both -h and --help, and no catch-all subcommand (docs/guides/cli-design.md:164-176).",
+      "category": "consistency"
+    },
+    {
+      "locator": "internal/cli/evaluation.go:198-210",
+      "observation": "Record-writing commands never block on a prompt: they accept --file \u003cpath\u003e, --file -, or piped stdin and fail with a usage error when input is absent on a TTY; strict JSON decoding rejects CLI-owned fields (docs/guides/cli-design.md:154-160,202-208).",
+      "category": "automation-compatibility"
+    },
+    {
+      "locator": "qualitymd lint - ; qualitymd init -",
+      "observation": "Gap: init supports '-' for stdin/stdout but lint does not (docs/guides/cli-design.md:157-158), an inconsistency; and the lint '-' refusal maps to exit 70 rather than the usage category 2.",
+      "category": "consistency",
+      "severity": "low"
+    },
+    {
+      "locator": "qualitymd (bare, no args)",
+      "observation": "Gap: a bare invocation prints the full Fang help rather than the guide's concise, example-led default for the nothing-to-do case (docs/guides/cli-design.md:85-86).",
+      "category": "usability",
+      "severity": "low"
+    }
+  ],
+  "rationale": "The CLI strongly follows the design guide on the load-bearing concerns: exit-code categories, conditional styling with no auto-detection, non-interactivity, and a consistent command grammar. Held from outstanding by low-severity deviations (inconsistent '-' support with a miscategorized exit code, and a non-concise root help). Rated target.",
+  "recommendations": []
+}

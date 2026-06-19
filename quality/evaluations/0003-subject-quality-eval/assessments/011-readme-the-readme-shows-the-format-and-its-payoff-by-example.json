@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README shows the format and its payoff by example",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:47-99",
+      "observation": "A realistic, complete QUALITY.md excerpt (frontmatter ratingScale/targets/factors/requirements plus a Markdown body) is shown before the reference schema, matching 'before reference detail'.",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:101-102",
+      "observation": "Gap: the payoff is described only in prose; the README never shows what running qualitymd against the example produces (no lint output, init receipt, report.md/report.json excerpt, or rating result).",
+      "category": "approachability",
+      "severity": "medium"
+    },
+    {
+      "locator": "README.md:174-176",
+      "observation": "A conceptual assessment -\u003e findings -\u003e rating result diagram conveys the idea but is not a real tool-output example.",
+      "category": "approachability",
+      "severity": "low"
+    },
+    {
+      "locator": "grep -nEi 'report\\.md|report\\.json|\\$ qualitymd|Findings:' README.md",
+      "observation": "Re-checked: no rendered qualitymd output or report excerpt appears anywhere in README.md (only the conceptual diagram and a build-report bullet).",
+      "category": "approachability",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "grep -nEi 'report.md|report.json|rating result' README.md"
+        }
+      ]
+    }
+  ],
+  "rationale": "The format-excerpt half is well met, but the requirement explicitly asks for what running qualitymd produces, and no produced output is shown anywhere. The show-don't-tell payoff is missing, holding the requirement at the floor. Rated minimum.",
+  "recommendations": []
+}

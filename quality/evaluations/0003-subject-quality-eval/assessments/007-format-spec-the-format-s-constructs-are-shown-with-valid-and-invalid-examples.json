@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format's constructs are shown with valid and invalid examples",
+  "factors": [
+    "verifiability"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:445-498",
+      "observation": "Valid worked examples exist: Appendix A a sample rating scale and Appendix B a complete realistic file (frontmatter plus body).",
+      "category": "verifiability"
+    },
+    {
+      "locator": "SPECIFICATION.md:249-250,275-277",
+      "observation": "Gap: invalid cases are enumerated only in prose (missing/empty/null/list-valued assessment; factors null/[]) and never shown as worked invalid YAML snippets.",
+      "category": "verifiability",
+      "severity": "medium"
+    },
+    {
+      "locator": "SPECIFICATION.md:476-498",
+      "observation": "Gap: many constructs (direct-target requirement requiring explicit factors, sub-factors, multi-target trees, source/glob selectors, ratings criterion overrides) have no worked example, valid or invalid.",
+      "category": "verifiability",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "Realistic valid examples hold the floor, but the requirement explicitly wants both valid and invalid examples: invalid counter-examples are not shown as examples and construct coverage is sparse, so the requirement is not satisfied. Rated minimum.",
+  "recommendations": []
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README gets a newcomer to a first result quickly",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:6-18",
+      "observation": "The Install section gives two short copyable commands (skill via npx, CLI via npm).",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:20-31",
+      "observation": "Gap: the Usage section routes the newcomer to the /quality skill, not a copyable install-then-one-command CLI sequence that shows a real result.",
+      "category": "approachability",
+      "severity": "medium"
+    },
+    {
+      "locator": "qualitymd init; qualitymd lint",
+      "observation": "Re-checked: the natural CLI first-result path works end-to-end (init creates QUALITY.md and points to lint; lint prints 'QUALITY.md is valid.'), but the README never shows it as a quickstart nor shows representative output. The gap is omission, not inaccuracy.",
+      "category": "approachability",
+      "severity": "medium",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "qualitymd init \u0026\u0026 qualitymd lint QUALITY.md (in temp dir)"
+        }
+      ]
+    },
+    {
+      "locator": "README.md:194,204-205",
+      "observation": "CI exit-code behavior is referenced and accurate (lint non-zero on errors; build-report --fail-at-or-below), but no representative output sample is shown for the newcomer.",
+      "category": "approachability",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Install commands hold the floor, but there is no short install-then-one-command sequence with representative output that lets a newcomer see a real first result. The requirement's core is unmet despite the underlying CLI flow working well. Rated minimum.",
+  "recommendations": []
+}

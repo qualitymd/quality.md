@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification separates rules from rationale",
+  "factors": [
+    "clarity"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:33-37",
+      "observation": "A global rule/rationale separation is declared: all content normative except passages explicitly marked non-normative; examples and notes are non-normative.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:257-260,447,474",
+      "observation": "Notes and both appendices are explicitly tagged non-normative, keeping rationale visibly separated from rules.",
+      "category": "clarity"
+    },
+    {
+      "locator": "SPECIFICATION.md:252-256",
+      "observation": "Gap: a rationale sentence ('Referencing names that entity once instead of copying criteria that would drift') sits unmarked among normative statements, so it is normative by default though it reads as explanation.",
+      "category": "clarity",
+      "severity": "low"
+    },
+    {
+      "locator": "SPECIFICATION.md:476-498",
+      "observation": "The only complete worked file example lives in non-normative Appendix B, so no normative rule depends solely on an example.",
+      "category": "clarity"
+    }
+  ],
+  "rationale": "A default classification rule plus consistent explicit non-normative tagging let a reader tell rule from rationale, and rules are not hidden in examples. Held from outstanding by one unmarked rationale aside.",
+  "recommendations": []
+}

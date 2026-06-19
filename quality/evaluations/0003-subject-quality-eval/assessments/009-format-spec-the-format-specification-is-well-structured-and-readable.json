@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is well-structured and readable",
+  "factors": [
+    "usability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:105-296",
+      "observation": "Document ordering is logical and concept-before-detail: Conformance, Terminology, Document Structure, Frontmatter Schema, Body Semantics, Evaluation Semantics, Report Semantics, Extensions, Appendices.",
+      "category": "usability"
+    },
+    {
+      "locator": "SPECIFICATION.md:445-498",
+      "observation": "Two appendices provide minimal and realistic examples, clearly marked non-normative; prose throughout is plain and declarative.",
+      "category": "usability"
+    },
+    {
+      "locator": "SPECIFICATION.md:137-152",
+      "observation": "Gap: requiredness is conveyed via YAML code-comment annotations rather than true field tables with type/required/cardinality/default columns, so allowed-values and defaults are not uniformly tabulated.",
+      "category": "usability",
+      "severity": "low"
+    },
+    {
+      "locator": "SPECIFICATION.md:132,158,185-236",
+      "observation": "Gap: heading levels are inconsistent (Model/Target/Factor/Requirement at H4 directly under an H2, skipping an intervening level).",
+      "category": "usability",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Dependency-respecting structure, scannable schema blocks, plain prose, and realistic examples satisfy the requirement; a few structural nits (annotation-vs-table, heading hierarchy) keep it from outstanding.",
+  "recommendations": []
+}

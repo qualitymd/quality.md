@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "localRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "Nine own requirements considered together: seven at target (completeness; all of clarity; consistency; the core verifiability rule; usability) and two at minimum (no shown invalid counter-examples; forward-evolution/versioning under-specified). The two gaps are real but contained documentation shortfalls, not failures of the spec's core contract, so the whole-set verdict holds at target."
+  },
+  "factorRatings": [
+    {
+      "factor": "clarity",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "All three clarity requirements meet target: BCP 14 keywords scoped to all-caps with an explicit normative split, rule/rationale separation declared and tagged, and a front-loaded glossary plus point-of-use definitions. Held from outstanding by a soft 'insufficient to rate' qualifier and one unmarked rationale aside."
+    },
+    {
+      "factor": "consistency",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "No contradictions found; one term per concept and worked examples track the rules they illustrate."
+    },
+    {
+      "factor": "verifiability",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "The binding question 'can conformance be decided' is answered yes: requirement-shape rules are statically checkable. Held from outstanding by judgment-bound rules (scale ordering, rating sufficiency, roll-up) and by the separate minimum-rated requirement that invalid counter-examples are not shown."
+    },
+    {
+      "factor": "extensibility",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Minimal core and structural extension are well specified, but 'how it evolves' is pointer-only (versioning policy delegated to an external doc) and unrecognized frontmatter keys lack an explicit reader rule. The format spec's weakest factor."
+    },
+    {
+      "factor": "usability",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Concept-before-detail ordering, scannable schema blocks, plain prose, and realistic appendices; minor structural nits (annotation-vs-table, heading hierarchy) keep it from outstanding."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "target",
+    "notAssessed": false,
+    "rationale": "Leaf target: aggregate equals local rating. The spec satisfies its completeness, clarity, consistency, core-verifiability, and usability bars; extensibility is the weakest factor at minimum, alongside the unmet invalid-examples requirement."
+  },
+  "assessmentRecords": [
+    "assessments/001-format-spec-the-format-specification-is-complete.json",
+    "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+    "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+    "assessments/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+    "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+    "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+    "assessments/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+    "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+    "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json"
+  ],
+  "childAnalysisRecords": []
+}

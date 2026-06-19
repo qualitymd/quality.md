@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README reflects what the CLI and spec actually provide",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:180-188",
+      "observation": "The CLI status note is accurate and marked provisional ('an early work in progress'; ships init, lint, spec, and the evaluation surface) and the 'deterministic, never calls a model' framing matches the implemented surface; verified against --help.",
+      "category": "approachability",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "qualitymd --help"
+        }
+      ]
+    },
+    {
+      "locator": "README.md:192-205",
+      "observation": "Every command and flag in the deterministic-surface list (init, lint, spec, evaluation create-run/add-record/set-planned-coverage/show-status/build-report, --fail-at-or-below) was verified to exist with matching behavior.",
+      "category": "approachability",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "qualitymd evaluation --help"
+        },
+        {
+          "kind": "command",
+          "ref": "qualitymd evaluation build-report --help"
+        }
+      ]
+    },
+    {
+      "locator": "README.md:24-31",
+      "observation": "The /quality skill usage examples are backed by real skill modes; minor: the improve mode exists in the skill but is not surfaced in the README usage list.",
+      "category": "approachability",
+      "severity": "low"
+    },
+    {
+      "locator": "README.md:127-151",
+      "observation": "The condensed Model Schema aligns with qualitymd spec; not exhaustively field-diffed against SPECIFICATION.md (limitation).",
+      "category": "approachability",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Every shown command, flag, and capability matches what the CLI provides today; planned work is marked planned and placeholders provisional, resolving the prior overstatement. Held from outstanding only by the improve-mode omission and an unexhaustive schema cross-check. Rated target.",
+  "recommendations": []
+}

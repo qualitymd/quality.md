@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "each rule is observable or testable",
+  "factors": [
+    "verifiability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:239-281",
+      "observation": "Requirement-shape rules are statically checkable (exactly one assessment as a non-empty scalar; ratings keyed by scale levels; factor references resolve to an in-scope factor).",
+      "category": "verifiability"
+    },
+    {
+      "locator": "SPECIFICATION.md:160-161",
+      "observation": "Gap: 'ordered from best to worst' is not machine-verifiable from the data alone; no comparable value encodes goodness, so it relies on author intent.",
+      "category": "verifiability",
+      "severity": "medium"
+    },
+    {
+      "locator": "SPECIFICATION.md:345-347",
+      "observation": "Gap: 'insufficient to rate' is a judgment, not a determinate test, so the not-assessed boundary case is not reproducibly decidable across readers.",
+      "category": "verifiability",
+      "severity": "medium"
+    },
+    {
+      "locator": "SPECIFICATION.md:355-358",
+      "observation": "Gap (intentional): roll-up defines no numeric aggregation formula, only 'preserve relationships and distinctions', so exact roll-up outcomes are not testable for correctness.",
+      "category": "verifiability",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "The bulk of conformance rules map to something a reader can observe or linter-decide, so independent readers decide the same way. Held from outstanding by several rules (ordering, sufficiency, roll-up) that are judgment-bound rather than reproducibly testable.",
+  "recommendations": []
+}

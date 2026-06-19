@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "target": "cli",
+  "targetPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows its functional specifications",
+  "factors": [
+    "consistency",
+    "determinism",
+    "automation-compatibility"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "qualitymd evaluation show-status \u003crun\u003e --json",
+      "observation": "Re-checked: show-status --json emits an ABSOLUTE filesystem path in the 'path' field while create-run --json emits a repository-relative path. This is a machine-varying payload value, violating specs/cli/evaluation-create-run.md:33 (path MUST be repository-relative) and specs/cli.md:99-100 (deterministic output with no machine-varying values). add-record and set-planned-coverage receipts share the absolute-path behavior.",
+      "category": "determinism",
+      "severity": "medium",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "qualitymd evaluation create-run --json (relative) vs show-status --json (absolute)"
+        }
+      ]
+    },
+    {
+      "locator": "qualitymd evaluation show-status \u003cempty-run\u003e --json",
+      "observation": "Re-checked: an empty run reports gap kind 'missing-analysis', but specs/cli/evaluation-show-status.md:29-32 mandates a 'missing-root-analysis' gap when no analysis record has an empty targetPath. A caller branching on the documented gap kind misses the empty-run case.",
+      "category": "consistency",
+      "severity": "medium",
+      "evidence": [
+        {
+          "kind": "command",
+          "ref": "qualitymd evaluation build-report \u003cempty-run\u003e  # 'Run is not reportable: missing-analysis'"
+        }
+      ]
+    },
+    {
+      "locator": "qualitymd evaluation build-report \u003crun\u003e --fail-at-or-below",
+      "observation": "The gate matches specs/cli/evaluation-build-report.md:96-99 exactly: gating at the root rating exits 1 (equal-or-worse), gating at a better level exits 0, an off-scale level exits 2; report.md/report.json are still written before gating.",
+      "category": "automation-compatibility"
+    },
+    {
+      "locator": "qualitymd evaluation build-report \u003crun\u003e",
+      "observation": "build-report is deterministic and idempotent: report.md is byte-identical on rebuild and contains zero ANSI/terminal escape sequences; the human 'Wrote ...' line is stderr-only while stdout stays empty without --json.",
+      "category": "determinism"
+    },
+    {
+      "locator": "internal/cli/init.go:44-65; internal/cli/spec.go:15-27",
+      "observation": "init and spec conform strongly to their specs: init output-target/-/--force/overwrite-protection rules hold and the scaffold lints clean; spec emits the bundled specification verbatim to stdout and refuses --json/extra args with usage exit 2.",
+      "category": "consistency"
+    },
+    {
+      "locator": "qualitymd init --json (existing file)",
+      "observation": "Gap: on an overwrite refusal init --json emits the spec'd JSON error object on stderr but ALSO a duplicate styled ERROR block, so a JSON consumer reading stderr sees two representations of the same failure.",
+      "category": "automation-compatibility",
+      "severity": "low"
+    }
+  ],
+  "rationale": "Most commands conform strongly (init, spec, lint, build-report gating and byte-stability), but two confirmed MUST-level spec divergences land squarely on the automation contract: a machine-varying absolute path in the show-status payload (determinism/consistency) and a gap kind that contradicts the documented missing-root-analysis contract (consistency). These hold the requirement at the floor rather than target. Rated minimum.",
+  "recommendations": []
+}

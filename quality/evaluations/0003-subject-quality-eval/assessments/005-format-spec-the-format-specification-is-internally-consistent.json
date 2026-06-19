@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is internally consistent",
+  "factors": [
+    "consistency"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:156-157,183,190-200",
+      "observation": "ratingScale ownership is consistent across statements: a Target MUST NOT declare ratingScale and the Target schema omits it.",
+      "category": "consistency"
+    },
+    {
+      "locator": "SPECIFICATION.md:262-269,275-277",
+      "observation": "Factor-connection rules agree across their positive and negative statements (every requirement connected to a factor; direct-target requirements MUST declare factors).",
+      "category": "consistency"
+    },
+    {
+      "locator": "SPECIFICATION.md:377-381",
+      "observation": "Leaf and grouping roll-up definitions compose without contradiction (leaf aggregate equals local; grouping aggregate derives from children).",
+      "category": "consistency"
+    },
+    {
+      "locator": "SPECIFICATION.md:476-498",
+      "observation": "The Appendix B example agrees with the rules it illustrates: two rating levels (\u003e=2 minimum), required level/criterion present, optional title omitted, requirement placement-connected to its factor.",
+      "category": "consistency"
+    }
+  ],
+  "rationale": "No two statements contradict; one term denotes one concept throughout and worked examples track the rules they illustrate across a large document. Satisfies the requirement at target.",
+  "recommendations": []
+}

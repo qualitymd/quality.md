@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "target": "cli",
+  "targetPath": [
+    "cli"
+  ],
+  "localRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Two requirements: 'follows its functional specifications' at minimum and 'follows the project CLI design guide' at target. The design-guide concerns (exit codes, conditional styling, non-interactivity, consistent grammar) are strongly met, but two confirmed MUST-level spec divergences in the automation surface — a machine-varying absolute path in the show-status payload and a gap kind contradicting the documented missing-root-analysis contract — bind the local rating to the floor."
+  },
+  "factorRatings": [
+    {
+      "factor": "consistency",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "Command grammar, flags, and help are uniform (a strength), but payload paths are inconsistent across sibling commands (show-status absolute vs create-run relative) and the empty-run gap kind diverges from the documented contract."
+    },
+    {
+      "factor": "determinism",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "build-report is byte-stable and ANSI-free (strong), but show-status --json emits a machine-varying absolute path, a determinism MUST violation in a machine-consumed payload field."
+    },
+    {
+      "factor": "automation-compatibility",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Strict JSON decoding, --json everywhere, non-interactive stdin handling, stdout/stderr separation, and exit-code categories all hold; held from outstanding by the duplicate human ERROR block on init --json refusals."
+    },
+    {
+      "factor": "usability",
+      "rating": "target",
+      "notAssessed": false,
+      "rationale": "Help, next-action footers, and error categories are clear and recoverable; a non-concise bare-args root help is the only low-severity deviation."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Leaf target: aggregate equals local rating. Strong design-guide adherence and automation ergonomics are pulled to the floor by two confirmed spec-conformance divergences in determinism and consistency."
+  },
+  "assessmentRecords": [
+    "assessments/014-cli-the-cli-follows-its-functional-specifications.json",
+    "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json"
+  ],
+  "childAnalysisRecords": []
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "target": "format-spec",
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specifies its core and how it extends and evolves",
+  "factors": [
+    "extensibility"
+  ],
+  "rating": "minimum",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:132-154",
+      "observation": "The minimal core is specified (ratingScale plus at least one of factors/requirements/targets), though it is assembled across several sections rather than stated as one consolidated minimal-file rule.",
+      "category": "extensibility",
+      "severity": "low"
+    },
+    {
+      "locator": "SPECIFICATION.md:431-443",
+      "observation": "An Extensions section covers added frontmatter properties, collision-resistant naming, no change to defined-property meaning, and preservation of unrecognized body content.",
+      "category": "extensibility"
+    },
+    {
+      "locator": "SPECIFICATION.md:113-117,125-127,437",
+      "observation": "Gap: an unrecognized frontmatter key that is neither defined nor a sanctioned extension has no explicit reader rule and leans toward making the file non-conforming.",
+      "category": "extensibility",
+      "severity": "medium"
+    },
+    {
+      "locator": "SPECIFICATION.md:3,16-19",
+      "observation": "Gap: the forward-evolution/versioning policy is delegated to an external docs/reference/versioning.md; the spec alone does not state how the format versions forward (compatibility rules, file-version field).",
+      "category": "extensibility",
+      "severity": "medium"
+    }
+  ],
+  "rationale": "Core and structural extension are now well specified, but 'how it evolves' remains pointer-only and unrecognized-frontmatter handling has a gap, so the conjunction core+extends+evolves is not fully satisfied. This is the format spec's weakest requirement; rated minimum.",
+  "recommendations": []
+}

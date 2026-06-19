@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "localRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Four approachability requirements: two at target (the README says what QUALITY.md is and who it's for; it now accurately reflects what the CLI and spec provide, resolving the prior overstatement) and two at minimum (it does not show what running qualitymd produces, and it offers no quick install-then-one-command first result with representative output). The binding constraints are the two show-don't-tell gaps, holding the target at the floor."
+  },
+  "factorRatings": [
+    {
+      "factor": "approachability",
+      "rating": "minimum",
+      "notAssessed": false,
+      "rationale": "The front door clearly states what QUALITY.md is and who it's for and is now factually accurate, but it tells rather than shows: there is no rendered qualitymd output and no copyable first-result quickstart, so a newcomer cannot see the payoff or reach a real result quickly. Held at minimum by those two gaps."
+    }
+  ],
+  "aggregateRating": {
+    "rating": "minimum",
+    "notAssessed": false,
+    "rationale": "Leaf target: aggregate equals local rating. Accurate and clear on what/who, but the missing produced-output payoff and quick-first-result keep approachability at the floor."
+  },
+  "assessmentRecords": [
+    "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+    "assessments/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+    "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+    "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json"
+  ],
+  "childAnalysisRecords": []
+}

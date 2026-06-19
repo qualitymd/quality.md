@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "target": "readme",
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README says what QUALITY.md is and who it's for",
+  "factors": [
+    "approachability"
+  ],
+  "rating": "target",
+  "notAssessed": false,
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:3-4",
+      "observation": "The opening sentence states what QUALITY.md is (an agent-friendly file format plus companion skill and CLI) and who it is for (people building coding-agent/AI-assistant projects/harnesses) in the first lines.",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:35-39",
+      "observation": "The 'The Format' section gives a clear jargon-light definition (a structured quality model plus plain-language rationale), reinforcing the what.",
+      "category": "approachability"
+    },
+    {
+      "locator": "README.md:4,49",
+      "observation": "Gap: the stated audience (coding-agent/AI harnesses) mismatches the worked 'Support Inbox' customer-support example, which can confuse a first-time reader about who the tool is for.",
+      "category": "approachability",
+      "severity": "medium"
+    },
+    {
+      "locator": "README.md:3-4",
+      "observation": "Gap: the problem solved is only implicit and somewhat circular ('continuously improving quality'); a reader does not learn what pain it removes.",
+      "category": "approachability",
+      "severity": "low"
+    }
+  ],
+  "rationale": "A first-time reader learns within the opening lines what QUALITY.md is and who it is for, satisfying the requirement; held from outstanding by the audience/example mismatch and an implicit problem statement.",
+  "recommendations": []
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "assessments": [
+    {
+      "targetPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows its functional specifications"
+    },
+    {
+      "targetPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows the project CLI design guide"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "each rule is observable or testable"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification admits a single interpretation"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification defines its terms before use"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is complete"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is internally consistent"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is well-structured and readable"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification separates rules from rationale"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specifies its core and how it extends and evolves"
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format's constructs are shown with valid and invalid examples"
+    },
+    {
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README gets a newcomer to a first result quickly"
+    },
+    {
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README reflects what the CLI and spec actually provide"
+    },
+    {
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README says what QUALITY.md is and who it's for"
+    },
+    {
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README shows the format and its payoff by example"
+    }
+  ],
+  "analyses": [
+    {
+      "targetPath": []
+    },
+    {
+      "targetPath": [
+        "cli"
+      ]
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ]
+    },
+    {
+      "targetPath": [
+        "readme"
+      ]
+    }
+  ]
+}
