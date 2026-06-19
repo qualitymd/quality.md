@@ -16,8 +16,12 @@ is its contract, and the guide is its implementation. The format the guide
 teaches is defined by [`SPECIFICATION.md`](../../../SPECIFICATION.md), the source
 of truth the guide **conforms to**.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**,
-and **MAY** are to be interpreted as described in IETF RFC 2119.
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", and
+"MAY" are to be interpreted as described in
+[RFC 2119](../../../docs/reference/rfc2119.md) and
+[RFC 8174](../../../docs/reference/rfc8174.md) when, and only when, they appear
+in all capitals.
 
 ## Purpose
 
@@ -97,12 +101,12 @@ a concept is) with **how-to** (the jobs of working with it):
 
 - How-to guidance **MUST** be written as **directives** — a short imperative
   (**Do** / **Consider** / **Avoid** / **Don't**) each paired with a brief *why*.
-  A directive **SHOULD** be promoted to a named **job** (a verb-phrased task
+  A directive should be promoted to a named **job** (a verb-phrased task
   heading grouping several directives) only when the task needs judgment — a
-  choice among options, a tradeoff, or several steps; a single rule **SHOULD**
+  choice among options, a tradeoff, or several steps; a single rule should
   stay a floating directive rather than acquire a job wrapper.
 
-- Concept chapters **SHOULD** be ordered as an author builds a model: the file
+- Concept chapters should be ordered as an author builds a model: the file
   and model frame first, then the rating scale, then the target tree (target →
   factor → requirement), then the Markdown body, then maintenance.
 

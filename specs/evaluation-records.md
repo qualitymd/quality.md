@@ -19,8 +19,11 @@ This contract is a standalone spec — not prompt prose, and not nested under
 that supplies judgment. A single cited source of truth keeps the two surfaces
 from drifting in a way duplicated prose could not.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
-interpreted as described in IETF RFC 2119.
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../docs/reference/rfc2119.md) and
+[RFC 8174](../docs/reference/rfc8174.md) when, and only when, they appear in all
+capitals.
 
 ## Responsibility
 
@@ -191,7 +194,7 @@ The Markdown body **MUST** state the gap, evidence locators, remediation options
 recommended option, and done criterion in stable human-readable sections.
 
 When a recommendation corrects an earlier recommendation while preserving the
-audit trail, it **MAY** include `supersedes`, a list of earlier recommendation
+audit trail, it can include `supersedes`, a list of earlier recommendation
 IDs or paths. Superseded recommendation records remain part of the run, but
 reports treat them as inactive advice. Active selection is driven by explicit
 `supersedes` intent, not by record numbering or recency: appending a corrected

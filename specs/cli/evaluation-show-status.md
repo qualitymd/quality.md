@@ -11,6 +11,12 @@ timestamp: 2026-06-18T00:00:00Z
 `qualitymd evaluation show-status <run>` reads an evaluation run and reports
 whether it is complete enough for `qualitymd evaluation build-report`.
 
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
+
 The command **MUST NOT** write files. It exits `0` when the run can be inspected,
 even when it is not yet reportable. Missing or dangling records are payload
 gaps, not command failures. A missing run folder, unreadable record, or malformed
@@ -60,7 +66,7 @@ Planned-coverage gaps **MUST** make the run non-reportable. When
 as a run with no planned coverage metadata.
 
 When a non-reportable run has duplicate-record or unexpected-record gaps,
-`nextActions` **SHOULD** direct the user to review the gaps rather than adding
+`nextActions` should direct the user to review the gaps rather than adding
 more records.
 
 When a recommendation record supersedes another recommendation, every

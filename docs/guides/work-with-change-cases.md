@@ -45,12 +45,13 @@ Write them in order — settle *what* the change case must do before working out
 The two stages line up with the `status` lifecycle below.
 
 1. **Functional spec first** (`spec.md`, `type: Functional Specification`), while
-   the change case is **Draft**. You **MUST** read
+   the change case is **Draft**. Read
    [Writing functional specs](write-functional-specs.md) before creating or
    updating any change case spec — it is required reading, not an optional
-   reference. Then follow it: state requirements with RFC 2119 keywords, specify
-   behavior not implementation, and don't invent requirements. Pin down the
-   *what* before moving on.
+   reference. Then follow it: state clear, testable requirements; use BCP 14
+   keywords only where they change conformance meaning; specify behavior, not
+   implementation; and don't invent requirements. Pin down the *what* before
+   moving on.
 2. **Design doc next** (`design.md`, `type: Design Doc`), once the spec is
    settled and the change case moves to **Design**. Follow
    [Writing design docs](write-design-docs.md): it answers the spec, so don't
@@ -68,7 +69,7 @@ and the [`docs/`](../index.md) guides hold the *cumulative* source of truth for
 the tool's current behavior. A Change Case is the bridge between them: it
 proposes a delta, and the enduring artifacts absorb it.
 
-Durable specs and docs are **not** locked to the change lifecycle. They **MAY**
+Durable specs and docs are **not** locked to the change lifecycle. They may
 be edited at any time — within a Change Case or on their own, with no case at
 all — whenever the current source of truth is wrong, stale, or incomplete. What
 a Change Case owes is honest *accounting* for the durable impact of its work,
@@ -77,14 +78,14 @@ not exclusive custody of the edits.
 So, up front — alongside the motivation and scope, not discovered at the end —
 record that impact in the parent concept's **Affected specs & docs** section:
 
-- A Change Case **MUST** list every durable spec or doc its work impacts and that
+- A Change Case must list every durable spec or doc its work impacts and that
   needs updating. Keep it honest: an empty list must read as a deliberate "no
   durable impact," not an oversight.
-- A Change Case **SHOULD** raise suggestions for any *new* durable specs worth
+- A Change Case should raise suggestions for any *new* durable specs worth
   creating — a contract its work reveals is under-specified or worth lifting out
   of code. Suggesting is enough; actually creating the new spec is not a
   precondition for the case to land.
-- A Change Case **SHOULD** bring the durable docs it lists into sync before it
+- A Change Case should bring the durable docs it lists into sync before it
   reaches **In-Review**, so the enduring source of truth matches the landed
   behavior. Because durable docs may also be edited independently, the case is
   not the only path to that update — but it must not leave a doc it listed
@@ -96,7 +97,7 @@ every artifact the case touches, and the checklist reconciled before
 in the [functional spec](write-functional-specs.md): which durable specs the
 change rewrites, and what they must say differently, belong with the requirements
 that drive them — not in the design doc, and not discovered at the end. So a
-change case's functional spec **MUST** carry a
+change case's functional spec must carry a
 [`## Durable spec changes`](write-functional-specs.md#durable-spec-changes)
 section — **To add** / **To modify** / **To delete**, each reading a list or an
 explicit `None` — covering the [`specs/`](../../specs/index.md) bundle and the
@@ -109,7 +110,7 @@ rationale are the reasons its requirements exist — and they archive with the
 case. Unless they are promoted into the durable spec, the spec inherits the rule
 and loses the reason, and a later editor re-litigates a settled lesson or
 "simplifies" a rule back into the bug it fixed. So when a Change Case updates a
-durable spec, it **SHOULD** lift that rationale into the spec's
+durable spec, it should lift that rationale into the spec's
 **Background / Motivation** (the
 big-picture *why*) and its per-requirement **annotations** (the fine-grained
 *why*), exactly as the [functional-spec guide](write-functional-specs.md)
@@ -133,14 +134,14 @@ A Change Case's `status` frontmatter advances, in order:
   list?" but "does this phase permit changing it?" The gate governs **code**.
   Before **In-Progress**, the Change Case's own work stays inside its folder,
   `changes/NNNN-<slug>/` — **Draft** produces its `spec.md`, **Design** produces
-  its `design.md`, and either MAY add supplementary files (sketches, examples,
+  its `design.md`, and either can add supplementary files (sketches, examples,
   data fixtures) that support those, so long as they live within that folder.
   **In-Progress** is the first phase that authorizes touching the **code**; all
   code stays untouched until then. **Implementation does not begin until the
   Change Case is In-Progress**: advance the `status` first, then implement. This
   is what keeps *what* and *how* settled before any code is written. Durable
   specs and docs are the exception to the gate — they track the *current* source
-  of truth, not this case's unimplemented delta, so they **MAY** be edited in any
+  of truth, not this case's unimplemented delta, so they may be edited in any
   phase (or with no Change Case at all; see
   [Account for the specs and docs it touches](#account-for-the-specs-and-docs-it-touches)).
   The Change Case's parent concept, its `index.md`, and the bundle
@@ -151,7 +152,7 @@ A Change Case's `status` frontmatter advances, in order:
   reality: every durable spec and doc the case listed should be updated (or
   already independently up to date), so the enduring source of truth matches the
   landed behavior and is ready for review with the implementation. When a Change
-  Case updates a durable spec, it **SHOULD** also promote the
+  Case updates a durable spec, it should also promote the
   [enduring *why*](#account-for-the-specs-and-docs-it-touches) — the Change Case's
   motivation and the design doc's durable rationale — into the spec's
   **Background / Motivation** and per-requirement annotations, so the reason a

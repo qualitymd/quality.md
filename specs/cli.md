@@ -17,8 +17,11 @@ It is a companion to the
 [`QUALITY.md` format specification](../SPECIFICATION.md): where this document
 constrains the *tool*, the format spec constrains the *file*.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
-interpreted as described in IETF RFC 2119.
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../docs/reference/rfc2119.md) and
+[RFC 8174](../docs/reference/rfc8174.md) when, and only when, they appear in all
+capitals.
 
 ## Scope
 
@@ -116,7 +119,7 @@ documented categories so callers can branch without parsing output:
 ### Opt-in Capabilities
 
 Agent-facing enrichments are opt-in per invocation and do not weaken the
-baseline. `--json` is a near-universal SHOULD across commands, with the detailed
+baseline. `--json` is a near-universal default across commands, with the detailed
 rules in [Conventions](#conventions). `nextActions` are offered only when a
 command has a useful follow-up; their rendering is also defined in
 [Conventions](#conventions). The quiet/verbosity control that governs human
@@ -131,7 +134,7 @@ on failure.
 Conventions that hold wherever they apply, so flags and output behave the same
 across commands.
 
-**`--json` for machine-readable output.** Commands **SHOULD** offer
+**`--json` for machine-readable output.** Commands should offer
 machine-readable output, spelled `--json` — never `--format json` or a
 per-command variant. Machine-readable output is the broad default wherever it is
 meaningful, so an agent can reach for `--json` without reasoning per command
@@ -141,7 +144,7 @@ Commands default to human-readable terminal output. There is no format
 auto-detection: passing `--json` is the only way to switch a command to emitting
 a JSON document on stdout, the form agents and CI consume.
 
-A command **MAY** omit `--json` only when its output is a verbatim artifact that
+A command can omit `--json` only when its output is a verbatim artifact that
 *is* the payload and is meant to be redirected, so wrapping it adds nothing. For
 example, [`spec`](./cli/spec.md) emits the format specification itself.
 
@@ -198,7 +201,7 @@ over a canonical plain form:
 - Styling applies **only** when the destination stream is a terminal and
   `NO_COLOR` is unset, per the [baseline](#baseline). Piped, redirected, and
   agent-driven output is the plain form, byte-for-byte.
-- A command **MAY** render a long verbatim artifact through the user's pager
+- A command can render a long verbatim artifact through the user's pager
   (`$PAGER`, else a system default) when stdout is a terminal. Paging is never
   load-bearing: it is skipped when stdout is not a terminal or no pager is
   available, and the artifact is written directly instead.
@@ -209,7 +212,7 @@ local build — it **MUST** fall back to the module build information the Go
 toolchain embeds (the module version for an installed release, otherwise a
 development label carrying the VCS revision). If a local development invocation
 does not expose the revision through embedded build information but can resolve
-it from the local VCS checkout, it **SHOULD** use that revision rather than
+it from the local VCS checkout, it should use that revision rather than
 reporting a bare placeholder.
 
 ## To be specified

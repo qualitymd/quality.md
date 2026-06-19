@@ -53,16 +53,23 @@ out of order. The elements below are a palette, not a checklist (see
 
 ## Requirements
 
-State requirements with RFC 2119 keywords — **MUST**, **SHOULD**, **MAY** — so
-each is testable and its strength is unambiguous:
+State requirements as clear, testable obligations. Use BCP 14 keywords
+(`MUST`, `SHOULD`, `MAY`) only when the keyword changes conformance meaning:
+required behavior, prohibited behavior, a default with a real escape hatch, or
+optional behavior that affects compatibility. Normal prose can use lowercase
+"must", "should", "may", and "can" with their ordinary English meanings.
 
 > A command **MUST** exit non-zero when it finds errors. Output **SHOULD** default
 > to a human-readable form.
 
-Declare the keyword convention once near the top:
+When a spec uses BCP 14 keywords, declare the convention once near the top:
 
-> The key words "MUST", "SHOULD", "MAY" … are to be interpreted as described in
-> IETF RFC 2119.
+> The key words "MUST", "SHOULD", and "MAY" are to be interpreted as described
+> in BCP 14 when, and only when, they appear in all capitals.
+
+Do not add BCP 14 keywords just to make a sentence feel spec-like. A requirement
+can be normative without a keyword when the obligation is still clear and
+testable.
 
 ### Per-requirement rationale
 
@@ -142,8 +149,8 @@ specs & docs** index, not here.
 - **Don't invent requirements (YAGNI).** Specify only what's actually asked for
   or genuinely needed now. A spec is not the place to anticipate features,
   hedge against hypothetical needs, or add flags, formats, and edge cases
-  "while we're here." Every MUST/SHOULD is a constraint someone has to implement
-  and uphold — speculative ones cost more than they save. When a need is real
+  "while we're here." Every requirement is a constraint someone has to implement
+  and uphold; speculative ones cost more than they save. When a need is real
   but not yet, record it under **deferred** rather than specifying it.
 - **An unspecified case is a decision delegated.** A spec *decides* behavior; it
   doesn't just describe the happy path. Each error, conflict, empty input, or
@@ -201,7 +208,7 @@ thoroughness:
   every bullet maps to a section that says the same thing, the list should be
   links.
 - **Rationale that buries the rule** — justification wrapped around a one-line
-  MUST until the requirement is no longer the lead, testable sentence. The cure
+  requirement until it is no longer the lead, testable sentence. The cure
   is order and subordination, not deletion: lead with the rule, drop the *why*
   into a [`Rationale:` annotation](#per-requirement-rationale) (or
   [Background](#shape)) beneath it.

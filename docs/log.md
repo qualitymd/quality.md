@@ -1,5 +1,17 @@
 # Docs Update Log
 
+## 2026-06-19
+
+- **Revision**: Updated [Writing functional specs](guides/write-functional-specs.md)
+  to use BCP 14 keywords sparingly: only where the keyword changes conformance
+  meaning. Cleaned related workflow guides so they use ordinary prose for
+  contribution-process advice rather than uppercase requirement words.
+
+- **Creation**: Added [RFC 8174](reference/rfc8174.md) as a `Reference`
+  concept beside [RFC 2119](reference/rfc2119.md), documenting the BCP 14
+  uppercase-only clarification used by `SPECIFICATION.md`, and listed it in the
+  [reference index](reference/index.md).
+
 ## 2026-06-18
 
 - **Revision**: Made change cases account for durable-**spec** deltas in the

@@ -27,7 +27,7 @@ Each concept begins with a YAML frontmatter block. Only `type` is required:
 
 ```yaml
 ---
-type: Specification          # REQUIRED — what kind of concept this is
+type: Specification          # required — what kind of concept this is
 title: qualitymd CLI         # recommended — display name
 description: One-line summary # recommended — used in index listings
 tags: [cli, specification]   # optional
@@ -37,7 +37,7 @@ timestamp: 2026-06-16T00:00:00Z  # optional — ISO 8601 last-modified
 
 `type` is a free-form string — pick something descriptive. OKF has no central
 registry, but as a project convention each bundle records the types it uses in
-its own `schema.md` (see below). You MAY add any other keys you need.
+its own `schema.md` (see below). You may add any other keys you need.
 
 ## Reserved files
 

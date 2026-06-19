@@ -12,6 +12,12 @@ timestamp: 2026-06-18T00:00:00Z
 coverage metadata for an existing evaluation run. The artifact contract is
 defined by [Evaluation records](../evaluation-records.md#planned-coverage).
 
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
+
 ## Input
 
 The command reads one JSON payload from `--file <path>`, from `--file -`, or

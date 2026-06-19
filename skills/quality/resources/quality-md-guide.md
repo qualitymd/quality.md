@@ -4,8 +4,7 @@ A single, comprehensive guide to understanding and working with `QUALITY.md`
 files: the concepts that make up the format, and the jobs you do when working
 with each.
 
-This guide restates the format defined in [`SPECIFICATION.md`](SPECIFICATION.md)
-and conforms to it; the specification governs on any conflict.
+This guide conforms to [`SPECIFICATION.md`](SPECIFICATION.md). The specification governs on any conflict.
 
 ## Contents
 
@@ -40,7 +39,7 @@ unless a target narrows it with a `source`.
 
 #### Place the file at the root of what it evaluates
 
-- **Do** put `QUALITY.md` in the directory whose contents are the subject. The
+- **Do** put `QUALITY.md` in the directory whose contents are the subject target. The
   default scope is that directory and all subdirectories — no `source` needed in
   the common case. *Location is the simplest, most reliable scope declaration.*
 

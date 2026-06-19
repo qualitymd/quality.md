@@ -12,6 +12,12 @@ timestamp: 2026-06-18T00:00:00Z
 from the run's assessment, analysis, and recommendation records. It renders
 recorded judgment; it **MUST NOT** infer or recompute ratings.
 
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
+
 The command **MUST** fail without writing a partial report when the run is not
 renderable. It **MUST** be deterministic and idempotent: unchanged records produce
 byte-identical report files. Determinism excludes terminal styling from the

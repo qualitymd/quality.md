@@ -17,8 +17,11 @@ an external copy.
 plain-output rules, and exit-code categories from the [CLI spec](../cli.md). This
 sub-spec states only the behavior particular to `spec`.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
-interpreted as described in IETF RFC 2119.
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
 
 ## Scope
 
@@ -39,10 +42,10 @@ Deferred:
 - When output must be plain — stdout is not a terminal, or `NO_COLOR` is set —
   `spec` **MUST** write the specification as verbatim Markdown and nothing else.
   `qualitymd spec > SPECIFICATION.md` reproduces the artifact byte-for-byte.
-- When stdout is a terminal, `spec` **SHOULD** render the Markdown formatted for
+- When stdout is a terminal, `spec` should render the Markdown formatted for
   readability using the stack's terminal renderer. This rendering is a human
   convenience; it **MUST NOT** change the bytes written when output must be plain.
-- When stdout is a terminal, `spec` **MAY** display the rendered specification
+- When stdout is a terminal, `spec` can display the rendered specification
   through the user's pager per the [paging convention](../cli.md#conventions), so
   a long spec scrolls. Paging is skipped when stdout is not a terminal, so a
   redirect still reproduces the artifact byte-for-byte.

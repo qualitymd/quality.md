@@ -20,8 +20,11 @@ exiting non-zero on errors so it drops into CI.
 `QUALITY.md` — only. It does not assess whether the model is a *good* quality
 model; that judgment lives in the evaluation skills, not the deterministic CLI.
 
+This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", "RECOMMENDED", and "MAY" are to be
-interpreted as described in IETF RFC 2119.
+interpreted as described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
 
 ## Scope
 
@@ -148,9 +151,9 @@ it. It MUST:
   warnings frame the recommendation they enforce, info is neutral observation; no
   blame, no exclamation.
 
-A message SHOULD **be actionable when the fix is determinate** — pointing to the
-expected shape or the valid set — and SHOULD stay concise, leading with the
-problem. A rule that finds several instances SHOULD emit **one message per
+A message should **be actionable when the fix is determinate** — pointing to the
+expected shape or the valid set — and should stay concise, leading with the
+problem. A rule that finds several instances should emit **one message per
 instance**, each with its own location, rather than one bundled list, so each is
 independently addressable.
 
@@ -158,7 +161,7 @@ independently addressable.
 
 A rule is **fixable** only when `qualitymd` can repair each finding with a
 deterministic edit that does not presume the author's intent. Fixability is
-independent of severity: an error MAY be fixable, and a warning MAY be
+independent of severity: an error can be fixable, and a warning can be
 non-fixable.
 
 A rule **MUST** be marked fixable only when all of the following hold:
@@ -209,13 +212,13 @@ frontmatter nodes:
 
 - Markdown body content **MUST** be preserved byte-for-byte.
 - YAML map order, comments, scalar style, and whitespace outside repaired nodes
-  **SHOULD** be preserved where the parser and emitter make that possible.
+  should be preserved where the parser and emitter make that possible.
 - Unrelated YAML keys **MUST NOT** be reordered or rewritten unless the rewrite is
   necessary to apply the repair deterministically.
-- The write **SHOULD** be atomic from the caller's perspective: write a complete
+- The write should be atomic from the caller's perspective: write a complete
   replacement and then replace the target path, rather than truncating the
   original before the replacement is ready.
-- To avoid ambiguous replacement behavior, `lint --fix` **SHOULD** refuse to
+- To avoid ambiguous replacement behavior, `lint --fix` should refuse to
   repair a linted path that is a symbolic link until symlink write semantics are
   specified.
 
@@ -295,7 +298,7 @@ Each repair object **MUST** contain:
 - `location` — the location object for the repaired finding.
 
 The JSON object **MUST NOT** include human styling, terminal control sequences,
-or implementation-only fields. Additional documented fields MAY be added later
+or implementation-only fields. Additional documented fields can be added later
 when they do not change the meaning of the required fields.
 
 ### Locations
@@ -321,24 +324,24 @@ missing key at the place it would appear.
 
 If source position is available, `location` **SHOULD** also include 1-based
 `line` and `column` fields for the start of the relevant YAML node. Source
-positions are advisory: callers MUST treat `modelPath` as the stable machine
+positions are advisory: callers must treat `modelPath` as the stable machine
 location.
 
 ### Human output
 
 Human-readable output **MUST** include, for each finding, the severity, rule id,
-message, and location label. It **SHOULD** summarize the total errors and
+message, and location label. It should summarize the total errors and
 warnings. When `--fix` applies repairs, human-readable output **MUST** also
 report how many repairs were applied. Styling and exact layout are governed by
 the CLI's output conventions and are not part of this sub-spec.
 
 When the result is invalid, human-readable output **MUST** render a
 deterministic next-action footer on stderr using the same action data emitted in
-the JSON result. The footer **SHOULD** prefer `qualitymd lint --fix <path>` when
-at least one remaining finding is fixable, and otherwise **SHOULD** point to
+the JSON result. The footer should prefer `qualitymd lint --fix <path>` when
+at least one remaining finding is fixable, and otherwise should point to
 rerunning `qualitymd lint <path>`.
 
-When there are no findings, human-readable output **SHOULD** report that the file
+When there are no findings, human-readable output should report that the file
 is valid. Under `--json`, a valid file is represented by `"valid": true`, zero
 counts in `summary.errors`, `summary.warnings`, and `summary.info`, and an empty
 `findings` array.
@@ -362,7 +365,7 @@ Findings **MUST** be emitted in deterministic order:
 3. For the same location, `error` before `warning` before `info`.
 4. For the same location and severity, lexicographic `ruleId`.
 
-A malformed or structurally invalid parent **MAY** block rules that depend on
+A malformed or structurally invalid parent can block rules that depend on
 that parent's parsed shape. For example, absent frontmatter or invalid YAML emits
 `invalid-frontmatter` and prevents model-level rules from running; a malformed
 `ratingScale` may prevent per-level checks from running. A blocked downstream
@@ -423,7 +426,7 @@ finding is advisory and does not affect the exit code.
 - **Rating-level order.** The spec requires levels ordered best-to-worst, but
   that ordering is semantic and cannot be verified mechanically, so no rule
   enforces it (fails [Rule scope](#rule-scope) criterion 2).
-- **Body heading.** The body's top-level heading SHOULD name the model's subject
+- **Body heading.** The body's top-level heading should name the model's subject
   (matching `title` when set), but whether a heading *names* a subject is a
   semantic judgment rather than a string match, so no rule enforces it (fails
   [Rule scope](#rule-scope) criterion 2).

@@ -12,8 +12,11 @@ timestamp: 2026-06-17T00:00:00Z
 inherits the cross-cutting CLI contract from the [CLI spec](../cli.md); this
 sub-spec covers only what is particular to `init`.
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
-interpreted as described in IETF RFC 2119.
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
 
 ## Scope
 
@@ -48,18 +51,18 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   **MUST** pass `qualitymd lint` with no errors, placeholder text and all.
 - The frontmatter **MUST** seed the suggested four-level rating scale
   (`outstanding` / `target` / `minimum` / `unacceptable`) from the
-  [format spec](../../SPECIFICATION.md#model), which a scaffolding tool MAY seed.
+  [format spec](../../SPECIFICATION.md#model), which a scaffolding tool can seed.
 - The frontmatter **MUST** include a minimal skeleton that leads to at least one
   requirement: a placeholder factor carrying a `description`, and beneath it a
   placeholder requirement carrying a single non-empty `assessment`.
-- Frontmatter placeholders **SHOULD** be accompanied by inline YAML comments that
+- Frontmatter placeholders should be accompanied by inline YAML comments that
   tell the author what to replace, so the file reads as a guided skeleton rather
   than a filled-in example.
 - The Markdown body **MUST** include the
   [recommended body sections](../../SPECIFICATION.md#markdown-body) — Overview,
   Scope, Needs, Risks, and Known gaps — as headed stubs, each with a brief prompt
   of what it captures.
-- The scaffold **SHOULD** seed a placeholder `title`, and the body **SHOULD**
+- The scaffold should seed a placeholder `title`, and the body should
   open with a top-level heading naming the subject, matching that `title`.
 
 ### Reporting
@@ -67,7 +70,7 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
 - On successfully writing a file, `init` **MUST** report the created path. This
   confirmation is written to standard error, so standard output carries only the
   scaffold itself when piping with `-`.
-- `init` **SHOULD** close with
+- `init` should close with
   [next actions](../cli.md#conventions) pointing the author to validate and then
   edit the new file, for example `qualitymd lint QUALITY.md`.
 - Under `--json`, `init` **MUST** emit a single result receipt on stdout instead
@@ -79,7 +82,7 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   - `nextActions` — the same next-action data that would render as the human
     footer.
 - When `init --json` refuses to overwrite an existing file, it **MUST NOT** emit
-  a success receipt. It **SHOULD** emit a JSON error object on stderr with
+  a success receipt. It should emit a JSON error object on stderr with
   `schemaVersion`, `path`, and `reason`; the exit code remains the CLI spec's
   internal-error category.
 

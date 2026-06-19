@@ -22,6 +22,12 @@ targets:
     source: ./SPECIFICATION.md
     requirements:
       "the format specification is complete":
+        factors:
+          - clarity
+          - consistency
+          - verifiability
+          - extensibility
+          - usability
         assessment: >
           Every frontmatter field and recommended body section has its shape,
           allowed values, requiredness, cardinality, and any default; the spec
@@ -37,9 +43,10 @@ targets:
         requirements:
           "the format specification admits a single interpretation":
             assessment: >
-              Each rule admits one reading. Obligations use a consistent
-              must/should/may vocabulary and no normative statement leans on a
-              vague quantifier without a stated bound.
+              Each rule admits one reading. Obligation strength is explicit
+              where it affects conformance, BCP 14 keywords are used sparingly
+              and consistently, and no normative statement leans on a vague
+              quantifier without a stated bound.
           "the format specification separates rules from rationale":
             assessment: >
               A reader can always tell whether a sentence states a binding rule
@@ -178,7 +185,8 @@ the README's job is newcomer orientation, not format precision.
   assessment source for requirements on the appropriate CLI targets and quality
   factors. It should inform requirements for command usability, automation
   compatibility, consistency, determinism, and help/error behavior.
-- The RFC 2119 reference (`docs/reference/rfc2119.md`) is not yet cited as a
-  reference standard for requirements that depend on normative vocabulary. It
-  should inform requirements that assess correct use of requirement-level
-  keywords, local adaptation, and citation/provenance.
+- The BCP 14 references (`docs/reference/rfc2119.md` and
+  `docs/reference/rfc8174.md`) are not yet cited as reference standards for
+  requirements that depend on normative vocabulary. They should inform
+  requirements that assess sparse, correct use of requirement-level keywords,
+  local adaptation, and citation/provenance.

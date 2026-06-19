@@ -25,8 +25,11 @@ this spec, the skill's own prompt, and the CLI together. That evaluation
 > assessments *through the CLI* is **deferred** in step with the CLI's deferred
 > record/gate surface (see [Deferred](#deferred)).
 
-The key words **MUST**, **MUST NOT**, **SHOULD**, **RECOMMENDED**, and **MAY**
-are to be interpreted as described in IETF RFC 2119.
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", "RECOMMENDED", and "MAY" are to be
+interpreted as described in [RFC 2119](../../../docs/reference/rfc2119.md) and
+[RFC 8174](../../../docs/reference/rfc8174.md) when, and only when, they appear
+in all capitals.
 
 ## Operating model
 
@@ -81,7 +84,7 @@ skill safe against the content it reads.
   the skill **MUST NOT** present a scoped result as a verdict on the whole model
   (per [Define](../../../SPECIFICATION.md#define)).
 - **Determinism over flair.** Given the same model, subject, and scope, the skill
-  **SHOULD** reach the same ratings and surface the same key gaps. Ratings are
+  should reach the same ratings and surface the same key gaps. Ratings are
   inferred judgments, not sampled opinions (see
   [Grounding judgment](#grounding-judgment)).
 
@@ -98,7 +101,7 @@ additional frontmatter fields.
 The installable `SKILL.md` **MUST** remain the router and always-loaded global
 contract: argument parsing, shared CLI prerequisites, safety rules, config, and
 artifact-contract guidance live there. Supporting docs live under
-`skills/quality/resources/`. Mode-specific procedure details **MAY** live in
+`skills/quality/resources/`. Mode-specific procedure details can live in
 separate mode files, and the current artifact keeps them under
 `skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`, and
 `improve.md`. When mode procedures live outside `SKILL.md`, the root prompt
@@ -112,7 +115,7 @@ evaluation/improvement, factors, characteristics, attributes, criteria),
 `QUALITY.md` vocabulary (Targets, Factors, Requirements), project/entity and
 component/target subject framing, subject evaluation, and `QUALITY.md`
 authoring/improvement. It **MUST NOT** include CLI implementation details, and it
-**SHOULD NOT** trigger for generic copyediting or one-off "make this higher
+should not trigger for generic copyediting or one-off "make this higher
 quality" requests that lack systematic quality criteria or assessment.
 
 To stay in sync with the format, the metadata and prompt **MUST NOT** embed a
@@ -144,7 +147,7 @@ valid:
 - **Scope** — the whole model (default), or a narrowing by **target** (a target
   and its subtree) and/or by **factor** (the requirements tied to a factor,
   including those tagging it as a secondary factor), per
-  [Define](../../../SPECIFICATION.md#define). A scope name **SHOULD** resolve
+  [Define](../../../SPECIFICATION.md#define). A scope name should resolve
   against the model the skill already grounded — a bare name is matched to the
   target or factor that bears it, with an explicit `target`/`factor` keyword
   available to disambiguate the rare name that is both.
@@ -225,7 +228,7 @@ output as the source of truth:
   own (see [Evaluation workflow](#evaluation-workflow)) and **conforms to**,
   rather than is fetched from, the spec.
 
-The skill **SHOULD** discover the CLI's available commands and flags from the CLI
+The skill should discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
 introspection channel where the [CLI](../../cli.md) offers one. It **MUST** consume
 machine-readable output where a command provides it (the
@@ -296,7 +299,7 @@ flowchart TD
    `source` will be covered at the chosen effort). The plan **MUST** record the
    chosen effort and concrete requirement set covered.
 6. **Record planned coverage when useful** — after the plan is settled, the
-   skill **SHOULD** write intended assessment and analysis coverage through
+   skill should write intended assessment and analysis coverage through
    `qualitymd evaluation set-planned-coverage` when resume diagnostics
    materially matter, especially for standard, deep, concurrent-write, or
    interruption-prone runs. The skill **MUST NOT** hand-author or hand-repair
@@ -341,7 +344,7 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   [Analyze](../../../SPECIFICATION.md#analyze)).
 - **Roll-up is inferred, weighted by what matters.** The skill infers factor,
   local, and aggregate ratings by judgment — a serious shortfall in an important
-  requirement **MUST NOT** be masked by many satisfactory ones — and **SHOULD**
+  requirement **MUST NOT** be masked by many satisfactory ones — and should
   record a brief rationale naming the binding constraints (per
   [Analyze](../../../SPECIFICATION.md#analyze)).
 
@@ -369,7 +372,7 @@ the failure mode this guards against. It is scoped to the headline-binding
 findings, not every finding, because the headline is the highest-stakes output
 and a universal second pass is disproportionate at `standard` effort.
 
-At `deep` effort, the skill **MAY** fan out per-requirement or per-target
+At `deep` effort, the skill can fan out per-requirement or per-target
 assessment to subagents that return structured findings. Roll-up judgment and
 headline ratings **MUST** remain with the orchestrating skill, and subagent
 evidence must meet the same locator and verification rules.
@@ -386,7 +389,7 @@ Every evaluation that finds gaps **MUST** also emit its Advice as discrete,
 triageable **recommendation** artifacts — recommendations are a product of
 evaluation, not of `improve` (see [Operating model](#operating-model)).
 
-A rating level's name **MAY** collide with `QUALITY.md` structural vocabulary —
+A rating level's name can collide with `QUALITY.md` structural vocabulary —
 most often the suggested scale's **Target** level against a **Target** entity.
 Wherever a level name could be read as a structural term, the report **MUST**
 qualify it: name the level with a qualifier (the **Target** rating level;
@@ -408,7 +411,7 @@ The folder and record contract is defined by
 [`Evaluation records`](../../evaluation-records.md).
 It **MUST** be repository-relative, normalized before use, and rejected when it is
 absolute or escapes the repository. Missing config or missing `evaluationDir`
-uses the default. Unknown config keys **SHOULD** be surfaced as warnings and
+uses the default. Unknown config keys should be surfaced as warnings and
 ignored.
 
 Runtime evaluation artifacts are raw outputs in the evaluated repository, not
@@ -453,7 +456,7 @@ Together these separate the three things an audit must tell apart — the *input
   run; the snapshot makes the report a self-contained, reproducible record whose
   findings trace to the exact requirements and `source` selectors in force at
   evaluation time. It is a verbatim capture, not a runtime judgment, and
-  **SHOULD** record the revision (e.g. commit) of the subject it was taken
+  should record the revision (e.g. commit) of the subject it was taken
   against.
 - The folder **MUST** include a **design** artifact recording the evaluation's
   resolved parameters — mode, target file, scope, and effort (see
@@ -474,7 +477,7 @@ Together these separate the three things an audit must tell apart — the *input
   layer: effort, scope or narrowing, in-scope requirement set, out-of-scope or
   deferred areas, headline evidence basis, and limitations that constrain the
   rating.
-- The folder **MAY** include optional **planned coverage** metadata when the run
+- The folder can include optional **planned coverage** metadata when the run
   needs machine-checkable resume diagnostics. The skill supplies the intended
   assessment requirements and analysis targets after the plan is settled, but the
   CLI writes `planned-coverage.json` through
@@ -527,7 +530,7 @@ rendering of the same result, produced by
 `qualitymd evaluation build-report`. The assessment records are the source of record for
 Assess-and-Rate and the analysis records for Analyze, and the report's
 per-requirement and per-target sections derive from them (the report adds the
-Advise and Report layers and the reader-facing framing). `report.json` **SHOULD**
+Advise and Report layers and the reader-facing framing). `report.json` should
 inline only minimal generic finding summaries by assessment-record reference for
 single-file consumers; full finding detail remains in `assessments/*.json`. This
 keeps the report from drifting and makes every rating in it traceable — leaf
@@ -557,7 +560,7 @@ set of remediation **options**; exactly one option marked **recommended**; and a
 against its `criterion`: for a rated gap, a target rating level; for a *not
 assessed* gap, becoming assessable and reaching at least the acceptable floor.
 That is what a later `improve` re-rates to confirm the fix. When the evidence
-or subject structure makes ownership inferable, the recommendation **SHOULD**
+or subject structure makes ownership inferable, the recommendation should
 name the route hint in existing text, such as the affected package, path,
 workflow, maintainer surface, or verification command. Like the report, a
 recommendation references any secret value by `file:line` and type only (see
@@ -565,7 +568,7 @@ recommendation references any secret value by `file:line` and type only (see
 records through `qualitymd evaluation add-record recommendation`; the CLI owns
 Markdown frontmatter, numbering, and stable rendering.
 
-When correcting an already written recommendation, the skill **SHOULD** write a
+When correcting an already written recommendation, the skill should write a
 new recommendation record with `supersedes` pointing at the stale
 recommendation, rather than appending ambiguous advice with no active-state
 signal. Appending a correction without `supersedes` leaves the run reportable and
@@ -573,7 +576,7 @@ renders both files, so the report's primary Next Action can still point at the
 stale original — the ambiguity is silent. Superseding makes the active advice
 unambiguous while preserving the audit trail.
 
-When correcting an already written assessment, the skill **SHOULD** write a new
+When correcting an already written assessment, the skill should write a new
 assessment record with `supersedes` pointing at the stale assessment, then
 replace the affected analysis record so it references the active assessment. This
 analysis step is required for assessments — and not for recommendations — because

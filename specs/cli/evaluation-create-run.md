@@ -12,6 +12,12 @@ timestamp: 2026-06-18T00:00:00Z
 inherits the cross-cutting CLI contract from [qualitymd CLI](../cli.md) and
 produces the layout defined by [Evaluation records](../evaluation-records.md).
 
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
+described in [RFC 2119](../../docs/reference/rfc2119.md) and
+[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+all capitals.
+
 ## Flags
 
 - `--narrowing <slug>` — optional path-safe scope slug.

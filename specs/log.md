@@ -1,5 +1,13 @@
 # Specs Update Log
 
+## 2026-06-19
+
+- **Revision**: Normalized active specs to the RFC 8174 / BCP 14 convention and
+  reduced uppercase requirement keywords where the text was advisory,
+  illustrative, or presentation guidance rather than a conformance switch.
+  Updated the root format spec, CLI specs, evaluation record contract, and
+  `/quality` skill specs to reserve BCP 14 wording for testable requirements.
+
 ## 2026-06-18
 
 - **Creation**: Added the [QUALITY.md authoring guide](skills/quality-skill/authoring-guide.md) sub-spec — the 1:1 contract for
