@@ -24,10 +24,6 @@ jobs:
       # so CI and `mise run check` stay in lockstep.
       - uses: jdx/mise-action@v4
 
-      # Fails if any Go file is not gofmt-clean.
-      - name: Check Go formatting
-        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
-
-      # vet, lint (golangci-lint), test, and Markdown format check.
+      # format, tidy, vet, lint, test, Markdown, and npm package checks.
       - name: Run checks
         run: mise run check

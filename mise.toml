@@ -25,9 +25,19 @@ run = "go vet ./..."
 description = "Lint the Go codebase with golangci-lint"
 run = "golangci-lint run"
 
+[tasks.fmt-go-check]
+description = "Check Go formatting without writing (CI-friendly)"
+run = '''
+unformatted="$(gofmt -l .)"
+if [ -n "$unformatted" ]; then
+	printf 'Go files need gofmt:\n%s\n' "$unformatted"
+	exit 1
+fi
+'''
+
 [tasks.check]
-description = "Run the full CI gate locally (vet, lint, test, format, npm package check)"
-depends = ["vet", "lint", "test", "fmt-md-check", "npm-pack-check"]
+description = "Run the full CI gate locally (format, tidy, vet, lint, test, npm package check)"
+depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "npm-pack-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"
@@ -48,6 +58,23 @@ run = "git config core.hooksPath .githooks"
 [tasks.tidy]
 description = "Tidy module dependencies"
 run = "go mod tidy"
+
+[tasks.tidy-check]
+description = "Verify go mod tidy leaves go.mod and go.sum unchanged"
+run = '''
+tmpdir="$(mktemp -d)"
+cp go.mod "$tmpdir/go.mod"
+cp go.sum "$tmpdir/go.sum"
+trap 'rm -rf "$tmpdir"' EXIT
+
+go mod tidy -modfile="$tmpdir/go.mod"
+if ! cmp -s "$tmpdir/go.mod" go.mod || ! cmp -s "$tmpdir/go.sum" go.sum; then
+	printf 'go mod tidy changed go.mod or go.sum. Review and stage the changes.\n'
+	diff -u --label go.mod --label 'go.mod (tidied)' go.mod "$tmpdir/go.mod" || true
+	diff -u --label go.sum --label 'go.sum (tidied)' go.sum "$tmpdir/go.sum" || true
+	exit 1
+fi
+'''
 
 [tasks.snapshot]
 description = "Build a local goreleaser snapshot (no publish)"

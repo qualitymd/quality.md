@@ -35,6 +35,7 @@ mise run build           # build ./dist/qualitymd
 mise run test            # go test ./...
 mise run vet             # go vet ./...
 mise run fmt             # gofmt -w . and dprint fmt
+mise run check           # run the same gate as CI and git hooks
 mise run fmt-md-check    # dprint check
 mise run npm-pack-check  # verify npm package README packaging
 mise run release-notes -- v0.3.0  # print curated release notes
@@ -43,21 +44,21 @@ mise run tidy            # go mod tidy
 mise run hooks           # install repo-managed git hooks
 ```
 
-Please run `mise run fmt`, `mise run test`, and `mise run vet` before opening a
-pull request. For docs-only changes, `mise run fmt-md-check` is the quick
-formatting gate.
+Please run `mise run fmt` before committing formatting-sensitive changes, then
+`mise run check` before opening a pull request. For docs-only changes,
+`mise run fmt-md-check` is the quick formatting gate.
 
 ### Git hooks
 
-Run this once after cloning if you want Git to run the repo's pre-commit checks:
+Run this once after cloning if you want Git to run the repo's hooks:
 
 ```sh
 mise run hooks
 ```
 
-The pre-commit hook checks staged Go files with `gofmt`, staged Markdown files
-with `dprint`, verifies `go mod tidy` leaves `go.mod` and `go.sum` unchanged,
-and runs `go test ./...`.
+The repo-managed hooks run the same `mise run check` gate as CI. `pre-commit`
+temporarily stashes unstaged files and checks the staged snapshot. `pre-push`
+temporarily stashes local changes and checks the committed snapshot.
 
 ### Testing the CLI from another directory
 

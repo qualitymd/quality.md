@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-}"
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+
+if ! command -v mise >/dev/null 2>&1; then
+	printf 'mise is required to run repo hooks. Install mise, then run: mise install\n' >&2
+	exit 1
+fi
+
+has_unstaged_changes() {
+	! git diff --quiet || [[ -n "$(git ls-files --others --exclude-standard)" ]]
+}
+
+has_local_changes() {
+	! git diff --quiet ||
+		! git diff --cached --quiet ||
+		[[ -n "$(git ls-files --others --exclude-standard)" ]]
+}
+
+stashed=false
+restore_args=()
+
+restore_stash() {
+	local status=$?
+	trap - EXIT
+
+	if [[ "$stashed" == "true" ]]; then
+		restore_failed=false
+		if ((${#restore_args[@]})); then
+			if ! git stash pop --quiet "${restore_args[@]}"; then
+				restore_failed=true
+			fi
+		else
+			if ! git stash pop --quiet; then
+				restore_failed=true
+			fi
+		fi
+		if [[ "$restore_failed" == "true" ]]; then
+			printf 'Checks finished, but restoring local changes failed.\n' >&2
+			printf 'Your changes are still in the most recent git stash entry.\n' >&2
+			exit 1
+		fi
+	fi
+
+	exit "$status"
+}
+
+stash_changes() {
+	local message="$1"
+	shift
+
+	git stash push --quiet "$@" -m "$message"
+	stashed=true
+	trap restore_stash EXIT
+}
+
+case "$mode" in
+	staged)
+		if git diff --cached --quiet; then
+			exit 0
+		fi
+		if has_unstaged_changes; then
+			stash_changes "qualitymd pre-commit unstaged changes" --keep-index --include-untracked
+		fi
+		printf 'Running mise run check against staged changes...\n'
+		;;
+	committed)
+		if has_local_changes; then
+			restore_args=(--index)
+			stash_changes "qualitymd pre-push local changes" --include-untracked
+		fi
+		printf 'Running mise run check against committed changes...\n'
+		;;
+	*)
+		printf 'usage: %s staged|committed\n' "$0" >&2
+		exit 2
+		;;
+esac
+
+mise run check

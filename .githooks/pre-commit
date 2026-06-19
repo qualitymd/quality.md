@@ -1,41 +1,4 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(git rev-parse --show-toplevel)"
-
-if command -v mise >/dev/null 2>&1; then
-	run_go() { mise exec -- go "$@"; }
-	run_gofmt() { mise exec -- gofmt "$@"; }
-	run_dprint() { mise exec -- dprint "$@"; }
-else
-	run_go() { go "$@"; }
-	run_gofmt() { gofmt "$@"; }
-	run_dprint() { dprint "$@"; }
-fi
-
-mapfile -t staged_go < <(git diff --cached --name-only --diff-filter=ACMR -- '*.go')
-if ((${#staged_go[@]})); then
-	unformatted="$(run_gofmt -l "${staged_go[@]}")"
-	if [[ -n "$unformatted" ]]; then
-		printf 'Go files need gofmt:\n%s\n\nRun: gofmt -w %s\n' "$unformatted" "${staged_go[*]}"
-		exit 1
-	fi
-fi
-
-mapfile -t staged_md < <(git diff --cached --name-only --diff-filter=ACMR -- '*.md')
-if ((${#staged_md[@]})); then
-	run_dprint check "${staged_md[@]}"
-fi
-
-before_mod="$(git hash-object go.mod)"
-before_sum="$(git hash-object go.sum)"
-run_go mod tidy
-after_mod="$(git hash-object go.mod)"
-after_sum="$(git hash-object go.sum)"
-if [[ "$before_mod" != "$after_mod" || "$before_sum" != "$after_sum" ]]; then
-	printf 'go mod tidy changed go.mod or go.sum. Review and stage the changes.\n'
-	git diff -- go.mod go.sum
-	exit 1
-fi
-
-run_go test ./...
+"$(git rev-parse --show-toplevel)/.githooks/run-check" staged
