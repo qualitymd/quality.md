@@ -2,6 +2,18 @@
 
 ## 2026-06-18
 
+- **Creation**: Added the [QUALITY.md authoring guide](skills/quality-skill/authoring-guide.md) sub-spec — the 1:1 contract for
+  the skill's [`quality-md-guide.md`](../skills/quality/resources/quality-md-guide.md)
+  resource. States its purpose (a single comprehensive guide to understanding and
+  working with `QUALITY.md` files), resolves the embed-vs-drift tension by scoping
+  the guide as a deliberately self-contained reference resource that restates the
+  format (an explicit exception to the prompt's no-drifting-copy rule) paid for by
+  a conformance duty to [`SPECIFICATION.md`](../SPECIFICATION.md), and fixes its
+  structural conventions (single-level concepts, reference + how-to per chapter,
+  directive/job form, authoring order). Promoted the authoring guide out of the
+  skill spec's **Deferred** resources note and added the one-line conformance note
+  and purpose statement to the guide itself.
+
 - **Revision**: Updated the
   [`lint`](cli/lint.md) spec for mandatory factor references: added
   `missing-factor-reference`, made `unknown-factor` apply to factor references

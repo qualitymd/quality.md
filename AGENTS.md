@@ -40,14 +40,6 @@ specs/docs, a functional spec, and optional design doc.
 - Do not add smoke-test scripts, utilities, fixtures, or code to repo.
 - Temporary helpers only in `tmp/` or throwaway dirs; remove when done.
 
-### Protected files
-
-Agents must follow these file-specific edit limits:
-
-| File                                           | Rule                                                          |
-| ---------------------------------------------- | ------------------------------------------------------------- |
-| `skills/quality/resources/quality-md-guide.md` | Minor grammar, spelling, and formatting only. No prose edits. |
-
 ### Guides
 
 Before work, read relevant [`docs/guides/`](docs/guides/index.md):

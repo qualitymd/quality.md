@@ -595,7 +595,8 @@ unpaired with its analysis would let a roll-up silently rely on stale judgment.
 
 - **Bundled `resources/` assets.** Which resource files the skill ships (e.g. an
   evaluation playbook or report template) and when it reads them, once the
-  workflow above settles.
+  workflow above settles. The authoring guide resource is settled and specified
+  in [QUALITY.md authoring guide](authoring-guide.md); the rest remain deferred.
 - **`improve` apply mechanics.** The shape of the apply step is settled — apply a
   chosen recommendation's option on explicit confirmation, then re-evaluate the
   affected scope to confirm it reached the recommendation's done-criterion (see
