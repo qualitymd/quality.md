@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Creation**: Added [Cut a release](guides/cut-a-release.md), a `How-to Guide`
+  for choosing a release version, checking the CLI/skill/specification versioned
+  surfaces, preparing curated release notes, running dry runs, publishing a tag,
+  verifying artifacts, handling failed releases, and tracking open process
+  support items such as `CHANGELOG.md` adoption and release-note automation.
+
 - **Revision**: Updated [Writing functional specs](guides/write-functional-specs.md)
   to use BCP 14 keywords sparingly: only where the keyword changes conformance
   meaning. Cleaned related workflow guides so they use ordinary prose for

@@ -95,6 +95,9 @@ mise run npm-build                # assemble npm packages under npm/platforms, n
 
 ### Cutting a release
 
+For the full release-prep, verification, failure-handling, and changelog
+workflow, see [Cut a release](docs/guides/cut-a-release.md).
+
 Releases are automated by `.github/workflows/release.yml` on any `v*` tag:
 
 ```sh
