@@ -45,6 +45,10 @@ edit.
 - [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
   - requires every requirement to be characterized by at least one factor and
     aligns terminology for direct versus secondary factor associations.
+- [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  - frames a requirement's assessment as inline or a reference to another entity,
+    reserves "source" for `Target.source`, and makes the model's traceability
+    graph an authoring concern.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
@@ -57,4 +61,5 @@ template for a new one.
 # Subfolders
 
 - [0028-require-characterized-requirements/](0028-require-characterized-requirements/) - spec for mandatory requirement characterization.
+- [0029-sharpen-assessment-references/](0029-sharpen-assessment-references/) - spec for assessment-reference framing and traceability.
 - [archive/](archive/) - completed change cases.

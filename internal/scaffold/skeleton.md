@@ -44,9 +44,11 @@ factors:
       # recovery" or "the public API can be adopted without reading the source".
       "<state one expectation you can assess>":
         # assessment — how an evaluator should inspect or measure the claim. It
-        # can be stated inline, or defer to a doc that already describes how to
-        # check it — a spec, style guide, runbook, or test plan.
-        # Defer to existing documentation (often the simplest):
+        # can be stated inline, or reference an entity that already defines how to
+        # check it — a spec, style guide, runbook, or test plan. An entity you own
+        # and reference can be a target in its own right, which keeps the
+        # dependency traceable.
+        # Reference existing documentation (often the simplest):
         # e.g. "Conform to the error-handling rules in docs/errors.md."
         # e.g. "Run the load test in perf/loadtest.md and compare to its SLOs."
         # Or state it inline:

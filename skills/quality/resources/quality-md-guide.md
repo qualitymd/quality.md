@@ -1,8 +1,7 @@
 # Authoring QUALITY.md
 
 A single, comprehensive guide to understanding and working with `QUALITY.md`
-files: the concepts that make up the format, and the jobs you do when working
-with each.
+files: the format concepts and the authoring jobs attached to each.
 
 This guide conforms to [`SPECIFICATION.md`](SPECIFICATION.md). The specification governs on any conflict.
 
@@ -37,11 +36,9 @@ unless a target narrows it with a `source`.
 
 ### Working with the file
 
-#### Place the file at the root of what it evaluates
-
 - **Do** put `QUALITY.md` in the directory whose contents are the subject target. The
   default scope is that directory and all subdirectories — no `source` needed in
-  the common case. *Location is the simplest, most reliable scope declaration.*
+  the common case.
 
 ---
 
@@ -71,19 +68,29 @@ shares with Target.
 
 ### Working with the model
 
-#### Start from the subject, not the structure
-
 - **Do** name the entity (`title`) and think through the body's Overview first —
   what the thing is and what "good" means for it — before listing factors.
-  *Factors and requirements are answers; you need the question first.*
 
 #### Keep the root lean when child targets carry the detail
 
 - **Consider** declaring only model-wide factors at the root and pushing
   narrower factors/requirements down to child targets. *A flat root with
-  everything at one level loses the structure that makes a model readable.*
+  everything at one level is harder to read and maintain.*
 - **Avoid** modeling every property at the root "to be safe." *An entry on
-  factors, requirements, **or** targets is enough; empty scaffolding is noise.*
+  factors, requirements, **or** targets is enough.*
+
+#### Make the traceability graph visible
+
+- **Do** treat the model as a graph: a tree of targets plus the assessment
+  references linking each requirement to the entity it is judged against. Which
+  entity is the criteria for which — and how quality depends along those edges —
+  is often the most valuable thing the model records.
+- **Do** make each assessment either inline or a reference to another entity, and
+  reference that entity by the same canonical path used as its target `source`,
+  so a reader can follow the edge from one target to the next.
+- **Do** stop the chain where ownership or value stops: model referenced entities
+  as targets while you own them; let a guide that governs its own kind be its own
+  assessment rather than adding another layer.
 
 ---
 
@@ -142,6 +149,11 @@ A **target** is an entity, or set of entities, with quality requirements subject
 to evaluation. It is the recursive node of the model: the root model is the apex
 target, and every entry under `targets` is another target, nested to any depth.
 
+An **entity** is anything evaluated for quality. Most often it is a concrete
+artifact — a document, a source tree, a config file — but it can also be a
+service, a behavior, or a process. The same entity can be a target in one
+relationship and the entity another requirement assesses against in another.
+
 A target's **source** defines *what* it evaluates; its **factors** and
 **requirements** define *what is assessed* about it. A target may also be a pure
 **grouping target** — only child targets, no requirements of its own.
@@ -163,11 +175,9 @@ target whose subtree has no requirements evaluates nothing.
 
 ### Working with targets
 
-#### Target the primary artifact, not its supporting cast
-
 - **Do** point a target at the thing whose quality you actually care about.
   **Avoid** modeling fixtures, generated output, or build scaffolding as targets.
-  *A model of the test fixtures rates the wrong thing.*
+  *Those usually support evaluation; they are not the subject being evaluated.*
 
 #### Split off a child target only when it has distinct factors or requirements
 
@@ -178,26 +188,34 @@ target whose subtree has no requirements evaluates nothing.
   targets don't inherit the parent's requirements, but duplicating them by hand
   is a maintenance trap — let the ancestor's source cover the shared scope.*
 
-#### Use a grouping target to organize, not to evaluate
-
 - **Do** leave a grouping target's `source` implicit and let its children narrow
-  it. *A grouping target has no local rating; its job is to hold child targets,
-  and its aggregate reflects only them.*
+  it. *A grouping target has no local rating; its aggregate reflects only its
+  children.*
 
 #### Define `source` only to narrow or relocate
 
 - **Do** omit `source` on the root to take the directory default, and on a child
   to inherit the nearest ancestor's scope.
 - **Do** set `source` (a path or glob, relative to the file) when a target
-  evaluates a specific subtree. *Be aware an ancestor's source may overlap a
-  child's, so the ancestor's requirements can also land on the child's entities.*
+  evaluates a specific subtree. *An ancestor's source may overlap a child's, so
+  ancestor requirements can also apply to the child's entities.*
+
+#### An entity can be both a target and an assessment reference
+
+- **Do** decide by *role in this relationship*, not by identity: an entity is a
+  target where its quality is the thing being managed, and an assessment
+  reference where it is what another target is judged against. A spec is both — a
+  target in its own right and what the code that implements it is judged against.
+- **Do** point `source` at the whole entity, not a thin entry point or proxy.
+- **Avoid** treating "target or reference?" as exclusive. *An owned entity used
+  as criteria usually deserves a target of its own as well.*
 
 #### Write a description that distinguishes, not enumerates
 
 - **Do** state what the target *is* and how it differs from its siblings/parent.
   **Avoid** restating its factors or requirements in the description. *The
-  description fixes what is evaluated; factors and requirements fix what is
-  assessed about it.*
+  description identifies the evaluated entity; factors and requirements define
+  what is assessed about it.*
 
 ---
 
@@ -227,7 +245,7 @@ different targets are distinct.
 
 - **Do** pick the handful of quality characteristics that genuinely drive this
   entity's quality. **Avoid** importing a standard checklist of characteristics
-  wholesale. *A factor nothing contributes to is a lens over nothing.*
+  wholesale.
 
 #### Write the description as an operational definition
 
@@ -239,8 +257,6 @@ different targets are distinct.
   reliable it is"). *That tells a reader nothing and doesn't distinguish it from
   its siblings.*
 
-#### Make sibling factors non-overlapping
-
 - **Do** write each factor's description so the factors on a target read as a
   distinct, non-overlapping set. *Overlapping factors make it ambiguous where a
   requirement belongs and double-count concerns in roll-up.*
@@ -250,10 +266,7 @@ different targets are distinct.
 - **Consider** sub-factors when a factor carries more than one distinct concern
   that's clearer assessed apart than together.
 - **Avoid** decomposing a factor whose requirements already speak for themselves.
-  *Decompose only as far as it helps; the same description and
-  distinct-from-siblings rules apply at every level.*
-
-#### Refine, don't redefine, an ancestor's factor
+  *Decompose only as far as it helps.*
 
 - **Do** treat a child target's factor that shares a name with an ancestor's as a
   *refinement* tailored to the child. *They're technically distinct factors;
@@ -292,32 +305,34 @@ the target it sits on, and counts once in that target's local rating.
 
 ### Working with requirements
 
-#### Write the statement as the expectation itself
+#### Write ratable requirement statements
 
 - **Do** phrase the map key as the thing you expect to be true ("Every public
   endpoint requires authentication", "p99 request latency stays within budget").
   *The statement is what shows up in reports; it should read as a claim that can
   be true or false to a degree.*
 
-#### Make each requirement meaningful on its own
-
 - **Do** write requirements specific enough that a single result stands on its
-  own. *A vague requirement produces a vague rating and a weak report.*
+  own. *A vague requirement produces a vague rating.*
 
 #### Give each requirement exactly one assessment
 
-- **Do** declare one `assessment` — inline criteria, a measurement procedure, an
-  inspection checklist, a diagnostic, or a path to a doc describing one.
+- **Do** declare one `assessment`, stated **inline** (criteria, a measurement
+  procedure, an inspection checklist, a diagnostic) or as a **reference** to an
+  entity that defines one.
 - **Avoid** stacking several independent assessments under one statement. *Split
   it into separate requirements instead — each result must be independently
   ratable.*
 
-#### Reference assessment sources; don't copy them
+#### Reference an external assessment; don't copy it
 
 - **Do** point at the spec, doc, or checklist that defines the assessment, naming
   it once.
 - **Avoid** extracting, summarizing, or duplicating that content into the
-  requirement. *Duplicated criteria drift out of sync with their source.*
+  requirement. *Duplicated criteria drift out of sync with their origin.*
+- **Do** reference that entity by the same canonical path used as its own
+  target's `source`. *That shared path is the edge between the two targets; it is
+  what makes the dependency traceable.*
 
 #### Connect to factors deliberately
 
@@ -326,6 +341,23 @@ the target it sits on, and counts once in that target's local rating.
   factor roll-ups.
 - **Do** declare `factors` explicitly for a requirement placed directly under a
   target — it's required there, and `null`/`[]`/empty entries don't satisfy it.
+
+#### Split by assessable claim, not by factor
+
+- **Do** size a requirement to one claim you want to rate as a single judgment —
+  not to one factor or one section of an assessment. *The requirement is the unit
+  assessed and rated, once.*
+- **Do** connect a claim that reads through several lenses to multiple factors
+  (placement for the primary, `factors` for the rest) instead of copying it into
+  a per-factor requirement. *One assessment, counted once, feeding several factor
+  roll-ups.*
+- **Avoid** a set of requirements that reference the same entity with the same
+  assessment, sliced one per factor. *That fragments a single judgment and
+  re-assesses the entity repeatedly.*
+- **But** keep genuinely independent claims separate even when they share a
+  reference — the test is whether their results could legitimately diverge (one
+  strong, one weak). *Many requirements can draw on one rich entity; that is not
+  duplication.*
 
 #### Override criteria only when the shared scale can't express the gradient
 
@@ -351,10 +383,8 @@ the target it sits on, and counts once in that target's local rating.
 
 ## The Markdown body
 
-The body documents *why* this is the right model — the context an evaluator
-needs to weigh the requirements. Where the frontmatter fixes *what* is assessed
-and *how it's rated*, the body explains *why these factors, why these
-requirements, and what matters most*.
+The body gives the context an evaluator needs to interpret and weigh the model:
+why these factors, why these requirements, and what matters most.
 
 The body is optional and fixes no required sections; you may rename, reorder, or
 replace these. They're recommended starting points:
@@ -369,28 +399,21 @@ replace these. They're recommended starting points:
 
 ### Working with the body
 
-#### Write the body to justify the model's weighting
-
 - **Do** capture, in Needs and Risks, why some requirements matter more than
-  others. *An evaluation weighs requirements by importance and names key gaps —
-  both lean on the body for that judgment.*
+  others. *Importance and gaps both depend on this context.*
 
 #### Keep Scope, Known gaps, and "not assessed" distinct
 
 - **Do** use **Scope** for concerns outside the model's remit, and **Known gaps**
   for in-scope concerns you've deliberately deferred.
 - **Do** record genuinely in-scope-but-deferred concerns as **Known gaps**. *A
-  requirement with no available evidence will rate as not assessed — better to
-  declare the gap than to surprise a reader with it.*
+  declared gap is clearer than a surprise not-assessed result.*
 - **Don't** confuse **Known gaps** (your standing declaration) with a **not
   assessed** result (an evaluator's per-run finding that evidence was missing).
-  *They look similar but mean different things in a report.*
 
 ---
 
 ## When to update QUALITY.md
-
-#### Update when you learn something that changes the model
 
 - **Do** revise when a discovery changes the context or content of the
   evaluation — a new factor that matters, a requirement whose assessment changed,

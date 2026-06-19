@@ -1,5 +1,33 @@
 # Changes Update Log
 
+## 2026-06-19
+
+- **Status**: Advanced change
+  [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  to `In-Review` after extending `SPECIFICATION.md`'s **Assessment** terminology
+  and Requirement section with the inline-or-reference framing and a non-normative
+  traceability note, applying the six authoring-guide edits (reserve "source" for
+  `Target.source`, traceability-graph job, entity gloss, target/assessment-
+  reference duality, split-by-claim job, and the renamed "Reference an external
+  assessment" job), nudging the scaffold to "reference" wording, and verifying the
+  Go test suite, vet, and Markdown formatting.
+
+- **Implementation**: Advanced change
+  [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  from `Draft` to `In-Progress` (no design doc) so the durable `SPECIFICATION.md`,
+  authoring guide, and scaffold edits can be made from the settled spec.
+
+- **Creation**: Added change
+  [0029 — Sharpen assessment references and traceability](0029-sharpen-assessment-references.md)
+  in `Draft` with its
+  [functional spec](0029-sharpen-assessment-references/spec.md). The change frames
+  a requirement's `assessment` as either stated inline or a reference to another
+  entity, reserves "source" for `Target.source`, extends the "reference"
+  terminology 0028 set for factors to the requirement→entity edge, and makes the
+  model's traceability graph an authoring concern — across `SPECIFICATION.md`, the
+  authoring guide, and the scaffold, with no schema or lint change. Omits a design
+  doc. Updated the bundle [index](index.md).
+
 ## 2026-06-18
 
 - **Status**: Advanced change

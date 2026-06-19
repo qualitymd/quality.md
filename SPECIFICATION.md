@@ -79,8 +79,9 @@ decomposed into sub-factors.
 statement, an Assessment, zero or more explicit Factor references, and optional
 per-level criterion overrides.
 
-**Assessment**: The means for assessing a Target's Source against a Requirement.
-An Assessment produces Findings.
+**Assessment**: The means for assessing a Target's Source against a Requirement,
+stated inline or as a reference to an entity that defines those means. An
+Assessment produces Findings.
 
 **Finding**: A single observation produced by an Assessment. A Finding records
 what was observed and is not itself rated.
@@ -242,6 +243,16 @@ ratings:                        # Optional
 
 `assessment` MUST be a single non-empty scalar. A missing, empty, null, or
 list-valued `assessment` is invalid.
+
+An `assessment` either states the means of assessing inline or references an
+entity that defines them, such as a specification, guide, or checklist.
+Referencing names that entity once instead of copying criteria that would drift
+from their origin.
+
+Note: This note is non-normative. A referenced entity may itself be a Target in
+the Model. Referencing it by the same selector used as that Target's `source`
+makes the dependency traceable from the Requirement to that Target without a
+distinct link type.
 
 Every Requirement MUST be connected to at least one Factor.
 
