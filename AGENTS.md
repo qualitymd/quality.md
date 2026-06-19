@@ -5,8 +5,15 @@ Public repo for **QUALITY.md**: `qualitymd` CLI, format spec, user docs.
 `QUALITY.md` = YAML frontmatter target tree + Markdown docs. CLI is
 deterministic/mechanical; skills judge and record through it.
 
-See [`README.md`](README.md), [`CONTRIBUTING.md`](CONTRIBUTING.md),
-[`SPECIFICATION.md`](SPECIFICATION.md).
+## Key Docs
+
+| Path                                                                                             | Purpose                                                                                                                                                                                                                                 |
+| ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`README.md`](README.md)                                                                         | Project overview, current implementation status, and install notes.                                                                                                                                                                     |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                             | Development setup, `mise run` tasks, project layout, and release process.                                                                                                                                                               |
+| [`SPECIFICATION.md`](SPECIFICATION.md)                                                           | Source of truth for the `QUALITY.md` format and evaluation semantics: Model / Target / Factor / Requirement / RatingScale schema, assessment -> finding -> rating-result chain, and Markdown body guidance.                             |
+| [`specs/skills/quality-skill/authoring-guide.md`](specs/skills/quality-skill/authoring-guide.md) | Governing functional spec for the `/quality` skill's authoring guide; defines the guide's purpose, scope, conformance to `SPECIFICATION.md`, structure, and editorial contract.                                                         |
+| [`skills/quality/resources/quality-md-guide.md`](skills/quality/resources/quality-md-guide.md)   | Runtime guide bundled with the `/quality` skill; gives agents and humans a self-contained practical guide to understanding and authoring `QUALITY.md` files, governed by the authoring-guide spec and conforming to `SPECIFICATION.md`. |
 
 ## Conventions
 
