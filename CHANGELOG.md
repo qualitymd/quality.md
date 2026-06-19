@@ -7,6 +7,20 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### CLI
 
+### /quality Skill
+
+### Specification
+
+### Documentation
+
+### Packaging
+
+### Compatibility / Migration
+
+## v0.3.0 - 2026-06-19
+
+### CLI
+
 - Added `qualitymd version` for structured local version metadata and
   `qualitymd upgrade` for explicit upgrade checks and guarded owner-channel
   apply behavior.
@@ -15,6 +29,9 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### /quality Skill
 
+- Added `/quality upgrade` to plan and orchestrate paired `/quality` skill and
+  `qualitymd` CLI upgrades while delegating mutation to the skill installer and
+  CLI owner channel.
 - Updated CLI prerequisite checks and evaluation reporting guidance for
   `version --json`, `upgrade --check`, and `report-summary.md`.
 
@@ -25,6 +42,8 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### Documentation
 
+- Documented `/quality upgrade` as the existing-install maintenance flow for the
+  skill/CLI pair.
 - Documented the GitHub-hosted managed installer entrypoints and explicit
   upgrade workflow.
 - Clarified the release runbook after the `v0.2.2` release: push `main` and

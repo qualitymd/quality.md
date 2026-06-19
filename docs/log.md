@@ -3,6 +3,12 @@
 ## 2026-06-19
 
 - **Revision**: Updated [Versioning](reference/versioning.md),
+  [Use the /quality skill](guides/use-quality-skill.md), and the top-level
+  [install guide](../install.md) for `/quality upgrade` as the paired
+  skill/CLI maintenance flow, including manual fallbacks and restart/reload
+  guidance after skill upgrades.
+
+- **Revision**: Updated [Versioning](reference/versioning.md),
   [Use the /quality skill](guides/use-quality-skill.md), and
   [Cut a release](guides/cut-a-release.md) to make
   `skills/quality/SKILL.md` metadata the source of truth for the `/quality`

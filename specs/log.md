@@ -4,6 +4,12 @@
 
 - **Revision**: Updated the
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) for
+  `/quality upgrade` as a first-class maintenance mode that plans paired
+  skill/CLI upgrades, asks before mutation, delegates to owner tools, verifies
+  the visible CLI, and warns about skill reload requirements.
+
+- **Revision**: Updated the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) for
   project-owned Agent Skills metadata: `metadata.version`,
   `metadata.requires-qualitymd-cli`, matching `compatibility` prose, and the
   released-install prerequisite range.

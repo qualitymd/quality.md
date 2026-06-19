@@ -110,3 +110,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0034 — Skill release metadata](0034-skill-release-metadata.md) - recorded the
   `/quality` skill version and required `qualitymd` CLI range in Agent
   Skills-compatible metadata with release-check validation (`Done`).
+- [0035 — /quality upgrade mode](0035-quality-skill-upgrade-mode.md) - added a
+  `/quality upgrade` mode that plans paired skill/CLI maintenance, delegates
+  mutation to owner tools, and reports restart/reload needs after skill updates
+  (`Done`).

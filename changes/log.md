@@ -3,6 +3,47 @@
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
+  [0035 — /quality upgrade mode](archive/0035-quality-skill-upgrade-mode.md).
+  Moved the parent concept and child folder into [`archive/`](archive/), fixed
+  repo-relative links for the deeper path, added the entry to the
+  [archive index](archive/index.md), and removed it from the open
+  [changes index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0035 — /quality upgrade mode](archive/0035-quality-skill-upgrade-mode.md). Added
+  the runtime `skills/quality/modes/upgrade.md` procedure, routed `upgrade` from
+  `SKILL.md`, taught wizard to recommend it for stale/incompatible skill/CLI
+  state, updated the durable `/quality` skill spec, documented the existing
+  install maintenance flow, and verified targeted Markdown formatting. The case
+  remains open in [`changes/`](index.md) for review; it is not archived until it
+  lands.
+
+- **Implementation**: Advanced change
+  [0035 — /quality upgrade mode](archive/0035-quality-skill-upgrade-mode.md) from
+  `Design` to `In-Progress` so the settled upgrade-mode spec and design can be
+  implemented and synced into the durable skill spec, runtime skill files, and
+  install/versioning docs.
+
+- **Design**: Advanced change
+  [0035 — /quality upgrade mode](archive/0035-quality-skill-upgrade-mode.md) from
+  `Draft` to `Design` and added its
+  [design doc](archive/0035-quality-skill-upgrade-mode/design.md). The design adds a
+  mode-specific upgrade procedure that snapshots skill and CLI versions, builds a
+  plan before mutation, delegates CLI changes to `qualitymd upgrade`, delegates
+  skill changes to the Agent Skills installer when available, verifies the
+  visible CLI afterward, and warns that skill upgrades may require a restarted
+  agent session.
+
+- **Creation**: Added change
+  [0035 — /quality upgrade mode](archive/0035-quality-skill-upgrade-mode.md) in `Draft`
+  with its [functional spec](archive/0035-quality-skill-upgrade-mode/spec.md). The
+  change proposes a skill mode that checks the installed `/quality` skill and
+  `qualitymd` CLI pair, diagnoses compatibility and available updates, plans
+  skill and CLI upgrade actions, asks before mutation, delegates mechanics to
+  the Agent Skills installer and `qualitymd upgrade`, and reports any required
+  agent restart or reload. Updated the bundle [index](index.md).
+
+- **Done**: Set status `Done` and archived
   [0031 — Evaluation report summary artifact](archive/0031-report-summary-artifact.md),
   [0032 — CLI managed upgrades](archive/0032-cli-managed-upgrades.md),
   [0033 — Required display titles](archive/0033-required-display-titles.md), and

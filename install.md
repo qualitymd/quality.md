@@ -19,7 +19,27 @@ npx skills add .
 
 Restart the target agent session if that agent only discovers skills at startup.
 
-## 2. Verify or install the CLI
+## 2. Upgrade an existing install
+
+For an existing `/quality` setup, prefer the skill-orchestrated upgrade flow:
+
+```text
+/quality upgrade
+```
+
+The upgrade mode checks the installed `/quality` skill metadata, verifies the
+visible `qualitymd` CLI, plans any skill and CLI updates, asks before applying
+changes, and reports whether the agent session must be restarted or reloaded.
+
+If `/quality upgrade` is unavailable, reinstall the skill and check the CLI
+manually:
+
+```sh
+npx skills add qualitymd/quality.md
+qualitymd upgrade --check
+```
+
+## 3. Verify or install the CLI
 
 Check whether `qualitymd` is available:
 
@@ -87,7 +107,7 @@ method, latest known version, and the recommended upgrade command. `qualitymd
 upgrade --apply` delegates only to supported owner channels such as npm and
 Homebrew; unknown, source, and archive installs receive manual guidance.
 
-## 3. Bootstrap a project
+## 4. Bootstrap a project
 
 In the repository to evaluate, ask the installed skill to set up or guide you:
 
@@ -100,7 +120,7 @@ In the repository to evaluate, ask the installed skill to set up or guide you:
 checks the model, identifies available targets/factors, and suggests concrete
 next actions such as `/quality evaluate` or scoped evaluations.
 
-## 4. Optional config
+## 5. Optional config
 
 Create `.quality/config.yaml` to move evaluation run folders away from the
 default `quality/evaluations/` parent:

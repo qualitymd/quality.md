@@ -7,6 +7,7 @@ Use these commands as the starting point for `qualitymd` work.
 | Check CLI version         | `qualitymd --version`                                                     |
 | Read version metadata     | `qualitymd version --json`                                                |
 | Check for CLI upgrades    | `qualitymd upgrade --check`                                               |
+| Apply CLI upgrade         | `qualitymd upgrade --apply`                                               |
 | Read format rules         | `qualitymd spec`                                                          |
 | Create a starter model    | `qualitymd init [path]`                                                   |
 | Validate a model          | `qualitymd lint [path]`                                                   |

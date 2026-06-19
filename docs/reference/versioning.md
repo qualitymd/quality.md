@@ -90,6 +90,23 @@ CLI minor line. Current skill installers may ignore this project-owned metadata;
 release checks validate it, and release notes mirror it, but installer
 enforcement is deferred until an installer/package contract supports it.
 
+## Paired Skill and CLI Upgrades
+
+Use `/quality upgrade` to maintain an existing `/quality` installation. The mode
+plans the skill and CLI pair together: it reads the installed skill metadata,
+checks the visible CLI, uses `qualitymd upgrade --check` for CLI owner-channel
+guidance, and delegates skill changes to the Agent Skills installer when that
+installer exposes an upgrade path.
+
+Compatibility is the hard gate: the visible CLI must satisfy the target skill's
+`metadata.requires-qualitymd-cli` range before setup, evaluation, or improvement
+work can proceed. Latest-version updates are advisory unless the user asks to
+upgrade.
+
+Skill upgrades may not take effect in the currently running agent session. After
+the skill package changes, restart, reload, or start a new session when the
+agent discovers skills only at startup or caches loaded skill instructions.
+
 ## Specification Version
 
 `SPECIFICATION.md` carries a specification version for the `QUALITY.md` document

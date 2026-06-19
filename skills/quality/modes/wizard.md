@@ -16,7 +16,7 @@ enumerate recommendations, or resolve build/install paths. Use
 
 ```text
 Probe state (CLI version plus status JSON)
-- CLI missing/stale? recommend install/upgrade
+- CLI missing/stale? recommend /quality upgrade
 - QUALITY.md missing? classify no setup; recommend setup
 - lint errors? classify invalid model; recommend repair
 - lint valid, no runs? classify ready to evaluate
@@ -34,6 +34,7 @@ Recommend one next step
 - explain why it is the best next step from observed state
 
 Offer concrete alternatives
+- upgrade skill/CLI pair
 - create setup
 - repair model
 - review/improve QUALITY.md
@@ -82,7 +83,9 @@ Offer concrete alternatives
 5. Offer only concrete workflows the user can choose next, such as setup, model
    repair, model review/improvement, whole-subject evaluation, scoped
    target/factor evaluation, recommendation review/improvement, or evaluation
-   history review.
+   history review. Include `/quality upgrade` when the CLI is missing, stale, or
+   outside the prerequisite range, or when the skill/CLI pair appears
+   incompatible.
 
 Wizard is read-only and shallow. It does not edit `QUALITY.md`, create
 evaluation records, build reports, or rate the subject. It may judge readiness
