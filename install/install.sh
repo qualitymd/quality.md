@@ -43,7 +43,14 @@ case "$os" in
 esac
 
 if [ "$version" = "latest" ]; then
-  version="$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)"
+  latest_json="$(curl -fsSL -H "User-Agent: qualitymd-installer" "https://api.github.com/repos/$repo/releases/latest" 2>/dev/null || true)"
+  version="$(printf '%s\n' "$latest_json" | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)"
+  if [ -z "$version" ]; then
+    latest_url="$(curl -fsIL -o /dev/null -w '%{url_effective}' "https://github.com/$repo/releases/latest" 2>/dev/null || true)"
+    case "$latest_url" in
+      */releases/tag/*) version="${latest_url##*/}" ;;
+    esac
+  fi
 fi
 if [ -z "$version" ]; then
   echo "could not resolve qualitymd version" >&2
