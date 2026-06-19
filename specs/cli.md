@@ -35,6 +35,7 @@ judgment and pass judgment payloads to the deterministic surface.
 | [`init`](./cli/init.md)                                                       | Scaffold a starter `QUALITY.md` to fill in.               |
 | [`lint`](./cli/lint.md)                                                       | Validate a file's structure against the format spec.      |
 | [`spec`](./cli/spec.md)                                                       | Emit the `QUALITY.md` format specification.               |
+| [`status`](./cli/status.md)                                                   | Emit a deterministic project-state snapshot.              |
 | [`evaluation create-run`](./cli/evaluation-create-run.md)                     | Create a numbered evaluation run folder.                  |
 | [`evaluation add-record`](./cli/evaluation-add-record.md)                     | Write one assessment, analysis, or recommendation record. |
 | [`evaluation set-planned-coverage`](./cli/evaluation-set-planned-coverage.md) | Write planned coverage metadata for a run.                |
@@ -46,6 +47,7 @@ judgment and pass judgment payloads to the deterministic surface.
 - [`init`](./cli/init.md) — scaffold a starter `QUALITY.md`.
 - [`lint`](./cli/lint.md) — validate a file's structure.
 - [`spec`](./cli/spec.md) — emit the format specification.
+- [`status`](./cli/status.md) — emit a deterministic project-state snapshot.
 - [`evaluation create-run`](./cli/evaluation-create-run.md) — create a numbered
   evaluation run folder.
 - [`evaluation add-record`](./cli/evaluation-add-record.md) — write evaluation

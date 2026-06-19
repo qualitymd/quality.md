@@ -42,10 +42,6 @@ edit.
 
 # Open change cases
 
-- [0030 — CLI status snapshot command](0030-cli-status-command.md)
-  - queued: add `qualitymd status [--json]` so the `/quality` wizard can route
-    from a deterministic state snapshot instead of hand-parsing `QUALITY.md` and
-    reading evaluation reports.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
@@ -57,5 +53,4 @@ template for a new one.
 
 # Subfolders
 
-- [0030-cli-status-command/](0030-cli-status-command/) - placeholder spec for the `qualitymd status` snapshot command.
 - [archive/](archive/) - completed change cases.

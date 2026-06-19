@@ -3,18 +3,58 @@
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md).
+  Moved the parent concept and child folder into [`archive/`](archive/), fixed
+  repo-relative links for the deeper path, added the entry to the
+  [archive index](archive/index.md), and removed it from the open
+  [changes index](index.md).
+
+- **Status**: Advanced change
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) to
+  `In-Review` after adding `qualitymd status [path] [--json]`, the
+  `internal/status` snapshot assembler, evaluation helpers for run listing and
+  active recommendation counts, CLI tests and status-package tests, durable CLI
+  specs, README command docs, and `/quality` skill updates. Verified targeted
+  Markdown formatting, `go test ./...`, `mise run vet`, and a smoke run of
+  `go run ./cmd/qualitymd status --json`.
+
+- **Implementation**: Advanced change
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) from
+  `Design` to `In-Progress` so the settled status-command spec and design can be
+  implemented and synced into the durable CLI docs and `/quality` skill
+  consumers.
+
+- **Design**: Advanced change
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) from
+  `Draft` to `Design` and added its
+  [design doc](archive/0030-cli-status-command/design.md). The design introduces
+  an `internal/status` snapshot assembler, keeps CLI rendering thin, reuses lint
+  and evaluation mechanics, compares run `model.md` snapshots for staleness,
+  counts active recommendations through evaluation-owned helpers, and keeps
+  report-body scraping out of the command.
+
+- **Draft**: Replaced the placeholder for
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) with a
+  full [functional spec](archive/0030-cli-status-command/spec.md). The spec
+  defines the read-only `qualitymd status [path] [--json]` invocation, lint
+  validity and model-shape snapshot, source coverage, evaluation history and
+  staleness signals, active recommendation counts, readiness states,
+  deterministic next-action data, and exit behavior. Updated the case and bundle
+  listings.
+
+- **Done**: Set status `Done` and archived
   [0028 — Require factor references](archive/0028-require-characterized-requirements.md)
   and
   [0029 — Sharpen assessment references and traceability](archive/0029-sharpen-assessment-references.md).
   Moved each parent concept and child folder into [`archive/`](archive/),
   fixed repo-relative links for the deeper path, added both entries to the
   [archive index](archive/index.md), and left
-  [0030 — CLI status snapshot command](0030-cli-status-command.md) as the only
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) as the only
   open change case.
 
 - **Creation**: Queued change
-  [0030 — CLI status snapshot command](0030-cli-status-command.md) in `Draft`
-  with a placeholder [functional spec](0030-cli-status-command/spec.md). The case
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) in `Draft`
+  with a placeholder [functional spec](archive/0030-cli-status-command/spec.md). The case
   proposes a read-only `qualitymd status [--json]` command that emits a
   deterministic project-state snapshot (model validity and shape, evaluation run
   history, open recommendation counts) so the `/quality` wizard routes from

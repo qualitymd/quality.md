@@ -94,3 +94,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   frames a requirement's assessment as inline or a reference to another entity,
   reserves "source" for `Target.source`, and makes the model's traceability
   graph an authoring concern (`Done`).
+- [0030 — CLI status snapshot command](0030-cli-status-command.md) - added
+  `qualitymd status [path] [--json]` so agents and humans can route from a
+  deterministic project-state snapshot instead of hand-parsing `QUALITY.md` or
+  evaluation reports (`Done`).

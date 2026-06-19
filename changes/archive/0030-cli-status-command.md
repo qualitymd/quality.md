@@ -2,19 +2,19 @@
 type: Change Case
 title: CLI status snapshot command
 description: Add a qualitymd status [--json] command that emits a deterministic project-state snapshot so the /quality wizard can route without hand-parsing QUALITY.md or reading evaluation reports.
-status: Draft
+status: Done
 tags: [cli, skill, wizard]
 timestamp: 2026-06-19T00:00:00Z
 ---
 
 # CLI status snapshot command
 
-A **Change Case** capturing the *why* and *status*; the detail will live in its
-[functional spec](0030-cli-status-command/spec.md) once the case is drafted.
+A **Change Case** capturing the *why* and *status* for adding a deterministic
+`qualitymd status` snapshot command. The detail lives in its
+[functional spec](0030-cli-status-command/spec.md).
 
-> **Queued.** This case is recorded in `Draft` to capture motivation and scope.
-> Its functional spec is not yet written; implementation begins only after the
-> case advances to `In-Progress`.
+> **Done.** Implementation and durable spec/doc updates are complete; the change
+> is archived.
 
 ## Motivation
 
@@ -49,32 +49,32 @@ routing behavior and its lean-probe contract are already in place (routine
 change to `modes/wizard.md`); this case supplies the structured source those
 signals should come from. No new lint semantics.
 
-Implementation begins only after the change advances to `In-Progress`.
-
 ## Affected specs & docs
 
-- [ ] [`specs/cli/index.md`](../specs/cli/index.md) and a new
+- [x] [`specs/cli/index.md`](../../specs/cli/index.md) and a new
       `specs/cli/status.md` sub-spec — register and specify the `status` command
-      (arguments, human vs. `--json` output, exit codes, determinism). Detailed in
-      the functional spec's **Durable spec changes** when drafted.
-- [ ] [`specs/cli.md`](../specs/cli.md) — list the new command in the CLI surface
+      (arguments, human vs. `--json` output, exit codes, determinism). Detailed
+      in the functional spec's **Durable spec changes**.
+- [x] [`specs/cli.md`](../../specs/cli.md) — list the new command in the CLI surface
       overview if it enumerates commands.
-- [ ] [`README.md`](../README.md) — add `status` to the documented command set.
-- [ ] [`skills/quality/resources/cli-quick-reference.md`](../skills/quality/resources/cli-quick-reference.md)
+- [x] [`README.md`](../../README.md) — add `status` to the documented command set.
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
       — add a `status` row and prefer `--json` for agent consumption.
-- [ ] [`skills/quality/modes/wizard.md`](../skills/quality/modes/wizard.md) —
+- [x] [`skills/quality/modes/wizard.md`](../../skills/quality/modes/wizard.md) —
       switch the batched probe to `qualitymd status --json` once the command exists,
       replacing the current per-signal shell checks.
-- [ ] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) — add `status` to the
+- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) — add `status` to the
       CLI Reference block and reconcile the declared CLI SemVer range with the
       release that ships the command.
 
 ## Children
 
-- [Functional spec](0030-cli-status-command/spec.md) — to be written in `Draft`.
+- [Functional spec](0030-cli-status-command/spec.md) — what the
+  `qualitymd status` snapshot command must provide.
+- [Design doc](0030-cli-status-command/design.md) — how the snapshot command
+  should compose existing CLI-owned mechanics.
 
 ## Status
 
-`Draft` (queued). See the [status lifecycle](index.md#status-lifecycle). The
-functional spec is a placeholder until the case is actively picked up; no design
-doc decision has been made yet.
+`Done`. The command, durable specs/docs, and skill consumers are synced and
+verified.

@@ -39,6 +39,7 @@ recommendations.
 qualitymd --version
 qualitymd spec
 qualitymd lint --help
+qualitymd status --help
 qualitymd init --help
 qualitymd evaluation create-run --help
 qualitymd evaluation add-record --help
@@ -128,5 +129,6 @@ Rules:
 
 The evaluation record layout and field contract lives in
 [`specs/evaluation-records.md`](../../specs/evaluation-records.md). Treat that
-spec, plus the `qualitymd evaluation ...` command help, as the source of truth.
-Do not restate the schema or folder layout in this prompt.
+spec, plus `qualitymd status --json` and the `qualitymd evaluation ...` command
+help, as the source of truth. Do not restate the schema or folder layout in this
+prompt.

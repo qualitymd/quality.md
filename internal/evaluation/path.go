@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -62,6 +63,59 @@ func ResolveRepoPath(repoRoot, value string) (string, string, error) {
 		return "", "", fmt.Errorf("path %q escapes the repository", value)
 	}
 	return abs, filepath.ToSlash(rel), nil
+}
+
+// EvaluationDir resolves the configured evaluation directory from a repository
+// root, returning both absolute and repository-relative paths.
+func EvaluationDir(repoRoot, override string) (string, string, error) {
+	value, err := evaluationDirValue(repoRoot, override)
+	if err != nil {
+		return "", "", err
+	}
+	return ResolveRepoPath(repoRoot, value)
+}
+
+// RunDir is one recognized evaluation run folder.
+type RunDir struct {
+	Number int
+	Name   string
+	Abs    string
+	Rel    string
+}
+
+// ListRunDirs returns recognized evaluation run folders in deterministic order.
+func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
+	entries, err := os.ReadDir(evalDirAbs)
+	if err != nil {
+		return nil, err
+	}
+	var runs []RunDir
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		match := runNameRE.FindStringSubmatch(entry.Name())
+		if match == nil {
+			continue
+		}
+		n, err := strconv.Atoi(match[1])
+		if err != nil {
+			continue
+		}
+		runs = append(runs, RunDir{
+			Number: n,
+			Name:   entry.Name(),
+			Abs:    filepath.Join(evalDirAbs, entry.Name()),
+			Rel:    filepath.ToSlash(filepath.Join(evalDirRel, entry.Name())),
+		})
+	}
+	slices.SortFunc(runs, func(a, b RunDir) int {
+		if a.Number != b.Number {
+			return a.Number - b.Number
+		}
+		return strings.Compare(a.Name, b.Name)
+	})
+	return runs, nil
 }
 
 func Slug(s string) string {

@@ -178,7 +178,7 @@ assessment -> findings -> rating result
 ## The CLI
 
 > **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init`, `qualitymd lint`, `qualitymd spec`, and the
+> `qualitymd init`, `qualitymd lint`, `qualitymd spec`, `qualitymd status`, and the
 > `qualitymd evaluation` run-record surface.
 
 `qualitymd` draws one hard line: the **CLI is deterministic and never calls a
@@ -193,6 +193,8 @@ The deterministic surface:
 - **`qualitymd lint`** — validate a file's structure, fast and deterministic,
   exiting non-zero on errors so it drops into CI.
 - **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
+- **`qualitymd status`** — emit a deterministic project-state snapshot for
+  routing, automation, and agent use.
 - **`qualitymd evaluation create-run`** — create and number an evaluation run
   folder.
 - **`qualitymd evaluation add-record`** — write assessment, analysis, and

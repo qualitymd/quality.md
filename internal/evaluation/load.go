@@ -193,6 +193,45 @@ func (r *Run) Counts() Counts {
 	}
 }
 
+// ActiveRecommendationCount returns the number of recommendation records not
+// superseded by a later recommendation record in this run.
+func (r *Run) ActiveRecommendationCount() int {
+	superseded := map[string]bool{}
+	known := map[string]string{}
+	for _, rec := range r.Recommendations {
+		for _, ref := range rec.Supersedes {
+			if file, ok := resolveKnownRecommendation(known, ref); ok {
+				superseded[file] = true
+			}
+		}
+		id := strings.TrimSuffix(filepath.Base(rec.File), ".md")
+		known[rec.File] = rec.File
+		known[id] = rec.File
+		known["recommendations/"+id+".md"] = rec.File
+	}
+	active := 0
+	for _, rec := range r.Recommendations {
+		if !superseded[rec.File] {
+			active++
+		}
+	}
+	return active
+}
+
+func resolveKnownRecommendation(known map[string]string, ref string) (string, bool) {
+	ref = strings.TrimSpace(ref)
+	if file, ok := known[ref]; ok {
+		return file, true
+	}
+	if strings.HasPrefix(ref, "recommendations/") {
+		id := strings.TrimSuffix(filepath.Base(ref), ".md")
+		file, ok := known[id]
+		return file, ok
+	}
+	file, ok := known["recommendations/"+ref+".md"]
+	return file, ok
+}
+
 func (r *Run) Status() Status {
 	gaps := r.Renderable()
 	status := Status{
