@@ -13,6 +13,27 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### Documentation
 
+### Packaging
+
+### Compatibility / Migration
+
+## v0.2.2 - 2026-06-19
+
+### CLI
+
+- No command, flag, exit-code, or machine-readable output behavior changes.
+
+### /quality Skill
+
+- No skill instruction or compatibility changes.
+
+### Specification
+
+- No normative `QUALITY.md` format or evaluation semantics change.
+- Specification remains `0.1 (Draft)`.
+
+### Documentation
+
 - Added release-note extraction and release-check automation to the release
   guide.
 
@@ -25,6 +46,14 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
   dry runs.
 
 ### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.2.2`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: compatible with `qualitymd >=0.2.0 <0.3.0`
+
+No migration is required from `v0.2.1`.
 
 ## v0.2.1 - 2026-06-19
 
