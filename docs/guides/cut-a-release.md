@@ -167,6 +167,9 @@ The release check:
 - verifies the target release notes are substantive;
 - checks obvious compatibility-block drift against the tag and
   `SPECIFICATION.md` version;
+- verifies `skills/quality/SKILL.md` `metadata.version` matches the tag without
+  `v`, that `metadata.requires-qualitymd-cli` has the expected range shape, and
+  that any `/quality skill` changelog compatibility line mirrors the metadata;
 - runs `mise run fmt`, `mise run test`, `mise run vet`, `mise run snapshot`, and
   `mise run npm-build`.
 
@@ -227,8 +230,14 @@ After the workflow finishes, verify:
 - The Homebrew tap updated.
 - npm packages published for the supported platforms.
 - `npx quality.md --version` reports the expected version.
+- `qualitymd version --json` reports the expected CLI version, commit when
+  stamped, and bundled `SPECIFICATION.md` version.
+- `qualitymd upgrade --check --json` returns a structured check result for at
+  least one fresh install channel.
 - A downloaded archive binary reports the expected version.
 - `qualitymd spec` emits the expected bundled specification.
+- Public installer entrypoints under `install/` are present in the release
+  source and use GitHub-hosted release assets.
 
 Use fresh installs where practical rather than already-built local binaries.
 A release-note comparison that differs only by a final trailing newline is
@@ -261,13 +270,19 @@ After verifying the release:
   versioning reference are still aligned.
 - Close or archive any completed Change Cases whose work shipped in the release.
 
-## Open Process Support Items
+## Process Support Boundaries
 
-The guide is enough to run a manual curated-release process. Keep release
-support small and add mechanics only when they remove repeated mistakes or
-manual comparison work:
+The guide is enough to run the curated-release process. Keep release support
+small and add mechanics only when they remove repeated mistakes or manual
+comparison work.
 
-- Keep release-prep manual unless repeated changelog mistakes show that a helper
-  would reduce errors without broadening the process.
-- Add skill package metadata for the `/quality` skill version and supported
-  `qualitymd` CLI range when the installer supports it.
+Release preparation stays manual. The release-check and release-notes helpers
+are the automation boundary for now; add another helper only after repeated
+release-prep mistakes show what comparison or validation should become
+mechanical.
+
+The `/quality` skill currently records project-owned release metadata in
+`skills/quality/SKILL.md` under `metadata.version` and
+`metadata.requires-qualitymd-cli`, mirrored by `compatibility` prose and curated
+release notes. `release-check` validates that metadata, but installer enforcement
+remains deferred until an installer/package contract supports dependency checks.

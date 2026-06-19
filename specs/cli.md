@@ -30,17 +30,19 @@ operate on `QUALITY.md` files, plus evaluation-run commands that scaffold,
 validate, and render runtime records. The CLI never calls a model; skills carry
 judgment and pass judgment payloads to the deterministic surface.
 
-| Command                                                                       | Purpose                                                   |
-| ----------------------------------------------------------------------------- | --------------------------------------------------------- |
-| [`init`](./cli/init.md)                                                       | Scaffold a starter `QUALITY.md` to fill in.               |
-| [`lint`](./cli/lint.md)                                                       | Validate a file's structure against the format spec.      |
-| [`spec`](./cli/spec.md)                                                       | Emit the `QUALITY.md` format specification.               |
-| [`status`](./cli/status.md)                                                   | Emit a deterministic project-state snapshot.              |
-| [`evaluation create-run`](./cli/evaluation-create-run.md)                     | Create a numbered evaluation run folder.                  |
-| [`evaluation add-record`](./cli/evaluation-add-record.md)                     | Write one assessment, analysis, or recommendation record. |
-| [`evaluation set-planned-coverage`](./cli/evaluation-set-planned-coverage.md) | Write planned coverage metadata for a run.                |
-| [`evaluation show-status`](./cli/evaluation-show-status.md)                   | Inspect whether a run can be rendered.                    |
-| [`evaluation build-report`](./cli/evaluation-build-report.md)                 | Render reports and optionally gate on the root rating.    |
+| Command                                                                       | Purpose                                                    |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [`init`](./cli/init.md)                                                       | Scaffold a starter `QUALITY.md` to fill in.                |
+| [`lint`](./cli/lint.md)                                                       | Validate a file's structure against the format spec.       |
+| [`spec`](./cli/spec.md)                                                       | Emit the `QUALITY.md` format specification.                |
+| [`status`](./cli/status.md)                                                   | Emit a deterministic project-state snapshot.               |
+| [`evaluation create-run`](./cli/evaluation-create-run.md)                     | Create a numbered evaluation run folder.                   |
+| [`evaluation add-record`](./cli/evaluation-add-record.md)                     | Write one assessment, analysis, or recommendation record.  |
+| [`evaluation set-planned-coverage`](./cli/evaluation-set-planned-coverage.md) | Write planned coverage metadata for a run.                 |
+| [`evaluation show-status`](./cli/evaluation-show-status.md)                   | Inspect whether a run can be rendered.                     |
+| [`evaluation build-report`](./cli/evaluation-build-report.md)                 | Render reports and optionally gate on the root rating.     |
+| [`version`](./cli/version.md)                                                 | Show structured CLI and bundled spec version metadata.     |
+| [`upgrade`](./cli/upgrade.md)                                                 | Check and advise on CLI upgrades through managed channels. |
 
 ## Commands
 
@@ -57,7 +59,9 @@ judgment and pass judgment payloads to the deterministic surface.
 - [`evaluation show-status`](./cli/evaluation-show-status.md) — inspect
   renderability.
 - [`evaluation build-report`](./cli/evaluation-build-report.md) — render
-  `report.md` and `report.json`.
+  `report-summary.md`, `report.md`, and `report.json`.
+- [`version`](./cli/version.md) — show structured CLI version metadata.
+- [`upgrade`](./cli/upgrade.md) — explicitly check and advise on CLI upgrades.
 
 ## Technical requirements
 
@@ -217,11 +221,14 @@ does not expose the revision through embedded build information but can resolve
 it from the local VCS checkout, it should use that revision rather than
 reporting a bare placeholder.
 
+`qualitymd version --json` **MUST** expose the CLI version, commit when known,
+development-build state, and bundled `SPECIFICATION.md` version as structured
+metadata. `qualitymd upgrade --check` **MUST** be the explicit update-check
+surface; unrelated commands **MUST NOT** contact the network for upgrade checks.
+
 ## To be specified
 
 - The shared invocation form and the file / stdin argument convention.
 - Global flags common to every command.
 - Machine-readable output stability across commands, and the verbosity/quiet
   control that governs human noise.
-- The version of the format spec the binary targets and how it relates to the
-  binary version above.

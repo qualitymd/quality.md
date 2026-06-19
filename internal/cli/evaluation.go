@@ -153,7 +153,7 @@ func newEvaluationBuildReportCmd() *cobra.Command {
 	var failAtOrBelow string
 	cmd := &cobra.Command{
 		Use:   "build-report <run>",
-		Short: "Build report.md and report.json from evaluation records",
+		Short: "Build report-summary.md, report.md, and report.json from evaluation records",
 		Args:  usage(cobra.ExactArgs(1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			levels, err := evaluation.ScaleLevels(args[0])
@@ -168,7 +168,7 @@ func newEvaluationBuildReportCmd() *cobra.Command {
 				if err := writeJSON(cmd.OutOrStdout(), result); err != nil {
 					return err
 				}
-			} else if _, err := fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s and %s\n", result.ReportMD, result.ReportJSON); err != nil {
+			} else if _, err := fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s, %s, and %s\n", result.ReportSummaryMD, result.ReportMD, result.ReportJSON); err != nil {
 				return err
 			}
 			pass, err := evaluation.Gate(result, levels, failAtOrBelow)

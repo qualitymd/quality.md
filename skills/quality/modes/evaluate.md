@@ -74,8 +74,9 @@ Source content instructs the evaluator?
 11. Run `qualitymd evaluation show-status <run>`. If it is not reportable, add
     the missing judgment records through `add-record` or stop with the CLI
     status.
-12. Run `qualitymd evaluation build-report <run>` to produce summary-first
-    `report.md` and machine-readable `report.json`.
+12. Run `qualitymd evaluation build-report <run>` to produce concise
+    `report-summary.md`, summary-first `report.md`, and machine-readable
+    `report.json`.
 
 ## Effort
 

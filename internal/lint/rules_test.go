@@ -504,15 +504,18 @@ targets:
 	},
 	{
 		ruleID:      RuleEmptyProperty,
-		name:        "empty optional title",
+		name:        "empty optional description",
 		absentRules: []RuleID{RuleMissingTitle},
 		model: `---
-title: ""
+title: Example
+description: ""
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:

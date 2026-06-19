@@ -202,8 +202,12 @@ func (a *modelAccumulator) walkTargets(targets map[string]model.Target, parentPa
 	for _, name := range sortedKeys(targets) {
 		target := targets[name]
 		path := appendString(parentPath, name)
+		label := target.Title
+		if label == "" {
+			label = name
+		}
 		a.shape.Targets++
-		a.coverage = append(a.coverage, sourceCoverageRow(path, name, target.Source, inheritedSource, len(target.Factors), len(target.Requirements), len(target.Targets)))
+		a.coverage = append(a.coverage, sourceCoverageRow(path, label, target.Source, inheritedSource, len(target.Factors), len(target.Requirements), len(target.Targets)))
 		a.walkFactors(target.Factors)
 		a.shape.Requirements += len(target.Requirements)
 		nextSource := inheritedSource

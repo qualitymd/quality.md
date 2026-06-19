@@ -19,6 +19,7 @@ ratingScale:
     criterion: "Falls below the acceptable floor."
 targets:
   format-spec:
+    title: Format specification
     source: ./SPECIFICATION.md
     requirements:
       "the format specification is complete":
@@ -36,6 +37,7 @@ targets:
           valid file, from the spec alone.
     factors:
       clarity:
+        title: Clarity
         description: >
           Can each rule be read in only one way? A spec governs independent
           implementations that never confer, so every obligation must land with
@@ -57,6 +59,7 @@ targets:
               Every technical term used in a rule is defined before, or at, the
               point it is first used.
       consistency:
+        title: Consistency
         description: >
           Does the document agree with itself? One concept keeps one name, no two
           statements contradict, and every illustration tracks the rule it
@@ -68,6 +71,7 @@ targets:
               concept throughout, and every example agrees with the rule it
               illustrates.
       verifiability:
+        title: Verifiability
         description: >
           Can conformance be decided rather than argued? Each rule turns on
           something a reader can observe or test.
@@ -82,6 +86,7 @@ targets:
               Constructs are shown with worked examples that include both valid
               cases and invalid counter-examples.
       extensibility:
+        title: Extensibility
         description: >
           Can the format grow without breaking what exists? A stable minimal core,
           defined room to extend, and a versioning path that does not strand
@@ -93,6 +98,7 @@ targets:
               authors may add factors, keys, or sections, how a reader treats
               unrecognized content, and how the format versions forward.
       usability:
+        title: Usability
         description: >
           Can a reader find and follow what they need? Navigability and
           readability: logical order, scannable tables, and copy-and-adapt
@@ -105,9 +111,11 @@ targets:
               minimal and realistic examples.
 
   readme:
+    title: README
     source: ./README.md
     factors:
       approachability:
+        title: Approachability
         description: >
           Does the front door bring a newcomer in? A first-time reader can grasp
           what the thing is, who it is for, see it work, reach a first result,
@@ -137,23 +145,27 @@ targets:
     source: ./internal/cli
     factors:
       usability:
+        title: Usability
         description: >
           Can people discover, understand, and use commands from terminal help,
           examples, output, and error messages? The CLI is a working interface,
           so it must make the common path clear and recovery from mistakes
           practical.
       automation-compatibility:
+        title: Automation compatibility
         description: >
           Can agents, CI, and scripts drive commands without hidden human
           assumptions? The CLI is the deterministic surface skills and
           automation call, so streams, exit codes, prompts, and structured output
           must remain safe to compose.
       consistency:
+        title: Consistency
         description: >
           Does the command tree feel like one program? Arguments, flags, output,
           help, errors, and next actions should follow shared conventions so
           users and callers can transfer expectations between commands.
       determinism:
+        title: Determinism
         description: >
           Does the same input and file state produce the same CLI result? Stable
           output, ordering, and next actions let agents and CI diff, cache, and

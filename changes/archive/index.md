@@ -98,3 +98,15 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   `qualitymd status [path] [--json]` so agents and humans can route from a
   deterministic project-state snapshot instead of hand-parsing `QUALITY.md` or
   evaluation reports (`Done`).
+- [0031 — Evaluation report summary artifact](0031-report-summary-artifact.md) -
+  generated `report-summary.md` beside full evaluation reports for compact
+  review and triage surfaces (`Done`).
+- [0032 — CLI managed upgrades](0032-cli-managed-upgrades.md) - added structured
+  version metadata, explicit upgrade checks, managed installer entrypoints, and
+  install-method-aware upgrade guidance (`Done`).
+- [0033 — Required display titles](0033-required-display-titles.md) - required
+  human-facing titles on Models, Targets, Factors, and Rating Levels, with lint,
+  scaffold, docs, and examples updated to match (`Done`).
+- [0034 — Skill release metadata](0034-skill-release-metadata.md) - recorded the
+  `/quality` skill version and required `qualitymd` CLI range in Agent
+  Skills-compatible metadata with release-check validation (`Done`).

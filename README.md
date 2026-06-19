@@ -66,9 +66,11 @@ ratingScale:
     criterion: "Falls below the minimum acceptable bar."
 targets:
   triage:
+    title: Triage
     source: ./support
     factors:
       responsiveness:
+        title: Responsiveness
         description: Customers receive timely, useful attention.
         requirements:
           "urgent messages are visible":
@@ -76,6 +78,7 @@ targets:
               New messages are classified so urgent customer-impacting issues
               are separated from routine requests.
       accuracy:
+        title: Accuracy
         description: Replies are correct, complete, and grounded in policy.
         requirements:
           "answers cite the current policy":
@@ -122,16 +125,17 @@ but it is where the model explains itself.
 The root model is a target plus a model-wide `ratingScale`.
 
 ```yaml
-title: <string>                 # Recommended
+title: <string>                 # Required
 description: <string>           # Optional
 ratingScale:                    # Required, ordered best to worst
   - level: <level-name>         # Required, unique within the scale
-    title: <string>             # Optional
+    title: <string>             # Required
     description: <string>       # Recommended
     criterion: <string>         # Required
 source: <string>                # Optional
 factors:                        # Optional*
   <factor-name>:
+    title: <string>             # Required
     description: <string>       # Recommended
     factors:                    # Optional
       <sub-factor-name>: <Factor>
@@ -195,6 +199,10 @@ The deterministic surface:
 - **`qualitymd spec`** — emit the bundled `QUALITY.md` format specification.
 - **`qualitymd status`** — emit a deterministic project-state snapshot for
   routing, automation, and agent use.
+- **`qualitymd version`** — show structured CLI and bundled specification
+  version metadata.
+- **`qualitymd upgrade --check`** — explicitly check the current install method,
+  latest version, and recommended upgrade action.
 - **`qualitymd evaluation create-run`** — create and number an evaluation run
   folder.
 - **`qualitymd evaluation add-record`** — write assessment, analysis, and
@@ -203,8 +211,9 @@ The deterministic surface:
   assessment and analysis coverage for resume diagnostics.
 - **`qualitymd evaluation show-status`** — inspect whether a run is ready to
   render.
-- **`qualitymd evaluation build-report`** — derive `report.md` / `report.json`
-  and optionally gate with `--fail-at-or-below`.
+- **`qualitymd evaluation build-report`** — derive `report-summary.md`,
+  `report.md`, and `report.json`, and optionally gate with
+  `--fail-at-or-below`.
 
 ## Conceptual model
 

@@ -13,14 +13,18 @@ func TestDecodeCurrentSchema(t *testing.T) {
 title: Example
 ratingScale:
   - level: target
+    title: Target
     criterion: Meets the requirement.
   - level: unacceptable
+    title: Unacceptable
     criterion: Does not meet the requirement.
 targets:
   api:
+    title: API
     source: ./internal/api
     factors:
       reliability:
+        title: Reliability
         description: The API continues to behave under expected failure modes.
         requirements:
           "writes are durable":
@@ -40,6 +44,12 @@ targets:
 	}
 	if len(model.RatingScale) != 2 {
 		t.Fatalf("len(RatingScale) = %d, want 2", len(model.RatingScale))
+	}
+	if got := model.Targets["api"].Title; got != "API" {
+		t.Fatalf("target title = %q, want API", got)
+	}
+	if got := model.Targets["api"].Factors["reliability"].Title; got != "Reliability" {
+		t.Fatalf("factor title = %q, want Reliability", got)
 	}
 	if got := model.Targets["api"].Factors["reliability"].Requirements["writes are durable"].Assessment; got == "" {
 		t.Fatal("assessment was not loaded")

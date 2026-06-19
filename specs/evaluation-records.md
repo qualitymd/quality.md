@@ -29,7 +29,7 @@ capitals.
 
 The CLI **MUST** own file creation, serialization, run-folder numbering,
 record numbering, `model.md` snapshotting, `schemaVersion` stamping, and
-`report.md` / `report.json` rendering. The skill supplies judgment content:
+`report-summary.md` / `report.md` / `report.json` rendering. The skill supplies judgment content:
 findings, ratings, rationales, roll-up judgment, and recommendations. The CLI
 owns the `model.md` snapshot — rather than the skill — because the snapshot is
 mechanically resolvable content, and keeping the record of *what was evaluated*
@@ -82,6 +82,7 @@ analysis/
 recommendations/
   NNN-<slug>.md
 report.md
+report-summary.md
 report.json
 ```
 
@@ -209,6 +210,9 @@ reason as assessment evidence above.
 
 ## report.json
 
+`report-summary.md`, `report.md`, and `report.json` are generated artifacts, not
+input records, judgment records, or OKF concepts.
+
 `report.json` is the machine rendering of the same Evaluation Report as
 `report.md`. It **MUST** present the in-scope root rating and rationale, scope,
 per-target results, and advice. It **MUST** reference findings by assessment
@@ -238,6 +242,14 @@ Derived limitation summaries **MUST** preserve locator-like text such as dotted
 file paths.
 
 Target local and aggregate ratings **MUST** render as explicit rating objects.
+
+## report-summary.md
+
+`report-summary.md` is the concise human triage artifact generated beside the
+full report. It **MUST** be derived from the same report model as `report.md` and
+`report.json`, link to both, and preserve the same active/superseded
+recommendation distinction. It **MUST NOT** replace `report.md` as the complete
+human Evaluation Report.
 A not-assessed rating uses `rating: null` and `notAssessed: true`. A structural
 grouping target with no local requirements **MUST** render a distinct structural
 local-rating state rather than looking like a missing-evidence not-assessed

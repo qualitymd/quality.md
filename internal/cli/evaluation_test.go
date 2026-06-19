@@ -58,9 +58,11 @@ func testEvaluationRepo(t *testing.T) string {
 title: Test model
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:

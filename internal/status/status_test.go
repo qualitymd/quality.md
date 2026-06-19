@@ -48,9 +48,11 @@ func TestSnapshotValidModelShapeAndSourceCoverage(t *testing.T) {
 	path := writeFile(t, repo, "QUALITY.md", validModel(`source: .
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
     factors:
       errors:
+        title: Error handling
         description: Error handling.
         requirements:
           "reports errors":
@@ -61,14 +63,17 @@ requirements:
     assessment: Run it.
 targets:
   api:
+    title: API
     requirements:
       "responds":
         factors: [reliability]
         assessment: Call it.
   cli:
+    title: CLI
     source: ./cmd
     factors:
       usability:
+        title: Usability
         description: Usability.
 `))
 	snapshot, err := Snapshot(Options{Path: path})
@@ -88,10 +93,10 @@ targets:
 	if len(snapshot.Model.SourceCoverage) != 3 {
 		t.Fatalf("sourceCoverage = %#v, want root plus 2 child targets", snapshot.Model.SourceCoverage)
 	}
-	if snapshot.Model.SourceCoverage[1].Label != "api" || snapshot.Model.SourceCoverage[1].SourceState != "inherited" || snapshot.Model.SourceCoverage[1].Source != "." {
+	if snapshot.Model.SourceCoverage[1].Label != "API" || snapshot.Model.SourceCoverage[1].SourceState != "inherited" || snapshot.Model.SourceCoverage[1].Source != "." {
 		t.Fatalf("api source coverage = %#v, want inherited root source", snapshot.Model.SourceCoverage[1])
 	}
-	if snapshot.Model.SourceCoverage[2].Label != "cli" || snapshot.Model.SourceCoverage[2].SourceState != "declared" || snapshot.Model.SourceCoverage[2].Source != "./cmd" {
+	if snapshot.Model.SourceCoverage[2].Label != "CLI" || snapshot.Model.SourceCoverage[2].SourceState != "declared" || snapshot.Model.SourceCoverage[2].Source != "./cmd" {
 		t.Fatalf("cli source coverage = %#v, want declared source", snapshot.Model.SourceCoverage[2])
 	}
 }
@@ -104,6 +109,7 @@ func TestSnapshotEvaluationHistoryStaleAndLatestRun(t *testing.T) {
     assessment: Run it.
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
 `))
 	first, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
@@ -119,6 +125,7 @@ factors:
     assessment: Run it again.
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
 `))
 	second, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
@@ -149,6 +156,7 @@ func TestSnapshotMalformedRunDoesNotHideLaterRuns(t *testing.T) {
     assessment: Run it.
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
 `))
 	if err := os.MkdirAll(filepath.Join(repo, "quality", "evaluations", "0001-subject-quality-eval"), 0o755); err != nil {
@@ -179,6 +187,7 @@ func TestSnapshotActiveRecommendationCountHonorsSuperseding(t *testing.T) {
     assessment: Run it.
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
 `))
 	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
@@ -247,9 +256,11 @@ func validModel(body string) string {
 title: Example
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 ` + body + `---

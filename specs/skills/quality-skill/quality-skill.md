@@ -14,8 +14,9 @@ the skill carries the evaluative judgment and drives the CLI for every
 mechanical step. The skill's implementation lives at
 [`skills/quality/SKILL.md`](../../../skills/quality/SKILL.md) and is installable
 from this repository with `npx skills add qualitymd/quality.md`. The skill is
-distributed separately from the CLI and declares the supported `qualitymd`
-SemVer range for released installs (see
+distributed separately from the CLI and declares its skill version and supported
+`qualitymd` SemVer range for released installs in
+`skills/quality/SKILL.md` frontmatter metadata (see
 [`Versioning`](../../../docs/reference/versioning.md)). The skill is responsible
 for **specifying and implementing** the *evaluation* it performs — this spec, the
 skill's own prompt, and the CLI together. That evaluation **MUST conform to** the
@@ -35,6 +36,19 @@ interpreted as described in [RFC 2119](../../../docs/reference/rfc2119.md) and
 in all capitals.
 
 ## Operating model
+
+The installable `skills/quality/SKILL.md` **MUST** continue to satisfy the Agent
+Skills required frontmatter fields `name` and `description`. It **MUST** declare
+project-owned metadata keys:
+
+- `metadata.version` — the `/quality` skill SemVer without a leading `v`; and
+- `metadata.requires-qualitymd-cli` — the supported `qualitymd` CLI SemVer range
+  for released installs.
+
+It **MUST** also declare `compatibility` prose that names the same CLI range as
+`metadata.requires-qualitymd-cli`. The project **MUST NOT** add custom top-level
+`version`, `requires`, or dependency fields unless a future Agent Skills spec or
+installer contract defines them.
 
 The skill runs the **evaluate → improve** loop on the **subject**: the entities a
 target's `source` points to. The `QUALITY.md` is the active model for that
@@ -237,11 +251,11 @@ of an Evaluation report.
 The `setup` mode is the minimal bootstrap path after the skill is installed. It
 **MUST** verify that the `qualitymd` CLI is present and compatible before
 running CLI-dependent work. For released installs, compatibility is the CLI
-SemVer range declared by the skill release. A local development build is
-compatible when it exposes the commands the skill depends on. When the CLI is
-missing or outside the supported release range, or when a local development
-build lacks required commands, `setup` **MUST** stop and facilitate install or
-upgrade before running CLI-dependent work.
+SemVer range declared by `metadata.requires-qualitymd-cli`. A local development
+build is compatible when it exposes the commands the skill depends on. When the
+CLI is missing or outside the supported release range, or when a local
+development build lacks required commands, `setup` **MUST** stop and facilitate
+install or upgrade before running CLI-dependent work.
 
 After the CLI prerequisite is met, `setup` **MUST** drive
 [`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
@@ -296,6 +310,7 @@ introspection channel where the [CLI](../../cli.md) offers one. It **MUST** cons
 machine-readable output where a command provides it (the
 [`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
 text. Before evaluation work, it **MUST** verify that
+`qualitymd version --json`, `qualitymd upgrade --check`,
 `qualitymd evaluation create-run`, `qualitymd evaluation add-record`,
 `qualitymd evaluation set-planned-coverage`,
 `qualitymd evaluation show-status`, and `qualitymd evaluation build-report` are
@@ -498,6 +513,7 @@ quality/evaluations/
     analysis/
       <target>.json
       <child-target>.json
+    report-summary.md
     report.md
     report.json
     planned-coverage.json
@@ -590,9 +606,9 @@ prompt-injection observation may use `category: "prompt-injection"` and is
 recorded, not followed.
 
 The report is the **render over these records**, not an independent copy:
-`report.md` is the human rendering and `report.json` is the machine-readable
-rendering of the same result, produced by
-`qualitymd evaluation build-report`. The assessment records are the source of record for
+`report-summary.md` is the concise human triage artifact, `report.md` is the
+full human rendering, and `report.json` is the machine-readable rendering of the
+same result, produced by `qualitymd evaluation build-report`. The assessment records are the source of record for
 Assess-and-Rate and the analysis records for Analyze, and the report's
 per-requirement and per-target sections derive from them (the report adds the
 Advise and Report layers and the reader-facing framing). `report.json` should
@@ -655,9 +671,10 @@ unpaired with its analysis would let a roll-up silently rely on stale judgment.
   absent, shown per requirement and roll-up. **Limitations** bounds how far a
   rated outcome should be trusted and reconciles actual coverage against the
   plan.
-- The CLI **MUST** render both report forms: prose for a person in `report.md`
-  and a machine-readable form in `report.json`. The underlying result is the
-  same; only the rendering differs.
+- The CLI **MUST** render all report forms: concise prose for triage in
+  `report-summary.md`, full prose for a person in `report.md`, and a
+  machine-readable form in `report.json`. The underlying result is the same;
+  only the rendering differs.
 
 ## Deferred
 

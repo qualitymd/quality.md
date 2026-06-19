@@ -3,6 +3,66 @@
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
+  [0031 — Evaluation report summary artifact](archive/0031-report-summary-artifact.md),
+  [0032 — CLI managed upgrades](archive/0032-cli-managed-upgrades.md),
+  [0033 — Required display titles](archive/0033-required-display-titles.md), and
+  [0034 — Skill release metadata](archive/0034-skill-release-metadata.md).
+  Moved each parent concept and child folder into [`archive/`](archive/), updated
+  the root and archive indexes, and left no open change cases.
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0034 — Skill release metadata](archive/0034-skill-release-metadata.md). The case
+  remains open in [`changes/`](index.md) for review; it is not archived until it
+  lands.
+
+- **Implementation**: Advanced
+  [0034 — Skill release metadata](archive/0034-skill-release-metadata.md) from `Design`
+  to `In-Progress` so its settled metadata and release-check design can be
+  implemented.
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0031 — Evaluation report summary artifact](archive/0031-report-summary-artifact.md),
+  [0032 — CLI managed upgrades](archive/0032-cli-managed-upgrades.md), and
+  [0033 — Required display titles](archive/0033-required-display-titles.md). The cases
+  remain open in [`changes/`](index.md) for review; they are not archived until
+  they land.
+
+- **Design**: Advanced change
+  [0034 — Skill release metadata](archive/0034-skill-release-metadata.md) from `Draft`
+  to `Design` and added its
+  [design doc](archive/0034-skill-release-metadata/design.md). The design uses
+  Agent Skills `metadata.version` and `metadata.requires-qualitymd-cli`, mirrors
+  the range in `compatibility`, adds release-check validation against the tag and
+  changelog, updates runtime/docs wording, and leaves installer enforcement for a
+  future package contract.
+
+- **Creation**: Added change
+  [0034 — Skill release metadata](archive/0034-skill-release-metadata.md) in `Draft`
+  with its [functional spec](archive/0034-skill-release-metadata/spec.md). The change
+  proposes project-owned Agent Skills metadata in `skills/quality/SKILL.md` for
+  the `/quality` skill SemVer and required `qualitymd` CLI range, mirrored by
+  `compatibility` prose and curated release notes, with release-check validation
+  and installer enforcement explicitly deferred. Updated the bundle
+  [index](index.md).
+
+- **Implementation**: Advanced changes
+  [0031 — Evaluation report summary artifact](archive/0031-report-summary-artifact.md),
+  [0032 — CLI managed upgrades](archive/0032-cli-managed-upgrades.md), and
+  [0033 — Required display titles](archive/0033-required-display-titles.md) to
+  `In-Progress` so their settled specs/designs can be implemented and synced
+  into durable specs, docs, tests, and examples. Updated the bundle
+  [index](index.md).
+
+- **Creation**: Added change
+  [0033 — Required display titles](archive/0033-required-display-titles.md) in `Draft`
+  with its [functional spec](archive/0033-required-display-titles/spec.md). The change
+  proposes required `title` properties on the Model, every Target, every Factor,
+  and every Rating Level; adds `Factor.title`; keeps Requirements title-free;
+  makes `missing-title` an error across those nodes; and records the affected
+  format, lint, init, report, status, skill, README, guide, scaffold, and example
+  updates. Updated the bundle [index](index.md).
+
+- **Done**: Set status `Done` and archived
   [0030 — CLI status snapshot command](archive/0030-cli-status-command.md).
   Moved the parent concept and child folder into [`archive/`](archive/), fixed
   repo-relative links for the deeper path, added the entry to the
@@ -19,28 +79,64 @@
   `go run ./cmd/qualitymd status --json`.
 
 - **Implementation**: Advanced change
-  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) from
-  `Design` to `In-Progress` so the settled status-command spec and design can be
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) from `Design`
+  to `In-Progress` so the settled status-command spec and design can be
   implemented and synced into the durable CLI docs and `/quality` skill
   consumers.
 
 - **Design**: Advanced change
-  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) from
-  `Draft` to `Design` and added its
-  [design doc](archive/0030-cli-status-command/design.md). The design introduces
-  an `internal/status` snapshot assembler, keeps CLI rendering thin, reuses lint
-  and evaluation mechanics, compares run `model.md` snapshots for staleness,
-  counts active recommendations through evaluation-owned helpers, and keeps
-  report-body scraping out of the command.
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) from `Draft`
+  to `Design` and added its
+  [design doc](archive/0030-cli-status-command/design.md). The design introduces an
+  `internal/status` snapshot assembler, keeps CLI rendering thin, reuses lint and
+  evaluation mechanics, compares run `model.md` snapshots for staleness, counts
+  active recommendations through evaluation-owned helpers, and keeps report-body
+  scraping out of the command.
 
 - **Draft**: Replaced the placeholder for
-  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) with a
-  full [functional spec](archive/0030-cli-status-command/spec.md). The spec
-  defines the read-only `qualitymd status [path] [--json]` invocation, lint
-  validity and model-shape snapshot, source coverage, evaluation history and
-  staleness signals, active recommendation counts, readiness states,
-  deterministic next-action data, and exit behavior. Updated the case and bundle
-  listings.
+  [0030 — CLI status snapshot command](archive/0030-cli-status-command.md) with a full
+  [functional spec](archive/0030-cli-status-command/spec.md). The spec defines the
+  read-only `qualitymd status [path] [--json]` invocation, lint validity and
+  model-shape snapshot, source coverage, evaluation history and staleness
+  signals, active recommendation counts, readiness states, deterministic
+  next-action data, and exit behavior. Updated the case and bundle listings.
+
+- **Design**: Advanced change
+  [0031 — Evaluation report summary artifact](archive/0031-report-summary-artifact.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0031-report-summary-artifact/design.md). The design reuses the
+  existing `ReportJSON` assembly as the single report model, adds a
+  `renderReportSummaryMarkdown` projection, extends `BuildResult` with the
+  summary path, and keeps `report-summary.md` generated from the same recorded
+  run data as `report.md` and `report.json`. Updated the bundle [index](index.md).
+
+- **Design**: Advanced change
+  [0032 — CLI managed upgrades](archive/0032-cli-managed-upgrades.md) from `Draft` to
+  `Design` and added its
+  [design doc](archive/0032-cli-managed-upgrades/design.md). The design stages the work
+  through structured version metadata, install-context detection, explicit
+  upgrade checks, guarded apply behavior, and GitHub-hosted managed installer
+  entrypoints under top-level `install/`.
+
+- **Creation**: Added change
+  [0032 — CLI managed upgrades](archive/0032-cli-managed-upgrades.md) in `Draft` with
+  its [functional spec](archive/0032-cli-managed-upgrades/spec.md). The change proposes
+  structured version metadata, explicit upgrade checks, safe install-method
+  detection, advisory output by default, guarded `--apply` behavior, npm launcher
+  marking, and a long-term managed standalone installer path. Records affected
+  CLI specs, install/versioning docs, release guidance, npm launcher, and
+  `/quality` skill consumers. Updated the bundle [index](index.md).
+
+- **Creation**: Added change
+  [0031 — Evaluation report summary artifact](archive/0031-report-summary-artifact.md)
+  in `Draft` with its
+  [functional spec](archive/0031-report-summary-artifact/spec.md). The change proposes
+  generating `report-summary.md` beside `report.md` and `report.json` during
+  `qualitymd evaluation build-report`, derived from the same recorded run data
+  and summary layer, for PR/CI/stakeholder triage without replacing the full
+  Evaluation Report. Records affected CLI specs, evaluation record contract,
+  skill reporting spec, README, and example bundles. Updated the bundle
+  [index](index.md).
 
 - **Done**: Set status `Done` and archived
   [0028 — Require factor references](archive/0028-require-characterized-requirements.md)

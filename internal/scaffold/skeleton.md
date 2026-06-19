@@ -31,6 +31,7 @@ factors:
   # usability, maintainability. Say what it means here, why it matters and to
   # whom, and how it differs from the other factors.
   "<name a quality that matters>":
+    title: "<short display label for this quality>"
     # description — what this quality means for the artifact, and to whom.
     # e.g. "Reliability: the system keeps serving correct responses under load
     #       and recovers cleanly from failure — the ops team and every
@@ -68,8 +69,10 @@ factors:
 # nested `targets`.
 # targets:
 #   "<name a thing to evaluate>":
+#     title: "<short display label for this target>"
 #     factors:
 #       "<a quality specific to this part>":
+#         title: "<short display label for this quality>"
 #         description: "<what it means for this target, and to whom>"
 #         requirements:
 #           "<an expectation you can assess on this target>":

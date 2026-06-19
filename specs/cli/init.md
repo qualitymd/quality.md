@@ -52,6 +52,9 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
 - The frontmatter **MUST** seed the suggested four-level rating scale
   (`outstanding` / `target` / `minimum` / `unacceptable`) from the
   [format spec](../../SPECIFICATION.md#model), which a scaffolding tool can seed.
+- The scaffold **MUST** seed non-empty placeholder `title` values wherever the
+  format requires them, including the model root, every seeded rating level, the
+  placeholder factor, and any commented target/factor examples.
 - The frontmatter **MUST** include a minimal skeleton that leads to at least one
   requirement: a placeholder factor carrying a `description`, and beneath it a
   placeholder requirement carrying a single non-empty `assessment`.
@@ -62,8 +65,8 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   [recommended body sections](../../SPECIFICATION.md#markdown-body) — Overview,
   Scope, Needs, Risks, and Known gaps — as headed stubs, each with a brief prompt
   of what it captures.
-- The scaffold should seed a placeholder `title`, and the body should
-  open with a top-level heading naming the subject, matching that `title`.
+- The body should open with a top-level heading naming the subject, matching the
+  scaffolded model `title`.
 
 ### Reporting
 

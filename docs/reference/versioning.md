@@ -21,8 +21,9 @@ repository state, but the skill is not bundled with the CLI binary.
 
 - CLI release version: the git release tag and build metadata reported by
   `qualitymd --version`.
-- Skill release version and supported CLI range: skill package metadata when the
-  installer supports it, mirrored in release notes or install documentation.
+- Skill release version and supported CLI range:
+  `skills/quality/SKILL.md` frontmatter metadata, mirrored in release notes and
+  install documentation.
 - Specification version: the version line near the top of `SPECIFICATION.md`.
 
 ## CLI Version
@@ -31,6 +32,7 @@ The `qualitymd` CLI uses SemVer and reports its version through:
 
 ```sh
 qualitymd --version
+qualitymd version --json
 ```
 
 The CLI version is the runtime compatibility boundary for the skill. It covers
@@ -42,7 +44,19 @@ the deterministic surface the skill depends on:
 - machine-readable output shapes;
 - evaluation artifact mechanics; and
 - the `SPECIFICATION.md` version bundled into the binary and emitted by
-  `qualitymd spec`.
+  `qualitymd spec` and `qualitymd version --json`.
+
+Upgrade checks are explicit:
+
+```sh
+qualitymd upgrade --check
+```
+
+Ordinary commands do not contact the network to check for updates. The upgrade
+surface reports the detected install method, latest known version, whether apply
+is supported, and the recommended command. Managed standalone, npm, Homebrew,
+source, archive, and unknown installs keep distinct ownership boundaries so the
+CLI does not replace binaries it does not own.
 
 While the CLI is in `0.x`, minor versions define compatibility lines. A breaking
 change to the skill-facing CLI surface should bump the minor version; patch
@@ -54,20 +68,27 @@ normal SemVer major-version compatibility rules apply.
 The `/quality` skill has its own SemVer because it is installed and upgraded
 separately from the CLI.
 
-Each skill release declares the `qualitymd` CLI SemVer range it supports. At
-runtime, the skill checks the installed CLI with `qualitymd --version` and stops
-when the CLI is missing or outside the supported range.
+Each skill release declares the `qualitymd` CLI SemVer range it supports in
+`skills/quality/SKILL.md`:
 
 During the `0.x` phase, skill releases should usually depend on one compatible
 CLI minor line, for example:
 
 ```yaml
-requires:
-  qualitymd: ">=0.4.0 <0.5.0"
+compatibility: Requires qualitymd CLI >=0.4.0 <0.5.0.
+metadata:
+  version: "0.4.0"
+  requires-qualitymd-cli: ">=0.4.0 <0.5.0"
 ```
 
+At runtime, the skill uses `metadata.requires-qualitymd-cli` as the released
+install range, checks the installed CLI with `qualitymd version --json` when
+available, and stops when the CLI is missing or outside the supported range.
+
 Use a broader range only when the skill has been checked against every included
-CLI minor line.
+CLI minor line. Current skill installers may ignore this project-owned metadata;
+release checks validate it, and release notes mirror it, but installer
+enforcement is deferred until an installer/package contract supports it.
 
 ## Specification Version
 

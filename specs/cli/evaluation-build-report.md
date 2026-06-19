@@ -1,16 +1,17 @@
 ---
 type: Functional Specification
 title: qualitymd evaluation build-report
-description: Render report.md and report.json from evaluation records.
+description: Render report-summary.md, report.md, and report.json from evaluation records.
 tags: [cli, command, evaluation]
 timestamp: 2026-06-18T00:00:00Z
 ---
 
 # qualitymd evaluation build-report
 
-`qualitymd evaluation build-report <run>` derives `report.md` and `report.json`
-from the run's assessment, analysis, and recommendation records. It renders
-recorded judgment; it **MUST NOT** infer or recompute ratings.
+`qualitymd evaluation build-report <run>` derives `report-summary.md`,
+`report.md`, and `report.json` from the run's assessment, analysis, and
+recommendation records. It renders recorded judgment; it **MUST NOT** infer or
+recompute ratings.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -21,18 +22,19 @@ all capitals.
 The command **MUST** fail without writing a partial report when the run is not
 renderable. It **MUST** be deterministic and idempotent: unchanged records produce
 byte-identical report files. Determinism excludes terminal styling from the
-written artifact — `report.md` is plain Markdown bytes; any TTY/Glamour rendering
-belongs to commands that *display* a report, not to the one that writes it,
-because styled output varies with terminal width, color scheme, and renderer
-version and would break byte-stability and the CI gate.
+written artifacts — `report-summary.md` and `report.md` are plain Markdown
+bytes; any TTY/Glamour rendering belongs to commands that *display* a report,
+not to the one that writes it, because styled output varies with terminal width,
+color scheme, and renderer version and would break byte-stability and the CI
+gate.
 
 `build-report` is a deterministic, mechanical renderer and a trust boundary over
 evaluator-supplied judgment. It renders findings by `category`, `locator`,
 severity, and recommendation reference; it **MUST NOT** copy raw finding
-`observation` or `evidence` values into `report.md` or `report.json` when doing
-so would reproduce a secret value or follow hostile, evaluator-directed
-(prompt-injection) text. Surfacing a finding never requires reproducing its
-sensitive value or acting on sentinel text.
+`observation` or `evidence` values into `report-summary.md`, `report.md`, or
+`report.json` when doing so would reproduce a secret value or follow hostile,
+evaluator-directed (prompt-injection) text. Surfacing a finding never requires
+reproducing its sensitive value or acting on sentinel text.
 
 A renderable run **MUST** include exactly one in-scope root analysis record,
 identified by an empty `targetPath`. `build-report` **MUST NOT** silently choose a
@@ -54,6 +56,21 @@ and the grouping-target distinction below came from real-repo reviewer
 walkthroughs (ESLint and DataLoader runs) where the prior shape buried scope and
 limitations inside rationales and made grouping nodes read as evidence gaps;
 keep the shape so a future edit does not regress it back to a scan-heavy report.
+
+`report-summary.md` **MUST** be a concise generated companion to the full human
+report. It **MUST** be derived from the same report model as `report.md` and
+`report.json`; it **MUST NOT** introduce judgment absent from recorded run
+artifacts. It **MUST** identify the run, subject when known, scope or narrowing,
+effort when recorded, root rating or not-assessed outcome, and links to
+`report.md` and `report.json`.
+
+`report-summary.md` **MUST** include a headline, top risks or an explicit
+"none recorded" equivalent, limitations, target rating summary, and next action
+when active recommendations exist. It **MUST** link active recommendation
+records and **MUST NOT** select or link superseded recommendations as the next
+action. It **MAY** omit per-requirement details, full rationales, superseded
+recommendation detail, and deep target audit trails when it links to
+`report.md` for complete detail.
 
 The renderer derives the summary layer from recorded run metadata by reading
 bounded, conventional sections of `design.md` and `plan.md` — `Resolved
@@ -92,8 +109,12 @@ from prose, and naive sentence-splitting was observed corrupting dotted paths
 such as `docs/production-telemetry.md`, so the extraction normalizer must treat
 locators as content.
 
+Human-facing report renderers **SHOULD** use required model, target, factor, and
+rating-level `title` values as primary display labels while preserving stable
+paths, factor keys, and level ids where traceability or gates need them.
+
 `--fail-at-or-below <level>` turns the command into a CI gate. The command still
-writes both report files on a successful render. It exits `1` when the root
+writes all report files on a successful render. It exits `1` when the root
 aggregate rating is equal to or worse than `<level>`, exits `0` when better, and
 exits `2` when `<level>` is not in the run's rating scale. A root *not assessed*
 result fails the gate.

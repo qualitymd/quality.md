@@ -24,7 +24,8 @@ try {
   process.exit(1);
 }
 
-const result = spawnSync(binary, process.argv.slice(2), { stdio: "inherit" });
+const env = { ...process.env, QUALITYMD_INSTALL_METHOD: "npm" };
+const result = spawnSync(binary, process.argv.slice(2), { stdio: "inherit", env });
 
 if (result.error) {
   throw result.error;

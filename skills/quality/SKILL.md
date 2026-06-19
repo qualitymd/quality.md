@@ -1,6 +1,10 @@
 ---
 name: quality
 description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, or improve project or harness quality, get wizard quality advice, anything concerning quality factors/attributes/characteristics relevant to project context"
+compatibility: Requires qualitymd CLI >=0.3.0 <0.4.0.
+metadata:
+  version: "0.3.0"
+  requires-qualitymd-cli: ">=0.3.0 <0.4.0"
 ---
 
 ## Purpose
@@ -37,6 +41,8 @@ recommendations.
 
 ```sh
 qualitymd --version
+qualitymd version --json
+qualitymd upgrade --check
 qualitymd spec
 qualitymd lint --help
 qualitymd status --help
@@ -48,9 +54,15 @@ qualitymd evaluation show-status --help
 qualitymd evaluation build-report --help
 ```
 
-For released installs, use the CLI SemVer range declared by this skill release.
+For released installs, use the `metadata.requires-qualitymd-cli` range in this
+skill's frontmatter as the supported CLI range. Use `qualitymd version --json`
+to inspect the CLI version, development-build state, commit when known, and
+bundled specification version before CLI-dependent workflows. Use
+`qualitymd upgrade --check` when the CLI is missing, stale, or outside the
+supported range so the remediation path follows the detected install method.
 Accept a local development build when those commands are present. If the CLI is
-missing or stale, stop and help the user install or upgrade it before continuing.
+missing or stale, stop and help the user install or upgrade it before
+continuing.
 
 ## Arguments
 

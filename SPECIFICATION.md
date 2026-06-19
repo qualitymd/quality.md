@@ -135,11 +135,11 @@ A Model is the root node of a `QUALITY.md` document. It has all Target
 properties plus the model-wide `ratingScale`.
 
 ```yaml
-title: <string>                 # Recommended
+title: <string>                 # Required
 description: <string>           # Optional
 ratingScale:                    # Required
   - level: <level-name>         #   Required; unique within the scale
-    title: <string>             #   Optional
+    title: <string>             #   Required
     description: <string>       #   Recommended
     criterion: <string>         #   Required
 factors:                        # Optional*
@@ -165,16 +165,13 @@ At least two rating levels MUST be supplied.
 Each Rating Level MUST declare:
 
 - `level`: a non-empty scalar name unique within the Rating Scale.
+- `title`: a non-empty scalar human-readable label.
 - `criterion`: a non-empty scalar default criterion for assigning that Rating
   Level to a Requirement's Findings.
 
 Each Rating Level SHOULD declare:
 
 - `description`: the stable meaning of the level across the Model.
-
-Each Rating Level can declare:
-
-- `title`: a human-readable label.
 
 A Rating Level's `description` and `criterion` have distinct semantics. The
 `description` defines what the level means across the Model. The `criterion`
@@ -188,7 +185,7 @@ A Target is the recursive node of the Model. Each entry under `targets` is a
 Target.
 
 ```yaml
-title: <string>                 # Recommended
+title: <string>                 # Required
 description: <string>           # Optional
 factors:                        # Optional*
   <factor-name>: <Factor>
@@ -202,8 +199,8 @@ source: <string>                # Optional
 A Target can declare no `factors` or `requirements` of its own when it is used
 as a grouping node for child `targets`.
 
-When present, `title` is the Target's display name. The Target's map key remains
-its identifier.
+`title` is the Target's display name. The Target's map key remains its
+identifier.
 
 When present, `source` selects the entities evaluated by the Target. Relative
 paths and globs resolve relative to the containing `QUALITY.md` file. When a
@@ -220,6 +217,7 @@ Requirements still evaluate against the ancestor Source.
 A Factor groups Requirements through a quality characteristic.
 
 ```yaml
+title: <string>                 # Required
 description: <string>           # Recommended
 factors:                        # Optional
   <factor-name>: <Factor>
@@ -232,6 +230,9 @@ Factor of the same shape, nested to any depth.
 
 Factor identity is local to the Target on which the Factor is declared. Factors
 with the same name on different Targets are distinct Factors.
+
+`title` is the Factor's display name. The Factor's map key remains its stable
+identifier local to the Target where the Factor is declared.
 
 #### Requirement
 

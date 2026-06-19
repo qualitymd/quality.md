@@ -56,7 +56,7 @@ type Rule struct {
 // each rule's severity and fixability.
 var Rules = []Rule{
 	{RuleInvalidFrontmatter, SeverityError, false, "The frontmatter is missing or has the wrong shape for a QUALITY.md model."},
-	{RuleMissingTitle, SeverityWarning, false, "The model root declares no title."},
+	{RuleMissingTitle, SeverityError, false, "A model element declares no required display title."},
 	{RuleMissingRatingScale, SeverityError, false, "The model root declares no rating scale."},
 	{RuleTooFewLevels, SeverityError, false, "The rating scale has fewer than two levels."},
 	{RuleMissingLevelName, SeverityError, false, "A rating level declares no level name."},

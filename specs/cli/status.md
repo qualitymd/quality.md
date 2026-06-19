@@ -69,6 +69,10 @@ ordered `targetPath`, a label, `sourceState` (`declared`, `inherited`, or
 `missing`), known `source` value when present, and direct Factor, Requirement,
 and child Target counts.
 
+Human-facing labels **SHOULD** use required Target `title` values. JSON
+`targetPath` values **MUST** remain identifier-based and **MUST NOT** be replaced
+by titles.
+
 When the model is invalid, `status` **MUST NOT** derive partial model-shape or
 source-coverage counts from it.
 

@@ -2,6 +2,30 @@
 
 ## 2026-06-19
 
+- **Revision**: Updated the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) for
+  project-owned Agent Skills metadata: `metadata.version`,
+  `metadata.requires-qualitymd-cli`, matching `compatibility` prose, and the
+  released-install prerequisite range.
+
+- **Revision**: Added [`qualitymd version`](cli/version.md) and
+  [`qualitymd upgrade`](cli/upgrade.md) command specs, updated the
+  [CLI overview](cli.md) and [command index](cli/index.md), and specified
+  structured local version metadata plus explicit, opt-in upgrade checks.
+
+- **Revision**: Updated [`evaluation build-report`](cli/evaluation-build-report.md),
+  [Evaluation records](evaluation-records.md), and the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) for generated
+  `report-summary.md` alongside `report.md` and `report.json`. Added a
+  representative summary artifact to the
+  [skill examples](skills/quality-skill/examples/index.md).
+
+- **Revision**: Updated the root [`SPECIFICATION.md`](../SPECIFICATION.md),
+  [`lint`](cli/lint.md), [`init`](cli/init.md), [`status`](cli/status.md),
+  [`evaluation build-report`](cli/evaluation-build-report.md), and
+  [`/quality` authoring guide spec](skills/quality-skill/authoring-guide.md) for
+  required display titles on Models, Targets, Factors, and Rating Levels.
+
 - **Revision**: Updated the durable
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) to align CLI
   prerequisite checks with the new versioning policy: released skill installs

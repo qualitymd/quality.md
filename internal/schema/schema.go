@@ -97,7 +97,7 @@ func (n Node) PropertyNames() []string {
 var Model = Node{
 	Kind: ModelKind,
 	Properties: []Property{
-		{Name: PropertyTitle, Shape: ScalarShape, Presence: RecommendedPresence},
+		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
 		{Name: PropertyRatingScale, Shape: SequenceShape, Presence: RequiredPresence, ElementKind: RatingLevelKind, MinItems: 2},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
@@ -114,7 +114,7 @@ var Model = Node{
 var Target = Node{
 	Kind: TargetKind,
 	Properties: []Property{
-		{Name: PropertyTitle, Shape: ScalarShape, Presence: RecommendedPresence},
+		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
@@ -127,6 +127,7 @@ var Target = Node{
 var Factor = Node{
 	Kind: FactorKind,
 	Properties: []Property{
+		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: RecommendedPresence},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
@@ -148,7 +149,7 @@ var RatingLevel = Node{
 	Kind: RatingLevelKind,
 	Properties: []Property{
 		{Name: PropertyLevel, Shape: ScalarShape, Presence: RequiredPresence},
-		{Name: PropertyTitle, Shape: ScalarShape, Presence: OptionalPresence},
+		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: RecommendedPresence},
 		{Name: PropertyCriterion, Shape: ScalarShape, Presence: RequiredPresence},
 	},

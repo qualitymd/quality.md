@@ -18,4 +18,8 @@ The format-tooling commands specified for this phase. See the parent
 - [qualitymd evaluation show-status](evaluation-show-status.md) - inspect whether
   a run can be rendered.
 - [qualitymd evaluation build-report](evaluation-build-report.md) - derive
-  `report.md` and `report.json`, with an optional CI gate.
+  `report-summary.md`, `report.md`, and `report.json`, with an optional CI gate.
+- [qualitymd version](version.md) - show structured CLI and bundled spec version
+  metadata.
+- [qualitymd upgrade](upgrade.md) - explicitly check for and advise on CLI
+  upgrades.

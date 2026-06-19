@@ -8,8 +8,8 @@ At runtime the skill writes these into the **evaluated** repository under
 `quality/evaluations/NNNN-<altitude>[-<narrowing>]-quality-eval/` (see
 [Reporting](../quality-skill.md#reporting)). These example files intentionally
 match that raw runtime shape: no OKF frontmatter, JSON assessment/analysis
-records, recommendation Markdown with runtime YAML frontmatter, and both
-`report.md` and `report.json`.
+records, recommendation Markdown with runtime YAML frontmatter, and generated
+`report-summary.md`, `report.md`, and `report.json`.
 
 Shared across this bundle, so the individual files need not repeat it: the
 subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
@@ -47,7 +47,8 @@ falls below its local rating because the Delivery child binds) of four.
   [plan](0001-subject-quality-eval/plan.md) →
   the [assessment records](0001-subject-quality-eval/assessments/) →
   the [analysis records](0001-subject-quality-eval/analysis/) →
-  the [human report](0001-subject-quality-eval/report.md) and
+  the [summary](0001-subject-quality-eval/report-summary.md),
+  [human report](0001-subject-quality-eval/report.md), and
   [JSON report](0001-subject-quality-eval/report.json) → its recommendations
   ([001 — rotate the committed key](0001-subject-quality-eval/recommendations/001-rotate-committed-gateway-key.md),
   [002 — produce reconciliation evidence](0001-subject-quality-eval/recommendations/002-produce-reconciliation-evidence.md),

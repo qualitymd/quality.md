@@ -25,6 +25,8 @@ Check whether `qualitymd` is available:
 
 ```sh
 qualitymd --version
+qualitymd version --json
+qualitymd upgrade --check
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
@@ -38,7 +40,31 @@ qualitymd evaluation build-report --help
 Released skill installs declare the `qualitymd` CLI SemVer range they support;
 see [Versioning](docs/reference/versioning.md) for the compatibility policy.
 
-If the CLI is missing or stale, install a pre-built binary — via npm:
+If the CLI is missing or stale, prefer the GitHub-hosted managed installer.
+
+macOS/Linux:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh
+```
+
+Windows PowerShell:
+
+```powershell
+iwr https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.ps1 -UseB | iex
+```
+
+For agents and CI, use non-interactive and pinned forms:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.4.1 sh
+```
+
+```powershell
+.\install.ps1 -NonInteractive -Version v0.4.1
+```
+
+Alternative channels remain supported. Install via npm:
 
 ```sh
 npm install -g quality.md
@@ -55,6 +81,11 @@ Or build the current CLI from source:
 ```sh
 go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ```
+
+After installation, `qualitymd upgrade --check` reports the detected install
+method, latest known version, and the recommended upgrade command. `qualitymd
+upgrade --apply` delegates only to supported owner channels such as npm and
+Homebrew; unknown, source, and archive installs receive manual guidance.
 
 ## 3. Bootstrap a project
 

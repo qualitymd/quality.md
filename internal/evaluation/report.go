@@ -27,6 +27,7 @@ type ReportJSON struct {
 }
 
 type ReportSummary struct {
+	Run         string  `json:"run,omitempty"`
 	Subject     string  `json:"subject"`
 	Altitude    string  `json:"altitude"`
 	Effort      string  `json:"effort"`
@@ -120,13 +121,14 @@ type ReportRecommendation struct {
 }
 
 type BuildResult struct {
-	SchemaVersion int              `json:"schemaVersion"`
-	Path          string           `json:"path"`
-	ReportMD      string           `json:"reportMd"`
-	ReportJSON    string           `json:"reportJson"`
-	Rating        *string          `json:"rating"`
-	NotAssessed   bool             `json:"notAssessed"`
-	NextActions   []receipt.Action `json:"nextActions,omitempty"`
+	SchemaVersion   int              `json:"schemaVersion"`
+	Path            string           `json:"path"`
+	ReportSummaryMD string           `json:"reportSummaryMd"`
+	ReportMD        string           `json:"reportMd"`
+	ReportJSON      string           `json:"reportJson"`
+	Rating          *string          `json:"rating"`
+	NotAssessed     bool             `json:"notAssessed"`
+	NextActions     []receipt.Action `json:"nextActions,omitempty"`
 }
 
 func BuildReport(path string) (*BuildResult, error) {
@@ -142,12 +144,17 @@ func BuildReport(path string) (*BuildResult, error) {
 		return nil, err
 	}
 	md := renderReportMarkdown(report)
+	summaryMD := renderReportSummaryMarkdown(report)
 	js, err := marshalJSON(report)
 	if err != nil {
 		return nil, err
 	}
+	reportSummaryMD := filepath.Join(run.Path, "report-summary.md")
 	reportMD := filepath.Join(run.Path, "report.md")
 	reportJSON := filepath.Join(run.Path, "report.json")
+	if err := writeReportFile(reportSummaryMD, summaryMD); err != nil {
+		return nil, err
+	}
 	if err := writeReportFile(reportMD, md); err != nil {
 		return nil, err
 	}
@@ -155,12 +162,13 @@ func BuildReport(path string) (*BuildResult, error) {
 		return nil, err
 	}
 	return &BuildResult{
-		SchemaVersion: SchemaVersion,
-		Path:          run.Path,
-		ReportMD:      filepath.ToSlash(reportMD),
-		ReportJSON:    filepath.ToSlash(reportJSON),
-		Rating:        report.Rating.Rating,
-		NotAssessed:   report.Rating.NotAssessed,
+		SchemaVersion:   SchemaVersion,
+		Path:            run.Path,
+		ReportSummaryMD: filepath.ToSlash(reportSummaryMD),
+		ReportMD:        filepath.ToSlash(reportMD),
+		ReportJSON:      filepath.ToSlash(reportJSON),
+		Rating:          report.Rating.Rating,
+		NotAssessed:     report.Rating.NotAssessed,
 	}, nil
 }
 
@@ -193,6 +201,7 @@ func (r *Run) Report() (ReportJSON, error) {
 	report := ReportJSON{
 		SchemaVersion: SchemaVersion,
 		Summary: ReportSummary{
+			Run:         filepath.Base(r.Path),
 			Subject:     rootAnalysis.Target,
 			Altitude:    context.Altitude,
 			Effort:      context.Effort,
@@ -520,6 +529,122 @@ func renderReportMarkdown(report ReportJSON) []byte {
 		}
 	}
 	return out.Bytes()
+}
+
+func renderReportSummaryMarkdown(report ReportJSON) []byte {
+	var out bytes.Buffer
+	out.WriteString("# Quality Evaluation Summary\n\n")
+	if report.Summary.Run != "" {
+		out.WriteString("**Run:** `" + report.Summary.Run + "`\n")
+	}
+	if report.Summary.Subject != "" {
+		out.WriteString("**Subject:** `" + report.Summary.Subject + "`\n")
+	}
+	out.WriteString("**Scope:** " + summaryScope(report) + "\n")
+	out.WriteString("**Effort:** " + summaryValue(report.Summary.Effort) + "\n")
+	out.WriteString("**Root rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed) + "\n")
+	out.WriteString("**Full report:** [report.md](report.md)\n")
+	out.WriteString("**Machine report:** [report.json](report.json)\n\n")
+
+	out.WriteString("## Headline\n\n")
+	if report.Summary.Rationale != "" {
+		out.WriteString(report.Summary.Rationale + "\n")
+	} else if report.Summary.NotAssessed {
+		out.WriteString("The root target was not assessed in this run.\n")
+	} else {
+		out.WriteString("The run completed with root rating " + displayRating(report.Summary.Rating, report.Summary.NotAssessed) + ".\n")
+	}
+
+	out.WriteString("\n## Top Risks\n\n")
+	risks := firstFindingSummaries(riskFindings(report.FindingSummaries), 5)
+	if len(risks) == 0 {
+		out.WriteString("None recorded.\n")
+	} else {
+		for i, finding := range risks {
+			out.WriteString(fmt.Sprintf("%d. ", i+1))
+			if finding.Severity != "" {
+				out.WriteString("**" + finding.Severity + "** - ")
+			}
+			out.WriteString(finding.Summary)
+			if finding.AssessmentRecord != "" {
+				out.WriteString(" (`" + finding.AssessmentRecord + "`")
+				if finding.Locator != "" {
+					out.WriteString(" at `" + finding.Locator + "`")
+				}
+				out.WriteString(")")
+			}
+			out.WriteString("\n")
+		}
+	}
+
+	out.WriteString("\n## Rating Summary\n\n")
+	if len(report.TargetSummary) == 0 {
+		out.WriteString("No target ratings were recorded.\n")
+	} else {
+		out.WriteString("| Target | Aggregate rating | Reason |\n")
+		out.WriteString("| --- | --- | --- |\n")
+		for _, target := range report.TargetSummary {
+			out.WriteString("| " + tableCell(target.Target) + " | " + tableCell(displayRatingResult(target.AggregateRating)) + " | " + tableCell(target.AggregateRating.Rationale) + " |\n")
+		}
+	}
+
+	out.WriteString("\n## Limitations\n\n")
+	limitations := firstStrings(report.Limitations, 5)
+	if len(limitations) == 0 {
+		out.WriteString("None recorded.\n")
+	} else {
+		for _, limitation := range limitations {
+			out.WriteString("- " + limitation + "\n")
+		}
+		if len(report.Limitations) > len(limitations) {
+			out.WriteString("- Additional limitations are available in [report.md](report.md).\n")
+		}
+	}
+
+	out.WriteString("\n## Next Action\n\n")
+	active := activeRecommendations(report.Recommendations)
+	if report.NextAction.RecommendationID != "" {
+		out.WriteString(report.NextAction.Summary + "\n\n")
+	} else {
+		out.WriteString(report.NextAction.Summary + "\n")
+	}
+	if len(active) > 0 {
+		out.WriteString("See active recommendations:\n\n")
+		for _, rec := range active {
+			out.WriteString("- [" + rec.ID + "](" + rec.Path + ") - " + rec.DoneCriterion + "\n")
+		}
+	}
+	return out.Bytes()
+}
+
+func summaryScope(report ReportJSON) string {
+	if report.Summary.Narrowing != "" {
+		return report.Summary.Narrowing
+	}
+	if report.Scope.Narrowing != "" {
+		return report.Scope.Narrowing
+	}
+	if report.Scope.Description != "" {
+		return report.Scope.Description
+	}
+	return "whole recorded run"
+}
+
+func summaryValue(value string) string {
+	if value == "" {
+		return "not recorded"
+	}
+	return value
+}
+
+func activeRecommendations(recommendations []ReportRecommendation) []ReportRecommendation {
+	active := []ReportRecommendation{}
+	for _, rec := range recommendations {
+		if rec.Active {
+			active = append(active, rec)
+		}
+	}
+	return active
 }
 
 func (r *Run) supersededRecommendations() map[string]bool {

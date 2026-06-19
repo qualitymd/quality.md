@@ -66,9 +66,11 @@ requirements:
 title: Example
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
@@ -155,12 +157,15 @@ ratings:
 
 func TestFixAppliesRepairsAndReportsPostRepairResult(t *testing.T) {
 	path := writeModel(t, `---
-title: ""
+title: Example
+description: ""
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
@@ -186,8 +191,8 @@ Keep me.
 		t.Fatalf("Repairs = %#v, want empty-property repair", result.Repairs)
 	}
 	raw := readFile(t, path)
-	if strings.Contains(raw, `title: ""`) {
-		t.Fatalf("fixed file still contains empty title:\n%s", raw)
+	if strings.Contains(raw, `description: ""`) {
+		t.Fatalf("fixed file still contains empty description:\n%s", raw)
 	}
 	if !strings.Contains(raw, "---\n\n# Body\n\nKeep me.\n") {
 		t.Fatalf("Markdown body was not preserved:\n%s", raw)
@@ -239,12 +244,15 @@ func TestFixWriteFailureLeavesOriginalFile(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "QUALITY.md")
 	content := `---
-title: ""
+title: Example
+description: ""
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
@@ -293,13 +301,16 @@ func validModel() string {
 title: Example
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
     requirements:
       "has an assessment":
@@ -315,9 +326,11 @@ func validFrontmatter(body string) string {
 title: Example
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 ` + body + `---

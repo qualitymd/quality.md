@@ -19,6 +19,7 @@ ratingScale:
     criterion: "Does not meet the requirement to an acceptable degree."
 factors:
   security:
+    title: Security
     description: >
       Security is the degree to which Sparrow Payments keeps money movement and
       account data out of unauthorized hands; it matters because a leaked
@@ -27,6 +28,7 @@ factors:
       distinct from Reliability's "does a legitimate request behave correctly".
     factors:
       secrets handling:
+        title: Secrets handling
         description: >
           Secrets handling is the degree to which credentials — gateway keys,
           tokens, database passwords — are kept out of source and managed so an
@@ -50,6 +52,7 @@ factors:
               minimum: "No live credential is present in the working tree, but a previously committed secret has not yet been rotated."
               unacceptable: "A live credential is present in the working tree (e.g. committed in plaintext)."
       access control:
+        title: Access control
         description: >
           Access control is the degree to which only authenticated, authorized
           callers can invoke money-moving operations; it matters because an
@@ -65,6 +68,7 @@ factors:
               requirement is met when no money-moving route is reachable without
               authentication; report any exceptions by route and location.
   reliability:
+    title: Reliability
     description: >
       Reliability is the degree to which Sparrow Payments performs money
       movements correctly under retry and partial failure, without losing or
@@ -90,6 +94,7 @@ targets:
     source: ./ledger
     factors:
       correctness:
+        title: Correctness
         description: >
           Correctness is the degree to which the ledger records every transfer as
           a balanced, reconcilable set of entries; it matters because a ledger
@@ -123,6 +128,7 @@ targets:
     source: ./webhooks
     factors:
       security:
+        title: Security
         description: >
           Security here is the degree to which a merchant can trust that a
           received webhook genuinely originated from Sparrow and was not forged;
@@ -150,6 +156,7 @@ targets:
         source: ./webhooks/delivery
         factors:
           reliability:
+            title: Reliability
             description: >
               Reliability here is the degree to which an event that should reach
               a merchant does reach it, exactly once in effect; it matters

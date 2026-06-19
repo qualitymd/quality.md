@@ -30,11 +30,14 @@ Restart the target agent if it discovers skills only at session startup.
 
 The skill drives the deterministic `qualitymd` CLI for setup, linting, format
 grounding, and evaluation record/report mechanics. Released skill installs use
-the CLI SemVer range declared by that skill release; see
+the CLI SemVer range declared in `skills/quality/SKILL.md`
+`metadata.requires-qualitymd-cli`; see
 [Versioning](../reference/versioning.md) for the compatibility policy.
 
 ```sh
 qualitymd --version
+qualitymd version --json
+qualitymd upgrade --check
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
@@ -45,11 +48,12 @@ qualitymd evaluation show-status --help
 qualitymd evaluation build-report --help
 ```
 
-If the CLI is missing or stale, build the current binary from source until a
-tagged release channel exists:
+If the CLI is missing or stale, use the recommended action from
+`qualitymd upgrade --check`, or install through the GitHub-hosted managed
+installer:
 
 ```sh
-go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh
 ```
 
 ## Run the skill

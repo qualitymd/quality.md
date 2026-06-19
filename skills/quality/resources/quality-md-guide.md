@@ -51,15 +51,15 @@ target tree.
 
 ### Properties
 
-| Property       | Presence    | What it is                                                               |
-| -------------- | ----------- | ------------------------------------------------------------------------ |
-| `title`        | Recommended | Human-readable name of the entity whose quality is modeled.              |
-| `description`  | Optional    | A concise statement of what the model's target is.                       |
-| `ratingScale`  | Required    | The [rating scale](#rating-scale) — the levels every result is rated on. |
-| `factors`      | Optional\*  | The [factors](#factor) — lenses through which quality is described.      |
-| `requirements` | Optional\*  | The [requirements](#requirement) assessed against the root source.       |
-| `targets`      | Optional\*  | Child [targets](#target) — more focused models nested to any depth.      |
-| `source`       | Optional    | Scope override; omit at the root to take the directory default.          |
+| Property       | Presence   | What it is                                                               |
+| -------------- | ---------- | ------------------------------------------------------------------------ |
+| `title`        | Required   | Human-readable name of the entity whose quality is modeled.              |
+| `description`  | Optional   | A concise statement of what the model's target is.                       |
+| `ratingScale`  | Required   | The [rating scale](#rating-scale) — the levels every result is rated on. |
+| `factors`      | Optional\* | The [factors](#factor) — lenses through which quality is described.      |
+| `requirements` | Optional\* | The [requirements](#requirement) assessed against the root source.       |
+| `targets`      | Optional\* | Child [targets](#target) — more focused models nested to any depth.      |
+| `source`       | Optional   | Scope override; omit at the root to take the directory default.          |
 
 \* At least one of `factors`, `requirements`, or `targets` must be present.
 
@@ -116,7 +116,7 @@ Each level does two distinct jobs through two properties:
 | Property      | Presence    | What it is                                                      |
 | ------------- | ----------- | --------------------------------------------------------------- |
 | `level`       | Required    | The level's name; unique within the scale.                      |
-| `title`       | Optional    | Human-readable label for reports.                               |
+| `title`       | Required    | Human-readable label for reports.                               |
 | `description` | Recommended | What the level means across the model (fixed).                  |
 | `criterion`   | Required    | Default rule for rating a requirement's findings at this level. |
 
@@ -160,14 +160,14 @@ A target's **source** defines *what* it evaluates; its **factors** and
 
 ### Properties
 
-| Property       | Presence    | What it is                                                             |
-| -------------- | ----------- | ---------------------------------------------------------------------- |
-| `title`        | Recommended | Display name; overrides the map key in reports.                        |
-| `description`  | Optional    | What the target is — the entity or scope it covers.                    |
-| `factors`      | Optional\*  | [Factors](#factor) scoped to this target's subtree.                    |
-| `requirements` | Optional\*  | [Requirements](#requirement) assessed against this target's source.    |
-| `targets`      | Optional\*  | Child targets, nested to any depth.                                    |
-| `source`       | Optional    | Where the entities live; inherits the nearest ancestor's when omitted. |
+| Property       | Presence   | What it is                                                             |
+| -------------- | ---------- | ---------------------------------------------------------------------- |
+| `title`        | Required   | Display name; overrides the map key in reports.                        |
+| `description`  | Optional   | What the target is — the entity or scope it covers.                    |
+| `factors`      | Optional\* | [Factors](#factor) scoped to this target's subtree.                    |
+| `requirements` | Optional\* | [Requirements](#requirement) assessed against this target's source.    |
+| `targets`      | Optional\* | Child targets, nested to any depth.                                    |
+| `source`       | Optional   | Where the entities live; inherits the nearest ancestor's when omitted. |
 
 \* A target may declare none of its own and serve purely as a grouping node, but
 each target should lead to at least one requirement somewhere in its subtree — a
@@ -235,6 +235,7 @@ different targets are distinct.
 
 | Property       | Presence    | What it is                                                     |
 | -------------- | ----------- | -------------------------------------------------------------- |
+| `title`        | Required    | Human-readable label for reports and status output.            |
 | `description`  | Recommended | The characteristic, defined operationally for this entity.     |
 | `factors`      | Optional    | Sub-factors — recursively a factor.                            |
 | `requirements` | Optional    | [Requirements](#requirement) uniquely relevant to this factor. |

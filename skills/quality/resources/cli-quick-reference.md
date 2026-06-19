@@ -5,6 +5,8 @@ Use these commands as the starting point for `qualitymd` work.
 | Task                      | Command                                                                   |
 | ------------------------- | ------------------------------------------------------------------------- |
 | Check CLI version         | `qualitymd --version`                                                     |
+| Read version metadata     | `qualitymd version --json`                                                |
+| Check for CLI upgrades    | `qualitymd upgrade --check`                                               |
 | Read format rules         | `qualitymd spec`                                                          |
 | Create a starter model    | `qualitymd init [path]`                                                   |
 | Validate a model          | `qualitymd lint [path]`                                                   |

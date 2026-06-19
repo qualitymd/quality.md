@@ -34,6 +34,7 @@ type RatingLevel struct {
 
 // Target is a recursive target node in the quality model.
 type Target struct {
+	Title        string                 `yaml:"title,omitempty" json:"title,omitempty"`
 	Factors      map[string]Factor      `yaml:"factors,omitempty" json:"factors,omitempty"`
 	Requirements map[string]Requirement `yaml:"requirements,omitempty" json:"requirements,omitempty"`
 	Targets      map[string]Target      `yaml:"targets,omitempty" json:"targets,omitempty"`
@@ -42,6 +43,7 @@ type Target struct {
 
 // Factor is a quality lens scoped to the target where it is declared.
 type Factor struct {
+	Title        string                 `yaml:"title,omitempty" json:"title,omitempty"`
 	Description  string                 `yaml:"description,omitempty" json:"description,omitempty"`
 	Factors      map[string]Factor      `yaml:"factors,omitempty" json:"factors,omitempty"`
 	Requirements map[string]Requirement `yaml:"requirements,omitempty" json:"requirements,omitempty"`

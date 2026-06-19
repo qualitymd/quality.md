@@ -14,6 +14,7 @@ func TestExecuteMapsLintProblemsWithoutExtraStderr(t *testing.T) {
 title: Example
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
 requirements:
@@ -104,9 +105,11 @@ func TestExecuteMapsSuccess(t *testing.T) {
 title: Example
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
@@ -115,6 +118,7 @@ requirements:
     assessment: Inspect it.
 factors:
   reliability:
+    title: Reliability
     description: Reliability.
 ---
 `), 0o600); err != nil {

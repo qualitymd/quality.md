@@ -2,6 +2,24 @@
 
 ## 2026-06-19
 
+- **Revision**: Updated [Versioning](reference/versioning.md),
+  [Use the /quality skill](guides/use-quality-skill.md), and
+  [Cut a release](guides/cut-a-release.md) to make
+  `skills/quality/SKILL.md` metadata the source of truth for the `/quality`
+  skill version and required `qualitymd` CLI range, with release notes as the
+  mirror and installer enforcement deferred.
+
+- **Revision**: Updated [Versioning](reference/versioning.md),
+  [Use the /quality skill](guides/use-quality-skill.md), and
+  [Cut a release](guides/cut-a-release.md) for structured CLI version metadata,
+  explicit upgrade checks, and managed installer release verification.
+
+- **Revision**: Worked through the remaining release-guide process items. The
+  [Cut a release](guides/cut-a-release.md) guide now records the current support
+  boundary: keep release preparation manual unless repeated mistakes justify a
+  focused helper, and keep `/quality` skill compatibility in release notes and
+  docs until the skill installer defines package metadata.
+
 - **Revision**: Clarified [Cut a release](guides/cut-a-release.md) after the
   `v0.2.2` release. The guide now makes hosted `main` CI an explicit pre-tag
   gate, notes that pre-tag Goreleaser snapshots can mention the previous tag,

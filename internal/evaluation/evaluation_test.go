@@ -12,12 +12,15 @@ const testModel = `---
 title: Test model
 ratingScale:
   - level: target
+    title: Target
     description: Target.
     criterion: Meets it.
   - level: minimum
+    title: Minimum
     description: Minimum.
     criterion: Barely meets it.
   - level: unacceptable
+    title: Unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
@@ -184,6 +187,34 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	}
 	if build.Rating == nil || *build.Rating != "minimum" {
 		t.Fatalf("build rating = %#v, want minimum", build.Rating)
+	}
+	if build.ReportSummaryMD == "" {
+		t.Fatal("build.ReportSummaryMD is empty")
+	}
+	summaryMD, err := os.ReadFile(filepath.Join(runPath, "report-summary.md"))
+	if err != nil {
+		t.Fatalf("reading report-summary.md: %v", err)
+	}
+	for _, want := range []string{"# Quality Evaluation Summary", "**Run:**", "**Root rating:** minimum", "[report.md](report.md)", "[report.json](report.json)", "## Top Risks", "None recorded.", "## Rating Summary", "## Limitations", "## Next Action", "[001-fix-the-test-gap](recommendations/001-fix-the-test-gap.md)"} {
+		if !strings.Contains(string(summaryMD), want) {
+			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
+		}
+	}
+	for _, notWant := range []string{"## Requirements", "## Findings", "### Has tests"} {
+		if strings.Contains(string(summaryMD), notWant) {
+			t.Fatalf("report-summary.md contains detailed section %q:\n%s", notWant, summaryMD)
+		}
+	}
+	beforeSummary := append([]byte(nil), summaryMD...)
+	if _, err := BuildReport(runPath); err != nil {
+		t.Fatalf("third BuildReport() error = %v", err)
+	}
+	afterSummary, err := os.ReadFile(filepath.Join(runPath, "report-summary.md"))
+	if err != nil {
+		t.Fatalf("reading third report-summary.md: %v", err)
+	}
+	if string(beforeSummary) != string(afterSummary) {
+		t.Fatal("report-summary.md changed across idempotent render")
 	}
 }
 
@@ -910,6 +941,16 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 	}
 	if !strings.Contains(string(reportMD), "[superseded]") || !strings.Contains(string(reportMD), "[active]") {
 		t.Fatalf("report.md missing recommendation states:\n%s", reportMD)
+	}
+	summaryMD, err := os.ReadFile(filepath.Join(runPath, "report-summary.md"))
+	if err != nil {
+		t.Fatalf("reading report-summary.md: %v", err)
+	}
+	if strings.Contains(string(summaryMD), "001-original-recommendation") {
+		t.Fatalf("report-summary.md links superseded recommendation:\n%s", summaryMD)
+	}
+	if !strings.Contains(string(summaryMD), "[002-corrected-recommendation](recommendations/002-corrected-recommendation.md)") {
+		t.Fatalf("report-summary.md missing active recommendation:\n%s", summaryMD)
 	}
 }
 

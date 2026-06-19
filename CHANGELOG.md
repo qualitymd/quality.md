@@ -7,20 +7,43 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### CLI
 
+- Added `qualitymd version` for structured local version metadata and
+  `qualitymd upgrade` for explicit upgrade checks and guarded owner-channel
+  apply behavior.
+- `qualitymd evaluation build-report` now writes `report-summary.md` beside
+  `report.md` and `report.json`.
+
 ### /quality Skill
+
+- Updated CLI prerequisite checks and evaluation reporting guidance for
+  `version --json`, `upgrade --check`, and `report-summary.md`.
 
 ### Specification
 
+- Required `title` on Models, Targets, Factors, and Rating Levels; `lint` now
+  reports missing required titles as errors.
+
 ### Documentation
 
+- Documented the GitHub-hosted managed installer entrypoints and explicit
+  upgrade workflow.
 - Clarified the release runbook after the `v0.2.2` release: push `main` and
   wait for hosted CI before tagging, treat pre-tag snapshot logs and trailing
   newline-only release-note diffs as non-blocking, and keep release-prep manual
   until repeated mistakes justify more mechanics.
+- Replaced the release guide's open process checklist with explicit process
+  support boundaries for manual release prep and future `/quality` skill package
+  metadata.
 
 ### Packaging
 
 ### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.3.0`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.3.0`, requires `qualitymd >=0.3.0 <0.4.0`
 
 ## v0.2.2 - 2026-06-19
 

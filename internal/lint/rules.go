@@ -33,9 +33,7 @@ func (s *runState) run() {
 
 func (s *runState) checkRoot() {
 	s.checkSchemaProperties(qschema.Model, s.doc.Frontmatter, nil, schemaContext{})
-	if _, value, _ := document.MapEntry(s.doc.Frontmatter, qschema.PropertyTitle); value == nil {
-		s.add(RuleMissingTitle, "The model root declares no `title`; a title is recommended for readable reports.", s.locForMissing([]PathSegment{"title"}, "title"), nil)
-	}
+	s.checkRequiredTitle(s.doc.Frontmatter, []PathSegment{}, "model root", "The model root declares no `title`; a model title is required for human-facing display.")
 }
 
 func (s *runState) checkSchemaProperties(node qschema.Node, owner *yaml.Node, base []PathSegment, context schemaContext) {
@@ -216,6 +214,7 @@ func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index 
 	if _, value, _ := document.MapEntry(level, qschema.PropertyCriterion); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
 		s.add(RuleMissingCriterion, "A rating level declares no `criterion`; each rating level requires a non-empty criterion.", s.locForNodeOrMissing(value, appendPath(path, "criterion"), "ratingScale["+strconv.Itoa(index)+"].criterion"), nil)
 	}
+	s.checkRequiredTitle(level, path, "rating level", "The rating level at `ratingScale["+strconv.Itoa(index)+"]` declares no `title`; each rating level requires a human-facing title.")
 	if _, value, _ := document.MapEntry(level, qschema.PropertyDescription); value == nil {
 		s.add(RuleMissingLevelDescription, "A rating level declares no `description`; a description is recommended for each level.", s.locForMissing(appendPath(path, "description"), "ratingScale["+strconv.Itoa(index)+"].description"), nil)
 	}
@@ -251,12 +250,26 @@ func (s *runState) rootHasAny(properties []string) bool {
 
 func (s *runState) checkTargetShape(target *targetRef) {
 	s.checkSchemaProperties(qschema.Target, target.node, target.path, schemaContext{targetName: target.name})
+	s.checkRequiredTitle(target.node, target.path, "target", "The target `"+target.name+"` declares no `title`; each target requires a human-facing title.")
 }
 
 func (s *runState) checkFactorShape(factor *factorRef) {
 	s.checkSchemaProperties(qschema.Factor, factor.node, factor.path, schemaContext{factorName: factor.name})
+	s.checkRequiredTitle(factor.node, factor.path, "factor", "The factor `"+factor.name+"` declares no `title`; each factor requires a human-facing title.")
 	if _, value, _ := document.MapEntry(factor.node, qschema.PropertyDescription); value == nil {
 		s.add(RuleMissingFactorDescription, "The factor `"+factor.name+"` declares no `description`; a description is recommended for each factor.", s.locForMissing(appendPath(factor.path, "description"), label(appendPath(factor.path, "description"))), nil)
+	}
+}
+
+func (s *runState) checkRequiredTitle(owner *yaml.Node, base []PathSegment, kind, message string) {
+	_, value, _ := document.MapEntry(owner, qschema.PropertyTitle)
+	path := appendPath(base, qschema.PropertyTitle)
+	locationLabel := label(path)
+	if kind == "model root" {
+		locationLabel = "title"
+	}
+	if value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
+		s.add(RuleMissingTitle, message, s.locForNodeOrMissing(value, path, locationLabel), nil)
 	}
 }
 

@@ -69,6 +69,9 @@ specs remain the contracts; the guide is instructional.
 The guide **MUST conform to** [`SPECIFICATION.md`](../../../SPECIFICATION.md):
 every concept definition, property, presence level (Required / Recommended /
 Optional), and rating-vocabulary term it states **MUST** match the format spec.
+The guide **MUST** teach that `title` is required on the Model, every Target,
+every Factor, and every Rating Level, and that Requirements do not have a
+separate `title` because the requirement statement is their display text.
 Conformance is the binding relationship, not deference — the guide phrases the
 format in its own instructional voice rather than quoting it — but where the
 guide and the format spec diverge, **the format spec governs and the guide MUST
