@@ -23,12 +23,15 @@ After applying confirmed option
 
 1. Read and follow [`evaluate.md`](evaluate.md) for the evaluation and
    recommendation pass.
-2. Before editing the subject or `QUALITY.md`, ask for explicit confirmation of
+2. Before asking for confirmation, make the recommendation self-contained enough
+   to apply and later re-evaluate: current state, proposed option, affected
+   scope, risk, verification path, and re-evaluation criterion.
+3. Before editing the subject or `QUALITY.md`, ask for explicit confirmation of
    the recommendation and option to apply.
-3. Apply only the confirmed option.
-4. Run a new evaluation in a new numbered folder and link it back to the prior
+4. Apply only the confirmed option.
+5. Run a new evaluation in a new numbered folder and link it back to the prior
    run.
-5. Check the done criterion against the new folder's rating.
+6. Check the done criterion against the new folder's rating.
 
 If the user does not confirm a recommendation and option, stop after reporting
 the evaluation and recommendations.

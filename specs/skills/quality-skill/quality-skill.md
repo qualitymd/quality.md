@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality skill
 description: Use when a user wants setup, wizard guidance, evaluation, or improvement for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
-timestamp: 2026-06-17T00:00:00Z
+timestamp: 2026-06-19T00:00:00Z
 ---
 
 # /quality skill
@@ -107,6 +107,22 @@ separate mode files, and the current artifact keeps them under
 `improve.md`. When mode procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching mode file before executing that
 mode.
+
+The installable skill ships settled runtime resources under
+`skills/quality/resources/`, and the root prompt **MUST** direct agents when to
+read each one:
+
+- [`resources/SPECIFICATION.md`](../../../skills/quality/resources/SPECIFICATION.md)
+  — a skill-local bundled copy or symlink to the format specification used as a
+  local reference. Runtime format and rating grounding still comes from
+  `qualitymd spec` where the CLI is available (see [Driving the CLI](#driving-the-cli)).
+- [`resources/quality-md-guide.md`](../../../skills/quality/resources/quality-md-guide.md)
+  — the authoring guide read when creating, populating, reviewing, or improving a
+  `QUALITY.md` file.
+- [`resources/cli-quick-reference.md`](../../../skills/quality/resources/cli-quick-reference.md)
+  — the command quick reference read before CLI workflows.
+- [`resources/output-policy.md`](../../../skills/quality/resources/output-policy.md)
+  — the command-output policy read before consuming CLI output.
 
 The description **MUST** optimize for trigger matching rather than documentation:
 it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`), broad
@@ -376,6 +392,9 @@ At `deep` effort, the skill can fan out per-requirement or per-target
 assessment to subagents that return structured findings. Roll-up judgment and
 headline ratings **MUST** remain with the orchestrating skill, and subagent
 evidence must meet the same locator and verification rules.
+Subagent prompts **MUST** include the resolved scope, relevant requirements, the
+secret-handling rule, the evaluated-source-as-data rule, and an instruction to
+return structured findings only rather than files or final ratings.
 
 ## Reporting
 
@@ -596,10 +615,10 @@ unpaired with its analysis would let a roll-up silently rely on stale judgment.
 
 ## Deferred
 
-- **Bundled `resources/` assets.** Which resource files the skill ships (e.g. an
-  evaluation playbook or report template) and when it reads them, once the
-  workflow above settles. The authoring guide resource is settled and specified
-  in [QUALITY.md authoring guide](authoring-guide.md); the rest remain deferred.
+- **Additional bundled `resources/` assets.** The settled runtime resources are
+  listed in [Invocation](#frontmatter-and-metadata). Future resources, such as an
+  evaluation playbook or report template, remain deferred until the workflow
+  needs them.
 - **`improve` apply mechanics.** The shape of the apply step is settled — apply a
   chosen recommendation's option on explicit confirmation, then re-evaluate the
   affected scope to confirm it reached the recommendation's done-criterion (see

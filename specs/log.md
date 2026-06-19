@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Revision**: Updated the durable
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) to settle the
+  skill's bundled runtime resources and require deep-evaluation subagent prompts
+  to carry scope, relevant requirements, secret-handling, source-as-data, and
+  structured-findings-only instructions.
+
 - **Revision**: Normalized active specs to the RFC 8174 / BCP 14 convention and
   reduced uppercase requirement keywords where the text was advisory,
   illustrative, or presentation guidance rather than a conformance switch.
