@@ -73,9 +73,11 @@ jobs:
           & (Join-Path $installDir "bin/qualitymd.exe") lint --help | Out-Null
           $marker = Join-Path $installDir ".qualitymd-managed-install"
           if (-not (Test-Path $marker)) { throw "missing managed install marker" }
-          $markerText = Get-Content $marker -Raw
-          if ($markerText -notmatch "(?m)^channel=github$") { throw "missing github channel marker" }
-          if ($markerText -notmatch "(?m)^version=v?[0-9]+\.[0-9]+\.[0-9]+") { throw "missing release version marker" }
+          $markerLines = Get-Content $marker
+          if ($markerLines -notcontains "channel=github") { throw "missing github channel marker" }
+          if (-not ($markerLines | Where-Object { $_ -match "^version=v?[0-9]+\.[0-9]+\.[0-9]+" })) {
+            throw "missing release version marker"
+          }
 
       - name: Install through Windows cmd shim
         if: ${{ runner.os == 'Windows' }}
