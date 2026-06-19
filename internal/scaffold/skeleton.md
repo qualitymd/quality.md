@@ -27,9 +27,9 @@ ratingScale:
 factors:
   # Factors here hang off the model root, so they describe the whole artifact —
   # the qualities that matter most across all of it. This is the usual starting
-  # point. A factor is a lens on quality — e.g. reliability, security, usability,
-  # maintainability. Say what it means here, why it matters and to whom, and how
-  # it differs from the other factors.
+  # point. A factor names a quality characteristic — e.g. reliability, security,
+  # usability, maintainability. Say what it means here, why it matters and to
+  # whom, and how it differs from the other factors.
   "<name a quality that matters>":
     # description — what this quality means for the artifact, and to whom.
     # e.g. "Reliability: the system keeps serving correct responses under load
@@ -62,7 +62,8 @@ factors:
 # that wouldn't fit cleanly at the top level. The whole-artifact factors above
 # still apply; a target just adds focus where a part needs it. A target takes
 # the same shape as the root: its own `factors` (and their `requirements`),
-# direct `requirements`, or further nested `targets`.
+# direct `requirements` with factor references under `factors`, or further
+# nested `targets`.
 # targets:
 #   "<name a thing to evaluate>":
 #     factors:

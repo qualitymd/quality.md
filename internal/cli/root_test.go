@@ -111,7 +111,11 @@ ratingScale:
     criterion: Does not meet it.
 requirements:
   "has an assessment":
+    factors: [reliability]
     assessment: Inspect it.
+factors:
+  reliability:
+    description: Reliability.
 ---
 `), 0o600); err != nil {
 		t.Fatalf("os.WriteFile() error = %v", err)

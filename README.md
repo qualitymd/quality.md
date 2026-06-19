@@ -41,6 +41,7 @@ targets:
     source: ./internal/api
     requirements:
       "accepted orders are durable":
+        factors: [reliability]
         assessment: >
           A write is acknowledged to the client only after it is committed to
           durable storage. Failures surface as errors, never as false successes.
@@ -61,11 +62,14 @@ targets:
               fixtures; secrets are loaded from the environment at runtime.
   docs:
     source: ./docs
-    requirements:
-      "integration docs describe the order lifecycle":
-        assessment: >
-          The documentation explains how an order moves from request to durable
-          acknowledgement, including failure responses and retry guidance.
+    factors:
+      usability:
+        description: Integrators can understand and use the documentation unaided.
+        requirements:
+          "integration docs describe the order lifecycle":
+            assessment: >
+              The documentation explains how an order moves from request to durable
+              acknowledgement, including failure responses and retry guidance.
 ---
 
 # Quality model — Orders API
@@ -94,10 +98,11 @@ The API handles customer data, so access is authenticated and least-privilege.
 ```
 
 The **frontmatter** is the structured model: **targets** (things evaluated),
-**factors** (quality lenses scoped to the target where they are declared), and
-**requirements** under either a target or a factor. Each requirement carries one
-**`assessment`**; the evaluator turns that assessment into a finding, then rates
-the finding against the scale criteria. A target's **`source`** identifies the
+**factors** (quality characteristics scoped to the target where they are
+declared), and **requirements** under either a target or a factor. Each
+requirement carries one **`assessment`** and is connected to at least one factor; the
+evaluator turns that assessment into a finding, then rates the finding against
+the scale criteria. A target's **`source`** identifies the
 material assessed, and child `targets:` decompose or narrow the subject. The
 **body** holds the reasoning the frontmatter cannot: what the system is, what
 *good* means for it, and why these are the right requirements.

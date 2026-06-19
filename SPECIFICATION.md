@@ -97,7 +97,7 @@ ratingScale:
 
 **Factors**: quality characteristics or attributes that matter most for evaluating the overall quality of the entity.
 
-**Requirements**: quality requirements that will be used to assess the quality of the entity. These are typically nested under a factor or target, but may be defined at the model root level when it is simpler to define a single requirement at the root and cross reference to multiple quality attributes.
+**Requirements**: quality requirements that will be used to assess the quality of the entity. These are typically nested under a factor or target, but may be defined at the model root level when it is simpler to define a single requirement at the root and reference one or more factors.
 
 **Targets**: more focused quality modeling for possible target entities. Not required but useful when a distinct set of factors or requirements would be more cohesively defined around a narrower target of evaluation than the scope implied by the source of the entire quality model.
 
@@ -163,7 +163,7 @@ A description SHOULD NOT restate, enumerate, or stand in for the factor's requir
 
 A useful shape is one or two sentences — "*\<Factor\> is the degree to which \<entity\> \<achieves some end\> under \<relevant conditions\>; it matters here because \<stakeholder concern\>.*" For example: *Reliability is the degree to which the orders API continues to accept and durably record orders under load and partial failure; it matters because an acknowledged order that is later lost is unrecoverable for the customer.*
 
-**Requirements**: the quality requirements assessed through this factor's lens, each evaluated against the source of the target on which it is declared. A factor SHOULD lead to at least one requirement — one nested directly beneath it, one added by a refinement on a descendant target, or one declared elsewhere that tags this factor as a secondary factor (see [Requirement](#requirement)). A factor that nothing contributes to is a lens over nothing.
+**Requirements**: requirements for the target that are uniquely relevant to this factor, each evaluated against the source of the target on which it is declared. A factor SHOULD lead to at least one requirement — one declared directly beneath it, one added by a refinement on a descendant target, or one declared elsewhere that references this factor under `factors` (see [Requirement](#requirement)). A factor that nothing contributes to is a lens over nothing.
 
 **Sub-factors**: a map of finer characteristics that decompose this factor, each a Factor of the same shape. Decompose a factor when it carries more than one distinct concern that is clearer assessed apart than together — but only as far as it aids understanding; a factor whose requirements already speak for themselves needs no sub-factors. The guidance above applies at every level: a sub-factor SHOULD carry its own `description`, SHOULD be distinguishable from its siblings, and SHOULD lead to at least one requirement. A sub-factor's requirements are assessed through its lens, and an evaluation infers a rating for the sub-factor that rolls up into the parent factor's rating (see [Analyze](#analyze)). A factor MAY hold both its own direct requirements and sub-factors.
 
@@ -173,11 +173,11 @@ Factor identity is local to its target. Factors of the same name declared on two
 
 A requirement is an assessable quality expectation — the single unit the model is built to judge. It pairs a **statement** (its map key, and its identity in reports) with an `assessment` that produces the findings; those findings are rated together to yield the requirement's **Rating Result**.
 
-A requirement's placement sets the factors it informs. Nested under a factor or sub-factor, that factor is its **primary** lens and the requirement joins the factor's roll-up. Placed directly under a target with no `factors`, it is **unlensed**, informing only that target's local rating. In any placement a requirement MAY name **secondary** factors under `factors` to inform additional lenses, so one result can feed several factor views at once — and a directly-placed requirement MAY use this to attach itself to one or more factors with no primary among them. However it is placed, a requirement always contributes to its target's local rating (counted once) and is assessed once, against the source of the target on which it is declared.
+Every requirement MUST be connected to at least one factor. A requirement is connected by placement when it is declared under a factor or sub-factor, or by explicit reference when it names a factor under `factors`. Nested under a factor or sub-factor, the containing factor is its **primary** factor and the requirement joins the factor's roll-up. A nested requirement MAY name additional factor references under `factors`; those references are **secondary** factors. Placed directly under a target, a requirement MUST declare one or more factor references under `factors`; those references are not secondary to a primary factor. However it is placed, a requirement always contributes to its target's local rating (counted once) and is assessed once, against the source of the target on which it is declared.
 
 ```yaml
 assessment: <string>            # Required; the means of assessing the source, producing findings
-factors:                        # Optional; additional factors in scope this result also informs
+factors:                        # Optional; required for direct requirements, additional for nested requirements
   - <factor-name>
 ratings:                        # Optional; per-requirement criterion overrides
   <level-name>: <criterion>     #   keyed by a level of the model's rating scale
@@ -185,13 +185,16 @@ ratings:                        # Optional; per-requirement criterion overrides
 
 **Assessment**: the means of assessing the target's source for this requirement — inline criteria, a measurement procedure, an inspection checklist, a diagnostic, or a path to a document describing one. A requirement MUST declare exactly one `assessment` as a single non-empty scalar; a missing, empty, or list-valued `assessment` is invalid. The assessment produces the requirement's **findings** — one or more observations, each recording *what was observed* and not itself rated (see [Assess and Rate](#assess-and-rate)). When a single statement needs several independent assessments, split it into several requirements rather than listing assessments under one.
 
-**Factors (secondary)**: an optional list of factor names this requirement's result should also inform, beyond the factor it is nested under (its **primary** factor). Each name MUST resolve to a factor in scope — one declared on the target where the requirement sits, or on an ancestor target. A secondary factor lets one result appear in additional factor roll-ups without duplicating the requirement; the result is still counted once in the target's local rating (see [Analyze](#analyze)). A requirement declared directly under a target, with no nesting factor, MAY use this list to attach itself to one or more factors.
+**Factors**: explicit factor references for this requirement. Each name MUST be a non-empty scalar and MUST resolve to a factor in scope — one declared on the target where the requirement sits, or on an ancestor target.
+
+For a requirement nested under a factor or sub-factor, `factors` is OPTIONAL. Any `factors` entries are **secondary** factors: they let one result appear in additional factor roll-ups without duplicating the requirement. For a requirement declared directly under a target, `factors` is REQUIRED and MUST include at least one non-empty scalar entry; because there is no containing primary factor, these entries are direct factor references, not secondary factors. Missing `factors`, `factors: null`, `factors: []`, and a sequence containing only null or empty entries do not satisfy the factor-reference requirement for a direct target-level requirement. In all cases, the result is still counted once in the target's local rating (see [Analyze](#analyze)).
 
 **Ratings (criterion overrides)**: an optional map that overrides the rating-scale criteria for this requirement, for use when the scale's shared criteria cannot express the gradient that matters. Each key MUST name a level of the model's rating scale; its value replaces that level's `criterion` for this requirement only. Overrides change the criterion alone — never the level's `description`, order, or `title`, which stay fixed across the model. Use them when a requirement has a natural measured threshold or a distinct qualitative spectrum:
 
 ```yaml
 requirements:
   "p99 request latency stays within budget":
+    factors: [reliability]
     assessment: >
       Measure p99 request latency over a representative production window.
     ratings:
@@ -266,7 +269,7 @@ Evaluation assesses a model's targets against their requirements, rates the evid
 Determine the scope of the evaluation. By default the scope is the whole model: every target, and within each target every requirement. The scope MAY be narrowed by a filter:
 
 - by **target** — restrict evaluation to a given target and its subtree;
-- by **factor** — restrict evaluation to the requirements tied to a given factor (including those that tag it as a secondary factor); or
+- by **factor** — restrict evaluation to the requirements that reference a given factor (including those that reference it as a secondary factor); or
 - both.
 
 For every target in scope, resolve the **source** entities to be evaluated from the target's `source`. A narrowed scope qualifies every result that follows: ratings are understood within the scope, and a scoped evaluation MUST NOT be presented as a whole-model verdict.
@@ -284,11 +287,11 @@ This produces one Rating Result per requirement in scope.
 
 Roll the requirement results up the model tree (requirement → factor → target → root, with sub-factors rolling up into their parent factor) by inference. Roll-up is not computed; an evaluator infers it by judgment against the rating scale. For each target — child targets first — the evaluator infers:
 
-- a **factor rating**, for each of the target's factors — its sub-factors first, deepest first: the level that best characterizes the factor considering, together, the rating results of every requirement tied to it (both those nested under it and those that tag it as a secondary factor) and the ratings of its sub-factors. A sub-factor is rated the same way, and its rating rolls up into its parent factor — as a child target's aggregate rolls up into its parent;
-- a **local rating**: the level that best characterizes the target considering all of its own requirement results together (each requirement counted once, whatever factors it touches); and
+- a **factor rating**, for each of the target's factors — its sub-factors first, deepest first: the level that best characterizes the factor considering, together, the rating results of every requirement declared under it, every requirement that references it under `factors`, and the ratings of its sub-factors. A sub-factor is rated the same way, and its rating rolls up into its parent factor — as a child target's aggregate rolls up into its parent;
+- a **local rating**: the level that best characterizes the target considering all of its own requirement results together (each requirement counted once, whatever factors it is connected to); and
 - an **aggregate rating**: the level that best characterizes the target considering its local rating together with the aggregate ratings of its child targets.
 
-Factor ratings and the local rating are two reads over a target's requirements, but not always of the same set: the local rating is the whole-set verdict over the target's *own* requirements (each counted once, whatever factors it touches), while a factor rating is a cross-cutting lens over every requirement tied to that factor (a requirement may tag several) — including any declared on a descendant target that tags it as a secondary factor. A factor rating therefore MAY range wider than the local rating. A target with no requirements of its own (a grouping target) has no local rating; its aggregate considers only its child targets. A leaf target's aggregate rating equals its local rating.
+Factor ratings and the local rating are two reads over a target's requirements, but not always of the same set: the local rating is the whole-set verdict over the target's *own* requirements (each counted once, whatever factors it is connected to), while a factor rating is a cross-cutting lens over every requirement connected to that factor — including any declared on a descendant target that references it as a secondary factor. A factor rating therefore MAY range wider than the local rating. A target with no requirements of its own (a grouping target) has no local rating; its aggregate considers only its child targets. A leaf target's aggregate rating equals its local rating.
 
 Roll-up considerations (guidance for inference, not computation):
 
@@ -319,7 +322,7 @@ Produce the **Evaluation Report**: the structured result of the evaluation, suit
 
 *Not assessed* outcomes MUST be shown wherever they occur, distinct from rated outcomes, at every level of the report.
 
-Note: a factor's rating MAY draw on requirements declared on descendant targets that tag it as a secondary factor (see [Analyze](#analyze)). When it does, the report SHOULD make those contributing requirements identifiable under the factor, even though each is listed in full under the target that declares it.
+Note: a factor's rating MAY draw on requirements declared on descendant targets that reference it as a secondary factor (see [Analyze](#analyze)). When it does, the report SHOULD make those contributing requirements identifiable under the factor, even though each is listed in full under the target that declares it.
 
 ## Appendix A: Sample Evaluation Report
 
@@ -342,7 +345,7 @@ A condensed view of the `QUALITY.md` under evaluation, for reference. Its rating
     - Factors: **Security**, **Reliability**
     - Requirements:
       - *Cardholder data is encrypted at rest* (Security)
-      - *Gateway calls are idempotent on retry* (Security; tags **Reliability** as a secondary factor)
+      - *Gateway calls are idempotent on retry* (Security; references **Reliability** as a secondary factor)
       - *Failed charges reconcile within 24 hours* (Reliability)
 
 ### The report
@@ -399,9 +402,9 @@ Requirements:
 - *Cardholder data is encrypted at rest* — **Target**
   - *Findings:* Card fields encrypted with AES-256; keys held in the managed KMS, rotated quarterly.
   - *Rationale:* Meets the encryption-at-rest criterion; no field-level exceptions found.
-- *Gateway calls are idempotent on retry* — **Target** *(Security; also lensed under Reliability)*
+- *Gateway calls are idempotent on retry* — **Target** *(Security; also references Reliability)*
   - *Findings:* Idempotency keys present on all charge calls; a replay test confirmed no double-charge.
-  - *Rationale:* Meets the criterion. Counts once in the local rating while informing both the Security and Reliability lenses.
+  - *Rationale:* Meets the criterion. Counts once in the local rating while informing both the Security and Reliability factors.
 - *Failed charges reconcile within 24 hours* — **Not assessed**
   - *Findings:* None — no reconciliation report or job output was available to assess against.
   - *Rationale:* Insufficient evidence to rate; recorded as *not assessed* rather than assigned a level.

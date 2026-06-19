@@ -40,6 +40,7 @@ const (
 	RuleInvalidAssessment        RuleID = "invalid-assessment"
 	RuleUnknownRatingKey         RuleID = "unknown-rating-key"
 	RuleUnknownFactor            RuleID = "unknown-factor"
+	RuleMissingFactorReference   RuleID = "missing-factor-reference"
 	RuleEmptyProperty            RuleID = "empty-property"
 )
 
@@ -69,7 +70,8 @@ var Rules = []Rule{
 	{RuleMissingFactorDescription, SeverityWarning, false, "A factor declares no description."},
 	{RuleInvalidAssessment, SeverityError, false, "A requirement has no single non-empty scalar assessment."},
 	{RuleUnknownRatingKey, SeverityError, false, "A ratings override names a level outside the rating scale."},
-	{RuleUnknownFactor, SeverityError, false, "A requirement names a secondary factor that does not resolve."},
+	{RuleUnknownFactor, SeverityError, false, "A requirement references a factor that does not resolve."},
+	{RuleMissingFactorReference, SeverityError, false, "A direct target-level requirement references no quality factor."},
 	{RuleEmptyProperty, SeverityWarning, true, "An optional property is present but empty and should be omitted."},
 }
 

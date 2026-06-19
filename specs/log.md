@@ -2,6 +2,12 @@
 
 ## 2026-06-18
 
+- **Revision**: Updated the
+  [`lint`](cli/lint.md) spec for mandatory factor references: added
+  `missing-factor-reference`, made `unknown-factor` apply to factor references
+  generally, and aligned `empty-factor` terminology with requirement
+  references.
+
 - **Revision**: Updated the durable
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) to allow the
   installable skill to keep `SKILL.md` as the always-loaded router while moving

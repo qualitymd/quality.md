@@ -2,8 +2,19 @@
 
 ## 2026-06-18
 
+- **Status**: Advanced change
+  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  to `In-Review` after adding the `missing-factor-reference` lint error,
+  updating factor-reference terminology, syncing durable specs/docs/scaffold, and
+  verifying the Go test suite.
+
+- **Implementation**: Advanced change
+  [0028 — Require factor references](0028-require-characterized-requirements.md)
+  from `Design` to `In-Progress` so the settled lint rule, terminology updates,
+  durable specs, README, and scaffold guidance can be implemented.
+
 - **Alignment**: Brought change
-  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](0028-require-characterized-requirements.md)
   into alignment with the current change-case guides by adding the required
   [Durable spec changes](0028-require-characterized-requirements/spec.md#durable-spec-changes)
   section to its functional spec and moving durable-doc accounting out of its
@@ -15,7 +26,7 @@
   Moved each parent concept and child folder into [`archive/`](archive/),
   updated repo-relative links for the deeper path, added both entries to the
   [archive index](archive/index.md), and left
-  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](0028-require-characterized-requirements.md)
   as the only open change case.
 
 - **Template**: Added a required `## Durable spec changes` section (**To add** /
@@ -25,24 +36,23 @@
   [Writing functional specs](../docs/guides/write-functional-specs.md#durable-spec-changes).
 
 - **Design**: Advanced change
-  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](0028-require-characterized-requirements.md)
   from `Draft` to `Design` and added its
   [design doc](0028-require-characterized-requirements/design.md). The design
   keeps `factors` structurally optional, adds a context-sensitive
-  `uncharacterized-requirement` lint error for direct target-level requirements
-  without listed factors, renames secondary-factor internals to neutral
-  listed-factor wording, and records why `missing-factor` and a schema-level
+  `missing-factor-reference` lint error for direct target-level requirements
+  without factor references, renames secondary-factor internals to neutral
+  factor-reference wording, and records why `missing-factor` and a schema-level
   required `factors` property were rejected.
 
 - **Creation**: Added change
-  [0028 — Require characterized requirements](0028-require-characterized-requirements.md)
+  [0028 — Require factor references](0028-require-characterized-requirements.md)
   in `Draft` with its
   [functional spec](0028-require-characterized-requirements/spec.md). The change
-  makes requirements invalid unless they are characterized by at least one
-  factor, keeps "lens" available as shorthand while preferring "characterized by"
-  for the mechanics, and distinguishes direct target-level `factors` from
-  secondary factors on requirements already nested under a factor. Updated the
-  bundle [index](index.md).
+  makes requirements invalid unless they reference at least one factor, keeps
+  "lens" available as shorthand, and distinguishes direct target-level
+  `factors` references from secondary factors on requirements already nested
+  under a factor. Updated the bundle [index](index.md).
 
 - **Schema migration**: Renamed the `changes/` parent concept type from
   `Change` to `Change Case`, updated existing parent concepts and the

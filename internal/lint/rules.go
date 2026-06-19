@@ -116,7 +116,7 @@ func (s *runState) checkScalarMapValues(value *yaml.Node, path []PathSegment) {
 func (s *runState) checkScalarSequenceItems(value *yaml.Node, path []PathSegment, context schemaContext) {
 	for i, item := range value.Content {
 		if item.Kind != yaml.ScalarNode || isEmpty(item) {
-			s.invalid(item, appendPath(path, i), label(appendPath(path, i)), "The requirement `"+context.requirement+"` has a secondary factor with the wrong YAML shape; each secondary factor must be a non-empty scalar.")
+			s.invalid(item, appendPath(path, i), label(appendPath(path, i)), "The requirement `"+context.requirement+"` has a factor reference with the wrong YAML shape; each factor reference must be a non-empty scalar.")
 		}
 	}
 }
@@ -158,7 +158,7 @@ func wrongShapeMessage(property qschema.Property, context schemaContext) string 
 		return "The `ratingScale` property has the wrong YAML shape; it must be a list of rating levels."
 	case qschema.PropertyFactors:
 		if context.requirement != "" {
-			return "The requirement `" + context.requirement + "` has the wrong `factors` shape; secondary factors must be a list."
+			return "The requirement `" + context.requirement + "` has the wrong `factors` shape; factor references must be a sequence."
 		}
 	case qschema.PropertyRatings:
 		return "The requirement `" + context.requirement + "` has the wrong `ratings` shape; ratings overrides must be a map."
@@ -302,7 +302,7 @@ func (s *runState) checkFactor(factor *factorRef) bool {
 		}
 	}
 	for _, req := range allRequirements(factor.target) {
-		for _, resolved := range s.secondaryFactors(req) {
+		for _, resolved := range s.referencedFactors(req) {
 			if resolved == factor {
 				has = true
 			}
@@ -336,6 +336,10 @@ func (s *runState) checkFactorRequirements(factor *factorRef) {
 }
 
 func (s *runState) checkRequirementRefs(req *requirementRef) {
+	if req.factor == nil && !requirementReferencesFactor(req) {
+		path := appendPath(req.path, "factors")
+		s.add(RuleMissingFactorReference, "The requirement `"+req.statement+"` references no quality factor; place it under a factor or add one or more factor references under `factors`.", s.locForMissing(path, label(path)), nil)
+	}
 	if _, ratings, _ := document.MapEntry(req.node, qschema.PropertyRatings); ratings != nil && ratings.Kind == yaml.MappingNode {
 		for key := range document.MapEntries(ratings) {
 			if !s.levels[key.Value] {
@@ -351,7 +355,7 @@ func (s *runState) checkRequirementRefs(req *requirementRef) {
 			}
 			if s.resolveFactor(req.target, item.Value) == nil {
 				path := appendPath(req.path, "factors", i)
-				s.add(RuleUnknownFactor, "The requirement `"+req.statement+"` names unknown secondary factor `"+item.Value+"`; secondary factors must resolve on the declaring target or an ancestor.", s.loc(item, path, label(path)), nil)
+				s.add(RuleUnknownFactor, "The requirement `"+req.statement+"` references unknown factor `"+item.Value+"`; factor references must resolve on the declaring target or an ancestor.", s.loc(item, path, label(path)), nil)
 			}
 		}
 	}

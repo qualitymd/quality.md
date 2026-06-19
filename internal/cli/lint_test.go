@@ -18,7 +18,11 @@ ratingScale:
     criterion: Meets it.
 requirements:
   "has an assessment":
+    factors: [reliability]
     assessment: Inspect it.
+factors:
+  reliability:
+    description: Reliability.
 ---
 `)
 
@@ -57,7 +61,11 @@ ratingScale:
     criterion: Meets it.
 requirements:
   "has an assessment":
+    factors: [reliability]
     assessment: Inspect it.
+factors:
+  reliability:
+    description: Reliability.
 ---
 `)
 
@@ -91,7 +99,11 @@ ratingScale:
     criterion: Does not meet it.
 requirements:
   "has an assessment":
+    factors: [reliability]
     assessment: Inspect it.
+factors:
+  reliability:
+    description: Reliability.
 ---
 `)
 
@@ -129,7 +141,11 @@ ratingScale:
     criterion: Does not meet it.
 requirements:
   "has an assessment":
+    factors: [reliability]
     assessment: Inspect it.
+factors:
+  reliability:
+    description: Reliability.
 ---
 `)
 

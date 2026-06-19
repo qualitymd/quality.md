@@ -338,6 +338,29 @@ requirements:
 `),
 	},
 	{
+		ruleID: RuleMissingFactorReference,
+		name:   "direct requirement missing factors",
+		model: validFrontmatter(`factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleMissingFactorReference,
+		name:   "direct requirement empty factors",
+		model: validFrontmatter(`factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+    factors: []
+`),
+	},
+	{
 		ruleID: RuleMissingTitle,
 		name:   "title absent",
 		model: `---
@@ -519,7 +542,7 @@ requirements:
 	},
 	{
 		ruleID: RuleEmptyProperty,
-		name:   "empty optional secondary factors",
+		name:   "empty optional factor references",
 		model: validFrontmatter(`requirements:
   "has an assessment":
     assessment: Inspect it.
@@ -585,6 +608,126 @@ targets:
 	}
 	if hasRule(result, RuleUnknownFactor) {
 		t.Fatalf("findings = %#v, ancestor factor should resolve", result.Findings)
+	}
+	if hasRule(result, RuleMissingFactorReference) {
+		t.Fatalf("findings = %#v, direct requirement references an ancestor factor", result.Findings)
+	}
+}
+
+func TestRuleRequirementFactorReferences(t *testing.T) {
+	for _, tc := range []struct {
+		name              string
+		body              string
+		wantEmptyProperty bool
+	}{
+		{
+			name: "missing factors",
+			body: `factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`,
+		},
+		{
+			name:              "null factors",
+			wantEmptyProperty: true,
+			body: `factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+    factors:
+`,
+		},
+		{
+			name:              "empty factors",
+			wantEmptyProperty: true,
+			body: `factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+    factors: []
+`,
+		},
+		{
+			name: "only empty factor entries",
+			body: `factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+    factors: ["", null]
+`,
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Check(writeModel(t, validFrontmatter(tc.body)))
+			if err != nil {
+				t.Fatalf("Check() error = %v", err)
+			}
+			if !hasRule(result, RuleMissingFactorReference) {
+				t.Fatalf("findings = %#v, want %s", result.Findings, RuleMissingFactorReference)
+			}
+			if tc.wantEmptyProperty && !hasRule(result, RuleEmptyProperty) {
+				t.Fatalf("findings = %#v, want %s", result.Findings, RuleEmptyProperty)
+			}
+		})
+	}
+
+	for _, tc := range []struct {
+		name string
+		body string
+	}{
+		{
+			name: "direct requirement references local factor",
+			body: `factors:
+  reliability:
+    description: Reliability.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+    factors: [reliability]
+`,
+		},
+		{
+			name: "direct requirement references ancestor factor",
+			body: `factors:
+  reliability:
+    description: Reliability.
+targets:
+  api:
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+        factors: [reliability]
+`,
+		},
+		{
+			name: "nested requirement declared under containing factor",
+			body: `factors:
+  reliability:
+    description: Reliability.
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`,
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Check(writeModel(t, validFrontmatter(tc.body)))
+			if err != nil {
+				t.Fatalf("Check() error = %v", err)
+			}
+			if hasRule(result, RuleMissingFactorReference) {
+				t.Fatalf("findings = %#v, requirement should be connected to a factor", result.Findings)
+			}
+		})
 	}
 }
 

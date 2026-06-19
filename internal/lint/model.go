@@ -102,7 +102,7 @@ func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *
 	return out
 }
 
-func (s *runState) secondaryFactors(req *requirementRef) []*factorRef {
+func (s *runState) referencedFactors(req *requirementRef) []*factorRef {
 	_, factors, _ := document.MapEntry(req.node, qschema.PropertyFactors)
 	if factors == nil || factors.Kind != yaml.SequenceNode {
 		return nil
@@ -117,6 +117,19 @@ func (s *runState) secondaryFactors(req *requirementRef) []*factorRef {
 		}
 	}
 	return out
+}
+
+func requirementReferencesFactor(req *requirementRef) bool {
+	_, factors, _ := document.MapEntry(req.node, qschema.PropertyFactors)
+	if factors == nil || factors.Kind != yaml.SequenceNode {
+		return false
+	}
+	for _, item := range factors.Content {
+		if item.Kind == yaml.ScalarNode && !isEmpty(item) {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *runState) resolveFactor(target *targetRef, name string) *factorRef {
