@@ -32,7 +32,7 @@
     },
     {
       "locator": "internal/cli/evaluation.go:16",
-      "observation": "The evaluation surface follows a consistent noun/verb tree: create, list, status, assessment-result add/list, analysis set/list, recommendation add/list, report build/gate.",
+      "observation": "The evaluation surface follows a consistent noun/verb tree: create, list, status, assessment add/list, analysis set/list, recommendation add/list, report build/gate.",
       "category": "subcommands"
     },
     {

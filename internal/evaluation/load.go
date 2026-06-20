@@ -80,7 +80,7 @@ func Load(path string) (*EvaluationRun, error) {
 		run.Plan = string(raw)
 		run.PlannedCoverage, run.PlanCoverageGaps = parsePlanCoverage(raw)
 	}
-	if err := loadJSONRecords(filepath.Join(runAbs, "assessment-results"), "*.json", func(path string, raw []byte) error {
+	if err := loadJSONRecords(filepath.Join(runAbs, "assessments"), "*.json", func(path string, raw []byte) error {
 		var rec AssessmentResultRecord
 		if err := json.Unmarshal(raw, &rec); err != nil {
 			return err
@@ -88,7 +88,7 @@ func Load(path string) (*EvaluationRun, error) {
 		if rec.SchemaVersion != SchemaVersion {
 			return fmt.Errorf("schemaVersion = %d, want %d", rec.SchemaVersion, SchemaVersion)
 		}
-		rec.File = filepath.ToSlash(filepath.Join("assessment-results", filepath.Base(path)))
+		rec.File = filepath.ToSlash(filepath.Join("assessments", filepath.Base(path)))
 		run.AssessmentResults = append(run.AssessmentResults, rec)
 		return nil
 	}); err != nil {
@@ -293,9 +293,9 @@ func (r *EvaluationRun) EvaluationRunStatus() EvaluationRunStatus {
 		}}
 	} else {
 		status.NextActions = []receipt.Action{{
-			ID:      "assessment-result-add",
+			ID:      "assessment-add",
 			Label:   "Add the missing evaluation records",
-			Command: "qualitymd evaluation assessment-result add " + r.Path,
+			Command: "qualitymd evaluation assessment add " + r.Path,
 		}}
 	}
 	return status
@@ -486,11 +486,11 @@ func resolveKnownAssessmentResult(known map[string]knownAssessmentResult, ref st
 	if rec, ok := known[ref]; ok {
 		return rec, true
 	}
-	if strings.HasPrefix(ref, "assessment-results/") {
+	if strings.HasPrefix(ref, "assessments/") {
 		rec, ok := known[strings.TrimSuffix(filepath.Base(ref), ".json")]
 		return rec, ok
 	}
-	rec, ok := known["assessment-results/"+ref+".json"]
+	rec, ok := known["assessments/"+ref+".json"]
 	return rec, ok
 }
 

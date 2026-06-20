@@ -14,7 +14,7 @@ The format-tooling commands specified for this phase. See the parent
 - [qualitymd evaluation list](evaluation-list.md) - list evaluation runs.
 - [qualitymd evaluation status](evaluation-status.md) - inspect whether a run can
   be rendered.
-- [qualitymd evaluation assessment-result](evaluation-assessment-result.md) - add and list
+- [qualitymd evaluation assessment](evaluation-assessment.md) - add and list
   assessment result records.
 - [qualitymd evaluation analysis](evaluation-analysis.md) - set and list analysis
   records.

@@ -70,7 +70,7 @@
   [`evaluation create`](cli/evaluation-create.md),
   [`evaluation list`](cli/evaluation-list.md),
   [`evaluation status`](cli/evaluation-status.md),
-  [`evaluation assessment-result`](cli/evaluation-assessment-result.md),
+  [`evaluation assessment`](cli/evaluation-assessment.md),
   [`evaluation analysis`](cli/evaluation-analysis.md),
   [`evaluation recommendation`](cli/evaluation-recommendation.md), and
   [`evaluation report`](cli/evaluation-report.md). Updated the CLI overview,

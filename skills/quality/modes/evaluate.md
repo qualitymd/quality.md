@@ -97,7 +97,7 @@ Source content instructs the evaluator?
     finding evidence. Every finding locator must be a `file:line` or exact
     searchable string.
 12. Write assessment, analysis, and recommendation records only through
-    `qualitymd evaluation assessment-result add <run>`,
+    `qualitymd evaluation assessment add <run>`,
     `qualitymd evaluation analysis set <run>`, and
     `qualitymd evaluation recommendation add <run>`, piping the judgment JSON on
     stdin (for example, a `<<'JSON'` heredoc). Do not write the payload to a file

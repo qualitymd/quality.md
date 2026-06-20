@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: qualitymd evaluation assessment-result
+title: qualitymd evaluation assessment
 description: Add and list assessment result records.
 tags: [cli, command, evaluation]
 timestamp: 2026-06-19T00:00:00Z
 ---
 
-# qualitymd evaluation assessment-result
+# qualitymd evaluation assessment
 
-`qualitymd evaluation assessment-result` is the assessment result record
+`qualitymd evaluation assessment` is the assessment result record
 resource. The record contract is [Evaluation records](../evaluation-records.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -20,8 +20,8 @@ all capitals.
 ## Commands
 
 ```text
-qualitymd evaluation assessment-result add <run>
-qualitymd evaluation assessment-result list <run>
+qualitymd evaluation assessment add <run>
+qualitymd evaluation assessment list <run>
 ```
 
 Both verbs **MUST** accept either a positional run path or `--latest`, and
@@ -36,4 +36,5 @@ CLI-owned fields such as `schemaVersion`.
 
 `list` **MUST NOT** accept `--file`, **MUST NOT** write files, and **MUST** list
 the run's assessment result record paths. Under `--json`, stdout **MUST** include
-`schemaVersion`, `path`, `kind`, and `records`.
+`schemaVersion`, `path`, `kind`, and `records`; `kind` **MUST** be
+`assessment`.

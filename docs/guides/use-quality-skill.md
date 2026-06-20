@@ -65,7 +65,7 @@ qualitymd init --help
 qualitymd evaluation create --help
 qualitymd evaluation list --help
 qualitymd evaluation status --help
-qualitymd evaluation assessment-result --help
+qualitymd evaluation assessment --help
 qualitymd evaluation analysis --help
 qualitymd evaluation recommendation --help
 qualitymd evaluation report --help

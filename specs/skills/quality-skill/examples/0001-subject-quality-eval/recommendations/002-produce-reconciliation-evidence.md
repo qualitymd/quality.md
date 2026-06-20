@@ -5,7 +5,7 @@ gap: No reconciliation job output, log, or report was available, so the requirem
 evidenceLocators:
   - ledger/reconcile.go:31
 assessmentResultRecords:
-  - assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json
+  - assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json
 remediationOptions:
   - Stand up the scheduled reconciliation run and emit a durable report.
   - Surface existing reconciliation output if it already runs elsewhere.

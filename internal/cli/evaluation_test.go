@@ -37,18 +37,18 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
     }
   }
 ]`))
-	cmd.SetArgs([]string{"evaluation", "assessment-result", "add", "--file", "-", "--json", runPath})
+	cmd.SetArgs([]string{"evaluation", "assessment", "add", "--file", "-", "--json", runPath})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
-	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessment-results/001-root-has-tests.json") {
+	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessments/001-root-has-tests.json") {
 		t.Fatalf("stdout = %s, want batched write receipt", out.String())
 	}
 	if strings.Contains(out.String(), repo) {
 		t.Fatalf("stdout = %s, want repository-relative receipt paths", out.String())
 	}
-	raw, err := os.ReadFile(filepath.Join(runPath, "assessment-results", "001-root-has-tests.json"))
+	raw, err := os.ReadFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"))
 	if err != nil {
 		t.Fatalf("reading assessment result record: %v", err)
 	}

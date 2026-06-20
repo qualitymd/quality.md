@@ -38,7 +38,7 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	if result.Path != "quality/evaluations/0001-subject-quality-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
-	for _, name := range []string{"model.md", "design.md", "plan.md", "assessment-results", "analysis", "recommendations"} {
+	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); err != nil {
 			t.Fatalf("missing %s: %v", name, err)
 		}
@@ -141,7 +141,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
       "rationale": "The root local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
@@ -331,7 +331,7 @@ targets:
       "rationale": "The local rating binds the aggregate."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-api-service-handles-api-requests.json"
+    "assessments/001-api-service-handles-api-requests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
@@ -490,7 +490,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
       "rationale": "The child local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-child-has-tests.json"
+    "assessments/001-child-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
@@ -641,7 +641,7 @@ func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
       "rationale": "The committed credential-like value and hostile source text bind the aggregate rating."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
@@ -740,7 +740,7 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
       "rationale": "The root cannot be assessed because docs/production-telemetry.md is absent."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
@@ -816,7 +816,7 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
       "rationale": "The child local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-child-has-tests.json"
+    "assessments/001-child-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
@@ -880,7 +880,7 @@ func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
       "rationale": "The root local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
@@ -897,7 +897,7 @@ func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
 	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "duplicate-assessment-result" {
 		t.Fatalf("status.Gaps = %#v, want duplicate-assessment-result", status.Gaps)
 	}
-	if status.Gaps[0].Ref != "assessment-results/002-root-has-tests.json" || !strings.Contains(status.Gaps[0].Detail, "assessment-results/001-root-has-tests.json") {
+	if status.Gaps[0].Ref != "assessments/002-root-has-tests.json" || !strings.Contains(status.Gaps[0].Detail, "assessments/001-root-has-tests.json") {
 		t.Fatalf("duplicate gap = %#v, want duplicate ref and prior detail", status.Gaps[0])
 	}
 	if len(status.NextActions) != 1 || status.NextActions[0].ID != "review-gaps" {
@@ -964,7 +964,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
       "rationale": "The stale assessment result still binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(stale analysis) error = %v", err)
@@ -997,7 +997,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
       "rationale": "The corrected assessment result binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/002-root-has-tests.json"
+    "assessments/002-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(corrected analysis) error = %v", err)
@@ -1214,7 +1214,7 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
       "rationale": "The root local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
@@ -1363,7 +1363,7 @@ coverage:
       "rationale": "The root local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-has-tests.json"
+    "assessments/001-root-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(root analysis) error = %v", err)
@@ -1417,7 +1417,7 @@ coverage:
       "rationale": "The child local rating binds."
   },
   "assessmentResultRecords": [
-    "assessment-results/002-child-has-tests.json"
+    "assessments/002-child-has-tests.json"
   ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)

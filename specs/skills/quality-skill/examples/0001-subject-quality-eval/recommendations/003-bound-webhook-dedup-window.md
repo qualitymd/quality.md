@@ -7,7 +7,7 @@ evidenceLocators:
   - webhooks/delivery/retry.go:37
   - docs/merchants/webhooks.md
 assessmentResultRecords:
-  - assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json
+  - assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json
 remediationOptions:
   - Tie the dedup-retention window to the retry window plus a margin.
   - Make suppression durable and unbounded per event id.

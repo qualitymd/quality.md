@@ -377,7 +377,7 @@
   ],
   "assessmentResults": [
     {
-      "assessmentResultRecord": "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
+      "assessmentResultRecord": "assessments/001-root-no-credentials-are-committed-to-the-repository.json",
       "targetPath": [],
       "requirement": "No credentials are committed to the repository",
       "ratingResult": {
@@ -388,7 +388,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+      "assessmentResultRecord": "assessments/002-root-every-money-moving-endpoint-enforces-authentication.json",
       "targetPath": [],
       "requirement": "Every money-moving endpoint enforces authentication",
       "ratingResult": {
@@ -399,7 +399,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/003-root-transfers-are-idempotent-on-retry.json",
+      "assessmentResultRecord": "assessments/003-root-transfers-are-idempotent-on-retry.json",
       "targetPath": [],
       "requirement": "Transfers are idempotent on retry",
       "ratingResult": {
@@ -410,7 +410,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
+      "assessmentResultRecord": "assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
       "targetPath": [
         "ledger"
       ],
@@ -423,7 +423,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
+      "assessmentResultRecord": "assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
       "targetPath": [
         "ledger"
       ],
@@ -435,7 +435,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
+      "assessmentResultRecord": "assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
       "targetPath": [
         "webhooks"
       ],
@@ -448,7 +448,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+      "assessmentResultRecord": "assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
       "targetPath": [
         "webhooks",
         "delivery"
@@ -462,7 +462,7 @@
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "targetPath": [
         "webhooks",
         "delivery"
@@ -478,110 +478,110 @@
   ],
   "findingSummaries": [
     {
-      "assessmentResultRecord": "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
+      "assessmentResultRecord": "assessments/001-root-no-credentials-are-committed-to-the-repository.json",
       "locator": "internal/gateway/client.go:48",
       "category": "secret",
       "severity": "critical",
       "summary": "A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder."
     },
     {
-      "assessmentResultRecord": "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
+      "assessmentResultRecord": "assessments/001-root-no-credentials-are-committed-to-the-repository.json",
       "locator": "internal/gateway/client_test.go:12",
       "category": "non-secret",
       "severity": "info",
       "summary": "A test publishable key is present and is non-secret by design."
     },
     {
-      "assessmentResultRecord": "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+      "assessmentResultRecord": "assessments/002-root-every-money-moving-endpoint-enforces-authentication.json",
       "locator": "cmd/api/routes.go",
       "category": "route-authentication",
       "severity": "info",
       "summary": "All 18 transfer, refund, and payout routes resolve through the RequireAuth middleware before reaching their handlers; no unauthenticated money-moving route was found."
     },
     {
-      "assessmentResultRecord": "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+      "assessmentResultRecord": "assessments/002-root-every-money-moving-endpoint-enforces-authentication.json",
       "locator": "internal/gateway/client.go:51",
       "category": "prompt-injection",
       "severity": "info",
       "summary": "Evaluator-directed source text resembling prompt injection was present and treated as data, not followed."
     },
     {
-      "assessmentResultRecord": "assessment-results/003-root-transfers-are-idempotent-on-retry.json",
+      "assessmentResultRecord": "assessments/003-root-transfers-are-idempotent-on-retry.json",
       "locator": "internal/transfer/handler.go:73",
       "category": "idempotency-key",
       "severity": "info",
       "summary": "POST /transfers requires an Idempotency-Key before processing a transfer."
     },
     {
-      "assessmentResultRecord": "assessment-results/003-root-transfers-are-idempotent-on-retry.json",
+      "assessmentResultRecord": "assessments/003-root-transfers-are-idempotent-on-retry.json",
       "locator": "internal/transfer/handler_test.go:120",
       "category": "replay-test",
       "severity": "info",
       "summary": "A replay test confirms a retried key returns the original result without a second debit."
     },
     {
-      "assessmentResultRecord": "assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
+      "assessmentResultRecord": "assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
       "locator": "ledger/posting.go:64",
       "category": "invariant-enforcement",
       "severity": "info",
       "summary": "The posting routine rejects entries whose sum is not zero before commit."
     },
     {
-      "assessmentResultRecord": "assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
+      "assessmentResultRecord": "assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
       "locator": "ledger/posting_test.go:210",
       "category": "property-test",
       "severity": "info",
       "summary": "A property test over 10k generated transfers found zero imbalanced postings."
     },
     {
-      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
+      "assessmentResultRecord": "assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
       "locator": "ledger/reconcile.go:31",
       "category": "missing-evidence",
       "summary": "A reconcile entrypoint exists, but no reconciliation job output, log, or report was available."
     },
     {
-      "assessmentResultRecord": "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
+      "assessmentResultRecord": "assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
       "locator": "webhooks/emit.go",
       "category": "signing-coverage",
       "severity": "info",
       "summary": "All six webhook emit paths sign through the shared signing path before delivery."
     },
     {
-      "assessmentResultRecord": "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
+      "assessmentResultRecord": "assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
       "locator": "webhooks/sign_test.go:48",
       "category": "signature-test",
       "severity": "info",
       "summary": "A signing test confirms tampered or unsigned payloads are rejected."
     },
     {
-      "assessmentResultRecord": "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+      "assessmentResultRecord": "assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
       "locator": "webhooks/delivery/retry.go:37",
       "category": "retry-backoff",
       "severity": "info",
       "summary": "Failed deliveries re-enqueue on an exponential backoff schedule within a bounded 24-hour retry window."
     },
     {
-      "assessmentResultRecord": "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+      "assessmentResultRecord": "assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
       "locator": "webhooks/delivery/retry_test.go:91",
       "category": "retry-test",
       "severity": "info",
       "summary": "A retry test confirms a transiently failing endpoint is retried and no event is silently lost."
     },
     {
-      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "locator": "webhooks/delivery/dedup.go:52",
       "category": "positive-evidence",
       "summary": "Each event carries a stable delivery id, and the engine suppresses a redelivery to an endpoint that already acknowledged it."
     },
     {
-      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "locator": "webhooks/delivery/dedup.go:52",
       "category": "bounded-deduplication",
       "severity": "medium",
       "summary": "Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired."
     },
     {
-      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "locator": "docs/merchants/webhooks.md",
       "category": "supporting-documentation",
       "summary": "Merchant docs say to consume events idempotently, confirming duplicates are possible by design."

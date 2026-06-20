@@ -27,7 +27,7 @@ qualitymd status --help
 qualitymd evaluation create --help
 qualitymd evaluation list --help
 qualitymd evaluation status --help
-qualitymd evaluation assessment-result --help
+qualitymd evaluation assessment --help
 qualitymd evaluation analysis --help
 qualitymd evaluation recommendation --help
 qualitymd evaluation report --help
@@ -52,7 +52,7 @@ whether the install is in the skill's supported range.
 | Inspect project status        | `qualitymd status [path] --json`                                      |
 | Create evaluation run         | `qualitymd evaluation create [--subject <path>] [--narrowing <slug>]` |
 | List evaluation runs          | `qualitymd evaluation list [--json]`                                  |
-| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment-result add <run>`       |
+| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment add <run>`              |
 | Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set <run>`                |
 | Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add <run>`          |
 | List records                  | `qualitymd evaluation <kind> list <run>`                              |
@@ -80,7 +80,7 @@ Need to evaluate?
 - Check model first -> qualitymd lint [path]
 - Inspect current state -> qualitymd status [path] --json
 - Create run -> qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
-- Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment-result add | analysis set | recommendation add <run>
+- Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
 ```
@@ -93,7 +93,7 @@ Run incomplete or stale?
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
 - Missing planned coverage? -> edit plan.md coverage frontmatter
-- Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment-result add | analysis set | recommendation add <run>
+- Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
@@ -130,7 +130,7 @@ qualitymd status [path] --json
 qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
 
 # Write records by piping JSON on stdin — do not create a scratch file.
-qualitymd evaluation assessment-result add <run> <<'JSON'
+qualitymd evaluation assessment add <run> <<'JSON'
 [
   {
     "targetPath": [],

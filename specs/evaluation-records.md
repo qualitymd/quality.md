@@ -74,7 +74,7 @@ A run folder contains:
 model.md
 design.md
 plan.md
-assessment-results/
+assessments/
   NNN-<target>-<requirement>.json
 analysis/
   <target>.json
@@ -85,7 +85,7 @@ report-summary.md
 report.json
 ```
 
-`assessment-results/` and `recommendations/` each use their own local `NNN`
+`assessments/` and `recommendations/` each use their own local `NNN`
 sequence.
 
 `plan.md` may be body-only, or it may carry YAML frontmatter with optional
@@ -93,7 +93,7 @@ planned coverage metadata.
 
 ## Schema Version
 
-Every JSON record (`assessment-results/*.json`, `analysis/*.json`,
+Every JSON record (`assessments/*.json`, `analysis/*.json`,
 `report.json`)
 **MUST** carry top-level `schemaVersion: 1`.
 
@@ -275,7 +275,7 @@ typed rating states, and record references.
 `report.md`. It **MUST** present the in-scope root Target's aggregate verdict
 and rationale, scope, per-target results, and advice. It **MUST** reference
 findings by assessment result record; full finding detail stays in
-`assessment-results/*.json`.
+`assessments/*.json`.
 Referencing a finding by record (rather than inlining its raw
 `observation`/`evidence`) also keeps the deterministic renderer from echoing
 secret values or prompt-injection text into the report artifact, the same

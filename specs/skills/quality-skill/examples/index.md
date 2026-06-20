@@ -16,7 +16,7 @@ subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
 `file:line` locator are fictional and illustrative; the model uses the suggested
 four-level rating scale
 (**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
-`design.md`, `plan.md`, and the `assessment-results/` and `analysis/` records are the
+`design.md`, `plan.md`, and the `assessments/` and `analysis/` records are the
 snapshot, inputs, method, and write-once evidence trail the skill writes
 alongside the report (see [Reporting](../quality-skill.md#reporting)), so the
 report's findings trace to the model, parameters, coverage, and per-requirement
@@ -44,7 +44,7 @@ per in-scope requirement and one analysis per target node.
   [model evaluated](0001-subject-quality-eval/model.md) →
   the [design](0001-subject-quality-eval/design.md) and
   [plan](0001-subject-quality-eval/plan.md) →
-  the [assessment result records](0001-subject-quality-eval/assessment-results/) →
+  the [assessment result records](0001-subject-quality-eval/assessments/) →
   the [analysis records](0001-subject-quality-eval/analysis/) →
   the [summary](0001-subject-quality-eval/report-summary.md),
   [human report](0001-subject-quality-eval/report.md), and

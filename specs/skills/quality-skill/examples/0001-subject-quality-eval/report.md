@@ -19,8 +19,8 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 ## Selected Findings and Limitations
 
-- `assessment-results/001-root-no-credentials-are-committed-to-the-repository.json` at `internal/gateway/client.go:48` [critical]: A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder.
-- `assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `webhooks/delivery/dedup.go:52` [medium]: Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired.
+- `assessments/001-root-no-credentials-are-committed-to-the-repository.json` at `internal/gateway/client.go:48` [critical]: A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder.
+- `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `webhooks/delivery/dedup.go:52` [medium]: Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired.
 - Limitation: Reconciliation runs daily and flags drift: Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level
 - Limitation: Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level
 - Limitation: The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding
@@ -131,7 +131,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Sparrow Payments API
 - **Rating:** Unacceptable
-- **Assessment result record:** `assessment-results/001-root-no-credentials-are-committed-to-the-repository.json`
+- **Assessment result record:** `assessments/001-root-no-credentials-are-committed-to-the-repository.json`
 - **Rationale:** Rated against this requirement's ratings overrides. Unacceptable applies because a live credential is present in the working tree; a single live secret satisfies that criterion regardless of clean findings elsewhere. The secret value is withheld and referenced only by locator and credential type.
 
 ### Every money-moving endpoint enforces authentication
@@ -139,7 +139,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Sparrow Payments API
 - **Rating:** Target
-- **Assessment result record:** `assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json`
+- **Assessment result record:** `assessments/002-root-every-money-moving-endpoint-enforces-authentication.json`
 - **Rationale:** Full route coverage with no unauthenticated money-moving exceptions satisfies the requirement. No evidence of step-up or re-authentication controls was recorded, so the result does not reach outstanding.
 
 ### Transfers are idempotent on retry
@@ -147,7 +147,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Sparrow Payments API
 - **Rating:** Target
-- **Assessment result record:** `assessment-results/003-root-transfers-are-idempotent-on-retry.json`
+- **Assessment result record:** `assessments/003-root-transfers-are-idempotent-on-retry.json`
 - **Rationale:** The transfer entrypoint requires an idempotency key and the replay test shows no duplicate debit on retry. Broader failure-injection evidence was not recorded, so the result remains at target.
 
 ### Every transfer debits and credits to a net zero (double-entry invariant)
@@ -155,7 +155,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Ledger
 - **Rating:** Target
-- **Assessment result record:** `assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json`
+- **Assessment result record:** `assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json`
 - **Rationale:** The invariant is enforced before commit and covered by a property test over observed transfer paths. Multi-currency rounding paths were not exercised, so the result remains below outstanding.
 
 ### Reconciliation runs daily and flags drift
@@ -163,7 +163,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Ledger
 - **Rating:** not assessed
-- **Assessment result record:** `assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json`
+- **Assessment result record:** `assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json`
 - **Rationale:** Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level. The Ledger local rating rests on its assessed requirement and is noted as incomplete.
 
 ### Every outbound webhook is signed so merchants can verify its origin
@@ -171,7 +171,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Webhooks
 - **Rating:** Target
-- **Assessment result record:** `assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json`
+- **Assessment result record:** `assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json`
 - **Rationale:** Every recorded emit path signs the payload with origin and replay protection, and tamper rejection is tested. Per-merchant signing-secret rotation was not recorded, so the result remains below outstanding.
 
 ### Failed deliveries retry with exponential backoff until acknowledged or the retry window expires
@@ -179,7 +179,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Delivery
 - **Rating:** Target
-- **Assessment result record:** `assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json`
+- **Assessment result record:** `assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json`
 - **Rationale:** Failures retry with exponential backoff until acknowledgment or the bounded retry window expires, and exhausted deliveries are recorded rather than silently dropped. Broader failure-injection evidence was not recorded, so the result remains below outstanding.
 
 ### A redelivery of an already-acknowledged event is suppressed for that endpoint
@@ -187,27 +187,27 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **State:** active
 - **Target:** Delivery
 - **Rating:** Minimum
-- **Assessment result record:** `assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json`
+- **Assessment result record:** `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json`
 - **Rationale:** Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor.
 
 ## Findings
 
-- `assessment-results/001-root-no-credentials-are-committed-to-the-repository.json` at `internal/gateway/client.go:48`: A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder.
-- `assessment-results/001-root-no-credentials-are-committed-to-the-repository.json` at `internal/gateway/client_test.go:12`: A test publishable key is present and is non-secret by design.
-- `assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json` at `cmd/api/routes.go`: All 18 transfer, refund, and payout routes resolve through the RequireAuth middleware before reaching their handlers; no unauthenticated money-moving route was found.
-- `assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json` at `internal/gateway/client.go:51`: Evaluator-directed source text resembling prompt injection was present and treated as data, not followed.
-- `assessment-results/003-root-transfers-are-idempotent-on-retry.json` at `internal/transfer/handler.go:73`: POST /transfers requires an Idempotency-Key before processing a transfer.
-- `assessment-results/003-root-transfers-are-idempotent-on-retry.json` at `internal/transfer/handler_test.go:120`: A replay test confirms a retried key returns the original result without a second debit.
-- `assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json` at `ledger/posting.go:64`: The posting routine rejects entries whose sum is not zero before commit.
-- `assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json` at `ledger/posting_test.go:210`: A property test over 10k generated transfers found zero imbalanced postings.
-- `assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json` at `ledger/reconcile.go:31`: A reconcile entrypoint exists, but no reconciliation job output, log, or report was available.
-- `assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json` at `webhooks/emit.go`: All six webhook emit paths sign through the shared signing path before delivery.
-- `assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json` at `webhooks/sign_test.go:48`: A signing test confirms tampered or unsigned payloads are rejected.
-- `assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json` at `webhooks/delivery/retry.go:37`: Failed deliveries re-enqueue on an exponential backoff schedule within a bounded 24-hour retry window.
-- `assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json` at `webhooks/delivery/retry_test.go:91`: A retry test confirms a transiently failing endpoint is retried and no event is silently lost.
-- `assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `webhooks/delivery/dedup.go:52`: Each event carries a stable delivery id, and the engine suppresses a redelivery to an endpoint that already acknowledged it.
-- `assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `webhooks/delivery/dedup.go:52`: Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired.
-- `assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `docs/merchants/webhooks.md`: Merchant docs say to consume events idempotently, confirming duplicates are possible by design.
+- `assessments/001-root-no-credentials-are-committed-to-the-repository.json` at `internal/gateway/client.go:48`: A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder.
+- `assessments/001-root-no-credentials-are-committed-to-the-repository.json` at `internal/gateway/client_test.go:12`: A test publishable key is present and is non-secret by design.
+- `assessments/002-root-every-money-moving-endpoint-enforces-authentication.json` at `cmd/api/routes.go`: All 18 transfer, refund, and payout routes resolve through the RequireAuth middleware before reaching their handlers; no unauthenticated money-moving route was found.
+- `assessments/002-root-every-money-moving-endpoint-enforces-authentication.json` at `internal/gateway/client.go:51`: Evaluator-directed source text resembling prompt injection was present and treated as data, not followed.
+- `assessments/003-root-transfers-are-idempotent-on-retry.json` at `internal/transfer/handler.go:73`: POST /transfers requires an Idempotency-Key before processing a transfer.
+- `assessments/003-root-transfers-are-idempotent-on-retry.json` at `internal/transfer/handler_test.go:120`: A replay test confirms a retried key returns the original result without a second debit.
+- `assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json` at `ledger/posting.go:64`: The posting routine rejects entries whose sum is not zero before commit.
+- `assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json` at `ledger/posting_test.go:210`: A property test over 10k generated transfers found zero imbalanced postings.
+- `assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json` at `ledger/reconcile.go:31`: A reconcile entrypoint exists, but no reconciliation job output, log, or report was available.
+- `assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json` at `webhooks/emit.go`: All six webhook emit paths sign through the shared signing path before delivery.
+- `assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json` at `webhooks/sign_test.go:48`: A signing test confirms tampered or unsigned payloads are rejected.
+- `assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json` at `webhooks/delivery/retry.go:37`: Failed deliveries re-enqueue on an exponential backoff schedule within a bounded 24-hour retry window.
+- `assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json` at `webhooks/delivery/retry_test.go:91`: A retry test confirms a transiently failing endpoint is retried and no event is silently lost.
+- `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `webhooks/delivery/dedup.go:52`: Each event carries a stable delivery id, and the engine suppresses a redelivery to an endpoint that already acknowledged it.
+- `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `webhooks/delivery/dedup.go:52`: Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired.
+- `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json` at `docs/merchants/webhooks.md`: Merchant docs say to consume events idempotently, confirming duplicates are possible by design.
 
 ## Advice
 

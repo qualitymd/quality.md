@@ -485,7 +485,7 @@ machine-readable output where a command provides it (the
 text. Before evaluation work, it **MUST** verify that
 `qualitymd version --json`, `qualitymd update --check`,
 `qualitymd evaluation create`, `qualitymd evaluation list`,
-`qualitymd evaluation status`, `qualitymd evaluation assessment-result`,
+`qualitymd evaluation status`, `qualitymd evaluation assessment`,
 `qualitymd evaluation analysis`, `qualitymd evaluation recommendation`, and
 `qualitymd evaluation report` are
 available; if any is missing, it stops rather than hand-authoring the run.
@@ -523,7 +523,7 @@ flowchart TD
     Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
     Run --> Plan[Fill design.md and plan.md:<br/>resolved parameters, coverage approach]
     Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
-    Eval --> Records[Write records through<br/>evaluation assessment-result/analysis/recommendation]
+    Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
     Records --> Status[Check qualitymd evaluation status]
     Status --> Report[Build reports through<br/>qualitymd evaluation report build]
     Report --> Mode{Mode?}
@@ -556,7 +556,7 @@ flowchart TD
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess.
 8. **Write records** with
-   `qualitymd evaluation assessment-result add <run>`,
+   `qualitymd evaluation assessment add <run>`,
    `qualitymd evaluation analysis set <run>`, and
    `qualitymd evaluation recommendation add <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
@@ -684,7 +684,7 @@ quality/evaluations/
     model.md
     design.md
     plan.md
-    assessment-results/
+    assessments/
       001-<target>-<requirement>.json
       002-<target>-<requirement>.json
     analysis/
@@ -747,7 +747,7 @@ Together these separate the three things an audit must tell apart — the *input
   the absent evidence. Each record is **written atomically and never mutated** —
   a re-assessment (e.g. under `improve`) produces a new evaluation folder rather
   than editing an existing record. The skill writes assessment result records through
-  `qualitymd evaluation assessment-result add`; the CLI owns serialization,
+  `qualitymd evaluation assessment add`; the CLI owns serialization,
   numbering, and `schemaVersion`.
 - The folder **MUST** capture the **analysis records** the Analyze phase produces
   as JSON — one write-once artifact per target node — holding that node's inferred
@@ -788,7 +788,7 @@ Assess-and-Rate and the analysis records for Analyze, and the report's
 per-requirement and per-target sections derive from them (the report adds the
 Advise and Report layers and the reader-facing framing). `report.json` should
 inline only minimal generic finding summaries by assessment-record reference for
-single-file consumers; full finding detail remains in `assessment-results/*.json`. This
+single-file consumers; full finding detail remains in `assessments/*.json`. This
 keeps the report from drifting and makes every rating in it traceable — leaf
 finding → assessment result record → analysis record → report — to the immutable records
 that produced it.

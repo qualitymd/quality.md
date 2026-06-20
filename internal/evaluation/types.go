@@ -38,7 +38,7 @@ type CreateRunReceipt struct {
 type EvaluationRecordKind string
 
 const (
-	KindAssessmentResult EvaluationRecordKind = "assessment-result"
+	KindAssessmentResult EvaluationRecordKind = "assessment"
 	KindAnalysis         EvaluationRecordKind = "analysis"
 	KindRecommendation   EvaluationRecordKind = "recommendation"
 )

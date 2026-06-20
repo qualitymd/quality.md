@@ -327,7 +327,7 @@ func renderEvaluationStatus(cmd *cobra.Command, status evaluation.EvaluationRunS
 	if status.Reportable {
 		reportable = "true"
 	}
-	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nRecords: %d assessment-results, %d analyses, %d recommendations\n",
+	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nRecords: %d assessments, %d analyses, %d recommendations\n",
 		status.Path, reportable, status.Counts.AssessmentResults, status.Counts.Analyses, status.Counts.Recommendations); err != nil {
 		return err
 	}

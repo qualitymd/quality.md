@@ -66,15 +66,15 @@
     "rationale": "Leaf target: aggregate equals local rating. The format spec satisfies every in-scope requirement at target or better."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-format-spec-the-format-specification-is-complete.json",
-    "assessment-results/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
-    "assessment-results/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
-    "assessment-results/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
-    "assessment-results/005-format-spec-the-format-specification-is-internally-consistent.json",
-    "assessment-results/006-format-spec-each-rule-is-observable-or-testable.json",
-    "assessment-results/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
-    "assessment-results/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
-    "assessment-results/009-format-spec-the-format-specification-is-well-structured-and-readable.json"
+    "assessments/001-format-spec-the-format-specification-is-complete.json",
+    "assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+    "assessments/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+    "assessments/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+    "assessments/005-format-spec-the-format-specification-is-internally-consistent.json",
+    "assessments/006-format-spec-each-rule-is-observable-or-testable.json",
+    "assessments/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+    "assessments/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+    "assessments/009-format-spec-the-format-specification-is-well-structured-and-readable.json"
   ],
   "childAnalysisRecords": []
 }

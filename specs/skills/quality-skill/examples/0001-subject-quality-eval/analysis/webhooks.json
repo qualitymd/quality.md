@@ -26,14 +26,14 @@
     "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
   },
   "assessmentResultRecords": [
-    "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json"
+    "assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json"
   ],
   "childAnalysisRecords": [
     "analysis/webhooks-delivery.json"
   ],
   "ratingConstraints": [
     {
-      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
       "level": "minimum"
     }

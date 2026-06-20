@@ -52,9 +52,9 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 		Path:   runRel,
 		Number: number,
 		NextActions: []receipt.Action{{
-			ID:      "assessment-result-add",
+			ID:      "assessment-add",
 			Label:   "Record evaluation judgments",
-			Command: "qualitymd evaluation assessment-result add " + runRel,
+			Command: "qualitymd evaluation assessment add " + runRel,
 		}},
 	}, nil
 }
@@ -79,7 +79,7 @@ func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
 }
 
 func createRunSkeleton(runAbs string, modelRaw []byte) error {
-	for _, subdir := range []string{"assessment-results", "analysis", "recommendations"} {
+	for _, subdir := range []string{"assessments", "analysis", "recommendations"} {
 		if err := os.Mkdir(filepath.Join(runAbs, subdir), 0o755); err != nil {
 			return fmt.Errorf("creating %s: %w", subdir, err)
 		}

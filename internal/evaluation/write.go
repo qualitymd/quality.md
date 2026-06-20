@@ -129,7 +129,7 @@ func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[stri
 		if err != nil {
 			return nil, err
 		}
-		path, err := writeNumbered(filepath.Join(runAbs, "assessment-results"), targetPathSlug(payload.TargetPath)+"-"+Slug(payload.Requirement)+".json", data)
+		path, err := writeNumbered(filepath.Join(runAbs, "assessments"), targetPathSlug(payload.TargetPath)+"-"+Slug(payload.Requirement)+".json", data)
 		if err != nil {
 			return nil, err
 		}
@@ -247,7 +247,7 @@ func verifyRun(runPath string) (string, error) {
 	if !info.IsDir() {
 		return "", fmt.Errorf("%s is not an evaluation run folder", runPath)
 	}
-	for _, name := range []string{"model.md", "design.md", "plan.md", "assessment-results", "analysis", "recommendations"} {
+	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
 		if _, err := os.Stat(filepath.Join(abs, name)); err != nil {
 			return "", fmt.Errorf("%s is not an evaluation run folder: missing %s", runPath, name)
 		}

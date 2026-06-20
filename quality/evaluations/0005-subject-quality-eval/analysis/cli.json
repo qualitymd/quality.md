@@ -56,8 +56,8 @@
     "rationale": "Leaf target: aggregate equals local rating. The release-relevant CLI conformance gaps found in this run are fixed and verified."
   },
   "assessmentResultRecords": [
-    "assessment-results/014-cli-the-cli-follows-its-functional-specifications.json",
-    "assessment-results/015-cli-the-cli-follows-the-project-cli-design-guide.json"
+    "assessments/014-cli-the-cli-follows-its-functional-specifications.json",
+    "assessments/015-cli-the-cli-follows-the-project-cli-design-guide.json"
   ],
   "childAnalysisRecords": []
 }

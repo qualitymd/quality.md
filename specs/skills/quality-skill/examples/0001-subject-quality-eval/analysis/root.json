@@ -34,9 +34,9 @@
     "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
   },
   "assessmentResultRecords": [
-    "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
-    "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
-    "assessment-results/003-root-transfers-are-idempotent-on-retry.json"
+    "assessments/001-root-no-credentials-are-committed-to-the-repository.json",
+    "assessments/002-root-every-money-moving-endpoint-enforces-authentication.json",
+    "assessments/003-root-transfers-are-idempotent-on-retry.json"
   ],
   "childAnalysisRecords": [
     "analysis/ledger.json",

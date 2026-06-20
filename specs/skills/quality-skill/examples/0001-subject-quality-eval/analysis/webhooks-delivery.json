@@ -27,13 +27,13 @@
     "rationale": "Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
   },
   "assessmentResultRecords": [
-    "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
-    "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json"
+    "assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+    "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json"
   ],
   "childAnalysisRecords": [],
   "ratingConstraints": [
     {
-      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
       "level": "minimum"
     }

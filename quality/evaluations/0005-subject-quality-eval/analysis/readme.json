@@ -26,10 +26,10 @@
     "rationale": "Leaf target: aggregate equals local rating. The front door now explains and demonstrates the tool adequately for release."
   },
   "assessmentResultRecords": [
-    "assessment-results/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
-    "assessment-results/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
-    "assessment-results/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
-    "assessment-results/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json"
+    "assessments/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+    "assessments/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+    "assessments/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+    "assessments/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json"
   ],
   "childAnalysisRecords": []
 }
