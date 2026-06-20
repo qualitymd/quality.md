@@ -1,9 +1,9 @@
 # Evaluation plan
 
-How this run covers the in-scope `source` at `standard` effort: every in-scope
+How this run covers the in-scope `source` at `standard` rigor: every in-scope
 requirement is assessed with targeted evidence sufficient to bind each rating
-(see [Effort levels](../quality-skill.md#effort-levels)). The table below is the
-concrete requirement set selected by that effort.
+(see [Rigor levels](../quality-skill.md#rigor-levels)). The table below is the
+concrete requirement set selected by that rigor.
 
 ## Coverage by target
 
@@ -33,11 +33,11 @@ concrete requirement set selected by that effort.
 
 ## Known coverage limits
 
-Anticipated at `standard` effort and reconciled in the report's *Limitations* and
+Anticipated at `standard` rigor and reconciled in the report's *Limitations* and
 *not assessed* outcomes — not a substitute for them:
 
 - The broader failure-injection and step-up-control evidence **Outstanding** would
-  require is not sought at this effort.
+  require is not sought at this rigor.
 - Reconciliation evidence is sought but may be absent; if no run output is found
   the requirement is recorded *not assessed* rather than guessed.
-- Multi-currency rounding paths in the Ledger are not exercised at this effort.
+- Multi-currency rounding paths in the Ledger are not exercised at this rigor.

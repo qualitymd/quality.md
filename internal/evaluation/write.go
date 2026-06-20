@@ -16,7 +16,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func AddRecord(kind WriteKind, runPath string, raw []byte) (*WriteResult, error) {
+func AddRecord(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
 	result, err := WriteRecords(kind, runPath, raw)
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func AddRecord(kind WriteKind, runPath string, raw []byte) (*WriteResult, error)
 	return result, nil
 }
 
-func WriteRecords(kind WriteKind, runPath string, raw []byte) (*WriteResult, error) {
+func WriteRecords(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
 	runAbs, err := verifyRun(runPath)
 	if err != nil {
 		return nil, err
@@ -37,8 +37,8 @@ func WriteRecords(kind WriteKind, runPath string, raw []byte) (*WriteResult, err
 		return nil, err
 	}
 	switch kind {
-	case KindAssessment:
-		return addAssessments(runAbs, raw, levels)
+	case KindAssessmentResult:
+		return addAssessmentResults(runAbs, raw, levels)
 	case KindAnalysis:
 		return setAnalyses(runAbs, raw, levels)
 	case KindRecommendation:
@@ -103,27 +103,24 @@ func decodeJSONDocument(raw []byte, dst any) error {
 	return nil
 }
 
-func addAssessments(runAbs string, raw []byte, levels map[string]bool) (*WriteResult, error) {
-	payloads, err := DecodeJSONList[AssessmentPayload](raw)
+func addAssessmentResults(runAbs string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
+	payloads, err := DecodeJSONList[AssessmentResultInput](raw)
 	if err != nil {
 		return nil, err
 	}
 	var paths []string
 	for _, payload := range payloads {
-		if err := validateAssessment(payload, levels); err != nil {
+		if err := validateAssessmentResult(payload, levels); err != nil {
 			return nil, err
 		}
-		rec := AssessmentRecord{
+		rec := AssessmentResultRecord{
 			SchemaVersion:   SchemaVersion,
-			Target:          payload.Target,
 			TargetPath:      payload.TargetPath,
 			Requirement:     payload.Requirement,
-			Factors:         payload.Factors,
-			Rating:          payload.Rating,
-			NotAssessed:     payload.NotAssessed,
+			FactorPaths:     payload.FactorPaths,
+			RatingResult:    payload.RatingResult,
 			CriterionSource: payload.CriterionSource,
 			Findings:        payload.Findings,
-			Rationale:       payload.Rationale,
 			Recommendations: payload.Recommendations,
 			Supersedes:      payload.Supersedes,
 		}
@@ -131,17 +128,17 @@ func addAssessments(runAbs string, raw []byte, levels map[string]bool) (*WriteRe
 		if err != nil {
 			return nil, err
 		}
-		path, err := writeNumbered(filepath.Join(runAbs, "assessments"), Slug(payload.Target)+"-"+Slug(payload.Requirement)+".json", data)
+		path, err := writeNumbered(filepath.Join(runAbs, "assessment-results"), targetPathSlug(payload.TargetPath)+"-"+Slug(payload.Requirement)+".json", data)
 		if err != nil {
 			return nil, err
 		}
 		paths = append(paths, filepath.ToSlash(path))
 	}
-	return &WriteResult{
+	return &WriteRecordReceipt{
 		SchemaVersion: SchemaVersion,
 		Path:          singlePath(paths),
 		Paths:         paths,
-		Kind:          KindAssessment,
+		Kind:          KindAssessmentResult,
 		NextActions: []receipt.Action{{
 			ID:      "evaluation-status",
 			Label:   "Inspect report readiness",
@@ -150,8 +147,8 @@ func addAssessments(runAbs string, raw []byte, levels map[string]bool) (*WriteRe
 	}, nil
 }
 
-func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteResult, error) {
-	payloads, err := DecodeJSONList[AnalysisPayload](raw)
+func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
+	payloads, err := DecodeJSONList[AnalysisInput](raw)
 	if err != nil {
 		return nil, err
 	}
@@ -162,21 +159,20 @@ func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteResul
 			return nil, err
 		}
 		rec := AnalysisRecord{
-			SchemaVersion:        SchemaVersion,
-			Target:               payload.Target,
-			TargetPath:           payload.TargetPath,
-			LocalRating:          payload.LocalRating,
-			FactorRatings:        payload.FactorRatings,
-			AggregateRating:      payload.AggregateRating,
-			AssessmentRecords:    payload.AssessmentRecords,
-			ChildAnalysisRecords: payload.ChildAnalysisRecords,
-			BindingConstraints:   payload.BindingConstraints,
+			SchemaVersion:           SchemaVersion,
+			TargetPath:              payload.TargetPath,
+			LocalRatingResult:       payload.LocalRatingResult,
+			FactorRatingResults:     payload.FactorRatingResults,
+			AggregateRatingResult:   payload.AggregateRatingResult,
+			AssessmentResultRecords: payload.AssessmentResultRecords,
+			ChildAnalysisRecords:    payload.ChildAnalysisRecords,
+			RatingConstraints:       payload.RatingConstraints,
 		}
 		data, err := marshalJSON(rec)
 		if err != nil {
 			return nil, err
 		}
-		path := filepath.Join(runAbs, "analysis", Slug(payload.Target)+".json")
+		path := filepath.Join(runAbs, "analysis", targetPathSlug(payload.TargetPath)+".json")
 		_, statErr := os.Stat(path)
 		created := os.IsNotExist(statErr)
 		if len(payloads) == 1 {
@@ -187,11 +183,11 @@ func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteResul
 		}
 		paths = append(paths, filepath.ToSlash(path))
 	}
-	return &WriteResult{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindAnalysis, Created: createdPtr}, nil
+	return &WriteRecordReceipt{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindAnalysis, Created: createdPtr}, nil
 }
 
-func addRecommendations(runAbs string, raw []byte) (*WriteResult, error) {
-	payloads, err := DecodeJSONList[RecommendationPayload](raw)
+func addRecommendations(runAbs string, raw []byte) (*WriteRecordReceipt, error) {
+	payloads, err := DecodeJSONList[RecommendationInput](raw)
 	if err != nil {
 		return nil, err
 	}
@@ -201,15 +197,15 @@ func addRecommendations(runAbs string, raw []byte) (*WriteResult, error) {
 			return nil, err
 		}
 		rec := RecommendationRecord{
-			SchemaVersion:      SchemaVersion,
-			Title:              payload.Title,
-			Gap:                payload.Gap,
-			EvidenceLocators:   payload.EvidenceLocators,
-			AssessmentRecords:  payload.AssessmentRecords,
-			RemediationOptions: payload.RemediationOptions,
-			RecommendedOption:  payload.RecommendedOption,
-			DoneCriterion:      payload.DoneCriterion,
-			Supersedes:         payload.Supersedes,
+			SchemaVersion:           SchemaVersion,
+			Title:                   payload.Title,
+			Gap:                     payload.Gap,
+			EvidenceLocators:        payload.EvidenceLocators,
+			AssessmentResultRecords: payload.AssessmentResultRecords,
+			RemediationOptions:      payload.RemediationOptions,
+			RecommendedOption:       payload.RecommendedOption,
+			DoneCriterion:           payload.DoneCriterion,
+			Supersedes:              payload.Supersedes,
 		}
 		data, err := renderRecommendation(rec)
 		if err != nil {
@@ -221,7 +217,7 @@ func addRecommendations(runAbs string, raw []byte) (*WriteResult, error) {
 		}
 		paths = append(paths, filepath.ToSlash(path))
 	}
-	return &WriteResult{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindRecommendation}, nil
+	return &WriteRecordReceipt{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindRecommendation}, nil
 }
 
 func singlePath(paths []string) string {
@@ -229,6 +225,13 @@ func singlePath(paths []string) string {
 		return paths[0]
 	}
 	return ""
+}
+
+func targetPathSlug(targetPath []string) string {
+	if len(targetPath) == 0 {
+		return "root"
+	}
+	return Slug(strings.Join(targetPath, "-"))
 }
 
 func verifyRun(runPath string) (string, error) {
@@ -243,7 +246,7 @@ func verifyRun(runPath string) (string, error) {
 	if !info.IsDir() {
 		return "", fmt.Errorf("%s is not an evaluation run folder", runPath)
 	}
-	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
+	for _, name := range []string{"model.md", "design.md", "plan.md", "assessment-results", "analysis", "recommendations"} {
 		if _, err := os.Stat(filepath.Join(abs, name)); err != nil {
 			return "", fmt.Errorf("%s is not an evaluation run folder: missing %s", runPath, name)
 		}
@@ -267,15 +270,18 @@ func ratingLevels(path string) (map[string]bool, error) {
 	return levels, nil
 }
 
-func validateAssessment(p AssessmentPayload, levels map[string]bool) error {
-	if err := validateAssessmentRequiredStrings(p); err != nil {
+func validateAssessmentResult(p AssessmentResultInput, levels map[string]bool) error {
+	if err := validateAssessmentResultRequiredStrings(p); err != nil {
 		return err
 	}
-	if err := validateAssessmentRating(p, levels); err != nil {
+	if err := validateRatingResult("ratingResult", &p.RatingResult, levels); err != nil {
 		return err
 	}
-	if p.Factors == nil {
-		return usagef("factors is required")
+	if p.TargetPath == nil {
+		return usagef("targetPath is required")
+	}
+	if p.FactorPaths == nil {
+		return usagef("factorPaths is required")
 	}
 	if p.Findings == nil {
 		return usagef("findings is required")
@@ -283,7 +289,7 @@ func validateAssessment(p AssessmentPayload, levels map[string]bool) error {
 	if p.Recommendations == nil {
 		return usagef("recommendations is required")
 	}
-	if err := validateAssessmentFindings(p.Findings); err != nil {
+	if err := validateAssessmentResultFindings(p.Findings); err != nil {
 		return err
 	}
 	if err := validateRequiredStrings("supersedes", p.Supersedes); err != nil {
@@ -292,12 +298,10 @@ func validateAssessment(p AssessmentPayload, levels map[string]bool) error {
 	return nil
 }
 
-func validateAssessmentRequiredStrings(p AssessmentPayload) error {
+func validateAssessmentResultRequiredStrings(p AssessmentResultInput) error {
 	for name, value := range map[string]string{
-		"target":          p.Target,
 		"requirement":     p.Requirement,
 		"criterionSource": p.CriterionSource,
-		"rationale":       p.Rationale,
 	} {
 		if err := requiredString(name, value); err != nil {
 			return err
@@ -306,20 +310,7 @@ func validateAssessmentRequiredStrings(p AssessmentPayload) error {
 	return nil
 }
 
-func validateAssessmentRating(p AssessmentPayload, levels map[string]bool) error {
-	if p.NotAssessed && p.Rating != nil {
-		return usagef("rating must be null when notAssessed is true")
-	}
-	if !p.NotAssessed && p.Rating == nil {
-		return usagef("rating is required unless notAssessed is true")
-	}
-	if p.Rating != nil && !levels[*p.Rating] {
-		return usagef("rating %q is not defined by the run model", *p.Rating)
-	}
-	return nil
-}
-
-func validateAssessmentFindings(findings []Finding) error {
+func validateAssessmentResultFindings(findings []Finding) error {
 	for i, finding := range findings {
 		if strings.TrimSpace(finding.Locator) == "" || strings.TrimSpace(finding.Observation) == "" || strings.TrimSpace(finding.Category) == "" {
 			return usagef("findings[%d] must include locator, observation, and category", i)
@@ -337,36 +328,31 @@ func validateRequiredStrings(name string, values []string) error {
 	return nil
 }
 
-func validateAnalysis(p AnalysisPayload, levels map[string]bool) error {
-	if err := requiredString("target", p.Target); err != nil {
+func validateAnalysis(p AnalysisInput, levels map[string]bool) error {
+	if p.TargetPath == nil {
+		return usagef("targetPath is required")
+	}
+	if err := validateRatingResult("aggregateRatingResult", &p.AggregateRatingResult, levels); err != nil {
 		return err
 	}
-	if err := validateRatingResult("aggregateRating", &p.AggregateRating, levels, true); err != nil {
-		return err
-	}
-	if p.LocalRating != nil {
-		if err := validateRatingResult("localRating", p.LocalRating, levels, false); err != nil {
+	if p.LocalRatingResult != nil {
+		if err := validateRatingResult("localRatingResult", p.LocalRatingResult, levels); err != nil {
 			return err
 		}
 	}
-	for i := range p.FactorRatings {
-		if strings.TrimSpace(p.FactorRatings[i].Factor) == "" {
-			return usagef("factorRatings[%d].factor is required", i)
+	for i := range p.FactorRatingResults {
+		if len(p.FactorRatingResults[i].FactorPath) == 0 {
+			return usagef("factorRatingResults[%d].factorPath is required", i)
 		}
-		rating := RatingResult{
-			Rating:      p.FactorRatings[i].Rating,
-			NotAssessed: p.FactorRatings[i].NotAssessed,
-			Rationale:   p.FactorRatings[i].Rationale,
-		}
-		if err := validateRatingResult(fmt.Sprintf("factorRatings[%d]", i), &rating, levels, true); err != nil {
+		if err := validateRatingResult(fmt.Sprintf("factorRatingResults[%d].ratingResult", i), &p.FactorRatingResults[i].RatingResult, levels); err != nil {
 			return err
 		}
 	}
-	if p.FactorRatings == nil {
-		return usagef("factorRatings is required")
+	if p.FactorRatingResults == nil {
+		return usagef("factorRatingResults is required")
 	}
-	if p.AssessmentRecords == nil {
-		return usagef("assessmentRecords is required")
+	if p.AssessmentResultRecords == nil {
+		return usagef("assessmentResultRecords is required")
 	}
 	if p.ChildAnalysisRecords == nil {
 		return usagef("childAnalysisRecords is required")
@@ -374,23 +360,29 @@ func validateAnalysis(p AnalysisPayload, levels map[string]bool) error {
 	return nil
 }
 
-func validateRatingResult(name string, result *RatingResult, levels map[string]bool, requireRating bool) error {
+func validateRatingResult(name string, result *RatingResult, levels map[string]bool) error {
 	if strings.TrimSpace(result.Rationale) == "" {
 		return usagef("%s.rationale is required", name)
 	}
-	if result.NotAssessed && result.Rating != nil {
-		return usagef("%s.rating must be null when notAssessed is true", name)
-	}
-	if !result.NotAssessed && requireRating && result.Rating == nil {
-		return usagef("%s.rating is required unless notAssessed is true", name)
-	}
-	if result.Rating != nil && !levels[*result.Rating] {
-		return usagef("%s.rating %q is not defined by the run model", name, *result.Rating)
+	switch result.Kind {
+	case "rated":
+		if strings.TrimSpace(result.Level) == "" {
+			return usagef("%s.level is required when kind is rated", name)
+		}
+		if !levels[result.Level] {
+			return usagef("%s.level %q is not defined by the run model", name, result.Level)
+		}
+	case "not-assessed":
+		if strings.TrimSpace(result.Level) != "" {
+			return usagef("%s.level must be empty when kind is not-assessed", name)
+		}
+	default:
+		return usagef("%s.kind must be rated or not-assessed", name)
 	}
 	return nil
 }
 
-func validateRecommendation(p RecommendationPayload) error {
+func validateRecommendation(p RecommendationInput) error {
 	for name, value := range map[string]string{
 		"title":             p.Title,
 		"gap":               p.Gap,
@@ -423,7 +415,7 @@ func renderRecommendation(rec RecommendationRecord) ([]byte, error) {
 	addYAMLScalar(&node, "title", rec.Title, "!!str")
 	addYAMLScalar(&node, "gap", rec.Gap, "!!str")
 	addYAMLSeq(&node, "evidenceLocators", rec.EvidenceLocators)
-	addYAMLSeq(&node, "assessmentRecords", rec.AssessmentRecords)
+	addYAMLSeq(&node, "assessmentResultRecords", rec.AssessmentResultRecords)
 	addYAMLSeq(&node, "remediationOptions", rec.RemediationOptions)
 	addYAMLScalar(&node, "recommendedOption", rec.RecommendedOption, "!!str")
 	addYAMLScalar(&node, "doneCriterion", rec.DoneCriterion, "!!str")

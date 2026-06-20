@@ -37,21 +37,23 @@ in-scope root target. The root analysis record is identified by an empty
 `targetPath`. If no such record exists, `status` **MUST** return
 `reportable: false` with a `missing-root-analysis` gap.
 
-A run is not reportable when two or more assessment records cover the same
+A run is not reportable when two or more assessment result records cover the same
 ordered `targetPath` and `requirement`, unless all but one are superseded by an
 active correction record. `status` **MUST** return `reportable: false` with a
-`duplicate-assessment` gap that references each later active duplicate record.
+`duplicate-assessment-result` gap that references each later active duplicate
+record.
 
 Assessment and recommendation superseding references **MUST** resolve to records
 in the same run. Dangling or invalid assessment superseding, stale analysis
-references to superseded assessments, and dangling recommendation superseding
-**MUST** produce gaps and make the run non-reportable.
+references to superseded assessment results, and dangling recommendation
+superseding **MUST** produce gaps and make the run non-reportable.
 
 When `plan.md` contains `coverage:` frontmatter, `status` **MUST** validate it at
 read time and compare planned assessment and analysis identities to written
-records. Missing planned records **MUST** produce `missing-planned-assessment`
-or `missing-planned-analysis`; written records outside the plan **MUST** produce
-`unexpected-assessment` or `unexpected-analysis`.
+records. Missing planned records **MUST** produce
+`missing-planned-assessment-result` or `missing-planned-analysis`; written
+records outside the plan **MUST** produce `unexpected-assessment-result` or
+`unexpected-analysis`.
 
 Malformed `coverage:` frontmatter **MUST** produce an `invalid-plan-coverage`
 gap. A body-only `plan.md`, or frontmatter without `coverage:`, keeps the same

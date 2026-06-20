@@ -6,24 +6,24 @@ import (
 	"strings"
 )
 
-type RunListEntry struct {
-	Path       string `json:"path"`
-	Subject    string `json:"subject"`
-	Narrowing  string `json:"narrowing,omitempty"`
-	Counts     Counts `json:"counts"`
-	Reportable bool   `json:"reportable"`
+type EvaluationRunListEntry struct {
+	Path       string                 `json:"path"`
+	Subject    string                 `json:"subject"`
+	Narrowing  string                 `json:"narrowing,omitempty"`
+	Counts     EvaluationRecordCounts `json:"counts"`
+	Reportable bool                   `json:"reportable"`
 }
 
-type RunListResult struct {
-	SchemaVersion int            `json:"schemaVersion"`
-	Runs          []RunListEntry `json:"runs"`
+type EvaluationRunList struct {
+	SchemaVersion int                      `json:"schemaVersion"`
+	Runs          []EvaluationRunListEntry `json:"runs"`
 }
 
-type RecordListResult struct {
-	SchemaVersion int       `json:"schemaVersion"`
-	Path          string    `json:"path"`
-	Kind          WriteKind `json:"kind"`
-	Records       []string  `json:"records"`
+type EvaluationRecordList struct {
+	SchemaVersion int                  `json:"schemaVersion"`
+	Path          string               `json:"path"`
+	Kind          EvaluationRecordKind `json:"kind"`
+	Records       []string             `json:"records"`
 }
 
 func ResolveRun(repoRoot, evaluationDir, runArg string, latest bool) (string, error) {
@@ -57,7 +57,7 @@ func ResolveRun(repoRoot, evaluationDir, runArg string, latest bool) (string, er
 	return runs[len(runs)-1].Rel, nil
 }
 
-func ListRuns(repoRoot, evaluationDir, state string) (*RunListResult, error) {
+func ListRuns(repoRoot, evaluationDir, state string) (*EvaluationRunList, error) {
 	if repoRoot == "" {
 		var err error
 		repoRoot, err = FindRepoRoot("")
@@ -73,17 +73,17 @@ func ListRuns(repoRoot, evaluationDir, state string) (*RunListResult, error) {
 	if err != nil {
 		return nil, fmt.Errorf("listing evaluation runs: %w", err)
 	}
-	result := &RunListResult{SchemaVersion: SchemaVersion}
+	result := &EvaluationRunList{SchemaVersion: SchemaVersion}
 	for _, dir := range runs {
 		run, err := Load(dir.Abs)
 		if err != nil {
 			return nil, fmt.Errorf("loading %s: %w", dir.Rel, err)
 		}
-		status := run.Status()
+		status := run.EvaluationRunStatus()
 		if !includeRunState(status.Reportable, state) {
 			continue
 		}
-		result.Runs = append(result.Runs, RunListEntry{
+		result.Runs = append(result.Runs, EvaluationRunListEntry{
 			Path:       dir.Rel,
 			Subject:    run.Model.Title,
 			Narrowing:  narrowingFromRunName(dir.Name),
@@ -124,15 +124,15 @@ func narrowingFromRunName(name string) string {
 	return strings.TrimPrefix(strings.TrimSuffix(match[3], "-quality-eval"), "-")
 }
 
-func ListRecords(kind WriteKind, runPath string) (*RecordListResult, error) {
+func ListRecords(kind EvaluationRecordKind, runPath string) (*EvaluationRecordList, error) {
 	run, err := Load(runPath)
 	if err != nil {
 		return nil, err
 	}
-	result := &RecordListResult{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(run.Path), Kind: kind}
+	result := &EvaluationRecordList{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(run.Path), Kind: kind}
 	switch kind {
-	case KindAssessment:
-		for _, rec := range run.Assessments {
+	case KindAssessmentResult:
+		for _, rec := range run.AssessmentResults {
 			result.Records = append(result.Records, rec.File)
 		}
 	case KindAnalysis:

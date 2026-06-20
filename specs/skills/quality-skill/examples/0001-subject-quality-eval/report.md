@@ -12,7 +12,7 @@ subtree is *rated* **Target**.
 
 **Scope.** Whole model; **subject** altitude; no target or factor narrowing.
 Source resolved from `./` (root), `./ledger` (Ledger), `./webhooks` (Webhooks),
-and `./webhooks/delivery` (Delivery). Effort: `standard`. One requirement *not
+and `./webhooks/delivery` (Delivery). Rigor: `standard`. One requirement *not
 assessed* (see Ledger). This is a whole-model verdict.
 
 **Evaluated.** Source `sparrow-payments` at commit `9f2c1ab`, with the
@@ -89,7 +89,7 @@ at the floor regardless of the two requirements *rated* **Target**.
     (`internal/transfer/handler_test.go:120`) confirms a retried key returns the
     original result without a second debit.
   - *Rationale:* Meets the idempotency criterion; the failure-injection breadth
-    Outstanding would require was not in evidence at `standard` effort.
+    Outstanding would require was not in evidence at `standard` rigor.
 
 ---
 
@@ -169,7 +169,7 @@ whole-set verdict at the floor — acceptable to ship, but short of the target.
 
 - **Reliability — Minimum.** A refinement of the root Reliability factor for the
   delivery context. Retry-with-backoff holds, so no transient failure silently
-  drops an event; but redelivery deduplication is only best-effort within a
+  drops an event; but redelivery deduplication is only best-rigor within a
   bounded window, which holds the factor at Minimum.
 
 ### Requirements
@@ -183,7 +183,7 @@ whole-set verdict at the floor — acceptable to ship, but short of the target.
     endpoint is retried and no event is silently lost.
   - *Rationale:* No transient failure results in a silently lost event, meeting
     the Target criterion; the broader failure-injection coverage Outstanding
-    would require was not in evidence at `standard` effort.
+    would require was not in evidence at `standard` rigor.
 - *A redelivery of an already-acknowledged event is suppressed for that
   endpoint* — **Minimum**
   - *Findings:* Each event carries a stable delivery id, and the engine
@@ -194,7 +194,7 @@ whole-set verdict at the floor — acceptable to ship, but short of the target.
     merchant a second time. The merchant docs note "consume events
     idempotently", confirming duplicates are possible by design.
   - *Rationale:* Deduplication exists and covers the common case but is bounded
-    and best-effort, so a duplicate is reachable on a known path — short of the
+    and best-rigor, so a duplicate is reachable on a known path — short of the
     target's "not delivered again" intent, yet a consciously-bounded floor
     rather than a failure. *Rated* **Minimum**. See recommendation
     [003](recommendations/003-bound-webhook-dedup-window.md).
@@ -209,7 +209,7 @@ exclusions (the gateway, the banks, and merchant endpoints — out of the model'
 remit by design) and from the *not assessed* reconciliation requirement (no
 evidence this run).
 
-- *Effort ceiling.* The run was `standard` effort, so the broader
+- *Rigor ceiling.* The run was `standard` rigor, so the broader
   failure-injection and step-up-control evidence Outstanding would require was not
   sought for the idempotency, authentication, signing, and retry requirements.
   Their **Target** ratings reflect that ceiling; a deeper run could revise them

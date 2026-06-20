@@ -42,7 +42,7 @@ func newStatusCmd() *cobra.Command {
 	return cmd
 }
 
-func renderStatusHuman(cmd *cobra.Command, snapshot *status.SnapshotResult) error {
+func renderStatusHuman(cmd *cobra.Command, snapshot *status.ProjectStatusSnapshot) error {
 	out := cmd.OutOrStdout()
 	model := "absent"
 	if snapshot.Model.Present {

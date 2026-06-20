@@ -26,7 +26,7 @@ format spec's
 > **not defer** its definition to it: the process below is the skill's own,
 > written to satisfy that contract rather than to merely point at it (see
 > [Conformance to the format spec](#conformance-to-the-format-spec)). Recording
-> assessments *through the CLI* is **deferred** in step with the CLI's deferred
+> assessment results *through the CLI* is **deferred** in step with the CLI's deferred
 > record/gate surface (see [Deferred](#deferred)).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -63,9 +63,9 @@ mutation, and delegates mechanical changes to the Agent Skills installer and
 `qualitymd upgrade`.
 
 Scope is a modifier, not a separate use case. Every evaluate/improve invocation
-takes an optional scope — the whole model, or a narrowing to particular target(s)
-or factor(s). The scope parameterizes the invocation rather than multiplying it
-(see [Invocation](#invocation)).
+takes an optional scope — a full evaluation, or a narrowing to particular
+target(s) or factor(s). The scope parameterizes the invocation rather than
+multiplying it (see [Invocation](#invocation)).
 
 Recommendations are a product of *evaluation*, not of `improve`: the format
 spec's [Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation,
@@ -102,9 +102,9 @@ skill safe against the content it reads.
   key, or `.env` value, findings and reports **MUST** reference it by
   `file:line` and credential type only and recommend rotation. The value itself
   **MUST NOT** appear in any finding, report, or recommendation.
-- **A scoped result is not a whole-model verdict.** When evaluation is narrowed
+- **A scoped result is not a full-evaluation verdict.** When evaluation is narrowed
   (see [Invocation](#invocation)), every rating is understood within that scope;
-  the skill **MUST NOT** present a scoped result as a verdict on the whole model
+  the skill **MUST NOT** present a scoped result as a full-evaluation verdict
   (per [Define](../../../SPECIFICATION.md#define)).
 - **Determinism over flair.** Given the same model, subject, and scope, the skill
   should reach the same ratings and surface the same key gaps. Ratings are
@@ -124,28 +124,35 @@ additional frontmatter fields.
 The installable `SKILL.md` **MUST** remain the router and always-loaded global
 contract: argument parsing, shared CLI prerequisites, safety rules, config, and
 artifact-contract guidance live there. Supporting docs live under
-`skills/quality/resources/`. Mode-specific procedure details can live in
-separate mode files, and the current artifact keeps them under
+`skills/quality/resources/` and `skills/quality/guides/`. Mode-specific
+procedure details can live in separate mode files, and the current artifact
+keeps them under
 `skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`,
 `improve.md`, and `upgrade.md`. When mode procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching mode file before executing that
 mode.
 
 The installable skill ships settled runtime resources under
-`skills/quality/resources/`, and the root prompt **MUST** direct agents when to
-read each one:
+`skills/quality/resources/` and runtime guides under `skills/quality/guides/`.
+The root prompt **MUST** direct agents when to read each one:
 
 - [`resources/SPECIFICATION.md`](../../../skills/quality/resources/SPECIFICATION.md)
   — a skill-local bundled copy or symlink to the format specification used as a
   local reference. Runtime format and rating grounding still comes from
   `qualitymd spec` where the CLI is available (see [Driving the CLI](#driving-the-cli)).
-- [`resources/quality-md-guide.md`](../../../skills/quality/resources/quality-md-guide.md)
-  — the authoring guide read when creating, populating, reviewing, or improving a
-  `QUALITY.md` file.
 - [`resources/cli-quick-reference.md`](../../../skills/quality/resources/cli-quick-reference.md)
   — the command quick reference read before CLI workflows.
 - [`resources/output-policy.md`](../../../skills/quality/resources/output-policy.md)
   — the command-output policy read before consuming CLI output.
+- [`guides/authoring.md`](../../../skills/quality/guides/authoring.md) — the
+  comprehensive authoring guide read when creating, populating, reviewing, or
+  improving a `QUALITY.md` file.
+- [`guides/getting-started.md`](../../../skills/quality/guides/getting-started.md)
+  — the first-run guide read after setup creates an initial `QUALITY.md`, or when
+  the user asks how to make the first useful model from a skeleton.
+- [`guides/top-10-quality-md-checks.md`](../../../skills/quality/guides/top-10-quality-md-checks.md)
+  — the quick inspection checklist read when assessing a `QUALITY.md` file's
+  current state, quality, or lifecycle, especially in wizard.
 
 The description **MUST** optimize for trigger matching rather than documentation:
 it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`,
@@ -188,15 +195,15 @@ valid:
   override it, and **MUST** error clearly when no default file exists. It **MUST
   NOT** walk parent directories or discover multiple models unless a future CLI
   convention defines that behavior.
-- **Scope** — the whole model (default), or a narrowing by **target** (a target
+- **Scope** — full evaluation (default), or a narrowing by **target** (a target
   and its subtree) and/or by **factor** (the requirements tied to a factor,
   including those tagging it as a secondary factor), per
   [Define](../../../SPECIFICATION.md#define). A scope name should resolve
   against the model the skill already grounded — a bare name is matched to the
   target or factor that bears it, with an explicit `target`/`factor` keyword
   available to disambiguate the rare name that is both.
-- **Effort** — the evaluation depth (default `standard`); see
-  [Effort levels](#effort-levels).
+- **Rigor** — the evaluation depth (default `standard`); see
+  [Rigor levels](#rigor-levels).
 
 ## User interaction contract
 
@@ -207,7 +214,7 @@ evidence, mutation, and next action.
 ### Run frames
 
 Before executing a mode, the skill **SHOULD** emit a concise run frame naming
-the resolved mode, target file, scope, effort level when applicable, mutation
+the resolved mode, target file, scope, rigor level when applicable, mutation
 policy, expected artifacts, and next user-visible gate. It **MAY** omit the run
 frame when the immediately preceding wizard output already stated the same mode,
 target file, scope, mutation policy, and next action.
@@ -324,20 +331,24 @@ guidance, not Evaluation ratings.
 The wizard **MUST** follow a probe → classify → recommend → offer flow:
 
 1. **Probe state.** Check CLI readiness; resolve the target file; inspect whether
-   `QUALITY.md` exists; run `qualitymd lint` when it exists; summarize model
-   shape when valid (targets, factors, requirement count, and visible source
-   coverage); and inspect existing evaluation history when present, including the
-   latest run, incomplete or stale-looking runs, active recommendations, and
-   available report/status files.
-2. **Classify readiness.** Name the user's lifecycle state using the best match:
+   `QUALITY.md` exists; run `qualitymd status --json` for mechanical model,
+   source-coverage, readiness, and evaluation-history signals.
+2. **Inspect model lifecycle.** When the model exists and is structurally valid,
+   use the
+   [`Top 10 QUALITY.md checks`](guides/top-10-quality-md-checks.md) checklist for
+   a bounded inspection of the `QUALITY.md` file itself. The wizard **MUST NOT**
+   inspect subject source files, read evaluation report bodies, create evaluation
+   records, or rate the subject during this checklist pass. Findings from this
+   pass are routing findings about model state and usefulness.
+3. **Classify readiness.** Name the user's lifecycle state using the best match:
    **no setup**, **invalid model**, **starter/skeleton model**, **usable but
    immature model**, **ready to evaluate**, **has evaluation history**, or
    **mature but needs maintenance/reconciliation**. A state can note a secondary
    concern when useful, such as "ready to evaluate, but prior recommendations are
    still open."
-3. **Recommend one next step.** Name the best next workflow and explain why it is
+4. **Recommend one next step.** Name the best next workflow and explain why it is
    best from the observed state.
-4. **Offer concrete alternatives.** Present a short menu of runnable workflows,
+5. **Offer concrete alternatives.** Present a short menu of runnable workflows,
    not vague advice.
 
 The wizard's output **MUST** be status-first and action-oriented:
@@ -349,6 +360,9 @@ Status
 - Model:
 - Evaluation history:
 - Readiness:
+
+QUALITY.md inspection findings
+- <top finding or "none blocking">
 
 Recommended next step
 - <workflow> because <observed reason>
@@ -387,8 +401,10 @@ After the CLI prerequisite is met, `setup` **MUST** drive
 [`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
 target file is absent, then run [`qualitymd lint`](../../cli/lint.md). It
 **MUST NOT** reimplement scaffolding, validation, CLI installation tooling, or
-source-driven authoring judgment. Guided population and refinement belong to
-[`wizard`](#wizard).
+source-driven authoring judgment. Guided first population belongs to the
+[getting-started guide](guides/getting-started.md), with the
+[authoring guide](guides/authoring.md) as its prerequisite; follow-on routing
+belongs to [`wizard`](#wizard).
 
 ### Upgrade
 
@@ -427,15 +443,15 @@ arguments, defaulting the ones left out:
 /quality next                  # wizard: recommend the next useful workflow
 /quality review model          # wizard: route to QUALITY.md model review/improvement
 /quality review history        # wizard: inspect prior runs and recommendations
-/quality evaluate              # evaluate the whole model — subject, standard depth
-/quality evaluate --effort quick   # fast evaluate: hotspots, high-confidence findings only
+/quality evaluate              # run a full evaluation — subject, standard depth
+/quality evaluate --rigor quick   # fast evaluate: hotspots, high-confidence findings only
 /quality evaluate payments     # scope to a target named "payments" (resolved from the model)
-/quality evaluate payments --effort deep   # exhaustive evaluate for one target
+/quality evaluate payments --rigor deep   # exhaustive evaluate for one target
 /quality evaluate security     # scope to a factor named "security" (resolved from the model)
 /quality evaluate factor flow  # disambiguate when a name is both a target and a factor
 /quality improve               # evaluate, then recommend (applies only on confirmation)
-/quality improve reliability --effort quick   # recommend from a fast pass, scoped to one factor
-/quality improve --effort deep # exhaustive evaluate, then recommend
+/quality improve reliability --rigor quick   # recommend from a fast pass, scoped to one factor
+/quality improve --rigor deep # exhaustive evaluate, then recommend
 /quality upgrade              # plan and orchestrate paired skill/CLI upgrades
 /quality setup                 # author a new QUALITY.md (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
@@ -464,7 +480,7 @@ machine-readable output where a command provides it (the
 text. Before evaluation work, it **MUST** verify that
 `qualitymd version --json`, `qualitymd upgrade --check`,
 `qualitymd evaluation create`, `qualitymd evaluation list`,
-`qualitymd evaluation status`, `qualitymd evaluation assessment`,
+`qualitymd evaluation status`, `qualitymd evaluation assessment-result`,
 `qualitymd evaluation analysis`, `qualitymd evaluation recommendation`, and
 `qualitymd evaluation report` are
 available; if any is missing, it stops rather than hand-authoring the run.
@@ -484,7 +500,7 @@ weighted by what matters, and the required report contents.
 
 Conformance is the binding relationship, not deference. The skill is **not** a
 mere executor of the spec text; it is one *implementation* of an evaluator, free
-to specify its own concrete workflow, ordering, heuristics, effort levels, and
+to specify its own concrete workflow, ordering, heuristics, rigor levels, and
 artifacts so long as the result satisfies the contract. The format spec remains
 the **conformance target**: where the skill's process and the contract would
 diverge, the contract governs and the skill **MUST** be corrected to conform.
@@ -502,7 +518,7 @@ flowchart TD
     Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
     Run --> Plan[Fill design.md and plan.md:<br/>resolved parameters, coverage approach]
     Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
-    Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
+    Eval --> Records[Write records through<br/>evaluation assessment-result/analysis/recommendation]
     Records --> Status[Check qualitymd evaluation status]
     Status --> Report[Build reports through<br/>qualitymd evaluation report build]
     Report --> Mode{Mode?}
@@ -525,8 +541,8 @@ flowchart TD
    number the folder, create the layout, and snapshot `model.md`.
 5. **Plan** — fill the evaluation's **design** (the resolved parameters and the
    `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
-   `source` will be covered at the chosen effort). The plan **MUST** record the
-   chosen effort and concrete requirement set covered.
+   `source` will be covered at the chosen rigor). The plan **MUST** record the
+   chosen rigor and concrete requirement set covered.
 6. **Record planned coverage when useful** — after the plan is settled, the
    skill should add `coverage:` frontmatter to `plan.md` when resume diagnostics
    materially matter, especially for standard, deep, concurrent-write, or
@@ -535,12 +551,12 @@ flowchart TD
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess.
 8. **Write records** with
-   `qualitymd evaluation assessment add <run>`,
+   `qualitymd evaluation assessment-result add <run>`,
    `qualitymd evaluation analysis set <run>`, and
    `qualitymd evaluation recommendation add <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
    `schemaVersion`. The judgment JSON uses stable model identifiers: Target path
-   entries are target keys, Factor references and `factorRatings[].factor`
+   entries are target keys, Factor references and `factorRatingResults[].factorPath`
    values are factor keys, and ratings are rating `level` ids. Human-facing
    prose can use titles; records keep identifiers so reports, gates, and
    machine consumers remain stable.
@@ -581,9 +597,9 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   record a brief rationale naming the binding constraints (per
   [Analyze](../../../SPECIFICATION.md#analyze)).
 
-### Effort levels
+### Rigor levels
 
-Effort sets how deeply the skill gathers evidence and how much of each target's
+Rigor sets how deeply the skill gathers evidence and how much of each target's
 `source` it covers. It changes the *thoroughness* of assessment, never the rating
 criteria or the report's shape.
 
@@ -603,9 +619,9 @@ The re-check *re-runs* the command rather than re-reading the earlier
 observation, because re-reading cannot catch a stale or hallucinated first read —
 the failure mode this guards against. It is scoped to the headline-binding
 findings, not every finding, because the headline is the highest-stakes output
-and a universal second pass is disproportionate at `standard` effort.
+and a universal second pass is disproportionate at `standard` rigor.
 
-At `deep` effort, the skill can fan out per-requirement or per-target
+At `deep` rigor, the skill can fan out per-requirement or per-target
 assessment to subagents that return structured findings. Roll-up judgment and
 headline ratings **MUST** remain with the orchestrating skill, and subagent
 evidence must meet the same locator and verification rules.
@@ -663,7 +679,7 @@ quality/evaluations/
     model.md
     design.md
     plan.md
-    assessments/
+    assessment-results/
       001-<target>-<requirement>.json
       002-<target>-<requirement>.json
     analysis/
@@ -695,45 +711,45 @@ Together these separate the three things an audit must tell apart — the *input
   should record the revision (e.g. commit) of the subject it was taken
   against.
 - The folder **MUST** include a **design** artifact recording the evaluation's
-  resolved parameters — mode, target file, scope, and effort (see
+  resolved parameters — mode, target file, scope, and rigor (see
   [Arguments](#arguments)) — and a citation of the `model.md` snapshot the run is
   bound to. It is the authoritative record of *what* was evaluated and *under what
   inputs*, so a later reader or re-run can reproduce the setup. The report's
   **Scope** statement is the reader-facing summary of this; the full
   parameterization lives here, stated once.
 - The folder **MUST** include a **plan** artifact recording the run's *method* —
-  how the skill covers each in-scope target's `source` at the chosen effort (per
-  [Effort levels](#effort-levels)): the entities or hotspots to assess, their
+  how the skill covers each in-scope target's `source` at the chosen rigor (per
+  [Rigor levels](#rigor-levels)): the entities or hotspots to assess, their
   order, and any diagnostics to run. The report's statement of what was *not
-  assessed* (see [Effort levels](#effort-levels)) **MUST** reconcile actual
+  assessed* (see [Rigor levels](#rigor-levels)) **MUST** reconcile actual
   coverage against this plan, so divergence between intended and achieved coverage
-  is visible rather than silent. The plan **MUST** name the effort level and the
-  concrete requirements selected by that effort. The design and plan together
+  is visible rather than silent. The plan **MUST** name the rigor level and the
+  concrete requirements selected by that rigor. The design and plan together
   **MUST** record enough concise report context for the CLI-rendered summary
-  layer: effort, scope or narrowing, in-scope requirement set, out-of-scope or
+  layer: rigor, scope or narrowing, in-scope requirement set, out-of-scope or
   deferred areas, headline evidence basis, and limitations that constrain the
   rating.
 - The folder can include optional **planned coverage** metadata when the run
   needs machine-checkable resume diagnostics. The skill supplies the intended
   assessment requirements and analysis targets as `coverage:` frontmatter in
   `plan.md` after the plan is settled.
-- The folder **MUST** capture the **assessment records** the Evaluate phase
+- The folder **MUST** capture the **assessment result records** the Evaluate phase
   produces as JSON — one artifact per in-scope requirement, holding its findings
   (each with its locator), the rating inferred against the requirement's
   `criterion`, and a brief rationale: the assess → finding → rating chain of
   [Grounding judgment](#grounding-judgment). A *not assessed* requirement gets a
-  record too, with `rating: null`, `notAssessed: true`, and a rationale stating
+  record too, with `ratingResult.kind: not-assessed`, and a rationale stating
   the absent evidence. Each record is **written atomically and never mutated** —
   a re-assessment (e.g. under `improve`) produces a new evaluation folder rather
-  than editing an existing record. The skill writes assessment records through
-  `qualitymd evaluation assessment add`; the CLI owns serialization,
+  than editing an existing record. The skill writes assessment result records through
+  `qualitymd evaluation assessment-result add`; the CLI owns serialization,
   numbering, and `schemaVersion`.
 - The folder **MUST** capture the **analysis records** the Analyze phase produces
   as JSON — one write-once artifact per target node — holding that node's inferred
   **local** and **aggregate** ratings and its **factor** ratings, each with a brief
   rationale naming the binding constraints (the inferred, weighted roll-up of
   [Grounding judgment](#grounding-judgment)). Each record **MUST cite the records
-  it derives from**: the in-scope **assessment records** behind its local rating,
+  it derives from**: the in-scope **assessment result records** behind its local rating,
   and its **children's analysis records** behind its aggregate — so the chain leaf
   → node → root is explicit and a *not assessed* outcome is visible wherever it
   propagates. The skill writes analysis records through
@@ -745,7 +761,7 @@ top-level fields tied to the evaluation workflow, not fields invented for one
 factor or requirement. Domain-specific details live under `attributes` on the
 smallest relevant object.
 
-An assessment record's finding uses generic fields:
+An assessment result record's finding uses generic fields:
 
 - `locator`
 - `observation`
@@ -762,14 +778,14 @@ recorded, not followed.
 The report is the **render over these records**, not an independent copy:
 `report-summary.md` is the concise human triage artifact, `report.md` is the
 full human rendering, and `report.json` is the machine-readable rendering of the
-same result, produced by `qualitymd evaluation report build`. The assessment records are the source of record for
+same result, produced by `qualitymd evaluation report build`. The assessment result records are the source of record for
 Assess-and-Rate and the analysis records for Analyze, and the report's
 per-requirement and per-target sections derive from them (the report adds the
 Advise and Report layers and the reader-facing framing). `report.json` should
 inline only minimal generic finding summaries by assessment-record reference for
-single-file consumers; full finding detail remains in `assessments/*.json`. This
+single-file consumers; full finding detail remains in `assessment-results/*.json`. This
 keeps the report from drifting and makes every rating in it traceable — leaf
-finding → assessment record → analysis record → report — to the immutable records
+finding → assessment result record → analysis record → report — to the immutable records
 that produced it.
 
 Human Markdown report labels are resolved from the run's `model.md` snapshot:
@@ -777,9 +793,13 @@ Model, Target, Factor, and Rating Level titles are primary display text, with
 stable identifiers retained where the report needs traceability. `report.json`
 preserves stable identifiers for machines.
 
-The CLI-rendered report **MUST** be summary-first for human readers: Summary,
-Scope, Top Risks and Limitations, Evidence Basis, Next Action, and Target Summary
-come before the detailed target and requirement sections. The JSON report
+The CLI-rendered concise summary **MUST** read as a decision brief for human
+readers: key details, Summary, Top Issues, Recommendations, and Scope &
+Limitations. Its key details use reader-facing labels including "Full
+evaluation" for an unnarrowed run and "Overall rating" for the in-scope
+subject's headline rating. Its Recommendations section surfaces copyable
+Recommendation IDs for follow-up prompts. The full `report.md` remains
+summary-first before detailed target and requirement sections. The JSON report
 **MUST** expose the same summary-layer data with non-null scope, empty arrays for
 empty collections, explicit rating objects for null or not-assessed ratings, and
 a structural state for grouping targets with no local requirements.
@@ -789,7 +809,7 @@ secret value by `file:line` and type only (see
 [Boundaries](#boundaries-and-hard-rules)).
 
 A worked reference instance of this layout — model snapshot, design, plan,
-assessment records, analysis records, report, and recommendations — is in
+assessment result records, analysis records, report, and recommendations — is in
 [`examples/`](examples/index.md).
 
 Each recommendation file **MUST** stand on its own as a unit a reader can triage
@@ -817,9 +837,9 @@ stale original — the ambiguity is silent. Superseding makes the active advice
 unambiguous while preserving the audit trail.
 
 When correcting an already written assessment, the skill should write a new
-assessment record with `supersedes` pointing at the stale assessment, then
+assessment result record with `supersedes` pointing at the stale assessment, then
 replace the affected analysis record so it references the active assessment. This
-analysis step is required for assessments — and not for recommendations — because
+analysis step is required for assessment results — and not for recommendations — because
 analysis ratings bind to assessment references, so a corrected assessment left
 unpaired with its analysis would let a roll-up silently rely on stale judgment.
 
@@ -837,10 +857,10 @@ unpaired with its analysis would let a roll-up silently rely on stale judgment.
 
 ## Deferred
 
-- **Additional bundled `resources/` assets.** The settled runtime resources are
-  listed in [Invocation](#frontmatter-and-metadata). Future resources, such as an
-  evaluation playbook or report template, remain deferred until the workflow
-  needs them.
+- **Additional bundled resources or guides.** The settled runtime resources and
+  guides are listed in [Invocation](#frontmatter-and-metadata). Future assets,
+  such as an evaluation playbook or report template, remain deferred until the
+  workflow needs them.
 - **`improve` apply mechanics.** The shape of the apply step is settled — apply a
   chosen recommendation's option on explicit confirmation, then re-evaluate the
   affected scope to confirm it reached the recommendation's done-criterion (see

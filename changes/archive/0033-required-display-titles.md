@@ -61,11 +61,11 @@ Implementation is complete and archived.
       identifier-based.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       and
-      [`specs/skills/quality-skill/authoring-guide.md`](../../specs/skills/quality-skill/authoring-guide.md)
+      [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
       - update the skill contract and authoring-guide spec for required display
       titles and title-first human output.
 - [x] [`README.md`](../../README.md) - update examples and schema reference.
-- [x] [`skills/quality/resources/quality-md-guide.md`](../../skills/quality/resources/quality-md-guide.md)
+- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
       - update runtime authoring guidance.
 - [x] [`internal/scaffold/skeleton.md`](../../internal/scaffold/skeleton.md) -
       include required placeholder titles in generated scaffolds.

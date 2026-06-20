@@ -12,7 +12,7 @@ Resolve target file
 
 Run qualitymd lint
 - errors? stop and report lint findings
-- valid? route to wizard for population or next action
+- valid? route to getting-started for population, then wizard for next action
 ```
 
 ## Procedure
@@ -45,8 +45,11 @@ Run qualitymd lint
    ```
 
 6. Run `qualitymd lint [path]`; stop on errors and report the CLI findings.
-7. Hand off to `wizard` to guide model population and the next evaluation.
+7. Read [`../guides/authoring.md`](../guides/authoring.md), then hand off to
+   [`../guides/getting-started.md`](../guides/getting-started.md) to guide first
+   model population. Route to `wizard` after population for the next evaluation
+   workflow.
 
 `setup` creates a valid skeleton; it does not invent a complete quality model
 without user/project context. For authoring judgment, read
-[`../resources/quality-md-guide.md`](../resources/quality-md-guide.md).
+[`../guides/authoring.md`](../guides/authoring.md).

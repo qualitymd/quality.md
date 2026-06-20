@@ -10,9 +10,8 @@ that make it concrete. The installable skill artifact lives at
 
 - [/quality skill](quality-skill.md) - the functional spec: operating model,
   invocation, evaluation workflow, and reporting contract.
-- [QUALITY.md authoring guide](authoring-guide.md) - contract for the skill's
-  authoring guide resource: a single comprehensive guide to understanding and
-  working with `QUALITY.md` files.
+- [guides/](guides/index.md) - contracts for runtime guide resources bundled
+  with the skill, including authoring, getting-started, and checklist guides.
 - [Installable skill artifact](../../../skills/quality/SKILL.md) - the prompt
   distributed by Agent Skills tooling.
 

@@ -16,20 +16,20 @@ subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
 `file:line` locator are fictional and illustrative; the model uses the suggested
 four-level rating scale
 (**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
-`design.md`, `plan.md`, and the `assessments/` and `analysis/` records are the
+`design.md`, `plan.md`, and the `assessment-results/` and `analysis/` records are the
 snapshot, inputs, method, and write-once evidence trail the skill writes alongside
 the report (see [Reporting](../quality-skill.md#reporting)), so the report's
 findings trace to the model, parameters, coverage, and per-requirement and
 per-target records in force at evaluation time. A full run records one assessment
 per in-scope requirement and one analysis per target node; the folders here keep a
-**representative subset** — `assessments/` the committed-key **Unacceptable**, the
+**representative subset** — `assessment-results/` the committed-key **Unacceptable**, the
 *not assessed* reconciliation, and the **Minimum** deduplication (of eight); and
 `analysis/` the root (bound by its own local rating) and Webhooks (whose aggregate
 falls below its local rating because the Delivery child binds) of four.
 
 # Examples
 
-- **[0001 — Sparrow Payments, whole model](0001-subject-quality-eval/report.md)**
+- **[0001 — Sparrow Payments, full evaluation](0001-subject-quality-eval/report.md)**
   — a subject evaluation of a small fictional payments service, held at
   **Unacceptable** by a committed live credential. Exercises `file:line`
   evidence, the secret-by-reference rule, a prompt-injection finding treated as
@@ -45,7 +45,7 @@ falls below its local rating because the Delivery child binds) of four.
   [model evaluated](0001-subject-quality-eval/model.md) →
   the [design](0001-subject-quality-eval/design.md) and
   [plan](0001-subject-quality-eval/plan.md) →
-  the [assessment records](0001-subject-quality-eval/assessments/) →
+  the [assessment result records](0001-subject-quality-eval/assessment-results/) →
   the [analysis records](0001-subject-quality-eval/analysis/) →
   the [summary](0001-subject-quality-eval/report-summary.md),
   [human report](0001-subject-quality-eval/report.md), and

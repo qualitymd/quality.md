@@ -1,19 +1,21 @@
 # Authoring QUALITY.md
 
-A single, comprehensive guide to understanding and working with `QUALITY.md`
-files: the format concepts and the authoring jobs attached to each.
+The canonical reference and best-practices guide for understanding and working
+with `QUALITY.md` files: the format concepts, authoring practices, and jobs
+attached to each.
 
-This guide conforms to [`SPECIFICATION.md`](SPECIFICATION.md). The specification governs on any conflict.
+This guide conforms to [`SPECIFICATION.md`](../resources/SPECIFICATION.md). The
+specification governs on any conflict.
 
 ## Contents
 
 - [The QUALITY.md file](#the-qualitymd-file)
 - [Quality Model](#quality-model)
+- [The Markdown body](#the-markdown-body)
 - [Rating Scale](#rating-scale)
 - [Target](#target)
 - [Factor](#factor)
 - [Requirement](#requirement)
-- [The Markdown body](#the-markdown-body)
 - [When to update QUALITY.md](#when-to-update-qualitymd)
 
 ---
@@ -71,6 +73,20 @@ shares with Target.
 - **Do** name the entity (`title`) and think through the body's Overview first —
   what the thing is and what "good" means for it — before listing factors.
 
+#### Build from context, then scale, then model tree
+
+- **Do** fill the Markdown body before expanding the frontmatter. *The body is
+  where the model gets its judgment context: what the subject is, what decisions
+  the model supports, what quality means here, and which risks matter enough to
+  assess.*
+- **Do** confirm the rating scale after the body and before writing Requirements.
+  *The scale is the shared vocabulary for turning future findings into ratings;
+  Requirements are easier to write once "unacceptable", "minimum", "target", and
+  "outstanding" mean something for this subject.*
+- **Do** derive Factors and Requirements from the body context. *Factors and
+  Requirements should express the subject's needs, risks, scope, and known gaps,
+  not lead them.*
+
 #### Keep the root lean when child targets carry the detail
 
 - **Consider** declaring only model-wide factors at the root and pushing
@@ -91,6 +107,46 @@ shares with Target.
 - **Do** stop the chain where ownership or value stops: model referenced entities
   as targets while you own them; let a guide that governs its own kind be its own
   assessment rather than adding another layer.
+
+---
+
+## The Markdown body
+
+The body gives the context an evaluator needs to interpret and weigh the model:
+why these factors, why these requirements, and what matters most.
+
+The body is optional and fixes no required sections; you may rename, reorder, or
+replace these. They're recommended starting points:
+
+| Section        | Desired outcome                                                                                                                                                       |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Overview**   | A reader can say what the subject is, who depends on it, and why its quality matters. This names the real entity, not just the repo or file where `QUALITY.md` lives. |
+| **Scope**      | A reader can tell what is included, what is excluded for now, and where the model boundary sits. Out-of-scope is not a deficiency.                                    |
+| **Needs**      | A reader can see the outcomes the subject must support and the users, operators, maintainers, or downstream systems those outcomes serve.                             |
+| **Risks**      | A reader can see the failures that would make the subject untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial Factors.  |
+| **Known gaps** | A reader can see current weaknesses, weak evidence, and known unknowns: missing context, unresolved questions, and evidence gaps not fully identified elsewhere.      |
+
+### Working with the body
+
+- **Do** write the body before expanding the model tree. *It is the fastest way
+  to discover what Factors and Requirements the frontmatter should express.*
+- **Do** capture, in Needs and Risks, why some requirements matter more than
+  others. *Importance and gaps both depend on this context.*
+- **Do** use the body to explain any rating-scale change. *A custom scale should
+  answer a real decision need visible in the body.*
+
+#### Keep Scope, Known gaps, and "not assessed" distinct
+
+- **Do** use **Scope** for concerns outside the model's remit, and **Known gaps**
+  for in-scope concerns you've deliberately deferred or cannot yet define.
+- **Do** record known unknowns as **Known gaps** when missing context, unresolved
+  questions, or weak evidence prevented the rest of the body from being fully
+  identified. *This keeps uncertainty visible without pretending it has already
+  been evaluated.*
+- **Do** record genuinely in-scope-but-deferred concerns as **Known gaps**. *A
+  declared gap is clearer than a surprise not-assessed result.*
+- **Don't** confuse **Known gaps** (your standing declaration) with a **not
+  assessed** result (an evaluator's per-run finding that evidence was missing).
 
 ---
 
@@ -131,6 +187,10 @@ Each level does two distinct jobs through two properties:
 - **Do** choose a different scale only when the subject demands it (e.g. a
   pass/fail gate wants two levels). *The scale should fit how decisions are
   actually made about this entity.*
+- **Do** review the scale after writing the body. *The body should reveal whether
+  "good enough" and "excellent" need sharper meaning for this subject.*
+- **Avoid** inventing a custom scale before the body reveals a real need for
+  one.
 
 #### Keep `description` about meaning and `criterion` about rating
 
@@ -247,6 +307,9 @@ different targets are distinct.
 - **Do** pick the handful of quality characteristics that genuinely drive this
   entity's quality. **Avoid** importing a standard checklist of characteristics
   wholesale.
+- **Do** derive initial factors from the body's Needs and Risks. *Needs point at
+  the outcomes quality should preserve; Risks point at the failure modes worth
+  assessing.*
 
 #### Write the description as an operational definition
 
@@ -315,6 +378,9 @@ the target it sits on, and counts once in that target's local rating.
 
 - **Do** write requirements specific enough that a single result stands on its
   own. *A vague requirement produces a vague rating.*
+- **Do** write Requirements that make the body context assessable. *A Requirement
+  should turn an important need, risk, or known gap into an expectation an
+  evaluator can inspect.*
 
 #### Give each requirement exactly one assessment
 
@@ -379,40 +445,6 @@ the target it sits on, and counts once in that target's local rating.
     minimum: "p99 at or under 500 ms."
     unacceptable: "p99 above 500 ms."
 ```
-
----
-
-## The Markdown body
-
-The body gives the context an evaluator needs to interpret and weigh the model:
-why these factors, why these requirements, and what matters most.
-
-The body is optional and fixes no required sections; you may rename, reorder, or
-replace these. They're recommended starting points:
-
-| Section        | What it captures                                                                       |
-| -------------- | -------------------------------------------------------------------------------------- |
-| **Overview**   | What the subject is, who depends on it, and what "good" means here.                    |
-| **Scope**      | What the model covers and deliberately leaves out. Out-of-scope ≠ deficiency.          |
-| **Needs**      | Stakeholder outcomes the requirements answer to — the source of how much each matters. |
-| **Risks**      | What goes wrong, and for whom, if a need isn't met.                                    |
-| **Known gaps** | In-scope concerns deliberately deferred, each with a brief reason.                     |
-
-### Working with the body
-
-- **Do** capture, in Needs and Risks, why some requirements matter more than
-  others. *Importance and gaps both depend on this context.*
-
-#### Keep Scope, Known gaps, and "not assessed" distinct
-
-- **Do** use **Scope** for concerns outside the model's remit, and **Known gaps**
-  for in-scope concerns you've deliberately deferred.
-- **Do** record genuinely in-scope-but-deferred concerns as **Known gaps**. *A
-  declared gap is clearer than a surprise not-assessed result.*
-- **Don't** confuse **Known gaps** (your standing declaration) with a **not
-  assessed** result (an evaluator's per-run finding that evidence was missing).
-
----
 
 ## When to update QUALITY.md
 

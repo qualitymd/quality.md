@@ -38,7 +38,7 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	if result.Path != "quality/evaluations/0001-subject-quality-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
-	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
+	for _, name := range []string{"model.md", "design.md", "plan.md", "assessment-results", "analysis", "recommendations"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); err != nil {
 			t.Fatalf("missing %s: %v", name, err)
 		}
@@ -78,11 +78,15 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	rec, err := AddRecord(KindRecommendation, runPath, []byte(`{
   "title": "Fix the test gap",
   "gap": "Tests are missing.",
-  "evidenceLocators": ["tests/example_test.go:1"],
-  "assessmentRecords": [],
-  "remediationOptions": ["Add tests"],
+  "evidenceLocators": [
+    "tests/example_test.go:1"
+  ],
+  "remediationOptions": [
+    "Add tests"
+  ],
   "recommendedOption": "Add tests",
-  "doneCriterion": "The requirement reaches target."
+  "doneCriterion": "The requirement reaches target.",
+  "assessmentResultRecords": []
 }`))
 	if err != nil {
 		t.Fatalf("AddRecord(recommendation) error = %v", err)
@@ -91,44 +95,53 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 		t.Fatalf("recommendation path = %q, want numbered markdown", rec.Path)
 	}
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "minimum",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [
     {
       "locator": "tests/example_test.go:1",
-      "observation": "Only a smoke test exists.",
       "category": "coverage",
-      "evidence": [{ "kind": "source", "ref": "tests/example_test.go:1" }]
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "tests/example_test.go:1"
+        }
+      ],
+      "observation": "Only a smoke test exists."
     }
   ],
-  "rationale": "Some evidence exists but coverage is thin.",
-  "recommendations": ["001-fix-the-test-gap"]
+  "recommendations": [
+    "001-fix-the-test-gap"
+  ],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Some evidence exists but coverage is thin."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "minimum",
-    "notAssessed": false,
-    "rationale": "Thin coverage binds the local rating."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "Thin coverage binds the local rating."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "minimum",
-    "notAssessed": false,
-    "rationale": "The root local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "The root local rating binds."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
 	}
@@ -137,7 +150,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.Status()
+	status := loaded.EvaluationRunStatus()
 	if !status.Reportable {
 		t.Fatalf("status.Reportable = false, gaps = %#v", status.Gaps)
 	}
@@ -159,7 +172,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
 		}
 	}
-	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`, `"rating": "minimum"`} {
+	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`, `"ratingResult": {`, `"level": "minimum"`} {
 		if !strings.Contains(string(first), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, first)
 		}
@@ -177,8 +190,8 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if string(first) != string(second) {
 		t.Fatal("report.json changed across idempotent render")
 	}
-	if build.Rating == nil || *build.Rating != "minimum" {
-		t.Fatalf("build rating = %#v, want minimum", build.Rating)
+	if build.RatingResult.Kind != "rated" || build.RatingResult.Level != "minimum" {
+		t.Fatalf("build ratingResult = %#v, want rated minimum", build.RatingResult)
 	}
 	if build.ReportSummaryMD == "" {
 		t.Fatal("build.ReportSummaryMD is empty")
@@ -187,13 +200,18 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report-summary.md: %v", err)
 	}
-	for _, want := range []string{"# Quality Evaluation Summary", "**Run:**", "**Root rating:** 🟡 Minimum", "[report.md](report.md)", "[report.json](report.json)", "## Top Risks", "None recorded.", "## Rating Summary", "## Limitations", "## Next Action", "[001-fix-the-test-gap](recommendations/001-fix-the-test-gap.md)"} {
+	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Overall rating | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Summary", "## Top Issues", "Only a smoke test exists.", "## Recommendations", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
 	}
-	if strings.Contains(string(summaryMD), "**Root rating:** minimum") {
-		t.Fatalf("report-summary.md rendered level id as root rating:\n%s", summaryMD)
+	if strings.Contains(string(summaryMD), "| Overall rating | minimum |") {
+		t.Fatalf("report-summary.md rendered level id as overall rating:\n%s", summaryMD)
+	}
+	for _, notWant := range []string{"**Root rating:**", "## Rating Summary", "## Limitations", "## Next Action"} {
+		if strings.Contains(string(summaryMD), notWant) {
+			t.Fatalf("report-summary.md contains old summary section or label %q:\n%s", notWant, summaryMD)
+		}
 	}
 	for _, notWant := range []string{"## Requirements", "## Findings", "### Has tests"} {
 		if strings.Contains(string(summaryMD), notWant) {
@@ -250,71 +268,97 @@ targets:
 	}
 	runPath := filepath.Join(repo, run.Path)
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "api-service",
-  "targetPath": ["api-service"],
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [
+    "api-service"
+  ],
   "requirement": "Handles API requests",
-  "factors": ["automation-compatibility", "reliability"],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "The assessed requirement reaches the target level.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [
+    [
+      "automation-compatibility"
+    ],
+    [
+      "reliability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The assessed requirement reaches the target level."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "api-service",
-  "targetPath": ["api-service"],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The local requirement reaches the target level."
+  "targetPath": [
+    "api-service"
+  ],
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The local requirement reaches the target level."
   },
-  "factorRatings": [
+  "factorRatingResults": [
     {
-      "factor": "automation-compatibility",
-      "rating": "target",
-      "notAssessed": false,
-      "rationale": "The automation factor reaches the target level."
+      "factorPath": [
+        "automation-compatibility"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The automation factor reaches the target level."
+      }
     },
     {
-      "factor": "reliability",
-      "rating": "target",
-      "notAssessed": false,
-      "rationale": "The inherited reliability factor reaches the target level."
+      "factorPath": [
+        "reliability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The inherited reliability factor reaches the target level."
+      }
     }
   ],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The local rating binds the aggregate."
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The local rating binds the aggregate."
   },
-  "assessmentRecords": ["assessments/001-api-service-handles-api-requests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-api-service-handles-api-requests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "root",
   "targetPath": [],
-  "localRating": null,
-  "factorRatings": [
+  "childAnalysisRecords": [
+    "analysis/api-service.json"
+  ],
+  "localRatingResult": null,
+  "factorRatingResults": [
     {
-      "factor": "reliability",
-      "rating": "target",
-      "notAssessed": false,
-      "rationale": "The root reliability factor reaches the target level."
+      "factorPath": [
+        "reliability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The root reliability factor reaches the target level."
+      }
     }
   ],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child aggregate rating binds the root."
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child aggregate rating binds the root."
   },
-  "assessmentRecords": [],
-  "childAnalysisRecords": ["analysis/api-service.json"]
+  "assessmentResultRecords": []
 }`)); err != nil {
 		t.Fatalf("AddRecord(root analysis) error = %v", err)
 	}
@@ -361,15 +405,15 @@ targets:
 		}
 	}
 	for _, want := range []string{
-		"**Subject:** `Root Quality Model`",
-		"| Root Quality Model | Good |",
-		"| API Service | Good |",
+		"| Subject | Root Quality Model |",
+		"| Root Quality Model | n/a (structural) | Good |",
+		"| API Service | Good | Good |",
 	} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
 	}
-	for _, want := range []string{`"target": "api-service"`, `"factor": "automation-compatibility"`, `"factor": "reliability"`, `"rating": "target"`} {
+	for _, want := range []string{`"targetPath": [`, `"api-service"`, `"factorPath": [`, `"automation-compatibility"`, `"reliability"`, `"ratingResult": {`, `"level": "target"`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing stable identifier %q:\n%s", want, reportJSON)
 		}
@@ -382,18 +426,18 @@ targets:
 }
 
 func TestDisplayRatingUsesTitleAndPreservesNonRatingStates(t *testing.T) {
-	rating := "minimum"
-	if got := displayRating(&rating, false, map[string]string{"minimum": "🟡 Minimum"}); got != "🟡 Minimum" {
-		t.Fatalf("displayRating() = %q, want title", got)
+	result := RatingResult{Kind: "rated", Level: "minimum", Rationale: "Meets the floor."}
+	if got := displayRatingResult(result, map[string]string{"minimum": "🟡 Minimum"}); got != "🟡 Minimum" {
+		t.Fatalf("displayRatingResult() = %q, want title", got)
 	}
-	if got := displayRating(&rating, false, map[string]string{}); got != "minimum" {
-		t.Fatalf("displayRating() = %q, want level fallback", got)
+	if got := displayRatingResult(result, map[string]string{}); got != "minimum" {
+		t.Fatalf("displayRatingResult() = %q, want level fallback", got)
 	}
-	if got := displayRating(&rating, true, map[string]string{"minimum": "🟡 Minimum"}); got != "not assessed" {
-		t.Fatalf("displayRating(not assessed) = %q", got)
+	if got := displayRatingResult(RatingResult{Kind: "not-assessed", Rationale: "No evidence."}, map[string]string{"minimum": "🟡 Minimum"}); got != "not assessed" {
+		t.Fatalf("displayRatingResult(not assessed) = %q", got)
 	}
-	if got := displayRatingResult(ReportRatingResult{Kind: "structural", Rating: &rating}, map[string]string{"minimum": "🟡 Minimum"}); got != "n/a (structural)" {
-		t.Fatalf("displayRatingResult(structural) = %q", got)
+	if got := displayOptionalRatingResult(nil, map[string]string{"minimum": "🟡 Minimum"}); got != "n/a (structural)" {
+		t.Fatalf("displayOptionalRatingResult(structural) = %q", got)
 	}
 }
 
@@ -404,58 +448,65 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
-	if err := os.WriteFile(filepath.Join(runPath, "design.md"), []byte("# Evaluation design\n\n## Resolved parameters\n\n- Mode: evaluate\n- Altitude: subject\n- Target file: `QUALITY.md`\n- Scope description: child target quick pass\n- Narrowing: `child-quick`\n- Effort: quick\n\n## Out of Scope\n\n- Browser tests.\n- Package-manager integration.\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(runPath, "design.md"), []byte("# Evaluation design\n\n## Resolved parameters\n\n- Mode: evaluate\n- Altitude: subject\n- Target file: `QUALITY.md`\n- Scope description: child target quick pass\n- Narrowing: `child-quick`\n- Rigor: quick\n\n## Out of Scope\n\n- Browser tests.\n- Package-manager integration.\n"), 0o644); err != nil {
 		t.Fatalf("write design.md: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte("# Evaluation plan\n\n## Effort\n\nQuick pass over one child target.\n\n## Planned limitations\n\n- Does not execute the full CI matrix.\n- Defers performance benchmarks.\n\n## Deferred Areas\n\n- Release packaging.\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte("# Evaluation plan\n\n## Rigor\n\nQuick pass over one child target.\n\n## Planned limitations\n\n- Does not execute the full CI matrix.\n- Defers performance benchmarks.\n\n## Deferred Areas\n\n- Release packaging.\n"), 0o644); err != nil {
 		t.Fatalf("write plan.md: %v", err)
 	}
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Child",
-  "targetPath": ["Child"],
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [
+    "Child"
+  ],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Focused tests cover the requirement. Does not execute the full CI matrix.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused tests cover the requirement. Does not execute the full CI matrix."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Child",
-  "targetPath": ["Child"],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child requirement reaches target."
+  "targetPath": [
+    "Child"
+  ],
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child requirement reaches target."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child local rating binds."
   },
-  "assessmentRecords": ["assessments/001-child-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-child-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": null,
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child aggregate rating binds the root."
+  "childAnalysisRecords": [
+    "analysis/child.json"
+  ],
+  "localRatingResult": null,
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child aggregate rating binds the root."
   },
-  "assessmentRecords": [],
-  "childAnalysisRecords": ["analysis/child.json"]
+  "assessmentResultRecords": []
 }`)); err != nil {
 		t.Fatalf("AddRecord(root analysis) error = %v", err)
 	}
@@ -471,7 +522,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{`"recommendations": []`, `"kind": "structural"`, `"narrowing": "child-quick"`, `"effort": "quick"`} {
+	for _, want := range []string{`"recommendations": []`, `"structural": true`, `"narrowing": "child-quick"`, `"rigor": "quick"`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, reportJSON)
 		}
@@ -513,60 +564,84 @@ func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 	if _, err := AddRecord(KindRecommendation, runPath, []byte(`{
   "title": "Remove committed credential-like value",
   "gap": "A credential-like value is committed and must be removed without copying the value into artifacts.",
-  "evidenceLocators": ["src/config.js:4"],
-  "assessmentRecords": [],
-  "remediationOptions": ["Move the value to runtime configuration and rotate it."],
+  "evidenceLocators": [
+    "src/config.js:4"
+  ],
+  "remediationOptions": [
+    "Move the value to runtime configuration and rotate it."
+  ],
   "recommendedOption": "Move the value to runtime configuration and rotate it.",
-  "doneCriterion": "The safety requirement reaches target and a credential scan over src/config.js passes."
+  "doneCriterion": "The safety requirement reaches target and a credential scan over src/config.js passes.",
+  "assessmentResultRecords": []
 }`)); err != nil {
 		t.Fatalf("AddRecord(recommendation) error = %v", err)
 	}
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": ["safety"],
-  "rating": "unacceptable",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [
     {
       "locator": "src/config.js:4",
-      "observation": "A credential-like API key is committed; cite the credential type and locator only.",
       "category": "secret-handling",
       "severity": "critical",
-      "evidence": [{ "kind": "source", "ref": "src/config.js:4" }],
-      "attributes": { "credentialType": "payment-gateway API key" }
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "src/config.js:4"
+        }
+      ],
+      "attributes": {
+        "credentialType": "payment-gateway API key"
+      },
+      "observation": "A credential-like API key is committed; cite the credential type and locator only."
     },
     {
       "locator": "docs/evaluator-notes.md:5",
-      "observation": "Hostile evaluator-directed source text is present and was treated as data, not followed.",
       "category": "prompt-injection",
       "severity": "high",
-      "evidence": [{ "kind": "source", "ref": "docs/evaluator-notes.md:5" }]
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "docs/evaluator-notes.md:5"
+        }
+      ],
+      "observation": "Hostile evaluator-directed source text is present and was treated as data, not followed."
     }
   ],
-  "rationale": "Safety is unacceptable because hostile source content and a committed credential-like value are present.",
-  "recommendations": ["001-remove-committed-credential-like-value"]
+  "recommendations": [
+    "001-remove-committed-credential-like-value"
+  ],
+  "factorPaths": [
+    [
+      "safety"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "Safety is unacceptable because hostile source content and a committed credential-like value are present."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "unacceptable",
-    "notAssessed": false,
-    "rationale": "The safety assessment binds the root."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "unacceptable",
+      "rationale": "The safety assessment result binds the root."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "unacceptable",
-    "notAssessed": false,
-    "rationale": "The committed credential-like value and hostile source text bind the aggregate rating."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "unacceptable",
+      "rationale": "The committed credential-like value and hostile source text bind the aggregate rating."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
 	}
@@ -606,52 +681,66 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	if _, err := AddRecord(KindRecommendation, runPath, []byte(`{
   "title": "Add production telemetry evidence",
   "gap": "Production telemetry evidence is absent.",
-  "evidenceLocators": ["docs/production-telemetry.md"],
-  "assessmentRecords": [],
-  "remediationOptions": ["Add production telemetry evidence."],
+  "evidenceLocators": [
+    "docs/production-telemetry.md"
+  ],
+  "remediationOptions": [
+    "Add production telemetry evidence."
+  ],
   "recommendedOption": "Add production telemetry evidence.",
-  "doneCriterion": "The requirement becomes assessable and reaches at least minimum."
+  "doneCriterion": "The requirement becomes assessable and reaches at least minimum.",
+  "assessmentResultRecords": []
 }`)); err != nil {
 		t.Fatalf("AddRecord(recommendation) error = %v", err)
 	}
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": ["observability"],
-  "rating": null,
-  "notAssessed": true,
   "criterionSource": "rating-scale",
   "findings": [
     {
       "locator": "docs/production-telemetry.md",
-      "observation": "Required production telemetry evidence is absent.",
       "category": "missing-evidence",
       "severity": "high",
-      "evidence": [{ "kind": "missing-path", "ref": "docs/production-telemetry.md" }]
+      "evidence": [
+        {
+          "kind": "missing-path",
+          "ref": "docs/production-telemetry.md"
+        }
+      ],
+      "observation": "Required production telemetry evidence is absent."
     }
   ],
-  "rationale": "Observability cannot be assessed because docs/production-telemetry.md is absent and the model says not to infer from local tests.",
-  "recommendations": ["001-add-production-telemetry-evidence"]
+  "recommendations": [
+    "001-add-production-telemetry-evidence"
+  ],
+  "factorPaths": [
+    [
+      "observability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "not-assessed",
+    "rationale": "Observability cannot be assessed because docs/production-telemetry.md is absent and the model says not to infer from local tests."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": null,
-    "notAssessed": true,
-    "rationale": "The required production telemetry evidence is missing."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "not-assessed",
+      "rationale": "The required production telemetry evidence is missing."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": null,
-    "notAssessed": true,
-    "rationale": "The root cannot be assessed because docs/production-telemetry.md is absent."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "not-assessed",
+      "rationale": "The root cannot be assessed because docs/production-telemetry.md is absent."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
 	}
@@ -667,11 +756,11 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Report() error = %v", err)
 	}
-	if report.Rating.Rating != nil || !report.Rating.NotAssessed {
-		t.Fatalf("root rating = %#v, want not assessed with nil rating", report.Rating)
+	if report.RatingResult.Kind != "not-assessed" || report.RatingResult.Level != "" {
+		t.Fatalf("root ratingResult = %#v, want not assessed with empty level", report.RatingResult)
 	}
-	if len(report.Assessments) != 1 || report.Assessments[0].Rating != nil || !report.Assessments[0].NotAssessed {
-		t.Fatalf("assessment = %#v, want not assessed with nil rating", report.Assessments)
+	if len(report.AssessmentResults) != 1 || report.AssessmentResults[0].RatingResult.Kind != "not-assessed" || report.AssessmentResults[0].RatingResult.Level != "" {
+		t.Fatalf("assessment result = %#v, want not assessed with empty level", report.AssessmentResults)
 	}
 	joinedLimitations := strings.Join(report.Limitations, "\n")
 	if !strings.Contains(joinedLimitations, "docs/production-telemetry.md") {
@@ -692,36 +781,42 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 	}
 	runPath := filepath.Join(repo, run.Path)
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Child",
-  "targetPath": ["Child"],
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [
+    "Child"
+  ],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Focused tests cover the requirement.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused tests cover the requirement."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Child",
-  "targetPath": ["Child"],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child requirement reaches target."
+  "targetPath": [
+    "Child"
+  ],
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child requirement reaches target."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child local rating binds."
   },
-  "assessmentRecords": ["assessments/001-child-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-child-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
 	}
@@ -730,7 +825,7 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.Status()
+	status := loaded.EvaluationRunStatus()
 	if status.Reportable {
 		t.Fatalf("status.Reportable = true, want false")
 	}
@@ -742,7 +837,7 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 	}
 }
 
-func TestStatusRejectsDuplicateAssessments(t *testing.T) {
+func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
 	repo := testRepo(t)
 	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
@@ -751,39 +846,41 @@ func TestStatusRejectsDuplicateAssessments(t *testing.T) {
 	runPath := filepath.Join(repo, run.Path)
 
 	payload := []byte(`{
-  "target": "Root",
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Focused tests cover the requirement.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused tests cover the requirement."
+  }
 }`)
-	if _, err := AddRecord(KindAssessment, runPath, payload); err != nil {
-		t.Fatalf("AddRecord(first assessment) error = %v", err)
+	if _, err := AddRecord(KindAssessmentResult, runPath, payload); err != nil {
+		t.Fatalf("AddRecord(first assessment result) error = %v", err)
 	}
-	if _, err := AddRecord(KindAssessment, runPath, payload); err != nil {
-		t.Fatalf("AddRecord(duplicate assessment) error = %v", err)
+	if _, err := AddRecord(KindAssessmentResult, runPath, payload); err != nil {
+		t.Fatalf("AddRecord(duplicate assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The first assessment reaches target."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The first assessment result reaches target."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The root local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The root local rating binds."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
 	}
@@ -792,25 +889,25 @@ func TestStatusRejectsDuplicateAssessments(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.Status()
+	status := loaded.EvaluationRunStatus()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
-	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "duplicate-assessment" {
-		t.Fatalf("status.Gaps = %#v, want duplicate-assessment", status.Gaps)
+	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "duplicate-assessment-result" {
+		t.Fatalf("status.Gaps = %#v, want duplicate-assessment-result", status.Gaps)
 	}
-	if status.Gaps[0].Ref != "assessments/002-root-has-tests.json" || !strings.Contains(status.Gaps[0].Detail, "assessments/001-root-has-tests.json") {
+	if status.Gaps[0].Ref != "assessment-results/002-root-has-tests.json" || !strings.Contains(status.Gaps[0].Detail, "assessment-results/001-root-has-tests.json") {
 		t.Fatalf("duplicate gap = %#v, want duplicate ref and prior detail", status.Gaps[0])
 	}
 	if len(status.NextActions) != 1 || status.NextActions[0].ID != "review-gaps" {
 		t.Fatalf("status.NextActions = %#v, want review-gaps", status.NextActions)
 	}
 	if _, err := BuildReport(runPath); err == nil {
-		t.Fatal("BuildReport() error = nil, want duplicate-assessment")
+		t.Fatal("BuildReport() error = nil, want duplicate-assessment-result")
 	}
 }
 
-func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
+func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	repo := testRepo(t)
 	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
@@ -818,51 +915,56 @@ func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	}
 	runPath := filepath.Join(repo, run.Path)
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "minimum",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Only thin evidence exists.",
-  "recommendations": []
-}`)); err != nil {
-		t.Fatalf("AddRecord(first assessment) error = %v", err)
-	}
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
-  "targetPath": [],
-  "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
-  "criterionSource": "rating-scale",
-  "findings": [],
-  "rationale": "Corrected evidence reaches target.",
   "recommendations": [],
-  "supersedes": ["001-root-has-tests"]
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Only thin evidence exists."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(corrected assessment) error = %v", err)
+		t.Fatalf("AddRecord(first assessment result) error = %v", err)
+	}
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [],
+  "requirement": "Has tests",
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "recommendations": [],
+  "supersedes": [
+    "001-root-has-tests"
+  ],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Corrected evidence reaches target."
+  }
+}`)); err != nil {
+		t.Fatalf("AddRecord(corrected assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "minimum",
-    "notAssessed": false,
-    "rationale": "The stale assessment still binds."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "The stale assessment result still binds."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "minimum",
-    "notAssessed": false,
-    "rationale": "The stale assessment still binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "The stale assessment result still binds."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(stale analysis) error = %v", err)
 	}
@@ -871,30 +973,31 @@ func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.Status()
+	status := loaded.EvaluationRunStatus()
 	if status.Reportable {
 		t.Fatal("status.Reportable with stale analysis = true, want false")
 	}
-	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "superseded-assessment-reference" {
-		t.Fatalf("status.Gaps = %#v, want superseded-assessment-reference", status.Gaps)
+	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "superseded-assessment-result-reference" {
+		t.Fatalf("status.Gaps = %#v, want superseded-assessment-result-reference", status.Gaps)
 	}
 
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The corrected assessment reaches target."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The corrected assessment result reaches target."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The corrected assessment binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The corrected assessment result binds."
   },
-  "assessmentRecords": ["assessments/002-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/002-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(corrected analysis) error = %v", err)
 	}
@@ -902,7 +1005,7 @@ func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load(after corrected analysis) error = %v", err)
 	}
-	if status := loaded.Status(); !status.Reportable {
+	if status := loaded.EvaluationRunStatus(); !status.Reportable {
 		t.Fatalf("status.Reportable after corrected analysis = false, gaps = %#v", status.Gaps)
 	}
 	if _, err := BuildReport(runPath); err != nil {
@@ -912,25 +1015,25 @@ func TestAssessmentSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Report() error = %v", err)
 	}
-	if len(report.Assessments) != 2 {
-		t.Fatalf("assessment count = %d, want 2", len(report.Assessments))
+	if len(report.AssessmentResults) != 2 {
+		t.Fatalf("assessment result count = %d, want 2", len(report.AssessmentResults))
 	}
-	if report.Assessments[0].Active {
-		t.Fatalf("first assessment active = true, want superseded")
+	if report.AssessmentResults[0].Active {
+		t.Fatalf("first assessment result active = true, want superseded")
 	}
-	if !report.Assessments[1].Active || len(report.Assessments[1].Supersedes) != 1 {
-		t.Fatalf("second assessment = %#v, want active superseding assessment", report.Assessments[1])
+	if !report.AssessmentResults[1].Active || len(report.AssessmentResults[1].Supersedes) != 1 {
+		t.Fatalf("second assessment result = %#v, want active superseding assessment result", report.AssessmentResults[1])
 	}
 	reportMD, err := os.ReadFile(filepath.Join(runPath, "report.md"))
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
 	if !strings.Contains(string(reportMD), "- **State:** superseded") || !strings.Contains(string(reportMD), "- **State:** active") {
-		t.Fatalf("report.md missing assessment states:\n%s", reportMD)
+		t.Fatalf("report.md missing assessment result states:\n%s", reportMD)
 	}
 }
 
-func TestAssessmentSupersedingRejectsMissingOrDifferentRequirement(t *testing.T) {
+func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *testing.T) {
 	repo := testRepo(t)
 	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
@@ -938,27 +1041,30 @@ func TestAssessmentSupersedingRejectsMissingOrDifferentRequirement(t *testing.T)
 	}
 	runPath := filepath.Join(repo, run.Path)
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Focused tests cover the requirement.",
   "recommendations": [],
-  "supersedes": ["999-missing-assessment"]
+  "supersedes": [
+    "999-missing-assessment-result"
+  ],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused tests cover the requirement."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(missing supersedes assessment) error = %v", err)
+		t.Fatalf("AddRecord(missing supersedes assessment result) error = %v", err)
 	}
 	loaded, err := Load(runPath)
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	if status := loaded.Status(); len(status.Gaps) != 2 || status.Gaps[0].Kind != "missing-superseded-assessment" {
-		t.Fatalf("status.Gaps = %#v, want missing-superseded-assessment plus missing-analysis", status.Gaps)
+	if status := loaded.EvaluationRunStatus(); len(status.Gaps) != 2 || status.Gaps[0].Kind != "missing-superseded-assessment-result" {
+		t.Fatalf("status.Gaps = %#v, want missing-superseded-assessment-result plus missing-analysis", status.Gaps)
 	}
 
 	repo = testRepo(t)
@@ -967,47 +1073,51 @@ func TestAssessmentSupersedingRejectsMissingOrDifferentRequirement(t *testing.T)
 		t.Fatalf("CreateRun(second) error = %v", err)
 	}
 	runPath = filepath.Join(repo, run.Path)
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "minimum",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Thin evidence exists.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Thin evidence exists."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(first assessment) error = %v", err)
+		t.Fatalf("AddRecord(first assessment result) error = %v", err)
 	}
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has docs",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Documentation exists.",
   "recommendations": [],
-  "supersedes": ["001-root-has-tests"]
+  "supersedes": [
+    "001-root-has-tests"
+  ],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Documentation exists."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(different requirement supersedes assessment) error = %v", err)
+		t.Fatalf("AddRecord(different requirement supersedes assessment result) error = %v", err)
 	}
 	loaded, err = Load(runPath)
 	if err != nil {
 		t.Fatalf("Load(second) error = %v", err)
 	}
 	found := false
-	for _, gap := range loaded.Status().Gaps {
-		if gap.Kind == "invalid-assessment-supersedes" {
+	for _, gap := range loaded.EvaluationRunStatus().Gaps {
+		if gap.Kind == "invalid-assessment-result-supersedes" {
 			found = true
 		}
 	}
 	if !found {
-		t.Fatalf("status.Gaps = %#v, want invalid-assessment-supersedes", loaded.Status().Gaps)
+		t.Fatalf("status.Gaps = %#v, want invalid-assessment-result-supersedes", loaded.EvaluationRunStatus().Gaps)
 	}
 }
 
@@ -1022,23 +1132,33 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 	if _, err := AddRecord(KindRecommendation, runPath, []byte(`{
   "title": "Original recommendation",
   "gap": "The initial remediation route is too broad.",
-  "evidenceLocators": ["tests/example_test.go:1"],
-  "assessmentRecords": [],
-  "remediationOptions": ["Do the broad fix"],
+  "evidenceLocators": [
+    "tests/example_test.go:1"
+  ],
+  "remediationOptions": [
+    "Do the broad fix"
+  ],
   "recommendedOption": "Do the broad fix",
-  "doneCriterion": "The broad fix is complete."
+  "doneCriterion": "The broad fix is complete.",
+  "assessmentResultRecords": []
 }`)); err != nil {
 		t.Fatalf("AddRecord(first recommendation) error = %v", err)
 	}
 	second, err := AddRecord(KindRecommendation, runPath, []byte(`{
   "title": "Corrected recommendation",
   "gap": "The remediation route should be narrower.",
-  "evidenceLocators": ["tests/example_test.go:1"],
-  "assessmentRecords": [],
-  "remediationOptions": ["Do the narrow fix"],
+  "evidenceLocators": [
+    "tests/example_test.go:1"
+  ],
+  "remediationOptions": [
+    "Do the narrow fix"
+  ],
   "recommendedOption": "Do the narrow fix",
   "doneCriterion": "The narrow fix is complete.",
-  "supersedes": ["001-original-recommendation"]
+  "supersedes": [
+    "001-original-recommendation"
+  ],
+  "assessmentResultRecords": []
 }`))
 	if err != nil {
 		t.Fatalf("AddRecord(second recommendation) error = %v", err)
@@ -1051,42 +1171,47 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 		t.Fatalf("second recommendation missing supersedes body:\n%s", secondRaw)
 	}
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "minimum",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [
     {
       "locator": "tests/example_test.go:1",
-      "observation": "Only a smoke test exists.",
-      "category": "coverage"
+      "category": "coverage",
+      "observation": "Only a smoke test exists."
     }
   ],
-  "rationale": "Some evidence exists but coverage is thin.",
-  "recommendations": ["001-original-recommendation", "002-corrected-recommendation"]
+  "recommendations": [
+    "001-original-recommendation",
+    "002-corrected-recommendation"
+  ],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Some evidence exists but coverage is thin."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(assessment) error = %v", err)
+		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "minimum",
-    "notAssessed": false,
-    "rationale": "Thin coverage binds the local rating."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "Thin coverage binds the local rating."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "minimum",
-    "notAssessed": false,
-    "rationale": "The root local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "The root local rating binds."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(analysis) error = %v", err)
 	}
@@ -1128,7 +1253,7 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 	if strings.Contains(string(summaryMD), "001-original-recommendation") {
 		t.Fatalf("report-summary.md links superseded recommendation:\n%s", summaryMD)
 	}
-	if !strings.Contains(string(summaryMD), "[002-corrected-recommendation](recommendations/002-corrected-recommendation.md)") {
+	if !strings.Contains(string(summaryMD), "`002-corrected-recommendation`") || !strings.Contains(string(summaryMD), "[Corrected Recommendation](recommendations/002-corrected-recommendation.md)") {
 		t.Fatalf("report-summary.md missing active recommendation:\n%s", summaryMD)
 	}
 }
@@ -1144,12 +1269,18 @@ func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 	if _, err := AddRecord(KindRecommendation, runPath, []byte(`{
   "title": "Corrected recommendation",
   "gap": "The remediation route should be narrower.",
-  "evidenceLocators": ["tests/example_test.go:1"],
-  "assessmentRecords": [],
-  "remediationOptions": ["Do the narrow fix"],
+  "evidenceLocators": [
+    "tests/example_test.go:1"
+  ],
+  "remediationOptions": [
+    "Do the narrow fix"
+  ],
   "recommendedOption": "Do the narrow fix",
   "doneCriterion": "The narrow fix is complete.",
-  "supersedes": ["999-missing-recommendation"]
+  "supersedes": [
+    "999-missing-recommendation"
+  ],
+  "assessmentResultRecords": []
 }`)); err != nil {
 		t.Fatalf("AddRecord(recommendation) error = %v", err)
 	}
@@ -1158,7 +1289,7 @@ func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.Status()
+	status := loaded.EvaluationRunStatus()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
@@ -1185,7 +1316,7 @@ func TestPlannedCoverageStatusGaps(t *testing.T) {
 	runPath := filepath.Join(repo, run.Path)
 	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte(`---
 coverage:
-  assessments:
+  assessmentResults:
     - targetPath: []
       requirement: Has tests
     - targetPath: [Child]
@@ -1198,36 +1329,38 @@ coverage:
 `), 0o644); err != nil {
 		t.Fatalf("write plan.md: %v", err)
 	}
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Root",
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Focused tests cover the root requirement.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused tests cover the root requirement."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(root assessment) error = %v", err)
+		t.Fatalf("AddRecord(root assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Root",
   "targetPath": [],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The root assessment reaches target."
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The root assessment result reaches target."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The root local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The root local rating binds."
   },
-  "assessmentRecords": ["assessments/001-root-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/001-root-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(root analysis) error = %v", err)
 	}
@@ -1236,46 +1369,52 @@ coverage:
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.Status()
+	status := loaded.EvaluationRunStatus()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
 	gotKinds := gapKinds(status.Gaps)
-	wantKinds := []string{"missing-planned-assessment", "missing-planned-analysis"}
+	wantKinds := []string{"missing-planned-assessment-result", "missing-planned-analysis"}
 	if !slices.Equal(gotKinds, wantKinds) {
 		t.Fatalf("gap kinds = %#v, want %#v; gaps = %#v", gotKinds, wantKinds, status.Gaps)
 	}
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Child",
-  "targetPath": ["Child"],
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [
+    "Child"
+  ],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "Focused tests cover the child requirement.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused tests cover the child requirement."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(child assessment) error = %v", err)
+		t.Fatalf("AddRecord(child assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "target": "Child",
-  "targetPath": ["Child"],
-  "localRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child assessment reaches target."
+  "targetPath": [
+    "Child"
+  ],
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child assessment result reaches target."
   },
-  "factorRatings": [],
-  "aggregateRating": {
-    "rating": "target",
-    "notAssessed": false,
-    "rationale": "The child local rating binds."
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The child local rating binds."
   },
-  "assessmentRecords": ["assessments/002-child-has-tests.json"],
-  "childAnalysisRecords": []
+  "assessmentResultRecords": [
+    "assessment-results/002-child-has-tests.json"
+  ]
 }`)); err != nil {
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
 	}
@@ -1283,34 +1422,37 @@ coverage:
 	if err != nil {
 		t.Fatalf("Load(after complete plan) error = %v", err)
 	}
-	if status := loaded.Status(); !status.Reportable {
+	if status := loaded.EvaluationRunStatus(); !status.Reportable {
 		t.Fatalf("completed planned coverage reportable = false, gaps = %#v", status.Gaps)
 	}
 
-	if _, err := AddRecord(KindAssessment, runPath, []byte(`{
-  "target": "Extra",
-  "targetPath": ["Extra"],
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [
+    "Extra"
+  ],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "An unplanned extra assessment exists.",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "An unplanned extra assessment result exists."
+  }
 }`)); err != nil {
-		t.Fatalf("AddRecord(extra assessment) error = %v", err)
+		t.Fatalf("AddRecord(extra assessment result) error = %v", err)
 	}
 	loaded, err = Load(runPath)
 	if err != nil {
 		t.Fatalf("Load(after extra record) error = %v", err)
 	}
-	status = loaded.Status()
+	status = loaded.EvaluationRunStatus()
 	if status.Reportable {
 		t.Fatal("status.Reportable with extra record = true, want false")
 	}
-	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "unexpected-assessment" {
-		t.Fatalf("status.Gaps = %#v, want unexpected-assessment", status.Gaps)
+	if len(status.Gaps) != 1 || status.Gaps[0].Kind != "unexpected-assessment-result" {
+		t.Fatalf("status.Gaps = %#v, want unexpected-assessment-result", status.Gaps)
 	}
 	if len(status.NextActions) != 1 || status.NextActions[0].ID != "review-gaps" {
 		t.Fatalf("status.NextActions = %#v, want review-gaps", status.NextActions)
@@ -1334,18 +1476,19 @@ func TestAddRecordRejectsCLIOwnedFields(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	_, err = AddRecord(KindAssessment, filepath.Join(repo, run.Path), []byte(`{
+	_, err = AddRecord(KindAssessmentResult, filepath.Join(repo, run.Path), []byte(`{
   "schemaVersion": 1,
-  "target": "Root",
   "targetPath": [],
   "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
   "criterionSource": "rating-scale",
   "findings": [],
-  "rationale": "ok",
-  "recommendations": []
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "ok"
+  }
 }`))
 	if err == nil {
 		t.Fatal("AddRecord() error = nil, want CLI-owned field rejection")
@@ -1355,7 +1498,7 @@ func TestAddRecordRejectsCLIOwnedFields(t *testing.T) {
 	}
 }
 
-func gapKinds(gaps []Gap) []string {
+func gapKinds(gaps []EvaluationRunGap) []string {
 	kinds := make([]string, 0, len(gaps))
 	for _, gap := range gaps {
 		kinds = append(kinds, gap.Kind)

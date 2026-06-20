@@ -35,12 +35,12 @@ files.
 
 `build` **MUST NOT** accept a gate flag. Gating is a separate operation.
 
-`gate` **MUST** read the already-rendered `report.json`, compare the root rating
-to `--at-or-below <level>`, and exit `1` when the root aggregate rating is equal
-to or worse than `<level>`. It exits `0` when better and exits `2` when
-`<level>` is not in the run's rating scale. A root not-assessed result fails the
-gate. `gate` **MUST NOT** write or modify any run file and **MUST** fail when no
-rendered `report.json` exists.
+`gate` **MUST** read the already-rendered `report.json`, compare the overall
+rating to `--at-or-below <level>`, and exit `1` when the in-scope root aggregate
+rating is equal to or worse than `<level>`. It exits `0` when better and exits
+`2` when `<level>` is not in the run's rating scale. An overall not-assessed
+result fails the gate. `gate` **MUST NOT** write or modify any run file and
+**MUST** fail when no rendered `report.json` exists.
 
 The report content contract is defined by
 [Evaluation records](../evaluation-records.md#reportjson) and

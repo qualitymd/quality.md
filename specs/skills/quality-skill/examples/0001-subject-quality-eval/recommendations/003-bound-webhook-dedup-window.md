@@ -6,12 +6,12 @@ evidenceLocators:
   - webhooks/delivery/dedup.go:52
   - webhooks/delivery/retry.go:37
   - docs/merchants/webhooks.md
-assessmentRecords:
-  - assessments/008-delivery-redelivery-dedup.json
+assessmentResultRecords:
+  - assessment-results/008-delivery-redelivery-dedup.json
 remediationOptions:
   - Tie the dedup-retention window to the retry window plus a margin.
   - Make suppression durable and unbounded per event id.
-  - Leave dedup best-effort and document at-least-once.
+  - Leave dedup best-rigor and document at-least-once.
 recommendedOption: Tie the dedup-retention window to the retry window plus a margin.
 doneCriterion: The webhook-delivery deduplication requirement reaches target for the full duration any retry could fire.
 ---
@@ -49,7 +49,7 @@ again to the same endpoint").
 - **(b) Make suppression durable and unbounded per event id.** Persist
   acknowledged-delivery ids so a redelivery is always suppressed, at the cost of
   unbounded dedup storage to manage.
-- **(c) Leave dedup best-effort and document at-least-once.** Keep the bounded
+- **(c) Leave dedup best-rigor and document at-least-once.** Keep the bounded
   window and rely on merchants consuming idempotently — the current Minimum
   posture, made explicit rather than improved.
 

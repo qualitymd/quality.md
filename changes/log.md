@@ -3,6 +3,40 @@
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
+  [0040 - Readable report summary](archive/0040-readable-report-summary.md).
+  Moved the parent concept and child folder into [`archive/`](archive/), added
+  the entry to the [archive index](archive/index.md), and removed it from the
+  open [changes index](index.md). Verified `go test ./...`, targeted
+  `dprint check`, and `git diff --check`.
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0040 - Readable report summary](archive/0040-readable-report-summary.md). The
+  summary renderer now emits the key-details, Summary, Top Issues,
+  Recommendations, and Scope & Limitations outline; uses "Full evaluation" and
+  "Overall rating" in human-facing summary output; surfaces copyable
+  Recommendation IDs; and keeps `report.json` unchanged. Updated durable report
+  specs, the `/quality` skill contract/runtime wording, tests, and the worked
+  summary example. Verified `go test ./...` and targeted `dprint check`.
+
+- **Implementation**: Advanced
+  [0040 - Readable report summary](archive/0040-readable-report-summary.md)
+  from `Draft` to `In-Progress` and added its
+  [design doc](archive/0040-readable-report-summary/design.md). The design keeps the
+  existing `EvaluationReportDocument` and JSON schema, reshaping only the concise
+  Markdown renderer into a decision-brief outline with display-time wording for
+  "Full evaluation" and "Overall rating".
+
+- **Creation**: Opened
+  [0040 - Readable report summary](archive/0040-readable-report-summary.md)
+  (`status: Draft`) with its child
+  [index](archive/0040-readable-report-summary/index.md) and
+  [functional spec](archive/0040-readable-report-summary/spec.md). The spec proposes the
+  revised `report-summary.md` outline: key details, Summary, Top Issues,
+  Recommendations, and Scope & Limitations; updates human-facing labels to
+  "Full evaluation" and "Overall rating"; and makes active Recommendation IDs
+  prominent for follow-up prompts.
+
+- **Done**: Set status `Done` and archived
   [0039 — Evaluation command surface redesign](archive/0039-evaluation-command-surface.md).
   Moved the parent concept and child folder into [`archive/`](archive/), fixed
   archive-relative links, added the entry to the [archive index](archive/index.md),
@@ -464,7 +498,7 @@
 - **Status**: Advanced change
   [0026 — Authoring guide replaces meta-model workflow](archive/0026-authoring-guide-remove-meta-model.md)
   to `In-Review` after replacing the skill-facing meta-model reference with
-  [quality-md-guide.md](../skills/quality/resources/quality-md-guide.md),
+  [authoring.md](../skills/quality/guides/authoring.md),
   removing the bundled `models` CLI/package, making evaluation run creation
   subject-only, syncing durable specs and docs, and verifying the Go test suite.
 
@@ -473,7 +507,7 @@
   in `In-Progress` with its
   [functional spec](archive/0026-authoring-guide-remove-meta-model/spec.md) and
   [design doc](archive/0026-authoring-guide-remove-meta-model/design.md). The change
-  replaces the skill-facing meta-model reference with a `quality-md-guide.md`
+  replaces the skill-facing meta-model reference with an authoring guide
   authoring guide, removes the public `qualitymd models` / model-altitude
   workflow, and syncs durable specs and docs around subject-only evaluation.
 

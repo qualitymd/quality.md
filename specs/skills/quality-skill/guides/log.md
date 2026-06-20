@@ -1,0 +1,26 @@
+# /quality Skill Guides Update Log
+
+## 2026-06-19
+
+- **Revision**: Clarified guide boundaries: authoring is the best-practices
+  prerequisite and getting-started is the first-run process/outcomes guide.
+
+- **Creation**: Added the Top 10 QUALITY.md checks guide contract for quick
+  read-only model/lifecycle inspection findings used by wizard and related
+  modes.
+
+- **Revision**: Clarified that getting-started Known gaps includes known
+  unknowns: missing context, unresolved questions, and evidence gaps.
+
+- **Revision**: Added desired outcomes for each getting-started Markdown body
+  section so the body can better support initial model authoring.
+
+- **Revision**: Updated the getting-started guide contract so the rating scale
+  follows the Markdown body before the rest of the model tree is expanded.
+
+- **Revision**: Tightened the getting-started guide contract so first-run
+  authoring fills the Markdown body before expanding the quality model tree.
+
+- **Creation**: Added the guides subfolder, moved the authoring guide contract
+  into it, and added the getting-started guide contract for first-run model
+  population after `qualitymd init`.

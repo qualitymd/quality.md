@@ -40,7 +40,7 @@ directory. Invalid subject paths **MUST** fail without creating a numbered run
 folder.
 
 The command **MUST** compute the next run number as one past the highest matching
-evaluation run folder, create the run directory, create `assessments/`,
+evaluation run folder, create the run directory, create `assessment-results/`,
 `analysis/`, and `recommendations/`, and seed `model.md`, `design.md`, and
 body-only `plan.md`.
 

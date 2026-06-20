@@ -122,7 +122,7 @@ None
 - `specs/skills/quality-skill/quality-skill.md` - update the skill contract so
   setup, wizard, evaluation, and reporting guidance assume required titles and
   use them for human-facing labels (per the display requirements above).
-- `specs/skills/quality-skill/authoring-guide.md` - update the guide contract so
+- `specs/skills/quality-skill/guides/authoring.md` - update the guide contract so
   the runtime authoring guide teaches required display titles (per the examples
   and guidance requirement above).
 

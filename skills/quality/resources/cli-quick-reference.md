@@ -27,7 +27,7 @@ qualitymd status --help
 qualitymd evaluation create --help
 qualitymd evaluation list --help
 qualitymd evaluation status --help
-qualitymd evaluation assessment --help
+qualitymd evaluation assessment-result --help
 qualitymd evaluation analysis --help
 qualitymd evaluation recommendation --help
 qualitymd evaluation report --help
@@ -39,26 +39,26 @@ whether the install is in the skill's supported range.
 
 ## Quick reference
 
-| Task                       | Command                                                               |
-| -------------------------- | --------------------------------------------------------------------- |
-| Check CLI version          | `qualitymd --version`                                                 |
-| Read version metadata      | `qualitymd version --json`                                            |
-| Check for CLI upgrades     | `qualitymd upgrade --check`                                           |
-| Apply CLI upgrade          | `qualitymd upgrade --apply`                                           |
-| Read format rules          | `qualitymd spec`                                                      |
-| Create a starter model     | `qualitymd init [path]`                                               |
-| Validate a model           | `qualitymd lint [path]`                                               |
-| Fix simple lint issues     | `qualitymd lint --fix [path]`                                         |
-| Inspect project status     | `qualitymd status [path] --json`                                      |
-| Create evaluation run      | `qualitymd evaluation create [--subject <path>] [--narrowing <slug>]` |
-| List evaluation runs       | `qualitymd evaluation list [--json]`                                  |
-| Add assessment records     | pipe JSON \| `qualitymd evaluation assessment add <run>`              |
-| Set analysis records       | pipe JSON \| `qualitymd evaluation analysis set <run>`                |
-| Add recommendation records | pipe JSON \| `qualitymd evaluation recommendation add <run>`          |
-| List records               | `qualitymd evaluation <kind> list <run>`                              |
-| Check reportability        | `qualitymd evaluation status <run>`                                   |
-| Build report               | `qualitymd evaluation report build <run>`                             |
-| Gate report                | `qualitymd evaluation report gate <run> --at-or-below <level>`        |
+| Task                          | Command                                                               |
+| ----------------------------- | --------------------------------------------------------------------- |
+| Check CLI version             | `qualitymd --version`                                                 |
+| Read version metadata         | `qualitymd version --json`                                            |
+| Check for CLI upgrades        | `qualitymd upgrade --check`                                           |
+| Apply CLI upgrade             | `qualitymd upgrade --apply`                                           |
+| Read format rules             | `qualitymd spec`                                                      |
+| Create a starter model        | `qualitymd init [path]`                                               |
+| Validate a model              | `qualitymd lint [path]`                                               |
+| Fix simple lint issues        | `qualitymd lint --fix [path]`                                         |
+| Inspect project status        | `qualitymd status [path] --json`                                      |
+| Create evaluation run         | `qualitymd evaluation create [--subject <path>] [--narrowing <slug>]` |
+| List evaluation runs          | `qualitymd evaluation list [--json]`                                  |
+| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment-result add <run>`       |
+| Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set <run>`                |
+| Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add <run>`          |
+| List records                  | `qualitymd evaluation <kind> list <run>`                              |
+| Check reportability           | `qualitymd evaluation status <run>`                                   |
+| Build report                  | `qualitymd evaluation report build <run>`                             |
+| Gate report                   | `qualitymd evaluation report gate <run> --at-or-below <level>`        |
 
 ## Decision trees
 
@@ -80,7 +80,7 @@ Need to evaluate?
 - Check model first -> qualitymd lint [path]
 - Inspect current state -> qualitymd status [path] --json
 - Create run -> qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
-- Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
+- Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment-result add | analysis set | recommendation add <run>
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
 ```
@@ -93,7 +93,7 @@ Run incomplete or stale?
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
 - Missing planned coverage? -> edit plan.md coverage frontmatter
-- Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
+- Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment-result add | analysis set | recommendation add <run>
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
@@ -130,8 +130,22 @@ qualitymd status [path] --json
 qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
 
 # Write records by piping JSON on stdin — do not create a scratch file.
-qualitymd evaluation assessment add <run> <<'JSON'
-{ "assessments": [ … ] }
+qualitymd evaluation assessment-result add <run> <<'JSON'
+[
+  {
+    "targetPath": [],
+    "requirement": "Example requirement",
+    "factorPaths": [],
+    "ratingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "Evidence supports the target level."
+    },
+    "criterionSource": "rating-scale",
+    "findings": [],
+    "recommendations": []
+  }
+]
 JSON
 
 qualitymd evaluation analysis set <run> <<'JSON'

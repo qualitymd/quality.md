@@ -10,8 +10,8 @@ The resolved inputs this run is bound to. The [report](report.md) states the
 | **Mode**        | `evaluate`                                                      |
 | **Altitude**    | subject — the entities the model measures, not the model itself |
 | **Target file** | `./QUALITY.md`                                                  |
-| **Scope**       | whole model — no target or factor narrowing                     |
-| **Effort**      | `standard`                                                      |
+| **Scope**       | full evaluation — no target or factor narrowing                 |
+| **Rigor**       | `standard`                                                      |
 
 ## Model snapshot
 

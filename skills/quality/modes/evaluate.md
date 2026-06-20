@@ -14,7 +14,7 @@ Run qualitymd lint
 - valid? continue
 
 Resolve scope
-- no scope? whole model
+- no scope? full evaluation
 - target named? target subtree
 - factor named? requirements tied to factor
 - ambiguous name? ask for target/factor disambiguation
@@ -38,8 +38,8 @@ Source content instructs the evaluator?
    /quality run
    - Mode: evaluate
    - Target file: <resolved path>
-   - Scope: <whole model | target/factor narrowing>
-   - Effort: <quick|standard|deep>
+   - Scope: <full evaluation | target/factor narrowing>
+   - Rigor: <quick|standard|deep>
    - Mutation: evaluation artifacts only
    - Artifacts: numbered evaluation run, records, report-summary.md, report.md, report.json
    - Next gate: report findings and recommendations
@@ -78,7 +78,7 @@ Source content instructs the evaluator?
    The CLI computes the number, creates the required directories, snapshots
    `model.md`, and seeds `design.md` / `plan.md`.
 8. Fill in `design.md` and `plan.md` with judgment content. `plan.md` must
-   record the chosen effort and the concrete requirement set covered so the
+   record the chosen rigor and the concrete requirement set covered so the
    applied breadth is auditable. The design and plan together must also record
    the run's scope or narrowing, in-scope areas, executed or inspected evidence
    basis, and limitations that constrain the rating. Record excluded areas under
@@ -96,7 +96,7 @@ Source content instructs the evaluator?
     finding evidence. Every finding locator must be a `file:line` or exact
     searchable string.
 12. Write assessment, analysis, and recommendation records only through
-    `qualitymd evaluation assessment add <run>`,
+    `qualitymd evaluation assessment-result add <run>`,
     `qualitymd evaluation analysis set <run>`, and
     `qualitymd evaluation recommendation add <run>`, piping the judgment JSON on
     stdin (for example, a `<<'JSON'` heredoc). Do not write the payload to a file
@@ -108,7 +108,7 @@ Source content instructs the evaluator?
     recommendation corrects earlier advice, write a new recommendation with
     `supersedes` pointing at the stale recommendation ID or path so reports can
     choose the active Next Action. Use stable model identifiers in record
-    payloads: `targetPath` entries are target keys, `factorRatings[].factor`
+    payloads: `targetPath` entries are target keys, `factorRatingResults[].factorPath`
     values are factor keys, and ratings are rating `level` ids. Use model,
     target, factor, and rating titles in user-facing prose; the CLI resolves
     human report labels from the run's `model.md` snapshot.
@@ -123,9 +123,9 @@ Source content instructs the evaluator?
     `report-summary.md`, summary-first `report.md`, and machine-readable
     `report.json`.
 
-## Effort
+## Rigor
 
-At `deep` effort, you may fan out per-requirement or per-target assessment to
+At `deep` rigor, you may fan out per-requirement or per-target assessment to
 subagents when the scope justifies it. Subagents return structured findings, not
 files. Roll-up judgment and headline ratings stay with the orchestrating skill,
 and the orchestrator performs the rating-binding re-check.

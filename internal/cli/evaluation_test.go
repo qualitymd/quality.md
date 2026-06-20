@@ -22,32 +22,35 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	var out, stderr bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&stderr)
-	cmd.SetIn(strings.NewReader(`[{
-  "target": "Root",
-  "targetPath": [],
-  "requirement": "Has tests",
-  "factors": [],
-  "rating": "target",
-  "notAssessed": false,
-  "criterionSource": "rating-scale",
-  "findings": [],
-  "rationale": "Tests cover the requirement.",
-  "recommendations": []
-}]`))
-	cmd.SetArgs([]string{"evaluation", "assessment", "add", "--file", "-", "--json", runPath})
+	cmd.SetIn(strings.NewReader(`[
+  {
+    "targetPath": [],
+    "requirement": "Has tests",
+    "criterionSource": "rating-scale",
+    "findings": [],
+    "recommendations": [],
+    "factorPaths": [],
+    "ratingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "Tests cover the requirement."
+    }
+  }
+]`))
+	cmd.SetArgs([]string{"evaluation", "assessment-result", "add", "--file", "-", "--json", runPath})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
-	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessments/001-root-has-tests.json") {
+	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessment-results/001-root-has-tests.json") {
 		t.Fatalf("stdout = %s, want batched write receipt", out.String())
 	}
-	raw, err := os.ReadFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"))
+	raw, err := os.ReadFile(filepath.Join(runPath, "assessment-results", "001-root-has-tests.json"))
 	if err != nil {
-		t.Fatalf("reading assessment record: %v", err)
+		t.Fatalf("reading assessment result record: %v", err)
 	}
 	if !strings.Contains(string(raw), `"schemaVersion": 1`) || !strings.Contains(string(raw), `"requirement": "Has tests"`) {
-		t.Fatalf("assessment record = %s, want canonical JSON", raw)
+		t.Fatalf("assessment result record = %s, want canonical JSON", raw)
 	}
 }
 

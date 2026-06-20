@@ -60,7 +60,7 @@ Implementation begins only after the change advances to `In-Progress`.
       non-normative note that a referenced entity may itself be a Target reachable by
       its `source`. (Durable spec; detailed in the functional spec's
       [Durable spec changes](0029-sharpen-assessment-references/spec.md#durable-spec-changes).)
-- [x] [`skills/quality/resources/quality-md-guide.md`](../../skills/quality/resources/quality-md-guide.md)
+- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
       — reserve "source" for `Target.source`; add the inline/reference framing, the
       "Make the traceability graph visible" job, the entity gloss, the
       target/assessment-reference duality job, and the "Split by assessable claim,
@@ -69,7 +69,7 @@ Implementation begins only after the change advances to `In-Progress`.
       "reference" rather than "defer to" for the assessment, and note a referenced
       entity can be a target in its own right.
 - Reviewed, no change:
-  [`specs/skills/quality-skill/authoring-guide.md`](../../specs/skills/quality-skill/authoring-guide.md)
+  [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
   — its conformance and single-level "Working with…" structure already admit
   these as authoring jobs; the guide's conformance duty carries the new
   `SPECIFICATION.md` wording forward.

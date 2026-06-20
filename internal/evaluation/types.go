@@ -29,35 +29,35 @@ type Options struct {
 	Subject       string
 }
 
-type CreateRunResult struct {
+type CreateRunReceipt struct {
 	Path        string           `json:"path"`
 	Number      int              `json:"-"`
 	NextActions []receipt.Action `json:"nextActions"`
 }
 
-type WriteKind string
+type EvaluationRecordKind string
 
 const (
-	KindAssessment     WriteKind = "assessment"
-	KindAnalysis       WriteKind = "analysis"
-	KindRecommendation WriteKind = "recommendation"
+	KindAssessmentResult EvaluationRecordKind = "assessment-result"
+	KindAnalysis         EvaluationRecordKind = "analysis"
+	KindRecommendation   EvaluationRecordKind = "recommendation"
 )
 
-type WriteResult struct {
-	SchemaVersion int              `json:"schemaVersion"`
-	Path          string           `json:"path,omitempty"`
-	Paths         []string         `json:"paths"`
-	Kind          WriteKind        `json:"kind"`
-	Created       *bool            `json:"created,omitempty"`
-	NextActions   []receipt.Action `json:"nextActions,omitempty"`
+type WriteRecordReceipt struct {
+	SchemaVersion int                  `json:"schemaVersion"`
+	Path          string               `json:"path,omitempty"`
+	Paths         []string             `json:"paths"`
+	Kind          EvaluationRecordKind `json:"kind"`
+	Created       *bool                `json:"created,omitempty"`
+	NextActions   []receipt.Action     `json:"nextActions,omitempty"`
 }
 
 type PlannedCoverage struct {
-	Assessments []PlannedCoverageAssessment `json:"assessments" yaml:"assessments"`
-	Analyses    []PlannedCoverageAnalysis   `json:"analyses" yaml:"analyses"`
+	AssessmentResults []PlannedAssessmentResult `json:"assessmentResults" yaml:"assessmentResults"`
+	Analyses          []PlannedCoverageAnalysis `json:"analyses" yaml:"analyses"`
 }
 
-type PlannedCoverageAssessment struct {
+type PlannedAssessmentResult struct {
 	TargetPath  []string `json:"targetPath" yaml:"targetPath"`
 	Requirement string   `json:"requirement" yaml:"requirement"`
 }
@@ -80,102 +80,92 @@ type Finding struct {
 	Attributes  map[string]any `json:"attributes,omitempty"`
 }
 
-type AssessmentPayload struct {
-	Target          string    `json:"target"`
-	TargetPath      []string  `json:"targetPath"`
-	Requirement     string    `json:"requirement"`
-	Factors         []string  `json:"factors"`
-	Rating          *string   `json:"rating"`
-	NotAssessed     bool      `json:"notAssessed"`
-	CriterionSource string    `json:"criterionSource"`
-	Findings        []Finding `json:"findings"`
-	Rationale       string    `json:"rationale"`
-	Recommendations []string  `json:"recommendations"`
-	Supersedes      []string  `json:"supersedes,omitempty"`
+type AssessmentResultInput struct {
+	TargetPath      []string     `json:"targetPath"`
+	Requirement     string       `json:"requirement"`
+	FactorPaths     [][]string   `json:"factorPaths"`
+	RatingResult    RatingResult `json:"ratingResult"`
+	CriterionSource string       `json:"criterionSource"`
+	Findings        []Finding    `json:"findings"`
+	Recommendations []string     `json:"recommendations"`
+	Supersedes      []string     `json:"supersedes,omitempty"`
 }
 
-type AssessmentRecord struct {
-	SchemaVersion   int       `json:"schemaVersion"`
-	Target          string    `json:"target"`
-	TargetPath      []string  `json:"targetPath"`
-	Requirement     string    `json:"requirement"`
-	Factors         []string  `json:"factors"`
-	Rating          *string   `json:"rating"`
-	NotAssessed     bool      `json:"notAssessed"`
-	CriterionSource string    `json:"criterionSource"`
-	Findings        []Finding `json:"findings"`
-	Rationale       string    `json:"rationale"`
-	Recommendations []string  `json:"recommendations"`
-	Supersedes      []string  `json:"supersedes,omitempty"`
-	File            string    `json:"-"`
+type AssessmentResultRecord struct {
+	SchemaVersion   int          `json:"schemaVersion"`
+	TargetPath      []string     `json:"targetPath"`
+	Requirement     string       `json:"requirement"`
+	FactorPaths     [][]string   `json:"factorPaths"`
+	RatingResult    RatingResult `json:"ratingResult"`
+	CriterionSource string       `json:"criterionSource"`
+	Findings        []Finding    `json:"findings"`
+	Recommendations []string     `json:"recommendations"`
+	Supersedes      []string     `json:"supersedes,omitempty"`
+	File            string       `json:"-"`
 }
 
 type RatingResult struct {
-	Rating      *string `json:"rating"`
-	NotAssessed bool    `json:"notAssessed"`
-	Rationale   string  `json:"rationale"`
+	Kind      string `json:"kind"`
+	Level     string `json:"level,omitempty"`
+	Rationale string `json:"rationale"`
 }
 
-type FactorRating struct {
-	Factor      string  `json:"factor"`
-	Rating      *string `json:"rating"`
-	NotAssessed bool    `json:"notAssessed"`
-	Rationale   string  `json:"rationale"`
+type FactorRatingResult struct {
+	FactorPath   []string     `json:"factorPath"`
+	RatingResult RatingResult `json:"ratingResult"`
 }
 
-type BindingConstraint struct {
-	Record      string  `json:"record,omitempty"`
-	Requirement string  `json:"requirement,omitempty"`
-	Rating      *string `json:"rating,omitempty"`
+type RatingConstraint struct {
+	AssessmentResultRecord string  `json:"assessmentResultRecord,omitempty"`
+	Requirement            string  `json:"requirement,omitempty"`
+	Level                  *string `json:"level,omitempty"`
 }
 
-type AnalysisPayload struct {
-	Target               string              `json:"target"`
-	TargetPath           []string            `json:"targetPath"`
-	LocalRating          *RatingResult       `json:"localRating"`
-	FactorRatings        []FactorRating      `json:"factorRatings"`
-	AggregateRating      RatingResult        `json:"aggregateRating"`
-	AssessmentRecords    []string            `json:"assessmentRecords"`
-	ChildAnalysisRecords []string            `json:"childAnalysisRecords"`
-	BindingConstraints   []BindingConstraint `json:"bindingConstraints,omitempty"`
+type AnalysisInput struct {
+	TargetPath              []string             `json:"targetPath"`
+	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
+	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
+	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`
+	AssessmentResultRecords []string             `json:"assessmentResultRecords"`
+	ChildAnalysisRecords    []string             `json:"childAnalysisRecords"`
+	RatingConstraints       []RatingConstraint   `json:"ratingConstraints,omitempty"`
 }
 
 type AnalysisRecord struct {
-	SchemaVersion        int                 `json:"schemaVersion"`
-	Target               string              `json:"target"`
-	TargetPath           []string            `json:"targetPath"`
-	LocalRating          *RatingResult       `json:"localRating"`
-	FactorRatings        []FactorRating      `json:"factorRatings"`
-	AggregateRating      RatingResult        `json:"aggregateRating"`
-	AssessmentRecords    []string            `json:"assessmentRecords"`
-	ChildAnalysisRecords []string            `json:"childAnalysisRecords"`
-	BindingConstraints   []BindingConstraint `json:"bindingConstraints,omitempty"`
-	File                 string              `json:"-"`
+	SchemaVersion           int                  `json:"schemaVersion"`
+	TargetPath              []string             `json:"targetPath"`
+	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
+	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
+	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`
+	AssessmentResultRecords []string             `json:"assessmentResultRecords"`
+	ChildAnalysisRecords    []string             `json:"childAnalysisRecords"`
+	RatingConstraints       []RatingConstraint   `json:"ratingConstraints,omitempty"`
+	File                    string               `json:"-"`
 }
 
-type RecommendationPayload struct {
-	Title              string   `json:"title"`
-	Gap                string   `json:"gap"`
-	EvidenceLocators   []string `json:"evidenceLocators"`
-	AssessmentRecords  []string `json:"assessmentRecords"`
-	RemediationOptions []string `json:"remediationOptions"`
-	RecommendedOption  string   `json:"recommendedOption"`
-	DoneCriterion      string   `json:"doneCriterion"`
-	Supersedes         []string `json:"supersedes,omitempty"`
+type RecommendationInput struct {
+	Title                   string   `json:"title"`
+	Gap                     string   `json:"gap"`
+	EvidenceLocators        []string `json:"evidenceLocators"`
+	AssessmentResultRecords []string `json:"assessmentResultRecords"`
+	RemediationOptions      []string `json:"remediationOptions"`
+	RecommendedOption       string   `json:"recommendedOption"`
+	DoneCriterion           string   `json:"doneCriterion"`
+	Supersedes              []string `json:"supersedes,omitempty"`
 }
 
 type RecommendationRecord struct {
-	SchemaVersion      int      `json:"schemaVersion" yaml:"schemaVersion"`
-	Title              string   `json:"title" yaml:"title"`
-	Gap                string   `json:"gap" yaml:"gap"`
-	EvidenceLocators   []string `json:"evidenceLocators" yaml:"evidenceLocators"`
-	AssessmentRecords  []string `json:"assessmentRecords" yaml:"assessmentRecords"`
-	RemediationOptions []string `json:"remediationOptions" yaml:"remediationOptions"`
-	RecommendedOption  string   `json:"recommendedOption" yaml:"recommendedOption"`
-	DoneCriterion      string   `json:"doneCriterion" yaml:"doneCriterion"`
-	Supersedes         []string `json:"supersedes,omitempty" yaml:"supersedes,omitempty"`
-	Body               string   `json:"-" yaml:"-"`
-	File               string   `json:"-" yaml:"-"`
+	SchemaVersion           int      `json:"schemaVersion" yaml:"schemaVersion"`
+	Title                   string   `json:"title" yaml:"title"`
+	Gap                     string   `json:"gap" yaml:"gap"`
+	EvidenceLocators        []string `json:"evidenceLocators" yaml:"evidenceLocators"`
+	AssessmentResultRecords []string `json:"assessmentResultRecords" yaml:"assessmentResultRecords"`
+	RemediationOptions      []string `json:"remediationOptions" yaml:"remediationOptions"`
+	RecommendedOption       string   `json:"recommendedOption" yaml:"recommendedOption"`
+	DoneCriterion           string   `json:"doneCriterion" yaml:"doneCriterion"`
+	Supersedes              []string `json:"supersedes,omitempty" yaml:"supersedes,omitempty"`
+	Body                    string   `json:"-" yaml:"-"`
+	File                    string   `json:"-" yaml:"-"`
 }
 
 func marshalJSON(v any) ([]byte, error) {

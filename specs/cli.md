@@ -30,21 +30,21 @@ operate on `QUALITY.md` files, plus evaluation-run commands that scaffold,
 validate, and render runtime records. The CLI never calls a model; skills carry
 judgment and pass judgment payloads to the deterministic surface.
 
-| Command                                                           | Purpose                                                    |
-| ----------------------------------------------------------------- | ---------------------------------------------------------- |
-| [`init`](./cli/init.md)                                           | Scaffold a starter `QUALITY.md` to fill in.                |
-| [`lint`](./cli/lint.md)                                           | Validate a file's structure against the format spec.       |
-| [`spec`](./cli/spec.md)                                           | Emit the `QUALITY.md` format specification.                |
-| [`status`](./cli/status.md)                                       | Emit a deterministic project-state snapshot.               |
-| [`evaluation create`](./cli/evaluation-create.md)                 | Create a numbered evaluation run folder.                   |
-| [`evaluation list`](./cli/evaluation-list.md)                     | List evaluation runs.                                      |
-| [`evaluation status`](./cli/evaluation-status.md)                 | Inspect whether a run can be rendered.                     |
-| [`evaluation assessment`](./cli/evaluation-assessment.md)         | Add and list assessment records.                           |
-| [`evaluation analysis`](./cli/evaluation-analysis.md)             | Set and list analysis records.                             |
-| [`evaluation recommendation`](./cli/evaluation-recommendation.md) | Add and list recommendation records.                       |
-| [`evaluation report`](./cli/evaluation-report.md)                 | Build and gate evaluation reports.                         |
-| [`version`](./cli/version.md)                                     | Show structured CLI and bundled spec version metadata.     |
-| [`upgrade`](./cli/upgrade.md)                                     | Check and advise on CLI upgrades through managed channels. |
+| Command                                                                 | Purpose                                                    |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [`init`](./cli/init.md)                                                 | Scaffold a starter `QUALITY.md` to fill in.                |
+| [`lint`](./cli/lint.md)                                                 | Validate a file's structure against the format spec.       |
+| [`spec`](./cli/spec.md)                                                 | Emit the `QUALITY.md` format specification.                |
+| [`status`](./cli/status.md)                                             | Emit a deterministic project-state snapshot.               |
+| [`evaluation create`](./cli/evaluation-create.md)                       | Create a numbered evaluation run folder.                   |
+| [`evaluation list`](./cli/evaluation-list.md)                           | List evaluation runs.                                      |
+| [`evaluation status`](./cli/evaluation-status.md)                       | Inspect whether a run can be rendered.                     |
+| [`evaluation assessment-result`](./cli/evaluation-assessment-result.md) | Add and list assessment result records.                    |
+| [`evaluation analysis`](./cli/evaluation-analysis.md)                   | Set and list analysis records.                             |
+| [`evaluation recommendation`](./cli/evaluation-recommendation.md)       | Add and list recommendation records.                       |
+| [`evaluation report`](./cli/evaluation-report.md)                       | Build and gate evaluation reports.                         |
+| [`version`](./cli/version.md)                                           | Show structured CLI and bundled spec version metadata.     |
+| [`upgrade`](./cli/upgrade.md)                                           | Check and advise on CLI upgrades through managed channels. |
 
 ## Commands
 
@@ -56,8 +56,8 @@ judgment and pass judgment payloads to the deterministic surface.
   evaluation run folder.
 - [`evaluation list`](./cli/evaluation-list.md) — list evaluation runs.
 - [`evaluation status`](./cli/evaluation-status.md) — inspect renderability.
-- [`evaluation assessment`](./cli/evaluation-assessment.md) — add and list
-  assessment records.
+- [`evaluation assessment-result`](./cli/evaluation-assessment-result.md) — add and list
+  assessment result records.
 - [`evaluation analysis`](./cli/evaluation-analysis.md) — set and list analysis
   records.
 - [`evaluation recommendation`](./cli/evaluation-recommendation.md) — add and

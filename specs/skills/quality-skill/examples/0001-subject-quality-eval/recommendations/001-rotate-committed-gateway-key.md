@@ -5,8 +5,8 @@ gap: A live payment-gateway credential is committed to the repository in plainte
 evidenceLocators:
   - internal/gateway/client.go:48
   - internal/gateway/client_test.go:12
-assessmentRecords:
-  - assessments/001-root-no-committed-credentials.json
+assessmentResultRecords:
+  - assessment-results/001-root-no-committed-credentials.json
 remediationOptions:
   - Rotate at the gateway, then move the secret to runtime configuration.
   - Move the secret to configuration without rotating.

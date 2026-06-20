@@ -129,3 +129,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   reshaped the `qualitymd evaluation` surface around noun/verb resources, folded
   planned coverage into `plan.md`, split report build from gate, added run and
   record listing, batched writes, and removed create altitude residue (`Done`).
+- [0040 — Readable report summary](0040-readable-report-summary.md) - reshaped
+  `report-summary.md` into a decision-brief artifact with reader-facing
+  vocabulary and prominent recommendation identifiers (`Done`).

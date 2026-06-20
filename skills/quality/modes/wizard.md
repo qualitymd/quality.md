@@ -7,10 +7,12 @@ unsure what to run next, asks for status/next steps, asks to review the model or
 history, or sends a bare `/quality`.
 
 Wizard must be **fast**. Its job is to route, not to audit: use the CLI status
-snapshot, classify readiness, and offer concrete next steps. Do not hand-parse
-`QUALITY.md` frontmatter, read evaluation report bodies, count requirements,
-enumerate recommendations, or resolve build/install paths. Use
-`qualitymd status --json` for those mechanical signals.
+snapshot, run the bounded
+[`../guides/top-10-quality-md-checks.md`](../guides/top-10-quality-md-checks.md)
+inspection when the model is valid, classify readiness, and offer concrete next
+steps. Do not perform an unbounded parse of `QUALITY.md`, read evaluation report
+bodies, count requirements by hand, enumerate recommendations, or resolve
+build/install paths. Use `qualitymd status --json` for mechanical signals.
 
 Run frame:
 
@@ -31,12 +33,15 @@ Probe state (CLI version plus status JSON)
 - CLI missing or below the prerequisite range? recommend /quality upgrade
 - QUALITY.md missing? classify no setup; recommend setup
 - lint errors? classify invalid model; recommend repair
-- lint valid, no runs? classify ready to evaluate
-- lint valid, runs present? classify evaluation history or reconciliation needs
+- lint valid? run top-10 QUALITY.md checks for model/lifecycle findings
+- lint valid, no blocking checklist findings, no runs? classify ready to evaluate
+- lint valid, no blocking checklist findings, runs present? classify evaluation history or reconciliation needs
 
-Classify readiness (from `qualitymd status --json`)
+Classify readiness (from `qualitymd status --json` plus checklist findings)
 - no setup            (QUALITY.md missing)
 - invalid model       (lint fails)
+- starter model       (valid but skeleton/body placeholders dominate)
+- immature model      (valid but model-usefulness findings block fair evaluation)
 - ready to evaluate   (lint passes, no runs yet)
 - has evaluation history (lint passes, runs present)
 - needs reconciliation (stale/incomplete/malformed runs or active recommendations)
@@ -63,17 +68,22 @@ Offer concrete alternatives
    - `qualitymd status --json [path]` for the resolved target path (do not walk
      parents).
 
-   These signals are sufficient to route. Do **not** open the model, reports, or
-   recommendation files to classify — defer that to the chosen mode.
-2. Classify readiness from the `readiness` field and supporting status counts.
-   This is a readiness judgment from mechanical signals, not an evaluation
-   rating. When a signal is genuinely needed to choose between options and is
-   cheap, gather just that one; otherwise state the open question and let the
-   user's choice resolve it.
-3. Only read [`../resources/quality-md-guide.md`](../resources/quality-md-guide.md)
-   if the user explicitly asks for authoring/model help — not to classify
-   readiness.
-4. Report in this shape:
+   These signals establish the mechanical lifecycle state.
+2. If the model exists and lint passes, read
+   [`../guides/top-10-quality-md-checks.md`](../guides/top-10-quality-md-checks.md)
+   and inspect the target `QUALITY.md` against it. Keep findings bounded to the
+   checklist. Do **not** inspect subject source files, read reports, or create
+   evaluation artifacts.
+3. Classify readiness from the `readiness` field, supporting status counts, and
+   checklist findings. This is routing judgment, not an evaluation rating. When
+   a signal is genuinely needed to choose between options and is cheap, gather
+   just that one; otherwise state the open question and let the user's choice
+   resolve it.
+4. Only read [`../guides/authoring.md`](../guides/authoring.md) if the user
+   explicitly asks for authoring/model help — not to classify readiness. If the
+   user has just initialized a skeleton or asks how to start from one, read
+   [`../guides/getting-started.md`](../guides/getting-started.md).
+5. Report in this shape:
 
    ```text
    Status
@@ -84,6 +94,9 @@ Offer concrete alternatives
    - Evaluation history: (runs/recommendations present; no body reads)
    - Readiness:
 
+   QUALITY.md inspection findings
+   - <top finding or "none blocking">
+
    Recommended next step
    - <workflow> because <observed reason>
 
@@ -93,7 +106,7 @@ Offer concrete alternatives
    3. <concrete workflow>
    ```
 
-5. Offer only concrete workflows the user can choose next, such as setup, model
+6. Offer only concrete workflows the user can choose next, such as setup, model
    repair, model review/improvement, whole-subject evaluation, scoped
    target/factor evaluation, recommendation review/improvement, or evaluation
    history review. Include `/quality upgrade` when the CLI is missing, below the
@@ -104,7 +117,7 @@ Offer concrete alternatives
    to discover a newer-but-compatible release — surface it when the user asks
    whether a newer CLI is available.
 
-Wizard is read-only, shallow, and status-first. It does not edit `QUALITY.md`, create
-evaluation records, build reports, or rate the subject. It may judge readiness
-and route to work; the work happens in the mode or confirmed workflow it hands
-off to.
+Wizard is read-only, shallow, and status-first. It does not edit `QUALITY.md`,
+create evaluation records, build reports, or rate the subject. It may produce
+checklist findings about the model and judge readiness to route to work; the work
+happens in the mode or confirmed workflow it hands off to.

@@ -1,67 +1,268 @@
 {
   "schemaVersion": 1,
-  "run": {
-    "id": "0001-subject-quality-eval",
-    "mode": "evaluate",
-    "altitude": "subject",
-    "targetFile": "./QUALITY.md",
-    "scope": "whole model",
-    "effort": "standard",
-    "sourceRevision": "9f2c1ab"
-  },
-  "rating": {
-    "rating": "unacceptable",
-    "notAssessed": false,
+  "summary": {
+    "run": "0001-subject-quality-eval",
     "subject": "Sparrow Payments API",
+    "altitude": "subject",
+    "rigor": "standard",
+    "narrowing": "",
+    "ratingResult": {
+      "kind": "rated",
+      "level": "unacceptable",
+      "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+    }
+  },
+  "ratingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
     "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
   },
+  "scope": {
+    "recorded": true,
+    "description": "whole model",
+    "narrowing": "",
+    "inScope": [
+      "Sparrow Payments API",
+      "Ledger",
+      "Webhooks",
+      "Delivery"
+    ],
+    "outOfScope": [],
+    "notRecorded": []
+  },
+  "evidenceBasis": [],
+  "limitations": [
+    "Standard rigor did not seek broader failure-injection and step-up-control evidence required for outstanding ratings.",
+    "The committed-credential finding reflects the tracked working tree at the evaluated commit.",
+    "Transfer idempotency and webhook deduplication each rest on one replay/redelivery test, not sustained concurrency or fault-injection soak."
+  ],
+  "nextAction": {
+    "kind": "recommendation",
+    "summary": "Rotate the committed gateway key.",
+    "recommendationId": "001-rotate-committed-gateway-key",
+    "recommendationPath": "recommendations/001-rotate-committed-gateway-key.md"
+  },
+  "targetSummary": [
+    {
+      "targetPath": [],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+      },
+      "coveredRequirements": 3
+    },
+    {
+      "targetPath": [
+        "ledger"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The target requirements are satisfied by the available evidence."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The target requirements are satisfied by the available evidence."
+      },
+      "coveredRequirements": 2,
+      "note": "has not-assessed requirements"
+    },
+    {
+      "targetPath": [
+        "webhooks"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The target requirements are satisfied by the available evidence."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "coveredRequirements": 1
+    },
+    {
+      "targetPath": [
+        "webhooks",
+        "delivery"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "coveredRequirements": 1
+    }
+  ],
   "targets": [
     {
-      "target": "Sparrow Payments API",
       "targetPath": [],
-      "localRating": "unacceptable",
-      "aggregateRating": "unacceptable",
-      "analysisRecord": "analysis/root-sparrow-payments.json"
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Security"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "unacceptable",
+            "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+          }
+        },
+        {
+          "factorPath": [
+            "Reliability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The target requirements are satisfied by the available evidence."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/root-sparrow-payments.json",
+      "notAssessedRequirements": [],
+      "structural": false
     },
     {
-      "target": "Ledger",
-      "targetPath": ["ledger"],
-      "localRating": "target",
-      "aggregateRating": "target",
+      "targetPath": [
+        "ledger"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The target requirements are satisfied by the available evidence."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The target requirements are satisfied by the available evidence."
+      },
+      "factorRatingResults": [],
       "analysisRecord": "analysis/ledger.json",
-      "notAssessed": ["Reconciliation runs daily and flags drift"]
+      "notAssessedRequirements": [
+        "Reconciliation runs daily and flags drift"
+      ],
+      "structural": false
     },
     {
-      "target": "Webhooks",
-      "targetPath": ["webhooks"],
-      "localRating": "target",
-      "aggregateRating": "minimum",
-      "analysisRecord": "analysis/webhooks.json"
+      "targetPath": [
+        "webhooks"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The target requirements are satisfied by the available evidence."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "factorRatingResults": [],
+      "analysisRecord": "analysis/webhooks.json",
+      "notAssessedRequirements": [],
+      "structural": false
     },
     {
-      "target": "Delivery",
-      "targetPath": ["webhooks", "delivery"],
-      "localRating": "minimum",
-      "aggregateRating": "minimum",
-      "analysisRecord": "analysis/delivery.json"
+      "targetPath": [
+        "webhooks",
+        "delivery"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "factorRatingResults": [],
+      "analysisRecord": "analysis/delivery.json",
+      "notAssessedRequirements": [],
+      "structural": false
+    }
+  ],
+  "assessmentResults": [
+    {
+      "assessmentResultRecord": "assessment-results/001-root-no-committed-credentials.json",
+      "targetPath": [],
+      "requirement": "No credentials are committed to the repository",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation.json",
+      "targetPath": [
+        "ledger"
+      ],
+      "requirement": "Reconciliation runs daily and flags drift",
+      "ratingResult": {
+        "kind": "not-assessed",
+        "rationale": "Scheduled-run evidence was not available."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-delivery-redelivery-dedup.json",
+      "targetPath": [
+        "webhooks",
+        "delivery"
+      ],
+      "requirement": "Redelivery is deduplicated inside the retry window",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+      },
+      "active": true
     }
   ],
   "findingSummaries": [
     {
-      "assessmentRecord": "assessments/001-root-no-committed-credentials.json",
+      "assessmentResultRecord": "assessment-results/001-root-no-committed-credentials.json",
       "locator": "internal/gateway/client.go:48",
       "category": "secret",
       "severity": "critical",
       "summary": "A live gateway secret key is committed in plaintext; value withheld."
     },
     {
-      "assessmentRecord": "assessments/005-ledger-reconciliation.json",
+      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation.json",
       "locator": "ledger/reconcile.go:31",
       "category": "missing-evidence",
       "summary": "A reconcile entrypoint exists, but no scheduled run output, log, or report was available."
     },
     {
-      "assessmentRecord": "assessments/008-delivery-redelivery-dedup.json",
+      "assessmentResultRecord": "assessment-results/008-delivery-redelivery-dedup.json",
       "locator": "webhooks/delivery/dedup.go:52",
       "category": "bounded-deduplication",
       "severity": "medium",
@@ -72,25 +273,20 @@
     {
       "id": "001-rotate-committed-gateway-key",
       "path": "recommendations/001-rotate-committed-gateway-key.md",
-      "priority": "key-gap",
-      "doneCriterion": "The committed-credentials requirement reaches target: no live credential is present in the working tree and the previously exposed key has been revoked."
+      "doneCriterion": "The committed-credentials requirement reaches target: no live credential is present in the working tree and the previously exposed key has been revoked.",
+      "active": true
     },
     {
       "id": "002-produce-reconciliation-evidence",
       "path": "recommendations/002-produce-reconciliation-evidence.md",
-      "priority": "coverage-gap",
-      "doneCriterion": "The reconciliation requirement becomes assessable and reaches at least the acceptable floor."
+      "doneCriterion": "The reconciliation requirement becomes assessable and reaches at least the acceptable floor.",
+      "active": true
     },
     {
       "id": "003-bound-webhook-dedup-window",
       "path": "recommendations/003-bound-webhook-dedup-window.md",
-      "priority": "next-constraint",
-      "doneCriterion": "The webhook-delivery deduplication requirement reaches target within the declared retry window."
+      "doneCriterion": "The webhook-delivery deduplication requirement reaches target within the declared retry window.",
+      "active": true
     }
-  ],
-  "limitations": [
-    "Standard effort did not seek broader failure-injection and step-up-control evidence required for outstanding ratings.",
-    "The committed-credential finding reflects the tracked working tree at the evaluated commit.",
-    "Transfer idempotency and webhook deduplication each rest on one replay/redelivery test, not sustained concurrency or fault-injection soak."
   ]
 }

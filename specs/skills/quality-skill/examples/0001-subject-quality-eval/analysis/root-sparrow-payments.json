@@ -1,38 +1,45 @@
 {
   "schemaVersion": 1,
-  "target": "Sparrow Payments API",
   "targetPath": [],
-  "localRating": {
-    "rating": "unacceptable",
-    "notAssessed": false,
-    "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
-  },
-  "factorRatings": [
-    {
-      "factor": "Security",
-      "rating": "unacceptable",
-      "notAssessed": false,
-      "rationale": "Bound by the Secrets handling sub-factor because a live gateway credential is committed in plaintext; Access control is rated target."
-    },
-    {
-      "factor": "Reliability",
-      "rating": "target",
-      "notAssessed": false,
-      "rationale": "Transfer idempotency holds, and the Ledger double-entry invariant tags Reliability as a secondary factor."
-    }
-  ],
-  "aggregateRating": {
-    "rating": "unacceptable",
-    "notAssessed": false,
-    "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
-  },
-  "assessmentRecords": [
-    "assessments/001-root-no-committed-credentials.json",
-    "assessments/002-root-endpoint-auth.json",
-    "assessments/003-root-transfer-idempotency.json"
-  ],
   "childAnalysisRecords": [
     "analysis/ledger.json",
     "analysis/webhooks.json"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
+  },
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "Security"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Bound by the Secrets handling sub-factor because a live gateway credential is committed in plaintext; Access control is rated target."
+      }
+    },
+    {
+      "factorPath": [
+        "Reliability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Transfer idempotency holds, and the Ledger double-entry invariant tags Reliability as a secondary factor."
+      }
+    }
+  ],
+  "assessmentResultRecords": [
+    "assessment-results/001-root-no-committed-credentials.json",
+    "assessment-results/002-root-endpoint-auth.json",
+    "assessment-results/003-root-transfer-idempotency.json"
   ]
 }

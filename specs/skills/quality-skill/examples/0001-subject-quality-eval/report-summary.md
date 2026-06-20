@@ -1,50 +1,65 @@
 # Quality Evaluation Summary
 
-**Run:** `0001-subject-quality-eval`
-**Subject:** `Sparrow Payments API`
-**Scope:** whole model
-**Effort:** standard
-**Root rating:** Unacceptable
-**Full report:** [report.md](report.md)
-**Machine report:** [report.json](report.json)
+| Field          | Value                       |
+| -------------- | --------------------------- |
+| Subject        | Sparrow Payments API        |
+| Run            | `0001-subject-quality-eval` |
+| Scope          | Full evaluation             |
+| Rigor          | Standard                    |
+| Overall rating | Unacceptable                |
+| Full report    | [report.md](report.md)      |
+| Machine report | [report.json](report.json)  |
 
-## Headline
+## Summary
 
-Held at Unacceptable by a committed live payment-gateway credential. Removing
-and rotating the credential lifts the root only to Minimum until the webhook
-delivery deduplication gap is also closed.
+Held at unacceptable by a single binding constraint: a live payment-gateway
+credential is committed to the repository. Rotating and removing it would lift
+the root off the floor, but the Webhooks delivery deduplication gap would then
+bind at minimum.
 
-## Top Risks
+| Target               | Local rating | Overall rating | Driver                                                                                                                                                                                                                                                     |
+| -------------------- | ------------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sparrow Payments API | Unacceptable | Unacceptable   | Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum. |
+| Ledger               | Target       | Target         | The target requirements are satisfied by the available evidence.                                                                                                                                                                                           |
+| Webhooks             | Target       | Minimum        | The target meets the floor but has a known bounded deduplication gap.                                                                                                                                                                                      |
+| Delivery             | Minimum      | Minimum        | The target meets the floor but has a known bounded deduplication gap.                                                                                                                                                                                      |
 
-1. **critical** - A live gateway credential is committed in plaintext; value
-   withheld and referenced by credential type and locator only.
-2. **high** - Webhook delivery redelivery behavior is not bounded by durable
-   deduplication evidence.
-3. **missing-evidence** - Ledger reconciliation cannot be fully assessed because
-   scheduled reconciliation evidence is absent.
+## Top Issues
 
-## Rating Summary
+1. **critical**
+   A live gateway secret key is committed in plaintext; value withheld.
+   `internal/gateway/client.go:48`
+   Assessment: `assessment-results/001-root-no-committed-credentials.json`
+2. **missing-evidence**
+   A reconcile entrypoint exists, but no scheduled run output, log, or report was
+   available.
+   `ledger/reconcile.go:31`
+   Assessment: `assessment-results/005-ledger-reconciliation.json`
+3. **medium**
+   Deduplication state is retained for the same 24-hour window as retries, so
+   late re-enqueue can duplicate delivery.
+   `webhooks/delivery/dedup.go:52`
+   Assessment: `assessment-results/008-delivery-redelivery-dedup.json`
 
-| Target               | Aggregate rating | Reason                                                                             |
-| -------------------- | ---------------- | ---------------------------------------------------------------------------------- |
-| Sparrow Payments API | Unacceptable     | Root security finding binds the whole-model rating.                                |
-| Ledger               | Target           | Ledger requirements are at target except the not-assessed reconciliation evidence. |
-| Webhooks             | Minimum          | Delivery child target holds the Webhooks aggregate below local Target.             |
-| Delivery             | Minimum          | Redelivery deduplication needs a bounded durable guarantee.                        |
+## Recommendations
 
-## Limitations
+Primary next action: use `001-rotate-committed-gateway-key`.
 
-- One Ledger requirement is not assessed because scheduled reconciliation
-  evidence was not available.
-- This is a standard-effort evaluation over representative evidence, not a full
-  source audit.
+| Recommendation ID                     | Priority | Recommendation                                                                            | Done criterion                                                                                                                                           |
+| ------------------------------------- | -------: | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `001-rotate-committed-gateway-key`    |        1 | [Rotate Committed Gateway Key](recommendations/001-rotate-committed-gateway-key.md)       | The committed-credentials requirement reaches target: no live credential is present in the working tree and the previously exposed key has been revoked. |
+| `002-produce-reconciliation-evidence` |        2 | [Produce Reconciliation Evidence](recommendations/002-produce-reconciliation-evidence.md) | The reconciliation requirement becomes assessable and reaches at least the acceptable floor.                                                             |
+| `003-bound-webhook-dedup-window`      |        3 | [Bound Webhook Dedup Window](recommendations/003-bound-webhook-dedup-window.md)           | The webhook-delivery deduplication requirement reaches target within the declared retry window.                                                          |
 
-## Next Action
+## Scope & Limitations
 
-Rotate the exposed gateway credential and remove it from version control.
+Scope: **Full evaluation**
 
-See active recommendations:
+In scope: Sparrow Payments API; Ledger; Webhooks; Delivery
 
-- [001-rotate-committed-gateway-key](recommendations/001-rotate-committed-gateway-key.md) - credential rotation is complete and a clean secret scan passes.
-- [002-produce-reconciliation-evidence](recommendations/002-produce-reconciliation-evidence.md) - reconciliation evidence exists and the requirement can be rated.
-- [003-bound-webhook-dedup-window](recommendations/003-bound-webhook-dedup-window.md) - webhook redelivery deduplication is bounded and verified.
+- Standard rigor did not seek broader failure-injection and step-up-control
+  evidence required for outstanding ratings.
+- The committed-credential finding reflects the tracked working tree at the
+  evaluated commit.
+- Transfer idempotency and webhook deduplication each rest on one
+  replay/redelivery test, not sustained concurrency or fault-injection soak.

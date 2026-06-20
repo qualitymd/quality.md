@@ -32,8 +32,8 @@ type Options struct {
 	Path string
 }
 
-// SnapshotResult is the JSON contract emitted by qualitymd status.
-type SnapshotResult struct {
+// ProjectStatusSnapshot is the JSON contract emitted by qualitymd status.
+type ProjectStatusSnapshot struct {
 	SchemaVersion int               `json:"schemaVersion"`
 	Path          string            `json:"path"`
 	Readiness     Readiness         `json:"readiness"`
@@ -73,11 +73,11 @@ type SourceCoverage struct {
 }
 
 type EvaluationHistory struct {
-	Path    string            `json:"path,omitempty"`
-	Runs    int               `json:"runs"`
-	Latest  *RunSummary       `json:"latest,omitempty"`
-	Items   []RunSummary      `json:"items"`
-	Summary EvaluationSummary `json:"summary"`
+	Path    string                 `json:"path,omitempty"`
+	Runs    int                    `json:"runs"`
+	Latest  *EvaluationRunSummary  `json:"latest,omitempty"`
+	Items   []EvaluationRunSummary `json:"items"`
+	Summary EvaluationSummary      `json:"summary"`
 }
 
 type EvaluationSummary struct {
@@ -88,27 +88,27 @@ type EvaluationSummary struct {
 	Problems              int `json:"problems"`
 }
 
-type RunSummary struct {
-	Path                  string            `json:"path"`
-	Reportable            bool              `json:"reportable"`
-	Stale                 bool              `json:"stale"`
-	Counts                evaluation.Counts `json:"counts"`
-	Gaps                  int               `json:"gaps"`
-	ActiveRecommendations int               `json:"activeRecommendations"`
-	Problem               string            `json:"problem,omitempty"`
+type EvaluationRunSummary struct {
+	Path                  string                            `json:"path"`
+	Reportable            bool                              `json:"reportable"`
+	Stale                 bool                              `json:"stale"`
+	Counts                evaluation.EvaluationRecordCounts `json:"counts"`
+	Gaps                  int                               `json:"gaps"`
+	ActiveRecommendations int                               `json:"activeRecommendations"`
+	Problem               string                            `json:"problem,omitempty"`
 }
 
 // Snapshot assembles a deterministic project-state snapshot.
-func Snapshot(opts Options) (*SnapshotResult, error) {
+func Snapshot(opts Options) (*ProjectStatusSnapshot, error) {
 	path := opts.Path
 	if path == "" {
 		path = "QUALITY.md"
 	}
-	result := &SnapshotResult{
+	result := &ProjectStatusSnapshot{
 		SchemaVersion: SchemaVersion,
 		Path:          path,
 		Evaluations: EvaluationHistory{
-			Items: []RunSummary{},
+			Items: []EvaluationRunSummary{},
 		},
 	}
 
@@ -265,7 +265,7 @@ func appendString(path []string, value string) []string {
 }
 
 func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, error) {
-	history := EvaluationHistory{Items: []RunSummary{}}
+	history := EvaluationHistory{Items: []EvaluationRunSummary{}}
 	repoRoot, err := evaluation.FindRepoRoot(modelPath)
 	if err != nil {
 		return history, err
@@ -306,8 +306,8 @@ func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, 
 	return history, nil
 }
 
-func inspectRun(runDir evaluation.RunDir, modelBytes []byte) RunSummary {
-	summary := RunSummary{Path: runDir.Rel}
+func inspectRun(runDir evaluation.RunDir, modelBytes []byte) EvaluationRunSummary {
+	summary := EvaluationRunSummary{Path: runDir.Rel}
 	runModel, err := os.ReadFile(filepath.Join(runDir.Abs, "model.md"))
 	if err != nil {
 		summary.Problem = fmt.Sprintf("reading model.md: %v", err)
@@ -320,9 +320,9 @@ func inspectRun(runDir evaluation.RunDir, modelBytes []byte) RunSummary {
 		summary.Problem = err.Error()
 		return summary
 	}
-	runStatus := run.Status()
+	runStatus := run.EvaluationRunStatus()
 	summary.Reportable = runStatus.Reportable
-	summary.Counts = run.Counts()
+	summary.Counts = run.RecordCounts()
 	summary.Gaps = len(runStatus.Gaps)
 	summary.ActiveRecommendations = run.ActiveRecommendationCount()
 	return summary

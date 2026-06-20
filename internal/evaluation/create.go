@@ -13,7 +13,7 @@ type config struct {
 	EvaluationDir string `yaml:"evaluationDir"`
 }
 
-func CreateRun(opts Options) (*CreateRunResult, error) {
+func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
 	}
@@ -48,13 +48,13 @@ func CreateRun(opts Options) (*CreateRunResult, error) {
 		return nil, err
 	}
 	runRel := filepath.ToSlash(filepath.Join(evalDirRel, name))
-	return &CreateRunResult{
+	return &CreateRunReceipt{
 		Path:   runRel,
 		Number: number,
 		NextActions: []receipt.Action{{
-			ID:      "assessment-add",
+			ID:      "assessment-result-add",
 			Label:   "Record evaluation judgments",
-			Command: "qualitymd evaluation assessment add " + runRel,
+			Command: "qualitymd evaluation assessment-result add " + runRel,
 		}},
 	}, nil
 }
@@ -79,7 +79,7 @@ func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
 }
 
 func createRunSkeleton(runAbs string, modelRaw []byte) error {
-	for _, subdir := range []string{"assessments", "analysis", "recommendations"} {
+	for _, subdir := range []string{"assessment-results", "analysis", "recommendations"} {
 		if err := os.Mkdir(filepath.Join(runAbs, subdir), 0o755); err != nil {
 			return fmt.Errorf("creating %s: %w", subdir, err)
 		}

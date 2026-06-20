@@ -65,7 +65,7 @@ qualitymd init --help
 qualitymd evaluation create --help
 qualitymd evaluation list --help
 qualitymd evaluation status --help
-qualitymd evaluation assessment --help
+qualitymd evaluation assessment-result --help
 qualitymd evaluation analysis --help
 qualitymd evaluation recommendation --help
 qualitymd evaluation report --help
@@ -90,10 +90,12 @@ In the repository you want to evaluate:
 /quality upgrade
 ```
 
-`setup` creates and lints a skeleton `QUALITY.md`. `wizard` inspects the model
-state and suggests concrete next actions. `evaluate` writes a numbered
-evaluation run under `quality/evaluations/` by default. `upgrade` plans and
-orchestrates paired skill/CLI maintenance without running a quality evaluation.
+`setup` creates and lints a skeleton `QUALITY.md`, then uses the bundled
+authoring guide and getting-started guide to help populate the first useful
+model. `wizard` inspects the model state and suggests concrete next actions.
+`evaluate` writes a numbered evaluation run under `quality/evaluations/` by
+default. `upgrade` plans and orchestrates paired skill/CLI maintenance without
+running a quality evaluation.
 
 ## Configure the evaluation directory
 

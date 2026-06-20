@@ -12,37 +12,30 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
-type ReportJSON struct {
-	SchemaVersion    int                    `json:"schemaVersion"`
-	Summary          ReportSummary          `json:"summary"`
-	Rating           ReportRating           `json:"rating"`
-	Scope            ReportScope            `json:"scope"`
-	EvidenceBasis    []ReportEvidence       `json:"evidenceBasis"`
-	Limitations      []string               `json:"limitations"`
-	NextAction       ReportNextAction       `json:"nextAction"`
-	TargetSummary    []ReportTargetSummary  `json:"targetSummary"`
-	Targets          []ReportTarget         `json:"targets"`
-	Assessments      []ReportAssessment     `json:"assessments"`
-	FindingSummaries []FindingSummary       `json:"findingSummaries"`
-	Recommendations  []ReportRecommendation `json:"recommendations"`
+type EvaluationReportDocument struct {
+	SchemaVersion     int                       `json:"schemaVersion"`
+	Summary           ReportSummary             `json:"summary"`
+	RatingResult      RatingResult              `json:"ratingResult"`
+	Scope             ReportScope               `json:"scope"`
+	EvidenceBasis     []ReportEvidence          `json:"evidenceBasis"`
+	Limitations       []string                  `json:"limitations"`
+	NextAction        ReportNextAction          `json:"nextAction"`
+	TargetSummary     []TargetRatingSummary     `json:"targetSummary"`
+	Targets           []TargetEvaluationDetail  `json:"targets"`
+	AssessmentResults []AssessmentResultDigest  `json:"assessmentResults"`
+	FindingSummaries  []FindingDigest           `json:"findingSummaries"`
+	Recommendations   []RecommendationReference `json:"recommendations"`
 }
+
+type ReportJSON = EvaluationReportDocument
 
 type ReportSummary struct {
-	Run         string  `json:"run,omitempty"`
-	Subject     string  `json:"subject"`
-	Altitude    string  `json:"altitude"`
-	Effort      string  `json:"effort"`
-	Narrowing   string  `json:"narrowing"`
-	Rating      *string `json:"rating"`
-	NotAssessed bool    `json:"notAssessed"`
-	Rationale   string  `json:"rationale"`
-}
-
-type ReportRating struct {
-	Rating      *string `json:"rating"`
-	NotAssessed bool    `json:"notAssessed"`
-	Subject     string  `json:"subject"`
-	Rationale   string  `json:"rationale"`
+	Run          string       `json:"run,omitempty"`
+	Subject      string       `json:"subject"`
+	Altitude     string       `json:"altitude"`
+	Rigor        string       `json:"rigor"`
+	Narrowing    string       `json:"narrowing"`
+	RatingResult RatingResult `json:"ratingResult"`
 }
 
 type ReportScope struct {
@@ -66,54 +59,42 @@ type ReportNextAction struct {
 	RecommendationPath string `json:"recommendationPath,omitempty"`
 }
 
-type ReportTargetSummary struct {
-	Target              string             `json:"target"`
-	TargetPath          []string           `json:"targetPath"`
-	LocalRating         ReportRatingResult `json:"localRating"`
-	AggregateRating     ReportRatingResult `json:"aggregateRating"`
-	CoveredRequirements int                `json:"coveredRequirements"`
-	Note                string             `json:"note,omitempty"`
+type TargetRatingSummary struct {
+	TargetPath            []string      `json:"targetPath"`
+	LocalRatingResult     *RatingResult `json:"localRatingResult"`
+	AggregateRatingResult RatingResult  `json:"aggregateRatingResult"`
+	CoveredRequirements   int           `json:"coveredRequirements"`
+	Note                  string        `json:"note,omitempty"`
 }
 
-type ReportTarget struct {
-	Target          string             `json:"target"`
-	TargetPath      []string           `json:"targetPath"`
-	LocalRating     ReportRatingResult `json:"localRating"`
-	AggregateRating ReportRatingResult `json:"aggregateRating"`
-	FactorRatings   []FactorRating     `json:"factorRatings"`
-	AnalysisRecord  string             `json:"analysisRecord"`
-	NotAssessed     []string           `json:"notAssessed"`
-	Structural      bool               `json:"structural"`
+type TargetEvaluationDetail struct {
+	TargetPath              []string             `json:"targetPath"`
+	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
+	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`
+	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
+	AnalysisRecord          string               `json:"analysisRecord"`
+	NotAssessedRequirements []string             `json:"notAssessedRequirements"`
+	Structural              bool                 `json:"structural"`
 }
 
-type ReportRatingResult struct {
-	Kind        string  `json:"kind"`
-	Rating      *string `json:"rating"`
-	NotAssessed bool    `json:"notAssessed"`
-	Rationale   string  `json:"rationale"`
+type AssessmentResultDigest struct {
+	AssessmentResultRecord string       `json:"assessmentResultRecord"`
+	TargetPath             []string     `json:"targetPath"`
+	Requirement            string       `json:"requirement"`
+	RatingResult           RatingResult `json:"ratingResult"`
+	Active                 bool         `json:"active"`
+	Supersedes             []string     `json:"supersedes,omitempty"`
 }
 
-type ReportAssessment struct {
-	AssessmentRecord string   `json:"assessmentRecord"`
-	Target           string   `json:"target"`
-	TargetPath       []string `json:"targetPath"`
-	Requirement      string   `json:"requirement"`
-	Rating           *string  `json:"rating"`
-	NotAssessed      bool     `json:"notAssessed"`
-	Rationale        string   `json:"rationale"`
-	Active           bool     `json:"active"`
-	Supersedes       []string `json:"supersedes,omitempty"`
+type FindingDigest struct {
+	AssessmentResultRecord string `json:"assessmentResultRecord"`
+	Locator                string `json:"locator"`
+	Category               string `json:"category"`
+	Severity               string `json:"severity,omitempty"`
+	Summary                string `json:"summary"`
 }
 
-type FindingSummary struct {
-	AssessmentRecord string `json:"assessmentRecord"`
-	Locator          string `json:"locator"`
-	Category         string `json:"category"`
-	Severity         string `json:"severity,omitempty"`
-	Summary          string `json:"summary"`
-}
-
-type ReportRecommendation struct {
+type RecommendationReference struct {
 	ID            string   `json:"id"`
 	Path          string   `json:"path"`
 	DoneCriterion string   `json:"doneCriterion"`
@@ -121,27 +102,25 @@ type ReportRecommendation struct {
 	Supersedes    []string `json:"supersedes,omitempty"`
 }
 
-type BuildResult struct {
+type BuildReportReceipt struct {
 	SchemaVersion   int              `json:"schemaVersion"`
 	Path            string           `json:"path"`
 	ReportSummaryMD string           `json:"reportSummaryMd"`
 	ReportMD        string           `json:"reportMd"`
 	ReportJSON      string           `json:"reportJson"`
-	Rating          *string          `json:"rating"`
-	NotAssessed     bool             `json:"notAssessed"`
+	RatingResult    RatingResult     `json:"ratingResult"`
 	NextActions     []receipt.Action `json:"nextActions,omitempty"`
 }
 
-type GateResult struct {
-	SchemaVersion int     `json:"schemaVersion"`
-	Path          string  `json:"path"`
-	Threshold     string  `json:"threshold"`
-	Rating        *string `json:"rating"`
-	NotAssessed   bool    `json:"notAssessed"`
-	Pass          bool    `json:"pass"`
+type GateReceipt struct {
+	SchemaVersion int          `json:"schemaVersion"`
+	Path          string       `json:"path"`
+	Threshold     string       `json:"threshold"`
+	RatingResult  RatingResult `json:"ratingResult"`
+	Pass          bool         `json:"pass"`
 }
 
-func BuildReport(path string) (*BuildResult, error) {
+func BuildReport(path string) (*BuildReportReceipt, error) {
 	run, err := Load(path)
 	if err != nil {
 		return nil, err
@@ -172,30 +151,29 @@ func BuildReport(path string) (*BuildResult, error) {
 	if err := writeReportFile(reportJSON, js); err != nil {
 		return nil, err
 	}
-	return &BuildResult{
+	return &BuildReportReceipt{
 		SchemaVersion:   SchemaVersion,
 		Path:            run.Path,
 		ReportSummaryMD: filepath.ToSlash(reportSummaryMD),
 		ReportMD:        filepath.ToSlash(reportMD),
 		ReportJSON:      filepath.ToSlash(reportJSON),
-		Rating:          report.Rating.Rating,
-		NotAssessed:     report.Rating.NotAssessed,
+		RatingResult:    report.RatingResult,
 	}, nil
 }
 
-func (r *Run) Report() (ReportJSON, error) {
+func (r *EvaluationRun) Report() (EvaluationReportDocument, error) {
 	analyses, rootAnalysis, err := sortedReportAnalyses(r.Analyses)
 	if err != nil {
-		return ReportJSON{}, err
+		return EvaluationReportDocument{}, err
 	}
 	context := r.reportContext()
-	report := newReportJSON(r.Path, rootAnalysis, context)
+	report := newReportDocument(r.Path, rootAnalysis, context)
 	collector := limitationCollector{seen: map[string]bool{}, out: &report.Limitations}
 	collector.addContext(context, rootAnalysis)
 
-	supersededAssessments, _ := r.assessmentSupersedingState()
-	assessmentsByFile := addReportAssessments(&report, r.Assessments, supersededAssessments, &collector)
-	addReportTargets(&report, analyses, assessmentsByFile, context, &collector)
+	supersededAssessmentResults, _ := r.assessmentResultSupersedingState()
+	assessmentResultsByFile := addAssessmentResultSummaries(&report, r.AssessmentResults, supersededAssessmentResults, &collector)
+	addReportTargets(&report, analyses, assessmentResultsByFile, context, &collector)
 	addReportRecommendations(&report, r.Recommendations, r.supersededRecommendations())
 	setReportNextAction(&report)
 	return report, nil
@@ -228,25 +206,19 @@ func sortedReportAnalyses(records []AnalysisRecord) ([]AnalysisRecord, AnalysisR
 	return analyses, *root, nil
 }
 
-func newReportJSON(runPath string, rootAnalysis AnalysisRecord, context runContext) ReportJSON {
-	report := ReportJSON{
+func newReportDocument(runPath string, rootAnalysis AnalysisRecord, context runContext) EvaluationReportDocument {
+	rootRating := rootAnalysis.AggregateRatingResult
+	report := EvaluationReportDocument{
 		SchemaVersion: SchemaVersion,
 		Summary: ReportSummary{
-			Run:         filepath.Base(runPath),
-			Subject:     rootAnalysis.Target,
-			Altitude:    context.Altitude,
-			Effort:      context.Effort,
-			Narrowing:   context.Narrowing,
-			Rating:      rootAnalysis.AggregateRating.Rating,
-			NotAssessed: rootAnalysis.AggregateRating.NotAssessed,
-			Rationale:   rootAnalysis.AggregateRating.Rationale,
+			Run:          filepath.Base(runPath),
+			Subject:      targetPathDisplay(rootAnalysis.TargetPath),
+			Altitude:     context.Altitude,
+			Rigor:        context.Rigor,
+			Narrowing:    context.Narrowing,
+			RatingResult: rootRating,
 		},
-		Rating: ReportRating{
-			Rating:      rootAnalysis.AggregateRating.Rating,
-			NotAssessed: rootAnalysis.AggregateRating.NotAssessed,
-			Subject:     rootAnalysis.Target,
-			Rationale:   rootAnalysis.AggregateRating.Rationale,
-		},
+		RatingResult: rootRating,
 		Scope: ReportScope{
 			Recorded:    context.Recorded,
 			Description: context.ScopeDescription,
@@ -255,21 +227,21 @@ func newReportJSON(runPath string, rootAnalysis AnalysisRecord, context runConte
 			OutOfScope:  append([]string(nil), context.OutOfScope...),
 			NotRecorded: []string{},
 		},
-		EvidenceBasis:    []ReportEvidence{},
-		Limitations:      []string{},
-		TargetSummary:    []ReportTargetSummary{},
-		Targets:          []ReportTarget{},
-		Assessments:      []ReportAssessment{},
-		FindingSummaries: []FindingSummary{},
-		Recommendations:  []ReportRecommendation{},
+		EvidenceBasis:     []ReportEvidence{},
+		Limitations:       []string{},
+		TargetSummary:     []TargetRatingSummary{},
+		Targets:           []TargetEvaluationDetail{},
+		AssessmentResults: []AssessmentResultDigest{},
+		FindingSummaries:  []FindingDigest{},
+		Recommendations:   []RecommendationReference{},
 	}
 	normalizeReportScope(&report)
 	return report
 }
 
-func normalizeReportScope(report *ReportJSON) {
+func normalizeReportScope(report *EvaluationReportDocument) {
 	if report.Scope.Description == "" {
-		report.Scope.Description = "Evaluation scope reconstructed from the run's analysis and assessment records."
+		report.Scope.Description = "Evaluation scope reconstructed from the run's analysis and assessment result records."
 	}
 	if report.Scope.InScope == nil {
 		report.Scope.InScope = []string{}
@@ -277,8 +249,8 @@ func normalizeReportScope(report *ReportJSON) {
 	if report.Scope.OutOfScope == nil {
 		report.Scope.OutOfScope = []string{}
 	}
-	if report.Summary.Effort == "" {
-		report.Scope.NotRecorded = append(report.Scope.NotRecorded, "effort")
+	if report.Summary.Rigor == "" {
+		report.Scope.NotRecorded = append(report.Scope.NotRecorded, "rigor")
 	}
 	if len(report.Scope.OutOfScope) == 0 {
 		report.Scope.NotRecorded = append(report.Scope.NotRecorded, "out-of-scope areas")
@@ -311,46 +283,43 @@ func (c *limitationCollector) addContext(context runContext, rootAnalysis Analys
 		c.addText(limitation)
 		c.add(limitation)
 	}
-	c.addText(rootAnalysis.AggregateRating.Rationale)
+	c.addText(rootAnalysis.AggregateRatingResult.Rationale)
 }
 
-func addReportAssessments(report *ReportJSON, assessments []AssessmentRecord, superseded map[string]bool, collector *limitationCollector) map[string]AssessmentRecord {
-	assessmentsByFile := map[string]AssessmentRecord{}
+func addAssessmentResultSummaries(report *EvaluationReportDocument, records []AssessmentResultRecord, superseded map[string]bool, collector *limitationCollector) map[string]AssessmentResultRecord {
+	recordsByFile := map[string]AssessmentResultRecord{}
 	evidenceSeen := map[string]bool{}
-	for _, assessment := range assessments {
-		active := !superseded[assessment.File]
-		assessmentsByFile[assessment.File] = assessment
-		report.Assessments = append(report.Assessments, ReportAssessment{
-			AssessmentRecord: assessment.File,
-			Target:           assessment.Target,
-			TargetPath:       assessment.TargetPath,
-			Requirement:      assessment.Requirement,
-			Rating:           assessment.Rating,
-			NotAssessed:      assessment.NotAssessed,
-			Rationale:        assessment.Rationale,
-			Active:           active,
-			Supersedes:       append([]string(nil), assessment.Supersedes...),
+	for _, record := range records {
+		active := !superseded[record.File]
+		recordsByFile[record.File] = record
+		report.AssessmentResults = append(report.AssessmentResults, AssessmentResultDigest{
+			AssessmentResultRecord: record.File,
+			TargetPath:             record.TargetPath,
+			Requirement:            record.Requirement,
+			RatingResult:           record.RatingResult,
+			Active:                 active,
+			Supersedes:             append([]string(nil), record.Supersedes...),
 		})
 		if !active {
 			continue
 		}
-		if assessment.NotAssessed {
-			collector.addText(assessment.Requirement + ": " + assessment.Rationale)
+		if isNotAssessed(record.RatingResult) {
+			collector.addText(record.Requirement + ": " + record.RatingResult.Rationale)
 		}
-		collector.addText(assessment.Rationale)
-		addReportFindings(report, assessment, evidenceSeen)
+		collector.addText(record.RatingResult.Rationale)
+		addReportFindings(report, record, evidenceSeen)
 	}
-	return assessmentsByFile
+	return recordsByFile
 }
 
-func addReportFindings(report *ReportJSON, assessment AssessmentRecord, evidenceSeen map[string]bool) {
-	for _, finding := range assessment.Findings {
-		report.FindingSummaries = append(report.FindingSummaries, FindingSummary{
-			AssessmentRecord: assessment.File,
-			Locator:          finding.Locator,
-			Category:         finding.Category,
-			Severity:         finding.Severity,
-			Summary:          finding.Observation,
+func addReportFindings(report *EvaluationReportDocument, record AssessmentResultRecord, evidenceSeen map[string]bool) {
+	for _, finding := range record.Findings {
+		report.FindingSummaries = append(report.FindingSummaries, FindingDigest{
+			AssessmentResultRecord: record.File,
+			Locator:                finding.Locator,
+			Category:               finding.Category,
+			Severity:               finding.Severity,
+			Summary:                finding.Observation,
 		})
 		for _, evidence := range finding.Evidence {
 			key := evidence.Kind + "\x00" + evidence.Ref
@@ -363,72 +332,67 @@ func addReportFindings(report *ReportJSON, assessment AssessmentRecord, evidence
 	}
 }
 
-func addReportTargets(report *ReportJSON, analyses []AnalysisRecord, assessmentsByFile map[string]AssessmentRecord, context runContext, collector *limitationCollector) {
+func addReportTargets(report *EvaluationReportDocument, analyses []AnalysisRecord, assessmentResultsByFile map[string]AssessmentResultRecord, context runContext, collector *limitationCollector) {
 	for _, analysis := range analyses {
-		structural := len(analysis.AssessmentRecords) == 0 && len(analysis.ChildAnalysisRecords) > 0
-		if analysis.LocalRating != nil {
-			collector.addText(analysis.LocalRating.Rationale)
+		structural := len(analysis.AssessmentResultRecords) == 0 && len(analysis.ChildAnalysisRecords) > 0
+		if analysis.LocalRatingResult != nil {
+			collector.addText(analysis.LocalRatingResult.Rationale)
 		}
-		collector.addText(analysis.AggregateRating.Rationale)
-		for _, factor := range analysis.FactorRatings {
-			collector.addText(factor.Rationale)
+		collector.addText(analysis.AggregateRatingResult.Rationale)
+		for _, factor := range analysis.FactorRatingResults {
+			collector.addText(factor.RatingResult.Rationale)
 		}
-		target := reportTargetFromAnalysis(analysis, structural)
-		for _, ref := range analysis.AssessmentRecords {
-			if assessment, ok := assessmentsByFile[ref]; ok && assessment.NotAssessed {
-				target.NotAssessed = append(target.NotAssessed, assessment.Requirement)
+		target := targetEvaluationFromAnalysis(analysis, structural)
+		for _, ref := range analysis.AssessmentResultRecords {
+			if record, ok := assessmentResultsByFile[ref]; ok && isNotAssessed(record.RatingResult) {
+				target.NotAssessedRequirements = append(target.NotAssessedRequirements, record.Requirement)
 			}
 		}
-		report.TargetSummary = append(report.TargetSummary, reportTargetSummary(target, len(analysis.AssessmentRecords)))
+		report.TargetSummary = append(report.TargetSummary, targetEvaluationSummary(target, len(analysis.AssessmentResultRecords)))
 		if len(context.InScope) == 0 {
-			report.Scope.InScope = append(report.Scope.InScope, target.Target)
+			report.Scope.InScope = append(report.Scope.InScope, targetPathDisplay(target.TargetPath))
 		}
 		report.Targets = append(report.Targets, target)
 	}
 }
 
-func reportTargetFromAnalysis(analysis AnalysisRecord, structural bool) ReportTarget {
-	target := ReportTarget{
-		Target:          analysis.Target,
-		TargetPath:      analysis.TargetPath,
-		AnalysisRecord:  analysis.File,
-		LocalRating:     reportRatingFromPointer(analysis.LocalRating),
-		AggregateRating: reportRatingFromValue(analysis.AggregateRating),
-		FactorRatings:   nonNilFactorRatings(analysis.FactorRatings),
-		NotAssessed:     []string{},
-		Structural:      structural,
+func targetEvaluationFromAnalysis(analysis AnalysisRecord, structural bool) TargetEvaluationDetail {
+	target := TargetEvaluationDetail{
+		TargetPath:              append([]string(nil), analysis.TargetPath...),
+		AnalysisRecord:          analysis.File,
+		LocalRatingResult:       cloneRatingResult(analysis.LocalRatingResult),
+		AggregateRatingResult:   analysis.AggregateRatingResult,
+		FactorRatingResults:     nonNilFactorRatingResults(analysis.FactorRatingResults),
+		NotAssessedRequirements: []string{},
+		Structural:              structural,
 	}
 	if structural {
-		target.LocalRating = ReportRatingResult{
-			Kind:      "structural",
-			Rationale: "Structural grouping target; local rating does not apply.",
-		}
+		target.LocalRatingResult = nil
 	}
 	return target
 }
 
-func reportTargetSummary(target ReportTarget, coveredRequirements int) ReportTargetSummary {
+func targetEvaluationSummary(target TargetEvaluationDetail, coveredRequirements int) TargetRatingSummary {
 	note := ""
 	if target.Structural {
 		note = "structural grouping target"
-	} else if len(target.NotAssessed) > 0 {
+	} else if len(target.NotAssessedRequirements) > 0 {
 		note = "has not-assessed requirements"
 	}
-	return ReportTargetSummary{
-		Target:              target.Target,
-		TargetPath:          target.TargetPath,
-		LocalRating:         target.LocalRating,
-		AggregateRating:     target.AggregateRating,
-		CoveredRequirements: coveredRequirements,
-		Note:                note,
+	return TargetRatingSummary{
+		TargetPath:            append([]string(nil), target.TargetPath...),
+		LocalRatingResult:     cloneRatingResult(target.LocalRatingResult),
+		AggregateRatingResult: target.AggregateRatingResult,
+		CoveredRequirements:   coveredRequirements,
+		Note:                  note,
 	}
 }
 
-func addReportRecommendations(report *ReportJSON, recommendations []RecommendationRecord, superseded map[string]bool) {
+func addReportRecommendations(report *EvaluationReportDocument, recommendations []RecommendationRecord, superseded map[string]bool) {
 	for _, rec := range recommendations {
 		id := strings.TrimSuffix(filepath.Base(rec.File), ".md")
-		report.Recommendations = append(report.Recommendations, ReportRecommendation{
-			ID:            strings.TrimSuffix(filepath.Base(rec.File), ".md"),
+		report.Recommendations = append(report.Recommendations, RecommendationReference{
+			ID:            id,
 			Path:          rec.File,
 			DoneCriterion: rec.DoneCriterion,
 			Active:        !superseded[rec.File] && !superseded[id],
@@ -437,7 +401,7 @@ func addReportRecommendations(report *ReportJSON, recommendations []Recommendati
 	}
 }
 
-func setReportNextAction(report *ReportJSON) {
+func setReportNextAction(report *EvaluationReportDocument) {
 	if first, ok := firstActiveRecommendation(report.Recommendations); ok {
 		report.NextAction = ReportNextAction{
 			Kind:               "recommendation",
@@ -453,7 +417,7 @@ func setReportNextAction(report *ReportJSON) {
 	}
 }
 
-func renderReportMarkdown(report ReportJSON, labels reportDisplayLabels) []byte {
+func renderReportMarkdown(report EvaluationReportDocument, labels reportDisplayLabels) []byte {
 	var out bytes.Buffer
 	out.WriteString("# Evaluation Report\n\n")
 	writeReportSummarySection(&out, report, labels)
@@ -469,7 +433,7 @@ func renderReportMarkdown(report ReportJSON, labels reportDisplayLabels) []byte 
 	return out.Bytes()
 }
 
-func writeReportSummarySection(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
+func writeReportSummarySection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
 	out.WriteString("## Summary\n\n")
 	out.WriteString("- **Subject:** " + labels.Target(nil, report.Summary.Subject) + "\n")
 	if report.Summary.Altitude != "" {
@@ -477,21 +441,21 @@ func writeReportSummarySection(out *bytes.Buffer, report ReportJSON, labels repo
 	} else {
 		out.WriteString("- **Altitude:** not recorded\n")
 	}
-	if report.Summary.Effort != "" {
-		out.WriteString("- **Effort:** " + report.Summary.Effort + "\n")
+	if report.Summary.Rigor != "" {
+		out.WriteString("- **Rigor:** " + report.Summary.Rigor + "\n")
 	} else {
-		out.WriteString("- **Effort:** not recorded\n")
+		out.WriteString("- **Rigor:** not recorded\n")
 	}
 	if report.Summary.Narrowing != "" {
 		out.WriteString("- **Narrowing:** " + report.Summary.Narrowing + "\n")
 	}
-	out.WriteString("- **Rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed, labels.Ratings) + "\n")
-	if report.Summary.Rationale != "" {
-		out.WriteString("- **Rationale:** " + report.Summary.Rationale + "\n")
+	out.WriteString("- **Rating:** " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + "\n")
+	if report.Summary.RatingResult.Rationale != "" {
+		out.WriteString("- **Rationale:** " + report.Summary.RatingResult.Rationale + "\n")
 	}
 }
 
-func writeReportScopeSection(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
+func writeReportScopeSection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
 	out.WriteString("\n## Scope\n\n")
 	out.WriteString(report.Scope.Description + "\n\n")
 	if report.Scope.Narrowing != "" {
@@ -510,7 +474,7 @@ func writeReportScopeSection(out *bytes.Buffer, report ReportJSON, labels report
 	}
 }
 
-func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report ReportJSON) {
+func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report EvaluationReportDocument) {
 	out.WriteString("\n## Top Risks and Limitations\n\n")
 	risks := riskFindings(report.FindingSummaries)
 	summaryRisks := firstFindingSummaries(risks, 8)
@@ -520,7 +484,7 @@ func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report ReportJSON)
 		return
 	}
 	for _, finding := range summaryRisks {
-		out.WriteString("- `" + finding.AssessmentRecord + "`")
+		out.WriteString("- `" + finding.AssessmentResultRecord + "`")
 		if finding.Locator != "" {
 			out.WriteString(" at `" + finding.Locator + "`")
 		}
@@ -537,7 +501,7 @@ func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report ReportJSON)
 	}
 }
 
-func writeReportEvidenceSection(out *bytes.Buffer, report ReportJSON) {
+func writeReportEvidenceSection(out *bytes.Buffer, report EvaluationReportDocument) {
 	out.WriteString("\n## Evidence Basis\n\n")
 	if len(report.EvidenceBasis) == 0 {
 		out.WriteString("No command or source evidence basis was recorded in findings.\n")
@@ -548,7 +512,7 @@ func writeReportEvidenceSection(out *bytes.Buffer, report ReportJSON) {
 	}
 }
 
-func writeReportNextActionSection(out *bytes.Buffer, report ReportJSON) {
+func writeReportNextActionSection(out *bytes.Buffer, report EvaluationReportDocument) {
 	out.WriteString("\n## Next Action\n\n")
 	if report.NextAction.RecommendationID != "" {
 		out.WriteString("- [" + report.NextAction.RecommendationID + "](" + report.NextAction.RecommendationPath + ") - " + report.NextAction.Summary + "\n")
@@ -557,36 +521,38 @@ func writeReportNextActionSection(out *bytes.Buffer, report ReportJSON) {
 	}
 }
 
-func writeReportTargetSummarySection(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
+func writeReportTargetSummarySection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
 	out.WriteString("\n## Target Summary\n\n")
 	out.WriteString("| Target | Local | Aggregate | Covered Requirements | Note |\n")
 	out.WriteString("| --- | --- | --- | --- | --- |\n")
 	for _, target := range report.TargetSummary {
-		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, target.Target)) + " | " + tableCell(displayRatingResult(target.LocalRating, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRating, labels.Ratings)) + " | " + fmt.Sprintf("%d", target.CoveredRequirements) + " | " + tableCell(target.Note) + " |\n")
+		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, targetPathDisplay(target.TargetPath))) + " | " + tableCell(displayOptionalRatingResult(target.LocalRatingResult, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRatingResult, labels.Ratings)) + " | " + fmt.Sprintf("%d", target.CoveredRequirements) + " | " + tableCell(target.Note) + " |\n")
 	}
 }
 
-func writeReportTargetDetailsSection(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
+func writeReportTargetDetailsSection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
 	out.WriteString("\n## Target Details\n\n")
 	for _, target := range report.Targets {
 		writeReportTargetDetail(out, target, labels)
 	}
 }
 
-func writeReportTargetDetail(out *bytes.Buffer, target ReportTarget, labels reportDisplayLabels) {
-	out.WriteString("### " + labels.Target(target.TargetPath, target.Target) + "\n\n")
+func writeReportTargetDetail(out *bytes.Buffer, target TargetEvaluationDetail, labels reportDisplayLabels) {
+	out.WriteString("### " + labels.Target(target.TargetPath, targetPathDisplay(target.TargetPath)) + "\n\n")
 	out.WriteString("- **Path:** " + displayPath(target.TargetPath) + "\n")
-	out.WriteString("- **Local rating:** " + displayRatingResult(target.LocalRating, labels.Ratings) + "\n")
-	writeOptionalRationale(out, target.LocalRating.Rationale)
-	out.WriteString("- **Aggregate rating:** " + displayRatingResult(target.AggregateRating, labels.Ratings) + "\n")
-	writeOptionalRationale(out, target.AggregateRating.Rationale)
-	for _, factor := range target.FactorRatings {
-		out.WriteString("- **Factor " + labels.Factor(target.TargetPath, factor.Factor) + ":** " + displayRating(factor.Rating, factor.NotAssessed, labels.Ratings) + "\n")
-		writeOptionalRationale(out, factor.Rationale)
+	out.WriteString("- **Local rating:** " + displayOptionalRatingResult(target.LocalRatingResult, labels.Ratings) + "\n")
+	if target.LocalRatingResult != nil {
+		writeOptionalRationale(out, target.LocalRatingResult.Rationale)
+	}
+	out.WriteString("- **Aggregate rating:** " + displayRatingResult(target.AggregateRatingResult, labels.Ratings) + "\n")
+	writeOptionalRationale(out, target.AggregateRatingResult.Rationale)
+	for _, factor := range target.FactorRatingResults {
+		out.WriteString("- **Factor " + labels.Factor(target.TargetPath, factor.FactorPath) + ":** " + displayRatingResult(factor.RatingResult, labels.Ratings) + "\n")
+		writeOptionalRationale(out, factor.RatingResult.Rationale)
 	}
 	out.WriteString("- **Analysis record:** `" + target.AnalysisRecord + "`\n")
-	if len(target.NotAssessed) > 0 {
-		out.WriteString("- **Not assessed:** " + strings.Join(target.NotAssessed, "; ") + "\n")
+	if len(target.NotAssessedRequirements) > 0 {
+		out.WriteString("- **Not assessed:** " + strings.Join(target.NotAssessedRequirements, "; ") + "\n")
 	}
 	out.WriteString("\n")
 }
@@ -597,29 +563,29 @@ func writeOptionalRationale(out *bytes.Buffer, rationale string) {
 	}
 }
 
-func writeReportRequirementsSection(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
+func writeReportRequirementsSection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
 	out.WriteString("## Requirements\n\n")
-	for _, assessment := range report.Assessments {
-		out.WriteString("### " + assessment.Requirement + "\n\n")
+	for _, result := range report.AssessmentResults {
+		out.WriteString("### " + result.Requirement + "\n\n")
 		state := "active"
-		if !assessment.Active {
+		if !result.Active {
 			state = "superseded"
 		}
 		out.WriteString("- **State:** " + state + "\n")
-		out.WriteString("- **Target:** " + labels.Target(assessment.TargetPath, assessment.Target) + "\n")
-		out.WriteString("- **Rating:** " + displayRating(assessment.Rating, assessment.NotAssessed, labels.Ratings) + "\n")
-		out.WriteString("- **Assessment record:** `" + assessment.AssessmentRecord + "`\n")
-		if assessment.Rationale != "" {
-			out.WriteString("- **Rationale:** " + assessment.Rationale + "\n")
+		out.WriteString("- **Target:** " + labels.Target(result.TargetPath, targetPathDisplay(result.TargetPath)) + "\n")
+		out.WriteString("- **Rating:** " + displayRatingResult(result.RatingResult, labels.Ratings) + "\n")
+		out.WriteString("- **Assessment result record:** `" + result.AssessmentResultRecord + "`\n")
+		if result.RatingResult.Rationale != "" {
+			out.WriteString("- **Rationale:** " + result.RatingResult.Rationale + "\n")
 		}
 		out.WriteString("\n")
 	}
 }
 
-func writeReportFindingsSection(out *bytes.Buffer, report ReportJSON) {
+func writeReportFindingsSection(out *bytes.Buffer, report EvaluationReportDocument) {
 	out.WriteString("## Findings\n\n")
 	for _, finding := range report.FindingSummaries {
-		out.WriteString("- `" + finding.AssessmentRecord + "`")
+		out.WriteString("- `" + finding.AssessmentResultRecord + "`")
 		if finding.Locator != "" {
 			out.WriteString(" at `" + finding.Locator + "`")
 		}
@@ -627,7 +593,7 @@ func writeReportFindingsSection(out *bytes.Buffer, report ReportJSON) {
 	}
 }
 
-func writeReportAdviceSection(out *bytes.Buffer, report ReportJSON) {
+func writeReportAdviceSection(out *bytes.Buffer, report EvaluationReportDocument) {
 	out.WriteString("\n## Advice\n\n")
 	if len(report.Recommendations) == 0 {
 		out.WriteString("No recommendation records exist for this run.\n")
@@ -642,127 +608,180 @@ func writeReportAdviceSection(out *bytes.Buffer, report ReportJSON) {
 	}
 }
 
-func renderReportSummaryMarkdown(report ReportJSON, labels reportDisplayLabels) []byte {
+func renderReportSummaryMarkdown(report EvaluationReportDocument, labels reportDisplayLabels) []byte {
 	var out bytes.Buffer
 	out.WriteString("# Quality Evaluation Summary\n\n")
-	writeSummaryHeader(&out, report, labels)
-	writeSummaryHeadline(&out, report, labels)
-	writeSummaryTopRisks(&out, report)
-	writeSummaryRatingSummary(&out, report, labels)
-	writeSummaryLimitations(&out, report)
-	writeSummaryNextAction(&out, report)
+	writeSummaryKeyDetails(&out, report, labels)
+	writeSummarySection(&out, report, labels)
+	writeSummaryTopIssues(&out, report)
+	writeSummaryRecommendations(&out, report)
+	writeSummaryScopeAndLimitations(&out, report, labels)
 	return out.Bytes()
 }
 
-func writeSummaryHeader(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
+func writeSummaryKeyDetails(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
+	out.WriteString("| Field | Value |\n")
+	out.WriteString("| --- | --- |\n")
+	out.WriteString("| Subject | " + tableCell(labels.Target(nil, report.Summary.Subject)) + " |\n")
 	if report.Summary.Run != "" {
-		out.WriteString("**Run:** `" + report.Summary.Run + "`\n")
+		out.WriteString("| Run | `" + tableCell(report.Summary.Run) + "` |\n")
 	}
-	if report.Summary.Subject != "" {
-		out.WriteString("**Subject:** `" + labels.Target(nil, report.Summary.Subject) + "`\n")
-	}
-	out.WriteString("**Scope:** " + summaryScope(report) + "\n")
-	out.WriteString("**Effort:** " + summaryValue(report.Summary.Effort) + "\n")
-	out.WriteString("**Root rating:** " + displayRating(report.Summary.Rating, report.Summary.NotAssessed, labels.Ratings) + "\n")
-	out.WriteString("**Full report:** [report.md](report.md)\n")
-	out.WriteString("**Machine report:** [report.json](report.json)\n\n")
+	out.WriteString("| Scope | " + tableCell(summaryScope(report)) + " |\n")
+	out.WriteString("| Rigor | " + tableCell(summaryValueTitle(report.Summary.Rigor)) + " |\n")
+	out.WriteString("| Overall rating | " + tableCell(displayRatingResult(report.Summary.RatingResult, labels.Ratings)) + " |\n")
+	out.WriteString("| Full report | [report.md](report.md) |\n")
+	out.WriteString("| Machine report | [report.json](report.json) |\n\n")
 }
 
-func writeSummaryHeadline(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
-	out.WriteString("## Headline\n\n")
-	if report.Summary.Rationale != "" {
-		out.WriteString(report.Summary.Rationale + "\n")
-	} else if report.Summary.NotAssessed {
-		out.WriteString("The root target was not assessed in this run.\n")
+func writeSummarySection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
+	out.WriteString("## Summary\n\n")
+	if report.Summary.RatingResult.Rationale != "" {
+		out.WriteString(report.Summary.RatingResult.Rationale + "\n")
+	} else if isNotAssessed(report.Summary.RatingResult) {
+		out.WriteString("The evaluation did not produce an overall rating.\n")
 	} else {
-		out.WriteString("The run completed with root rating " + displayRating(report.Summary.Rating, report.Summary.NotAssessed, labels.Ratings) + ".\n")
+		out.WriteString("The evaluation completed with overall rating " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + ".\n")
 	}
+	writeSummaryRatingTable(out, report, labels)
 }
 
-func writeSummaryTopRisks(out *bytes.Buffer, report ReportJSON) {
-	out.WriteString("\n## Top Risks\n\n")
-	risks := firstFindingSummaries(riskFindings(report.FindingSummaries), 5)
-	if len(risks) == 0 {
-		out.WriteString("None recorded.\n")
-		return
-	}
-	for i, finding := range risks {
-		fmt.Fprintf(out, "%d. ", i+1)
-		if finding.Severity != "" {
-			out.WriteString("**" + finding.Severity + "** - ")
-		}
-		out.WriteString(finding.Summary)
-		writeFindingRecordSuffix(out, finding)
-		out.WriteString("\n")
-	}
-}
-
-func writeFindingRecordSuffix(out *bytes.Buffer, finding FindingSummary) {
-	if finding.AssessmentRecord == "" {
-		return
-	}
-	out.WriteString(" (`" + finding.AssessmentRecord + "`")
-	if finding.Locator != "" {
-		out.WriteString(" at `" + finding.Locator + "`")
-	}
-	out.WriteString(")")
-}
-
-func writeSummaryRatingSummary(out *bytes.Buffer, report ReportJSON, labels reportDisplayLabels) {
-	out.WriteString("\n## Rating Summary\n\n")
+func writeSummaryRatingTable(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
+	out.WriteString("\n\n")
 	if len(report.TargetSummary) == 0 {
 		out.WriteString("No target ratings were recorded.\n")
-	} else {
-		out.WriteString("| Target | Aggregate rating | Reason |\n")
-		out.WriteString("| --- | --- | --- |\n")
-		for _, target := range report.TargetSummary {
-			out.WriteString("| " + tableCell(labels.Target(target.TargetPath, target.Target)) + " | " + tableCell(displayRatingResult(target.AggregateRating, labels.Ratings)) + " | " + tableCell(target.AggregateRating.Rationale) + " |\n")
-		}
+		return
+	}
+	out.WriteString("| Target | Local rating | Overall rating | Driver |\n")
+	out.WriteString("| --- | --- | --- | --- |\n")
+	for _, target := range report.TargetSummary {
+		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, targetPathDisplay(target.TargetPath))) + " | " + tableCell(displayOptionalRatingResult(target.LocalRatingResult, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRatingResult, labels.Ratings)) + " | " + tableCell(summaryDriver(target)) + " |\n")
 	}
 }
 
-func writeSummaryLimitations(out *bytes.Buffer, report ReportJSON) {
-	out.WriteString("\n## Limitations\n\n")
-	limitations := firstStrings(report.Limitations, 5)
-	if len(limitations) == 0 {
+func summaryDriver(target TargetRatingSummary) string {
+	if target.AggregateRatingResult.Rationale != "" {
+		return target.AggregateRatingResult.Rationale
+	}
+	if target.Note != "" {
+		return target.Note
+	}
+	return ""
+}
+
+func writeSummaryTopIssues(out *bytes.Buffer, report EvaluationReportDocument) {
+	out.WriteString("\n## Top Issues\n\n")
+	issues := firstFindingSummaries(report.FindingSummaries, 5)
+	if len(issues) == 0 {
 		out.WriteString("None recorded.\n")
-	} else {
-		for _, limitation := range limitations {
-			out.WriteString("- " + limitation + "\n")
+		return
+	}
+	for i, finding := range issues {
+		fmt.Fprintf(out, "%d. ", i+1)
+		if finding.Severity != "" {
+			out.WriteString("**" + finding.Severity + "**  \n   ")
+		} else if finding.Category != "" {
+			out.WriteString("**" + finding.Category + "**  \n   ")
 		}
-		if len(report.Limitations) > len(limitations) {
-			out.WriteString("- Additional limitations are available in [report.md](report.md).\n")
+		out.WriteString(finding.Summary)
+		out.WriteString("\n")
+		if finding.Locator != "" {
+			out.WriteString("   `" + finding.Locator + "`\n")
+		}
+		if finding.AssessmentResultRecord != "" {
+			out.WriteString("   Assessment: `" + finding.AssessmentResultRecord + "`\n")
 		}
 	}
 }
 
-func writeSummaryNextAction(out *bytes.Buffer, report ReportJSON) {
-	out.WriteString("\n## Next Action\n\n")
+func writeSummaryRecommendations(out *bytes.Buffer, report EvaluationReportDocument) {
+	out.WriteString("\n## Recommendations\n\n")
 	active := activeRecommendations(report.Recommendations)
 	if report.NextAction.RecommendationID != "" {
-		out.WriteString(report.NextAction.Summary + "\n\n")
+		out.WriteString("Primary next action: use `" + report.NextAction.RecommendationID + "`.\n\n")
 	} else {
 		out.WriteString(report.NextAction.Summary + "\n")
 	}
-	if len(active) > 0 {
-		out.WriteString("See active recommendations:\n\n")
-		for _, rec := range active {
-			out.WriteString("- [" + rec.ID + "](" + rec.Path + ") - " + rec.DoneCriterion + "\n")
-		}
+	if len(active) == 0 {
+		return
+	}
+	out.WriteString("| Recommendation ID | Priority | Recommendation | Done criterion |\n")
+	out.WriteString("| --- | --- | --- | --- |\n")
+	for i, rec := range active {
+		out.WriteString("| `" + tableCell(rec.ID) + "` | " + fmt.Sprintf("%d", i+1) + " | [" + tableCell(recommendationTitle(rec.ID)) + "](" + rec.Path + ") | " + tableCell(rec.DoneCriterion) + " |\n")
 	}
 }
 
-func summaryScope(report ReportJSON) string {
+func recommendationTitle(id string) string {
+	parts := strings.Split(id, "-")
+	if len(parts) > 1 && isDigits(parts[0]) {
+		parts = parts[1:]
+	}
+	for i, part := range parts {
+		if part == "" {
+			continue
+		}
+		parts[i] = strings.ToUpper(part[:1]) + part[1:]
+	}
+	return strings.Join(parts, " ")
+}
+
+func isDigits(value string) bool {
+	if value == "" {
+		return false
+	}
+	for _, r := range value {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
+}
+
+func writeSummaryScopeAndLimitations(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
+	out.WriteString("\n## Scope & Limitations\n\n")
+	out.WriteString("Scope: **" + summaryScope(report) + "**\n")
+	inScope := displayScopeList(report.Scope.InScope, report.TargetSummary, labels)
+	if inScope != "" && inScope != "not recorded" {
+		out.WriteString("\nIn scope: " + inScope + "\n")
+	}
+	limitations := firstStrings(report.Limitations, 5)
+	if len(limitations) == 0 {
+		out.WriteString("\nLimitations: none recorded.\n")
+		return
+	}
+	out.WriteString("\n")
+	for _, limitation := range limitations {
+		out.WriteString("- " + limitation + "\n")
+	}
+	if len(report.Limitations) > len(limitations) {
+		out.WriteString("- Additional limitations are available in [report.md](report.md).\n")
+	}
+}
+
+func summaryScope(report EvaluationReportDocument) string {
 	if report.Summary.Narrowing != "" {
 		return report.Summary.Narrowing
 	}
 	if report.Scope.Narrowing != "" {
 		return report.Scope.Narrowing
 	}
+	if isFullEvaluationScope(report.Scope.Description) {
+		return "Full evaluation"
+	}
 	if report.Scope.Description != "" {
 		return report.Scope.Description
 	}
-	return "whole recorded run"
+	return "Full evaluation"
+}
+
+func isFullEvaluationScope(value string) bool {
+	normalized := strings.ToLower(strings.TrimSpace(value))
+	switch normalized {
+	case "", "whole model", "whole subject", "whole recorded run", "full evaluation", "evaluation scope reconstructed from the run's analysis and assessment result records.":
+		return true
+	default:
+		return false
+	}
 }
 
 func summaryValue(value string) string {
@@ -772,8 +791,16 @@ func summaryValue(value string) string {
 	return value
 }
 
-func activeRecommendations(recommendations []ReportRecommendation) []ReportRecommendation {
-	active := []ReportRecommendation{}
+func summaryValueTitle(value string) string {
+	value = summaryValue(value)
+	if value == "not recorded" {
+		return value
+	}
+	return strings.ToUpper(value[:1]) + value[1:]
+}
+
+func activeRecommendations(recommendations []RecommendationReference) []RecommendationReference {
+	active := []RecommendationReference{}
 	for _, rec := range recommendations {
 		if rec.Active {
 			active = append(active, rec)
@@ -782,7 +809,7 @@ func activeRecommendations(recommendations []ReportRecommendation) []ReportRecom
 	return active
 }
 
-func (r *Run) supersededRecommendations() map[string]bool {
+func (r *EvaluationRun) supersededRecommendations() map[string]bool {
 	known := map[string]string{}
 	superseded := map[string]bool{}
 	for _, rec := range r.Recommendations {
@@ -814,27 +841,27 @@ func (r *Run) supersededRecommendations() map[string]bool {
 	return superseded
 }
 
-func firstActiveRecommendation(recommendations []ReportRecommendation) (ReportRecommendation, bool) {
+func firstActiveRecommendation(recommendations []RecommendationReference) (RecommendationReference, bool) {
 	for _, rec := range recommendations {
 		if rec.Active {
 			return rec, true
 		}
 	}
-	return ReportRecommendation{}, false
+	return RecommendationReference{}, false
 }
 
 type runContext struct {
 	Recorded         bool
 	Altitude         string
 	Narrowing        string
-	Effort           string
+	Rigor            string
 	ScopeDescription string
 	InScope          []string
 	OutOfScope       []string
 	Limitations      []string
 }
 
-func (r *Run) reportContext() runContext {
+func (r *EvaluationRun) reportContext() runContext {
 	context := inferRunContext(r.Path)
 	designParams := markdownBulletMap(markdownSection(r.Design, "Resolved parameters"))
 	if value := designParams["Altitude"]; value != "" {
@@ -848,8 +875,8 @@ func (r *Run) reportContext() runContext {
 		context.Narrowing = cleanInlineCode(value)
 		context.Recorded = true
 	}
-	if value := designParams["Effort"]; value != "" {
-		context.Effort = strings.ToLower(cleanInlineCode(value))
+	if value := designParams["Rigor"]; value != "" {
+		context.Rigor = strings.ToLower(cleanInlineCode(value))
 		context.Recorded = true
 	}
 	if value := designParams["Scope"]; value != "" {
@@ -859,13 +886,13 @@ func (r *Run) reportContext() runContext {
 		context.ScopeDescription = cleanInlineCode(value)
 		context.Recorded = true
 	}
-	if effort := firstParagraph(markdownSection(r.Plan, "Effort")); effort != "" {
+	if rigor := firstParagraph(markdownSection(r.Plan, "Rigor")); rigor != "" {
 		context.Recorded = true
-		if context.Effort == "" {
-			context.Effort = inferEffort(strings.ToLower(effort))
+		if context.Rigor == "" {
+			context.Rigor = inferRigor(strings.ToLower(rigor))
 		}
 		if context.ScopeDescription == "" {
-			context.ScopeDescription = effort
+			context.ScopeDescription = rigor
 		}
 	}
 	if limitations := markdownListItems(markdownSection(r.Plan, "Planned limitations")); len(limitations) > 0 {
@@ -914,15 +941,15 @@ func inferRunContext(path string) runContext {
 	context := runContext{Altitude: parts[1]}
 	if len(parts) == 3 {
 		context.Narrowing = parts[2]
-		context.Effort = inferEffort(parts[2])
+		context.Rigor = inferRigor(parts[2])
 	}
 	return context
 }
 
-func inferEffort(narrowing string) string {
-	for _, effort := range []string{"quick", "standard", "deep"} {
-		if strings.Contains(narrowing, effort) {
-			return effort
+func inferRigor(narrowing string) string {
+	for _, rigor := range []string{"quick", "standard", "deep"} {
+		if strings.Contains(narrowing, rigor) {
+			return rigor
 		}
 	}
 	return ""
@@ -1011,39 +1038,23 @@ func cleanInlineCode(value string) string {
 	return strings.TrimSpace(value)
 }
 
-func reportRatingFromPointer(result *RatingResult) ReportRatingResult {
+func cloneRatingResult(result *RatingResult) *RatingResult {
 	if result == nil {
-		return ReportRatingResult{
-			Kind:        "not-assessed",
-			NotAssessed: true,
-			Rationale:   "No local rating was recorded.",
-		}
+		return nil
 	}
-	return reportRatingFromValue(*result)
+	clone := *result
+	return &clone
 }
 
-func reportRatingFromValue(result RatingResult) ReportRatingResult {
-	kind := "rated"
-	if result.NotAssessed || result.Rating == nil {
-		kind = "not-assessed"
-	}
-	return ReportRatingResult{
-		Kind:        kind,
-		Rating:      result.Rating,
-		NotAssessed: result.NotAssessed,
-		Rationale:   result.Rationale,
-	}
-}
-
-func nonNilFactorRatings(factors []FactorRating) []FactorRating {
+func nonNilFactorRatingResults(factors []FactorRatingResult) []FactorRatingResult {
 	if factors == nil {
-		return []FactorRating{}
+		return []FactorRatingResult{}
 	}
 	return factors
 }
 
-func riskFindings(findings []FindingSummary) []FindingSummary {
-	risks := []FindingSummary{}
+func riskFindings(findings []FindingDigest) []FindingDigest {
+	risks := []FindingDigest{}
 	for _, finding := range findings {
 		if finding.Severity == "" {
 			continue
@@ -1058,7 +1069,7 @@ func riskFindings(findings []FindingSummary) []FindingSummary {
 	return risks
 }
 
-func firstFindingSummaries(items []FindingSummary, limit int) []FindingSummary {
+func firstFindingSummaries(items []FindingDigest, limit int) []FindingDigest {
 	if len(items) <= limit {
 		return items
 	}
@@ -1158,10 +1169,21 @@ func (l reportDisplayLabels) addTargets(parentPath []string, targets map[string]
 
 func (l reportDisplayLabels) addFactors(targetPath []string, factors map[string]model.Factor) {
 	for key, factor := range factors {
+		path := appendPathElement(nil, key)
 		if strings.TrimSpace(factor.Title) != "" {
-			l.Factors[factorLabelKey(targetPath, key)] = factor.Title
+			l.Factors[factorLabelKey(targetPath, path)] = factor.Title
 		}
-		l.addFactors(targetPath, factor.Factors)
+		l.addSubFactors(targetPath, path, factor.Factors)
+	}
+}
+
+func (l reportDisplayLabels) addSubFactors(targetPath, parentFactorPath []string, factors map[string]model.Factor) {
+	for key, factor := range factors {
+		path := appendPathElement(parentFactorPath, key)
+		if strings.TrimSpace(factor.Title) != "" {
+			l.Factors[factorLabelKey(targetPath, path)] = factor.Title
+		}
+		l.addSubFactors(targetPath, path, factor.Factors)
 	}
 }
 
@@ -1172,13 +1194,13 @@ func (l reportDisplayLabels) Target(path []string, fallback string) string {
 	return fallback
 }
 
-func (l reportDisplayLabels) Factor(targetPath []string, fallback string) string {
+func (l reportDisplayLabels) Factor(targetPath []string, factorPath []string) string {
 	for i := len(targetPath); i >= 0; i-- {
-		if title := l.Factors[factorLabelKey(targetPath[:i], fallback)]; title != "" {
+		if title := l.Factors[factorLabelKey(targetPath[:i], factorPath)]; title != "" {
 			return title
 		}
 	}
-	return fallback
+	return factorPathDisplay(factorPath)
 }
 
 func ratingDisplayLabels(scale []model.RatingLevel) map[string]string {
@@ -1192,23 +1214,28 @@ func ratingDisplayLabels(scale []model.RatingLevel) map[string]string {
 	return labels
 }
 
-func displayRating(rating *string, notAssessed bool, ratingLabels map[string]string) string {
-	if notAssessed || rating == nil {
-		return "not assessed"
+func displayOptionalRatingResult(result *RatingResult, ratingLabels map[string]string) string {
+	if result == nil {
+		return "n/a (structural)"
 	}
-	if title := ratingLabels[*rating]; title != "" {
-		return title
-	}
-	return *rating
+	return displayRatingResult(*result, ratingLabels)
 }
 
-func displayRatingResult(result ReportRatingResult, ratingLabels map[string]string) string {
-	switch result.Kind {
-	case "structural":
-		return "n/a (structural)"
-	default:
-		return displayRating(result.Rating, result.NotAssessed, ratingLabels)
+func displayRatingResult(result RatingResult, ratingLabels map[string]string) string {
+	if isNotAssessed(result) {
+		return "not assessed"
 	}
+	if title := ratingLabels[result.Level]; title != "" {
+		return title
+	}
+	if result.Level == "" {
+		return "not assessed"
+	}
+	return result.Level
+}
+
+func isNotAssessed(result RatingResult) bool {
+	return result.Kind == "not-assessed"
 }
 
 func displayList(items []string) string {
@@ -1218,17 +1245,18 @@ func displayList(items []string) string {
 	return strings.Join(items, "; ")
 }
 
-func displayScopeList(items []string, targets []ReportTargetSummary, labels reportDisplayLabels) string {
+func displayScopeList(items []string, targets []TargetRatingSummary, labels reportDisplayLabels) string {
 	if len(items) == 0 {
 		return "none"
 	}
 	targetLabels := map[string]string{}
 	for _, target := range targets {
-		if _, exists := targetLabels[target.Target]; exists {
-			targetLabels[target.Target] = ""
+		id := targetPathDisplay(target.TargetPath)
+		if _, exists := targetLabels[id]; exists {
+			targetLabels[id] = ""
 			continue
 		}
-		targetLabels[target.Target] = labels.Target(target.TargetPath, target.Target)
+		targetLabels[id] = labels.Target(target.TargetPath, id)
 	}
 	display := make([]string, 0, len(items))
 	for _, item := range items {
@@ -1248,12 +1276,26 @@ func displayPath(path []string) string {
 	return strings.Join(path, " / ")
 }
 
+func targetPathDisplay(path []string) string {
+	if len(path) == 0 {
+		return "root"
+	}
+	return strings.Join(path, "/")
+}
+
+func factorPathDisplay(path []string) string {
+	if len(path) == 0 {
+		return ""
+	}
+	return strings.Join(path, "/")
+}
+
 func targetLabelKey(path []string) string {
 	return strings.Join(path, "\x00")
 }
 
-func factorLabelKey(targetPath []string, factor string) string {
-	return targetLabelKey(targetPath) + "\x00" + factor
+func factorLabelKey(targetPath []string, factorPath []string) string {
+	return targetLabelKey(targetPath) + "\x00" + strings.Join(factorPath, "\x00")
 }
 
 func appendPathElement(path []string, value string) []string {
@@ -1281,7 +1323,7 @@ func writeReportFile(path string, data []byte) error {
 	return os.WriteFile(path, data, 0o644)
 }
 
-func Gate(result *BuildResult, scale []string, threshold string) (bool, error) {
+func Gate(result *BuildReportReceipt, scale []string, threshold string) (bool, error) {
 	if threshold == "" {
 		return true, nil
 	}
@@ -1291,23 +1333,23 @@ func Gate(result *BuildResult, scale []string, threshold string) (bool, error) {
 		if level == threshold {
 			thresholdIndex = i
 		}
-		if result.Rating != nil && level == *result.Rating {
+		if result.RatingResult.Level != "" && level == result.RatingResult.Level {
 			ratingIndex = i
 		}
 	}
 	if thresholdIndex < 0 {
 		return false, usagef("--at-or-below level %q is not in the run rating scale", threshold)
 	}
-	if result.NotAssessed || result.Rating == nil {
+	if isNotAssessed(result.RatingResult) || result.RatingResult.Level == "" {
 		return false, nil
 	}
 	if ratingIndex < 0 {
-		return false, fmt.Errorf("root rating %q is not in the run rating scale", *result.Rating)
+		return false, fmt.Errorf("overall rating %q is not in the run rating scale", result.RatingResult.Level)
 	}
 	return ratingIndex < thresholdIndex, nil
 }
 
-func GateReport(path, threshold string) (*GateResult, error) {
+func GateReport(path, threshold string) (*GateReceipt, error) {
 	run, err := Load(path)
 	if err != nil {
 		return nil, err
@@ -1320,7 +1362,7 @@ func GateReport(path, threshold string) (*GateResult, error) {
 		}
 		return nil, fmt.Errorf("reading report.json: %w", err)
 	}
-	var report ReportJSON
+	var report EvaluationReportDocument
 	if err := DecodeSingleJSON(raw, &report); err != nil {
 		return nil, fmt.Errorf("reading report.json: %w", err)
 	}
@@ -1328,17 +1370,16 @@ func GateReport(path, threshold string) (*GateResult, error) {
 	for _, level := range run.Scale {
 		levels = append(levels, level.Level)
 	}
-	build := &BuildResult{Rating: report.Rating.Rating, NotAssessed: report.Rating.NotAssessed}
+	build := &BuildReportReceipt{RatingResult: report.RatingResult}
 	pass, err := Gate(build, levels, threshold)
 	if err != nil {
 		return nil, err
 	}
-	return &GateResult{
+	return &GateReceipt{
 		SchemaVersion: SchemaVersion,
 		Path:          filepath.ToSlash(reportPath),
 		Threshold:     threshold,
-		Rating:        report.Rating.Rating,
-		NotAssessed:   report.Rating.NotAssessed,
+		RatingResult:  report.RatingResult,
 		Pass:          pass,
 	}, nil
 }

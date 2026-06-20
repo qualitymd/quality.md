@@ -4,8 +4,8 @@ title: Produce reconciliation evidence so the requirement can be rated
 gap: No reconciliation job output, log, or report was available, so the requirement could not be assessed.
 evidenceLocators:
   - ledger/reconcile.go:31
-assessmentRecords:
-  - assessments/005-ledger-reconciliation.json
+assessmentResultRecords:
+  - assessment-results/005-ledger-reconciliation.json
 remediationOptions:
   - Stand up the scheduled reconciliation run and emit a durable report.
   - Surface existing reconciliation output if it already runs elsewhere.
@@ -33,7 +33,7 @@ and is noted as incomplete.
 
 - `ledger/reconcile.go:31` — a `reconcile` entrypoint exists, but no evidence of
   a scheduled or recent run (no job log, report, or run record) was found at
-  `standard` effort.
+  `standard` rigor.
 
 ## Options
 

@@ -2,11 +2,54 @@
 
 ## 2026-06-19
 
+- **Revision**: Updated the evaluation report summary contract for
+  [0040 - Readable report summary](../changes/0040-readable-report-summary.md):
+  `report-summary.md` now uses a decision-brief outline, "Full evaluation",
+  "Overall rating", and prominent Recommendation IDs while preserving the
+  existing `report.json` schema.
+
+- **Revision**: Clarified guide boundaries for the `/quality` skill guides:
+  authoring now carries reusable best practices, getting-started is the
+  first-run process/outcomes guide, and the Top 10 checklist routes against that
+  split.
+
+- **Creation**: Added the
+  [`Top 10 QUALITY.md checks`](skills/quality-skill/guides/top-10-quality-md-checks.md)
+  guide contract and wired the `/quality` wizard spec to use it for bounded
+  model/lifecycle inspection findings.
+
+- **Revision**: Clarified that the
+  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide's
+  Known gaps section includes known unknowns: missing context, unresolved
+  questions, and evidence gaps.
+
+- **Revision**: Added desired outcomes for each Markdown body section in the
+  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  contract.
+
+- **Revision**: Updated the
+  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  contract so the rating scale follows the Markdown body before the rest of the
+  model tree is expanded.
+
+- **Revision**: Updated the
+  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  contract so first-run authoring fills the Markdown body before building out
+  the quality model tree.
+
+- **Revision**: Added runtime guide structure for the
+  [`/quality` skill](skills/quality-skill/quality-skill.md): moved the
+  authoring guide contract to
+  [`guides/authoring`](skills/quality-skill/guides/authoring.md), added the
+  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  contract for first-run model population after `qualitymd init`, and updated
+  the skill spec to route setup to the new guide.
+
 - **Revision**: Replaced the evaluation CLI command specs with
   [`evaluation create`](cli/evaluation-create.md),
   [`evaluation list`](cli/evaluation-list.md),
   [`evaluation status`](cli/evaluation-status.md),
-  [`evaluation assessment`](cli/evaluation-assessment.md),
+  [`evaluation assessment-result`](cli/evaluation-assessment-result.md),
   [`evaluation analysis`](cli/evaluation-analysis.md),
   [`evaluation recommendation`](cli/evaluation-recommendation.md), and
   [`evaluation report`](cli/evaluation-report.md). Updated the CLI overview,
@@ -48,7 +91,7 @@
 - **Revision**: Updated the root [`SPECIFICATION.md`](../SPECIFICATION.md),
   [`lint`](cli/lint.md), [`init`](cli/init.md), [`status`](cli/status.md),
   [`evaluation build-report`](cli/evaluation-build-report.md), and
-  [`/quality` authoring guide spec](skills/quality-skill/authoring-guide.md) for
+  [`/quality` authoring guide spec](skills/quality-skill/guides/authoring.md) for
   required display titles on Models, Targets, Factors, and Rating Levels.
 
 - **Revision**: Updated the durable
@@ -77,8 +120,8 @@
 
 ## 2026-06-18
 
-- **Creation**: Added the [QUALITY.md authoring guide](skills/quality-skill/authoring-guide.md) sub-spec — the 1:1 contract for
-  the skill's [`quality-md-guide.md`](../skills/quality/resources/quality-md-guide.md)
+- **Creation**: Added the [QUALITY.md authoring guide](skills/quality-skill/guides/authoring.md) sub-spec — the 1:1 contract for
+  the skill's [`authoring.md`](../skills/quality/guides/authoring.md)
   resource. States its purpose (a single comprehensive guide to understanding and
   working with `QUALITY.md` files), resolves the embed-vs-drift tension by scoping
   the guide as a deliberately self-contained reference resource that restates the
@@ -128,9 +171,9 @@
   re-read re-check rationale; superseding correction rationale).
 
 - **Revision**: Added assessment superseding for evaluation runs. Corrected
-  assessment records may now carry `supersedes`; status reports dangling,
+  assessment result records may now carry `supersedes`; status reports dangling,
   cross-requirement, and stale-analysis superseding references; reports
-  distinguish active from superseded assessments.
+  distinguish active from superseded assessment results.
 
 - **Revision**: Tightened `evaluation create-run --subject` validation. Invalid
   subject paths now fail before creating the evaluation directory or a numbered
@@ -144,7 +187,7 @@
 - **Revision**: Added optional planned coverage metadata for evaluation runs.
   `qualitymd evaluation set-planned-coverage` writes run-root
   `planned-coverage.json`, and `show-status` now reports missing planned
-  assessments, missing planned analyses, and unexpected records when that
+  assessment results, missing planned analyses, and unexpected assessment result records when that
   artifact exists.
 
 - **Revision**: Tightened evaluation reportability for duplicate assessment
@@ -185,7 +228,7 @@
   skill prompt, skill guide, and reference recommendation examples with the new
   evaluation CLI surface. The skill now delegates run scaffolding, record writes,
   renderability checks, and report rendering to `qualitymd evaluation ...`, while
-  retaining judgment and the stricter evidence/re-check/effort rules.
+  retaining judgment and the stricter evidence/re-check/rigor rules.
 
 - **CLI output polish**: Updated the CLI baseline to apply the `NO_COLOR` and
   non-terminal plain-output gate across stdout and stderr human surfaces. Updated
@@ -214,7 +257,7 @@
   report, while staying within the format spec's "presents at least" Report
   contract. Added an **Evaluated** provenance line (source commit, model
   revision, evaluator, date, assessment inputs) so the verdict is reproducible; a
-  **Limitations** section (effort ceiling, point-in-time secret scan, single-test
+  **Limitations** section (rigor ceiling, point-in-time secret scan, single-test
   confidence) qualifying the ratings without changing them, kept distinct from
   Scope exclusions and *not assessed* outcomes; and sharpened the committed-credential
   rationale to trace measure → applied criterion against the requirement's own
@@ -317,7 +360,7 @@
   spec's Evaluation contract (assessment → finding → rating, *not assessed* over
   guessing, inferred weighted roll-up, required report contents) while the skill
   remains one *implementation* free to specify its own workflow, ordering,
-  heuristics, effort levels, and artifacts — with the spec as the **conformance
+  heuristics, rigor levels, and artifacts — with the spec as the **conformance
   target** that governs on divergence. Scoped the existing "don't embed the
   format" rule to the *format/schema rules and rating vocabulary* (still grounded
   at runtime from `qualitymd spec`), explicitly excluding the *evaluation
@@ -359,7 +402,7 @@
   rather than hard-coded, plus five resolved arguments — mode
   `evaluate`/`improve`/`setup`/`wizard`, subject-vs-model altitude, target file,
   target/factor scope that composes with either altitude and resolves bare names
-  against the grounded model, and effort — where a bare `/quality` runs a
+  against the grounded model, and rigor — where a bare `/quality` runs a
   read-only `wizard` mode that inspects model state and suggests concrete next
   invocations);
   **Driving the CLI** (`init`/`lint`/`spec` for every mechanical step, introspect
@@ -367,11 +410,11 @@
   format spec's five Evaluation phases with mechanical read → lint → ground →
   evaluate → report steps; **Grounding judgment** (rate against declared
   criteria, evidence per rating, *not assessed* over guessing, inferred weighted
-  roll-up); **Effort levels** (`quick`/`standard`/`deep` coverage); and
+  roll-up); **Rigor levels** (`quick`/`standard`/`deep` coverage); and
   **Reporting** (the Evaluation Report, scoped, human or `--json`), plus an
   illustrative (non-normative) commented-examples block sketching invocation
   patterns in the style of the shadcn/improve README. Recording
-  assessments through the CLI and bundled `resources/` remain deferred in step
+  assessment results through the CLI and bundled `resources/` remain deferred in step
   with the CLI's deferred record/gate surface.
 - **Revision**: Firmed up [`SPECIFICATION.md`](../SPECIFICATION.md) to fully
   ground the [`lint`](cli/lint.md) rules — made the per-property YAML shapes

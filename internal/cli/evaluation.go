@@ -28,7 +28,7 @@ func newEvaluationCmd() *cobra.Command {
 	cmd.AddCommand(newEvaluationCreateCmd())
 	cmd.AddCommand(newEvaluationListCmd())
 	cmd.AddCommand(newEvaluationStatusCmd())
-	cmd.AddCommand(newEvaluationRecordNounCmd(evaluation.KindAssessment, "add"))
+	cmd.AddCommand(newEvaluationRecordNounCmd(evaluation.KindAssessmentResult, "add"))
 	cmd.AddCommand(newEvaluationRecordNounCmd(evaluation.KindAnalysis, "set"))
 	cmd.AddCommand(newEvaluationRecordNounCmd(evaluation.KindRecommendation, "add"))
 	cmd.AddCommand(newEvaluationReportCmd())
@@ -50,8 +50,8 @@ func newEvaluationCreateCmd() *cobra.Command {
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), struct {
 					SchemaVersion int `json:"schemaVersion"`
-					*evaluation.CreateRunResult
-				}{SchemaVersion: evaluation.SchemaVersion, CreateRunResult: result})
+					*evaluation.CreateRunReceipt
+				}{SchemaVersion: evaluation.SchemaVersion, CreateRunReceipt: result})
 			}
 			if _, err := fmt.Fprintf(cmd.ErrOrStderr(), "Created %s\n", result.Path); err != nil {
 				return err
@@ -110,7 +110,7 @@ func newEvaluationStatusCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			status := run.Status()
+			status := run.EvaluationRunStatus()
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), status)
 			}
@@ -122,7 +122,7 @@ func newEvaluationStatusCmd() *cobra.Command {
 	return cmd
 }
 
-func newEvaluationRecordNounCmd(kind evaluation.WriteKind, writeVerb string) *cobra.Command {
+func newEvaluationRecordNounCmd(kind evaluation.EvaluationRecordKind, writeVerb string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   string(kind),
 		Short: "Work with " + string(kind) + " records",
@@ -133,7 +133,7 @@ func newEvaluationRecordNounCmd(kind evaluation.WriteKind, writeVerb string) *co
 	return cmd
 }
 
-func newEvaluationRecordWriteCmd(kind evaluation.WriteKind, verb string) *cobra.Command {
+func newEvaluationRecordWriteCmd(kind evaluation.EvaluationRecordKind, verb string) *cobra.Command {
 	var runFlags evaluationRunFlags
 	var file string
 	var jsonOutput bool
@@ -167,7 +167,7 @@ func newEvaluationRecordWriteCmd(kind evaluation.WriteKind, verb string) *cobra.
 	return cmd
 }
 
-func newEvaluationRecordListCmd(kind evaluation.WriteKind) *cobra.Command {
+func newEvaluationRecordListCmd(kind evaluation.EvaluationRecordKind) *cobra.Command {
 	var runFlags evaluationRunFlags
 	var jsonOutput bool
 	cmd := &cobra.Command{
@@ -257,7 +257,7 @@ func newEvaluationReportGateCmd() *cobra.Command {
 				if err := writeJSON(cmd.OutOrStdout(), result); err != nil {
 					return err
 				}
-			} else if _, err := fmt.Fprintf(cmd.OutOrStdout(), "Gate compared %s at or below %s: %v\n", ratingLabel(result.Rating, result.NotAssessed), threshold, result.Pass); err != nil {
+			} else if _, err := fmt.Fprintf(cmd.OutOrStdout(), "Gate compared %s at or below %s: %v\n", ratingLabel(result.RatingResult), threshold, result.Pass); err != nil {
 				return err
 			}
 			if !result.Pass {
@@ -267,7 +267,7 @@ func newEvaluationReportGateCmd() *cobra.Command {
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
-	cmd.Flags().StringVar(&threshold, "at-or-below", "", "exit 1 when the root rating is this level or worse")
+	cmd.Flags().StringVar(&threshold, "at-or-below", "", "exit 1 when the overall rating is this level or worse")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable gate result")
 	return cmd
 }
@@ -299,20 +299,20 @@ func readPayload(cmd *cobra.Command, file string) ([]byte, error) {
 	return io.ReadAll(in)
 }
 
-func renderRunList(w io.Writer, result *evaluation.RunListResult) error {
+func renderRunList(w io.Writer, result *evaluation.EvaluationRunList) error {
 	if len(result.Runs) == 0 {
 		_, err := fmt.Fprintln(w, "No evaluation runs found.")
 		return err
 	}
 	for _, run := range result.Runs {
-		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\trecords=%d/%d/%d\n", run.Path, run.Subject, run.Reportable, run.Counts.Assessments, run.Counts.Analyses, run.Counts.Recommendations); err != nil {
+		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\trecords=%d/%d/%d\n", run.Path, run.Subject, run.Reportable, run.Counts.AssessmentResults, run.Counts.Analyses, run.Counts.Recommendations); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func renderRecordList(w io.Writer, result *evaluation.RecordListResult) error {
+func renderRecordList(w io.Writer, result *evaluation.EvaluationRecordList) error {
 	for _, record := range result.Records {
 		if _, err := fmt.Fprintln(w, record); err != nil {
 			return err
@@ -321,14 +321,14 @@ func renderRecordList(w io.Writer, result *evaluation.RecordListResult) error {
 	return nil
 }
 
-func renderEvaluationStatus(cmd *cobra.Command, status evaluation.Status) error {
+func renderEvaluationStatus(cmd *cobra.Command, status evaluation.EvaluationRunStatus) error {
 	out := cmd.OutOrStdout()
 	reportable := "false"
 	if status.Reportable {
 		reportable = "true"
 	}
-	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nRecords: %d assessments, %d analyses, %d recommendations\n",
-		status.Path, reportable, status.Counts.Assessments, status.Counts.Analyses, status.Counts.Recommendations); err != nil {
+	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nRecords: %d assessment-results, %d analyses, %d recommendations\n",
+		status.Path, reportable, status.Counts.AssessmentResults, status.Counts.Analyses, status.Counts.Recommendations); err != nil {
 		return err
 	}
 	for _, gap := range status.Gaps {
@@ -339,11 +339,11 @@ func renderEvaluationStatus(cmd *cobra.Command, status evaluation.Status) error 
 	return renderNextActions(cmd.ErrOrStderr(), status.NextActions)
 }
 
-func ratingLabel(rating *string, notAssessed bool) string {
-	if notAssessed || rating == nil {
+func ratingLabel(result evaluation.RatingResult) string {
+	if result.Kind == "not-assessed" || result.Level == "" {
 		return "not assessed"
 	}
-	return *rating
+	return result.Level
 }
 
 func titleVerb(verb string) string {
