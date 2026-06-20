@@ -149,7 +149,7 @@
   made `evaluation create-run` subject-only with no `--altitude` flag, and
   updated the evaluation record contract to treat `model` altitude as historical
   only. Synced the durable `/quality` skill spec around subject evaluation plus
-  guide-backed `QUALITY.md` authoring.
+  guide-backed QUALITY.md authoring.
 
 - **Rationale capture**: Made durable the motivating learnings behind the
   in-review evaluation changes (0012–0024), so the *why* survives when the change

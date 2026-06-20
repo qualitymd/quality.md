@@ -18,11 +18,11 @@ CLI if necessary.
 
 ## Major Components
 
-| Component           | Where to look                                                                                                                                                         |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `QUALITY.md` format | [`SPECIFICATION.md`](SPECIFICATION.md) is the source of truth for the model schema, Markdown body guidance, and evaluation semantics.                                 |
-| `/quality` skill    | Runtime files live in [`skills/quality/`](skills/quality/); functional specs and guide outlines live in [`specs/skills/quality-skill/`](specs/skills/quality-skill/). |
-| `qualitymd` CLI     | Source starts at [`cmd/qualitymd/`](cmd/qualitymd/) and [`internal/`](internal/); CLI specs live in [`specs/cli/`](specs/cli/) and [`specs/cli.md`](specs/cli.md).    |
+| Component         | Where to look                                                                                                                                                         |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| QUALITY.md format | [`SPECIFICATION.md`](SPECIFICATION.md) is the source of truth for the model schema, Markdown body guidance, and evaluation semantics.                                 |
+| `/quality` skill  | Runtime files live in [`skills/quality/`](skills/quality/); functional specs and guide outlines live in [`specs/skills/quality-skill/`](specs/skills/quality-skill/). |
+| `qualitymd` CLI   | Source starts at [`cmd/qualitymd/`](cmd/qualitymd/) and [`internal/`](internal/); CLI specs live in [`specs/cli/`](specs/cli/) and [`specs/cli.md`](specs/cli.md).    |
 
 ## Working Rules
 
@@ -58,6 +58,14 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 | Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)         |
 
 ## Repository Conventions
+
+### Naming QUALITY.md
+
+- Use `QUALITY.md` in backticks for the literal file/path agents should read or
+  edit.
+- Use QUALITY.md plain for the project, format, standard, or product concept.
+- Use **QUALITY.md** only for first-mention emphasis in user-facing intro prose.
+- Prefer no bold in agent instructions, specs, and dense technical docs.
 
 ### Open Knowledge Format (OKF) bundles
 

@@ -7,7 +7,7 @@ The format-tooling commands specified for this phase. See the parent
 
 - [qualitymd init](init.md) - scaffold a starter `QUALITY.md` to fill in.
 - [qualitymd lint](lint.md) - validate a file's structure against the format spec.
-- [qualitymd spec](spec.md) - emit the `QUALITY.md` format specification.
+- [qualitymd spec](spec.md) - emit the QUALITY.md format specification.
 - [qualitymd status](status.md) - emit a deterministic project-state snapshot.
 - [qualitymd evaluation create](evaluation-create.md) - create a numbered
   evaluation run folder.

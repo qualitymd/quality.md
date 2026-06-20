@@ -87,7 +87,7 @@ root rather than your test directory.
 cmd/qualitymd        entry point
 internal/cli         Cobra commands, run through Charm Fang
 internal/document    QUALITY.md frontmatter parsing, rendering, and file writes
-internal/scaffold    embedded starter QUALITY.md used by qualitymd init
+internal/scaffold    embedded starter `QUALITY.md` used by qualitymd init
 internal/model       typed QUALITY.md frontmatter model
 scripts/build-npm.mjs   assembles the npm distribution
 scripts/extract-release-notes.mjs   extracts a tagged CHANGELOG.md section

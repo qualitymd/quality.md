@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI upgrade help for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, upgrading the /quality stack, or authoring/improving a QUALITY.md file.
+description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI upgrade help for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, upgrading the /quality stack, or authoring/improving a `QUALITY.md` file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-19T00:00:00Z
 ---
@@ -158,9 +158,9 @@ The description **MUST** optimize for trigger matching rather than documentation
 it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`,
 `upgrade`), broad quality vocabulary users naturally ask with (`quality
 management`, quality evaluation/improvement, factors, characteristics,
-attributes, criteria), `QUALITY.md` vocabulary (Targets, Factors, Requirements),
+attributes, criteria), QUALITY.md vocabulary (Targets, Factors, Requirements),
 project/entity and component/target subject framing, subject evaluation,
-upgrading the `/quality` stack, and `QUALITY.md` authoring/improvement. It
+upgrading the `/quality` stack, and QUALITY.md authoring/improvement. It
 **MUST NOT** include CLI implementation details, and it should not trigger for
 generic copyediting or one-off "make this higher quality" requests that lack
 systematic quality criteria or assessment.
@@ -309,7 +309,7 @@ The skill **MUST** distinguish CLI/tooling readiness, model validity, model
 usefulness, subject quality, and evaluation history status. It must not collapse
 them into a single generic quality verdict. The skill **SHOULD** recommend one
 best next step and then provide a short list of concrete alternatives when
-useful. It **MUST** use `QUALITY.md` terms consistently in user-facing output:
+useful. It **MUST** use QUALITY.md terms consistently in user-facing output:
 Target, Factor, Requirement, rating, finding, and recommendation.
 
 For user-facing labels, the skill **SHOULD** use required `title` values for
@@ -322,7 +322,7 @@ payloads.
 ### Wizard
 
 The `wizard` mode is the quality wayfinder: a read-only coaching entry point for
-a user at any point in the `QUALITY.md` lifecycle. It **MUST NOT** modify
+a user at any point in the QUALITY.md lifecycle. It **MUST NOT** modify
 anything, create evaluation records, build reports, or rate the subject. It can
 make readiness judgments — whether the project is set up, whether the model is
 valid or useful enough to evaluate, and whether prior evaluations or
@@ -458,7 +458,7 @@ arguments, defaulting the ones left out:
 /quality improve reliability --rigor quick   # recommend from a fast pass, scoped to one factor
 /quality improve --rigor deep # exhaustive evaluate, then recommend
 /quality upgrade              # plan and orchestrate paired skill/CLI upgrades
-/quality setup                 # author a new QUALITY.md (drives qualitymd init)
+/quality setup                 # author a new model file (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
 ```
 
@@ -646,7 +646,7 @@ Every evaluation that finds gaps **MUST** also emit its Advice as discrete,
 triageable **recommendation** artifacts — recommendations are a product of
 evaluation, not of `improve` (see [Operating model](#operating-model)).
 
-A rating level's name can collide with `QUALITY.md` structural vocabulary —
+A rating level's name can collide with QUALITY.md structural vocabulary —
 most often the suggested scale's **Target** level against a **Target** entity.
 Wherever a level name could be read as a structural term, the report **MUST**
 qualify it: name the level with a qualifier (the **Target** rating level;

@@ -12,7 +12,7 @@ This project has three separately versioned surfaces:
 
 - the `qualitymd` CLI;
 - the `/quality` skill; and
-- the `QUALITY.md` format specification.
+- the QUALITY.md format specification.
 
 The CLI and skill are distributed separately. They can be released from the same
 repository state, but the skill is not bundled with the CLI binary.
@@ -109,10 +109,10 @@ agent discovers skills only at startup or caches loaded skill instructions.
 
 ## Specification Version
 
-`SPECIFICATION.md` carries a specification version for the `QUALITY.md` document
+`SPECIFICATION.md` carries a specification version for the QUALITY.md document
 format, frontmatter schema, evaluation semantics, and required report semantics.
 
-The specification version changes when the meaning of conforming `QUALITY.md`
+The specification version changes when the meaning of conforming QUALITY.md
 documents or conforming evaluation/report behavior changes. Editorial fixes,
 clarifications that do not change conformance, and non-normative examples do not
 require a specification version change.

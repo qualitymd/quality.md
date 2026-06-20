@@ -2,18 +2,18 @@
 
 **Specification version:** 0.1 (Draft)
 
-This document specifies the `QUALITY.md` standard: a Markdown file with YAML
+This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
 context. The specification is a reference for authors, parsers, linters,
 evaluators, report renderers, and tools that need to exchange or interpret
-`QUALITY.md` documents consistently.
+QUALITY.md documents consistently.
 
 This specification defines the document structure, model vocabulary,
 frontmatter schema, evaluation semantics, and minimum report semantics of
-`QUALITY.md`. Authoring advice, examples, and notes are informative unless
+QUALITY.md. Authoring advice, examples, and notes are informative unless
 explicitly stated otherwise.
 
-The specification version identifies the `QUALITY.md` document format and
+The specification version identifies the QUALITY.md document format and
 evaluation semantics defined here. See
 [Versioning](docs/reference/versioning.md#specification-version) for the
 project's specification-version policy.
@@ -22,18 +22,18 @@ project's specification-version policy.
 
 Note: This section is non-normative.
 
-`QUALITY.md` is informed by established software-quality, requirements,
+QUALITY.md is informed by established software-quality, requirements,
 measurement, testing, and evaluation traditions, including ISO/IEC and
 ISO/IEC/IEEE standards, CISQ structural-quality work, and earlier software
 quality models such as McCall and Dromey.
 
 These are acknowledged as influences, not normative references or conformance
-targets. `QUALITY.md` uses its own vocabulary and structure where that makes the
+targets. QUALITY.md uses its own vocabulary and structure where that makes the
 format more practical, readable, and accessible.
 
 ## Conformance
 
-Conforming uses and applications of `QUALITY.md` MUST fulfill all applicable
+Conforming uses and applications of QUALITY.md MUST fulfill all applicable
 normative requirements in this specification.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
@@ -56,7 +56,7 @@ non-conforming.
 
 ### Conformance Classes
 
-A `QUALITY.md` document conforms when it satisfies the document and frontmatter
+A QUALITY.md document conforms when it satisfies the document and frontmatter
 requirements in this specification.
 
 A parser conforms when it accepts conforming documents, rejects frontmatter that
@@ -117,7 +117,7 @@ scope, Findings summaries, ratings, rationales, and advice.
 
 ## Document Structure
 
-A `QUALITY.md` document is a Markdown file containing:
+A QUALITY.md document is a Markdown file containing:
 
 1. A YAML frontmatter block containing the Model.
 2. An optional Markdown body documenting the Model's context.
@@ -129,7 +129,7 @@ The Markdown body can be empty. A conforming tool MUST preserve body content it
 does not interpret. A conforming tool MUST NOT reject a document solely because
 the body uses unrecognized headings or sections.
 
-The location of a `QUALITY.md` document defines the default Source for the root
+The location of a QUALITY.md document defines the default Source for the root
 Model: the directory containing the file and all descendants. A root Model can
 override that default by declaring `source`.
 
@@ -137,14 +137,14 @@ override that default by declaring `source`.
 
 Every property present in the frontmatter MUST use the YAML shape specified in
 this section. Frontmatter that parses as YAML but does not conform to these
-shapes is not a conforming `QUALITY.md` document.
+shapes is not a conforming QUALITY.md document.
 
 Null or empty values do not satisfy required properties. A required property
 with a null or empty value MUST be treated as absent.
 
 #### Model
 
-A Model is the root node of a `QUALITY.md` document. It has all Target
+A Model is the root node of a QUALITY.md document. It has all Target
 properties plus the model-wide `ratingScale`.
 
 ```yaml

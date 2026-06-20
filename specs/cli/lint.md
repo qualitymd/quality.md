@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: qualitymd lint
-description: Validate a QUALITY.md file's structure against the format spec.
+description: Validate a `QUALITY.md` file's structure against the format spec.
 tags: [cli, command, lint]
 timestamp: 2026-06-17T00:00:00Z
 ---
@@ -98,7 +98,7 @@ MUST follow these guidelines:
   future `model-summary` info rule). Every rule in the current set is
   `<defect>-<subject>`; the second shape is reserved for the `info` observations
   defined later.
-- Name the subject in `QUALITY.md` vocabulary — Target, Factor, Requirement,
+- Name the subject in QUALITY.md vocabulary — Target, Factor, Requirement,
   Rating Scale, Rating Level, Assessment — never ISO terms or implementation
   names.
 - Keep it short; prefer two words. Do not prefix ids with `quality-` or similar;
@@ -121,7 +121,7 @@ catalog. It MUST:
 
 - be **one present-tense sentence**, generic — describing the check, never a
   specific occurrence, with no interpolated values;
-- **state the triggering condition**, leading with the subject in `QUALITY.md`
+- **state the triggering condition**, leading with the subject in QUALITY.md
   vocabulary — e.g. "Flags a requirement whose `assessment` is missing, empty,
   or a list.";
 - **name the exact frontmatter key it inspects** in backticks (`ratingScale`,
@@ -145,7 +145,7 @@ it. It MUST:
 - **contrast found against required** — what is actually there versus what the
   format spec requires;
 - **be self-contained and deterministic** — understandable without the rule
-  description, the same for the same input, in `QUALITY.md` vocabulary with no
+  description, the same for the same input, in QUALITY.md vocabulary with no
   implementation terms; and
 - **carry tone to match severity** — errors state the violation plainly,
   warnings frame the recommendation they enforce, info is neutral observation; no

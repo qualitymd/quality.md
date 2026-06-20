@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: qualitymd init
-description: Scaffold a starter QUALITY.md to fill in.
+description: Scaffold a starter `QUALITY.md` to fill in.
 tags: [cli, command, init]
 timestamp: 2026-06-17T00:00:00Z
 ---

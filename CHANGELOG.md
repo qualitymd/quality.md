@@ -1,7 +1,7 @@
 # Changelog
 
 User-facing release notes for `qualitymd`, the `/quality` skill, and the
-`QUALITY.md` specification.
+QUALITY.md specification.
 
 ## Unreleased
 
@@ -211,7 +211,7 @@ Compatibility:
 
 ### Specification
 
-- No normative `QUALITY.md` format or evaluation semantics change.
+- No normative QUALITY.md format or evaluation semantics change.
 - Specification remains `0.1 (Draft)`.
 
 ### Documentation
@@ -252,7 +252,7 @@ No migration is required from `v0.2.1`.
 
 ### Specification
 
-- No normative `QUALITY.md` format or evaluation semantics change.
+- No normative QUALITY.md format or evaluation semantics change.
 - Specification remains `0.1 (Draft)`.
 
 ### Documentation
@@ -290,7 +290,7 @@ No migration is required from `v0.2.0`.
 
 ### /quality Skill
 
-- Replaced the meta-model workflow with the bundled `QUALITY.md` authoring
+- Replaced the meta-model workflow with the bundled QUALITY.md authoring
   guide.
 - Modularized setup, wizard, evaluate, and improve procedures into
   mode-specific skill files.
@@ -300,7 +300,7 @@ No migration is required from `v0.2.0`.
 
 - Updated evaluation records, evaluation CLI commands, report behavior,
   recommendation and assessment superseding, and factor-reference terminology.
-- Kept the `QUALITY.md` specification at `0.1 (Draft)`.
+- Kept the QUALITY.md specification at `0.1 (Draft)`.
 
 ### Documentation
 

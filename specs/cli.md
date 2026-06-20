@@ -14,7 +14,7 @@ codes, and agent accessibility independent of any one command's behavior.
 Per-command behavior lives in the command sub-specs under [Commands](#commands).
 
 It is a companion to the
-[`QUALITY.md` format specification](../SPECIFICATION.md): where this document
+[QUALITY.md format specification](../SPECIFICATION.md): where this document
 constrains the *tool*, the format spec constrains the *file*.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -34,7 +34,7 @@ judgment and pass judgment payloads to the deterministic surface.
 | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
 | [`init`](./cli/init.md)                                                 | Scaffold a starter `QUALITY.md` to fill in.                |
 | [`lint`](./cli/lint.md)                                                 | Validate a file's structure against the format spec.       |
-| [`spec`](./cli/spec.md)                                                 | Emit the `QUALITY.md` format specification.                |
+| [`spec`](./cli/spec.md)                                                 | Emit the QUALITY.md format specification.                  |
 | [`status`](./cli/status.md)                                             | Emit a deterministic project-state snapshot.               |
 | [`evaluation create`](./cli/evaluation-create.md)                       | Create a numbered evaluation run folder.                   |
 | [`evaluation list`](./cli/evaluation-list.md)                           | List evaluation runs.                                      |

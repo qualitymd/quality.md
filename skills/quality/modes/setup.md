@@ -26,8 +26,8 @@ Run qualitymd lint
    - Mode: setup
    - Target file: <resolved path>
    - Scope: model skeleton/readiness
-   - Mutation: QUALITY.md when missing or when an existing model change is confirmed
-   - Artifacts: QUALITY.md
+   - Mutation: `QUALITY.md` when missing or when an existing model change is confirmed
+   - Artifacts: `QUALITY.md`
    - Next gate: lint result, guided population, then wizard next step
    ```
 
@@ -36,7 +36,7 @@ Run qualitymd lint
    before editing:
 
    ```text
-   Decision: update existing QUALITY.md?
+   Decision: update existing `QUALITY.md`?
    - Changes:
    - Evidence/reason:
    - Recommended option:

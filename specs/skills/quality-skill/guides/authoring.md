@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md authoring guide
-description: Contract for the skill's authoring guide — the canonical reference and best-practices guide for understanding and working with QUALITY.md files.
+description: Contract for the skill's authoring guide — the canonical reference and best-practices guide for understanding and working with `QUALITY.md` files.
 tags: [skill, quality, guide]
 timestamp: 2026-06-18T00:00:00Z
 ---
@@ -94,7 +94,7 @@ The guide is organized for a reader who is authoring, mixing **reference** (what
 a concept is) with **how-to** (the jobs of working with it):
 
 - The guide **MUST** use a **single level** of concept hierarchy: each top-level
-  `QUALITY.md` concept (the file, the model, rating scale, target, factor,
+  QUALITY.md concept (the file, the model, rating scale, target, factor,
   requirement, the body) is its own chapter. A concept's sub-concepts and
   properties **MUST** be documented *within* their parent concept's chapter, not
   promoted to their own chapters.
@@ -121,7 +121,7 @@ a concept is) with **how-to** (the jobs of working with it):
 These conventions exist so the guide reads consistently and a reader can either
 read a chapter straight through to understand a concept or jump to "Working with…"
 when mid-task. They are the guide's editorial contract, not constraints on the
-`QUALITY.md` format itself.
+QUALITY.md format itself.
 
 ### Best-practice coverage
 

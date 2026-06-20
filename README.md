@@ -247,7 +247,7 @@ assessment -> findings -> rating result
 
 ## Status
 
-The `QUALITY.md` format, `qualitymd` CLI, and `/quality` skill are early and
+The QUALITY.md format, `qualitymd` CLI, and `/quality` skill are early and
 under active development. Expect the format and tooling to change as they
 mature.
 

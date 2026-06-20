@@ -9,7 +9,7 @@ specification governs on any conflict.
 
 ## Contents
 
-- [The QUALITY.md file](#the-qualitymd-file)
+- [The `QUALITY.md` file](#the-qualitymd-file)
 - [Quality Model](#quality-model)
 - [The Markdown body](#the-markdown-body)
 - [Rating Scale](#rating-scale)
@@ -20,7 +20,7 @@ specification governs on any conflict.
 
 ---
 
-## The QUALITY.md file
+## The `QUALITY.md` file
 
 A `QUALITY.md` file is a Markdown file with two parts:
 

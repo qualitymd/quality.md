@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 # Cut a Release
 
 Use this guide when publishing a tagged release of the `qualitymd` CLI and any
-same-repo release notes for the `/quality` skill or `QUALITY.md` specification.
+same-repo release notes for the `/quality` skill or QUALITY.md specification.
 
 This guide is the authoritative release runbook. Other docs should link here
 instead of restating release-prep, tag-publish, verification, or failure-handling
@@ -55,7 +55,7 @@ This repo has three separately versioned surfaces:
 
 - `qualitymd` CLI
 - `/quality` skill
-- `QUALITY.md` specification
+- QUALITY.md specification
 
 Before tagging, decide which surfaces changed.
 
@@ -77,7 +77,7 @@ release changes:
 - supported CLI SemVer range.
 
 Update the `SPECIFICATION.md` specification version only when the meaning of
-conforming `QUALITY.md` documents or conforming evaluation/report behavior
+conforming QUALITY.md documents or conforming evaluation/report behavior
 changes. Editorial fixes and non-normative examples do not require a spec version
 change.
 

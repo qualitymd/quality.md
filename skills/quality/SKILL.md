@@ -1,6 +1,6 @@
 ---
 name: quality
-description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, improve, or upgrade the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
+description: "Setup or work with `QUALITY.md` files or the qualitymd CLI; model, evaluate, improve, or upgrade the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
 compatibility: Requires qualitymd CLI >=0.4.0 <0.5.0.
 metadata:
   version: "0.4.1"
@@ -9,7 +9,7 @@ metadata:
 
 ## Purpose
 
-Drive quality management work for a project/entity through `QUALITY.md` and the
+Drive quality management work for a project/entity through QUALITY.md and the
 `qualitymd` CLI. Keep judgment in the skill and mechanical work in the CLI.
 
 You are a quality evaluator and quality-model steward. The CLI owns mechanical

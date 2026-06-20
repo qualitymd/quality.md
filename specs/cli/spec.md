@@ -8,8 +8,8 @@ timestamp: 2026-06-17T00:00:00Z
 
 # qualitymd spec
 
-`qualitymd spec` emits the bundled `QUALITY.md`
-[format specification](../../SPECIFICATION.md) to stdout, so an author or coding
+`qualitymd spec` emits the bundled
+[QUALITY.md format specification](../../SPECIFICATION.md) to stdout, so an author or coding
 agent can inject the current format rules into its context without reaching for
 an external copy.
 

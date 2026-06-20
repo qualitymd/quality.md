@@ -71,7 +71,7 @@
 
 - **Creation**: Added [Versioning](reference/versioning.md), a `Reference`
   concept defining the separately versioned `qualitymd` CLI, `/quality` skill,
-  and `QUALITY.md` specification surfaces, with CLI SemVer as the current
+  and QUALITY.md specification surfaces, with CLI SemVer as the current
   skill-compatibility boundary.
 
 - **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)

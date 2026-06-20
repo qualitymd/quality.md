@@ -49,7 +49,7 @@ its own `schema.md` (see below). You may add any other keys you need.
   ```markdown
   # Commands
 
-  - [qualitymd init](init.md) - scaffold a starter QUALITY.md.
+  - [qualitymd init](init.md) - scaffold a starter `QUALITY.md`.
   - [qualitymd lint](lint.md) - validate a file's structure.
   ```
 
