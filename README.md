@@ -220,18 +220,6 @@ Targets can nest recursively. `ratingScale` exists only on the root model.
 | Finding      | An observation produced by an assessment.                       |
 | Rating Scale | The ordered model-wide scale used to rate results.              |
 
-### Evaluation Semantics
-
-Each requirement has exactly one `assessment`. An evaluator performs that
-assessment against the target source, records findings, and rates the
-requirement's findings against the model's `ratingScale`. A finding records what
-was observed; the rating result records how that observation compares with the
-model's scale.
-
-```text
-assessment -> findings -> rating result
-```
-
 ## CLI Quick Reference
 
 | Task                  | Command                          |
