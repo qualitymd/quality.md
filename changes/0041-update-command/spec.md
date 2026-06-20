@@ -17,7 +17,7 @@ behavior, plus the paired rename of the `/quality upgrade` skill mode to
 `specs/cli/update.md`.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
-The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", and "MAY" are to be
+The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be
 interpreted as described in [RFC 2119](../../../docs/reference/rfc2119.md) and
 [RFC 8174](../../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
@@ -72,10 +72,16 @@ install and print manual guidance instead.
 current version, latest known version when available, detected install method,
 whether an update is available, whether apply is supported for this install, the
 recommended action, and the release-notes reference when known.
-`qualitymd update --json` **MUST** emit those facts with stable field names. An
-update is available only when the latest version is strictly newer than the
-current version by SemVer precedence and the readiness gate is satisfied; a
-development build **MUST NOT** report an available update.
+`--json` selects machine-readable output and **MUST NOT** change whether `update`
+applies: `qualitymd update --json` applies by default and emits a structured
+result of that apply, while `qualitymd update --check --json` reports the facts
+above without mutating. Both forms **MUST** emit stable field names and **MUST**
+include a stable boolean field reporting whether an update was applied. An update
+is available only when both the current and latest versions are valid SemVer and
+the latest is strictly newer by SemVer precedence and the readiness gate is
+satisfied. When either version is not valid SemVer, or is a prerelease, or the
+build is a development build, `update` **MUST** report no available update — it
+**MUST NOT** fall back to reporting any difference, and **MUST NOT** apply.
 
 The CLI **SHOULD** retain a deprecated `upgrade` alias that behaves as `update`
 for one release cycle and prints a deprecation notice to stderr.
@@ -102,17 +108,45 @@ works for the `/quality` skill and CI.
 npm installs **MUST** apply through `npm install -g quality.md@latest` and
 Homebrew installs through the documented Homebrew command, unchanged from 0032.
 
+### Apply verification
+
+After applying, `update` **MUST** verify the running version through
+`qualitymd --version` and **MUST** report honestly when the running version did
+not advance to the target release — rather than reporting a successful apply. This
+generalizes the post-install `--version` check the managed standalone path already
+requires to every channel that applies, and covers the case where a
+registry-backed channel's local state has not yet caught up to the published
+version (for example, a Homebrew install whose local tap has not refreshed to the
+published cask).
+
+> Rationale: `brew upgrade` installs whatever the user's local tap pins, which can
+> lag the published cask the readiness gate reads; a pre-apply version check cannot
+> see that lag, so the only honest post-apply signal is whether the running binary
+> actually advanced. — 0041
+
 ### Release readiness
 
 For the channel that owns the installation, an update **MUST NOT** be reported
 available, and `update` **MUST NOT** apply one, unless the target release is
-actually retrievable for that channel — for the GitHub-backed channels, that the
-release publishes the platform archive and its checksums; for a package-manager
-channel, that the registry reports the version as the installable latest. When
-readiness cannot be confirmed, `update --check` **MUST** report no available
-update and **SHOULD** make the unconfirmed state legible rather than conflating it
-with "up to date"; `update` **MUST** fail before mutating, with a diagnostic that
-the target release is not yet available.
+actually retrievable for that channel — for the GitHub-backed channels (managed
+standalone), that the release publishes the platform archive and its checksums;
+for a registry-backed channel, that the channel's own registry reports the version
+as the installable latest. The owning registry, not the GitHub release tag,
+**MUST** be the source of both latest-version and readiness for a registry-backed
+channel: for npm that is the npm registry, and for Homebrew that is the published
+tap cask — so an update is reported for a Homebrew install only when the tap cask
+advertises it, never merely because a GitHub release tag exists. When readiness
+cannot be confirmed, `update --check` **MUST** report no available update and
+**SHOULD** make the unconfirmed state legible rather than conflating it with "up
+to date"; `update` **MUST** fail before mutating, with a diagnostic that the
+target release is not yet available.
+
+> Rationale: `brew upgrade` installs whatever the tap cask pins, which the project
+> publishes in the same release run but a user's local Homebrew only sees after a
+> tap refresh. Reading the GitHub release tag would advertise — and, now that
+> apply is the default, run — an upgrade the tap cannot yet deliver, the exact
+> confusion readiness gating exists to prevent. This implements 0032's unfulfilled
+> "compare against the channel that owns the installation" SHOULD. — 0041
 
 > Rationale: a release tag can appear before its archive and checksum assets
 > finish uploading. Advising — or, now that apply is the default, running — an
@@ -202,9 +236,23 @@ $ qualitymd update --check --json
   "currentVersion": "0.4.1",
   "installMethod": "managed-standalone",
   "latestVersion": "0.5.0",
+  "latestVersionReady": true,
   "updateAvailable": true,
   "applySupported": true,
+  "applied": false,
   "recommendedAction": "qualitymd update",
+  "releaseNotesURL": "https://github.com/qualitymd/quality.md/releases/tag/v0.5.0"
+}
+
+$ qualitymd update --json            # applies by default, then reports the result
+{
+  "currentVersion": "0.5.0",
+  "installMethod": "managed-standalone",
+  "latestVersion": "0.5.0",
+  "latestVersionReady": true,
+  "updateAvailable": false,
+  "applySupported": true,
+  "applied": true,
   "releaseNotesURL": "https://github.com/qualitymd/quality.md/releases/tag/v0.5.0"
 }
 ```
@@ -238,5 +286,9 @@ stable machine-readable names.
 
 ### To delete
 
-- `specs/cli/upgrade.md` — renamed to `specs/cli/update.md`; no behavior is
-  dropped silently, only moved and extended.
+- `specs/cli/upgrade.md` — renamed to `specs/cli/update.md`; content is moved and
+  extended. One behavior is intentionally dropped, not silently: upgrade.md's
+  "When either version is not valid SemVer, the check MAY fall back to reporting
+  any difference" — `update` instead reports no available update for non-SemVer or
+  prerelease versions (per Command shape), which is safer now that apply is the
+  default.

@@ -67,7 +67,9 @@ release, and a release-notes reference in advisory and applied output.
 Covered: rename `upgrade` → `update` with a deprecated `upgrade` alias for one
 release cycle; flagless apply-by-default; `--check` advisory and `--json`;
 managed standalone self-apply; release-readiness gating on availability and
-apply; a release-notes reference; an ambient cached update notice on ordinary
+apply, including resolving Homebrew latest/readiness from the published tap cask
+rather than the GitHub release tag; a release-notes reference; an ambient cached
+update notice on ordinary
 commands with a local cache, bounded background refresh, and a documented
 opt-out; suppression of the notice under `--json`, non-interactive/CI, and
 development builds; and renaming the `/quality upgrade` skill mode to
@@ -88,8 +90,10 @@ no change to `QUALITY.md` format or evaluation semantics.
       `update` command (file → `internal/cli/update.go`): apply by default,
       `--check` advisory, drop `--apply`; widen the latest-version provider to
       carry readiness and a release-notes reference; gate availability and apply
-      on readiness; add managed standalone to the apply path; add a deprecated
-      `upgrade` alias.
+      on readiness; resolve Homebrew latest/readiness from the published tap cask
+      instead of the GitHub release tag (fixing the 0032 bug where brew compared
+      against GitHub), with a post-apply `--version` verify on every apply path;
+      add managed standalone to the apply path; add a deprecated `upgrade` alias.
 - [ ] `internal/cli` root command wiring — a persistent post-run hook that emits
       the ambient notice from cache under the gating rules, and a bounded,
       non-blocking cache refresh.
@@ -98,9 +102,10 @@ no change to `QUALITY.md` format or evaluation semantics.
 - [ ] [`internal/cli/version.go`](../internal/cli/version.go) — reuse version
       metadata for the notice and dev-build suppression.
 - [ ] [`internal/cli/version_upgrade_test.go`](../internal/cli/version_upgrade_test.go)
-      — cover apply-by-default, `--check`, managed standalone apply, readiness
-      gating, release-notes output, the alias, and notice gating (TTY/CI/`--json`/
-      opt-out/dev-build/cache states).
+      → `internal/cli/version_update_test.go` (renamed alongside `update.go`) —
+      cover apply-by-default, `--check`, managed standalone apply, readiness
+      gating, release-notes output, the alias, post-apply `--version` verify, and
+      notice gating (TTY/CI/`--json`/opt-out/dev-build/cache states).
 
 ### Durable specs
 

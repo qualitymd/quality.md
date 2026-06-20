@@ -43,11 +43,15 @@ Relevant existing shape:
 ### Rename and reshape the command
 
 Rename the command to `update`. The default `RunE` applies; a `--check` flag
-short-circuits to the advisory path; `--json` emits the result struct. `--apply`
+short-circuits to the advisory path; `--json` emits the result struct — an output
+modifier that never changes whether the command applies, so the struct carries an
+`applied` boolean that lets a consumer tell an apply from a `--check`. `--apply`
 is removed — applying is the default. Register a second cobra command `upgrade`
 marked `Deprecated` (cobra prints the deprecation line automatically) that shares
 `update`'s `RunE`, so `qualitymd upgrade [--check]` keeps working for one cycle.
-The file moves `internal/cli/upgrade.go` → `update.go`; symbols rename to match.
+The file moves `internal/cli/upgrade.go` → `update.go` and its test
+`internal/cli/version_upgrade_test.go` → `version_update_test.go`; symbols rename
+to match.
 
 Apply gating keeps 0032's refusal for unowned channels, just relocated to the
 default path: unknown/archive/Go-source still refuse and print guidance.
@@ -67,19 +71,47 @@ type latestVersionProvider func(context.Context, installMethod) (latestRelease, 
 ```
 
 `checkUpdate` computes `newer := updateAvailable(current, latest.Version)`
-(unchanged SemVer logic) and reports `UpdateAvailable = newer && latest.Ready`.
+(strict SemVer precedence; `updateAvailable` returns false when either version is
+not valid SemVer or is a prerelease — the old "report any difference" fallback is
+dropped, so such builds never report or apply an update, per the spec) and reports
+`UpdateAvailable = newer && latest.Ready`.
 The default (apply) path refuses with a clear diagnostic when `newer &&
-!latest.Ready`, before any mutation.
+!latest.Ready`, before any mutation. The result struct also carries `latest.Ready`
+through to an explicit `latestVersionReady` field in `--json`, so a consumer can
+tell "newer release exists but isn't downloadable yet" apart from "up to date" —
+the legibility the spec's unconfirmed-state SHOULD calls for; inferring it from
+`updateAvailable: false` + a populated `latestVersion` is ambiguous (that combo
+also describes being current).
 
 `Ready` is resolved from the response already fetched — no extra round trip:
 
-- GitHub-backed channels: parse `assets[]`; `Ready` requires both
-  `qualitymd_<os>_<arch>.tar.gz` (reusing the installer's GOOS/GOARCH → token
-  mapping in one helper) and `checksums.txt`. `ReleaseNotesURL` = the release
-  `html_url`.
+- GitHub-backed channels (managed standalone, and the archive/source guidance
+  paths): parse `assets[]`; `Ready` requires both `qualitymd_<os>_<arch>.tar.gz`
+  (reusing the installer's GOOS/GOARCH → token mapping in one helper) and
+  `checksums.txt`. `ReleaseNotesURL` = the release `html_url`.
 - npm: the registry `/latest` *is* the installable latest, so `Ready` is true
   whenever a version returns; `ReleaseNotesURL` left empty (no GitHub URL in the
   registry response — see Alternatives).
+- Homebrew: route to a new `latestHomebrewVersion` that reads the tap cask the
+  project publishes — `GET https://raw.githubusercontent.com/qualitymd/homebrew-tap/main/Casks/qualitymd.rb`
+  — and parses its `version "X.Y.Z"` line (a small regex; the cask is generated,
+  so the line is stable). The cask *is* what `brew upgrade qualitymd/tap/qualitymd`
+  installs, so like npm `Ready` is true whenever a version parses — never gated on
+  the GitHub release tag. Unlike npm, brew gets a real `ReleaseNotesURL`: the
+  cask's `url` pins `releases/download/v<version>/…`, so the notes URL is
+  `releases/tag/v<version>` for the same parsed version — known-good, not
+  constructed-and-hoped (contrast the npm rejection in Alternatives). This drops
+  brew out of `defaultLatestVersion`'s `default:` GitHub branch, which was the
+  bug: brew was resolving latest from the GitHub tag instead of the tap.
+
+Brew apply is unchanged (`brew upgrade qualitymd/tap/qualitymd`), but a user's
+*local* Homebrew can still lag the published tap until it refreshes — which a
+version check can't see. So the post-apply `qualitymd --version` verify that the
+managed standalone path already performs is now required on every apply path (the
+spec's Apply verification requirement), brew most notably: if the running version
+didn't advance after `brew upgrade`, `update` reports that honestly (suggesting a
+tap refresh) instead of a false "applied." Tap-source readiness fixes the advisory
+signal; the verify keeps apply honest against local staleness.
 
 ### Managed standalone self-apply
 
@@ -110,21 +142,36 @@ command, and the notes URL when known. Gates: cache says a newer, ready version
 exists; stderr is a terminal (`term.IsTerminal`); not `--json` (inspect the
 invoked command's flag); no CI env (`CI`); opt-out unset
 (`QUALITYMD_NO_UPDATE_CHECK`); not a dev build. Any failure to read the cache is
-swallowed — the notice never affects exit code or output.
+swallowed — the notice never affects exit code or output. The notice shows on
+every qualifying run (no rate-limit, no persisted dismissal) — the gating already
+confines it to interactive non-`--json` humans, and a single quiet stderr line
+per run matches npm/gh/brew.
 
-**Refresh.** When checks are enabled and interactive and the cache is older than
-the TTL (e.g. 24h), the foreground process spawns a *detached* `qualitymd`
-subprocess that performs the check and rewrites the cache, then returns
-immediately without waiting. A `QUALITYMD_UPDATE_REFRESH=1` env marker on the
-child makes it do only the refresh (no notice, no recursive spawn). The
+**Refresh.** The refresh shares the notice's suppression gates: it spawns only
+when the opt-out is unset, the build is not a dev build, stderr is interactive,
+and the cache is older than the TTL (20h). The interactive (TTY) gate already
+excludes the piped invocations agents and CI typically use (whether or not
+`--json` is set), so the refresh need not separately gate on `--json`; and
+skipping dev builds avoids a network subprocess for a build that can never report
+an update. When those gates pass, the foreground process spawns a *detached*
+`qualitymd` subprocess from the root `PersistentPreRunE` — so the child has
+maximum lead time, overlaps the real command, and still spawns even if the command
+later errors before post-run. The child performs the check and rewrites the cache, then the parent
+returns immediately without waiting. A `QUALITYMD_UPDATE_REFRESH=1` env marker on
+the child makes it do only the refresh (no notice, no recursive spawn). The
 triggering command uses the existing cache and exits; the fresh value appears on
 a later invocation — exactly the non-blocking, surface-next-run semantics the
 spec requires. The explicit `update`/`update --check` paths also rewrite the
 cache as a side effect, so an interactive check keeps it warm.
 
 **Opt-out.** `QUALITYMD_NO_UPDATE_CHECK=1` disables both the refresh and the
-notice. (A config-file key can follow if/when qualitymd grows a config surface;
-the env var is the documented contract now.)
+notice — the documented contract for now. A config-file key is the intended
+*primary* opt-out for centrally managed and air-gapped fleets once qualitymd grows
+a config surface (an env var doesn't persist across a managed fleet the way a
+checked-in config setting does, which is exactly the audience the opt-out serves),
+so the env var should not ossify as the only knob. This mirrors how Codex exposes
+its update check solely as a `check_for_update_on_startup` config flag documented
+"set to false only if your updates are centrally managed," with no env-var gate.
 
 ## Alternatives
 
@@ -143,7 +190,18 @@ the env var is the documented contract now.)
   detached subprocess is the only reliable way to refresh without blocking. Cost:
   cross-platform process detachment and an extra short-lived process (see risks).
 - **Construct an npm release-notes URL from the version.** Rejected — assumes the
-  `v`-prefixed tag format and can 404; honest omission beats a broken link.
+  `v`-prefixed tag format and can 404; honest omission beats a broken link. (Brew
+  is different: the cask *pins* the release it installs, so the tag is known-good,
+  not assumed — hence brew gets a notes URL and npm doesn't.)
+- **Resolve brew latest via `brew info` / a local brew invocation.** Rejected —
+  reads the user's *local* tap state, which is exactly the staleness we don't want
+  to treat as authoritative, and shells out to brew on a plain version check.
+  Reading the published cask over HTTP gives the canonical "what brew would install
+  after a tap refresh." Local staleness is instead caught by the post-apply verify.
+- **Keep brew on the GitHub release tag (defer the fix).** Rejected — 0041's
+  readiness gate would then confirm GitHub assets, a signal `brew upgrade` doesn't
+  use, advertising upgrades the tap can't yet deliver. The gate is the reason this
+  had to be fixed here, not deferred.
 - **Hard rename with no alias.** Rejected — the version-pinned `/quality` skill
   and existing scripts call `upgrade`; a deprecated alias avoids breaking the
   paired flow mid-transition.
@@ -160,20 +218,35 @@ the env var is the documented contract now.)
   opt-out and TTL, but it must be invisible (no output, no error propagation).
 - Widening the provider return type touches every call site and its tests, but
   all are confined to `internal/cli`.
+- Reading the brew tap cask couples the CLI to a published-file shape (the cask's
+  `version` line and tap path) the project itself generates via GoReleaser, so it
+  is stable but not contractual. Mitigation: a parse miss is treated like any
+  failed latest check — no update reported, never an error — and the apply path's
+  `--version` verify backstops a wrong/stale read. The tap path is a single
+  constant if the repo or cask name ever changes.
 - The deprecated `upgrade` alias is one extra command to carry and later remove;
   cheap, and it keeps the skill working across the version bump.
 
-## Open questions
+## Resolved decisions
 
-- **TTL and notice cadence.** A 24h refresh, and show the notice on every
-  qualifying run until updated? Or rate-limit the notice itself to avoid nagging?
+- **TTL and notice cadence.** 20h refresh TTL (under a day, so a user who runs at
+  the same clock time daily isn't perpetually just short of the window — the same
+  reason Codex uses a sub-24h, 20h TTL); show the notice on every qualifying run
+  until updated, with no rate-limit and no persisted dismissal. The existing gating
+  confines it to interactive non-`--json` humans, and one quiet stderr line per run
+  matches npm/gh/brew. Revisit only if it proves noisy.
 - **Refresh trigger placement.** Spawn the detached refresh from
-  `PersistentPreRun` (so it overlaps the command) or `PersistentPostRun` (after
-  output)? Pre-run overlaps better but must not delay the command.
-- **Homebrew latest source.** Homebrew installs currently resolve "latest" via
-  GitHub (a pre-existing 0032 quirk), so readiness checks GitHub assets for brew.
-  Worth fixing the Homebrew provider, but out of this change's scope — flagged,
-  not silently widened.
-- **`releaseReady` in `--json`.** Expose an explicit readiness field, or let
-  agents infer from `updateAvailable: false` + a populated `latestVersion`?
-  Leaning to the latter to avoid schema growth.
+  `PersistentPreRunE` (max lead time, overlaps the command, fires even on later
+  error) and emit the notice from `PersistentPostRunE` (after stdout). Detached
+  and non-blocking, so neither hook delays the command.
+- **`latestVersionReady` in `--json`.** Expose an explicit readiness field rather
+  than inferring from `updateAvailable: false` + a populated `latestVersion`,
+  which is ambiguous with "up to date." Cheap, and it satisfies the spec's
+  legibility SHOULD for the unconfirmed state.
+- **Homebrew latest source.** Pulled into scope (not deferred): resolve brew latest
+  and readiness from the published tap cask, not the GitHub release tag, and extend
+  the post-apply `--version` verify to the brew path. This fixes the pre-existing
+  0032 bug — brew was comparing against GitHub — and implements 0032's unfulfilled
+  "compare against the owning channel" SHOULD. Deferring it would leave 0041's
+  readiness gate confirming the wrong signal for brew. Mechanics in *Widen the
+  latest-version provider*.
