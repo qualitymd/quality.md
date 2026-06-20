@@ -127,6 +127,10 @@ They are not human display titles.
   `not-assessed`
 - `rationale`
 
+The `kind` value is a typed rating-result state. A rated result without a
+`level`, a not-assessed result with a `level`, an unknown `kind`, or an empty
+`rationale` makes the record invalid for reporting.
+
 Each finding **MUST** carry `locator`, `observation`, `category`, and
 `severity`; it **MAY** carry `evidence` and `attributes`.
 
@@ -150,6 +154,10 @@ Evidence verification and locator rigor ride on these existing fields
 deliberately, with no new schema field; this keeps `schemaVersion` stable and
 the record mechanically gate-able. Add a dedicated field only when repeated
 real-repo use shows the existing fields insufficient.
+
+`evidence[].kind` is an intentionally open classification string. Report
+renderers can display or group it, but they must not assign special semantics to
+undocumented kind values.
 
 A run **MUST NOT** contain more than one active assessment result record for the
 same ordered `targetPath` and `requirement`. Duplicate active assessment result
@@ -179,7 +187,11 @@ An analysis record is one JSON file per target. Required fields:
 
 Every rating result **MUST** use the explicit `ratingResult` object shape
 defined above. `targetPath`, `factorRatingResults[].factorPath`, and rating
-values are stable model identifiers, not human display titles.
+values are stable model identifiers, not human display titles. A
+`localRatingResult: null` on a target with child analyses and no local
+assessment result records represents a structural grouping target; report outputs
+must render that as a distinct structural local-rating state, not as a missing
+not-assessed rating.
 When present, each `ratingConstraints` entry **SHOULD** identify the binding
 `assessmentResultRecord`, `requirement`, and constrained `level`.
 
@@ -271,6 +283,8 @@ than adding a new judgment layer. In particular:
   verdict is displayed.
 - `rated`, `not-assessed`, active, superseded, and structural/no-local-rating
   states **MUST** remain distinct.
+- Report JSON **MUST** expose those states as typed fields rather than requiring
+  consumers to infer them from `null`, absent fields, or booleans alone.
 - Findings are evidence. A report output **MUST NOT** turn findings into actions
   unless they are connected to active recommendation records.
 - Recommendation-facing action surfaces **MUST** use active recommendations only;
@@ -305,15 +319,30 @@ next action, and target summary. Collections **MUST** render as arrays,
 including empty arrays; they **MUST NOT** render as `null`.
 
 Recommendation summaries **MUST** indicate whether each recommendation is active
-or superseded. The report Next Action **MUST** choose from active
-recommendations only.
+or superseded through a typed lifecycle `state`. The legacy convenience `active`
+boolean can be present, but it must agree with `state`. The report Next Action
+**MUST** choose from active recommendations only.
 
 Assessment result summaries **MUST** indicate whether each assessment result is
-active or superseded. Superseded assessment results remain visible in the report
-audit trail but must not be treated as active judgment.
+active or superseded through the same typed lifecycle `state`. Superseded
+assessment results remain visible in the report audit trail but must not be
+treated as active judgment.
 
 Finding summaries **MUST** preserve the canonical severity `level` and expose
 the corresponding display `title`.
+
+Target summaries and details **MUST** include `localRating`, a typed local rating
+state with `kind: rated`, `kind: not-assessed`, or `kind: structural`. Rated and
+not-assessed local states include the underlying `ratingResult`; structural local
+states do not. The historical `localRatingResult` field can remain as a
+compatibility convenience, but consumers should use `localRating`.
+
+The report next action **MUST** be a typed next-step object under `nextAction`
+with `kind: recommendation` or `kind: none`. Recommendation next steps include
+the recommendation id and path; none next steps do not.
+
+Missing report metadata **MUST** render as objects with a stable `field` and a
+human `title`, not as prose-only strings.
 
 Equivalent limitation summaries **MUST** be deduplicated across recorded context
 and rationale-derived constraints. Deduplication **MUST** be deterministic and
@@ -354,5 +383,5 @@ prominent for follow-up prompts. When active recommendations exist, the summary
 
 A not-assessed rating uses `ratingResult.kind: not-assessed` and no
 `ratingResult.level`. A structural grouping target with no local requirements
-**MUST** render a distinct structural local-rating state rather than looking
-like a missing-evidence not-assessed rating.
+**MUST** render the `localRating.kind: structural` state rather than looking like
+a missing-evidence not-assessed rating.

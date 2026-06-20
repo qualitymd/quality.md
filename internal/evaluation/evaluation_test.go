@@ -356,7 +356,7 @@ func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *test
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
-	if !hasGap(status.Gaps, "invalid-finding-severity") {
+	if !hasGap(status.Gaps, GapInvalidFindingSeverity) {
 		t.Fatalf("status.Gaps = %#v, want invalid-finding-severity", status.Gaps)
 	}
 	if _, err := BuildReport(runPath); err == nil || !strings.Contains(err.Error(), "invalid-finding-severity") {
@@ -364,7 +364,47 @@ func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *test
 	}
 }
 
-func hasGap(gaps []EvaluationRunGap, kind string) bool {
+func TestLoadedAssessmentResultWithInvalidRatingResultIsNotReportable(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+	if err := os.WriteFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"), []byte(`{
+  "schemaVersion": 1,
+  "targetPath": [],
+  "requirement": "Has tests",
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "not-assessed",
+    "level": "minimum",
+    "rationale": "A not-assessed result must not carry a level."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "recommendations": []
+}`), 0o644); err != nil {
+		t.Fatalf("write invalid assessment result: %v", err)
+	}
+
+	loaded, err := Load(runPath)
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	status := loaded.EvaluationRunStatus()
+	if status.Reportable {
+		t.Fatal("status.Reportable = true, want false")
+	}
+	if !hasGap(status.Gaps, GapInvalidRatingResult) {
+		t.Fatalf("status.Gaps = %#v, want invalid-rating-result", status.Gaps)
+	}
+	if _, err := BuildReport(runPath); err == nil || !strings.Contains(err.Error(), "invalid-rating-result") {
+		t.Fatalf("BuildReport() error = %v, want invalid-rating-result", err)
+	}
+}
+
+func hasGap(gaps []EvaluationRunGap, kind EvaluationRunGapKind) bool {
 	for _, gap := range gaps {
 		if gap.Kind == kind {
 			return true
@@ -568,18 +608,18 @@ targets:
 }
 
 func TestDisplayRatingUsesTitleAndPreservesNonRatingStates(t *testing.T) {
-	result := RatingResult{Kind: "rated", Level: "minimum", Rationale: "Meets the floor."}
+	result := RatingResult{Kind: RatingResultRated, Level: "minimum", Rationale: "Meets the floor."}
 	if got := displayRatingResult(result, map[string]string{"minimum": "🟡 Minimum"}); got != "🟡 Minimum" {
 		t.Fatalf("displayRatingResult() = %q, want title", got)
 	}
 	if got := displayRatingResult(result, map[string]string{}); got != "minimum" {
 		t.Fatalf("displayRatingResult() = %q, want level fallback", got)
 	}
-	if got := displayRatingResult(RatingResult{Kind: "not-assessed", Rationale: "No evidence."}, map[string]string{"minimum": "🟡 Minimum"}); got != "not assessed" {
+	if got := displayRatingResult(RatingResult{Kind: RatingResultNotAssessed, Rationale: "No evidence."}, map[string]string{"minimum": "🟡 Minimum"}); got != "not assessed" {
 		t.Fatalf("displayRatingResult(not assessed) = %q", got)
 	}
-	if got := displayOptionalRatingResult(nil, map[string]string{"minimum": "🟡 Minimum"}); got != "n/a (structural)" {
-		t.Fatalf("displayOptionalRatingResult(structural) = %q", got)
+	if got := displayLocalRatingState(localRatingStateFromResult(nil), map[string]string{"minimum": "🟡 Minimum"}); got != "n/a (structural)" {
+		t.Fatalf("displayLocalRatingState(structural) = %q", got)
 	}
 }
 
@@ -664,7 +704,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{`"recommendations": []`, `"structural": true`, `"narrowing": "child-quick"`, `"rigor": "quick"`} {
+	for _, want := range []string{`"recommendations": []`, `"structural": true`, `"localRating": {`, `"kind": "structural"`, `"narrowing": "child-quick"`, `"rigor": "quick"`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, reportJSON)
 		}
@@ -687,6 +727,9 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 	report, err := loaded.Report()
 	if err != nil {
 		t.Fatalf("Report() error = %v", err)
+	}
+	if len(report.Targets) == 0 || report.Targets[0].LocalRating.Kind != LocalRatingStructural {
+		t.Fatalf("root local rating = %#v, want structural", report.Targets)
 	}
 	if got := strings.Count(strings.Join(report.Limitations, "\n"), "Does not execute the full CI matrix"); got != 1 {
 		t.Fatalf("duplicate limitation count = %d, limitations = %#v", got, report.Limitations)
@@ -900,6 +943,9 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	}
 	if report.RatingResult.Kind != "not-assessed" || report.RatingResult.Level != "" {
 		t.Fatalf("root ratingResult = %#v, want not assessed with empty level", report.RatingResult)
+	}
+	if len(report.Targets) != 1 || report.Targets[0].LocalRating.Kind != LocalRatingNotAssessed {
+		t.Fatalf("local rating = %#v, want not assessed", report.Targets)
 	}
 	if len(report.AssessmentResults) != 1 || report.AssessmentResults[0].RatingResult.Kind != "not-assessed" || report.AssessmentResults[0].RatingResult.Level != "" {
 		t.Fatalf("assessment result = %#v, want not assessed with empty level", report.AssessmentResults)
@@ -1254,7 +1300,7 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 	}
 	found := false
 	for _, gap := range loaded.EvaluationRunStatus().Gaps {
-		if gap.Kind == "invalid-assessment-result-supersedes" {
+		if gap.Kind == GapInvalidAssessmentResultSupersedes {
 			found = true
 		}
 	}
@@ -1263,7 +1309,7 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 	}
 }
 
-func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
+func TestRecommendationSupersedingSelectsActiveNextStep(t *testing.T) {
 	repo := testRepo(t)
 	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
 	if err != nil {
@@ -1379,11 +1425,17 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 	if report.Recommendations[0].Path != "recommendations/001-original-recommendation.md" || report.Recommendations[0].Active {
 		t.Fatalf("first recommendation = %#v, want superseded original recommendation", report.Recommendations[0])
 	}
+	if report.Recommendations[0].State != RecordLifecycleSuperseded {
+		t.Fatalf("first recommendation state = %q, want superseded", report.Recommendations[0].State)
+	}
 	if report.Recommendations[1].Path != "recommendations/002-corrected-recommendation.md" || !report.Recommendations[1].Active {
 		t.Fatalf("second recommendation = %#v, want active corrected recommendation", report.Recommendations[1])
 	}
-	if report.NextAction.RecommendationID != "002-corrected-recommendation" || report.NextAction.Summary != "The narrow fix is complete." {
-		t.Fatalf("next action = %#v, want corrected recommendation", report.NextAction)
+	if report.Recommendations[1].State != RecordLifecycleActive {
+		t.Fatalf("second recommendation state = %q, want active", report.Recommendations[1].State)
+	}
+	if report.NextStep.RecommendationID != "002-corrected-recommendation" || report.NextStep.Summary != "The narrow fix is complete." {
+		t.Fatalf("next step = %#v, want corrected recommendation", report.NextStep)
 	}
 	reportMD, err := os.ReadFile(filepath.Join(runPath, "report.md"))
 	if err != nil {
@@ -1441,7 +1493,7 @@ func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 	}
 	found := false
 	for _, gap := range status.Gaps {
-		if gap.Kind == "missing-superseded-recommendation" && gap.Ref == "999-missing-recommendation" {
+		if gap.Kind == GapMissingSupersededRecommendation && gap.Ref == "999-missing-recommendation" {
 			found = true
 		}
 	}
@@ -1704,7 +1756,7 @@ func copyDir(t *testing.T, src, dst string) {
 func gapKinds(gaps []EvaluationRunGap) []string {
 	kinds := make([]string, 0, len(gaps))
 	for _, gap := range gaps {
-		kinds = append(kinds, gap.Kind)
+		kinds = append(kinds, string(gap.Kind))
 	}
 	return kinds
 }

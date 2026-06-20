@@ -32,6 +32,11 @@ Human output **MUST** include the run path, record counts, reportability, and an
 gaps. Under `--json`, stdout **MUST** include `schemaVersion`, `path`,
 `reportable`, counts, gaps, and `nextActions`.
 
+Every gap `kind` **MUST** be one of the typed evaluation-run gap kinds defined by
+the implementation and the [Evaluation records](../evaluation-records.md)
+contract. Status routing **MUST** use those typed gap kinds rather than
+interpreting free-form text in `detail`.
+
 A run is reportable only when exactly one analysis record represents the
 in-scope root target. The root analysis record is identified by an empty
 `targetPath`. If no such record exists, `status` **MUST** return
@@ -47,6 +52,11 @@ Assessment and recommendation superseding references **MUST** resolve to records
 in the same run. Dangling or invalid assessment superseding, stale analysis
 references to superseded assessment results, and dangling recommendation
 superseding **MUST** produce gaps and make the run non-reportable.
+
+Assessment result records with invalid typed fields, including missing or
+unknown finding severity, invalid `ratingResult.kind`, rated results without a
+level, not-assessed results with a level, or empty rating rationales, **MUST**
+produce gaps and make the run non-reportable.
 
 When `plan.md` contains `coverage:` frontmatter, `status` **MUST** validate it at
 read time and compare planned assessment and analysis identities to written

@@ -58,12 +58,56 @@ type PlannedCoverage struct {
 }
 
 type PlannedAssessmentResult struct {
-	TargetPath  []string `json:"targetPath" yaml:"targetPath"`
-	Requirement string   `json:"requirement" yaml:"requirement"`
+	TargetPath  TargetPath `json:"targetPath" yaml:"targetPath"`
+	Requirement string     `json:"requirement" yaml:"requirement"`
 }
 
 type PlannedCoverageAnalysis struct {
-	TargetPath []string `json:"targetPath" yaml:"targetPath"`
+	TargetPath TargetPath `json:"targetPath" yaml:"targetPath"`
+}
+
+type TargetPath []string
+
+func (p TargetPath) Clone() TargetPath {
+	if len(p) == 0 {
+		return TargetPath{}
+	}
+	return append(TargetPath(nil), p...)
+}
+
+func (p TargetPath) Elements() []string {
+	return []string(p)
+}
+
+func (p TargetPath) IdentityKey() string {
+	return strings.Join(p, "\x00")
+}
+
+func (p TargetPath) Display() string {
+	if len(p) == 0 {
+		return "root"
+	}
+	return strings.Join(p, "/")
+}
+
+type FactorPath []string
+
+func (p FactorPath) Clone() FactorPath {
+	if len(p) == 0 {
+		return FactorPath{}
+	}
+	return append(FactorPath(nil), p...)
+}
+
+func (p FactorPath) Elements() []string {
+	return []string(p)
+}
+
+func (p FactorPath) Display() string {
+	if len(p) == 0 {
+		return "root"
+	}
+	return strings.Join(p, "/")
 }
 
 type Evidence struct {
@@ -134,9 +178,9 @@ func findingSeverityLevels() string {
 }
 
 type AssessmentResultInput struct {
-	TargetPath      []string     `json:"targetPath"`
+	TargetPath      TargetPath   `json:"targetPath"`
 	Requirement     string       `json:"requirement"`
-	FactorPaths     [][]string   `json:"factorPaths"`
+	FactorPaths     []FactorPath `json:"factorPaths"`
 	RatingResult    RatingResult `json:"ratingResult"`
 	CriterionSource string       `json:"criterionSource"`
 	Findings        []Finding    `json:"findings"`
@@ -146,9 +190,9 @@ type AssessmentResultInput struct {
 
 type AssessmentResultRecord struct {
 	SchemaVersion   int          `json:"schemaVersion"`
-	TargetPath      []string     `json:"targetPath"`
+	TargetPath      TargetPath   `json:"targetPath"`
 	Requirement     string       `json:"requirement"`
-	FactorPaths     [][]string   `json:"factorPaths"`
+	FactorPaths     []FactorPath `json:"factorPaths"`
 	RatingResult    RatingResult `json:"ratingResult"`
 	CriterionSource string       `json:"criterionSource"`
 	Findings        []Finding    `json:"findings"`
@@ -158,13 +202,151 @@ type AssessmentResultRecord struct {
 }
 
 type RatingResult struct {
-	Kind      string `json:"kind"`
-	Level     string `json:"level,omitempty"`
-	Rationale string `json:"rationale"`
+	Kind      RatingResultKind `json:"kind"`
+	Level     string           `json:"level,omitempty"`
+	Rationale string           `json:"rationale"`
+}
+
+type RatingResultKind string
+
+const (
+	RatingResultRated       RatingResultKind = "rated"
+	RatingResultNotAssessed RatingResultKind = "not-assessed"
+)
+
+func (k RatingResultKind) Valid() bool {
+	switch k {
+	case RatingResultRated, RatingResultNotAssessed:
+		return true
+	default:
+		return false
+	}
+}
+
+func (k RatingResultKind) IsRated() bool {
+	return k == RatingResultRated
+}
+
+func (k RatingResultKind) IsNotAssessed() bool {
+	return k == RatingResultNotAssessed
+}
+
+type LocalRatingKind string
+
+const (
+	LocalRatingRated       LocalRatingKind = "rated"
+	LocalRatingNotAssessed LocalRatingKind = "not-assessed"
+	LocalRatingStructural  LocalRatingKind = "structural"
+)
+
+type LocalRatingState struct {
+	Kind         LocalRatingKind `json:"kind"`
+	RatingResult *RatingResult   `json:"ratingResult,omitempty"`
+	Title        string          `json:"title"`
+}
+
+func localRatingStateFromResult(result *RatingResult) LocalRatingState {
+	if result == nil {
+		return LocalRatingState{Kind: LocalRatingStructural, Title: "Structural"}
+	}
+	clone := *result
+	if clone.Kind.IsNotAssessed() {
+		return LocalRatingState{Kind: LocalRatingNotAssessed, RatingResult: &clone, Title: "Not assessed"}
+	}
+	return LocalRatingState{Kind: LocalRatingRated, RatingResult: &clone, Title: "Rated"}
+}
+
+type RecordLifecycleState string
+
+const (
+	RecordLifecycleActive     RecordLifecycleState = "active"
+	RecordLifecycleSuperseded RecordLifecycleState = "superseded"
+)
+
+func lifecycleState(active bool) RecordLifecycleState {
+	if active {
+		return RecordLifecycleActive
+	}
+	return RecordLifecycleSuperseded
+}
+
+func (s RecordLifecycleState) Active() bool {
+	return s == RecordLifecycleActive
+}
+
+type ReportNextStepKind string
+
+const (
+	ReportNextStepRecommendation ReportNextStepKind = "recommendation"
+	ReportNextStepNone           ReportNextStepKind = "none"
+)
+
+type EvaluationRigor string
+
+const (
+	EvaluationRigorQuick    EvaluationRigor = "quick"
+	EvaluationRigorStandard EvaluationRigor = "standard"
+	EvaluationRigorDeep     EvaluationRigor = "deep"
+)
+
+func (r EvaluationRigor) Valid() bool {
+	switch r {
+	case EvaluationRigorQuick, EvaluationRigorStandard, EvaluationRigorDeep:
+		return true
+	default:
+		return false
+	}
+}
+
+func (r EvaluationRigor) Display() string {
+	if r == "" {
+		return "not recorded"
+	}
+	return strings.ToUpper(string(r[:1])) + string(r[1:])
+}
+
+type EvaluationLevel string
+
+const (
+	EvaluationLevelSubject EvaluationLevel = "subject"
+	EvaluationLevelModel   EvaluationLevel = "model"
+)
+
+func (l EvaluationLevel) Valid() bool {
+	switch l {
+	case EvaluationLevelSubject, EvaluationLevelModel:
+		return true
+	default:
+		return false
+	}
+}
+
+type MissingMetadataKind string
+
+const (
+	MissingMetadataRigor      MissingMetadataKind = "rigor"
+	MissingMetadataOutOfScope MissingMetadataKind = "out-of-scope-areas"
+	MissingMetadataUnknown    MissingMetadataKind = "unknown"
+)
+
+type MissingMetadata struct {
+	Field MissingMetadataKind `json:"field"`
+	Title string              `json:"title"`
+}
+
+func missingMetadata(kind MissingMetadataKind) MissingMetadata {
+	switch kind {
+	case MissingMetadataRigor:
+		return MissingMetadata{Field: kind, Title: "Rigor"}
+	case MissingMetadataOutOfScope:
+		return MissingMetadata{Field: kind, Title: "Out-of-scope areas"}
+	default:
+		return MissingMetadata{Field: MissingMetadataUnknown, Title: "Unknown metadata"}
+	}
 }
 
 type FactorRatingResult struct {
-	FactorPath   []string     `json:"factorPath"`
+	FactorPath   FactorPath   `json:"factorPath"`
 	RatingResult RatingResult `json:"ratingResult"`
 }
 
@@ -175,7 +357,7 @@ type RatingConstraint struct {
 }
 
 type AnalysisInput struct {
-	TargetPath              []string             `json:"targetPath"`
+	TargetPath              TargetPath           `json:"targetPath"`
 	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
 	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
 	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`
@@ -186,7 +368,7 @@ type AnalysisInput struct {
 
 type AnalysisRecord struct {
 	SchemaVersion           int                  `json:"schemaVersion"`
-	TargetPath              []string             `json:"targetPath"`
+	TargetPath              TargetPath           `json:"targetPath"`
 	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
 	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
 	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`

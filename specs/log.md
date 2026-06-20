@@ -3,6 +3,15 @@
 ## 2026-06-20
 
 - **Revision**: Updated the [Evaluation records](evaluation-records.md),
+  [`evaluation status`](cli/evaluation-status.md),
+  [`evaluation report`](cli/evaluation-report.md), and
+  [`/quality` skill](skills/quality-skill/quality-skill.md) contracts for typed
+  evaluation-report states. Rating results, local target ratings, record
+  lifecycle, next steps, missing metadata, finding severity, and run gaps now
+  have explicit typed-state contracts, while evidence kind remains intentionally
+  open display/grouping metadata.
+
+- **Revision**: Updated the [Evaluation records](evaluation-records.md),
   [`evaluation report`](cli/evaluation-report.md), and
   [`/quality` skill](skills/quality-skill/quality-skill.md) contracts so all
   report outputs are faithful projections of one assembled report model.

@@ -809,7 +809,11 @@ surfaces copyable Recommendation IDs for follow-up prompts. The full `report.md`
 remains verdict-first before detailed target and requirement sections. The JSON
 report **MUST** expose the same summary-layer data with non-null scope, empty
 arrays for empty collections, explicit rating objects for null or not-assessed
-ratings, and a structural state for grouping targets with no local requirements.
+ratings, typed lifecycle state for assessment and recommendation digests, typed
+next-step state, typed missing-metadata entries, and a structural local-rating
+state for grouping targets with no local requirements. The skill must treat those
+typed report states as the routing source rather than inferring state from
+`null`, absent fields, or `active` booleans alone.
 
 Like the report, the design, plan, assessment, and analysis records reference any
 secret value by `file:line` and type only (see

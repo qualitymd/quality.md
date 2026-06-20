@@ -4,6 +4,7 @@
     "run": "0001-subject-quality-eval",
     "subject": "root",
     "altitude": "subject",
+    "evaluationLevel": "subject",
     "rigor": "",
     "narrowing": "",
     "ratingResult": {
@@ -29,8 +30,14 @@
     ],
     "outOfScope": [],
     "notRecorded": [
-      "rigor",
-      "out-of-scope areas"
+      {
+        "field": "rigor",
+        "title": "Rigor"
+      },
+      {
+        "field": "out-of-scope-areas",
+        "title": "Out-of-scope areas"
+      }
     ]
   },
   "evidenceBasis": [
@@ -178,7 +185,16 @@
   },
   "targetSummary": [
     {
-      "targetPath": null,
+      "targetPath": [],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "unacceptable",
+          "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
@@ -195,6 +211,15 @@
       "targetPath": [
         "ledger"
       ],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
@@ -212,6 +237,15 @@
       "targetPath": [
         "webhooks"
       ],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The Webhooks target's own signing requirement is rated target."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
@@ -229,6 +263,15 @@
         "webhooks",
         "delivery"
       ],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "minimum",
@@ -244,7 +287,16 @@
   ],
   "targets": [
     {
-      "targetPath": null,
+      "targetPath": [],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "unacceptable",
+          "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
@@ -285,6 +337,15 @@
       "targetPath": [
         "ledger"
       ],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
@@ -317,6 +378,15 @@
       "targetPath": [
         "webhooks"
       ],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The Webhooks target's own signing requirement is rated target."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
@@ -348,6 +418,15 @@
         "webhooks",
         "delivery"
       ],
+      "localRating": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
+        },
+        "title": "Rated"
+      },
       "localRatingResult": {
         "kind": "rated",
         "level": "minimum",
@@ -385,6 +464,7 @@
         "level": "unacceptable",
         "rationale": "Rated against this requirement's ratings overrides. Unacceptable applies because a live credential is present in the working tree; a single live secret satisfies that criterion regardless of clean findings elsewhere. The secret value is withheld and referenced only by locator and credential type."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -396,6 +476,7 @@
         "level": "target",
         "rationale": "Full route coverage with no unauthenticated money-moving exceptions satisfies the requirement. No evidence of step-up or re-authentication controls was recorded, so the result does not reach outstanding."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -407,6 +488,7 @@
         "level": "target",
         "rationale": "The transfer entrypoint requires an idempotency key and the replay test shows no duplicate debit on retry. Broader failure-injection evidence was not recorded, so the result remains at target."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -420,6 +502,7 @@
         "level": "target",
         "rationale": "The invariant is enforced before commit and covered by a property test over observed transfer paths. Multi-currency rounding paths were not exercised, so the result remains below outstanding."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -432,6 +515,7 @@
         "kind": "not-assessed",
         "rationale": "Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level. The Ledger local rating rests on its assessed requirement and is noted as incomplete."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -445,6 +529,7 @@
         "level": "target",
         "rationale": "Every recorded emit path signs the payload with origin and replay protection, and tamper rejection is tested. Per-merchant signing-secret rotation was not recorded, so the result remains below outstanding."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -459,6 +544,7 @@
         "level": "target",
         "rationale": "Failures retry with exponential backoff until acknowledgment or the bounded retry window expires, and exhausted deliveries are recorded rather than silently dropped. Broader failure-injection evidence was not recorded, so the result remains below outstanding."
       },
+      "state": "active",
       "active": true
     },
     {
@@ -473,6 +559,7 @@
         "level": "minimum",
         "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor."
       },
+      "state": "active",
       "active": true
     }
   ],
@@ -643,18 +730,21 @@
       "id": "001-rotate-committed-gateway-key",
       "path": "recommendations/001-rotate-committed-gateway-key.md",
       "doneCriterion": "The committed-credentials requirement reaches target; no live credential is present in the working tree and the previously exposed key has been revoked.",
+      "state": "active",
       "active": true
     },
     {
       "id": "002-produce-reconciliation-evidence",
       "path": "recommendations/002-produce-reconciliation-evidence.md",
       "doneCriterion": "The reconciliation requirement becomes assessable and reaches at least the acceptable floor.",
+      "state": "active",
       "active": true
     },
     {
       "id": "003-bound-webhook-dedup-window",
       "path": "recommendations/003-bound-webhook-dedup-window.md",
       "doneCriterion": "The webhook-delivery deduplication requirement reaches target for the full duration any retry could fire.",
+      "state": "active",
       "active": true
     }
   ]

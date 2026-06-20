@@ -2,6 +2,22 @@
 
 ## 2026-06-20
 
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0042 - Typed report model](0042-typed-report-model.md). Evaluation reports
+  now use typed rating-result, local-rating, next-step, lifecycle,
+  missing-metadata, rigor, evaluation-level, path, and gap concepts; report JSON
+  exposes explicit state objects; existing invalid rating/severity records become
+  non-reportable gaps; and the Sparrow fixture reports were regenerated.
+  Verified `mise run check`. Updated the bundle [index](index.md).
+
+- **In-Progress**: Opened
+  [0042 - Typed report model](0042-typed-report-model.md) to replace stringly
+  typed and implicit evaluation-report states with explicit typed concepts for
+  rating results, local target ratings, next steps, lifecycle state, run gaps,
+  rigor, evaluation level, missing metadata, and path identities. Added the
+  parent case, functional spec, design doc, and child index; updated the bundle
+  [index](index.md).
+
 - **Done**: Set status `Done` and archived
   [0041 - Update command and improvements](archive/0041-update-command.md) after
   publishing and verifying `v0.5.0`. Moved the parent concept and child folder

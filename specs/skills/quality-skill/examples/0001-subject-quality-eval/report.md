@@ -3,7 +3,7 @@
 ## Verdict
 
 - **Subject:** Sparrow Payments API
-- **Altitude:** subject
+- **Evaluation level:** subject
 - **Rigor:** not recorded
 - **Evaluation verdict:** Unacceptable
 - **Rationale:** The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint.
@@ -15,7 +15,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **Narrowing:** whole recorded run
 - **In scope:** Sparrow Payments API; Ledger; Webhooks; Delivery
 - **Out of scope:** not recorded
-- **Metadata not recorded:** rigor; out-of-scope areas
+- **Metadata not recorded:** Rigor; Out-of-scope areas
 
 ## Selected Findings and Limitations
 

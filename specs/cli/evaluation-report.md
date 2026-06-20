@@ -35,6 +35,13 @@ judgment. It **MUST** fail without writing a partial report when the run is not
 renderable. It **MUST** be deterministic and idempotent: unchanged records
 produce byte-identical report files.
 
+The assembled report model **MUST** preserve typed states from the record
+contract in `report.json`: rating-result kind, local-rating state, record
+lifecycle state, next-step kind, missing metadata fields, finding severity, and
+stable target/factor paths. Human Markdown can render those states with display
+labels, but it **MUST NOT** collapse structural local ratings into not-assessed
+ratings or superseded records into active advice.
+
 `build` **MUST NOT** accept a gate flag. Gating is a separate operation.
 
 `gate` **MUST** read the already-rendered `report.json`, compare the in-scope

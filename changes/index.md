@@ -43,7 +43,9 @@ edit.
 
 # Open change cases
 
-None.
+- [0042 - Typed report model](0042-typed-report-model.md) - In-Review; replaces
+  stringly typed and implicit evaluation-report states with explicit typed model
+  concepts.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

@@ -388,14 +388,14 @@ func validateRatingResult(name string, result *RatingResult, levels map[string]b
 		return usagef("%s.rationale is required", name)
 	}
 	switch result.Kind {
-	case "rated":
+	case RatingResultRated:
 		if strings.TrimSpace(result.Level) == "" {
 			return usagef("%s.level is required when kind is rated", name)
 		}
 		if !levels[result.Level] {
 			return usagef("%s.level %q is not defined by the run model", name, result.Level)
 		}
-	case "not-assessed":
+	case RatingResultNotAssessed:
 		if strings.TrimSpace(result.Level) != "" {
 			return usagef("%s.level must be empty when kind is not-assessed", name)
 		}
