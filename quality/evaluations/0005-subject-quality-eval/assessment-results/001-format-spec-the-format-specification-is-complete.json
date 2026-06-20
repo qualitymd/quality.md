@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is complete",
+  "factorPaths": [
+    [
+      "clarity"
+    ],
+    [
+      "consistency"
+    ],
+    [
+      "verifiability"
+    ],
+    [
+      "extensibility"
+    ],
+    [
+      "usability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The specification is complete enough for parser, linter, author, evaluator, and report-renderer implementation. Scalar bounds remain intentionally broad, so the result satisfies the requirement without reaching outstanding."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:105",
+      "observation": "The document structure, frontmatter schema, body semantics, evaluation semantics, report semantics, and extensions are all defined in one specification.",
+      "category": "completeness"
+    },
+    {
+      "locator": "SPECIFICATION.md:123",
+      "observation": "Model, Rating Scale, Target, Factor, and Requirement shapes define requiredness, cardinality, inheritance/default source behavior, and malformed-value handling.",
+      "category": "schema"
+    },
+    {
+      "locator": "SPECIFICATION.md:137",
+      "observation": "Scalar placeholders such as \u003cstring\u003e and \u003clevel-name\u003e intentionally do not define detailed character-set or length bounds, leaving edge cases to conforming tools.",
+      "category": "bounded-gap",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

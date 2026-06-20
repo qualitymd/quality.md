@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [],
+  "localRatingResult": null,
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The root is a grouping target. All three child deliverables now aggregate to target after the spec, README, CLI, and evaluation-history fixes, so the whole project meets the release quality bar."
+  },
+  "assessmentResultRecords": [],
+  "childAnalysisRecords": [
+    "analysis/format-spec.json",
+    "analysis/readme.json",
+    "analysis/cli.json"
+  ]
+}

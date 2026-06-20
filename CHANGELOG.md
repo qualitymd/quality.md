@@ -17,6 +17,50 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### Compatibility / Migration
 
+## v0.4.1 - 2026-06-20
+
+### CLI
+
+- Fixed evaluation run status and record-write receipts so machine-readable
+  paths stay repository-relative instead of leaking local absolute paths.
+- Fixed empty evaluation runs to report the documented `missing-root-analysis`
+  gap, and mapped `qualitymd lint -` to the usage-error exit category.
+- Kept `report-summary.md` Top Issues focused on issue-like findings instead of
+  labeling ordinary positive findings as issues.
+
+### /quality Skill
+
+- Bumped the bundled skill release metadata to `0.4.1`; the supported
+  `qualitymd` CLI compatibility range remains `>=0.4.0 <0.5.0`.
+
+### Specification
+
+- Fixed Appendix B's minimal example to include required rating-level and Factor
+  `title` fields.
+- Added non-normative invalid counter-examples for missing rating-level titles,
+  direct Target Requirements without Factors, and list-valued Assessments.
+
+### Documentation
+
+- Added README first-result output and evaluation report output examples so a
+  newcomer can see what successful `qualitymd` commands produce.
+- Archived pre-current-contract dogfood evaluation runs out of the live
+  evaluation scan path and recorded a fresh deep evaluation at `target`.
+
+### Packaging
+
+- No packaging changes.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.4.1`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.4.1`, requires `qualitymd >=0.4.0 <0.5.0`
+
+No migration is required from `v0.4.0`.
+
 ## v0.4.0 - 2026-06-19
 
 ### CLI

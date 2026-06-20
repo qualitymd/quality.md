@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows the project CLI design guide",
+  "factorPaths": [
+    [
+      "usability"
+    ],
+    [
+      "automation-compatibility"
+    ],
+    [
+      "consistency"
+    ],
+    [
+      "determinism"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The command surface is examples-led, non-interactive, stdout/stderr-safe, deterministic under JSON/plain output, and uses consistent noun/verb evaluation commands."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "internal/cli/style.go:68",
+      "observation": "The no-argument root command renders concise examples-first welcome output rather than full help.",
+      "category": "help"
+    },
+    {
+      "locator": "internal/cli/evaluation.go:16",
+      "observation": "The evaluation surface follows a consistent noun/verb tree: create, list, status, assessment-result add/list, analysis set/list, recommendation add/list, report build/gate.",
+      "category": "subcommands"
+    },
+    {
+      "locator": "internal/cli/style.go:44",
+      "observation": "Human styling is conditional on terminal output and NO_COLOR, keeping redirected output plain.",
+      "category": "plain-output"
+    }
+  ],
+  "recommendations": []
+}

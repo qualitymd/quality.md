@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format's constructs are shown with valid and invalid examples",
+  "factorPaths": [
+    [
+      "verifiability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The spec now includes valid minimal/suggested examples and explicit invalid counter-examples for missing required title, missing direct-requirement factors, and list-valued assessment."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:445",
+      "observation": "Appendix A and Appendix B provide copyable valid examples for the rating scale and a minimal file.",
+      "category": "valid-examples"
+    },
+    {
+      "locator": "SPECIFICATION.md:509",
+      "observation": "Appendix C provides worked invalid counter-examples for a missing rating-level title, direct target requirement without factors, and list-valued assessment.",
+      "category": "invalid-examples"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README shows the format and its payoff by example",
+  "factorPaths": [
+    [
+      "approachability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The README now pairs a realistic QUALITY.md excerpt with concrete CLI/report output before the reference schema."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:66",
+      "observation": "A realistic Support Inbox QUALITY.md excerpt shows ratingScale, target source, factors, requirements, and body context.",
+      "category": "format-example"
+    },
+    {
+      "locator": "README.md:129",
+      "observation": "The README shows the evaluation report build output and a report-summary excerpt, making the CLI payoff visible rather than only described.",
+      "category": "payoff-output"
+    }
+  ],
+  "recommendations": []
+}

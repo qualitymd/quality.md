@@ -29,7 +29,7 @@ func newLintCmd() *cobra.Command {
 				path = args[0]
 			}
 			if path == "-" {
-				return fmt.Errorf("lint does not read from stdin yet; pass a file path")
+				return usageError(fmt.Errorf("lint does not read from stdin yet; pass a file path"))
 			}
 
 			var (

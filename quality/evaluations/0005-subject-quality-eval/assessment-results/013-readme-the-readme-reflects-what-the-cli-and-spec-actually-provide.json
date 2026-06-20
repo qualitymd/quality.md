@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README reflects what the CLI and spec actually provide",
+  "factorPaths": [
+    [
+      "approachability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The README command list and format summary align with the current v0.4 command surface and specification."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:196",
+      "observation": "The CLI section lists current commands: init, lint, spec, status, version, upgrade, and the evaluation run-record surface.",
+      "category": "cli-surface"
+    },
+    {
+      "locator": "README.md:216",
+      "observation": "The typical local loop uses existing commands: spec, init, lint, and status --json.",
+      "category": "command-loop"
+    },
+    {
+      "locator": "go run ./cmd/qualitymd --help",
+      "observation": "The current command tree exposes the commands named in README.md.",
+      "category": "verified-command"
+    }
+  ],
+  "recommendations": []
+}

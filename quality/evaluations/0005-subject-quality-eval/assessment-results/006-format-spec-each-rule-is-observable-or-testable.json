@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "each rule is observable or testable",
+  "factorPaths": [
+    [
+      "verifiability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Structural conformance requirements map to observable document or record properties; judgment-bearing evaluation semantics are still explicitly semantic rather than mechanically formulaic."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:112",
+      "observation": "Frontmatter validity, required properties, list cardinality, factor references, and assessment scalar shape are all observable from the document.",
+      "category": "verifiability"
+    },
+    {
+      "locator": "SPECIFICATION.md:356",
+      "observation": "Roll-up intentionally has no numeric aggregation formula, so exact rating inference remains evaluator judgment constrained by required distinctions.",
+      "category": "semantic-boundary",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Nine requirements are covered. All meet target or better after the Appendix B and invalid-counter-example fixes; the remaining gaps are bounded edge precision and evaluator-judgment limits, not release blockers."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "clarity"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Single interpretation, rules/rationale separation, and terms-before-use all satisfy the model, with terms-before-use outstanding."
+      }
+    },
+    {
+      "factorPath": [
+        "consistency"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The prior minimal-example contradiction is fixed; examples and normative rules now agree."
+      }
+    },
+    {
+      "factorPath": [
+        "verifiability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Structural rules are observable and the spec now includes invalid counter-examples; some semantic roll-up judgment remains intentionally non-formulaic."
+      }
+    },
+    {
+      "factorPath": [
+        "extensibility"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The minimal core, extension boundaries, unrecognized-content preservation, and versioning reference provide a compatible evolution path."
+      }
+    },
+    {
+      "factorPath": [
+        "usability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The document is ordered concept-first, with scannable schemas and valid/invalid examples."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Leaf target: aggregate equals local rating. The format spec satisfies every in-scope requirement at target or better."
+  },
+  "assessmentResultRecords": [
+    "assessment-results/001-format-spec-the-format-specification-is-complete.json",
+    "assessment-results/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+    "assessment-results/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+    "assessment-results/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+    "assessment-results/005-format-spec-the-format-specification-is-internally-consistent.json",
+    "assessment-results/006-format-spec-each-rule-is-observable-or-testable.json",
+    "assessment-results/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+    "assessment-results/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+    "assessment-results/009-format-spec-the-format-specification-is-well-structured-and-readable.json"
+  ],
+  "childAnalysisRecords": []
+}

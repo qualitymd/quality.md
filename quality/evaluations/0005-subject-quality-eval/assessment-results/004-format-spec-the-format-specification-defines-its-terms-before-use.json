@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification defines its terms before use",
+  "factorPaths": [
+    [
+      "clarity"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "outstanding",
+    "rationale": "A dedicated terminology section defines the core vocabulary before the schema and evaluation rules use it."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:56",
+      "observation": "Quality Model, Entity, Model, Target, Source, Factor, Requirement, Assessment, Finding, Rating Scale, Rating Level, Rating Result, and Evaluation Report are defined before schema rules.",
+      "category": "terminology"
+    },
+    {
+      "locator": "SPECIFICATION.md:123",
+      "observation": "Later schema and evaluation sections reuse those defined terms consistently.",
+      "category": "terminology-use"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README says what QUALITY.md is and who it's for",
+  "factorPaths": [
+    [
+      "approachability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The opening and Why section identify the format, companion skill/CLI, intended agent-project audience, and the quality-debt problem it addresses."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:3",
+      "observation": "The first paragraph says QUALITY.md is an agent-friendly file format with companion skill and CLI for coding-agent and AI assistant projects/harnesses.",
+      "category": "orientation"
+    },
+    {
+      "locator": "README.md:7",
+      "observation": "The Why section frames the problem as technical, cognitive, and intent debt becoming explicit and checkable.",
+      "category": "problem"
+    }
+  ],
+  "recommendations": []
+}

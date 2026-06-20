@@ -1,0 +1,705 @@
+{
+  "schemaVersion": 1,
+  "summary": {
+    "run": "0005-subject-quality-eval",
+    "subject": "root",
+    "altitude": "subject",
+    "rigor": "deep",
+    "narrowing": "Full evaluation",
+    "ratingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The root is a grouping target. All three child deliverables now aggregate to target after the spec, README, CLI, and evaluation-history fixes, so the whole project meets the release quality bar."
+    }
+  },
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The root is a grouping target. All three child deliverables now aggregate to target after the spec, README, CLI, and evaluation-history fixes, so the whole project meets the release quality bar."
+  },
+  "scope": {
+    "recorded": true,
+    "description": "Full evaluation",
+    "narrowing": "Full evaluation",
+    "inScope": [
+      "root",
+      "cli",
+      "format-spec",
+      "readme"
+    ],
+    "outOfScope": [
+      "Hosted CI and publication checks are deferred to the release runbook.",
+      "Exhaustive CLI matrix testing is deferred; focused behavior checks and package tests cover the release-relevant regressions found in this run."
+    ],
+    "notRecorded": []
+  },
+  "evidenceBasis": [],
+  "limitations": [
+    "The spec now includes valid minimal/suggested examples and explicit invalid counter-examples for missing required title, missing direct-requirement factors, and list-valued assessment"
+  ],
+  "nextAction": {
+    "kind": "none",
+    "summary": "No recommendation records exist for this run."
+  },
+  "targetSummary": [
+    {
+      "targetPath": null,
+      "localRatingResult": null,
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The root is a grouping target. All three child deliverables now aggregate to target after the spec, README, CLI, and evaluation-history fixes, so the whole project meets the release quality bar."
+      },
+      "coveredRequirements": 0,
+      "note": "structural grouping target"
+    },
+    {
+      "targetPath": [
+        "cli"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Both CLI requirements meet target after fixing usage-error mapping and repo-relative evaluation status paths/gaps, with focused tests and behavior checks passing."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf target: aggregate equals local rating. The release-relevant CLI conformance gaps found in this run are fixed and verified."
+      },
+      "coveredRequirements": 2
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Nine requirements are covered. All meet target or better after the Appendix B and invalid-counter-example fixes; the remaining gaps are bounded edge precision and evaluator-judgment limits, not release blockers."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf target: aggregate equals local rating. The format spec satisfies every in-scope requirement at target or better."
+      },
+      "coveredRequirements": 9
+    },
+    {
+      "targetPath": [
+        "readme"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All four approachability requirements are covered and meet target after adding first-result output and report-output payoff examples."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf target: aggregate equals local rating. The front door now explains and demonstrates the tool adequately for release."
+      },
+      "coveredRequirements": 4
+    }
+  ],
+  "targets": [
+    {
+      "targetPath": null,
+      "localRatingResult": null,
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The root is a grouping target. All three child deliverables now aggregate to target after the spec, README, CLI, and evaluation-history fixes, so the whole project meets the release quality bar."
+      },
+      "factorRatingResults": [],
+      "analysisRecord": "analysis/root.json",
+      "notAssessedRequirements": [],
+      "structural": true
+    },
+    {
+      "targetPath": [
+        "cli"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Both CLI requirements meet target after fixing usage-error mapping and repo-relative evaluation status paths/gaps, with focused tests and behavior checks passing."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf target: aggregate equals local rating. The release-relevant CLI conformance gaps found in this run are fixed and verified."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "usability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Root welcome, help, errors, and next actions are concise and recoverable."
+          }
+        },
+        {
+          "factorPath": [
+            "automation-compatibility"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "JSON surfaces are explicit, non-interactive input handling is deterministic, and stdout/stderr separation is preserved."
+          }
+        },
+        {
+          "factorPath": [
+            "consistency"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Evaluation commands share the noun/verb grammar and status/write receipts now use consistent repo-relative paths."
+          }
+        },
+        {
+          "factorPath": [
+            "determinism"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The fixed evaluation status output no longer includes machine-varying absolute paths, and report/status behavior is covered by focused tests."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/cli.json",
+      "notAssessedRequirements": [],
+      "structural": false
+    },
+    {
+      "targetPath": [
+        "format-spec"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Nine requirements are covered. All meet target or better after the Appendix B and invalid-counter-example fixes; the remaining gaps are bounded edge precision and evaluator-judgment limits, not release blockers."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf target: aggregate equals local rating. The format spec satisfies every in-scope requirement at target or better."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "clarity"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Single interpretation, rules/rationale separation, and terms-before-use all satisfy the model, with terms-before-use outstanding."
+          }
+        },
+        {
+          "factorPath": [
+            "consistency"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The prior minimal-example contradiction is fixed; examples and normative rules now agree."
+          }
+        },
+        {
+          "factorPath": [
+            "verifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Structural rules are observable and the spec now includes invalid counter-examples; some semantic roll-up judgment remains intentionally non-formulaic."
+          }
+        },
+        {
+          "factorPath": [
+            "extensibility"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The minimal core, extension boundaries, unrecognized-content preservation, and versioning reference provide a compatible evolution path."
+          }
+        },
+        {
+          "factorPath": [
+            "usability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The document is ordered concept-first, with scannable schemas and valid/invalid examples."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/format-spec.json",
+      "notAssessedRequirements": [],
+      "structural": false
+    },
+    {
+      "targetPath": [
+        "readme"
+      ],
+      "localRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All four approachability requirements are covered and meet target after adding first-result output and report-output payoff examples."
+      },
+      "aggregateRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf target: aggregate equals local rating. The front door now explains and demonstrates the tool adequately for release."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "approachability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The README says what QUALITY.md is, shows a realistic format example, shows first-result CLI output, and reflects the current command surface."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/readme.json",
+      "notAssessedRequirements": [],
+      "structural": false
+    }
+  ],
+  "assessmentResults": [
+    {
+      "assessmentResultRecord": "assessment-results/001-format-spec-the-format-specification-is-complete.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is complete",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The specification is complete enough for parser, linter, author, evaluator, and report-renderer implementation. Scalar bounds remain intentionally broad, so the result satisfies the requirement without reaching outstanding."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification admits a single interpretation",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Conformance classes, BCP 14 scope, normative vs non-normative distinctions, and schema wording give one settled reading for release-relevant rules."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification separates rules from rationale",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Binding rules appear in normative sections, while examples, notes, and appendices are marked non-normative."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification defines its terms before use",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "outstanding",
+        "rationale": "A dedicated terminology section defines the core vocabulary before the schema and evaluation rules use it."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is internally consistent",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The earlier Appendix B contradiction was fixed; current examples and rules use the same required title fields and terminology."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/006-format-spec-each-rule-is-observable-or-testable.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "each rule is observable or testable",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Structural conformance requirements map to observable document or record properties; judgment-bearing evaluation semantics are still explicitly semantic rather than mechanically formulaic."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format's constructs are shown with valid and invalid examples",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The spec now includes valid minimal/suggested examples and explicit invalid counter-examples for missing required title, missing direct-requirement factors, and list-valued assessment."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specifies its core and how it extends and evolves",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The minimal core, extension boundaries, unrecognized-content preservation, and external versioning policy are defined sufficiently for compatible evolution."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "targetPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is well-structured and readable",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The document introduces concepts before dependent schema and semantics, uses scannable examples, and keeps prose direct."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README says what QUALITY.md is and who it's for",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The opening and Why section identify the format, companion skill/CLI, intended agent-project audience, and the quality-debt problem it addresses."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README shows the format and its payoff by example",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The README now pairs a realistic QUALITY.md excerpt with concrete CLI/report output before the reference schema."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README gets a newcomer to a first result quickly",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The README now gives a short install/use path and representative first-result output for init and lint."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "targetPath": [
+        "readme"
+      ],
+      "requirement": "the README reflects what the CLI and spec actually provide",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The README command list and format summary align with the current v0.4 command surface and specification."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/014-cli-the-cli-follows-its-functional-specifications.json",
+      "targetPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows its functional specifications",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Focused checks and tests show the current CLI satisfies the release-relevant functional contracts, including the issues fixed during this evaluation."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "targetPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows the project CLI design guide",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The command surface is examples-led, non-interactive, stdout/stderr-safe, deterministic under JSON/plain output, and uses consistent noun/verb evaluation commands."
+      },
+      "active": true
+    }
+  ],
+  "findingSummaries": [
+    {
+      "assessmentResultRecord": "assessment-results/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:105",
+      "category": "completeness",
+      "summary": "The document structure, frontmatter schema, body semantics, evaluation semantics, report semantics, and extensions are all defined in one specification."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:123",
+      "category": "schema",
+      "summary": "Model, Rating Scale, Target, Factor, and Requirement shapes define requiredness, cardinality, inheritance/default source behavior, and malformed-value handling."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/001-format-spec-the-format-specification-is-complete.json",
+      "locator": "SPECIFICATION.md:137",
+      "category": "bounded-gap",
+      "severity": "low",
+      "summary": "Scalar placeholders such as \u003cstring\u003e and \u003clevel-name\u003e intentionally do not define detailed character-set or length bounds, leaving edge cases to conforming tools."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:21",
+      "category": "normative-language",
+      "summary": "BCP 14 keywords are scoped to all-capital uses, reducing ambiguity around obligation strength."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:29",
+      "category": "rule-boundary",
+      "summary": "Examples and notes are explicitly non-normative and do not add conformance requirements."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/002-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:344",
+      "category": "bounded-gap",
+      "severity": "low",
+      "summary": "The not-assessed boundary still depends on evaluator judgment about evidence sufficiency, but the report distinction is explicit."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "locator": "SPECIFICATION.md:27",
+      "category": "rule-boundary",
+      "summary": "The specification states that all content is normative except passages explicitly marked otherwise."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/003-format-spec-the-format-specification-separates-rules-from-rationale.json",
+      "locator": "SPECIFICATION.md:445",
+      "category": "examples",
+      "summary": "Appendix A, Appendix B, and Appendix C are each explicitly non-normative before their examples."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+      "locator": "SPECIFICATION.md:56",
+      "category": "terminology",
+      "summary": "Quality Model, Entity, Model, Target, Source, Factor, Requirement, Assessment, Finding, Rating Scale, Rating Level, Rating Result, and Evaluation Report are defined before schema rules."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/004-format-spec-the-format-specification-defines-its-terms-before-use.json",
+      "locator": "SPECIFICATION.md:123",
+      "category": "terminology-use",
+      "summary": "Later schema and evaluation sections reuse those defined terms consistently."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "locator": "SPECIFICATION.md:158",
+      "category": "consistency",
+      "summary": "Rating Level rules require level, title, and criterion; the suggested scale and minimal example now include those fields."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/005-format-spec-the-format-specification-is-internally-consistent.json",
+      "locator": "SPECIFICATION.md:485",
+      "category": "fix-verified",
+      "summary": "Appendix B now includes title fields for the target and unacceptable rating levels and for the reliability factor."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/006-format-spec-each-rule-is-observable-or-testable.json",
+      "locator": "SPECIFICATION.md:112",
+      "category": "verifiability",
+      "summary": "Frontmatter validity, required properties, list cardinality, factor references, and assessment scalar shape are all observable from the document."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/006-format-spec-each-rule-is-observable-or-testable.json",
+      "locator": "SPECIFICATION.md:356",
+      "category": "semantic-boundary",
+      "severity": "low",
+      "summary": "Roll-up intentionally has no numeric aggregation formula, so exact rating inference remains evaluator judgment constrained by required distinctions."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+      "locator": "SPECIFICATION.md:445",
+      "category": "valid-examples",
+      "summary": "Appendix A and Appendix B provide copyable valid examples for the rating scale and a minimal file."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/007-format-spec-the-format-s-constructs-are-shown-with-valid-and-invalid-examples.json",
+      "locator": "SPECIFICATION.md:509",
+      "category": "invalid-examples",
+      "summary": "Appendix C provides worked invalid counter-examples for a missing rating-level title, direct target requirement without factors, and list-valued assessment."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:132",
+      "category": "core",
+      "summary": "The root model requires ratingScale plus at least one of factors, requirements, or targets."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:431",
+      "category": "extensions",
+      "summary": "Extensions cannot change conforming-property meaning, and tools should preserve unrecognized extension fields and body content."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-format-spec-the-format-specifies-its-core-and-how-it-extends-and-evolves.json",
+      "locator": "SPECIFICATION.md:16",
+      "category": "versioning",
+      "summary": "The specification identifies its version and points to the project versioning policy for forward-versioning behavior."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "locator": "SPECIFICATION.md:56",
+      "category": "structure",
+      "summary": "Terminology precedes document structure, schema, and evaluation semantics."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "locator": "SPECIFICATION.md:137",
+      "category": "readability",
+      "summary": "Annotated YAML blocks make required fields and nesting shapes quick to scan."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/009-format-spec-the-format-specification-is-well-structured-and-readable.json",
+      "locator": "SPECIFICATION.md:445",
+      "category": "examples",
+      "summary": "Valid and invalid appendices give copy-and-adapt examples after the normative sections."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "locator": "README.md:3",
+      "category": "orientation",
+      "summary": "The first paragraph says QUALITY.md is an agent-friendly file format with companion skill and CLI for coding-agent and AI assistant projects/harnesses."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/010-readme-the-readme-says-what-quality-md-is-and-who-it-s-for.json",
+      "locator": "README.md:7",
+      "category": "problem",
+      "summary": "The Why section frames the problem as technical, cognitive, and intent debt becoming explicit and checkable."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+      "locator": "README.md:66",
+      "category": "format-example",
+      "summary": "A realistic Support Inbox QUALITY.md excerpt shows ratingScale, target source, factors, requirements, and body context."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/011-readme-the-readme-shows-the-format-and-its-payoff-by-example.json",
+      "locator": "README.md:129",
+      "category": "payoff-output",
+      "summary": "The README shows the evaluation report build output and a report-summary excerpt, making the CLI payoff visible rather than only described."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "locator": "README.md:25",
+      "category": "quickstart",
+      "summary": "Install remains a two-step skill and CLI install sequence."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/012-readme-the-readme-gets-a-newcomer-to-a-first-result-quickly.json",
+      "locator": "README.md:37",
+      "category": "first-result",
+      "summary": "The Usage section gives `qualitymd init` then `qualitymd lint`, followed by expected output showing `Created QUALITY.md` and `QUALITY.md is valid.`"
+    },
+    {
+      "assessmentResultRecord": "assessment-results/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "locator": "README.md:196",
+      "category": "cli-surface",
+      "summary": "The CLI section lists current commands: init, lint, spec, status, version, upgrade, and the evaluation run-record surface."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "locator": "README.md:216",
+      "category": "command-loop",
+      "summary": "The typical local loop uses existing commands: spec, init, lint, and status --json."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/013-readme-the-readme-reflects-what-the-cli-and-spec-actually-provide.json",
+      "locator": "go run ./cmd/qualitymd --help",
+      "category": "verified-command",
+      "summary": "The current command tree exposes the commands named in README.md."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/014-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "go run ./cmd/qualitymd evaluation status quality/evaluations/0005-subject-quality-eval --json",
+      "category": "fix-verified",
+      "summary": "evaluation status now emits a repository-relative `path`, repository-relative next action, and `missing-root-analysis` for an empty run."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/014-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "go run ./cmd/qualitymd lint -",
+      "category": "fix-verified",
+      "summary": "lint '-' now maps to the usage category; go run reports `exit status 2`, matching the CLI exit-code contract."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/014-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "go test ./internal/cli ./internal/evaluation ./internal/status",
+      "category": "tests",
+      "summary": "Focused regression tests pass for CLI behavior, evaluation record/report behavior, and status snapshots."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "internal/cli/style.go:68",
+      "category": "help",
+      "summary": "The no-argument root command renders concise examples-first welcome output rather than full help."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "internal/cli/evaluation.go:16",
+      "category": "subcommands",
+      "summary": "The evaluation surface follows a consistent noun/verb tree: create, list, status, assessment-result add/list, analysis set/list, recommendation add/list, report build/gate."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/015-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "internal/cli/style.go:44",
+      "category": "plain-output",
+      "summary": "Human styling is conditional on terminal output and NO_COLOR, keeping redirected output plain."
+    }
+  ],
+  "recommendations": []
+}

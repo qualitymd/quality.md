@@ -17,6 +17,7 @@ import (
 
 type EvaluationRun struct {
 	Path              string
+	AbsPath           string
 	Design            string
 	Plan              string
 	PlannedCoverage   *PlannedCoverage
@@ -62,7 +63,12 @@ func Load(path string) (*EvaluationRun, error) {
 	if err != nil {
 		return nil, err
 	}
-	run := &EvaluationRun{Path: filepath.ToSlash(runAbs), Model: spec, Scale: spec.RatingScale}
+	run := &EvaluationRun{
+		Path:    displayRunPath(runAbs),
+		AbsPath: filepath.ToSlash(runAbs),
+		Model:   spec,
+		Scale:   spec.RatingScale,
+	}
 	if raw, err := os.ReadFile(filepath.Join(runAbs, "design.md")); err != nil {
 		return nil, fmt.Errorf("reading design.md: %w", err)
 	} else {
@@ -378,9 +384,6 @@ func (r *EvaluationRun) recommendationReferenceGaps(recommendations map[string]b
 }
 
 func (r *EvaluationRun) analysisReferenceGaps(assessmentResults renderableAssessmentResultState, analyses renderableAnalysisState, superseded map[string]bool) []EvaluationRunGap {
-	if len(r.Analyses) == 0 {
-		return []EvaluationRunGap{{Kind: "missing-analysis", Ref: "analysis/", Detail: "no analysis records are present"}}
-	}
 	var gaps []EvaluationRunGap
 	rootAnalyses := 0
 	for _, analysis := range r.Analyses {

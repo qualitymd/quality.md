@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is internally consistent",
+  "factorPaths": [
+    [
+      "consistency"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The earlier Appendix B contradiction was fixed; current examples and rules use the same required title fields and terminology."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:158",
+      "observation": "Rating Level rules require level, title, and criterion; the suggested scale and minimal example now include those fields.",
+      "category": "consistency"
+    },
+    {
+      "locator": "SPECIFICATION.md:485",
+      "observation": "Appendix B now includes title fields for the target and unacceptable rating levels and for the reliability factor.",
+      "category": "fix-verified"
+    }
+  ],
+  "recommendations": []
+}

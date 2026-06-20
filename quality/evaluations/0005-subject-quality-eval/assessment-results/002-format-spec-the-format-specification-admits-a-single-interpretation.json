@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification admits a single interpretation",
+  "factorPaths": [
+    [
+      "clarity"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Conformance classes, BCP 14 scope, normative vs non-normative distinctions, and schema wording give one settled reading for release-relevant rules."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:21",
+      "observation": "BCP 14 keywords are scoped to all-capital uses, reducing ambiguity around obligation strength.",
+      "category": "normative-language"
+    },
+    {
+      "locator": "SPECIFICATION.md:29",
+      "observation": "Examples and notes are explicitly non-normative and do not add conformance requirements.",
+      "category": "rule-boundary"
+    },
+    {
+      "locator": "SPECIFICATION.md:344",
+      "observation": "The not-assessed boundary still depends on evaluator judgment about evidence sufficiency, but the report distinction is explicit.",
+      "category": "bounded-gap",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

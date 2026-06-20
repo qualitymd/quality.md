@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "readme"
+  ],
+  "requirement": "the README gets a newcomer to a first result quickly",
+  "factorPaths": [
+    [
+      "approachability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The README now gives a short install/use path and representative first-result output for init and lint."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:25",
+      "observation": "Install remains a two-step skill and CLI install sequence.",
+      "category": "quickstart"
+    },
+    {
+      "locator": "README.md:37",
+      "observation": "The Usage section gives `qualitymd init` then `qualitymd lint`, followed by expected output showing `Created QUALITY.md` and `QUALITY.md is valid.`",
+      "category": "first-result"
+    }
+  ],
+  "recommendations": []
+}

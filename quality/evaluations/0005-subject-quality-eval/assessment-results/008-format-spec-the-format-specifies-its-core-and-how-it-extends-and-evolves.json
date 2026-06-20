@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specifies its core and how it extends and evolves",
+  "factorPaths": [
+    [
+      "extensibility"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The minimal core, extension boundaries, unrecognized-content preservation, and external versioning policy are defined sufficiently for compatible evolution."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:132",
+      "observation": "The root model requires ratingScale plus at least one of factors, requirements, or targets.",
+      "category": "core"
+    },
+    {
+      "locator": "SPECIFICATION.md:431",
+      "observation": "Extensions cannot change conforming-property meaning, and tools should preserve unrecognized extension fields and body content.",
+      "category": "extensions"
+    },
+    {
+      "locator": "SPECIFICATION.md:16",
+      "observation": "The specification identifies its version and points to the project versioning policy for forward-versioning behavior.",
+      "category": "versioning"
+    }
+  ],
+  "recommendations": []
+}

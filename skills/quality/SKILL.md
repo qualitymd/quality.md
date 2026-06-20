@@ -3,7 +3,7 @@ name: quality
 description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, improve, or upgrade the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
 compatibility: Requires qualitymd CLI >=0.4.0 <0.5.0.
 metadata:
-  version: "0.4.0"
+  version: "0.4.1"
   requires-qualitymd-cli: ">=0.4.0 <0.5.0"
 ---
 

@@ -32,17 +32,18 @@ func WriteRecords(kind EvaluationRecordKind, runPath string, raw []byte) (*Write
 	if err != nil {
 		return nil, err
 	}
+	runDisplay := displayRunPath(runAbs)
 	levels, err := ratingLevels(filepath.Join(runAbs, "model.md"))
 	if err != nil {
 		return nil, err
 	}
 	switch kind {
 	case KindAssessmentResult:
-		return addAssessmentResults(runAbs, raw, levels)
+		return addAssessmentResults(runAbs, runDisplay, raw, levels)
 	case KindAnalysis:
-		return setAnalyses(runAbs, raw, levels)
+		return setAnalyses(runAbs, runDisplay, raw, levels)
 	case KindRecommendation:
-		return addRecommendations(runAbs, raw)
+		return addRecommendations(runAbs, runDisplay, raw)
 	default:
 		return nil, usagef("unknown record kind %q", kind)
 	}
@@ -103,7 +104,7 @@ func decodeJSONDocument(raw []byte, dst any) error {
 	return nil
 }
 
-func addAssessmentResults(runAbs string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
+func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
 	payloads, err := DecodeJSONList[AssessmentResultInput](raw)
 	if err != nil {
 		return nil, err
@@ -132,7 +133,7 @@ func addAssessmentResults(runAbs string, raw []byte, levels map[string]bool) (*W
 		if err != nil {
 			return nil, err
 		}
-		paths = append(paths, filepath.ToSlash(path))
+		paths = append(paths, displayRecordPath(runAbs, runDisplay, path))
 	}
 	return &WriteRecordReceipt{
 		SchemaVersion: SchemaVersion,
@@ -142,12 +143,12 @@ func addAssessmentResults(runAbs string, raw []byte, levels map[string]bool) (*W
 		NextActions: []receipt.Action{{
 			ID:      "evaluation-status",
 			Label:   "Inspect report readiness",
-			Command: "qualitymd evaluation status " + filepath.ToSlash(runAbs),
+			Command: "qualitymd evaluation status " + runDisplay,
 		}},
 	}, nil
 }
 
-func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
+func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
 	payloads, err := DecodeJSONList[AnalysisInput](raw)
 	if err != nil {
 		return nil, err
@@ -181,12 +182,12 @@ func setAnalyses(runAbs string, raw []byte, levels map[string]bool) (*WriteRecor
 		if err := writeReplace(path, data); err != nil {
 			return nil, err
 		}
-		paths = append(paths, filepath.ToSlash(path))
+		paths = append(paths, displayRecordPath(runAbs, runDisplay, path))
 	}
 	return &WriteRecordReceipt{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindAnalysis, Created: createdPtr}, nil
 }
 
-func addRecommendations(runAbs string, raw []byte) (*WriteRecordReceipt, error) {
+func addRecommendations(runAbs, runDisplay string, raw []byte) (*WriteRecordReceipt, error) {
 	payloads, err := DecodeJSONList[RecommendationInput](raw)
 	if err != nil {
 		return nil, err
@@ -215,7 +216,7 @@ func addRecommendations(runAbs string, raw []byte) (*WriteRecordReceipt, error) 
 		if err != nil {
 			return nil, err
 		}
-		paths = append(paths, filepath.ToSlash(path))
+		paths = append(paths, displayRecordPath(runAbs, runDisplay, path))
 	}
 	return &WriteRecordReceipt{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindRecommendation}, nil
 }
@@ -252,6 +253,25 @@ func verifyRun(runPath string) (string, error) {
 		}
 	}
 	return abs, nil
+}
+
+func displayRunPath(runAbs string) string {
+	runAbs = filepath.Clean(runAbs)
+	repoRoot, err := FindRepoRoot(runAbs)
+	if err == nil {
+		if rel, relErr := filepath.Rel(repoRoot, runAbs); relErr == nil && rel != "." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) && rel != ".." {
+			return filepath.ToSlash(rel)
+		}
+	}
+	return filepath.ToSlash(runAbs)
+}
+
+func displayRecordPath(runAbs, runDisplay, recordAbs string) string {
+	rel, err := filepath.Rel(runAbs, recordAbs)
+	if err != nil {
+		return filepath.ToSlash(recordAbs)
+	}
+	return filepath.ToSlash(filepath.Join(runDisplay, rel))
 }
 
 func ratingLevels(path string) (map[string]bool, error) {

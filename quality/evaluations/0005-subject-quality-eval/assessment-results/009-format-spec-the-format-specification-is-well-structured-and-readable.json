@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is well-structured and readable",
+  "factorPaths": [
+    [
+      "usability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The document introduces concepts before dependent schema and semantics, uses scannable examples, and keeps prose direct."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:56",
+      "observation": "Terminology precedes document structure, schema, and evaluation semantics.",
+      "category": "structure"
+    },
+    {
+      "locator": "SPECIFICATION.md:137",
+      "observation": "Annotated YAML blocks make required fields and nesting shapes quick to scan.",
+      "category": "readability"
+    },
+    {
+      "locator": "SPECIFICATION.md:445",
+      "observation": "Valid and invalid appendices give copy-and-adapt examples after the normative sections.",
+      "category": "examples"
+    }
+  ],
+  "recommendations": []
+}

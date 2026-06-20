@@ -77,7 +77,7 @@ CLI minor line, for example:
 ```yaml
 compatibility: Requires qualitymd CLI >=0.4.0 <0.5.0.
 metadata:
-  version: "0.4.0"
+  version: "0.4.1"
   requires-qualitymd-cli: ">=0.4.0 <0.5.0"
 ```
 

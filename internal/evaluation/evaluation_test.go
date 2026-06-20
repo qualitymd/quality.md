@@ -103,6 +103,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
     {
       "locator": "tests/example_test.go:1",
       "category": "coverage",
+      "severity": "medium",
       "evidence": [
         {
           "kind": "source",
@@ -1163,7 +1164,10 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
 	if err != nil {
 		t.Fatalf("AddRecord(second recommendation) error = %v", err)
 	}
-	secondRaw, err := os.ReadFile(second.Path)
+	if filepath.IsAbs(second.Path) {
+		t.Fatalf("second recommendation path = %q, want repository-relative receipt path", second.Path)
+	}
+	secondRaw, err := os.ReadFile(filepath.Join(repo, second.Path))
 	if err != nil {
 		t.Fatalf("reading second recommendation: %v", err)
 	}

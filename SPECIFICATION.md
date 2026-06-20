@@ -480,13 +480,16 @@ title: Acme Checkout API
 description: Public API for accepting and settling customer payments.
 ratingScale:
   - level: target
+    title: Target
     description: "Meets the agreed quality bar."
     criterion: "Satisfies the requirement."
   - level: unacceptable
+    title: Unacceptable
     description: "Does not meet the agreed quality bar."
     criterion: "Does not satisfy the requirement."
 factors:
   reliability:
+    title: Reliability
     description: The API continues to accept and durably record orders.
     requirements:
       "Checkout requests are durably recorded":
@@ -497,3 +500,50 @@ factors:
 
 This model covers the checkout API and the payment write path it owns.
 ```
+
+## Appendix C: Invalid Counter-Examples
+
+This appendix is non-normative.
+
+The following snippets illustrate invalid shapes. They are intentionally
+incomplete and are not standalone `QUALITY.md` files.
+
+### Missing rating-level title
+
+```yaml
+ratingScale:
+  - level: target
+    criterion: "Satisfies the requirement."
+  - level: unacceptable
+    title: Unacceptable
+    criterion: "Does not satisfy the requirement."
+```
+
+Invalid because every Rating Level MUST declare `level`, `title`, and
+`criterion`.
+
+### Direct target requirement without factors
+
+```yaml
+requirements:
+  "Checkout requests are durably recorded":
+    assessment: Review production write-path telemetry and recovery tests.
+```
+
+Invalid because a Requirement declared directly under a Target MUST declare
+`factors` with at least one non-empty scalar entry.
+
+### List-valued assessment
+
+```yaml
+factors:
+  reliability:
+    title: Reliability
+    requirements:
+      "Checkout requests are durably recorded":
+        assessment:
+          - Review telemetry.
+          - Review recovery tests.
+```
+
+Invalid because `assessment` MUST be a single non-empty scalar.

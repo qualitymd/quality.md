@@ -35,6 +35,22 @@ npm install quality.md -g
 
 ## Usage
 
+Create and check a first model with the CLI:
+
+```sh
+qualitymd init
+qualitymd lint
+```
+
+Expected first result:
+
+```text
+Created QUALITY.md
+
+Next: qualitymd lint QUALITY.md
+QUALITY.md is valid.
+```
+
 Invoke the `/quality` skill to manage quality for your project:
 
 ```text
@@ -119,6 +135,27 @@ It does not cover billing system behavior or product incident response.
 
 An agent that reads this file can evaluate support work against the stated
 requirements, produce findings, and rate the results against the model's scale.
+
+For a completed evaluation run, the CLI renders a concise summary and the full
+report from records supplied by the `/quality` skill:
+
+```text
+Wrote quality/evaluations/0001-subject-quality-eval/report-summary.md, quality/evaluations/0001-subject-quality-eval/report.md, and quality/evaluations/0001-subject-quality-eval/report.json
+```
+
+A summary excerpt looks like this:
+
+```md
+# Quality Evaluation Summary
+
+| Field          | Value  |
+| -------------- | ------ |
+| Overall rating | Target |
+
+## Top Issues
+
+None recorded.
+```
 
 ## The Specification
 

@@ -183,6 +183,9 @@ func TestLintRejectsStdinSentinel(t *testing.T) {
 	if !strings.Contains(err.Error(), "does not read from stdin") {
 		t.Fatalf("Execute() error = %v, want stdin message", err)
 	}
+	if got := codeFor(err); got != ExitUsage {
+		t.Fatalf("codeFor(error) = %d, want %d", got, ExitUsage)
+	}
 }
 
 func TestLintMissingFileMapsToInternal(t *testing.T) {

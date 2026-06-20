@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows its functional specifications",
+  "factorPaths": [
+    [
+      "consistency"
+    ],
+    [
+      "determinism"
+    ],
+    [
+      "automation-compatibility"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Focused checks and tests show the current CLI satisfies the release-relevant functional contracts, including the issues fixed during this evaluation."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "go run ./cmd/qualitymd evaluation status quality/evaluations/0005-subject-quality-eval --json",
+      "observation": "evaluation status now emits a repository-relative `path`, repository-relative next action, and `missing-root-analysis` for an empty run.",
+      "category": "fix-verified"
+    },
+    {
+      "locator": "go run ./cmd/qualitymd lint -",
+      "observation": "lint '-' now maps to the usage category; go run reports `exit status 2`, matching the CLI exit-code contract.",
+      "category": "fix-verified"
+    },
+    {
+      "locator": "go test ./internal/cli ./internal/evaluation ./internal/status",
+      "observation": "Focused regression tests pass for CLI behavior, evaluation record/report behavior, and status snapshots.",
+      "category": "tests"
+    }
+  ],
+  "recommendations": []
+}

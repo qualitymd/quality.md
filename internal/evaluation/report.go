@@ -139,24 +139,24 @@ func BuildReport(path string) (*BuildReportReceipt, error) {
 	if err != nil {
 		return nil, err
 	}
-	reportSummaryMD := filepath.Join(run.Path, "report-summary.md")
-	reportMD := filepath.Join(run.Path, "report.md")
-	reportJSON := filepath.Join(run.Path, "report.json")
-	if err := writeReportFile(reportSummaryMD, summaryMD); err != nil {
+	reportSummaryAbs := filepath.Join(run.AbsPath, "report-summary.md")
+	reportAbs := filepath.Join(run.AbsPath, "report.md")
+	reportJSONAbs := filepath.Join(run.AbsPath, "report.json")
+	if err := writeReportFile(reportSummaryAbs, summaryMD); err != nil {
 		return nil, err
 	}
-	if err := writeReportFile(reportMD, md); err != nil {
+	if err := writeReportFile(reportAbs, md); err != nil {
 		return nil, err
 	}
-	if err := writeReportFile(reportJSON, js); err != nil {
+	if err := writeReportFile(reportJSONAbs, js); err != nil {
 		return nil, err
 	}
 	return &BuildReportReceipt{
 		SchemaVersion:   SchemaVersion,
 		Path:            run.Path,
-		ReportSummaryMD: filepath.ToSlash(reportSummaryMD),
-		ReportMD:        filepath.ToSlash(reportMD),
-		ReportJSON:      filepath.ToSlash(reportJSON),
+		ReportSummaryMD: filepath.ToSlash(filepath.Join(run.Path, "report-summary.md")),
+		ReportMD:        filepath.ToSlash(filepath.Join(run.Path, "report.md")),
+		ReportJSON:      filepath.ToSlash(filepath.Join(run.Path, "report.json")),
 		RatingResult:    report.RatingResult,
 	}, nil
 }
@@ -670,7 +670,7 @@ func summaryDriver(target TargetRatingSummary) string {
 
 func writeSummaryTopIssues(out *bytes.Buffer, report EvaluationReportDocument) {
 	out.WriteString("\n## Top Issues\n\n")
-	issues := firstFindingSummaries(report.FindingSummaries, 5)
+	issues := firstFindingSummaries(riskFindings(report.FindingSummaries), 5)
 	if len(issues) == 0 {
 		out.WriteString("None recorded.\n")
 		return

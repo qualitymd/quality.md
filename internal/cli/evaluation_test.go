@@ -45,6 +45,9 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessment-results/001-root-has-tests.json") {
 		t.Fatalf("stdout = %s, want batched write receipt", out.String())
 	}
+	if strings.Contains(out.String(), repo) {
+		t.Fatalf("stdout = %s, want repository-relative receipt paths", out.String())
+	}
 	raw, err := os.ReadFile(filepath.Join(runPath, "assessment-results", "001-root-has-tests.json"))
 	if err != nil {
 		t.Fatalf("reading assessment result record: %v", err)
@@ -94,6 +97,15 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	}
 	if !strings.Contains(out.String(), `"path": `) || !strings.Contains(out.String(), `"reportable": false`) {
 		t.Fatalf("status stdout = %s, want latest status", out.String())
+	}
+	if !strings.Contains(out.String(), `"path": "quality/evaluations/0001-subject-quality-eval"`) {
+		t.Fatalf("status stdout = %s, want repository-relative run path", out.String())
+	}
+	if !strings.Contains(out.String(), `"kind": "missing-root-analysis"`) {
+		t.Fatalf("status stdout = %s, want documented empty-run gap", out.String())
+	}
+	if strings.Contains(out.String(), repo) {
+		t.Fatalf("status stdout = %s, want no absolute repository path", out.String())
 	}
 }
 

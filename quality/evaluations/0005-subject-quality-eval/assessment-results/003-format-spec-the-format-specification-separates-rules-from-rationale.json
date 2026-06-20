@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification separates rules from rationale",
+  "factorPaths": [
+    [
+      "clarity"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Binding rules appear in normative sections, while examples, notes, and appendices are marked non-normative."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:27",
+      "observation": "The specification states that all content is normative except passages explicitly marked otherwise.",
+      "category": "rule-boundary"
+    },
+    {
+      "locator": "SPECIFICATION.md:445",
+      "observation": "Appendix A, Appendix B, and Appendix C are each explicitly non-normative before their examples.",
+      "category": "examples"
+    }
+  ],
+  "recommendations": []
+}
