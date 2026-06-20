@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: qualitymd status
-description: Emit a deterministic project-state snapshot for a `QUALITY.md` file.
+description: Emit a deterministic project-state snapshot for a QUALITY.md file.
 tags: [cli, command, status]
 timestamp: 2026-06-19T00:00:00Z
 ---

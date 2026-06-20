@@ -1,7 +1,7 @@
 # Authoring QUALITY.md
 
 The canonical reference and best-practices guide for understanding and working
-with `QUALITY.md` files: the format concepts, authoring practices, and jobs
+with QUALITY.md files: the format concepts, authoring practices, and jobs
 attached to each.
 
 This guide conforms to [`SPECIFICATION.md`](../resources/SPECIFICATION.md). The
@@ -9,20 +9,20 @@ specification governs on any conflict.
 
 ## Contents
 
-- [The `QUALITY.md` file](#the-qualitymd-file)
+- [The QUALITY.md file](#the-qualitymd-file)
 - [Quality Model](#quality-model)
 - [The Markdown body](#the-markdown-body)
 - [Rating Scale](#rating-scale)
 - [Target](#target)
 - [Factor](#factor)
 - [Requirement](#requirement)
-- [When to update `QUALITY.md`](#when-to-update-qualitymd)
+- [When to update QUALITY.md](#when-to-update-qualitymd)
 
 ---
 
-## The `QUALITY.md` file
+## The QUALITY.md file
 
-A `QUALITY.md` file is a Markdown file with two parts:
+A QUALITY.md file is a Markdown file with two parts:
 
 - **YAML frontmatter** — the **quality model**: a structured, declarative
   description of what quality means for the entity being evaluated.
@@ -703,9 +703,9 @@ conflicts, or duplicates. Run a closing pass over the set:
 - **Do** move unresolved holes to Known gaps rather than shipping a vague,
   unratable requirement to stand in for them.
 
-## When to update `QUALITY.md`
+## When to update QUALITY.md
 
-A `QUALITY.md` is expected to evolve through two loops: the **improve loop** fixes
+A QUALITY.md is expected to evolve through two loops: the **improve loop** fixes
 the subject against the model, and the **learn loop** reviews the model itself
 against reality. The two never fold together — the model's own quality is never
 averaged into the subject's rating.

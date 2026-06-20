@@ -1,6 +1,6 @@
 # /quality skill
 
-The companion evaluation skill for a `QUALITY.md`: it carries the evaluative
+The companion evaluation skill for QUALITY.md: it carries the evaluative
 judgment and drives the deterministic [CLI](../../cli.md) for every mechanical
 step. This folder holds the skill's functional spec and the reference artifacts
 that make it concrete. The installable skill artifact lives at

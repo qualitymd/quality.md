@@ -1,6 +1,6 @@
 # Top 10 QUALITY.md Checks
 
-Use this checklist for a fast, read-only inspection of a `QUALITY.md` file's
+Use this checklist for a fast, read-only inspection of a QUALITY.md file's
 current state, model quality, and lifecycle readiness. The result is not an
 Evaluation report and does not rate the subject. It produces routing findings
 that wizard and other modes can use to choose the next workflow.
@@ -135,7 +135,7 @@ workflow is maintenance rather than new authoring or evaluation.
 
 ## Summary Judgment
 
-After the checks, classify the `QUALITY.md` lifecycle in one phrase:
+After the checks, classify the QUALITY.md lifecycle in one phrase:
 
 - `missing`
 - `invalid`

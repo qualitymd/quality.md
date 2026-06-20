@@ -26,7 +26,7 @@ capitals.
 ## Scope
 
 This phase covers the deterministic CLI surface: format-tooling commands that
-operate on `QUALITY.md` files, plus evaluation-run commands that scaffold,
+operate on QUALITY.md files, plus evaluation-run commands that scaffold,
 validate, and render runtime records. The CLI never calls a model; skills carry
 judgment and pass judgment payloads to the deterministic surface.
 

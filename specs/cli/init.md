@@ -46,7 +46,7 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
 
 ### Scaffold contents
 
-- The scaffold **MUST** be a structurally valid `QUALITY.md` per the
+- The scaffold **MUST** be a structurally valid QUALITY.md file per the
   [format specification](../../SPECIFICATION.md): a freshly initialized file
   **MUST** pass `qualitymd lint` with no errors, placeholder text and all.
 - The frontmatter **MUST** seed the suggested four-level rating scale

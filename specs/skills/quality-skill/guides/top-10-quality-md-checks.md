@@ -32,7 +32,7 @@ getting-started, authoring, evaluation, improvement, or history work.
 ## Purpose
 
 The guide exists to quickly assess the current state, quality, and lifecycle of
-a `QUALITY.md` file. Its output is a small set of routing findings that explain
+a QUALITY.md file. Its output is a small set of routing findings that explain
 why the next workflow should be setup, getting-started, authoring/model review,
 evaluation, improvement, history/reconciliation, or upgrade.
 
@@ -55,7 +55,7 @@ Evaluation report.
 ### Runtime Use
 
 The skill root prompt **MUST** tell agents to read the checklist when quickly
-inspecting a `QUALITY.md` file's current state, quality, or lifecycle.
+inspecting a QUALITY.md file's current state, quality, or lifecycle.
 
 Wizard mode **MUST** use the checklist after status probing when a `QUALITY.md`
 exists and is structurally valid, unless the user asked only for raw status.

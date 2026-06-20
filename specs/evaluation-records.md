@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Evaluation records
 
-This spec defines the runtime record contract for a `QUALITY.md` evaluation run:
+This spec defines the runtime record contract for a QUALITY.md evaluation run:
 folder names, record names, record schemas, `schemaVersion`, and the division of
 responsibility between the deterministic `qualitymd` CLI and the judging skill.
 The evaluation semantics are defined by

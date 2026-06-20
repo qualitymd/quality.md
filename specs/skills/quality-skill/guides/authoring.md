@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md authoring guide
-description: Contract for the skill's authoring guide — the canonical reference and best-practices guide for understanding and working with `QUALITY.md` files.
+description: Contract for the skill's authoring guide — the canonical reference and best-practices guide for understanding and working with QUALITY.md files.
 tags: [skill, quality, guide]
 timestamp: 2026-06-18T00:00:00Z
 ---
@@ -11,7 +11,7 @@ timestamp: 2026-06-18T00:00:00Z
 This spec governs the **authoring guide** the [`/quality` skill](../quality-skill.md) ships at
 [`skills/quality/guides/authoring.md`](../../../../skills/quality/guides/authoring.md)
 — the document the skill reads when creating, populating, reviewing, or
-improving a `QUALITY.md` file. It has 1:1 coverage with that document: this spec
+improving a QUALITY.md file. It has 1:1 coverage with that document: this spec
 is its contract, and the guide is its implementation. The format the guide
 teaches is defined by [`SPECIFICATION.md`](../../../../SPECIFICATION.md), the source
 of truth the guide **conforms to**.
@@ -26,7 +26,7 @@ in all capitals.
 ## Purpose
 
 The guide exists to be the **canonical reference and best-practices guide for
-understanding and working with `QUALITY.md` files**: one document a reader can
+understanding and working with QUALITY.md files**: one document a reader can
 stay inside to learn what each concept of the format *is* and how to author a
 useful model. It serves both the skill (its reader at runtime) and a human
 author. The guide **MUST** state this purpose in its own preamble, so the
@@ -37,7 +37,7 @@ document declares the job it is built to do.
 The defining scope decision is **self-containedness**. The guide is *all-inclusive*:
 it restates the format's concepts, properties, and rating vocabulary in full
 rather than deferring to [`SPECIFICATION.md`](../../../../SPECIFICATION.md) for the
-definitions. A reader **MUST** be able to understand and author a `QUALITY.md`
+definitions. A reader **MUST** be able to understand and author a QUALITY.md
 from the guide alone, without opening the format spec.
 
 This is a deliberate exception to the skill's general "don't embed a drifting
@@ -53,7 +53,7 @@ duty below, which makes the format spec the authority whenever the two disagree.
 > a single comprehensive guide. Self-containedness is the purpose; the
 > conformance duty is the price that keeps it honest.
 
-**In scope:** authoring a useful `QUALITY.md` — its file shape, the model
+**In scope:** authoring a useful QUALITY.md — its file shape, the model
 concepts (rating scale, targets, factors, requirements), the Markdown body, and
 durable authoring practices such as body-first model development, rating-scale
 fit, deriving Factors from Needs/Risks, writing assessable Requirements, and

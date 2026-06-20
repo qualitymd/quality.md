@@ -1,6 +1,6 @@
 ---
 name: quality
-description: "Setup or work with `QUALITY.md` files or the qualitymd CLI; model, evaluate, improve, or upgrade the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
+description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, improve, or upgrade the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
 compatibility: Requires qualitymd CLI >=0.4.0 <0.5.0.
 metadata:
   version: "0.4.1"
@@ -20,12 +20,12 @@ recommendations.
 
 - Read [`resources/SPECIFICATION.md`](resources/SPECIFICATION.md)
 - Read [`guides/authoring.md`](guides/authoring.md) when
-  creating, populating, reviewing, or improving a `QUALITY.md` file.
+  creating, populating, reviewing, or improving a QUALITY.md file.
 - Read [`guides/getting-started.md`](guides/getting-started.md) after setup
   creates an initial `QUALITY.md`, or when the user asks how to make the first
   useful model from a skeleton. Read the authoring guide first.
 - Read [`guides/top-10-quality-md-checks.md`](guides/top-10-quality-md-checks.md)
-  when quickly inspecting a `QUALITY.md` file's current state, quality, or
+  when quickly inspecting a QUALITY.md file's current state, quality, or
   lifecycle, especially in wizard.
 - Read [`resources/cli-quick-reference.md`](resources/cli-quick-reference.md)
   before running CLI workflows.

@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md getting-started guide
-description: Contract for the skill's first-run guide for turning an initialized `QUALITY.md` skeleton into a first useful model.
+description: Contract for the skill's first-run guide for turning an initialized QUALITY.md skeleton into a first useful model.
 tags: [skill, quality, guide]
 timestamp: 2026-06-19T00:00:00Z
 ---
@@ -33,7 +33,7 @@ first-run workflow.
 
 ## Purpose
 
-The guide exists to help a reader turn an initialized `QUALITY.md` skeleton into
+The guide exists to help a reader turn an initialized QUALITY.md skeleton into
 a first useful model through an ordered process. After following it, the file
 should still lint cleanly and each step should have reached a stated outcome, so
 `/quality wizard` can route a meaningful next workflow.

@@ -27,4 +27,4 @@ before it lands.
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs.
-- [skills/](skills/) - companion skills that carry judgment around a `QUALITY.md` (`/quality`).
+- [skills/](skills/) - companion skills that carry judgment around QUALITY.md (`/quality`).

@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: qualitymd lint
-description: Validate a `QUALITY.md` file's structure against the format spec.
+description: Validate a QUALITY.md file's structure against the format spec.
 tags: [cli, command, lint]
 timestamp: 2026-06-17T00:00:00Z
 ---
@@ -12,12 +12,12 @@ timestamp: 2026-06-17T00:00:00Z
 formats, exit codes, and agent accessibility — from the [CLI spec](../cli.md).
 This file specifies only what is particular to `lint`.
 
-`qualitymd lint` validates a `QUALITY.md` file's structure against the
+`qualitymd lint` validates a QUALITY.md file's structure against the
 [format specification](../../SPECIFICATION.md), fast and deterministically,
 exiting non-zero on errors so it drops into CI.
 
 **Boundary.** `lint` checks *format conformance* — whether the file is a valid
-`QUALITY.md` — only. It does not assess whether the model is a *good* quality
+QUALITY.md file — only. It does not assess whether the model is a *good* quality
 model; that judgment lives in the evaluation skills, not the deterministic CLI.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -49,7 +49,7 @@ post-repair findings and the repairs that were applied.
 
 ## Rule scope
 
-A `QUALITY.md` is validated by a set of named **rules**, each checking one
+A QUALITY.md is validated by a set of named **rules**, each checking one
 property and emitting a **finding** when violated. A rule belongs in `lint` only
 when **all four** of the following hold:
 
@@ -59,7 +59,7 @@ when **all four** of the following hold:
 2. **Deterministic and mechanical.** Its verdict is computable from the file's
    structure alone — no judgment, no external data, the same result every run.
 3. **Format, not goodness.** It decides whether the file *is a valid
-   `QUALITY.md`*, never whether it is a *good* quality model. Anything requiring
+   QUALITY.md file*, never whether it is a *good* quality model. Anything requiring
    evaluative judgment is out of scope — that is the evaluation skills' work.
 4. **Self-contained.** It is decidable from the single file plus its own declared
    cross-references (e.g. resolving a factor reference, a `ratings`
@@ -76,7 +76,7 @@ Rule logic MUST NOT maintain a second valid-key list independent of that schema.
 Every rule carries a fixed **severity** that governs how its finding surfaces:
 
 - **error** — a spec **MUST**/**MUST NOT** is violated; the file is not a valid
-  `QUALITY.md`. Errors are what make `lint` exit non-zero.
+  QUALITY.md file. Errors are what make `lint` exit non-zero.
 - **warning** — a spec **SHOULD**/**RECOMMENDED** that is still mechanically
   determinable is unmet (e.g. a recommended `description` is absent, or a target
   whose subtree reaches no requirement). Warnings do not affect the exit code.

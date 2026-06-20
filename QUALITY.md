@@ -125,7 +125,7 @@ targets:
           "the README says what QUALITY.md is and who it's for":
             assessment: >
               A first-time reader learns within the opening lines what a
-              `QUALITY.md` file is, what problem it solves, and who it is for.
+              QUALITY.md file is, what problem it solves, and who it is for.
           "the README foregrounds the agent-first workflow":
             assessment: >
               The README presents `/quality`, `QUALITY.md`, and thoughtful direct
