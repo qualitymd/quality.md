@@ -44,11 +44,10 @@ agents.
 
 ## Scope
 
-Covered: the `update` command (apply-by-default, `--check`, `--json`); a
-deprecated `upgrade` alias; managed standalone self-apply; readiness gating on
-availability and apply; a release-notes reference; an ambient cached update
-notice with bounded refresh and an opt-out; and renaming the `/quality upgrade`
-skill mode to `/quality update`.
+Covered: the `update` command (apply-by-default, `--check`, `--json`); managed
+standalone self-apply; readiness gating on availability and apply; a release-notes
+reference; an ambient cached update notice with bounded refresh and an opt-out;
+and renaming the `/quality upgrade` skill mode to `/quality update`.
 
 Deferred / non-goals: no persisted dismissal ("skip this version"); no
 interactive prompt or modal; no rollback; no pre-release channel selection; no
@@ -82,13 +81,12 @@ the latest is strictly newer by SemVer precedence and the readiness gate is
 satisfied. When either version is not valid SemVer, or is a prerelease, or the
 build is a development build, `update` **MUST** report no available update — it
 **MUST NOT** fall back to reporting any difference, and **MUST NOT** apply.
+Development-build detection **MUST** be a single explicit condition (not an
+incidental consequence of SemVer parsing), and the same condition gates the
+ambient notice and its refresh below.
 
-The CLI **SHOULD** retain a deprecated `upgrade` alias that behaves as `update`
-for one release cycle and prints a deprecation notice to stderr.
-
-> Rationale: the `/quality` skill and existing scripts call `qualitymd upgrade`;
-> an alias lets the rename land without breaking the paired skill-and-CLI flow
-> mid-transition. — 0041
+There is no `upgrade` alias; `upgrade` is renamed outright to `update`, and the
+paired skill mode is renamed and version-pinned in lockstep (see below).
 
 ### Managed standalone self-apply
 
@@ -258,14 +256,17 @@ $ qualitymd update --json            # applies by default, then reports the resu
 ```
 
 Field names are illustrative; the implementation must carry equivalent facts with
-stable machine-readable names.
+stable machine-readable names. Both `--json` forms **MUST** share one stable
+schema: a field that does not apply to a given form — for example
+`recommendedAction` after a successful apply — is omitted rather than renamed or
+restructured, the same omit-when-not-known rule that governs `releaseNotesURL`.
 
 ## Durable spec changes
 
 ### To add
 
 - `specs/cli/update.md` — the `update` command contract: apply-by-default and
-  `--check`/`--json`, the deprecated `upgrade` alias, managed standalone
+  `--check`/`--json`, managed standalone
   self-apply, readiness gating, the release-notes reference, the ambient cached
   notice with its stderr/TTY/CI/`--json`/dev-build gating and non-blocking
   refresh, and the opt-out (per the requirements above). Carries forward the

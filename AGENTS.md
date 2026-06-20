@@ -61,9 +61,10 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
 ### Naming QUALITY.md
 
-- Use `QUALITY.md` in backticks when describing an operational use case for a
-  concrete `QUALITY.md` file.
-- Use QUALITY.md plain for the project, format, standard, or product concept.
+- Use QUALITY.md plain by default, including when referring to QUALITY.md in
+  the abstract or conceptual sense.
+- Use `QUALITY.md` in backticks when describing a concrete instance of a
+  QUALITY.md in an operational use case.
 - Use bold/emphasized **QUALITY.md** only for first-mention emphasis in user-facing intro prose.
 - Prefer no bold in agent instructions, specs, and dense technical docs.
 

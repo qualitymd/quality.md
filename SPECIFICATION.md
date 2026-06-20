@@ -81,7 +81,7 @@ for a subject.
 
 **Entity**: A thing evaluated for quality.
 
-**Model**: The root object in a `QUALITY.md` file. A Model is the apex Target
+**Model**: The root object in a QUALITY.md file. A Model is the apex Target
 plus the model-wide Rating Scale.
 
 **Target**: An entity or set of entities with quality requirements subject to
@@ -216,7 +216,7 @@ as a grouping node for child `targets`.
 identifier.
 
 When present, `source` selects the entities evaluated by the Target. Relative
-paths and globs resolve relative to the containing `QUALITY.md` file. When a
+paths and globs resolve relative to the containing QUALITY.md file. When a
 Target omits `source`, it inherits the Source of the nearest ancestor Target
 that declares one; if no ancestor declares one, it inherits the document's
 default Source.
@@ -519,7 +519,7 @@ This model covers the checkout API and the payment write path it owns.
 This appendix is non-normative.
 
 The following snippets illustrate invalid shapes. They are intentionally
-incomplete and are not standalone `QUALITY.md` files.
+incomplete and are not standalone QUALITY.md files.
 
 ### Missing rating-level title
 

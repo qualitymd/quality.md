@@ -2,13 +2,13 @@
 
 **QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
 what matters most, why, and how. Use it with the `/quality` agent skill to
-continuously improve AI assistant and coding projects.
+continuously improve AI assistant and coding agent projects.
 
-A `QUALITY.md` file is a Markdown file with a quality model in YAML frontmatter
-and supporting quality context in the Markdown body. The `/quality` skill helps
-set up the file, evaluate quality, and evolve the model as you learn. The
-`qualitymd` CLI provides support tooling for validation, status, and evaluation
-records.
+A QUALITY.md file is a Markdown file with a quality model and supporting
+context. The `/quality` skill helps set up the file, evaluate quality, and
+evolve the model as you learn. The `qualitymd` CLI provides support tooling for
+validating QUALITY.md files, managing quality evaluations, and maintaining a
+QUALITY.md workspace.
 
 ## Install
 
@@ -66,13 +66,7 @@ gaps stay visible and addressable instead of compounding.
 > The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
 > Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
 
-## Format
-
-### Specification
-
-The format is specified in [`SPECIFICATION.md`](SPECIFICATION.md).
-
-### Example QUALITY.md
+## Example QUALITY.md
 
 ```markdown
 ---
@@ -131,40 +125,15 @@ This model covers message triage and written replies in the support workspace.
 It does not cover billing system behavior or product incident response.
 ```
 
-An agent that reads this file can evaluate support work against the stated
-requirements, produce findings, and rate the results against the model's scale.
+## Format
 
-For a completed evaluation run, the CLI renders a concise summary and the full
-report from records supplied by the `/quality` skill:
+### Specification
 
-```text
-Wrote quality/evaluations/0001-subject-quality-eval/report-summary.md,
-quality/evaluations/0001-subject-quality-eval/report.md, and
-quality/evaluations/0001-subject-quality-eval/report.json
-```
-
-A summary excerpt looks like this:
-
-```md
-# Quality Evaluation Summary
-
-| Field          | Value  |
-| -------------- | ------ |
-| Overall rating | Target |
-
-## Top Issues
-
-None recorded.
-```
-
-## The Specification
-
-The full format specification lives at [`SPECIFICATION.md`](SPECIFICATION.md).
-What follows is a condensed reference.
+The full format is specified in [`SPECIFICATION.md`](SPECIFICATION.md).
 
 ### File Structure
 
-A `QUALITY.md` file has two layers:
+A QUALITY.md file has two layers:
 
 1. **YAML frontmatter** — the structured quality model.
 2. **Markdown body** — the context, rationale, scope, needs, risks, and known
@@ -211,7 +180,7 @@ Targets can nest recursively. `ratingScale` exists only on the root model.
 
 | Concept      | Meaning                                                         |
 | ------------ | --------------------------------------------------------------- |
-| Model        | The root quality model in a `QUALITY.md` file.                  |
+| Model        | The root quality model in a QUALITY.md file.                    |
 | Target       | The thing being evaluated.                                      |
 | Source       | The material assessed for a target, such as a path or selector. |
 | Factor       | A quality dimension that matters for a target.                  |

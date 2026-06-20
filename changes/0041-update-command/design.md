@@ -46,9 +46,9 @@ Rename the command to `update`. The default `RunE` applies; a `--check` flag
 short-circuits to the advisory path; `--json` emits the result struct — an output
 modifier that never changes whether the command applies, so the struct carries an
 `applied` boolean that lets a consumer tell an apply from a `--check`. `--apply`
-is removed — applying is the default. Register a second cobra command `upgrade`
-marked `Deprecated` (cobra prints the deprecation line automatically) that shares
-`update`'s `RunE`, so `qualitymd upgrade [--check]` keeps working for one cycle.
+is removed — applying is the default. `upgrade` is renamed outright to `update`
+with no alias; the paired `/quality` skill mode is renamed and version-pinned in
+lockstep, so nothing keeps calling `qualitymd upgrade`.
 The file moves `internal/cli/upgrade.go` → `update.go` and its test
 `internal/cli/version_upgrade_test.go` → `version_update_test.go`; symbols rename
 to match.
@@ -74,7 +74,12 @@ type latestVersionProvider func(context.Context, installMethod) (latestRelease, 
 (strict SemVer precedence; `updateAvailable` returns false when either version is
 not valid SemVer or is a prerelease — the old "report any difference" fallback is
 dropped, so such builds never report or apply an update, per the spec) and reports
-`UpdateAvailable = newer && latest.Ready`.
+`UpdateAvailable = newer && latest.Ready && !isDevBuild()`.
+A development build is a first-class no-update condition, not a side effect of
+SemVer parsing: a single `isDevBuild()` predicate (read from the build-stamped
+version metadata) short-circuits `checkUpdate` to `UpdateAvailable=false`, refuses
+apply, and is the exact dev-build gate the ambient notice and refresh reuse — one
+source of truth, so a dev build carrying a SemVer-looking stamp can't slip through.
 The default (apply) path refuses with a clear diagnostic when `newer &&
 !latest.Ready`, before any mutation. The result struct also carries `latest.Ready`
 through to an explicit `latestVersionReady` field in `--json`, so a consumer can
@@ -138,22 +143,24 @@ checkedAt }`.
 
 **Emit.** A cobra root `PersistentPostRunE` reads the cache and, when all gates
 pass, writes one stderr line naming current → latest, the `qualitymd update`
-command, and the notes URL when known. Gates: cache says a newer, ready version
-exists; stderr is a terminal (`term.IsTerminal`); not `--json` (inspect the
-invoked command's flag); no CI env (`CI`); opt-out unset
-(`QUALITYMD_NO_UPDATE_CHECK`); not a dev build. Any failure to read the cache is
+command, and the notes URL when known. Gates: the cache says a newer, ready
+version exists, `ambientAllowed()` holds (opt-out unset / not a dev build / no CI
+env / stderr is a terminal — see Refresh), and the command is not `--json`
+(inspect the invoked command's flag). Any failure to read the cache is
 swallowed — the notice never affects exit code or output. The notice shows on
 every qualifying run (no rate-limit, no persisted dismissal) — the gating already
 confines it to interactive non-`--json` humans, and a single quiet stderr line
 per run matches npm/gh/brew.
 
-**Refresh.** The refresh shares the notice's suppression gates: it spawns only
-when the opt-out is unset, the build is not a dev build, stderr is interactive,
-and the cache is older than the TTL (20h). The interactive (TTY) gate already
-excludes the piped invocations agents and CI typically use (whether or not
-`--json` is set), so the refresh need not separately gate on `--json`; and
-skipping dev builds avoids a network subprocess for a build that can never report
-an update. When those gates pass, the foreground process spawns a *detached*
+**Refresh.** Notice and refresh share one `ambientAllowed()` predicate — opt-out
+unset, not a dev build, no CI env (`CI`), stderr interactive (`term.IsTerminal`) —
+and the notice additionally checks `--json`. The refresh spawns only when
+`ambientAllowed()` holds and the cache is older than the TTL (20h). It gates on CI
+explicitly rather than leaning on "TTY implies not-CI": some CI runners allocate a
+pseudo-TTY, and a CI run must never spawn a network subprocess the user didn't
+invoke. The refresh needs no `--json` gate of its own — `--json` only suppresses
+the visible line, not the background warming — and skipping dev builds avoids a
+network subprocess for a build that can never report an update. When those gates pass, the foreground process spawns a *detached*
 `qualitymd` subprocess from the root `PersistentPreRunE` — so the child has
 maximum lead time, overlaps the real command, and still spawns even if the command
 later errors before post-run. The child performs the check and rewrites the cache, then the parent
@@ -202,9 +209,11 @@ its update check solely as a `check_for_update_on_startup` config flag documente
   readiness gate would then confirm GitHub assets, a signal `brew upgrade` doesn't
   use, advertising upgrades the tap can't yet deliver. The gate is the reason this
   had to be fixed here, not deferred.
-- **Hard rename with no alias.** Rejected — the version-pinned `/quality` skill
-  and existing scripts call `upgrade`; a deprecated alias avoids breaking the
-  paired flow mid-transition.
+- **Keep a deprecated `upgrade` alias.** Rejected — the only callers are the
+  version-pinned `/quality` skill (renamed in lockstep) and scripts; carrying an
+  alias whose no-flag behavior silently flips from advisory to apply is more
+  surprising than a clean rename, and there is no external compatibility contract
+  to preserve.
 
 ## Trade-offs and risks
 
@@ -224,8 +233,6 @@ its update check solely as a `check_for_update_on_startup` config flag documente
   failed latest check — no update reported, never an error — and the apply path's
   `--version` verify backstops a wrong/stale read. The tap path is a single
   constant if the repo or cask name ever changes.
-- The deprecated `upgrade` alias is one extra command to carry and later remove;
-  cheap, and it keeps the skill working across the version bump.
 
 ## Resolved decisions
 

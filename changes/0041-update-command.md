@@ -1,7 +1,7 @@
 ---
 type: Change Case
 title: Update command and improvements
-description: Rename upgrade to update with apply-by-default and a --check advisory, rename the /quality upgrade skill mode to update, self-apply managed standalone installs, gate availability on release readiness, surface release notes, and add an ambient cached update nudge.
+description: Rename upgrade to update with apply-by-default and a --check advisory, rename the /quality upgrade skill mode to update, self-apply managed standalone installs, gate availability on release readiness, surface release notes, and add an ambient cached update notice.
 status: Design
 tags: [cli, update, upgrade, install, versioning, skill]
 timestamp: 2026-06-20T00:00:00Z
@@ -64,8 +64,8 @@ release, and a release-notes reference in advisory and applied output.
 
 ## Scope
 
-Covered: rename `upgrade` → `update` with a deprecated `upgrade` alias for one
-release cycle; flagless apply-by-default; `--check` advisory and `--json`;
+Covered: rename `upgrade` → `update` outright (no alias); flagless
+apply-by-default; `--check` advisory and `--json`;
 managed standalone self-apply; release-readiness gating on availability and
 apply, including resolving Homebrew latest/readiness from the published tap cask
 rather than the GitHub release tag; a release-notes reference; an ambient cached
@@ -93,7 +93,7 @@ no change to `QUALITY.md` format or evaluation semantics.
       on readiness; resolve Homebrew latest/readiness from the published tap cask
       instead of the GitHub release tag (fixing the 0032 bug where brew compared
       against GitHub), with a post-apply `--version` verify on every apply path;
-      add managed standalone to the apply path; add a deprecated `upgrade` alias.
+      add managed standalone to the apply path.
 - [ ] `internal/cli` root command wiring — a persistent post-run hook that emits
       the ambient notice from cache under the gating rules, and a bounded,
       non-blocking cache refresh.
@@ -104,8 +104,9 @@ no change to `QUALITY.md` format or evaluation semantics.
 - [ ] [`internal/cli/version_upgrade_test.go`](../internal/cli/version_upgrade_test.go)
       → `internal/cli/version_update_test.go` (renamed alongside `update.go`) —
       cover apply-by-default, `--check`, managed standalone apply, readiness
-      gating, release-notes output, the alias, post-apply `--version` verify, and
-      notice gating (TTY/CI/`--json`/opt-out/dev-build/cache states).
+      gating, release-notes output, post-apply `--version` verify, dev-build
+      no-update behavior, and notice/refresh gating
+      (TTY/CI/`--json`/opt-out/dev-build/cache states).
 
 ### Durable specs
 
@@ -148,13 +149,15 @@ the document format or evaluation semantics.
       recommend `/quality update` (was `/quality upgrade`) and reference
       `qualitymd update --check`.
 - [ ] [`skills/quality/resources/cli-quick-reference.md`](../skills/quality/resources/cli-quick-reference.md)
-      — `update` / `update --check`, dropped `--apply`, the alias, and the notice.
+      — `update` / `update --check`, dropped `--apply` and the old `upgrade`
+      command, and the notice.
 - [ ] [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md)
       and [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
       — rename the `upgrade` route token to `update` in the route list.
 - [ ] [`install.md`](../install.md) — `qualitymd update --check`, self-applying
       channels, and how to opt out of the ambient notice.
-- [ ] [`CHANGELOG.md`](../CHANGELOG.md) — record the rename (with alias), the
+- [ ] [`CHANGELOG.md`](../CHANGELOG.md) — record the rename (breaking: no
+      `upgrade` alias), the
       `/quality update` mode rename, and the ambient notice as notable changes.
 
 ### Install/scaffold
