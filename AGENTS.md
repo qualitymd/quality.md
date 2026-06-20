@@ -1,56 +1,70 @@
 # QUALITY.md
 
-QUALITY.md is an open format for modeling a project's quality for the purpose of evaluation, team/agent alignment, and continuous improvement.
+## Project Context
 
-Read [`README.md`](README.md) before you continue for important project context.
+QUALITY.md is an open format for modeling a project's quality for the purpose
+of evaluation, team/agent alignment, and continuous improvement.
 
-## Key Docs
+Read [`README.md`](README.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md)
+before you continue for important project context and development guidance.
 
-| Path                                                                                               | Purpose                                                                                                                                                                                                     |
-| -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`README.md`](README.md)                                                                           | Project overview, current implementation status, and install notes.                                                                                                                                         |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md)                                                               | Development setup, `mise run` tasks, project layout, and process pointers.                                                                                                                                  |
-| [`docs/guides/cut-a-release.md`](docs/guides/cut-a-release.md)                                     | Authoritative release runbook: release prep, tag/publish, verification, failure handling, and changelog workflow.                                                                                           |
-| [`SPECIFICATION.md`](SPECIFICATION.md)                                                             | Source of truth for the `QUALITY.md` format and evaluation semantics: Model / Target / Factor / Requirement / RatingScale schema, assessment -> finding -> rating-result chain, and Markdown body guidance. |
-| [`specs/skills/quality-skill/guides/authoring.md`](specs/skills/quality-skill/guides/authoring.md) | Governing functional spec for the `/quality` skill's authoring guide; defines its role as the canonical reference and best-practices guide.                                                                 |
-| [`skills/quality/guides/authoring.md`](skills/quality/guides/authoring.md)                         | Runtime guide bundled with the `/quality` skill; gives agents and humans the reusable concepts and best practices for authoring useful `QUALITY.md` files.                                                  |
-| [`skills/quality/guides/getting-started.md`](skills/quality/guides/getting-started.md)             | Runtime process guide for turning an initialized `QUALITY.md` skeleton into a first useful model after reading the authoring guide.                                                                         |
+The QUALITY.md experience is largely agent and skill-first. Users do not
+typically use the CLI for most use cases. Instead, the CLI and edits to
+`QUALITY.md` are managed by the agent skill. Users are still encouraged to edit
+`QUALITY.md` manually or with thoughtful AI assistance, especially the Markdown
+body. User-facing docs, guides, explainers, etc. should foreground the
+`/quality` agent skill or the `QUALITY.md` file itself and only highlight the
+CLI if necessary.
 
-## Conventions
+## Major Components
+
+| Component           | Where to look                                                                                                                                                         |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `QUALITY.md` format | [`SPECIFICATION.md`](SPECIFICATION.md) is the source of truth for the model schema, Markdown body guidance, and evaluation semantics.                                 |
+| `/quality` skill    | Runtime files live in [`skills/quality/`](skills/quality/); functional specs and guide outlines live in [`specs/skills/quality-skill/`](specs/skills/quality-skill/). |
+| `qualitymd` CLI     | Source starts at [`cmd/qualitymd/`](cmd/qualitymd/) and [`internal/`](internal/); CLI specs live in [`specs/cli/`](specs/cli/) and [`specs/cli.md`](specs/cli.md).    |
+
+## Working Rules
 
 ### Instruction style
 
 Keep this file extremely concise. Brevity over grammar.
 
-### Referencing ISO standards
+### Routine changes
 
-- Keep ISO lineage background.
-- Do not cite specific ISO standards in public code/artifacts unless requested
-  or the file's purpose.
-- Use QUALITY.md terms: Targets, Factors, Requirements.
-- [`SPECIFICATION.md`](SPECIFICATION.md) may cite ISO for provenance.
-
-### Open Knowledge Format (OKF) bundles
-
-OKF bundles register concept types in root `schema.md`:
-
-| Folder     | What it holds                                                |
-| ---------- | ------------------------------------------------------------ |
-| `specs/`   | Specifications for the deterministic `qualitymd` surface.    |
-| `docs/`    | Project documentation, organized by the four Diátaxis modes. |
-| `changes/` | Change Cases — formal work records with spec/design history. |
-
-A Change Case records significant work: motivation, status, affected durable
-artifacts, a functional spec, and optional design doc.
+Routine prompted edits do not require a Change Case. Use `changes/` only when
+the user asks for a Change Case, when continuing an existing `changes/NNNN-*`
+item, or when the work needs durable spec/design/review history. Other routine
+changes follow the normal change guide: make the scoped edit, update directly
+relevant docs, tests, and specs, and verify.
 
 ### Smoke testing
 
-- Do not add smoke-test scripts, utilities, fixtures, or code to repo.
+- Do not add smoke-test scripts, utilities, fixtures, or code to the repo.
 - Temporary helpers only in `tmp/` or throwaway dirs; remove when done.
+
+## Documentation Map
+
+### Core docs
+
+| Path                                                           | Purpose                                                                                                   |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| [`README.md`](README.md)                                       | Project overview, current implementation status, and install notes.                                       |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md)                           | Development setup, `mise run` tasks, project layout, and process pointers.                                |
+| [`SPECIFICATION.md`](SPECIFICATION.md)                         | Source of truth for the `QUALITY.md` format and evaluation semantics.                                     |
+| [`docs/guides/cut-a-release.md`](docs/guides/cut-a-release.md) | Authoritative release runbook: prep, tag/publish, verification, failure handling, and changelog workflow. |
+
+### Quality skill docs
+
+| Path                                                                                               | Purpose                                                                                           |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [`specs/skills/quality-skill/guides/authoring.md`](specs/skills/quality-skill/guides/authoring.md) | Governing functional spec for the `/quality` skill's authoring guide.                             |
+| [`skills/quality/guides/authoring.md`](skills/quality/guides/authoring.md)                         | Runtime guide with reusable concepts and best practices for authoring useful `QUALITY.md` files.  |
+| [`skills/quality/guides/getting-started.md`](skills/quality/guides/getting-started.md)             | Runtime process guide for turning an initialized `QUALITY.md` skeleton into a first useful model. |
 
 ### Guides
 
-Before work, read relevant [`docs/guides/`](docs/guides/index.md):
+Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
 | When you are…                                   | Read                                                               |
 | ----------------------------------------------- | ------------------------------------------------------------------ |
@@ -61,13 +75,30 @@ Before work, read relevant [`docs/guides/`](docs/guides/index.md):
 | Designing or reshaping a CLI command            | [Designing CLI interfaces](docs/guides/cli-design.md)              |
 | Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)         |
 
-Routine prompted edits do not require a Change Case. Use `changes/` only when
-the user asks for a Change Case, when continuing an existing `changes/NNNN-*`
-item, or when the work needs durable spec/design/review history. Other
-changes/modifications follow the normal routine change guide: make the scoped
-edit, update directly relevant docs, tests, and specs, and verify.
+## Repository Conventions
+
+### Open Knowledge Format (OKF) bundles
+
+OKF bundles register concept types in the root `schema.md`:
+
+| Folder     | What it holds                                                |
+| ---------- | ------------------------------------------------------------ |
+| `specs/`   | Specifications for the deterministic `qualitymd` surface.    |
+| `docs/`    | Project documentation, organized by the four Diátaxis modes. |
+| `changes/` | Change Cases — formal work records with spec/design history. |
+
+A Change Case records significant work: motivation, status, affected durable
+artifacts, a functional spec, and optional design doc.
+
+### Referencing ISO standards
+
+- Keep ISO lineage background.
+- Do not cite specific ISO standards in public code/artifacts unless requested
+  or relevant to the file's purpose.
+- Use QUALITY.md terms: Targets, Factors, Requirements.
+- [`SPECIFICATION.md`](SPECIFICATION.md) may cite ISO for provenance.
 
 ### Agent guidance files
 
-- `CLAUDE.md`, `GEMINI.md` symlink here. Edit `AGENTS.md` only.
-- Both symlinks gitignored.
+- `CLAUDE.md` and `GEMINI.md` symlink to this file. Edit `AGENTS.md` only.
+- Both symlinks are gitignored.

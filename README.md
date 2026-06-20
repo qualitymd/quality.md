@@ -33,7 +33,7 @@ Invoke the `/quality` skill to manage quality for your project:
 /quality wizard                                 Have your AI assistant/agent help you manage quality
 /quality evaluate                               Evaluate the quality of your project
 /quality evaluate security                      Evaluate a specific quality factor or characteristic
-/quality evaluate payments-api                  Evaluate specific target or project component
+/quality evaluate payments-api                  Evaluate a specific target or project component
 /quality evaluate payments-api maintainability  Evaluate a target's specific quality
 ```
 
@@ -138,7 +138,9 @@ For a completed evaluation run, the CLI renders a concise summary and the full
 report from records supplied by the `/quality` skill:
 
 ```text
-Wrote quality/evaluations/0001-subject-quality-eval/report-summary.md, quality/evaluations/0001-subject-quality-eval/report.md, and quality/evaluations/0001-subject-quality-eval/report.json
+Wrote quality/evaluations/0001-subject-quality-eval/report-summary.md,
+quality/evaluations/0001-subject-quality-eval/report.md, and
+quality/evaluations/0001-subject-quality-eval/report.json
 ```
 
 A summary excerpt looks like this:
@@ -164,8 +166,8 @@ What follows is a condensed reference.
 
 A `QUALITY.md` file has two layers:
 
-1. **YAML frontmatter** - the structured quality model.
-2. **Markdown body** - the context, rationale, scope, needs, risks, and known
+1. **YAML frontmatter** — the structured quality model.
+2. **Markdown body** — the context, rationale, scope, needs, risks, and known
    gaps that help people and agents interpret the model.
 
 The document begins with the YAML frontmatter. The Markdown body can be empty,
@@ -245,7 +247,9 @@ assessment -> findings -> rating result
 
 ## Status
 
-The `QUALITY.md` format, `qualitymd` CLI, and `/quality` skill are early and under active development. Expect the format and tooling to change as they mature.
+The `QUALITY.md` format, `qualitymd` CLI, and `/quality` skill are early and
+under active development. Expect the format and tooling to change as they
+mature.
 
 ## Contributing
 
