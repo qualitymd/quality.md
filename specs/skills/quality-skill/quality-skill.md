@@ -799,15 +799,15 @@ stable identifiers retained where the report needs traceability. `report.json`
 preserves stable identifiers for machines.
 
 The CLI-rendered concise summary **MUST** read as a decision brief for human
-readers: key details, Summary, Top Issues, Recommendations, and Scope &
-Limitations. Its key details use reader-facing labels including "Full
-evaluation" for an unnarrowed run and "Overall rating" for the in-scope
-subject's headline rating. Its Recommendations section surfaces copyable
-Recommendation IDs for follow-up prompts. The full `report.md` remains
-summary-first before detailed target and requirement sections. The JSON report
-**MUST** expose the same summary-layer data with non-null scope, empty arrays for
-empty collections, explicit rating objects for null or not-assessed ratings, and
-a structural state for grouping targets with no local requirements.
+readers: key details, Verdict, Target Ratings, Selected Findings, Recommended
+Actions, and Scope & Limitations. Its key details use reader-facing labels
+including "Full evaluation" for an unnarrowed run and "Evaluation verdict" for
+the in-scope root Target's aggregate verdict. Its Recommended Actions section
+surfaces copyable Recommendation IDs for follow-up prompts. The full `report.md`
+remains verdict-first before detailed target and requirement sections. The JSON
+report **MUST** expose the same summary-layer data with non-null scope, empty
+arrays for empty collections, explicit rating objects for null or not-assessed
+ratings, and a structural state for grouping targets with no local requirements.
 
 Like the report, the design, plan, assessment, and analysis records reference any
 secret value by `file:line` and type only (see

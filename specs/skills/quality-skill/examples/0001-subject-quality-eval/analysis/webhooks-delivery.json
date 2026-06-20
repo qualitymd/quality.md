@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "webhooks",
+    "delivery"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "Reliability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Retry-with-backoff reaches target, but redelivery deduplication is bounded and best-effort, so the reliability factor is minimum."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
+  },
+  "assessmentResultRecords": [
+    "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+    "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json"
+  ],
+  "childAnalysisRecords": [],
+  "ratingConstraints": [
+    {
+      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
+      "level": "minimum"
+    }
+  ]
+}

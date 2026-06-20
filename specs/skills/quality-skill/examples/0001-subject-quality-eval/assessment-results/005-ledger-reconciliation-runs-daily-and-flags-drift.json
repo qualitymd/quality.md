@@ -4,6 +4,15 @@
     "ledger"
   ],
   "requirement": "Reconciliation runs daily and flags drift",
+  "factorPaths": [
+    [
+      "Correctness"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "not-assessed",
+    "rationale": "Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level. The Ledger local rating rests on its assessed requirement and is noted as incomplete."
+  },
   "criterionSource": "rating-scale",
   "findings": [
     {
@@ -31,14 +40,5 @@
   ],
   "recommendations": [
     "002-produce-reconciliation-evidence"
-  ],
-  "factorPaths": [
-    [
-      "Correctness"
-    ]
-  ],
-  "ratingResult": {
-    "kind": "not-assessed",
-    "rationale": "Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level. The Ledger local rating rests on its assessed requirement and is noted as incomplete."
-  }
+  ]
 }

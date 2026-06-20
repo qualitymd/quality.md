@@ -6,7 +6,7 @@ evidenceLocators:
   - internal/gateway/client.go:48
   - internal/gateway/client_test.go:12
 assessmentResultRecords:
-  - assessment-results/001-root-no-committed-credentials.json
+  - assessment-results/001-root-no-credentials-are-committed-to-the-repository.json
 remediationOptions:
   - Rotate at the gateway, then move the secret to runtime configuration.
   - Move the secret to configuration without rotating.

@@ -2,58 +2,192 @@
   "schemaVersion": 1,
   "summary": {
     "run": "0001-subject-quality-eval",
-    "subject": "Sparrow Payments API",
+    "subject": "root",
     "altitude": "subject",
-    "rigor": "standard",
+    "rigor": "",
     "narrowing": "",
     "ratingResult": {
       "kind": "rated",
       "level": "unacceptable",
-      "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+      "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
     }
   },
   "ratingResult": {
     "kind": "rated",
     "level": "unacceptable",
-    "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+    "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
   },
   "scope": {
-    "recorded": true,
-    "description": "whole model",
+    "recorded": false,
+    "description": "Evaluation scope reconstructed from the run's analysis and assessment result records.",
     "narrowing": "",
     "inScope": [
-      "Sparrow Payments API",
-      "Ledger",
-      "Webhooks",
-      "Delivery"
+      "root",
+      "ledger",
+      "webhooks",
+      "webhooks/delivery"
     ],
     "outOfScope": [],
-    "notRecorded": []
+    "notRecorded": [
+      "rigor",
+      "out-of-scope areas"
+    ]
   },
-  "evidenceBasis": [],
+  "evidenceBasis": [
+    {
+      "kind": "source",
+      "ref": "internal/gateway/client.go:48"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'gateway secret key' internal/gateway/client.go"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'gateway secret key' internal/gateway/client.go (rating-binding re-check)"
+    },
+    {
+      "kind": "source",
+      "ref": "internal/gateway/client_test.go:12"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'publishable key' internal/gateway/client_test.go"
+    },
+    {
+      "kind": "source",
+      "ref": "cmd/api/routes.go"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'RequireAuth|transfers|refunds|payouts' cmd/api/routes.go"
+    },
+    {
+      "kind": "source",
+      "ref": "internal/gateway/client.go:51"
+    },
+    {
+      "kind": "source",
+      "ref": "internal/transfer/handler.go:73"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'Idempotency-Key' internal/transfer"
+    },
+    {
+      "kind": "source",
+      "ref": "internal/transfer/handler_test.go:120"
+    },
+    {
+      "kind": "test",
+      "ref": "go test ./internal/transfer -run TestTransferReplayReturnsOriginalResult"
+    },
+    {
+      "kind": "source",
+      "ref": "ledger/posting.go:64"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'sum|balanced|zero' ledger/posting.go"
+    },
+    {
+      "kind": "source",
+      "ref": "ledger/posting_test.go:210"
+    },
+    {
+      "kind": "test",
+      "ref": "go test ./ledger -run TestPostingPropertyBalancedTransfers"
+    },
+    {
+      "kind": "source",
+      "ref": "ledger/reconcile.go:31"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'reconcile' ledger"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'reconciliation report|drift report|scheduled reconciliation' ."
+    },
+    {
+      "kind": "source",
+      "ref": "webhooks/emit.go"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'Sign|sign' webhooks/emit.go webhooks/sign.go"
+    },
+    {
+      "kind": "source",
+      "ref": "webhooks/sign_test.go:48"
+    },
+    {
+      "kind": "test",
+      "ref": "go test ./webhooks -run TestWebhookSignatureRejectsTamper"
+    },
+    {
+      "kind": "source",
+      "ref": "webhooks/delivery/retry.go:37"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'backoff|retry window|24h' webhooks/delivery/retry.go"
+    },
+    {
+      "kind": "source",
+      "ref": "webhooks/delivery/retry_test.go:91"
+    },
+    {
+      "kind": "test",
+      "ref": "go test ./webhooks/delivery -run TestRetryTransientFailure"
+    },
+    {
+      "kind": "source",
+      "ref": "webhooks/delivery/dedup.go:52"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'dedup' webhooks/delivery"
+    },
+    {
+      "kind": "search",
+      "ref": "rg '24h|retention' webhooks/delivery"
+    },
+    {
+      "kind": "source",
+      "ref": "docs/merchants/webhooks.md"
+    },
+    {
+      "kind": "search",
+      "ref": "rg 'idempotent|duplicate' docs/merchants/webhooks.md"
+    }
+  ],
   "limitations": [
-    "Standard rigor did not seek broader failure-injection and step-up-control evidence required for outstanding ratings.",
-    "The committed-credential finding reflects the tracked working tree at the evaluated commit.",
-    "Transfer idempotency and webhook deduplication each rest on one replay/redelivery test, not sustained concurrency or fault-injection soak."
+    "Reconciliation runs daily and flags drift: Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level",
+    "Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level",
+    "The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding",
+    "The assessed double-entry invariant reaches target while reconciliation remains not assessed",
+    "The double-entry invariant holds in the recorded evidence; reconciliation is not assessed, so the factor rating is target but incomplete"
   ],
   "nextAction": {
     "kind": "recommendation",
-    "summary": "Rotate the committed gateway key.",
+    "summary": "The committed-credentials requirement reaches target; no live credential is present in the working tree and the previously exposed key has been revoked.",
     "recommendationId": "001-rotate-committed-gateway-key",
     "recommendationPath": "recommendations/001-rotate-committed-gateway-key.md"
   },
   "targetSummary": [
     {
-      "targetPath": [],
+      "targetPath": null,
       "localRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
-        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+        "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
-        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+        "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
       },
       "coveredRequirements": 3
     },
@@ -64,12 +198,12 @@
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The target requirements are satisfied by the available evidence."
+        "rationale": "The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The target requirements are satisfied by the available evidence."
+        "rationale": "Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
       },
       "coveredRequirements": 2,
       "note": "has not-assessed requirements"
@@ -81,12 +215,12 @@
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The target requirements are satisfied by the available evidence."
+        "rationale": "The Webhooks target's own signing requirement is rated target."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
       },
       "coveredRequirements": 1
     },
@@ -98,28 +232,28 @@
       "localRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
       },
-      "coveredRequirements": 1
+      "coveredRequirements": 2
     }
   ],
   "targets": [
     {
-      "targetPath": [],
+      "targetPath": null,
       "localRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
-        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+        "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
-        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+        "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
       },
       "factorRatingResults": [
         {
@@ -129,7 +263,7 @@
           "ratingResult": {
             "kind": "rated",
             "level": "unacceptable",
-            "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+            "rationale": "Bound by the Secrets handling sub-factor because a live gateway credential is committed in plaintext; Access control is rated target."
           }
         },
         {
@@ -139,11 +273,11 @@
           "ratingResult": {
             "kind": "rated",
             "level": "target",
-            "rationale": "The target requirements are satisfied by the available evidence."
+            "rationale": "Transfer idempotency holds, and the Ledger double-entry invariant tags Reliability as a secondary factor."
           }
         }
       ],
-      "analysisRecord": "analysis/root-sparrow-payments.json",
+      "analysisRecord": "analysis/root.json",
       "notAssessedRequirements": [],
       "structural": false
     },
@@ -154,14 +288,25 @@
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The target requirements are satisfied by the available evidence."
+        "rationale": "The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The target requirements are satisfied by the available evidence."
+        "rationale": "Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
       },
-      "factorRatingResults": [],
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Correctness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The double-entry invariant holds in the recorded evidence; reconciliation is not assessed, so the factor rating is target but incomplete."
+          }
+        }
+      ],
       "analysisRecord": "analysis/ledger.json",
       "notAssessedRequirements": [
         "Reconciliation runs daily and flags drift"
@@ -175,14 +320,25 @@
       "localRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The target requirements are satisfied by the available evidence."
+        "rationale": "The Webhooks target's own signing requirement is rated target."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
       },
-      "factorRatingResults": [],
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Security"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Every emit path signs webhook payloads and no unsigned path was found."
+          }
+        }
+      ],
       "analysisRecord": "analysis/webhooks.json",
       "notAssessedRequirements": [],
       "structural": false
@@ -195,85 +351,247 @@
       "localRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
       },
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
       },
-      "factorRatingResults": [],
-      "analysisRecord": "analysis/delivery.json",
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Reliability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "Retry-with-backoff reaches target, but redelivery deduplication is bounded and best-effort, so the reliability factor is minimum."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/webhooks-delivery.json",
       "notAssessedRequirements": [],
       "structural": false
     }
   ],
   "assessmentResults": [
     {
-      "assessmentResultRecord": "assessment-results/001-root-no-committed-credentials.json",
+      "assessmentResultRecord": "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
       "targetPath": [],
       "requirement": "No credentials are committed to the repository",
       "ratingResult": {
         "kind": "rated",
         "level": "unacceptable",
-        "rationale": "Held at unacceptable by a single binding constraint: a live payment-gateway credential is committed to the repository. Rotating and removing it would lift the root off the floor, but the Webhooks delivery deduplication gap would then bind at minimum."
+        "rationale": "Rated against this requirement's ratings overrides. Unacceptable applies because a live credential is present in the working tree; a single live secret satisfies that criterion regardless of clean findings elsewhere. The secret value is withheld and referenced only by locator and credential type."
       },
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation.json",
+      "assessmentResultRecord": "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+      "targetPath": [],
+      "requirement": "Every money-moving endpoint enforces authentication",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Full route coverage with no unauthenticated money-moving exceptions satisfies the requirement. No evidence of step-up or re-authentication controls was recorded, so the result does not reach outstanding."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/003-root-transfers-are-idempotent-on-retry.json",
+      "targetPath": [],
+      "requirement": "Transfers are idempotent on retry",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The transfer entrypoint requires an idempotency key and the replay test shows no duplicate debit on retry. Broader failure-injection evidence was not recorded, so the result remains at target."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
+      "targetPath": [
+        "ledger"
+      ],
+      "requirement": "Every transfer debits and credits to a net zero (double-entry invariant)",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The invariant is enforced before commit and covered by a property test over observed transfer paths. Multi-currency rounding paths were not exercised, so the result remains below outstanding."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
       "targetPath": [
         "ledger"
       ],
       "requirement": "Reconciliation runs daily and flags drift",
       "ratingResult": {
         "kind": "not-assessed",
-        "rationale": "Scheduled-run evidence was not available."
+        "rationale": "Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level. The Ledger local rating rests on its assessed requirement and is noted as incomplete."
       },
       "active": true
     },
     {
-      "assessmentResultRecord": "assessment-results/008-delivery-redelivery-dedup.json",
+      "assessmentResultRecord": "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
+      "targetPath": [
+        "webhooks"
+      ],
+      "requirement": "Every outbound webhook is signed so merchants can verify its origin",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Every recorded emit path signs the payload with origin and replay protection, and tamper rejection is tested. Per-merchant signing-secret rotation was not recorded, so the result remains below outstanding."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
       "targetPath": [
         "webhooks",
         "delivery"
       ],
-      "requirement": "Redelivery is deduplicated inside the retry window",
+      "requirement": "Failed deliveries retry with exponential backoff until acknowledged or the retry window expires",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Failures retry with exponential backoff until acknowledgment or the bounded retry window expires, and exhausted deliveries are recorded rather than silently dropped. Broader failure-injection evidence was not recorded, so the result remains below outstanding."
+      },
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "targetPath": [
+        "webhooks",
+        "delivery"
+      ],
+      "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
       "ratingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target meets the floor but has a known bounded deduplication gap."
+        "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor."
       },
       "active": true
     }
   ],
   "findingSummaries": [
     {
-      "assessmentResultRecord": "assessment-results/001-root-no-committed-credentials.json",
+      "assessmentResultRecord": "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
       "locator": "internal/gateway/client.go:48",
       "category": "secret",
       "severity": "critical",
-      "summary": "A live gateway secret key is committed in plaintext; value withheld."
+      "summary": "A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder."
     },
     {
-      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation.json",
+      "assessmentResultRecord": "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
+      "locator": "internal/gateway/client_test.go:12",
+      "category": "non-secret",
+      "severity": "info",
+      "summary": "A test publishable key is present and is non-secret by design."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+      "locator": "cmd/api/routes.go",
+      "category": "route-authentication",
+      "severity": "info",
+      "summary": "All 18 transfer, refund, and payout routes resolve through the RequireAuth middleware before reaching their handlers; no unauthenticated money-moving route was found."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+      "locator": "internal/gateway/client.go:51",
+      "category": "prompt-injection",
+      "severity": "info",
+      "summary": "Evaluator-directed source text resembling prompt injection was present and treated as data, not followed."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/003-root-transfers-are-idempotent-on-retry.json",
+      "locator": "internal/transfer/handler.go:73",
+      "category": "idempotency-key",
+      "severity": "info",
+      "summary": "POST /transfers requires an Idempotency-Key before processing a transfer."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/003-root-transfers-are-idempotent-on-retry.json",
+      "locator": "internal/transfer/handler_test.go:120",
+      "category": "replay-test",
+      "severity": "info",
+      "summary": "A replay test confirms a retried key returns the original result without a second debit."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
+      "locator": "ledger/posting.go:64",
+      "category": "invariant-enforcement",
+      "severity": "info",
+      "summary": "The posting routine rejects entries whose sum is not zero before commit."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
+      "locator": "ledger/posting_test.go:210",
+      "category": "property-test",
+      "severity": "info",
+      "summary": "A property test over 10k generated transfers found zero imbalanced postings."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
       "locator": "ledger/reconcile.go:31",
       "category": "missing-evidence",
-      "summary": "A reconcile entrypoint exists, but no scheduled run output, log, or report was available."
+      "summary": "A reconcile entrypoint exists, but no reconciliation job output, log, or report was available."
     },
     {
-      "assessmentResultRecord": "assessment-results/008-delivery-redelivery-dedup.json",
+      "assessmentResultRecord": "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
+      "locator": "webhooks/emit.go",
+      "category": "signing-coverage",
+      "severity": "info",
+      "summary": "All six webhook emit paths sign through the shared signing path before delivery."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
+      "locator": "webhooks/sign_test.go:48",
+      "category": "signature-test",
+      "severity": "info",
+      "summary": "A signing test confirms tampered or unsigned payloads are rejected."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+      "locator": "webhooks/delivery/retry.go:37",
+      "category": "retry-backoff",
+      "severity": "info",
+      "summary": "Failed deliveries re-enqueue on an exponential backoff schedule within a bounded 24-hour retry window."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
+      "locator": "webhooks/delivery/retry_test.go:91",
+      "category": "retry-test",
+      "severity": "info",
+      "summary": "A retry test confirms a transiently failing endpoint is retried and no event is silently lost."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "locator": "webhooks/delivery/dedup.go:52",
+      "category": "positive-evidence",
+      "summary": "Each event carries a stable delivery id, and the engine suppresses a redelivery to an endpoint that already acknowledged it."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
       "locator": "webhooks/delivery/dedup.go:52",
       "category": "bounded-deduplication",
       "severity": "medium",
-      "summary": "Deduplication state is retained for the same 24-hour window as retries, so late re-enqueue can duplicate delivery."
+      "summary": "Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired."
+    },
+    {
+      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "locator": "docs/merchants/webhooks.md",
+      "category": "supporting-documentation",
+      "summary": "Merchant docs say to consume events idempotently, confirming duplicates are possible by design."
     }
   ],
   "recommendations": [
     {
       "id": "001-rotate-committed-gateway-key",
       "path": "recommendations/001-rotate-committed-gateway-key.md",
-      "doneCriterion": "The committed-credentials requirement reaches target: no live credential is present in the working tree and the previously exposed key has been revoked.",
+      "doneCriterion": "The committed-credentials requirement reaches target; no live credential is present in the working tree and the previously exposed key has been revoked.",
       "active": true
     },
     {
@@ -285,7 +603,7 @@
     {
       "id": "003-bound-webhook-dedup-window",
       "path": "recommendations/003-bound-webhook-dedup-window.md",
-      "doneCriterion": "The webhook-delivery deduplication requirement reaches target within the declared retry window.",
+      "doneCriterion": "The webhook-delivery deduplication requirement reaches target for the full duration any retry could fire.",
       "active": true
     }
   ]

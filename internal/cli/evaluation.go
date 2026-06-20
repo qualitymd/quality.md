@@ -267,7 +267,7 @@ func newEvaluationReportGateCmd() *cobra.Command {
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
-	cmd.Flags().StringVar(&threshold, "at-or-below", "", "exit 1 when the overall rating is this level or worse")
+	cmd.Flags().StringVar(&threshold, "at-or-below", "", "exit 1 when the evaluation verdict is this level or worse")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable gate result")
 	return cmd
 }

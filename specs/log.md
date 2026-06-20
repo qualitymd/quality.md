@@ -1,5 +1,20 @@
 # Specs Update Log
 
+## 2026-06-20
+
+- **Revision**: Updated the [Evaluation records](evaluation-records.md),
+  [`evaluation report`](cli/evaluation-report.md), and
+  [`/quality` skill](skills/quality-skill/quality-skill.md) contracts so all
+  report outputs are faithful projections of one assembled report model.
+  Clarified headline verdict sourcing, scoped-output labeling,
+  active/superseded handling, typed rating states, deterministic finding/action
+  labels, and the renderer's no-rejudging boundary.
+
+- **Revision**: Completed the
+  [`Sparrow Payments`](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
+  example as a reportable generated fixture, with full assessment and analysis
+  records for the run and checked-in reports regenerated from those records.
+
 ## 2026-06-19
 
 - **Revision**: Added [`qualitymd update`](cli/update.md), replacing

@@ -17,15 +17,14 @@ subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
 four-level rating scale
 (**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
 `design.md`, `plan.md`, and the `assessment-results/` and `analysis/` records are the
-snapshot, inputs, method, and write-once evidence trail the skill writes alongside
-the report (see [Reporting](../quality-skill.md#reporting)), so the report's
-findings trace to the model, parameters, coverage, and per-requirement and
-per-target records in force at evaluation time. A full run records one assessment
-per in-scope requirement and one analysis per target node; the folders here keep a
-**representative subset** — `assessment-results/` the committed-key **Unacceptable**, the
-*not assessed* reconciliation, and the **Minimum** deduplication (of eight); and
-`analysis/` the root (bound by its own local rating) and Webhooks (whose aggregate
-falls below its local rating because the Delivery child binds) of four.
+snapshot, inputs, method, and write-once evidence trail the skill writes
+alongside the report (see [Reporting](../quality-skill.md#reporting)), so the
+report's findings trace to the model, parameters, coverage, and per-requirement
+and per-target records in force at evaluation time. The checked-in reports are
+generated from the adjacent runtime records; update them by changing the fixture
+inputs and rebuilding the report, not by hand-editing the generated report files.
+This fixture is intentionally complete and reportable: it records one assessment
+per in-scope requirement and one analysis per target node.
 
 # Examples
 

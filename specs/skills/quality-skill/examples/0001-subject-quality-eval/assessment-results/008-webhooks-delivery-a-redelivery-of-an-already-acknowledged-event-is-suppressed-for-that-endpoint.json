@@ -5,6 +5,16 @@
     "delivery"
   ],
   "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
+  "factorPaths": [
+    [
+      "Reliability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor."
+  },
   "criterionSource": "rating-scale",
   "findings": [
     {
@@ -60,15 +70,5 @@
   ],
   "recommendations": [
     "003-bound-webhook-dedup-window"
-  ],
-  "factorPaths": [
-    [
-      "Reliability"
-    ]
-  ],
-  "ratingResult": {
-    "kind": "rated",
-    "level": "minimum",
-    "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor."
-  }
+  ]
 }

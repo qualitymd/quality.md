@@ -227,14 +227,53 @@ maintainer surface, verification command) belong in the existing recommendation
 text fields rather than a dedicated schema field, for the same schema-stability
 reason as assessment evidence above.
 
-## report.json
+## Report Outputs
 
 `report-summary.md`, `report.md`, and `report.json` are generated artifacts, not
 input records, judgment records, or OKF concepts.
 
+All report outputs are projections of one assembled Evaluation Report model. The
+renderer **MUST** assemble that model from the run's `model.md`, `plan.md`,
+assessment result records, analysis records, recommendation records, and run
+metadata before rendering any output. `report-summary.md`, `report.md`,
+`report.json`, and gate behavior **MUST NOT** be composed independently from run
+files in ways that can diverge on scope, headline rating, active advice,
+limitations, or record references.
+
+Report rendering **MUST** preserve the meaning of the underlying records rather
+than adding a new judgment layer. In particular:
+
+- The headline verdict is the in-scope root Target's aggregate
+  `ratingResult`.
+- A local Target rating **MUST NOT** be presented as the headline verdict unless
+  the active analysis record also makes it the aggregate rating.
+- Labels **MUST NOT** imply whole-model coverage, ranking, priority, causality,
+  or actionability unless that meaning is present in the records or in a
+  documented deterministic renderer rule.
+- Scoped evaluations **MUST** be explicitly labeled as scoped wherever their
+  verdict is displayed.
+- `rated`, `not-assessed`, active, superseded, and structural/no-local-rating
+  states **MUST** remain distinct.
+- Findings are evidence. A report output **MUST NOT** turn findings into actions
+  unless they are connected to active recommendation records.
+- Recommendation-facing action surfaces **MUST** use active recommendations only;
+  superseded recommendations remain audit/detail data.
+- Rendering may resolve labels, sort, deduplicate, link, summarize, and apply
+  documented selection rules. It **MUST NOT** reread subject source, recompute
+  ratings, invent findings, or choose new recommendations by evaluator
+  judgment.
+
+`report.json` is the canonical serialized form of that assembled report model.
+`report.md` is the complete human Evaluation Report. `report-summary.md` is the
+concise human triage projection. They can differ in density, but they **MUST**
+agree on the in-scope root verdict, scope, active recommendations, limitations,
+typed rating states, and record references.
+
+## report.json
+
 `report.json` is the machine rendering of the same Evaluation Report as
-`report.md`. It **MUST** present the overall rating and rationale for the
-in-scope subject, scope, per-target results, and advice. It **MUST** reference
+`report.md`. It **MUST** present the in-scope root Target's aggregate verdict
+and rationale, scope, per-target results, and advice. It **MUST** reference
 findings by assessment result record; full finding detail stays in
 `assessment-results/*.json`.
 Referencing a finding by record (rather than inlining its raw
@@ -243,10 +282,10 @@ secret values or prompt-injection text into the report artifact, the same
 trust-boundary rule the
 [`report build`](cli/evaluation-report.md) renderer follows.
 
-`report.json` **MUST** carry a summary layer equivalent to the leading sections
-of `report.md`: summary, scope, evidence basis, limitations, next action, and
-target summary. Collections **MUST** render as arrays, including empty arrays;
-they **MUST NOT** render as `null`.
+`report.json` **MUST** carry a leading report-summary layer equivalent to the
+leading sections of `report.md`: verdict, scope, evidence basis, limitations,
+next action, and target summary. Collections **MUST** render as arrays,
+including empty arrays; they **MUST NOT** render as `null`.
 
 Recommendation summaries **MUST** indicate whether each recommendation is active
 or superseded. The report Next Action **MUST** choose from active
@@ -276,12 +315,19 @@ recommendation distinction. It **MUST NOT** replace `report.md` as the complete
 human Evaluation Report.
 
 `report-summary.md` **MUST** use a decision-brief outline for human readers:
-key details under `# Quality Evaluation Summary`, then Summary, Top Issues,
-Recommendations, and Scope & Limitations. The key details **MUST** use
-reader-facing labels, including "Full evaluation" for an unnarrowed run and
-"Overall rating" for the in-scope subject's headline rating.
+key details under `# Quality Evaluation Summary`, then Verdict, Target Ratings,
+Selected Findings, Recommended Actions, and Scope & Limitations. The key details
+**MUST** use reader-facing labels, including "Full evaluation" for an
+unnarrowed run and "Evaluation verdict" for the in-scope root Target's aggregate
+verdict.
 
-The Recommendations section **MUST** make active recommendation identifiers
+The Target Ratings section **MUST** distinguish local ratings from aggregate
+ratings. The selected finding section **MUST** be named for its deterministic
+selection rule, such as "Selected Findings" for a severity-filtered subset or
+"Rating-Binding Findings" only when the renderer can prove binding status from
+recorded constraints.
+
+The Recommended Actions section **MUST** make active recommendation identifiers
 prominent for follow-up prompts. When active recommendations exist, the summary
 **MUST** render a `Recommendation ID` column with copyable stable identifiers and
 **MUST NOT** present superseded recommendations as primary actions.

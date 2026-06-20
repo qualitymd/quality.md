@@ -434,7 +434,7 @@ func renderReportMarkdown(report EvaluationReportDocument, labels reportDisplayL
 }
 
 func writeReportSummarySection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
-	out.WriteString("## Summary\n\n")
+	out.WriteString("## Verdict\n\n")
 	out.WriteString("- **Subject:** " + labels.Target(nil, report.Summary.Subject) + "\n")
 	if report.Summary.Altitude != "" {
 		out.WriteString("- **Altitude:** " + report.Summary.Altitude + "\n")
@@ -449,7 +449,7 @@ func writeReportSummarySection(out *bytes.Buffer, report EvaluationReportDocumen
 	if report.Summary.Narrowing != "" {
 		out.WriteString("- **Narrowing:** " + report.Summary.Narrowing + "\n")
 	}
-	out.WriteString("- **Rating:** " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + "\n")
+	out.WriteString("- **Evaluation verdict:** " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + "\n")
 	if report.Summary.RatingResult.Rationale != "" {
 		out.WriteString("- **Rationale:** " + report.Summary.RatingResult.Rationale + "\n")
 	}
@@ -475,12 +475,12 @@ func writeReportScopeSection(out *bytes.Buffer, report EvaluationReportDocument,
 }
 
 func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report EvaluationReportDocument) {
-	out.WriteString("\n## Top Risks and Limitations\n\n")
+	out.WriteString("\n## Selected Findings and Limitations\n\n")
 	risks := riskFindings(report.FindingSummaries)
 	summaryRisks := firstFindingSummaries(risks, 8)
 	summaryLimitations := firstStrings(report.Limitations, 8)
 	if len(summaryRisks) == 0 && len(summaryLimitations) == 0 {
-		out.WriteString("No top risks or limitations were recorded in the summary data.\n")
+		out.WriteString("No selected findings or limitations were recorded in the report data.\n")
 		return
 	}
 	for _, finding := range summaryRisks {
@@ -497,7 +497,7 @@ func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report EvaluationR
 		out.WriteString("- Limitation: " + limitation + "\n")
 	}
 	if len(risks) > len(summaryRisks) || len(report.Limitations) > len(summaryLimitations) {
-		out.WriteString("- Additional risks or limitations are available in `report.json`.\n")
+		out.WriteString("- Additional selected findings or limitations are available in `report.json`.\n")
 	}
 }
 
@@ -523,7 +523,7 @@ func writeReportNextActionSection(out *bytes.Buffer, report EvaluationReportDocu
 
 func writeReportTargetSummarySection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
 	out.WriteString("\n## Target Summary\n\n")
-	out.WriteString("| Target | Local | Aggregate | Covered Requirements | Note |\n")
+	out.WriteString("| Target | Local rating | Aggregate rating | Covered requirements | Note |\n")
 	out.WriteString("| --- | --- | --- | --- | --- |\n")
 	for _, target := range report.TargetSummary {
 		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, targetPathDisplay(target.TargetPath))) + " | " + tableCell(displayOptionalRatingResult(target.LocalRatingResult, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRatingResult, labels.Ratings)) + " | " + fmt.Sprintf("%d", target.CoveredRequirements) + " | " + tableCell(target.Note) + " |\n")
@@ -628,19 +628,19 @@ func writeSummaryKeyDetails(out *bytes.Buffer, report EvaluationReportDocument, 
 	}
 	out.WriteString("| Scope | " + tableCell(summaryScope(report)) + " |\n")
 	out.WriteString("| Rigor | " + tableCell(summaryValueTitle(report.Summary.Rigor)) + " |\n")
-	out.WriteString("| Overall rating | " + tableCell(displayRatingResult(report.Summary.RatingResult, labels.Ratings)) + " |\n")
+	out.WriteString("| Evaluation verdict | " + tableCell(displayRatingResult(report.Summary.RatingResult, labels.Ratings)) + " |\n")
 	out.WriteString("| Full report | [report.md](report.md) |\n")
 	out.WriteString("| Machine report | [report.json](report.json) |\n\n")
 }
 
 func writeSummarySection(out *bytes.Buffer, report EvaluationReportDocument, labels reportDisplayLabels) {
-	out.WriteString("## Summary\n\n")
+	out.WriteString("## Verdict\n\n")
 	if report.Summary.RatingResult.Rationale != "" {
 		out.WriteString(report.Summary.RatingResult.Rationale + "\n")
 	} else if isNotAssessed(report.Summary.RatingResult) {
-		out.WriteString("The evaluation did not produce an overall rating.\n")
+		out.WriteString("The evaluation did not produce a rated verdict.\n")
 	} else {
-		out.WriteString("The evaluation completed with overall rating " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + ".\n")
+		out.WriteString("The evaluation completed with verdict " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + ".\n")
 	}
 	writeSummaryRatingTable(out, report, labels)
 }
@@ -651,14 +651,14 @@ func writeSummaryRatingTable(out *bytes.Buffer, report EvaluationReportDocument,
 		out.WriteString("No target ratings were recorded.\n")
 		return
 	}
-	out.WriteString("| Target | Local rating | Overall rating | Driver |\n")
+	out.WriteString("| Target | Local rating | Aggregate rating | Rating basis |\n")
 	out.WriteString("| --- | --- | --- | --- |\n")
 	for _, target := range report.TargetSummary {
-		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, targetPathDisplay(target.TargetPath))) + " | " + tableCell(displayOptionalRatingResult(target.LocalRatingResult, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRatingResult, labels.Ratings)) + " | " + tableCell(summaryDriver(target)) + " |\n")
+		out.WriteString("| " + tableCell(labels.Target(target.TargetPath, targetPathDisplay(target.TargetPath))) + " | " + tableCell(displayOptionalRatingResult(target.LocalRatingResult, labels.Ratings)) + " | " + tableCell(displayRatingResult(target.AggregateRatingResult, labels.Ratings)) + " | " + tableCell(summaryRatingBasis(target)) + " |\n")
 	}
 }
 
-func summaryDriver(target TargetRatingSummary) string {
+func summaryRatingBasis(target TargetRatingSummary) string {
 	if target.AggregateRatingResult.Rationale != "" {
 		return target.AggregateRatingResult.Rationale
 	}
@@ -669,7 +669,7 @@ func summaryDriver(target TargetRatingSummary) string {
 }
 
 func writeSummaryTopIssues(out *bytes.Buffer, report EvaluationReportDocument) {
-	out.WriteString("\n## Top Issues\n\n")
+	out.WriteString("\n## Selected Findings\n\n")
 	issues := firstFindingSummaries(riskFindings(report.FindingSummaries), 5)
 	if len(issues) == 0 {
 		out.WriteString("None recorded.\n")
@@ -694,7 +694,7 @@ func writeSummaryTopIssues(out *bytes.Buffer, report EvaluationReportDocument) {
 }
 
 func writeSummaryRecommendations(out *bytes.Buffer, report EvaluationReportDocument) {
-	out.WriteString("\n## Recommendations\n\n")
+	out.WriteString("\n## Recommended Actions\n\n")
 	active := activeRecommendations(report.Recommendations)
 	if report.NextAction.RecommendationID != "" {
 		out.WriteString("Primary next action: use `" + report.NextAction.RecommendationID + "`.\n\n")
@@ -1344,7 +1344,7 @@ func Gate(result *BuildReportReceipt, scale []string, threshold string) (bool, e
 		return false, nil
 	}
 	if ratingIndex < 0 {
-		return false, fmt.Errorf("overall rating %q is not in the run rating scale", result.RatingResult.Level)
+		return false, fmt.Errorf("evaluation verdict %q is not in the run rating scale", result.RatingResult.Level)
 	}
 	return ratingIndex < thresholdIndex, nil
 }

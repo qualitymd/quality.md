@@ -1,19 +1,10 @@
 {
   "schemaVersion": 1,
   "targetPath": [],
-  "childAnalysisRecords": [
-    "analysis/ledger.json",
-    "analysis/webhooks.json"
-  ],
   "localRatingResult": {
     "kind": "rated",
     "level": "unacceptable",
     "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
-  },
-  "aggregateRatingResult": {
-    "kind": "rated",
-    "level": "unacceptable",
-    "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
   },
   "factorRatingResults": [
     {
@@ -37,9 +28,18 @@
       }
     }
   ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
+  },
   "assessmentResultRecords": [
-    "assessment-results/001-root-no-committed-credentials.json",
-    "assessment-results/002-root-endpoint-auth.json",
-    "assessment-results/003-root-transfer-idempotency.json"
+    "assessment-results/001-root-no-credentials-are-committed-to-the-repository.json",
+    "assessment-results/002-root-every-money-moving-endpoint-enforces-authentication.json",
+    "assessment-results/003-root-transfers-are-idempotent-on-retry.json"
+  ],
+  "childAnalysisRecords": [
+    "analysis/ledger.json",
+    "analysis/webhooks.json"
   ]
 }

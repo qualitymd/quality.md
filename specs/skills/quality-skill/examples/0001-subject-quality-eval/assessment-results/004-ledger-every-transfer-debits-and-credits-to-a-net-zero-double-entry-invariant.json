@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "targetPath": [
+    "ledger"
+  ],
+  "requirement": "Every transfer debits and credits to a net zero (double-entry invariant)",
+  "factorPaths": [
+    [
+      "Correctness"
+    ],
+    [
+      "Reliability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The invariant is enforced before commit and covered by a property test over observed transfer paths. Multi-currency rounding paths were not exercised, so the result remains below outstanding."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "ledger/posting.go:64",
+      "observation": "The posting routine rejects entries whose sum is not zero before commit.",
+      "category": "invariant-enforcement",
+      "severity": "info",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "ledger/posting.go:64"
+        },
+        {
+          "kind": "search",
+          "ref": "rg 'sum|balanced|zero' ledger/posting.go"
+        }
+      ]
+    },
+    {
+      "locator": "ledger/posting_test.go:210",
+      "observation": "A property test over 10k generated transfers found zero imbalanced postings.",
+      "category": "property-test",
+      "severity": "info",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "ledger/posting_test.go:210"
+        },
+        {
+          "kind": "test",
+          "ref": "go test ./ledger -run TestPostingPropertyBalancedTransfers"
+        }
+      ],
+      "attributes": {
+        "generatedTransfers": "10000",
+        "imbalancedPostings": "0"
+      }
+    }
+  ],
+  "recommendations": []
+}

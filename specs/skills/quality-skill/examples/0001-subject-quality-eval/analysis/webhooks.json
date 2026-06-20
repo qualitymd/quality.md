@@ -3,25 +3,10 @@
   "targetPath": [
     "webhooks"
   ],
-  "childAnalysisRecords": [
-    "analysis/delivery.json"
-  ],
-  "ratingConstraints": [
-    {
-      "assessmentResultRecord": "assessment-results/008-delivery-redelivery-dedup.json",
-      "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
-      "level": "minimum"
-    }
-  ],
   "localRatingResult": {
     "kind": "rated",
     "level": "target",
-    "rationale": "The Webhooks node's own signing requirement is rated target."
-  },
-  "aggregateRatingResult": {
-    "kind": "rated",
-    "level": "minimum",
-    "rationale": "The node's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
+    "rationale": "The Webhooks target's own signing requirement is rated target."
   },
   "factorRatingResults": [
     {
@@ -35,7 +20,22 @@
       }
     }
   ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
+  },
   "assessmentResultRecords": [
-    "assessment-results/006-webhooks-signing.json"
+    "assessment-results/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json"
+  ],
+  "childAnalysisRecords": [
+    "analysis/webhooks-delivery.json"
+  ],
+  "ratingConstraints": [
+    {
+      "assessmentResultRecord": "assessment-results/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
+      "requirement": "A redelivery of an already-acknowledged event is suppressed for that endpoint",
+      "level": "minimum"
+    }
   ]
 }
