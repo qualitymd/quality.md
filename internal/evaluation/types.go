@@ -72,12 +72,65 @@ type Evidence struct {
 }
 
 type Finding struct {
-	Locator     string         `json:"locator"`
-	Observation string         `json:"observation"`
-	Category    string         `json:"category"`
-	Severity    string         `json:"severity,omitempty"`
-	Evidence    []Evidence     `json:"evidence,omitempty"`
-	Attributes  map[string]any `json:"attributes,omitempty"`
+	Locator     string               `json:"locator"`
+	Observation string               `json:"observation"`
+	Category    string               `json:"category"`
+	Severity    FindingSeverityLevel `json:"severity"`
+	Evidence    []Evidence           `json:"evidence,omitempty"`
+	Attributes  map[string]any       `json:"attributes,omitempty"`
+}
+
+type FindingSeverityLevel string
+
+const (
+	FindingSeverityCritical FindingSeverityLevel = "critical"
+	FindingSeverityHigh     FindingSeverityLevel = "high"
+	FindingSeverityMedium   FindingSeverityLevel = "medium"
+	FindingSeverityLow      FindingSeverityLevel = "low"
+	FindingSeverityInfo     FindingSeverityLevel = "info"
+)
+
+type FindingSeverity struct {
+	Level FindingSeverityLevel `json:"level"`
+	Title string               `json:"title"`
+}
+
+func (s FindingSeverityLevel) Valid() bool {
+	switch s {
+	case FindingSeverityCritical, FindingSeverityHigh, FindingSeverityMedium, FindingSeverityLow, FindingSeverityInfo:
+		return true
+	default:
+		return false
+	}
+}
+
+func (s FindingSeverityLevel) Title() string {
+	switch s {
+	case FindingSeverityCritical:
+		return "Critical"
+	case FindingSeverityHigh:
+		return "High"
+	case FindingSeverityMedium:
+		return "Medium"
+	case FindingSeverityLow:
+		return "Low"
+	case FindingSeverityInfo:
+		return "Info"
+	default:
+		return string(s)
+	}
+}
+
+func (s FindingSeverityLevel) IsRisk() bool {
+	return s.Valid() && s != FindingSeverityInfo
+}
+
+func (s FindingSeverityLevel) Display() FindingSeverity {
+	return FindingSeverity{Level: s, Title: s.Title()}
+}
+
+func findingSeverityLevels() string {
+	return "critical, high, medium, low, or info"
 }
 
 type AssessmentResultInput struct {

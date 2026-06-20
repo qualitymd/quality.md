@@ -21,6 +21,7 @@
       "locator": "webhooks/delivery/dedup.go:52",
       "observation": "Each event carries a stable delivery id, and the engine suppresses a redelivery to an endpoint that already acknowledged it.",
       "category": "positive-evidence",
+      "severity": "info",
       "evidence": [
         {
           "kind": "source",
@@ -56,6 +57,7 @@
       "locator": "docs/merchants/webhooks.md",
       "observation": "Merchant docs say to consume events idempotently, confirming duplicates are possible by design.",
       "category": "supporting-documentation",
+      "severity": "info",
       "evidence": [
         {
           "kind": "source",

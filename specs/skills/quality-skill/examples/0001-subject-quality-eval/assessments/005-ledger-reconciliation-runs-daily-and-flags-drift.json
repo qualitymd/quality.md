@@ -19,6 +19,7 @@
       "locator": "ledger/reconcile.go:31",
       "observation": "A reconcile entrypoint exists, but no reconciliation job output, log, or report was available.",
       "category": "missing-evidence",
+      "severity": "medium",
       "evidence": [
         {
           "kind": "source",

@@ -335,6 +335,7 @@ func (r *EvaluationRun) renderableAssessmentResultState(superseded map[string]bo
 	identities := map[string]string{}
 	for _, rec := range r.AssessmentResults {
 		state.Known[rec.File] = true
+		state.Gaps = append(state.Gaps, assessmentResultFindingSeverityGaps(rec)...)
 		if superseded[rec.File] {
 			continue
 		}
@@ -347,6 +348,19 @@ func (r *EvaluationRun) renderableAssessmentResultState(superseded map[string]bo
 		identities[key] = rec.File
 	}
 	return state
+}
+
+func assessmentResultFindingSeverityGaps(rec AssessmentResultRecord) []EvaluationRunGap {
+	var gaps []EvaluationRunGap
+	for i, finding := range rec.Findings {
+		switch {
+		case strings.TrimSpace(string(finding.Severity)) == "":
+			gaps = append(gaps, EvaluationRunGap{Kind: "missing-finding-severity", Ref: rec.File, Detail: fmt.Sprintf("findings[%d] must include severity", i)})
+		case !finding.Severity.Valid():
+			gaps = append(gaps, EvaluationRunGap{Kind: "invalid-finding-severity", Ref: rec.File, Detail: fmt.Sprintf("findings[%d].severity must be one of %s", i, findingSeverityLevels())})
+		}
+	}
+	return gaps
 }
 
 func (r *EvaluationRun) renderableAnalysisState() renderableAnalysisState {
@@ -574,7 +588,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 
 func hasReviewGap(gaps []EvaluationRunGap) bool {
 	for _, gap := range gaps {
-		if gap.Kind == "duplicate-assessment-result" || gap.Kind == "duplicate-root-analysis" || gap.Kind == "missing-superseded-recommendation" || gap.Kind == "missing-superseded-assessment-result" || gap.Kind == "invalid-assessment-result-supersedes" || gap.Kind == "invalid-plan-coverage" || gap.Kind == "superseded-assessment-result-reference" || strings.HasPrefix(gap.Kind, "unexpected-") {
+		if gap.Kind == "duplicate-assessment-result" || gap.Kind == "duplicate-root-analysis" || gap.Kind == "missing-superseded-recommendation" || gap.Kind == "missing-superseded-assessment-result" || gap.Kind == "invalid-assessment-result-supersedes" || gap.Kind == "invalid-plan-coverage" || gap.Kind == "missing-finding-severity" || gap.Kind == "invalid-finding-severity" || gap.Kind == "superseded-assessment-result-reference" || strings.HasPrefix(gap.Kind, "unexpected-") {
 			return true
 		}
 	}

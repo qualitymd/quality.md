@@ -771,14 +771,16 @@ An assessment result record's finding uses generic fields:
 - `locator`
 - `observation`
 - `category`
-- optional `severity`
+- `severity`
 - `evidence`
 - optional `attributes`
 
 For example, a secret finding may use `category: "secret"` and
-`attributes.credentialType`; it must not include the secret value. A
-prompt-injection observation may use `category: "prompt-injection"` and is
-recorded, not followed.
+`severity: "critical"` with `attributes.credentialType`; it must not include the
+secret value. A prompt-injection observation may use
+`category: "prompt-injection"` and is recorded, not followed. Severity values
+come from the canonical evaluation-record vocabulary and reports render their
+display titles.
 
 The report is the **render over these records**, not an independent copy:
 `report-summary.md` is the concise human triage artifact, `report.md` is the

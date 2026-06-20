@@ -87,11 +87,11 @@ type AssessmentResultDigest struct {
 }
 
 type FindingDigest struct {
-	AssessmentResultRecord string `json:"assessmentResultRecord"`
-	Locator                string `json:"locator"`
-	Category               string `json:"category"`
-	Severity               string `json:"severity,omitempty"`
-	Summary                string `json:"summary"`
+	AssessmentResultRecord string          `json:"assessmentResultRecord"`
+	Locator                string          `json:"locator"`
+	Category               string          `json:"category"`
+	Severity               FindingSeverity `json:"severity"`
+	Summary                string          `json:"summary"`
 }
 
 type RecommendationReference struct {
@@ -318,7 +318,7 @@ func addReportFindings(report *EvaluationReportDocument, record AssessmentResult
 			AssessmentResultRecord: record.File,
 			Locator:                finding.Locator,
 			Category:               finding.Category,
-			Severity:               finding.Severity,
+			Severity:               finding.Severity.Display(),
 			Summary:                finding.Observation,
 		})
 		for _, evidence := range finding.Evidence {
@@ -488,9 +488,7 @@ func writeReportRisksAndLimitationsSection(out *bytes.Buffer, report EvaluationR
 		if finding.Locator != "" {
 			out.WriteString(" at `" + finding.Locator + "`")
 		}
-		if finding.Severity != "" {
-			out.WriteString(" [" + finding.Severity + "]")
-		}
+		out.WriteString(" [" + finding.Severity.Title + "]")
 		out.WriteString(": " + finding.Summary + "\n")
 	}
 	for _, limitation := range summaryLimitations {
@@ -677,11 +675,7 @@ func writeSummaryTopIssues(out *bytes.Buffer, report EvaluationReportDocument) {
 	}
 	for i, finding := range issues {
 		fmt.Fprintf(out, "%d. ", i+1)
-		if finding.Severity != "" {
-			out.WriteString("**" + finding.Severity + "**  \n   ")
-		} else if finding.Category != "" {
-			out.WriteString("**" + finding.Category + "**  \n   ")
-		}
+		out.WriteString("**" + finding.Severity.Title + "**  \n   ")
 		out.WriteString(finding.Summary)
 		out.WriteString("\n")
 		if finding.Locator != "" {
@@ -1056,13 +1050,7 @@ func nonNilFactorRatingResults(factors []FactorRatingResult) []FactorRatingResul
 func riskFindings(findings []FindingDigest) []FindingDigest {
 	risks := []FindingDigest{}
 	for _, finding := range findings {
-		if finding.Severity == "" {
-			continue
-		}
-		switch strings.ToLower(finding.Severity) {
-		case "info", "informational", "note":
-			continue
-		default:
+		if finding.Severity.Level.IsRisk() {
 			risks = append(risks, finding)
 		}
 	}

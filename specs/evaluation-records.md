@@ -127,12 +127,29 @@ They are not human display titles.
   `not-assessed`
 - `rationale`
 
-Each finding **MUST** carry `locator`, `observation`, and `category`; it **MAY**
-carry `severity`, `evidence`, and `attributes`. Evidence verification and
-locator rigor ride on these existing fields deliberately, with no new schema
-field; this keeps `schemaVersion` stable and the record mechanically gate-able.
-Add a dedicated field only when repeated real-repo use shows the existing fields
-insufficient.
+Each finding **MUST** carry `locator`, `observation`, `category`, and
+`severity`; it **MAY** carry `evidence` and `attributes`.
+
+`severity` **MUST** be one of the canonical severity levels below. The `level`
+is the stable record value; the `title` is the human display label used by
+reports.
+
+| level      | title    |
+| ---------- | -------- |
+| `critical` | Critical |
+| `high`     | High     |
+| `medium`   | Medium   |
+| `low`      | Low      |
+| `info`     | Info     |
+
+Findings with `severity: "info"` are neutral evidence or supporting
+observations. Findings with `critical`, `high`, `medium`, or `low` are risk
+findings eligible for selected-finding summaries.
+
+Evidence verification and locator rigor ride on these existing fields
+deliberately, with no new schema field; this keeps `schemaVersion` stable and
+the record mechanically gate-able. Add a dedicated field only when repeated
+real-repo use shows the existing fields insufficient.
 
 A run **MUST NOT** contain more than one active assessment result record for the
 same ordered `targetPath` and `requirement`. Duplicate active assessment result
@@ -294,6 +311,9 @@ recommendations only.
 Assessment result summaries **MUST** indicate whether each assessment result is
 active or superseded. Superseded assessment results remain visible in the report
 audit trail but must not be treated as active judgment.
+
+Finding summaries **MUST** preserve the canonical severity `level` and expose
+the corresponding display `title`.
 
 Equivalent limitation summaries **MUST** be deduplicated across recorded context
 and rationale-derived constraints. Deduplication **MUST** be deterministic and

@@ -332,8 +332,11 @@ func validateAssessmentResultRequiredStrings(p AssessmentResultInput) error {
 
 func validateAssessmentResultFindings(findings []Finding) error {
 	for i, finding := range findings {
-		if strings.TrimSpace(finding.Locator) == "" || strings.TrimSpace(finding.Observation) == "" || strings.TrimSpace(finding.Category) == "" {
-			return usagef("findings[%d] must include locator, observation, and category", i)
+		if strings.TrimSpace(finding.Locator) == "" || strings.TrimSpace(finding.Observation) == "" || strings.TrimSpace(finding.Category) == "" || strings.TrimSpace(string(finding.Severity)) == "" {
+			return usagef("findings[%d] must include locator, observation, category, and severity", i)
+		}
+		if !finding.Severity.Valid() {
+			return usagef("findings[%d].severity must be one of %s", i, findingSeverityLevels())
 		}
 	}
 	return nil

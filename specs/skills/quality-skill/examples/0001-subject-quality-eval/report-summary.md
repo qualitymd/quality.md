@@ -24,11 +24,15 @@ The root's own local rating binds. Ledger is rated target and Webhooks is rated 
 
 ## Selected Findings
 
-1. **critical**  
+1. **Critical**  
    A live payment-gateway API secret key is committed in plaintext; it matches the format of an active key and is not a placeholder.
    `internal/gateway/client.go:48`
    Assessment: `assessments/001-root-no-credentials-are-committed-to-the-repository.json`
-2. **medium**  
+2. **Medium**  
+   A reconcile entrypoint exists, but no reconciliation job output, log, or report was available.
+   `ledger/reconcile.go:31`
+   Assessment: `assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json`
+3. **Medium**  
    Suppression state is retained for only 24 hours, the same as the retry window, so a delivery re-enqueued late in that window can fire after its dedup record has expired.
    `webhooks/delivery/dedup.go:52`
    Assessment: `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json`

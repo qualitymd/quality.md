@@ -111,6 +111,12 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
         }
       ],
       "observation": "Only a smoke test exists."
+    },
+    {
+      "locator": "docs/testing.md:1",
+      "category": "supporting-evidence",
+      "severity": "info",
+      "observation": "A testing note exists as supporting evidence."
     }
   ],
   "recommendations": [
@@ -173,7 +179,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
 		}
 	}
-	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`, `"ratingResult": {`, `"level": "minimum"`} {
+	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`, `"ratingResult": {`, `"level": "minimum"`, `"severity": {`, `"level": "medium"`, `"title": "Medium"`} {
 		if !strings.Contains(string(first), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, first)
 		}
@@ -201,13 +207,16 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report-summary.md: %v", err)
 	}
-	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Evaluation verdict | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Verdict", "## Selected Findings", "Only a smoke test exists.", "## Recommended Actions", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
+	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Evaluation verdict | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Verdict", "## Selected Findings", "**Medium**", "Only a smoke test exists.", "## Recommended Actions", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
 	}
 	if strings.Contains(string(summaryMD), "| Evaluation verdict | minimum |") {
 		t.Fatalf("report-summary.md rendered level id as evaluation verdict:\n%s", summaryMD)
+	}
+	if strings.Contains(string(summaryMD), "A testing note exists as supporting evidence.") {
+		t.Fatalf("report-summary.md selected an info finding:\n%s", summaryMD)
 	}
 	for _, notWant := range []string{"**Root rating:**", "## Rating Summary", "## Summary", "## Top Issues", "## Recommendations", "## Limitations", "## Next Action", "| Overall rating |"} {
 		if strings.Contains(string(summaryMD), notWant) {
@@ -230,6 +239,138 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if string(beforeSummary) != string(afterSummary) {
 		t.Fatal("report-summary.md changed across idempotent render")
 	}
+}
+
+func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	for _, tc := range []struct {
+		name string
+		raw  string
+		want string
+	}{
+		{
+			name: "missing",
+			raw: `{
+  "targetPath": [],
+  "requirement": "Has tests",
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "tests/example_test.go:1",
+      "category": "coverage",
+      "observation": "Only a smoke test exists."
+    }
+  ],
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Some evidence exists but coverage is thin."
+  }
+}`,
+			want: "must include locator, observation, category, and severity",
+		},
+		{
+			name: "unknown",
+			raw: `{
+  "targetPath": [],
+  "requirement": "Has tests",
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "tests/example_test.go:1",
+      "category": "coverage",
+      "severity": "blocker",
+      "observation": "Only a smoke test exists."
+    }
+  ],
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Some evidence exists but coverage is thin."
+  }
+}`,
+			want: "severity must be one of critical, high, medium, low, or info",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := AddRecord(KindAssessmentResult, runPath, []byte(tc.raw))
+			if err == nil {
+				t.Fatal("AddRecord() error = nil, want severity validation error")
+			}
+			if _, ok := err.(*UsageError); !ok {
+				t.Fatalf("error type = %T, want *UsageError (%v)", err, err)
+			}
+			if !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("error = %q, want substring %q", err.Error(), tc.want)
+			}
+		})
+	}
+}
+
+func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+	if err := os.WriteFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"), []byte(`{
+  "schemaVersion": 1,
+  "targetPath": [],
+  "requirement": "Has tests",
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Some evidence exists but coverage is thin."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "tests/example_test.go:1",
+      "category": "coverage",
+      "severity": "blocker",
+      "observation": "Only a smoke test exists."
+    }
+  ],
+  "recommendations": []
+}`), 0o644); err != nil {
+		t.Fatalf("write invalid assessment result: %v", err)
+	}
+
+	loaded, err := Load(runPath)
+	if err != nil {
+		t.Fatalf("Load() error = %v", err)
+	}
+	status := loaded.EvaluationRunStatus()
+	if status.Reportable {
+		t.Fatal("status.Reportable = true, want false")
+	}
+	if !hasGap(status.Gaps, "invalid-finding-severity") {
+		t.Fatalf("status.Gaps = %#v, want invalid-finding-severity", status.Gaps)
+	}
+	if _, err := BuildReport(runPath); err == nil || !strings.Contains(err.Error(), "invalid-finding-severity") {
+		t.Fatalf("BuildReport() error = %v, want invalid-finding-severity", err)
+	}
+}
+
+func hasGap(gaps []EvaluationRunGap, kind string) bool {
+	for _, gap := range gaps {
+		if gap.Kind == kind {
+			return true
+		}
+	}
+	return false
 }
 
 func TestBuildReportUsesModelTitlesForHumanTargetAndFactorLabels(t *testing.T) {
@@ -1183,6 +1324,7 @@ func TestRecommendationSupersedingSelectsActiveNextAction(t *testing.T) {
     {
       "locator": "tests/example_test.go:1",
       "category": "coverage",
+      "severity": "low",
       "observation": "Only a smoke test exists."
     }
   ],
