@@ -135,7 +135,7 @@ workflow is maintenance rather than new authoring or evaluation.
 
 ## Summary Judgment
 
-After the checks, classify the QUALITY.md lifecycle in one phrase:
+After the checks, classify the `QUALITY.md` lifecycle in one phrase:
 
 - `missing`
 - `invalid`

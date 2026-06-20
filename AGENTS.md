@@ -61,10 +61,10 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
 ### Naming QUALITY.md
 
-- Use `QUALITY.md` in backticks for the literal file/path agents should read or
-  edit.
+- Use `QUALITY.md` in backticks when describing an operational use case for a
+  concrete `QUALITY.md` file.
 - Use QUALITY.md plain for the project, format, standard, or product concept.
-- Use **QUALITY.md** only for first-mention emphasis in user-facing intro prose.
+- Use bold/emphasized **QUALITY.md** only for first-mention emphasis in user-facing intro prose.
 - Prefer no bold in agent instructions, specs, and dense technical docs.
 
 ### Open Knowledge Format (OKF) bundles

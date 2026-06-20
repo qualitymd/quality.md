@@ -322,7 +322,7 @@ payloads.
 ### Wizard
 
 The `wizard` mode is the quality wayfinder: a read-only coaching entry point for
-a user at any point in the QUALITY.md lifecycle. It **MUST NOT** modify
+a user at any point in the `QUALITY.md` lifecycle. It **MUST NOT** modify
 anything, create evaluation records, build reports, or rate the subject. It can
 make readiness judgments — whether the project is set up, whether the model is
 valid or useful enough to evaluate, and whether prior evaluations or

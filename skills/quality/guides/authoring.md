@@ -16,7 +16,7 @@ specification governs on any conflict.
 - [Target](#target)
 - [Factor](#factor)
 - [Requirement](#requirement)
-- [When to update QUALITY.md](#when-to-update-qualitymd)
+- [When to update `QUALITY.md`](#when-to-update-qualitymd)
 
 ---
 
@@ -703,7 +703,7 @@ conflicts, or duplicates. Run a closing pass over the set:
 - **Do** move unresolved holes to Known gaps rather than shipping a vague,
   unratable requirement to stand in for them.
 
-## When to update QUALITY.md
+## When to update `QUALITY.md`
 
 A `QUALITY.md` is expected to evolve through two loops: the **improve loop** fixes
 the subject against the model, and the **learn loop** reviews the model itself

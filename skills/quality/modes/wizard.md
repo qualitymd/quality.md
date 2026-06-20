@@ -1,7 +1,7 @@
 # Wizard Mode
 
 Use wizard as the quality wayfinder: a read-only coach that meets the user where
-they are in the QUALITY.md lifecycle, summarizes current state, recommends the
+they are in the `QUALITY.md` lifecycle, summarizes current state, recommends the
 next useful workflow, and offers concrete alternatives. Use it when the user is
 unsure what to run next, asks for status/next steps, asks to review the model or
 history, or sends a bare `/quality`.
