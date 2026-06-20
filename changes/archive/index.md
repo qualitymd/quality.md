@@ -132,3 +132,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0040 — Readable report summary](0040-readable-report-summary.md) - reshaped
   `report-summary.md` into a decision-brief artifact with reader-facing
   vocabulary and prominent recommendation identifiers (`Done`).
+- [0041 — Update command and improvements](0041-update-command.md) - renamed
+  `qualitymd upgrade` to apply-by-default `qualitymd update`, added the cached
+  ambient update notice and readiness-aware update checks, and renamed the paired
+  `/quality` maintenance mode to `update` (`Done`).

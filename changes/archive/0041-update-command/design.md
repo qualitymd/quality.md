@@ -13,7 +13,7 @@ change and its [functional spec](spec.md).
 
 ## Context
 
-[0032](../archive/0032-cli-managed-upgrades.md) built the self-update surface as
+[0032](../0032-cli-managed-upgrades.md) built the self-update surface as
 layers in `internal/cli/upgrade.go`: install-context detection, an injectable
 latest-version provider, and a guarded `--apply`. This change reshapes that
 command to an apply-by-default `update` verb and adds a cached ambient notice. The

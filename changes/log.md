@@ -2,8 +2,14 @@
 
 ## 2026-06-20
 
+- **Done**: Set status `Done` and archived
+  [0041 - Update command and improvements](archive/0041-update-command.md) after
+  publishing and verifying `v0.5.0`. Moved the parent concept and child folder
+  into [`archive/`](archive/), added the entry to the [archive index](archive/index.md),
+  and removed it from the open [changes index](index.md).
+
 - **In-Review**: Completed implementation and durable artifact synchronization
-  for [0041 - Update command and improvements](0041-update-command.md). The CLI
+  for [0041 - Update command and improvements](archive/0041-update-command.md). The CLI
   now exposes apply-by-default `qualitymd update` with `--check`, readiness and
   release-notes fields, managed standalone apply, post-apply version
   verification, update-check opt-out, and a cached ambient notice. Renamed the
@@ -13,18 +19,18 @@
   Updated the bundle [index](index.md).
 
 - **In-Progress**: Advanced
-  [0041 - Update command and improvements](0041-update-command.md) from `Design`
+  [0041 - Update command and improvements](archive/0041-update-command.md) from `Design`
   to `In-Progress` to begin implementation of the apply-by-default
   `qualitymd update` command, ambient cached update notice, and paired
   `/quality update` skill-mode rename. Updated the bundle [index](index.md).
 
 - **Re-characterization**: Re-characterized
-  [0041 - Update command and improvements](0041-update-command.md) as the
+  [0041 - Update command and improvements](archive/0041-update-command.md) as the
   upgrade→update rename plus its improvements, dropping the earlier framing and
   renaming the case from slug `0041-codex-aligned-update` to `0041-update-command`
   (parent, child folder, and the same-day entries below repointed to the new
   path). Expanded scope to rename the paired `/quality upgrade` skill mode to
-  `/quality update`: the [functional spec](0041-update-command/spec.md) gains a
+  `/quality update`: the [functional spec](archive/0041-update-command/spec.md) gains a
   paired skill-mode-rename requirement and a durable-spec change for
   `specs/skills/quality-skill/quality-skill.md`, and the parent's
   **Affected artifacts** now lists the skill spec, the runtime
@@ -33,11 +39,11 @@
   the bundle [index](index.md).
 
 - **Redesign**: Reshaped 0041 to an apply-by-default `update` command and renamed
-  the case to [0041 - Update command and improvements](0041-update-command.md)
+  the case to [0041 - Update command and improvements](archive/0041-update-command.md)
   (slug `0041-upgrade-apply-and-readiness` → `0041-update-command`; earlier
   entries below repointed to the new path). Per the chosen direction, the
-  [functional spec](0041-update-command/spec.md) and
-  [design doc](0041-update-command/design.md) now rename `upgrade`→`update`
+  [functional spec](archive/0041-update-command/spec.md) and
+  [design doc](archive/0041-update-command/design.md) now rename `upgrade`→`update`
   with apply-by-default and a `--check` advisory (deprecated `upgrade` alias for
   one cycle), and add an ambient cached update notice on ordinary commands. The
   notice deliberately reverses 0032's "ordinary commands MUST NOT check the
@@ -52,9 +58,9 @@
   Updated the bundle [index](index.md).
 
 - **Design**: Advanced
-  [0041 - Upgrade self-apply, readiness, and release notes](0041-update-command.md)
+  [0041 - Upgrade self-apply, readiness, and release notes](archive/0041-update-command.md)
   from `Draft` to `Design` and added its
-  [design doc](0041-update-command/design.md). The design lands all
+  [design doc](archive/0041-update-command/design.md). The design lands all
   three deltas inside the existing `internal/cli/upgrade.go` seams: widen
   `latestVersionProvider` to return a `{version, ready, releaseNotesURL}` struct
   (so readiness and notes ride the single injectable, offline-testable network
@@ -64,13 +70,13 @@
   the `applySupported`/`upgradeCommand` tables, invoking the existing idempotent
   installer non-interactively via `QUALITYMD_NO_INPUT=1`. Records the Homebrew
   latest-provider quirk and a possible `releaseReady` JSON field as open
-  questions. Updated the [child index](0041-update-command/index.md)
+  questions. Updated the [child index](archive/0041-update-command/index.md)
   and the bundle [index](index.md).
 
 - **Creation**: Opened
-  [0041 - Upgrade self-apply, readiness, and release notes](0041-update-command.md)
-  (`status: Draft`) with its [functional spec](0041-update-command/spec.md)
-  and [child index](0041-update-command/index.md). The case captures
+  [0041 - Upgrade self-apply, readiness, and release notes](archive/0041-update-command.md)
+  (`status: Draft`) with its [functional spec](archive/0041-update-command/spec.md)
+  and [child index](archive/0041-update-command/index.md). The case captures
   three improvements drawn from comparing `qualitymd upgrade` with a conventional
   CLI update flow: extend `--apply` to self-update managed standalone installs (the
   channel the project owns yet 0032 left unable to apply), gate "update

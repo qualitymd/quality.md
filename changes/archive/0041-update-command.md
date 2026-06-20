@@ -2,7 +2,7 @@
 type: Change Case
 title: Update command and improvements
 description: Rename upgrade to update with apply-by-default and a --check advisory, rename the /quality upgrade skill mode to update, self-apply managed standalone installs, gate availability on release readiness, surface release notes, and add an ambient cached update notice.
-status: In-Review
+status: Done
 tags: [cli, update, upgrade, install, versioning, skill]
 timestamp: 2026-06-20T00:00:00Z
 ---
@@ -19,12 +19,12 @@ release-readiness gating, and a release-notes reference. Detail lives in the
 [functional spec](0041-update-command/spec.md) and
 [design doc](0041-update-command/design.md).
 
-> **In-Review.** Implementation complete for the apply-by-default `update`
-> command, ambient update notice, and paired `/quality update` skill-mode rename.
+> **Done.** Released in `v0.5.0`; implementation and durable artifact
+> synchronization are complete, and the change is archived.
 
 ## Motivation
 
-[0032](archive/0032-cli-managed-upgrades.md) shipped `qualitymd upgrade` with a
+[0032](0032-cli-managed-upgrades.md) shipped `qualitymd upgrade` with a
 deliberately offline-by-default posture: ordinary commands never touch the
 network, the command is advisory unless `--apply` is passed, and only npm and
 Homebrew self-update. That kept the CLI deterministic, but it also means a user
@@ -99,7 +99,7 @@ no change to `QUALITY.md` format or evaluation semantics.
       non-blocking cache refresh.
 - [x] `internal/cli` update-cache helper (new) — read/write the cached
       latest-release record under `$QUALITYMD_HOME`, with a freshness timestamp.
-- [x] [`internal/cli/version.go`](../internal/cli/version.go) — reuse version
+- [x] [`internal/cli/version.go`](../../internal/cli/version.go) — reuse version
       metadata for the notice and dev-build suppression.
 - [x] `internal/cli/version_upgrade_test.go`
       → `internal/cli/version_update_test.go` (renamed alongside `update.go`) —
@@ -118,12 +118,12 @@ for the per-requirement breakdown.
       `update` command contract, readiness, release notes, and the ambient notice.
 - [x] `specs/cli/upgrade.md` — removed (content carried
       forward into `update.md`).
-- [x] [`specs/cli.md`](../specs/cli.md) — reverse the "unrelated commands MUST NOT
+- [x] [`specs/cli.md`](../../specs/cli.md) — reverse the "unrelated commands MUST NOT
       contact the network for upgrade checks" line; register `update`, the cached
       ambient notice, and the opt-out.
-- [x] [`specs/cli/index.md`](../specs/cli/index.md) — rename the command sub-spec
+- [x] [`specs/cli/index.md`](../../specs/cli/index.md) — rename the command sub-spec
       entry.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       — rename the `upgrade` skill mode to `update` throughout the durable skill
       contract (mode list, routing, the `Upgrade` section, examples, prerequisite
       commands), and point its CLI references at `qualitymd update`.
@@ -133,7 +133,7 @@ the document format or evaluation semantics.
 
 ### Durable docs
 
-- [x] [`docs/reference/versioning.md`](../docs/reference/versioning.md) — replace
+- [x] [`docs/reference/versioning.md`](../../docs/reference/versioning.md) — replace
       the "ordinary commands do not contact the network" guidance with the cached
       ambient-notice model and opt-out; document `update` and managed standalone
       self-apply.
@@ -141,36 +141,36 @@ the document format or evaluation semantics.
       rename the runtime mode file to `skills/quality/modes/update.md`; call
       `qualitymd update --check` / `qualitymd update`; reflect that managed
       standalone now self-applies.
-- [x] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) — rename the
+- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) — rename the
       `upgrade` mode to `update` in the router, mode list, routing table, and
       examples; update the command references and the `requires-qualitymd-cli`
       range for the renamed command.
-- [x] [`skills/quality/modes/wizard.md`](../skills/quality/modes/wizard.md) —
+- [x] [`skills/quality/modes/wizard.md`](../../skills/quality/modes/wizard.md) —
       recommend `/quality update` (was `/quality upgrade`) and reference
       `qualitymd update --check`.
-- [x] [`skills/quality/resources/cli-quick-reference.md`](../skills/quality/resources/cli-quick-reference.md)
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
       — `update` / `update --check`, dropped `--apply` and the old `upgrade`
       command, and the notice.
-- [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md)
-      and [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
+- [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../../skills/quality/guides/top-10-quality-md-checks.md)
+      and [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
       — rename the `upgrade` route token to `update` in the route list.
-- [x] [`install.md`](../install.md) — `qualitymd update --check`, self-applying
+- [x] [`install.md`](../../install.md) — `qualitymd update --check`, self-applying
       channels, and how to opt out of the ambient notice.
-- [x] [`README.md`](../README.md) — quick reference uses `qualitymd update --check`
+- [x] [`README.md`](../../README.md) — quick reference uses `qualitymd update --check`
       for update checks.
-- [x] [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md)
+- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md)
       — existing-install maintenance flow is `/quality update`, with CLI checks
       through `qualitymd update --check`.
-- [x] [`docs/guides/cut-a-release.md`](../docs/guides/cut-a-release.md) —
+- [x] [`docs/guides/cut-a-release.md`](../../docs/guides/cut-a-release.md) —
       release verification checks `qualitymd update --check --json`.
-- [x] [`CHANGELOG.md`](../CHANGELOG.md) — record the rename (breaking: no
+- [x] [`CHANGELOG.md`](../../CHANGELOG.md) — record the rename (breaking: no
       `upgrade` alias), the
       `/quality update` mode rename, and the ambient notice as notable changes.
 
 ### Install/scaffold
 
-- [x] [`install/install.sh`](../install/install.sh),
-      [`install/install.ps1`](../install/install.ps1) — confirm the
+- [x] [`install/install.sh`](../../install/install.sh),
+      [`install/install.ps1`](../../install/install.ps1) — confirm the
       non-interactive contract `update` relies on to drive a managed standalone
       apply without prompts.
 
@@ -184,5 +184,5 @@ the document format or evaluation semantics.
 
 ## Status
 
-`In-Review`. Implementation complete for the apply-by-default `update` command,
-ambient update notice, and paired `/quality update` skill-mode rename.
+`Done`. Released in `v0.5.0`; implementation and durable artifact
+synchronization are complete, and the change is archived.

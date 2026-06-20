@@ -24,7 +24,7 @@ all capitals.
 
 ## Background / Motivation
 
-[0032](../archive/0032-cli-managed-upgrades.md) made the self-update surface
+[0032](../0032-cli-managed-upgrades.md) made the self-update surface
 advisory-by-default and forbade any network access from ordinary commands, so a
 user learns about a release only by explicitly running a check. This change
 adopts the conventional update-command shape instead: one `update` verb that
