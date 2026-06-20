@@ -46,6 +46,9 @@ edit.
 - [0042 - Typed report model](0042-typed-report-model.md) - In-Review; replaces
   stringly typed and implicit evaluation-report states with explicit typed model
   concepts.
+- [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md) -
+  In-Review; makes evaluation-history readers tolerant of old, malformed, partial,
+  or hand-edited run records while keeping current writers strict.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

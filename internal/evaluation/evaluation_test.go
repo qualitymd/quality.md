@@ -67,6 +67,116 @@ func TestCreateRunValidatesSubjectBeforeCreatingRunFolder(t *testing.T) {
 	}
 }
 
+func TestInspectReportsCompatibilityGapsAndDiscoveredCounts(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+	writeRunFile(t, runPath, "assessments/001-malformed.json", `{`)
+	writeRunFile(t, runPath, "assessments/002-missing-schema.json", `{
+  "targetPath": [],
+  "requirement": "Has tests",
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Looks good."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "recommendations": []
+}`)
+	writeRunFile(t, runPath, "assessments/003-future-schema.json", `{
+  "schemaVersion": 99,
+  "targetPath": [],
+  "requirement": "Has tests",
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Looks good."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "recommendations": []
+}`)
+	writeRunFile(t, runPath, "analysis/root.json", `{
+  "schemaVersion": 1,
+  "targetPath": []
+}`)
+	writeRunFile(t, runPath, "recommendations/001-bad.md", `# No runtime frontmatter
+`)
+
+	if _, err := Load(runPath); err == nil {
+		t.Fatal("Load() error = nil, want strict load to reject malformed record")
+	}
+	inspected, err := Inspect(runPath)
+	if err != nil {
+		t.Fatalf("Inspect() error = %v", err)
+	}
+	status := inspected.EvaluationRunStatus()
+	if status.Reportable {
+		t.Fatalf("status.Reportable = true, gaps = %#v", status.Gaps)
+	}
+	if status.Counts.AssessmentResults != 3 || status.Counts.Analyses != 1 || status.Counts.Recommendations != 1 {
+		t.Fatalf("counts = %#v, want discovered record-file counts", status.Counts)
+	}
+	for _, kind := range []EvaluationRunGapKind{
+		GapMalformedEvaluationRecord,
+		GapMissingRecordSchemaVersion,
+		GapUnsupportedRecordSchemaVersion,
+		GapIncompleteEvaluationRecord,
+	} {
+		if !hasGap(status.Gaps, kind) {
+			t.Fatalf("status gaps = %#v, want %s", status.Gaps, kind)
+		}
+	}
+	if _, err := BuildReport(runPath); err == nil || !strings.Contains(err.Error(), "qualitymd evaluation status") || !strings.Contains(err.Error(), string(GapMalformedEvaluationRecord)) {
+		t.Fatalf("BuildReport() error = %v, want reportability diagnostic with status command", err)
+	}
+	if _, err := GateReport(runPath, "target"); err == nil || !strings.Contains(err.Error(), "qualitymd evaluation status") || !strings.Contains(err.Error(), string(GapMalformedEvaluationRecord)) {
+		t.Fatalf("GateReport() error = %v, want reportability diagnostic with status command", err)
+	}
+
+	records, err := ListRecords(KindAssessmentResult, runPath)
+	if err != nil {
+		t.Fatalf("ListRecords() error = %v", err)
+	}
+	if len(records.Records) != 3 || records.Records[0] != "assessments/001-malformed.json" {
+		t.Fatalf("records = %#v, want discovered assessment filenames", records.Records)
+	}
+}
+
+func TestListRunsIncludesReportableAndIncompatibleRuns(t *testing.T) {
+	repo := testRepo(t)
+	first, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun(first) error = %v", err)
+	}
+	completeReportableRun(t, filepath.Join(repo, first.Path))
+	second, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun(second) error = %v", err)
+	}
+	writeRunFile(t, filepath.Join(repo, second.Path), "assessments/001-bad.json", `{`)
+
+	list, err := ListRuns(repo, "", "all")
+	if err != nil {
+		t.Fatalf("ListRuns() error = %v", err)
+	}
+	if len(list.Runs) != 2 {
+		t.Fatalf("runs = %#v, want reportable plus incompatible run", list.Runs)
+	}
+	if !list.Runs[0].Reportable || list.Runs[0].Gaps != 0 {
+		t.Fatalf("first run = %#v, want reportable", list.Runs[0])
+	}
+	if list.Runs[1].Reportable || list.Runs[1].Gaps == 0 {
+		t.Fatalf("second run = %#v, want incompatible incomplete run", list.Runs[1])
+	}
+}
+
 func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	repo := testRepo(t)
 	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
@@ -1764,6 +1874,56 @@ func gapKinds(gaps []EvaluationRunGap) []string {
 func testRepo(t *testing.T) string {
 	t.Helper()
 	return testRepoWithModel(t, testModel)
+}
+
+func writeRunFile(t *testing.T, runPath, name, content string) {
+	t.Helper()
+	path := filepath.Join(runPath, filepath.FromSlash(name))
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatalf("mkdir %s: %v", filepath.Dir(path), err)
+	}
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		t.Fatalf("write %s: %v", path, err)
+	}
+}
+
+func completeReportableRun(t *testing.T, runPath string) {
+	t.Helper()
+	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
+  "targetPath": [],
+  "requirement": "Has tests",
+  "criterionSource": "rating-scale",
+  "findings": [],
+  "recommendations": [],
+  "factorPaths": [],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Tests cover the requirement."
+  }
+}`)); err != nil {
+		t.Fatalf("AddRecord(assessment) error = %v", err)
+	}
+	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
+  "targetPath": [],
+  "childAnalysisRecords": [],
+  "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The local rating is target."
+  },
+  "factorRatingResults": [],
+  "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The local rating binds."
+  },
+  "assessmentResultRecords": [
+    "assessments/001-root-has-tests.json"
+  ]
+}`)); err != nil {
+		t.Fatalf("AddRecord(analysis) error = %v", err)
+	}
 }
 
 func testRepoWithModel(t *testing.T, content string) string {

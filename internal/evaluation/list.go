@@ -12,6 +12,7 @@ type EvaluationRunListEntry struct {
 	Narrowing  string                 `json:"narrowing,omitempty"`
 	Counts     EvaluationRecordCounts `json:"counts"`
 	Reportable bool                   `json:"reportable"`
+	Gaps       int                    `json:"gaps"`
 }
 
 type EvaluationRunList struct {
@@ -75,7 +76,7 @@ func ListRuns(repoRoot, evaluationDir, state string) (*EvaluationRunList, error)
 	}
 	result := &EvaluationRunList{SchemaVersion: SchemaVersion}
 	for _, dir := range runs {
-		run, err := Load(dir.Abs)
+		run, err := Inspect(dir.Abs)
 		if err != nil {
 			return nil, fmt.Errorf("loading %s: %w", dir.Rel, err)
 		}
@@ -89,6 +90,7 @@ func ListRuns(repoRoot, evaluationDir, state string) (*EvaluationRunList, error)
 			Narrowing:  narrowingFromRunName(dir.Name),
 			Counts:     status.Counts,
 			Reportable: status.Reportable,
+			Gaps:       len(status.Gaps),
 		})
 	}
 	return result, nil
@@ -125,26 +127,34 @@ func narrowingFromRunName(name string) string {
 }
 
 func ListRecords(kind EvaluationRecordKind, runPath string) (*EvaluationRecordList, error) {
-	run, err := Load(runPath)
+	run, err := Inspect(runPath)
 	if err != nil {
 		return nil, err
 	}
 	result := &EvaluationRecordList{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(run.Path), Kind: kind}
+	records, err := recordFilesForKind(run.AbsPath, kind)
+	if err != nil {
+		return nil, usagef("unknown record kind %q", kind)
+	}
+	result.Records = records
+	return result, nil
+}
+
+func recordFilesForKind(runAbs string, kind EvaluationRecordKind) ([]string, error) {
+	var dir, pattern string
 	switch kind {
 	case KindAssessmentResult:
-		for _, rec := range run.AssessmentResults {
-			result.Records = append(result.Records, rec.File)
-		}
+		dir, pattern = "assessments", "*.json"
 	case KindAnalysis:
-		for _, rec := range run.Analyses {
-			result.Records = append(result.Records, rec.File)
-		}
+		dir, pattern = "analysis", "*.json"
 	case KindRecommendation:
-		for _, rec := range run.Recommendations {
-			result.Records = append(result.Records, rec.File)
-		}
+		dir, pattern = "recommendations", "*.md"
 	default:
 		return nil, usagef("unknown record kind %q", kind)
 	}
-	return result, nil
+	var records []string
+	for _, path := range globRecordFiles(filepath.Join(runAbs, dir), pattern) {
+		records = append(records, filepath.ToSlash(filepath.Join(dir, filepath.Base(path))))
+	}
+	return records, nil
 }

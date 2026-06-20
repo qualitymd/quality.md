@@ -106,7 +106,7 @@ func newEvaluationStatusCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			run, err := evaluation.Load(runPath)
+			run, err := evaluation.Inspect(runPath)
 			if err != nil {
 				return mapEvaluationError(err)
 			}

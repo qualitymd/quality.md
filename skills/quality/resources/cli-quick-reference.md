@@ -92,6 +92,7 @@ Run incomplete or stale?
 - Inspect project state -> qualitymd status [path] --json
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
+- Incompatible historical record? -> treat as run status; inspect or create a fresh run, do not hand-migrate records
 - Missing planned coverage? -> edit plan.md coverage frontmatter
 - Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Reportable? -> qualitymd evaluation report build <run>

@@ -315,7 +315,7 @@ func inspectRun(runDir evaluation.RunDir, modelBytes []byte) EvaluationRunSummar
 	}
 	summary.Stale = string(runModel) != string(modelBytes)
 
-	run, err := evaluation.Load(runDir.Abs)
+	run, err := evaluation.Inspect(runDir.Abs)
 	if err != nil {
 		summary.Problem = err.Error()
 		return summary

@@ -129,6 +129,11 @@ latest run, incomplete or stale-looking runs, open recommendations, and prior
 ratings for the same resolved scope. Treat prior runs as context only; fresh
 evidence and the current `QUALITY.md` control current judgment.
 
+Treat malformed, schema-incompatible, partial, or hand-edited historical runs as
+evaluation history status, not subject quality evidence. Route to
+`qualitymd evaluation status <run>` or a fresh evaluation; do not manually
+migrate, rewrite, or hand-author records to make an old run reportable.
+
 After `improve` applies a confirmed recommendation, re-evaluate the affected
 scope and report the before/after delta: recommendation, applied option, changed
 artifacts, before evidence, after evidence, verification, rating movement, and

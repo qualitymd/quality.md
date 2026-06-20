@@ -3,6 +3,16 @@
 ## 2026-06-20
 
 - **Revision**: Updated the [Evaluation records](evaluation-records.md),
+  [`evaluation list`](cli/evaluation-list.md),
+  [`evaluation status`](cli/evaluation-status.md),
+  [`evaluation report`](cli/evaluation-report.md), [`status`](cli/status.md),
+  and [`/quality` skill](skills/quality-skill/quality-skill.md) contracts for
+  evaluation-history compatibility. Current record writers stay strict, while
+  history/status/list readers surface malformed, unsupported, or incomplete
+  historical records as non-reportable run gaps instead of breaking ordinary
+  workflows.
+
+- **Revision**: Updated the [Evaluation records](evaluation-records.md),
   [`evaluation status`](cli/evaluation-status.md),
   [`evaluation report`](cli/evaluation-report.md), and
   [`/quality` skill](skills/quality-skill/quality-skill.md) contracts for typed

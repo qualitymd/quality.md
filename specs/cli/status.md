@@ -91,6 +91,11 @@ reportable run count, incomplete run count, stale run count, and active
 recommendation count. A stale run is one whose `model.md` snapshot bytes differ
 from the selected model file bytes.
 
+Individual records that are malformed, unreadable, schema-incompatible, or
+structurally incomplete under the current evaluation-record contract **MUST**
+make their run incomplete with status gaps. They **MUST NOT** prevent project
+status from listing the run or inspecting later runs.
+
 For each run summary under `--json`, `status` **MUST** include run path,
 reportability, stale state, record counts, gap count, active recommendation
 count, and any inspection problem.
@@ -101,9 +106,10 @@ recommendation record in the same run supersedes it.
 
 `status` **MUST NOT** read `report.md` bodies to compute the snapshot.
 
-Malformed individual runs **MUST** appear in the snapshot with an inspection
-problem, and `status` **MUST** continue inspecting later runs. Failure to read the
-evaluation directory itself remains an internal error.
+Malformed run folders that prevent basic run inspection **MUST** appear in the
+snapshot with an inspection problem, and `status` **MUST** continue inspecting
+later runs. Failure to read the evaluation directory itself remains an internal
+error.
 
 ## Readiness
 

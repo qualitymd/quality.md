@@ -100,6 +100,26 @@ Every JSON record (`assessments/*.json`, `analysis/*.json`,
 Every CLI-written recommendation Markdown record **MUST** carry runtime YAML
 frontmatter with `schemaVersion: 1`.
 
+## Historical and Non-CLI Records
+
+The current CLI writer is strict: new records **MUST** satisfy the active
+contract and carry the active `schemaVersion`. Readers that inspect evaluation
+history are tolerant: historical, partial, hand-edited, copied, or non-CLI
+records can be present in a run folder without making ordinary history
+inspection fail.
+
+An individual record that cannot be trusted under the current contract makes
+only that run non-reportable. Status/list readers **SHOULD** surface it as a
+run gap that names the record path and reason, preserving any run metadata and
+record-file counts that can be determined without trusting the malformed
+payload. Tools **MUST NOT** migrate, rewrite, silently skip, or reinterpret old
+record shapes as a compatibility mechanism. A fresh evaluation or explicit
+correction through the current CLI is the forward path.
+
+At minimum, incompatible-record gaps distinguish malformed JSON or runtime
+frontmatter, unreadable records, missing `schemaVersion`, unsupported
+`schemaVersion`, and structurally incomplete current-schema records.
+
 ## Assessment Result Record
 
 An assessment result record is one JSON file per evaluated requirement. It is

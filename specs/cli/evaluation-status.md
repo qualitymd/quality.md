@@ -25,8 +25,11 @@ recent recognized run in the resolved evaluation directory.
 
 The command **MUST NOT** write files. It exits `0` when the run can be inspected,
 even when it is not yet reportable. Missing or dangling records are payload
-gaps, not command failures. A missing run folder, unreadable record, or malformed
-record that prevents inspection fails with the internal-error category.
+gaps, not command failures. Malformed, unreadable, schema-incompatible, or
+structurally incomplete individual records **MUST** produce typed gaps and make
+the run non-reportable rather than aborting inspection. A missing run folder or
+broken run skeleton that prevents basic run inspection fails with the
+internal-error category.
 
 Human output **MUST** include the run path, record counts, reportability, and any
 gaps. Under `--json`, stdout **MUST** include `schemaVersion`, `path`,
@@ -57,6 +60,12 @@ Assessment result records with invalid typed fields, including missing or
 unknown finding severity, invalid `ratingResult.kind`, rated results without a
 level, not-assessed results with a level, or empty rating rationales, **MUST**
 produce gaps and make the run non-reportable.
+
+Records that cannot be trusted under the current evaluation-record contract
+**MUST** produce compatibility gaps. At minimum, status **MUST** distinguish
+malformed evaluation records, unreadable evaluation records, missing record
+`schemaVersion`, unsupported record `schemaVersion`, and incomplete
+current-schema records.
 
 When `plan.md` contains `coverage:` frontmatter, `status` **MUST** validate it at
 read time and compare planned assessment and analysis identities to written

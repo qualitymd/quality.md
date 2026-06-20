@@ -3,6 +3,43 @@
 ## 2026-06-20
 
 - **In-Review**: Completed implementation and durable artifact synchronization
+  for [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md).
+  Evaluation history inspection now surfaces malformed, unsupported, and
+  incomplete historical records as typed non-reportable gaps; list/status/latest
+  workflows remain usable; report build/gate refuse incompatible selected runs
+  with status-oriented diagnostics; and the `/quality` skill guidance treats
+  incompatible records as history status rather than subject quality evidence.
+  Verified `go test ./...` and `mise run check`. Updated the [child index](0043-evaluation-history-compatibility/index.md)
+  and bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md)
+  from `Design` to `In-Progress` to implement tolerant evaluation-history
+  inspection, compatibility gaps, and graceful report/list/status behavior.
+  Updated the [child index](0043-evaluation-history-compatibility/index.md) and
+  bundle [index](index.md).
+
+- **Design**: Advanced
+  [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md)
+  from `Draft` to `Design` and added its
+  [design doc](0043-evaluation-history-compatibility/design.md). The design uses
+  a tolerant run-inspection layer for status/list/history commands, records
+  incompatible files as reportability gaps, keeps record writers strict, and
+  gates report build/gate through compatibility status before trusted report
+  assembly. Updated the [child index](0043-evaluation-history-compatibility/index.md)
+  and bundle [index](index.md).
+
+- **Creation**: Opened
+  [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md)
+  (`status: Draft`) with its
+  [functional spec](0043-evaluation-history-compatibility/spec.md) and
+  [child index](0043-evaluation-history-compatibility/index.md). The case
+  captures the strict-writer / tolerant-reader posture for evaluation history:
+  historical or hand-edited runs can become non-reportable compatibility gaps
+  without breaking ordinary status, list, latest-run, or fresh-evaluation
+  workflows. Updated the bundle [index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
   for [0042 - Typed report model](0042-typed-report-model.md). Evaluation reports
   now use typed rating-result, local-rating, next-step, lifecycle,
   missing-metadata, rigor, evaluation-level, path, and gap concepts; report JSON

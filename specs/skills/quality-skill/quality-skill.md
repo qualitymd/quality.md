@@ -277,6 +277,12 @@ stale-looking runs, open recommendations, and prior ratings for the same
 resolved scope. Prior evaluations **MUST** be treated as context, not authority:
 fresh evidence and the current `QUALITY.md` model control the current judgment.
 
+If prior runs contain malformed, schema-incompatible, partial, or hand-edited
+records, the skill **MUST** treat that as evaluation-history status rather than
+subject quality evidence. It should route to `qualitymd evaluation status <run>`
+or a fresh evaluation; it **MUST NOT** manually migrate, rewrite, or hand-author
+records to make an old run reportable.
+
 A scoped evaluation **MUST NOT** compare itself to a prior whole-model or
 differently scoped rating as if the scopes were identical. When current findings
 contradict a prior run, the skill **SHOULD** state the likely reason when

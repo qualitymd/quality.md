@@ -179,6 +179,40 @@ factors:
 	}
 }
 
+func TestSnapshotIncompatibleRunRecordIsHistoryGap(t *testing.T) {
+	repo := newRepo(t)
+	path := writeFile(t, repo, validModel(`requirements:
+  "starts":
+    factors: [reliability]
+    assessment: EvaluationRun it.
+factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+`))
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(repo, run.Path, "assessments", "001-bad.json"), []byte(`{`), 0o644); err != nil {
+		t.Fatalf("write bad assessment: %v", err)
+	}
+
+	snapshot, err := Snapshot(Options{Path: path})
+	if err != nil {
+		t.Fatalf("Snapshot() error = %v", err)
+	}
+	if snapshot.Readiness != ReadinessNeedsEvaluationReconcile {
+		t.Fatalf("readiness = %q, want reconciliation", snapshot.Readiness)
+	}
+	if snapshot.Evaluations.Summary.Problems != 0 || snapshot.Evaluations.Summary.Incomplete != 1 {
+		t.Fatalf("evaluation summary = %#v, want incompatible record as incomplete history gap", snapshot.Evaluations.Summary)
+	}
+	if snapshot.Evaluations.Latest == nil || snapshot.Evaluations.Latest.Gaps == 0 {
+		t.Fatalf("latest = %#v, want latest run with gaps", snapshot.Evaluations.Latest)
+	}
+}
+
 func TestSnapshotActiveRecommendationCountHonorsSuperseding(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:

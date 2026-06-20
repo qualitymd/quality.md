@@ -109,6 +109,57 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	}
 }
 
+func TestEvaluationListAndLatestStatusSurviveIncompatibleRun(t *testing.T) {
+	repo := testEvaluationRepo(t)
+	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"}); err != nil {
+		t.Fatalf("CreateRun(first) error = %v", err)
+	}
+	latest, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun(latest) error = %v", err)
+	}
+	runPath := filepath.Join(repo, latest.Path)
+	if err := os.WriteFile(filepath.Join(runPath, "assessments", "001-bad.json"), []byte(`{`), 0o644); err != nil {
+		t.Fatalf("write bad assessment: %v", err)
+	}
+	oldwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Getwd() error = %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(oldwd); err != nil {
+			t.Fatalf("restore cwd: %v", err)
+		}
+	})
+	if err := os.Chdir(repo); err != nil {
+		t.Fatalf("chdir repo: %v", err)
+	}
+
+	cmd := newRootCmd()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "list", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("list Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), latest.Path) || !strings.Contains(out.String(), `"gaps":`) {
+		t.Fatalf("list stdout = %s, want incompatible latest run with gaps", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "status", "--latest", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("status Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), latest.Path) || !strings.Contains(out.String(), `"kind": "malformed-evaluation-record"`) {
+		t.Fatalf("status stdout = %s, want latest incompatible run status", out.String())
+	}
+}
+
 func TestEvaluationOldCommandNamesAreRejected(t *testing.T) {
 	cmd := newRootCmd()
 	cmd.SetOut(&bytes.Buffer{})

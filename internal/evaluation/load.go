@@ -22,11 +22,13 @@ type EvaluationRun struct {
 	Plan              string
 	PlannedCoverage   *PlannedCoverage
 	PlanCoverageGaps  []EvaluationRunGap
+	CompatibilityGaps []EvaluationRunGap
 	AssessmentResults []AssessmentResultRecord
 	Analyses          []AnalysisRecord
 	Recommendations   []RecommendationRecord
 	Model             *model.Spec
 	Scale             []model.RatingLevel
+	recordCounts      EvaluationRecordCounts
 }
 
 type EvaluationRecordCounts struct {
@@ -62,6 +64,11 @@ const (
 	GapMissingPlannedAnalysis              EvaluationRunGapKind = "missing-planned-analysis"
 	GapUnexpectedAssessmentResult          EvaluationRunGapKind = "unexpected-assessment-result"
 	GapUnexpectedAnalysis                  EvaluationRunGapKind = "unexpected-analysis"
+	GapMalformedEvaluationRecord           EvaluationRunGapKind = "malformed-evaluation-record"
+	GapUnreadableEvaluationRecord          EvaluationRunGapKind = "unreadable-evaluation-record"
+	GapMissingRecordSchemaVersion          EvaluationRunGapKind = "missing-record-schema-version"
+	GapUnsupportedRecordSchemaVersion      EvaluationRunGapKind = "unsupported-record-schema-version"
+	GapIncompleteEvaluationRecord          EvaluationRunGapKind = "incomplete-evaluation-record"
 )
 
 func (k EvaluationRunGapKind) RequiresReview() bool {
@@ -77,7 +84,12 @@ func (k EvaluationRunGapKind) RequiresReview() bool {
 		GapInvalidRatingResult,
 		GapSupersededAssessmentResultReference,
 		GapUnexpectedAssessmentResult,
-		GapUnexpectedAnalysis:
+		GapUnexpectedAnalysis,
+		GapMalformedEvaluationRecord,
+		GapUnreadableEvaluationRecord,
+		GapMissingRecordSchemaVersion,
+		GapUnsupportedRecordSchemaVersion,
+		GapIncompleteEvaluationRecord:
 		return true
 	default:
 		return false
@@ -94,6 +106,14 @@ type EvaluationRunStatus struct {
 }
 
 func Load(path string) (*EvaluationRun, error) {
+	return load(path, false)
+}
+
+func Inspect(path string) (*EvaluationRun, error) {
+	return load(path, true)
+}
+
+func load(path string, tolerant bool) (*EvaluationRun, error) {
 	runAbs, err := verifyRun(path)
 	if err != nil {
 		return nil, err
@@ -112,6 +132,7 @@ func Load(path string) (*EvaluationRun, error) {
 		Model:   spec,
 		Scale:   spec.RatingScale,
 	}
+	run.recordCounts = countRecordFiles(runAbs)
 	if raw, err := os.ReadFile(filepath.Join(runAbs, "design.md")); err != nil {
 		return nil, fmt.Errorf("reading design.md: %w", err)
 	} else {
@@ -123,7 +144,7 @@ func Load(path string) (*EvaluationRun, error) {
 		run.Plan = string(raw)
 		run.PlannedCoverage, run.PlanCoverageGaps = parsePlanCoverage(raw)
 	}
-	if err := loadJSONRecords(filepath.Join(runAbs, "assessments"), "*.json", func(path string, raw []byte) error {
+	loadAssessment := func(path string, raw []byte) error {
 		var rec AssessmentResultRecord
 		if err := json.Unmarshal(raw, &rec); err != nil {
 			return err
@@ -134,10 +155,8 @@ func Load(path string) (*EvaluationRun, error) {
 		rec.File = filepath.ToSlash(filepath.Join("assessments", filepath.Base(path)))
 		run.AssessmentResults = append(run.AssessmentResults, rec)
 		return nil
-	}); err != nil {
-		return nil, err
 	}
-	if err := loadJSONRecords(filepath.Join(runAbs, "analysis"), "*.json", func(path string, raw []byte) error {
+	loadAnalysis := func(path string, raw []byte) error {
 		var rec AnalysisRecord
 		if err := json.Unmarshal(raw, &rec); err != nil {
 			return err
@@ -148,13 +167,167 @@ func Load(path string) (*EvaluationRun, error) {
 		rec.File = filepath.ToSlash(filepath.Join("analysis", filepath.Base(path)))
 		run.Analyses = append(run.Analyses, rec)
 		return nil
-	}); err != nil {
+	}
+	if tolerant {
+		run.CompatibilityGaps = append(run.CompatibilityGaps, inspectJSONRecords(filepath.Join(runAbs, "assessments"), "assessments", assessmentRequiredFields(), loadAssessment)...)
+		run.CompatibilityGaps = append(run.CompatibilityGaps, inspectJSONRecords(filepath.Join(runAbs, "analysis"), "analysis", analysisRequiredFields(), loadAnalysis)...)
+		run.CompatibilityGaps = append(run.CompatibilityGaps, inspectRecommendations(filepath.Join(runAbs, "recommendations"), &run.Recommendations)...)
+		return run, nil
+	}
+	if err := loadJSONRecords(filepath.Join(runAbs, "assessments"), "*.json", loadAssessment); err != nil {
+		return nil, err
+	}
+	if err := loadJSONRecords(filepath.Join(runAbs, "analysis"), "*.json", loadAnalysis); err != nil {
 		return nil, err
 	}
 	if err := loadRecommendations(filepath.Join(runAbs, "recommendations"), &run.Recommendations); err != nil {
 		return nil, err
 	}
 	return run, nil
+}
+
+func countRecordFiles(runAbs string) EvaluationRecordCounts {
+	return EvaluationRecordCounts{
+		AssessmentResults: len(globRecordFiles(filepath.Join(runAbs, "assessments"), "*.json")),
+		Analyses:          len(globRecordFiles(filepath.Join(runAbs, "analysis"), "*.json")),
+		Recommendations:   len(globRecordFiles(filepath.Join(runAbs, "recommendations"), "*.md")),
+	}
+}
+
+func globRecordFiles(dir, pattern string) []string {
+	paths, err := filepath.Glob(filepath.Join(dir, pattern))
+	if err != nil {
+		return nil
+	}
+	slices.Sort(paths)
+	return paths
+}
+
+func inspectJSONRecords(dir, recordDir string, required []string, decode func(string, []byte) error) []EvaluationRunGap {
+	var gaps []EvaluationRunGap
+	for _, path := range globRecordFiles(dir, "*.json") {
+		file := filepath.ToSlash(filepath.Join(recordDir, filepath.Base(path)))
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			gaps = append(gaps, unreadableRecordGap(file, err))
+			continue
+		}
+		if gap := jsonRecordCompatibilityGap(file, raw, required); gap != nil {
+			gaps = append(gaps, *gap)
+			continue
+		}
+		if err := decode(path, raw); err != nil {
+			gaps = append(gaps, malformedRecordGap(file, err))
+		}
+	}
+	return gaps
+}
+
+func jsonRecordCompatibilityGap(file string, raw []byte, required []string) *EvaluationRunGap {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		return gapPtr(malformedRecordGap(file, err))
+	}
+	versionRaw, ok := fields["schemaVersion"]
+	if !ok || isJSONNull(versionRaw) {
+		return gapPtr(EvaluationRunGap{Kind: GapMissingRecordSchemaVersion, Ref: file, Detail: "schemaVersion is required"})
+	}
+	var version int
+	if err := json.Unmarshal(versionRaw, &version); err != nil {
+		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: "schemaVersion must be an integer"})
+	}
+	if version != SchemaVersion {
+		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: fmt.Sprintf("schemaVersion = %d, want %d", version, SchemaVersion)})
+	}
+	for _, field := range required {
+		raw, ok := fields[field]
+		if !ok || (isJSONNull(raw) && field != "localRatingResult") {
+			return gapPtr(EvaluationRunGap{Kind: GapIncompleteEvaluationRecord, Ref: file, Detail: field + " is required"})
+		}
+	}
+	return nil
+}
+
+func isJSONNull(raw json.RawMessage) bool {
+	return string(bytes.TrimSpace(raw)) == "null"
+}
+
+func inspectRecommendations(dir string, out *[]RecommendationRecord) []EvaluationRunGap {
+	var gaps []EvaluationRunGap
+	for _, path := range globRecordFiles(dir, "*.md") {
+		file := filepath.ToSlash(filepath.Join("recommendations", filepath.Base(path)))
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			gaps = append(gaps, unreadableRecordGap(file, err))
+			continue
+		}
+		front, body, err := splitMarkdownFrontmatter(raw)
+		if err != nil {
+			gaps = append(gaps, malformedRecordGap(file, err))
+			continue
+		}
+		if gap := recommendationCompatibilityGap(file, front); gap != nil {
+			gaps = append(gaps, *gap)
+			continue
+		}
+		var rec RecommendationRecord
+		if err := yaml.Unmarshal(front, &rec); err != nil {
+			gaps = append(gaps, malformedRecordGap(file, err))
+			continue
+		}
+		rec.Body = string(body)
+		rec.File = file
+		*out = append(*out, rec)
+	}
+	return gaps
+}
+
+func recommendationCompatibilityGap(file string, front []byte) *EvaluationRunGap {
+	var fields map[string]any
+	if err := yaml.Unmarshal(front, &fields); err != nil {
+		return gapPtr(malformedRecordGap(file, err))
+	}
+	rawVersion, ok := fields["schemaVersion"]
+	if !ok || rawVersion == nil {
+		return gapPtr(EvaluationRunGap{Kind: GapMissingRecordSchemaVersion, Ref: file, Detail: "schemaVersion is required"})
+	}
+	version, ok := rawVersion.(int)
+	if !ok {
+		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: "schemaVersion must be an integer"})
+	}
+	if version != SchemaVersion {
+		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: fmt.Sprintf("schemaVersion = %d, want %d", version, SchemaVersion)})
+	}
+	for _, field := range recommendationRequiredFields() {
+		if value, ok := fields[field]; !ok || value == nil {
+			return gapPtr(EvaluationRunGap{Kind: GapIncompleteEvaluationRecord, Ref: file, Detail: field + " is required"})
+		}
+	}
+	return nil
+}
+
+func malformedRecordGap(file string, err error) EvaluationRunGap {
+	return EvaluationRunGap{Kind: GapMalformedEvaluationRecord, Ref: file, Detail: err.Error()}
+}
+
+func unreadableRecordGap(file string, err error) EvaluationRunGap {
+	return EvaluationRunGap{Kind: GapUnreadableEvaluationRecord, Ref: file, Detail: err.Error()}
+}
+
+func gapPtr(gap EvaluationRunGap) *EvaluationRunGap {
+	return &gap
+}
+
+func assessmentRequiredFields() []string {
+	return []string{"targetPath", "requirement", "factorPaths", "ratingResult", "criterionSource", "findings", "recommendations"}
+}
+
+func analysisRequiredFields() []string {
+	return []string{"targetPath", "localRatingResult", "factorRatingResults", "aggregateRatingResult", "assessmentResultRecords", "childAnalysisRecords"}
+}
+
+func recommendationRequiredFields() []string {
+	return []string{"title", "gap", "evidenceLocators", "assessmentResultRecords", "remediationOptions", "recommendedOption", "doneCriterion"}
 }
 
 func loadJSONRecords(dir, pattern string, decode func(string, []byte) error) error {
@@ -267,11 +440,7 @@ func invalidPlanCoverageGap(err error) EvaluationRunGap {
 }
 
 func (r *EvaluationRun) RecordCounts() EvaluationRecordCounts {
-	return EvaluationRecordCounts{
-		AssessmentResults: len(r.AssessmentResults),
-		Analyses:          len(r.Analyses),
-		Recommendations:   len(r.Recommendations),
-	}
+	return r.recordCounts
 }
 
 // ActiveRecommendationCount returns the number of recommendation records not
@@ -345,7 +514,7 @@ func (r *EvaluationRun) EvaluationRunStatus() EvaluationRunStatus {
 }
 
 func (r *EvaluationRun) Renderable() []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+	gaps := append([]EvaluationRunGap(nil), r.CompatibilityGaps...)
 	supersededAssessmentResults, supersedingGaps := r.assessmentResultSupersedingState()
 	gaps = append(gaps, supersedingGaps...)
 	assessmentResultState := r.renderableAssessmentResultState(supersededAssessmentResults)

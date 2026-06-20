@@ -126,12 +126,12 @@ type GateReceipt struct {
 }
 
 func BuildReport(path string) (*BuildReportReceipt, error) {
-	run, err := Load(path)
+	run, err := Inspect(path)
 	if err != nil {
 		return nil, err
 	}
 	if gaps := run.Renderable(); len(gaps) > 0 {
-		return nil, fmt.Errorf("run is not reportable: %s %s", gaps[0].Kind, gaps[0].Ref)
+		return nil, nonReportableRunError(run.Path, gaps[0])
 	}
 	report, err := run.Report()
 	if err != nil {
@@ -164,6 +164,10 @@ func BuildReport(path string) (*BuildReportReceipt, error) {
 		ReportJSON:      filepath.ToSlash(filepath.Join(run.Path, "report.json")),
 		RatingResult:    report.RatingResult,
 	}, nil
+}
+
+func nonReportableRunError(runPath string, gap EvaluationRunGap) error {
+	return fmt.Errorf("run is not reportable: %s %s: %s (run `qualitymd evaluation status %s` for all gaps)", gap.Kind, gap.Ref, gap.Detail, runPath)
 }
 
 func (r *EvaluationRun) Report() (EvaluationReportDocument, error) {
@@ -1334,9 +1338,12 @@ func Gate(result *BuildReportReceipt, scale []string, threshold string) (bool, e
 }
 
 func GateReport(path, threshold string) (*GateReceipt, error) {
-	run, err := Load(path)
+	run, err := Inspect(path)
 	if err != nil {
 		return nil, err
+	}
+	if gaps := run.Renderable(); len(gaps) > 0 {
+		return nil, nonReportableRunError(run.Path, gaps[0])
 	}
 	reportPath := filepath.Join(run.Path, "report.json")
 	raw, err := os.ReadFile(reportPath)
@@ -1369,7 +1376,7 @@ func GateReport(path, threshold string) (*GateReceipt, error) {
 }
 
 func ScaleLevels(path string) ([]string, error) {
-	run, err := Load(path)
+	run, err := Inspect(path)
 	if err != nil {
 		return nil, err
 	}

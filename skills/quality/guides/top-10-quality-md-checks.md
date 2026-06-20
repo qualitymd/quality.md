@@ -131,7 +131,8 @@ workflow is maintenance rather than new authoring or evaluation.
 - Finding when active recommendations exist: route to improve or recommendation
   review.
 - Finding when the latest run is stale, incomplete, malformed, or unreportable:
-  route to history/reconciliation.
+  route to history/reconciliation. Treat malformed or incompatible records as
+  history status, not subject quality evidence; do not suggest manual migration.
 
 ## Summary Judgment
 

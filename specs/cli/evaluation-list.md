@@ -26,7 +26,13 @@ run.
 
 Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
 **MUST** identify the run path, subject, record counts, and reportability, and
-**MAY** include narrowing when present.
+**MAY** include narrowing when present. It **MAY** include a gap count so callers
+can distinguish an incomplete run with blocking diagnostics from an empty run.
+
+The command **MUST NOT** abort solely because an individual record in a
+recognized run is malformed, schema-incompatible, or structurally incomplete
+under the current record contract. Such a run remains listed as incomplete or
+problematic; detailed diagnostics live in `qualitymd evaluation status <run>`.
 
 The command **MAY** accept `--state all|reportable|incomplete` to filter the
 listed runs. Unknown state filters **MUST** be usage errors.
