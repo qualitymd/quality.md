@@ -1,9 +1,56 @@
 # QUALITY.md
 
-**QUALITY.md** is an agent-friendly file format and companion agent skill and
-CLI for continuously improving the quality of coding agent and AI assistant projects/harnesses.
+**QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
+what matters most, why, and how. Use it with the `/quality` agent skill to
+continuously improve AI assistant and coding projects.
+
+A `QUALITY.md` file is a Markdown file with a quality model in YAML frontmatter
+and supporting quality context in the Markdown body. The `/quality` skill helps
+set up the file, evaluate quality, and evolve the model as you learn. The
+`qualitymd` CLI provides support tooling for validation, status, and evaluation
+records.
+
+## Install
+
+1. Install the agent skill:
+
+```sh
+npx skills add qualitymd/quality.md
+```
+
+2. Install the CLI:
+
+```sh
+npm install -g quality.md
+```
+
+## Usage
+
+Invoke the `/quality` skill to manage quality for your project:
+
+```text
+/quality setup                                  Get started working with QUALITY.md
+/quality wizard                                 Have your AI assistant/agent help you manage quality
+/quality evaluate                               Evaluate the quality of your project
+/quality evaluate security                      Evaluate a specific quality factor or characteristic
+/quality evaluate payments-api                  Evaluate specific target or project component
+/quality evaluate payments-api maintainability  Evaluate a target's specific quality
+```
+
+Most users should work with `QUALITY.md` through their coding agent, the
+`/quality` skill, or direct edits. The CLI is primarily support tooling for
+validation, status, and evaluation records.
+
+To keep the model visible to agents, add a short note to `AGENTS.md` or
+`CLAUDE.md`:
+
+```text
+See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality.
+```
 
 ## Why QUALITY.md
+
+### Manage Quality Debt
 
 As software — and the agents that write it — moves faster, quality erodes
 quietly through three accumulating debts:
@@ -19,56 +66,7 @@ gaps stay visible and addressable instead of compounding.
 > The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
 > Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
 
-## Install
-
-1. Install the agent skill:
-
-```sh
-npx skills add qualitymd/quality.md
-```
-
-2. Install the CLI:
-
-```sh
-npm install quality.md -g
-```
-
-## Usage
-
-Create and check a first model with the CLI:
-
-```sh
-qualitymd init
-qualitymd lint
-```
-
-Expected first result:
-
-```text
-Created QUALITY.md
-
-Next: qualitymd lint QUALITY.md
-QUALITY.md is valid.
-```
-
-Invoke the `/quality` skill to manage quality for your project:
-
-```text
-/quality setup                                  Get started working with QUALITY.md
-/quality wizard                                 Have your AI assistant/agent help you manage quality
-/quality evaluate                               Evaluate the quality of your project
-/quality evaluate security                      Evaluate a specific quality factor or characteristic
-/quality evaluate payments-api                  Evaluate specific target or project component
-/quality evaluate payments-api maintainability  Evaluate a target's specific quality
-```
-
-## The Format
-
-A `QUALITY.md` file combines a structured quality model with plain-language
-rationale. The structured model names what is being evaluated, which quality
-factors matter, what requirements define those factors, and how each requirement
-should be assessed. The Markdown body explains the context: what the work is,
-what "good" means, where the boundaries are, and why these standards matter.
+## Format
 
 ### Specification
 
@@ -232,60 +230,23 @@ model's scale.
 assessment -> findings -> rating result
 ```
 
-## The CLI
+## CLI Quick Reference
 
-> **The CLI is an early work in progress.** Today the binary ships
-> `qualitymd init`, `qualitymd lint`, `qualitymd spec`, `qualitymd status`, and the
-> `qualitymd evaluation` run-record surface.
-
-`qualitymd` draws one hard line: the **CLI never asks an AI model to judge your
-project.** It creates and checks `QUALITY.md` files, shows what the file covers,
-writes evaluation records for the `/quality` skill, renders reports, and can
-fail CI when ratings fall below your chosen bar. The judgment work happens in
-the skill, not in the CLI.
-
-### Common commands
-
-| Goal                   | Command                          |
-| ---------------------- | -------------------------------- |
-| Show the format rules  | `qualitymd spec`                 |
-| Create a starter file  | `qualitymd init [path]`          |
-| Check a file           | `qualitymd lint [path]`          |
-| Fix simple lint issues | `qualitymd lint --fix [path]`    |
-| Show project status    | `qualitymd status [path] --json` |
-| Show version info      | `qualitymd version --json`       |
-| Check for updates      | `qualitymd upgrade --check`      |
-| Show command help      | `qualitymd <command> --help`     |
-
-Typical local loop:
-
-```sh
-qualitymd spec
-qualitymd init
-qualitymd lint
-qualitymd status --json
-```
-
-The `/quality` skill uses additional evaluation commands behind the scenes.
-The detailed command guide lives in the bundled
-[`CLI Quick Reference`](skills/quality/resources/cli-quick-reference.md).
-
-## Conceptual model
-
-The way `QUALITY.md` frames quality is informed by the **ISO/IEC 25000 (SQuaRE)**
-family of software-quality standards — particularly ISO/IEC 25010 — and, for the
-shape of a well-formed requirement, **ISO/IEC/IEEE 29148**. We acknowledge these
-as the conceptual lineage, not a conformance target: `QUALITY.md` borrows their
-ideas and vocabulary where they help and diverges where they don't (it uses
-*Factors* where ISO says *characteristics*), optimizing first for a practical,
-readable format.
+| Task                  | Command                          |
+| --------------------- | -------------------------------- |
+| Show format spec      | `qualitymd spec`                 |
+| Create a starter file | `qualitymd init [path]`          |
+| Validate a file       | `qualitymd lint [path]`          |
+| Fix lint issues       | `qualitymd lint --fix [path]`    |
+| Show project status   | `qualitymd status [path] --json` |
+| Show version info     | `qualitymd version --json`       |
+| Check for updates     | `qualitymd upgrade --check`      |
+| Show command help     | `qualitymd <command> --help`     |
 
 ## Status
 
-The `QUALITY.md` format, `qualitymd` CLI, and `/quality` skill are early and under active development. The format is specified in [`SPECIFICATION.md`](SPECIFICATION.md). Expect the format and tooling to change as they mature.
+The `QUALITY.md` format, `qualitymd` CLI, and `/quality` skill are early and under active development. Expect the format and tooling to change as they mature.
 
 ## Contributing
 
 Contributor setup and local tasks live in [`CONTRIBUTING.md`](CONTRIBUTING.md).
-The release runbook lives in
-[`docs/guides/cut-a-release.md`](docs/guides/cut-a-release.md).

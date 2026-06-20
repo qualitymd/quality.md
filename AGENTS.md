@@ -1,9 +1,8 @@
 # QUALITY.md
 
-Public repo for **QUALITY.md**: `qualitymd` CLI, format spec, user docs.
+QUALITY.md is an open format for modeling a project's quality for the purpose of evaluation, team/agent alignment, and continuous improvement.
 
-`QUALITY.md` = YAML frontmatter target tree + Markdown docs. CLI is
-deterministic/mechanical; skills judge and record through it.
+Read [`README.md`](README.md) before you continue for important project context.
 
 ## Key Docs
 
@@ -42,7 +41,7 @@ OKF bundles register concept types in root `schema.md`:
 | `changes/` | Change Cases — formal work records with spec/design history. |
 
 A Change Case records significant work: motivation, status, affected durable
-specs/docs, a functional spec, and optional design doc.
+artifacts, a functional spec, and optional design doc.
 
 ### Smoke testing
 

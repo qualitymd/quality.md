@@ -18,6 +18,19 @@ evaluation semantics defined here. See
 [Versioning](docs/reference/versioning.md#specification-version) for the
 project's specification-version policy.
 
+## Lineage
+
+Note: This section is non-normative.
+
+`QUALITY.md` is informed by established software-quality, requirements,
+measurement, testing, and evaluation traditions, including ISO/IEC and
+ISO/IEC/IEEE standards, CISQ structural-quality work, and earlier software
+quality models such as McCall and Dromey.
+
+These are acknowledged as influences, not normative references or conformance
+targets. `QUALITY.md` uses its own vocabulary and structure where that makes the
+format more practical, readable, and accessible.
+
 ## Conformance
 
 Conforming uses and applications of `QUALITY.md` MUST fulfill all applicable
