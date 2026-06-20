@@ -1,5 +1,70 @@
 # Changes Update Log
 
+## 2026-06-20
+
+- **Re-characterization**: Re-characterized
+  [0041 - Update command and improvements](0041-update-command.md) as the
+  upgrade→update rename plus its improvements, dropping the earlier framing and
+  renaming the case from slug `0041-codex-aligned-update` to `0041-update-command`
+  (parent, child folder, and the same-day entries below repointed to the new
+  path). Expanded scope to rename the paired `/quality upgrade` skill mode to
+  `/quality update`: the [functional spec](0041-update-command/spec.md) gains a
+  paired skill-mode-rename requirement and a durable-spec change for
+  `specs/skills/quality-skill/quality-skill.md`, and the parent's
+  **Affected artifacts** now lists the skill spec, the runtime
+  `skills/quality/modes/upgrade.md` → `update.md` rename, `SKILL.md` routing,
+  `wizard.md`, the CLI quick reference, and the top-10-checks route token. Updated
+  the bundle [index](index.md).
+
+- **Redesign**: Reshaped 0041 to an apply-by-default `update` command and renamed
+  the case to [0041 - Update command and improvements](0041-update-command.md)
+  (slug `0041-upgrade-apply-and-readiness` → `0041-update-command`; earlier
+  entries below repointed to the new path). Per the chosen direction, the
+  [functional spec](0041-update-command/spec.md) and
+  [design doc](0041-update-command/design.md) now rename `upgrade`→`update`
+  with apply-by-default and a `--check` advisory (deprecated `upgrade` alias for
+  one cycle), and add an ambient cached update notice on ordinary commands. The
+  notice deliberately reverses 0032's "ordinary commands MUST NOT check the
+  network" rule; it is fenced by strict rails — stderr only, never in
+  stdout/`--json`, suppressed off a terminal, in CI, behind
+  `QUALITYMD_NO_UPDATE_CHECK`, and for dev builds — served from a cache under
+  `$QUALITYMD_HOME` refreshed by a detached, non-blocking subprocess. The managed
+  standalone self-apply, readiness gating, and release-notes reference carry
+  forward onto the new command shape. Expands the affected-artifact footprint
+  (the durable `specs/cli/upgrade.md` is renamed to `specs/cli/update.md`;
+  `specs/cli.md`, versioning docs, and the `/quality` skill files all change).
+  Updated the bundle [index](index.md).
+
+- **Design**: Advanced
+  [0041 - Upgrade self-apply, readiness, and release notes](0041-update-command.md)
+  from `Draft` to `Design` and added its
+  [design doc](0041-update-command/design.md). The design lands all
+  three deltas inside the existing `internal/cli/upgrade.go` seams: widen
+  `latestVersionProvider` to return a `{version, ready, releaseNotesURL}` struct
+  (so readiness and notes ride the single injectable, offline-testable network
+  call); resolve `Ready` from the `assets[]`/`html_url` already in the GitHub
+  `releases/latest` response (npm's registry latest is ready by definition); gate
+  reported availability and `--apply` on readiness; and add managed standalone to
+  the `applySupported`/`upgradeCommand` tables, invoking the existing idempotent
+  installer non-interactively via `QUALITYMD_NO_INPUT=1`. Records the Homebrew
+  latest-provider quirk and a possible `releaseReady` JSON field as open
+  questions. Updated the [child index](0041-update-command/index.md)
+  and the bundle [index](index.md).
+
+- **Creation**: Opened
+  [0041 - Upgrade self-apply, readiness, and release notes](0041-update-command.md)
+  (`status: Draft`) with its [functional spec](0041-update-command/spec.md)
+  and [child index](0041-update-command/index.md). The case captures
+  three improvements drawn from comparing `qualitymd upgrade` with a conventional
+  CLI update flow: extend `--apply` to self-update managed standalone installs (the
+  channel the project owns yet 0032 left unable to apply), gate "update
+  available" and `--apply` on the target release actually being downloadable, and
+  surface a release-notes reference in advisory and `--json` output. Records
+  [`internal/cli/upgrade.go`](../internal/cli/upgrade.go),
+  [`specs/cli/upgrade.md`](../specs/cli/upgrade.md), the `/quality` upgrade-mode
+  skill files, and versioning docs as affected. Added the open-case entry to the
+  bundle [index](index.md).
+
 ## 2026-06-19
 
 - **Done**: Set status `Done` and archived
