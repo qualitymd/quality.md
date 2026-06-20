@@ -201,7 +201,8 @@ valid:
   [Define](../../../SPECIFICATION.md#define). A scope name should resolve
   against the model the skill already grounded — a bare name is matched to the
   target or factor that bears it, with an explicit `target`/`factor` keyword
-  available to disambiguate the rare name that is both.
+  available to disambiguate the rare name that is both. Two bare names resolve as
+  a `target factor` pair — the factor narrowed within that target.
 - **Rigor** — the evaluation depth (default `standard`); see
   [Rigor levels](#rigor-levels).
 
@@ -401,10 +402,13 @@ After the CLI prerequisite is met, `setup` **MUST** drive
 [`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
 target file is absent, then run [`qualitymd lint`](../../cli/lint.md). It
 **MUST NOT** reimplement scaffolding, validation, CLI installation tooling, or
-source-driven authoring judgment. Guided first population belongs to the
-[getting-started guide](guides/getting-started.md), with the
-[authoring guide](guides/authoring.md) as its prerequisite; follow-on routing
-belongs to [`wizard`](#wizard).
+source-driven authoring judgment. After a valid skeleton, `setup` **MUST** read
+the [authoring guide](guides/authoring.md) and
+[getting-started guide](guides/getting-started.md) and begin guided first
+population in the same run — drafting the body's Overview, Scope, Needs, Risks,
+and Known gaps and proposing project-specific Factors and Requirements to replace
+the placeholders — rather than stopping at naming that next step. Follow-on
+routing belongs to [`wizard`](#wizard).
 
 ### Upgrade
 
@@ -448,6 +452,7 @@ arguments, defaulting the ones left out:
 /quality evaluate payments     # scope to a target named "payments" (resolved from the model)
 /quality evaluate payments --rigor deep   # exhaustive evaluate for one target
 /quality evaluate security     # scope to a factor named "security" (resolved from the model)
+/quality evaluate payments maintainability   # a target's factor: "maintainability" within target "payments"
 /quality evaluate factor flow  # disambiguate when a name is both a target and a factor
 /quality improve               # evaluate, then recommend (applies only on confirmation)
 /quality improve reliability --rigor quick   # recommend from a fast pass, scoped to one factor

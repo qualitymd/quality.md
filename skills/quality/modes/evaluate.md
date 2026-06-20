@@ -15,9 +15,10 @@ Run qualitymd lint
 
 Resolve scope
 - no scope? full evaluation
-- target named? target subtree
-- factor named? requirements tied to factor
-- ambiguous name? ask for target/factor disambiguation
+- one bare name? resolve against the model: target subtree or factor's requirements
+- two bare names? <target> <factor>: that factor's requirements within the target
+- target/factor keyword given? use it to disambiguate a name that is both
+- unresolvable or both target and factor? ask for target/factor disambiguation
 
 Finding claims code, CLI, or tool behavior?
 - verify with command/search and cite locator

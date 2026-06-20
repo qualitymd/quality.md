@@ -12,7 +12,7 @@ Resolve target file
 
 Run qualitymd lint
 - errors? stop and report lint findings
-- valid? route to getting-started for population, then wizard for next action
+- valid? read getting-started + authoring and begin guided population, then wizard for next action
 ```
 
 ## Procedure
@@ -28,7 +28,7 @@ Run qualitymd lint
    - Scope: model skeleton/readiness
    - Mutation: QUALITY.md when missing or when an existing model change is confirmed
    - Artifacts: QUALITY.md
-   - Next gate: lint result and wizard next step
+   - Next gate: lint result, guided population, then wizard next step
    ```
 
 4. If no target file exists, run `qualitymd init [path]`.
@@ -45,10 +45,12 @@ Run qualitymd lint
    ```
 
 6. Run `qualitymd lint [path]`; stop on errors and report the CLI findings.
-7. Read [`../guides/authoring.md`](../guides/authoring.md), then hand off to
-   [`../guides/getting-started.md`](../guides/getting-started.md) to guide first
-   model population. Route to `wizard` after population for the next evaluation
-   workflow.
+7. Read [`../guides/authoring.md`](../guides/authoring.md) and
+   [`../guides/getting-started.md`](../guides/getting-started.md), then begin
+   guided population in the same run: draft the body's Overview, Scope, Needs,
+   Risks, and Known gaps, and propose project-specific Factors and Requirements
+   to replace the placeholders with the user. Do not stop at naming the next
+   step. Route to `wizard` after population for the next evaluation workflow.
 
 `setup` creates a valid skeleton; it does not invent a complete quality model
 without user/project context. For authoring judgment, read

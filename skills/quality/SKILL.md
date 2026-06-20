@@ -79,8 +79,11 @@ Parse the user's request from free-form arguments:
   skill, the `qualitymd` CLI, or their compatibility pair as `upgrade`.
 - Target file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
-- Scope: full evaluation by default, or a named target/factor. Use explicit
-  `target`/`factor` words to disambiguate.
+- Scope: full evaluation by default, or a narrowing. Resolve a bare name against
+  the grounded model — match it to the target or factor that bears it. Two bare
+  names are a `<target> <factor>` pair: that factor narrowed within the target.
+  Use an explicit `target`/`factor` keyword only to disambiguate a name that is
+  both a target and a factor.
 - Rigor: `standard` by default; see [Rigor Levels](#rigor-levels).
 
 When a bare request is ambiguous, run `wizard`: inspect state, summarize the
@@ -154,10 +157,13 @@ not be replaced by titles.
 /quality review history
 /quality setup
 /quality evaluate
+/quality evaluate <name>
+/quality evaluate <target> <factor>
 /quality evaluate target <name>
 /quality evaluate factor <name>
 /quality evaluate deep
 /quality improve
+/quality improve <name>
 /quality improve target <name>
 /quality upgrade
 ```
