@@ -43,31 +43,13 @@ relevant docs, tests, and specs, and verify.
 - Do not add smoke-test scripts, utilities, fixtures, or code to the repo.
 - Temporary helpers only in `tmp/` or throwaway dirs; remove when done.
 
-## Documentation Map
-
-### Core docs
-
-| Path                                                           | Purpose                                                                                                   |
-| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| [`README.md`](README.md)                                       | Project overview, current implementation status, and install notes.                                       |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md)                           | Development setup, `mise run` tasks, project layout, and process pointers.                                |
-| [`SPECIFICATION.md`](SPECIFICATION.md)                         | Source of truth for the `QUALITY.md` format and evaluation semantics.                                     |
-| [`docs/guides/cut-a-release.md`](docs/guides/cut-a-release.md) | Authoritative release runbook: prep, tag/publish, verification, failure handling, and changelog workflow. |
-
-### Quality skill docs
-
-| Path                                                                                               | Purpose                                                                                           |
-| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [`specs/skills/quality-skill/guides/authoring.md`](specs/skills/quality-skill/guides/authoring.md) | Governing functional spec for the `/quality` skill's authoring guide.                             |
-| [`skills/quality/guides/authoring.md`](skills/quality/guides/authoring.md)                         | Runtime guide with reusable concepts and best practices for authoring useful `QUALITY.md` files.  |
-| [`skills/quality/guides/getting-started.md`](skills/quality/guides/getting-started.md)             | Runtime process guide for turning an initialized `QUALITY.md` skeleton into a first useful model. |
-
-### Guides
+## Guides
 
 Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
 | When you are…                                   | Read                                                               |
 | ----------------------------------------------- | ------------------------------------------------------------------ |
+| Cutting or verifying a release                  | [Cut a release](docs/guides/cut-a-release.md)                      |
 | Creating or advancing a Change Case             | [Working with change cases](docs/guides/work-with-change-cases.md) |
 | Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md)  |
 | Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)            |
