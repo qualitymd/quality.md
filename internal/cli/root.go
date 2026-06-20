@@ -46,24 +46,55 @@ var (
 func newRootCmd() *cobra.Command {
 	root := &cobra.Command{
 		Use:   "qualitymd",
-		Short: "Work with QUALITY.md files",
-		Long: "qualitymd works with QUALITY.md files: Markdown documents whose YAML " +
-			"frontmatter declares a quality model with a ratingScale, targets, factors, " +
-			"requirements, and one assessment per requirement.",
+		Short: "Evaluate and improve AI assistant projects with QUALITY.md",
+		Long: "qualitymd is the companion CLI for the QUALITY.md file format for " +
+			"evaluating and improving the quality of AI assistant projects and harnesses.\n\n" +
+			"Designed to be used with the companion agent skill.\n\n" +
+			"Learn more at https://getquality.md\n" +
+			"Report issues at https://github.com/qualitymd/quality.md/issues",
+		Example:       "npx skills add qualitymd/quality.md",
 		SilenceUsage:  true,
 		SilenceErrors: true,
+		Args:          usage(cobra.NoArgs),
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			return renderRootWelcome(cmd.OutOrStdout())
+		},
 	}
 	root.SetFlagErrorFunc(func(_ *cobra.Command, err error) error {
 		return usageError(err)
 	})
-	root.AddCommand(newInitCmd())
-	root.AddCommand(newEvaluationCmd())
-	root.AddCommand(newLintCmd())
-	root.AddCommand(newSpecCmd())
-	root.AddCommand(newStatusCmd())
-	root.AddCommand(newUpgradeCmd())
-	root.AddCommand(newVersionCmd())
+	// Keep commands in registration order so the help reference reads as a
+	// workflow (init -> lint -> spec -> evaluation) rather than alphabetically.
+	cobra.EnableCommandSorting = false
+	root.AddGroup(
+		&cobra.Group{ID: groupCommon, Title: "Common Tasks"},
+		&cobra.Group{ID: groupManage, Title: "Manage"},
+	)
+	addCommand(root, groupCommon, newInitCmd())
+	addCommand(root, groupCommon, newLintCmd())
+	addCommand(root, groupCommon, newSpecCmd())
+	addCommand(root, groupCommon, newEvaluationCmd())
+	addCommand(root, groupManage, newVersionCmd())
+	addCommand(root, groupManage, newUpgradeCmd())
+	addCommand(root, groupManage, newStatusCmd())
+	// Cobra's auto-generated help and completion commands are housekeeping, not
+	// part of the workflow, so file them under Manage rather than letting them
+	// form a stray default group above the curated ones.
+	root.SetHelpCommandGroupID(groupManage)
+	root.SetCompletionCommandGroupID(groupManage)
 	return root
+}
+
+// Command groups for the root help reference. Common Tasks is the authoring
+// loop; Manage is housekeeping (state, upgrades, version, shell plumbing).
+const (
+	groupCommon = "common"
+	groupManage = "manage"
+)
+
+func addCommand(root *cobra.Command, groupID string, cmd *cobra.Command) {
+	cmd.GroupID = groupID
+	root.AddCommand(cmd)
 }
 
 // Execute builds the command tree and runs it. It exits non-zero on error;

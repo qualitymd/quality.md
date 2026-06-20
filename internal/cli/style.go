@@ -8,6 +8,8 @@ package cli
 // CLI spec's agent-accessibility baseline.
 
 import (
+	"fmt"
+	"image/color"
 	"io"
 	"os"
 
@@ -17,14 +19,33 @@ import (
 	"github.com/charmbracelet/x/term"
 )
 
-// brandColorScheme is qualitymd's Fang colorscheme: the stack default with the
-// title and program name in the brand green, so styled help and version share
-// the palette the command renderers below use.
+// brandColorScheme keeps Fang-rendered help mostly monochrome. Color is
+// reserved for status output below, not the command reference itself.
 func brandColorScheme(c lipgloss.LightDarkFunc) fang.ColorScheme {
-	scheme := fang.DefaultColorScheme(c)
-	scheme.Title = charmtone.Guac
-	scheme.Program = c(charmtone.Guac, charmtone.Julep)
-	return scheme
+	base := c(charmtone.Charcoal, charmtone.Ash)
+	dim := c(charmtone.Squid, charmtone.Oyster)
+	codeblock := c(charmtone.Salt, lipgloss.Color("#2F2E36"))
+	return fang.ColorScheme{
+		Base:           base,
+		Title:          base,
+		Description:    base,
+		Codeblock:      codeblock,
+		Program:        base,
+		DimmedArgument: dim,
+		Comment:        dim,
+		Flag:           base,
+		FlagDefault:    dim,
+		Command:        base,
+		QuotedString:   base,
+		Argument:       base,
+		Help:           base,
+		Dash:           dim,
+		ErrorHeader: [2]color.Color{
+			charmtone.Butter,
+			charmtone.Cherry,
+		},
+		ErrorDetails: charmtone.Cherry,
+	}
 }
 
 // colorEnabled reports whether human styling should be applied to w. It mirrors
@@ -44,13 +65,14 @@ func colorEnabled(w io.Writer) bool {
 // Brand styles, used only on the color-enabled path. Colors are charmtone keys
 // chosen to stay legible on both light and dark terminals.
 var (
-	styleSuccess = lipgloss.NewStyle().Foreground(charmtone.Guac).Bold(true)
+	styleBrand   = lipgloss.NewStyle().Bold(true)
+	styleSuccess = lipgloss.NewStyle().Foreground(charmtone.Guac)
 	styleError   = lipgloss.NewStyle().Foreground(charmtone.Cherry).Bold(true)
 	styleWarning = lipgloss.NewStyle().Foreground(charmtone.Mustard).Bold(true)
-	styleInfo    = lipgloss.NewStyle().Foreground(charmtone.Malibu).Bold(true)
+	styleInfo    = lipgloss.NewStyle().Foreground(charmtone.Squid)
 	styleRule    = lipgloss.NewStyle().Foreground(charmtone.Squid)
 	styleDim     = lipgloss.NewStyle().Foreground(charmtone.Squid)
-	styleCommand = lipgloss.NewStyle().Foreground(charmtone.Malibu)
+	styleCommand = lipgloss.NewStyle().Bold(true)
 )
 
 const (
@@ -59,3 +81,48 @@ const (
 	glyphWarning = "⚠"
 	glyphInfo    = "•"
 )
+
+func renderRootWelcome(w io.Writer) error {
+	if !colorEnabled(w) {
+		_, err := fmt.Fprint(w, rootWelcomePlain())
+		return err
+	}
+	_, err := fmt.Fprint(w, rootWelcomeStyled())
+	return err
+}
+
+func rootWelcomePlain() string {
+	return "QUALITY.md\n\n" +
+		"The companion CLI for the QUALITY.md file format for evaluating and improving\n" +
+		"the quality of AI assistant projects and harnesses.\n\n" +
+		"Designed to be used with the companion agent skill:\n" +
+		"  npx skills add qualitymd/quality.md\n\n" +
+		"Start:\n" +
+		"  qualitymd init\n" +
+		"  qualitymd lint QUALITY.md\n\n" +
+		"Continue:\n" +
+		"  qualitymd status\n" +
+		"  qualitymd evaluation create\n\n" +
+		"More:\n" +
+		"  qualitymd --help\n" +
+		"  docs: https://getquality.md\n" +
+		"  report issues: https://github.com/qualitymd/quality.md/issues\n"
+}
+
+func rootWelcomeStyled() string {
+	return styleBrand.Render("QUALITY.md") + "\n\n" +
+		"The companion CLI for the QUALITY.md file format for evaluating and improving\n" +
+		"the quality of AI assistant projects and harnesses.\n\n" +
+		"Designed to be used with the companion agent skill:\n" +
+		"  " + styleCommand.Render("npx skills add qualitymd/quality.md") + "\n\n" +
+		styleDim.Render("Start:") + "\n" +
+		"  " + styleCommand.Render("qualitymd init") + "\n" +
+		"  " + styleCommand.Render("qualitymd lint QUALITY.md") + "\n\n" +
+		styleDim.Render("Continue:") + "\n" +
+		"  " + styleCommand.Render("qualitymd status") + "\n" +
+		"  " + styleCommand.Render("qualitymd evaluation create") + "\n\n" +
+		styleDim.Render("More:") + "\n" +
+		"  " + styleCommand.Render("qualitymd --help") + "\n" +
+		"  " + styleDim.Render("docs:") + " https://getquality.md\n" +
+		"  " + styleDim.Render("report issues:") + " https://github.com/qualitymd/quality.md/issues\n"
+}

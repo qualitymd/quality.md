@@ -9,6 +9,72 @@ import (
 	"testing"
 )
 
+func TestExecuteNoArgsShowsConciseWelcome(t *testing.T) {
+	var out, stderr bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+
+	if got := execute(context.Background(), cmd); got != ExitOK {
+		t.Fatalf("execute() = %d, want %d", got, ExitOK)
+	}
+
+	want := "QUALITY.md\n\n" +
+		"The companion CLI for the QUALITY.md file format for evaluating and improving\n" +
+		"the quality of AI assistant projects and harnesses.\n\n" +
+		"Designed to be used with the companion agent skill:\n" +
+		"  npx skills add qualitymd/quality.md\n\n" +
+		"Start:\n" +
+		"  qualitymd init\n" +
+		"  qualitymd lint QUALITY.md\n\n" +
+		"Continue:\n" +
+		"  qualitymd status\n" +
+		"  qualitymd evaluation create\n\n" +
+		"More:\n" +
+		"  qualitymd --help\n" +
+		"  docs: https://getquality.md\n" +
+		"  report issues: https://github.com/qualitymd/quality.md/issues\n"
+	if out.String() != want {
+		t.Fatalf("stdout =\n%q\nwant\n%q", out.String(), want)
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("stderr = %q, want empty", stderr.String())
+	}
+}
+
+func TestExecuteHelpShowsFullReference(t *testing.T) {
+	var out, stderr bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+	cmd.SetArgs([]string{"--help"})
+
+	if got := execute(context.Background(), cmd); got != ExitOK {
+		t.Fatalf("execute() = %d, want %d", got, ExitOK)
+	}
+
+	got := out.String()
+	for _, want := range []string{
+		"USAGE",
+		"COMMON TASKS",
+		"MANAGE",
+		"qualitymd [command] [--flags]",
+		"npx skills add qualitymd/quality.md",
+		"https://getquality.md",
+		"https://github.com/qualitymd/quality.md/issues",
+	} {
+		if !strings.Contains(got, want) {
+			t.Fatalf("stdout = %q, want substring %q", got, want)
+		}
+	}
+	if strings.Contains(got, "Start:\n  qualitymd init") {
+		t.Fatalf("stdout = %q, want full help instead of root welcome", got)
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("stderr = %q, want empty", stderr.String())
+	}
+}
+
 func TestExecuteMapsLintProblemsWithoutExtraStderr(t *testing.T) {
 	path := writeLintModel(t, `---
 title: Example

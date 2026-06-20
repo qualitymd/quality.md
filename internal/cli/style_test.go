@@ -2,8 +2,12 @@ package cli
 
 import (
 	"bytes"
+	"reflect"
 	"strings"
 	"testing"
+
+	"charm.land/lipgloss/v2"
+	"github.com/charmbracelet/x/exp/charmtone"
 
 	"github.com/qualitymd/quality.md/internal/lint"
 	"github.com/qualitymd/quality.md/internal/receipt"
@@ -19,6 +23,23 @@ func TestColorEnabledOffWhenNoColorSet(t *testing.T) {
 	t.Setenv("NO_COLOR", "1")
 	if colorEnabled(panicFDWriter{}) {
 		t.Fatal("colorEnabled() = true, want false when NO_COLOR is set")
+	}
+}
+
+func TestBrandColorSchemeAvoidsDefaultAccentColors(t *testing.T) {
+	scheme := brandColorScheme(lipgloss.LightDark(false))
+	for name, got := range map[string]any{
+		"title":         scheme.Title,
+		"program":       scheme.Program,
+		"command":       scheme.Command,
+		"flag":          scheme.Flag,
+		"quoted string": scheme.QuotedString,
+	} {
+		for _, unwanted := range []any{charmtone.Charple, charmtone.Pony, charmtone.Cheeky, charmtone.Guac} {
+			if reflect.DeepEqual(got, unwanted) {
+				t.Fatalf("%s color = %#v, want neutral color", name, got)
+			}
+		}
 	}
 }
 
