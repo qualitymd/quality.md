@@ -2,6 +2,22 @@
 
 ## 2026-06-20
 
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0041 - Update command and improvements](0041-update-command.md). The CLI
+  now exposes apply-by-default `qualitymd update` with `--check`, readiness and
+  release-notes fields, managed standalone apply, post-apply version
+  verification, update-check opt-out, and a cached ambient notice. Renamed the
+  `/quality` maintenance mode and durable skill/spec/docs references to
+  `update`. Verified `mise run check`, a Windows compile-only check for
+  `internal/cli`, and CLI smoke checks for `update` and removed `upgrade`.
+  Updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0041 - Update command and improvements](0041-update-command.md) from `Design`
+  to `In-Progress` to begin implementation of the apply-by-default
+  `qualitymd update` command, ambient cached update notice, and paired
+  `/quality update` skill-mode rename. Updated the bundle [index](index.md).
+
 - **Re-characterization**: Re-characterized
   [0041 - Update command and improvements](0041-update-command.md) as the
   upgrade→update rename plus its improvements, dropping the earlier framing and

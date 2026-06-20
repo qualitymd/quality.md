@@ -24,5 +24,5 @@ The format-tooling commands specified for this phase. See the parent
   reports.
 - [qualitymd version](version.md) - show structured CLI and bundled spec version
   metadata.
-- [qualitymd upgrade](upgrade.md) - explicitly check for and advise on CLI
-  upgrades.
+- [qualitymd update](update.md) - apply or check for CLI updates through managed
+  install channels.

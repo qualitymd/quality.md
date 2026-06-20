@@ -34,7 +34,7 @@ getting-started, authoring, evaluation, improvement, or history work.
 The guide exists to quickly assess the current state, quality, and lifecycle of
 a QUALITY.md file. Its output is a small set of routing findings that explain
 why the next workflow should be setup, getting-started, authoring/model review,
-evaluation, improvement, history/reconciliation, or upgrade.
+evaluation, improvement, history/reconciliation, or update.
 
 ## Scope
 
@@ -91,7 +91,7 @@ section names, property paths, counts, or short locators rather than long
 quotations.
 
 Routes should use skill workflow language such as setup, getting-started,
-authoring, evaluate, improve, history, or upgrade.
+authoring, evaluate, improve, history, or update.
 
 The checklist **MUST** treat the authoring guide as the quality reference for
 what good authoring looks like. It should route starter or placeholder models to

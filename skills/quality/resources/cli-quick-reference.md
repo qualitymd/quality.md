@@ -43,8 +43,8 @@ whether the install is in the skill's supported range.
 | ----------------------------- | --------------------------------------------------------------------- |
 | Check CLI version             | `qualitymd --version`                                                 |
 | Read version metadata         | `qualitymd version --json`                                            |
-| Check for CLI upgrades        | `qualitymd upgrade --check`                                           |
-| Apply CLI upgrade             | `qualitymd upgrade --apply`                                           |
+| Check for CLI updates         | `qualitymd update --check`                                            |
+| Apply CLI update              | `qualitymd update`                                                    |
 | Read format rules             | `qualitymd spec`                                                      |
 | Create a starter model        | `qualitymd init [path]`                                               |
 | Validate a model              | `qualitymd lint [path]`                                               |
@@ -97,13 +97,13 @@ Run incomplete or stale?
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
-### Upgrading
+### Updating
 
 ```text
 CLI missing, stale, or incompatible?
 - Inspect visible CLI -> qualitymd version --json
-- Check install-aware action -> qualitymd upgrade --check
-- Apply only when confirmed -> qualitymd upgrade --apply
+- Check install-aware action -> qualitymd update --check
+- Apply only when confirmed -> qualitymd update
 ```
 
 ## Common workflows

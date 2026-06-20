@@ -56,6 +56,12 @@ func newRootCmd() *cobra.Command {
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Args:          usage(cobra.NoArgs),
+		PersistentPreRun: func(cmd *cobra.Command, _ []string) {
+			maybeStartUpdateRefresh(cmd)
+		},
+		PersistentPostRun: func(cmd *cobra.Command, _ []string) {
+			maybeEmitUpdateNotice(cmd)
+		},
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			return renderRootWelcome(cmd.OutOrStdout())
 		},
@@ -75,8 +81,9 @@ func newRootCmd() *cobra.Command {
 	addCommand(root, groupCommon, newSpecCmd())
 	addCommand(root, groupCommon, newEvaluationCmd())
 	addCommand(root, groupManage, newVersionCmd())
-	addCommand(root, groupManage, newUpgradeCmd())
+	addCommand(root, groupManage, newUpdateCmd())
 	addCommand(root, groupManage, newStatusCmd())
+	root.AddCommand(newUpdateRefreshCmd())
 	// Cobra's auto-generated help and completion commands are housekeeping, not
 	// part of the workflow, so file them under Manage rather than letting them
 	// form a stray default group above the curated ones.
@@ -86,7 +93,7 @@ func newRootCmd() *cobra.Command {
 }
 
 // Command groups for the root help reference. Common Tasks is the authoring
-// loop; Manage is housekeeping (state, upgrades, version, shell plumbing).
+// loop; Manage is housekeeping (state, updates, version, shell plumbing).
 const (
 	groupCommon = "common"
 	groupManage = "manage"

@@ -23,7 +23,7 @@ QUALITY.md inspection findings
 - <check id>: <finding>
   Evidence: <status field, section, or property>
   Impact: <why this affects lifecycle/model usefulness>
-  Route: <setup | getting-started | authoring | evaluate | improve | history | upgrade>
+  Route: <setup | getting-started | authoring | evaluate | improve | history | update>
 ```
 
 Keep evidence short. Cite section names, property paths, counts, or status JSON

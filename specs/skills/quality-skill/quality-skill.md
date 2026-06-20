@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI upgrade help for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, upgrading the /quality stack, or authoring/improving a QUALITY.md file.
+description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI update help for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-19T00:00:00Z
 ---
@@ -56,11 +56,11 @@ evaluation. `lint` asks "is this a valid QUALITY.md file?"; authoring guidance a
 "is this a useful and understandable model?" without turning that question into a
 second bundled evaluation model.
 
-The skill also owns a maintenance orchestration mode, `upgrade`, for keeping the
+The skill also owns a maintenance orchestration mode, `update`, for keeping the
 separately distributed `/quality` skill and `qualitymd` CLI compatible. It
-diagnoses the installed pair, plans skill and CLI upgrade actions, asks before
+diagnoses the installed pair, plans skill and CLI update actions, asks before
 mutation, and delegates mechanical changes to the Agent Skills installer and
-`qualitymd upgrade`.
+`qualitymd update`.
 
 Scope is a modifier, not a separate use case. Every evaluate/improve invocation
 takes an optional scope — a full evaluation, or a narrowing to particular
@@ -128,7 +128,7 @@ artifact-contract guidance live there. Supporting docs live under
 procedure details can live in separate mode files, and the current artifact
 keeps them under
 `skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`,
-`improve.md`, and `upgrade.md`. When mode procedures live outside `SKILL.md`, the root prompt
+`improve.md`, and `update.md`. When mode procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching mode file before executing that
 mode.
 
@@ -156,11 +156,11 @@ The root prompt **MUST** direct agents when to read each one:
 
 The description **MUST** optimize for trigger matching rather than documentation:
 it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`,
-`upgrade`), broad quality vocabulary users naturally ask with (`quality
+`update`), broad quality vocabulary users naturally ask with (`quality
 management`, quality evaluation/improvement, factors, characteristics,
 attributes, criteria), QUALITY.md vocabulary (Targets, Factors, Requirements),
 project/entity and component/target subject framing, subject evaluation,
-upgrading the `/quality` stack, and QUALITY.md authoring/improvement. It
+updating the `/quality` stack, and QUALITY.md authoring/improvement. It
 **MUST NOT** include CLI implementation details, and it should not trigger for
 generic copyediting or one-off "make this higher quality" requests that lack
 systematic quality criteria or assessment.
@@ -181,11 +181,11 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 An invocation resolves four things, each with a default so a bare `/quality` is
 valid:
 
-- **Mode** — `evaluate`, `improve`, `setup`, `upgrade`, or `wizard`. A bare
+- **Mode** — `evaluate`, `improve`, `setup`, `update`, or `wizard`. A bare
   `/quality` with no direction runs the [`wizard`](#wizard) — the quality
   wayfinder that inspects state and suggests what to run. User intents such as
   `status`, `next`, `review model`, and `review history` resolve to wizard
-  unless the user clearly asks for another mode. `upgrade` is selected for
+  unless the user clearly asks for another mode. `update` is selected for
   requests to update, upgrade, or repair the installed `/quality` skill and
   `qualitymd` CLI pair. `setup` is selected when no model file is present or the
   user asks to create one; otherwise the default action is `evaluate`, so naming
@@ -243,7 +243,7 @@ rather than inventing a false coverage ranking. The skill **MUST NOT** treat an
 obvious or recommended fix as consent to mutate; explicit approval remains
 required wherever this spec requires confirmation.
 
-> Rationale: `improve`, `setup`, and `upgrade` can all make useful changes, but
+> Rationale: `improve`, `setup`, and `update` can all make useful changes, but
 > the user needs to know what surface is changing and how the skill will prove
 > the change worked. — 0038
 
@@ -257,7 +257,7 @@ The skill **SHOULD** stop before rating when requirements are too vague to bind
 evidence to a rating or when available evidence cannot distinguish adjacent
 rating levels. A stop response **MUST** explain the reason in concrete terms and
 offer at least one runnable next step, such as reviewing the model with the
-authoring guide, narrowing the scope, repairing source references, upgrading
+authoring guide, narrowing the scope, repairing source references, updating
 stale CLI support, or proceeding with a clearly limited quick evaluation when
 that is still defensible.
 
@@ -378,11 +378,11 @@ The options should be selected from the workflows the skill can route to:
 creating setup, repairing a model that fails lint, reviewing or improving
 `QUALITY.md` with the authoring guide, evaluating the subject whole or scoped,
 improving the subject from evaluation recommendations, reviewing evaluation
-history, or running `/quality upgrade` when the CLI is missing, below the
+history, or running `/quality update` when the CLI is missing, below the
 prerequisite range, or the skill/CLI pair is incompatible. The wizard judges CLI
 readiness offline from the visible version against the prerequisite range and
 **MUST NOT** probe the network; discovering a newer-but-compatible release
-belongs to `/quality upgrade` (`qualitymd upgrade --check`). When the user asks to review or improve the
+belongs to `/quality update` (`qualitymd update --check`). When the user asks to review or improve the
 `QUALITY.md` itself, the wizard uses the authoring guide as the model-quality
 reference and routes to a confirmed editing workflow rather than treating the
 `QUALITY.md` as the subject of an Evaluation report.
@@ -396,7 +396,7 @@ SemVer range declared by `metadata.requires-qualitymd-cli`. A local development
 build is compatible when it exposes the commands the skill depends on. When the
 CLI is missing or outside the supported release range, or when a local
 development build lacks required commands, `setup` **MUST** stop and facilitate
-install or upgrade before running CLI-dependent work.
+install or update before running CLI-dependent work.
 
 After the CLI prerequisite is met, `setup` **MUST** drive
 [`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
@@ -410,29 +410,29 @@ and Known gaps and proposing project-specific Factors and Requirements to replac
 the placeholders — rather than stopping at naming that next step. Follow-on
 routing belongs to [`wizard`](#wizard).
 
-### Upgrade
+### Update
 
-The `upgrade` mode is maintenance orchestration for the `/quality` stack. It
+The `update` mode is maintenance orchestration for the `/quality` stack. It
 **MUST** inspect the loaded skill metadata, inspect the installed `qualitymd`
-CLI version, use `qualitymd upgrade --check` when available, and build a plan
+CLI version, use `qualitymd update --check` when available, and build a plan
 before applying changes.
 
 The plan **MUST** classify whether the `/quality` skill, the `qualitymd` CLI,
 both, or neither need action. It **MUST** ask for explicit user confirmation
-before applying any upgrade action.
+before applying any update action.
 
-The skill **MUST NOT** edit installed skill files directly. Skill upgrades
+The skill **MUST NOT** edit installed skill files directly. Skill updates
 belong to the Agent Skills installer or package manager. The skill **MUST NOT**
-replace the `qualitymd` binary directly. CLI upgrades belong to
-`qualitymd upgrade --apply`, owner package-manager commands, or documented manual
+replace the `qualitymd` binary directly. CLI updates belong to
+`qualitymd update`, owner package-manager commands, or documented manual
 guidance.
 
-After a CLI upgrade, the skill **MUST** verify the visible `qualitymd` version
-against the target skill's required CLI range. After a skill upgrade, it **MUST**
+After a CLI update, the skill **MUST** verify the visible `qualitymd` version
+against the target skill's required CLI range. After a skill update, it **MUST**
 tell the user that the active agent session may still be running previously
 loaded skill instructions and may require restart, reload, or a new session.
 
-`upgrade` **MUST** stop before setup, evaluation, or improvement work. It is not
+`update` **MUST** stop before setup, evaluation, or improvement work. It is not
 an Evaluation mode.
 
 ### Examples
@@ -457,7 +457,7 @@ arguments, defaulting the ones left out:
 /quality improve               # evaluate, then recommend (applies only on confirmation)
 /quality improve reliability --rigor quick   # recommend from a fast pass, scoped to one factor
 /quality improve --rigor deep # exhaustive evaluate, then recommend
-/quality upgrade              # plan and orchestrate paired skill/CLI upgrades
+/quality update              # plan and orchestrate paired skill/CLI updates
 /quality setup                 # author a new model file (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
 ```
@@ -483,7 +483,7 @@ introspection channel where the [CLI](../../cli.md) offers one. It **MUST** cons
 machine-readable output where a command provides it (the
 [`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
 text. Before evaluation work, it **MUST** verify that
-`qualitymd version --json`, `qualitymd upgrade --check`,
+`qualitymd version --json`, `qualitymd update --check`,
 `qualitymd evaluation create`, `qualitymd evaluation list`,
 `qualitymd evaluation status`, `qualitymd evaluation assessment-result`,
 `qualitymd evaluation analysis`, `qualitymd evaluation recommendation`, and

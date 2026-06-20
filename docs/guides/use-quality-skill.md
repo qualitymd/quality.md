@@ -27,24 +27,24 @@ npx skills add .
 
 Restart the target agent if it discovers skills only at session startup.
 
-## Upgrade an existing install
+## Update an Existing Install
 
-For an existing setup, use the skill-orchestrated upgrade flow:
+For an existing setup, use the skill-orchestrated update flow:
 
 ```text
-/quality upgrade
+/quality update
 ```
 
-The upgrade mode checks the installed `/quality` skill metadata, verifies the
+The update mode checks the installed `/quality` skill metadata, verifies the
 visible `qualitymd` CLI, plans any skill and CLI updates, asks before applying
 changes, and reports whether the agent session must be restarted or reloaded.
 
-If `/quality upgrade` is unavailable, reinstall the skill and check the CLI
+If `/quality update` is unavailable, reinstall the skill and check the CLI
 manually:
 
 ```sh
 npx skills add qualitymd/quality.md
-qualitymd upgrade --check
+qualitymd update --check
 ```
 
 ## Verify the CLI prerequisite
@@ -58,7 +58,7 @@ the CLI SemVer range declared in `skills/quality/SKILL.md`
 ```sh
 qualitymd --version
 qualitymd version --json
-qualitymd upgrade --check
+qualitymd update --check
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
@@ -72,7 +72,7 @@ qualitymd evaluation report --help
 ```
 
 If the CLI is missing or stale, use the recommended action from
-`qualitymd upgrade --check`, or install through the GitHub-hosted managed
+`qualitymd update --check`, or install through the GitHub-hosted managed
 installer:
 
 ```sh
@@ -87,14 +87,14 @@ In the repository you want to evaluate:
 /quality setup
 /quality wizard
 /quality evaluate
-/quality upgrade
+/quality update
 ```
 
 `setup` creates and lints a skeleton `QUALITY.md`, then uses the bundled
 authoring guide and getting-started guide to help populate the first useful
 model. `wizard` inspects the model state and suggests concrete next actions.
 `evaluate` writes a numbered evaluation run under `quality/evaluations/` by
-default. `upgrade` plans and orchestrates paired skill/CLI maintenance without
+default. `update` plans and orchestrates paired skill/CLI maintenance without
 running a quality evaluation.
 
 ## Configure the evaluation directory

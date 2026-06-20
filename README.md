@@ -199,7 +199,7 @@ Targets can nest recursively. `ratingScale` exists only on the root model.
 | Fix lint issues       | `qualitymd lint --fix [path]`    |
 | Show project status   | `qualitymd status [path] --json` |
 | Show version info     | `qualitymd version --json`       |
-| Check for updates     | `qualitymd upgrade --check`      |
+| Check for updates     | `qualitymd update --check`       |
 | Show command help     | `qualitymd <command> --help`     |
 
 ## Status

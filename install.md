@@ -19,24 +19,24 @@ npx skills add .
 
 Restart the target agent session if that agent only discovers skills at startup.
 
-## 2. Upgrade an existing install
+## 2. Update an existing install
 
-For an existing `/quality` setup, prefer the skill-orchestrated upgrade flow:
+For an existing `/quality` setup, prefer the skill-orchestrated update flow:
 
 ```text
-/quality upgrade
+/quality update
 ```
 
-The upgrade mode checks the installed `/quality` skill metadata, verifies the
+The update mode checks the installed `/quality` skill metadata, verifies the
 visible `qualitymd` CLI, plans any skill and CLI updates, asks before applying
 changes, and reports whether the agent session must be restarted or reloaded.
 
-If `/quality upgrade` is unavailable, reinstall the skill and check the CLI
+If `/quality update` is unavailable, reinstall the skill and check the CLI
 manually:
 
 ```sh
 npx skills add qualitymd/quality.md
-qualitymd upgrade --check
+qualitymd update --check
 ```
 
 ## 3. Verify or install the CLI
@@ -46,7 +46,7 @@ Check whether `qualitymd` is available:
 ```sh
 qualitymd --version
 qualitymd version --json
-qualitymd upgrade --check
+qualitymd update --check
 qualitymd spec
 qualitymd lint --help
 qualitymd init --help
@@ -79,11 +79,11 @@ iwr https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.
 For agents and CI, use non-interactive and pinned forms:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.4.1 sh
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.5.0 sh
 ```
 
 ```powershell
-.\install.ps1 -NonInteractive -Version v0.4.1
+.\install.ps1 -NonInteractive -Version v0.5.0
 ```
 
 When the install directory is not already on your `PATH`, the shell installer
@@ -95,7 +95,7 @@ runs; they do not change what is installed. To pass flags through a piped shell
 install, use `sh -s --`:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh -s -- --version v0.4.1
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh -s -- --version v0.5.0
 ```
 
 Alternative channels remain supported. Install via npm:
@@ -116,10 +116,13 @@ Or build the current CLI from source:
 go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ```
 
-After installation, `qualitymd upgrade --check` reports the detected install
-method, latest known version, and the recommended upgrade command. `qualitymd
-upgrade --apply` delegates only to supported owner channels such as npm and
-Homebrew; unknown, source, and archive installs receive manual guidance.
+After installation, `qualitymd update --check` reports the detected install
+method, latest known version, release readiness, and the recommended update
+action. `qualitymd update` applies by default through supported owner channels
+such as managed standalone, npm, and Homebrew; unknown, source, and archive
+installs receive manual guidance. Set `QUALITYMD_NO_UPDATE_CHECK=1` to disable
+explicit update checks, the ambient cached update notice, and background cache
+refresh.
 
 ## 4. Bootstrap a project
 

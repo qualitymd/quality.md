@@ -49,9 +49,18 @@ func currentVersionInfo() versionInfo {
 		SchemaVersion:        1,
 		Version:              v,
 		Commit:               c,
-		DevelopmentBuild:     strings.HasPrefix(v, "dev"),
+		DevelopmentBuild:     isDevelopmentVersion(v),
 		SpecificationVersion: bundledSpecificationVersion(),
 	}
+}
+
+func isDevelopmentVersion(v string) bool {
+	v = strings.TrimSpace(v)
+	if strings.HasPrefix(v, "dev") || strings.Contains(v, "+dirty") {
+		return true
+	}
+	normalized := "v" + normalizeVersion(v)
+	return strings.Contains(normalized, "-0.")
 }
 
 func bundledSpecificationVersion() string {

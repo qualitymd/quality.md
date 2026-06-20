@@ -236,7 +236,7 @@ After the workflow finishes, verify:
 - `npx quality.md --version` reports the expected version.
 - `qualitymd version --json` reports the expected CLI version, commit when
   stamped, and bundled `SPECIFICATION.md` version.
-- `qualitymd upgrade --check --json` returns a structured check result for at
+- `qualitymd update --check --json` returns a structured check result for at
   least one fresh install channel.
 - A downloaded archive binary reports the expected version.
 - `qualitymd spec` emits the expected bundled specification.

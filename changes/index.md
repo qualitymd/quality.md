@@ -44,8 +44,8 @@ edit.
 # Open change cases
 
 - [0041 — Update command and improvements](0041-update-command.md)
-  (`status: Design`) — rename `upgrade`→`update` with apply-by-default and a
-  `--check` advisory, rename the `/quality upgrade` skill mode to `update`,
+  (`status: In-Review`) — rename `upgrade`→`update` with apply-by-default and
+  a `--check` advisory, rename the `/quality upgrade` skill mode to `update`,
   self-apply managed standalone installs, gate availability on release readiness,
   surface a release-notes link, and add an ambient cached update notice.
 

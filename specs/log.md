@@ -2,6 +2,12 @@
 
 ## 2026-06-19
 
+- **Revision**: Added [`qualitymd update`](cli/update.md), replacing
+  `qualitymd upgrade` with apply-by-default update behavior, `--check` advisory
+  mode, release readiness, release notes, managed standalone self-apply, and the
+  cached ambient update notice. Updated the [CLI overview](cli.md), command
+  index, and `/quality` skill contract for the `/quality update` mode rename.
+
 - **Revision**: Updated the evaluation report summary contract for
   [0040 - Readable report summary](../changes/0040-readable-report-summary.md):
   `report-summary.md` now uses a decision-brief outline, "Full evaluation",

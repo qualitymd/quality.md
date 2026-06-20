@@ -46,17 +46,25 @@ the deterministic surface the skill depends on:
 - the `SPECIFICATION.md` version bundled into the binary and emitted by
   `qualitymd spec` and `qualitymd version --json`.
 
-Upgrade checks are explicit:
+Update checks are explicit:
 
 ```sh
-qualitymd upgrade --check
+qualitymd update --check
 ```
 
-Ordinary commands do not contact the network to check for updates. The upgrade
-surface reports the detected install method, latest known version, whether apply
-is supported, and the recommended command. Managed standalone, npm, Homebrew,
-source, archive, and unknown installs keep distinct ownership boundaries so the
-CLI does not replace binaries it does not own.
+Ordinary commands may show an ambient update notice from a local cache and may
+refresh that cache in a bounded, best-effort background process. They do not
+block on network update checks, and the notice is suppressed outside interactive
+stderr, in CI, for `--json`, for development builds, and when
+`QUALITYMD_NO_UPDATE_CHECK=1` is set. The same environment variable disables
+explicit update checks for centrally managed or air-gapped installs.
+
+The update surface reports the detected install method, latest known version,
+release readiness, whether apply is supported, and the recommended action.
+`qualitymd update` applies by default for managed standalone, npm, and Homebrew
+installs, then verifies the visible `qualitymd --version`. Source, archive, and
+unknown installs keep distinct ownership boundaries so the CLI does not replace
+binaries it does not own.
 
 While the CLI is in `0.x`, minor versions define compatibility lines. A breaking
 change to the skill-facing CLI surface should bump the minor version; patch
@@ -75,10 +83,10 @@ During the `0.x` phase, skill releases should usually depend on one compatible
 CLI minor line, for example:
 
 ```yaml
-compatibility: Requires qualitymd CLI >=0.4.0 <0.5.0.
+compatibility: Requires qualitymd CLI >=0.5.0 <0.6.0.
 metadata:
-  version: "0.4.1"
-  requires-qualitymd-cli: ">=0.4.0 <0.5.0"
+  version: "0.5.0"
+  requires-qualitymd-cli: ">=0.5.0 <0.6.0"
 ```
 
 At runtime, the skill uses `metadata.requires-qualitymd-cli` as the released
@@ -92,18 +100,18 @@ enforcement is deferred until an installer/package contract supports it.
 
 ## Paired Skill and CLI Upgrades
 
-Use `/quality upgrade` to maintain an existing `/quality` installation. The mode
+Use `/quality update` to maintain an existing `/quality` installation. The mode
 plans the skill and CLI pair together: it reads the installed skill metadata,
-checks the visible CLI, uses `qualitymd upgrade --check` for CLI owner-channel
+checks the visible CLI, uses `qualitymd update --check` for CLI owner-channel
 guidance, and delegates skill changes to the Agent Skills installer when that
-installer exposes an upgrade path.
+installer exposes an update path.
 
 Compatibility is the hard gate: the visible CLI must satisfy the target skill's
 `metadata.requires-qualitymd-cli` range before setup, evaluation, or improvement
-work can proceed. Latest-version updates are advisory unless the user asks to
-upgrade.
+work can proceed. Latest-version updates are applied only after the user confirms
+the `/quality update` plan.
 
-Skill upgrades may not take effect in the currently running agent session. After
+Skill updates may not take effect in the currently running agent session. After
 the skill package changes, restart, reload, or start a new session when the
 agent discovers skills only at startup or caches loaded skill instructions.
 

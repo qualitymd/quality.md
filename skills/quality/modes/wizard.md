@@ -30,7 +30,7 @@ Run frame:
 
 ```text
 Probe state (CLI version plus status JSON)
-- CLI missing or below the prerequisite range? recommend /quality upgrade
+- CLI missing or below the prerequisite range? recommend /quality update
 - QUALITY.md missing? classify no setup; recommend setup
 - lint errors? classify invalid model; recommend repair
 - lint valid? run top-10 QUALITY.md checks for model/lifecycle findings
@@ -51,7 +51,7 @@ Recommend one next step
 - explain why it is the best next step from observed state
 
 Offer concrete alternatives
-- upgrade skill/CLI pair
+- update skill/CLI pair
 - create setup
 - repair model
 - review/improve `QUALITY.md`
@@ -109,11 +109,11 @@ Offer concrete alternatives
 6. Offer only concrete workflows the user can choose next, such as setup, model
    repair, model review/improvement, whole-subject evaluation, scoped
    target/factor evaluation, recommendation review/improvement, or evaluation
-   history review. Include `/quality upgrade` when the CLI is missing, below the
+   history review. Include `/quality update` when the CLI is missing, below the
    prerequisite range, or the skill/CLI pair appears incompatible. Wizard stays
    offline: it judges staleness from `qualitymd --version` against the
-   prerequisite range only and does not probe the network. `/quality upgrade`
-   owns the network check (`qualitymd upgrade --check`), so it is also the path
+   prerequisite range only and does not probe the network. `/quality update`
+   owns the network check (`qualitymd update --check`), so it is also the path
    to discover a newer-but-compatible release — surface it when the user asks
    whether a newer CLI is available.
 

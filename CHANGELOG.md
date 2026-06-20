@@ -17,6 +17,40 @@ QUALITY.md specification.
 
 ### Compatibility / Migration
 
+## v0.5.0 - 2026-06-20
+
+### CLI
+
+- Renamed `qualitymd upgrade` to `qualitymd update` with no `upgrade` alias.
+  `qualitymd update` applies by default, while `qualitymd update --check`
+  reports without mutating.
+- Added managed standalone self-apply, release-readiness gating, post-apply
+  visible-version verification, release-note references, and a cached ambient
+  update notice controlled by `QUALITYMD_NO_UPDATE_CHECK=1`.
+
+### /quality Skill
+
+- Renamed `/quality upgrade` to `/quality update` and retargeted the maintenance
+  workflow to `qualitymd update` / `qualitymd update --check`.
+
+### Specification
+
+### Documentation
+
+### Packaging
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.5.0`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.5.0`, requires `qualitymd >=0.5.0 <0.6.0`
+
+The `qualitymd upgrade` command and `/quality upgrade` mode were renamed to
+`update`; update scripts and prompts to call `qualitymd update --check`,
+`qualitymd update`, and `/quality update`.
+
 ## v0.4.1 - 2026-06-20
 
 ### CLI
