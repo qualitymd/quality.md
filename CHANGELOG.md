@@ -7,17 +7,38 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 
 ### CLI
 
+### /quality Skill
+
+### Specification
+
+### Documentation
+
+### Packaging
+
+### Compatibility / Migration
+
+## v0.4.0 - 2026-06-19
+
+### CLI
+
 - Reshaped the evaluation surface: `evaluation create`, `list`, `status`,
   record resources (`assessment add`, `analysis set`, `recommendation add`),
   and `report build` / `report gate` replace the older mixed verbs.
 - Folded planned coverage into `plan.md` frontmatter, added batched record
   writes and explicit `--latest` run resolution, and removed the create receipt's
   altitude field.
+- Added a concise no-argument welcome screen and reorganized root help into
+  common workflow tasks and management commands.
+- Refined terminal styling so help output stays mostly neutral while status and
+  command output keep semantic color.
 
 ### /quality Skill
 
 - Updated evaluation workflows and CLI references for the new evaluation command
   surface and `plan.md` coverage metadata.
+- Expanded the authoring guide with stronger guidance for traceability, rating
+  boundaries, target/source alignment, roll-up decisions, stakeholder concerns,
+  measurable criteria, and requirement-set review.
 
 ### Specification
 
@@ -29,6 +50,16 @@ User-facing release notes for `qualitymd`, the `/quality` skill, and the
 ### Packaging
 
 ### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.4.0`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.4.0`, requires `qualitymd >=0.4.0 <0.5.0`
+
+Evaluation workflows and integrations that use the previous `qualitymd
+evaluation` command names must migrate to the `v0.4.0` noun/verb command
+surface.
 
 ## v0.3.1 - 2026-06-19
 
