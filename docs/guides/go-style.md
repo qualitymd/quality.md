@@ -17,10 +17,15 @@ enforces. `mise run check` (run in CI and the git hooks) covers formatting and
 imports (`gofmt`, `goimports`), suspicious constructs (`go vet`), unchecked
 errors (`errcheck`), dead code and unused parameters (`unused`, `unparam`),
 ineffective assignments and needless conversions (`ineffassign`, `unconvert`),
-correctness and simplification rules (`staticcheck`), misspellings (`misspell`),
-and size/complexity limits (`cyclop`, `gocognit`, `nestif`, `funlen`). If a rule
-below would duplicate one of those, it has been left out on purpose — let the
-tool be the source of truth.
+correctness, simplification, and some style conventions (`staticcheck`),
+misspellings (`misspell`), and size/complexity limits (`cyclop`, `gocognit`,
+`nestif`, `funlen`). If a rule below would duplicate one of those, it has been
+left out on purpose — let the tool be the source of truth.
+
+`staticcheck` here is the golangci-lint v2 linter, which folds in the former
+`stylecheck` (ST) checks — so a few *style* conventions are enforced too, not
+just correctness: notably `self`/`this` receiver names (ST1006) and
+error-string punctuation (ST1005). Don't restate those below.
 
 For *which package a type belongs in*, see
 [Designing Go packages](design-go-packages.md). This guide is about everything
@@ -34,11 +39,13 @@ else.
 - **No `Get` prefix on accessors.** A getter is named for the thing it returns:
   `cfg.Timeout()`, not `cfg.GetTimeout()`. Reserve verb prefixes for methods
   that *do* something.
-- **Package names are short, lowercase, singular, and meaningful.** Avoid
-  `util`, `common`, `helpers`, `misc` — they describe nothing and attract
-  unrelated code. Name the package for the concept it provides.
+- **Package names are short, lowercase, singular, and meaningful.** Name the
+  package for the concept it provides; never a catch-all (`util`, `common`,
+  `helpers`, `misc`). [Designing Go packages](design-go-packages.md) covers why
+  a catch-all bucket is the wrong home for a type.
 - **Receiver names are short and consistent.** One or two letters, the same
-  letter for every method on a type (`e *Evaluation`), never `self` or `this`.
+  letter for every method on a type (`e *Evaluation`). The `self`/`this` ban is
+  enforced by the gate (see above), so it lives there, not here.
 - **Error values and types follow the convention.** Sentinel values are
   `ErrNotFound`; custom error types are `ParseError`.
 
@@ -71,6 +78,9 @@ else.
 - **Assert compliance at compile time** when a type must satisfy an interface:
   `var _ Loader = (*FileLoader)(nil)`. It turns an accidental break into a
   build error.
+- **Prefer composition over embedding in exported structs.** Embedding promotes
+  the inner type's methods into your public surface, leaking detail you may not
+  want to commit to.
 - **Many parameters → a config struct or functional options.** Once a
   constructor grows past a few arguments, an options struct (named fields,
   obvious defaults, no positional swaps) or variadic `Option` functions beats a
@@ -99,9 +109,6 @@ else.
   single-return form panics on a miss.
 - **No mutable package-level globals.** Inject dependencies through
   constructors. Keep `init()` deterministic — no I/O, no environment reads.
-- **Prefer composition over embedding in exported structs.** Embedding promotes
-  the inner type's methods into your public surface, leaking detail you may not
-  want to commit to.
 
 ## Documentation comments
 
