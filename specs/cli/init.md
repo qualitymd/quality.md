@@ -62,10 +62,12 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   tell the author what to replace, so the file reads as a guided skeleton rather
   than a filled-in example.
 - The Markdown body **MUST** include the
-  [recommended body sections](../../SPECIFICATION.md#markdown-body) — Overview,
+  [recommended body sections](../../SPECIFICATION.md#body-semantics) — Overview,
   Scope, Needs, and Risks — as headed stubs, each with a brief prompt of what it
   captures and a place for the section's unknowns, open questions, and review
-  state line.
+  state line. The starter body should teach that material support unavailable to
+  the evaluating agent belongs in the relevant section's unknowns or open
+  questions.
 - The body should open with a top-level heading naming the subject, matching the
   scaffolded model `title`.
 

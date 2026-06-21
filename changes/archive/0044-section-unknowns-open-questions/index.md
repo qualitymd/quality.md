@@ -7,4 +7,4 @@ Children of
 
 - [Functional spec](spec.md) - what the change must do.
 
-This change case is in `In-Review`.
+This change case is in `Done`.

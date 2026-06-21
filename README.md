@@ -136,11 +136,12 @@ The full format is specified in [`SPECIFICATION.md`](SPECIFICATION.md).
 A QUALITY.md file has two layers:
 
 1. **YAML frontmatter** — the structured quality model.
-2. **Markdown body** — the context, rationale, scope, needs, risks, and known
-   gaps that help people and agents interpret the model.
+2. **Markdown body** — the judgment context, rationale, scope, needs, risks,
+   unknowns, and open questions that help people and agents build, interpret,
+   and evaluate the model.
 
 The document begins with the YAML frontmatter. The Markdown body can be empty,
-but it is where the model explains itself.
+but it is where the model explains its purpose and context.
 
 ### Model Schema
 

@@ -1,5 +1,15 @@
 # Specs Update Log
 
+## 2026-06-21
+
+- **Revision**: Clarified Markdown-body semantics and skill-guide contracts for
+  [0045 - Evaluable body context](../changes/0045-evaluable-body-context.md).
+  The body is now described as evaluable judgment context for building, using,
+  justifying, and evaluating model quality; body sections should be concise,
+  self-explanatory, progressively disclosed, and grounded in agent-accessible
+  support; material support that is not agent-accessible is captured in the
+  relevant section's unknowns or open questions.
+
 ## 2026-06-20
 
 - **Revision**: Replaced the standalone Known gaps body section with per-section

@@ -26,8 +26,9 @@ A QUALITY.md file is a Markdown file with two parts:
 
 - **YAML frontmatter** — the **quality model**: a structured, declarative
   description of what quality means for the entity being evaluated.
-- **Markdown body** — the context a reader needs to interpret the model: why
-  these factors, why these requirements, what matters most.
+- **Markdown body** — the evaluable judgment context for the model: what the
+  subject is, why quality matters, what decisions the model supports, and what
+  context is missing or inaccessible.
 
 The whole file represents a single apex **target** — the top entity whose
 quality is modeled. Everything else nests beneath it.
@@ -122,8 +123,21 @@ shares with Target.
 
 ## The Markdown body
 
-The body gives the context an evaluator needs to interpret and weigh the model:
-why these factors, why these requirements, and what matters most.
+The body is evaluable judgment context: what the subject is, why its quality
+matters, what decisions the model supports, which needs and risks shaped it, and
+what context is missing or inaccessible. It should provide enough concise,
+self-explanatory context for a later human or agent to justify the model,
+evaluate the model's quality, and decide whether the model still fits the
+subject.
+
+A strong body makes its completeness, thoroughness, recency, grounding,
+agent-accessibility, and open questions visible instead of implicit.
+
+**Agent-accessible** support is available to the evaluating agent through the
+repository, cited local paths, configured tools, linked public sources, or
+explicitly provided context. If important support exists but is private,
+permission-limited, stale, only known from memory, or unavailable to the agent,
+record that limitation in the relevant section's unknowns or open questions.
 
 The body is optional and fixes no required sections; you may rename, reorder, or
 replace these. They're recommended starting points:
@@ -143,7 +157,11 @@ reads consistently as it grows:
 1. **Purpose** — open with one line on why this section matters for *this*
    subject, not in the abstract. *If the line would read the same for any
    project, it isn't earning its place.*
-2. **Contents** — the substance, and only what helps interpret the model.
+2. **Contents** — concise, self-explanatory judgment context for this section.
+   State the section's conclusion clearly enough that it can be reviewed on its
+   own; cite supporting detail instead of copying it; include enough specificity
+   to evaluate completeness, thoroughness, recency, and grounding in
+   agent-accessible support.
 3. **Unknowns & open questions** — captured for every section, scoped to what
    that section covers. An **unknown** is a broad area of uncertainty within the
    section's topic that may not resolve to a single answer; an **open question**
@@ -206,6 +224,14 @@ A section with nothing outstanding still says so:
 
 - **Do** write the body before expanding the model tree. *It is the fastest way
   to discover what Factors and Requirements the frontmatter should express.*
+- **Do** write the body so it can be evaluated for quality in its own right.
+  *A later reviewer should be able to judge whether the context is complete
+  enough, current enough, specific enough, grounded enough, and accessible enough
+  to support the model.*
+- **Do** cite supporting detail when it materially grounds a section, and flag
+  important support that is not agent-accessible. *The body should not become an
+  evidence dump, but a later evaluator must be able to tell what the judgment
+  rests on and what context could not be inspected.*
 - **Do** capture, in Needs and Risks, why some requirements matter more than
   others. *Importance and gaps both depend on this context.*
 - **Do** use the body to explain any rating-scale change. *A custom scale should

@@ -126,20 +126,41 @@ QUALITY.md format itself.
 ### Best-practice coverage
 
 The guide **MUST** teach body-first model development: fill the Markdown body
-before expanding the model tree, because the body supplies the context for
-choosing the rating scale, Factors, Requirements, and scope.
+before expanding the model tree, because the body supplies the evaluable
+judgment context for choosing the rating scale, Factors, Requirements, and
+scope, and for later judging whether the model still fits the subject.
 
 The guide **MUST** state desired outcomes for the recommended body sections:
-Overview, Scope, Needs, and Risks. The guide **MUST** teach a common section
-shape under which each section records its own unknowns (broad areas of
-uncertainty about the section's topic that may not resolve to a single answer)
-and open questions (specific questions with one particular answer, still
-unresolved), scoped to the section and distinct from a `not assessed` result, and
-**MUST** teach stating "none known" rather than omitting them.
+Overview, Scope, Needs, and Risks. The guide **MUST** teach that the body is
+context for building the model, understanding the model's purpose, using the
+model in evaluation, evaluating the model's quality, and deciding whether the
+model still fits the subject.
+
+The guide **MUST** teach a common section shape under which each section records
+its own unknowns (broad areas of uncertainty about the section's topic that may
+not resolve to a single answer) and open questions (specific questions with one
+particular answer, still unresolved), scoped to the section and distinct from a
+`not assessed` result, and **MUST** teach stating "none known" rather than
+omitting them.
 
 > Rationale: a single catch-all Known gaps section sat far from the content it
 > qualified and was skimmed past; uncertainty belongs with the section it
 > concerns. — 0044
+
+The guide **MUST** teach that body sections are themselves evaluable: a later
+human or agent should be able to judge their completeness, thoroughness,
+recency, subject specificity, grounding, agent-accessibility, and open
+questions. The guide **MUST** teach sections to be concise, rigorous, and
+self-explanatory, with supporting detail cited rather than copied when citation
+keeps the body readable.
+
+The guide **MUST** use and define **agent-accessible** support: support
+available to the evaluating agent through the repository, cited local paths,
+configured tools, linked public sources, or explicitly provided context. The
+guide **MUST** instruct authors to cite material support when it is
+agent-accessible and to record material support that is not agent-accessible as
+a first-class limitation in the relevant section's unknowns or open questions.
+The guide **MUST NOT** require a separate `Access gaps` line in every section.
 
 The guide **MUST** teach a per-section review state line that records the last
 human review (citing a named person) distinctly from the last agent review

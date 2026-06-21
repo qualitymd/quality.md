@@ -5,17 +5,60 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.5.1 - 2026-06-21
+
 ### CLI
+
+- Made evaluation report assembly use explicit typed states for rating results,
+  local target ratings, run gaps, lifecycle, next steps, rigor, evaluation
+  level, missing metadata, and path identities, so invalid or incomplete report
+  inputs surface as clear reportability gaps.
+- Made evaluation-history inspection tolerant of older, malformed, partial, or
+  hand-edited run records while keeping current record writers strict and report
+  generation explicit.
 
 ### /quality Skill
 
+- Clarified authoring, setup, getting-started, and quick-check guidance so the
+  Markdown body is treated as evaluable judgment context, including
+  agent-accessible support and scoped unknowns/open questions.
+- Aligned the skill contract with tolerant historical-run inspection: malformed
+  or incompatible historical records are evaluation-history status, not subject
+  quality evidence.
+
 ### Specification
+
+- Clarified Markdown body semantics: the body supports building, interpreting,
+  using, and evaluating the model; unknowns and open questions are section-scoped
+  author-declared context distinct from `not assessed` evaluation results.
+- Clarified evaluation-record and report contracts for typed report states and
+  tolerant evaluation-history readers.
 
 ### Documentation
 
+- Replaced the standalone Known gaps body pattern with per-section unknowns,
+  open questions, and human/agent review state guidance across the authoring
+  guide, scaffold, examples, and dogfood model.
+- Documented the Markdown body as concise, self-explanatory judgment context
+  whose completeness, recency, grounding, and agent-accessibility can itself be
+  evaluated.
+- Archived completed Change Cases 0042 through 0045.
+
 ### Packaging
 
+- Updated pinned installer examples to `v0.5.1`.
+
 ### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.5.1`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.5.1`, requires `qualitymd >=0.5.0 <0.6.0`
+
+No migration is required from `v0.5.0`. Existing QUALITY.md files remain valid;
+authors can move standalone Known gaps content into the relevant section's
+unknowns or open questions when they next revise the body.
 
 ## v0.5.0 - 2026-06-20
 

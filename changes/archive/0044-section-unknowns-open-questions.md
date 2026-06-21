@@ -2,7 +2,7 @@
 type: Change Case
 title: Section unknowns and open questions
 description: Replace the standalone Known gaps body section with per-section unknowns, open questions, and a human/agent review state line across the format spec, skill, scaffold, checks, specs, and dogfood instances.
-status: In-Review
+status: Done
 tags: [authoring, body, skill, scaffold, spec]
 timestamp: 2026-06-20T00:00:00Z
 ---
@@ -14,9 +14,9 @@ body section follows one shape, carries its own unknowns and open questions, and
 closes with a review-provenance state line. This retires the separate **Known
 gaps** body section, whose content now lives in the section it concerns.
 
-> **In-Review.** Implementation, durable spec/doc updates, fixture and dogfood
-> migration, and verification (`go test ./...`, `mise run check`) are complete and
-> ready for review.
+> **Done.** Implementation, durable spec/doc updates, fixture and dogfood
+> migration, and verification (`go test ./...`, `mise run check`) are complete,
+> and the change is archived for release.
 
 ## Motivation
 
@@ -63,16 +63,16 @@ See the functional spec's
 [Durable spec changes](0044-section-unknowns-open-questions/spec.md#durable-spec-changes)
 for the per-requirement breakdown.
 
-- [x] [`SPECIFICATION.md`](../SPECIFICATION.md) — body context names unknowns and
+- [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) — body context names unknowns and
       open questions instead of known gaps.
-- [x] [`specs/cli/init.md`](../specs/cli/init.md) — recommended body sections.
-- [x] [`specs/skills/quality-skill/guides/authoring.md`](../specs/skills/quality-skill/guides/authoring.md)
+- [x] [`specs/cli/init.md`](../../specs/cli/init.md) — recommended body sections.
+- [x] [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
       — recommended-section MUST and the body best-practice coverage.
-- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
+- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
       — body-context check.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       — setup first-population body list.
-- [x] [`specs/log.md`](../specs/log.md) — record the spec changes.
+- [x] [`specs/log.md`](../../specs/log.md) — record the spec changes.
 
 ### Durable docs (bundled skill)
 

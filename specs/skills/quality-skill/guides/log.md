@@ -1,5 +1,13 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-21
+
+- **Revision**: Clarified that the authoring, getting-started, and top-10-checks
+  guide contracts treat the Markdown body as evaluable judgment context. Body
+  sections should be concise, self-explanatory, and grounded in
+  agent-accessible support, with material inaccessible support captured in the
+  relevant section's unknowns or open questions.
+
 ## 2026-06-19
 
 - **Revision**: Clarified guide boundaries: authoring is the best-practices

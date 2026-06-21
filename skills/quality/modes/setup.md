@@ -48,8 +48,8 @@ Run qualitymd lint
 7. Read [`../guides/authoring.md`](../guides/authoring.md) and
    [`../guides/getting-started.md`](../guides/getting-started.md), then begin
    guided population in the same run: draft the body's Overview, Scope, Needs,
-   Risks, each with its unknowns and open questions, and propose project-specific
-   Factors and Requirements
+   Risks, each with its unknowns, open questions, and any material support that
+   is not agent-accessible, and propose project-specific Factors and Requirements
    to replace the placeholders with the user. Do not stop at naming the next
    step. Route to `wizard` after population for the next evaluation workflow.
 

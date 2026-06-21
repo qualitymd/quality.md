@@ -2,7 +2,7 @@
 type: Change Case
 title: Typed report model
 description: Replace stringly typed and implicit evaluation-report states with explicit typed concepts for ratings, local target state, next steps, lifecycle state, run gaps, rigor, evaluation level, missing metadata, and path identities.
-status: In-Review
+status: Done
 tags: [evaluation, report, records, types]
 timestamp: 2026-06-20T00:00:00Z
 ---
@@ -13,8 +13,8 @@ A Change Case for making the evaluation reporting model explicit and typed. It
 continues the finding-severity cleanup by applying the same treatment to the
 other report concepts that carry control-flow meaning.
 
-> **In-Review.** Implementation, durable spec updates, fixtures, and verification
-> are complete and ready for review.
+> **Done.** Implementation, durable spec updates, fixtures, and verification are
+> complete, and the change is archived for release.
 
 ## Motivation
 
@@ -59,11 +59,11 @@ See the functional spec's
 [Durable spec changes](0042-typed-report-model/spec.md#durable-spec-changes)
 for the per-requirement breakdown.
 
-- [x] [`specs/evaluation-records.md`](../specs/evaluation-records.md)
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-- [x] [`specs/cli/evaluation-status.md`](../specs/cli/evaluation-status.md)
-- [x] [`specs/cli/evaluation-report.md`](../specs/cli/evaluation-report.md)
-- [x] [`specs/log.md`](../specs/log.md)
+- [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
+- [x] [`specs/cli/evaluation-status.md`](../../specs/cli/evaluation-status.md)
+- [x] [`specs/cli/evaluation-report.md`](../../specs/cli/evaluation-report.md)
+- [x] [`specs/log.md`](../../specs/log.md)
 
 No `SPECIFICATION.md` change is expected: this tightens runtime evaluation
 records and report rendering, not QUALITY.md document semantics.

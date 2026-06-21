@@ -79,11 +79,11 @@ iwr https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.
 For agents and CI, use non-interactive and pinned forms:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.5.0 sh
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.5.1 sh
 ```
 
 ```powershell
-.\install.ps1 -NonInteractive -Version v0.5.0
+.\install.ps1 -NonInteractive -Version v0.5.1
 ```
 
 When the install directory is not already on your `PATH`, the shell installer
@@ -95,7 +95,7 @@ runs; they do not change what is installed. To pass flags through a piped shell
 install, use `sh -s --`:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh -s -- --version v0.5.0
+curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh -s -- --version v0.5.1
 ```
 
 Alternative channels remain supported. Install via npm:

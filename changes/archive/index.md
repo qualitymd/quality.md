@@ -136,3 +136,17 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   `qualitymd upgrade` to apply-by-default `qualitymd update`, added the cached
   ambient update notice and readiness-aware update checks, and renamed the paired
   `/quality` maintenance mode to `update` (`Done`).
+- [0042 — Typed report model](0042-typed-report-model.md) - replaced stringly
+  typed and implicit evaluation-report states with explicit typed concepts for
+  ratings, local target state, next steps, lifecycle state, run gaps, rigor,
+  evaluation level, missing metadata, and path identities (`Done`).
+- [0043 — Evaluation history compatibility](0043-evaluation-history-compatibility.md) -
+  made evaluation-history readers tolerant of old, malformed, partial, or
+  hand-edited run records while keeping current writers strict and report
+  generation explicit (`Done`).
+- [0044 — Section unknowns and open questions](0044-section-unknowns-open-questions.md) -
+  replaced the standalone Known gaps body section with per-section unknowns,
+  open questions, and a human/agent review state line (`Done`).
+- [0045 — Evaluable body context](0045-evaluable-body-context.md) - clarified
+  the Markdown body as concise, self-explanatory, agent-accessible judgment
+  context for building, justifying, and evaluating model quality (`Done`).

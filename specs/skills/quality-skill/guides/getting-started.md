@@ -96,8 +96,10 @@ scale second, then subject/source alignment, Factors, Requirements, validation,
 and wizard routing.
 
 The guide **MUST** distinguish structural validity from model usefulness. A
-valid skeleton is not enough for evaluation; the guide should ask whether
-Requirements are assessable and whether evidence can distinguish important
+valid skeleton is not enough for evaluation; the guide should ask whether the
+body context is specific, current, grounded in agent-accessible support where
+support is material, and sufficient to evaluate model quality; whether
+Requirements are assessable; and whether evidence can distinguish important
 rating levels.
 
 The guide **MUST** end by routing to `/quality wizard` as the normal next

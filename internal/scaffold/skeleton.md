@@ -82,16 +82,20 @@ factors:
 # <the system, component, or artifact this model is about>
 
 The frontmatter above fixes *what* is assessed and *how* it is rated. This body
-explains *why* — the context a reader needs to trust the model, and an evaluator
-needs to weigh it. Fill in each section and delete these hints as you go.
+records the judgment context a reader needs to trust the model, evaluate the
+model's quality, and weigh future findings. Fill in each section and delete
+these hints as you go.
 
 Close each section with its unknowns, its open questions, and a state line. An
 unknown is a broad area of uncertainty about that section's topic that may not
 resolve to a single answer; an open question is a specific question with one
 particular answer, still unresolved. Write "none known" rather than leaving
-either out. The state line records who last stood behind the section: `Reviewed`
-names the person who endorsed it, `agent-reviewed` the last agent pass — advance
-`Reviewed` only when a person actually reviews it.
+either out. If important supporting context is not agent-accessible — not in the
+repo, cited paths, configured tools, linked public sources, or context provided
+to the agent — record that limitation where it bears on the section. The state
+line records who last stood behind the section: `Reviewed` names the person who
+endorsed it, `agent-reviewed` the last agent pass — advance `Reviewed` only when
+a person actually reviews it.
 
 ## Overview
 

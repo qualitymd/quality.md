@@ -117,6 +117,9 @@ The body-context check **MUST** inspect the recommended Markdown body sections:
 Overview, Scope, Needs, and Risks, along with each section's unknowns and open
 questions. Those unknowns and open questions **MUST** be treated as
 author-declared context, distinct from a `not assessed` evaluation result.
+The check **SHOULD** flag missing or non-agent-accessible support as a
+model-usefulness finding when it prevents a reader or agent from evaluating
+whether the body context is complete, current, grounded, or sufficient.
 
 The evaluation-readiness check **MUST** distinguish model usefulness from subject
 quality. A valid but vague model is a model-authoring finding, not evidence that

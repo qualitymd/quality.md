@@ -296,12 +296,14 @@ criterion override replaces only that level's criterion for that Requirement.
 
 ## Body Semantics
 
-The Markdown body documents context for interpreting the Model. The format does
-not require any body section names, ordering, or content.
+The Markdown body documents context for building, interpreting, using, and
+evaluating the Model. The format does not require any body section names,
+ordering, or content.
 
 The body can document the subject, scope, stakeholder needs, risks, unknowns,
-open questions, or other important context for the Model. Evaluators can use body content
-when judging importance, rationale, and advice.
+open questions, evidence context, or other important context for the Model.
+Evaluators can use body content when judging model fit, importance, rationale,
+and advice.
 
 ## Evaluation Semantics
 

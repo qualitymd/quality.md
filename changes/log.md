@@ -1,66 +1,107 @@
 # Changes Update Log
 
+## 2026-06-21
+
+- **Done**: Archived completed change cases
+  [0042 - Typed report model](archive/0042-typed-report-model.md),
+  [0043 - Evaluation history compatibility](archive/0043-evaluation-history-compatibility.md),
+  [0044 - Section unknowns and open questions](archive/0044-section-unknowns-open-questions.md),
+  and [0045 - Evaluable body context](archive/0045-evaluable-body-context.md)
+  after review. Moved each parent concept and child folder into
+  [`archive/`](archive/), set their statuses to `Done`, added them to the
+  [archive index](archive/index.md), and removed them from the open
+  [changes index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0045 - Evaluable body context](archive/0045-evaluable-body-context.md). The
+  authoring guide, format spec, guide contracts, getting-started/top-10/setup
+  guidance, README summary, and scaffold now treat the Markdown body as
+  evaluable, agent-accessible judgment context; the scaffold test asserts the
+  new marker. Reviewed the dogfood `QUALITY.md` and active eval model for
+  concrete access-gap fallout. Verified `go test ./...` and `mise run check`.
+  Updated the [child index](archive/0045-evaluable-body-context/index.md) and bundle
+  [index](index.md).
+
+- **In-Progress**: Advanced
+  [0045 - Evaluable body context](archive/0045-evaluable-body-context.md) from `Draft`
+  through `Design` (no design doc needed) to `In-Progress`. Implementation will
+  update the authoring guide, its durable spec contract, body-context checks,
+  and any scaffold or setup guidance needed to treat the Markdown body as
+  evaluable, agent-accessible judgment context. Updated the [child index](archive/0045-evaluable-body-context/index.md)
+  and bundle [index](index.md).
+
+- **Creation**: Opened
+  [0045 - Evaluable body context](archive/0045-evaluable-body-context.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0045-evaluable-body-context/spec.md) and
+  [child index](archive/0045-evaluable-body-context/index.md). The case clarifies that
+  the Markdown body is evaluable judgment context for building, justifying, and
+  evaluating model quality; that body sections should be concise,
+  self-explanatory, and progressively disclosed; and that material support that
+  is not agent-accessible is a first-class limitation captured in the relevant
+  section's unknowns or open questions. Updated the bundle [index](index.md).
+
 ## 2026-06-20
 
 - **In-Review**: Completed
-  [0044 - Section unknowns and open questions](0044-section-unknowns-open-questions.md).
+  [0044 - Section unknowns and open questions](archive/0044-section-unknowns-open-questions.md).
   Retired the standalone Known gaps body section in favor of per-section unknowns,
   open questions, and a human/agent review state line across the format spec,
   authoring guide, `init` scaffold (and its test), skill setup/getting-started/
   top-10 checks, the durable specs, the example fixtures, and the dogfood
   `QUALITY.md` and active eval model. Verified `go test ./...` and `mise run check`.
-  Updated the [child index](0044-section-unknowns-open-questions/index.md) and
+  Updated the [child index](archive/0044-section-unknowns-open-questions/index.md) and
   bundle [index](index.md).
 
 - **In-Progress**: Created and advanced
-  [0044 - Section unknowns and open questions](0044-section-unknowns-open-questions.md)
+  [0044 - Section unknowns and open questions](archive/0044-section-unknowns-open-questions.md)
   from `Draft` through `Design` (no design doc needed) to `In-Progress`. The case
   replaces the standalone Known gaps body section with a common per-section shape,
   per-section unknowns and open questions, and a human/agent review state line,
   propagating across the format spec, authoring guide, scaffold, skill checks, and
-  dogfood instances. Added the [functional spec](0044-section-unknowns-open-questions/spec.md),
-  [child index](0044-section-unknowns-open-questions/index.md), and bundle
+  dogfood instances. Added the [functional spec](archive/0044-section-unknowns-open-questions/spec.md),
+  [child index](archive/0044-section-unknowns-open-questions/index.md), and bundle
   [index](index.md) entry.
 
 - **In-Review**: Completed implementation and durable artifact synchronization
-  for [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md).
+  for [0043 - Evaluation history compatibility](archive/0043-evaluation-history-compatibility.md).
   Evaluation history inspection now surfaces malformed, unsupported, and
   incomplete historical records as typed non-reportable gaps; list/status/latest
   workflows remain usable; report build/gate refuse incompatible selected runs
   with status-oriented diagnostics; and the `/quality` skill guidance treats
   incompatible records as history status rather than subject quality evidence.
-  Verified `go test ./...` and `mise run check`. Updated the [child index](0043-evaluation-history-compatibility/index.md)
+  Verified `go test ./...` and `mise run check`. Updated the [child index](archive/0043-evaluation-history-compatibility/index.md)
   and bundle [index](index.md).
 
 - **In-Progress**: Advanced
-  [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md)
+  [0043 - Evaluation history compatibility](archive/0043-evaluation-history-compatibility.md)
   from `Design` to `In-Progress` to implement tolerant evaluation-history
   inspection, compatibility gaps, and graceful report/list/status behavior.
-  Updated the [child index](0043-evaluation-history-compatibility/index.md) and
+  Updated the [child index](archive/0043-evaluation-history-compatibility/index.md) and
   bundle [index](index.md).
 
 - **Design**: Advanced
-  [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md)
+  [0043 - Evaluation history compatibility](archive/0043-evaluation-history-compatibility.md)
   from `Draft` to `Design` and added its
-  [design doc](0043-evaluation-history-compatibility/design.md). The design uses
+  [design doc](archive/0043-evaluation-history-compatibility/design.md). The design uses
   a tolerant run-inspection layer for status/list/history commands, records
   incompatible files as reportability gaps, keeps record writers strict, and
   gates report build/gate through compatibility status before trusted report
-  assembly. Updated the [child index](0043-evaluation-history-compatibility/index.md)
+  assembly. Updated the [child index](archive/0043-evaluation-history-compatibility/index.md)
   and bundle [index](index.md).
 
 - **Creation**: Opened
-  [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md)
+  [0043 - Evaluation history compatibility](archive/0043-evaluation-history-compatibility.md)
   (`status: Draft`) with its
-  [functional spec](0043-evaluation-history-compatibility/spec.md) and
-  [child index](0043-evaluation-history-compatibility/index.md). The case
+  [functional spec](archive/0043-evaluation-history-compatibility/spec.md) and
+  [child index](archive/0043-evaluation-history-compatibility/index.md). The case
   captures the strict-writer / tolerant-reader posture for evaluation history:
   historical or hand-edited runs can become non-reportable compatibility gaps
   without breaking ordinary status, list, latest-run, or fresh-evaluation
   workflows. Updated the bundle [index](index.md).
 
 - **In-Review**: Completed implementation and durable artifact synchronization
-  for [0042 - Typed report model](0042-typed-report-model.md). Evaluation reports
+  for [0042 - Typed report model](archive/0042-typed-report-model.md). Evaluation reports
   now use typed rating-result, local-rating, next-step, lifecycle,
   missing-metadata, rigor, evaluation-level, path, and gap concepts; report JSON
   exposes explicit state objects; existing invalid rating/severity records become
@@ -68,7 +109,7 @@
   Verified `mise run check`. Updated the bundle [index](index.md).
 
 - **In-Progress**: Opened
-  [0042 - Typed report model](0042-typed-report-model.md) to replace stringly
+  [0042 - Typed report model](archive/0042-typed-report-model.md) to replace stringly
   typed and implicit evaluation-report states with explicit typed concepts for
   rating results, local target ratings, next steps, lifecycle state, run gaps,
   rigor, evaluation level, missing metadata, and path identities. Added the

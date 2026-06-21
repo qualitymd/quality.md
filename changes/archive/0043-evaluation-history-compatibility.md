@@ -2,7 +2,7 @@
 type: Change Case
 title: Evaluation history compatibility
 description: Make evaluation-history readers tolerant of old, malformed, partial, or hand-edited run records while keeping current writers strict and report generation explicit.
-status: In-Review
+status: Done
 tags: [evaluation, records, compatibility, status]
 timestamp: 2026-06-20T00:00:00Z
 ---
@@ -12,8 +12,8 @@ timestamp: 2026-06-20T00:00:00Z
 A Change Case for hardening evaluation-history behavior as the evaluation
 process and record implementation continue to change.
 
-> **In-Review.** Implementation, durable spec and skill updates, regression
-> coverage, and verification are complete and ready for review.
+> **Done.** Implementation, durable spec and skill updates, regression coverage,
+> and verification are complete, and the change is archived for release.
 
 ## Motivation
 
@@ -71,13 +71,13 @@ See the functional spec's
 [Durable spec changes](0043-evaluation-history-compatibility/spec.md#durable-spec-changes)
 for the per-requirement breakdown.
 
-- [x] [`specs/evaluation-records.md`](../specs/evaluation-records.md)
-- [x] [`specs/cli/evaluation-list.md`](../specs/cli/evaluation-list.md)
-- [x] [`specs/cli/evaluation-status.md`](../specs/cli/evaluation-status.md)
-- [x] [`specs/cli/evaluation-report.md`](../specs/cli/evaluation-report.md)
-- [x] [`specs/cli/status.md`](../specs/cli/status.md)
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-- [x] [`specs/log.md`](../specs/log.md)
+- [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md)
+- [x] [`specs/cli/evaluation-list.md`](../../specs/cli/evaluation-list.md)
+- [x] [`specs/cli/evaluation-status.md`](../../specs/cli/evaluation-status.md)
+- [x] [`specs/cli/evaluation-report.md`](../../specs/cli/evaluation-report.md)
+- [x] [`specs/cli/status.md`](../../specs/cli/status.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
+- [x] [`specs/log.md`](../../specs/log.md)
 
 No `SPECIFICATION.md` change is expected: this concerns runtime evaluation
 records, not QUALITY.md document semantics.

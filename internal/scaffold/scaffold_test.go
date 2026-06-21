@@ -49,7 +49,7 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 	if strings.Contains(raw, "## Known gaps") {
 		t.Fatal("skeleton still has a standalone \"## Known gaps\" section")
 	}
-	for _, marker := range []string{"*Unknowns*", "*Open questions*", "*Reviewed —"} {
+	for _, marker := range []string{"agent-accessible", "*Unknowns*", "*Open questions*", "*Reviewed —"} {
 		if !strings.Contains(raw, marker) {
 			t.Fatalf("skeleton is missing the %q convention marker", marker)
 		}
