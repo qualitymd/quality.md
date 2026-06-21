@@ -3,7 +3,7 @@ type: Reference
 title: Versioning
 description: Versioned surfaces and compatibility policy for the CLI, /quality skill, and QUALITY.md specification.
 tags: [versioning, release, cli, skill, specification]
-timestamp: 2026-06-19T00:00:00Z
+timestamp: 2026-06-21T00:00:00Z
 ---
 
 # Versioning
@@ -83,10 +83,10 @@ During the `0.x` phase, skill releases should usually depend on one compatible
 CLI minor line, for example:
 
 ```yaml
-compatibility: Requires qualitymd CLI >=0.5.0 <0.6.0.
+compatibility: Requires qualitymd CLI >=0.6.0 <0.7.0.
 metadata:
-  version: "0.5.0"
-  requires-qualitymd-cli: ">=0.5.0 <0.6.0"
+  version: "0.6.0"
+  requires-qualitymd-cli: ">=0.6.0 <0.7.0"
 ```
 
 At runtime, the skill uses `metadata.requires-qualitymd-cli` as the released

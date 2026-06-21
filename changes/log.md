@@ -2,6 +2,44 @@
 
 ## 2026-06-21
 
+- **Done**: Archived
+  [0046 - Evaluation debug log](archive/0046-evaluation-debug-log.md) after
+  implementation and verification. Moved the parent concept and child folder
+  into [`archive/`](archive/), set status to `Done`, added it to the
+  [archive index](archive/index.md), and removed it from the open
+  [changes index](index.md).
+
+- **In-Review**: Completed implementation and durable artifact synchronization
+  for [0046 - Evaluation debug log](archive/0046-evaluation-debug-log.md). New
+  evaluation runs seed a process-only `debug-log.md`; the record specs, CLI
+  create contract, `/quality` skill guidance, reference fixture, docs,
+  changelog, and skill compatibility metadata now preserve the boundary between
+  evaluation-process events and formal subject-quality evidence. Verified
+  `go test ./...` and `mise run check`. Updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0046 - Evaluation debug log](archive/0046-evaluation-debug-log.md) from `Design` to
+  `In-Progress`. Implementation will seed `debug-log.md` in evaluation runs,
+  update the runtime and CLI contracts, align the `/quality` skill guidance, and
+  refresh tests, examples, and release notes. Updated the bundle
+  [index](index.md).
+
+- **Design**: Advanced
+  [0046 - Evaluation debug log](archive/0046-evaluation-debug-log.md) from `Draft` to
+  `Design` and added its
+  [design doc](archive/0046-evaluation-debug-log/design.md). The design seeds a small
+  run-root `debug-log.md` through `qualitymd evaluation create`, keeps report
+  assembly independent of debug prose, and puts the process-only boundary in the
+  `/quality` skill guidance. Updated the bundle [index](index.md).
+
+- **Creation**: Opened
+  [0046 - Evaluation debug log](archive/0046-evaluation-debug-log.md) (`status: Draft`)
+  with its [functional spec](archive/0046-evaluation-debug-log/spec.md) and
+  [child index](archive/0046-evaluation-debug-log/index.md). The case adds a
+  process-only `debug-log.md` artifact to evaluation runs while keeping
+  assessments, analysis, recommendations, and reports authoritative for
+  subject-quality judgment. Updated the bundle [index](index.md).
+
 - **Done**: Archived completed change cases
   [0042 - Typed report model](archive/0042-typed-report-model.md),
   [0043 - Evaluation history compatibility](archive/0043-evaluation-history-compatibility.md),

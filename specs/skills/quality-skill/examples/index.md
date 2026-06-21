@@ -16,15 +16,16 @@ subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
 `file:line` locator are fictional and illustrative; the model uses the suggested
 four-level rating scale
 (**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
-`design.md`, `plan.md`, and the `assessments/` and `analysis/` records are the
-snapshot, inputs, method, and write-once evidence trail the skill writes
-alongside the report (see [Reporting](../quality-skill.md#reporting)), so the
-report's findings trace to the model, parameters, coverage, and per-requirement
-and per-target records in force at evaluation time. The checked-in reports are
-generated from the adjacent runtime records; update them by changing the fixture
-inputs and rebuilding the report, not by hand-editing the generated report files.
-This fixture is intentionally complete and reportable: it records one assessment
-per in-scope requirement and one analysis per target node.
+`design.md`, `plan.md`, `debug-log.md`, and the `assessments/` and `analysis/`
+records are the snapshot, inputs, method, process diagnostics, and write-once
+evidence trail the skill writes alongside the report (see
+[Reporting](../quality-skill.md#reporting)), so the report's findings trace to
+the model, parameters, coverage, and per-requirement and per-target records in
+force at evaluation time. The checked-in reports are generated from the adjacent
+runtime records; update them by changing the fixture inputs and rebuilding the
+report, not by hand-editing the generated report files. This fixture is
+intentionally complete and reportable: it records one assessment per in-scope
+requirement and one analysis per target node.
 
 # Examples
 
@@ -44,6 +45,7 @@ per in-scope requirement and one analysis per target node.
   [model evaluated](0001-subject-quality-eval/model.md) →
   the [design](0001-subject-quality-eval/design.md) and
   [plan](0001-subject-quality-eval/plan.md) →
+  the [debug log](0001-subject-quality-eval/debug-log.md) →
   the [assessment result records](0001-subject-quality-eval/assessments/) →
   the [analysis records](0001-subject-quality-eval/analysis/) →
   the [summary](0001-subject-quality-eval/report-summary.md),

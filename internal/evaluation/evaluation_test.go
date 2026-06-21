@@ -38,9 +38,18 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	if result.Path != "quality/evaluations/0001-subject-quality-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
-	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
+	for _, name := range []string{"model.md", "debug-log.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); err != nil {
 			t.Fatalf("missing %s: %v", name, err)
+		}
+	}
+	debugLog, err := os.ReadFile(filepath.Join(repo, result.Path, "debug-log.md"))
+	if err != nil {
+		t.Fatalf("reading debug-log.md: %v", err)
+	}
+	for _, want := range []string{"# Evaluation debug log", "evaluation process itself", "## Events"} {
+		if !strings.Contains(string(debugLog), want) {
+			t.Fatalf("debug-log.md missing %q:\n%s", want, debugLog)
 		}
 	}
 

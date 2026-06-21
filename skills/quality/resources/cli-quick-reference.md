@@ -80,6 +80,7 @@ Need to evaluate?
 - Check model first -> qualitymd lint [path]
 - Inspect current state -> qualitymd status [path] --json
 - Create run -> qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
+- Maintain process notes -> edit debug-log.md for notable evaluation-process events only
 - Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
@@ -93,6 +94,7 @@ Run incomplete or stale?
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
 - Incompatible historical record? -> treat as run status; inspect or create a fresh run, do not hand-migrate records
+- Process ambiguity or recovery? -> record concise notes in debug-log.md; do not duplicate assessment evidence
 - Missing planned coverage? -> edit plan.md coverage frontmatter
 - Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Reportable? -> qualitymd evaluation report build <run>

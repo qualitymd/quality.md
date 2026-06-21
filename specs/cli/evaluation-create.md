@@ -3,7 +3,7 @@ type: Functional Specification
 title: qualitymd evaluation create
 description: Create a numbered evaluation run folder.
 tags: [cli, command, evaluation]
-timestamp: 2026-06-19T00:00:00Z
+timestamp: 2026-06-21T00:00:00Z
 ---
 
 # qualitymd evaluation create
@@ -41,8 +41,8 @@ folder.
 
 The command **MUST** compute the next run number as one past the highest matching
 evaluation run folder, create the run directory, create `assessments/`,
-`analysis/`, and `recommendations/`, and seed `model.md`, `design.md`, and
-body-only `plan.md`.
+`analysis/`, and `recommendations/`, and seed `model.md`, `debug-log.md`,
+`design.md`, and body-only `plan.md`.
 
 `model.md` is the resolved subject file. New runs are subject-altitude. The
 command **MUST NOT** expose an altitude flag, option, or JSON receipt field.

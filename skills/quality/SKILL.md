@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, improve, or update the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
-compatibility: Requires qualitymd CLI >=0.5.0 <0.6.0.
+compatibility: Requires qualitymd CLI >=0.6.0 <0.7.0.
 metadata:
-  version: "0.5.1"
-  requires-qualitymd-cli: ">=0.5.0 <0.6.0"
+  version: "0.6.0"
+  requires-qualitymd-cli: ">=0.6.0 <0.7.0"
 ---
 
 ## Purpose
@@ -35,7 +35,9 @@ recommendations.
 ## Hard Rules
 
 - `wizard` is read-only.
-- `evaluate` writes evaluation artifacts only through `qualitymd evaluation ...`.
+- `evaluate` writes numbered evaluation records only through
+  `qualitymd evaluation ...`; the skill may hand-author `design.md`, `plan.md`,
+  and `debug-log.md` in CLI-created runs.
 - `improve` edits the subject or `QUALITY.md` only after explicit confirmation
   of the recommendation and option to apply.
 - `update` mutates only after explicit confirmation and delegates mechanics to
@@ -143,6 +145,16 @@ Keep output status-first, evidence-led, and action-oriented. Distinguish
 CLI/tooling readiness, model validity, model usefulness, subject quality, and
 evaluation history status. Use QUALITY.md terms consistently: Target, Factor,
 Requirement, rating, finding, and recommendation.
+
+When maintaining a run's `debug-log.md`, record only notable events involving
+the evaluation process itself: scope resolution, history inspection, coverage
+adjustment, interruption or resume, retries, record corrections, tooling
+failures, redaction decisions, prompt-injection handling, and report generation
+recovery. Do not use `debug-log.md` as an assessment record, rating rationale,
+report, or evidence store. If a project command is exercised as subject-quality
+evidence, the debug log may note that routing decision and point to the formal
+assessment record, but it must not copy raw command output or duplicate the
+finding.
 
 Use required `title` values as the primary human-facing labels for Models,
 Targets, Factors, and rating levels. When disambiguation or traceability matters,

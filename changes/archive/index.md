@@ -150,3 +150,5 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0045 — Evaluable body context](0045-evaluable-body-context.md) - clarified
   the Markdown body as concise, self-explanatory, agent-accessible judgment
   context for building, justifying, and evaluating model quality (`Done`).
+- [0046 — Evaluation debug log](0046-evaluation-debug-log.md) - added a
+  process-only `debug-log.md` artifact to evaluation runs (`Done`).

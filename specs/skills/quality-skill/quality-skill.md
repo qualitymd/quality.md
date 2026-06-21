@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality skill
 description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI update help for quality management of a project/entity or one of its components/targets. Trigger for requests about quality factors, characteristics, attributes, criteria, Targets, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a subject against quality criteria, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
-timestamp: 2026-06-19T00:00:00Z
+timestamp: 2026-06-21T00:00:00Z
 ---
 
 # /quality skill
@@ -528,7 +528,7 @@ flowchart TD
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
     Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
-    Run --> Plan[Fill design.md and plan.md:<br/>resolved parameters, coverage approach]
+    Run --> Plan[Fill design.md, plan.md,<br/>and debug-log.md]
     Plan --> Eval[Evaluate in-scope targets:<br/>Define → Assess &amp; Rate → Analyze → Advise]
     Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
     Records --> Status[Check qualitymd evaluation status]
@@ -550,7 +550,8 @@ flowchart TD
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
 4. **Create the run** with `qualitymd evaluation create`, letting the CLI
-   number the folder, create the layout, and snapshot `model.md`.
+   number the folder, create the layout, snapshot `model.md`, and seed
+   `debug-log.md`.
 5. **Plan** — fill the evaluation's **design** (the resolved parameters and the
    `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
    `source` will be covered at the chosen rigor). The plan **MUST** record the
@@ -559,10 +560,17 @@ flowchart TD
    skill should add `coverage:` frontmatter to `plan.md` when resume diagnostics
    materially matter, especially for standard, deep, concurrent-write, or
    interruption-prone runs.
-7. **Evaluate** — run the skill's evaluation process (the five conformant phases
+7. **Maintain the debug log** — hand-author concise `debug-log.md` entries for
+   notable events involving the evaluation process itself. Keep the log separate
+   from formal subject-quality judgment: it may explain routing, retries,
+   coverage adjustment, redaction, prompt-injection handling, or artifact
+   recovery, but it must not duplicate subject-quality findings, rating
+   rationale, or raw output from project commands exercised as assessment
+   evidence.
+8. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope targets, resolving each target's `source` to the
    entities to assess.
-8. **Write records** with
+9. **Write records** with
    `qualitymd evaluation assessment add <run>`,
    `qualitymd evaluation analysis set <run>`, and
    `qualitymd evaluation recommendation add <run>`,
@@ -572,13 +580,13 @@ flowchart TD
    values are factor keys, and ratings are rating `level` ids. Human-facing
    prose can use titles; records keep identifiers so reports, gates, and
    machine consumers remain stable.
-9. **Check and report** with `qualitymd evaluation status <run>` followed by
-   `qualitymd evaluation report build <run>` when reportable. Under `improve`,
-   the skill then **applies a chosen
-   recommendation** — defaulting to its recommended option — only on explicit
-   confirmation, then creates a **new numbered evaluation folder** and
-   re-evaluates the affected scope to confirm the rating moved (see
-   [Operating model](#operating-model)).
+10. **Check and report** with `qualitymd evaluation status <run>` followed by
+    `qualitymd evaluation report build <run>` when reportable. Under `improve`,
+    the skill then **applies a chosen
+    recommendation** — defaulting to its recommended option — only on explicit
+    confirmation, then creates a **new numbered evaluation folder** and
+    re-evaluates the affected scope to confirm the rating moved (see
+    [Operating model](#operating-model)).
 
 `improve` adds no new judgment phase — it runs this same workflow, recommendations
 and all, then applies a confirmed recommendation and verifies the result by
@@ -681,15 +689,16 @@ ignored.
 Runtime evaluation artifacts are raw outputs in the evaluated repository, not
 OKF concepts. They **MUST NOT** carry OKF frontmatter or require registration in
 `specs/schema.md`. Alongside the report and its recommendations the folder
-captures three further artifacts that make the run auditable and reproducible —
-a snapshot of the model evaluated, the run's **design** (its inputs), and its
-execution **plan** (its method):
+captures four further artifacts that make the run auditable and reproducible —
+a snapshot of the model evaluated, the run's **design** (its inputs), its
+execution **plan** (its method), and its process-only **debug log**:
 
 ```
 quality/evaluations/
   0001-subject[-<narrowing>]-quality-eval/
     model.md
     design.md
+    debug-log.md
     plan.md
     assessments/
       001-<target>-<requirement>.json
@@ -745,6 +754,16 @@ Together these separate the three things an audit must tell apart — the *input
   needs machine-checkable resume diagnostics. The skill supplies the intended
   assessment requirements and analysis targets as `coverage:` frontmatter in
   `plan.md` after the plan is settled.
+- The folder **MUST** include a **debug log** recording notable events involving
+  the evaluation process itself: scope ambiguity, history inspection, coverage
+  adjustment, interruptions or resumes, retries, record corrections, tooling
+  failures, redaction decisions, prompt-injection handling, or report generation
+  recovery. `debug-log.md` is not an assessment record, rating rationale, report,
+  or evidence store. Subject-quality findings and rating rationale belong in the
+  formal records. When a project command is exercised as evidence against the
+  evaluated subject, the log may record only the routing fact and point to the
+  assessment record; it must not copy raw command output or preserve a second
+  copy of assessment evidence.
 - The folder **MUST** capture the **assessment result records** the Evaluate phase
   produces as JSON — one artifact per in-scope requirement, holding its findings
   (each with its locator), the rating inferred against the requirement's

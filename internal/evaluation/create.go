@@ -13,6 +13,16 @@ type config struct {
 	EvaluationDir string `yaml:"evaluationDir"`
 }
 
+const debugLogSeed = `# Evaluation debug log
+
+This log records notable events involving the evaluation process itself. It is
+not an assessment record, rating rationale, report, or evidence store;
+subject-quality evidence belongs in assessment, analysis, and recommendation
+records.
+
+## Events
+`
+
 func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
@@ -88,8 +98,9 @@ func createRunSkeleton(runAbs string, modelRaw []byte) error {
 		return fmt.Errorf("writing model.md: %w", err)
 	}
 	for file, content := range map[string]string{
-		"design.md": "# Evaluation design\n",
-		"plan.md":   "# Evaluation plan\n",
+		"debug-log.md": debugLogSeed,
+		"design.md":    "# Evaluation design\n",
+		"plan.md":      "# Evaluation plan\n",
 	} {
 		if err := os.WriteFile(filepath.Join(runAbs, file), []byte(content), 0o644); err != nil {
 			return fmt.Errorf("writing %s: %w", file, err)

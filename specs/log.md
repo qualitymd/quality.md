@@ -2,6 +2,14 @@
 
 ## 2026-06-21
 
+- **Revision**: Added the process-only `debug-log.md` evaluation artifact for
+  [0046 - Evaluation debug log](../changes/archive/0046-evaluation-debug-log.md).
+  Updated [Evaluation records](evaluation-records.md),
+  [`evaluation create`](cli/evaluation-create.md), and the
+  [/quality skill contract](skills/quality-skill/quality-skill.md) so new runs
+  seed a debug log while reports, ratings, findings, recommendations, and next
+  actions remain derived from formal evaluation records.
+
 - **Revision**: Clarified Markdown-body semantics and skill-guide contracts for
   [0045 - Evaluable body context](../changes/0045-evaluable-body-context.md).
   The body is now described as evaluable judgment context for building, using,

@@ -5,6 +5,45 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.6.0 - 2026-06-21
+
+### CLI
+
+- Added `debug-log.md` to newly created evaluation runs as a process-only
+  diagnostic artifact for evaluation orchestration, retries, recovery, coverage
+  decisions, and tooling friction.
+
+### /quality Skill
+
+- Updated evaluation guidance so agents hand-author `debug-log.md` for notable
+  evaluation-process events while keeping subject-quality findings, rating
+  rationale, and raw project-command output in formal assessment, analysis, and
+  recommendation records.
+
+### Specification
+
+- Added the `debug-log.md` runtime artifact contract to evaluation records and
+  clarified that reports, ratings, findings, recommendations, and next actions
+  remain derived from formal evaluation records.
+
+### Documentation
+
+- Updated the `/quality` usage guide and reference example evaluation run to
+  show the process-only debug log alongside design, plan, records, and reports.
+
+### Packaging
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.6.0`
+- QUALITY.md specification: `0.1 (Draft)`
+- /quality skill: `0.6.0`, requires `qualitymd >=0.6.0 <0.7.0`
+
+Existing evaluation runs remain readable and reportable. New evaluation runs
+include `debug-log.md`; older runs do not need to be migrated.
+
 ## v0.5.1 - 2026-06-21
 
 ### CLI

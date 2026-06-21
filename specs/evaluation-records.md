@@ -3,7 +3,7 @@ type: Functional Specification
 title: Evaluation records
 description: The deterministic on-disk contract for QUALITY.md evaluation run records.
 tags: [evaluation, records, cli, skill]
-timestamp: 2026-06-18T00:00:00Z
+timestamp: 2026-06-21T00:00:00Z
 ---
 
 # Evaluation records
@@ -73,6 +73,7 @@ A run folder contains:
 ```text
 model.md
 design.md
+debug-log.md
 plan.md
 assessments/
   NNN-<target>-<requirement>.json
@@ -88,8 +89,8 @@ report.json
 `assessments/` and `recommendations/` each use their own local `NNN`
 sequence.
 
-`plan.md` may be body-only, or it may carry YAML frontmatter with optional
-planned coverage metadata.
+`debug-log.md` is a process-only Markdown artifact. `plan.md` may be body-only,
+or it may carry YAML frontmatter with optional planned coverage metadata.
 
 ## Schema Version
 
@@ -243,6 +244,35 @@ When `coverage:` is absent, the run keeps the same status and reportability
 behavior it would have without planned coverage metadata. Malformed `coverage:`
 frontmatter makes the run non-reportable through an `invalid-plan-coverage`
 status gap rather than making the run unloadable.
+
+## Debug Log
+
+`debug-log.md` is a hand-authored process log for notable events involving the
+evaluation process itself. The CLI **MUST** seed it when creating a new run, but
+report loading and report rendering **MUST NOT** derive ratings, findings,
+recommendations, next actions, or generated report content from it.
+
+`debug-log.md` is a runtime evaluation artifact, not an OKF `log.md`, and
+**MUST NOT** be interpreted as an OKF concept history.
+
+The log's content **MUST** stay on the evaluator-process side of the boundary:
+scope resolution, evaluation history inspection, coverage planning,
+interruptions or resumes, retries, artifact corrections, CLI/tooling readiness
+and failures, subagent coordination, redaction decisions, prompt-injection
+handling, and report generation recovery.
+
+The log **MUST NOT** record subject-quality findings as primary content or
+duplicate rating rationale from assessment or analysis records. When a project
+command is exercised as evidence against the evaluated subject, the log **MAY**
+record that routing fact and cite the formal assessment record.
+
+The log **MUST NOT** copy raw project-command output or preserve a second copy
+of assessment evidence.
+
+`debug-log.md` **MUST NOT** contain secret values or reproduce raw
+prompt-injection text from evaluated source content. When a secret or hostile
+instruction affects the evaluation process, the log **MAY** record a sanitized
+locator and type.
 
 ## Recommendation Record
 

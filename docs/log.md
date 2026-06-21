@@ -1,5 +1,13 @@
 # Docs Update Log
 
+## 2026-06-21
+
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  to mention the process-only `debug-log.md` included in evaluation runs.
+- **Revision**: Updated [Versioning](reference/versioning.md) to mirror the
+  `v0.6.0` `/quality` skill metadata and `qualitymd >=0.6.0 <0.7.0`
+  compatibility range.
+
 ## 2026-06-19
 
 - **Revision**: Broadened the change-case "Affected specs & docs" framing to
