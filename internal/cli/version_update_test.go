@@ -302,24 +302,27 @@ func TestUpgradeAliasRemoved(t *testing.T) {
 
 func TestUpdateAvailableSemVerOnly(t *testing.T) {
 	cases := []struct {
-		name            string
-		current, latest string
-		want            bool
+		name    string
+		current string
+		latest  string
+		want    bool
 	}{
-		{"newer patch", "v0.4.0", "v0.4.1", true},
-		{"latest older", "v0.5.0", "v0.4.1", false},
-		{"equal", "v0.4.1", "v0.4.1", false},
-		{"current prerelease", "v0.4.1-rc.1", "v0.4.1", false},
-		{"latest prerelease", "v0.4.1", "v0.4.2-rc.1", false},
-		{"development build", "dev (abc1234)", "v9.9.9", false},
-		{"prefixed current", "qualitymd v0.4.0", "v0.4.1", true},
-		{"empty latest", "v0.4.0", "", false},
-		{"non-semver differ", "weird", "weirder", false},
+		{name: "newer patch", current: "v0.4.0", latest: "v0.4.1", want: true},
+		{name: "latest older", current: "v0.5.0", latest: "v0.4.1", want: false},
+		{name: "equal", current: "v0.4.1", latest: "v0.4.1", want: false},
+		{name: "current prerelease", current: "v0.4.1-rc.1", latest: "v0.4.1", want: false},
+		{name: "latest prerelease", current: "v0.4.1", latest: "v0.4.2-rc.1", want: false},
+		{name: "development build", current: "dev (abc1234)", latest: "v9.9.9", want: false},
+		{name: "prefixed current", current: "qualitymd v0.4.0", latest: "v0.4.1", want: true},
+		{name: "empty latest", current: "v0.4.0", latest: "", want: false},
+		{name: "non-semver differ", current: "weird", latest: "weirder", want: false},
 	}
 	for _, tc := range cases {
-		if got := updateAvailable(tc.current, tc.latest); got != tc.want {
-			t.Errorf("%s: updateAvailable(%q, %q) = %v, want %v", tc.name, tc.current, tc.latest, got, tc.want)
-		}
+		t.Run(tc.name, func(t *testing.T) {
+			if got := updateAvailable(tc.current, tc.latest); got != tc.want {
+				t.Errorf("updateAvailable(%q, %q) = %v, want %v", tc.current, tc.latest, got, tc.want)
+			}
+		})
 	}
 }
 

@@ -125,14 +125,14 @@ func TestInspectReportsCompatibilityGapsAndDiscoveredCounts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Inspect() error = %v", err)
 	}
-	status := inspected.EvaluationRunStatus()
+	status := inspected.Status()
 	if status.Reportable {
 		t.Fatalf("status.Reportable = true, gaps = %#v", status.Gaps)
 	}
 	if status.Counts.AssessmentResults != 3 || status.Counts.Analyses != 1 || status.Counts.Recommendations != 1 {
 		t.Fatalf("counts = %#v, want discovered record-file counts", status.Counts)
 	}
-	for _, kind := range []EvaluationRunGapKind{
+	for _, kind := range []RunGapKind{
 		GapMalformedEvaluationRecord,
 		GapMissingRecordSchemaVersion,
 		GapUnsupportedRecordSchemaVersion,
@@ -276,7 +276,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if !status.Reportable {
 		t.Fatalf("status.Reportable = false, gaps = %#v", status.Gaps)
 	}
@@ -471,7 +471,7 @@ func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *test
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
@@ -511,7 +511,7 @@ func TestLoadedAssessmentResultWithInvalidRatingResultIsNotReportable(t *testing
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
@@ -523,7 +523,7 @@ func TestLoadedAssessmentResultWithInvalidRatingResultIsNotReportable(t *testing
 	}
 }
 
-func hasGap(gaps []EvaluationRunGap, kind EvaluationRunGapKind) bool {
+func hasGap(gaps []RunGap, kind RunGapKind) bool {
 	for _, gap := range gaps {
 		if gap.Kind == kind {
 			return true
@@ -1132,7 +1132,7 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatalf("status.Reportable = true, want false")
 	}
@@ -1196,7 +1196,7 @@ func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
@@ -1280,7 +1280,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable with stale analysis = true, want false")
 	}
@@ -1312,7 +1312,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
 	if err != nil {
 		t.Fatalf("Load(after corrected analysis) error = %v", err)
 	}
-	if status := loaded.EvaluationRunStatus(); !status.Reportable {
+	if status := loaded.Status(); !status.Reportable {
 		t.Fatalf("status.Reportable after corrected analysis = false, gaps = %#v", status.Gaps)
 	}
 	if _, err := BuildReport(runPath); err != nil {
@@ -1370,7 +1370,7 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	if status := loaded.EvaluationRunStatus(); len(status.Gaps) != 2 || status.Gaps[0].Kind != "missing-superseded-assessment-result" {
+	if status := loaded.Status(); len(status.Gaps) != 2 || status.Gaps[0].Kind != "missing-superseded-assessment-result" {
 		t.Fatalf("status.Gaps = %#v, want missing-superseded-assessment-result plus missing-analysis", status.Gaps)
 	}
 
@@ -1418,13 +1418,13 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 		t.Fatalf("Load(second) error = %v", err)
 	}
 	found := false
-	for _, gap := range loaded.EvaluationRunStatus().Gaps {
+	for _, gap := range loaded.Status().Gaps {
 		if gap.Kind == GapInvalidAssessmentResultSupersedes {
 			found = true
 		}
 	}
 	if !found {
-		t.Fatalf("status.Gaps = %#v, want invalid-assessment-result-supersedes", loaded.EvaluationRunStatus().Gaps)
+		t.Fatalf("status.Gaps = %#v, want invalid-assessment-result-supersedes", loaded.Status().Gaps)
 	}
 }
 
@@ -1606,7 +1606,7 @@ func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
@@ -1686,7 +1686,7 @@ coverage:
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
-	status := loaded.EvaluationRunStatus()
+	status := loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable = true, want false")
 	}
@@ -1739,7 +1739,7 @@ coverage:
 	if err != nil {
 		t.Fatalf("Load(after complete plan) error = %v", err)
 	}
-	if status := loaded.EvaluationRunStatus(); !status.Reportable {
+	if status := loaded.Status(); !status.Reportable {
 		t.Fatalf("completed planned coverage reportable = false, gaps = %#v", status.Gaps)
 	}
 
@@ -1764,7 +1764,7 @@ coverage:
 	if err != nil {
 		t.Fatalf("Load(after extra record) error = %v", err)
 	}
-	status = loaded.EvaluationRunStatus()
+	status = loaded.Status()
 	if status.Reportable {
 		t.Fatal("status.Reportable with extra record = true, want false")
 	}
@@ -1824,7 +1824,7 @@ func TestSparrowExampleReportFixtureIsGenerated(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Load(fixture copy) error = %v", err)
 	}
-	if status := loaded.EvaluationRunStatus(); !status.Reportable {
+	if status := loaded.Status(); !status.Reportable {
 		t.Fatalf("fixture status.Reportable = false, gaps = %#v", status.Gaps)
 	}
 	if _, err := BuildReport(tempRun); err != nil {
@@ -1872,7 +1872,7 @@ func copyDir(t *testing.T, src, dst string) {
 	}
 }
 
-func gapKinds(gaps []EvaluationRunGap) []string {
+func gapKinds(gaps []RunGap) []string {
 	kinds := make([]string, 0, len(gaps))
 	for _, gap := range gaps {
 		kinds = append(kinds, string(gap.Kind))

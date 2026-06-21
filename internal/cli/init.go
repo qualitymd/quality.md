@@ -60,6 +60,7 @@ func newInitCmd() *cobra.Command {
 			if err := scaffold.Create(path, force); err != nil {
 				if jsonOutput {
 					writeInitError(cmd.ErrOrStderr(), path, err)
+					return silentInternal(err)
 				}
 				return err
 			}
@@ -106,7 +107,7 @@ func initActions(path string) []receipt.Action {
 	}
 }
 
-func writeInitReceipt(w interface{ Write([]byte) (int, error) }, receipt InitReceipt) error {
+func writeInitReceipt(w io.Writer, receipt InitReceipt) error {
 	data, err := json.MarshalIndent(receipt, "", "  ")
 	if err != nil {
 		return err
@@ -115,7 +116,7 @@ func writeInitReceipt(w interface{ Write([]byte) (int, error) }, receipt InitRec
 	return err
 }
 
-func writeInitError(w interface{ Write([]byte) (int, error) }, path string, err error) {
+func writeInitError(w io.Writer, path string, err error) {
 	data, marshalErr := json.MarshalIndent(initError{
 		SchemaVersion: initSchemaVersion,
 		Path:          path,

@@ -26,10 +26,10 @@ func usagef(format string, args ...any) error {
 
 // Options configures evaluation run creation.
 type Options struct {
-	RepoRoot      string
-	EvaluationDir string
-	Narrowing     string
-	Model         string
+	RepoRoot   string
+	ResolveDir string
+	Narrowing  string
+	Model      string
 }
 
 // CreateRunReceipt is the JSON contract emitted after creating a run.
@@ -39,23 +39,23 @@ type CreateRunReceipt struct {
 	NextActions []receipt.Action `json:"nextActions"`
 }
 
-// EvaluationRecordKind identifies an evaluation record family.
-type EvaluationRecordKind string
+// RecordKind identifies an evaluation record family.
+type RecordKind string
 
 const (
-	KindAssessmentResult EvaluationRecordKind = "assessment"
-	KindAnalysis         EvaluationRecordKind = "analysis"
-	KindRecommendation   EvaluationRecordKind = "recommendation"
+	KindAssessmentResult RecordKind = "assessment"
+	KindAnalysis         RecordKind = "analysis"
+	KindRecommendation   RecordKind = "recommendation"
 )
 
 // WriteRecordReceipt is the JSON contract emitted after writing records.
 type WriteRecordReceipt struct {
-	SchemaVersion int                  `json:"schemaVersion"`
-	Path          string               `json:"path,omitempty"`
-	Paths         []string             `json:"paths"`
-	Kind          EvaluationRecordKind `json:"kind"`
-	Created       *bool                `json:"created,omitempty"`
-	NextActions   []receipt.Action     `json:"nextActions,omitempty"`
+	SchemaVersion int              `json:"schemaVersion"`
+	Path          string           `json:"path,omitempty"`
+	Paths         []string         `json:"paths"`
+	Kind          RecordKind       `json:"kind"`
+	Created       *bool            `json:"created,omitempty"`
+	NextActions   []receipt.Action `json:"nextActions,omitempty"`
 }
 
 // PlannedCoverage records the assessment and analysis records expected for a
@@ -320,19 +320,19 @@ const (
 	ReportNextStepNone           ReportNextStepKind = "none"
 )
 
-// EvaluationRigor identifies the rigor recorded for an evaluation run.
-type EvaluationRigor string
+// Rigor identifies the rigor recorded for an evaluation run.
+type Rigor string
 
 const (
-	EvaluationRigorQuick    EvaluationRigor = "quick"
-	EvaluationRigorStandard EvaluationRigor = "standard"
-	EvaluationRigorDeep     EvaluationRigor = "deep"
+	RigorQuick    Rigor = "quick"
+	RigorStandard Rigor = "standard"
+	RigorDeep     Rigor = "deep"
 )
 
 // Valid reports whether r is a canonical evaluation rigor.
-func (r EvaluationRigor) Valid() bool {
+func (r Rigor) Valid() bool {
 	switch r {
-	case EvaluationRigorQuick, EvaluationRigorStandard, EvaluationRigorDeep:
+	case RigorQuick, RigorStandard, RigorDeep:
 		return true
 	default:
 		return false
@@ -340,24 +340,24 @@ func (r EvaluationRigor) Valid() bool {
 }
 
 // Display returns the human-facing rigor label.
-func (r EvaluationRigor) Display() string {
+func (r Rigor) Display() string {
 	if r == "" {
 		return "not recorded"
 	}
 	return strings.ToUpper(string(r[:1])) + string(r[1:])
 }
 
-// EvaluationLevel identifies the level at which an evaluation was performed.
-type EvaluationLevel string
+// Level identifies the level at which an evaluation was performed.
+type Level string
 
 const (
-	EvaluationLevelModel EvaluationLevel = "model"
+	LevelModel Level = "model"
 )
 
 // Valid reports whether l is a canonical evaluation level.
-func (l EvaluationLevel) Valid() bool {
+func (l Level) Valid() bool {
 	switch l {
-	case EvaluationLevelModel:
+	case LevelModel:
 		return true
 	default:
 		return false

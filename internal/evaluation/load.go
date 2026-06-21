@@ -15,68 +15,68 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// EvaluationRun is a loaded evaluation run folder and its decoded records.
-type EvaluationRun struct {
+// Run is a loaded evaluation run folder and its decoded records.
+type Run struct {
 	Path              string
 	AbsPath           string
 	Design            string
 	Plan              string
 	PlannedCoverage   *PlannedCoverage
-	PlanCoverageGaps  []EvaluationRunGap
-	CompatibilityGaps []EvaluationRunGap
+	PlanCoverageGaps  []RunGap
+	CompatibilityGaps []RunGap
 	AssessmentResults []AssessmentResultRecord
 	Analyses          []AnalysisRecord
 	Recommendations   []RecommendationRecord
 	Model             *model.Spec
 	Scale             []model.RatingLevel
-	recordCounts      EvaluationRecordCounts
+	recordCounts      RecordCounts
 }
 
-// EvaluationRecordCounts counts the record files discovered in a run.
-type EvaluationRecordCounts struct {
+// RecordCounts counts the record files discovered in a run.
+type RecordCounts struct {
 	AssessmentResults int `json:"assessmentResults"`
 	Analyses          int `json:"analyses"`
 	Recommendations   int `json:"recommendations"`
 }
 
-// EvaluationRunGap describes a compatibility or reportability gap in a run.
-type EvaluationRunGap struct {
-	Kind   EvaluationRunGapKind `json:"kind"`
-	Ref    string               `json:"ref"`
-	Detail string               `json:"detail"`
+// RunGap describes a compatibility or reportability gap in a run.
+type RunGap struct {
+	Kind   RunGapKind `json:"kind"`
+	Ref    string     `json:"ref"`
+	Detail string     `json:"detail"`
 }
 
-// EvaluationRunGapKind identifies a class of evaluation run gap.
-type EvaluationRunGapKind string
+// RunGapKind identifies a class of evaluation run gap.
+type RunGapKind string
 
 const (
-	GapInvalidPlanCoverage                 EvaluationRunGapKind = "invalid-plan-coverage"
-	GapDuplicateAssessmentResult           EvaluationRunGapKind = "duplicate-assessment-result"
-	GapMissingFindingSeverity              EvaluationRunGapKind = "missing-finding-severity"
-	GapInvalidFindingSeverity              EvaluationRunGapKind = "invalid-finding-severity"
-	GapInvalidRatingResult                 EvaluationRunGapKind = "invalid-rating-result"
-	GapMissingSupersededRecommendation     EvaluationRunGapKind = "missing-superseded-recommendation"
-	GapMissingAssessmentResult             EvaluationRunGapKind = "missing-assessment-result"
-	GapSupersededAssessmentResultReference EvaluationRunGapKind = "superseded-assessment-result-reference"
-	GapMissingAnalysis                     EvaluationRunGapKind = "missing-analysis"
-	GapMissingRootAnalysis                 EvaluationRunGapKind = "missing-root-analysis"
-	GapDuplicateRootAnalysis               EvaluationRunGapKind = "duplicate-root-analysis"
-	GapMissingRecommendation               EvaluationRunGapKind = "missing-recommendation"
-	GapMissingSupersededAssessmentResult   EvaluationRunGapKind = "missing-superseded-assessment-result"
-	GapInvalidAssessmentResultSupersedes   EvaluationRunGapKind = "invalid-assessment-result-supersedes"
-	GapMissingPlannedAssessmentResult      EvaluationRunGapKind = "missing-planned-assessment-result"
-	GapMissingPlannedAnalysis              EvaluationRunGapKind = "missing-planned-analysis"
-	GapUnexpectedAssessmentResult          EvaluationRunGapKind = "unexpected-assessment-result"
-	GapUnexpectedAnalysis                  EvaluationRunGapKind = "unexpected-analysis"
-	GapMalformedEvaluationRecord           EvaluationRunGapKind = "malformed-evaluation-record"
-	GapUnreadableEvaluationRecord          EvaluationRunGapKind = "unreadable-evaluation-record"
-	GapMissingRecordSchemaVersion          EvaluationRunGapKind = "missing-record-schema-version"
-	GapUnsupportedRecordSchemaVersion      EvaluationRunGapKind = "unsupported-record-schema-version"
-	GapIncompleteEvaluationRecord          EvaluationRunGapKind = "incomplete-evaluation-record"
+	GapInvalidPlanCoverage                 RunGapKind = "invalid-plan-coverage"
+	GapDuplicateAssessmentResult           RunGapKind = "duplicate-assessment-result"
+	GapMissingFindingSeverity              RunGapKind = "missing-finding-severity"
+	GapInvalidFindingSeverity              RunGapKind = "invalid-finding-severity"
+	GapInvalidRatingResult                 RunGapKind = "invalid-rating-result"
+	GapMissingSupersededRecommendation     RunGapKind = "missing-superseded-recommendation"
+	GapMissingAssessmentResult             RunGapKind = "missing-assessment-result"
+	GapSupersededAssessmentResultReference RunGapKind = "superseded-assessment-result-reference"
+	GapMissingAnalysis                     RunGapKind = "missing-analysis"
+	GapMissingRootAnalysis                 RunGapKind = "missing-root-analysis"
+	GapDuplicateRootAnalysis               RunGapKind = "duplicate-root-analysis"
+	GapMissingRecommendation               RunGapKind = "missing-recommendation"
+	GapMissingSupersededAssessmentResult   RunGapKind = "missing-superseded-assessment-result"
+	GapInvalidAssessmentResultSupersedes   RunGapKind = "invalid-assessment-result-supersedes"
+	GapMissingPlannedAssessmentResult      RunGapKind = "missing-planned-assessment-result"
+	GapMissingPlannedAnalysis              RunGapKind = "missing-planned-analysis"
+	GapUnexpectedAssessmentResult          RunGapKind = "unexpected-assessment-result"
+	GapUnexpectedAnalysis                  RunGapKind = "unexpected-analysis"
+	GapMalformedEvaluationRecord           RunGapKind = "malformed-evaluation-record"
+	GapUnreadableEvaluationRecord          RunGapKind = "unreadable-evaluation-record"
+	GapMissingRecordSchemaVersion          RunGapKind = "missing-record-schema-version"
+	GapUnsupportedRecordSchemaVersion      RunGapKind = "unsupported-record-schema-version"
+	GapIncompleteEvaluationRecord          RunGapKind = "incomplete-evaluation-record"
 )
 
 // RequiresReview reports whether a gap requires human or agent reconciliation.
-func (k EvaluationRunGapKind) RequiresReview() bool {
+func (k RunGapKind) RequiresReview() bool {
 	switch k {
 	case GapDuplicateAssessmentResult,
 		GapDuplicateRootAnalysis,
@@ -101,27 +101,27 @@ func (k EvaluationRunGapKind) RequiresReview() bool {
 	}
 }
 
-// EvaluationRunStatus is the JSON contract emitted by evaluation status.
-type EvaluationRunStatus struct {
-	SchemaVersion int                    `json:"schemaVersion"`
-	Path          string                 `json:"path"`
-	Reportable    bool                   `json:"reportable"`
-	Counts        EvaluationRecordCounts `json:"counts"`
-	Gaps          []EvaluationRunGap     `json:"gaps"`
-	NextActions   []receipt.Action       `json:"nextActions"`
+// RunStatus is the JSON contract emitted by evaluation status.
+type RunStatus struct {
+	SchemaVersion int              `json:"schemaVersion"`
+	Path          string           `json:"path"`
+	Reportable    bool             `json:"reportable"`
+	Counts        RecordCounts     `json:"counts"`
+	Gaps          []RunGap         `json:"gaps"`
+	NextActions   []receipt.Action `json:"nextActions"`
 }
 
 // Load reads a current-contract evaluation run and rejects incompatible records.
-func Load(path string) (*EvaluationRun, error) {
+func Load(path string) (*Run, error) {
 	return load(path, false)
 }
 
 // Inspect reads an evaluation run in tolerant mode for history/status views.
-func Inspect(path string) (*EvaluationRun, error) {
+func Inspect(path string) (*Run, error) {
 	return load(path, true)
 }
 
-func load(path string, tolerant bool) (*EvaluationRun, error) {
+func load(path string, tolerant bool) (*Run, error) {
 	runAbs, err := verifyRun(path)
 	if err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ func load(path string, tolerant bool) (*EvaluationRun, error) {
 	if err != nil {
 		return nil, err
 	}
-	run := &EvaluationRun{
+	run := &Run{
 		Path:    displayRunPath(runAbs),
 		AbsPath: filepath.ToSlash(runAbs),
 		Model:   spec,
@@ -194,8 +194,8 @@ func load(path string, tolerant bool) (*EvaluationRun, error) {
 	return run, nil
 }
 
-func countRecordFiles(runAbs string) EvaluationRecordCounts {
-	return EvaluationRecordCounts{
+func countRecordFiles(runAbs string) RecordCounts {
+	return RecordCounts{
 		AssessmentResults: len(globRecordFiles(filepath.Join(runAbs, "assessments"), "*.json")),
 		Analyses:          len(globRecordFiles(filepath.Join(runAbs, "analysis"), "*.json")),
 		Recommendations:   len(globRecordFiles(filepath.Join(runAbs, "recommendations"), "*.md")),
@@ -211,8 +211,8 @@ func globRecordFiles(dir, pattern string) []string {
 	return paths
 }
 
-func inspectJSONRecords(dir, recordDir string, required []string, decode func(string, []byte) error) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func inspectJSONRecords(dir, recordDir string, required []string, decode func(string, []byte) error) []RunGap {
+	var gaps []RunGap
 	for _, path := range globRecordFiles(dir, "*.json") {
 		file := filepath.ToSlash(filepath.Join(recordDir, filepath.Base(path)))
 		raw, err := os.ReadFile(path)
@@ -231,26 +231,26 @@ func inspectJSONRecords(dir, recordDir string, required []string, decode func(st
 	return gaps
 }
 
-func jsonRecordCompatibilityGap(file string, raw []byte, required []string) *EvaluationRunGap {
+func jsonRecordCompatibilityGap(file string, raw []byte, required []string) *RunGap {
 	var fields map[string]json.RawMessage
 	if err := json.Unmarshal(raw, &fields); err != nil {
 		return gapPtr(malformedRecordGap(file, err))
 	}
 	versionRaw, ok := fields["schemaVersion"]
 	if !ok || isJSONNull(versionRaw) {
-		return gapPtr(EvaluationRunGap{Kind: GapMissingRecordSchemaVersion, Ref: file, Detail: "schemaVersion is required"})
+		return gapPtr(RunGap{Kind: GapMissingRecordSchemaVersion, Ref: file, Detail: "schemaVersion is required"})
 	}
 	var version int
 	if err := json.Unmarshal(versionRaw, &version); err != nil {
-		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: "schemaVersion must be an integer"})
+		return gapPtr(RunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: "schemaVersion must be an integer"})
 	}
 	if version != SchemaVersion {
-		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: fmt.Sprintf("schemaVersion = %d, want %d", version, SchemaVersion)})
+		return gapPtr(RunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: fmt.Sprintf("schemaVersion = %d, want %d", version, SchemaVersion)})
 	}
 	for _, field := range required {
 		raw, ok := fields[field]
 		if !ok || (isJSONNull(raw) && field != "localRatingResult") {
-			return gapPtr(EvaluationRunGap{Kind: GapIncompleteEvaluationRecord, Ref: file, Detail: field + " is required"})
+			return gapPtr(RunGap{Kind: GapIncompleteEvaluationRecord, Ref: file, Detail: field + " is required"})
 		}
 	}
 	return nil
@@ -260,8 +260,8 @@ func isJSONNull(raw json.RawMessage) bool {
 	return string(bytes.TrimSpace(raw)) == "null"
 }
 
-func inspectRecommendations(dir string, out *[]RecommendationRecord) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func inspectRecommendations(dir string, out *[]RecommendationRecord) []RunGap {
+	var gaps []RunGap
 	for _, path := range globRecordFiles(dir, "*.md") {
 		file := filepath.ToSlash(filepath.Join("recommendations", filepath.Base(path)))
 		raw, err := os.ReadFile(path)
@@ -290,39 +290,39 @@ func inspectRecommendations(dir string, out *[]RecommendationRecord) []Evaluatio
 	return gaps
 }
 
-func recommendationCompatibilityGap(file string, front []byte) *EvaluationRunGap {
+func recommendationCompatibilityGap(file string, front []byte) *RunGap {
 	var fields map[string]any
 	if err := yaml.Unmarshal(front, &fields); err != nil {
 		return gapPtr(malformedRecordGap(file, err))
 	}
 	rawVersion, ok := fields["schemaVersion"]
 	if !ok || rawVersion == nil {
-		return gapPtr(EvaluationRunGap{Kind: GapMissingRecordSchemaVersion, Ref: file, Detail: "schemaVersion is required"})
+		return gapPtr(RunGap{Kind: GapMissingRecordSchemaVersion, Ref: file, Detail: "schemaVersion is required"})
 	}
 	version, ok := rawVersion.(int)
 	if !ok {
-		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: "schemaVersion must be an integer"})
+		return gapPtr(RunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: "schemaVersion must be an integer"})
 	}
 	if version != SchemaVersion {
-		return gapPtr(EvaluationRunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: fmt.Sprintf("schemaVersion = %d, want %d", version, SchemaVersion)})
+		return gapPtr(RunGap{Kind: GapUnsupportedRecordSchemaVersion, Ref: file, Detail: fmt.Sprintf("schemaVersion = %d, want %d", version, SchemaVersion)})
 	}
 	for _, field := range recommendationRequiredFields() {
 		if value, ok := fields[field]; !ok || value == nil {
-			return gapPtr(EvaluationRunGap{Kind: GapIncompleteEvaluationRecord, Ref: file, Detail: field + " is required"})
+			return gapPtr(RunGap{Kind: GapIncompleteEvaluationRecord, Ref: file, Detail: field + " is required"})
 		}
 	}
 	return nil
 }
 
-func malformedRecordGap(file string, err error) EvaluationRunGap {
-	return EvaluationRunGap{Kind: GapMalformedEvaluationRecord, Ref: file, Detail: err.Error()}
+func malformedRecordGap(file string, err error) RunGap {
+	return RunGap{Kind: GapMalformedEvaluationRecord, Ref: file, Detail: err.Error()}
 }
 
-func unreadableRecordGap(file string, err error) EvaluationRunGap {
-	return EvaluationRunGap{Kind: GapUnreadableEvaluationRecord, Ref: file, Detail: err.Error()}
+func unreadableRecordGap(file string, err error) RunGap {
+	return RunGap{Kind: GapUnreadableEvaluationRecord, Ref: file, Detail: err.Error()}
 }
 
-func gapPtr(gap EvaluationRunGap) *EvaluationRunGap {
+func gapPtr(gap RunGap) *RunGap {
 	return &gap
 }
 
@@ -409,23 +409,23 @@ type planFrontmatter struct {
 	Coverage *PlannedCoverage `yaml:"coverage"`
 }
 
-func parsePlanCoverage(raw []byte) (*PlannedCoverage, []EvaluationRunGap) {
+func parsePlanCoverage(raw []byte) (*PlannedCoverage, []RunGap) {
 	front, _, ok, err := splitOptionalMarkdownFrontmatter(raw)
 	if err != nil {
-		return nil, []EvaluationRunGap{invalidPlanCoverageGap(err)}
+		return nil, []RunGap{invalidPlanCoverageGap(err)}
 	}
 	if !ok {
 		return nil, nil
 	}
 	var fm planFrontmatter
 	if err := yaml.Unmarshal(front, &fm); err != nil {
-		return nil, []EvaluationRunGap{invalidPlanCoverageGap(fmt.Errorf("parsing frontmatter: %w", err))}
+		return nil, []RunGap{invalidPlanCoverageGap(fmt.Errorf("parsing frontmatter: %w", err))}
 	}
 	if fm.Coverage == nil {
 		return nil, nil
 	}
 	if err := validatePlannedCoverage(*fm.Coverage); err != nil {
-		return nil, []EvaluationRunGap{invalidPlanCoverageGap(err)}
+		return nil, []RunGap{invalidPlanCoverageGap(err)}
 	}
 	sortPlannedCoverage(fm.Coverage)
 	return fm.Coverage, nil
@@ -443,17 +443,20 @@ func splitOptionalMarkdownFrontmatter(raw []byte) ([]byte, []byte, bool, error) 
 	return rest[:end], rest[end+len("\n---\n"):], true, nil
 }
 
-func invalidPlanCoverageGap(err error) EvaluationRunGap {
-	return EvaluationRunGap{Kind: GapInvalidPlanCoverage, Ref: "plan.md", Detail: err.Error()}
+func invalidPlanCoverageGap(err error) RunGap {
+	return RunGap{Kind: GapInvalidPlanCoverage, Ref: "plan.md", Detail: err.Error()}
 }
 
-func (r *EvaluationRun) RecordCounts() EvaluationRecordCounts {
+// RecordCounts returns the counts of record files discovered in the run,
+// captured at load time. These are file-glob counts and are distinct from the
+// lengths of the decoded result slices after tolerant filtering.
+func (r *Run) RecordCounts() RecordCounts {
 	return r.recordCounts
 }
 
 // ActiveRecommendationCount returns the number of recommendation records not
 // superseded by a later recommendation record in this run.
-func (r *EvaluationRun) ActiveRecommendationCount() int {
+func (r *Run) ActiveRecommendationCount() int {
 	superseded := map[string]bool{}
 	known := map[string]string{}
 	for _, rec := range r.Recommendations {
@@ -490,9 +493,13 @@ func resolveKnownRecommendation(known map[string]string, ref string) (string, bo
 	return file, ok
 }
 
-func (r *EvaluationRun) EvaluationRunStatus() EvaluationRunStatus {
+// Status returns the run's report-readiness status. Reportable is true only
+// when Renderable returns no gaps. NextActions is always populated with the
+// single next step: build the report when reportable, resolve record gaps when
+// a gap requires review, or add the missing records otherwise.
+func (r *Run) Status() RunStatus {
 	gaps := r.Renderable()
-	status := EvaluationRunStatus{
+	status := RunStatus{
 		SchemaVersion: SchemaVersion,
 		Path:          r.Path,
 		Reportable:    len(gaps) == 0,
@@ -521,8 +528,11 @@ func (r *EvaluationRun) EvaluationRunStatus() EvaluationRunStatus {
 	return status
 }
 
-func (r *EvaluationRun) Renderable() []EvaluationRunGap {
-	gaps := append([]EvaluationRunGap(nil), r.CompatibilityGaps...)
+// Renderable returns the gaps that block building a report for the run. An
+// empty (or nil) slice means the run is reportable; BuildReport and GateReport
+// gate on len(Renderable()) == 0.
+func (r *Run) Renderable() []RunGap {
+	gaps := append([]RunGap(nil), r.CompatibilityGaps...)
 	supersededAssessmentResults, supersedingGaps := r.assessmentResultSupersedingState()
 	gaps = append(gaps, supersedingGaps...)
 	assessmentResultState := r.renderableAssessmentResultState(supersededAssessmentResults)
@@ -540,16 +550,16 @@ func (r *EvaluationRun) Renderable() []EvaluationRunGap {
 type renderableAssessmentResultState struct {
 	Known             map[string]bool
 	RecordsByIdentity map[string]string
-	Gaps              []EvaluationRunGap
+	Gaps              []RunGap
 }
 
 type renderableAnalysisState struct {
 	Known             map[string]AnalysisRecord
 	RecordsByIdentity map[string]string
-	Gaps              []EvaluationRunGap
+	Gaps              []RunGap
 }
 
-func (r *EvaluationRun) renderableAssessmentResultState(superseded map[string]bool) renderableAssessmentResultState {
+func (r *Run) renderableAssessmentResultState(superseded map[string]bool) renderableAssessmentResultState {
 	state := renderableAssessmentResultState{
 		Known:             map[string]bool{},
 		RecordsByIdentity: map[string]string{},
@@ -565,7 +575,7 @@ func (r *EvaluationRun) renderableAssessmentResultState(superseded map[string]bo
 		key := assessmentResultIdentity(rec)
 		state.RecordsByIdentity[key] = rec.File
 		if prior, ok := identities[key]; ok {
-			state.Gaps = append(state.Gaps, EvaluationRunGap{Kind: GapDuplicateAssessmentResult, Ref: rec.File, Detail: "duplicates " + prior})
+			state.Gaps = append(state.Gaps, RunGap{Kind: GapDuplicateAssessmentResult, Ref: rec.File, Detail: "duplicates " + prior})
 			continue
 		}
 		identities[key] = rec.File
@@ -573,7 +583,7 @@ func (r *EvaluationRun) renderableAssessmentResultState(superseded map[string]bo
 	return state
 }
 
-func (r *EvaluationRun) ratingLevelSet() map[string]bool {
+func (r *Run) ratingLevelSet() map[string]bool {
 	levels := map[string]bool{}
 	for _, level := range r.Scale {
 		levels[level.Level] = true
@@ -581,27 +591,27 @@ func (r *EvaluationRun) ratingLevelSet() map[string]bool {
 	return levels
 }
 
-func assessmentResultRatingGaps(rec AssessmentResultRecord, levels map[string]bool) []EvaluationRunGap {
+func assessmentResultRatingGaps(rec AssessmentResultRecord, levels map[string]bool) []RunGap {
 	if detail := ratingResultGapDetail("ratingResult", rec.RatingResult, levels); detail != "" {
-		return []EvaluationRunGap{{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail}}
+		return []RunGap{{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail}}
 	}
 	return nil
 }
 
-func assessmentResultFindingSeverityGaps(rec AssessmentResultRecord) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func assessmentResultFindingSeverityGaps(rec AssessmentResultRecord) []RunGap {
+	var gaps []RunGap
 	for i, finding := range rec.Findings {
 		switch {
 		case strings.TrimSpace(string(finding.Severity)) == "":
-			gaps = append(gaps, EvaluationRunGap{Kind: GapMissingFindingSeverity, Ref: rec.File, Detail: fmt.Sprintf("findings[%d] must include severity", i)})
+			gaps = append(gaps, RunGap{Kind: GapMissingFindingSeverity, Ref: rec.File, Detail: fmt.Sprintf("findings[%d] must include severity", i)})
 		case !finding.Severity.Valid():
-			gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidFindingSeverity, Ref: rec.File, Detail: fmt.Sprintf("findings[%d].severity must be one of %s", i, findingSeverityLevels())})
+			gaps = append(gaps, RunGap{Kind: GapInvalidFindingSeverity, Ref: rec.File, Detail: fmt.Sprintf("findings[%d].severity must be one of %s", i, findingSeverityLevels())})
 		}
 	}
 	return gaps
 }
 
-func (r *EvaluationRun) renderableAnalysisState() renderableAnalysisState {
+func (r *Run) renderableAnalysisState() renderableAnalysisState {
 	state := renderableAnalysisState{
 		Known:             map[string]AnalysisRecord{},
 		RecordsByIdentity: map[string]string{},
@@ -614,19 +624,19 @@ func (r *EvaluationRun) renderableAnalysisState() renderableAnalysisState {
 	return state
 }
 
-func analysisRatingGaps(rec AnalysisRecord, levels map[string]bool) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func analysisRatingGaps(rec AnalysisRecord, levels map[string]bool) []RunGap {
+	var gaps []RunGap
 	if rec.LocalRatingResult != nil {
 		if detail := ratingResultGapDetail("localRatingResult", *rec.LocalRatingResult, levels); detail != "" {
-			gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail})
+			gaps = append(gaps, RunGap{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail})
 		}
 	}
 	if detail := ratingResultGapDetail("aggregateRatingResult", rec.AggregateRatingResult, levels); detail != "" {
-		gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail})
+		gaps = append(gaps, RunGap{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail})
 	}
 	for i, factor := range rec.FactorRatingResults {
 		if detail := ratingResultGapDetail(fmt.Sprintf("factorRatingResults[%d].ratingResult", i), factor.RatingResult, levels); detail != "" {
-			gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail})
+			gaps = append(gaps, RunGap{Kind: GapInvalidRatingResult, Ref: rec.File, Detail: detail})
 		}
 	}
 	return gaps
@@ -654,7 +664,7 @@ func ratingResultGapDetail(name string, result RatingResult, levels map[string]b
 	return ""
 }
 
-func (r *EvaluationRun) renderableRecommendationRefs() map[string]bool {
+func (r *Run) renderableRecommendationRefs() map[string]bool {
 	recs := map[string]bool{}
 	for _, rec := range r.Recommendations {
 		recs[rec.File] = true
@@ -663,21 +673,21 @@ func (r *EvaluationRun) renderableRecommendationRefs() map[string]bool {
 	return recs
 }
 
-func (r *EvaluationRun) recommendationReferenceGaps(recommendations map[string]bool) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func (r *Run) recommendationReferenceGaps(recommendations map[string]bool) []RunGap {
+	var gaps []RunGap
 	for _, rec := range r.Recommendations {
 		for _, ref := range rec.Supersedes {
 			if recommendationRefExists(recommendations, ref) {
 				continue
 			}
-			gaps = append(gaps, EvaluationRunGap{Kind: GapMissingSupersededRecommendation, Ref: ref, Detail: "referenced by " + rec.File})
+			gaps = append(gaps, RunGap{Kind: GapMissingSupersededRecommendation, Ref: ref, Detail: "referenced by " + rec.File})
 		}
 	}
 	return gaps
 }
 
-func (r *EvaluationRun) analysisReferenceGaps(assessmentResults renderableAssessmentResultState, analyses renderableAnalysisState, superseded map[string]bool) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func (r *Run) analysisReferenceGaps(assessmentResults renderableAssessmentResultState, analyses renderableAnalysisState, superseded map[string]bool) []RunGap {
+	var gaps []RunGap
 	rootAnalyses := 0
 	for _, analysis := range r.Analyses {
 		if len(analysis.AreaPath) == 0 {
@@ -689,49 +699,49 @@ func (r *EvaluationRun) analysisReferenceGaps(assessmentResults renderableAssess
 	return append(gaps, rootAnalysisGaps(rootAnalyses)...)
 }
 
-func assessmentResultReferenceGaps(analysis AnalysisRecord, assessmentResults, superseded map[string]bool) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func assessmentResultReferenceGaps(analysis AnalysisRecord, assessmentResults, superseded map[string]bool) []RunGap {
+	var gaps []RunGap
 	for _, ref := range analysis.AssessmentResultRecords {
 		if !assessmentResults[ref] {
-			gaps = append(gaps, EvaluationRunGap{Kind: GapMissingAssessmentResult, Ref: ref, Detail: "referenced by " + analysis.File})
+			gaps = append(gaps, RunGap{Kind: GapMissingAssessmentResult, Ref: ref, Detail: "referenced by " + analysis.File})
 			continue
 		}
 		if superseded[ref] {
-			gaps = append(gaps, EvaluationRunGap{Kind: GapSupersededAssessmentResultReference, Ref: ref, Detail: "referenced by " + analysis.File})
+			gaps = append(gaps, RunGap{Kind: GapSupersededAssessmentResultReference, Ref: ref, Detail: "referenced by " + analysis.File})
 		}
 	}
 	return gaps
 }
 
-func childAnalysisReferenceGaps(analysis AnalysisRecord, analyses map[string]AnalysisRecord) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func childAnalysisReferenceGaps(analysis AnalysisRecord, analyses map[string]AnalysisRecord) []RunGap {
+	var gaps []RunGap
 	for _, ref := range analysis.ChildAnalysisRecords {
 		if _, ok := analyses[ref]; !ok {
-			gaps = append(gaps, EvaluationRunGap{Kind: GapMissingAnalysis, Ref: ref, Detail: "referenced by " + analysis.File})
+			gaps = append(gaps, RunGap{Kind: GapMissingAnalysis, Ref: ref, Detail: "referenced by " + analysis.File})
 		}
 	}
 	return gaps
 }
 
-func rootAnalysisGaps(rootAnalyses int) []EvaluationRunGap {
+func rootAnalysisGaps(rootAnalyses int) []RunGap {
 	switch {
 	case rootAnalyses == 0:
-		return []EvaluationRunGap{{Kind: GapMissingRootAnalysis, Ref: "analysis/", Detail: "no analysis record has an empty areaPath for the in-scope root"}}
+		return []RunGap{{Kind: GapMissingRootAnalysis, Ref: "analysis/", Detail: "no analysis record has an empty areaPath for the in-scope root"}}
 	case rootAnalyses > 1:
-		return []EvaluationRunGap{{Kind: GapDuplicateRootAnalysis, Ref: "analysis/", Detail: "multiple analysis records have an empty areaPath"}}
+		return []RunGap{{Kind: GapDuplicateRootAnalysis, Ref: "analysis/", Detail: "multiple analysis records have an empty areaPath"}}
 	default:
 		return nil
 	}
 }
 
-func (r *EvaluationRun) assessmentResultRecommendationGaps(recommendations map[string]bool) []EvaluationRunGap {
-	var gaps []EvaluationRunGap
+func (r *Run) assessmentResultRecommendationGaps(recommendations map[string]bool) []RunGap {
+	var gaps []RunGap
 	for _, assessmentResult := range r.AssessmentResults {
 		for _, ref := range assessmentResult.Recommendations {
 			if recommendations[ref] || recommendations["recommendations/"+ref+".md"] {
 				continue
 			}
-			gaps = append(gaps, EvaluationRunGap{Kind: GapMissingRecommendation, Ref: ref, Detail: "referenced by " + assessmentResult.File})
+			gaps = append(gaps, RunGap{Kind: GapMissingRecommendation, Ref: ref, Detail: "referenced by " + assessmentResult.File})
 		}
 	}
 	return gaps
@@ -750,20 +760,20 @@ type knownAssessmentResult struct {
 	Record AssessmentResultRecord
 }
 
-func (r *EvaluationRun) assessmentResultSupersedingState() (map[string]bool, []EvaluationRunGap) {
+func (r *Run) assessmentResultSupersedingState() (map[string]bool, []RunGap) {
 	known := map[string]knownAssessmentResult{}
 	superseded := map[string]bool{}
-	var gaps []EvaluationRunGap
+	var gaps []RunGap
 	for _, rec := range r.AssessmentResults {
 		for _, ref := range rec.Supersedes {
 			ref = strings.TrimSpace(ref)
 			prior, ok := resolveKnownAssessmentResult(known, ref)
 			if !ok {
-				gaps = append(gaps, EvaluationRunGap{Kind: GapMissingSupersededAssessmentResult, Ref: ref, Detail: "referenced by " + rec.File})
+				gaps = append(gaps, RunGap{Kind: GapMissingSupersededAssessmentResult, Ref: ref, Detail: "referenced by " + rec.File})
 				continue
 			}
 			if assessmentResultIdentity(prior.Record) != assessmentResultIdentity(rec) {
-				gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidAssessmentResultSupersedes, Ref: ref, Detail: "referenced by " + rec.File + " with different areaPath or requirement"})
+				gaps = append(gaps, RunGap{Kind: GapInvalidAssessmentResultSupersedes, Ref: ref, Detail: "referenced by " + rec.File + " with different areaPath or requirement"})
 				continue
 			}
 			superseded[prior.File] = true
@@ -802,8 +812,8 @@ func recommendationRefExists(recs map[string]bool, ref string) bool {
 	return recs["recommendations/"+ref+".md"]
 }
 
-func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, analysisRecordsByIdentity map[string]string, supersededAssessmentResults map[string]bool) []EvaluationRunGap {
-	gaps := append([]EvaluationRunGap(nil), r.PlanCoverageGaps...)
+func (r *Run) plannedCoverageGaps(assessmentResultRecordsByIdentity, analysisRecordsByIdentity map[string]string, supersededAssessmentResults map[string]bool) []RunGap {
+	gaps := append([]RunGap(nil), r.PlanCoverageGaps...)
 	if r.PlannedCoverage == nil {
 		return gaps
 	}
@@ -820,7 +830,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 		if _, ok := assessmentResultRecordsByIdentity[key]; ok {
 			continue
 		}
-		gaps = append(gaps, EvaluationRunGap{
+		gaps = append(gaps, RunGap{
 			Kind:   GapMissingPlannedAssessmentResult,
 			Ref:    "plan.md",
 			Detail: describePlannedAssessmentResult(assessmentResult),
@@ -831,7 +841,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 		if _, ok := analysisRecordsByIdentity[key]; ok {
 			continue
 		}
-		gaps = append(gaps, EvaluationRunGap{
+		gaps = append(gaps, RunGap{
 			Kind:   GapMissingPlannedAnalysis,
 			Ref:    "plan.md",
 			Detail: describePlannedAnalysis(analysis),
@@ -845,7 +855,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 		if _, ok := plannedAssessmentResults[plannedAssessmentResultIdentity(planned)]; ok {
 			continue
 		}
-		gaps = append(gaps, EvaluationRunGap{
+		gaps = append(gaps, RunGap{
 			Kind:   GapUnexpectedAssessmentResult,
 			Ref:    assessmentResult.File,
 			Detail: describePlannedAssessmentResult(planned),
@@ -856,7 +866,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 		if _, ok := plannedAnalyses[plannedAnalysisIdentity(planned)]; ok {
 			continue
 		}
-		gaps = append(gaps, EvaluationRunGap{
+		gaps = append(gaps, RunGap{
 			Kind:   GapUnexpectedAnalysis,
 			Ref:    analysis.File,
 			Detail: describePlannedAnalysis(planned),
@@ -865,7 +875,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 	return gaps
 }
 
-func hasReviewGap(gaps []EvaluationRunGap) bool {
+func hasReviewGap(gaps []RunGap) bool {
 	for _, gap := range gaps {
 		if gap.Kind.RequiresReview() {
 			return true

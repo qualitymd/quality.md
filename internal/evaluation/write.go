@@ -18,7 +18,7 @@ import (
 
 // AddRecord writes one evaluation record and preserves the legacy single-path
 // receipt field when exactly one record is created.
-func AddRecord(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
+func AddRecord(kind RecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
 	result, err := WriteRecords(kind, runPath, raw)
 	if err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ func AddRecord(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRec
 }
 
 // WriteRecords writes one or more evaluation records from a JSON payload.
-func WriteRecords(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
+func WriteRecords(kind RecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
 	runAbs, err := verifyRun(runPath)
 	if err != nil {
 		return nil, err
@@ -69,6 +69,10 @@ func DecodeSingleJSON(raw []byte, dst any) error {
 	return nil
 }
 
+// DecodeJSONList decodes the input into a slice of T. It accepts either a
+// single JSON object (returned as a one-element slice) or a JSON array. Decoding
+// is strict: unknown fields and trailing documents are rejected. Empty or
+// otherwise invalid input returns a usage error.
 func DecodeJSONList[T any](raw []byte) ([]T, error) {
 	trimmed := bytes.TrimSpace(raw)
 	if len(trimmed) == 0 {

@@ -182,9 +182,6 @@ func codeFor(err error) int {
 	if errors.As(err, &coded) {
 		return coded.code
 	}
-	if isUsageError(err) {
-		return ExitUsage
-	}
 	return ExitInternal
 }
 
@@ -213,18 +210,9 @@ func silentProblems(err error) error {
 	return &codedError{code: ExitProblems, silent: true, err: err}
 }
 
-func isUsageError(err error) bool {
-	s := err.Error()
-	for _, prefix := range []string{
-		"flag needs an argument:",
-		"unknown flag:",
-		"unknown shorthand flag:",
-		"unknown command",
-		"invalid argument",
-	} {
-		if strings.HasPrefix(s, prefix) {
-			return true
-		}
-	}
-	return false
+// silentInternal wraps err as an internal failure whose rendering the caller has
+// already handled (e.g. an emitted JSON error receipt), so the top-level handler
+// does not render it a second time. The exit code stays ExitInternal.
+func silentInternal(err error) error {
+	return &codedError{code: ExitInternal, silent: true, err: err}
 }

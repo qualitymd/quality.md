@@ -14,10 +14,10 @@ func TestSpecificationSchemaSnippetsMatchDeclaration(t *testing.T) {
 		heading string
 		node    Node
 	}{
-		{"Model", Model},
-		{"Area", Area},
-		{"Factor", Factor},
-		{"Requirement", Requirement},
+		{heading: "Model", node: Model},
+		{heading: "Area", node: Area},
+		{heading: "Factor", node: Factor},
+		{heading: "Requirement", node: Requirement},
 	} {
 		t.Run(tc.heading, func(t *testing.T) {
 			got := parseTopLevelProperties(firstYAMLBlock(t, spec, "#### "+tc.heading))

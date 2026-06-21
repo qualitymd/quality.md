@@ -34,8 +34,8 @@ type Options struct {
 	Path string
 }
 
-// ProjectStatusSnapshot is the JSON contract emitted by qualitymd status.
-type ProjectStatusSnapshot struct {
+// ProjectSnapshot is the JSON contract emitted by qualitymd status.
+type ProjectSnapshot struct {
 	SchemaVersion int               `json:"schemaVersion"`
 	Path          string            `json:"path"`
 	Readiness     Readiness         `json:"readiness"`
@@ -98,22 +98,22 @@ type EvaluationSummary struct {
 
 // EvaluationRunSummary summarizes one evaluation run in status output.
 type EvaluationRunSummary struct {
-	Path                  string                            `json:"path"`
-	Reportable            bool                              `json:"reportable"`
-	Stale                 bool                              `json:"stale"`
-	Counts                evaluation.EvaluationRecordCounts `json:"counts"`
-	Gaps                  int                               `json:"gaps"`
-	ActiveRecommendations int                               `json:"activeRecommendations"`
-	Problem               string                            `json:"problem,omitempty"`
+	Path                  string                  `json:"path"`
+	Reportable            bool                    `json:"reportable"`
+	Stale                 bool                    `json:"stale"`
+	Counts                evaluation.RecordCounts `json:"counts"`
+	Gaps                  int                     `json:"gaps"`
+	ActiveRecommendations int                     `json:"activeRecommendations"`
+	Problem               string                  `json:"problem,omitempty"`
 }
 
 // Snapshot assembles a deterministic project-state snapshot.
-func Snapshot(opts Options) (*ProjectStatusSnapshot, error) {
+func Snapshot(opts Options) (*ProjectSnapshot, error) {
 	path := opts.Path
 	if path == "" {
 		path = "QUALITY.md"
 	}
-	result := &ProjectStatusSnapshot{
+	result := &ProjectSnapshot{
 		SchemaVersion: SchemaVersion,
 		Path:          path,
 		Evaluations: EvaluationHistory{
@@ -279,7 +279,7 @@ func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, 
 	if err != nil {
 		return history, err
 	}
-	evalDirAbs, evalDirRel, err := evaluation.EvaluationDir(repoRoot, "")
+	evalDirAbs, evalDirRel, err := evaluation.ResolveDir(repoRoot, "")
 	if err != nil {
 		return history, err
 	}
@@ -329,7 +329,7 @@ func inspectRun(runDir evaluation.RunDir, modelBytes []byte) EvaluationRunSummar
 		summary.Problem = err.Error()
 		return summary
 	}
-	runStatus := run.EvaluationRunStatus()
+	runStatus := run.Status()
 	summary.Reportable = runStatus.Reportable
 	summary.Counts = run.RecordCounts()
 	summary.Gaps = len(runStatus.Gaps)

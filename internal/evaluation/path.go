@@ -68,9 +68,9 @@ func ResolveRepoPath(repoRoot, value string) (string, string, error) {
 	return abs, filepath.ToSlash(rel), nil
 }
 
-// EvaluationDir resolves the configured evaluation directory from a repository
+// ResolveDir resolves the configured evaluation directory from a repository
 // root, returning both absolute and repository-relative paths.
-func EvaluationDir(repoRoot, override string) (string, string, error) {
+func ResolveDir(repoRoot, override string) (string, string, error) {
 	value, err := evaluationDirValue(repoRoot, override)
 	if err != nil {
 		return "", "", err

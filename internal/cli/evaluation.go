@@ -61,7 +61,7 @@ func newEvaluationCreateCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional scope slug for the run folder")
 	cmd.Flags().StringVar(&opts.Model, "model", "", "QUALITY.md file to snapshot")
-	cmd.Flags().StringVar(&opts.EvaluationDir, "evaluation-dir", "", "override the evaluation directory")
+	cmd.Flags().StringVar(&opts.ResolveDir, "evaluation-dir", "", "override the evaluation directory")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run creation receipt")
 	return cmd
 }
@@ -110,7 +110,7 @@ func newEvaluationStatusCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			status := run.EvaluationRunStatus()
+			status := run.Status()
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), status)
 			}
@@ -122,7 +122,7 @@ func newEvaluationStatusCmd() *cobra.Command {
 	return cmd
 }
 
-func newEvaluationRecordNounCmd(kind evaluation.EvaluationRecordKind, writeVerb string) *cobra.Command {
+func newEvaluationRecordNounCmd(kind evaluation.RecordKind, writeVerb string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   string(kind),
 		Short: "Work with " + string(kind) + " records",
@@ -133,7 +133,7 @@ func newEvaluationRecordNounCmd(kind evaluation.EvaluationRecordKind, writeVerb 
 	return cmd
 }
 
-func newEvaluationRecordWriteCmd(kind evaluation.EvaluationRecordKind, verb string) *cobra.Command {
+func newEvaluationRecordWriteCmd(kind evaluation.RecordKind, verb string) *cobra.Command {
 	var runFlags evaluationRunFlags
 	var file string
 	var jsonOutput bool
@@ -167,7 +167,7 @@ func newEvaluationRecordWriteCmd(kind evaluation.EvaluationRecordKind, verb stri
 	return cmd
 }
 
-func newEvaluationRecordListCmd(kind evaluation.EvaluationRecordKind) *cobra.Command {
+func newEvaluationRecordListCmd(kind evaluation.RecordKind) *cobra.Command {
 	var runFlags evaluationRunFlags
 	var jsonOutput bool
 	cmd := &cobra.Command{
@@ -299,7 +299,7 @@ func readPayload(cmd *cobra.Command, file string) ([]byte, error) {
 	return io.ReadAll(in)
 }
 
-func renderRunList(w io.Writer, result *evaluation.EvaluationRunList) error {
+func renderRunList(w io.Writer, result *evaluation.RunList) error {
 	if len(result.Runs) == 0 {
 		_, err := fmt.Fprintln(w, "No evaluation runs found.")
 		return err
@@ -312,7 +312,7 @@ func renderRunList(w io.Writer, result *evaluation.EvaluationRunList) error {
 	return nil
 }
 
-func renderRecordList(w io.Writer, result *evaluation.EvaluationRecordList) error {
+func renderRecordList(w io.Writer, result *evaluation.RecordList) error {
 	for _, record := range result.Records {
 		if _, err := fmt.Fprintln(w, record); err != nil {
 			return err
@@ -321,7 +321,7 @@ func renderRecordList(w io.Writer, result *evaluation.EvaluationRecordList) erro
 	return nil
 }
 
-func renderEvaluationStatus(cmd *cobra.Command, status evaluation.EvaluationRunStatus) error {
+func renderEvaluationStatus(cmd *cobra.Command, status evaluation.RunStatus) error {
 	out := cmd.OutOrStdout()
 	reportable := "false"
 	if status.Reportable {

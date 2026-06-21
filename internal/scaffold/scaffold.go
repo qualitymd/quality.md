@@ -11,9 +11,12 @@ import (
 //go:embed skeleton.md
 var skeleton []byte
 
-// Bytes returns the raw QUALITY.md scaffold.
+// Bytes returns a copy of the raw QUALITY.md scaffold. The returned slice is the
+// caller's to mutate; it does not alias the shared embedded data.
 func Bytes() []byte {
-	return skeleton
+	out := make([]byte, len(skeleton))
+	copy(out, skeleton)
+	return out
 }
 
 // Create writes the scaffold to path, refusing to overwrite unless force is set.

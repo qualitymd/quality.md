@@ -106,7 +106,7 @@ func TestSnapshotEvaluationHistoryStaleAndLatestRun(t *testing.T) {
 	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
-    assessment: EvaluationRun it.
+    assessment: Run it.
 factors:
   reliability:
     title: Reliability
@@ -122,7 +122,7 @@ factors:
 	writeFile(t, repo, validModel(`requirements:
   "starts well":
     factors: [reliability]
-    assessment: EvaluationRun it again.
+    assessment: Run it again.
 factors:
   reliability:
     title: Reliability
@@ -153,7 +153,7 @@ func TestSnapshotMalformedRunDoesNotHideLaterRuns(t *testing.T) {
 	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
-    assessment: EvaluationRun it.
+    assessment: Run it.
 factors:
   reliability:
     title: Reliability
@@ -184,7 +184,7 @@ func TestSnapshotIncompatibleRunRecordIsHistoryGap(t *testing.T) {
 	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
-    assessment: EvaluationRun it.
+    assessment: Run it.
 factors:
   reliability:
     title: Reliability
@@ -218,7 +218,7 @@ func TestSnapshotActiveRecommendationCountHonorsSuperseding(t *testing.T) {
 	path := writeFile(t, repo, validModel(`requirements:
   "starts":
     factors: [reliability]
-    assessment: EvaluationRun it.
+    assessment: Run it.
 factors:
   reliability:
     title: Reliability

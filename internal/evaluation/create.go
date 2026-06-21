@@ -10,7 +10,7 @@ import (
 )
 
 type config struct {
-	EvaluationDir string `yaml:"evaluationDir"`
+	ResolveDir string `yaml:"evaluationDir"`
 }
 
 const debugLogSeed = `# Evaluation debug log
@@ -36,7 +36,7 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if err != nil {
 		return nil, err
 	}
-	evalDirValue, err := evaluationDirValue(repoRoot, opts.EvaluationDir)
+	evalDirValue, err := evaluationDirValue(repoRoot, opts.ResolveDir)
 	if err != nil {
 		return nil, err
 	}
@@ -125,10 +125,10 @@ func evaluationDirValue(repoRoot, override string) (string, error) {
 	if err := yaml.Unmarshal(raw, &cfg); err != nil {
 		return "", fmt.Errorf("parsing .quality/config.yaml: %w", err)
 	}
-	if cfg.EvaluationDir == "" {
+	if cfg.ResolveDir == "" {
 		return "quality/evaluations", nil
 	}
-	return cfg.EvaluationDir, nil
+	return cfg.ResolveDir, nil
 }
 
 func modelSnapshot(repoRoot string, opts Options) ([]byte, error) {

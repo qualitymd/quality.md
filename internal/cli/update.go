@@ -196,7 +196,7 @@ func applyUpdate(ctx context.Context, result *updateResult, newerButNotReady boo
 	return nil
 }
 
-func renderUpdateResult(w interface{ Write([]byte) (int, error) }, result updateResult, checkOnly bool) error {
+func renderUpdateResult(w io.Writer, result updateResult, checkOnly bool) error {
 	if _, err := fmt.Fprintf(w, "Current version: %s\nLatest version: %s\nLatest version ready: %t\nInstall method: %s\nUpdate available: %t\n",
 		result.CurrentVersion, emptyDisplay(result.LatestVersion), result.LatestVersionReady, result.InstallMethod, result.UpdateAvailable); err != nil {
 		return err
