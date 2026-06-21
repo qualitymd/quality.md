@@ -41,9 +41,17 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 	}
 
 	raw := string(Bytes())
-	for _, heading := range []string{"# <the system, component, or artifact this model is about>", "## Overview", "## Scope", "## Needs", "## Risks", "## Known gaps"} {
+	for _, heading := range []string{"# <the system, component, or artifact this model is about>", "## Overview", "## Scope", "## Needs", "## Risks"} {
 		if !strings.Contains(raw, heading) {
 			t.Fatalf("skeleton is missing %q", heading)
+		}
+	}
+	if strings.Contains(raw, "## Known gaps") {
+		t.Fatal("skeleton still has a standalone \"## Known gaps\" section")
+	}
+	for _, marker := range []string{"*Unknowns*", "*Open questions*", "*Reviewed —"} {
+		if !strings.Contains(raw, marker) {
+			t.Fatalf("skeleton is missing the %q convention marker", marker)
 		}
 	}
 }

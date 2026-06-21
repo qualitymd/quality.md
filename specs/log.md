@@ -2,6 +2,17 @@
 
 ## 2026-06-20
 
+- **Revision**: Replaced the standalone Known gaps body section with per-section
+  unknowns, open questions, and a human/agent review state line across the
+  [format spec](../SPECIFICATION.md), [`init`](cli/init.md),
+  the [authoring guide spec](skills/quality-skill/guides/authoring.md),
+  the [top-10 checks spec](skills/quality-skill/guides/top-10-quality-md-checks.md),
+  and the [`/quality` skill spec](skills/quality-skill/quality-skill.md). The
+  recommended body sections are now Overview, Scope, Needs, and Risks; each
+  records its own unknowns (broad uncertainty) and open questions (specific,
+  one-answer), distinct from a `not assessed` result. Per
+  [0044](../changes/0044-section-unknowns-open-questions.md).
+
 - **Revision**: Updated the [Evaluation records](evaluation-records.md),
   [`evaluation list`](cli/evaluation-list.md),
   [`evaluation status`](cli/evaluation-status.md),

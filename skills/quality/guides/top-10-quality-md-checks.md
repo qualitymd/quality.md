@@ -44,15 +44,15 @@ valid with no history, valid with history, or needs evaluation reconciliation.
 ### 2. Body Context
 
 Inspect whether the Markdown body gives enough context to build and evaluate the
-model: Overview, Scope, Needs, Risks, and Known gaps should be present and
-substantive.
+model: Overview, Scope, Needs, and Risks should be present and substantive, each
+closing with its own unknowns and open questions.
 
 - Finding when body sections are empty, placeholder-like, or generic in a starter
   model: route to getting-started. Use the authoring guide as the quality
   reference for what the body should accomplish.
-- Finding when Known gaps omits known unknowns while the rest of the body leaves
-  unresolved questions: route to getting-started for first-run process or
-  authoring for best-practice guidance.
+- Finding when a section omits its unknowns or open questions while the rest of
+  the body leaves unresolved questions: route to getting-started for first-run
+  process or authoring for best-practice guidance.
 
 ### 3. Rating Scale Fit
 

@@ -254,6 +254,11 @@ The format spec is the contract for every reader, author, implementation, and
 file. It carries the most detailed factors: Clarity, Consistency, Verifiability,
 Extensibility, and Usability.
 
+*Unknowns* — the BCP 14 references (`docs/reference/rfc2119.md` and
+`docs/reference/rfc8174.md`) are not yet cited as reference standards for
+requirements that depend on normative vocabulary.
+*Open questions* — none.
+
 ### readme
 
 The README is the project's front door. Approachability is scoped here because
@@ -266,12 +271,7 @@ quality depends on satisfying the binding CLI functional specs while following
 the CLI design guide's expectations for usable, scriptable, consistent, and
 deterministic command behavior.
 
-## Known gaps
-
-- The BCP 14 references (`docs/reference/rfc2119.md` and
-  `docs/reference/rfc8174.md`) are not yet cited as reference standards for
-  requirements that depend on normative vocabulary. They should inform
-  requirements that assess sparse, correct use of requirement-level keywords,
-  local adaptation, and citation/provenance.
+*Unknowns* — none known.
+*Open questions* — none.
 
 [triple-debt]: https://arxiv.org/abs/2603.22106 "Margaret-Anne Storey, The Triple Debt of Software Development (arXiv:2603.22106)"

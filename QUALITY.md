@@ -283,6 +283,11 @@ purpose first, backed by conformance where the project defines a normative
 contract: the format specification, skill functional spec, CLI specs, and design
 guides are the sources of truth for the artifacts they govern.
 
+*Unknowns* — none known.
+*Open questions* — none.
+
+*Agent-reviewed — Claude, 2026-06.*
+
 ## Scope
 
 The deliverables are modeled as target nodes: `format-spec`, `readme`,
@@ -312,6 +317,13 @@ contained.
 Out of scope by design: dependencies the project does not own, including the Go
 toolchain, Cobra/Fang, Agent Skills installers, and release tooling.
 
+*Unknowns* — none known.
+*Open questions* — whether to encode per-requirement rating overrides for the
+most important safety and conformance requirements, given the model's stated
+worst-of bias and veto behavior.
+
+*Agent-reviewed — Claude, 2026-06.*
+
 ## Needs
 
 - Software development teams can hold the line against the three debts that
@@ -326,8 +338,8 @@ toolchain, Cobra/Fang, Agent Skills installers, and release tooling.
 - Users can manage quality through their coding agent and the `/quality` skill
   without learning the CLI first.
 - Authors can improve the Markdown body manually or with thoughtful AI
-  assistance because it carries the model's purpose, scope, needs, risks, and
-  known gaps.
+  assistance because it carries the model's purpose, scope, needs, risks, and the
+  unknowns and open questions behind them.
 - Coding agents can discover the model from `AGENTS.md` guidance and evaluate a
   subject from the model alone.
 - The `/quality` skill can safely set up, inspect, evaluate, improve, and
@@ -339,6 +351,11 @@ toolchain, Cobra/Fang, Agent Skills installers, and release tooling.
   errors when they need the support tooling directly.
 - Agents, CI, scripts, and the `/quality` skill can drive the CLI
   deterministically without prompts or polluted streams.
+
+*Unknowns* — none known.
+*Open questions* — none.
+
+*Agent-reviewed — Claude, 2026-06.*
 
 ## Risks
 
@@ -352,6 +369,11 @@ surface. A CLI that is inconsistent, noisy on the wrong stream, interactive by
 surprise, or non-deterministic undermines the automation role the project
 depends on.
 
+*Unknowns* — none known.
+*Open questions* — none.
+
+*Agent-reviewed — Claude, 2026-06.*
+
 ## Targets and factors
 
 ### format-spec
@@ -359,6 +381,11 @@ depends on.
 The format spec is the contract for every reader, author, implementation, and
 file. It carries the most detailed factors: Clarity, Consistency, Verifiability,
 Extensibility, and Usability.
+
+*Unknowns* — the BCP 14 references (`docs/reference/rfc2119.md` and
+`docs/reference/rfc8174.md`) are not yet cited as reference standards for
+requirements that depend on normative vocabulary.
+*Open questions* — none.
 
 ### readme
 
@@ -368,12 +395,21 @@ the agent-first path clear: install the skill, install the CLI support tooling,
 invoke `/quality`, and treat direct edits to `QUALITY.md` as a useful companion
 workflow.
 
+*Unknowns* — the README/AGENTS agent-first positioning is represented in this
+model, but the readme requirements have not yet been evaluated against the
+current artifacts.
+*Open questions* — none.
+
 ### quality-skill
 
 The `/quality` skill is the primary user experience for setup, evaluation,
 improvement, and upgrade guidance. Its quality depends on grounded judgment,
 safe mutation gates, correct CLI delegation, and lifecycle guidance that keeps
 status, history, recommendations, and next actions visible.
+
+*Unknowns* — none known.
+*Open questions* — whether the skill requirements need sharper per-level criteria
+once the first evaluation distinguishes adjacent ratings.
 
 ### cli
 
@@ -384,20 +420,7 @@ scriptable, consistent, and deterministic command behavior. The CLI should be
 excellent at validation, status, version checks, scaffolding, and evaluation
 records without becoming the default workflow users must learn first.
 
-## Known gaps
-
-- The README and AGENTS agent-first positioning is now represented in this model,
-  but the target requirements have not yet been evaluated against the current
-  artifacts.
-- The `/quality` skill target is new; its requirements may need sharper
-  per-level criteria after the first evaluation distinguishes adjacent ratings.
-- The model states a worst-of bias and veto behavior for contract failures, but
-  it does not yet encode per-requirement rating overrides for the most important
-  safety and conformance requirements.
-- The BCP 14 references (`docs/reference/rfc2119.md` and
-  `docs/reference/rfc8174.md`) are not yet cited as reference standards for
-  requirements that depend on normative vocabulary. They should inform
-  requirements that assess sparse, correct use of requirement-level keywords,
-  local adaptation, and citation/provenance.
+*Unknowns* — none known.
+*Open questions* — none.
 
 [triple-debt]: https://arxiv.org/abs/2603.22106 "Margaret-Anne Storey, The Triple Debt of Software Development (arXiv:2603.22106)"

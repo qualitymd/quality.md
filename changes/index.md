@@ -49,6 +49,9 @@ edit.
 - [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md) -
   In-Review; makes evaluation-history readers tolerant of old, malformed, partial,
   or hand-edited run records while keeping current writers strict.
+- [0044 - Section unknowns and open questions](0044-section-unknowns-open-questions.md) -
+  In-Review; replaces the standalone Known gaps body section with per-section
+  unknowns, open questions, and a human/agent review state line.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

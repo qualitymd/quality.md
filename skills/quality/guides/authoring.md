@@ -87,7 +87,7 @@ shares with Target.
   Requirements are easier to write once "unacceptable", "minimum", "target", and
   "outstanding" mean something for this subject.*
 - **Do** derive Factors and Requirements from the body context. *Factors and
-  Requirements should express the subject's needs, risks, scope, and known gaps,
+  Requirements should express the subject's needs, risks, scope, and unknowns,
   not lead them.*
 - **Do** trace at least one important concern from body to model before expanding
   the tree. *A useful trace reads like: a Need names the outcome, a Risk names
@@ -128,13 +128,79 @@ why these factors, why these requirements, and what matters most.
 The body is optional and fixes no required sections; you may rename, reorder, or
 replace these. They're recommended starting points:
 
-| Section        | Desired outcome                                                                                                                                                       |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Overview**   | A reader can say what the subject is, who depends on it, and why its quality matters. This names the real entity, not just the repo or file where `QUALITY.md` lives. |
-| **Scope**      | A reader can tell what is included, what is excluded for now, and where the model boundary sits. Out-of-scope is not a deficiency.                                    |
-| **Needs**      | A reader can see the outcomes the subject must support and the users, operators, maintainers, or downstream systems those outcomes serve.                             |
-| **Risks**      | A reader can see the failures that would make the subject untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial Factors.  |
-| **Known gaps** | A reader can see current weaknesses, weak evidence, and known unknowns: missing context, unresolved questions, and evidence gaps not fully identified elsewhere.      |
+| Section      | Desired outcome                                                                                                                                                       |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Overview** | A reader can say what the subject is, who depends on it, and why its quality matters. This names the real entity, not just the repo or file where `QUALITY.md` lives. |
+| **Scope**    | A reader can tell what is included, what is excluded for now, and where the model boundary sits. Out-of-scope is not a deficiency.                                    |
+| **Needs**    | A reader can see the outcomes the subject must support and the users, operators, maintainers, or downstream systems those outcomes serve.                             |
+| **Risks**    | A reader can see the failures that would make the subject untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial Factors.  |
+
+### Shape of a body section
+
+Write each section — including ones you add — to a common shape, so the body
+reads consistently as it grows:
+
+1. **Purpose** — open with one line on why this section matters for *this*
+   subject, not in the abstract. *If the line would read the same for any
+   project, it isn't earning its place.*
+2. **Contents** — the substance, and only what helps interpret the model.
+3. **Unknowns & open questions** — captured for every section, scoped to what
+   that section covers. An **unknown** is a broad area of uncertainty within the
+   section's topic that may not resolve to a single answer; an **open question**
+   is sharper — a specific question about that section with a particular answer,
+   still unresolved. Both are context that feeds the model, not commentary on it.
+   *Write "none known" when there are none, so the absence reads as considered,
+   not skipped.*
+4. **State** — close with the review-provenance line.
+
+### Mark the state of a section
+
+Close each section with its unknowns, its open questions, and a state line. Both
+are scoped to what the section covers — context that feeds the model, not
+commentary on it. An **unknown** is a broad area of uncertainty within the
+section's topic that may not resolve to a single answer; an **open question** is
+sharper — a specific question about it that has a particular answer, still
+unresolved (see [Keep Scope, unknowns, open questions, and "not assessed"
+distinct](#keep-scope-unknowns-open-questions-and-not-assessed-distinct)).
+
+Because the body is largely agent-authored, the freshness signal worth trusting
+is not when a section last changed but when a person last stood behind it. The
+state line carries two reviews — the last human review (cite the person) and the
+last agent review (name the agent):
+
+```markdown
+## Risks
+
+A regional outage is the failure that would most erode trust: orders silently
+drop instead of failing over. Cost overrun is a distant second.
+
+*Unknowns* — failover under a full regional outage is untested.
+*Open questions* — should orders fail over to another region, or degrade in place?
+
+*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude, 2026-06.*
+```
+
+A section with nothing outstanding still says so:
+
+```markdown
+*Unknowns* — none known.
+*Open questions* — none.
+
+*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude, 2026-06.*
+```
+
+- **Do** capture `Unknowns` and `Open questions` for every section, writing "none
+  known" rather than omitting them. *On a high-leverage file, an explicit "none"
+  reads as considered; a blank reads as skipped.*
+- **Do** cite a named person in `reviewed`. *An anonymous review carries no
+  accountability; the name is what makes it a trust signal.*
+- **Do** advance `reviewed` only when that person actually read and endorsed the
+  section — never for an agent or mechanical edit.
+- **Do** read `agent-reviewed` newer than `reviewed` as the warning state: the
+  section has agent changes not yet human-endorsed.
+- **Do** treat a missing `reviewed` as **unreviewed** — agent-touched, not yet
+  vetted. *Absence is honest; never backfill a name and date a person didn't
+  earn.*
 
 ### Working with the body
 
@@ -177,23 +243,28 @@ from spec.
   operators, maintainers, downstream systems). *A quality no named stakeholder
   would miss is rarely worth modeling.*
 
-#### Keep Scope, Known gaps, and "not assessed" distinct
+#### Keep Scope, unknowns, open questions, and "not assessed" distinct
 
-- **Do** use **Scope** for concerns outside the model's remit, and **Known gaps**
-  for in-scope concerns you've deliberately deferred or cannot yet define.
-- **Do** record known unknowns as **Known gaps** when missing context, unresolved
-  questions, or weak evidence prevented the rest of the body from being fully
-  identified. *This keeps uncertainty visible without pretending it has already
-  been evaluated.*
-- **Do** record genuinely in-scope-but-deferred concerns as **Known gaps**. *A
-  declared gap is clearer than a surprise not-assessed result.*
-- **Don't** confuse **Known gaps** (your standing declaration) with a **not
+- **Do** use **Scope** for concerns outside the model's remit, and a section's
+  **Unknowns** for in-scope concerns you've deliberately deferred or cannot yet
+  define.
+- **Do** record known unknowns under the **Unknowns** of the section they bear
+  on, when missing context or weak evidence prevented that part of the body from
+  being fully identified. *This keeps uncertainty visible without pretending it
+  has already been evaluated.*
+- **Consider** keeping an **open question** distinct from an unknown: an unknown
+  is a broad area of uncertainty within the section's topic that may not resolve
+  to a single answer; an open question is a specific question about that section
+  with one particular answer, still unresolved. Both are input to the model, not
+  statements about how the model is built. *Note each in the section it bears on
+  — an open question is a standing prompt for the next review.*
+- **Don't** confuse a declared unknown (your standing declaration) with a **not
   assessed** result (an evaluator's per-run finding that evidence was missing).
 - **Do** record low *confidence* in an assessment, not only its absence. *A
   requirement rated `target` on one stale benchmark or a single reviewer differs
-  from one rated on sustained evidence; note that fragility in Known gaps. "Rated
-  but barely trusted" is neither "not assessed" nor "no gap," and it is often
-  where the next evaluation should look first.*
+  from one rated on sustained evidence; note that fragility alongside the concern
+  it qualifies. "Rated but barely trusted" is neither "not assessed" nor "no
+  gap," and it is often where the next evaluation should look first.*
 
 ---
 
@@ -448,7 +519,8 @@ different targets are distinct.
   assessing.*
 - **Do** reconcile major Needs and Risks back to Factors after drafting them.
   *If an important concern has no Factor, either add the Factor, mark the concern
-  out of scope, or record the unresolved concern in Known gaps.*
+  out of scope, or note the unresolved concern as an unknown in the relevant
+  body section.*
 - **Do** justify each Factor by something concrete about *this* subject — who
   depends on it, what it is for, where it runs — not by its presence on a general
   list. *A characteristic with no user, no failure mode, and no decision riding on
@@ -555,7 +627,7 @@ something inspectable is the core authoring move.
 - **Do** write requirements specific enough that a single result stands on its
   own. *A vague requirement produces a vague rating.*
 - **Do** write Requirements that make the body context assessable. *A Requirement
-  should turn an important need, risk, or known gap into an expectation an
+  should turn an important need, risk, or noted unknown into an expectation an
   evaluator can inspect.*
 - **Do**, for behavioral qualities (reliability, recoverability, security under
   attack), phrase the statement around the *triggering condition and operating
@@ -569,10 +641,11 @@ something inspectable is the core authoring move.
   to the claim. *A latency claim needs runtime telemetry; a structure claim needs
   the source. If the only available evidence cannot address the claim, the
   requirement returns "not assessed" no matter how well written — narrow it to what
-  the evidence supports, or record the gap in Known gaps.*
+  the evidence supports, or note the gap as an unknown in the relevant section.*
 - **Do** apply the discard test: if a requirement were deleted, would any decision
-  about this subject change? *If not, it is ritual — drop it or move it to Known
-  gaps. Requirements imported to "be thorough" inflate the model and dilute the
+  about this subject change? *If not, it is ritual — drop it or note it as an
+  unknown in the relevant section. Requirements imported to "be thorough" inflate
+  the model and dilute the
   ratings that drive choices.*
 
 #### Let risk decide where requirements go deep
@@ -580,7 +653,7 @@ something inspectable is the core authoring move.
 - **Do** spend requirement detail where risk exposure (likelihood × impact) is
   highest — the failure modes named in body Risks. *A high-risk concern deserves a
   sharply bounded requirement with measured criteria; a low-risk one can stay
-  coarse or live in Known gaps.*
+  coarse or be noted as an unknown.*
 - **Avoid** spreading equal effort across all requirements. *Uniform depth spends
   scarce judgment on concerns that will not change a decision.*
 
@@ -693,14 +766,15 @@ Individual requirements can each be sound while the set as a whole has holes,
 conflicts, or duplicates. Run a closing pass over the set:
 
 - **Do** check **completeness**: every Need and Risk the body raises is covered by
-  a requirement, marked out of Scope, or recorded in Known gaps.
+  a requirement, marked out of Scope, or noted as an unknown in the relevant
+  section.
 - **Do** check **consistency**: no two requirements make conflicting claims about
   the same source, and the same term or unit means the same thing across
   statements and criteria.
 - **Avoid** **redundancy**: two statements that would always rate together against
   the same source are one requirement. *(Same test as for splitting — could their
   results legitimately diverge?)*
-- **Do** move unresolved holes to Known gaps rather than shipping a vague,
+- **Do** note unresolved holes as unknowns rather than shipping a vague,
   unratable requirement to stand in for them.
 
 ## When to update QUALITY.md

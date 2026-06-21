@@ -411,9 +411,10 @@ target file is absent, then run [`qualitymd lint`](../../cli/lint.md). It
 source-driven authoring judgment. After a valid skeleton, `setup` **MUST** read
 the [authoring guide](guides/authoring.md) and
 [getting-started guide](guides/getting-started.md) and begin guided first
-population in the same run — drafting the body's Overview, Scope, Needs, Risks,
-and Known gaps and proposing project-specific Factors and Requirements to replace
-the placeholders — rather than stopping at naming that next step. Follow-on
+population in the same run — drafting the body's Overview, Scope, Needs, and
+Risks with each section's unknowns and open questions, and proposing
+project-specific Factors and Requirements to replace the placeholders — rather
+than stopping at naming that next step. Follow-on
 routing belongs to [`wizard`](#wizard).
 
 ### Update

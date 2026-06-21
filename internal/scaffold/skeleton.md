@@ -85,16 +85,34 @@ The frontmatter above fixes *what* is assessed and *how* it is rated. This body
 explains *why* — the context a reader needs to trust the model, and an evaluator
 needs to weigh it. Fill in each section and delete these hints as you go.
 
+Close each section with its unknowns, its open questions, and a state line. An
+unknown is a broad area of uncertainty about that section's topic that may not
+resolve to a single answer; an open question is a specific question with one
+particular answer, still unresolved. Write "none known" rather than leaving
+either out. The state line records who last stood behind the section: `Reviewed`
+names the person who endorsed it, `agent-reviewed` the last agent pass — advance
+`Reviewed` only when a person actually reviews it.
+
 ## Overview
 
 What is this, who relies on it, and what does "good" look like for them? Quality
 is value to the people who depend on the thing, so name them and the value they
 expect.
 
+*Unknowns* — <broad uncertainties about the subject, or "none known">
+*Open questions* — <specific unresolved questions, or "none">
+
+*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
+
 ## Scope
 
 Draw the boundary: what this model covers, and what it deliberately leaves out.
 What is left out is an exclusion by design, not a failing.
+
+*Unknowns* — <broad uncertainties about the boundary, or "none known">
+*Open questions* — <specific unresolved questions, or "none">
+
+*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
 
 ## Needs
 
@@ -102,12 +120,17 @@ The outcomes your stakeholders are counting on. Each requirement above should
 answer to a need here — this is what tells an evaluator how much each one
 matters.
 
+*Unknowns* — <broad uncertainties about the needs, or "none known">
+*Open questions* — <specific unresolved questions, or "none">
+
+*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
+
 ## Risks
 
 What goes wrong, and for whom, when a need goes unmet? Naming the worst outcomes
 is what keeps a rating meaningful rather than mechanical.
 
-## Known gaps
+*Unknowns* — <broad uncertainties about the risks, or "none known">
+*Open questions* — <specific unresolved questions, or "none">
 
-Quality concerns that are in scope but deliberately set aside for now, each with
-a brief reason. A stated gap is more useful than a silent one.
+*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*

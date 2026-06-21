@@ -63,8 +63,9 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   than a filled-in example.
 - The Markdown body **MUST** include the
   [recommended body sections](../../SPECIFICATION.md#markdown-body) — Overview,
-  Scope, Needs, Risks, and Known gaps — as headed stubs, each with a brief prompt
-  of what it captures.
+  Scope, Needs, and Risks — as headed stubs, each with a brief prompt of what it
+  captures and a place for the section's unknowns, open questions, and review
+  state line.
 - The body should open with a top-level heading naming the subject, matching the
   scaffolded model `title`.
 

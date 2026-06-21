@@ -218,6 +218,7 @@ investigation. A spoofed or unsigned webhook can make a merchant act on money
 that never moved; a silently dropped notification leaves the merchant's view
 stale.
 
-## Known gaps
+*Unknowns* — sustained peak-load behavior is in scope but not yet modeled.
+*Open questions* — none.
 
-- Sustained peak-load behavior is in scope but not yet modeled.
+*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude, 2026-06.*

@@ -2,6 +2,26 @@
 
 ## 2026-06-20
 
+- **In-Review**: Completed
+  [0044 - Section unknowns and open questions](0044-section-unknowns-open-questions.md).
+  Retired the standalone Known gaps body section in favor of per-section unknowns,
+  open questions, and a human/agent review state line across the format spec,
+  authoring guide, `init` scaffold (and its test), skill setup/getting-started/
+  top-10 checks, the durable specs, the example fixtures, and the dogfood
+  `QUALITY.md` and active eval model. Verified `go test ./...` and `mise run check`.
+  Updated the [child index](0044-section-unknowns-open-questions/index.md) and
+  bundle [index](index.md).
+
+- **In-Progress**: Created and advanced
+  [0044 - Section unknowns and open questions](0044-section-unknowns-open-questions.md)
+  from `Draft` through `Design` (no design doc needed) to `In-Progress`. The case
+  replaces the standalone Known gaps body section with a common per-section shape,
+  per-section unknowns and open questions, and a human/agent review state line,
+  propagating across the format spec, authoring guide, scaffold, skill checks, and
+  dogfood instances. Added the [functional spec](0044-section-unknowns-open-questions/spec.md),
+  [child index](0044-section-unknowns-open-questions/index.md), and bundle
+  [index](index.md) entry.
+
 - **In-Review**: Completed implementation and durable artifact synchronization
   for [0043 - Evaluation history compatibility](0043-evaluation-history-compatibility.md).
   Evaluation history inspection now surfaces malformed, unsupported, and

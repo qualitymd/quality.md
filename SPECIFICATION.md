@@ -299,13 +299,9 @@ criterion override replaces only that level's criterion for that Requirement.
 The Markdown body documents context for interpreting the Model. The format does
 not require any body section names, ordering, or content.
 
-The body can document the subject, scope, stakeholder needs, risks, known gaps,
-or other rationale for the Model. Evaluators can use body content when judging
-importance, rationale, and advice.
-
-Known gaps documented in the body are author-declared model context. They are
-distinct from a `not assessed` Rating Result, which is produced during an
-Evaluation when evidence is absent or insufficient.
+The body can document the subject, scope, stakeholder needs, risks, unknowns,
+open questions, or other important context for the Model. Evaluators can use body content
+when judging importance, rationale, and advice.
 
 ## Evaluation Semantics
 

@@ -26,8 +26,9 @@ If lint fails, fix validity first. Do not build a model on an invalid skeleton.
 
 ### Fill the Body First
 
-Outcome: the Markdown body explains subject, scope, needs, risks, and known gaps
-well enough to justify the first quality model.
+Outcome: the Markdown body explains subject, scope, needs, and risks — with each
+section's unknowns and open questions — well enough to justify the first quality
+model.
 
 Use authoring guidance: [The Markdown body](authoring.md#the-markdown-body).
 
@@ -37,7 +38,7 @@ Check before moving on:
 - Scope names what is included, excluded, and where the model boundary sits.
 - Needs names the outcomes and stakeholders the model serves.
 - Risks name the important failure modes.
-- Known gaps names current weaknesses and known unknowns.
+- Each section records its own unknowns and open questions, or "none known".
 
 ### Confirm the Rating Scale
 
@@ -111,7 +112,8 @@ questions:
 - Does every Requirement name evidence or criteria that can be inspected?
 - Can an evaluator tell `target` from `minimum` for the important Requirements?
 - Does the body explain why these Factors and Requirements matter?
-- Are known gaps captured as context without turning them into ratings?
+- Are each section's unknowns and open questions captured as context without
+  turning them into ratings?
 
 If the answer is no, revise the model before running an evaluation.
 

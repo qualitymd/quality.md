@@ -25,7 +25,7 @@ doneCriterion: The reconciliation requirement becomes assessable and reaches at 
 The requirement could not be assessed: no reconciliation job output, log, or
 report was available, so there is no evidence to rate against the scale. This is
 an evaluator-determined *not assessed* outcome for this run — distinct from a
-standing **Known gap** the author has declared in the model body. The Ledger
+standing **unknown** the author has declared in the model body. The Ledger
 subtree's Correctness rating currently rests on the double-entry invariant alone
 and is noted as incomplete.
 

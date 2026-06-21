@@ -114,9 +114,9 @@ The checklist **MUST** contain ten checks:
 10. maintenance signals.
 
 The body-context check **MUST** inspect the recommended Markdown body sections:
-Overview, Scope, Needs, Risks, and Known gaps. The Known gaps guidance **MUST**
-include known unknowns: missing context, unresolved questions, and evidence gaps
-that prevented the rest of the body from being fully identified or defined.
+Overview, Scope, Needs, and Risks, along with each section's unknowns and open
+questions. Those unknowns and open questions **MUST** be treated as
+author-declared context, distinct from a `not assessed` evaluation result.
 
 The evaluation-readiness check **MUST** distinguish model usefulness from subject
 quality. A valid but vague model is a model-authoring finding, not evidence that

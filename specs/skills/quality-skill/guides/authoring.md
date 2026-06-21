@@ -57,7 +57,7 @@ duty below, which makes the format spec the authority whenever the two disagree.
 concepts (rating scale, targets, factors, requirements), the Markdown body, and
 durable authoring practices such as body-first model development, rating-scale
 fit, deriving Factors from Needs/Risks, writing assessable Requirements, and
-using Known gaps for known unknowns.
+recording each section's unknowns and open questions.
 
 **Non-goals:** the guide does **not** document the *evaluation* process (Define →
 Assess and Rate → Analyze → Advise → Report) beyond what bears on authoring; that
@@ -130,9 +130,24 @@ before expanding the model tree, because the body supplies the context for
 choosing the rating scale, Factors, Requirements, and scope.
 
 The guide **MUST** state desired outcomes for the recommended body sections:
-Overview, Scope, Needs, Risks, and Known gaps. Known gaps guidance **MUST**
-include known unknowns: missing context, unresolved questions, and evidence gaps
-that could not be fully identified or defined in the rest of the body.
+Overview, Scope, Needs, and Risks. The guide **MUST** teach a common section
+shape under which each section records its own unknowns (broad areas of
+uncertainty about the section's topic that may not resolve to a single answer)
+and open questions (specific questions with one particular answer, still
+unresolved), scoped to the section and distinct from a `not assessed` result, and
+**MUST** teach stating "none known" rather than omitting them.
+
+> Rationale: a single catch-all Known gaps section sat far from the content it
+> qualified and was skimmed past; uncertainty belongs with the section it
+> concerns. — 0044
+
+The guide **MUST** teach a per-section review state line that records the last
+human review (citing a named person) distinctly from the last agent review
+(naming the agent), and that the human review advances only when a person reads
+and endorses the section.
+
+> Rationale: the body is largely agent-authored, so the only freshness signal
+> worth trusting is when a person last stood behind the section. — 0044
 
 The guide **MUST** teach that the rating scale should be reviewed after the body
 and before writing Requirements, so the shared rating vocabulary fits the
