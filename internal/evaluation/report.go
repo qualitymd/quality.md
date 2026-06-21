@@ -12,6 +12,8 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
+// EvaluationReportDocument is the JSON report document derived from an
+// evaluation run.
 type EvaluationReportDocument struct {
 	SchemaVersion     int                       `json:"schemaVersion"`
 	Summary           ReportSummary             `json:"summary"`
@@ -27,8 +29,10 @@ type EvaluationReportDocument struct {
 	Recommendations   []RecommendationReference `json:"recommendations"`
 }
 
+// ReportJSON is the JSON report document contract.
 type ReportJSON = EvaluationReportDocument
 
+// ReportSummary captures the headline report metadata and rating.
 type ReportSummary struct {
 	Run             string          `json:"run,omitempty"`
 	RootArea        string          `json:"rootArea"`
@@ -38,6 +42,8 @@ type ReportSummary struct {
 	RatingResult    RatingResult    `json:"ratingResult"`
 }
 
+// ReportScope describes recorded in-scope, out-of-scope, and missing scope
+// metadata.
 type ReportScope struct {
 	Recorded    bool              `json:"recorded"`
 	Description string            `json:"description"`
@@ -47,11 +53,13 @@ type ReportScope struct {
 	NotRecorded []MissingMetadata `json:"notRecorded"`
 }
 
+// ReportEvidence names evidence documents used to derive a report.
 type ReportEvidence struct {
 	Kind string `json:"kind"`
 	Ref  string `json:"ref"`
 }
 
+// ReportNextStep summarizes the next recommended report action.
 type ReportNextStep struct {
 	Kind               ReportNextStepKind `json:"kind"`
 	Summary            string             `json:"summary"`
@@ -59,6 +67,7 @@ type ReportNextStep struct {
 	RecommendationPath string             `json:"recommendationPath,omitempty"`
 }
 
+// AreaRatingSummary summarizes rating state for one area.
 type AreaRatingSummary struct {
 	AreaPath              AreaPath         `json:"areaPath"`
 	LocalRating           LocalRatingState `json:"localRating"`
@@ -68,6 +77,7 @@ type AreaRatingSummary struct {
 	Note                  string           `json:"note,omitempty"`
 }
 
+// AreaEvaluationDetail contains the detailed report entry for one area.
 type AreaEvaluationDetail struct {
 	AreaPath                AreaPath             `json:"areaPath"`
 	LocalRating             LocalRatingState     `json:"localRating"`
@@ -79,6 +89,7 @@ type AreaEvaluationDetail struct {
 	Structural              bool                 `json:"structural"`
 }
 
+// AssessmentResultDigest summarizes an assessment result included in a report.
 type AssessmentResultDigest struct {
 	AssessmentResultRecord string               `json:"assessmentResultRecord"`
 	AreaPath               AreaPath             `json:"areaPath"`
@@ -89,6 +100,7 @@ type AssessmentResultDigest struct {
 	Supersedes             []string             `json:"supersedes,omitempty"`
 }
 
+// FindingDigest summarizes a finding for report display.
 type FindingDigest struct {
 	AssessmentResultRecord string          `json:"assessmentResultRecord"`
 	Locator                string          `json:"locator"`
@@ -97,6 +109,7 @@ type FindingDigest struct {
 	Summary                string          `json:"summary"`
 }
 
+// RecommendationReference summarizes a recommendation linked from a report.
 type RecommendationReference struct {
 	ID            string               `json:"id"`
 	Path          string               `json:"path"`
@@ -106,6 +119,7 @@ type RecommendationReference struct {
 	Supersedes    []string             `json:"supersedes,omitempty"`
 }
 
+// BuildReportReceipt is the JSON contract emitted after building report files.
 type BuildReportReceipt struct {
 	SchemaVersion   int              `json:"schemaVersion"`
 	Path            string           `json:"path"`
@@ -116,6 +130,7 @@ type BuildReportReceipt struct {
 	NextActions     []receipt.Action `json:"nextActions,omitempty"`
 }
 
+// GateReceipt is the JSON contract emitted by report gate checks.
 type GateReceipt struct {
 	SchemaVersion int          `json:"schemaVersion"`
 	Path          string       `json:"path"`
@@ -124,6 +139,7 @@ type GateReceipt struct {
 	Pass          bool         `json:"pass"`
 }
 
+// BuildReport renders report-summary.md, report.md, and report.json for a run.
 func BuildReport(path string) (*BuildReportReceipt, error) {
 	run, err := Inspect(path)
 	if err != nil {
@@ -1325,6 +1341,8 @@ func writeReportFile(path string, data []byte) error {
 	return os.WriteFile(path, data, 0o644)
 }
 
+// Gate reports whether a built report rating passes a threshold against the
+// given ordered rating scale.
 func Gate(result *BuildReportReceipt, scale []string, threshold string) (bool, error) {
 	if threshold == "" {
 		return true, nil
@@ -1351,6 +1369,7 @@ func Gate(result *BuildReportReceipt, scale []string, threshold string) (bool, e
 	return ratingIndex < thresholdIndex, nil
 }
 
+// GateReport loads a built report and evaluates it against a threshold.
 func GateReport(path, threshold string) (*GateReceipt, error) {
 	run, err := Inspect(path)
 	if err != nil {
@@ -1389,6 +1408,7 @@ func GateReport(path, threshold string) (*GateReceipt, error) {
 	}, nil
 }
 
+// ScaleLevels returns the ordered rating scale levels for a run.
 func ScaleLevels(path string) ([]string, error) {
 	run, err := Inspect(path)
 	if err != nil {

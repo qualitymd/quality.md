@@ -16,6 +16,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// AddRecord writes one evaluation record and preserves the legacy single-path
+// receipt field when exactly one record is created.
 func AddRecord(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
 	result, err := WriteRecords(kind, runPath, raw)
 	if err != nil {
@@ -27,6 +29,7 @@ func AddRecord(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRec
 	return result, nil
 }
 
+// WriteRecords writes one or more evaluation records from a JSON payload.
 func WriteRecords(kind EvaluationRecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
 	runAbs, err := verifyRun(runPath)
 	if err != nil {
@@ -49,6 +52,7 @@ func WriteRecords(kind EvaluationRecordKind, runPath string, raw []byte) (*Write
 	}
 }
 
+// DecodeSingleJSON decodes one strict JSON document into dst.
 func DecodeSingleJSON(raw []byte, dst any) error {
 	dec := json.NewDecoder(bytes.NewReader(raw))
 	dec.DisallowUnknownFields()

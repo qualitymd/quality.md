@@ -2,6 +2,16 @@
 
 ## 2026-06-21
 
+- **Creation**: Added [Go style](guides/go-style.md), a contributor guide for
+  judgment-based Go conventions that the deterministic check gate does not
+  enforce. Linked it from the [guide index](guides/index.md) and
+  [`AGENTS.md`](../AGENTS.md), clarified the Go source scope in
+  [Designing Go packages](guides/design-go-packages.md), and updated the dogfood
+  [`QUALITY.md`](../QUALITY.md) model to evaluate CLI maintainability against the
+  new guide.
+- **Revision**: Updated [Versioning](reference/versioning.md) to mirror the
+  `v0.7.1` `/quality` skill metadata while keeping the compatible
+  `qualitymd >=0.7.0 <0.8.0` range.
 - **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
   to mention the process-only `debug-log.md` included in evaluation runs.
 - **Revision**: Updated [Versioning](reference/versioning.md) to mirror the

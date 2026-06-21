@@ -15,8 +15,10 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
+// SchemaVersion is the current status snapshot schema version.
 const SchemaVersion = 1
 
+// Readiness identifies the current model/evaluation lifecycle state.
 type Readiness string
 
 const (
@@ -42,6 +44,7 @@ type ProjectStatusSnapshot struct {
 	NextActions   []receipt.Action  `json:"nextActions"`
 }
 
+// ModelStatus summarizes whether the model is present, valid, and evaluable.
 type ModelStatus struct {
 	Present        bool             `json:"present"`
 	Valid          bool             `json:"valid"`
@@ -50,11 +53,13 @@ type ModelStatus struct {
 	SourceCoverage []SourceCoverage `json:"sourceCoverage,omitempty"`
 }
 
+// LintStatus embeds lint summary and findings in status output.
 type LintStatus struct {
 	Summary  lint.Summary   `json:"summary"`
 	Findings []lint.Finding `json:"findings,omitempty"`
 }
 
+// ModelShape counts the model's structural elements.
 type ModelShape struct {
 	Areas        int `json:"areas"`
 	Factors      int `json:"factors"`
@@ -62,6 +67,7 @@ type ModelShape struct {
 	RatingLevels int `json:"ratingLevels"`
 }
 
+// SourceCoverage summarizes source declarations for one area.
 type SourceCoverage struct {
 	AreaPath     []string `json:"areaPath"`
 	Label        string   `json:"label"`
@@ -72,6 +78,7 @@ type SourceCoverage struct {
 	ChildAreas   int      `json:"childAreas"`
 }
 
+// EvaluationHistory summarizes discovered evaluation runs for the model.
 type EvaluationHistory struct {
 	Path    string                 `json:"path,omitempty"`
 	Runs    int                    `json:"runs"`
@@ -80,6 +87,7 @@ type EvaluationHistory struct {
 	Summary EvaluationSummary      `json:"summary"`
 }
 
+// EvaluationSummary aggregates evaluation history counts.
 type EvaluationSummary struct {
 	Reportable            int `json:"reportable"`
 	Incomplete            int `json:"incomplete"`
@@ -88,6 +96,7 @@ type EvaluationSummary struct {
 	Problems              int `json:"problems"`
 }
 
+// EvaluationRunSummary summarizes one evaluation run in status output.
 type EvaluationRunSummary struct {
 	Path                  string                            `json:"path"`
 	Reportable            bool                              `json:"reportable"`

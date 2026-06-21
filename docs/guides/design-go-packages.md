@@ -8,9 +8,10 @@ timestamp: 2026-06-17T00:00:00Z
 
 # Designing Go packages
 
-The `qualitymd` CLI is Go under `internal/`. This guide covers one recurring
-decision: **which package a type belongs in.** It exists because the easy answer
-— "wherever it's already imported" — is usually the wrong one.
+The `qualitymd` CLI is Go under `cmd/qualitymd/` and `internal/`. This guide
+covers one recurring decision: **which package a type belongs in.** It exists
+because the easy answer — "wherever it's already imported" — is usually the
+wrong one.
 
 ## Place a type by the concept it models
 

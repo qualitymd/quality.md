@@ -15,6 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// EvaluationRun is a loaded evaluation run folder and its decoded records.
 type EvaluationRun struct {
 	Path              string
 	AbsPath           string
@@ -31,18 +32,21 @@ type EvaluationRun struct {
 	recordCounts      EvaluationRecordCounts
 }
 
+// EvaluationRecordCounts counts the record files discovered in a run.
 type EvaluationRecordCounts struct {
 	AssessmentResults int `json:"assessmentResults"`
 	Analyses          int `json:"analyses"`
 	Recommendations   int `json:"recommendations"`
 }
 
+// EvaluationRunGap describes a compatibility or reportability gap in a run.
 type EvaluationRunGap struct {
 	Kind   EvaluationRunGapKind `json:"kind"`
 	Ref    string               `json:"ref"`
 	Detail string               `json:"detail"`
 }
 
+// EvaluationRunGapKind identifies a class of evaluation run gap.
 type EvaluationRunGapKind string
 
 const (
@@ -71,6 +75,7 @@ const (
 	GapIncompleteEvaluationRecord          EvaluationRunGapKind = "incomplete-evaluation-record"
 )
 
+// RequiresReview reports whether a gap requires human or agent reconciliation.
 func (k EvaluationRunGapKind) RequiresReview() bool {
 	switch k {
 	case GapDuplicateAssessmentResult,
@@ -96,6 +101,7 @@ func (k EvaluationRunGapKind) RequiresReview() bool {
 	}
 }
 
+// EvaluationRunStatus is the JSON contract emitted by evaluation status.
 type EvaluationRunStatus struct {
 	SchemaVersion int                    `json:"schemaVersion"`
 	Path          string                 `json:"path"`
@@ -105,10 +111,12 @@ type EvaluationRunStatus struct {
 	NextActions   []receipt.Action       `json:"nextActions"`
 }
 
+// Load reads a current-contract evaluation run and rejects incompatible records.
 func Load(path string) (*EvaluationRun, error) {
 	return load(path, false)
 }
 
+// Inspect reads an evaluation run in tolerant mode for history/status views.
 func Inspect(path string) (*EvaluationRun, error) {
 	return load(path, true)
 }

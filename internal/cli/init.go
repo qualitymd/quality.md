@@ -82,6 +82,7 @@ func newInitCmd() *cobra.Command {
 
 const initSchemaVersion = 1
 
+// InitReceipt is the JSON contract emitted by `qualitymd init --json`.
 type InitReceipt struct {
 	SchemaVersion int              `json:"schemaVersion"`
 	Path          string           `json:"path"`

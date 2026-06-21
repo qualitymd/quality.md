@@ -9,8 +9,10 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
+// SchemaVersion is the current evaluation record and receipt schema version.
 const SchemaVersion = 1
 
+// UsageError marks an evaluation error as invalid user input.
 type UsageError struct {
 	Err error
 }
@@ -22,6 +24,7 @@ func usagef(format string, args ...any) error {
 	return &UsageError{Err: fmt.Errorf(format, args...)}
 }
 
+// Options configures evaluation run creation.
 type Options struct {
 	RepoRoot      string
 	EvaluationDir string
@@ -29,12 +32,14 @@ type Options struct {
 	Model         string
 }
 
+// CreateRunReceipt is the JSON contract emitted after creating a run.
 type CreateRunReceipt struct {
 	Path        string           `json:"path"`
 	Number      int              `json:"-"`
 	NextActions []receipt.Action `json:"nextActions"`
 }
 
+// EvaluationRecordKind identifies an evaluation record family.
 type EvaluationRecordKind string
 
 const (
@@ -43,6 +48,7 @@ const (
 	KindRecommendation   EvaluationRecordKind = "recommendation"
 )
 
+// WriteRecordReceipt is the JSON contract emitted after writing records.
 type WriteRecordReceipt struct {
 	SchemaVersion int                  `json:"schemaVersion"`
 	Path          string               `json:"path,omitempty"`
@@ -52,22 +58,28 @@ type WriteRecordReceipt struct {
 	NextActions   []receipt.Action     `json:"nextActions,omitempty"`
 }
 
+// PlannedCoverage records the assessment and analysis records expected for a
+// run.
 type PlannedCoverage struct {
 	AssessmentResults []PlannedAssessmentResult `json:"assessmentResults" yaml:"assessmentResults"`
 	Analyses          []PlannedCoverageAnalysis `json:"analyses" yaml:"analyses"`
 }
 
+// PlannedAssessmentResult identifies one expected assessment result.
 type PlannedAssessmentResult struct {
 	AreaPath    AreaPath `json:"areaPath" yaml:"areaPath"`
 	Requirement string   `json:"requirement" yaml:"requirement"`
 }
 
+// PlannedCoverageAnalysis identifies one expected analysis record.
 type PlannedCoverageAnalysis struct {
 	AreaPath AreaPath `json:"areaPath" yaml:"areaPath"`
 }
 
+// AreaPath is a stable path from the root area to a nested area.
 type AreaPath []string
 
+// Clone returns a copy of the area path.
 func (p AreaPath) Clone() AreaPath {
 	if len(p) == 0 {
 		return AreaPath{}
@@ -75,14 +87,17 @@ func (p AreaPath) Clone() AreaPath {
 	return append(AreaPath(nil), p...)
 }
 
+// Elements returns the path elements as a string slice.
 func (p AreaPath) Elements() []string {
 	return []string(p)
 }
 
+// IdentityKey returns a stable string key for equality comparisons.
 func (p AreaPath) IdentityKey() string {
 	return strings.Join(p, "\x00")
 }
 
+// Display returns the human-facing path label.
 func (p AreaPath) Display() string {
 	if len(p) == 0 {
 		return "root"
@@ -90,8 +105,10 @@ func (p AreaPath) Display() string {
 	return strings.Join(p, "/")
 }
 
+// FactorPath is a stable path from an area's factor set to a nested factor.
 type FactorPath []string
 
+// Clone returns a copy of the factor path.
 func (p FactorPath) Clone() FactorPath {
 	if len(p) == 0 {
 		return FactorPath{}
@@ -99,10 +116,12 @@ func (p FactorPath) Clone() FactorPath {
 	return append(FactorPath(nil), p...)
 }
 
+// Elements returns the path elements as a string slice.
 func (p FactorPath) Elements() []string {
 	return []string(p)
 }
 
+// Display returns the human-facing path label.
 func (p FactorPath) Display() string {
 	if len(p) == 0 {
 		return "root"
@@ -110,11 +129,13 @@ func (p FactorPath) Display() string {
 	return strings.Join(p, "/")
 }
 
+// Evidence identifies supporting evidence for a finding.
 type Evidence struct {
 	Kind string `json:"kind"`
 	Ref  string `json:"ref"`
 }
 
+// Finding records one observation in an assessment result.
 type Finding struct {
 	Locator     string               `json:"locator"`
 	Observation string               `json:"observation"`
@@ -124,6 +145,7 @@ type Finding struct {
 	Attributes  map[string]any       `json:"attributes,omitempty"`
 }
 
+// FindingSeverityLevel identifies a finding severity.
 type FindingSeverityLevel string
 
 const (
@@ -134,11 +156,13 @@ const (
 	FindingSeverityInfo     FindingSeverityLevel = "info"
 )
 
+// FindingSeverity is the report-display form of a severity level.
 type FindingSeverity struct {
 	Level FindingSeverityLevel `json:"level"`
 	Title string               `json:"title"`
 }
 
+// Valid reports whether s is a canonical finding severity.
 func (s FindingSeverityLevel) Valid() bool {
 	switch s {
 	case FindingSeverityCritical, FindingSeverityHigh, FindingSeverityMedium, FindingSeverityLow, FindingSeverityInfo:
@@ -148,6 +172,7 @@ func (s FindingSeverityLevel) Valid() bool {
 	}
 }
 
+// Title returns the display title for a severity level.
 func (s FindingSeverityLevel) Title() string {
 	switch s {
 	case FindingSeverityCritical:
@@ -165,10 +190,12 @@ func (s FindingSeverityLevel) Title() string {
 	}
 }
 
+// IsRisk reports whether a severity represents a risk finding.
 func (s FindingSeverityLevel) IsRisk() bool {
 	return s.Valid() && s != FindingSeverityInfo
 }
 
+// Display returns the report-display form of a severity level.
 func (s FindingSeverityLevel) Display() FindingSeverity {
 	return FindingSeverity{Level: s, Title: s.Title()}
 }
@@ -177,6 +204,7 @@ func findingSeverityLevels() string {
 	return "critical, high, medium, low, or info"
 }
 
+// AssessmentResultInput is the user-authored payload for an assessment result.
 type AssessmentResultInput struct {
 	AreaPath        AreaPath     `json:"areaPath"`
 	Requirement     string       `json:"requirement"`
@@ -188,6 +216,7 @@ type AssessmentResultInput struct {
 	Supersedes      []string     `json:"supersedes,omitempty"`
 }
 
+// AssessmentResultRecord is a persisted assessment result record.
 type AssessmentResultRecord struct {
 	SchemaVersion   int          `json:"schemaVersion"`
 	AreaPath        AreaPath     `json:"areaPath"`
@@ -201,12 +230,14 @@ type AssessmentResultRecord struct {
 	File            string       `json:"-"`
 }
 
+// RatingResult records a rating verdict or not-assessed state and rationale.
 type RatingResult struct {
 	Kind      RatingResultKind `json:"kind"`
 	Level     string           `json:"level,omitempty"`
 	Rationale string           `json:"rationale"`
 }
 
+// RatingResultKind identifies the shape of a rating result.
 type RatingResultKind string
 
 const (
@@ -214,6 +245,7 @@ const (
 	RatingResultNotAssessed RatingResultKind = "not-assessed"
 )
 
+// Valid reports whether k is a canonical rating result kind.
 func (k RatingResultKind) Valid() bool {
 	switch k {
 	case RatingResultRated, RatingResultNotAssessed:
@@ -223,14 +255,17 @@ func (k RatingResultKind) Valid() bool {
 	}
 }
 
+// IsRated reports whether k represents a rated result.
 func (k RatingResultKind) IsRated() bool {
 	return k == RatingResultRated
 }
 
+// IsNotAssessed reports whether k represents a not-assessed result.
 func (k RatingResultKind) IsNotAssessed() bool {
 	return k == RatingResultNotAssessed
 }
 
+// LocalRatingKind identifies how an area's local rating should be interpreted.
 type LocalRatingKind string
 
 const (
@@ -239,6 +274,7 @@ const (
 	LocalRatingStructural  LocalRatingKind = "structural"
 )
 
+// LocalRatingState is the report-display form of an area's local rating state.
 type LocalRatingState struct {
 	Kind         LocalRatingKind `json:"kind"`
 	RatingResult *RatingResult   `json:"ratingResult,omitempty"`
@@ -256,6 +292,7 @@ func localRatingStateFromResult(result *RatingResult) LocalRatingState {
 	return LocalRatingState{Kind: LocalRatingRated, RatingResult: &clone, Title: "Rated"}
 }
 
+// RecordLifecycleState identifies whether a record is active or superseded.
 type RecordLifecycleState string
 
 const (
@@ -270,10 +307,12 @@ func lifecycleState(active bool) RecordLifecycleState {
 	return RecordLifecycleSuperseded
 }
 
+// Active reports whether s represents an active record.
 func (s RecordLifecycleState) Active() bool {
 	return s == RecordLifecycleActive
 }
 
+// ReportNextStepKind identifies the kind of next action a report recommends.
 type ReportNextStepKind string
 
 const (
@@ -281,6 +320,7 @@ const (
 	ReportNextStepNone           ReportNextStepKind = "none"
 )
 
+// EvaluationRigor identifies the rigor recorded for an evaluation run.
 type EvaluationRigor string
 
 const (
@@ -289,6 +329,7 @@ const (
 	EvaluationRigorDeep     EvaluationRigor = "deep"
 )
 
+// Valid reports whether r is a canonical evaluation rigor.
 func (r EvaluationRigor) Valid() bool {
 	switch r {
 	case EvaluationRigorQuick, EvaluationRigorStandard, EvaluationRigorDeep:
@@ -298,6 +339,7 @@ func (r EvaluationRigor) Valid() bool {
 	}
 }
 
+// Display returns the human-facing rigor label.
 func (r EvaluationRigor) Display() string {
 	if r == "" {
 		return "not recorded"
@@ -305,12 +347,14 @@ func (r EvaluationRigor) Display() string {
 	return strings.ToUpper(string(r[:1])) + string(r[1:])
 }
 
+// EvaluationLevel identifies the level at which an evaluation was performed.
 type EvaluationLevel string
 
 const (
 	EvaluationLevelModel EvaluationLevel = "model"
 )
 
+// Valid reports whether l is a canonical evaluation level.
 func (l EvaluationLevel) Valid() bool {
 	switch l {
 	case EvaluationLevelModel:
@@ -320,6 +364,7 @@ func (l EvaluationLevel) Valid() bool {
 	}
 }
 
+// MissingMetadataKind identifies scope metadata absent from a report.
 type MissingMetadataKind string
 
 const (
@@ -328,6 +373,7 @@ const (
 	MissingMetadataUnknown    MissingMetadataKind = "unknown"
 )
 
+// MissingMetadata describes report metadata that was not recorded.
 type MissingMetadata struct {
 	Field MissingMetadataKind `json:"field"`
 	Title string              `json:"title"`
@@ -344,17 +390,20 @@ func missingMetadata(kind MissingMetadataKind) MissingMetadata {
 	}
 }
 
+// FactorRatingResult records the rating result for one factor path.
 type FactorRatingResult struct {
 	FactorPath   FactorPath   `json:"factorPath"`
 	RatingResult RatingResult `json:"ratingResult"`
 }
 
+// RatingConstraint records the assessment-level reason constraining a rating.
 type RatingConstraint struct {
 	AssessmentResultRecord string  `json:"assessmentResultRecord,omitempty"`
 	Requirement            string  `json:"requirement,omitempty"`
 	Level                  *string `json:"level,omitempty"`
 }
 
+// AnalysisInput is the user-authored payload for an analysis record.
 type AnalysisInput struct {
 	AreaPath                AreaPath             `json:"areaPath"`
 	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
@@ -365,6 +414,7 @@ type AnalysisInput struct {
 	RatingConstraints       []RatingConstraint   `json:"ratingConstraints,omitempty"`
 }
 
+// AnalysisRecord is a persisted analysis record.
 type AnalysisRecord struct {
 	SchemaVersion           int                  `json:"schemaVersion"`
 	AreaPath                AreaPath             `json:"areaPath"`
@@ -377,6 +427,7 @@ type AnalysisRecord struct {
 	File                    string               `json:"-"`
 }
 
+// RecommendationInput is the user-authored payload for a recommendation record.
 type RecommendationInput struct {
 	Title                   string   `json:"title"`
 	Gap                     string   `json:"gap"`
@@ -388,6 +439,7 @@ type RecommendationInput struct {
 	Supersedes              []string `json:"supersedes,omitempty"`
 }
 
+// RecommendationRecord is a persisted recommendation record.
 type RecommendationRecord struct {
 	SchemaVersion           int      `json:"schemaVersion" yaml:"schemaVersion"`
 	Title                   string   `json:"title" yaml:"title"`

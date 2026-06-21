@@ -15,6 +15,7 @@ var (
 	recordNameRE = regexp.MustCompile(`^(\d+)-`)
 )
 
+// FindRepoRoot walks upward from start until it finds a Git repository root.
 func FindRepoRoot(start string) (string, error) {
 	if start == "" {
 		var err error
@@ -46,6 +47,8 @@ func FindRepoRoot(start string) (string, error) {
 	}
 }
 
+// ResolveRepoPath validates a repository-relative path and returns absolute and
+// slash-normalized relative forms.
 func ResolveRepoPath(repoRoot, value string) (string, string, error) {
 	if filepath.IsAbs(value) {
 		return "", "", fmt.Errorf("path %q must be repository-relative", value)
@@ -118,6 +121,7 @@ func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
 	return runs, nil
 }
 
+// Slug normalizes a string into the path-safe slug form used for run names.
 func Slug(s string) string {
 	s = strings.ToLower(s)
 	var b strings.Builder
@@ -136,6 +140,7 @@ func Slug(s string) string {
 	return strings.Trim(b.String(), "-")
 }
 
+// IsPathSafeSlug reports whether s is already in path-safe slug form.
 func IsPathSafeSlug(s string) bool {
 	return s != "" && Slug(s) == s
 }

@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// EvaluationRunListEntry summarizes one discovered evaluation run.
 type EvaluationRunListEntry struct {
 	Path       string                 `json:"path"`
 	RootArea   string                 `json:"rootArea"`
@@ -15,11 +16,13 @@ type EvaluationRunListEntry struct {
 	Gaps       int                    `json:"gaps"`
 }
 
+// EvaluationRunList is the JSON contract emitted by evaluation run listings.
 type EvaluationRunList struct {
 	SchemaVersion int                      `json:"schemaVersion"`
 	Runs          []EvaluationRunListEntry `json:"runs"`
 }
 
+// EvaluationRecordList is the JSON contract emitted by record listings.
 type EvaluationRecordList struct {
 	SchemaVersion int                  `json:"schemaVersion"`
 	Path          string               `json:"path"`
@@ -27,6 +30,7 @@ type EvaluationRecordList struct {
 	Records       []string             `json:"records"`
 }
 
+// ResolveRun resolves an explicit run path or the latest discovered run.
 func ResolveRun(repoRoot, evaluationDir, runArg string, latest bool) (string, error) {
 	if runArg != "" && latest {
 		return "", usagef("pass a run path or --latest, not both")
@@ -58,6 +62,7 @@ func ResolveRun(repoRoot, evaluationDir, runArg string, latest bool) (string, er
 	return runs[len(runs)-1].Rel, nil
 }
 
+// ListRuns lists discovered evaluation runs, optionally filtered by state.
 func ListRuns(repoRoot, evaluationDir, state string) (*EvaluationRunList, error) {
 	if repoRoot == "" {
 		var err error
@@ -109,6 +114,7 @@ func includeRunState(reportable bool, state string) bool {
 	}
 }
 
+// ValidateRunState checks an evaluation run listing state filter.
 func ValidateRunState(state string) error {
 	switch state {
 	case "", "all", "reportable", "incomplete":
@@ -135,6 +141,7 @@ func narrowingFromRunName(name string) string {
 	return suffix
 }
 
+// ListRecords lists record files of the requested kind for a run.
 func ListRecords(kind EvaluationRecordKind, runPath string) (*EvaluationRecordList, error) {
 	run, err := Inspect(runPath)
 	if err != nil {

@@ -245,6 +245,14 @@ areas:
           Does the same input and file state produce the same CLI result? Stable
           output, ordering, and next actions let agents and CI diff, cache, and
           assert against command behavior without flaky variation.
+      maintainability:
+        title: Maintainability
+        description: >
+          Is the Go implementation readable and idiomatic beyond what the
+          deterministic check gate enforces? Naming, error handling, interface
+          and API shape, concurrency discipline, value and state hygiene, doc
+          comments, and test style determine how safely contributors and agents
+          can change the code.
     requirements:
       "the CLI follows its functional specifications":
         factors:
@@ -264,6 +272,19 @@ areas:
         assessment: >
           Assess command arguments, flags, help, output, errors, interactivity,
           exit codes, and next actions against docs/guides/cli-design.md.
+      "the Go implementation follows the project Go style guide":
+        factors:
+          - maintainability
+          - consistency
+        assessment: >
+          Assess the Go code under cmd/qualitymd/ and internal/ against
+          docs/guides/go-style.md: naming, error wrapping and handling,
+          interface and API shape, concurrency lifetimes, value and state
+          hygiene, doc comments, and test style. Judge only the conventions the
+          guide covers; the deterministic check gate (gofmt, go vet,
+          staticcheck, the complexity linters, and the rest of `mise run check`)
+          owns formatting, correctness, and size, so do not re-litigate those
+          here.
 ---
 
 # Quality model - QUALITY.md
@@ -296,15 +317,19 @@ own job assessable. The format spec declares Clarity, Consistency,
 Verifiability, Extensibility, and Usability factors; the README declares
 Approachability; the `/quality` skill declares Judgment Grounding, Mutation
 Safety, CLI Orchestration, and Lifecycle Guidance; and the CLI declares
-Usability, Automation Compatibility, Consistency, and Determinism. Applicability
-is structural: factors apply where they are declared and below.
+Usability, Automation Compatibility, Consistency, Determinism, and
+Maintainability. Applicability is structural: factors apply where they are
+declared and below.
 
 The skill functional spec (`specs/skills/quality-skill/quality-skill.md`) is
 binding for `/quality` behavior. The CLI functional specs (`specs/cli.md` and
 `specs/cli/`) are binding for what commands do. The CLI design guide
 (`docs/guides/cli-design.md`) supplies the quality expectations for how command
 arguments, flags, help, output, errors, interactivity, exit codes, and next
-actions should work.
+actions should work. The Go style guide (`docs/guides/go-style.md`) supplies the
+judgment-based expectations for the Go implementation under `cmd/qualitymd/` and
+`internal/`, complementing the deterministic check gate that owns formatting,
+correctness, and size.
 
 Ratings should be read with a worst-of bias for contract failures: a single
 unacceptable finding in the format spec, skill safety rules, or CLI automation
@@ -418,7 +443,10 @@ The CLI is deterministic support tooling for humans, agents, CI, and the
 specs while following the CLI design guide's expectations for usable,
 scriptable, consistent, and deterministic command behavior. The CLI should be
 excellent at validation, status, version checks, scaffolding, and evaluation
-records without becoming the default workflow users must learn first.
+records without becoming the default workflow users must learn first. The Go
+implementation under `cmd/qualitymd/` and `internal/` is also held to the Go
+style guide (`docs/guides/go-style.md`) for maintainability, which the
+deterministic check gate does not assess.
 
 *Unknowns* — none known.
 *Open questions* — none.

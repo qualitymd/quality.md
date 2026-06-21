@@ -56,6 +56,7 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 | Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                   |
 | Designing or reshaping a CLI command            | [Designing CLI interfaces](docs/guides/cli-design.md)              |
 | Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)         |
+| Writing Go code                                 | [Go style](docs/guides/go-style.md)                                |
 
 ## Repository Conventions
 

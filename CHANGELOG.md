@@ -5,6 +5,43 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.7.1 - 2026-06-21
+
+### CLI
+
+- Added documentation comments for exported evaluation, report, and status
+  contract types so the implementation follows the project Go style guide
+  without changing command behavior or machine-readable output.
+
+### /quality Skill
+
+- Bumped the bundled skill release metadata to `0.7.1`; the supported
+  `qualitymd` CLI compatibility range remains `>=0.7.0 <0.8.0`.
+
+### Specification
+
+- No specification changes.
+
+### Documentation
+
+- Added a Go style guide for judgment-based conventions that the deterministic
+  check gate does not enforce, linked it from contributor and agent guidance, and
+  added it to the dogfood quality model as a CLI maintainability requirement.
+
+### Packaging
+
+- No packaging changes.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.7.1`
+- QUALITY.md specification: `0.2 (Draft)`
+- /quality skill: `0.7.1`, requires `qualitymd >=0.7.0 <0.8.0`
+
+No migration is required from `v0.7.0`.
+
 ## v0.7.0 - 2026-06-21
 
 ### Breaking Changes

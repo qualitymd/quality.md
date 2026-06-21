@@ -22,6 +22,8 @@ evaluation evidence belongs in assessment, analysis, and recommendation records.
 ## Events
 `
 
+// CreateRun creates a numbered evaluation run folder and seeds its standard
+// runtime files.
 func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
