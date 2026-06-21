@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [
+  "areaPath": [
     "webhooks",
     "delivery"
   ],
@@ -13,7 +13,7 @@
   "ratingResult": {
     "kind": "rated",
     "level": "minimum",
-    "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor."
+    "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the area's intent while remaining at the acceptable floor."
   },
   "criterionSource": "rating-scale",
   "findings": [

@@ -16,7 +16,7 @@ doneCriterion: The reconciliation requirement becomes assessable and reaches at 
 
 # Produce reconciliation evidence so the requirement can be rated
 
-**Target / factor:** Ledger → Correctness
+**Area / factor:** Ledger → Correctness
 **In-scope requirement:** *Reconciliation runs daily and flags drift*
 **Current rating:** Not assessed — no evidence was available to rate against.
 

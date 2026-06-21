@@ -18,7 +18,7 @@ ratingScale:
   - level: unacceptable
     title: Unacceptable
     criterion: Does not meet the requirement.
-targets:
+areas:
   api:
     title: API
     source: ./internal/api
@@ -45,13 +45,13 @@ targets:
 	if len(model.RatingScale) != 2 {
 		t.Fatalf("len(RatingScale) = %d, want 2", len(model.RatingScale))
 	}
-	if got := model.Targets["api"].Title; got != "API" {
-		t.Fatalf("target title = %q, want API", got)
+	if got := model.Areas["api"].Title; got != "API" {
+		t.Fatalf("area title = %q, want API", got)
 	}
-	if got := model.Targets["api"].Factors["reliability"].Title; got != "Reliability" {
+	if got := model.Areas["api"].Factors["reliability"].Title; got != "Reliability" {
 		t.Fatalf("factor title = %q, want Reliability", got)
 	}
-	if got := model.Targets["api"].Factors["reliability"].Requirements["writes are durable"].Assessment; got == "" {
+	if got := model.Areas["api"].Factors["reliability"].Requirements["writes are durable"].Assessment; got == "" {
 		t.Fatal("assessment was not loaded")
 	}
 }

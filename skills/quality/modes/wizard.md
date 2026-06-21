@@ -19,7 +19,7 @@ Run frame:
 ```text
 /quality run
 - Mode: wizard
-- Target file: <resolved path>
+- Model file: <resolved path>
 - Scope: model/history readiness only
 - Mutation: read-only
 - Artifacts: none
@@ -55,8 +55,8 @@ Offer concrete alternatives
 - create setup
 - repair model
 - review/improve `QUALITY.md`
-- evaluate subject
-- improve subject from recommendations
+- evaluate root area
+- improve evaluated source from recommendations
 - review evaluation history
 ```
 
@@ -65,14 +65,14 @@ Offer concrete alternatives
 1. Run a shallow CLI probe:
    - `qualitymd --version` and whether it satisfies the prerequisite range from
      `SKILL.md`.
-   - `qualitymd status --json [path]` for the resolved target path (do not walk
+   - `qualitymd status --json [path]` for the resolved area path (do not walk
      parents).
 
    These signals establish the mechanical lifecycle state.
 2. If the model exists and lint passes, read
    [`../guides/top-10-quality-md-checks.md`](../guides/top-10-quality-md-checks.md)
-   and inspect the target `QUALITY.md` against it. Keep findings bounded to the
-   checklist. Do **not** inspect subject source files, read reports, or create
+   and inspect the area `QUALITY.md` against it. Keep findings bounded to the
+   checklist. Do **not** inspect evaluated source files, read reports, or create
    evaluation artifacts.
 3. Classify readiness from the `readiness` field, supporting status counts, and
    checklist findings. This is routing judgment, not an evaluation rating. When
@@ -88,9 +88,9 @@ Offer concrete alternatives
    ```text
    Status
    - CLI:                (version; in range or stale)
-   - QUALITY.md:         (present/absent at target path)
+   - QUALITY.md:         (present/absent at area path)
    - Model:              (validity and usefulness/readiness; no shape audit)
-   - Subject:            (ready/blocked/unknown from source signals)
+   - Evaluated source:   (ready/blocked/unknown from source signals)
    - Evaluation history: (runs/recommendations present; no body reads)
    - Readiness:
 
@@ -107,8 +107,8 @@ Offer concrete alternatives
    ```
 
 6. Offer only concrete workflows the user can choose next, such as setup, model
-   repair, model review/improvement, whole-subject evaluation, scoped
-   target/factor evaluation, recommendation review/improvement, or evaluation
+   repair, model review/improvement, whole-quality evaluation, scoped
+   area/factor evaluation, recommendation review/improvement, or evaluation
    history review. Include `/quality update` when the CLI is missing, below the
    prerequisite range, or the skill/CLI pair appears incompatible. Wizard stays
    offline: it judges staleness from `qualitymd --version` against the
@@ -118,6 +118,6 @@ Offer concrete alternatives
    whether a newer CLI is available.
 
 Wizard is read-only, shallow, and status-first. It does not edit `QUALITY.md`,
-create evaluation records, build reports, or rate the subject. It may produce
+create evaluation records, build reports, or rate the evaluated source. It may produce
 checklist findings about the model and judge readiness to route to work; the work
 happens in the mode or confirmed workflow it hands off to.

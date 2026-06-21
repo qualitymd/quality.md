@@ -31,7 +31,7 @@ not judge quality, recompute ratings, or replace evaluation reports.
 ## Scope
 
 Covered: `qualitymd status [path]`, `--json`, model validity and shape, per-
-Target source coverage, recognized evaluation run history, stale and incomplete
+Area source coverage, recognized evaluation run history, stale and incomplete
 run counts, active recommendation counts, readiness, next actions, deterministic
 ordering, and exit behavior.
 
@@ -60,17 +60,17 @@ When lint can inspect the file, `status` **MUST** report whether the model is
 valid, lint summary counts, and lint findings under `--json`.
 
 When the model is lint-valid, `status` **MUST** report deterministic model-shape
-counts for Targets, Factors, Requirements, and rating-scale levels. The Target
-count includes the root Model as the root Target.
+counts for Areas, Factors, Requirements, and rating-scale levels. The Area
+count includes the root Model as the root Area.
 
 When the model is lint-valid, `status` **MUST** report source coverage for every
-Target, including the root Model. Each source-coverage row **MUST** include the
-ordered `targetPath`, a label, `sourceState` (`declared`, `inherited`, or
+Area, including the root Model. Each source-coverage row **MUST** include the
+ordered `areaPath`, a label, `sourceState` (`declared`, `inherited`, or
 `missing`), known `source` value when present, and direct Factor, Requirement,
-and child Target counts.
+and child Area counts.
 
-Human-facing labels **SHOULD** use required Target `title` values. JSON
-`targetPath` values **MUST** remain identifier-based and **MUST NOT** be replaced
+Human-facing labels **SHOULD** use required Area `title` values. JSON
+`areaPath` values **MUST** remain identifier-based and **MUST NOT** be replaced
 by titles.
 
 When the model is invalid, `status` **MUST NOT** derive partial model-shape or

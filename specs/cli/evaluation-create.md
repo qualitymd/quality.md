@@ -21,7 +21,7 @@ all capitals.
 ## Flags
 
 - `--narrowing <slug>` — optional path-safe scope slug.
-- `--subject <path>` — repository-relative `QUALITY.md` file to snapshot;
+- `--model <path>` — repository-relative `QUALITY.md` file to snapshot;
   defaults to `QUALITY.md`.
 - `--evaluation-dir <path>` — override the evaluation directory.
 - `--json` — emit a receipt on stdout.
@@ -33,10 +33,10 @@ The command **MUST** resolve the evaluation directory using this precedence:
 `quality/evaluations/`. The path **MUST** be repository-relative and **MUST NOT**
 escape the repository.
 
-The command **MUST** validate the subject path before creating the evaluation
-directory or run folder. The subject path **MUST** be repository-relative,
+The command **MUST** validate the model path before creating the evaluation
+directory or run folder. The model path **MUST** be repository-relative,
 **MUST NOT** escape the repository, and **MUST** resolve to a file, not a
-directory. Invalid subject paths **MUST** fail without creating a numbered run
+directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 
 The command **MUST** compute the next run number as one past the highest matching
@@ -44,7 +44,7 @@ evaluation run folder, create the run directory, create `assessments/`,
 `analysis/`, and `recommendations/`, and seed `model.md`, `debug-log.md`,
 `design.md`, and body-only `plan.md`.
 
-`model.md` is the resolved subject file. New runs are subject-altitude. The
+`model.md` is the resolved model file. New run names MUST NOT include an altitude segment. The
 command **MUST NOT** expose an altitude flag, option, or JSON receipt field.
 
 On success, human output **MUST** report the created path on stderr. Under

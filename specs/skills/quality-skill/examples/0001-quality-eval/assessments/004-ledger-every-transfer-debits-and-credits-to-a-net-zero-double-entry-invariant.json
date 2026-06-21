@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [
+  "areaPath": [
     "ledger"
   ],
   "requirement": "Every transfer debits and credits to a net zero (double-entry invariant)",

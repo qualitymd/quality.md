@@ -13,7 +13,7 @@ ships at
 [`skills/quality/guides/top-10-quality-md-checks.md`](../../../../skills/quality/guides/top-10-quality-md-checks.md).
 The guide is a bounded, fast inspection checklist for the `QUALITY.md` file
 itself. It produces findings about model state, model usefulness, and lifecycle
-routing; it does not evaluate or rate the subject.
+routing; it does not evaluate or rate the root area.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -24,7 +24,7 @@ appear in all capitals.
 ## Motivation
 
 Wizard needs more than raw status counts to recommend the right lifecycle step,
-but it should not become a full model audit or subject evaluation. A short,
+but it should not become a full model audit or quality evaluation. A short,
 shared checklist gives wizard and related modes a consistent way to inspect the
 current `QUALITY.md`, surface actionable findings, and route to setup,
 getting-started, authoring, evaluation, improvement, or history work.
@@ -38,15 +38,15 @@ evaluation, improvement, history/reconciliation, or update.
 
 ## Scope
 
-In scope: read-only inspection of `qualitymd status --json`, the target
+In scope: read-only inspection of `qualitymd status --json`, the area
 `QUALITY.md` file, and evaluation-history signals summarized by status JSON.
 The checklist covers lifecycle state, Markdown body context, rating-scale fit,
-subject/source alignment, target shape, Factor coverage, Requirement
+root area/source alignment, area shape, Factor coverage, Requirement
 assessability, assessment evidence, evaluation readiness, and maintenance
 signals.
 
-Non-goals: the checklist does not inspect subject source files, produce
-evaluation artifacts, rate the subject, fully audit every Requirement, or replace
+Non-goals: the checklist does not inspect root area source files, produce
+evaluation artifacts, rate the root area, fully audit every Requirement, or replace
 the authoring and getting-started guides. It produces routing findings, not an
 Evaluation report.
 
@@ -69,8 +69,8 @@ next workflow.
 ### Inspection Boundary
 
 The checklist **MUST** stay read-only. It **MUST NOT** edit `QUALITY.md`, inspect
-subject source files, read evaluation report bodies, create evaluation records,
-or rate the subject.
+root area source files, read evaluation report bodies, create evaluation records,
+or rate the root area.
 
 The checklist should use status JSON for mechanical signals and read the
 `QUALITY.md` file only for bounded model-usefulness inspection. It should not
@@ -105,8 +105,8 @@ The checklist **MUST** contain ten checks:
 1. lifecycle state;
 2. body context;
 3. rating scale fit;
-4. subject and source alignment;
-5. target shape;
+4. root area and source alignment;
+5. area shape;
 6. Factor coverage;
 7. Requirement assessability;
 8. assessment evidence;
@@ -121,9 +121,9 @@ The check **SHOULD** flag missing or non-agent-accessible support as a
 model-usefulness finding when it prevents a reader or agent from evaluating
 whether the body context is complete, current, grounded, or sufficient.
 
-The evaluation-readiness check **MUST** distinguish model usefulness from subject
+The evaluation-readiness check **MUST** distinguish model usefulness from root area
 quality. A valid but vague model is a model-authoring finding, not evidence that
-the subject is low quality.
+the root area is low quality.
 
 ### Summary Judgment
 

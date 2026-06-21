@@ -8,7 +8,7 @@ import (
 
 type EvaluationRunListEntry struct {
 	Path       string                 `json:"path"`
-	Subject    string                 `json:"subject"`
+	RootArea   string                 `json:"rootArea"`
 	Narrowing  string                 `json:"narrowing,omitempty"`
 	Counts     EvaluationRecordCounts `json:"counts"`
 	Reportable bool                   `json:"reportable"`
@@ -86,7 +86,7 @@ func ListRuns(repoRoot, evaluationDir, state string) (*EvaluationRunList, error)
 		}
 		result.Runs = append(result.Runs, EvaluationRunListEntry{
 			Path:       dir.Rel,
-			Subject:    run.Model.Title,
+			RootArea:   run.Model.Title,
 			Narrowing:  narrowingFromRunName(dir.Name),
 			Counts:     status.Counts,
 			Reportable: status.Reportable,
@@ -120,10 +120,19 @@ func ValidateRunState(state string) error {
 
 func narrowingFromRunName(name string) string {
 	match := runNameRE.FindStringSubmatch(name)
-	if match == nil || match[3] == "" {
+	if match == nil || match[2] == "" {
 		return ""
 	}
-	return strings.TrimPrefix(strings.TrimSuffix(match[3], "-quality-eval"), "-")
+	suffix := match[2]
+	if suffix == "subject" || suffix == "model" {
+		return ""
+	}
+	for _, prefix := range []string{"subject-", "model-"} {
+		if strings.HasPrefix(suffix, prefix) {
+			return strings.TrimPrefix(suffix, prefix)
+		}
+	}
+	return suffix
 }
 
 func ListRecords(kind EvaluationRecordKind, runPath string) (*EvaluationRecordList, error) {

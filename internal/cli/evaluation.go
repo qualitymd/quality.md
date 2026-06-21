@@ -60,7 +60,7 @@ func newEvaluationCreateCmd() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional scope slug for the run folder")
-	cmd.Flags().StringVar(&opts.Subject, "subject", "", "QUALITY.md file to snapshot")
+	cmd.Flags().StringVar(&opts.Model, "model", "", "QUALITY.md file to snapshot")
 	cmd.Flags().StringVar(&opts.EvaluationDir, "evaluation-dir", "", "override the evaluation directory")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run creation receipt")
 	return cmd
@@ -305,7 +305,7 @@ func renderRunList(w io.Writer, result *evaluation.EvaluationRunList) error {
 		return err
 	}
 	for _, run := range result.Runs {
-		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\trecords=%d/%d/%d\n", run.Path, run.Subject, run.Reportable, run.Counts.AssessmentResults, run.Counts.Analyses, run.Counts.Recommendations); err != nil {
+		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\trecords=%d/%d/%d\n", run.Path, run.RootArea, run.Reportable, run.Counts.AssessmentResults, run.Counts.Analyses, run.Counts.Recommendations); err != nil {
 			return err
 		}
 	}

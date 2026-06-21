@@ -2,16 +2,16 @@
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's
 current state, model quality, and lifecycle readiness. The result is not an
-Evaluation report and does not rate the subject. It produces routing findings
+Evaluation report and does not rate the evaluated source. It produces routing findings
 that wizard and other modes can use to choose the next workflow.
 
 ## Inputs
 
 - `qualitymd status [path] --json`
-- the target `QUALITY.md`
+- the area `QUALITY.md`
 - evaluation history summarized by status JSON
 
-Do not inspect subject source files for this checklist. Do not read evaluation
+Do not inspect evaluated source files for this checklist. Do not read evaluation
 report bodies. Keep the inspection bounded to the model file and status signals.
 
 ## Finding Shape
@@ -67,24 +67,24 @@ context.
 - Finding when a custom scale exists but the body does not explain why: route to
   authoring.
 
-### 4. Subject and Source Alignment
+### 4. Root Area and Source Alignment
 
 Check whether the root title, body scope, file location, and root or child
-`source` values describe the same evaluated subject.
+`source` values describe the same evaluated the root area.
 
 - Finding when the title names the repository but the body/sources are narrower:
   route to getting-started or authoring.
 - Finding when source coverage includes unrelated/generated/supporting artifacts:
   route to authoring.
 
-### 5. Target Shape
+### 5. Area Shape
 
-Check whether the target tree is small enough to understand and specific enough
+Check whether the area tree is small enough to understand and specific enough
 to represent distinct evaluated entities.
 
 - Finding when all concerns are flattened into the root despite clear sub-entities
   in the body: route to authoring.
-- Finding when child targets merely mirror the parent without distinct Factors or
+- Finding when child areas merely mirror the parent without distinct Factors or
   Requirements: route to authoring.
 
 ### 6. Factor Coverage
@@ -118,7 +118,7 @@ of assessment, either inline or by referencing an entity that defines it.
 ### 9. Evaluation Readiness
 
 Decide whether the model is useful enough to evaluate without confusing model
-weakness with subject quality.
+weakness with evaluated-source quality.
 
 - Finding when the model is valid but too vague to bind evidence to ratings:
   route starter/placeholder models to getting-started; route populated models to
@@ -135,7 +135,7 @@ workflow is maintenance rather than new authoring or evaluation.
   review.
 - Finding when the latest run is stale, incomplete, malformed, or unreportable:
   route to history/reconciliation. Treat malformed or incompatible records as
-  history status, not subject quality evidence; do not suggest manual migration.
+  history status, not evaluated-source quality evidence; do not suggest manual migration.
 
 ## Summary Judgment
 

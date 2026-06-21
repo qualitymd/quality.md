@@ -20,7 +20,7 @@ all capitals.
 
 ## Scope
 
-Covered: the output target and stdout piping, overwrite protection, and the
+Covered: the output area and stdout piping, overwrite protection, and the
 contents of the scaffold `init` produces, including its `--json` result receipt.
 
 ## Requirements
@@ -39,10 +39,10 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
 
 ### Overwrite protection
 
-- When the target file already exists, `init` **MUST NOT** overwrite it: it
+- When the model file already exists, `init` **MUST NOT** overwrite it: it
   **MUST** leave the file untouched and exit non-zero, reporting that the file
   already exists.
-- A `--force` flag **MUST** permit overwriting an existing target file.
+- A `--force` flag **MUST** permit overwriting an existing model file.
 
 ### Scaffold contents
 
@@ -54,7 +54,7 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   [format spec](../../SPECIFICATION.md#model), which a scaffolding tool can seed.
 - The scaffold **MUST** seed non-empty placeholder `title` values wherever the
   format requires them, including the model root, every seeded rating level, the
-  placeholder factor, and any commented target/factor examples.
+  placeholder factor, and any commented area/factor examples.
 - The frontmatter **MUST** include a minimal skeleton that leads to at least one
   requirement: a placeholder factor carrying a `description`, and beneath it a
   placeholder requirement carrying a single non-empty `assessment`.
@@ -68,7 +68,7 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   state line. The starter body should teach that material support unavailable to
   the evaluating agent belongs in the relevant section's unknowns or open
   questions.
-- The body should open with a top-level heading naming the subject, matching the
+- The body should open with a top-level heading naming the root area, matching the
   scaffolded model `title`.
 
 ### Reporting

@@ -39,26 +39,26 @@ whether the install is in the skill's supported range.
 
 ## Quick reference
 
-| Task                          | Command                                                               |
-| ----------------------------- | --------------------------------------------------------------------- |
-| Check CLI version             | `qualitymd --version`                                                 |
-| Read version metadata         | `qualitymd version --json`                                            |
-| Check for CLI updates         | `qualitymd update --check`                                            |
-| Apply CLI update              | `qualitymd update`                                                    |
-| Read format rules             | `qualitymd spec`                                                      |
-| Create a starter model        | `qualitymd init [path]`                                               |
-| Validate a model              | `qualitymd lint [path]`                                               |
-| Fix simple lint issues        | `qualitymd lint --fix [path]`                                         |
-| Inspect project status        | `qualitymd status [path] --json`                                      |
-| Create evaluation run         | `qualitymd evaluation create [--subject <path>] [--narrowing <slug>]` |
-| List evaluation runs          | `qualitymd evaluation list [--json]`                                  |
-| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment add <run>`              |
-| Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set <run>`                |
-| Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add <run>`          |
-| List records                  | `qualitymd evaluation <kind> list <run>`                              |
-| Check reportability           | `qualitymd evaluation status <run>`                                   |
-| Build report                  | `qualitymd evaluation report build <run>`                             |
-| Gate report                   | `qualitymd evaluation report gate <run> --at-or-below <level>`        |
+| Task                          | Command                                                             |
+| ----------------------------- | ------------------------------------------------------------------- |
+| Check CLI version             | `qualitymd --version`                                               |
+| Read version metadata         | `qualitymd version --json`                                          |
+| Check for CLI updates         | `qualitymd update --check`                                          |
+| Apply CLI update              | `qualitymd update`                                                  |
+| Read format rules             | `qualitymd spec`                                                    |
+| Create a starter model        | `qualitymd init [path]`                                             |
+| Validate a model              | `qualitymd lint [path]`                                             |
+| Fix simple lint issues        | `qualitymd lint --fix [path]`                                       |
+| Inspect project status        | `qualitymd status [path] --json`                                    |
+| Create evaluation run         | `qualitymd evaluation create [--model <path>] [--narrowing <slug>]` |
+| List evaluation runs          | `qualitymd evaluation list [--json]`                                |
+| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment add <run>`            |
+| Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set <run>`              |
+| Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add <run>`        |
+| List records                  | `qualitymd evaluation <kind> list <run>`                            |
+| Check reportability           | `qualitymd evaluation status <run>`                                 |
+| Build report                  | `qualitymd evaluation report build <run>`                           |
+| Gate report                   | `qualitymd evaluation report gate <run> --at-or-below <level>`      |
 
 ## Decision trees
 
@@ -79,7 +79,7 @@ Need a QUALITY.md?
 Need to evaluate?
 - Check model first -> qualitymd lint [path]
 - Inspect current state -> qualitymd status [path] --json
-- Create run -> qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
+- Create run -> qualitymd evaluation create [--model <path>] [--narrowing <slug>]
 - Maintain process notes -> edit debug-log.md for notable evaluation-process events only
 - Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Ready to report? -> qualitymd evaluation status <run>
@@ -130,13 +130,13 @@ qualitymd status [path] --json
 ### Create and complete an evaluation run
 
 ```sh
-qualitymd evaluation create [--subject <path>] [--narrowing <slug>]
+qualitymd evaluation create [--model <path>] [--narrowing <slug>]
 
 # Write records by piping JSON on stdin — do not create a scratch file.
 qualitymd evaluation assessment add <run> <<'JSON'
 [
   {
-    "targetPath": [],
+    "areaPath": [],
     "requirement": "Example requirement",
     "factorPaths": [],
     "ratingResult": {

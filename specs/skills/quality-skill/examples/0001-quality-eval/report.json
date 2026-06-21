@@ -1,10 +1,9 @@
 {
   "schemaVersion": 1,
   "summary": {
-    "run": "0001-subject-quality-eval",
-    "subject": "root",
-    "altitude": "subject",
-    "evaluationLevel": "subject",
+    "run": "0001-quality-eval",
+    "rootArea": "root",
+    "evaluationLevel": "",
     "rigor": "",
     "narrowing": "",
     "ratingResult": {
@@ -183,9 +182,9 @@
     "recommendationId": "001-rotate-committed-gateway-key",
     "recommendationPath": "recommendations/001-rotate-committed-gateway-key.md"
   },
-  "targetSummary": [
+  "areaSummary": [
     {
-      "targetPath": [],
+      "areaPath": [],
       "localRating": {
         "kind": "rated",
         "ratingResult": {
@@ -208,7 +207,7 @@
       "coveredRequirements": 3
     },
     {
-      "targetPath": [
+      "areaPath": [
         "ledger"
       ],
       "localRating": {
@@ -228,13 +227,13 @@
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
+        "rationale": "Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
       },
       "coveredRequirements": 2,
       "note": "has not-assessed requirements"
     },
     {
-      "targetPath": [
+      "areaPath": [
         "webhooks"
       ],
       "localRating": {
@@ -254,12 +253,12 @@
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
+        "rationale": "The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
       },
       "coveredRequirements": 1
     },
     {
-      "targetPath": [
+      "areaPath": [
         "webhooks",
         "delivery"
       ],
@@ -280,14 +279,14 @@
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
+        "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
       },
       "coveredRequirements": 2
     }
   ],
-  "targets": [
+  "areas": [
     {
-      "targetPath": [],
+      "areaPath": [],
       "localRating": {
         "kind": "rated",
         "ratingResult": {
@@ -334,7 +333,7 @@
       "structural": false
     },
     {
-      "targetPath": [
+      "areaPath": [
         "ledger"
       ],
       "localRating": {
@@ -354,7 +353,7 @@
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
+        "rationale": "Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
       },
       "factorRatingResults": [
         {
@@ -375,7 +374,7 @@
       "structural": false
     },
     {
-      "targetPath": [
+      "areaPath": [
         "webhooks"
       ],
       "localRating": {
@@ -395,7 +394,7 @@
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
+        "rationale": "The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
       },
       "factorRatingResults": [
         {
@@ -414,7 +413,7 @@
       "structural": false
     },
     {
-      "targetPath": [
+      "areaPath": [
         "webhooks",
         "delivery"
       ],
@@ -435,7 +434,7 @@
       "aggregateRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
+        "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
       },
       "factorRatingResults": [
         {
@@ -457,7 +456,7 @@
   "assessmentResults": [
     {
       "assessmentResultRecord": "assessments/001-root-no-credentials-are-committed-to-the-repository.json",
-      "targetPath": [],
+      "areaPath": [],
       "requirement": "No credentials are committed to the repository",
       "ratingResult": {
         "kind": "rated",
@@ -469,7 +468,7 @@
     },
     {
       "assessmentResultRecord": "assessments/002-root-every-money-moving-endpoint-enforces-authentication.json",
-      "targetPath": [],
+      "areaPath": [],
       "requirement": "Every money-moving endpoint enforces authentication",
       "ratingResult": {
         "kind": "rated",
@@ -481,7 +480,7 @@
     },
     {
       "assessmentResultRecord": "assessments/003-root-transfers-are-idempotent-on-retry.json",
-      "targetPath": [],
+      "areaPath": [],
       "requirement": "Transfers are idempotent on retry",
       "ratingResult": {
         "kind": "rated",
@@ -493,7 +492,7 @@
     },
     {
       "assessmentResultRecord": "assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",
-      "targetPath": [
+      "areaPath": [
         "ledger"
       ],
       "requirement": "Every transfer debits and credits to a net zero (double-entry invariant)",
@@ -507,7 +506,7 @@
     },
     {
       "assessmentResultRecord": "assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json",
-      "targetPath": [
+      "areaPath": [
         "ledger"
       ],
       "requirement": "Reconciliation runs daily and flags drift",
@@ -520,7 +519,7 @@
     },
     {
       "assessmentResultRecord": "assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json",
-      "targetPath": [
+      "areaPath": [
         "webhooks"
       ],
       "requirement": "Every outbound webhook is signed so merchants can verify its origin",
@@ -534,7 +533,7 @@
     },
     {
       "assessmentResultRecord": "assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",
-      "targetPath": [
+      "areaPath": [
         "webhooks",
         "delivery"
       ],
@@ -549,7 +548,7 @@
     },
     {
       "assessmentResultRecord": "assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json",
-      "targetPath": [
+      "areaPath": [
         "webhooks",
         "delivery"
       ],
@@ -557,7 +556,7 @@
       "ratingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor."
+        "rationale": "Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the area's intent while remaining at the acceptable floor."
       },
       "state": "active",
       "active": true

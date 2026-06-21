@@ -18,7 +18,7 @@ type repairOp struct {
 
 type runState struct {
 	doc      *document.Document
-	root     *targetRef
+	root     *areaRef
 	findings []Finding
 	repairs  []repairOp
 	levels   map[string]bool

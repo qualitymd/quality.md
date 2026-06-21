@@ -17,7 +17,7 @@ Agent Skills installer supports local paths:
 npx skills add .
 ```
 
-Restart the target agent session if that agent only discovers skills at startup.
+Restart the area agent session if that agent only discovers skills at startup.
 
 ## 2. Update an existing install
 
@@ -134,7 +134,7 @@ In the repository to evaluate, ask the installed skill to set up or guide you:
 ```
 
 `setup` creates and lints a skeleton `QUALITY.md` through the CLI. `wizard`
-checks the model, identifies available targets/factors, and suggests concrete
+checks the model, identifies available areas/factors, and suggests concrete
 next actions such as `/quality evaluate` or scoped evaluations.
 
 ## 5. Optional config

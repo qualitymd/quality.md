@@ -17,8 +17,7 @@ const debugLogSeed = `# Evaluation debug log
 
 This log records notable events involving the evaluation process itself. It is
 not an assessment record, rating rationale, report, or evidence store;
-subject-quality evidence belongs in assessment, analysis, and recommendation
-records.
+evaluation evidence belongs in assessment, analysis, and recommendation records.
 
 ## Events
 `
@@ -81,9 +80,9 @@ func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
 	if err != nil {
 		return 0, "", err
 	}
-	name := fmt.Sprintf("%04d-subject-quality-eval", number)
+	name := fmt.Sprintf("%04d-quality-eval", number)
 	if narrowing != "" {
-		name = fmt.Sprintf("%04d-subject-%s-quality-eval", number, narrowing)
+		name = fmt.Sprintf("%04d-%s-quality-eval", number, narrowing)
 	}
 	return number, name, nil
 }
@@ -131,27 +130,27 @@ func evaluationDirValue(repoRoot, override string) (string, error) {
 }
 
 func modelSnapshot(repoRoot string, opts Options) ([]byte, error) {
-	subject := opts.Subject
-	if subject == "" {
-		subject = "QUALITY.md"
+	modelPath := opts.Model
+	if modelPath == "" {
+		modelPath = "QUALITY.md"
 	}
-	if filepath.Clean(subject) == "." {
-		return nil, usagef("--subject %q must name a QUALITY.md file, not a directory", subject)
+	if filepath.Clean(modelPath) == "." {
+		return nil, usagef("--model %q must name a QUALITY.md file, not a directory", modelPath)
 	}
-	subjectAbs, _, err := ResolveRepoPath(repoRoot, subject)
+	modelAbs, _, err := ResolveRepoPath(repoRoot, modelPath)
 	if err != nil {
-		return nil, usagef("--subject %s", err)
+		return nil, usagef("--model %s", err)
 	}
-	info, err := os.Stat(subjectAbs)
+	info, err := os.Stat(modelAbs)
 	if err != nil {
-		return nil, fmt.Errorf("reading subject %s: %w", subject, err)
+		return nil, fmt.Errorf("reading model %s: %w", modelPath, err)
 	}
 	if info.IsDir() {
-		return nil, usagef("--subject %q must name a QUALITY.md file, not a directory", subject)
+		return nil, usagef("--model %q must name a QUALITY.md file, not a directory", modelPath)
 	}
-	raw, err := os.ReadFile(subjectAbs)
+	raw, err := os.ReadFile(modelAbs)
 	if err != nil {
-		return nil, fmt.Errorf("reading subject %s: %w", subject, err)
+		return nil, fmt.Errorf("reading model %s: %w", modelPath, err)
 	}
 	return raw, nil
 }

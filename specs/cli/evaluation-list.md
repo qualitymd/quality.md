@@ -25,7 +25,7 @@ folders in deterministic run-number order and **MUST NOT** write or modify any
 run.
 
 Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
-**MUST** identify the run path, subject, record counts, and reportability, and
+**MUST** identify the run path, root area, record counts, and reportability, and
 **MAY** include narrowing when present. It **MAY** include a gap count so callers
 can distinguish an incomplete run with blocking diagnostics from an empty run.
 

@@ -6,7 +6,7 @@ type NodeKind string
 
 const (
 	ModelKind       NodeKind = "model"
-	TargetKind      NodeKind = "target"
+	AreaKind        NodeKind = "area"
 	FactorKind      NodeKind = "factor"
 	RequirementKind NodeKind = "requirement"
 	RatingLevelKind NodeKind = "ratingLevel"
@@ -17,7 +17,7 @@ const (
 	PropertyRatingScale  = "ratingScale"
 	PropertyFactors      = "factors"
 	PropertyRequirements = "requirements"
-	PropertyTargets      = "targets"
+	PropertyAreas        = "areas"
 	PropertySource       = "source"
 	PropertyLevel        = "level"
 	PropertyDescription  = "description"
@@ -102,23 +102,23 @@ var Model = Node{
 		{Name: PropertyRatingScale, Shape: SequenceShape, Presence: RequiredPresence, ElementKind: RatingLevelKind, MinItems: 2},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
-		{Name: PropertyTargets, Shape: MapShape, Presence: OptionalPresence, ElementKind: TargetKind},
+		{Name: PropertyAreas, Shape: MapShape, Presence: OptionalPresence, ElementKind: AreaKind},
 		{Name: PropertySource, Shape: ScalarShape, Presence: OptionalPresence},
 	},
 	RequiredAny: []RequiredAny{
-		{Name: "model-content", Properties: []string{PropertyFactors, PropertyRequirements, PropertyTargets}},
+		{Name: "model-content", Properties: []string{PropertyFactors, PropertyRequirements, PropertyAreas}},
 	},
 }
 
-// Target is the recursive target-node schema.
-var Target = Node{
-	Kind: TargetKind,
+// Area is the recursive area-node schema.
+var Area = Node{
+	Kind: AreaKind,
 	Properties: []Property{
 		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
 		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
-		{Name: PropertyTargets, Shape: MapShape, Presence: OptionalPresence, ElementKind: TargetKind},
+		{Name: PropertyAreas, Shape: MapShape, Presence: OptionalPresence, ElementKind: AreaKind},
 		{Name: PropertySource, Shape: ScalarShape, Presence: OptionalPresence},
 	},
 }
@@ -156,4 +156,4 @@ var RatingLevel = Node{
 }
 
 // Nodes lists every structural schema node.
-var Nodes = []Node{Model, Target, Factor, Requirement, RatingLevel}
+var Nodes = []Node{Model, Area, Factor, Requirement, RatingLevel}

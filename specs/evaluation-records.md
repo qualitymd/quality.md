@@ -54,13 +54,10 @@ recommendation records is machine metadata, not OKF concept frontmatter.
 Each run folder is named:
 
 ```text
-NNNN-<altitude>[-<narrowing>]-quality-eval
+NNNN[-<narrowing>]-quality-eval
 ```
 
-`<altitude>` is `subject`. Historical runs may use `model`, but new run creation
-is subject-only. `NNNN` is one zero-padded sequence across the evaluation
-directory, computed by directory scan immediately before creation (one past the
-highest present). An existing folder at the computed name **MUST** fail rather
+`NNNN` is one zero-padded sequence across the evaluation directory, computed by directory scan immediately before creation (one past the highest present). `<narrowing>` is omitted for an unnarrowed run. An existing folder at the computed name **MUST** fail rather
 than be overwritten or silently retried at the next number: under a deterministic
 shared sequence a collision signals concurrent or corrupt state that must
 surface, not be papered over. The scan-then-create step is safe but not
@@ -76,9 +73,9 @@ design.md
 debug-log.md
 plan.md
 assessments/
-  NNN-<target>-<requirement>.json
+  NNN-<area>-<requirement>.json
 analysis/
-  <target>.json
+  <area>.json
 recommendations/
   NNN-<slug>.md
 report.md
@@ -128,7 +125,7 @@ the result of carrying out the Requirement's authored `assessment` instruction
 against run evidence. Required fields:
 
 - `schemaVersion`
-- `targetPath`
+- `areaPath`
 - `requirement`
 - `factorPaths`
 - `ratingResult`
@@ -137,8 +134,8 @@ against run evidence. Required fields:
 - `recommendations`
 - `supersedes`, optional
 
-`targetPath`, `factorPaths`, and `ratingResult.level` values are stable model
-identifiers: ordered Target paths, ordered Factor paths, and rating `level` ids.
+`areaPath`, `factorPaths`, and `ratingResult.level` values are stable model
+identifiers: ordered Area paths, ordered Factor paths, and rating `level` ids.
 They are not human display titles.
 
 `ratingResult` **MUST** be an object with:
@@ -181,13 +178,13 @@ renderers can display or group it, but they must not assign special semantics to
 undocumented kind values.
 
 A run **MUST NOT** contain more than one active assessment result record for the
-same ordered `targetPath` and `requirement`. Duplicate active assessment result
+same ordered `areaPath` and `requirement`. Duplicate active assessment result
 records make the run non-reportable. This uniqueness rule exists because a
 correction or resume workflow that re-adds an assessment result would otherwise
 append a conflicting second record while the run still reported as renderable,
 producing a report whose requirement entry and roll-up disagree. A corrected
 assessment result **MAY** include `supersedes`, a list of earlier assessment
-result IDs or paths for the same ordered `targetPath` and `requirement`;
+result IDs or paths for the same ordered `areaPath` and `requirement`;
 superseded assessment result records remain part of the run but are not active.
 Analysis records **MUST** reference active assessment result records. This is
 stricter than recommendation superseding (below): because analysis ratings bind
@@ -196,10 +193,10 @@ with an updated analysis, or roll-ups would silently inherit stale judgment.
 
 ## Analysis Record
 
-An analysis record is one JSON file per target. Required fields:
+An analysis record is one JSON file per Area. Required fields:
 
-- `schemaVersion`, `targetPath`
-- `localRatingResult`, or `null` for a grouping target with no own requirements
+- `schemaVersion`, `areaPath`
+- `localRatingResult`, or `null` for a grouping area with no own requirements
 - `factorRatingResults`
 - `aggregateRatingResult`
 - `assessmentResultRecords`
@@ -207,10 +204,10 @@ An analysis record is one JSON file per target. Required fields:
 - `ratingConstraints`, optional
 
 Every rating result **MUST** use the explicit `ratingResult` object shape
-defined above. `targetPath`, `factorRatingResults[].factorPath`, and rating
+defined above. `areaPath`, `factorRatingResults[].factorPath`, and rating
 values are stable model identifiers, not human display titles. A
-`localRatingResult: null` on a target with child analyses and no local
-assessment result records represents a structural grouping target; report outputs
+`localRatingResult: null` on an area with child analyses and no local
+assessment result records represents a structural grouping Area; report outputs
 must render that as a distinct structural local-rating state, not as a missing
 not-assessed rating.
 When present, each `ratingConstraints` entry **SHOULD** identify the binding
@@ -220,7 +217,7 @@ When present, each `ratingConstraints` entry **SHOULD** identify the binding
 
 `plan.md` is a YAML-frontmatter + Markdown-body artifact. Its Markdown body is
 the run's prose plan. Optional frontmatter `coverage:` lists the assessment
-result requirements and analysis targets intended for the run. Planned coverage
+result requirements and analysis areas intended for the run. Planned coverage
 exists to support deterministic resume diagnostics; it **MUST NOT** replace the
 prose plan or the evaluation design.
 
@@ -229,15 +226,15 @@ When `coverage:` is present, it **MUST** contain:
 - `assessmentResults`
 - `analyses`
 
-Each assessment result entry **MUST** contain ordered `targetPath` and
+Each assessment result entry **MUST** contain ordered `areaPath` and
 `requirement`.
-Each analysis entry **MUST** contain ordered `targetPath`.
+Each analysis entry **MUST** contain ordered `areaPath`.
 
 Coverage frontmatter is hand-authored as part of `plan.md`; there is no separate
 CLI write command for planned coverage.
 
-A planned assessment result key is ordered `targetPath` plus `requirement`. A
-planned analysis key is ordered `targetPath`. Duplicate planned assessment
+A planned assessment result key is ordered `areaPath` plus `requirement`. A
+planned analysis key is ordered `areaPath`. Duplicate planned assessment
 result or analysis keys are invalid.
 
 When `coverage:` is absent, the run keeps the same status and reportability
@@ -261,9 +258,9 @@ interruptions or resumes, retries, artifact corrections, CLI/tooling readiness
 and failures, subagent coordination, redaction decisions, prompt-injection
 handling, and report generation recovery.
 
-The log **MUST NOT** record subject-quality findings as primary content or
+The log **MUST NOT** record evaluation findings as primary content or
 duplicate rating rationale from assessment or analysis records. When a project
-command is exercised as evidence against the evaluated subject, the log **MAY**
+command is exercised as evidence against the evaluated source, the log **MAY**
 record that routing fact and cite the formal assessment record.
 
 The log **MUST NOT** copy raw project-command output or preserve a second copy
@@ -322,9 +319,9 @@ limitations, or record references.
 Report rendering **MUST** preserve the meaning of the underlying records rather
 than adding a new judgment layer. In particular:
 
-- The headline verdict is the in-scope root Target's aggregate
+- The headline verdict is the in-scope root Area's aggregate
   `ratingResult`.
-- A local Target rating **MUST NOT** be presented as the headline verdict unless
+- A local Area rating **MUST NOT** be presented as the headline verdict unless
   the active analysis record also makes it the aggregate rating.
 - Labels **MUST NOT** imply whole-model coverage, ranking, priority, causality,
   or actionability unless that meaning is present in the records or in a
@@ -340,7 +337,7 @@ than adding a new judgment layer. In particular:
 - Recommendation-facing action surfaces **MUST** use active recommendations only;
   superseded recommendations remain audit/detail data.
 - Rendering may resolve labels, sort, deduplicate, link, summarize, and apply
-  documented selection rules. It **MUST NOT** reread subject source, recompute
+  documented selection rules. It **MUST NOT** reread evaluated source, recompute
   ratings, invent findings, or choose new recommendations by evaluator
   judgment.
 
@@ -353,8 +350,8 @@ typed rating states, and record references.
 ## report.json
 
 `report.json` is the machine rendering of the same Evaluation Report as
-`report.md`. It **MUST** present the in-scope root Target's aggregate verdict
-and rationale, scope, per-target results, and advice. It **MUST** reference
+`report.md`. It **MUST** present the in-scope root Area's aggregate verdict
+and rationale, scope, per-area results, and advice. It **MUST** reference
 findings by assessment result record; full finding detail stays in
 `assessments/*.json`.
 Referencing a finding by record (rather than inlining its raw
@@ -365,7 +362,7 @@ trust-boundary rule the
 
 `report.json` **MUST** carry a leading report-summary layer equivalent to the
 leading sections of `report.md`: verdict, scope, evidence basis, limitations,
-next action, and target summary. Collections **MUST** render as arrays,
+next action, and area summary. Collections **MUST** render as arrays,
 including empty arrays; they **MUST NOT** render as `null`.
 
 Recommendation summaries **MUST** indicate whether each recommendation is active
@@ -381,7 +378,7 @@ treated as active judgment.
 Finding summaries **MUST** preserve the canonical severity `level` and expose
 the corresponding display `title`.
 
-Target summaries and details **MUST** include `localRating`, a typed local rating
+Area summaries and details **MUST** include `localRating`, a typed local rating
 state with `kind: rated`, `kind: not-assessed`, or `kind: structural`. Rated and
 not-assessed local states include the underlying `ratingResult`; structural local
 states do not. The historical `localRatingResult` field can remain as a
@@ -400,8 +397,8 @@ preserve the first displayed wording.
 Derived limitation summaries **MUST** preserve locator-like text such as dotted
 file paths.
 
-Target local and aggregate ratings **MUST** render as explicit rating objects.
-Human Markdown reports resolve Model, Target, Factor, and Rating Level display
+Area local and aggregate ratings **MUST** render as explicit rating objects.
+Human Markdown reports resolve Model, Area, Factor, and Rating Level display
 labels from the run's `model.md` snapshot. `report.json` preserves the stable
 identifiers from assessment and analysis records.
 
@@ -414,13 +411,13 @@ recommendation distinction. It **MUST NOT** replace `report.md` as the complete
 human Evaluation Report.
 
 `report-summary.md` **MUST** use a decision-brief outline for human readers:
-key details under `# Quality Evaluation Summary`, then Verdict, Target Ratings,
+key details under `# Quality Evaluation Summary`, then Verdict, Area Ratings,
 Selected Findings, Recommended Actions, and Scope & Limitations. The key details
 **MUST** use reader-facing labels, including "Full evaluation" for an
-unnarrowed run and "Evaluation verdict" for the in-scope root Target's aggregate
+unnarrowed run and "Evaluation verdict" for the in-scope root Area's aggregate
 verdict.
 
-The Target Ratings section **MUST** distinguish local ratings from aggregate
+The Area Ratings section **MUST** distinguish local ratings from aggregate
 ratings. The selected finding section **MUST** be named for its deterministic
 selection rule, such as "Selected Findings" for a severity-filtered subset or
 "Rating-Binding Findings" only when the renderer can prove binding status from
@@ -432,6 +429,6 @@ prominent for follow-up prompts. When active recommendations exist, the summary
 **MUST NOT** present superseded recommendations as primary actions.
 
 A not-assessed rating uses `ratingResult.kind: not-assessed` and no
-`ratingResult.level`. A structural grouping target with no local requirements
+`ratingResult.level`. A structural grouping area with no local requirements
 **MUST** render the `localRating.kind: structural` state rather than looking like
 a missing-evidence not-assessed rating.

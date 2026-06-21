@@ -26,12 +26,12 @@ After applying confirmed option
 2. Before asking for confirmation, make the recommendation self-contained enough
    to apply and later re-evaluate: current state, proposed option, affected
    scope, risk, verification path, and re-evaluation criterion.
-3. Before editing the subject or `QUALITY.md`, ask for explicit confirmation of
+3. Before editing the root area or `QUALITY.md`, ask for explicit confirmation of
    the recommendation and option to apply using a decision brief:
 
    ```text
    Decision: apply <recommendation>?
-   - Changes: <subject source | QUALITY.md | both>
+   - Changes: <evaluated source | QUALITY.md | both>
    - Evidence/reason:
    - Recommended option:
    - Alternatives:

@@ -12,7 +12,7 @@ import (
 
 func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	repo := testEvaluationRepo(t)
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -24,7 +24,7 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	cmd.SetErr(&stderr)
 	cmd.SetIn(strings.NewReader(`[
   {
-    "targetPath": [],
+    "areaPath": [],
     "requirement": "Has tests",
     "criterionSource": "rating-scale",
     "findings": [],
@@ -59,7 +59,7 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 
 func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	repo := testEvaluationRepo(t)
-	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"}); err != nil {
+	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"}); err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	oldwd, err := os.Getwd()
@@ -98,7 +98,7 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	if !strings.Contains(out.String(), `"path": `) || !strings.Contains(out.String(), `"reportable": false`) {
 		t.Fatalf("status stdout = %s, want latest status", out.String())
 	}
-	if !strings.Contains(out.String(), `"path": "quality/evaluations/0001-subject-quality-eval"`) {
+	if !strings.Contains(out.String(), `"path": "quality/evaluations/0001-quality-eval"`) {
 		t.Fatalf("status stdout = %s, want repository-relative run path", out.String())
 	}
 	if !strings.Contains(out.String(), `"kind": "missing-root-analysis"`) {
@@ -111,10 +111,10 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 
 func TestEvaluationListAndLatestStatusSurviveIncompatibleRun(t *testing.T) {
 	repo := testEvaluationRepo(t)
-	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"}); err != nil {
+	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"}); err != nil {
 		t.Fatalf("CreateRun(first) error = %v", err)
 	}
-	latest, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	latest, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(latest) error = %v", err)
 	}

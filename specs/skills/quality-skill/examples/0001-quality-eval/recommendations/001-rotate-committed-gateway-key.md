@@ -17,7 +17,7 @@ doneCriterion: The committed-credentials requirement reaches target; no live cre
 
 # Rotate and remove the committed gateway credential
 
-**Target / factor:** Sparrow Payments API (root) → Security → Secrets handling
+**Area / factor:** Sparrow Payments API (root) → Security → Secrets handling
 **In-scope requirement:** *No credentials are committed to the repository*
 **Current rating:** Unacceptable — **binding constraint** on the whole-model rating.
 

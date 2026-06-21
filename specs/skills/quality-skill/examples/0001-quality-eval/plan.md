@@ -5,9 +5,9 @@ requirement is assessed with targeted evidence sufficient to bind each rating
 (see [Rigor levels](../quality-skill.md#rigor-levels)). The table below is the
 concrete requirement set selected by that rigor.
 
-## Coverage by target
+## Coverage by area
 
-| Target *(source)*                      | Requirements to assess                                     | How                                                                                                  |
+| Area *(source)*                        | Requirements to assess                                     | How                                                                                                  |
 | -------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | **Sparrow Payments API** *(`./`)*      | committed-credentials, endpoint auth, transfer idempotency | tracked-source secret scan; HTTP route enumeration from `cmd/api/routes.go`; idempotency replay test |
 | **Ledger** *(`./ledger`)*              | double-entry invariant, daily reconciliation               | inspect the posting routine and its property test; look for reconciliation job output                |

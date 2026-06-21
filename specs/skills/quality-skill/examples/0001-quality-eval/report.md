@@ -2,8 +2,8 @@
 
 ## Verdict
 
-- **Subject:** Sparrow Payments API
-- **Evaluation level:** subject
+- **Root area:** Sparrow Payments API
+- **Evaluation level:** not recorded
 - **Rigor:** not recorded
 - **Evaluation verdict:** Unacceptable
 - **Rationale:** The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint.
@@ -67,16 +67,16 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 - [001-rotate-committed-gateway-key](recommendations/001-rotate-committed-gateway-key.md) - The committed-credentials requirement reaches target; no live credential is present in the working tree and the previously exposed key has been revoked.
 
-## Target Summary
+## Area Summary
 
-| Target | Local rating | Aggregate rating | Covered requirements | Note |
+| Area | Local rating | Aggregate rating | Covered requirements | Note |
 | --- | --- | --- | --- | --- |
 | Sparrow Payments API | Unacceptable | Unacceptable | 3 |   |
 | Ledger | Target | Target | 2 | has not-assessed requirements |
 | Webhooks | Target | Minimum | 1 |   |
 | Delivery | Minimum | Minimum | 2 |   |
 
-## Target Details
+## Area Details
 
 ### Sparrow Payments API
 
@@ -97,7 +97,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **Local rating:** Target
   - The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding.
 - **Aggregate rating:** Target
-  - Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed.
+  - Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed.
 - **Factor Correctness:** Target
   - The double-entry invariant holds in the recorded evidence; reconciliation is not assessed, so the factor rating is target but incomplete.
 - **Analysis record:** `analysis/ledger.json`
@@ -109,7 +109,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **Local rating:** Target
   - The Webhooks target's own signing requirement is rated target.
 - **Aggregate rating:** Minimum
-  - The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating.
+  - The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating.
 - **Factor Security:** Target
   - Every emit path signs webhook payloads and no unsigned path was found.
 - **Analysis record:** `analysis/webhooks.json`
@@ -120,7 +120,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **Local rating:** Minimum
   - The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor.
 - **Aggregate rating:** Minimum
-  - Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum.
+  - Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum.
 - **Factor Reliability:** Minimum
   - Retry-with-backoff reaches target, but redelivery deduplication is bounded and best-effort, so the reliability factor is minimum.
 - **Analysis record:** `analysis/webhooks-delivery.json`
@@ -130,7 +130,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### No credentials are committed to the repository
 
 - **State:** active
-- **Target:** Sparrow Payments API
+- **Area:** Sparrow Payments API
 - **Rating:** Unacceptable
 - **Assessment result record:** `assessments/001-root-no-credentials-are-committed-to-the-repository.json`
 - **Rationale:** Rated against this requirement's ratings overrides. Unacceptable applies because a live credential is present in the working tree; a single live secret satisfies that criterion regardless of clean findings elsewhere. The secret value is withheld and referenced only by locator and credential type.
@@ -138,7 +138,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Every money-moving endpoint enforces authentication
 
 - **State:** active
-- **Target:** Sparrow Payments API
+- **Area:** Sparrow Payments API
 - **Rating:** Target
 - **Assessment result record:** `assessments/002-root-every-money-moving-endpoint-enforces-authentication.json`
 - **Rationale:** Full route coverage with no unauthenticated money-moving exceptions satisfies the requirement. No evidence of step-up or re-authentication controls was recorded, so the result does not reach outstanding.
@@ -146,7 +146,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Transfers are idempotent on retry
 
 - **State:** active
-- **Target:** Sparrow Payments API
+- **Area:** Sparrow Payments API
 - **Rating:** Target
 - **Assessment result record:** `assessments/003-root-transfers-are-idempotent-on-retry.json`
 - **Rationale:** The transfer entrypoint requires an idempotency key and the replay test shows no duplicate debit on retry. Broader failure-injection evidence was not recorded, so the result remains at target.
@@ -154,7 +154,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Every transfer debits and credits to a net zero (double-entry invariant)
 
 - **State:** active
-- **Target:** Ledger
+- **Area:** Ledger
 - **Rating:** Target
 - **Assessment result record:** `assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json`
 - **Rationale:** The invariant is enforced before commit and covered by a property test over observed transfer paths. Multi-currency rounding paths were not exercised, so the result remains below outstanding.
@@ -162,7 +162,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Reconciliation runs daily and flags drift
 
 - **State:** active
-- **Target:** Ledger
+- **Area:** Ledger
 - **Rating:** not assessed
 - **Assessment result record:** `assessments/005-ledger-reconciliation-runs-daily-and-flags-drift.json`
 - **Rationale:** Insufficient evidence to rate against the scale, so the requirement is recorded as not assessed rather than assigned a level. The Ledger local rating rests on its assessed requirement and is noted as incomplete.
@@ -170,7 +170,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Every outbound webhook is signed so merchants can verify its origin
 
 - **State:** active
-- **Target:** Webhooks
+- **Area:** Webhooks
 - **Rating:** Target
 - **Assessment result record:** `assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json`
 - **Rationale:** Every recorded emit path signs the payload with origin and replay protection, and tamper rejection is tested. Per-merchant signing-secret rotation was not recorded, so the result remains below outstanding.
@@ -178,7 +178,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Failed deliveries retry with exponential backoff until acknowledged or the retry window expires
 
 - **State:** active
-- **Target:** Delivery
+- **Area:** Delivery
 - **Rating:** Target
 - **Assessment result record:** `assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json`
 - **Rationale:** Failures retry with exponential backoff until acknowledgment or the bounded retry window expires, and exhausted deliveries are recorded rather than silently dropped. Broader failure-injection evidence was not recorded, so the result remains below outstanding.
@@ -186,10 +186,10 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### A redelivery of an already-acknowledged event is suppressed for that endpoint
 
 - **State:** active
-- **Target:** Delivery
+- **Area:** Delivery
 - **Rating:** Minimum
 - **Assessment result record:** `assessments/008-webhooks-delivery-a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint.json`
-- **Rationale:** Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the target's intent while remaining at the acceptable floor.
+- **Rationale:** Deduplication exists and covers the common case but is bounded and best-effort. A duplicate is reachable on a known path, so the requirement falls short of the area's intent while remaining at the acceptable floor.
 
 ## Findings
 

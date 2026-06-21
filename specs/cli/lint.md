@@ -63,8 +63,8 @@ when **all four** of the following hold:
    evaluative judgment is out of scope — that is the evaluation skills' work.
 4. **Self-contained.** It is decidable from the single file plus its own declared
    cross-references (e.g. resolving a factor reference, a `ratings`
-   override key). A rule MUST NOT resolve a target's `source` or read the
-   entities a target evaluates; that is beyond format conformance.
+   override key). A rule MUST NOT resolve a area's `source` or read the
+   entities an area evaluates; that is beyond format conformance.
 
 Structural validation — valid keys, required/recommended/optional properties,
 YAML value shapes, the model-content group, and the rating-scale minimum — MUST
@@ -78,7 +78,7 @@ Every rule carries a fixed **severity** that governs how its finding surfaces:
 - **error** — a spec **MUST**/**MUST NOT** is violated; the file is not a valid
   QUALITY.md file. Errors are what make `lint` exit non-zero.
 - **warning** — a spec **SHOULD**/**RECOMMENDED** that is still mechanically
-  determinable is unmet (e.g. a recommended `description` is absent, or a target
+  determinable is unmet (e.g. a recommended `description` is absent, or an area
   whose subtree reaches no requirement). Warnings do not affect the exit code.
 - **info** — a non-judgmental structural observation (e.g. a model summary), not
   a defect.
@@ -92,13 +92,13 @@ MUST follow these guidelines:
 - **kebab-case**, lowercase, naming the **condition checked** as a noun phrase —
   not an imperative. Prefer `missing-criterion` over `criterion-required` or
   `no-missing-criterion`.
-- Use one of two shapes: **`<defect>-<subject>`** for the defect a rule rejects
+- Use one of two shapes: **`<defect>-<concept>`** for the defect a rule rejects
   (`missing-rating-scale`, `duplicate-level`, `unknown-factor`) or
-  **`<subject>-<aspect>`** for a neutral observation about a subject (e.g. a
+  **`<concept>-<aspect>`** for a neutral observation about a concept (e.g. a
   future `model-summary` info rule). Every rule in the current set is
-  `<defect>-<subject>`; the second shape is reserved for the `info` observations
+  `<defect>-<concept>`; the second shape is reserved for the `info` observations
   defined later.
-- Name the subject in QUALITY.md vocabulary — Target, Factor, Requirement,
+- Name the concept in QUALITY.md vocabulary — Area, Factor, Requirement,
   Rating Scale, Rating Level, Assessment — never ISO terms or implementation
   names.
 - Keep it short; prefer two words. Do not prefix ids with `quality-` or similar;
@@ -121,7 +121,7 @@ catalog. It MUST:
 
 - be **one present-tense sentence**, generic — describing the check, never a
   specific occurrence, with no interpolated values;
-- **state the triggering condition**, leading with the subject in QUALITY.md
+- **state the triggering condition**, leading with the concept in QUALITY.md
   vocabulary — e.g. "Flags a requirement whose `assessment` is missing, empty,
   or a list.";
 - **name the exact frontmatter key it inspects** in backticks (`ratingScale`,
@@ -216,7 +216,7 @@ frontmatter nodes:
 - Unrelated YAML keys **MUST NOT** be reordered or rewritten unless the rewrite is
   necessary to apply the repair deterministically.
 - The write should be atomic from the caller's perspective: write a complete
-  replacement and then replace the target path, rather than truncating the
+  replacement and then replace the area path, rather than truncating the
   original before the replacement is ready.
 - To avoid ambiguous replacement behavior, `lint --fix` should refuse to
   repair a linted path that is a symbolic link until symlink write semantics are
@@ -396,16 +396,16 @@ Each enforces a **MUST** — its finding means the file is not a valid
 | -------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------- | ---------------------------------------------------------------------------------- |
 | `invalid-frontmatter`      | *YAML Frontmatter* — a file MUST begin with a valid YAML frontmatter block                | Rejects frontmatter that is absent, not valid YAML, or not the model's shape.                    | No      | Parse and shape failures do not have one safe structural repair.                   |
 | `missing-rating-scale`     | *Model* — `ratingScale` is required                                                       | Flags a model that declares no `ratingScale`.                                                    | No      | The scale defines model semantics; the format has no single required scale.        |
-| `missing-title`            | *Model / Target / Factor / Rating Scale* — each displayable element requires a `title`    | Flags a Model, Target, Factor, or Rating Level with no non-empty scalar `title`.                 | No      | A title names the element for readers and cannot be inferred mechanically.         |
+| `missing-title`            | *Model / Area / Factor / Rating Scale* — each displayable element requires a `title`      | Flags a Model, Area, Factor, or Rating Level with no non-empty scalar `title`.                   | No      | A title names the element for readers and cannot be inferred mechanically.         |
 | `too-few-levels`           | *Rating Scale* — at least two rating levels MUST be supplied                              | Flags a `ratingScale` with fewer than two rating levels.                                         | No      | Adding levels requires choosing scale vocabulary and criteria.                     |
 | `missing-level-name`       | *Rating Scale* — each level MUST declare a `level` name                                   | Flags a rating level that declares no `level` name.                                              | No      | A generated name would define rating vocabulary for the author.                    |
 | `duplicate-level`          | *Rating Scale* — a `level` name MUST be unique within the scale                           | Flags two rating levels that share a `level` name.                                               | No      | Repair requires choosing which level to rename, merge, or remove.                  |
 | `missing-criterion`        | *Rating Scale* — each level MUST declare a `criterion`                                    | Flags a rating level that declares no `criterion`.                                               | No      | Criterion text defines rating semantics and cannot be inferred mechanically.       |
-| `empty-model`              | *Model* — an entry on `factors`, `requirements`, or `targets` MUST be supplied            | Flags a model root that supplies no entry under `factors`, `requirements`, or `targets`.         | No      | Repair requires choosing what kind of model content to add.                        |
-| `misplaced-root-key`       | *Target* — a Target MUST NOT declare `ratingScale`                                        | Flags a target that declares `ratingScale`.                                                      | No      | Repair requires deciding whether to remove, move, or reinterpret authored content. |
+| `empty-model`              | *Model* — an entry on `factors`, `requirements`, or `areas` MUST be supplied              | Flags a model root that supplies no entry under `factors`, `requirements`, or `areas`.           | No      | Repair requires choosing what kind of model content to add.                        |
+| `misplaced-root-key`       | *Area* — a Area MUST NOT declare `ratingScale`                                            | Flags an area that declares `ratingScale`.                                                       | No      | Repair requires deciding whether to remove, move, or reinterpret authored content. |
 | `invalid-assessment`       | *Requirement* — a requirement MUST declare exactly one `assessment` as a non-empty scalar | Flags a requirement whose `assessment` is missing, empty, or a list rather than a single scalar. | No      | Repair requires choosing the requirement's assessment text.                        |
-| `unknown-factor`           | *Requirement* — each factor reference MUST resolve to a factor in scope                   | Flags a requirement whose `factors` entry references no factor on its target or an ancestor.     | No      | Repair requires choosing the intended in-scope factor or adding a new one.         |
-| `missing-factor-reference` | *Requirement* — every requirement MUST be connected to at least one factor                | Flags a direct target-level requirement with no non-empty scalar factor reference.               | No      | Repair requires choosing the intended factor or moving the requirement under one.  |
+| `unknown-factor`           | *Requirement* — each factor reference MUST resolve to a factor in scope                   | Flags a requirement whose `factors` entry references no factor on its area or an ancestor.       | No      | Repair requires choosing the intended in-scope factor or adding a new one.         |
+| `missing-factor-reference` | *Requirement* — every requirement MUST be connected to at least one factor                | Flags a direct area-level requirement with no non-empty scalar factor reference.                 | No      | Repair requires choosing the intended factor or moving the requirement under one.  |
 | `unknown-rating-key`       | *Requirement* — each `ratings` override key MUST name a level of the rating scale         | Flags a `ratings` override key that names no level in the model's `ratingScale`.                 | No      | Repair requires choosing the intended rating level or changing the scale.          |
 
 ### Warnings
@@ -413,21 +413,21 @@ Each enforces a **MUST** — its finding means the file is not a valid
 Each enforces a mechanically determinable **SHOULD**/**RECOMMENDED** — its
 finding is advisory and does not affect the exit code.
 
-| Rule                         | Enforces (format spec)                                                       | Description                                                                                                                        | Fixable | Fixable rationale                                                                             |
-| ---------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
-| `missing-level-description`  | *Rating Scale* — a level `description` is RECOMMENDED                        | Warns when a rating level declares no `description`.                                                                               | No      | A description states the level's meaning and requires authored content.                       |
-| `missing-factor-description` | *Factor* — a factor SHOULD declare a `description`                           | Warns when a factor declares no `description`.                                                                                     | No      | A description states what the factor means and requires authored content.                     |
-| `empty-factor`               | *Factor* — a factor SHOULD lead to at least one requirement                  | Warns when a factor leads to no `requirements` declared under it, referencing it under `factors`, or reached through a sub-factor. | No      | Repair requires adding or moving requirements, or adding factor references with model intent. |
-| `empty-target`               | *Target* — each target SHOULD lead to a requirement somewhere in its subtree | Warns when a target's subtree reaches no `requirements`.                                                                           | No      | Repair requires choosing target content or restructuring the target tree.                     |
-| `empty-property`             | *YAML Frontmatter* — null or empty optional properties SHOULD be omitted     | Warns when an optional property is present but null or empty instead of omitted.                                                   | Yes     | Removing the empty optional property is the required structural repair.                       |
+| Rule                         | Enforces (format spec)                                                   | Description                                                                                                                        | Fixable | Fixable rationale                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `missing-level-description`  | *Rating Scale* — a level `description` is RECOMMENDED                    | Warns when a rating level declares no `description`.                                                                               | No      | A description states the level's meaning and requires authored content.                       |
+| `missing-factor-description` | *Factor* — a factor SHOULD declare a `description`                       | Warns when a factor declares no `description`.                                                                                     | No      | A description states what the factor means and requires authored content.                     |
+| `empty-factor`               | *Factor* — a factor SHOULD lead to at least one requirement              | Warns when a factor leads to no `requirements` declared under it, referencing it under `factors`, or reached through a sub-factor. | No      | Repair requires adding or moving requirements, or adding factor references with model intent. |
+| `empty-area`                 | *Area* — each area SHOULD lead to a requirement somewhere in its subtree | Warns when an area's subtree reaches no `requirements`.                                                                            | No      | Repair requires choosing area content or restructuring the area tree.                         |
+| `empty-property`             | *YAML Frontmatter* — null or empty optional properties SHOULD be omitted | Warns when an optional property is present but null or empty instead of omitted.                                                   | Yes     | Removing the empty optional property is the required structural repair.                       |
 
 ### Not checked
 
 - **Rating-level order.** The spec requires levels ordered best-to-worst, but
   that ordering is semantic and cannot be verified mechanically, so no rule
   enforces it (fails [Rule scope](#rule-scope) criterion 2).
-- **Body heading.** The body's top-level heading should name the model's subject
-  (matching `title` when set), but whether a heading *names* a subject is a
+- **Body heading.** The body's top-level heading should name the root area
+  (matching `title` when set), but whether a heading names the root area is a
   semantic judgment rather than a string match, so no rule enforces it (fails
   [Rule scope](#rule-scope) criterion 2).
 - **`info` rules.** The initial set defines none; the severity is reserved for

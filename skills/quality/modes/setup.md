@@ -6,7 +6,7 @@ user toward guided population.
 ## Decision Tree
 
 ```text
-Resolve target file
+Resolve model file
 - missing? run qualitymd init [path]
 - present? do not overwrite; validate it
 
@@ -18,21 +18,21 @@ Run qualitymd lint
 ## Procedure
 
 1. Verify the CLI prerequisite from `SKILL.md`.
-2. Resolve the target file.
+2. Resolve the model file.
 3. Emit the run frame:
 
    ```text
    /quality run
    - Mode: setup
-   - Target file: <resolved path>
+   - Model file: <resolved path>
    - Scope: model skeleton/readiness
    - Mutation: `QUALITY.md` when missing or when an existing model change is confirmed
    - Artifacts: `QUALITY.md`
    - Next gate: lint result, guided population, then wizard next step
    ```
 
-4. If no target file exists, run `qualitymd init [path]`.
-5. If the target file exists and setup would change it, use a decision brief
+4. If no model file exists, run `qualitymd init [path]`.
+5. If the model file exists and setup would change it, use a decision brief
    before editing:
 
    ```text

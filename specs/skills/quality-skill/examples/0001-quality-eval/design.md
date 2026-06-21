@@ -5,13 +5,12 @@ The resolved inputs this run is bound to. The [report](report.md) states the
 
 ## Parameters
 
-| Parameter       | Value                                                           |
-| --------------- | --------------------------------------------------------------- |
-| **Mode**        | `evaluate`                                                      |
-| **Altitude**    | subject — the entities the model measures, not the model itself |
-| **Target file** | `./QUALITY.md`                                                  |
-| **Scope**       | full evaluation — no target or factor narrowing                 |
-| **Rigor**       | `standard`                                                      |
+| Parameter      | Value                                         |
+| -------------- | --------------------------------------------- |
+| **Mode**       | `evaluate`                                    |
+| **Model file** | `./QUALITY.md`                                |
+| **Scope**      | full evaluation — no area or factor narrowing |
+| **Rigor**      | `standard`                                    |
 
 ## Model snapshot
 
@@ -19,13 +18,13 @@ Bound to the model captured in [`model.md`](model.md) — the `./QUALITY.md` in
 force at evaluation time, reproduced verbatim so the report's findings trace to
 the exact requirements and `source` selectors they were rated against.
 
-## Subject
+## Root area
 
 - **Source:** `sparrow-payments` at commit `9f2c1ab`, with the `./QUALITY.md`
   model at the same revision.
 - **Source resolved from:** `./` (root), `./ledger` (Ledger), `./webhooks`
   (Webhooks), and `./webhooks/delivery` (Delivery) — the `source` selectors the
-  in-scope targets declare.
+  in-scope areas declare.
 - **Evaluator:** the `/quality` skill — the deterministic `qualitymd` surface for
   structure and source resolution, agent assessment for the findings — on
   2026-06-17.

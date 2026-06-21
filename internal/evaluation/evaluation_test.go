@@ -31,11 +31,11 @@ requirements:
 
 func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	repo := testRepo(t)
-	result, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	if result.Path != "quality/evaluations/0001-subject-quality-eval" {
+	if result.Path != "quality/evaluations/0001-quality-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
 	for _, name := range []string{"model.md", "debug-log.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
@@ -53,23 +53,23 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 		}
 	}
 
-	second, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	second, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("second CreateRun() error = %v", err)
 	}
-	if second.Path != "quality/evaluations/0002-subject-quality-eval" {
-		t.Fatalf("second path = %q, want next subject run", second.Path)
+	if second.Path != "quality/evaluations/0002-quality-eval" {
+		t.Fatalf("second path = %q, want next quality run", second.Path)
 	}
 }
 
-func TestCreateRunValidatesSubjectBeforeCreatingRunFolder(t *testing.T) {
+func TestCreateRunValidatesModelBeforeCreatingRunFolder(t *testing.T) {
 	repo := testRepo(t)
-	_, err := CreateRun(Options{RepoRoot: repo, Subject: "."})
+	_, err := CreateRun(Options{RepoRoot: repo, Model: "."})
 	if err == nil {
 		t.Fatal("CreateRun() error = nil, want invalid subject")
 	}
-	if !strings.Contains(err.Error(), "--subject") {
-		t.Fatalf("CreateRun() error = %v, want subject diagnostic", err)
+	if !strings.Contains(err.Error(), "--model") {
+		t.Fatalf("CreateRun() error = %v, want model diagnostic", err)
 	}
 	if _, err := os.Stat(filepath.Join(repo, "quality")); !os.IsNotExist(err) {
 		t.Fatalf("quality directory stat error = %v, want not exist", err)
@@ -78,14 +78,14 @@ func TestCreateRunValidatesSubjectBeforeCreatingRunFolder(t *testing.T) {
 
 func TestInspectReportsCompatibilityGapsAndDiscoveredCounts(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 	writeRunFile(t, runPath, "assessments/001-malformed.json", `{`)
 	writeRunFile(t, runPath, "assessments/002-missing-schema.json", `{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "factorPaths": [],
   "ratingResult": {
@@ -99,7 +99,7 @@ func TestInspectReportsCompatibilityGapsAndDiscoveredCounts(t *testing.T) {
 }`)
 	writeRunFile(t, runPath, "assessments/003-future-schema.json", `{
   "schemaVersion": 99,
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "factorPaths": [],
   "ratingResult": {
@@ -113,7 +113,7 @@ func TestInspectReportsCompatibilityGapsAndDiscoveredCounts(t *testing.T) {
 }`)
 	writeRunFile(t, runPath, "analysis/root.json", `{
   "schemaVersion": 1,
-  "targetPath": []
+  "areaPath": []
 }`)
 	writeRunFile(t, runPath, "recommendations/001-bad.md", `# No runtime frontmatter
 `)
@@ -160,12 +160,12 @@ func TestInspectReportsCompatibilityGapsAndDiscoveredCounts(t *testing.T) {
 
 func TestListRunsIncludesReportableAndIncompatibleRuns(t *testing.T) {
 	repo := testRepo(t)
-	first, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	first, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(first) error = %v", err)
 	}
 	completeReportableRun(t, filepath.Join(repo, first.Path))
-	second, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	second, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(second) error = %v", err)
 	}
@@ -188,7 +188,7 @@ func TestListRunsIncludesReportableAndIncompatibleRuns(t *testing.T) {
 
 func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -215,7 +215,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	}
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [
@@ -252,7 +252,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	}
 
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -293,12 +293,12 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{"## Verdict", "## Scope", "## Selected Findings and Limitations", "## Evidence Basis", "## Next Action", "## Target Summary", "- **Evaluation verdict:** 🟡 Minimum", "| Test model | 🟡 Minimum | 🟡 Minimum |"} {
+	for _, want := range []string{"## Verdict", "## Scope", "## Selected Findings and Limitations", "## Evidence Basis", "## Next Action", "## Area Summary", "- **Evaluation verdict:** 🟡 Minimum", "| Test model | 🟡 Minimum | 🟡 Minimum |"} {
 		if !strings.Contains(string(reportMD), want) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
 		}
 	}
-	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"targetSummary": [`, `"recommendations": [`, `"ratingResult": {`, `"level": "minimum"`, `"severity": {`, `"level": "medium"`, `"title": "Medium"`} {
+	for _, want := range []string{`"scope": {`, `"evidenceBasis": [`, `"areaSummary": [`, `"recommendations": [`, `"ratingResult": {`, `"level": "minimum"`, `"severity": {`, `"level": "medium"`, `"title": "Medium"`} {
 		if !strings.Contains(string(first), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, first)
 		}
@@ -362,7 +362,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 
 func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -376,7 +376,7 @@ func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
 		{
 			name: "missing",
 			raw: `{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [
@@ -399,7 +399,7 @@ func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
 		{
 			name: "unknown",
 			raw: `{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [
@@ -438,14 +438,14 @@ func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
 
 func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 	if err := os.WriteFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"), []byte(`{
   "schemaVersion": 1,
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "factorPaths": [],
   "ratingResult": {
@@ -485,14 +485,14 @@ func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *test
 
 func TestLoadedAssessmentResultWithInvalidRatingResultIsNotReportable(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 	if err := os.WriteFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"), []byte(`{
   "schemaVersion": 1,
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "factorPaths": [],
   "ratingResult": {
@@ -548,7 +548,7 @@ factors:
   reliability:
     title: Operational reliability
     description: Reliable operation.
-targets:
+areas:
   api-service:
     title: API Service
     factors:
@@ -563,14 +563,14 @@ targets:
         assessment: Inspect API handling.
 ---
 `)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "api-service"
   ],
   "requirement": "Handles API requests",
@@ -594,7 +594,7 @@ targets:
 		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "api-service"
   ],
   "childAnalysisRecords": [],
@@ -637,7 +637,7 @@ targets:
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [
     "analysis/api-service.json"
   ],
@@ -681,14 +681,14 @@ targets:
 	}
 
 	for _, want := range []string{
-		"- **Subject:** Root Quality Model",
+		"- **Root area:** Root Quality Model",
 		"| Root Quality Model | n/a (structural) | Good |",
 		"| API Service | Good | Good |",
 		"### API Service",
 		"- **Path:** api-service",
 		"- **Factor Automation compatibility:** Good",
 		"- **Factor Operational reliability:** Good",
-		"- **Target:** API Service",
+		"- **Area:** API Service",
 	} {
 		if !strings.Contains(string(reportMD), want) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
@@ -699,14 +699,14 @@ targets:
 		"### api-service",
 		"- **Factor automation-compatibility:**",
 		"- **Factor reliability:**",
-		"- **Target:** api-service",
+		"- **Area:** api-service",
 	} {
 		if strings.Contains(string(reportMD), notWant) {
 			t.Fatalf("report.md contains raw identifier label %q:\n%s", notWant, reportMD)
 		}
 	}
 	for _, want := range []string{
-		"| Subject | Root Quality Model |",
+		"| Root area | Root Quality Model |",
 		"| Root Quality Model | n/a (structural) | Good |",
 		"| API Service | Good | Good |",
 	} {
@@ -714,7 +714,7 @@ targets:
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
 	}
-	for _, want := range []string{`"targetPath": [`, `"api-service"`, `"factorPath": [`, `"automation-compatibility"`, `"reliability"`, `"ratingResult": {`, `"level": "target"`} {
+	for _, want := range []string{`"areaPath": [`, `"api-service"`, `"factorPath": [`, `"automation-compatibility"`, `"reliability"`, `"ratingResult": {`, `"level": "target"`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing stable identifier %q:\n%s", want, reportJSON)
 		}
@@ -744,20 +744,20 @@ func TestDisplayRatingUsesTitleAndPreservesNonRatingStates(t *testing.T) {
 
 func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Narrowing: "child-quick", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Narrowing: "child-quick", Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
-	if err := os.WriteFile(filepath.Join(runPath, "design.md"), []byte("# Evaluation design\n\n## Resolved parameters\n\n- Mode: evaluate\n- Altitude: subject\n- Target file: `QUALITY.md`\n- Scope description: child target quick pass\n- Narrowing: `child-quick`\n- Rigor: quick\n\n## Out of Scope\n\n- Browser tests.\n- Package-manager integration.\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(runPath, "design.md"), []byte("# Evaluation design\n\n## Resolved parameters\n\n- Mode: evaluate\n- Model file: `QUALITY.md`\n- Scope description: child area quick pass\n- Narrowing: `child-quick`\n- Rigor: quick\n\n## Out of Scope\n\n- Browser tests.\n- Package-manager integration.\n"), 0o644); err != nil {
 		t.Fatalf("write design.md: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte("# Evaluation plan\n\n## Rigor\n\nQuick pass over one child target.\n\n## Planned limitations\n\n- Does not execute the full CI matrix.\n- Defers performance benchmarks.\n\n## Deferred Areas\n\n- Release packaging.\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte("# Evaluation plan\n\n## Rigor\n\nQuick pass over one child area.\n\n## Planned limitations\n\n- Does not execute the full CI matrix.\n- Defers performance benchmarks.\n\n## Deferred Areas\n\n- Release packaging.\n"), 0o644); err != nil {
 		t.Fatalf("write plan.md: %v", err)
 	}
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Child"
   ],
   "requirement": "Has tests",
@@ -774,7 +774,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Child"
   ],
   "childAnalysisRecords": [],
@@ -796,7 +796,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 		t.Fatalf("AddRecord(child analysis) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [
     "analysis/child.json"
   ],
@@ -828,7 +828,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 			t.Fatalf("report.json missing %q:\n%s", want, reportJSON)
 		}
 	}
-	for _, want := range []string{`"description": "child target quick pass"`, `"outOfScope": [`, `Browser tests.`, `Package-manager integration.`, `Does not execute the full CI matrix.`, `Defers performance benchmarks.`, `Release packaging.`, `"notRecorded": []`} {
+	for _, want := range []string{`"description": "child area quick pass"`, `"outOfScope": [`, `Browser tests.`, `Package-manager integration.`, `Does not execute the full CI matrix.`, `Defers performance benchmarks.`, `Release packaging.`, `"notRecorded": []`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing context %q:\n%s", want, reportJSON)
 		}
@@ -847,8 +847,8 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 	if err != nil {
 		t.Fatalf("Report() error = %v", err)
 	}
-	if len(report.Targets) == 0 || report.Targets[0].LocalRating.Kind != LocalRatingStructural {
-		t.Fatalf("root local rating = %#v, want structural", report.Targets)
+	if len(report.Areas) == 0 || report.Areas[0].LocalRating.Kind != LocalRatingStructural {
+		t.Fatalf("root local rating = %#v, want structural", report.Areas)
 	}
 	if got := strings.Count(strings.Join(report.Limitations, "\n"), "Does not execute the full CI matrix"); got != 1 {
 		t.Fatalf("duplicate limitation count = %d, limitations = %#v", got, report.Limitations)
@@ -857,7 +857,7 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 
 func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -881,7 +881,7 @@ func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 		t.Fatalf("AddRecord(recommendation) error = %v", err)
 	}
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [
@@ -930,7 +930,7 @@ func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -976,7 +976,7 @@ func TestReportRegressionAdverseSafetyFindings(t *testing.T) {
 
 func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -998,7 +998,7 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 		t.Fatalf("AddRecord(recommendation) error = %v", err)
 	}
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [
@@ -1031,7 +1031,7 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "not-assessed",
@@ -1063,8 +1063,8 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	if report.RatingResult.Kind != "not-assessed" || report.RatingResult.Level != "" {
 		t.Fatalf("root ratingResult = %#v, want not assessed with empty level", report.RatingResult)
 	}
-	if len(report.Targets) != 1 || report.Targets[0].LocalRating.Kind != LocalRatingNotAssessed {
-		t.Fatalf("local rating = %#v, want not assessed", report.Targets)
+	if len(report.Areas) != 1 || report.Areas[0].LocalRating.Kind != LocalRatingNotAssessed {
+		t.Fatalf("local rating = %#v, want not assessed", report.Areas)
 	}
 	if len(report.AssessmentResults) != 1 || report.AssessmentResults[0].RatingResult.Kind != "not-assessed" || report.AssessmentResults[0].RatingResult.Level != "" {
 		t.Fatalf("assessment result = %#v, want not assessed with empty level", report.AssessmentResults)
@@ -1082,14 +1082,14 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 
 func TestStatusRequiresRootAnalysis(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Narrowing: "child-only", Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Narrowing: "child-only", Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Child"
   ],
   "requirement": "Has tests",
@@ -1106,7 +1106,7 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Child"
   ],
   "childAnalysisRecords": [],
@@ -1146,14 +1146,14 @@ func TestStatusRequiresRootAnalysis(t *testing.T) {
 
 func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 
 	payload := []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1172,7 +1172,7 @@ func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
 		t.Fatalf("AddRecord(duplicate assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -1216,14 +1216,14 @@ func TestStatusRejectsDuplicateAssessmentResults(t *testing.T) {
 
 func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1238,7 +1238,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
 		t.Fatalf("AddRecord(first assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1256,7 +1256,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
 		t.Fatalf("AddRecord(corrected assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -1289,7 +1289,7 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
 	}
 
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -1342,14 +1342,14 @@ func TestAssessmentResultSupersedingRequiresActiveAnalysisReference(t *testing.T
 
 func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, run.Path)
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1375,13 +1375,13 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 	}
 
 	repo = testRepo(t)
-	run, err = CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err = CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(second) error = %v", err)
 	}
 	runPath = filepath.Join(repo, run.Path)
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1396,7 +1396,7 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 		t.Fatalf("AddRecord(first assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has docs",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1430,7 +1430,7 @@ func TestAssessmentResultSupersedingRejectsMissingOrDifferentRequirement(t *test
 
 func TestRecommendationSupersedingSelectsActiveNextStep(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -1482,7 +1482,7 @@ func TestRecommendationSupersedingSelectsActiveNextStep(t *testing.T) {
 	}
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [
@@ -1507,7 +1507,7 @@ func TestRecommendationSupersedingSelectsActiveNextStep(t *testing.T) {
 		t.Fatalf("AddRecord(assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -1577,7 +1577,7 @@ func TestRecommendationSupersedingSelectsActiveNextStep(t *testing.T) {
 
 func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -1626,7 +1626,7 @@ func TestStatusRejectsMissingSupersededRecommendation(t *testing.T) {
 
 func TestPlannedCoverageStatusGaps(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -1634,20 +1634,20 @@ func TestPlannedCoverageStatusGaps(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte(`---
 coverage:
   assessmentResults:
-    - targetPath: []
+    - areaPath: []
       requirement: Has tests
-    - targetPath: [Child]
+    - areaPath: [Child]
       requirement: Has tests
   analyses:
-    - targetPath: []
-    - targetPath: [Child]
+    - areaPath: []
+    - areaPath: [Child]
 ---
 # Evaluation plan
 `), 0o644); err != nil {
 		t.Fatalf("write plan.md: %v", err)
 	}
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1662,7 +1662,7 @@ coverage:
 		t.Fatalf("AddRecord(root assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",
@@ -1697,7 +1697,7 @@ coverage:
 	}
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Child"
   ],
   "requirement": "Has tests",
@@ -1714,7 +1714,7 @@ coverage:
 		t.Fatalf("AddRecord(child assessment result) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Child"
   ],
   "childAnalysisRecords": [],
@@ -1744,7 +1744,7 @@ coverage:
 	}
 
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [
+  "areaPath": [
     "Extra"
   ],
   "requirement": "Has tests",
@@ -1789,13 +1789,13 @@ func TestLimitationSentencesPreservesDottedPaths(t *testing.T) {
 
 func TestAddRecordRejectsCLIOwnedFields(t *testing.T) {
 	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	_, err = AddRecord(KindAssessmentResult, filepath.Join(repo, run.Path), []byte(`{
   "schemaVersion": 1,
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1816,8 +1816,8 @@ func TestAddRecordRejectsCLIOwnedFields(t *testing.T) {
 }
 
 func TestSparrowExampleReportFixtureIsGenerated(t *testing.T) {
-	fixture := filepath.Join("..", "..", "specs", "skills", "quality-skill", "examples", "0001-subject-quality-eval")
-	tempRun := filepath.Join(t.TempDir(), "0001-subject-quality-eval")
+	fixture := filepath.Join("..", "..", "specs", "skills", "quality-skill", "examples", "0001-quality-eval")
+	tempRun := filepath.Join(t.TempDir(), "0001-quality-eval")
 	copyDir(t, fixture, tempRun)
 
 	loaded, err := Load(tempRun)
@@ -1899,7 +1899,7 @@ func writeRunFile(t *testing.T, runPath, name, content string) {
 func completeReportableRun(t *testing.T, runPath string) {
 	t.Helper()
 	if _, err := AddRecord(KindAssessmentResult, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Has tests",
   "criterionSource": "rating-scale",
   "findings": [],
@@ -1914,7 +1914,7 @@ func completeReportableRun(t *testing.T, runPath string) {
 		t.Fatalf("AddRecord(assessment) error = %v", err)
 	}
 	if _, err := AddRecord(KindAnalysis, runPath, []byte(`{
-  "targetPath": [],
+  "areaPath": [],
   "childAnalysisRecords": [],
   "localRatingResult": {
       "kind": "rated",

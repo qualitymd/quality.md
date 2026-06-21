@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [
+  "areaPath": [
     "ledger"
   ],
   "localRatingResult": {
@@ -23,7 +23,7 @@
   "aggregateRatingResult": {
     "kind": "rated",
     "level": "target",
-    "rationale": "Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
+    "rationale": "Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
   },
   "assessmentResultRecords": [
     "assessments/004-ledger-every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant.json",

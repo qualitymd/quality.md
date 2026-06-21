@@ -3,6 +3,56 @@
 ## 2026-06-21
 
 - **Done**: Archived
+  [0047 - Area terminology changeover](archive/0047-area-terminology.md) after
+  implementation and verification. Moved the parent concept and child folder
+  into [`archive/`](archive/), set status to `Done`, added it to the
+  [archive index](archive/index.md), and removed it from the open
+  [changes index](index.md).
+
+- **In-Review**: Completed implementation for
+  [0047 - Area terminology changeover](archive/0047-area-terminology.md). The live
+  schema, typed model, lint/status surfaces, evaluation records, reports, CLI
+  create flag and run naming, durable specs, `/quality` skill guidance,
+  scaffold, dogfood model, README/npm README, changelog, and maintained Sparrow
+  example bundle now use Area/`areas:`/`areaPath` terminology while preserving
+  the default `target` / `Target` rating level. Verified `go test ./...`.
+
+- **In-Progress**: Advanced
+  [0047 - Area terminology changeover](archive/0047-area-terminology.md) from `Design`
+  to `In-Progress` to implement the full no-compatibility Target to Area
+  changeover across the schema, evaluation records, reports, CLI, `/quality`
+  skill, scaffold, dogfood model, maintained examples, and docs. Updated the
+  bundle [index](index.md).
+
+- **Design refinement**: Updated
+  [0047 - Area terminology changeover](archive/0047-area-terminology.md) to keep
+  `source` as the Area selector property. The
+  [functional spec](archive/0047-area-terminology/spec.md) now explicitly rejects
+  renaming `source` and asks prose to distinguish `source` from source code; the
+  [design doc](archive/0047-area-terminology/design.md) records the rejected alternatives.
+
+- **Design**: Advanced
+  [0047 - Area terminology changeover](archive/0047-area-terminology.md) from `Draft` to
+  `Design` and added its
+  [design doc](archive/0047-area-terminology/design.md). The design uses a big-bang
+  schema/type/record rename from Target to Area, replaces user-facing Subject
+  labels with root area or model-file wording, renames evaluation-create
+  `--subject` to `--model`, drops the subject altitude from new run folders, and
+  guards record decoding so legacy `targetPath` records cannot be mistaken for
+  root-area records. Updated the [child index](archive/0047-area-terminology/index.md)
+  and bundle [index](index.md).
+
+- **Creation**: Opened
+  [0047 - Area terminology changeover](archive/0047-area-terminology.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0047-area-terminology/spec.md) and
+  [child index](archive/0047-area-terminology/index.md). The case replaces the formal
+  Target model-node vocabulary with Area, introduces root area as the formal root
+  descriptor, rejects legacy `targets:` / `targetPath` compatibility, and scopes
+  the change across schema, records, reports, CLI, skill, scaffold, examples,
+  and docs. Updated the bundle [index](index.md).
+
+- **Done**: Archived
   [0046 - Evaluation debug log](archive/0046-evaluation-debug-log.md) after
   implementation and verification. Moved the parent concept and child folder
   into [`archive/`](archive/), set status to `Done`, added it to the

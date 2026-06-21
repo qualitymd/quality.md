@@ -116,7 +116,7 @@ func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[stri
 		}
 		rec := AssessmentResultRecord{
 			SchemaVersion:   SchemaVersion,
-			TargetPath:      payload.TargetPath,
+			AreaPath:        payload.AreaPath,
 			Requirement:     payload.Requirement,
 			FactorPaths:     payload.FactorPaths,
 			RatingResult:    payload.RatingResult,
@@ -129,7 +129,7 @@ func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[stri
 		if err != nil {
 			return nil, err
 		}
-		path, err := writeNumbered(filepath.Join(runAbs, "assessments"), targetPathSlug(payload.TargetPath)+"-"+Slug(payload.Requirement)+".json", data)
+		path, err := writeNumbered(filepath.Join(runAbs, "assessments"), areaPathSlug(payload.AreaPath)+"-"+Slug(payload.Requirement)+".json", data)
 		if err != nil {
 			return nil, err
 		}
@@ -161,7 +161,7 @@ func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool) 
 		}
 		rec := AnalysisRecord{
 			SchemaVersion:           SchemaVersion,
-			TargetPath:              payload.TargetPath,
+			AreaPath:                payload.AreaPath,
 			LocalRatingResult:       payload.LocalRatingResult,
 			FactorRatingResults:     payload.FactorRatingResults,
 			AggregateRatingResult:   payload.AggregateRatingResult,
@@ -173,7 +173,7 @@ func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool) 
 		if err != nil {
 			return nil, err
 		}
-		path := filepath.Join(runAbs, "analysis", targetPathSlug(payload.TargetPath)+".json")
+		path := filepath.Join(runAbs, "analysis", areaPathSlug(payload.AreaPath)+".json")
 		_, statErr := os.Stat(path)
 		created := os.IsNotExist(statErr)
 		if len(payloads) == 1 {
@@ -228,11 +228,11 @@ func singlePath(paths []string) string {
 	return ""
 }
 
-func targetPathSlug(targetPath []string) string {
-	if len(targetPath) == 0 {
+func areaPathSlug(areaPath []string) string {
+	if len(areaPath) == 0 {
 		return "root"
 	}
-	return Slug(strings.Join(targetPath, "-"))
+	return Slug(strings.Join(areaPath, "-"))
 }
 
 func verifyRun(runPath string) (string, error) {
@@ -297,8 +297,8 @@ func validateAssessmentResult(p AssessmentResultInput, levels map[string]bool) e
 	if err := validateRatingResult("ratingResult", &p.RatingResult, levels); err != nil {
 		return err
 	}
-	if p.TargetPath == nil {
-		return usagef("targetPath is required")
+	if p.AreaPath == nil {
+		return usagef("areaPath is required")
 	}
 	if p.FactorPaths == nil {
 		return usagef("factorPaths is required")
@@ -352,8 +352,8 @@ func validateRequiredStrings(name string, values []string) error {
 }
 
 func validateAnalysis(p AnalysisInput, levels map[string]bool) error {
-	if p.TargetPath == nil {
-		return usagef("targetPath is required")
+	if p.AreaPath == nil {
+		return usagef("areaPath is required")
 	}
 	if err := validateRatingResult("aggregateRatingResult", &p.AggregateRatingResult, levels); err != nil {
 		return err

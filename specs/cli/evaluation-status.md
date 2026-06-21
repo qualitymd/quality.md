@@ -41,12 +41,12 @@ contract. Status routing **MUST** use those typed gap kinds rather than
 interpreting free-form text in `detail`.
 
 A run is reportable only when exactly one analysis record represents the
-in-scope root target. The root analysis record is identified by an empty
-`targetPath`. If no such record exists, `status` **MUST** return
+in-scope root area. The root analysis record is identified by an empty
+`areaPath`. If no such record exists, `status` **MUST** return
 `reportable: false` with a `missing-root-analysis` gap.
 
 A run is not reportable when two or more assessment result records cover the same
-ordered `targetPath` and `requirement`, unless all but one are superseded by an
+ordered `areaPath` and `requirement`, unless all but one are superseded by an
 active correction record. `status` **MUST** return `reportable: false` with a
 `duplicate-assessment-result` gap that references each later active duplicate
 record.

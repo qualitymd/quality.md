@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Every money-moving endpoint enforces authentication",
   "factorPaths": [
     [

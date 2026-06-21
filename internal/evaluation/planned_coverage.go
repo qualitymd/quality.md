@@ -15,8 +15,8 @@ func validatePlannedCoverage(coverage PlannedCoverage) error {
 	}
 	assessmentResultKeys := map[string]bool{}
 	for i, assessmentResult := range coverage.AssessmentResults {
-		if assessmentResult.TargetPath == nil {
-			return usagef("assessmentResults[%d].targetPath is required", i)
+		if assessmentResult.AreaPath == nil {
+			return usagef("assessmentResults[%d].areaPath is required", i)
 		}
 		if strings.TrimSpace(assessmentResult.Requirement) == "" {
 			return usagef("assessmentResults[%d].requirement is required", i)
@@ -29,8 +29,8 @@ func validatePlannedCoverage(coverage PlannedCoverage) error {
 	}
 	analysisKeys := map[string]bool{}
 	for i, analysis := range coverage.Analyses {
-		if analysis.TargetPath == nil {
-			return usagef("analyses[%d].targetPath is required", i)
+		if analysis.AreaPath == nil {
+			return usagef("analyses[%d].areaPath is required", i)
 		}
 		key := plannedAnalysisIdentity(analysis)
 		if analysisKeys[key] {
@@ -51,24 +51,24 @@ func sortPlannedCoverage(coverage *PlannedCoverage) {
 }
 
 func plannedAssessmentResultIdentity(assessmentResult PlannedAssessmentResult) string {
-	return strings.Join(assessmentResult.TargetPath, "\x00") + "\x00" + assessmentResult.Requirement
+	return strings.Join(assessmentResult.AreaPath, "\x00") + "\x00" + assessmentResult.Requirement
 }
 
 func plannedAnalysisIdentity(analysis PlannedCoverageAnalysis) string {
-	return strings.Join(analysis.TargetPath, "\x00")
+	return strings.Join(analysis.AreaPath, "\x00")
 }
 
 func describePlannedAssessmentResult(assessmentResult PlannedAssessmentResult) string {
-	return fmt.Sprintf("targetPath=%s requirement=%q", describeTargetPath(assessmentResult.TargetPath), assessmentResult.Requirement)
+	return fmt.Sprintf("areaPath=%s requirement=%q", describeAreaPath(assessmentResult.AreaPath), assessmentResult.Requirement)
 }
 
 func describePlannedAnalysis(analysis PlannedCoverageAnalysis) string {
-	return "targetPath=" + describeTargetPath(analysis.TargetPath)
+	return "areaPath=" + describeAreaPath(analysis.AreaPath)
 }
 
-func describeTargetPath(targetPath []string) string {
-	if len(targetPath) == 0 {
+func describeAreaPath(areaPath []string) string {
+	if len(areaPath) == 0 {
 		return "[]"
 	}
-	return fmt.Sprintf("%q", targetPath)
+	return fmt.Sprintf("%q", areaPath)
 }

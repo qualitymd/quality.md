@@ -26,7 +26,7 @@ type Options struct {
 	RepoRoot      string
 	EvaluationDir string
 	Narrowing     string
-	Subject       string
+	Model         string
 }
 
 type CreateRunReceipt struct {
@@ -58,32 +58,32 @@ type PlannedCoverage struct {
 }
 
 type PlannedAssessmentResult struct {
-	TargetPath  TargetPath `json:"targetPath" yaml:"targetPath"`
-	Requirement string     `json:"requirement" yaml:"requirement"`
+	AreaPath    AreaPath `json:"areaPath" yaml:"areaPath"`
+	Requirement string   `json:"requirement" yaml:"requirement"`
 }
 
 type PlannedCoverageAnalysis struct {
-	TargetPath TargetPath `json:"targetPath" yaml:"targetPath"`
+	AreaPath AreaPath `json:"areaPath" yaml:"areaPath"`
 }
 
-type TargetPath []string
+type AreaPath []string
 
-func (p TargetPath) Clone() TargetPath {
+func (p AreaPath) Clone() AreaPath {
 	if len(p) == 0 {
-		return TargetPath{}
+		return AreaPath{}
 	}
-	return append(TargetPath(nil), p...)
+	return append(AreaPath(nil), p...)
 }
 
-func (p TargetPath) Elements() []string {
+func (p AreaPath) Elements() []string {
 	return []string(p)
 }
 
-func (p TargetPath) IdentityKey() string {
+func (p AreaPath) IdentityKey() string {
 	return strings.Join(p, "\x00")
 }
 
-func (p TargetPath) Display() string {
+func (p AreaPath) Display() string {
 	if len(p) == 0 {
 		return "root"
 	}
@@ -178,7 +178,7 @@ func findingSeverityLevels() string {
 }
 
 type AssessmentResultInput struct {
-	TargetPath      TargetPath   `json:"targetPath"`
+	AreaPath        AreaPath     `json:"areaPath"`
 	Requirement     string       `json:"requirement"`
 	FactorPaths     []FactorPath `json:"factorPaths"`
 	RatingResult    RatingResult `json:"ratingResult"`
@@ -190,7 +190,7 @@ type AssessmentResultInput struct {
 
 type AssessmentResultRecord struct {
 	SchemaVersion   int          `json:"schemaVersion"`
-	TargetPath      TargetPath   `json:"targetPath"`
+	AreaPath        AreaPath     `json:"areaPath"`
 	Requirement     string       `json:"requirement"`
 	FactorPaths     []FactorPath `json:"factorPaths"`
 	RatingResult    RatingResult `json:"ratingResult"`
@@ -308,13 +308,12 @@ func (r EvaluationRigor) Display() string {
 type EvaluationLevel string
 
 const (
-	EvaluationLevelSubject EvaluationLevel = "subject"
-	EvaluationLevelModel   EvaluationLevel = "model"
+	EvaluationLevelModel EvaluationLevel = "model"
 )
 
 func (l EvaluationLevel) Valid() bool {
 	switch l {
-	case EvaluationLevelSubject, EvaluationLevelModel:
+	case EvaluationLevelModel:
 		return true
 	default:
 		return false
@@ -357,7 +356,7 @@ type RatingConstraint struct {
 }
 
 type AnalysisInput struct {
-	TargetPath              TargetPath           `json:"targetPath"`
+	AreaPath                AreaPath             `json:"areaPath"`
 	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
 	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
 	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`
@@ -368,7 +367,7 @@ type AnalysisInput struct {
 
 type AnalysisRecord struct {
 	SchemaVersion           int                  `json:"schemaVersion"`
-	TargetPath              TargetPath           `json:"targetPath"`
+	AreaPath                AreaPath             `json:"areaPath"`
 	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
 	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
 	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`

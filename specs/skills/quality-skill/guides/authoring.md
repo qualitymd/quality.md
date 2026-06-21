@@ -54,7 +54,7 @@ duty below, which makes the format spec the authority whenever the two disagree.
 > conformance duty is the price that keeps it honest.
 
 **In scope:** authoring a useful QUALITY.md — its file shape, the model
-concepts (rating scale, targets, factors, requirements), the Markdown body, and
+concepts (rating scale, areas, factors, requirements), the Markdown body, and
 durable authoring practices such as body-first model development, rating-scale
 fit, deriving Factors from Needs/Risks, writing assessable Requirements, and
 recording each section's unknowns and open questions.
@@ -74,7 +74,7 @@ playbook belongs to the getting-started guide, which depends on this guide.
 The guide **MUST conform to** [`SPECIFICATION.md`](../../../../SPECIFICATION.md):
 every concept definition, property, presence level (Required / Recommended /
 Optional), and rating-vocabulary term it states **MUST** match the format spec.
-The guide **MUST** teach that `title` is required on the Model, every Target,
+The guide **MUST** teach that `title` is required on the Model, every Area,
 every Factor, and every Rating Level, and that Requirements do not have a
 separate `title` because the requirement statement is their display text.
 Conformance is the binding relationship, not deference — the guide phrases the
@@ -94,7 +94,7 @@ The guide is organized for a reader who is authoring, mixing **reference** (what
 a concept is) with **how-to** (the jobs of working with it):
 
 - The guide **MUST** use a **single level** of concept hierarchy: each top-level
-  QUALITY.md concept (the file, the model, rating scale, target, factor,
+  QUALITY.md concept (the file, the model, rating scale, area, factor,
   requirement, the body) is its own chapter. A concept's sub-concepts and
   properties **MUST** be documented *within* their parent concept's chapter, not
   promoted to their own chapters.
@@ -116,7 +116,7 @@ a concept is) with **how-to** (the jobs of working with it):
 
 - Concept chapters should be ordered as an author builds a useful first model:
   the file and model frame first, then the Markdown body, then the rating scale,
-  then the target tree (target → factor → requirement), then maintenance.
+  then the area tree (area → factor → requirement), then maintenance.
 
 These conventions exist so the guide reads consistently and a reader can either
 read a chapter straight through to understand a concept or jump to "Working with…"
@@ -128,13 +128,13 @@ QUALITY.md format itself.
 The guide **MUST** teach body-first model development: fill the Markdown body
 before expanding the model tree, because the body supplies the evaluable
 judgment context for choosing the rating scale, Factors, Requirements, and
-scope, and for later judging whether the model still fits the subject.
+scope, and for later judging whether the model still fits the root area.
 
 The guide **MUST** state desired outcomes for the recommended body sections:
 Overview, Scope, Needs, and Risks. The guide **MUST** teach that the body is
 context for building the model, understanding the model's purpose, using the
 model in evaluation, evaluating the model's quality, and deciding whether the
-model still fits the subject.
+model still fits the root area.
 
 The guide **MUST** teach a common section shape under which each section records
 its own unknowns (broad areas of uncertainty about the section's topic that may
@@ -149,7 +149,7 @@ omitting them.
 
 The guide **MUST** teach that body sections are themselves evaluable: a later
 human or agent should be able to judge their completeness, thoroughness,
-recency, subject specificity, grounding, agent-accessibility, and open
+recency, root area specificity, grounding, agent-accessibility, and open
 questions. The guide **MUST** teach sections to be concise, rigorous, and
 self-explanatory, with supporting detail cited rather than copied when citation
 keeps the body readable.
@@ -172,7 +172,7 @@ and endorses the section.
 
 The guide **MUST** teach that the rating scale should be reviewed after the body
 and before writing Requirements, so the shared rating vocabulary fits the
-subject's decision context.
+root area's decision context.
 
 The guide **MUST** teach that initial Factors should be derived from the body's
 Needs and Risks, and that Requirements should make the body context assessable.

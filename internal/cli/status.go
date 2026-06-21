@@ -57,7 +57,7 @@ func renderStatusHuman(cmd *cobra.Command, snapshot *status.ProjectStatusSnapsho
 	}
 	if snapshot.Model.Shape != nil {
 		shape := snapshot.Model.Shape
-		if _, err := fmt.Fprintf(out, "- Model: %d target(s), %d factor(s), %d requirement(s)\n", shape.Targets, shape.Factors, shape.Requirements); err != nil {
+		if _, err := fmt.Fprintf(out, "- Model: %d area(s), %d factor(s), %d requirement(s)\n", shape.Areas, shape.Factors, shape.Requirements); err != nil {
 			return err
 		}
 	}

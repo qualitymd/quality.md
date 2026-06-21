@@ -84,7 +84,7 @@ factors:
           the same request returns the original result without a second debit.
           The requirement is met when a retried transfer produces no duplicate
           money movement.
-targets:
+areas:
   ledger:
     title: Ledger
     description: >
@@ -145,7 +145,7 @@ targets:
               signature covers the body and a timestamp so a merchant can verify
               origin and reject replays. The requirement is met when no code path
               emits an unsigned webhook; report any unsigned path by location.
-    targets:
+    areas:
       delivery:
         title: Delivery
         description: >

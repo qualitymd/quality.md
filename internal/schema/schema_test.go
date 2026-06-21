@@ -15,7 +15,7 @@ func TestSpecificationSchemaSnippetsMatchDeclaration(t *testing.T) {
 		node    Node
 	}{
 		{"Model", Model},
-		{"Target", Target},
+		{"Area", Area},
 		{"Factor", Factor},
 		{"Requirement", Requirement},
 	} {
@@ -47,7 +47,7 @@ func TestSpecificationSchemaSnippetsMatchDeclaration(t *testing.T) {
 				t.Fatalf("SPECIFICATION.md does not mention required-any property %q", property)
 			}
 		}
-		if !strings.Contains(spec, "An entry on either factors, requirements, or targets MUST be supplied.") {
+		if !strings.Contains(spec, "An entry on either factors, requirements, or areas MUST be supplied.") {
 			t.Fatal("SPECIFICATION.md does not document the model-content required-any group")
 		}
 	}

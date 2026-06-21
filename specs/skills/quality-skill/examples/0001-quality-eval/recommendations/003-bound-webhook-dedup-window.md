@@ -18,7 +18,7 @@ doneCriterion: The webhook-delivery deduplication requirement reaches target for
 
 # Bound the webhook redelivery-deduplication window
 
-**Target / factor:** Webhooks → Delivery → Reliability
+**Area / factor:** Webhooks → Delivery → Reliability
 **In-scope requirement:** *A redelivery of an already-acknowledged event is suppressed for that endpoint*
 **Current rating:** Minimum — the **next binding constraint**: it holds the Webhooks subtree at Minimum and, once the committed credential is rotated, holds the whole-model rating below Target.
 

@@ -83,10 +83,10 @@ During the `0.x` phase, skill releases should usually depend on one compatible
 CLI minor line, for example:
 
 ```yaml
-compatibility: Requires qualitymd CLI >=0.6.0 <0.7.0.
+compatibility: Requires qualitymd CLI >=0.7.0 <0.8.0.
 metadata:
-  version: "0.6.0"
-  requires-qualitymd-cli: ">=0.6.0 <0.7.0"
+  version: "0.7.0"
+  requires-qualitymd-cli: ">=0.7.0 <0.8.0"
 ```
 
 At runtime, the skill uses `metadata.requires-qualitymd-cli` as the released

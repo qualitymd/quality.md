@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	runNameRE    = regexp.MustCompile(`^(\d{4})-(subject|model)(-[a-z0-9-]+)?-quality-eval$`)
+	runNameRE    = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
 	recordNameRE = regexp.MustCompile(`^(\d+)-`)
 )
 

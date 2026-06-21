@@ -10,7 +10,7 @@ import (
 )
 
 type schemaContext struct {
-	targetName  string
+	areaName    string
 	factorName  string
 	requirement string
 }
@@ -20,12 +20,12 @@ func (s *runState) run() {
 		s.add(RuleInvalidFrontmatter, "The frontmatter is not a model mapping; a QUALITY.md frontmatter block must be a map of model properties.", s.loc(s.doc.Frontmatter, nil, "frontmatter"), nil)
 		return
 	}
-	s.root = &targetRef{node: s.doc.Frontmatter, path: []PathSegment{}}
+	s.root = &areaRef{node: s.doc.Frontmatter, path: []PathSegment{}}
 	s.checkRoot()
 	s.checkRatingScale()
 	s.walkModel()
 	s.checkEmptyModel()
-	s.checkTargets(s.root)
+	s.checkAreas(s.root)
 	s.checkFactors(s.root)
 	s.checkRequirements(s.root)
 	s.sort()
@@ -45,8 +45,8 @@ func (s *runState) checkSchemaProperties(node qschema.Node, owner *yaml.Node, ba
 		locationLabel := label(path)
 		property, ok := node.Property(key.Value)
 		if !ok {
-			if node.Kind == qschema.TargetKind && qschema.Model.HasProperty(key.Value) {
-				s.add(RuleMisplacedRootKey, "The target `"+context.targetName+"` declares `"+key.Value+"`; `"+key.Value+"` is only valid on the model root.", s.loc(key, path, locationLabel), nil)
+			if node.Kind == qschema.AreaKind && qschema.Model.HasProperty(key.Value) {
+				s.add(RuleMisplacedRootKey, "The area `"+context.areaName+"` declares `"+key.Value+"`; `"+key.Value+"` is only valid on the model root.", s.loc(key, path, locationLabel), nil)
 				continue
 			}
 			s.invalid(key, path, locationLabel, unknownPropertyMessage(node, key.Value, context))
@@ -130,8 +130,8 @@ func unknownPropertyMessage(node qschema.Node, key string, context schemaContext
 	switch node.Kind {
 	case qschema.ModelKind:
 		return "The frontmatter declares an unknown root key `" + key + "`; a QUALITY.md model may only use the specified model properties."
-	case qschema.TargetKind:
-		return "The target `" + context.targetName + "` declares an unknown key `" + key + "`; targets may only use target properties."
+	case qschema.AreaKind:
+		return "The area `" + context.areaName + "` declares an unknown key `" + key + "`; areas may only use area properties."
 	case qschema.FactorKind:
 		return "The factor `" + context.factorName + "` declares an unknown key `" + key + "`; factors may only use factor properties."
 	case qschema.RequirementKind:
@@ -230,7 +230,7 @@ func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index 
 func (s *runState) checkEmptyModel() {
 	for _, group := range qschema.Model.RequiredAny {
 		if group.Name == "model-content" && !s.rootHasAny(group.Properties) {
-			s.add(RuleEmptyModel, "The model root supplies no entries under `factors`, `requirements`, or `targets`; a QUALITY.md model requires model content.", s.loc(s.doc.Frontmatter, []PathSegment{}, "frontmatter"), nil)
+			s.add(RuleEmptyModel, "The model root supplies no entries under `factors`, `requirements`, or `areas`; a QUALITY.md model requires model content.", s.loc(s.doc.Frontmatter, []PathSegment{}, "frontmatter"), nil)
 		}
 	}
 }
@@ -246,8 +246,8 @@ func (s *runState) rootHasAny(properties []string) bool {
 			if len(s.root.requirements) > 0 {
 				return true
 			}
-		case qschema.PropertyTargets:
-			if len(s.root.targets) > 0 {
+		case qschema.PropertyAreas:
+			if len(s.root.areas) > 0 {
 				return true
 			}
 		}
@@ -255,9 +255,9 @@ func (s *runState) rootHasAny(properties []string) bool {
 	return false
 }
 
-func (s *runState) checkTargetShape(target *targetRef) {
-	s.checkSchemaProperties(qschema.Target, target.node, target.path, schemaContext{targetName: target.name})
-	s.checkRequiredTitle(target.node, target.path, "target", "The target `"+target.name+"` declares no `title`; each target requires a human-facing title.")
+func (s *runState) checkAreaShape(area *areaRef) {
+	s.checkSchemaProperties(qschema.Area, area.node, area.path, schemaContext{areaName: area.name})
+	s.checkRequiredTitle(area.node, area.path, "area", "The area `"+area.name+"` declares no `title`; each area requires a human-facing title.")
 }
 
 func (s *runState) checkFactorShape(factor *factorRef) {
@@ -287,29 +287,29 @@ func (s *runState) checkRequirementShape(req *requirementRef) {
 	}
 }
 
-func (s *runState) checkTargets(target *targetRef) bool {
-	hasRequirements := len(target.requirements) > 0
-	for _, factor := range target.factors {
+func (s *runState) checkAreas(area *areaRef) bool {
+	hasRequirements := len(area.requirements) > 0
+	for _, factor := range area.factors {
 		if factorHasRequirements(factor) {
 			hasRequirements = true
 		}
 	}
-	for _, child := range target.targets {
-		if s.checkTargets(child) {
+	for _, child := range area.areas {
+		if s.checkAreas(child) {
 			hasRequirements = true
 		}
 	}
-	if target.parent != nil && !hasRequirements {
-		s.add(RuleEmptyTarget, "The target `"+target.name+"` reaches no requirements in its subtree; each target should lead to at least one requirement.", s.loc(target.node, target.path, label(target.path)), nil)
+	if area.parent != nil && !hasRequirements {
+		s.add(RuleEmptyArea, "The area `"+area.name+"` reaches no requirements in its subtree; each area should lead to at least one requirement.", s.loc(area.node, area.path, label(area.path)), nil)
 	}
 	return hasRequirements
 }
 
-func (s *runState) checkFactors(target *targetRef) {
-	for _, factor := range target.factors {
+func (s *runState) checkFactors(area *areaRef) {
+	for _, factor := range area.factors {
 		s.checkFactor(factor)
 	}
-	for _, child := range target.targets {
+	for _, child := range area.areas {
 		s.checkFactors(child)
 	}
 }
@@ -321,7 +321,7 @@ func (s *runState) checkFactor(factor *factorRef) bool {
 			has = true
 		}
 	}
-	for _, req := range allRequirements(factor.target) {
+	for _, req := range allRequirements(factor.area) {
 		for _, resolved := range s.referencedFactors(req) {
 			if resolved == factor {
 				has = true
@@ -334,14 +334,14 @@ func (s *runState) checkFactor(factor *factorRef) bool {
 	return has
 }
 
-func (s *runState) checkRequirements(target *targetRef) {
-	for _, req := range target.requirements {
+func (s *runState) checkRequirements(area *areaRef) {
+	for _, req := range area.requirements {
 		s.checkRequirementRefs(req)
 	}
-	for _, factor := range target.factors {
+	for _, factor := range area.factors {
 		s.checkFactorRequirements(factor)
 	}
-	for _, child := range target.targets {
+	for _, child := range area.areas {
 		s.checkRequirements(child)
 	}
 }
@@ -373,9 +373,9 @@ func (s *runState) checkRequirementRefs(req *requirementRef) {
 			if item.Kind != yaml.ScalarNode || isEmpty(item) {
 				continue
 			}
-			if s.resolveFactor(req.target, item.Value) == nil {
+			if s.resolveFactor(req.area, item.Value) == nil {
 				path := appendPath(req.path, "factors", i)
-				s.add(RuleUnknownFactor, "The requirement `"+req.statement+"` references unknown factor `"+item.Value+"`; factor references must resolve on the declaring target or an ancestor.", s.loc(item, path, label(path)), nil)
+				s.add(RuleUnknownFactor, "The requirement `"+req.statement+"` references unknown factor `"+item.Value+"`; factor references must resolve on the declaring area or an ancestor.", s.loc(item, path, label(path)), nil)
 			}
 		}
 	}

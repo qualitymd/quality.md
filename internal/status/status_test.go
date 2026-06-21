@@ -61,7 +61,7 @@ requirements:
   "starts":
     factors: [reliability]
     assessment: Run it.
-targets:
+areas:
   api:
     title: API
     requirements:
@@ -87,11 +87,11 @@ targets:
 	if shape == nil {
 		t.Fatal("shape is nil")
 	}
-	if shape.Targets != 3 || shape.Factors != 3 || shape.Requirements != 3 || shape.RatingLevels != 2 {
-		t.Fatalf("shape = %#v, want 3 targets, 3 factors, 3 requirements, 2 levels", *shape)
+	if shape.Areas != 3 || shape.Factors != 3 || shape.Requirements != 3 || shape.RatingLevels != 2 {
+		t.Fatalf("shape = %#v, want 3 areas, 3 factors, 3 requirements, 2 levels", *shape)
 	}
 	if len(snapshot.Model.SourceCoverage) != 3 {
-		t.Fatalf("sourceCoverage = %#v, want root plus 2 child targets", snapshot.Model.SourceCoverage)
+		t.Fatalf("sourceCoverage = %#v, want root plus 2 child areas", snapshot.Model.SourceCoverage)
 	}
 	if snapshot.Model.SourceCoverage[1].Label != "API" || snapshot.Model.SourceCoverage[1].SourceState != "inherited" || snapshot.Model.SourceCoverage[1].Source != "." {
 		t.Fatalf("api source coverage = %#v, want inherited root source", snapshot.Model.SourceCoverage[1])
@@ -112,11 +112,11 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	first, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	first, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(first) error = %v", err)
 	}
-	if !strings.Contains(first.Path, "0001-subject-quality-eval") {
+	if !strings.Contains(first.Path, "0001-quality-eval") {
 		t.Fatalf("first path = %q, want run 0001", first.Path)
 	}
 	writeFile(t, repo, validModel(`requirements:
@@ -128,7 +128,7 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	second, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	second, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun(second) error = %v", err)
 	}
@@ -159,10 +159,10 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	if err := os.MkdirAll(filepath.Join(repo, "quality", "evaluations", "0001-subject-quality-eval"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(repo, "quality", "evaluations", "0001-quality-eval"), 0o755); err != nil {
 		t.Fatalf("MkdirAll() error = %v", err)
 	}
-	later, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	later, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -190,7 +190,7 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -224,7 +224,7 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Subject: "QUALITY.md"})
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}

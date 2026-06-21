@@ -86,7 +86,7 @@ artifacts, a functional spec, and optional design doc.
 - Keep ISO lineage background.
 - Do not cite specific ISO standards in public code/artifacts unless requested
   or relevant to the file's purpose.
-- Use QUALITY.md terms: Targets, Factors, Requirements.
+- Use QUALITY.md terms: Areas, Factors, Requirements.
 - [`SPECIFICATION.md`](SPECIFICATION.md) may cite ISO for provenance.
 
 ### Agent guidance files

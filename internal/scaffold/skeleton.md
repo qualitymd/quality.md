@@ -47,7 +47,7 @@ factors:
         # assessment — how an evaluator should inspect or measure the claim. It
         # can be stated inline, or reference an entity that already defines how to
         # check it — a spec, style guide, runbook, or test plan. An entity you own
-        # and reference can be a target in its own right, which keeps the
+        # and reference can be an area in its own right, which keeps the
         # dependency traceable.
         # Reference existing documentation (often the simplest):
         # e.g. "Conform to the error-handling rules in docs/errors.md."
@@ -59,23 +59,23 @@ factors:
         #       whether they can complete the quickstart unaided."
         assessment: "<how an evaluator should inspect or measure it>"
 
-# Targets are optional and narrower. Reach for one when a distinct part of the
+# Areas are optional and narrower. Reach for one when a distinct part of the
 # artifact — a service, a module, a document (e.g. "checkout-api",
 # "auth-service", "design-system") — deserves its own factors or requirements
 # that wouldn't fit cleanly at the top level. The whole-artifact factors above
-# still apply; a target just adds focus where a part needs it. A target takes
+# still apply; an area just adds focus where a part needs it. An area takes
 # the same shape as the root: its own `factors` (and their `requirements`),
 # direct `requirements` with factor references under `factors`, or further
-# nested `targets`.
-# targets:
+# nested `areas`.
+# areas:
 #   "<name a thing to evaluate>":
-#     title: "<short display label for this target>"
+#     title: "<short display label for this area>"
 #     factors:
 #       "<a quality specific to this part>":
 #         title: "<short display label for this quality>"
-#         description: "<what it means for this target, and to whom>"
+#         description: "<what it means for this area, and to whom>"
 #         requirements:
-#           "<an expectation you can assess on this target>":
+#           "<an expectation you can assess on this area>":
 #             assessment: "<how an evaluator should inspect or measure it>"
 ---
 
@@ -103,7 +103,7 @@ What is this, who relies on it, and what does "good" look like for them? Quality
 is value to the people who depend on the thing, so name them and the value they
 expect.
 
-*Unknowns* — <broad uncertainties about the subject, or "none known">
+*Unknowns* — <broad uncertainties about the root area, or "none known">
 *Open questions* — <specific unresolved questions, or "none">
 
 *Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*

@@ -33,8 +33,8 @@ Invoke the `/quality` skill to manage quality for your project:
 /quality wizard                                 Have your AI assistant/agent help you manage quality
 /quality evaluate                               Evaluate the quality of your project
 /quality evaluate security                      Evaluate a specific quality factor or characteristic
-/quality evaluate payments-api                  Evaluate a specific target or project component
-/quality evaluate payments-api maintainability  Evaluate a target's specific quality
+/quality evaluate payments-api                  Evaluate a specific area or project component
+/quality evaluate payments-api maintainability  Evaluate an area's specific quality
 ```
 
 Most users should work with `QUALITY.md` through their coding agent, the
@@ -88,7 +88,7 @@ ratingScale:
     title: Unacceptable
     description: The work is below the shared quality bar.
     criterion: "Falls below the minimum acceptable bar."
-targets:
+areas:
   triage:
     title: Triage
     source: ./support
@@ -145,7 +145,7 @@ but it is where the model explains its purpose and context.
 
 ### Model Schema
 
-The root model is a target plus a model-wide `ratingScale`.
+The root model is an area plus a model-wide `ratingScale`.
 
 ```yaml
 title: <string>                 # Required
@@ -167,28 +167,28 @@ factors:                        # Optional*
 requirements:                   # Optional*
   <requirement-statement>:
     assessment: <string>        # Required, exactly one
-    factors: [<factor-name>]    # Required for direct target requirements
+    factors: [<factor-name>]    # Required for direct area requirements
     ratings:                    # Optional per-level criteria
       <level-name>: <criterion>
-targets:                        # Optional*
-  <target-name>: <Target>
+areas:                          # Optional*
+  <area-name>: <Area>
 ```
 
-At least one of `factors`, `requirements`, or `targets` must be supplied.
-Targets can nest recursively. `ratingScale` exists only on the root model.
+At least one of `factors`, `requirements`, or `areas` must be supplied.
+Areas can nest recursively. `ratingScale` exists only on the root model.
 
 ### Core Concepts
 
-| Concept      | Meaning                                                         |
-| ------------ | --------------------------------------------------------------- |
-| Model        | The root quality model in a QUALITY.md file.                    |
-| Target       | The thing being evaluated.                                      |
-| Source       | The material assessed for a target, such as a path or selector. |
-| Factor       | A quality dimension that matters for a target.                  |
-| Requirement  | A specific quality expectation.                                 |
-| Assessment   | The means of checking a requirement against a target source.    |
-| Finding      | An observation produced by an assessment.                       |
-| Rating Scale | The ordered model-wide scale used to rate results.              |
+| Concept      | Meaning                                                        |
+| ------------ | -------------------------------------------------------------- |
+| Model        | The root quality model in a QUALITY.md file.                   |
+| Area         | The thing being evaluated.                                     |
+| Source       | The material assessed for an area, such as a path or selector. |
+| Factor       | A quality dimension that matters for an area.                  |
+| Requirement  | A specific quality expectation.                                |
+| Assessment   | The means of checking a requirement against an area source.    |
+| Finding      | An observation produced by an assessment.                      |
+| Rating Scale | The ordered model-wide scale used to rate results.             |
 
 ## CLI Quick Reference
 

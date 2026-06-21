@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Subject | Sparrow Payments API |
-| Run | `0001-subject-quality-eval` |
+| Root area | Sparrow Payments API |
+| Run | `0001-quality-eval` |
 | Scope | Full evaluation |
 | Rigor | not recorded |
 | Evaluation verdict | Unacceptable |
@@ -15,12 +15,12 @@
 The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint.
 
 
-| Target | Local rating | Aggregate rating | Rating basis |
+| Area | Local rating | Aggregate rating | Rating basis |
 | --- | --- | --- | --- |
 | Sparrow Payments API | Unacceptable | Unacceptable | The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint. |
-| Ledger | Target | Target | Ledger is a leaf target, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed. |
-| Webhooks | Target | Minimum | The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating. |
-| Delivery | Minimum | Minimum | Delivery is a leaf target, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum. |
+| Ledger | Target | Target | Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed. |
+| Webhooks | Target | Minimum | The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating. |
+| Delivery | Minimum | Minimum | Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum. |
 
 ## Selected Findings
 

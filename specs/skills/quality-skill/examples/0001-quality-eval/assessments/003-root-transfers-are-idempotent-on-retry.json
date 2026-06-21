@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [],
+  "areaPath": [],
   "requirement": "Transfers are idempotent on retry",
   "factorPaths": [
     [

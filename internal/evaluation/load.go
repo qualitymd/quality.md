@@ -319,11 +319,11 @@ func gapPtr(gap EvaluationRunGap) *EvaluationRunGap {
 }
 
 func assessmentRequiredFields() []string {
-	return []string{"targetPath", "requirement", "factorPaths", "ratingResult", "criterionSource", "findings", "recommendations"}
+	return []string{"areaPath", "requirement", "factorPaths", "ratingResult", "criterionSource", "findings", "recommendations"}
 }
 
 func analysisRequiredFields() []string {
-	return []string{"targetPath", "localRatingResult", "factorRatingResults", "aggregateRatingResult", "assessmentResultRecords", "childAnalysisRecords"}
+	return []string{"areaPath", "localRatingResult", "factorRatingResults", "aggregateRatingResult", "assessmentResultRecords", "childAnalysisRecords"}
 }
 
 func recommendationRequiredFields() []string {
@@ -672,7 +672,7 @@ func (r *EvaluationRun) analysisReferenceGaps(assessmentResults renderableAssess
 	var gaps []EvaluationRunGap
 	rootAnalyses := 0
 	for _, analysis := range r.Analyses {
-		if len(analysis.TargetPath) == 0 {
+		if len(analysis.AreaPath) == 0 {
 			rootAnalyses++
 		}
 		gaps = append(gaps, assessmentResultReferenceGaps(analysis, assessmentResults.Known, superseded)...)
@@ -708,9 +708,9 @@ func childAnalysisReferenceGaps(analysis AnalysisRecord, analyses map[string]Ana
 func rootAnalysisGaps(rootAnalyses int) []EvaluationRunGap {
 	switch {
 	case rootAnalyses == 0:
-		return []EvaluationRunGap{{Kind: GapMissingRootAnalysis, Ref: "analysis/", Detail: "no analysis record has an empty targetPath for the in-scope root"}}
+		return []EvaluationRunGap{{Kind: GapMissingRootAnalysis, Ref: "analysis/", Detail: "no analysis record has an empty areaPath for the in-scope root"}}
 	case rootAnalyses > 1:
-		return []EvaluationRunGap{{Kind: GapDuplicateRootAnalysis, Ref: "analysis/", Detail: "multiple analysis records have an empty targetPath"}}
+		return []EvaluationRunGap{{Kind: GapDuplicateRootAnalysis, Ref: "analysis/", Detail: "multiple analysis records have an empty areaPath"}}
 	default:
 		return nil
 	}
@@ -730,7 +730,7 @@ func (r *EvaluationRun) assessmentResultRecommendationGaps(recommendations map[s
 }
 
 func assessmentResultIdentity(rec AssessmentResultRecord) string {
-	return strings.Join(rec.TargetPath, "\x00") + "\x00" + rec.Requirement
+	return strings.Join(rec.AreaPath, "\x00") + "\x00" + rec.Requirement
 }
 
 func assessmentResultID(file string) string {
@@ -755,7 +755,7 @@ func (r *EvaluationRun) assessmentResultSupersedingState() (map[string]bool, []E
 				continue
 			}
 			if assessmentResultIdentity(prior.Record) != assessmentResultIdentity(rec) {
-				gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidAssessmentResultSupersedes, Ref: ref, Detail: "referenced by " + rec.File + " with different targetPath or requirement"})
+				gaps = append(gaps, EvaluationRunGap{Kind: GapInvalidAssessmentResultSupersedes, Ref: ref, Detail: "referenced by " + rec.File + " with different areaPath or requirement"})
 				continue
 			}
 			superseded[prior.File] = true
@@ -780,7 +780,7 @@ func resolveKnownAssessmentResult(known map[string]knownAssessmentResult, ref st
 }
 
 func analysisIdentity(rec AnalysisRecord) string {
-	return strings.Join(rec.TargetPath, "\x00")
+	return strings.Join(rec.AreaPath, "\x00")
 }
 
 func recommendationRefExists(recs map[string]bool, ref string) bool {
@@ -833,7 +833,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 		if supersededAssessmentResults[assessmentResult.File] {
 			continue
 		}
-		planned := PlannedAssessmentResult{TargetPath: assessmentResult.TargetPath, Requirement: assessmentResult.Requirement}
+		planned := PlannedAssessmentResult{AreaPath: assessmentResult.AreaPath, Requirement: assessmentResult.Requirement}
 		if _, ok := plannedAssessmentResults[plannedAssessmentResultIdentity(planned)]; ok {
 			continue
 		}
@@ -844,7 +844,7 @@ func (r *EvaluationRun) plannedCoverageGaps(assessmentResultRecordsByIdentity, a
 		})
 	}
 	for _, analysis := range r.Analyses {
-		planned := PlannedCoverageAnalysis{TargetPath: analysis.TargetPath}
+		planned := PlannedCoverageAnalysis{AreaPath: analysis.AreaPath}
 		if _, ok := plannedAnalyses[plannedAnalysisIdentity(planned)]; ok {
 			continue
 		}

@@ -6,21 +6,21 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type targetRef struct {
+type areaRef struct {
 	name         string
 	node         *yaml.Node
 	path         []PathSegment
-	parent       *targetRef
+	parent       *areaRef
 	factors      []*factorRef
 	requirements []*requirementRef
-	targets      []*targetRef
+	areas        []*areaRef
 }
 
 type factorRef struct {
 	name         string
 	node         *yaml.Node
 	path         []PathSegment
-	target       *targetRef
+	area         *areaRef
 	parent       *factorRef
 	factors      []*factorRef
 	requirements []*requirementRef
@@ -30,39 +30,39 @@ type requirementRef struct {
 	statement string
 	node      *yaml.Node
 	path      []PathSegment
-	target    *targetRef
+	area      *areaRef
 	factor    *factorRef
 }
 
 func (s *runState) walkModel() {
 	s.root.factors = s.walkFactors(s.root, nil, s.doc.Frontmatter, []PathSegment{})
 	s.root.requirements = s.walkRequirements(s.root, nil, s.doc.Frontmatter, []PathSegment{})
-	s.root.targets = s.walkTargets(s.root, s.doc.Frontmatter, []PathSegment{})
+	s.root.areas = s.walkAreas(s.root, s.doc.Frontmatter, []PathSegment{})
 }
 
-func (s *runState) walkTargets(parent *targetRef, node *yaml.Node, base []PathSegment) []*targetRef {
-	_, targets, _ := document.MapEntry(node, qschema.PropertyTargets)
-	if targets == nil || targets.Kind != yaml.MappingNode {
+func (s *runState) walkAreas(parent *areaRef, node *yaml.Node, base []PathSegment) []*areaRef {
+	_, areas, _ := document.MapEntry(node, qschema.PropertyAreas)
+	if areas == nil || areas.Kind != yaml.MappingNode {
 		return nil
 	}
-	var out []*targetRef
-	for key, value := range document.MapEntries(targets) {
-		path := appendPath(base, qschema.PropertyTargets, key.Value)
+	var out []*areaRef
+	for key, value := range document.MapEntries(areas) {
+		path := appendPath(base, qschema.PropertyAreas, key.Value)
 		if value.Kind != yaml.MappingNode {
-			s.invalid(key, path, label(path), "The target `"+key.Value+"` has the wrong YAML shape; each target must be a map.")
+			s.invalid(key, path, label(path), "The area `"+key.Value+"` has the wrong YAML shape; each area must be a map.")
 			continue
 		}
-		target := &targetRef{name: key.Value, node: value, path: path, parent: parent}
-		s.checkTargetShape(target)
-		target.factors = s.walkFactors(target, nil, value, path)
-		target.requirements = s.walkRequirements(target, nil, value, path)
-		target.targets = s.walkTargets(target, value, path)
-		out = append(out, target)
+		area := &areaRef{name: key.Value, node: value, path: path, parent: parent}
+		s.checkAreaShape(area)
+		area.factors = s.walkFactors(area, nil, value, path)
+		area.requirements = s.walkRequirements(area, nil, value, path)
+		area.areas = s.walkAreas(area, value, path)
+		out = append(out, area)
 	}
 	return out
 }
 
-func (s *runState) walkFactors(target *targetRef, parent *factorRef, node *yaml.Node, base []PathSegment) []*factorRef {
+func (s *runState) walkFactors(area *areaRef, parent *factorRef, node *yaml.Node, base []PathSegment) []*factorRef {
 	_, factors, _ := document.MapEntry(node, qschema.PropertyFactors)
 	if factors == nil || factors.Kind != yaml.MappingNode {
 		return nil
@@ -74,16 +74,16 @@ func (s *runState) walkFactors(target *targetRef, parent *factorRef, node *yaml.
 			s.invalid(key, path, label(path), "The factor `"+key.Value+"` has the wrong YAML shape; each factor must be a map.")
 			continue
 		}
-		factor := &factorRef{name: key.Value, node: value, path: path, target: target, parent: parent}
+		factor := &factorRef{name: key.Value, node: value, path: path, area: area, parent: parent}
 		s.checkFactorShape(factor)
-		factor.factors = s.walkFactors(target, factor, value, path)
-		factor.requirements = s.walkRequirements(target, factor, value, path)
+		factor.factors = s.walkFactors(area, factor, value, path)
+		factor.requirements = s.walkRequirements(area, factor, value, path)
 		out = append(out, factor)
 	}
 	return out
 }
 
-func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *yaml.Node, base []PathSegment) []*requirementRef {
+func (s *runState) walkRequirements(area *areaRef, factor *factorRef, node *yaml.Node, base []PathSegment) []*requirementRef {
 	_, requirements, _ := document.MapEntry(node, qschema.PropertyRequirements)
 	if requirements == nil || requirements.Kind != yaml.MappingNode {
 		return nil
@@ -95,7 +95,7 @@ func (s *runState) walkRequirements(target *targetRef, factor *factorRef, node *
 			s.invalid(key, path, label(path), "The requirement `"+key.Value+"` has the wrong YAML shape; each requirement must be a map.")
 			continue
 		}
-		req := &requirementRef{statement: key.Value, node: value, path: path, target: target, factor: factor}
+		req := &requirementRef{statement: key.Value, node: value, path: path, area: area, factor: factor}
 		s.checkRequirementShape(req)
 		out = append(out, req)
 	}
@@ -112,7 +112,7 @@ func (s *runState) referencedFactors(req *requirementRef) []*factorRef {
 		if item.Kind != yaml.ScalarNode || isEmpty(item) {
 			continue
 		}
-		if factor := s.resolveFactor(req.target, item.Value); factor != nil {
+		if factor := s.resolveFactor(req.area, item.Value); factor != nil {
 			out = append(out, factor)
 		}
 	}
@@ -132,8 +132,8 @@ func requirementReferencesFactor(req *requirementRef) bool {
 	return false
 }
 
-func (s *runState) resolveFactor(target *targetRef, name string) *factorRef {
-	for current := target; current != nil; current = current.parent {
+func (s *runState) resolveFactor(area *areaRef, name string) *factorRef {
+	for current := area; current != nil; current = current.parent {
 		if found := findFactor(current.factors, name); found != nil {
 			return found
 		}
@@ -153,9 +153,9 @@ func findFactor(factors []*factorRef, name string) *factorRef {
 	return nil
 }
 
-func allRequirements(target *targetRef) []*requirementRef {
+func allRequirements(area *areaRef) []*requirementRef {
 	var out []*requirementRef
-	var walkTarget func(*targetRef)
+	var walkArea func(*areaRef)
 	var walkFactor func(*factorRef)
 	walkFactor = func(factor *factorRef) {
 		out = append(out, factor.requirements...)
@@ -163,16 +163,16 @@ func allRequirements(target *targetRef) []*requirementRef {
 			walkFactor(child)
 		}
 	}
-	walkTarget = func(target *targetRef) {
-		out = append(out, target.requirements...)
-		for _, factor := range target.factors {
+	walkArea = func(area *areaRef) {
+		out = append(out, area.requirements...)
+		for _, factor := range area.factors {
 			walkFactor(factor)
 		}
-		for _, child := range target.targets {
-			walkTarget(child)
+		for _, child := range area.areas {
+			walkArea(child)
 		}
 	}
-	walkTarget(target)
+	walkArea(area)
 	return out
 }
 

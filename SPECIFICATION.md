@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Specification version:** 0.1 (Draft)
+**Specification version:** 0.2 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -77,19 +77,19 @@ the concrete rendering format.
 ## Terminology
 
 **Quality Model**: A structured, declarative description of what quality means
-for a subject.
+for a root area and any child Areas.
 
 **Entity**: A thing evaluated for quality.
 
-**Model**: The root object in a QUALITY.md file. A Model is the apex Target
-plus the model-wide Rating Scale.
+**Model**: The root object in a QUALITY.md file. A Model is the root area plus
+the model-wide Rating Scale.
 
-**Target**: An entity or set of entities with quality requirements subject to
+**Area**: An entity or set of entities with quality requirements subject to
 evaluation.
 
-**Source**: A selector describing the entities evaluated by a Target.
+**Source**: A selector describing the material evaluated by an Area.
 
-**Factor**: A quality characteristic or attribute through which a Target's
+**Factor**: A quality characteristic or attribute through which an Area's
 quality is described. A Factor groups connected Requirements and can be
 decomposed into sub-factors.
 
@@ -97,7 +97,7 @@ decomposed into sub-factors.
 statement, an Assessment, zero or more explicit Factor references, and optional
 per-level criterion overrides.
 
-**Assessment**: The means for assessing a Target's Source against a Requirement,
+**Assessment**: The means for assessing an Area's Source against a Requirement,
 stated inline or as a reference to an entity that defines those means. An
 Assessment produces Findings.
 
@@ -130,7 +130,7 @@ does not interpret. A conforming tool MUST NOT reject a document solely because
 the body uses unrecognized headings or sections.
 
 The location of a QUALITY.md document defines the default Source for the root
-Model: the directory containing the file and all descendants. A root Model can
+area: the directory containing the file and all descendants. A root area can
 override that default by declaring `source`.
 
 ## Frontmatter Schema
@@ -144,7 +144,7 @@ with a null or empty value MUST be treated as absent.
 
 #### Model
 
-A Model is the root node of a QUALITY.md document. It has all Target
+A Model is the root node of a QUALITY.md document. It has all Area
 properties plus the model-wide `ratingScale`.
 
 ```yaml
@@ -159,14 +159,14 @@ factors:                        # Optional*
   <factor-name>: <Factor>
 requirements:                   # Optional*
   <requirement-statement>: <Requirement>
-targets:                        # Optional*
-  <target-name>: <Target>
+areas:                          # Optional*
+  <area-name>: <Area>
 source: <string>                # Optional
 ```
 
-An entry on either factors, requirements, or targets MUST be supplied.
+An entry on either factors, requirements, or areas MUST be supplied.
 
-`ratingScale` is unique to the Model. A Target MUST NOT declare `ratingScale`.
+`ratingScale` is unique to the Model. An Area MUST NOT declare `ratingScale`.
 
 ### Rating Scale
 
@@ -192,10 +192,10 @@ defines the default rule for deciding whether a Requirement's Findings are
 rated at that level. Requirement-level `ratings` can override criteria, but
 MUST NOT override a level's `description`, `title`, `level`, or ordering.
 
-#### Target
+#### Area
 
-A Target is the recursive node of the Model. Each entry under `targets` is a
-Target.
+An Area is the recursive node of the Model. Each entry under `areas` is an
+Area.
 
 ```yaml
 title: <string>                 # Required
@@ -204,25 +204,25 @@ factors:                        # Optional*
   <factor-name>: <Factor>
 requirements:                   # Optional*
   <requirement-statement>: <Requirement>
-targets:                        # Optional*
-  <target-name>: <Target>
+areas:                          # Optional*
+  <area-name>: <Area>
 source: <string>                # Optional
 ```
 
-A Target can declare no `factors` or `requirements` of its own when it is used
-as a grouping node for child `targets`.
+An Area can declare no `factors` or `requirements` of its own when it is used
+as a grouping node for child `areas`.
 
-`title` is the Target's display name. The Target's map key remains its
+`title` is the Area's display name. The Area's map key remains its
 identifier.
 
-When present, `source` selects the entities evaluated by the Target. Relative
+When present, `source` selects the entities evaluated by the Area. Relative
 paths and globs resolve relative to the containing QUALITY.md file. When a
-Target omits `source`, it inherits the Source of the nearest ancestor Target
+Area omits `source`, it inherits the Source of the nearest ancestor Area
 that declares one; if no ancestor declares one, it inherits the document's
 default Source.
 
-Child Targets do not inherit parent Requirements. An ancestor Target's Source
-can overlap with a descendant Target's Source; when that occurs, ancestor
+Child Areas do not inherit parent Requirements. An ancestor Area's Source
+can overlap with a descendant Area's Source; when that occurs, ancestor
 Requirements still evaluate against the ancestor Source.
 
 #### Factor
@@ -241,11 +241,11 @@ requirements:                   # Optional
 `factors`, when present on a Factor, declares sub-factors. A sub-factor is a
 Factor of the same shape, nested to any depth.
 
-Factor identity is local to the Target on which the Factor is declared. Factors
-with the same name on different Targets are distinct Factors.
+Factor identity is local to the Area on which the Factor is declared. Factors
+with the same name on different Areas are distinct Factors.
 
 `title` is the Factor's display name. The Factor's map key remains its stable
-identifier local to the Target where the Factor is declared.
+identifier local to the Area where the Factor is declared.
 
 #### Requirement
 
@@ -254,7 +254,7 @@ Requirement MUST declare exactly one `assessment`.
 
 ```yaml
 assessment: <string>            # Required
-factors:                        # Optional; required for direct Target requirements
+factors:                        # Optional; required for direct Area requirements
   - <factor-name>
 ratings:                        # Optional
   <level-name>: <criterion>
@@ -268,9 +268,9 @@ entity that defines them, such as a specification, guide, or checklist.
 Referencing names that entity once instead of copying criteria that would drift
 from their origin.
 
-Note: This note is non-normative. A referenced entity may itself be a Target in
-the Model. Referencing it by the same selector used as that Target's `source`
-makes the dependency traceable from the Requirement to that Target without a
+Note: This note is non-normative. A referenced entity may itself be an Area in
+the Model. Referencing it by the same selector used as that Area's `source`
+makes the dependency traceable from the Requirement to that Area without a
 distinct link type.
 
 Every Requirement MUST be connected to at least one Factor.
@@ -279,16 +279,16 @@ A Requirement declared under a Factor or sub-factor is connected by placement.
 The containing Factor is its primary Factor. Such a Requirement can also declare
 `factors`; those entries are secondary Factor references.
 
-A Requirement declared directly under a Target is not connected by placement.
+A Requirement declared directly under an Area is not connected by placement.
 It MUST declare `factors` with at least one non-empty scalar entry.
 
 Each explicit Factor reference MUST resolve to a Factor in scope. A Factor is in
-scope when it is declared on the Target where the Requirement sits or on an
-ancestor Target.
+scope when it is declared on the Area where the Requirement sits or on an
+ancestor Area.
 
 Missing `factors`, `factors: null`, `factors: []`, and sequences containing only
 null or empty entries do not satisfy the Factor-reference requirement for a
-direct Target Requirement.
+direct Area Requirement.
 
 `ratings`, when present, MUST be a map keyed by Rating Level names from the
 Model's Rating Scale. Each value MUST be a non-empty scalar criterion. A
@@ -300,7 +300,7 @@ The Markdown body documents context for building, interpreting, using, and
 evaluating the Model. The format does not require any body section names,
 ordering, or content.
 
-The body can document the subject, scope, stakeholder needs, risks, unknowns,
+The body can document the root area, scope, stakeholder needs, risks, unknowns,
 open questions, evidence context, or other important context for the Model.
 Evaluators can use body content when judging model fit, importance, rationale,
 and advice.
@@ -309,7 +309,7 @@ and advice.
 
 Evaluation interprets a Model against selected Sources, produces Findings for
 Requirements, rates those Findings, rolls ratings up through Factors and
-Targets, and produces an Evaluation Report.
+Areas, and produces an Evaluation Report.
 
 This specification defines the required observable semantics of Evaluation. An
 implementation can use different internal algorithms when the resulting
@@ -325,28 +325,28 @@ Evaluation proceeds through these semantic phases:
 
 ### Define Scope
 
-By default, an Evaluation's scope is the whole Model: every Target and every
-Requirement within each Target.
+By default, an Evaluation's scope is the whole Model: every Area and every
+Requirement within each Area.
 
-An Evaluation can be narrowed by Target, by Factor, or by both. A Target filter
-selects a Target and its subtree. A Factor filter selects Requirements connected
+An Evaluation can be narrowed by Area, by Factor, or by both. An Area filter
+selects an Area and its subtree. A Factor filter selects Requirements connected
 to the named Factor, including Requirements that reference it as a secondary
 Factor.
 
-For every Target in scope, the evaluator resolves the Target's Source according
-to [Target](#target).
+For every Area in scope, the evaluator resolves the Area's Source according
+to [Area](#area).
 
 A scoped Evaluation is not a whole-model verdict. A conforming report renderer
 MUST distinguish a scoped Evaluation from a whole-model Evaluation.
 
 ### Assess and Rate Requirements
 
-Each in-scope Requirement is assessed once, against the Source of the Target on
+Each in-scope Requirement is assessed once, against the Source of the Area on
 which it is declared.
 
 For each Requirement:
 
-1. The evaluator applies the Requirement's Assessment to the Target Source,
+1. The evaluator applies the Requirement's Assessment to the Area Source,
    producing zero or more Findings.
 2. The evaluator rates the Findings together against the Model's Rating Scale,
    using the Requirement's criterion overrides when present.
@@ -360,8 +360,8 @@ MUST be `not assessed`.
 
 ### Analyze Roll-Ups
 
-Roll-up infers ratings for Factors and Targets from Requirement Rating Results,
-sub-factor ratings, child Target ratings, and the Model's body context where
+Roll-up infers ratings for Factors and Areas from Requirement Rating Results,
+sub-factor ratings, child Area ratings, and the Model's body context where
 relevant.
 
 This specification does not define a numeric aggregation formula. A conforming
@@ -369,12 +369,12 @@ evaluator can use explicit weights, thresholds, or computed aggregation, but
 the resulting ratings MUST preserve the relationships and distinctions defined
 in this section.
 
-For each Target in scope, processed child Targets before their ancestors:
+For each Area in scope, processed child Areas before their ancestors:
 
 - Each Factor receives a Factor rating or `not assessed`.
-- Each Target with its own Requirements receives a local rating or
+- Each Area with its own Requirements receives a local rating or
   `not assessed`.
-- Each Target receives an aggregate rating or `not assessed`.
+- Each Area receives an aggregate rating or `not assessed`.
 
 A Factor rating characterizes the Factor considering, together:
 
@@ -382,15 +382,15 @@ A Factor rating characterizes the Factor considering, together:
 - Rating Results of Requirements that explicitly reference that Factor.
 - Ratings of the Factor's sub-factors.
 
-A local rating characterizes the Target considering all Requirements declared
-on that Target, each counted once regardless of how many Factors it is connected
+A local rating characterizes the Area considering all Requirements declared
+on that Area, each counted once regardless of how many Factors it is connected
 to.
 
-A grouping Target with no Requirements of its own has no local rating.
+A grouping Area with no Requirements of its own has no local rating.
 
-An aggregate rating characterizes the Target considering its local rating, when
-present, together with aggregate ratings of child Targets in scope. A leaf
-Target's aggregate rating equals its local rating.
+An aggregate rating characterizes the Area considering its local rating, when
+present, together with aggregate ratings of child Areas in scope. A leaf
+Area's aggregate rating equals its local rating.
 
 `not assessed` Requirement, Factor, local, or aggregate outcomes MUST remain
 distinct from Rating Levels. When too little has been assessed to responsibly
@@ -418,21 +418,21 @@ An Evaluation Report is the structured result of an Evaluation.
 A conforming Evaluation Report MUST include:
 
 - The Evaluation scope.
-- The rating or `not assessed` outcome for the in-scope root Target.
-- A rationale for the in-scope root Target outcome.
-- For each Target in scope, recursively:
+- The rating or `not assessed` outcome for the in-scope root Area.
+- A rationale for the in-scope root Area outcome.
+- For each Area in scope, recursively:
   - each Requirement's Findings summary, Rating Result, and rationale;
   - each Factor's rating or `not assessed` outcome and rationale, including
     sub-factors;
-  - the Target's local rating or `not assessed` outcome, when a local rating
+  - the Area's local rating or `not assessed` outcome, when a local rating
     exists; and
-  - the Target's aggregate rating or `not assessed` outcome.
+  - the Area's aggregate rating or `not assessed` outcome.
 - Advice, when produced.
 
 `not assessed` outcomes MUST be shown wherever they occur and MUST be distinct
 from Rating Levels.
 
-When a Factor rating includes Requirements declared on descendant Targets
+When a Factor rating includes Requirements declared on descendant Areas
 because those Requirements reference the Factor, the report SHOULD make those
 contributing Requirements identifiable.
 
@@ -533,7 +533,7 @@ ratingScale:
 Invalid because every Rating Level MUST declare `level`, `title`, and
 `criterion`.
 
-### Direct target requirement without factors
+### Direct area requirement without factors
 
 ```yaml
 requirements:
@@ -541,7 +541,7 @@ requirements:
     assessment: Review production write-path telemetry and recovery tests.
 ```
 
-Invalid because a Requirement declared directly under a Target MUST declare
+Invalid because a Requirement declared directly under a Area MUST declare
 `factors` with at least one non-empty scalar entry.
 
 ### List-valued assessment

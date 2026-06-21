@@ -76,7 +76,7 @@ shell profiles.
 ## Release Readiness and Notes
 
 An update **MUST NOT** be reported available, and `update` **MUST NOT** apply,
-unless the target release is retrievable for the owning channel. For the
+unless the area release is retrievable for the owning channel. For the
 GitHub-backed managed standalone channel, readiness requires the platform
 archive and checksums. For registry-backed channels, the owning registry is the
 source of both latest version and readiness: npm uses the npm registry, and
@@ -87,7 +87,7 @@ update and **SHOULD** make the unconfirmed state legible. `update` **MUST** fail
 before mutating when a newer version is known but not ready.
 
 `update --check`, an applied `update`, and the ambient notice **SHOULD** include
-a reference to the target release's notes when one is known. `update --json`
+a reference to the area release's notes when one is known. `update --json`
 **MUST** carry that reference under a stable field, omitted when not known. The
 reference is advisory and **MUST NOT** change availability or apply behavior.
 

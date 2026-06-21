@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [
+  "areaPath": [
     "webhooks"
   ],
   "localRatingResult": {
@@ -23,7 +23,7 @@
   "aggregateRatingResult": {
     "kind": "rated",
     "level": "minimum",
-    "rationale": "The target's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
+    "rationale": "The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
   },
   "assessmentResultRecords": [
     "assessments/006-webhooks-every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin.json"

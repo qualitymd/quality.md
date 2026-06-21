@@ -13,7 +13,7 @@ specification governs on any conflict.
 - [Quality Model](#quality-model)
 - [The Markdown body](#the-markdown-body)
 - [Rating Scale](#rating-scale)
-- [Target](#target)
+- [Area](#area)
 - [Factor](#factor)
 - [Requirement](#requirement)
 - [When to update QUALITY.md](#when-to-update-qualitymd)
@@ -27,23 +27,23 @@ A QUALITY.md file is a Markdown file with two parts:
 - **YAML frontmatter** — the **quality model**: a structured, declarative
   description of what quality means for the entity being evaluated.
 - **Markdown body** — the evaluable judgment context for the model: what the
-  subject is, why quality matters, what decisions the model supports, and what
+  root area is, why quality matters, what decisions the model supports, and what
   context is missing or inaccessible.
 
-The whole file represents a single apex **target** — the top entity whose
+The whole file represents a single root **area** — the top entity whose
 quality is modeled. Everything else nests beneath it.
 
 The file's location carries meaning: a `QUALITY.md` in a directory makes that
 directory and everything under it (`**/*`) the default scope of evaluation,
-unless a target narrows it with a `source`.
+unless an area narrows it with a `source`.
 
 ### Working with the file
 
-- **Do** put `QUALITY.md` in the directory whose contents are the subject target. The
+- **Do** put `QUALITY.md` in the directory whose contents are the root area. The
   default scope is that directory and all subdirectories — no `source` needed in
   the common case.
 - **Do** keep the root `title`, body Overview and Scope, file location, and
-  root `source` aligned on the same evaluated subject. *If those disagree, the
+  root `source` aligned on the same evaluated root area. *If those disagree, the
   model may be valid YAML but misleading about what is actually being judged.*
 
 ---
@@ -52,25 +52,25 @@ unless a target narrows it with a `source`.
 
 The **quality model** is the frontmatter: the root node of the file. It carries
 one model-wide property, the `ratingScale`, plus all the properties of a
-[Target](#target) — because the model root *is* the apex target and tops the
-target tree.
+[Area](#area) — because the model root *is* the apex area and tops the
+area tree.
 
 ### Properties
 
 | Property       | Presence   | What it is                                                               |
 | -------------- | ---------- | ------------------------------------------------------------------------ |
 | `title`        | Required   | Human-readable name of the entity whose quality is modeled.              |
-| `description`  | Optional   | A concise statement of what the model's target is.                       |
+| `description`  | Optional   | A concise statement of what the model's area is.                         |
 | `ratingScale`  | Required   | The [rating scale](#rating-scale) — the levels every result is rated on. |
 | `factors`      | Optional\* | The [factors](#factor) — lenses through which quality is described.      |
 | `requirements` | Optional\* | The [requirements](#requirement) assessed against the root source.       |
-| `targets`      | Optional\* | Child [targets](#target) — more focused models nested to any depth.      |
+| `areas`        | Optional\* | Child [areas](#area) — more focused models nested to any depth.          |
 | `source`       | Optional   | Scope override; omit at the root to take the directory default.          |
 
-\* At least one of `factors`, `requirements`, or `targets` must be present.
+\* At least one of `factors`, `requirements`, or `areas` must be present.
 
 `ratingScale` is the only property unique to the model; everything else it
-shares with Target.
+shares with Area.
 
 ### Working with the model
 
@@ -80,55 +80,55 @@ shares with Target.
 #### Build from context, then scale, then model tree
 
 - **Do** fill the Markdown body before expanding the frontmatter. *The body is
-  where the model gets its judgment context: what the subject is, what decisions
+  where the model gets its judgment context: what the root area is, what decisions
   the model supports, what quality means here, and which risks matter enough to
   assess.*
 - **Do** confirm the rating scale after the body and before writing Requirements.
   *The scale is the shared vocabulary for turning future findings into ratings;
   Requirements are easier to write once "unacceptable", "minimum", "target", and
-  "outstanding" mean something for this subject.*
+  "outstanding" mean something for this root area.*
 - **Do** derive Factors and Requirements from the body context. *Factors and
-  Requirements should express the subject's needs, risks, scope, and unknowns,
+  Requirements should express the root area's needs, risks, scope, and unknowns,
   not lead them.*
 - **Do** trace at least one important concern from body to model before expanding
   the tree. *A useful trace reads like: a Need names the outcome, a Risk names
   the failure mode, a Factor names the quality lens, and a Requirement names the
   inspectable expectation.*
 
-#### Keep the root lean when child targets carry the detail
+#### Keep the root lean when child areas carry the detail
 
 - **Consider** declaring only model-wide factors at the root and pushing
-  narrower factors/requirements down to child targets. *A flat root with
+  narrower factors/requirements down to child areas. *A flat root with
   everything at one level is harder to read and maintain.*
 - **Avoid** modeling every property at the root "to be safe." *An entry on
-  factors, requirements, **or** targets is enough.*
-- **Do** make sure the model reaches Requirements somewhere in the target tree
+  factors, requirements, **or** areas is enough.*
+- **Do** make sure the model reaches Requirements somewhere in the area tree
   before treating it as evaluable. *Factors without Requirements can describe
   concerns, but they do not give an evaluator anything to rate.*
 
 #### Make the traceability graph visible
 
-- **Do** treat the model as a graph: a tree of targets plus the assessment
+- **Do** treat the model as a graph: a tree of areas plus the assessment
   references that link a requirement to the entity supplying its criteria. Which
   entity is the criteria for which — and how quality depends along those edges —
   is often the most valuable thing the model records.
 - **Do** make each assessment either inline or a reference to another entity, and
-  reference that entity by the same canonical path used as its target `source`,
-  so a reader can follow the edge from one target to the next.
+  reference that entity by the same canonical path used as its area `source`,
+  so a reader can follow the edge from one area to the next.
 - **Do** stop the chain where ownership or value stops: model referenced entities
-  as targets while you own them; let a guide that governs its own kind be its own
+  as areas while you own them; let a guide that governs its own kind be its own
   assessment rather than adding another layer.
 
 ---
 
 ## The Markdown body
 
-The body is evaluable judgment context: what the subject is, why its quality
+The body is evaluable judgment context: what the root area is, why its quality
 matters, what decisions the model supports, which needs and risks shaped it, and
 what context is missing or inaccessible. It should provide enough concise,
 self-explanatory context for a later human or agent to justify the model,
 evaluate the model's quality, and decide whether the model still fits the
-subject.
+root area.
 
 A strong body makes its completeness, thoroughness, recency, grounding,
 agent-accessibility, and open questions visible instead of implicit.
@@ -142,12 +142,12 @@ record that limitation in the relevant section's unknowns or open questions.
 The body is optional and fixes no required sections; you may rename, reorder, or
 replace these. They're recommended starting points:
 
-| Section      | Desired outcome                                                                                                                                                       |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Overview** | A reader can say what the subject is, who depends on it, and why its quality matters. This names the real entity, not just the repo or file where `QUALITY.md` lives. |
-| **Scope**    | A reader can tell what is included, what is excluded for now, and where the model boundary sits. Out-of-scope is not a deficiency.                                    |
-| **Needs**    | A reader can see the outcomes the subject must support and the users, operators, maintainers, or downstream systems those outcomes serve.                             |
-| **Risks**    | A reader can see the failures that would make the subject untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial Factors.  |
+| Section      | Desired outcome                                                                                                                                                         |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Overview** | A reader can say what the root area is, who depends on it, and why its quality matters. This names the real entity, not just the repo or file where `QUALITY.md` lives. |
+| **Scope**    | A reader can tell what is included, what is excluded for now, and where the model boundary sits. Out-of-scope is not a deficiency.                                      |
+| **Needs**    | A reader can see the outcomes the root area must support and the users, operators, maintainers, or downstream systems those outcomes serve.                             |
+| **Risks**    | A reader can see the failures that would make the root area untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial Factors.  |
 
 ### Shape of a body section
 
@@ -155,7 +155,7 @@ Write each section — including ones you add — to a common shape, so the body
 reads consistently as it grows:
 
 1. **Purpose** — open with one line on why this section matters for *this*
-   subject, not in the abstract. *If the line would read the same for any
+   root area, not in the abstract. *If the line would read the same for any
    project, it isn't earning its place.*
 2. **Contents** — concise, self-explanatory judgment context for this section.
    State the section's conclusion clearly enough that it can be reviewed on its
@@ -238,7 +238,7 @@ A section with nothing outstanding still says so:
   answer a real decision need visible in the body.*
 - **Do** treat Needs as *benefits to realize*, not only outcomes to protect, and
   Risks as the problems that erode them. *A model that lists only failure modes
-  can rate every requirement at target while the subject is still not worth
+  can rate every requirement at target while the root area is still not worth
   shipping — because nothing weighs whether the benefits, on the whole, outweigh
   the residual problems.*
 - **Consider** separating two reasons a concern matters: how much its failure
@@ -253,10 +253,10 @@ A section with nothing outstanding still says so:
 
 #### Say which sense of "good" this model uses
 
-Quality is not one thing. A subject can be judged by **conformance** (does it
+Quality is not one thing. A root area can be judged by **conformance** (does it
 match its specification?), by **fitness for purpose** (does it serve the user's
 real need?), or by **value** (is it worth its cost?). These can disagree — a
-subject can meet its spec yet fail the need, or serve the need while departing
+root area can meet its spec yet fail the need, or serve the need while departing
 from spec.
 
 - **Do** name the governing sense of "good" in the Overview, so a reader knows
@@ -328,11 +328,11 @@ Each level does two distinct jobs through two properties:
   default — a stretch level, the level to aim for, the floor you've agreed to
   ship at, and below the floor. *A shared four-band vocabulary is enough for most
   models and keeps reports comparable.*
-- **Do** choose a different scale only when the subject demands it (e.g. a
+- **Do** choose a different scale only when the root area demands it (e.g. a
   pass/fail gate wants two levels). *The scale should fit how decisions are
   actually made about this entity.*
 - **Do** review the scale after writing the body. *The body should reveal whether
-  "good enough" and "excellent" need sharper meaning for this subject.*
+  "good enough" and "excellent" need sharper meaning for this root area.*
 - **Do** test adjacent levels against the same plausible finding. *If one
   finding could reasonably satisfy both `target` and `minimum`, sharpen the
   criteria until the boundary is usable.*
@@ -342,9 +342,9 @@ Each level does two distinct jobs through two properties:
   pass/fail model deliberately gives up the ability to say "how good" — sometimes
   exactly what you want, sometimes a loss.*
 - **Do** fix the *required margin* in the body: how far above `minimum` this
-  subject must actually land to be good enough, and why (safety, reputation,
+  root area must actually land to be good enough, and why (safety, reputation,
   regulatory exposure, throwaway tool). *The same four levels serve a life-critical
-  system and a one-off script; what differs is the band the subject must reach.
+  system and a one-off script; what differs is the band the root area must reach.
   State it so an evaluator knows whether an all-`minimum` result is fine or
   alarming.*
 - **Do** calibrate the levels against concrete exemplars where you can — a real
@@ -367,54 +367,54 @@ Each level does two distinct jobs through two properties:
   one — a threshold, a count, a proportion, a band. *Unclear, unmeasurable criteria
   are a leading source of requirements debt; a measurable boundary is what makes a
   finding land at one level rather than hover between two.*
-- **Avoid** subjective or comparative wording in a `criterion` ("user-friendly",
+- **Avoid** root areaive or comparative wording in a `criterion` ("user-friendly",
   "better than", "as appropriate", "minimal"). *Such terms cannot reliably separate
   two adjacent levels; if you cannot operationalize a criterion, treat it as a
   smell pointing back at the requirement statement.*
 
 ---
 
-## Target
+## Area
 
-A **target** is an entity, or set of entities, with quality requirements subject
+A **target** is an entity, or set of entities, with quality requirements root area
 to evaluation. It is the recursive node of the model: the root model is the apex
-target, and every entry under `targets` is another target, nested to any depth.
+target, and every entry under `areas` is another target, nested to any depth.
 
 An **entity** is anything evaluated for quality. Most often it is a concrete
 artifact — a document, a source tree, a config file — but it can also be a
-service, a behavior, or a process. The same entity can be a target in one
+service, a behavior, or a process. The same entity can be an area in one
 relationship and the reference supplying another requirement's criteria in
 another.
 
 A target's **source** defines *what* it evaluates; its **factors** and
-**requirements** define *what is assessed* about it. A target may also be a pure
-**grouping target** — only child targets, no requirements of its own.
+**requirements** define *what is assessed* about it. A area may also be a pure
+**grouping target** — only child areas, no requirements of its own.
 
 ### Properties
 
 | Property       | Presence   | What it is                                                             |
 | -------------- | ---------- | ---------------------------------------------------------------------- |
 | `title`        | Required   | Display name in reports; the map key stays the identifier.             |
-| `description`  | Optional   | What the target is — the entity or scope it covers.                    |
+| `description`  | Optional   | What the area is — the entity or scope it covers.                      |
 | `factors`      | Optional\* | [Factors](#factor) scoped to this target's subtree.                    |
-| `requirements` | Optional\* | [Requirements](#requirement) assessed against this target's source.    |
-| `targets`      | Optional\* | Child targets, nested to any depth.                                    |
+| `requirements` | Optional\* | [Requirements](#requirement) assessed against this area's source.      |
+| `areas`        | Optional\* | Child areas, nested to any depth.                                      |
 | `source`       | Optional   | Where the entities live; inherits the nearest ancestor's when omitted. |
 
-\* At least one of `factors`, `requirements`, or `targets` must be present, same
-as the model. A target with only child `targets` is a grouping node; even then,
-each target should lead to at least one requirement somewhere in its subtree — a
+\* At least one of `factors`, `requirements`, or `areas` must be present, same
+as the model. A area with only child `areas` is a grouping node; even then,
+each area should lead to at least one requirement somewhere in its subtree — a
 target whose subtree has no requirements evaluates nothing.
 
-### Working with targets
+### Working with areas
 
-- **Do** point a target at the thing whose quality you actually care about.
-  **Avoid** modeling fixtures, generated output, or build scaffolding as targets.
-  *Those usually support evaluation; they are not the subject being evaluated.*
+- **Do** point an area at the thing whose quality you actually care about.
+  **Avoid** modeling fixtures, generated output, or build scaffolding as areas.
+  *Those usually support evaluation; they are not the root area being evaluated.*
 
-#### Choose targets that are authored, inspectable artifacts
+#### Choose areas that are authored, inspectable artifacts
 
-- **Do** prefer targets that are authored and inspectable — source trees, specs,
+- **Do** prefer areas that are authored and inspectable — source trees, specs,
   tests, docs, configs, checklists — over runtime behavior or process you cannot
   open and examine. *The model is judged by inspecting the entity; point it at
   something an evaluator can actually read.*
@@ -422,21 +422,21 @@ target whose subtree has no requirements evaluates nothing.
   source, the document) or **normative** (it *governs* the product — a spec, style
   guide, or checklist others are judged against). *Normative artifacts are
   high-leverage: quality invested once propagates to everything they govern, often
-  the fastest early win for a low-maturity subject.*
-- **Do** match the target's grain to the concern: a single test and a test *suite*
-  are different targets. *A collection is judged by whole-set concerns no member
+  the fastest early win for a low-maturity root area.*
+- **Do** match the area's grain to the concern: a single test and a test *suite*
+  are different areas. *A collection is judged by whole-set concerns no member
   has — coverage, balance, non-redundancy, navigability. Point `source` at the
   whole set and write requirements at that grain.*
 
-#### Split off a child target only when it has distinct factors or requirements
+#### Split off a child area only when it has distinct factors or requirements
 
-- **Consider** a child target when a part of the subject is best evaluated
+- **Consider** a child area when a part of the root area is best evaluated
   through its own factors or requirements that would not apply to its siblings
   (e.g. a payment integration with its own security concerns).
-- **Avoid** child targets that merely re-state the parent's requirements. *Child
+- **Avoid** child areas that merely re-state the parent's requirements. *Child
   targets don't inherit the parent's requirements, but duplicating them by hand
   is a maintenance trap — let the ancestor's source cover the shared scope.*
-- **Do** place a requirement on the most specific target whose source actually
+- **Do** place a requirement on the most specific area whose source actually
   owns the concern, not on a broad ancestor that merely contains it. *Assessing a
   payment-integration concern at the root re-judges it at every level and blurs
   who owns the finding; a second evaluator should be able to place the same
@@ -445,50 +445,50 @@ target whose subtree has no requirements evaluates nothing.
   only interpretable alongside its siblings, keep the concern in the parent; split
   when the child could be evaluated, and trusted, in isolation.*
 
-- **Do** leave a grouping target's `source` implicit and let its children narrow
-  it. *A grouping target has no local rating; its aggregate reflects only its
+- **Do** leave a grouping area's `source` implicit and let its children narrow
+  it. *A grouping area has no local rating; its aggregate reflects only its
   children.*
 
 #### Define `source` only to narrow or relocate
 
 - **Do** omit `source` on the root to take the directory default, and on a child
   to inherit the nearest ancestor's scope.
-- **Do** set `source` (a path or glob, relative to the file) when a target
+- **Do** set `source` (a path or glob, relative to the file) when an area
   evaluates a specific subtree. *An ancestor's source may overlap a child's; even
-  so, each requirement evaluates against its own target's source — the overlap
+  so, each requirement evaluates against its own area's source — the overlap
   just means the child's entities also fall within the ancestor's scope.*
-- **Do** compare each `source` to the target's title and description. *The source
+- **Do** compare each `source` to the area's title and description. *The source
   should select the entity being modeled, not a convenient proxy, generated
   output, or a broader repository area that happens to contain it.*
 
-#### An entity can be both a target and an assessment reference
+#### An entity can be both an area and an assessment reference
 
 - **Do** decide by *role in this relationship*, not by identity: an entity is a
-  target where its quality is the thing being managed, and an assessment
+  area where its quality is the thing being managed, and an assessment
   reference where it supplies the criteria for judging another target. A spec is
-  both — a target in its own right and the criteria for judging the code that
+  both — an area in its own right and the criteria for judging the code that
   implements it.
 - **Do** point `source` at the whole entity, not a thin entry point or proxy.
 - **Avoid** treating "target or reference?" as exclusive. *An owned entity used
-  as criteria usually deserves a target of its own as well.*
+  as criteria usually deserves an area of its own as well.*
 - **Do** spend early effort on the normative artifacts that play both roles — a
-  spec, standard, or style guide. *Improving one raises every target judged against
+  spec, standard, or style guide. *Improving one raises every area judged against
   it, so it is often the highest-leverage place to invest quality early.*
 
 #### Write a description that distinguishes, not enumerates
 
-- **Do** state what the target *is* and how it differs from its siblings/parent.
+- **Do** state what the area *is* and how it differs from its siblings/parent.
   **Avoid** restating its factors or requirements in the description. *The
   description identifies the evaluated entity; factors and requirements define
   what is assessed about it.*
 
 #### Decide how ratings roll up
 
-A target's local rating and a factor's rating are inferred from the requirement
+A area's local rating and a factor's rating are inferred from the requirement
 results beneath them. The format fixes no aggregation formula, so how those
 results combine is a modeling decision you should make and communicate.
 
-- **Do** decide and state how a target's requirements combine into its rating when
+- **Do** decide and state how an area's requirements combine into its rating when
   it is not obvious. *Two defensible defaults: **worst-of** (the weakest finding
   sets the rating — right when any unacceptable requirement makes the whole
   untrustworthy) and **most-common / median** (right when requirements genuinely
@@ -498,9 +498,9 @@ results combine is a modeling decision you should make and communicate.
   levels has no meaning — three `target`s and one `unacceptable` is not "slightly
   above minimum."*
 - **Do** identify the requirements that can **veto** a rating — a single
-  `unacceptable` finding that makes the subject not good enough no matter how
+  `unacceptable` finding that makes the root area not good enough no matter how
   strong everything else is (secrets stored in plaintext, data loss on failover).
-  *Most requirements trade off against each other; a few cap the target. Sharpen a
+  *Most requirements trade off against each other; a few cap the rating. Sharpen a
   veto requirement's `unacceptable` criterion and name its role in the body, since
   a compensating roll-up can otherwise hide a critical problem behind strong
   siblings.*
@@ -515,14 +515,14 @@ results combine is a modeling decision you should make and communicate.
 ## Factor
 
 A **factor** is a quality characteristic — a *lens* such as `reliability`,
-`security`, or `maintainability` — through which a target's quality is described.
+`security`, or `maintainability` — through which an area's quality is described.
 It groups the requirements assessed through it. A factor may decompose into
 **sub-factors**: finer characteristics that together make up the parent (e.g.
 `reliability` into `availability`, `fault tolerance`, `recoverability`). A
 sub-factor is itself a factor of the same shape, nested to any depth.
 
-Factor identity is local to its target: factors of the same name on two
-different targets are distinct.
+Factor identity is local to its area: factors of the same name on two
+different areas are distinct.
 
 ### Properties
 
@@ -547,7 +547,7 @@ different targets are distinct.
   *If an important concern has no Factor, either add the Factor, mark the concern
   out of scope, or note the unresolved concern as an unknown in the relevant
   body section.*
-- **Do** justify each Factor by something concrete about *this* subject — who
+- **Do** justify each Factor by something concrete about *this* root area — who
   depends on it, what it is for, where it runs — not by its presence on a general
   list. *A characteristic with no user, no failure mode, and no decision riding on
   it here does not earn a Factor, however standard it is elsewhere; pull from a
@@ -572,7 +572,7 @@ different targets are distinct.
   reliable it is"). *That tells a reader nothing and doesn't distinguish it from
   its siblings.*
 
-- **Do** write each factor's description so the factors on a target read as a
+- **Do** write each factor's description so the factors on an area read as a
   distinct, non-overlapping set. *Overlapping factors make it ambiguous where a
   requirement belongs and double-count concerns in roll-up.*
 
@@ -586,7 +586,7 @@ different targets are distinct.
   assessment — a sub-factor you *can* observe or proxy is more useful than a parent
   you can only assert. *Decompose for measurability, not only for readability.*
 
-- **Do** treat a child target's factor that shares a name with an ancestor's as a
+- **Do** treat a child area's factor that shares a name with an ancestor's as a
   *refinement* tailored to the child. *They're technically distinct factors;
   write the child's description to say how it specializes the ancestor's
   concern.*
@@ -607,25 +607,25 @@ Every requirement must be connected to at least one factor:
   **primary** factor and the requirement joins that factor's roll-up.
 - **By reference** — naming factors under `factors`. On a nested requirement
   these are **secondary** factors (it appears in additional roll-ups). On a
-  requirement placed directly under a target, `factors` is **required** and names
+  requirement placed directly under an area, `factors` is **required** and names
   the factors directly.
 
 However it is connected, a requirement is assessed once, against the source of
-the target it sits on, and counts once in that target's local rating.
+the area it sits on, and counts once in that area's local rating.
 
 ### Properties
 
-| Property     | Presence                       | What it is                                                       |
-| ------------ | ------------------------------ | ---------------------------------------------------------------- |
-| `assessment` | Required                       | The means of assessing the source; produces the findings.        |
-| `factors`    | Required for target-level reqs | Factor references; secondary factors when nested under a factor. |
-| `ratings`    | Optional                       | Per-requirement criterion overrides, keyed by rating level.      |
+| Property     | Presence                     | What it is                                                       |
+| ------------ | ---------------------------- | ---------------------------------------------------------------- |
+| `assessment` | Required                     | The means of assessing the source; produces the findings.        |
+| `factors`    | Required for area-level reqs | Factor references; secondary factors when nested under a factor. |
+| `ratings`    | Optional                     | Per-requirement criterion overrides, keyed by rating level.      |
 
 ### Working with requirements
 
 #### Operationalize a factor into an assessable property
 
-A target does not directly manifest a Factor like "reliability"; it exhibits
+A area does not directly manifest a Factor like "reliability"; it exhibits
 concrete properties that imply it. Bridging from the abstract characteristic to
 something inspectable is the core authoring move.
 
@@ -669,7 +669,7 @@ something inspectable is the core authoring move.
   requirement returns "not assessed" no matter how well written — narrow it to what
   the evidence supports, or note the gap as an unknown in the relevant section.*
 - **Do** apply the discard test: if a requirement were deleted, would any decision
-  about this subject change? *If not, it is ritual — drop it or note it as an
+  about this root area change? *If not, it is ritual — drop it or note it as an
   unknown in the relevant section. Requirements imported to "be thorough" inflate
   the model and dilute the
   ratings that drive choices.*
@@ -715,7 +715,7 @@ something inspectable is the core authoring move.
 - **Avoid** extracting, summarizing, or duplicating that content into the
   requirement. *Duplicated criteria drift out of sync with their origin.*
 - **Do** reference that entity by the same canonical path used as its own
-  target's `source`. *That shared path is the edge between the two targets; it is
+  area's `source`. *That shared path is the edge between the two targets; it is
   what makes the dependency traceable.*
 - **Do** point at the specific applicable part of the referenced entity, and pin a
   version where it matters. *An unversioned, whole-document reference leaves the
@@ -728,9 +728,9 @@ something inspectable is the core authoring move.
   it), and add `factors` only to pull the result into additional (**secondary**)
   factor roll-ups.
 - **Do** declare `factors` explicitly for a requirement placed directly under a
-  target — it's required there, and `null`/`[]`/empty entries don't satisfy it.
+  area — it's required there, and `null`/`[]`/empty entries don't satisfy it.
 - **Do** name in `factors` only factors that are **in scope** — declared on this
-  target or on an ancestor. *A named factor that lives on a sibling or a
+  area or on an ancestor. *A named factor that lives on a sibling or a
   descendant doesn't resolve; you can reach up to an ancestor's factor, but not
   across or down.*
 
@@ -758,7 +758,7 @@ something inspectable is the core authoring move.
   it. *A totality claim is only verifiable if the assessment establishes the
   "every."*
 - **Do** keep conformance and fitness as separate requirements when they can
-  legitimately diverge. *A subject can match its specification yet fail the user's
+  legitimately diverge. *A root area can match its specification yet fail the user's
   real need, or serve the need while departing from spec; one result cannot carry
   both judgments.*
 
@@ -806,24 +806,24 @@ conflicts, or duplicates. Run a closing pass over the set:
 ## When to update QUALITY.md
 
 A QUALITY.md is expected to evolve through two loops: the **improve loop** fixes
-the subject against the model, and the **learn loop** reviews the model itself
+the root area against the model, and the **learn loop** reviews the model itself
 against reality. The two never fold together — the model's own quality is never
-averaged into the subject's rating.
+averaged into the root area's rating.
 
 - **Do** revise when a discovery changes the context or content of the
   evaluation — a new factor that matters, a requirement whose assessment changed,
   a scope that shifted.
 - **Do** update the model when an evaluation finding shows the model no longer
-  reflects the subject's real scope, risks, or decision needs. *That is model
-  drift, not merely a weak subject rating.*
+  reflects the root area's real scope, risks, or decision needs. *That is model
+  drift, not merely a weak root area rating.*
 - **Do** keep the body current with the frontmatter. *A model whose body no
   longer explains its factors misleads the next evaluator.*
-- **Avoid** using `QUALITY.md` as a defect backlog. *Subject defects belong in
-  the subject's normal planning system unless they also change what quality
+- **Avoid** using `QUALITY.md` as a defect backlog. *Evaluated-source defects belong in
+  the root area's normal planning system unless they also change what quality
   means or how it should be assessed.*
 - **Do** distinguish *recalibration* (a deliberate decision to reset a criterion
   because you have learned what is achievable) from *drift* (the model silently
-  falling out of step with the subject). *Recalibration is healthy: after a
+  falling out of step with the root area). *Recalibration is healthy: after a
   breakthrough, raise `minimum` so the new floor sticks; after hitting a real
   constraint, lower a `target` consciously and say why in the body.*
 - **Avoid** sharpening criteria only to keep ratings green. *The review's job is to
@@ -834,6 +834,6 @@ averaged into the subject's rating.
   strongest evidence the model is incomplete — the model improves by being used,
   not only by being authored.*
 - **Do** periodically check that satisfying the requirement set would actually
-  deliver the body's Needs. *If the model can be fully green while the subject
+  deliver the body's Needs. *If the model can be fully green while the root area
   still fails its purpose, the requirement set is incomplete — that is model drift,
-  not a strong subject.*
+  not a strong root area.*

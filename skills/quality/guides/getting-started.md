@@ -26,7 +26,7 @@ If lint fails, fix validity first. Do not build a model on an invalid skeleton.
 
 ### Fill the Body First
 
-Outcome: the Markdown body explains subject, scope, needs, and risks — with each
+Outcome: the Markdown body explains the root area, scope, needs, and risks — with each
 section's unknowns and open questions — well enough to justify and evaluate the
 first quality model.
 
@@ -34,7 +34,7 @@ Use authoring guidance: [The Markdown body](authoring.md#the-markdown-body).
 
 Check before moving on:
 
-- Overview names the real subject, dependents, and why quality matters.
+- Overview names the real the root area, dependents, and why quality matters.
 - Scope names what is included, excluded, and where the model boundary sits.
 - Needs names the outcomes and stakeholders the model serves.
 - Risks name the important failure modes.
@@ -45,7 +45,7 @@ Check before moving on:
 ### Confirm the Rating Scale
 
 Outcome: the rating levels can distinguish `unacceptable`, `minimum`, `target`,
-and `outstanding` for this subject.
+and `outstanding` for this the root area.
 
 Use authoring guidance: [Rating Scale](authoring.md#rating-scale).
 
@@ -55,13 +55,13 @@ Check before moving on:
   needed.
 - The level criteria are clear enough to rate future findings consistently.
 
-### Name the Subject
+### Name the Root Area
 
 Outcome: the root `title`, body, file location, and root `source` describe the
-same evaluated subject.
+same evaluated the root area.
 
 Use authoring guidance: [Quality Model](authoring.md#quality-model) and
-[Target](authoring.md#target).
+[Area](authoring.md#area).
 
 Check before moving on:
 
@@ -80,7 +80,7 @@ Check before moving on:
 
 - Each major body need or risk has a quality lens.
 - Each Factor has a required `title`.
-- Each Factor description explains the lens in terms of this subject.
+- Each Factor description explains the lens in terms of this the root area.
 
 ### Write Assessable Requirements
 
@@ -129,5 +129,5 @@ When the file is valid and the first model is useful enough, run:
 /quality wizard
 ```
 
-Wizard should route to model review, whole-subject evaluation, scoped
+Wizard should route to model review, whole-quality evaluation, scoped
 evaluation, or another concrete next step based on the current status.

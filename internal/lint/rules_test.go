@@ -230,14 +230,14 @@ ratingScale:
     criterion: Does not meet it.
 factors: {}
 requirements: {}
-targets: {}
+areas: {}
 ---
 `,
 	},
 	{
 		ruleID: RuleMisplacedRootKey,
-		name:   "nested target rating scale",
-		model: validFrontmatter(`targets:
+		name:   "nested area rating scale",
+		model: validFrontmatter(`areas:
   api:
     ratingScale:
       - level: target
@@ -249,10 +249,10 @@ targets: {}
 	},
 	{
 		ruleID: RuleMisplacedRootKey,
-		name:   "deep nested target rating scale",
-		model: validFrontmatter(`targets:
+		name:   "deep nested area rating scale",
+		model: validFrontmatter(`areas:
   api:
-    targets:
+    areas:
       handlers:
         ratingScale:
           - level: target
@@ -300,8 +300,8 @@ requirements:
 	},
 	{
 		ruleID: RuleUnknownFactor,
-		name:   "child target names sibling factor",
-		model: validFrontmatter(`targets:
+		name:   "child area names sibling factor",
+		model: validFrontmatter(`areas:
   api:
     factors:
       reliability:
@@ -379,7 +379,7 @@ requirements:
 	},
 	{
 		ruleID: RuleMissingTitle,
-		name:   "title absent with target content",
+		name:   "title absent with area content",
 		model: `---
 ratingScale:
   - level: target
@@ -388,7 +388,7 @@ ratingScale:
   - level: unacceptable
     description: Unacceptable.
     criterion: Does not meet it.
-targets:
+areas:
   api:
     requirements:
       "has an assessment":
@@ -479,25 +479,25 @@ requirements:
 `),
 	},
 	{
-		ruleID: RuleEmptyTarget,
-		name:   "leaf target has no requirements",
+		ruleID: RuleEmptyArea,
+		name:   "leaf area has no requirements",
 		model: validFrontmatter(`requirements:
   "has an assessment":
     assessment: Inspect it.
-targets:
+areas:
   api:
     source: ./api
 `),
 	},
 	{
-		ruleID: RuleEmptyTarget,
-		name:   "nested target subtree has no requirements",
+		ruleID: RuleEmptyArea,
+		name:   "nested area subtree has no requirements",
 		model: validFrontmatter(`requirements:
   "has an assessment":
     assessment: Inspect it.
-targets:
+areas:
   api:
-    targets:
+    areas:
       handlers:
         source: ./handlers
 `),
@@ -555,7 +555,7 @@ requirements:
 	{
 		ruleID: RuleEmptyProperty,
 		name:   "empty optional nested source",
-		model: validFrontmatter(`targets:
+		model: validFrontmatter(`areas:
   api:
     source:
     requirements:
@@ -599,7 +599,7 @@ func TestRuleValidReferenceResolution(t *testing.T) {
 	result, err := Check(writeModel(t, validFrontmatter(`factors:
   reliability:
     description: Reliability.
-targets:
+areas:
   api:
     requirements:
       "has an assessment":
@@ -703,7 +703,7 @@ requirements:
 			body: `factors:
   reliability:
     description: Reliability.
-targets:
+areas:
   api:
     requirements:
       "has an assessment":
@@ -734,14 +734,14 @@ targets:
 	}
 }
 
-func TestTargetDisplayFieldsAreValid(t *testing.T) {
+func TestAreaDisplayFieldsAreValid(t *testing.T) {
 	for _, tc := range []struct {
 		name  string
 		model string
 	}{
 		{
 			name: "title",
-			model: validFrontmatter(`targets:
+			model: validFrontmatter(`areas:
   api:
     title: API
     requirements:
@@ -751,7 +751,7 @@ func TestTargetDisplayFieldsAreValid(t *testing.T) {
 		},
 		{
 			name: "description",
-			model: validFrontmatter(`targets:
+			model: validFrontmatter(`areas:
   api:
     description: Functional specifications for the API.
     requirements:
@@ -761,7 +761,7 @@ func TestTargetDisplayFieldsAreValid(t *testing.T) {
 		},
 		{
 			name: "title and description",
-			model: validFrontmatter(`targets:
+			model: validFrontmatter(`areas:
   api:
     title: API
     description: Functional specifications for the API.
@@ -777,20 +777,20 @@ func TestTargetDisplayFieldsAreValid(t *testing.T) {
 				t.Fatalf("Check() error = %v", err)
 			}
 			if hasRule(result, RuleMisplacedRootKey) || hasRule(result, RuleInvalidFrontmatter) {
-				t.Fatalf("findings = %#v, target display fields should be valid", result.Findings)
+				t.Fatalf("findings = %#v, area display fields should be valid", result.Findings)
 			}
 		})
 	}
 }
 
-func TestTargetDisplayFieldShapesAreValidated(t *testing.T) {
+func TestAreaDisplayFieldShapesAreValidated(t *testing.T) {
 	for _, tc := range []struct {
 		name  string
 		model string
 	}{
 		{
 			name: "title list",
-			model: validFrontmatter(`targets:
+			model: validFrontmatter(`areas:
   api:
     title: [API]
     requirements:
@@ -800,7 +800,7 @@ func TestTargetDisplayFieldShapesAreValidated(t *testing.T) {
 		},
 		{
 			name: "description map",
-			model: validFrontmatter(`targets:
+			model: validFrontmatter(`areas:
   api:
     description:
       text: Functional specifications for the API.
@@ -819,7 +819,7 @@ func TestTargetDisplayFieldShapesAreValidated(t *testing.T) {
 				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidFrontmatter)
 			}
 			if hasRule(result, RuleMisplacedRootKey) {
-				t.Fatalf("findings = %#v, target display fields should not be root-key findings", result.Findings)
+				t.Fatalf("findings = %#v, area display fields should not be root-key findings", result.Findings)
 			}
 		})
 	}
@@ -857,7 +857,7 @@ requirements:
 		},
 		{
 			name: "target",
-			model: validFrontmatter(`targets:
+			model: validFrontmatter(`areas:
   api:
     unexpected: true
     requirements:

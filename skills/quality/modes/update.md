@@ -24,7 +24,7 @@ Apply only after confirmation
 - not confirmed? stop after plan
 
 Verify
-- CLI visible and in target range?
+- CLI visible and in area range?
 - skill changed? tell user restart/reload/new session may be required
 ```
 
@@ -77,10 +77,10 @@ Verify
    - Skill: the Agent Skills installer/package-manager command when available.
    - Otherwise stop with the manual command.
 8. After a CLI action, re-run the CLI version check and verify the visible CLI
-   satisfies the target `metadata.requires-qualitymd-cli` range when known.
+   satisfies the area `metadata.requires-qualitymd-cli` range when known.
 9. After a skill action, tell the user the current agent session may still be
    using previously loaded skill instructions and may need restart, reload, or a
    new session before the updated skill is active.
 
 `update` does not create or edit `QUALITY.md`, create evaluation records, build
-reports, rate the subject, or apply quality recommendations.
+reports, rate the evaluated source, or apply quality recommendations.

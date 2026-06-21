@@ -56,20 +56,20 @@ type LintStatus struct {
 }
 
 type ModelShape struct {
-	Targets      int `json:"targets"`
+	Areas        int `json:"areas"`
 	Factors      int `json:"factors"`
 	Requirements int `json:"requirements"`
 	RatingLevels int `json:"ratingLevels"`
 }
 
 type SourceCoverage struct {
-	TargetPath   []string `json:"targetPath"`
+	AreaPath     []string `json:"areaPath"`
 	Label        string   `json:"label"`
 	SourceState  string   `json:"sourceState"`
 	Source       string   `json:"source,omitempty"`
 	Factors      int      `json:"factors"`
 	Requirements int      `json:"requirements"`
-	ChildTargets int      `json:"childTargets"`
+	ChildAreas   int      `json:"childAreas"`
 }
 
 type EvaluationHistory struct {
@@ -180,16 +180,16 @@ func invalidModelActions(path string, summary lint.Summary) []receipt.Action {
 
 func modelSnapshot(spec *model.Spec) (ModelShape, []SourceCoverage) {
 	acc := modelAccumulator{
-		shape: ModelShape{Targets: 1, RatingLevels: len(spec.RatingScale)},
+		shape: ModelShape{Areas: 1, RatingLevels: len(spec.RatingScale)},
 	}
 	label := spec.Title
 	if label == "" {
 		label = "Model"
 	}
-	acc.coverage = append(acc.coverage, sourceCoverageRow(nil, label, spec.Source, "", len(spec.Factors), len(spec.Requirements), len(spec.Targets)))
+	acc.coverage = append(acc.coverage, sourceCoverageRow(nil, label, spec.Source, "", len(spec.Factors), len(spec.Requirements), len(spec.Areas)))
 	acc.walkFactors(spec.Factors)
 	acc.shape.Requirements += len(spec.Requirements)
-	acc.walkTargets(spec.Targets, nil, spec.Source)
+	acc.walkAreas(spec.Areas, nil, spec.Source)
 	return acc.shape, acc.coverage
 }
 
@@ -198,23 +198,23 @@ type modelAccumulator struct {
 	coverage []SourceCoverage
 }
 
-func (a *modelAccumulator) walkTargets(targets map[string]model.Target, parentPath []string, inheritedSource string) {
-	for _, name := range sortedKeys(targets) {
-		target := targets[name]
+func (a *modelAccumulator) walkAreas(areas map[string]model.Area, parentPath []string, inheritedSource string) {
+	for _, name := range sortedKeys(areas) {
+		area := areas[name]
 		path := appendString(parentPath, name)
-		label := target.Title
+		label := area.Title
 		if label == "" {
 			label = name
 		}
-		a.shape.Targets++
-		a.coverage = append(a.coverage, sourceCoverageRow(path, label, target.Source, inheritedSource, len(target.Factors), len(target.Requirements), len(target.Targets)))
-		a.walkFactors(target.Factors)
-		a.shape.Requirements += len(target.Requirements)
+		a.shape.Areas++
+		a.coverage = append(a.coverage, sourceCoverageRow(path, label, area.Source, inheritedSource, len(area.Factors), len(area.Requirements), len(area.Areas)))
+		a.walkFactors(area.Factors)
+		a.shape.Requirements += len(area.Requirements)
 		nextSource := inheritedSource
-		if target.Source != "" {
-			nextSource = target.Source
+		if area.Source != "" {
+			nextSource = area.Source
 		}
-		a.walkTargets(target.Targets, path, nextSource)
+		a.walkAreas(area.Areas, path, nextSource)
 	}
 }
 
@@ -229,11 +229,11 @@ func (a *modelAccumulator) walkFactors(factors map[string]model.Factor) {
 
 func sourceCoverageRow(path []string, label, declaredSource, inheritedSource string, factors, requirements, children int) SourceCoverage {
 	row := SourceCoverage{
-		TargetPath:   append([]string{}, path...),
+		AreaPath:     append([]string{}, path...),
 		Label:        label,
 		Factors:      factors,
 		Requirements: requirements,
-		ChildTargets: children,
+		ChildAreas:   children,
 	}
 	switch {
 	case declaredSource != "":
@@ -344,7 +344,7 @@ func nextActions(path string, history EvaluationHistory, state Readiness) []rece
 		return []receipt.Action{{
 			ID:      "evaluation-create",
 			Label:   "Create an evaluation run",
-			Command: "qualitymd evaluation create --subject " + path,
+			Command: "qualitymd evaluation create --model " + path,
 		}}
 	case ReadinessNeedsEvaluationReconcile:
 		return reconciliationActions(path, history)
@@ -376,7 +376,7 @@ func reconciliationActions(path string, history EvaluationHistory) []receipt.Act
 		return []receipt.Action{{
 			ID:      "evaluation-create",
 			Label:   "Create a fresh evaluation run",
-			Command: "qualitymd evaluation create --subject " + path,
+			Command: "qualitymd evaluation create --model " + path,
 		}}
 	case latest.ActiveRecommendations > 0:
 		return []receipt.Action{{

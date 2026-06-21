@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [
+  "areaPath": [
     "webhooks"
   ],
   "requirement": "Every outbound webhook is signed so merchants can verify its origin",

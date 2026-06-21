@@ -34,7 +34,7 @@ const (
 	RuleMissingLevelDescription  RuleID = "missing-level-description"
 	RuleEmptyModel               RuleID = "empty-model"
 	RuleMisplacedRootKey         RuleID = "misplaced-root-key"
-	RuleEmptyTarget              RuleID = "empty-target"
+	RuleEmptyArea                RuleID = "empty-area"
 	RuleEmptyFactor              RuleID = "empty-factor"
 	RuleMissingFactorDescription RuleID = "missing-factor-description"
 	RuleInvalidAssessment        RuleID = "invalid-assessment"
@@ -63,15 +63,15 @@ var Rules = []Rule{
 	{RuleDuplicateLevel, SeverityError, false, "A rating level name is duplicated within the rating scale."},
 	{RuleMissingCriterion, SeverityError, false, "A rating level declares no criterion."},
 	{RuleMissingLevelDescription, SeverityWarning, false, "A rating level declares no description."},
-	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or targets."},
-	{RuleMisplacedRootKey, SeverityError, false, "The `ratingScale` key appears on a nested target."},
-	{RuleEmptyTarget, SeverityWarning, false, "A target reaches no requirements in its subtree."},
+	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or areas."},
+	{RuleMisplacedRootKey, SeverityError, false, "The `ratingScale` key appears on a nested area."},
+	{RuleEmptyArea, SeverityWarning, false, "An area reaches no requirements in its subtree."},
 	{RuleEmptyFactor, SeverityWarning, false, "A factor leads to no requirements."},
 	{RuleMissingFactorDescription, SeverityWarning, false, "A factor declares no description."},
 	{RuleInvalidAssessment, SeverityError, false, "A requirement has no single non-empty scalar assessment."},
 	{RuleUnknownRatingKey, SeverityError, false, "A ratings override names a level outside the rating scale."},
 	{RuleUnknownFactor, SeverityError, false, "A requirement references a factor that does not resolve."},
-	{RuleMissingFactorReference, SeverityError, false, "A direct target-level requirement references no quality factor."},
+	{RuleMissingFactorReference, SeverityError, false, "A direct area-level requirement references no quality factor."},
 	{RuleEmptyProperty, SeverityWarning, true, "An optional property is present but empty and should be omitted."},
 }
 

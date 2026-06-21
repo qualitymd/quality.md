@@ -5,6 +5,37 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.7.0 - 2026-06-21
+
+### Breaking Changes
+
+- Renamed the formal model-node concept from Target to Area throughout the draft
+  format: `areas:` replaces `targets:`, evaluation records use `areaPath`
+  instead of `targetPath`, reports render Area/root area labels, and current
+  readers treat legacy Target-shaped records as incompatible historical records.
+- Renamed `qualitymd evaluation create --subject` to `--model` and changed new
+  evaluation run folders from `NNNN-subject[-<narrowing>]-quality-eval` to
+  `NNNN[-<narrowing>]-quality-eval`.
+
+### Documentation
+
+- Updated the `/quality` skill, scaffold, README, specs, dogfood `QUALITY.md`,
+  and maintained Sparrow example bundle to use Area terminology while preserving
+  the default `target` / `Target` rating level.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.7.0`
+- QUALITY.md specification: `0.2 (Draft)`
+- /quality skill: `0.7.0`, requires `qualitymd >=0.7.0 <0.8.0`
+
+This is a breaking draft-format change. Existing `targets:` models and
+evaluation records that use `targetPath` must be updated to `areas:` and
+`areaPath`; current readers treat old records as incompatible historical data
+rather than translating them.
+
 ## v0.6.0 - 2026-06-21
 
 ### CLI

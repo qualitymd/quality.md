@@ -30,7 +30,7 @@ Both verbs **MUST** accept either a positional run path or `--latest`, and
 `set` reads analysis JSON from `--file <path>`, from `--file -`, or from
 non-terminal stdin. It **MUST** accept either one analysis object or an array of
 analysis objects, validate each payload against the run's `model.md`, stamp
-`schemaVersion: 1`, and upsert each analysis by target slug in order. It
+`schemaVersion: 1`, and upsert each analysis by area slug in order. It
 **MUST** report all written paths. The payload **MUST NOT** include CLI-owned
 fields such as `schemaVersion`.
 

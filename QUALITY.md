@@ -17,7 +17,7 @@ ratingScale:
     title: 🔴 Unacceptable
     description: "Below the floor: the artifact does not satisfy the quality requirement acceptably."
     criterion: "Falls below the acceptable floor."
-targets:
+areas:
   format-spec:
     title: Format specification
     source: ./SPECIFICATION.md
@@ -162,10 +162,10 @@ targets:
             assessment: >
               Assess the runtime skill files under skills/quality/ against
               specs/skills/quality-skill/quality-skill.md. The skill resolves
-              mode, target file, scope, and rigor from the user's request; reads
+              mode, model file, scope, and rigor from the user's request; reads
               the required resources before acting; uses QUALITY.md terms
               consistently; distinguishes model validity, model usefulness,
-              subject quality, tooling readiness, and evaluation history; and
+              evaluated-source quality, tooling readiness, and evaluation history; and
               stops when evidence cannot support a rating.
       mutation-safety:
         title: Mutation safety
@@ -277,7 +277,7 @@ introduces that experience, and the deterministic `qualitymd` CLI that supports
 validation, status, and evaluation records.
 
 Good quality here means a team or agent can make quality expectations explicit,
-evaluate current evidence against them, and improve the subject without losing
+evaluate current evidence against them, and improve the evaluated source without losing
 the intent behind the model. The governing sense of "good" is fitness for
 purpose first, backed by conformance where the project defines a normative
 contract: the format specification, skill functional spec, CLI specs, and design
@@ -290,8 +290,8 @@ guides are the sources of truth for the artifacts they govern.
 
 ## Scope
 
-The deliverables are modeled as target nodes: `format-spec`, `readme`,
-`quality-skill`, and `cli`. Each target carries the requirements that make its
+The deliverables are modeled as area nodes: `format-spec`, `readme`,
+`quality-skill`, and `cli`. Each area carries the requirements that make its
 own job assessable. The format spec declares Clarity, Consistency,
 Verifiability, Extensibility, and Usability factors; the README declares
 Approachability; the `/quality` skill declares Judgment Grounding, Mutation
@@ -308,7 +308,7 @@ actions should work.
 
 Ratings should be read with a worst-of bias for contract failures: a single
 unacceptable finding in the format spec, skill safety rules, or CLI automation
-contract can cap its target, even if surrounding requirements are strong.
+contract can cap its rating, even if surrounding requirements are strong.
 Usability and approachability findings can compensate more often, but not when
 they mislead users about the supported workflow. `Minimum` is acceptable for
 early pre-1.0 work only when the body names the gap and the remaining risk is
@@ -341,7 +341,7 @@ worst-of bias and veto behavior.
   assistance because it carries the model's purpose, scope, needs, risks, and the
   unknowns and open questions behind them.
 - Coding agents can discover the model from `AGENTS.md` guidance and evaluate a
-  subject from the model alone.
+  root area from the model alone.
 - The `/quality` skill can safely set up, inspect, evaluate, improve, and
   upgrade the quality-management workflow while making mutation and evidence
   boundaries explicit.
@@ -374,7 +374,7 @@ depends on.
 
 *Agent-reviewed — Claude, 2026-06.*
 
-## Targets and factors
+## Areas and factors
 
 ### format-spec
 

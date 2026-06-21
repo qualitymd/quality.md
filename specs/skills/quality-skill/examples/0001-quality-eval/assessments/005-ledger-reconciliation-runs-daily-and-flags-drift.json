@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "targetPath": [
+  "areaPath": [
     "ledger"
   ],
   "requirement": "Reconciliation runs daily and flags drift",

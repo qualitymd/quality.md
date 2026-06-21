@@ -14,7 +14,7 @@ type Spec struct {
 	RatingScale  []RatingLevel          `yaml:"ratingScale" json:"ratingScale"`
 	Factors      map[string]Factor      `yaml:"factors,omitempty" json:"factors,omitempty"`
 	Requirements map[string]Requirement `yaml:"requirements,omitempty" json:"requirements,omitempty"`
-	Targets      map[string]Target      `yaml:"targets,omitempty" json:"targets,omitempty"`
+	Areas        map[string]Area        `yaml:"areas,omitempty" json:"areas,omitempty"`
 	Source       string                 `yaml:"source,omitempty" json:"source,omitempty"`
 
 	// Path is the source file; not part of the YAML.
@@ -32,16 +32,16 @@ type RatingLevel struct {
 	Criterion   string `yaml:"criterion" json:"criterion"`
 }
 
-// Target is a recursive target node in the quality model.
-type Target struct {
+// Area is a recursive area node in the quality model.
+type Area struct {
 	Title        string                 `yaml:"title,omitempty" json:"title,omitempty"`
 	Factors      map[string]Factor      `yaml:"factors,omitempty" json:"factors,omitempty"`
 	Requirements map[string]Requirement `yaml:"requirements,omitempty" json:"requirements,omitempty"`
-	Targets      map[string]Target      `yaml:"targets,omitempty" json:"targets,omitempty"`
+	Areas        map[string]Area        `yaml:"areas,omitempty" json:"areas,omitempty"`
 	Source       string                 `yaml:"source,omitempty" json:"source,omitempty"`
 }
 
-// Factor is a quality lens scoped to the target where it is declared.
+// Factor is a quality lens scoped to the area where it is declared.
 type Factor struct {
 	Title        string                 `yaml:"title,omitempty" json:"title,omitempty"`
 	Description  string                 `yaml:"description,omitempty" json:"description,omitempty"`

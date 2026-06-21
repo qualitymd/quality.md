@@ -80,7 +80,7 @@ The guide **MUST** cover these first-pass jobs:
 
 - filling the recommended Markdown body stubs;
 - confirming or lightly adapting the seeded rating scale;
-- naming the root subject from the body context;
+- naming the root root area from the body context;
 - deciding whether the root `source` can stay implicit;
 - selecting a small first set of Factors;
 - replacing placeholder Requirements with assessable Requirements;
@@ -92,7 +92,7 @@ brief completion checks, but it should not duplicate the full rationale or
 concept guidance from the authoring guide.
 
 The guide **MUST** preserve this process order: Markdown body first, rating
-scale second, then subject/source alignment, Factors, Requirements, validation,
+scale second, then root area/source alignment, Factors, Requirements, validation,
 and wizard routing.
 
 The guide **MUST** distinguish structural validity from model usefulness. A

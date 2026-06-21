@@ -29,7 +29,7 @@ Both verbs **MUST** accept either a positional run path or `--latest`, and
 `build` derives one assembled report model from the run's model snapshot, plan,
 assessment records, analysis records, recommendation records, and run metadata,
 then renders `report-summary.md`, `report.md`, and `report.json` from that model.
-It renders recorded judgment; it **MUST NOT** reread subject source, infer or
+It renders recorded judgment; it **MUST NOT** reread evaluated source, infer or
 recompute ratings, invent findings, or choose new recommendations by evaluator
 judgment. It **MUST** fail without writing a partial report when the run is not
 renderable, including when any run record is malformed, schema-incompatible, or
@@ -42,7 +42,7 @@ files.
 The assembled report model **MUST** preserve typed states from the record
 contract in `report.json`: rating-result kind, local-rating state, record
 lifecycle state, next-step kind, missing metadata fields, finding severity, and
-stable target/factor paths. Human Markdown can render those states with display
+stable area/factor paths. Human Markdown can render those states with display
 labels, but it **MUST NOT** collapse structural local ratings into not-assessed
 ratings or superseded records into active advice.
 
