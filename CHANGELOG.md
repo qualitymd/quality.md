@@ -5,6 +5,50 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.7.2 - 2026-06-20
+
+### CLI
+
+- `qualitymd init --json` now emits only the JSON error receipt when scaffolding
+  fails, instead of also rendering the styled error a second time. A `--json`
+  consumer reading stderr sees a single failure report; the exit code is
+  unchanged.
+- Reworked internal evaluation package naming to drop the redundant `Evaluation`
+  prefix (for example `evaluation.Run` and `evaluation.RunStatus`), clarified
+  usage-error exit classification, and added contract documentation comments to
+  follow the project Go style guide. Machine-readable JSON output and exit codes
+  are unchanged.
+
+### /quality Skill
+
+- Bumped the bundled skill release metadata to `0.7.2`; the supported
+  `qualitymd` CLI compatibility range remains `>=0.7.0 <0.8.0`.
+
+### Specification
+
+- No specification changes.
+
+### Documentation
+
+- Refined the Go style and package-design contributor guides: reorganized the
+  headings, clarified which conventions the deterministic check gate already
+  enforces, and tied the package-design guidance to the in-repo `receipt.Action`
+  example.
+
+### Packaging
+
+- No packaging changes.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.7.2`
+- QUALITY.md specification: `0.2 (Draft)`
+- /quality skill: `0.7.2`, requires `qualitymd >=0.7.0 <0.8.0`
+
+No migration is required from `v0.7.1`.
+
 ## v0.7.1 - 2026-06-21
 
 ### CLI
