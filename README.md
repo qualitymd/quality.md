@@ -76,14 +76,18 @@ agents with what matters in *this* codebase. You capture it once, then run a
    context gaps agents and contributors need to close before they can know what
    matters most.*
 
-2. **Run `/quality evaluate` to see where you stand.** It grades the work against
-   your new model and returns rated findings, each with evidence.
-   → *An honest first read on quality, each finding a gap in the work or a gap in
-   the bar.*
+2. **Run `/quality evaluate` to see where you stand.** The skill analyzes each
+   area of your project against the quality requirements defined in your model,
+   then provides ratings, findings, recommendations, and opportunities to improve
+   both the work and `QUALITY.md` itself.
+   → *A concrete read on where the work meets the bar, where it falls short, and
+   where the model needs to become clearer, more complete, or better grounded.*
 
-3. **Review and act on the findings.** Implement the fixes that are clear; triage
-   the rest into your backlog like any other work.
-   → *Real improvements landed, and a tracked plan for the rest.*
+3. **Review and act on the evaluation.** Weigh the quality ratings for each area
+   and factor, use the findings to understand the evidence behind the gaps, and
+   apply the recommended actions or hand them off to your issue tracker.
+   → *Clear next steps from the evaluation: what to fix now, what to track for
+   later, and why each action matters.*
 
 4. **Revise the model with what you learned.** Update `QUALITY.md` where the bar
    proved wrong, unclear, or out of date. Tip: let the `/quality` skill drive the
