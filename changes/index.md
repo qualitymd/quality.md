@@ -43,6 +43,11 @@ edit.
 
 # Open change cases
 
+- [0056 Prospective evaluation plan artifacts](0056-prospective-evaluation-plan-artifacts.md)
+  (`Design`) — make `design.md` and the initial `plan.md` prospective artifacts
+  authored before assessment begins, with later plan changes marked as
+  amendments.
+
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
 template for a new one.

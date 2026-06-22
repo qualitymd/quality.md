@@ -146,6 +146,51 @@ areas:
               the skill, CLI, and spec provide today; planned work is marked
               planned and placeholders are marked provisional.
 
+  # This area evaluates the concrete QUALITY.md artifact for this repository.
+  # The requirement's assessment names the authoring guide used to judge it.
+  quality-md:
+    title: QUALITY.md QUALITY.md
+    description: >
+      The repository's own QUALITY.md model, including its structured model and
+      Markdown judgment context.
+    source: ./QUALITY.md
+    factors:
+      context-grounding:
+        title: Context grounding
+        description: >
+          Does the Markdown body explain the root area, scope, needs, risks,
+          unknowns, and open questions well enough for later humans and agents
+          to understand what quality means here?
+      model-structure:
+        title: Model structure
+        description: >
+          Does the frontmatter organize areas, factors, requirements, sources,
+          and assessments so the model is readable, scoped, and traceable?
+      evaluability:
+        title: Evaluability
+        description: >
+          Can an evaluator bind evidence to each requirement and distinguish
+          adjacent rating levels without relying on unstated project knowledge?
+      lifecycle-maintenance:
+        title: Lifecycle maintenance
+        description: >
+          Does the model remain current as the project, skill, CLI, docs, and
+          evaluation history change?
+    requirements:
+      "the QUALITY.md model follows the active authoring guide":
+        factors:
+          - context-grounding
+          - model-structure
+          - evaluability
+          - lifecycle-maintenance
+        assessment: >
+          Assess ./QUALITY.md against skills/quality/guides/authoring.md. The
+          body should state the root area, scope, needs, risks, unknowns, open
+          questions, and review state; the frontmatter should use clear area
+          boundaries, explicit sources, coherent factors, and assessable
+          requirements; and model changes should preserve useful evaluation
+          routing and quality-log history.
+
   quality-skill:
     title: /quality skill
     source: ./skills/quality
@@ -312,11 +357,13 @@ guides are the sources of truth for the artifacts they govern.
 ## Scope
 
 The deliverables are modeled as area nodes: `format-spec`, `readme`,
-`quality-skill`, and `cli`. Each area carries the requirements that make its
+`quality-md`, `quality-skill`, and `cli`. Each area carries the requirements that make its
 own job assessable. The format spec declares Clarity, Consistency,
 Verifiability, Extensibility, and Usability factors; the README declares
-Approachability; the `/quality` skill declares Judgment Grounding, Mutation
-Safety, CLI Orchestration, and Lifecycle Guidance; and the CLI declares
+Approachability; the `QUALITY.md` artifact declares Context Grounding, Model
+Structure, Evaluability, and Lifecycle Maintenance; the `/quality` skill declares
+Judgment Grounding, Mutation Safety, CLI Orchestration, and Lifecycle Guidance;
+and the CLI declares
 Usability, Automation Compatibility, Consistency, Determinism, and
 Maintainability. Applicability is structural: factors apply where they are
 declared and below.
@@ -365,6 +412,9 @@ worst-of bias and veto behavior.
 - Authors can improve the Markdown body manually or with thoughtful AI
   assistance because it carries the model's purpose, scope, needs, risks, and the
   unknowns and open questions behind them.
+- Contributors can evaluate and improve this repository's own `QUALITY.md`
+  artifact against the active authoring guide rather than treating the model as
+  unjudged project metadata.
 - Coding agents can discover the model from `AGENTS.md` guidance and evaluate a
   root area from the model alone.
 - The `/quality` skill can safely set up, inspect, evaluate, improve, and
@@ -389,9 +439,10 @@ implementations diverge and the format stops being portable. A skill that rates
 without enough evidence, follows instructions from evaluated content, hides
 mutation, or drifts from the CLI can damage trust in the whole quality workflow.
 A README that drifts back to CLI-first framing turns newcomers away or teaches
-the wrong path. A stale Markdown body can make future agents optimize the wrong
-surface. A CLI that is inconsistent, noisy on the wrong stream, interactive by
-surprise, or non-deterministic undermines the automation role the project
+the wrong path. A stale or structurally weak `QUALITY.md` can make future agents
+optimize the wrong surface, miss model gaps, or treat outdated judgment context
+as current. A CLI that is inconsistent, noisy on the wrong stream, interactive
+by surprise, or non-deterministic undermines the automation role the project
 depends on.
 
 *Unknowns* — none known.
@@ -424,6 +475,19 @@ workflow.
 model, but the readme requirements have not yet been evaluated against the
 current artifacts.
 *Open questions* — none.
+
+### quality-md
+
+The repository's own `QUALITY.md` is a first-class evaluated artifact. Its
+quality depends on how well the body grounds the model, how clearly the
+frontmatter scopes areas and factors, whether requirements are assessable, and
+whether model changes leave a useful quality-log history.
+
+*Unknowns* — the `quality-md` area has not yet been evaluated against the
+current authoring guide.
+*Open questions* — whether future evaluations should add per-level criteria for
+model usefulness once this area produces enough findings to distinguish adjacent
+ratings.
 
 ### quality-skill
 

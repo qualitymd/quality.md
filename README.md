@@ -99,6 +99,12 @@ agents with what matters in *this* codebase. You capture it once, then run a
    well-formed, grounded, and current, with meaningful changes recorded in the
    quality log.
 
+### Keeping the skill and CLI current
+
+**Run `/quality update` to update the `/quality` agent skill and `qualitymd`
+CLI.** Keep them up to date to take advantage of the latest improvements to the
+efficiency and efficacy of working with QUALITY.md files.
+
 ### Keeping the loop running
 
 Once you have a model, the loop keeps going at whatever cadence and trigger fits

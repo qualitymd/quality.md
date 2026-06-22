@@ -13,6 +13,28 @@
   published-skill relative-link package guard. Updated the archive [index](archive/index.md)
   and removed the entry from the open-cases list in the bundle [index](index.md).
 
+- **Design**: Advanced
+  [0056 - Prospective evaluation plan artifacts](0056-prospective-evaluation-plan-artifacts.md)
+  from `Draft` to `Design` and added its
+  [design doc](0056-prospective-evaluation-plan-artifacts/design.md). The design
+  lands the change as a contract and prompt repair rather than a CLI behavior
+  change: add a planning checkpoint after run creation and before assessment,
+  split `design.md`, `plan.md`, `debug-log.md`, and formal records by job, add a
+  small `design.md` artifact spec, and keep later scope or coverage changes as
+  explicit `plan.md` amendments. Updated the open-cases entry in the bundle
+  [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0056 - Prospective evaluation plan artifacts](0056-prospective-evaluation-plan-artifacts.md)
+  (`Draft`) with its
+  [functional spec](0056-prospective-evaluation-plan-artifacts/spec.md) and
+  [child index](0056-prospective-evaluation-plan-artifacts/index.md). The case
+  tightens `/quality evaluate` so `design.md` and the initial `plan.md` are
+  authored immediately after run creation and before assessment begins, separates
+  intended evidence planning from actual findings and rating rationale, and
+  requires later scope or coverage changes to be explicit amendments. Added the
+  case to the open-cases list in the bundle [index](index.md).
+
 - **In-Review**: Completed implementation of
   [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md)
   and advanced it from `In-Progress` to `In-Review`. Added payload-documenting
