@@ -44,6 +44,14 @@ After applying confirmed option
    If options differ in risk or coverage, say so explicitly. Do not treat an
    obvious recommendation as consent.
 4. Apply only the confirmed option.
+   - When the applied change is a **model change** to `QUALITY.md` (per the
+     meaningful-change taxonomy in [`../guides/authoring.md`](../guides/authoring.md)),
+     append one quality log entry under `quality/log/` cross-linking the
+     evaluation run and recommendation it came from. This needs no confirmation
+     beyond the user's existing confirmation of the change; its rationale is the
+     rationale already in the decision brief. An evaluated-source fix that does
+     not change the model gets no log entry. See the contract in
+     [`../SKILL.md`](../SKILL.md).
 5. Run a new evaluation in a new numbered folder and link it back to the prior
    run.
 6. Check the done criterion against the new folder's rating.
@@ -53,7 +61,7 @@ After applying confirmed option
    Improvement result
    - Recommendation:
    - Applied option:
-   - Changed artifacts:
+   - Changed artifacts:        (name the quality log entry when the model changed)
    - Before evidence:
    - After evidence:
    - Verification:

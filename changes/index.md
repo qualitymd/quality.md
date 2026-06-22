@@ -43,9 +43,7 @@ edit.
 
 # Open change cases
 
-- [0050 - Quality log](0050-quality-log.md) - add a curated quality log — dated
-  entries under `quality/log/` that record meaningful, evidence-linked changes to
-  a QUALITY.md model, written by the `/quality` skill. Status: `Draft`.
+*None open.*
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

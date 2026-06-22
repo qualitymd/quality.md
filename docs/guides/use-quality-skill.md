@@ -99,6 +99,12 @@ process-only `debug-log.md` for notable evaluation orchestration events.
 `update` plans and orchestrates paired skill/CLI maintenance without running a
 quality evaluation.
 
+`setup` and `improve` also maintain a **quality log** — dated entries under
+`quality/log/` that record meaningful, evidence-linked changes to the model
+(`setup` seeds an inaugural entry; `improve` appends one per confirmed model
+change). The log preserves *why* the model changed where `git log` only shows the
+diff; it is curated, not exhaustive.
+
 ## Configure the evaluation directory
 
 Create `.quality/config.yaml` to choose a different parent directory for

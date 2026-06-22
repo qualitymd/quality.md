@@ -40,6 +40,10 @@ recommendations.
   and `debug-log.md` in CLI-created runs.
 - `improve` edits evaluated source files or `QUALITY.md` only after explicit
   confirmation of the recommendation and option to apply.
+- The quality log under `quality/log/` is written only by `setup` (an inaugural
+  entry) and `improve` (one entry per confirmed model change). `evaluate` never
+  writes it, and `wizard` is read-only with respect to it. See
+  [Quality Log](#quality-log).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
 - Never manually create evaluation run folders or record files.
@@ -102,7 +106,7 @@ wizard output already stated the same facts:
 - Model file:
 - Scope:
 - Rigor:        (when applicable)
-- Mutation:      (read-only, evaluation artifacts, evaluated source, QUALITY.md, tooling)
+- Mutation:      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, tooling)
 - Artifacts:
 - Next gate:
 ```
@@ -231,3 +235,53 @@ The evaluation record layout and field contract lives in
 spec, plus `qualitymd status --json` and the `qualitymd evaluation ...` command
 help, as the source of truth. Do not restate the schema or folder layout in this
 prompt.
+
+## Quality Log
+
+The quality log is a curated, evidence-linked timeline of meaningful changes to
+the QUALITY.md model, written as dated entries under `quality/log/`. It preserves
+the *why* a model changed — which evaluation surfaced a gap, whether a criterion
+moved by recalibration or drift — that `git log` does not capture. It is the
+model's own history; it is **not** an evaluation record (those own
+`quality/evaluations/`) and **not** a defect backlog.
+
+Format contract:
+
+- **Location.** `quality/log/`, a sibling of the resolved evaluation directory
+  (default `quality/evaluations/`; the log directory is not configurable yet).
+- **One entry per meaningful change**, one file. Name it
+  `YYYY-MM-DD-<slug>.md`, where the date is the day the change was made and
+  `<slug>` is a short kebab-case summary. Do **not** assign a global sequential
+  counter — the date prefix orders entries.
+- **Runtime artifact, not an OKF bundle.** No `index.md`, `schema.md`, or
+  `log.md`; entry frontmatter is machine metadata, not OKF concept frontmatter.
+- **Each entry** carries small frontmatter plus a prose rationale body. The
+  frontmatter records the change kind, the model target it affects, and — when the
+  change came from an evaluation — the source run and recommendation it traces to.
+  The body states *why*. Reference any secret value by `file:line` and type only.
+
+  ```markdown
+  ---
+  date: 2026-06-22
+  kind: apply-recommendation   # or model-creation, add, remove, rename,
+                               # recalibrate, drift-correction, scope-change,
+                               # apex-change, weight-change, criterion-change
+  target: <area/factor/requirement key or "model">
+  run: 0003-quality-eval       # when the change came from an evaluation
+  recommendation: 002-<slug>   # when the change came from an evaluation
+  ---
+
+  Why the model changed, and — for a criterion move — whether it is deliberate
+  recalibration or a drift correction.
+  ```
+
+The log is **curated, not complete**: hand edits to `QUALITY.md` bypass the
+skill, so git remains the full diff history while the log carries the judgment.
+Log a change that alters what the model *is* or *how it judges*; do **not** log
+Markdown-body wording, typo, or formatting changes, nor evaluated-source fixes
+that leave the model unchanged. Write one entry per coherent change (a confirmed
+`improve` apply, or the initial population), not one per field touched. The
+meaningful-change taxonomy is in [`guides/authoring.md`](guides/authoring.md).
+
+A `qualitymd log` command, a `.quality/config.yaml` `logDir` key, and a queryable
+index are deferred; this convention is what the skill writes against today.

@@ -2,6 +2,17 @@
 
 ## 2026-06-22
 
+- **Revision**: Added a `## Quality log` section to the
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) for
+  [0050 - Quality log](../changes/archive/0050-quality-log.md). The section specifies the
+  convention-first quality log under `quality/log/`: date-named one-file-per-change
+  entries, runtime-not-OKF status, the meaningful-change criterion, which modes
+  write (`setup` seeds, `improve` appends) and reconcile (`wizard`, read-only), and
+  the run-frame mutation accounting. Promoted the curated-not-complete and
+  date-naming rationale into the section and recorded the CLI graduation (a
+  `qualitymd log` command, a `logDir` config key, a standalone artifact-spec, and a
+  queryable index) as deferred.
+
 - **Creation**: Added the companion JSON Schema artifact-spec
   [`quality.schema.json`](quality-schema-json.md) and the
   [`qualitymd schema`](cli/schema.md) command sub-spec for

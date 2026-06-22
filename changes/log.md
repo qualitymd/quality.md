@@ -3,6 +3,35 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0050 - Quality log](archive/0050-quality-log.md) — advanced from `In-Progress`
+  through `In-Review` to `Done` and moved the parent concept and its
+  [folder](archive/0050-quality-log/index.md) into [`archive/`](archive/index.md).
+  The case added the convention-first quality log: dated `quality/log/` entries the
+  `/quality` skill writes (`setup` seeds an inaugural entry, `improve` appends one
+  per confirmed model change), with the format contract in `skills/quality/SKILL.md`,
+  the meaningful-change taxonomy in `skills/quality/guides/authoring.md`, the
+  inaugural-seed step in `modes/setup.md`, the model-change entry in `modes/improve.md`,
+  and the read-only model-history/reconciliation surface in `modes/wizard.md`. Synced
+  the durable `/quality` skill spec with a new `## Quality log` section and a
+  deferred-CLI bullet, logged it in `specs/log.md`, and added a quality-log mention
+  to `docs/guides/use-quality-skill.md`. No Go code: the `qualitymd log` CLI
+  command is explicitly deferred. Updated the archive [index](archive/index.md) and
+  emptied the open-cases list in the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0050 - Quality log](archive/0050-quality-log.md) and advanced it from
+  `In-Progress` to `In-Review`. Reconciled the Affected artifacts list with reality
+  — the only doc beyond the listed durable spec and bundled skill files was
+  `docs/guides/use-quality-skill.md`, which already enumerated skill outputs and
+  would have gone stale.
+
+- **In-Progress**: Advanced [0050 - Quality log](archive/0050-quality-log.md) from
+  `Draft` to `In-Progress`. The functional spec is settled and needs no design
+  doc, so implementation of the convention-first quality log begins: the durable
+  quality-skill spec subsection plus the bundled skill edits (`SKILL.md`,
+  `guides/authoring.md`, `modes/setup.md`, `modes/improve.md`, `modes/wizard.md`).
+
+- **Done**: Landed and archived
   [0049 - Companion JSON Schema](archive/0049-companion-json-schema.md) — advanced
   from `In-Review` to `Done` and moved the parent concept and its
   [folder](archive/0049-companion-json-schema/index.md) into

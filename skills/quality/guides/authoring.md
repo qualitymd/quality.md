@@ -837,3 +837,30 @@ averaged into the root area's rating.
   deliver the body's Needs. *If the model can be fully green while the root area
   still fails its purpose, the requirement set is incomplete — that is model drift,
   not a strong root area.*
+
+### Logging a model change
+
+When the learn loop actually changes the model, record it in the **quality log**
+— a curated, evidence-linked timeline of meaningful model changes under
+`quality/log/`, one dated entry per change (`YYYY-MM-DD-<slug>.md`). The log
+preserves the *why* a commit message scrolls away; its format contract lives in
+[`SKILL.md`](../SKILL.md). The judgment is *what* counts as meaningful:
+
+- **Do** log a change that alters what the model *is* or *how it judges*: adding,
+  removing, or renaming an Area, Factor, or Requirement; changing the rating
+  scale, a criterion, or a relative weight; shifting scope; changing the apex or
+  required margin; or applying an evaluation recommendation. *That is the
+  judgment layer git cannot reconstruct from a diff.*
+- **Do** state whether a criterion move is deliberate *recalibration* or a *drift
+  correction*, and cross-link the evaluation run and recommendation behind it when
+  the change came from one. *The evidence link is the entry's whole value over
+  `git log`.*
+- **Do** write **one entry per coherent change** — a confirmed `improve` apply, or
+  the initial population — not one per field touched. *The unit of record is the
+  decision, not the edit.*
+- **Avoid** logging Markdown-body wording, typo, or formatting changes, or
+  evaluated-source fixes that leave the model unchanged. *Those are not model
+  changes; git already records them, and logging them turns a curated timeline
+  into noise.*
+- **Avoid** treating the log as a second evaluation record or a defect backlog.
+  *It references evaluation runs; it never copies them.*

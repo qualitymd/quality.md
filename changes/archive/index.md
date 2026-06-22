@@ -163,3 +163,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   structural, non-normative JSON Schema for QUALITY.md frontmatter, generated
   from `internal/schema` and guarded against drift, embedded via a root
   `schema.go`, and emitted by a new `qualitymd schema` command (`Done`).
+- [0050 — Quality log](0050-quality-log.md) - added the convention-first quality
+  log: dated `quality/log/` entries the `/quality` skill writes (`setup` seeds,
+  `improve` appends) to record meaningful, evidence-linked model changes, with the
+  format contract in `SKILL.md`, the meaningful-change taxonomy in the authoring
+  guide, `wizard` reconciliation, and a new `## Quality log` section in the
+  durable skill spec (`Done`).

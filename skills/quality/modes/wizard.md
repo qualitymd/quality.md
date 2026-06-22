@@ -44,7 +44,8 @@ Classify readiness (from `qualitymd status --json` plus checklist findings)
 - immature model      (valid but model-usefulness findings block fair evaluation)
 - ready to evaluate   (lint passes, no runs yet)
 - has evaluation history (lint passes, runs present)
-- needs reconciliation (stale/incomplete/malformed runs or active recommendations)
+- needs reconciliation (stale/incomplete/malformed runs, active recommendations,
+                        or model changed out of band since the last quality log entry)
 
 Recommend one next step
 - name the workflow
@@ -58,6 +59,7 @@ Offer concrete alternatives
 - evaluate root area
 - improve evaluated source from recommendations
 - review evaluation history
+- backfill quality log for out-of-band model changes (via improve/authoring)
 ```
 
 ## Procedure
@@ -79,6 +81,13 @@ Offer concrete alternatives
    a signal is genuinely needed to choose between options and is cheap, gather
    just that one; otherwise state the open question and let the user's choice
    resolve it.
+   - Cheaply surface model history: note the latest `quality/log/` entry (a bare
+     directory listing — do not read entry bodies). When the model appears to
+     have changed out of band since that entry — the `QUALITY.md` is newer than
+     the last logged change, or there is no log at all for an evolved model —
+     classify it under **needs reconciliation** and offer the backfill route. The
+     backfill is performed by a confirmed `improve`/authoring workflow; wizard
+     stays read-only and never writes the log itself.
 4. Only read [`../guides/authoring.md`](../guides/authoring.md) if the user
    explicitly asks for authoring/model help — not to classify readiness. If the
    user has just initialized a skeleton or asks how to start from one, read
@@ -92,6 +101,7 @@ Offer concrete alternatives
    - Model:              (validity and usefulness/readiness; no shape audit)
    - Evaluated source:   (ready/blocked/unknown from source signals)
    - Evaluation history: (runs/recommendations present; no body reads)
+   - Model history:      (latest quality log entry; "no log" or "drift since last entry")
    - Readiness:
 
    QUALITY.md inspection findings

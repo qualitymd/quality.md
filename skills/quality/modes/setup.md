@@ -26,8 +26,8 @@ Run qualitymd lint
    - Mode: setup
    - Model file: <resolved path>
    - Scope: model skeleton/readiness
-   - Mutation: `QUALITY.md` when missing or when an existing model change is confirmed
-   - Artifacts: `QUALITY.md`
+   - Mutation: `QUALITY.md` when missing or when an existing model change is confirmed; quality log
+   - Artifacts: `QUALITY.md`, `quality/log/` inaugural entry
    - Next gate: lint result, guided population, then wizard next step
    ```
 
@@ -51,7 +51,15 @@ Run qualitymd lint
    Risks, each with its unknowns, open questions, and any material support that
    is not agent-accessible, and propose project-specific Factors and Requirements
    to replace the placeholders with the user. Do not stop at naming the next
-   step. Route to `wizard` after population for the next evaluation workflow.
+   step.
+8. After guided population settles, seed the inaugural quality log entry under
+   `quality/log/` recording model creation and the initial model shape. Use
+   `YYYY-MM-DD-<slug>.md` (e.g. `2026-06-22-initial-model.md`) with
+   `kind: model-creation` and `target: model`; the body states what the first
+   model captures and why. Seeding needs no separate confirmation beyond the
+   user's confirmation of the model itself. See the quality log contract in
+   [`../SKILL.md`](../SKILL.md). Route to `wizard` after population for the next
+   evaluation workflow.
 
 `setup` creates a valid skeleton; it does not invent a complete quality model
 without user/project context. For authoring judgment, read

@@ -2,7 +2,7 @@
 type: Change Case
 title: Quality log
 description: Add a curated quality log — dated entries under quality/log/ that record meaningful changes to a QUALITY.md model and cross-link the evaluation evidence behind them.
-status: Draft
+status: Done
 tags: [skill, quality, evaluation, changes]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -14,14 +14,12 @@ curated, evidence-linked history of meaningful changes to a QUALITY.md model,
 written by the `/quality` skill as dated entries under `quality/log/`. The detail
 lives in its [functional spec](0050-quality-log/spec.md).
 
-> **Draft.** Settling *what* the quality log must do. The shape is largely
-> decided from discussion — a folder of date-named entries, written by `setup`
-> and `improve`, reconciled by `wizard`, with the format contract in `SKILL.md`
-> and the meaningful-change judgment in the authoring guide — and that rationale
-> is carried on the spec's requirements. This case is **convention-first**: the
-> skill writes entries directly, with no `qualitymd log` CLI command and no
-> standalone artifact-spec yet (see [Scope](#scope)). No skill files are touched
-> until the case reaches **In-Progress**.
+> **Done.** A folder of date-named entries, written by `setup` and `improve`,
+> reconciled by `wizard`, with the format contract in `SKILL.md` and the
+> meaningful-change judgment in the authoring guide. The case is
+> **convention-first**: the skill writes entries directly, with no `qualitymd log`
+> CLI command and no standalone artifact-spec yet (see [Scope](#scope)). The
+> durable rationale is carried on the [`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md#quality-log).
 
 ## Motivation
 
@@ -106,11 +104,13 @@ Deferred / non-goals:
 
 ### Durable docs, scaffold, and examples
 
-- `README.md` — no expected impact; mention the quality log only if the README
-  enumerates skill outputs.
-- `docs/guides/` — no expected impact (the change-case and authoring guidance
-  already cover the relevant editing rules).
-- Scaffold/install files — no expected impact.
+- `README.md` — no impact; the README does not enumerate runtime skill outputs.
+- `docs/guides/use-quality-skill.md` — added a quality-log sentence to the skill
+  mode rundown, which already enumerates what `setup`/`evaluate` write, so it does
+  not read as stale.
+- Other `docs/guides/` — no impact (the change-case and authoring guidance already
+  cover the relevant editing rules).
+- Scaffold/install files — no impact.
 
 ## Children
 
@@ -121,5 +121,8 @@ carried on the spec's requirements (folder-vs-file, date-naming, guidance split)
 
 ## Status
 
-`Draft`. See the [status lifecycle](../index.md#status-lifecycle). Writing the
-functional spec; no skill files touched until **In-Progress**.
+`Done`. See the [status lifecycle](../index.md#status-lifecycle). The spec was
+settled (no design doc needed); the durable quality-skill spec subsection and the
+bundled skill edits enumerated under [Affected artifacts](#affected-artifacts)
+landed, and the case was archived. The durable rationale lives in the
+[`/quality` skill spec](../../specs/skills/quality-skill/quality-skill.md#quality-log).
