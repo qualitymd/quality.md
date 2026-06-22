@@ -320,7 +320,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{"## Verdict", "## Scope", "## Selected Findings and Limitations", "## Evidence Basis", "## Next Action", "## Area Breakdown", "- **Evaluation verdict:** 🟡 Minimum", "| Test model | `root` | 🟡 Minimum | 🟡 Minimum | (no factor ratings) |"} {
+	for _, want := range []string{"## Verdict", "## Scope", "## Selected Findings and Limitations", "## Evidence Basis", "## Next Action", "## Area Breakdown", "- **Evaluation verdict:** 🟡 Minimum", "| Test model | `/` | 🟡 Minimum | 🟡 Minimum | (no factor ratings) |"} {
 		if !strings.Contains(string(reportMD), want) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
 		}
@@ -353,7 +353,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report-summary.md: %v", err)
 	}
-	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Evaluation verdict | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Verdict", "## Area Breakdown", "| Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |", "| Test model | `root` | 🟡 Minimum | 🟡 Minimum | (no factor ratings) |", "## Selected Findings", "**Medium**", "Only a smoke test exists.", "## Recommended Actions", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
+	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Evaluation verdict | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Verdict", "## Area Breakdown", "| Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |", "| Test model | `/` | 🟡 Minimum | 🟡 Minimum | (no factor ratings) |", "## Selected Findings", "**Medium**", "Only a smoke test exists.", "## Recommended Actions", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
@@ -841,8 +841,10 @@ areas:
 
 	for _, want := range []string{
 		"- **Root area:** Root Quality Model",
-		"| Root Quality Model | `root` | (area group) | Good | Operational reliability: Good |",
+		"| Root Quality Model | `/` | (area group) | Good | Operational reliability: Good |",
 		"| API Service | `api-service` | Good | Good | Automation compatibility: Good; Operational reliability: Good |",
+		"### Root Quality Model",
+		"- **Path:** /",
 		"### API Service",
 		"- **Path:** api-service",
 		"- **Area rating:** Good",
@@ -871,7 +873,7 @@ areas:
 	for _, want := range []string{
 		"| Root area | Root Quality Model |",
 		"## Area Breakdown",
-		"| Root Quality Model | `root` | (area group) | Good | Operational reliability: Good |",
+		"| Root Quality Model | `/` | (area group) | Good | Operational reliability: Good |",
 		"| API Service | `api-service` | Good | Good | Automation compatibility: Good; Operational reliability: Good |",
 	} {
 		if !strings.Contains(string(summaryMD), want) {

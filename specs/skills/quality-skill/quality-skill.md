@@ -213,7 +213,8 @@ valid:
   type is fixed, such as `area webhooks/delivery` or
   `factor webhooks/delivery::reliability`. Legacy
   bare names are human-edge shorthand matched against the grounded model; an
-  explicit `area`/`factor` keyword disambiguates a name that is both.
+  explicit `area`/`factor` keyword disambiguates a name that is both. Display
+  values, such as `/` for the root Area in reports, are not model references.
 - **Rigor** — the evaluation depth (default `standard`); see
   [Rigor levels](evaluation.md#rigor-levels).
 
@@ -335,10 +336,11 @@ output: area, factor, requirement, rating, finding, and recommendation. It
 For user-facing labels, the skill **SHOULD** use required `title` values for
 Models, Areas, Factors, and Rating Levels as the primary wording. It **MAY**
 include qualified model references as secondary context when needed for
-disambiguation or traceability. In fixed-type contexts, such as an Area-only
-report column, the skill **MAY** rely on unqualified references rendered by the
-CLI. The skill **MUST NOT** replace structured stable identifiers with titles or
-unqualified references in evaluation record payloads.
+disambiguation or traceability. In generated human reports, the skill **MAY**
+rely on display values rendered by the CLI for user-facing discussion; the root
+Area displays as `/`, while its references remain `area:root` and `root`. The
+skill **MUST NOT** replace structured stable identifiers with titles, display
+values, or unqualified references in evaluation record payloads.
 
 ### Mode specs
 

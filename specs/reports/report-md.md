@@ -54,12 +54,14 @@ and limitations, evidence basis, next action, and Area breakdown before detailed
 Area and Requirement sections.
 
 The Area breakdown **MUST** use the same compact Area breakdown data or rendering
-rules as `report-summary.md`, including the Area Breakdown `Path` reference
-form.
+rules as `report-summary.md`, including the Area Breakdown `Path` display value.
 
 The full report **MUST** preserve detailed Area entries with Area-only rating,
 Area-with-descendants rating, Factor rating results, rationales, analysis record
 references, and not-assessed requirements when present.
+
+Detailed Area entries **MUST** render `Path` as the Area display value: `/` for
+the root Area and `<area-path>` for descendants.
 
 The full report **MUST** preserve per-Requirement summaries with Area,
 rating result, rationale, active/superseded state, and assessment-result record

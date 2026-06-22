@@ -246,7 +246,7 @@ func newReportDocument(runPath string, rootAnalysis AnalysisRecord, context runC
 		SchemaVersion: SchemaVersion,
 		Summary: ReportSummary{
 			Run:          filepath.Base(runPath),
-			RootArea:     rootAnalysis.AreaPath.Display(),
+			RootArea:     rootAnalysis.AreaPath.UnqualifiedReference(),
 			Level:        context.Level,
 			Rigor:        context.Rigor,
 			Narrowing:    context.Narrowing,
@@ -385,7 +385,7 @@ func addReportAreas(report *ReportDocument, analyses []AnalysisRecord, assessmen
 		}
 		report.AreaSummary = append(report.AreaSummary, areaEvaluationSummary(area, len(analysis.AssessmentResultRecords)))
 		if len(context.InScope) == 0 {
-			report.Scope.InScope = append(report.Scope.InScope, area.AreaPath.Display())
+			report.Scope.InScope = append(report.Scope.InScope, area.AreaPath.UnqualifiedReference())
 		}
 		report.Areas = append(report.Areas, area)
 	}
@@ -572,12 +572,12 @@ func writeAreaBreakdownSection(out *bytes.Buffer, report ReportDocument, labels 
 }
 
 // areaBreakdownRow renders one compact Area Breakdown row. The Area column shows
-// the Area title; the Path column shows the unqualified Area reference; the
-// rating columns preserve Area-only and Area-with-descendants states; the
-// Factors column lists each factor as `<factor display path>: <rating>`.
+// the Area title; the Path column shows the Area display value; the rating
+// columns preserve Area-only and Area-with-descendants states; the Factors
+// column lists each factor as `<factor display path>: <rating>`.
 func areaBreakdownRow(area AreaRatingSummary, labels reportDisplayLabels) string {
 	return "| " + tableCell(labels.Area(area.AreaPath.Elements(), area.AreaPath.Display())) +
-		" | `" + tableCell(area.AreaPath.UnqualifiedReference()) + "`" +
+		" | `" + tableCell(area.AreaPath.Display()) + "`" +
 		" | " + tableCell(displayAreaRatingState(area.AreaRatingState, labels.Ratings)) +
 		" | " + tableCell(displayRatingResult(area.AreaWithDescendantsRatingResult, labels.Ratings)) +
 		" | " + tableCell(areaBreakdownFactors(area, labels)) + " |\n"
@@ -607,7 +607,7 @@ func writeReportAreaDetailsSection(out *bytes.Buffer, report ReportDocument, lab
 
 func writeReportAreaDetail(out *bytes.Buffer, area AreaEvaluationDetail, labels reportDisplayLabels) {
 	out.WriteString("### " + labels.Area(area.AreaPath.Elements(), area.AreaPath.Display()) + "\n\n")
-	out.WriteString("- **Path:** " + displayPath(area.AreaPath) + "\n")
+	out.WriteString("- **Path:** " + area.AreaPath.Display() + "\n")
 	out.WriteString("- **Area rating:** " + displayAreaRatingState(area.AreaRatingState, labels.Ratings) + "\n")
 	if area.AreaRatingState.RatingResult != nil {
 		writeOptionalRationale(out, area.AreaRatingState.RatingResult.Rationale)
@@ -1343,12 +1343,13 @@ func displayScopeList(items []string, areas []AreaRatingSummary, labels reportDi
 	}
 	areaLabels := map[string]string{}
 	for _, area := range areas {
-		id := area.AreaPath.Display()
-		if _, exists := areaLabels[id]; exists {
-			areaLabels[id] = ""
-			continue
+		display := area.AreaPath.Display()
+		reference := area.AreaPath.UnqualifiedReference()
+		label := labels.Area(area.AreaPath.Elements(), display)
+		addScopeAreaLabel(areaLabels, display, label)
+		if reference != display {
+			addScopeAreaLabel(areaLabels, reference, label)
 		}
-		areaLabels[id] = labels.Area(area.AreaPath.Elements(), id)
 	}
 	display := make([]string, 0, len(items))
 	for _, item := range items {
@@ -1361,11 +1362,12 @@ func displayScopeList(items []string, areas []AreaRatingSummary, labels reportDi
 	return strings.Join(display, "; ")
 }
 
-func displayPath(path AreaPath) string {
-	if len(path) == 0 {
-		return "(root)"
+func addScopeAreaLabel(areaLabels map[string]string, id, label string) {
+	if _, exists := areaLabels[id]; exists {
+		areaLabels[id] = ""
+		return
 	}
-	return strings.Join(path, " / ")
+	areaLabels[id] = label
 }
 
 func areaLabelKey(path []string) string {

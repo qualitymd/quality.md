@@ -44,17 +44,26 @@ func modelReferenceSpec() *model.Spec {
 }
 
 func TestModelReferenceRendering(t *testing.T) {
+	if got := (AreaPath{}).Display(); got != "/" {
+		t.Fatalf("root area display = %q", got)
+	}
 	if got := (AreaPath{}).Reference(); got != "area:root" {
 		t.Fatalf("root area reference = %q", got)
 	}
 	if got := (AreaPath{}).UnqualifiedReference(); got != "root" {
 		t.Fatalf("root area unqualified reference = %q", got)
 	}
+	if got := (AreaPath{"webhooks", "delivery"}).Display(); got != "webhooks/delivery" {
+		t.Fatalf("nested area display = %q", got)
+	}
 	if got := (AreaPath{"webhooks", "delivery"}).Reference(); got != "area:webhooks/delivery" {
 		t.Fatalf("nested area reference = %q", got)
 	}
 	if got := (AreaPath{"webhooks", "delivery"}).UnqualifiedReference(); got != "webhooks/delivery" {
 		t.Fatalf("nested area unqualified reference = %q", got)
+	}
+	if got := (FactorPath{"reliability", "retry-behavior"}).Display(); got != "reliability/retry-behavior" {
+		t.Fatalf("factor display = %q", got)
 	}
 	if got := FactorReference(AreaPath{"webhooks", "delivery"}, FactorPath{"reliability", "retry-behavior"}); got != "factor:webhooks/delivery::reliability/retry-behavior" {
 		t.Fatalf("factor reference = %q", got)
@@ -67,6 +76,9 @@ func TestModelReferenceRendering(t *testing.T) {
 	}
 	if got := RatingReference("target"); got != "rating:target" {
 		t.Fatalf("rating reference = %q", got)
+	}
+	if got := RatingDisplay("target"); got != "target" {
+		t.Fatalf("rating display = %q", got)
 	}
 	if got := UnqualifiedRatingReference("target"); got != "target" {
 		t.Fatalf("rating unqualified reference = %q", got)
@@ -166,6 +178,10 @@ func TestParseModelReferencesRejectInvalidOrUnresolvedInput(t *testing.T) {
 		}},
 		{name: "unqualified area rejects typed reference", call: func() error {
 			_, err := ParseUnqualifiedAreaReference(spec, "area:webhooks/delivery")
+			return err
+		}},
+		{name: "unqualified area rejects display root", call: func() error {
+			_, err := ParseUnqualifiedAreaReference(spec, "/")
 			return err
 		}},
 		{name: "area bad segment", call: func() error {

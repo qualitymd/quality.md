@@ -201,8 +201,8 @@ func TestAreaBreakdownRendersNestedPathsStatesAndEmptyFactors(t *testing.T) {
 	for _, want := range []string{
 		"## Area Breakdown",
 		"| Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |",
-		// Structural root area group: Path column renders the unqualified reference; roll-up + factors preserved.
-		"| Atlas Commerce | `root` | (area group) | 🟡 Minimum | Trust: 🔵 Target; Operability: 🟡 Minimum |",
+		// Structural root area group: Path column renders the display value; roll-up + factors preserved.
+		"| Atlas Commerce | `/` | (area group) | 🟡 Minimum | Trust: 🔵 Target; Operability: 🟡 Minimum |",
 		// Depth-4 absolute area path with a nested factor display path.
 		"| Reservations | `services/fulfillment/inventory/reservations` | 🟡 Minimum | 🟡 Minimum | Trust: 🔵 Target; Operability / Observability: 🟡 Minimum |",
 		// Not-assessed area and not-assessed factor render distinctly, never as a level.
@@ -317,7 +317,7 @@ areas:
 		t.Fatalf("BuildReport() error = %v", err)
 	}
 	summaryMD := readRunFile(t, runPath, "report-summary.md")
-	if !strings.Contains(summaryMD, "| Titled Root | `root` | (area group) | 🔵 Target |") {
+	if !strings.Contains(summaryMD, "| Titled Root | `/` | (area group) | 🔵 Target |") {
 		t.Fatalf("root row missing titled fallback:\n%s", summaryMD)
 	}
 	if !strings.Contains(summaryMD, "| untitled-area | `untitled-area` | 🔵 Target | 🔵 Target | Trust: 🔵 Target |") {

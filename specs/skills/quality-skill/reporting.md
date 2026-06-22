@@ -208,10 +208,11 @@ that produced it.
 
 Human Markdown report labels are resolved from the run's `model.md` snapshot:
 Model, Area, Factor, and Rating Level titles are primary display text, with
-stable identifiers retained where the report needs traceability. Human reports
-may use unqualified references where the surrounding section or column fixes the
-reference type; `report.json` preserves stable structured identifiers for
-machines.
+stable identifiers retained where the report needs traceability. Human report
+path displays are labels, not model references: the root Area display value is
+`/`, even though the root Area references remain `area:root` and `root`.
+`report.json` preserves stable structured identifiers for machines and must not
+persist display values.
 
 The CLI-rendered report artifacts are specified by the durable report specs:
 [`report-summary.md`](../../reports/report-summary-md.md),

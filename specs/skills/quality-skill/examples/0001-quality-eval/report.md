@@ -71,7 +71,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 | Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |
 | --- | --- | --- | --- | --- |
-| Sparrow Payments API | `root` | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
+| Sparrow Payments API | `/` | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
 | Ledger | `ledger` | Target | Target | Correctness: Target |
 | Webhooks | `webhooks` | Target | Minimum | Security: Target |
 | Delivery | `webhooks/delivery` | Minimum | Minimum | Reliability: Minimum |
@@ -80,7 +80,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 ### Sparrow Payments API
 
-- **Path:** (root)
+- **Path:** /
 - **Area rating:** Unacceptable
   - Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target.
 - **+ Sub-Areas rating:** Unacceptable
@@ -116,7 +116,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 ### Delivery
 
-- **Path:** webhooks / delivery
+- **Path:** webhooks/delivery
 - **Area rating:** Minimum
   - The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor.
 - **+ Sub-Areas rating:** Minimum

@@ -3,6 +3,17 @@
 ## 2026-06-22
 
 - **Revision**: Implemented durable spec alignment for
+  [0060 - Friendly path display](../changes/0060-friendly-path-display.md).
+  Updated [`SPECIFICATION.md`](../SPECIFICATION.md),
+  [`report-summary.md`](reports/report-summary-md.md),
+  [`report.md`](reports/report-md.md), [`report.json`](reports/report-json.md),
+  [evaluation report outputs](evaluation-records/report-outputs.md), and durable
+  [`/quality` skill](skills/quality-skill/index.md) specs to distinguish human
+  display values from model references, render the root Area path as `/` in
+  human Markdown reports, and keep report JSON identifiers structured or
+  reference-compatible.
+
+- **Revision**: Implemented durable spec alignment for
   [0059 - Unqualified model references](../changes/0059-unqualified-model-references.md).
   Updated [`SPECIFICATION.md`](../SPECIFICATION.md),
   [`report-summary.md`](reports/report-summary-md.md),

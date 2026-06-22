@@ -139,8 +139,9 @@ Source content instructs the evaluator?
     Area, Factor, and Rating Level titles in user-facing prose; use qualified
     model references such as `area:webhooks/delivery` where traceability
     matters, or unqualified references where the surrounding context fixes the
-    type. The CLI resolves human report labels from the run's `model.md`
-    snapshot.
+    type. Treat report path display values as labels, not references; the root
+    Area displays as `/`, while its references remain `area:root` and `root`.
+    The CLI resolves human report labels from the run's `model.md` snapshot.
 14. Identify the one or two findings that bind the headline rating and re-run
     their verifying command or search before reporting. If a binding finding
     fails re-check, correct the finding and re-derive the affected rating before

@@ -18,7 +18,7 @@ The root's own local rating binds. Ledger is rated target and Webhooks is rated 
 
 | Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |
 | --- | --- | --- | --- | --- |
-| Sparrow Payments API | `root` | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
+| Sparrow Payments API | `/` | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
 | Ledger | `ledger` | Target | Target | Correctness: Target |
 | Webhooks | `webhooks` | Target | Minimum | Security: Target |
 | Delivery | `webhooks/delivery` | Minimum | Minimum | Reliability: Minimum |

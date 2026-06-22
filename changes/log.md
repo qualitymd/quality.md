@@ -3,6 +3,40 @@
 ## 2026-06-22
 
 - **In-Review**: Completed implementation of
+  [0060 - Friendly path display](0060-friendly-path-display.md) and advanced it
+  from `In-Progress` to `In-Review`. Separated Area/Factor/Rating display
+  helpers from reference helpers; rendered `/` for root Area paths in human
+  Markdown report path fields; preserved `area:root`, `root`, `root::factor`,
+  and structured `report.json` identifiers; aligned durable specs, runtime
+  `/quality` guidance, generated examples, logs, and changelog. Verified
+  `go test ./internal/evaluation` and `mise run check`.
+
+- **In-Progress**: Advanced
+  [0060 - Friendly path display](0060-friendly-path-display.md) from `Design`
+  to `In-Progress`. The functional spec and design doc are settled;
+  implementation begins across display/reference helper separation, report path
+  rendering, durable specs, runtime skill guidance, generated examples, and
+  changelog.
+
+- **Design**: Advanced
+  [0060 - Friendly path display](0060-friendly-path-display.md) from `Draft` to
+  `Design` and added its
+  [design doc](0060-friendly-path-display/design.md). The design separates
+  display helpers from qualified and unqualified reference helpers, keeps `/`
+  out of reference parsing, and updates report rendering to use display values
+  in human path fields. Updated the open-cases entry in the bundle
+  [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0060 - Friendly path display](0060-friendly-path-display.md) (`Draft`) with
+  its [functional spec](0060-friendly-path-display/spec.md) and
+  [child index](0060-friendly-path-display/index.md). The case separates
+  display values from qualified and unqualified model references, keeps
+  reference grammar stable, and proposes rendering the root Area path as `/` in
+  human report display contexts. Added the case to the open-cases list in the
+  bundle [index](index.md). Design and code not started.
+
+- **In-Review**: Completed implementation of
   [0059 - Unqualified model references](0059-unqualified-model-references.md)
   and advanced it from `In-Progress` to `In-Review`. Added unqualified Area,
   Factor, and Rating reference helpers; type-specific unqualified parsers while

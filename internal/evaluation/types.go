@@ -106,6 +106,13 @@ func (p AreaPath) IdentityKey() string {
 // Display returns the human-facing path label.
 func (p AreaPath) Display() string {
 	if len(p) == 0 {
+		return "/"
+	}
+	return strings.Join(p, "/")
+}
+
+func (p AreaPath) referencePath() string {
+	if len(p) == 0 {
 		return "root"
 	}
 	return strings.Join(p, "/")
@@ -113,12 +120,12 @@ func (p AreaPath) Display() string {
 
 // Reference returns the canonical typed model reference for an area path.
 func (p AreaPath) Reference() string {
-	return "area:" + p.Display()
+	return "area:" + p.referencePath()
 }
 
 // UnqualifiedReference returns the fixed-type Area reference for an area path.
 func (p AreaPath) UnqualifiedReference() string {
-	return p.Display()
+	return p.referencePath()
 }
 
 // FactorPath is a stable path from an area's factor set to a nested factor.
@@ -150,22 +157,34 @@ func (p FactorPath) Display() string {
 	return strings.Join(p, "/")
 }
 
+func (p FactorPath) referencePath() string {
+	if len(p) == 0 {
+		return "root"
+	}
+	return strings.Join(p, "/")
+}
+
 // FactorReference returns the canonical typed model reference for a factor path
 // declared by areaPath.
 func FactorReference(areaPath AreaPath, factorPath FactorPath) string {
-	return "factor:" + areaPath.Display() + "::" + factorPath.Display()
+	return "factor:" + areaPath.referencePath() + "::" + factorPath.referencePath()
 }
 
 // UnqualifiedFactorReference returns the fixed-type Factor reference for a
 // factor path declared by areaPath.
 func UnqualifiedFactorReference(areaPath AreaPath, factorPath FactorPath) string {
-	return areaPath.Display() + "::" + factorPath.Display()
+	return areaPath.referencePath() + "::" + factorPath.referencePath()
 }
 
 // RatingReference returns the canonical typed model reference for a Rating Level
 // ID.
 func RatingReference(level string) string {
 	return "rating:" + level
+}
+
+// RatingDisplay returns the human-facing label for a Rating Level ID.
+func RatingDisplay(level string) string {
+	return level
 }
 
 // UnqualifiedRatingReference returns the fixed-type Rating Level reference.

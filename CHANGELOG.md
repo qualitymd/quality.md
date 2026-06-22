@@ -14,6 +14,9 @@ QUALITY.md specification.
 - Added fixed-type unqualified model references and changed human Area
   Breakdown paths to render without redundant `area:` prefixes while keeping
   `report.json` and evaluation records structured.
+- Separated human path display from model references so generated Markdown
+  reports render the root Area path as `/` while `area:root`, `root`, and
+  structured report JSON identifiers remain unchanged.
 - Moved the default evaluation data directory from `quality/evaluations/` to
   `.quality/evaluations/`, added shared QUALITY.md workspace resolution with an
   optional root `config` pointer to the workspace config file, and kept
@@ -30,6 +33,8 @@ QUALITY.md specification.
 
 - Aligned scoped evaluation guidance with qualified model references while
   keeping unqualified references only at fixed-type human input edges.
+- Clarified that generated report path display values, including `/` for the
+  root Area, are human labels and must not be written into evaluation records.
 - Moved the default quality log from `quality/log/` to `.quality/log/` under the
   workspace quality data directory and aligned setup, wizard, evaluate, and
   recommendation follow-up guidance with the new workspace paths.
@@ -49,6 +54,8 @@ QUALITY.md specification.
 - Defined Area names, Area IDs, Factor names, Factor IDs, Rating Level IDs, and
   canonical model references; clarified that durable machine artifacts preserve
   structured `areaPath` and `factorPath` arrays.
+- Distinguished display values from model references, including `/` as the
+  human display value for the root Area path.
 
 ## v0.8.0 - 2026-06-22
 

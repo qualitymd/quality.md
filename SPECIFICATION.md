@@ -132,6 +132,9 @@ Rating Scale: either one Rating Level or `not assessed`.
 **Model reference**: A text form used at human/tool boundaries to address an
 Area, Factor, or Rating Level.
 
+**Display value**: A human-facing label for a known Model concept. Display
+values are not model references unless a section explicitly says so.
+
 **Evaluation Report**: The structured result of evaluating a Model, including
 scope, Findings summaries, ratings, rationales, and advice.
 
@@ -174,6 +177,13 @@ where the surrounding context fixes the reference type. Unqualified Area
 references render as `root` or `<area-path>`; unqualified Factor references
 render as `<declaring-area-path>::<factor-path>`; unqualified Rating Level
 references render as the Rating Level ID.
+
+Tools MAY render display values in human-facing reports and UI. Area display
+values render the root Area as `/` and nested Areas as `<area-path>`, such as
+`webhooks/delivery`. `/` is a display value, not an Area reference; tools MUST
+NOT parse `/` as a qualified or unqualified Area reference. Factor display
+values render as `<factor-path>`; Rating Level display values render as the
+Rating Level ID unless a title is resolved from the Model.
 
 Tools MUST NOT render or accept unqualified references on mixed-reference
 surfaces or anywhere the reference type must be recoverable from the value

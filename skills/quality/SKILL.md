@@ -97,8 +97,10 @@ Parse the user's request from free-form arguments:
   `rating:<rating-level-id>` where rating references are needed. Accept
   unqualified references only at fixed-type input edges such as
   `area webhooks/delivery` or `factor webhooks/delivery::reliability`; never
-  persist unqualified references in records or `report.json`. Resolve legacy
-  bare names against the grounded model only as
+  persist display values or unqualified references in records or `report.json`.
+  In generated human reports, the root Area display value is `/`; its
+  references remain `area:root` and `root`. Resolve legacy bare names against
+  the grounded model only as
   human-edge shorthand — match it to the Area or Factor that bears it. Two bare
   names are an `<area> <factor>` pair: that Factor narrowed within the Area. Use
   an explicit `area`/`factor` keyword only to disambiguate a name that is both an
@@ -180,7 +182,7 @@ Areas, Factors, and Rating Levels. When disambiguation or traceability matters,
 include qualified model references as secondary context, for example
 `Format specification (area:format-spec)`. Evaluation record payloads still use
 structured stable identifiers: `areaPath`, `factorPath`, and rating `level` ids
-must not be replaced by titles or unqualified references.
+must not be replaced by titles, display values, or unqualified references.
 
 ## Invocation Variants
 
