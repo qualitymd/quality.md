@@ -16,8 +16,8 @@ Breakdown table.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
-described in [RFC 2119](../../docs/reference/rfc2119.md) and
-[RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
+described in [RFC 2119](../../../docs/reference/rfc2119.md) and
+[RFC 8174](../../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
 ## Background / Motivation

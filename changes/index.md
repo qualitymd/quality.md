@@ -43,16 +43,13 @@ edit.
 
 # Open change cases
 
-- [0058 Model reference identifiers](0058-model-reference-identifiers.md)
-  (`In-Review`) - define strict Area/Factor/Rating names, canonical typed
-  model references, edge-only shorthand, and clearer report summary Area
-  Breakdown columns.
 - [0059 Unqualified model references](0059-unqualified-model-references.md)
   (`Design`) - define bounded unqualified Area, Factor, and Rating references
   for fixed-type contexts and use them for Area-only report summary paths.
-  Completed change cases live in [`archive/`](archive/); copy
-  [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
-  template for a new one.
+
+Completed change cases live in [`archive/`](archive/); copy
+[`archive/0001-example-change`](archive/0001-example-change.md) as a starting
+template for a new one.
 
 # Bundle
 

@@ -3,7 +3,7 @@
 ## 2026-06-22
 
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for
-  [0058 - Model reference identifiers](../../../../changes/0058-model-reference-identifiers.md)
+  [0058 - Model reference identifiers](../../../../changes/archive/0058-model-reference-identifiers.md)
   so the guide must teach strict Area names, Factor names, Rating Level IDs,
   structured IDs, and canonical model references while keeping Requirement
   statements natural-language keys.

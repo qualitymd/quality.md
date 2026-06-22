@@ -3,7 +3,7 @@
 ## 2026-06-22
 
 - **Revision**: Updated [report outputs](report-outputs.md) for
-  [0058 - Model reference identifiers](../../changes/0058-model-reference-identifiers.md)
+  [0058 - Model reference identifiers](../../changes/archive/0058-model-reference-identifiers.md)
   so human reports use canonical model references where a stable handle is
   displayed while `report.json` preserves structured `areaPath` and `factorPath`
   arrays.

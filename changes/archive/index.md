@@ -197,3 +197,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   QUALITY.md workspace envelope, moved live support artifacts under `.quality/`,
   added the root `config` tooling pointer, and kept strict lint handling for
   unknown keys (`Done`).
+- [0058 — Model reference identifiers](0058-model-reference-identifiers.md) -
+  defined strict Area/Factor/Rating names, canonical typed model references,
+  edge-only shorthand boundaries, and clearer Area Breakdown report columns
+  (`Done`).

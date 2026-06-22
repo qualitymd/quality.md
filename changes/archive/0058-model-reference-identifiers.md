@@ -2,7 +2,7 @@
 type: Change Case
 title: Model reference identifiers
 description: Define strict model names, canonical Area/Factor/Rating references, edge-only shorthand, and clearer report summary Area breakdown columns.
-status: In-Review
+status: Done
 tags: [format, references, reports, cli, lint]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -80,56 +80,56 @@ Code:
 
 Specs:
 
-- [x] [`SPECIFICATION.md`](../SPECIFICATION.md) - define name grammar, Area ID,
+- [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) - define name grammar, Area ID,
       Factor ID, Rating Level ID, canonical model references, and shorthand
       rules.
-- [x] [`specs/reports/report-summary-md.md`](../specs/reports/report-summary-md.md)
+- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md)
       - update the concise Area Breakdown table contract.
-- [x] [`specs/reports/report-md.md`](../specs/reports/report-md.md) - keep the
+- [x] [`specs/reports/report-md.md`](../../specs/reports/report-md.md) - keep the
       shared compact Area Breakdown table aligned with the summary.
-- [x] [`specs/reports/report-json.md`](../specs/reports/report-json.md) -
+- [x] [`specs/reports/report-json.md`](../../specs/reports/report-json.md) -
       clarify that JSON preserves structured IDs and may add canonical
       references only without replacing arrays.
-- [x] [`specs/evaluation-records/report-outputs.md`](../specs/evaluation-records/report-outputs.md)
+- [x] [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md)
       - align shared report-model terminology with canonical model references.
-- [x] [`specs/cli/evaluation-create.md`](../specs/cli/evaluation-create.md),
-      [`specs/cli/evaluation-report.md`](../specs/cli/evaluation-report.md),
+- [x] [`specs/cli/evaluation-create.md`](../../specs/cli/evaluation-create.md),
+      [`specs/cli/evaluation-report.md`](../../specs/cli/evaluation-report.md),
       and other CLI selector specs as discovered - align user-facing selectors
       with model-reference and shorthand rules. No direct CLI selector specs
       needed changes beyond lint/report contracts in this phase.
-- [x] [`specs/cli/lint.md`](../specs/cli/lint.md) - state that lint enforces
+- [x] [`specs/cli/lint.md`](../../specs/cli/lint.md) - state that lint enforces
       the strict model-name grammar as part of model validation.
-- [x] [`specs/cli/lint-rules.md`](../specs/cli/lint-rules.md) - add or update
+- [x] [`specs/cli/lint-rules.md`](../../specs/cli/lint-rules.md) - add or update
       diagnostics for invalid Area names, Factor names, and Rating Level IDs,
       including concrete rule IDs.
-- [x] [`specs/quality-schema-json.md`](../specs/quality-schema-json.md) -
+- [x] [`specs/quality-schema-json.md`](../../specs/quality-schema-json.md) -
       include the structural expression of the strict name grammar if the
       generated schema supports it.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md),
-      [`specs/skills/quality-skill/evaluation.md`](../specs/skills/quality-skill/evaluation.md),
-      and [`specs/skills/quality-skill/guides/authoring-md.md`](../specs/skills/quality-skill/guides/authoring-md.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md),
+      [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md),
+      and [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
       - align durable skill contracts and authoring-guide contract with model
       references and strict names.
-- [x] OKF logs under [`specs/`](../specs/log.md) - record durable spec updates.
+- [x] OKF logs under [`specs/`](../../specs/log.md) - record durable spec updates.
 
 Runtime skill and docs:
 
-- [x] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) - align scope
+- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - align scope
       resolution and stable identifier language with model references.
-- [x] [`skills/quality/resources/SPECIFICATION.md`](../skills/quality/resources/SPECIFICATION.md)
+- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md)
       - update the bundled specification copy when `SPECIFICATION.md` changes.
-- [x] [`skills/quality/resources/cli-quick-reference.md`](../skills/quality/resources/cli-quick-reference.md)
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
       - update CLI selector examples. No selector examples needed changes in
       this phase; record payload examples already use structured arrays.
-- [x] [`skills/quality/modes/evaluate.md`](../skills/quality/modes/evaluate.md)
+- [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md)
       and related mode docs - use model-reference terminology for scoped
       evaluations.
-- [x] [`skills/quality/guides/authoring.md`](../skills/quality/guides/authoring.md)
+- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
       - teach strict names, IDs, and canonical model references in the
       self-contained authoring guide.
-- [x] [`README.md`](../README.md) - update examples if command examples adopt
+- [x] [`README.md`](../../README.md) - update examples if command examples adopt
       canonical model references.
-- [x] [`CHANGELOG.md`](../CHANGELOG.md) - add the unreleased entry when the
+- [x] [`CHANGELOG.md`](../../CHANGELOG.md) - add the unreleased entry when the
       implementation lands.
 
 ## Children
@@ -143,8 +143,9 @@ Runtime skill and docs:
 
 ## Status
 
-`In-Review`. Implementation is complete across strict model-name lint rules,
-schema generation, canonical model-reference helpers, Area Breakdown rendering,
-durable specs, runtime skill files, scaffold updates, docs, and changelog.
+`Done`. Implemented and archived. The change defines strict model-name grammar,
+canonical Area/Factor/Rating references, edge-only shorthand boundaries, named
+lint diagnostics, generated JSON Schema patterns, Area Breakdown report columns,
+runtime and durable `/quality` guidance, scaffold updates, docs, and changelog.
 Verified with `mise run check` and
 `go run ./cmd/qualitymd lint --json QUALITY.md`.

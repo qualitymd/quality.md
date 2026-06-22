@@ -2,6 +2,17 @@
 
 ## 2026-06-22
 
+- **Done**: Landed and archived
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md)
+  — advanced it to `Done` and moved the parent concept and its
+  [folder](archive/0058-model-reference-identifiers/index.md) into
+  [`archive/`](archive/index.md). The case defined strict Area name, Factor
+  name, and Rating Level ID grammar; canonical typed model references;
+  edge-only shorthand boundaries; lint diagnostics; JSON Schema patterns;
+  revised Area Breakdown columns; durable specs; runtime `/quality` guidance;
+  scaffold updates; docs; and changelog. Updated the archive [index](archive/index.md)
+  and removed the open-cases entry from the bundle [index](index.md).
+
 - **Refinement**: Updated
   [0059 - Unqualified model references](0059-unqualified-model-references.md)
   to explicitly include the durable `/quality` reporting spec in the affected
@@ -22,7 +33,7 @@
   bundle [index](index.md). Code not started.
 
 - **In-Review**: Completed implementation of
-  [0058 - Model reference identifiers](0058-model-reference-identifiers.md) and
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md) and
   advanced it from `In-Progress` to `In-Review`. Added strict Area name, Factor
   name, and Rating Level ID validation; generated JSON Schema patterns where
   JSON Schema can express the strict grammar; canonical model-reference
@@ -32,16 +43,16 @@
   `mise run check` and `go run ./cmd/qualitymd lint --json QUALITY.md`.
 
 - **In-Progress**: Advanced
-  [0058 - Model reference identifiers](0058-model-reference-identifiers.md)
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md)
   from `Design` to `In-Progress`. The functional spec and design doc are
   settled; implementation begins across strict model-name lint rules, structural
   schema support, canonical model-reference helpers, Area Breakdown rendering,
   durable specs, runtime skill files, docs, and changelog.
 
 - **Design**: Advanced
-  [0058 - Model reference identifiers](0058-model-reference-identifiers.md)
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md)
   from `Draft` to `Design` and added its
-  [design doc](0058-model-reference-identifiers/design.md). The design keeps
+  [design doc](archive/0058-model-reference-identifiers/design.md). The design keeps
   `areaPath` and `factorPath` arrays as durable machine data, adds canonical
   typed reference helpers at human/tool boundaries, enforces strict local names
   through named lint rules with JSON Schema pattern support where structural
@@ -68,24 +79,24 @@
   runtime skill guidance, docs, and changelog.
 
 - **Refinement**: Updated
-  [0058 - Model reference identifiers](0058-model-reference-identifiers.md) to
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md) to
   explicitly list [`specs/cli/lint.md`](../specs/cli/lint.md) alongside
   [`specs/cli/lint-rules.md`](../specs/cli/lint-rules.md), so the lint command
   contract and lint rule catalog both account for strict Area name, Factor name,
   and Rating Level ID validation with named rule IDs.
 
 - **Refinement**: Updated
-  [0058 - Model reference identifiers](0058-model-reference-identifiers.md) to
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md) to
   use `rating:` as the canonical model-reference prefix for Rating Level IDs,
   while keeping the formal identifier term "Rating Level ID". This keeps the
   CLI/user-facing reference vocabulary aligned with Area and Factor references
   without renaming the underlying `ratingScale[].level` field.
 
 - **Draft**: Created
-  [0058 - Model reference identifiers](0058-model-reference-identifiers.md)
+  [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md)
   (`Draft`) with its
-  [functional spec](0058-model-reference-identifiers/spec.md) and
-  [child index](0058-model-reference-identifiers/index.md). The case defines
+  [functional spec](archive/0058-model-reference-identifiers/spec.md) and
+  [child index](archive/0058-model-reference-identifiers/index.md). The case defines
   strict Area names, Factor names, and Rating Level IDs; formal Area, Factor,
   and Rating Level IDs; canonical typed model references; edge-only shorthand;
   and clearer report summary Area Breakdown columns that separate Area title,
