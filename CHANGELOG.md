@@ -5,6 +5,68 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.8.0 - 2026-06-22
+
+### CLI
+
+- Added `qualitymd schema`, which emits the companion structural JSON Schema for
+  QUALITY.md frontmatter. The schema is also published as `quality.schema.json`
+  for editor and integration tooling; semantic validation remains owned by
+  `qualitymd lint`.
+- Added a compact Area-by-Factor report breakdown to generated evaluation report
+  surfaces, making scoped strengths and gaps easier to scan without changing the
+  underlying evaluation record contract.
+- Updated the starter `QUALITY.md` scaffold comments to better explain Area
+  `source` versus Requirement `assessment`.
+
+### /quality Skill
+
+- Removed `/quality improve` as a public mode. Evaluation still emits
+  recommendations, and recommendation follow-up is now a non-mode workflow for
+  applying a confirmed option or handing the recommendation to an issue tracker.
+- Added convention-first quality-log guidance for meaningful model changes under
+  `quality/log/`, including setup-created inaugural entries and confirmed
+  recommendation/model-authoring changes.
+- Added setup guidance for modeling the active `QUALITY.md` itself as a
+  `quality-md` Area when a project wants to evaluate its quality model artifact.
+- Bumped the bundled skill release metadata to `0.8.0`; the supported
+  `qualitymd` CLI compatibility range is now `>=0.8.0 <0.9.0`.
+
+### Specification
+
+- Added a non-normative note pointing to the companion JSON Schema and clarifying
+  that the schema is structural-only and subordinate to the specification and
+  `qualitymd lint`.
+- No specification version change; the QUALITY.md specification remains
+  `0.2 (Draft)`.
+
+### Documentation
+
+- Expanded the README's quality-loop onboarding with setup, evaluation, review,
+  model-refinement, cadence, and issue-tracker handoff guidance.
+- Split and aligned durable `/quality` skill specs and evaluation-record specs
+  into parent/component/artifact contracts so mode behavior, reporting, quality
+  logs, recommendation follow-up, and generated artifacts are easier to review.
+- Updated contributor guidance for functional-spec granularity, durable-spec
+  change accounting, and Change Case status conventions.
+
+### Packaging
+
+- No packaging changes.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.8.0`
+- QUALITY.md specification: `0.2 (Draft)`
+- /quality skill: `0.8.0`, requires `qualitymd >=0.8.0 <0.9.0`
+
+For `/quality` users, replace `/quality improve` prompts with evaluation
+follow-up prompts such as "apply recommendation 002" or "handoff recommendation
+002." CLI users do not need to migrate existing `QUALITY.md` files or evaluation
+records for this release.
+
 ## v0.7.2 - 2026-06-20
 
 ### CLI
