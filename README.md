@@ -89,11 +89,15 @@ agents with what matters in *this* codebase. You capture it once, then run a
    → *Clear next steps from the evaluation: what to fix now, what to track for
    later, and why each action matters.*
 
-4. **Revise the model with what you learned.** Update `QUALITY.md` where the bar
-   proved wrong, unclear, or out of date. Tip: let the `/quality` skill drive the
-   edits — it applies the format's authoring best practices so the model stays
-   well-formed as it grows.
-   → *A sharper model that stays useful as the project evolves.*
+4. **Refine the model as you learn.** Revise `QUALITY.md` when the evaluation
+   reveals missing context, unclear requirements, changed risks, or a quality bar
+   that no longer matches the project.
+   → *A quality bar that gets clearer and more useful every time you use it.*
+
+   **Tip:** Discuss and apply changes to `QUALITY.md` with your agent. The
+   `/quality` skill applies authoring best practices so model changes stay
+   well-formed, grounded, and current, with meaningful changes recorded in the
+   quality log.
 
 ### Keeping the loop running
 
