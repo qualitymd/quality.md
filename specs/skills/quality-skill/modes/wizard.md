@@ -25,8 +25,8 @@ appear in all capitals.
 
 `wizard` is selected for a bare `/quality`, ambiguous direction, `status`,
 `next`, `review model`, `review history`, and other requests that ask what to do
-with a QUALITY.md model rather than directly choosing setup, evaluate, improve,
-or update.
+with a QUALITY.md model rather than directly choosing setup, evaluate, update,
+or recommendation follow-up.
 
 Its purpose is to inspect current state, classify readiness, recommend one next
 workflow, and offer concrete alternatives. Its judgments are routing findings,

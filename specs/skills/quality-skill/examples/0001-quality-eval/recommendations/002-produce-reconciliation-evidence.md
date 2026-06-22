@@ -59,6 +59,6 @@ the run already exists; option (c) is only right if the need itself does not.
 The requirement *Reconciliation runs daily and flags drift* moves from *not
 assessed* to a rated level — at least **Target** against its criterion: a daily
 run exists and its report shows drift is detected and flagged within the expected
-window. A later `improve` re-evaluates the Ledger scope to confirm the
-requirement is now assessable and that the subtree rating reflects full coverage
-rather than resting on a single requirement.
+window. Recommendation follow-up re-evaluates the Ledger scope when the evidence
+is produced to confirm the requirement is now assessable and that the subtree
+rating reflects full coverage rather than resting on a single requirement.

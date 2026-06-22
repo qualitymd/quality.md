@@ -66,7 +66,7 @@ Minimum.
 The requirement *A redelivery of an already-acknowledged event is suppressed for
 that endpoint* reaches **Target** against its criterion — an acknowledged event
 is not delivered again to the same endpoint for the full duration any retry
-could fire. A later `improve` re-evaluates the Delivery scope to confirm the
-rating moved off Minimum; clearing this gap (after the committed credential is
-rotated) is expected to lift the Webhooks subtree and the whole-model rating to
-**Target**.
+could fire. Recommendation follow-up re-evaluates the Delivery scope when the
+fix is applied to confirm the rating moved off Minimum; clearing this gap (after
+the committed credential is rotated) is expected to lift the Webhooks subtree
+and the whole-model rating to **Target**.

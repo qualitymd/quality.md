@@ -11,8 +11,8 @@ timestamp: 2026-06-22T00:00:00Z
 This spec owns the `/quality` skill's convention-first quality log: dated
 entries under `quality/log/` that record meaningful, evidence-linked changes to
 a QUALITY.md model. It composes the shared contracts in the parent
-[/quality skill](quality-skill.md) spec and is written by setup/improve behavior
-where those mode specs allow model changes.
+[/quality skill](quality-skill.md) spec and is written by setup plus confirmed
+model-authoring or recommendation-apply workflows.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
@@ -100,8 +100,8 @@ nor evaluated-source fixes that do not change the model.
 > them turns a curated timeline into noise. — 0050
 
 The skill **SHOULD** write **one entry per coherent change** — a confirmed
-`improve` apply, or the initial model population — rather than one entry per field
-touched.
+recommendation apply, a model-authoring change, or the initial model population
+— rather than one entry per field touched.
 
 > Rationale: the unit of record is the decision, not the edit; per-field entries
 > fragment one rationale across many files. — 0050
@@ -109,14 +109,15 @@ touched.
 ### Who writes and reconciles
 
 `setup` **MUST** seed an inaugural entry after guided first population, recording
-model creation and the initial model shape. `improve` **MUST** append an entry for
-each confirmed model change, cross-linking the evaluation run and recommendation
-it came from; writing the entry **MUST NOT** require confirmation beyond the
-user's existing confirmation of the change itself, since the entry's rationale is
+model creation and the initial model shape. A confirmed recommendation-apply or
+model-authoring workflow **MUST** append an entry for each meaningful model
+change, cross-linking the evaluation run and recommendation when the change came
+from one; writing the entry **MUST NOT** require confirmation beyond the user's
+existing confirmation of the model change itself, since the entry's rationale is
 the rationale already shown in the decision brief.
 
-`evaluate` **MUST NOT** write to the quality log, and no mode other than `setup`
-and `improve` writes entries.
+`evaluate` **MUST NOT** write to the quality log. Issue-tracker handoff **MUST
+NOT** write to the quality log.
 
 > Rationale: evaluations own `quality/evaluations/`; keeping the log to model
 > changes only — referencing runs, never duplicating them — is what stops it
@@ -126,8 +127,8 @@ and `improve` writes entries.
 model history (the latest entry) in its status output, and when the model has
 changed out of band since the last logged entry it **SHOULD** classify that under
 its existing *needs reconciliation* readiness and offer a backfill route. The
-backfill itself is performed by a confirmed `improve`/authoring workflow, not by
-`wizard`.
+backfill itself is performed by confirmed model-authoring or recommendation
+follow-up work, not by `wizard`.
 
 > Rationale: the log is curated, not complete; `wizard` is where the gap left by
 > hand edits gets caught and routed for repair without `wizard` itself mutating

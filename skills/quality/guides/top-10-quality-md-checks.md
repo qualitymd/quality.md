@@ -23,7 +23,7 @@ QUALITY.md inspection findings
 - <check id>: <finding>
   Evidence: <status field, section, or property>
   Impact: <why this affects lifecycle/model usefulness>
-  Route: <setup | getting-started | authoring | evaluate | improve | history | update>
+  Route: <setup | getting-started | authoring | evaluate | recommendation follow-up | history | update>
 ```
 
 Keep evidence short. Cite section names, property paths, counts, or status JSON
@@ -131,8 +131,8 @@ weakness with evaluated-source quality.
 Use evaluation history and active recommendations to decide whether the next
 workflow is maintenance rather than new authoring or evaluation.
 
-- Finding when active recommendations exist: route to improve or recommendation
-  review.
+- Finding when active recommendations exist: route to recommendation review,
+  apply, or issue-tracker handoff.
 - Finding when the latest run is stale, incomplete, malformed, or unreportable:
   route to history/reconciliation. Treat malformed or incompatible records as
   history status, not evaluated-source quality evidence; do not suggest manual migration.

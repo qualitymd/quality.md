@@ -36,7 +36,8 @@ model file, scope, and rigor. It does not apply fixes.
 
 `evaluate` may mutate only evaluation artifacts under the resolved evaluation
 directory. It **MUST NOT** edit evaluated source files, edit `QUALITY.md`, write
-the quality log, or update tooling.
+the quality log, create external issues, apply recommendations, or update
+tooling.
 
 `evaluate` **MUST** create numbered run folders through `qualitymd evaluation
 create` and write assessment, analysis, recommendation, and report artifacts
@@ -62,7 +63,8 @@ not-assessed result.
 
 When the evaluation finds gaps, `evaluate` **MUST** emit triageable
 recommendation artifacts as part of Advise. Recommendations are evaluation
-outputs, not exclusive to `improve`.
+outputs and become inputs to
+[recommendation follow-up](../recommendation-follow-up.md).
 
 ## Stop conditions
 

@@ -1,15 +1,15 @@
 ---
 type: How-to Guide
 title: Use the /quality skill
-description: Install the /quality skill, maintain the skill/CLI pair, and run setup, wizard, evaluation, and improvement modes.
+description: Install the /quality skill, maintain the skill/CLI pair, run setup/wizard/evaluation modes, and follow up on recommendations.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-21T00:00:00Z
 ---
 
 # Use the /quality skill
 
-Use the `/quality` skill when you want an agent to set up, evaluate, improve, or
-maintain the quality workflow for a project/entity or one of its
+Use the `/quality` skill when you want an agent to set up, evaluate, maintain,
+or follow up on quality recommendations for a project/entity or one of its
 components/targets.
 
 ## Install the skill
@@ -99,11 +99,19 @@ process-only `debug-log.md` for notable evaluation orchestration events.
 `update` plans and orchestrates paired skill/CLI maintenance without running a
 quality evaluation.
 
-`setup` and `improve` also maintain a **quality log** — dated entries under
-`quality/log/` that record meaningful, evidence-linked changes to the model
-(`setup` seeds an inaugural entry; `improve` appends one per confirmed model
-change). The log preserves *why* the model changed where `git log` only shows the
-diff; it is curated, not exhaustive.
+Recommendations are produced by `evaluate`. After an evaluation, ask the agent
+to follow up on a recommendation when you want to apply a confirmed option now
+or hand it off to an issue tracker. The agent prepares issue-ready text, and it
+creates an external issue only when suitable issue-tracker tooling is available
+and you explicitly confirm creation.
+
+`setup` and confirmed model-authoring or recommendation-apply workflows maintain
+a **quality log** — dated entries under `quality/log/` that record meaningful,
+evidence-linked changes to the model. `setup` seeds an inaugural entry; later
+confirmed model changes add one entry per coherent model change. The log
+preserves *why* the model changed where `git log` only shows the diff; it is
+curated, not exhaustive. Issue-tracker handoff alone does not write the quality
+log.
 
 ## Configure the evaluation directory
 

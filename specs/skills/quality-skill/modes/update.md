@@ -29,7 +29,7 @@ compatibility of the `/quality` skill, the `qualitymd` CLI, or their supported
 version pair.
 
 The mode's purpose is maintenance orchestration. It is not an Evaluation mode
-and **MUST** stop before setup, evaluation, or improvement work.
+and **MUST** stop before setup, evaluation, or recommendation follow-up work.
 
 ## Mutation surface and artifacts
 

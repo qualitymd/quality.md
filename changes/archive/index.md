@@ -182,3 +182,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0053 — Align remaining durable specs](0053-align-remaining-durable-specs.md) -
   split remaining large durable specs for evaluation records, lint, and ambient
   update notices into parent and component/artifact contracts (`Done`).
+- [0054 — Remove improve mode](0054-remove-improve-mode.md) - removed
+  `/quality improve` as a public mode while preserving recommendation follow-up
+  with apply-now and issue-tracker handoff outcomes (`Done`).

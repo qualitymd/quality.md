@@ -1,6 +1,6 @@
 ---
 name: quality
-description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, improve, or update the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
+description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, follow up on recommendations, or update the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
 compatibility: Requires qualitymd CLI >=0.7.0 <0.8.0.
 metadata:
   version: "0.7.2"
@@ -27,6 +27,8 @@ recommendations.
 - Read [`guides/top-10-quality-md-checks.md`](guides/top-10-quality-md-checks.md)
   when quickly inspecting a QUALITY.md file's current state, quality, or
   lifecycle, especially in wizard.
+- Read [`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md)
+  when applying, acting on, or handing off an evaluation recommendation.
 - Read [`resources/cli-quick-reference.md`](resources/cli-quick-reference.md)
   before running CLI workflows.
 - Read [`resources/output-policy.md`](resources/output-policy.md) before
@@ -38,11 +40,13 @@ recommendations.
 - `evaluate` writes numbered evaluation records only through
   `qualitymd evaluation ...`; the skill may hand-author `design.md`, `plan.md`,
   and `debug-log.md` in CLI-created runs.
-- `improve` edits evaluated source files or `QUALITY.md` only after explicit
-  confirmation of the recommendation and option to apply.
+- Recommendation follow-up edits evaluated source files or `QUALITY.md` only
+  after explicit confirmation of the recommendation, option, and mutation
+  surface.
 - The quality log under `quality/log/` is written only by `setup` (an inaugural
-  entry) and `improve` (one entry per confirmed model change). `evaluate` never
-  writes it, and `wizard` is read-only with respect to it. See
+  entry) and confirmed model-authoring or recommendation-apply workflows (one
+  entry per meaningful model change). `evaluate` never writes it, issue-tracker
+  handoff never writes it, and `wizard` is read-only with respect to it. See
   [Quality Log](#quality-log).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
@@ -79,10 +83,12 @@ continuing.
 Parse the user's request from free-form arguments:
 
 - Mode: `wizard` by default when direction is unclear; otherwise `evaluate`,
-  `improve`, `setup`, `update`, or `wizard`. Treat `status`, `next`,
+  `setup`, `update`, or `wizard`. Treat `status`, `next`,
   `review model`, and `review history` as wizard intents unless the user clearly
   asks for another mode. Treat requests to update or upgrade the `/quality`
-  skill, the `qualitymd` CLI, or their compatibility pair as `update`.
+  skill, the `qualitymd` CLI, or their compatibility pair as `update`. Treat
+  requests to improve, apply, act on, or hand off an evaluation recommendation
+  as recommendation follow-up, not as a separate mode.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
 - Scope: full evaluation by default, or a narrowing. Resolve a bare name against
@@ -130,20 +136,21 @@ evidence cannot distinguish adjacent rating levels. A stop response names the
 reason, distinguishes model usefulness from evaluated-source quality, and offers
 concrete next workflows.
 
-Before `evaluate` and `improve`, inspect evaluation history when present:
-latest run, incomplete or stale-looking runs, open recommendations, and prior
-ratings for the same resolved scope. Treat prior runs as context only; fresh
-evidence and the current `QUALITY.md` control current judgment.
+Before `evaluate` and recommendation follow-up, inspect evaluation history when
+present: latest run, incomplete or stale-looking runs, open recommendations, and
+prior ratings for the same resolved scope. Treat prior runs as context only;
+fresh evidence and the current `QUALITY.md` control current judgment.
 
 Treat malformed, schema-incompatible, partial, or hand-edited historical runs as
 evaluation history status, not evaluated-source quality evidence. Route to
 `qualitymd evaluation status <run>` or a fresh evaluation; do not manually
 migrate, rewrite, or hand-author records to make an old run reportable.
 
-After `improve` applies a confirmed recommendation, re-evaluate the affected
-scope and report the before/after delta: recommendation, applied option, changed
-artifacts, before evidence, after evidence, verification, rating movement, and
-remaining limits.
+After recommendation follow-up applies a confirmed option, verify the done
+criterion with the narrowest useful evidence. When the done criterion is
+rating-bound or depends on the model, re-evaluate the affected scope and report
+the before/after delta: recommendation, applied option, changed artifacts,
+verification, rating movement when known, and remaining limits.
 
 Keep output status-first, evidence-led, and action-oriented. Distinguish
 CLI/tooling readiness, model validity, model usefulness, evaluated-source
@@ -184,9 +191,6 @@ not be replaced by titles.
 /quality evaluate area <name>
 /quality evaluate factor <name>
 /quality evaluate deep
-/quality improve
-/quality improve <name>
-/quality improve area <name>
 /quality update
 ```
 
@@ -210,8 +214,11 @@ After resolving the mode, read the matching mode file before acting:
 - `setup` → [`modes/setup.md`](modes/setup.md)
 - `wizard` → [`modes/wizard.md`](modes/wizard.md)
 - `evaluate` → [`modes/evaluate.md`](modes/evaluate.md)
-- `improve` → [`modes/improve.md`](modes/improve.md)
 - `update` → [`modes/update.md`](modes/update.md)
+
+Recommendation follow-up is not a mode. When the user asks to apply, act on,
+improve from, or hand off an evaluation recommendation, read
+[`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md).
 
 ## Config
 
@@ -281,8 +288,9 @@ skill, so git remains the full diff history while the log carries the judgment.
 Log a change that alters what the model *is* or *how it judges*; do **not** log
 Markdown-body wording, typo, or formatting changes, nor evaluated-source fixes
 that leave the model unchanged. Write one entry per coherent change (a confirmed
-`improve` apply, or the initial population), not one per field touched. The
-meaningful-change taxonomy is in [`guides/authoring.md`](guides/authoring.md).
+recommendation apply, model-authoring change, or the initial population), not
+one per field touched. The meaningful-change taxonomy is in
+[`guides/authoring.md`](guides/authoring.md).
 
 A `qualitymd log` command, a `.quality/config.yaml` `logDir` key, and a queryable
 index are deferred; this convention is what the skill writes against today.

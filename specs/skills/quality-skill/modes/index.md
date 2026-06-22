@@ -10,7 +10,6 @@ and completion criteria.
 - [setup](setup.md) - bootstrap or populate a `QUALITY.md` model.
 - [wizard](wizard.md) - read-only state inspection and routing guidance.
 - [evaluate](evaluate.md) - create evaluation records and reports.
-- [improve](improve.md) - apply a confirmed recommendation and verify the delta.
 - [update](update.md) - orchestrate compatible `/quality` skill and CLI updates.
 
 # Bundle

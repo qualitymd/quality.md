@@ -12,7 +12,7 @@ This spec owns the `/quality` skill's cross-mode evaluation workflow: how the
 skill grounds format rules, plans and performs assessment, records judgment, and
 uses rigor levels. It composes the shared contracts in the parent
 [/quality skill](quality-skill.md) spec and is used by the
-[`evaluate`](modes/evaluate.md) and [`improve`](modes/improve.md) modes.
+[`evaluate`](modes/evaluate.md) mode.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
@@ -42,8 +42,8 @@ diverge, the contract governs and the skill **MUST** be corrected to conform.
 
 ### Workflow
 
-For an `evaluate` or `improve` invocation the skill's process interleaves the
-judgment phases above with mechanical steps it drives through the CLI:
+For an `evaluate` invocation the skill's process interleaves the judgment phases
+above with mechanical steps it drives through the CLI:
 
 ```mermaid
 flowchart TD
@@ -56,15 +56,7 @@ flowchart TD
     Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
     Records --> Status[Check qualitymd evaluation status]
     Status --> Report[Build reports through<br/>qualitymd evaluation report build]
-    Report --> Mode{Mode?}
-    Mode -->|evaluate| Done([Done])
-    Mode -->|improve| Confirm{User confirms a<br/>recommendation + option?}
-    Confirm -->|no| Done
-    Confirm -->|yes| Apply[Apply chosen option<br/>to evaluated source or model]
-    Apply --> ReEval[Create a new run folder<br/>and re-evaluate affected scope]
-    ReEval --> Criterion{Reached<br/>done-criterion?}
-    Criterion -->|yes| Done
-    Criterion -->|no| Report
+    Report --> Done([Done])
 ```
 
 1. **Read** the resolved model file.
@@ -104,16 +96,12 @@ flowchart TD
    prose can use titles; records keep identifiers so reports, gates, and
    machine consumers remain stable.
 10. **Check and report** with `qualitymd evaluation status <run>` followed by
-    `qualitymd evaluation report build <run>` when reportable. Under `improve`,
-    the skill then **applies a chosen
-    recommendation** — defaulting to its recommended option — only on explicit
-    confirmation, then creates a **new numbered evaluation folder** and
-    re-evaluates the affected scope to confirm the rating moved (see
-    [Operating model](quality-skill.md#operating-model)).
+    `qualitymd evaluation report build <run>` when reportable.
 
-`improve` adds no new judgment phase — it runs this same workflow, recommendations
-and all, then applies a confirmed recommendation and verifies the result by
-re-rating.
+Recommendation follow-up happens after evaluation has produced recommendation
+artifacts. It is governed by
+[/quality recommendation follow-up](recommendation-follow-up.md), not by a
+separate evaluation mode.
 
 ### Grounding judgment
 

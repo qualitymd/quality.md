@@ -2,6 +2,19 @@
 
 ## 2026-06-22
 
+- **Revision**: Removed `/quality improve` as a durable mode contract for
+  [0054 - Remove improve mode](../changes/archive/0054-remove-improve-mode.md).
+  Added
+  the non-mode
+  [`recommendation follow-up`](skills/quality-skill/recommendation-follow-up.md)
+  contract for apply-now and issue-tracker handoff outcomes, updated the parent
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md), evaluation
+  workflow, reporting, quality log, wizard/evaluate/update mode specs, and mode
+  index to route active recommendations through follow-up rather than an
+  `improve` mode. Added the runtime
+  [`recommendation follow-up guide`](skills/quality-skill/guides/recommendation-follow-up-md.md)
+  contract.
+
 - **Revision**: Split remaining large durable specs for
   [0053 - Align remaining durable specs](../changes/archive/0053-align-remaining-durable-specs.md).
   `evaluation-records.md` now keeps shared responsibility, runtime-not-OKF,

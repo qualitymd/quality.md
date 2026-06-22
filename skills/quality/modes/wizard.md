@@ -57,9 +57,9 @@ Offer concrete alternatives
 - repair model
 - review/improve `QUALITY.md`
 - evaluate root area
-- improve evaluated source from recommendations
+- review/apply recommendations or hand them off to an issue tracker
 - review evaluation history
-- backfill quality log for out-of-band model changes (via improve/authoring)
+- backfill quality log for out-of-band model changes through confirmed model authoring
 ```
 
 ## Procedure
@@ -86,8 +86,8 @@ Offer concrete alternatives
      have changed out of band since that entry — the `QUALITY.md` is newer than
      the last logged change, or there is no log at all for an evolved model —
      classify it under **needs reconciliation** and offer the backfill route. The
-     backfill is performed by a confirmed `improve`/authoring workflow; wizard
-     stays read-only and never writes the log itself.
+     backfill is performed by confirmed model-authoring or recommendation
+     follow-up work; wizard stays read-only and never writes the log itself.
 4. Only read [`../guides/authoring.md`](../guides/authoring.md) if the user
    explicitly asks for authoring/model help — not to classify readiness. If the
    user has just initialized a skeleton or asks how to start from one, read
@@ -118,7 +118,7 @@ Offer concrete alternatives
 
 6. Offer only concrete workflows the user can choose next, such as setup, model
    repair, model review/improvement, whole-quality evaluation, scoped
-   area/factor evaluation, recommendation review/improvement, or evaluation
+   area/factor evaluation, recommendation review/apply/handoff, or evaluation
    history review. Include `/quality update` when the CLI is missing, below the
    prerequisite range, or the skill/CLI pair appears incompatible. Wizard stays
    offline: it judges staleness from `qualitymd --version` against the

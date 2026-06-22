@@ -27,14 +27,15 @@ Wizard needs more than raw status counts to recommend the right lifecycle step,
 but it should not become a full model audit or quality evaluation. A short,
 shared checklist gives wizard and related modes a consistent way to inspect the
 current `QUALITY.md`, surface actionable findings, and route to setup,
-getting-started, authoring, evaluation, improvement, or history work.
+getting-started, authoring, evaluation, recommendation follow-up, or history
+work.
 
 ## Purpose
 
 The guide exists to quickly assess the current state, quality, and lifecycle of
 a QUALITY.md file. Its output is a small set of routing findings that explain
 why the next workflow should be setup, getting-started, authoring/model review,
-evaluation, improvement, history/reconciliation, or update.
+evaluation, recommendation follow-up, history/reconciliation, or update.
 
 ## Scope
 
@@ -63,8 +64,8 @@ Wizard may skip checklist inspection when the model is missing, the model is
 invalid, or CLI support is missing/stale enough that routing is already decided.
 
 Other modes **MAY** use checklist findings as context when they need to explain
-why model authoring, evaluation, improvement, or history/reconciliation is the
-next workflow.
+why model authoring, evaluation, recommendation follow-up, or
+history/reconciliation is the next workflow.
 
 ### Inspection Boundary
 

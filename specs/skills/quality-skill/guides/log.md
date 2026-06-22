@@ -2,6 +2,10 @@
 
 ## 2026-06-22
 
+- **Creation**: Added the
+  [`recommendation-follow-up.md`](recommendation-follow-up-md.md) guide contract
+  for the runtime recommendation follow-up guide.
+
 - **Revision**: Renamed the guide contract specs to follow the 1:1
   artifact-spec filename convention: `authoring-md.md`,
   `getting-started-md.md`, and `top-10-quality-md-checks-md.md`. Runtime guide

@@ -31,7 +31,8 @@ occur, distinct from rated outcomes.
 
 Every evaluation that finds gaps **MUST** also emit its Advice as discrete,
 triageable **recommendation** artifacts — recommendations are a product of
-evaluation, not of `improve` (see [Operating model](quality-skill.md#operating-model)).
+evaluation and the input to
+[recommendation follow-up](recommendation-follow-up.md).
 
 A rating level's name can collide with QUALITY.md structural vocabulary —
 most often the suggested scale's **Area** level against a **Area** entity.
@@ -144,8 +145,8 @@ Together these separate the three things an audit must tell apart — the *input
   [Grounding judgment](evaluation.md#grounding-judgment). A *not assessed* requirement gets a
   record too, with `ratingResult.kind: not-assessed`, and a rationale stating
   the absent evidence. Each record is **written atomically and never mutated** —
-  a re-assessment (e.g. under `improve`) produces a new evaluation folder rather
-  than editing an existing record. The skill writes assessment result records through
+  a re-assessment produces a new evaluation folder rather than editing an
+  existing record. The skill writes assessment result records through
   `qualitymd evaluation assessment add`; the CLI owns serialization,
   numbering, and `schemaVersion`.
 - The folder **MUST** capture the **analysis records** the Analyze phase produces
@@ -233,8 +234,9 @@ set of remediation **options**; exactly one option marked **recommended**; and a
 **done-criterion** expressed as the outcome the in-scope requirement should reach
 against its `criterion`: for a rated gap, a target rating level; for a *not
 assessed* gap, becoming assessable and reaching at least the acceptable floor.
-That is what a later `improve` re-rates to confirm the fix. When the evidence
-or source structure makes ownership inferable, the recommendation should
+That is what recommendation follow-up verifies, with a scoped re-evaluation when
+the done criterion is rating-bound. When the evidence or source structure makes
+ownership inferable, the recommendation should
 name the route hint in existing text, such as the affected package, path,
 workflow, maintainer surface, or verification command. Like the report, a
 recommendation references any secret value by `file:line` and type only (see

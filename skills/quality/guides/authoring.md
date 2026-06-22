@@ -909,9 +909,9 @@ preserves the *why* a commit message scrolls away; its format contract lives in
   correction*, and cross-link the evaluation run and recommendation behind it when
   the change came from one. *The evidence link is the entry's whole value over
   `git log`.*
-- **Do** write **one entry per coherent change** — a confirmed `improve` apply, or
-  the initial population — not one per field touched. *The unit of record is the
-  decision, not the edit.*
+- **Do** write **one entry per coherent change** — a confirmed recommendation
+  apply, a model-authoring change, or the initial population — not one per field
+  touched. *The unit of record is the decision, not the edit.*
 - **Avoid** logging Markdown-body wording, typo, or formatting changes, or
   evaluated-source fixes that leave the model unchanged. *Those are not model
   changes; git already records them, and logging them turns a curated timeline

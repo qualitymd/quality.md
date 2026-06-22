@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, updating the /quality stack, or authoring/improving a QUALITY.md file.
+description: Use when a user wants setup, wizard guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -50,11 +50,13 @@ It **MUST** also declare `compatibility` prose that names the same CLI range as
 `version`, `requires`, or dependency fields unless a future Agent Skills spec or
 installer contract defines them.
 
-The skill runs the **evaluate → improve** loop on the **root area**: the entities a
-area's `source` points to. The `QUALITY.md` is the active model for that
-evaluation. `lint` asks "is this a valid QUALITY.md file?"; authoring guidance asks
-"is this a useful and understandable model?" without turning that question into a
-second bundled evaluation model.
+The skill runs the quality loop on the **root area**: the entities a area's
+`source` points to. The `QUALITY.md` is the active model for evaluation. `lint`
+asks "is this a valid QUALITY.md file?"; authoring guidance asks "is this a
+useful and understandable model?" without turning that question into a second
+bundled evaluation model. Evaluation produces recommendations; recommendation
+follow-up helps the user apply a confirmed option or hand it off to an issue
+tracker.
 
 The skill also owns a maintenance orchestration mode, `update`, for keeping the
 separately distributed `/quality` skill and `qualitymd` CLI compatible. It
@@ -62,22 +64,21 @@ diagnoses the installed pair, plans skill and CLI update actions, asks before
 mutation, and delegates mechanical changes to the Agent Skills installer and
 `qualitymd update`.
 
-Scope is a modifier, not a separate use case. Every evaluate/improve invocation
-takes an optional scope — a full evaluation, or a narrowing to particular
-area(s) or factor(s). The scope parameterizes the invocation rather than
-multiplying it (see [Invocation](#invocation)).
+Scope is a modifier, not a separate use case. Every evaluation takes an optional
+scope — a full evaluation, or a narrowing to particular area(s) or factor(s).
+The scope parameterizes the invocation rather than multiplying it (see
+[Invocation](#invocation)).
 
-Recommendations are a product of *evaluation*, not of `improve`: the format
-spec's [Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation,
-so any `evaluate` that finds gaps emits recommendations alongside its report (see
-[Reporting](#reporting)). `improve` adds exactly one thing — a **confirmed
-apply** of a chosen recommendation, defaulting to its recommended option — and
-**MUST** otherwise behave as `evaluate`. It **MUST NOT** edit evaluated source files
-entities or the `QUALITY.md` until the user explicitly confirms the recommendation
-and option to apply, and it **MUST** then re-evaluate the affected scope to
-confirm the change reached the recommendation's done-criterion (see
-[Reporting](#reporting)). Whether the evaluated source or the `QUALITY.md` file is being
-touched **MUST** be unambiguous to the user before any edit.
+Recommendations are a product of *evaluation*: the format spec's
+[Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation, so
+any `evaluate` that finds gaps emits recommendations alongside its report (see
+[Reporting](#reporting)). Acting on a recommendation is recommendation
+follow-up, not a separate mode. Follow-up offers two explicit productive
+outcomes: apply a confirmed recommendation option now, or hand the
+recommendation to an issue tracker. The skill **MUST NOT** edit evaluated source
+files or `QUALITY.md` until the user explicitly confirms the recommendation,
+option, and mutation surface. External issue creation **MUST** require explicit
+confirmation and available issue-tracker tooling.
 
 ## Boundaries and hard rules
 
@@ -127,8 +128,8 @@ artifact-contract guidance live there. Supporting docs live under
 `skills/quality/resources/` and `skills/quality/guides/`. Mode-specific
 procedure details can live in separate mode files, and the current artifact
 keeps them under
-`skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`,
-`improve.md`, and `update.md`. When mode procedures live outside `SKILL.md`, the root prompt
+`skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`, and
+`update.md`. When mode procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching mode file before executing that
 mode.
 
@@ -153,14 +154,18 @@ The root prompt **MUST** direct agents when to read each one:
 - [`guides/top-10-quality-md-checks.md`](../../../skills/quality/guides/top-10-quality-md-checks.md)
   — the quick inspection checklist read when assessing a QUALITY.md file's
   current state, quality, or lifecycle, especially in wizard.
+- [`guides/recommendation-follow-up.md`](../../../skills/quality/guides/recommendation-follow-up.md)
+  — the non-mode guide read when applying, acting on, or handing off an
+  evaluation recommendation.
 
 The description **MUST** optimize for trigger matching rather than documentation:
-it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`,
-`update`), broad quality vocabulary users naturally ask with (`quality
-management`, quality evaluation/improvement, factors, characteristics,
+it includes supported modes (`setup`, `wizard`, `evaluate`, `update`), broad
+quality vocabulary users naturally ask with (`quality management`, quality
+evaluation/improvement, factors, characteristics,
 attributes, criteria), QUALITY.md vocabulary (areas, factors, requirements),
 project/entity and component/area quality framing, quality evaluation,
-updating the `/quality` stack, and QUALITY.md authoring/improvement. It
+recommendation follow-up, issue-tracker handoff, updating the `/quality` stack,
+and QUALITY.md authoring/improvement. It
 **MUST NOT** include CLI implementation details, and it should not trigger for
 generic copyediting or one-off "make this higher quality" requests that lack
 systematic quality criteria or assessment.
@@ -181,7 +186,7 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 An invocation resolves four things, each with a default so a bare `/quality` is
 valid:
 
-- **Mode** — `evaluate`, `improve`, `setup`, `update`, or `wizard`. A bare
+- **Mode** — `evaluate`, `setup`, `update`, or `wizard`. A bare
   `/quality` with no direction runs the [`wizard`](#wizard) — the quality
   wayfinder that inspects state and suggests what to run. User intents such as
   `status`, `next`, `review model`, and `review history` resolve to wizard
@@ -189,7 +194,10 @@ valid:
   requests to update, upgrade, or repair the installed `/quality` skill and
   `qualitymd` CLI pair. `setup` is selected when no model file is present or the
   user asks to create one; otherwise the default action is `evaluate`, so naming
-  only a scope still evaluates.
+  only a scope still evaluates. Requests to improve, apply, act on, or hand off
+  a recommendation resolve to
+  [recommendation follow-up](recommendation-follow-up.md), not to a separate
+  mode.
 - **Model file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
   in the current working directory. The skill **MUST** accept an explicit path to
   override it, and **MUST** error clearly when no default file exists. It **MUST
@@ -243,9 +251,9 @@ rather than inventing a false coverage ranking. The skill **MUST NOT** treat an
 obvious or recommended fix as consent to mutate; explicit approval remains
 required wherever this spec requires confirmation.
 
-> Rationale: `improve`, `setup`, and `update` can all make useful changes, but
-> the user needs to know what surface is changing and how the skill will prove
-> the change worked. — 0038
+> Rationale: `setup`, `update`, and recommendation follow-up can all make useful
+> changes, but the user needs to know what surface is changing and how the skill
+> will prove the change worked. — 0038
 
 ### Stop rules and rerouting
 
@@ -272,9 +280,9 @@ evaluated-source defect.
 
 ### History-aware operation
 
-Before `evaluate` and `improve`, the skill **SHOULD** inspect available
-evaluation history when present, including the latest run, incomplete or
-stale-looking runs, open recommendations, and prior ratings for the same
+Before `evaluate` and recommendation follow-up, the skill **SHOULD** inspect
+available evaluation history when present, including the latest run, incomplete
+or stale-looking runs, open recommendations, and prior ratings for the same
 resolved scope. Prior evaluations **MUST** be treated as context, not authority:
 fresh evidence and the current `QUALITY.md` model control the current judgment.
 
@@ -290,18 +298,19 @@ contradict a prior run, the skill **SHOULD** state the likely reason when
 knowable: changed evaluated source, changed `QUALITY.md`, better evidence,
 different scope, or prior error.
 
-### Improvement delta reports
+### Recommendation follow-up results
 
-After `improve` applies a confirmed recommendation, the skill **MUST**
-re-evaluate the affected scope as required by the existing improve contract and
-report a before/after improvement delta. The delta report **MUST** connect the
-original recommendation to the applied option, changed files or artifacts, before
-evidence, after evidence, verification performed, rating movement when any, and
-remaining gaps or limits.
+After recommendation follow-up applies a confirmed recommendation option, the
+skill **SHOULD** verify the done criterion with the narrowest useful evidence.
+When the done criterion is rating-bound or depends on the QUALITY.md model, the
+skill **SHOULD** re-evaluate the affected scope and report a before/after delta.
+The result report **MUST** connect the original recommendation to the outcome,
+applied option, changed files or artifacts, verification performed, rating
+movement when known, and remaining gaps or limits.
 
-If the rating does not move after an applied improvement, the skill **MUST** say
-why when knowable. If verification is incomplete, the result **MUST** be labeled
-as limited rather than reported as fully confirmed.
+If the rating does not move after an applied recommendation, the skill **MUST**
+say why when knowable. If verification is incomplete, the result **MUST** be
+labeled as limited rather than reported as fully confirmed.
 
 > Rationale: quality improvement is only trustworthy when the user can see how
 > the original finding was closed or narrowed by new evidence. — 0038
@@ -358,13 +367,13 @@ model file, scope, and rigor. It may write only evaluation-run artifacts, follow
 the shared Define -> Assess and Rate -> Analyze -> Advise -> Report workflow,
 and emits recommendations whenever evaluation finds gaps.
 
-### Improve
+### Recommendation follow-up
 
-[`improve`](modes/improve.md) runs the same evaluation workflow, presents a
-decision brief for a recommendation option, applies a confirmed change only
-after explicit approval, then re-evaluates the affected scope and reports the
-before/after delta. When the confirmed change alters the model, it also writes
-the corresponding quality-log entry.
+[`recommendation follow-up`](recommendation-follow-up.md) is the non-mode
+workflow for acting on active evaluation recommendations. It offers apply-now and
+issue-tracker handoff outcomes, requires explicit confirmation before local
+mutation or external issue creation, and writes the quality log only for
+meaningful confirmed model changes.
 
 ### Update
 
@@ -372,7 +381,7 @@ the corresponding quality-log entry.
 `qualitymd` CLI maintenance. It inspects the loaded skill metadata and visible
 CLI version, plans any skill or CLI update action, asks before mutation,
 delegates mechanics to owner tooling, verifies the visible result, and stops
-before setup, evaluation, or improvement work.
+before setup, evaluation, or recommendation follow-up work.
 
 ### Examples
 
@@ -393,9 +402,8 @@ arguments, defaulting the ones left out:
 /quality evaluate security     # scope to a factor named "security" (resolved from the model)
 /quality evaluate payments maintainability   # a area's factor: "maintainability" within area "payments"
 /quality evaluate factor flow  # disambiguate when a name is both an area and a factor
-/quality improve               # evaluate, then recommend (applies only on confirmation)
-/quality improve reliability --rigor quick   # recommend from a fast pass, scoped to one factor
-/quality improve --rigor deep # exhaustive evaluate, then recommend
+/quality apply recommendation 002   # follow up: apply only on confirmation
+/quality handoff recommendation 002 # follow up: prepare/create an issue
 /quality update              # plan and orchestrate paired skill/CLI updates
 /quality setup                 # author a new model file (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
@@ -433,8 +441,8 @@ available; if any is missing, it stops rather than hand-authoring the run.
 
 The cross-mode evaluation workflow lives in
 [/quality evaluation workflow](evaluation.md). That component spec owns
-conformance to the format spec's Evaluation contract, the evaluate/improve
-workflow, grounding judgment, rigor levels, and rating-binding evidence checks.
+conformance to the format spec's Evaluation contract, the evaluation workflow,
+grounding judgment, rigor levels, and rating-binding evidence checks.
 
 ## Reporting
 
@@ -448,7 +456,7 @@ reportability expectations.
 
 The convention-first quality log contract lives in
 [/quality quality log](quality-log.md). That component spec owns dated
-`quality/log/` entries, meaningful-change criteria, mode write/reconcile
+`quality/log/` entries, meaningful-change criteria, write/reconcile
 responsibilities, and the deferred CLI surface.
 
 ## Deferred
@@ -457,11 +465,11 @@ responsibilities, and the deferred CLI surface.
   guides are listed in [Invocation](#frontmatter-and-metadata). Future assets,
   such as an evaluation playbook or report template, remain deferred until the
   workflow needs them.
-- **`improve` apply mechanics.** The shape of the apply step is settled — apply a
-  chosen recommendation's option on explicit confirmation, then re-evaluate the
-  affected scope to confirm it reached the recommendation's done-criterion (see
-  [Reporting](reporting.md#reporting)). How that change is staged, isolated, or
-  reviewed before it lands is left for later.
+- **Recommendation apply staging.** The shape of the apply step is settled —
+  apply a chosen recommendation's option on explicit confirmation, then verify
+  the done criterion and re-evaluate the affected scope when rating-bound. How
+  that change is staged, isolated, or reviewed before it lands is left for
+  later.
 - **Quality log CLI surface.** The [quality log](quality-log.md#quality-log) is
   convention-first: the skill writes date-named entries directly. A
   `qualitymd log` command (so numbering and an index can be CLI-owned), a

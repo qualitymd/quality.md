@@ -3,6 +3,45 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) — advanced
+  it to `Done` and moved the parent concept and its
+  [folder](archive/0054-remove-improve-mode/index.md) into
+  [`archive/`](archive/index.md). The case removed `/quality improve` as a public
+  mode, added recommendation follow-up with apply-now and issue-tracker handoff
+  outcomes, updated runtime skill guidance and durable skill specs, and removed
+  the improve mode files. Updated the archive [index](archive/index.md) and
+  emptied the open-cases list in the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) and advanced
+  it from `In-Progress` to `In-Review`. Removed runtime and durable `improve`
+  mode files, added recommendation follow-up runtime and durable guidance,
+  updated wizard/evaluate/update routing and quality-log ownership, updated user
+  docs and examples, and verified `mise run fmt-md-check`, `git diff --check`,
+  and targeted stale-reference searches.
+
+- **In-Progress**: Advanced
+  [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) from `Design` to
+  `In-Progress`. No design doc is required: the implementation is a mechanical
+  skill/spec/doc surface change that removes the public `improve` mode and keeps
+  recommendation follow-up as a non-mode workflow.
+
+- **Design**: Advanced
+  [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) from `Draft` to
+  `Design`. The functional spec is settled enough to work through design for
+  removing the public `/quality improve` mode while preserving recommendation
+  follow-up and issue-tracker handoff.
+
+- **Creation**: Added
+  [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) (`status:
+  Draft`) with its
+  [functional spec](archive/0054-remove-improve-mode/spec.md) and
+  [child index](archive/0054-remove-improve-mode/index.md). The case simplifies
+  the `/quality` skill surface by removing the separate improve mode while
+  preserving recommendation follow-up with apply-now and issue-tracker handoff
+  outcomes. Updated the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0053 - Align remaining durable specs](archive/0053-align-remaining-durable-specs.md) —
   advanced it to `Done` and moved the parent concept and its
   [folder](archive/0053-align-remaining-durable-specs/index.md) into
