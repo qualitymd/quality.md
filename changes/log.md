@@ -3,6 +3,34 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0056 - Prospective evaluation plan artifacts](archive/0056-prospective-evaluation-plan-artifacts.md) —
+  advanced it to `Done` and moved the parent concept and its
+  [folder](archive/0056-prospective-evaluation-plan-artifacts/index.md) into
+  [`archive/`](archive/index.md). The case made `design.md` and the initial
+  `plan.md` prospective `/quality evaluate` artifacts authored before assessment
+  begins, with later scope, coverage, rigor, or evidence-strategy changes
+  recorded as plan amendments. Updated the archive [index](archive/index.md) and
+  removed the entry from the open-cases list in the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0056 - Prospective evaluation plan artifacts](archive/0056-prospective-evaluation-plan-artifacts.md)
+  and advanced it from `In-Progress` to `In-Review`. Added the
+  [`design.md`](../specs/evaluation-records/design-md.md) artifact spec,
+  clarified [`plan.md`](../specs/evaluation-records/plan-md.md) as prospective
+  execution planning with explicit amendments, aligned durable `/quality`
+  evaluation workflow, evaluate mode, and reporting specs, updated the runtime
+  evaluate prompt and quick reference, and added the unreleased changelog entry.
+  Verified `mise run fmt-md-check`, `git diff --check`, and
+  `mise run npm-pack-check`.
+
+- **In-Progress**: Advanced
+  [0056 - Prospective evaluation plan artifacts](archive/0056-prospective-evaluation-plan-artifacts.md)
+  from `Design` to `In-Progress`. The functional spec and design doc are
+  settled; implementation begins across the durable evaluation-record specs,
+  durable `/quality` evaluation workflow specs, and runtime `/quality evaluate`
+  guidance.
+
+- **Done**: Landed and archived
   [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md) —
   advanced it to `Done` and moved the parent concept and its
   [folder](archive/0055-evaluation-input-ergonomics/index.md) into
@@ -14,9 +42,9 @@
   and removed the entry from the open-cases list in the bundle [index](index.md).
 
 - **Design**: Advanced
-  [0056 - Prospective evaluation plan artifacts](0056-prospective-evaluation-plan-artifacts.md)
+  [0056 - Prospective evaluation plan artifacts](archive/0056-prospective-evaluation-plan-artifacts.md)
   from `Draft` to `Design` and added its
-  [design doc](0056-prospective-evaluation-plan-artifacts/design.md). The design
+  [design doc](archive/0056-prospective-evaluation-plan-artifacts/design.md). The design
   lands the change as a contract and prompt repair rather than a CLI behavior
   change: add a planning checkpoint after run creation and before assessment,
   split `design.md`, `plan.md`, `debug-log.md`, and formal records by job, add a
@@ -25,10 +53,10 @@
   [index](index.md). Code not started.
 
 - **Draft**: Created
-  [0056 - Prospective evaluation plan artifacts](0056-prospective-evaluation-plan-artifacts.md)
+  [0056 - Prospective evaluation plan artifacts](archive/0056-prospective-evaluation-plan-artifacts.md)
   (`Draft`) with its
-  [functional spec](0056-prospective-evaluation-plan-artifacts/spec.md) and
-  [child index](0056-prospective-evaluation-plan-artifacts/index.md). The case
+  [functional spec](archive/0056-prospective-evaluation-plan-artifacts/spec.md)
+  and [child index](archive/0056-prospective-evaluation-plan-artifacts/index.md). The case
   tightens `/quality evaluate` so `design.md` and the initial `plan.md` are
   authored immediately after run creation and before assessment begins, separates
   intended evidence planning from actual findings and rating rationale, and

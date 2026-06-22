@@ -142,6 +142,12 @@ generate the design, plan, planned coverage, or evidence strategy.
 - `specs/skills/quality-skill/evaluation.md` — make the workflow order explicit:
   create run, author initial `design.md` and `plan.md`, optionally add settled
   coverage metadata, then assess and write records (per all requirements).
+- `specs/skills/quality-skill/modes/evaluate.md` — align the mode-specific
+  required flow with the pre-assessment artifact checkpoint (per the
+  pre-assessment artifact authoring requirement).
+- `specs/skills/quality-skill/reporting.md` — align the run-artifact contract
+  with prospective design/plan authoring and explicit plan amendments (per the
+  prospective/retrospective boundary and plan update requirements).
 - `specs/evaluation-records/plan-md.md` — clarify that `plan.md` is prospective,
   that actual findings/rationale belong in records and reports, and that later
   changes are explicit amendments (per the prospective/retrospective boundary

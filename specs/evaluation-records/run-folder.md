@@ -56,5 +56,6 @@ report.json
 `assessments/` and `recommendations/` each use their own local `NNN`
 sequence.
 
-`debug-log.md` is a process-only Markdown artifact. `plan.md` may be body-only,
-or it may carry YAML frontmatter with optional planned coverage metadata.
+`design.md` is the evaluation-frame artifact. `debug-log.md` is a process-only
+Markdown artifact. `plan.md` may be body-only, or it may carry YAML frontmatter
+with optional planned coverage metadata.

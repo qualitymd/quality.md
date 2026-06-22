@@ -2,6 +2,17 @@
 
 ## 2026-06-22
 
+- **Revision**: Clarified prospective evaluation design and plan artifacts for
+  [0056 - Prospective evaluation plan artifacts](../changes/archive/0056-prospective-evaluation-plan-artifacts.md).
+  Added the [design.md](evaluation-records/design-md.md) artifact spec, updated
+  [plan.md](evaluation-records/plan-md.md) so the initial plan records intended
+  execution before assessment begins, and aligned the durable
+  [/quality evaluation workflow](skills/quality-skill/evaluation.md),
+  [`evaluate` mode](skills/quality-skill/modes/evaluate.md),
+  [reporting](skills/quality-skill/reporting.md), and runtime skill guidance
+  with explicit plan amendments for later scope, coverage, rigor, or evidence
+  strategy changes.
+
 - **Revision**: Added the structured-input contract for
   [0055 - Self-describing evaluation record input](../changes/0055-evaluation-input-ergonomics.md).
   The CLI parent spec now requires payload-documenting help, `-n/--dry-run`

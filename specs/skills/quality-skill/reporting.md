@@ -109,25 +109,34 @@ Together these separate the three things an audit must tell apart — the *input
   resolved parameters — mode, model file, scope, and rigor (see
   [Arguments](quality-skill.md#arguments)) — and a citation of the `model.md` snapshot the run is
   bound to. It is the authoritative record of *what* was evaluated and *under what
-  inputs*, so a later reader or re-run can reproduce the setup. The report's
-  **Scope** statement is the reader-facing summary of this; the full
-  parameterization lives here, stated once.
+  inputs*, so a later reader or re-run can reproduce the setup. The skill authors
+  the initial design before assessment evidence collection or record writes
+  begin. The report's **Scope** statement is the reader-facing summary of this;
+  the full parameterization lives here, stated once.
 - The folder **MUST** include a **plan** artifact recording the run's *method* —
   how the skill covers each in-scope area's `source` at the chosen rigor (per
   [Rigor levels](evaluation.md#rigor-levels)): the entities or hotspots to assess, their
   order, and any diagnostics to run. The report's statement of what was *not
   assessed* (see [Rigor levels](evaluation.md#rigor-levels)) **MUST** reconcile actual
   coverage against this plan, so divergence between intended and achieved coverage
-  is visible rather than silent. The plan **MUST** name the rigor level and the
-  concrete requirements selected by that rigor. The design and plan together
-  **MUST** record enough concise report context for the CLI-rendered summary
-  layer: rigor, scope or narrowing, in-scope requirement set, out-of-scope or
-  deferred areas, headline evidence basis, and limitations that constrain the
-  rating.
+  is visible rather than silent. The skill authors the initial plan before
+  assessment evidence collection or record writes begin. The plan **MUST** name
+  the rigor level, concrete requirements selected by that rigor, intended
+  evidence basis or inspection strategy, planned commands or source reads when
+  known, and planned limitations. The design and plan together **MUST** record
+  enough concise report context for the CLI-rendered summary layer: rigor, scope
+  or narrowing, in-scope requirement set, out-of-scope or deferred areas,
+  intended evidence basis, and limitations that constrain the rating. Actual
+  findings, rating rationale, and recommendation reasoning belong in formal
+  records and reports, not in the initial plan.
 - The folder can include optional **planned coverage** metadata when the run
   needs machine-checkable resume diagnostics. The skill supplies the intended
   assessment requirements and analysis areas as `coverage:` frontmatter in
-  `plan.md` after the plan is settled.
+  `plan.md` after the intended requirement and analysis coverage is settled and
+  before dependent record writes begin. If scope, coverage, rigor, or material
+  evidence strategy changes during the run, the skill records that as a plan
+  amendment rather than silently rewriting the initial plan; coverage frontmatter
+  and the amendment are updated together when planned coverage changes.
 - The folder **MUST** include a **debug log** recording notable events involving
   the evaluation process itself: scope ambiguity, history inspection, coverage
   adjustment, interruptions or resumes, retries, record corrections, tooling

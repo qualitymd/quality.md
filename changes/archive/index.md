@@ -189,3 +189,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   made evaluation record payloads discoverable and validatable through
   payload-documenting help, no-persist dry-runs, aggregated key-named validation,
   synced skill surfaces, and a published-skill link guard (`Done`).
+- [0056 — Prospective evaluation plan artifacts](0056-prospective-evaluation-plan-artifacts.md) -
+  made `design.md` and the initial `plan.md` prospective `/quality evaluate`
+  artifacts authored before assessment begins, with later plan changes recorded
+  as amendments (`Done`).

@@ -17,6 +17,9 @@ QUALITY.md specification.
 
 - Updated evaluation record-writing guidance and quick-reference payload examples
   to discover schemas through CLI help and validate new payloads with dry-run.
+- Tightened `/quality evaluate` planning guidance so `design.md` and the initial
+  `plan.md` are authored before assessment begins, with later scope, coverage,
+  rigor, or evidence-strategy changes recorded as plan amendments.
 
 ### Packaging
 

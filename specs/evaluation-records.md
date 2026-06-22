@@ -62,6 +62,7 @@ contracts live in child specs:
 - [Run folder](evaluation-records/run-folder.md) - runtime folder naming and layout.
 - [Assessment result record](evaluation-records/assessment-result-record.md) - JSON assessment result records.
 - [Analysis record](evaluation-records/analysis-record.md) - JSON analysis records.
+- [design.md](evaluation-records/design-md.md) - evaluation-frame artifact.
 - [plan.md](evaluation-records/plan-md.md) - plan artifact and planned coverage metadata.
 - [debug-log.md](evaluation-records/debug-log-md.md) - process-only debug log artifact.
 - [Recommendation record](evaluation-records/recommendation-record-md.md) - Markdown recommendation records.

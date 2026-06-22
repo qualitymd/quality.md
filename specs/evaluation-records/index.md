@@ -8,6 +8,7 @@ Child specs for independently reviewable runtime contracts under the parent
 - [Run folder](run-folder.md) - runtime folder naming and layout for evaluation runs.
 - [Assessment result record](assessment-result-record.md) - JSON assessment result record contract.
 - [Analysis record](analysis-record.md) - JSON analysis record contract.
+- [design.md](design-md.md) - evaluation-frame artifact contract.
 - [plan.md](plan-md.md) - plan artifact and planned coverage contract.
 - [debug-log.md](debug-log-md.md) - process-only debug log contract.
 - [Recommendation record](recommendation-record-md.md) - Markdown recommendation record contract.

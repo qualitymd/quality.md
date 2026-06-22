@@ -19,13 +19,41 @@ described in [RFC 2119](../../docs/reference/rfc2119.md) and
 [RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
-## Planned Coverage
+## Evaluation Plan
 
 `plan.md` is a YAML-frontmatter + Markdown-body artifact. Its Markdown body is
-the run's prose plan. Optional frontmatter `coverage:` lists the assessment
-result requirements and analysis areas intended for the run. Planned coverage
-exists to support deterministic resume diagnostics; it **MUST NOT** replace the
-prose plan or the evaluation design.
+the run's prose execution plan. The CLI seeds the file when it creates a run, and
+the skill authors the initial content before assessment evidence collection or
+record writes begin.
+
+The initial `plan.md` **MUST** record:
+
+- the chosen rigor;
+- the concrete in-scope requirement set;
+- the intended evidence basis or inspection strategy;
+- planned commands, searches, or source reads when known;
+- planned limitations.
+
+The initial `plan.md` **MUST NOT** present actual findings, rating rationale, or
+recommendation reasoning as though they were planning content.
+
+> Rationale: the plan is useful for audit and resume diagnostics only when it
+> captures intended execution before judgment starts. Actual evidence and
+> rationale belong in assessment, analysis, recommendation, and report artifacts.
+> — 0056
+
+When the evaluator changes scope, coverage, rigor, or material evidence strategy
+after the initial plan is written, the skill **SHOULD** amend `plan.md` under a
+clear update heading rather than silently rewriting the plan as though the new
+path had always been intended. Amendments **MUST NOT** replace or erase the
+original prospective content.
+
+## Planned Coverage
+
+Optional frontmatter `coverage:` lists the assessment result requirements and
+analysis areas intended for the run. Planned coverage exists to support
+deterministic resume diagnostics; it **MUST NOT** replace the prose plan or the
+evaluation design.
 
 When `coverage:` is present, it **MUST** contain:
 
@@ -37,7 +65,9 @@ Each assessment result entry **MUST** contain ordered `areaPath` and
 Each analysis entry **MUST** contain ordered `areaPath`.
 
 Coverage frontmatter is hand-authored as part of `plan.md`; there is no separate
-CLI write command for planned coverage.
+CLI write command for planned coverage. When planned coverage changes during the
+run, the skill **SHOULD** update the `coverage:` frontmatter and the prose plan
+amendment together.
 
 New run scaffolds **SHOULD** include a commented or fenced coverage example in
 `plan.md` so the expected shape is discoverable without guessing field names.

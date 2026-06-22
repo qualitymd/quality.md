@@ -55,11 +55,20 @@ Before rating, `evaluate` **MUST**:
 - inspect relevant evaluation history when present; and
 - create the run through the CLI.
 
-After run creation, `evaluate` **MUST** fill the run design, plan, and debug log
-as process artifacts, then perform Define -> Assess and Rate -> Analyze ->
-Advise -> Report over the in-scope requirements. Every in-scope requirement
-covered by the chosen rigor **MUST** receive an assessment result or an explicit
-not-assessed result.
+After run creation and before assessment evidence collection or record writes
+begin, `evaluate` **MUST** author the run's initial `design.md` and `plan.md`.
+`design.md` records the resolved evaluation frame: mode, model file, scope,
+rigor, in-scope areas, exclusions, known method limits, and the `model.md`
+snapshot relationship. `plan.md` records intended execution: chosen rigor,
+concrete in-scope requirement set, intended evidence basis or inspection
+strategy, known planned checks, and planned limitations. Later scope, coverage,
+rigor, or material evidence-strategy changes **SHOULD** be recorded as explicit
+plan amendments rather than silent rewrites.
+
+`evaluate` **MUST** maintain `debug-log.md` only for notable process events.
+It then performs Define -> Assess and Rate -> Analyze -> Advise -> Report over
+the in-scope requirements. Every in-scope requirement covered by the chosen rigor
+**MUST** receive an assessment result or an explicit not-assessed result.
 
 When the evaluation finds gaps, `evaluate` **MUST** emit triageable
 recommendation artifacts as part of Advise. Recommendations are evaluation

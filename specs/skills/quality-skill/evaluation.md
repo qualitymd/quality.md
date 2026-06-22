@@ -51,8 +51,10 @@ flowchart TD
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
     Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
-    Run --> Plan[Fill design.md, plan.md,<br/>and debug-log.md]
-    Plan --> Eval[Evaluate in-scope areas:<br/>Define → Assess &amp; Rate → Analyze → Advise]
+    Run --> Plan[Author initial design.md<br/>and plan.md]
+    Plan --> Coverage[Add settled coverage<br/>when useful]
+    Coverage --> Log[Maintain debug-log.md<br/>for process events]
+    Log --> Eval[Evaluate in-scope areas:<br/>Define → Assess &amp; Rate → Analyze → Advise]
     Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
     Records --> Status[Check qualitymd evaluation status]
     Status --> Report[Build reports through<br/>qualitymd evaluation report build]
@@ -66,15 +68,22 @@ flowchart TD
    `qualitymd spec`.
 4. **Create the run** with `qualitymd evaluation create`, letting the CLI
    number the folder, create the layout, snapshot `model.md`, and seed
-   `debug-log.md`.
-5. **Plan** — fill the evaluation's **design** (the resolved parameters and the
-   `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
-   `source` will be covered at the chosen rigor). The plan **MUST** record the
-   chosen rigor and concrete requirement set covered.
-6. **Record planned coverage when useful** — after the plan is settled, the
+   `debug-log.md`, `design.md`, and `plan.md`.
+5. **Author the initial design and plan before assessment** — author the
+   evaluation's **design** (mode, model file, scope, rigor, in-scope areas,
+   exclusions, known method limits, and bound `model.md` snapshot) and
+   **execution plan** (how the in-scope `source` will be covered at the chosen
+   rigor) before assessment evidence collection or record writes begin. The plan
+   **MUST** record the chosen rigor, concrete requirement set covered, intended
+   evidence basis or inspection strategy, known planned commands or source
+   reads, and planned limitations.
+6. **Record planned coverage when useful** — after the intended requirement and
+   analysis coverage is settled and before dependent record writes begin, the
    skill should add `coverage:` frontmatter to `plan.md` when resume diagnostics
    materially matter, especially for standard, deep, concurrent-write, or
-   interruption-prone runs.
+   interruption-prone runs. If scope, coverage, rigor, or material evidence
+   strategy changes during the run, amend `plan.md` under a clear update heading
+   and update `coverage:` with the amendment when planned coverage changes.
 7. **Maintain the debug log** — hand-author concise `debug-log.md` entries for
    notable events involving the evaluation process itself. Keep the log separate
    from formal evaluation judgment: it may explain routing, retries,
