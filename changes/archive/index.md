@@ -155,3 +155,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0047 — Area terminology changeover](0047-area-terminology.md) - replaced the
   formal Target terminology with Area across the live schema, records, reports,
   CLI, skill, scaffold, examples, and docs (`Done`).
+- [0048 — Area factor report breakdown](0048-area-factor-report-breakdown.md) -
+  exposed a compact Area-by-Factor breakdown from a first-class report model
+  across `report-summary.md`, `report.md`, and `report.json`, renamed the Area
+  rating fields, and added the durable `specs/reports/` artifact specs (`Done`).

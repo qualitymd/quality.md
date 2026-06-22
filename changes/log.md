@@ -2,6 +2,16 @@
 
 ## 2026-06-22
 
+- **Done**: Landed and archived
+  [0048 - Area factor report breakdown](archive/0048-area-factor-report-breakdown.md)
+  — advanced from `In-Review` to `Done` and moved the parent concept and its
+  [folder](archive/0048-area-factor-report-breakdown/index.md) into
+  [`archive/`](archive/index.md). The case exposed a compact Area-by-Factor
+  breakdown from a first-class report model across `report-summary.md`,
+  `report.md`, and `report.json`, renamed the Area rating fields, and landed the
+  durable `specs/reports/` artifact specs. Updated the archive
+  [index](archive/index.md) and removed the entry from the bundle [index](index.md).
+
 - **Creation**: Added [0050 - Quality log](0050-quality-log.md) (`status: Draft`)
   with its [functional spec](0050-quality-log/spec.md) and
   [child index](0050-quality-log/index.md). The case proposes a curated,
