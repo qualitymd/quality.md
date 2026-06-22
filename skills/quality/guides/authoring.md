@@ -72,6 +72,13 @@ area tree.
 `ratingScale` is the only property unique to the model; everything else it
 shares with Area.
 
+Area names, Factor names, and Rating Level IDs use the same strict name grammar:
+letters or digits at both ends, with letters, digits, `_`, or `-` inside.
+Requirement statements stay natural language and are not constrained by that
+grammar. When a tool needs a stable text handle, it uses canonical model
+references such as `area:root`, `area:api`, `factor:api::reliability`, or
+`rating:target`.
+
 ### Working with the model
 
 - **Do** name the entity (`title`) and think through the body's Overview first —
@@ -315,7 +322,7 @@ Each level does two distinct jobs through two properties:
 
 | Property      | Presence    | What it is                                                      |
 | ------------- | ----------- | --------------------------------------------------------------- |
-| `level`       | Required    | The level's name; unique within the scale.                      |
+| `level`       | Required    | Rating Level ID; unique within the scale.                       |
 | `title`       | Required    | Human-readable label for reports.                               |
 | `description` | Recommended | What the level means across the model (fixed).                  |
 | `criterion`   | Required    | Default rule for rating a requirement's findings at this level. |
@@ -394,7 +401,7 @@ A target's **source** defines *what* it evaluates; its **factors** and
 
 | Property       | Presence   | What it is                                                             |
 | -------------- | ---------- | ---------------------------------------------------------------------- |
-| `title`        | Required   | Display name in reports; the map key stays the identifier.             |
+| `title`        | Required   | Display name in reports; the map key is the Area name.                 |
 | `description`  | Optional   | What the area is — the entity or scope it covers.                      |
 | `factors`      | Optional\* | [Factors](#factor) scoped to this area's subtree.                      |
 | `requirements` | Optional\* | [Requirements](#requirement) assessed against this area's source.      |
@@ -407,6 +414,9 @@ each area should lead to at least one requirement somewhere in its subtree — a
 target whose subtree has no requirements evaluates nothing.
 
 ### Working with areas
+
+An Area's stable ID is its path of Area names from the root. The root Area ID is
+empty and renders as `area:root` when a canonical model reference is needed.
 
 - **Do** point an area at the thing whose quality you actually care about.
   **Avoid** modeling fixtures, generated output, or build scaffolding as areas.
@@ -522,7 +532,8 @@ It groups the requirements assessed through it. A factor may decompose into
 sub-factor is itself a factor of the same shape, nested to any depth.
 
 Factor identity is local to its area: factors of the same name on two
-different areas are distinct.
+different areas are distinct. A Factor's stable ID is the declaring Area ID plus
+its path of Factor names from that Area's `factors` map.
 
 ### Properties
 
@@ -643,7 +654,7 @@ the area it sits on, and counts once in that area's local rating.
 | ------------ | ---------------------------- | ---------------------------------------------------------------- |
 | `assessment` | Required                     | The means of assessing the source; produces the findings.        |
 | `factors`    | Required for area-level reqs | factor references; secondary factors when nested under a factor. |
-| `ratings`    | Optional                     | Per-requirement criterion overrides, keyed by rating level.      |
+| `ratings`    | Optional                     | Per-requirement criterion overrides, keyed by Rating Level ID.   |
 
 ### Working with requirements
 
@@ -820,7 +831,7 @@ requirements:
 
 - **Consider** a `ratings` override when a requirement has a natural measured
   threshold or a distinct qualitative spectrum (e.g. latency bands).
-- **Do** key overrides by existing rating levels and change *only* the
+- **Do** key overrides by existing Rating Level IDs and change *only* the
   `criterion`. **Avoid** touching a level's `description`, order, or `title` —
   those stay fixed across the model.
 - **Do** treat a measured override as a pair: the value you aim for (lands at

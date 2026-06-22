@@ -68,15 +68,17 @@ The evaluation verdict **MUST** be the in-scope root Area's
 Area-with-descendants rating. It **MUST NOT** be the Area-only rating unless the
 recorded analysis makes those ratings equivalent.
 
-The Area Breakdown section **MUST** show each in-scope Area's display path,
-Area-only rating, Area-with-descendants rating, and Factor breakdown.
+The Area Breakdown section **MUST** show each in-scope Area's title, stable Area
+model reference, Area-only rating, Area-with-descendants rating, and Factor
+breakdown.
 
-Human Markdown **SHOULD** label the Area Breakdown columns as `Path`, `Area`,
-`+ Sub-Areas`, and `Factors`.
+Human Markdown **MUST** label the Area Breakdown columns, in order, as `Area`,
+`Path`, `Area Rating`, `Area + Sub-Areas Rating`, and `Factors`.
 
-Area display paths **MUST** be absolute. The root Area renders as
-`/ (<root title>)`; descendants render with a leading `/`, such as
-`/Services/Payments/Webhooks`.
+The `Area` column **MUST** render the Area title, falling back to the Area ID
+when the title is unavailable. The `Path` column **MUST** render the canonical
+Area model reference. The root Area renders as `area:root`; descendants render
+as `area:<area-path>`, such as `area:services/payments/webhooks`.
 
 Areas with child Areas but no direct requirements **MUST** render the Area-only
 rating as `(area group)` in human Markdown.
@@ -85,6 +87,15 @@ rating as `(area group)` in human Markdown.
 
 Areas with no recorded Factor ratings **MUST** render an explicit empty-state in
 the Factor breakdown.
+
+For example:
+
+```md
+| Area                 | Path                     | Area Rating  | Area + Sub-Areas Rating | Factors                                     |
+| -------------------- | ------------------------ | ------------ | ----------------------- | ------------------------------------------- |
+| Sparrow Payments API | `area:root`              | Unacceptable | Unacceptable            | Security: Unacceptable; Reliability: Target |
+| Delivery             | `area:webhooks/delivery` | Minimum      | Minimum                 | Reliability: Minimum                        |
+```
 
 The Selected Findings section **MUST** include only deterministic selected
 findings from the assembled report model. Informational findings **MUST NOT** be

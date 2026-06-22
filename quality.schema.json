@@ -7,6 +7,9 @@
           "additionalProperties": {
             "$ref": "#/$defs/area"
           },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+          },
           "type": "object"
         },
         "description": {
@@ -15,6 +18,9 @@
         "factors": {
           "additionalProperties": {
             "$ref": "#/$defs/factor"
+          },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
           },
           "type": "object"
         },
@@ -45,6 +51,9 @@
           "additionalProperties": {
             "$ref": "#/$defs/factor"
           },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+          },
           "type": "object"
         },
         "requirements": {
@@ -71,6 +80,7 @@
           "type": "string"
         },
         "level": {
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
           "type": "string"
         },
         "title": {
@@ -133,6 +143,9 @@
       "additionalProperties": {
         "$ref": "#/$defs/area"
       },
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+      },
       "type": "object"
     },
     "description": {
@@ -141,6 +154,9 @@
     "factors": {
       "additionalProperties": {
         "$ref": "#/$defs/factor"
+      },
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
       },
       "type": "object"
     },

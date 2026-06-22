@@ -128,6 +128,42 @@ requirements:
 `,
 	},
 	{
+		ruleID: RuleInvalidRatingLevelID,
+		name:   "level id contains dot",
+		model: `---
+title: Example
+ratingScale:
+  - level: tar.get
+    description: Target.
+    criterion: Meets it.
+  - level: unacceptable
+    description: Unacceptable.
+    criterion: Does not meet it.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+---
+`,
+	},
+	{
+		ruleID: RuleInvalidRatingLevelID,
+		name:   "level id has trailing separator",
+		model: `---
+title: Example
+ratingScale:
+  - level: target_
+    description: Target.
+    criterion: Meets it.
+  - level: unacceptable
+    description: Unacceptable.
+    criterion: Does not meet it.
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+---
+`,
+	},
+	{
 		ruleID: RuleDuplicateLevel,
 		name:   "two duplicate levels",
 		model: `---
@@ -275,6 +311,28 @@ areas: {}
         ratingScale:
           - level: target
             criterion: Meets it.
+        requirements:
+          "has an assessment":
+            assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleInvalidAreaName,
+		name:   "area name contains slash",
+		model: validFrontmatter(`areas:
+  api/service:
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleInvalidAreaName,
+		name:   "nested area name starts with separator",
+		model: validFrontmatter(`areas:
+  api:
+    areas:
+      _handlers:
         requirements:
           "has an assessment":
             assessment: Inspect it.
@@ -466,6 +524,31 @@ requirements:
     description: Reliability.
     factors:
       availability:
+        requirements:
+          "has an assessment":
+            assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleInvalidFactorName,
+		name:   "factor name contains space",
+		model: validFrontmatter(`factors:
+  service health:
+    description: Service health.
+    requirements:
+      "has an assessment":
+        assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleInvalidFactorName,
+		name:   "nested factor name ends with separator",
+		model: validFrontmatter(`factors:
+  reliability:
+    description: Reliability.
+    factors:
+      availability-:
+        description: Availability.
         requirements:
           "has an assessment":
             assessment: Inspect it.

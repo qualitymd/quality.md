@@ -2,6 +2,12 @@
 
 ## 2026-06-22
 
+- **Revision**: Updated [report outputs](report-outputs.md) for
+  [0058 - Model reference identifiers](../../changes/0058-model-reference-identifiers.md)
+  so human reports use canonical model references where a stable handle is
+  displayed while `report.json` preserves structured `areaPath` and `factorPath`
+  arrays.
+
 - **Revision**: Added the [design.md](design-md.md) artifact contract for
   [0056 - Prospective evaluation plan artifacts](../../changes/archive/0056-prospective-evaluation-plan-artifacts.md)
   and clarified that the initial [plan.md](plan-md.md) is prospective execution

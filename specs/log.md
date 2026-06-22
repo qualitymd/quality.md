@@ -3,6 +3,19 @@
 ## 2026-06-22
 
 - **Revision**: Implemented durable spec alignment for
+  [0058 - Model reference identifiers](../changes/0058-model-reference-identifiers.md).
+  Updated [`SPECIFICATION.md`](../SPECIFICATION.md),
+  [`report-summary.md`](reports/report-summary-md.md),
+  [`report.md`](reports/report-md.md), [`report.json`](reports/report-json.md),
+  [evaluation report outputs](evaluation-records/report-outputs.md),
+  [`qualitymd lint`](cli/lint.md), [`qualitymd lint rules`](cli/lint-rules.md),
+  the [`quality.schema.json`](quality-schema-json.md) artifact spec, and durable
+  [`/quality` skill](skills/quality-skill/index.md) specs to define strict Area
+  names, Factor names, Rating Level IDs, canonical typed model references,
+  edge-only shorthand, structured path preservation, and the revised Area
+  Breakdown columns.
+
+- **Revision**: Implemented durable spec alignment for
   [0057 - Quality data directory](../changes/0057-quality-data-directory.md).
   Updated [`qualitymd evaluation create`](cli/evaluation-create.md),
   [`qualitymd status`](cli/status.md), [`qualitymd lint`](cli/lint.md),

@@ -3,6 +3,7 @@ package schema
 import (
 	"bytes"
 	"encoding/json"
+	"strings"
 	"testing"
 )
 
@@ -115,6 +116,27 @@ func TestGenerateJSONDefinesRecursiveNodes(t *testing.T) {
 	}
 }
 
+func TestGenerateJSONIncludesStrictModelNamePatterns(t *testing.T) {
+	doc := generate(t)
+	props := doc["properties"].(map[string]any)
+	assertPropertyNamesPattern(t, props[PropertyAreas], ModelNamePattern)
+	assertPropertyNamesPattern(t, props[PropertyFactors], ModelNamePattern)
+
+	scale := props[PropertyRatingScale].(map[string]any)
+	items := scale["items"].(map[string]any)
+	defs := doc["$defs"].(map[string]any)
+	ratingLevel := defs[strings.TrimPrefix(items["$ref"].(string), "#/$defs/")].(map[string]any)
+	level := ratingLevel["properties"].(map[string]any)[PropertyLevel].(map[string]any)
+	if got := level["pattern"]; got != ModelNamePattern {
+		t.Fatalf("rating level pattern = %v, want %s", got, ModelNamePattern)
+	}
+
+	requirements := props[PropertyRequirements].(map[string]any)
+	if _, ok := requirements["propertyNames"]; ok {
+		t.Fatal("requirements map has propertyNames; Requirement statements must remain natural language")
+	}
+}
+
 func TestGenerateJSONAllowsExtensions(t *testing.T) {
 	doc := generate(t)
 	// The format permits extension frontmatter, so no node object closes itself
@@ -129,6 +151,17 @@ func TestGenerateJSONAllowsExtensions(t *testing.T) {
 		if _, ok := def.(map[string]any)["additionalProperties"]; ok {
 			t.Errorf("$defs.%s sets additionalProperties on the node object", name)
 		}
+	}
+}
+
+func assertPropertyNamesPattern(t *testing.T, v any, want string) {
+	t.Helper()
+	propertyNames, ok := v.(map[string]any)["propertyNames"].(map[string]any)
+	if !ok {
+		t.Fatalf("propertyNames = %T, want map", v.(map[string]any)["propertyNames"])
+	}
+	if got := propertyNames["pattern"]; got != want {
+		t.Fatalf("propertyNames.pattern = %v, want %s", got, want)
 	}
 }
 

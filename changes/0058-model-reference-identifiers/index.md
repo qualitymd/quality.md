@@ -8,3 +8,5 @@ case.
 
 - [Functional spec](spec.md) - what strict names, canonical model references,
   edge-only shorthand, and report summary columns must require.
+- [Design doc](design.md) - how strict names, canonical references, lint checks,
+  schema support, and report rendering should be implemented.

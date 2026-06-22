@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Added strict Area name, Factor name, and Rating Level ID validation to
+  `qualitymd lint`, added canonical `area:`, `factor:`, and `rating:` model
+  references, and updated generated Area Breakdown tables to separate Area
+  titles from stable Area references.
 - Moved the default evaluation data directory from `quality/evaluations/` to
   `.quality/evaluations/`, added shared QUALITY.md workspace resolution with an
   optional root `config` pointer to the workspace config file, and kept
@@ -21,6 +25,8 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Aligned scoped evaluation guidance with canonical model references while
+  keeping shorthand only at fixed-type human input edges.
 - Moved the default quality log from `quality/log/` to `.quality/log/` under the
   workspace quality data directory and aligned setup, wizard, evaluate, and
   recommendation follow-up guidance with the new workspace paths.
@@ -34,6 +40,12 @@ QUALITY.md specification.
 
 - Added a package check that fails when a relative link inside the shipped
   `skills/quality` bundle does not resolve.
+
+### Specification
+
+- Defined Area names, Area IDs, Factor names, Factor IDs, Rating Level IDs, and
+  canonical model references; clarified that durable machine artifacts preserve
+  structured `areaPath` and `factorPath` arrays.
 
 ## v0.8.0 - 2026-06-22
 

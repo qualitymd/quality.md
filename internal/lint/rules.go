@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -9,6 +10,8 @@ import (
 	"github.com/qualitymd/quality.md/internal/workspace"
 	"gopkg.in/yaml.v3"
 )
+
+var modelNamePattern = regexp.MustCompile(qschema.ModelNamePattern)
 
 type schemaContext struct {
 	areaName    string
@@ -226,18 +229,7 @@ func (s *runState) checkRatingScale() {
 
 func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index int, seen map[string]Location) {
 	s.checkSchemaProperties(qschema.RatingLevel, level, path, schemaContext{})
-	if _, value, _ := document.MapEntry(level, qschema.PropertyLevel); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
-		s.add(RuleMissingLevelName, "A rating level declares no `level` name; each rating level requires a non-empty `level`.", s.locForNodeOrMissing(value, appendPath(path, "level"), "ratingScale["+strconv.Itoa(index)+"].level"), nil)
-	} else {
-		name := value.Value
-		if prior, ok := seen[name]; ok {
-			s.add(RuleDuplicateLevel, "The rating level `"+name+"` is duplicated; each `level` name must be unique within `ratingScale`.", s.loc(value, appendPath(path, "level"), "ratingScale["+strconv.Itoa(index)+"].level"), nil)
-			s.add(RuleDuplicateLevel, "The rating level `"+name+"` is duplicated; each `level` name must be unique within `ratingScale`.", prior, nil)
-		} else {
-			seen[name] = s.loc(value, appendPath(path, "level"), "ratingScale["+strconv.Itoa(index)+"].level")
-			s.levels[name] = true
-		}
-	}
+	s.checkRatingLevelID(level, path, index, seen)
 	if _, value, _ := document.MapEntry(level, qschema.PropertyCriterion); value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
 		s.add(RuleMissingCriterion, "A rating level declares no `criterion`; each rating level requires a non-empty criterion.", s.locForNodeOrMissing(value, appendPath(path, "criterion"), "ratingScale["+strconv.Itoa(index)+"].criterion"), nil)
 	}
@@ -245,6 +237,29 @@ func (s *runState) checkRatingLevel(level *yaml.Node, path []PathSegment, index 
 	if _, value, _ := document.MapEntry(level, qschema.PropertyDescription); value == nil {
 		s.add(RuleMissingLevelDescription, "A rating level declares no `description`; a description is recommended for each level.", s.locForMissing(appendPath(path, "description"), "ratingScale["+strconv.Itoa(index)+"].description"), nil)
 	}
+}
+
+func (s *runState) checkRatingLevelID(level *yaml.Node, path []PathSegment, index int, seen map[string]Location) {
+	_, value, _ := document.MapEntry(level, qschema.PropertyLevel)
+	label := "ratingScale[" + strconv.Itoa(index) + "].level"
+	levelPath := appendPath(path, "level")
+	if value == nil || isEmpty(value) || value.Kind != yaml.ScalarNode {
+		s.add(RuleMissingLevelName, "A rating level declares no `level` name; each rating level requires a non-empty `level`.", s.locForNodeOrMissing(value, levelPath, label), nil)
+		return
+	}
+
+	name := value.Value
+	location := s.loc(value, levelPath, label)
+	if !validModelName(name) {
+		s.add(RuleInvalidRatingLevelID, "The rating level ID `"+name+"` is invalid; Area names, Factor names, and Rating Level IDs must match "+qschema.ModelNamePattern+".", location, nil)
+	}
+	if prior, ok := seen[name]; ok {
+		s.add(RuleDuplicateLevel, "The rating level `"+name+"` is duplicated; each `level` name must be unique within `ratingScale`.", location, nil)
+		s.add(RuleDuplicateLevel, "The rating level `"+name+"` is duplicated; each `level` name must be unique within `ratingScale`.", prior, nil)
+		return
+	}
+	seen[name] = location
+	s.levels[name] = true
 }
 
 func (s *runState) checkEmptyModel() {
@@ -286,6 +301,10 @@ func (s *runState) checkFactorShape(factor *factorRef) {
 	if _, value, _ := document.MapEntry(factor.node, qschema.PropertyDescription); value == nil {
 		s.add(RuleMissingFactorDescription, "The factor `"+factor.name+"` declares no `description`; a description is recommended for each factor.", s.locForMissing(appendPath(factor.path, "description"), label(appendPath(factor.path, "description"))), nil)
 	}
+}
+
+func validModelName(name string) bool {
+	return modelNamePattern.MatchString(name)
 }
 
 func (s *runState) checkRequiredTitle(owner *yaml.Node, base []PathSegment, kind, message string) {

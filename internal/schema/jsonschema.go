@@ -131,16 +131,24 @@ func anyOfRequired(r RequiredAny) []any {
 func propertySchema(p Property) (map[string]any, error) {
 	switch p.Shape {
 	case ScalarShape:
-		return map[string]any{"type": "string"}, nil
+		schema := map[string]any{"type": "string"}
+		if p.Pattern != "" {
+			schema["pattern"] = p.Pattern
+		}
+		return schema, nil
 	case MapShape:
 		element, err := elementSchema(p)
 		if err != nil {
 			return nil, err
 		}
-		return map[string]any{
+		schema := map[string]any{
 			"type":                 "object",
 			"additionalProperties": element,
-		}, nil
+		}
+		if p.KeyPattern != "" {
+			schema["propertyNames"] = map[string]any{"pattern": p.KeyPattern}
+		}
+		return schema, nil
 	case SequenceShape:
 		element, err := elementSchema(p)
 		if err != nil {

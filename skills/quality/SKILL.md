@@ -91,11 +91,17 @@ Parse the user's request from free-form arguments:
   as recommendation follow-up, not as a separate mode.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
-- Scope: full evaluation by default, or a narrowing. Resolve a bare name against
-  the grounded model — match it to the area or factor that bears it. Two bare
-  names are an `<area> <factor>` pair: that factor narrowed within the area.
-  Use an explicit `area`/`factor` keyword only to disambiguate a name that is
-  both an Area and a Factor.
+- Scope: full evaluation by default, or a narrowing. Prefer canonical model
+  references for explicit scoped input: `area:<area-path>` for an Area,
+  `factor:<declaring-area-path>::<factor-path>` for a Factor, and
+  `rating:<rating-level-id>` where rating references are needed. Accept
+  shorthand only at fixed-type input edges such as `area webhooks/delivery` or
+  `factor webhooks/delivery::reliability`; never persist shorthand in records or
+  reports. Resolve legacy bare names against the grounded model only as
+  human-edge shorthand — match it to the Area or Factor that bears it. Two bare
+  names are an `<area> <factor>` pair: that Factor narrowed within the Area. Use
+  an explicit `area`/`factor` keyword only to disambiguate a name that is both an
+  Area and a Factor.
 - Rigor: `standard` by default; see [Rigor Levels](#rigor-levels).
 
 When a bare request is ambiguous, run `wizard`: inspect state, summarize the
@@ -169,11 +175,11 @@ assessment record, but it must not copy raw command output or duplicate the
 finding.
 
 Use required `title` values as the primary human-facing labels for models,
-areas, factors, and rating levels. When disambiguation or traceability matters,
-include stable identifiers as secondary context, for example
-`Format specification (area: format-spec)`. Evaluation record payloads still
-use stable identifiers: `areaPath`, factor keys, and rating `level` ids must
-not be replaced by titles.
+Areas, Factors, and Rating Levels. When disambiguation or traceability matters,
+include canonical model references as secondary context, for example
+`Format specification (area:format-spec)`. Evaluation record payloads still use
+structured stable identifiers: `areaPath`, `factorPath`, and rating `level` ids
+must not be replaced by titles or shorthand references.
 
 ## Invocation Variants
 

@@ -102,10 +102,12 @@ flowchart TD
    `schemaVersion`. Before writing an unfamiliar payload shape, inspect the
    command's `--help`; before committing records, use `-n/--dry-run` when the
    payload was newly authored or materially revised. The judgment JSON uses
-   stable model identifiers: area path entries are area keys, factor references
-   and `factorRatingResults[].factorPath` values are factor keys, and ratings
-   are rating `level` ids. Human-facing prose can use titles; records keep
-   identifiers so reports, gates, and machine consumers remain stable.
+   stable model identifiers: `areaPath` entries are Area ID elements,
+   `factorRatingResults[].factorPath` values are Factor ID elements relative to
+   the declaring Area, and ratings are Rating Level IDs in `level`. Human-facing
+   prose can use titles and canonical model references for traceability; records
+   keep structured identifiers so reports, gates, and machine consumers remain
+   stable.
 10. **Check and report** with `qualitymd evaluation status <run>` followed by
     `qualitymd evaluation report build <run>` when reportable.
 

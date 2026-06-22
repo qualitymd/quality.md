@@ -564,19 +564,20 @@ func writeAreaBreakdownSection(out *bytes.Buffer, report ReportDocument, labels 
 		out.WriteString("No area ratings were recorded.\n")
 		return
 	}
-	out.WriteString("| Path | Area | + Sub-Areas | Factors |\n")
-	out.WriteString("| --- | --- | --- | --- |\n")
+	out.WriteString("| Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |\n")
+	out.WriteString("| --- | --- | --- | --- | --- |\n")
 	for _, area := range report.AreaSummary {
 		out.WriteString(areaBreakdownRow(area, labels))
 	}
 }
 
 // areaBreakdownRow renders one compact Area Breakdown row. The Area column shows
-// the Area-only rating (area-group state renders as `(area group)`); the
-// + Sub-Areas column shows the Area-with-descendants rating; the Factors column
-// lists each factor as `<factor display path>: <rating>`.
+// the Area title; the Path column shows the canonical Area model reference; the
+// rating columns preserve Area-only and Area-with-descendants states; the
+// Factors column lists each factor as `<factor display path>: <rating>`.
 func areaBreakdownRow(area AreaRatingSummary, labels reportDisplayLabels) string {
-	return "| " + tableCell(labels.AreaDisplayPath(area.AreaPath.Elements())) +
+	return "| " + tableCell(labels.Area(area.AreaPath.Elements(), area.AreaPath.Display())) +
+		" | `" + tableCell(area.AreaPath.Reference()) + "`" +
 		" | " + tableCell(displayAreaRatingState(area.AreaRatingState, labels.Ratings)) +
 		" | " + tableCell(displayRatingResult(area.AreaWithDescendantsRatingResult, labels.Ratings)) +
 		" | " + tableCell(areaBreakdownFactors(area, labels)) + " |\n"

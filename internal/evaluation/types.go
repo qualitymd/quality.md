@@ -111,6 +111,11 @@ func (p AreaPath) Display() string {
 	return strings.Join(p, "/")
 }
 
+// Reference returns the canonical typed model reference for an area path.
+func (p AreaPath) Reference() string {
+	return "area:" + p.Display()
+}
+
 // FactorPath is a stable path from an area's factor set to a nested factor.
 type FactorPath []string
 
@@ -138,6 +143,18 @@ func (p FactorPath) Display() string {
 		return "root"
 	}
 	return strings.Join(p, "/")
+}
+
+// FactorReference returns the canonical typed model reference for a factor path
+// declared by areaPath.
+func FactorReference(areaPath AreaPath, factorPath FactorPath) string {
+	return "factor:" + areaPath.Display() + "::" + factorPath.Display()
+}
+
+// RatingReference returns the canonical typed model reference for a Rating Level
+// ID.
+func RatingReference(level string) string {
+	return "rating:" + level
 }
 
 // Evidence identifies supporting evidence for a finding.

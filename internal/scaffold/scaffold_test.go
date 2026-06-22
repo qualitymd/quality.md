@@ -31,7 +31,7 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 	if got, want := model.RatingScale[3].Level, "unacceptable"; got != want {
 		t.Fatalf("RatingScale[3].Level = %q, want %q", got, want)
 	}
-	factor := model.Factors["<name a quality that matters>"]
+	factor := model.Factors["quality-name"]
 	if factor.Description == "" {
 		t.Fatal("skeleton factor description is empty")
 	}

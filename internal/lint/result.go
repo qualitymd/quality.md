@@ -29,13 +29,16 @@ const (
 	RuleMissingRatingScale       RuleID = "missing-rating-scale"
 	RuleTooFewLevels             RuleID = "too-few-levels"
 	RuleMissingLevelName         RuleID = "missing-level-name"
+	RuleInvalidRatingLevelID     RuleID = "invalid-rating-level-id"
 	RuleDuplicateLevel           RuleID = "duplicate-level"
 	RuleInvalidConfig            RuleID = "invalid-config"
 	RuleMissingCriterion         RuleID = "missing-criterion"
 	RuleMissingLevelDescription  RuleID = "missing-level-description"
 	RuleEmptyModel               RuleID = "empty-model"
 	RuleMisplacedRootKey         RuleID = "misplaced-root-key"
+	RuleInvalidAreaName          RuleID = "invalid-area-name"
 	RuleEmptyArea                RuleID = "empty-area"
+	RuleInvalidFactorName        RuleID = "invalid-factor-name"
 	RuleEmptyFactor              RuleID = "empty-factor"
 	RuleMissingFactorDescription RuleID = "missing-factor-description"
 	RuleInvalidAssessment        RuleID = "invalid-assessment"
@@ -61,13 +64,16 @@ var Rules = []Rule{
 	{RuleMissingRatingScale, SeverityError, false, "The model root declares no rating scale."},
 	{RuleTooFewLevels, SeverityError, false, "The rating scale has fewer than two levels."},
 	{RuleMissingLevelName, SeverityError, false, "A rating level declares no level name."},
+	{RuleInvalidRatingLevelID, SeverityError, false, "A rating level ID does not match the model name grammar."},
 	{RuleDuplicateLevel, SeverityError, false, "A rating level name is duplicated within the rating scale."},
 	{RuleInvalidConfig, SeverityError, false, "The root config tooling pointer is not a safe repository-relative scalar path."},
 	{RuleMissingCriterion, SeverityError, false, "A rating level declares no criterion."},
 	{RuleMissingLevelDescription, SeverityWarning, false, "A rating level declares no description."},
 	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or areas."},
 	{RuleMisplacedRootKey, SeverityError, false, "The `ratingScale` key appears on a nested area."},
+	{RuleInvalidAreaName, SeverityError, false, "An area name does not match the model name grammar."},
 	{RuleEmptyArea, SeverityWarning, false, "An area reaches no requirements in its subtree."},
+	{RuleInvalidFactorName, SeverityError, false, "A factor name does not match the model name grammar."},
 	{RuleEmptyFactor, SeverityWarning, false, "A factor leads to no requirements."},
 	{RuleMissingFactorDescription, SeverityWarning, false, "A factor declares no description."},
 	{RuleInvalidAssessment, SeverityError, false, "A requirement has no single non-empty scalar assessment."},

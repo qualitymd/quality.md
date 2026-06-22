@@ -32,9 +32,10 @@ Invoke the `/quality` skill to manage quality for your project:
 /quality setup                                  Get started working with QUALITY.md
 /quality wizard                                 Have your AI assistant/agent help you manage quality
 /quality evaluate                               Evaluate the quality of your project
-/quality evaluate security                      Evaluate a specific quality factor or characteristic
-/quality evaluate payments-api                  Evaluate a specific area or project component
-/quality evaluate payments-api maintainability  Evaluate an area's specific quality
+/quality evaluate factor:root::security         Evaluate a specific quality factor or characteristic
+/quality evaluate area:payments-api             Evaluate a specific area or project component
+/quality evaluate factor:payments-api::maintainability
+                                                Evaluate an area's specific quality
 ```
 
 Most users should work with `QUALITY.md` through their coding agent, the
@@ -131,7 +132,8 @@ your team:
 - **On demand.** Run `/quality evaluate` whenever you need a read — before a
   ship, during code review, when you inherit an unfamiliar codebase, or when
   something just feels off. Scope it down when you don't need the whole model:
-  `/quality evaluate payments-api` or `/quality evaluate payments-api security`.
+  `/quality evaluate area:payments-api` or
+  `/quality evaluate factor:payments-api::security`.
 
 - **On a cadence.** Make the model and its latest evaluation a recurring team
   review — per sprint, per release, whatever your rhythm. Close gaps in the work,
@@ -228,7 +230,7 @@ The root model is an area plus a model-wide `ratingScale`.
 title: <string>                 # Required
 description: <string>           # Optional
 ratingScale:                    # Required, ordered best to worst
-  - level: <level-name>         # Required, unique within the scale
+  - level: <rating-level-id>    # Required, unique within the scale
     title: <string>             # Required
     description: <string>       # Recommended
     criterion: <string>         # Required
@@ -246,7 +248,7 @@ requirements:                   # Optional*
     assessment: <string>        # Required, exactly one
     factors: [<factor-name>]    # Required for direct area requirements
     ratings:                    # Optional per-level criteria
-      <level-name>: <criterion>
+      <rating-level-id>: <criterion>
 areas:                          # Optional*
   <area-name>: <Area>
 ```

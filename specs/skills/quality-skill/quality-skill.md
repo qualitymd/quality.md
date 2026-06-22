@@ -203,14 +203,16 @@ valid:
   override it, and **MUST** error clearly when no default file exists. It **MUST
   NOT** walk parent directories or discover multiple models unless a future CLI
   convention defines that behavior.
-- **Scope** — full evaluation (default), or a narrowing by **area** (an area
-  and its subtree) and/or by **factor** (the requirements tied to a factor,
-  including those tagging it as a secondary factor), per
-  [Define](../../../SPECIFICATION.md#define). A scope name should resolve
-  against the model the skill already grounded — a bare name is matched to the
-  area or factor that bears it, with an explicit `area`/`factor` keyword
-  available to disambiguate the rare name that is both. Two bare names resolve as
-  an `area factor` pair — the factor narrowed within that area.
+- **Scope** — full evaluation (default), or a narrowing by **Area** (an Area
+  and its subtree) and/or by **Factor** (the Requirements tied to a Factor,
+  including those tagging it as a secondary Factor), per
+  [Define](../../../SPECIFICATION.md#define). Explicit scoped input should use
+  canonical model references: `area:<area-path>` or
+  `factor:<declaring-area-path>::<factor-path>`. The skill may accept shorthand
+  only at human/input edges where the expected reference type is fixed, such as
+  `area webhooks/delivery` or `factor webhooks/delivery::reliability`. Legacy
+  bare names are human-edge shorthand matched against the grounded model; an
+  explicit `area`/`factor` keyword disambiguates a name that is both.
 - **Rigor** — the evaluation depth (default `standard`); see
   [Rigor levels](evaluation.md#rigor-levels).
 
@@ -330,11 +332,10 @@ output: area, factor, requirement, rating, finding, and recommendation. It
 **MUST** capitalize formal type names only when precision requires it.
 
 For user-facing labels, the skill **SHOULD** use required `title` values for
-models, areas, factors, and rating levels as the primary wording. It **MAY**
-include stable area keys, factor keys, area paths, or rating `level` ids as
-secondary context when needed for disambiguation or traceability. The skill
-**MUST NOT** replace stable identifiers with titles in evaluation record
-payloads.
+Models, Areas, Factors, and Rating Levels as the primary wording. It **MAY**
+include canonical model references as secondary context when needed for
+disambiguation or traceability. The skill **MUST NOT** replace structured stable
+identifiers with titles or shorthand references in evaluation record payloads.
 
 ### Mode specs
 
@@ -397,11 +398,11 @@ arguments, defaulting the ones left out:
 /quality review history        # wizard: inspect prior runs and recommendations
 /quality evaluate              # run a full evaluation — root area, standard depth
 /quality evaluate --rigor quick   # fast evaluate: hotspots, high-confidence findings only
-/quality evaluate payments     # scope to an area named "payments" (resolved from the model)
-/quality evaluate payments --rigor deep   # exhaustive evaluate for one area
-/quality evaluate security     # scope to a factor named "security" (resolved from the model)
-/quality evaluate payments maintainability   # a area's factor: "maintainability" within area "payments"
-/quality evaluate factor flow  # disambiguate when a name is both an area and a factor
+/quality evaluate area:payments       # scope to the payments Area
+/quality evaluate area:payments --rigor deep   # exhaustive evaluate for one Area
+/quality evaluate factor:root::security   # scope to the root Security Factor
+/quality evaluate factor:payments::maintainability   # payments Area's Maintainability Factor
+/quality evaluate factor flow  # fixed-type shorthand when a name is both an Area and a Factor
 /quality apply recommendation 002   # follow up: apply only on confirmation
 /quality handoff recommendation 002 # follow up: prepare/create an issue
 /quality update              # plan and orchestrate paired skill/CLI updates

@@ -78,6 +78,10 @@ Optional), and rating-vocabulary term it states **MUST** match the format spec.
 The guide **MUST** teach that `title` is required on the Model, every Area,
 every Factor, and every Rating Level, and that requirements do not have a
 separate `title` because the requirement statement is their display text.
+The guide **MUST** teach the strict name grammar for Area names, Factor names,
+and Rating Level IDs, and that Requirement statements remain natural-language
+keys outside that grammar. The guide **MUST** distinguish human display titles
+from structured IDs and canonical model references.
 Conformance is the binding relationship, not deference — the guide phrases the
 format in its own instructional voice rather than quoting it — but where the
 guide and the format spec diverge, **the format spec governs and the guide MUST

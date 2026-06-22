@@ -26,6 +26,10 @@ const (
 	PropertyRatings      = "ratings"
 )
 
+// ModelNamePattern is the strict grammar for Area names, Factor names, and
+// Rating Level IDs.
+const ModelNamePattern = `^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$`
+
 // Shape is the YAML shape a property value must have.
 type Shape string
 
@@ -53,6 +57,8 @@ type Property struct {
 	ElementShape Shape
 	ValueShape   Shape
 	MinItems     int
+	KeyPattern   string
+	Pattern      string
 }
 
 // RequiredAny requires at least one of its properties to contain entries.
@@ -100,9 +106,9 @@ var Model = Node{
 		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
 		{Name: PropertyRatingScale, Shape: SequenceShape, Presence: RequiredPresence, ElementKind: RatingLevelKind, MinItems: 2},
-		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
+		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind, KeyPattern: ModelNamePattern},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
-		{Name: PropertyAreas, Shape: MapShape, Presence: OptionalPresence, ElementKind: AreaKind},
+		{Name: PropertyAreas, Shape: MapShape, Presence: OptionalPresence, ElementKind: AreaKind, KeyPattern: ModelNamePattern},
 		{Name: PropertySource, Shape: ScalarShape, Presence: OptionalPresence},
 	},
 	RequiredAny: []RequiredAny{
@@ -116,9 +122,9 @@ var Area = Node{
 	Properties: []Property{
 		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: OptionalPresence},
-		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
+		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind, KeyPattern: ModelNamePattern},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
-		{Name: PropertyAreas, Shape: MapShape, Presence: OptionalPresence, ElementKind: AreaKind},
+		{Name: PropertyAreas, Shape: MapShape, Presence: OptionalPresence, ElementKind: AreaKind, KeyPattern: ModelNamePattern},
 		{Name: PropertySource, Shape: ScalarShape, Presence: OptionalPresence},
 	},
 }
@@ -129,7 +135,7 @@ var Factor = Node{
 	Properties: []Property{
 		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: RecommendedPresence},
-		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind},
+		{Name: PropertyFactors, Shape: MapShape, Presence: OptionalPresence, ElementKind: FactorKind, KeyPattern: ModelNamePattern},
 		{Name: PropertyRequirements, Shape: MapShape, Presence: OptionalPresence, ElementKind: RequirementKind},
 	},
 }
@@ -148,7 +154,7 @@ var Requirement = Node{
 var RatingLevel = Node{
 	Kind: RatingLevelKind,
 	Properties: []Property{
-		{Name: PropertyLevel, Shape: ScalarShape, Presence: RequiredPresence},
+		{Name: PropertyLevel, Shape: ScalarShape, Presence: RequiredPresence, Pattern: ModelNamePattern},
 		{Name: PropertyTitle, Shape: ScalarShape, Presence: RequiredPresence},
 		{Name: PropertyDescription, Shape: ScalarShape, Presence: RecommendedPresence},
 		{Name: PropertyCriterion, Shape: ScalarShape, Presence: RequiredPresence},

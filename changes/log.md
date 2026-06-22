@@ -2,6 +2,54 @@
 
 ## 2026-06-22
 
+- **Refinement**: Updated
+  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  to explicitly include the durable `/quality` reporting spec in the affected
+  artifacts, so agent-facing report guidance is updated alongside
+  `report-summary.md`, `report.md`, `report.json`, generated examples, and the
+  shared report renderer.
+
+- **Design**: Created
+  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  (`Design`) with its
+  [functional spec](0059-unqualified-model-references/spec.md),
+  [design doc](0059-unqualified-model-references/design.md), and
+  [child index](0059-unqualified-model-references/index.md). The case defines
+  unqualified references as a bounded fixed-type form for Areas, Factors, and
+  Rating Levels; preserves qualified references for mixed-reference and
+  machine-readable surfaces; and plans named helper functions plus Area
+  Breakdown rendering updates. Added the case to the open-cases list in the
+  bundle [index](index.md). Code not started.
+
+- **In-Review**: Completed implementation of
+  [0058 - Model reference identifiers](0058-model-reference-identifiers.md) and
+  advanced it from `In-Progress` to `In-Review`. Added strict Area name, Factor
+  name, and Rating Level ID validation; generated JSON Schema patterns where
+  JSON Schema can express the strict grammar; canonical model-reference
+  render/parse helpers; revised Area Breakdown columns; updated generated
+  example reports, scaffold placeholders, durable specs, runtime and durable
+  `/quality` guidance, authoring guidance, README, and changelog. Verified
+  `mise run check` and `go run ./cmd/qualitymd lint --json QUALITY.md`.
+
+- **In-Progress**: Advanced
+  [0058 - Model reference identifiers](0058-model-reference-identifiers.md)
+  from `Design` to `In-Progress`. The functional spec and design doc are
+  settled; implementation begins across strict model-name lint rules, structural
+  schema support, canonical model-reference helpers, Area Breakdown rendering,
+  durable specs, runtime skill files, docs, and changelog.
+
+- **Design**: Advanced
+  [0058 - Model reference identifiers](0058-model-reference-identifiers.md)
+  from `Draft` to `Design` and added its
+  [design doc](0058-model-reference-identifiers/design.md). The design keeps
+  `areaPath` and `factorPath` arrays as durable machine data, adds canonical
+  typed reference helpers at human/tool boundaries, enforces strict local names
+  through named lint rules with JSON Schema pattern support where structural
+  support is possible,
+  and updates the shared Area Breakdown renderer to separate Area titles from
+  stable Area references. Updated the open-cases entry in the bundle
+  [index](index.md). Code not started.
+
 - **Done**: Landed and archived
   [0057 - Quality data directory](archive/0057-quality-data-directory.md) —
   advanced it to `Done` and moved the parent concept and its

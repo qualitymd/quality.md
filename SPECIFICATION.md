@@ -87,11 +87,25 @@ the model-wide Rating Scale.
 **Area**: An entity or set of entities with quality requirements subject to
 evaluation.
 
+**Area name**: A single map key under `areas`, unique among sibling Areas in
+that `areas` map.
+
+**Area ID**: The ordered path of Area names from the root Area to an Area. The
+root Area ID is the empty path.
+
+**Area title**: The required human display label stored in an Area's `title`.
+
 **Source**: A selector describing the material evaluated by an Area.
 
 **Factor**: A quality characteristic or attribute through which an Area's
 quality is described. A Factor groups connected Requirements and can be
 decomposed into sub-factors.
+
+**Factor name**: A single map key under `factors`, unique among sibling Factors
+in that `factors` map.
+
+**Factor ID**: The declaring Area ID plus the ordered path of Factor names from
+that Area's `factors` map to the Factor.
 
 **Requirement**: An assessable quality expectation. A Requirement has a
 statement, an Assessment, zero or more explicit Factor references, and optional
@@ -109,11 +123,58 @@ what was observed and is not itself rated.
 **Rating Level**: A single level on a Rating Scale, with a stable meaning and a
 default criterion for rating a Requirement's Findings.
 
+**Rating Level ID**: The `level` value of a Rating Level, unique within the
+Model's Rating Scale.
+
 **Rating Result**: The outcome of rating a Requirement's Findings against the
 Rating Scale: either one Rating Level or `not assessed`.
 
+**Model reference**: The canonical typed text form used at human/tool boundaries
+to address an Area, Factor, or Rating Level.
+
 **Evaluation Report**: The structured result of evaluating a Model, including
 scope, Findings summaries, ratings, rationales, and advice.
+
+## Names and Model References
+
+Area names, Factor names, and Rating Level IDs MUST match:
+
+```regex
+^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$
+```
+
+Requirement statement keys MUST NOT be constrained by this grammar. They remain
+natural-language Requirement statements.
+
+The grammar excludes `/`, `:`, spaces, dots, and leading or trailing separators
+so canonical model references are unambiguous and do not resemble filesystem
+paths.
+
+Canonical Area references use `area:<area-path>`. The root Area reference is
+`area:root`; nested Area references join Area names with `/`, for example
+`area:webhooks` and `area:webhooks/delivery`.
+
+Canonical Factor references use
+`factor:<declaring-area-path>::<factor-path>`. The root declaring Area is
+written as `root`, for example `factor:root::security` and
+`factor:root::security/secrets`. Nested declaring Areas and nested Factors use
+`/` within each side of the `::` separator, for example
+`factor:webhooks/delivery::reliability/retry-behavior`.
+
+Canonical Rating Level references use `rating:<rating-level-id>`, for example
+`rating:target`.
+
+Tools that render canonical model references MUST use the typed prefixes
+`area:`, `factor:`, and `rating:`. Tools that parse canonical model references
+MUST reject references whose segments fail the strict name grammar or whose
+referenced model element does not exist.
+
+Tools MAY accept shorthand references that omit the type prefix only at
+human/input edges where the expected reference type is fixed by the command,
+field, UI control, or API parameter. Tools MUST NOT persist shorthand references
+in evaluation records, `report.json`, generated reports, or other durable
+machine-readable artifacts. Mixed-reference surfaces MUST require canonical typed
+model references.
 
 ## Document Structure
 
@@ -158,7 +219,7 @@ properties plus the model-wide `ratingScale`.
 title: <string>                 # Required
 description: <string>           # Optional
 ratingScale:                    # Required
-  - level: <level-name>         #   Required; unique within the scale
+  - level: <rating-level-id>    #   Required; unique within the scale
     title: <string>             #   Required
     description: <string>       #   Recommended
     criterion: <string>         #   Required
@@ -184,7 +245,7 @@ At least two rating levels MUST be supplied.
 
 Each Rating Level MUST declare:
 
-- `level`: a non-empty scalar name unique within the Rating Scale.
+- `level`: a non-empty scalar Rating Level ID unique within the Rating Scale.
 - `title`: a non-empty scalar human-readable label.
 - `criterion`: a non-empty scalar default criterion for assigning that Rating
   Level to a Requirement's Findings.
@@ -220,7 +281,8 @@ An Area can declare no `factors` or `requirements` of its own when it is used
 as a grouping node for child `areas`.
 
 `title` is the Area's display name. The Area's map key remains its
-identifier.
+Area name; its Area ID is the ordered path of Area names from the root Area to
+that Area.
 
 When present, `source` selects the entities evaluated by the Area. Relative
 paths and globs resolve relative to the containing QUALITY.md file. When a
@@ -252,7 +314,9 @@ Factor identity is local to the Area on which the Factor is declared. Factors
 with the same name on different Areas are distinct Factors.
 
 `title` is the Factor's display name. The Factor's map key remains its stable
-identifier local to the Area where the Factor is declared.
+Factor name local to the Area where the Factor is declared. Its Factor ID is the
+declaring Area ID plus the ordered path of Factor names from that Area's
+`factors` map to the Factor.
 
 #### Requirement
 
@@ -264,7 +328,7 @@ assessment: <string>            # Required
 factors:                        # Optional; required for direct Area requirements
   - <factor-name>
 ratings:                        # Optional
-  <level-name>: <criterion>
+  <rating-level-id>: <criterion>
 ```
 
 `assessment` MUST be a single non-empty scalar. A missing, empty, null, or
@@ -297,7 +361,7 @@ Missing `factors`, `factors: null`, `factors: []`, and sequences containing only
 null or empty entries do not satisfy the Factor-reference requirement for a
 direct Area Requirement.
 
-`ratings`, when present, MUST be a map keyed by Rating Level names from the
+`ratings`, when present, MUST be a map keyed by Rating Level IDs from the
 Model's Rating Scale. Each value MUST be a non-empty scalar criterion. A
 criterion override replaces only that level's criterion for that Requirement.
 
