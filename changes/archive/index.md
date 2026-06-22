@@ -201,3 +201,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   defined strict Area/Factor/Rating names, canonical typed model references,
   edge-only shorthand boundaries, and clearer Area Breakdown report columns
   (`Done`).
+- [0059 — Unqualified model references](0059-unqualified-model-references.md) -
+  defined bounded unqualified Area, Factor, and Rating references for fixed-type
+  contexts and used them for Area-only report summary paths (`Done`).
+- [0060 — Friendly path display](0060-friendly-path-display.md) - separated
+  human display values from model-reference grammar so root Area paths render as
+  `/` in human reports while references stay stable (`Done`).

@@ -43,12 +43,7 @@ edit.
 
 # Open change cases
 
-- [0059 Unqualified model references](0059-unqualified-model-references.md)
-  (`In-Review`) - define bounded unqualified Area, Factor, and Rating references
-  for fixed-type contexts and use them for Area-only report summary paths.
-- [0060 Friendly path display](0060-friendly-path-display.md) (`In-Review`) -
-  separate friendly display values from model-reference grammar so human reports
-  can render the root Area path as `/` without changing references.
+None.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

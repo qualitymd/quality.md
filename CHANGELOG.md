@@ -7,6 +7,16 @@ QUALITY.md specification.
 
 ### CLI
 
+### /quality Skill
+
+### Packaging
+
+### Specification
+
+## v0.9.0 - 2026-06-22
+
+### CLI
+
 - Added strict Area name, Factor name, and Rating Level ID validation to
   `qualitymd lint`, added canonical `area:`, `factor:`, and `rating:` model
   references, and updated generated Area Breakdown tables to separate Area
@@ -35,6 +45,8 @@ QUALITY.md specification.
   keeping unqualified references only at fixed-type human input edges.
 - Clarified that generated report path display values, including `/` for the
   root Area, are human labels and must not be written into evaluation records.
+- Bumped the bundled skill release metadata to `0.9.0`; the supported
+  `qualitymd` CLI compatibility range is now `>=0.9.0 <0.10.0`.
 - Moved the default quality log from `quality/log/` to `.quality/log/` under the
   workspace quality data directory and aligned setup, wizard, evaluate, and
   recommendation follow-up guidance with the new workspace paths.
@@ -56,6 +68,27 @@ QUALITY.md specification.
   structured `areaPath` and `factorPath` arrays.
 - Distinguished display values from model references, including `/` as the
   human display value for the root Area path.
+- Bumped the QUALITY.md specification version to `0.3 (Draft)`.
+
+### Documentation
+
+- No documentation-only changes.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.9.0`
+- QUALITY.md specification: `0.3 (Draft)`
+- /quality skill: `0.9.0`, requires `qualitymd >=0.9.0 <0.10.0`
+
+Existing QUALITY.md files may need Area names, Factor names, or Rating Level IDs
+renamed if they used spaces, dots, slashes, colons, or leading/trailing
+separators in structural keys. New evaluation runs default to
+`.quality/evaluations/`; use `--evaluation-dir` or a workspace config pointer
+when continuing to write somewhere else. Existing evaluation records remain
+structured, while generated human Markdown reports now show `/` for the root
+Area path.
 
 ## v0.8.0 - 2026-06-22
 

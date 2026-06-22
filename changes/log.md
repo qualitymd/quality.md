@@ -2,8 +2,16 @@
 
 ## 2026-06-22
 
+- **Done**: Landed and archived
+  [0059 - Unqualified model references](archive/0059-unqualified-model-references.md)
+  and [0060 - Friendly path display](archive/0060-friendly-path-display.md) —
+  advanced both to `Done`, moved their parent concepts and child folders into
+  [`archive/`](archive/index.md), added them to the archive [index](archive/index.md),
+  and removed them from the open-cases [index](index.md). Both cases are part of
+  the v0.9.0 release state.
+
 - **In-Review**: Completed implementation of
-  [0060 - Friendly path display](0060-friendly-path-display.md) and advanced it
+  [0060 - Friendly path display](archive/0060-friendly-path-display.md) and advanced it
   from `In-Progress` to `In-Review`. Separated Area/Factor/Rating display
   helpers from reference helpers; rendered `/` for root Area paths in human
   Markdown report path fields; preserved `area:root`, `root`, `root::factor`,
@@ -12,32 +20,32 @@
   `go test ./internal/evaluation` and `mise run check`.
 
 - **In-Progress**: Advanced
-  [0060 - Friendly path display](0060-friendly-path-display.md) from `Design`
+  [0060 - Friendly path display](archive/0060-friendly-path-display.md) from `Design`
   to `In-Progress`. The functional spec and design doc are settled;
   implementation begins across display/reference helper separation, report path
   rendering, durable specs, runtime skill guidance, generated examples, and
   changelog.
 
 - **Design**: Advanced
-  [0060 - Friendly path display](0060-friendly-path-display.md) from `Draft` to
+  [0060 - Friendly path display](archive/0060-friendly-path-display.md) from `Draft` to
   `Design` and added its
-  [design doc](0060-friendly-path-display/design.md). The design separates
+  [design doc](archive/0060-friendly-path-display/design.md). The design separates
   display helpers from qualified and unqualified reference helpers, keeps `/`
   out of reference parsing, and updates report rendering to use display values
   in human path fields. Updated the open-cases entry in the bundle
   [index](index.md). Code not started.
 
 - **Draft**: Created
-  [0060 - Friendly path display](0060-friendly-path-display.md) (`Draft`) with
-  its [functional spec](0060-friendly-path-display/spec.md) and
-  [child index](0060-friendly-path-display/index.md). The case separates
+  [0060 - Friendly path display](archive/0060-friendly-path-display.md) (`Draft`) with
+  its [functional spec](archive/0060-friendly-path-display/spec.md) and
+  [child index](archive/0060-friendly-path-display/index.md). The case separates
   display values from qualified and unqualified model references, keeps
   reference grammar stable, and proposes rendering the root Area path as `/` in
   human report display contexts. Added the case to the open-cases list in the
   bundle [index](index.md). Design and code not started.
 
 - **In-Review**: Completed implementation of
-  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  [0059 - Unqualified model references](archive/0059-unqualified-model-references.md)
   and advanced it from `In-Progress` to `In-Review`. Added unqualified Area,
   Factor, and Rating reference helpers; type-specific unqualified parsers while
   preserving strict qualified parsing; unqualified Area Breakdown `Path`
@@ -46,7 +54,7 @@
   `go test ./...` and `mise run check`.
 
 - **In-Progress**: Advanced
-  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  [0059 - Unqualified model references](archive/0059-unqualified-model-references.md)
   from `Design` to `In-Progress`. The functional spec and design doc are
   settled; implementation begins across unqualified reference helpers,
   type-specific parsing, shared Area Breakdown rendering, durable specs, runtime
@@ -64,18 +72,18 @@
   and removed the open-cases entry from the bundle [index](index.md).
 
 - **Refinement**: Updated
-  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  [0059 - Unqualified model references](archive/0059-unqualified-model-references.md)
   to explicitly include the durable `/quality` reporting spec in the affected
   artifacts, so agent-facing report guidance is updated alongside
   `report-summary.md`, `report.md`, `report.json`, generated examples, and the
   shared report renderer.
 
 - **Design**: Created
-  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  [0059 - Unqualified model references](archive/0059-unqualified-model-references.md)
   (`Design`) with its
-  [functional spec](0059-unqualified-model-references/spec.md),
-  [design doc](0059-unqualified-model-references/design.md), and
-  [child index](0059-unqualified-model-references/index.md). The case defines
+  [functional spec](archive/0059-unqualified-model-references/spec.md),
+  [design doc](archive/0059-unqualified-model-references/design.md), and
+  [child index](archive/0059-unqualified-model-references/index.md). The case defines
   unqualified references as a bounded fixed-type form for Areas, Factors, and
   Rating Levels; preserves qualified references for mixed-reference and
   machine-readable surfaces; and plans named helper functions plus Area

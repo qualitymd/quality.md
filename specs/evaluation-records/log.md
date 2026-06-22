@@ -3,13 +3,13 @@
 ## 2026-06-22
 
 - **Revision**: Updated [report outputs](report-outputs.md) for
-  [0060 - Friendly path display](../../changes/0060-friendly-path-display.md) so
+  [0060 - Friendly path display](../../changes/archive/0060-friendly-path-display.md) so
   human Markdown reports may render display values such as `/` for the root Area
   while `report.json` continues to preserve structured path arrays and
   reference-compatible identifiers.
 
 - **Revision**: Updated [report outputs](report-outputs.md) for
-  [0059 - Unqualified model references](../../changes/0059-unqualified-model-references.md)
+  [0059 - Unqualified model references](../../changes/archive/0059-unqualified-model-references.md)
   so fixed-type human report contexts may use unqualified references while
   `report.json` continues to preserve structured `areaPath` and `factorPath`
   arrays.
