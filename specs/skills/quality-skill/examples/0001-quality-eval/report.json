@@ -185,7 +185,7 @@
   "areaSummary": [
     {
       "areaPath": [],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -194,23 +194,45 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
         "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
         "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
       },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Security"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "unacceptable",
+            "rationale": "Bound by the Secrets handling sub-factor because a live gateway credential is committed in plaintext; Access control is rated target."
+          }
+        },
+        {
+          "factorPath": [
+            "Reliability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Transfer idempotency holds, and the Ledger double-entry invariant tags Reliability as a secondary factor."
+          }
+        }
+      ],
       "coveredRequirements": 3
     },
     {
       "areaPath": [
         "ledger"
       ],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -219,16 +241,28 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "target",
         "rationale": "The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "target",
         "rationale": "Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
       },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Correctness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The double-entry invariant holds in the recorded evidence; reconciliation is not assessed, so the factor rating is target but incomplete."
+          }
+        }
+      ],
       "coveredRequirements": 2,
       "note": "has not-assessed requirements"
     },
@@ -236,7 +270,7 @@
       "areaPath": [
         "webhooks"
       ],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -245,16 +279,28 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "target",
         "rationale": "The Webhooks target's own signing requirement is rated target."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "minimum",
         "rationale": "The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
       },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Security"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Every emit path signs webhook payloads and no unsigned path was found."
+          }
+        }
+      ],
       "coveredRequirements": 1
     },
     {
@@ -262,7 +308,7 @@
         "webhooks",
         "delivery"
       ],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -271,23 +317,35 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "minimum",
         "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "minimum",
         "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
       },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Reliability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "Retry-with-backoff reaches target, but redelivery deduplication is bounded and best-effort, so the reliability factor is minimum."
+          }
+        }
+      ],
       "coveredRequirements": 2
     }
   ],
   "areas": [
     {
       "areaPath": [],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -296,12 +354,12 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
         "rationale": "Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "unacceptable",
         "rationale": "The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint."
@@ -329,14 +387,13 @@
         }
       ],
       "analysisRecord": "analysis/root.json",
-      "notAssessedRequirements": [],
-      "structural": false
+      "notAssessedRequirements": []
     },
     {
       "areaPath": [
         "ledger"
       ],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -345,12 +402,12 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "target",
         "rationale": "The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "target",
         "rationale": "Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed."
@@ -370,14 +427,13 @@
       "analysisRecord": "analysis/ledger.json",
       "notAssessedRequirements": [
         "Reconciliation runs daily and flags drift"
-      ],
-      "structural": false
+      ]
     },
     {
       "areaPath": [
         "webhooks"
       ],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -386,12 +442,12 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "target",
         "rationale": "The Webhooks target's own signing requirement is rated target."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "minimum",
         "rationale": "The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating."
@@ -409,15 +465,14 @@
         }
       ],
       "analysisRecord": "analysis/webhooks.json",
-      "notAssessedRequirements": [],
-      "structural": false
+      "notAssessedRequirements": []
     },
     {
       "areaPath": [
         "webhooks",
         "delivery"
       ],
-      "localRating": {
+      "areaRatingState": {
         "kind": "rated",
         "ratingResult": {
           "kind": "rated",
@@ -426,12 +481,12 @@
         },
         "title": "Rated"
       },
-      "localRatingResult": {
+      "areaRatingResult": {
         "kind": "rated",
         "level": "minimum",
         "rationale": "The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor."
       },
-      "aggregateRatingResult": {
+      "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "minimum",
         "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
@@ -449,8 +504,7 @@
         }
       ],
       "analysisRecord": "analysis/webhooks-delivery.json",
-      "notAssessedRequirements": [],
-      "structural": false
+      "notAssessedRequirements": []
     }
   ],
   "assessmentResults": [

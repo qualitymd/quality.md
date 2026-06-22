@@ -2,7 +2,7 @@
 type: Change Case
 title: Area factor report breakdown
 description: Make generated evaluation reports expose an at-a-glance Area breakdown by Factor without weakening the underlying report model.
-status: Design
+status: In-Review
 tags: [evaluation, report, cli, model, ux]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -14,10 +14,11 @@ evaluation reports so readers can see, at a glance, which Areas were evaluated
 and which Factors drove their ratings. The detail lives in its
 [functional spec](0048-area-factor-report-breakdown/spec.md).
 
-> **Design.** The functional spec and design doc are present. **Code:** not
-> started (gated to In-Progress). **Durable specs:** the new `specs/reports/`
-> artifact specs and the guide-spec renames are already scaffolded on disk —
-> durable specs track the current source of truth and are not lifecycle-gated.
+> **In-Review.** Implementation complete and verified in `internal/evaluation/`
+> (`go test ./...` green); the three `0001-quality-eval` golden report fixtures
+> are regenerated. **Durable specs:** the new `specs/reports/` artifact specs and
+> the guide-spec renames already landed — durable specs track the current source
+> of truth and are not lifecycle-gated.
 
 ## Motivation
 
@@ -119,7 +120,10 @@ report shapes.
 
 ## Status
 
-`Design`. The functional spec and design doc are present. Code is not started
-(gated to In-Progress). The durable `specs/reports/` artifact specs and the
-guide-spec renames are already scaffolded, which durable-spec editing permits in
-any phase.
+`In-Review`. The functional spec and design doc are settled and the code is
+implemented in `internal/evaluation/` (report-model field rename, compact
+Area-by-Factor breakdown, shared Area Breakdown renderer, and analysis-write
+Factor-path validation), with regression tests and the three regenerated
+`0001-quality-eval` golden report fixtures; `go test ./...` is green. The durable
+`specs/reports/` artifact specs and the guide-spec renames already landed, which
+durable-spec editing permits in any phase.

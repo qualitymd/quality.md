@@ -45,7 +45,13 @@ edit.
 
 - [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md) -
   expose a compact Area-by-Factor report breakdown from a first-class report
-  model. Status: `Design`.
+  model. Status: `In-Review`.
+- [0049 - Companion JSON Schema](0049-companion-json-schema.md) - publish a
+  structural JSON Schema for QUALITY.md frontmatter, derived from the linter's
+  schema, and add a `qualitymd schema` command that emits it. Status: `Design`.
+- [0050 - Quality log](0050-quality-log.md) - add a curated quality log — dated
+  entries under `quality/log/` that record meaningful, evidence-linked changes to
+  a QUALITY.md model, written by the `/quality` skill. Status: `Draft`.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

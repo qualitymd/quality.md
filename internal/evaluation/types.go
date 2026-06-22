@@ -121,6 +121,11 @@ func (p FactorPath) Elements() []string {
 	return []string(p)
 }
 
+// IdentityKey returns a stable string key for equality comparisons.
+func (p FactorPath) IdentityKey() string {
+	return strings.Join(p, "\x00")
+}
+
 // Display returns the human-facing path label.
 func (p FactorPath) Display() string {
 	if len(p) == 0 {
@@ -265,31 +270,34 @@ func (k RatingResultKind) IsNotAssessed() bool {
 	return k == RatingResultNotAssessed
 }
 
-// LocalRatingKind identifies how an area's local rating should be interpreted.
-type LocalRatingKind string
+// AreaRatingKind identifies how an area's Area-only rating should be
+// interpreted.
+type AreaRatingKind string
 
 const (
-	LocalRatingRated       LocalRatingKind = "rated"
-	LocalRatingNotAssessed LocalRatingKind = "not-assessed"
-	LocalRatingStructural  LocalRatingKind = "structural"
+	AreaRatingRated       AreaRatingKind = "rated"
+	AreaRatingNotAssessed AreaRatingKind = "not-assessed"
+	AreaRatingStructural  AreaRatingKind = "structural"
 )
 
-// LocalRatingState is the report-display form of an area's local rating state.
-type LocalRatingState struct {
-	Kind         LocalRatingKind `json:"kind"`
-	RatingResult *RatingResult   `json:"ratingResult,omitempty"`
-	Title        string          `json:"title"`
+// AreaRatingState is the report-display form of an area's Area-only rating
+// state. Rated and not-assessed states carry the underlying rating result;
+// structural area-group states carry no nested result.
+type AreaRatingState struct {
+	Kind         AreaRatingKind `json:"kind"`
+	RatingResult *RatingResult  `json:"ratingResult,omitempty"`
+	Title        string         `json:"title"`
 }
 
-func localRatingStateFromResult(result *RatingResult) LocalRatingState {
+func areaRatingStateFromResult(result *RatingResult) AreaRatingState {
 	if result == nil {
-		return LocalRatingState{Kind: LocalRatingStructural, Title: "Structural"}
+		return AreaRatingState{Kind: AreaRatingStructural, Title: "Structural"}
 	}
 	clone := *result
 	if clone.Kind.IsNotAssessed() {
-		return LocalRatingState{Kind: LocalRatingNotAssessed, RatingResult: &clone, Title: "Not assessed"}
+		return AreaRatingState{Kind: AreaRatingNotAssessed, RatingResult: &clone, Title: "Not assessed"}
 	}
-	return LocalRatingState{Kind: LocalRatingRated, RatingResult: &clone, Title: "Rated"}
+	return AreaRatingState{Kind: AreaRatingRated, RatingResult: &clone, Title: "Rated"}
 }
 
 // RecordLifecycleState identifies whether a record is active or superseded.

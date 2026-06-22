@@ -36,15 +36,19 @@ func WriteRecords(kind RecordKind, runPath string, raw []byte) (*WriteRecordRece
 		return nil, err
 	}
 	runDisplay := displayRunPath(runAbs)
-	levels, err := ratingLevels(filepath.Join(runAbs, "model.md"))
-	if err != nil {
-		return nil, err
-	}
 	switch kind {
 	case KindAssessmentResult:
+		levels, err := ratingLevels(filepath.Join(runAbs, "model.md"))
+		if err != nil {
+			return nil, err
+		}
 		return addAssessmentResults(runAbs, runDisplay, raw, levels)
 	case KindAnalysis:
-		return setAnalyses(runAbs, runDisplay, raw, levels)
+		spec, err := decodeRunModel(filepath.Join(runAbs, "model.md"))
+		if err != nil {
+			return nil, err
+		}
+		return setAnalyses(runAbs, runDisplay, raw, ratingLevelSetFromSpec(spec), newFactorVocabulary(spec))
 	case KindRecommendation:
 		return addRecommendations(runAbs, runDisplay, raw)
 	default:
@@ -156,7 +160,7 @@ func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[stri
 	}, nil
 }
 
-func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
+func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool, vocab factorVocabulary) (*WriteRecordReceipt, error) {
 	payloads, err := DecodeJSONList[AnalysisInput](raw)
 	if err != nil {
 		return nil, err
@@ -164,7 +168,7 @@ func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool) 
 	var paths []string
 	var createdPtr *bool
 	for _, payload := range payloads {
-		if err := validateAnalysis(payload, levels); err != nil {
+		if err := validateAnalysis(payload, levels, vocab); err != nil {
 			return nil, err
 		}
 		rec := AnalysisRecord{
@@ -282,20 +286,31 @@ func displayRecordPath(runAbs, runDisplay, recordAbs string) string {
 	return filepath.ToSlash(filepath.Join(runDisplay, rel))
 }
 
-func ratingLevels(path string) (map[string]bool, error) {
+func decodeRunModel(path string) (*model.Spec, error) {
 	doc, err := document.Parse(path)
 	if err != nil {
 		return nil, err
 	}
-	spec, err := model.Decode(doc)
-	if err != nil {
-		return nil, err
-	}
+	return model.Decode(doc)
+}
+
+func ratingLevelSetFromSpec(spec *model.Spec) map[string]bool {
 	levels := map[string]bool{}
+	if spec == nil {
+		return levels
+	}
 	for _, level := range spec.RatingScale {
 		levels[level.Level] = true
 	}
-	return levels, nil
+	return levels
+}
+
+func ratingLevels(path string) (map[string]bool, error) {
+	spec, err := decodeRunModel(path)
+	if err != nil {
+		return nil, err
+	}
+	return ratingLevelSetFromSpec(spec), nil
 }
 
 func validateAssessmentResult(p AssessmentResultInput, levels map[string]bool) error {
@@ -359,7 +374,7 @@ func validateRequiredStrings(name string, values []string) error {
 	return nil
 }
 
-func validateAnalysis(p AnalysisInput, levels map[string]bool) error {
+func validateAnalysis(p AnalysisInput, levels map[string]bool, vocab factorVocabulary) error {
 	if p.AreaPath == nil {
 		return usagef("areaPath is required")
 	}
@@ -371,9 +386,19 @@ func validateAnalysis(p AnalysisInput, levels map[string]bool) error {
 			return err
 		}
 	}
+	seenFactorPaths := map[string]bool{}
 	for i := range p.FactorRatingResults {
-		if len(p.FactorRatingResults[i].FactorPath) == 0 {
+		factorPath := p.FactorRatingResults[i].FactorPath
+		if len(factorPath) == 0 {
 			return usagef("factorRatingResults[%d].factorPath is required", i)
+		}
+		key := factorPath.IdentityKey()
+		if seenFactorPaths[key] {
+			return usagef("factorRatingResults[%d].factorPath %q is a duplicate within the analysis record", i, factorPath.Display())
+		}
+		seenFactorPaths[key] = true
+		if !vocab.Resolves(p.AreaPath, factorPath) {
+			return usagef("factorRatingResults[%d].factorPath %q does not resolve against the area's declared or inherited factor vocabulary", i, factorPath.Display())
 		}
 		if err := validateRatingResult(fmt.Sprintf("factorRatingResults[%d].ratingResult", i), &p.FactorRatingResults[i].RatingResult, levels); err != nil {
 			return err
@@ -481,6 +506,88 @@ func renderRecommendation(rec RecommendationRecord) ([]byte, error) {
 		}
 	}
 	return out.Bytes(), nil
+}
+
+// factorVocabulary resolves factor paths against a run model's declared and
+// inherited factor vocabulary. It is built once from the parsed model and used
+// by the analysis write path to reject factor paths that cannot be resolved.
+type factorVocabulary struct {
+	spec *model.Spec
+}
+
+func newFactorVocabulary(spec *model.Spec) factorVocabulary {
+	return factorVocabulary{spec: spec}
+}
+
+// Resolves reports whether factorPath resolves against the vocabulary visible to
+// the area at areaPath: the union of the root model factors, every ancestor
+// area's factors, and the area's own factors. Path elements are matched against
+// factor-map keys or factor titles, case-insensitively. When the model is
+// absent, resolution is permissive so model-free runs are not blocked.
+func (v factorVocabulary) Resolves(areaPath AreaPath, factorPath FactorPath) bool {
+	if v.spec == nil {
+		return true
+	}
+	if len(factorPath) == 0 {
+		return false
+	}
+	for _, scope := range v.factorScopes(areaPath) {
+		if resolveFactorPath(scope, factorPath) {
+			return true
+		}
+	}
+	return false
+}
+
+// factorScopes returns the factor maps visible to the area at areaPath, from the
+// root model down through each ancestor area to the area itself.
+func (v factorVocabulary) factorScopes(areaPath AreaPath) []map[string]model.Factor {
+	scopes := []map[string]model.Factor{v.spec.Factors}
+	areas := v.spec.Areas
+	for _, element := range areaPath {
+		area, ok := areas[element]
+		if !ok {
+			break
+		}
+		scopes = append(scopes, area.Factors)
+		areas = area.Areas
+	}
+	return scopes
+}
+
+// resolveFactorPath reports whether factorPath resolves within a single factor
+// map by walking each element to a matching factor or sub-factor.
+func resolveFactorPath(factors map[string]model.Factor, factorPath FactorPath) bool {
+	current := factors
+	for i, element := range factorPath {
+		factor, ok := matchFactor(current, element)
+		if !ok {
+			return false
+		}
+		if i == len(factorPath)-1 {
+			return true
+		}
+		current = factor.Factors
+	}
+	return false
+}
+
+// matchFactor finds the factor in factors whose map key or title matches element
+// case-insensitively.
+func matchFactor(factors map[string]model.Factor, element string) (model.Factor, bool) {
+	target := strings.ToLower(strings.TrimSpace(element))
+	if factor, ok := factors[element]; ok {
+		return factor, true
+	}
+	for key, factor := range factors {
+		if strings.ToLower(strings.TrimSpace(key)) == target {
+			return factor, true
+		}
+		if strings.ToLower(strings.TrimSpace(factor.Title)) == target {
+			return factor, true
+		}
+	}
+	return model.Factor{}, false
 }
 
 func addYAMLScalar(node *yaml.Node, key, value, tag string) {

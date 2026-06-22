@@ -293,7 +293,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{"## Verdict", "## Scope", "## Selected Findings and Limitations", "## Evidence Basis", "## Next Action", "## Area Summary", "- **Evaluation verdict:** 🟡 Minimum", "| Test model | 🟡 Minimum | 🟡 Minimum |"} {
+	for _, want := range []string{"## Verdict", "## Scope", "## Selected Findings and Limitations", "## Evidence Basis", "## Next Action", "## Area Breakdown", "- **Evaluation verdict:** 🟡 Minimum", "| / (Test model) | 🟡 Minimum | 🟡 Minimum | (no factor ratings) |"} {
 		if !strings.Contains(string(reportMD), want) {
 			t.Fatalf("report.md missing %q:\n%s", want, reportMD)
 		}
@@ -326,7 +326,7 @@ func TestAddRecordStatusAndBuildReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report-summary.md: %v", err)
 	}
-	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Evaluation verdict | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Verdict", "## Selected Findings", "**Medium**", "Only a smoke test exists.", "## Recommended Actions", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
+	for _, want := range []string{"# Quality Evaluation Summary", "| Run |", "| Scope | Full evaluation |", "| Evaluation verdict | 🟡 Minimum |", "[report.md](report.md)", "[report.json](report.json)", "## Verdict", "## Area Breakdown", "| Path | Area | + Sub-Areas | Factors |", "| / (Test model) | 🟡 Minimum | 🟡 Minimum | (no factor ratings) |", "## Selected Findings", "**Medium**", "Only a smoke test exists.", "## Recommended Actions", "| Recommendation ID | Priority | Recommendation | Done criterion |", "`001-fix-the-test-gap`", "## Scope & Limitations"} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
 		}
@@ -682,10 +682,12 @@ areas:
 
 	for _, want := range []string{
 		"- **Root area:** Root Quality Model",
-		"| Root Quality Model | n/a (structural) | Good |",
-		"| API Service | Good | Good |",
+		"| / (Root Quality Model) | (area group) | Good | Operational reliability: Good |",
+		"| /API Service | Good | Good | Automation compatibility: Good; Operational reliability: Good |",
 		"### API Service",
 		"- **Path:** api-service",
+		"- **Area rating:** Good",
+		"- **+ Sub-Areas rating:** Good",
 		"- **Factor Automation compatibility:** Good",
 		"- **Factor Operational reliability:** Good",
 		"- **Area:** API Service",
@@ -700,6 +702,8 @@ areas:
 		"- **Factor automation-compatibility:**",
 		"- **Factor reliability:**",
 		"- **Area:** api-service",
+		"## Area Summary",
+		"n/a (structural)",
 	} {
 		if strings.Contains(string(reportMD), notWant) {
 			t.Fatalf("report.md contains raw identifier label %q:\n%s", notWant, reportMD)
@@ -707,8 +711,9 @@ areas:
 	}
 	for _, want := range []string{
 		"| Root area | Root Quality Model |",
-		"| Root Quality Model | n/a (structural) | Good |",
-		"| API Service | Good | Good |",
+		"## Area Breakdown",
+		"| / (Root Quality Model) | (area group) | Good | Operational reliability: Good |",
+		"| /API Service | Good | Good | Automation compatibility: Good; Operational reliability: Good |",
 	} {
 		if !strings.Contains(string(summaryMD), want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
@@ -737,8 +742,8 @@ func TestDisplayRatingUsesTitleAndPreservesNonRatingStates(t *testing.T) {
 	if got := displayRatingResult(RatingResult{Kind: RatingResultNotAssessed, Rationale: "No evidence."}, map[string]string{"minimum": "🟡 Minimum"}); got != "not assessed" {
 		t.Fatalf("displayRatingResult(not assessed) = %q", got)
 	}
-	if got := displayLocalRatingState(localRatingStateFromResult(nil), map[string]string{"minimum": "🟡 Minimum"}); got != "n/a (structural)" {
-		t.Fatalf("displayLocalRatingState(structural) = %q", got)
+	if got := displayAreaRatingState(areaRatingStateFromResult(nil), map[string]string{"minimum": "🟡 Minimum"}); got != "(area group)" {
+		t.Fatalf("displayAreaRatingState(structural) = %q", got)
 	}
 }
 
@@ -823,18 +828,27 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	for _, want := range []string{`"recommendations": []`, `"structural": true`, `"localRating": {`, `"kind": "structural"`, `"narrowing": "child-quick"`, `"rigor": "quick"`} {
+	for _, want := range []string{`"recommendations": []`, `"areaRatingState": {`, `"kind": "structural"`, `"narrowing": "child-quick"`, `"rigor": "quick"`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing %q:\n%s", want, reportJSON)
 		}
+	}
+	if strings.Contains(string(reportJSON), `"structural": true`) {
+		t.Fatalf("report.json retains structural bool:\n%s", reportJSON)
+	}
+	if strings.Contains(string(reportJSON), `"localRating":`) {
+		t.Fatalf("report.json retains old localRating field:\n%s", reportJSON)
+	}
+	if !strings.Contains(string(reportJSON), `"areaRatingResult": null`) {
+		t.Fatalf("report.json structural area missing null areaRatingResult:\n%s", reportJSON)
 	}
 	for _, want := range []string{`"description": "child area quick pass"`, `"outOfScope": [`, `Browser tests.`, `Package-manager integration.`, `Does not execute the full CI matrix.`, `Defers performance benchmarks.`, `Release packaging.`, `"notRecorded": []`} {
 		if !strings.Contains(string(reportJSON), want) {
 			t.Fatalf("report.json missing context %q:\n%s", want, reportJSON)
 		}
 	}
-	if !strings.Contains(string(reportMD), "n/a (structural)") {
-		t.Fatalf("report.md missing structural local rating:\n%s", reportMD)
+	if !strings.Contains(string(reportMD), "(area group)") {
+		t.Fatalf("report.md missing area-group rating:\n%s", reportMD)
 	}
 	if !strings.Contains(string(reportMD), "Does not execute the full CI matrix.") {
 		t.Fatalf("report.md missing planned limitation:\n%s", reportMD)
@@ -847,8 +861,8 @@ func TestBuildReportRendersStructuralTargetAndEmptyRecommendations(t *testing.T)
 	if err != nil {
 		t.Fatalf("Report() error = %v", err)
 	}
-	if len(report.Areas) == 0 || report.Areas[0].LocalRating.Kind != LocalRatingStructural {
-		t.Fatalf("root local rating = %#v, want structural", report.Areas)
+	if len(report.Areas) == 0 || report.Areas[0].AreaRatingState.Kind != AreaRatingStructural {
+		t.Fatalf("root area rating state = %#v, want structural", report.Areas)
 	}
 	if got := strings.Count(strings.Join(report.Limitations, "\n"), "Does not execute the full CI matrix"); got != 1 {
 		t.Fatalf("duplicate limitation count = %d, limitations = %#v", got, report.Limitations)
@@ -1063,8 +1077,8 @@ func TestReportRegressionNotAssessedDottedPath(t *testing.T) {
 	if report.RatingResult.Kind != "not-assessed" || report.RatingResult.Level != "" {
 		t.Fatalf("root ratingResult = %#v, want not assessed with empty level", report.RatingResult)
 	}
-	if len(report.Areas) != 1 || report.Areas[0].LocalRating.Kind != LocalRatingNotAssessed {
-		t.Fatalf("local rating = %#v, want not assessed", report.Areas)
+	if len(report.Areas) != 1 || report.Areas[0].AreaRatingState.Kind != AreaRatingNotAssessed {
+		t.Fatalf("area rating state = %#v, want not assessed", report.Areas)
 	}
 	if len(report.AssessmentResults) != 1 || report.AssessmentResults[0].RatingResult.Kind != "not-assessed" || report.AssessmentResults[0].RatingResult.Level != "" {
 		t.Fatalf("assessment result = %#v, want not assessed with empty level", report.AssessmentResults)

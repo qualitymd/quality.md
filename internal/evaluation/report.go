@@ -67,26 +67,31 @@ type ReportNextStep struct {
 	RecommendationPath string             `json:"recommendationPath,omitempty"`
 }
 
-// AreaRatingSummary summarizes rating state for one area.
+// AreaRatingSummary summarizes rating state for one area. It is the canonical
+// compact Area breakdown layer: it carries the Factor rating results so the
+// summary-level Factor breakdown is recoverable without joining the detailed
+// Areas array.
 type AreaRatingSummary struct {
-	AreaPath              AreaPath         `json:"areaPath"`
-	LocalRating           LocalRatingState `json:"localRating"`
-	LocalRatingResult     *RatingResult    `json:"localRatingResult"`
-	AggregateRatingResult RatingResult     `json:"aggregateRatingResult"`
-	CoveredRequirements   int              `json:"coveredRequirements"`
-	Note                  string           `json:"note,omitempty"`
+	AreaPath                        AreaPath             `json:"areaPath"`
+	AreaRatingState                 AreaRatingState      `json:"areaRatingState"`
+	AreaRatingResult                *RatingResult        `json:"areaRatingResult"`
+	AreaWithDescendantsRatingResult RatingResult         `json:"areaWithDescendantsRatingResult"`
+	FactorRatingResults             []FactorRatingResult `json:"factorRatingResults"`
+	CoveredRequirements             int                  `json:"coveredRequirements"`
+	Note                            string               `json:"note,omitempty"`
 }
 
-// AreaEvaluationDetail contains the detailed report entry for one area.
+// AreaEvaluationDetail contains the detailed report entry for one area. The
+// structural/area-group state lives only in AreaRatingState; there is no
+// parallel boolean re-encoding it.
 type AreaEvaluationDetail struct {
-	AreaPath                AreaPath             `json:"areaPath"`
-	LocalRating             LocalRatingState     `json:"localRating"`
-	LocalRatingResult       *RatingResult        `json:"localRatingResult"`
-	AggregateRatingResult   RatingResult         `json:"aggregateRatingResult"`
-	FactorRatingResults     []FactorRatingResult `json:"factorRatingResults"`
-	AnalysisRecord          string               `json:"analysisRecord"`
-	NotAssessedRequirements []string             `json:"notAssessedRequirements"`
-	Structural              bool                 `json:"structural"`
+	AreaPath                        AreaPath             `json:"areaPath"`
+	AreaRatingState                 AreaRatingState      `json:"areaRatingState"`
+	AreaRatingResult                *RatingResult        `json:"areaRatingResult"`
+	AreaWithDescendantsRatingResult RatingResult         `json:"areaWithDescendantsRatingResult"`
+	FactorRatingResults             []FactorRatingResult `json:"factorRatingResults"`
+	AnalysisRecord                  string               `json:"analysisRecord"`
+	NotAssessedRequirements         []string             `json:"notAssessedRequirements"`
 }
 
 // AssessmentResultDigest summarizes an assessment result included in a report.
@@ -388,36 +393,34 @@ func addReportAreas(report *ReportDocument, analyses []AnalysisRecord, assessmen
 
 func areaEvaluationFromAnalysis(analysis AnalysisRecord, structural bool) AreaEvaluationDetail {
 	area := AreaEvaluationDetail{
-		AreaPath:                analysis.AreaPath.Clone(),
-		AnalysisRecord:          analysis.File,
-		LocalRating:             localRatingStateFromResult(analysis.LocalRatingResult),
-		LocalRatingResult:       cloneRatingResult(analysis.LocalRatingResult),
-		AggregateRatingResult:   analysis.AggregateRatingResult,
-		FactorRatingResults:     nonNilFactorRatingResults(analysis.FactorRatingResults),
-		NotAssessedRequirements: []string{},
-		Structural:              structural,
+		AreaPath:                        analysis.AreaPath.Clone(),
+		AnalysisRecord:                  analysis.File,
+		AreaRatingState:                 areaRatingStateFromResult(analysis.LocalRatingResult),
+		AreaRatingResult:                cloneRatingResult(analysis.LocalRatingResult),
+		AreaWithDescendantsRatingResult: analysis.AggregateRatingResult,
+		FactorRatingResults:             nonNilFactorRatingResults(analysis.FactorRatingResults),
+		NotAssessedRequirements:         []string{},
 	}
 	if structural {
-		area.LocalRatingResult = nil
-		area.LocalRating = localRatingStateFromResult(nil)
+		area.AreaRatingResult = nil
+		area.AreaRatingState = areaRatingStateFromResult(nil)
 	}
 	return area
 }
 
 func areaEvaluationSummary(area AreaEvaluationDetail, coveredRequirements int) AreaRatingSummary {
 	note := ""
-	if area.Structural {
-		note = "structural grouping area"
-	} else if len(area.NotAssessedRequirements) > 0 {
+	if len(area.NotAssessedRequirements) > 0 {
 		note = "has not-assessed requirements"
 	}
 	return AreaRatingSummary{
-		AreaPath:              area.AreaPath.Clone(),
-		LocalRating:           area.LocalRating,
-		LocalRatingResult:     cloneRatingResult(area.LocalRatingResult),
-		AggregateRatingResult: area.AggregateRatingResult,
-		CoveredRequirements:   coveredRequirements,
-		Note:                  note,
+		AreaPath:                        area.AreaPath.Clone(),
+		AreaRatingState:                 area.AreaRatingState,
+		AreaRatingResult:                cloneRatingResult(area.AreaRatingResult),
+		AreaWithDescendantsRatingResult: area.AreaWithDescendantsRatingResult,
+		FactorRatingResults:             cloneFactorRatingResults(area.FactorRatingResults),
+		CoveredRequirements:             coveredRequirements,
+		Note:                            note,
 	}
 }
 
@@ -459,7 +462,7 @@ func renderReportMarkdown(report ReportDocument, labels reportDisplayLabels) []b
 	writeReportRisksAndLimitationsSection(&out, report)
 	writeReportEvidenceSection(&out, report)
 	writeReportNextStepSection(&out, report)
-	writeReportAreaSummarySection(&out, report, labels)
+	writeAreaBreakdownSection(&out, report, labels)
 	writeReportAreaDetailsSection(&out, report, labels)
 	writeReportRequirementsSection(&out, report, labels)
 	writeReportFindingsSection(&out, report)
@@ -553,13 +556,45 @@ func writeReportNextStepSection(out *bytes.Buffer, report ReportDocument) {
 	}
 }
 
-func writeReportAreaSummarySection(out *bytes.Buffer, report ReportDocument, labels reportDisplayLabels) {
-	out.WriteString("\n## Area Summary\n\n")
-	out.WriteString("| Area | Local rating | Aggregate rating | Covered requirements | Note |\n")
-	out.WriteString("| --- | --- | --- | --- | --- |\n")
-	for _, area := range report.AreaSummary {
-		out.WriteString("| " + tableCell(labels.Area(area.AreaPath.Elements(), area.AreaPath.Display())) + " | " + tableCell(displayLocalRatingState(area.LocalRating, labels.Ratings)) + " | " + tableCell(displayRatingResult(area.AggregateRatingResult, labels.Ratings)) + " | " + fmt.Sprintf("%d", area.CoveredRequirements) + " | " + tableCell(area.Note) + " |\n")
+// writeAreaBreakdownSection renders the shared compact Area Breakdown table used
+// by both report.md and report-summary.md so the two cannot drift.
+func writeAreaBreakdownSection(out *bytes.Buffer, report ReportDocument, labels reportDisplayLabels) {
+	out.WriteString("\n## Area Breakdown\n\n")
+	if len(report.AreaSummary) == 0 {
+		out.WriteString("No area ratings were recorded.\n")
+		return
 	}
+	out.WriteString("| Path | Area | + Sub-Areas | Factors |\n")
+	out.WriteString("| --- | --- | --- | --- |\n")
+	for _, area := range report.AreaSummary {
+		out.WriteString(areaBreakdownRow(area, labels))
+	}
+}
+
+// areaBreakdownRow renders one compact Area Breakdown row. The Area column shows
+// the Area-only rating (area-group state renders as `(area group)`); the
+// + Sub-Areas column shows the Area-with-descendants rating; the Factors column
+// lists each factor as `<factor display path>: <rating>`.
+func areaBreakdownRow(area AreaRatingSummary, labels reportDisplayLabels) string {
+	return "| " + tableCell(labels.AreaDisplayPath(area.AreaPath.Elements())) +
+		" | " + tableCell(displayAreaRatingState(area.AreaRatingState, labels.Ratings)) +
+		" | " + tableCell(displayRatingResult(area.AreaWithDescendantsRatingResult, labels.Ratings)) +
+		" | " + tableCell(areaBreakdownFactors(area, labels)) + " |\n"
+}
+
+// areaBreakdownFactors renders the Factors cell: a "; "-joined list of
+// `<factor display path>: <rating>`. Areas with no recorded factor ratings
+// render an explicit empty-state token so an omission cannot read as accidental.
+func areaBreakdownFactors(area AreaRatingSummary, labels reportDisplayLabels) string {
+	if len(area.FactorRatingResults) == 0 {
+		return "(no factor ratings)"
+	}
+	parts := make([]string, 0, len(area.FactorRatingResults))
+	for _, factor := range area.FactorRatingResults {
+		label := labels.FactorDisplayPath(area.AreaPath.Elements(), factor.FactorPath.Elements())
+		parts = append(parts, label+": "+displayRatingResult(factor.RatingResult, labels.Ratings))
+	}
+	return strings.Join(parts, "; ")
 }
 
 func writeReportAreaDetailsSection(out *bytes.Buffer, report ReportDocument, labels reportDisplayLabels) {
@@ -572,14 +607,14 @@ func writeReportAreaDetailsSection(out *bytes.Buffer, report ReportDocument, lab
 func writeReportAreaDetail(out *bytes.Buffer, area AreaEvaluationDetail, labels reportDisplayLabels) {
 	out.WriteString("### " + labels.Area(area.AreaPath.Elements(), area.AreaPath.Display()) + "\n\n")
 	out.WriteString("- **Path:** " + displayPath(area.AreaPath) + "\n")
-	out.WriteString("- **Local rating:** " + displayLocalRatingState(area.LocalRating, labels.Ratings) + "\n")
-	if area.LocalRating.RatingResult != nil {
-		writeOptionalRationale(out, area.LocalRating.RatingResult.Rationale)
+	out.WriteString("- **Area rating:** " + displayAreaRatingState(area.AreaRatingState, labels.Ratings) + "\n")
+	if area.AreaRatingState.RatingResult != nil {
+		writeOptionalRationale(out, area.AreaRatingState.RatingResult.Rationale)
 	}
-	out.WriteString("- **Aggregate rating:** " + displayRatingResult(area.AggregateRatingResult, labels.Ratings) + "\n")
-	writeOptionalRationale(out, area.AggregateRatingResult.Rationale)
+	out.WriteString("- **+ Sub-Areas rating:** " + displayRatingResult(area.AreaWithDescendantsRatingResult, labels.Ratings) + "\n")
+	writeOptionalRationale(out, area.AreaWithDescendantsRatingResult.Rationale)
 	for _, factor := range area.FactorRatingResults {
-		out.WriteString("- **Factor " + labels.Factor(area.AreaPath.Elements(), factor.FactorPath.Elements()) + ":** " + displayRatingResult(factor.RatingResult, labels.Ratings) + "\n")
+		out.WriteString("- **Factor " + labels.FactorDisplayPath(area.AreaPath.Elements(), factor.FactorPath.Elements()) + ":** " + displayRatingResult(factor.RatingResult, labels.Ratings) + "\n")
 		writeOptionalRationale(out, factor.RatingResult.Rationale)
 	}
 	out.WriteString("- **Analysis record:** `" + area.AnalysisRecord + "`\n")
@@ -637,6 +672,7 @@ func renderReportSummaryMarkdown(report ReportDocument, labels reportDisplayLabe
 	out.WriteString("# Quality Evaluation Summary\n\n")
 	writeSummaryKeyDetails(&out, report, labels)
 	writeSummarySection(&out, report, labels)
+	writeAreaBreakdownSection(&out, report, labels)
 	writeSummaryTopIssues(&out, report)
 	writeSummaryRecommendations(&out, report)
 	writeSummaryScopeAndLimitations(&out, report, labels)
@@ -666,30 +702,6 @@ func writeSummarySection(out *bytes.Buffer, report ReportDocument, labels report
 	} else {
 		out.WriteString("The evaluation completed with verdict " + displayRatingResult(report.Summary.RatingResult, labels.Ratings) + ".\n")
 	}
-	writeSummaryRatingTable(out, report, labels)
-}
-
-func writeSummaryRatingTable(out *bytes.Buffer, report ReportDocument, labels reportDisplayLabels) {
-	out.WriteString("\n\n")
-	if len(report.AreaSummary) == 0 {
-		out.WriteString("No area ratings were recorded.\n")
-		return
-	}
-	out.WriteString("| Area | Local rating | Aggregate rating | Rating basis |\n")
-	out.WriteString("| --- | --- | --- | --- |\n")
-	for _, area := range report.AreaSummary {
-		out.WriteString("| " + tableCell(labels.Area(area.AreaPath.Elements(), area.AreaPath.Display())) + " | " + tableCell(displayLocalRatingState(area.LocalRating, labels.Ratings)) + " | " + tableCell(displayRatingResult(area.AggregateRatingResult, labels.Ratings)) + " | " + tableCell(summaryRatingBasis(area)) + " |\n")
-	}
-}
-
-func summaryRatingBasis(area AreaRatingSummary) string {
-	if area.AggregateRatingResult.Rationale != "" {
-		return area.AggregateRatingResult.Rationale
-	}
-	if area.Note != "" {
-		return area.Note
-	}
-	return ""
 }
 
 func writeSummaryTopIssues(out *bytes.Buffer, report ReportDocument) {
@@ -1074,6 +1086,17 @@ func nonNilFactorRatingResults(factors []FactorRatingResult) []FactorRatingResul
 	return factors
 }
 
+func cloneFactorRatingResults(factors []FactorRatingResult) []FactorRatingResult {
+	out := make([]FactorRatingResult, 0, len(factors))
+	for _, factor := range factors {
+		out = append(out, FactorRatingResult{
+			FactorPath:   factor.FactorPath.Clone(),
+			RatingResult: factor.RatingResult,
+		})
+	}
+	return out
+}
+
 func riskFindings(findings []FindingDigest) []FindingDigest {
 	risks := []FindingDigest{}
 	for _, finding := range findings {
@@ -1218,6 +1241,37 @@ func (l reportDisplayLabels) Factor(areaPath []string, factorPath []string) stri
 	return FactorPath(factorPath).Display()
 }
 
+// AreaDisplayPath renders the absolute display path for an area, resolving each
+// path prefix to its title. The root area (empty path) renders as
+// `/ (<root title>)`; descendants render slash-prefixed, such as
+// `/Services/Payments/Webhooks`. The path is built from the element array, never
+// by parsing a joined string.
+func (l reportDisplayLabels) AreaDisplayPath(path []string) string {
+	if len(path) == 0 {
+		return "/ (" + l.Area(nil, "root") + ")"
+	}
+	var out strings.Builder
+	for i := range path {
+		out.WriteString("/")
+		out.WriteString(l.Area(path[:i+1], path[i]))
+	}
+	return out.String()
+}
+
+// FactorDisplayPath renders the display path for a factor, resolving each factor
+// prefix to its title and joining with " / ". The path is built from the
+// element array, never by parsing a joined string.
+func (l reportDisplayLabels) FactorDisplayPath(areaPath []string, factorPath []string) string {
+	if len(factorPath) == 0 {
+		return FactorPath(factorPath).Display()
+	}
+	parts := make([]string, 0, len(factorPath))
+	for i := range factorPath {
+		parts = append(parts, l.Factor(areaPath, factorPath[:i+1]))
+	}
+	return strings.Join(parts, " / ")
+}
+
 func ratingDisplayLabels(scale []model.RatingLevel) map[string]string {
 	labels := map[string]string{}
 	for _, level := range scale {
@@ -1229,11 +1283,11 @@ func ratingDisplayLabels(scale []model.RatingLevel) map[string]string {
 	return labels
 }
 
-func displayLocalRatingState(state LocalRatingState, ratingLabels map[string]string) string {
+func displayAreaRatingState(state AreaRatingState, ratingLabels map[string]string) string {
 	switch state.Kind {
-	case LocalRatingStructural:
-		return "n/a (structural)"
-	case LocalRatingNotAssessed, LocalRatingRated:
+	case AreaRatingStructural:
+		return "(area group)"
+	case AreaRatingNotAssessed, AreaRatingRated:
 		if state.RatingResult == nil {
 			return "not assessed"
 		}

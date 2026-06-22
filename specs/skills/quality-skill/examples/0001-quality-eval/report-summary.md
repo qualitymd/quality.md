@@ -14,13 +14,14 @@
 
 The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint.
 
+## Area Breakdown
 
-| Area | Local rating | Aggregate rating | Rating basis |
+| Path | Area | + Sub-Areas | Factors |
 | --- | --- | --- | --- |
-| Sparrow Payments API | Unacceptable | Unacceptable | The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint. |
-| Ledger | Target | Target | Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed. |
-| Webhooks | Target | Minimum | The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating. |
-| Delivery | Minimum | Minimum | Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum. |
+| / (Sparrow Payments API) | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
+| /Ledger | Target | Target | Correctness: Target |
+| /Webhooks | Target | Minimum | Security: Target |
+| /Webhooks/Delivery | Minimum | Minimum | Reliability: Minimum |
 
 ## Selected Findings
 

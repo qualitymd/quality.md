@@ -67,23 +67,23 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 - [001-rotate-committed-gateway-key](recommendations/001-rotate-committed-gateway-key.md) - The committed-credentials requirement reaches target; no live credential is present in the working tree and the previously exposed key has been revoked.
 
-## Area Summary
+## Area Breakdown
 
-| Area | Local rating | Aggregate rating | Covered requirements | Note |
-| --- | --- | --- | --- | --- |
-| Sparrow Payments API | Unacceptable | Unacceptable | 3 |   |
-| Ledger | Target | Target | 2 | has not-assessed requirements |
-| Webhooks | Target | Minimum | 1 |   |
-| Delivery | Minimum | Minimum | 2 |   |
+| Path | Area | + Sub-Areas | Factors |
+| --- | --- | --- | --- |
+| / (Sparrow Payments API) | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
+| /Ledger | Target | Target | Correctness: Target |
+| /Webhooks | Target | Minimum | Security: Target |
+| /Webhooks/Delivery | Minimum | Minimum | Reliability: Minimum |
 
 ## Area Details
 
 ### Sparrow Payments API
 
 - **Path:** (root)
-- **Local rating:** Unacceptable
+- **Area rating:** Unacceptable
   - Over the root's three own requirements, the committed-credential shortfall is security-critical and holds the local rating at the floor regardless of the two requirements rated target.
-- **Aggregate rating:** Unacceptable
+- **+ Sub-Areas rating:** Unacceptable
   - The root's own local rating binds. Ledger is rated target and Webhooks is rated minimum; if the local secret gap were cleared, Webhooks would become the next binding constraint.
 - **Factor Security:** Unacceptable
   - Bound by the Secrets handling sub-factor because a live gateway credential is committed in plaintext; Access control is rated target.
@@ -94,9 +94,9 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Ledger
 
 - **Path:** ledger
-- **Local rating:** Target
+- **Area rating:** Target
   - The double-entry invariant is rated target. The reconciliation requirement is not assessed, so the local rating rests on the assessed invariant evidence and is noted as incomplete rather than outstanding.
-- **Aggregate rating:** Target
+- **+ Sub-Areas rating:** Target
   - Ledger is a leaf area, so its aggregate equals its local rating. The assessed double-entry invariant reaches target while reconciliation remains not assessed.
 - **Factor Correctness:** Target
   - The double-entry invariant holds in the recorded evidence; reconciliation is not assessed, so the factor rating is target but incomplete.
@@ -106,9 +106,9 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Webhooks
 
 - **Path:** webhooks
-- **Local rating:** Target
+- **Area rating:** Target
   - The Webhooks target's own signing requirement is rated target.
-- **Aggregate rating:** Minimum
+- **+ Sub-Areas rating:** Minimum
   - The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating.
 - **Factor Security:** Target
   - Every emit path signs webhook payloads and no unsigned path was found.
@@ -117,9 +117,9 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 ### Delivery
 
 - **Path:** webhooks / delivery
-- **Local rating:** Minimum
+- **Area rating:** Minimum
   - The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor.
-- **Aggregate rating:** Minimum
+- **+ Sub-Areas rating:** Minimum
   - Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum.
 - **Factor Reliability:** Minimum
   - Retry-with-backoff reaches target, but redelivery deduplication is bounded and best-effort, so the reliability factor is minimum.

@@ -2,6 +2,70 @@
 
 ## 2026-06-22
 
+- **Creation**: Added [0050 - Quality log](0050-quality-log.md) (`status: Draft`)
+  with its [functional spec](0050-quality-log/spec.md) and
+  [child index](0050-quality-log/index.md). The case proposes a curated,
+  evidence-linked **quality log** — dated entries under `quality/log/` recording
+  meaningful changes to a QUALITY.md model, written by the `/quality` skill
+  (`setup` seeds, `improve` appends, `wizard` reconciles drift). Convention-first:
+  no `qualitymd log` CLI command or standalone artifact-spec yet. Functional spec
+  lists `specs/skills/quality-skill/quality-skill.md` under **To modify**. Updated
+  the bundle [index](index.md).
+
+- **Creation**: Added
+  [0049 - Companion JSON Schema](0049-companion-json-schema.md) (`status: Draft`)
+  with its [functional spec](0049-companion-json-schema/spec.md) and
+  [child index](0049-companion-json-schema/index.md). The case proposes a
+  structural JSON Schema for QUALITY.md frontmatter — derived from
+  [`internal/schema`](../internal/schema/schema.go) so it cannot drift,
+  non-normative and subordinate to [`SPECIFICATION.md`](../SPECIFICATION.md) —
+  plus a `qualitymd schema` verbatim-artifact command that emits it. Functional
+  spec lists new durable specs `specs/quality-schema-json.md` and
+  `specs/cli/schema.md`. Updated the bundle [index](index.md).
+
+- **Design**: Advanced
+  [0049 - Companion JSON Schema](0049-companion-json-schema.md) from `Draft` to
+  `Design` and added its [design doc](0049-companion-json-schema/design.md).
+  Decided terminal JSON highlighting uses
+  [`chroma`](https://github.com/alecthomas/chroma) directly (promoted from an
+  indirect dep, byte-safe on the redirect path), rejecting a glamour code-fence
+  (reflows content) and a hand-rolled lipgloss tokenizer (reinvents a lexer).
+  Decided the artifact lives at the repo root (`quality.schema.json`, a sibling
+  of [`SPECIFICATION.md`](../SPECIFICATION.md)), embedded via a new root
+  `schema.go` mirroring [`specification.go`](../specification.go) — over
+  co-locating under `internal/schema/` or a dedicated `schema/` dir. Updated the
+  parent artifacts (added `go.mod` chroma promotion) and the bundle
+  [index](index.md).
+
+- **Design**: Closed the remaining
+  [0049 - Companion JSON Schema](0049-companion-json-schema.md) open questions.
+  Generation is a `go:generate` tool writing the committed root file (the embed
+  *is* the golden, guarded by a consistency test re-running an exported
+  `GenerateJSON()`) over runtime generation — keeping schema changes visible as a
+  reviewable diff. The schema declares JSON Schema draft 2020-12 and an
+  unversioned `$id` of `https://quality.md/quality.schema.json` (identity, not
+  hosting; GitHub raw-root URL as fallback if `quality.md` is not the canonical
+  domain). No design questions remain; the case is ready for **In-Progress**.
+
+- **Implementation**: Completed
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  code in `internal/evaluation/` and advanced it to `In-Review`. Renamed the
+  report-model Area rating fields to
+  `areaRatingState` / `areaRatingResult` / `areaWithDescendantsRatingResult` on
+  `areaSummary` and `areas`, dropped the `structural` bool and the
+  structural-grouping note, added `factorRatingResults` to the compact
+  `areaSummary` layer, and rendered a shared `## Area Breakdown` table (absolute
+  Area display paths, path-aware Factor labels, `(area group)`, `not assessed`,
+  and empty-Factor states) in `report-summary.md` and `report.md`. Strengthened
+  analysis-write validation to reject duplicate and vocabulary-unresolvable
+  Factor paths, added regression tests, and regenerated the three
+  `0001-quality-eval` golden report fixtures. `go test ./...` green.
+
+- **Status**: Advanced
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  from `Design` to `In-Progress` to begin code implementation in
+  `internal/evaluation/`. Durable specs and guide-spec renames already landed.
+
 - **Design refinement**: Sharpened
   [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
   for long-term structure: adopted renaming the opaque Area rating fields to
