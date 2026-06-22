@@ -67,12 +67,14 @@ agents with what matters in *this* codebase. You capture it once, then run a
 
 ### Getting started
 
-1. **Run `/quality setup` to capture what *good* means here.** The skill reads
-   your project and drafts a `QUALITY.md`: the quality factors that matter most,
-   the requirements under them, and the risks, needs, and open questions behind
-   them.
-   → *A documented picture of your quality bar — much of it previously only in
-   people's heads — and a shared definition your agents can follow.*
+1. **Run `/quality setup` to make your quality bar visible.** Using available
+   context, the skill drafts a `QUALITY.md` with likely quality factors,
+   assessable requirements, needs, risks, unknowns, open questions, and
+   agent-accessibility gaps.
+   → *A shared starting point for what good means here: the expectations already
+   visible in the project, the judgments that still need human input, and the
+   context gaps agents and contributors need to close before they can know what
+   matters most.*
 
 2. **Run `/quality evaluate` to see where you stand.** It grades the work against
    your new model and returns rated findings, each with evidence.
