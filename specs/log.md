@@ -15,6 +15,12 @@
   [`update`](cli/update.md) command.
 
 - **Revision**: Aligned the durable `/quality` skill specs with the
+  repository capitalization convention for QUALITY.md vocabulary. The skill,
+  evaluation, guide, setup, and evaluate specs now reserve capitalized model
+  vocabulary for formal type-name use and prefer lowercase in ordinary
+  instructional and user-facing prose.
+
+- **Revision**: Aligned the durable `/quality` skill specs with the
   artifact-spec versus behavioral-component guidance for
   [0052 - Durable spec alignment](../changes/0052-durable-spec-alignment.md).
   Added mode behavior specs under

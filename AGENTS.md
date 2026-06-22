@@ -69,6 +69,19 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - Use bold/emphasized **QUALITY.md** only for first-mention emphasis in user-facing intro prose.
 - Prefer no bold in agent instructions, specs, and dense technical docs.
 
+### QUALITY.md vocabulary capitalization
+
+- Capitalize formal model concepts when used as type names or terms of art:
+  Model, Area, Factor, Requirement, Assessment, Finding, Rating Scale,
+  Rating Level, Rating Result, Evaluation Report.
+- Use lowercase in ordinary prose: area, factor, requirement, assessment,
+  finding, rating, recommendation.
+- Use backticks for concrete YAML fields, file names, commands, and literal
+  values: `areas`, `factors`, `requirements`, `ratingScale`, `QUALITY.md`,
+  `qualitymd`.
+- Prefer lowercase in README, guides, tutorials, and user-facing prose unless
+  capitalization improves precision.
+
 ### Open Knowledge Format (OKF) bundles
 
 OKF bundles register concept types in the root `schema.md`:
@@ -87,7 +100,7 @@ artifacts, a functional spec, and optional design doc.
 - Keep ISO lineage background.
 - Do not cite specific ISO standards in public code/artifacts unless requested
   or relevant to the file's purpose.
-- Use QUALITY.md terms: Areas, Factors, Requirements.
+- Use QUALITY.md vocabulary instead of ISO terms.
 - [`SPECIFICATION.md`](SPECIFICATION.md) may cite ISO for provenance.
 
 ### Agent guidance files

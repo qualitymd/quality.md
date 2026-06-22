@@ -83,16 +83,16 @@ shares with Area.
   where the model gets its judgment context: what the root area is, what decisions
   the model supports, what quality means here, and which risks matter enough to
   assess.*
-- **Do** confirm the rating scale after the body and before writing Requirements.
+- **Do** confirm the rating scale after the body and before writing requirements.
   *The scale is the shared vocabulary for turning future findings into ratings;
-  Requirements are easier to write once "unacceptable", "minimum", "target", and
+  requirements are easier to write once "unacceptable", "minimum", "target", and
   "outstanding" mean something for this root area.*
-- **Do** derive Factors and Requirements from the body context. *Factors and
-  Requirements should express the root area's needs, risks, scope, and unknowns,
+- **Do** derive factors and requirements from the body context. *Those factors
+  and requirements should express the root area's needs, risks, scope, and unknowns,
   not lead them.*
 - **Do** trace at least one important concern from body to model before expanding
-  the tree. *A useful trace reads like: a Need names the outcome, a Risk names
-  the failure mode, a Factor names the quality lens, and a Requirement names the
+  the tree. *A useful trace reads like: a need names the outcome, a risk names
+  the failure mode, a factor names the quality lens, and a requirement names the
   inspectable expectation.*
 
 #### Keep the root lean when child areas carry the detail
@@ -102,9 +102,9 @@ shares with Area.
   everything at one level is harder to read and maintain.*
 - **Avoid** modeling every property at the root "to be safe." *An entry on
   factors, requirements, **or** areas is enough.*
-- **Do** make sure the model reaches Requirements somewhere in the area tree
-  before treating it as evaluable. *Factors without Requirements can describe
-  concerns, but they do not give an evaluator anything to rate.*
+- **Do** make sure the model reaches requirements somewhere in the area tree
+  before treating it as evaluable. *Factors can describe concerns, but without
+  requirements they do not give an evaluator anything to rate.*
 
 #### Make the traceability graph visible
 
@@ -147,7 +147,7 @@ replace these. They're recommended starting points:
 | **Overview** | A reader can say what the root area is, who depends on it, and why its quality matters. This names the real entity, not just the repo or file where `QUALITY.md` lives. |
 | **Scope**    | A reader can tell what is included, what is excluded for now, and where the model boundary sits. Out-of-scope is not a deficiency.                                      |
 | **Needs**    | A reader can see the outcomes the root area must support and the users, operators, maintainers, or downstream systems those outcomes serve.                             |
-| **Risks**    | A reader can see the failures that would make the root area untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial Factors.  |
+| **Risks**    | A reader can see the failures that would make the root area untrustworthy, unusable, unsafe, expensive, or hard to change. These are raw material for initial factors.  |
 
 ### Shape of a body section
 
@@ -223,7 +223,7 @@ A section with nothing outstanding still says so:
 ### Working with the body
 
 - **Do** write the body before expanding the model tree. *It is the fastest way
-  to discover what Factors and Requirements the frontmatter should express.*
+  to discover what factors and requirements the frontmatter should express.*
 - **Do** write the body so it can be evaluated for quality in its own right.
   *A later reviewer should be able to judge whether the context is complete
   enough, current enough, specific enough, grounded enough, and accessible enough
@@ -246,7 +246,7 @@ A section with nothing outstanding still says so:
   (how much else it forces to change). *A concern can be low-stakes yet
   high-blast-radius, or the reverse; saying which helps the next evaluator weigh
   roll-ups.*
-- **Consider** noting where two Factors or Requirements pull against each other
+- **Consider** noting where two factors or requirements pull against each other
   (tighter access control vs. faster onboarding, latency vs. cost) and which way
   you have chosen to lean. *A model that hides its trade-offs invites an evaluator
   to "fix" a deliberate compromise.*
@@ -396,7 +396,7 @@ A target's **source** defines *what* it evaluates; its **factors** and
 | -------------- | ---------- | ---------------------------------------------------------------------- |
 | `title`        | Required   | Display name in reports; the map key stays the identifier.             |
 | `description`  | Optional   | What the area is — the entity or scope it covers.                      |
-| `factors`      | Optional\* | [Factors](#factor) scoped to this target's subtree.                    |
+| `factors`      | Optional\* | [Factors](#factor) scoped to this area's subtree.                      |
 | `requirements` | Optional\* | [Requirements](#requirement) assessed against this area's source.      |
 | `areas`        | Optional\* | Child areas, nested to any depth.                                      |
 | `source`       | Optional   | Where the entities live; inherits the nearest ancestor's when omitted. |
@@ -543,20 +543,20 @@ different areas are distinct.
 - **Do** derive initial factors from the body's Needs and Risks. *Needs point at
   the outcomes quality should preserve; Risks point at the failure modes worth
   assessing.*
-- **Do** reconcile major Needs and Risks back to Factors after drafting them.
-  *If an important concern has no Factor, either add the Factor, mark the concern
+- **Do** reconcile major Needs and Risks back to factors after drafting them.
+  *If an important concern has no factor, either add the factor, mark the concern
   out of scope, or note the unresolved concern as an unknown in the relevant
   body section.*
-- **Do** justify each Factor by something concrete about *this* root area — who
+- **Do** justify each factor by something concrete about *this* root area — who
   depends on it, what it is for, where it runs — not by its presence on a general
   list. *A characteristic with no user, no failure mode, and no decision riding on
-  it here does not earn a Factor, however standard it is elsewhere; pull from a
+  it here does not earn a factor, however standard it is elsewhere; pull from a
   catalog as a prompt, never as a quota.*
-- **Do** anchor each Factor to a stakeholder whose concern it carries — the user
+- **Do** anchor each factor to a stakeholder whose concern it carries — the user
   who needs it to work, the maintainer who needs to change it, the operator who
   runs it. *Where stakeholders disagree on what "good enough" means, surface the
   conflict rather than averaging it into one criterion.*
-- **Consider** whether a Factor names something a stakeholder *experiences* (the
+- **Consider** whether a factor names something a stakeholder *experiences* (the
   system is available, decisions are correct) or something *internal* that matters
   only because it produces that experience (low coupling, clear structure). *Keep
   internal factors tied to the outcome they serve, so an evaluator can tell a real
@@ -564,12 +564,12 @@ different areas are distinct.
 
 #### Name the quality, not the practice
 
-- **Do** name a Factor as a quality characteristic the Area can exhibit to a
+- **Do** name a factor as a quality characteristic the area can exhibit to a
   degree: `completeness`, `consistency`, `credibility`, `currentness`,
   `understandability`, `traceability`, `assessability`, `maintainability`,
   `modifiability`, `testability`. *The name should read as the thing being
   judged, not the work someone does to improve it.*
-- **Avoid** Factor names that describe a workflow, lifecycle phase, authoring
+- **Avoid** factor names that describe a workflow, lifecycle phase, authoring
   technique, or evaluation tactic. *For example, `lifecycle-stewardship` is a
   practice; `maintainability`, `modifiability`, or `currentness` names the
   quality it is meant to protect. `grounding` is a tactic or metaphor;
@@ -590,7 +590,7 @@ different areas are distinct.
 
 - **Do** define the characteristic as the *degree or capability to achieve some
   end under the conditions that matter*, and say why it matters and to whom. A
-  useful shape: *"\<Factor\> is the degree to which \<entity\> \<achieves some
+  useful shape: *"\<factor\> is the degree to which \<entity\> \<achieves some
   end\> under \<conditions\>; it matters because \<stakeholder concern\>."*
 - **Avoid** an adjective or a synonym for the factor name ("Reliability: how
   reliable it is"). *That tells a reader nothing and doesn't distinguish it from
@@ -642,18 +642,18 @@ the area it sits on, and counts once in that area's local rating.
 | Property     | Presence                     | What it is                                                       |
 | ------------ | ---------------------------- | ---------------------------------------------------------------- |
 | `assessment` | Required                     | The means of assessing the source; produces the findings.        |
-| `factors`    | Required for area-level reqs | Factor references; secondary factors when nested under a factor. |
+| `factors`    | Required for area-level reqs | factor references; secondary factors when nested under a factor. |
 | `ratings`    | Optional                     | Per-requirement criterion overrides, keyed by rating level.      |
 
 ### Working with requirements
 
 #### Operationalize a factor into an assessable property
 
-A area does not directly manifest a Factor like "reliability"; it exhibits
+An area does not directly manifest a factor like "reliability"; it exhibits
 concrete properties that imply it. Bridging from the abstract characteristic to
 something inspectable is the core authoring move.
 
-- **Do** name a concrete, observable property of the entity that the Factor
+- **Do** name a concrete, observable property of the entity that the factor
   depends on, then phrase the requirement as the expectation about that property.
   *Reliability (abstract) → "recovers from a dependency outage without data loss"
   (property) → the requirement and its assessment.*
@@ -663,7 +663,7 @@ something inspectable is the core authoring move.
   users using only online help*), and the rating boundary it tests. *If you cannot
   name a scale and a meter, the statement is still a slogan — "easy to use" has
   neither.*
-- **Avoid** jumping straight from a Factor to a convenient metric with no property
+- **Avoid** jumping straight from a factor to a convenient metric with no property
   in between. *That is how you get measurements no one can tie back to why they
   matter.*
 
@@ -676,7 +676,7 @@ something inspectable is the core authoring move.
 
 - **Do** write requirements specific enough that a single result stands on its
   own. *A vague requirement produces a vague rating.*
-- **Do** write Requirements that make the body context assessable. *A Requirement
+- **Do** write requirements that make the body context assessable. *A requirement
   should turn an important need, risk, or noted unknown into an expectation an
   evaluator can inspect.*
 - **Do**, for behavioral qualities (reliability, recoverability, security under
@@ -694,7 +694,7 @@ something inspectable is the core authoring move.
   the evidence supports, or note the gap as an unknown in the relevant section.*
 - **Do** apply the discard test: if a requirement were deleted, would any decision
   about this root area change? *If not, it is ritual — drop it or note it as an
-  unknown in the relevant section. Requirements imported to "be thorough" inflate
+  unknown in the relevant section. Imported requirements meant to "be thorough" inflate
   the model and dilute the
   ratings that drive choices.*
 
@@ -724,9 +724,9 @@ something inspectable is the core authoring move.
   release deserves a repeatable, reproducible method; a low-stakes or exploratory
   one can name a lighter inspection. *Over-specifying rigor everywhere wastes
   effort; under-specifying it where it counts hides risk.*
-- **Do** make sure every assessment answers "which Factor's question does this
+- **Do** make sure every assessment answers "which factor's question does this
   finding help rate?" *An assessment that measures something only because it is
-  easy to measure, tied to no Factor's concern, is noise that dilutes the report.*
+  easy to measure, tied to no factor's concern, is noise that dilutes the report.*
 - **Avoid** an assessment so narrowly metric-shaped that satisfying the letter
   abandons the intent ("coverage ≥ 80%" met by trivial tests). *Where a single
   number invites gaming, pair it with an inspection of intent or phrase the
@@ -749,15 +749,15 @@ something inspectable is the core authoring move.
 #### Use one referenced assessment when one guide governs several factors
 
 - **Do** write one requirement when a single guide, spec, or checklist defines a
-  coherent quality judgment that bears on several Factors. Put the requirement at
-  the Area level, list every affected Factor in `factors`, and reference the
+  coherent quality judgment that bears on several factors. Put the requirement at
+  the area level, list every affected factor in `factors`, and reference the
   governing entity once. *That keeps the criterion edge visible without repeating
-  the same assessment under every Factor.*
+  the same assessment under every factor.*
 - **Do** split the requirement only when the referenced entity defines claims
   whose results could legitimately diverge. *A QUALITY.md can follow its
   authoring guide for assessability while still lacking credibility; those are
   separate requirements. A single conformance judgment that feeds assessability,
-  traceability, and maintainability is one requirement with several Factor
+  traceability, and maintainability is one requirement with several factor
   references.*
 
 ```yaml
@@ -771,8 +771,8 @@ requirements:
       - maintainability
     assessment: >
       Assess QUALITY.md against ./skills/quality/guides/authoring.md,
-      especially whether the body credibly supports the model, Factors come
-      from visible needs and risks, Requirements are assessable, Sources are
+      especially whether the body credibly supports the model, factors come
+      from visible needs and risks, requirements are assessable, sources are
       inspectable, and unknowns or open questions are explicit.
 ```
 
@@ -884,7 +884,7 @@ averaged into the root area's rating.
   keep the rubric valid, not passing; locked baselines and an honest "not assessed"
   guard against gaming it.*
 - **Do** treat a finding that no existing requirement anticipated as a signal to
-  add a requirement or Factor. *A real weakness your model could not express is the
+  add a requirement or factor. *A real weakness your model could not express is the
   strongest evidence the model is incomplete — the model improves by being used,
   not only by being authored.*
 - **Do** periodically check that satisfying the requirement set would actually

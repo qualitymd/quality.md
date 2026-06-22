@@ -49,19 +49,19 @@ Run qualitymd lint
    [`../guides/getting-started.md`](../guides/getting-started.md), then begin
    guided population in the same run: draft the body's Overview, Scope, Needs,
    Risks, each with its unknowns, open questions, and any material support that
-   is not agent-accessible, and propose project-specific Factors and Requirements
+   is not agent-accessible, and propose project-specific factors and requirements
    to replace the placeholders with the user. Normally include a `quality-md`
-   Area that evaluates this `QUALITY.md` artifact itself against the active
+   area that evaluates this `QUALITY.md` artifact itself against the active
    authoring guide, unless the user declines or the model file is not in the root
-   area it governs. Use `quality-md` as the Area key, `<Root Title> QUALITY.md`
-   as the Area title, an Area `description`, and an explicit path-based `source`
+   area it governs. Use `quality-md` as the area key, `<Root Title> QUALITY.md`
+   as the area title, an area `description`, and an explicit path-based `source`
    for the model file such as `./QUALITY.md`; do not use prose aliases such as
-   `(this file)` for `source`. Add concise YAML comments around that Area
+   `(this file)` for `source`. Add concise YAML comments around that area
    explaining that `source` is the `QUALITY.md` artifact being evaluated, while
-   the Requirement's `assessment` references the guide used to judge it. Prefer
-   one Area-level Requirement that cites the active authoring guide once and
-   lists each affected Factor under `factors` when that guide defines one
-   coherent judgment across the Factors. Do not stop at naming the next step.
+   the requirement's `assessment` references the guide used to judge it. Prefer
+   one area-level requirement that cites the active authoring guide once and
+   lists each affected factor under `factors` when that guide defines one
+   coherent judgment across the factors. Do not stop at naming the next step.
 8. After guided population settles, seed the inaugural quality log entry under
    `quality/log/` recording model creation and the initial model shape. Use
    `YYYY-MM-DD-<slug>.md` (e.g. `2026-06-22-initial-model.md`) with

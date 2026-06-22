@@ -56,7 +56,7 @@ duty below, which makes the format spec the authority whenever the two disagree.
 **In scope:** authoring a useful QUALITY.md — its file shape, the model
 concepts (rating scale, areas, factors, requirements), the Markdown body, and
 durable authoring practices such as body-first model development, rating-scale
-fit, deriving Factors from Needs/Risks, writing assessable Requirements, and
+fit, deriving factors from Needs/Risks, writing assessable requirements, and
 recording each section's unknowns and open questions.
 
 **Non-goals:** the guide does **not** document the *evaluation* process (Define →
@@ -76,7 +76,7 @@ The guide **MUST conform to** [`SPECIFICATION.md`](../../../../SPECIFICATION.md)
 every concept definition, property, presence level (Required / Recommended /
 Optional), and rating-vocabulary term it states **MUST** match the format spec.
 The guide **MUST** teach that `title` is required on the Model, every Area,
-every Factor, and every Rating Level, and that Requirements do not have a
+every Factor, and every Rating Level, and that requirements do not have a
 separate `title` because the requirement statement is their display text.
 Conformance is the binding relationship, not deference — the guide phrases the
 format in its own instructional voice rather than quoting it — but where the
@@ -128,7 +128,7 @@ QUALITY.md format itself.
 
 The guide **MUST** teach body-first model development: fill the Markdown body
 before expanding the model tree, because the body supplies the evaluable
-judgment context for choosing the rating scale, Factors, Requirements, and
+judgment context for choosing the rating scale, factors, requirements, and
 scope, and for later judging whether the model still fits the root area.
 
 The guide **MUST** state desired outcomes for the recommended body sections:
@@ -172,22 +172,22 @@ and endorses the section.
 > worth trusting is when a person last stood behind the section. — 0044
 
 The guide **MUST** teach that the rating scale should be reviewed after the body
-and before writing Requirements, so the shared rating vocabulary fits the
+and before writing requirements, so the shared rating vocabulary fits the
 root area's decision context.
 
-The guide **MUST** teach that initial Factors should be derived from the body's
-Needs and Risks, and that Requirements should make the body context assessable.
+The guide **MUST** teach that initial factors should be derived from the body's
+Needs and Risks, and that requirements should make the body context assessable.
 
-The guide **MUST** teach authors to name Factors as quality characteristics the
-Area can exhibit to a degree, not as practices, workflows, lifecycle phases,
+The guide **MUST** teach authors to name factors as quality characteristics the
+area can exhibit to a degree, not as practices, workflows, lifecycle phases,
 authoring techniques, or evaluation tactics. It **SHOULD** show how to choose
 narrower, better-established attributes when a broad label hides the real
 concern, and it **SHOULD** distinguish product/tooling qualities from
 data/document/model qualities.
 
 The guide **MUST** teach that when one guide, spec, or checklist defines a
-coherent assessment that bears on several Factors, authors should write one
-Requirement, connect it to the affected Factors through `factors`, and reference
-the governing entity once. It **MUST** teach authors to split such Requirements
+coherent assessment that bears on several factors, authors should write one
+requirement, connect it to the affected factors through `factors`, and reference
+the governing entity once. It **MUST** teach authors to split such requirements
 only when the referenced entity defines claims whose results could legitimately
 diverge.

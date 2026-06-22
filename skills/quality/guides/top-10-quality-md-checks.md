@@ -84,30 +84,30 @@ to represent distinct evaluated entities.
 
 - Finding when all concerns are flattened into the root despite clear sub-entities
   in the body: route to authoring.
-- Finding when child areas merely mirror the parent without distinct Factors or
-  Requirements: route to authoring.
+- Finding when child areas merely mirror the parent without distinct factors or
+  requirements: route to authoring.
 
 ### 6. Factor Coverage
 
-Check whether Factors reflect the body context: important needs and risks should
-have a quality lens, and Factors should not be vague labels alone.
+Check whether factors reflect the body context: important needs and risks should
+have a quality lens, and factors should not be vague labels alone.
 
-- Finding when major body needs/risks have no Factor: route to authoring.
-- Finding when Factors are generic, overlapping, or unexplained: route to
+- Finding when major body needs/risks have no factor: route to authoring.
+- Finding when factors are generic, overlapping, or unexplained: route to
   authoring.
 
 ### 7. Requirement Assessability
 
-Check whether Requirements are concrete enough to produce findings and ratings.
+Check whether requirements are concrete enough to produce findings and ratings.
 
-- Finding when Requirements are aspirations rather than assessable expectations:
+- Finding when requirements are aspirations rather than assessable expectations:
   route to authoring.
-- Finding when a Requirement lacks observable evidence or criteria: route to
+- Finding when a requirement lacks observable evidence or criteria: route to
   authoring before evaluation.
 
 ### 8. Assessment Evidence
 
-Check whether each Requirement's `assessment` gives the evaluator a usable means
+Check whether each requirement's `assessment` gives the evaluator a usable means
 of assessment, either inline or by referencing an entity that defines it.
 
 - Finding when assessments are placeholders, circular, or vague: route to

@@ -25,7 +25,7 @@ ratingScale:
     description: "Below the floor — not good enough to ship."
     criterion: "Does not meet the requirement to an acceptable degree."
 factors:
-  # Factors here hang off the model root, so they describe the whole artifact —
+  # factors here hang off the model root, so they describe the whole artifact —
   # the qualities that matter most across all of it. This is the usual starting
   # point. A factor names a quality characteristic — e.g. reliability, security,
   # usability, maintainability. Say what it means here, why it matters and to
@@ -59,7 +59,7 @@ factors:
         #       whether they can complete the quickstart unaided."
         assessment: "<how an evaluator should inspect or measure it>"
 
-# Areas are optional and narrower. Reach for one when a distinct part of the
+# areas are optional and narrower. Reach for one when a distinct part of the
 # artifact — a service, a module, a document (e.g. "checkout-api",
 # "auth-service", "design-system") — deserves its own factors or requirements
 # that wouldn't fit cleanly at the top level. The whole-artifact factors above

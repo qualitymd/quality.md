@@ -82,8 +82,8 @@ The guide **MUST** cover these first-pass jobs:
 - confirming or lightly adapting the seeded rating scale;
 - naming the root root area from the body context;
 - deciding whether the root `source` can stay implicit;
-- selecting a small first set of Factors;
-- replacing placeholder Requirements with assessable Requirements;
+- selecting a small first set of factors;
+- replacing placeholder requirements with assessable requirements;
 - running validation/status commands before the next skill workflow.
 
 Each first-pass job **MUST** include a desired outcome and should link to the
@@ -92,14 +92,14 @@ brief completion checks, but it should not duplicate the full rationale or
 concept guidance from the authoring guide.
 
 The guide **MUST** preserve this process order: Markdown body first, rating
-scale second, then root area/source alignment, Factors, Requirements, validation,
+scale second, then root area/source alignment, factors, requirements, validation,
 and wizard routing.
 
 The guide **MUST** distinguish structural validity from model usefulness. A
 valid skeleton is not enough for evaluation; the guide should ask whether the
 body context is specific, current, grounded in agent-accessible support where
 support is material, and sufficient to evaluate model quality; whether
-Requirements are assessable; and whether evidence can distinguish important
+requirements are assessable; and whether evidence can distinguish important
 rating levels.
 
 The guide **MUST** end by routing to `/quality wizard` as the normal next

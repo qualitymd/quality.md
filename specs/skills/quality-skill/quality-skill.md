@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, Areas, Factors, Requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, updating the /quality stack, or authoring/improving a QUALITY.md file.
+description: Use when a user wants setup, wizard guidance, evaluation, improvement, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -158,7 +158,7 @@ The description **MUST** optimize for trigger matching rather than documentation
 it includes supported modes (`setup`, `wizard`, `evaluate`, `improve`,
 `update`), broad quality vocabulary users naturally ask with (`quality
 management`, quality evaluation/improvement, factors, characteristics,
-attributes, criteria), QUALITY.md vocabulary (Areas, Factors, Requirements),
+attributes, criteria), QUALITY.md vocabulary (areas, factors, requirements),
 project/entity and component/area quality framing, quality evaluation,
 updating the `/quality` stack, and QUALITY.md authoring/improvement. It
 **MUST NOT** include CLI implementation details, and it should not trigger for
@@ -316,12 +316,13 @@ The skill **MUST** distinguish CLI/tooling readiness, model validity, model
 usefulness, evaluated-source quality, and evaluation history status. It must not collapse
 them into a single generic quality verdict. The skill **SHOULD** recommend one
 best next step and then provide a short list of concrete alternatives when
-useful. It **MUST** use QUALITY.md terms consistently in user-facing output:
-Area, Factor, Requirement, rating, finding, and recommendation.
+useful. It **MUST** use QUALITY.md vocabulary consistently in user-facing
+output: area, factor, requirement, rating, finding, and recommendation. It
+**MUST** capitalize formal type names only when precision requires it.
 
 For user-facing labels, the skill **SHOULD** use required `title` values for
-Models, Areas, Factors, and Rating Levels as the primary wording. It **MAY**
-include stable area keys, factor keys, Area paths, or rating `level` ids as
+models, areas, factors, and rating levels as the primary wording. It **MAY**
+include stable area keys, factor keys, area paths, or rating `level` ids as
 secondary context when needed for disambiguation or traceability. The skill
 **MUST NOT** replace stable identifiers with titles in evaluation record
 payloads.

@@ -98,8 +98,8 @@ flowchart TD
    `qualitymd evaluation analysis set <run>`, and
    `qualitymd evaluation recommendation add <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
-   `schemaVersion`. The judgment JSON uses stable model identifiers: Area path
-   entries are area keys, Factor references and `factorRatingResults[].factorPath`
+   `schemaVersion`. The judgment JSON uses stable model identifiers: area path
+   entries are area keys, factor references and `factorRatingResults[].factorPath`
    values are factor keys, and ratings are rating `level` ids. Human-facing
    prose can use titles; records keep identifiers so reports, gates, and
    machine consumers remain stable.

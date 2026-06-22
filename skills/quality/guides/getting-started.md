@@ -71,7 +71,7 @@ Check before moving on:
 
 ### Pick Two to Five Factors
 
-Outcome: the initial Factors cover the most important Needs and Risks without
+Outcome: the initial factors cover the most important Needs and Risks without
 overlapping heavily.
 
 Use authoring guidance: [Factor](authoring.md#factor).
@@ -79,12 +79,12 @@ Use authoring guidance: [Factor](authoring.md#factor).
 Check before moving on:
 
 - Each major body need or risk has a quality lens.
-- Each Factor has a required `title`.
-- Each Factor description explains the lens in terms of this the root area.
+- Each factor has a required `title`.
+- Each factor description explains the lens in terms of this the root area.
 
 ### Write Assessable Requirements
 
-Outcome: each initial Requirement can produce evidence, findings, and a rating.
+Outcome: each initial requirement can produce evidence, findings, and a rating.
 
 Use authoring guidance: [Requirement](authoring.md#requirement).
 
@@ -95,7 +95,7 @@ Check before moving on:
 - evidence a future evaluator can actually inspect;
 - enough specificity to distinguish at least adjacent rating levels.
 
-Prefer a small first model with assessable Requirements over a broad model full
+Prefer a small first model with assessable requirements over a broad model full
 of aspirations.
 
 ## First Validation
@@ -111,9 +111,9 @@ Lint proves structure. Status helps route the next workflow. Neither proves the
 model is useful enough to evaluate; read the file once more against these
 questions:
 
-- Does every Requirement name evidence or criteria that can be inspected?
-- Can an evaluator tell `target` from `minimum` for the important Requirements?
-- Does the body explain why these Factors and Requirements matter?
+- Does every requirement name evidence or criteria that can be inspected?
+- Can an evaluator tell `target` from `minimum` for the important requirements?
+- Does the body explain why these factors and requirements matter?
 - Is the body current, grounded, and agent-accessible enough to evaluate the
   model's quality?
 - Are each section's unknowns and open questions captured as context without

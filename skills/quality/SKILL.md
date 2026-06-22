@@ -147,8 +147,9 @@ remaining limits.
 
 Keep output status-first, evidence-led, and action-oriented. Distinguish
 CLI/tooling readiness, model validity, model usefulness, evaluated-source
-quality, and evaluation history status. Use QUALITY.md terms consistently: Area,
-Factor, Requirement, rating, finding, and recommendation.
+quality, and evaluation history status. Use QUALITY.md vocabulary consistently:
+area, factor, requirement, rating, finding, and recommendation. Capitalize
+formal type names only when precision requires it.
 
 When maintaining a run's `debug-log.md`, record only notable events involving
 the evaluation process itself: scope resolution, history inspection, coverage
@@ -160,8 +161,8 @@ evidence, the debug log may note that routing decision and point to the formal
 assessment record, but it must not copy raw command output or duplicate the
 finding.
 
-Use required `title` values as the primary human-facing labels for Models,
-Areas, Factors, and rating levels. When disambiguation or traceability matters,
+Use required `title` values as the primary human-facing labels for models,
+areas, factors, and rating levels. When disambiguation or traceability matters,
 include stable identifiers as secondary context, for example
 `Format specification (area: format-spec)`. Evaluation record payloads still
 use stable identifiers: `areaPath`, factor keys, and rating `level` ids must

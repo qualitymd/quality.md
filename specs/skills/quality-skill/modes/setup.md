@@ -51,21 +51,21 @@ guide and getting-started guide before guided population. Guided population
 including each section's unknowns, open questions, and any material support that
 is not agent-accessible.
 
-Guided population **SHOULD** propose project-specific Factors and Requirements
+Guided population **SHOULD** propose project-specific factors and requirements
 to replace placeholders.
 
-Guided population **SHOULD** include a `quality-md` Area that evaluates the
+Guided population **SHOULD** include a `quality-md` area that evaluates the
 `QUALITY.md` artifact itself against the active authoring guide unless the user
-declines or the model file is not in the root Area it governs. The Area
+declines or the model file is not in the root area it governs. The area
 **SHOULD** use the key `quality-md`, a title of the form `<Root Title>
-QUALITY.md`, an Area `description`, and an explicit path-based `source` such as
+QUALITY.md`, an area `description`, and an explicit path-based `source` such as
 `./QUALITY.md`. It **MUST NOT** use prose aliases such as `(this file)` for
 `source`.
 
-When setup adds that Area, it **SHOULD** include concise YAML comments that
-distinguish the Area `source` from the Requirement `assessment`. It **SHOULD**
-use one Area-level Requirement with `factors` when the active authoring guide
-defines one coherent judgment across multiple Factors.
+When setup adds that area, it **SHOULD** include concise YAML comments that
+distinguish the area `source` from the requirement `assessment`. It **SHOULD**
+use one area-level requirement with `factors` when the active authoring guide
+defines one coherent judgment across multiple factors.
 
 ## Stop conditions
 

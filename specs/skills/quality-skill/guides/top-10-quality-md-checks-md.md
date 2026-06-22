@@ -41,12 +41,12 @@ evaluation, improvement, history/reconciliation, or update.
 In scope: read-only inspection of `qualitymd status --json`, the area
 `QUALITY.md` file, and evaluation-history signals summarized by status JSON.
 The checklist covers lifecycle state, Markdown body context, rating-scale fit,
-root area/source alignment, area shape, Factor coverage, Requirement
+root area/source alignment, area shape, factor coverage, requirement
 assessability, assessment evidence, evaluation readiness, and maintenance
 signals.
 
 Non-goals: the checklist does not inspect root area source files, produce
-evaluation artifacts, rate the root area, fully audit every Requirement, or replace
+evaluation artifacts, rate the root area, fully audit every requirement, or replace
 the authoring and getting-started guides. It produces routing findings, not an
 Evaluation report.
 
