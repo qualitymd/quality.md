@@ -54,7 +54,8 @@ and limitations, evidence basis, next action, and Area breakdown before detailed
 Area and Requirement sections.
 
 The Area breakdown **MUST** use the same compact Area breakdown data or rendering
-rules as `report-summary.md`.
+rules as `report-summary.md`, including the Area Breakdown `Path` reference
+form.
 
 The full report **MUST** preserve detailed Area entries with Area-only rating,
 Area-with-descendants rating, Factor rating results, rationales, analysis record

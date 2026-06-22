@@ -207,10 +207,11 @@ valid:
   and its subtree) and/or by **Factor** (the Requirements tied to a Factor,
   including those tagging it as a secondary Factor), per
   [Define](../../../SPECIFICATION.md#define). Explicit scoped input should use
-  canonical model references: `area:<area-path>` or
-  `factor:<declaring-area-path>::<factor-path>`. The skill may accept shorthand
-  only at human/input edges where the expected reference type is fixed, such as
-  `area webhooks/delivery` or `factor webhooks/delivery::reliability`. Legacy
+  qualified model references: `area:<area-path>` or
+  `factor:<declaring-area-path>::<factor-path>`. The skill may accept
+  unqualified references only at human/input edges where the expected reference
+  type is fixed, such as `area webhooks/delivery` or
+  `factor webhooks/delivery::reliability`. Legacy
   bare names are human-edge shorthand matched against the grounded model; an
   explicit `area`/`factor` keyword disambiguates a name that is both.
 - **Rigor** — the evaluation depth (default `standard`); see
@@ -333,9 +334,11 @@ output: area, factor, requirement, rating, finding, and recommendation. It
 
 For user-facing labels, the skill **SHOULD** use required `title` values for
 Models, Areas, Factors, and Rating Levels as the primary wording. It **MAY**
-include canonical model references as secondary context when needed for
-disambiguation or traceability. The skill **MUST NOT** replace structured stable
-identifiers with titles or shorthand references in evaluation record payloads.
+include qualified model references as secondary context when needed for
+disambiguation or traceability. In fixed-type contexts, such as an Area-only
+report column, the skill **MAY** rely on unqualified references rendered by the
+CLI. The skill **MUST NOT** replace structured stable identifiers with titles or
+unqualified references in evaluation record payloads.
 
 ### Mode specs
 
@@ -402,7 +405,7 @@ arguments, defaulting the ones left out:
 /quality evaluate area:payments --rigor deep   # exhaustive evaluate for one Area
 /quality evaluate factor:root::security   # scope to the root Security Factor
 /quality evaluate factor:payments::maintainability   # payments Area's Maintainability Factor
-/quality evaluate factor flow  # fixed-type shorthand when a name is both an Area and a Factor
+/quality evaluate factor flow  # fixed-type unqualified reference when a name is both an Area and a Factor
 /quality apply recommendation 002   # follow up: apply only on confirmation
 /quality handoff recommendation 002 # follow up: prepare/create an issue
 /quality update              # plan and orchestrate paired skill/CLI updates

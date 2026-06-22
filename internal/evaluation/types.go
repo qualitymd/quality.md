@@ -116,6 +116,11 @@ func (p AreaPath) Reference() string {
 	return "area:" + p.Display()
 }
 
+// UnqualifiedReference returns the fixed-type Area reference for an area path.
+func (p AreaPath) UnqualifiedReference() string {
+	return p.Display()
+}
+
 // FactorPath is a stable path from an area's factor set to a nested factor.
 type FactorPath []string
 
@@ -151,10 +156,21 @@ func FactorReference(areaPath AreaPath, factorPath FactorPath) string {
 	return "factor:" + areaPath.Display() + "::" + factorPath.Display()
 }
 
+// UnqualifiedFactorReference returns the fixed-type Factor reference for a
+// factor path declared by areaPath.
+func UnqualifiedFactorReference(areaPath AreaPath, factorPath FactorPath) string {
+	return areaPath.Display() + "::" + factorPath.Display()
+}
+
 // RatingReference returns the canonical typed model reference for a Rating Level
 // ID.
 func RatingReference(level string) string {
 	return "rating:" + level
+}
+
+// UnqualifiedRatingReference returns the fixed-type Rating Level reference.
+func UnqualifiedRatingReference(level string) string {
+	return level
 }
 
 // Evidence identifies supporting evidence for a finding.

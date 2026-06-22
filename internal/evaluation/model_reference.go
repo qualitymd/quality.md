@@ -20,12 +20,25 @@ func ParseAreaReference(spec *model.Spec, ref string) (AreaPath, error) {
 	if !ok {
 		return nil, usagef("area model reference %q must start with area:", ref)
 	}
+	return parseAreaReferenceBody(spec, ref, body, "area model reference")
+}
+
+// ParseUnqualifiedAreaReference resolves an Area reference in a context where
+// the expected reference type is fixed.
+func ParseUnqualifiedAreaReference(spec *model.Spec, ref string) (AreaPath, error) {
+	if spec == nil {
+		return nil, usagef("model reference %q cannot resolve without a model", ref)
+	}
+	return parseAreaReferenceBody(spec, ref, ref, "unqualified area reference")
+}
+
+func parseAreaReferenceBody(spec *model.Spec, ref, body, label string) (AreaPath, error) {
 	path, err := parseReferencePath(body)
 	if err != nil {
-		return nil, usagef("area model reference %q is invalid: %w", ref, err)
+		return nil, usagef("%s %q is invalid: %w", label, ref, err)
 	}
 	if !areaExists(spec, path) {
-		return nil, usagef("area model reference %q does not resolve in the model", ref)
+		return nil, usagef("%s %q does not resolve in the model", label, ref)
 	}
 	return AreaPath(path), nil
 }
@@ -39,26 +52,39 @@ func ParseFactorReference(spec *model.Spec, ref string) (AreaPath, FactorPath, e
 	if !ok {
 		return nil, nil, usagef("factor model reference %q must start with factor:", ref)
 	}
+	return parseFactorReferenceBody(spec, ref, body, "factor model reference")
+}
+
+// ParseUnqualifiedFactorReference resolves a Factor reference in a context where
+// the expected reference type is fixed.
+func ParseUnqualifiedFactorReference(spec *model.Spec, ref string) (AreaPath, FactorPath, error) {
+	if spec == nil {
+		return nil, nil, usagef("model reference %q cannot resolve without a model", ref)
+	}
+	return parseFactorReferenceBody(spec, ref, ref, "unqualified factor reference")
+}
+
+func parseFactorReferenceBody(spec *model.Spec, ref, body, label string) (AreaPath, FactorPath, error) {
 	areaPart, factorPart, ok := strings.Cut(body, "::")
 	if !ok {
-		return nil, nil, usagef("factor model reference %q must separate area and factor paths with ::", ref)
+		return nil, nil, usagef("%s %q must separate area and factor paths with ::", label, ref)
 	}
 	areaPath, err := parseReferencePath(areaPart)
 	if err != nil {
-		return nil, nil, usagef("factor model reference %q has invalid area path: %w", ref, err)
+		return nil, nil, usagef("%s %q has invalid area path: %w", label, ref, err)
 	}
 	factorPath, err := parseReferencePath(factorPart)
 	if err != nil {
-		return nil, nil, usagef("factor model reference %q has invalid factor path: %w", ref, err)
+		return nil, nil, usagef("%s %q has invalid factor path: %w", label, ref, err)
 	}
 	if len(factorPath) == 0 {
-		return nil, nil, usagef("factor model reference %q must name a factor path", ref)
+		return nil, nil, usagef("%s %q must name a factor path", label, ref)
 	}
 	if !areaExists(spec, areaPath) {
-		return nil, nil, usagef("factor model reference %q declares an area that does not resolve in the model", ref)
+		return nil, nil, usagef("%s %q declares an area that does not resolve in the model", label, ref)
 	}
 	if !factorExists(spec, areaPath, factorPath) {
-		return nil, nil, usagef("factor model reference %q does not resolve in the model", ref)
+		return nil, nil, usagef("%s %q does not resolve in the model", label, ref)
 	}
 	return AreaPath(areaPath), FactorPath(factorPath), nil
 }
@@ -73,15 +99,28 @@ func ParseRatingReference(spec *model.Spec, ref string) (string, error) {
 	if !ok {
 		return "", usagef("rating model reference %q must start with rating:", ref)
 	}
+	return parseRatingReferenceBody(spec, ref, level, "rating model reference")
+}
+
+// ParseUnqualifiedRatingReference resolves a Rating Level reference in a context
+// where the expected reference type is fixed.
+func ParseUnqualifiedRatingReference(spec *model.Spec, ref string) (string, error) {
+	if spec == nil {
+		return "", usagef("model reference %q cannot resolve without a model", ref)
+	}
+	return parseRatingReferenceBody(spec, ref, ref, "unqualified rating reference")
+}
+
+func parseRatingReferenceBody(spec *model.Spec, ref, level, label string) (string, error) {
 	if !validReferenceName(level) {
-		return "", usagef("rating model reference %q has an invalid Rating Level ID", ref)
+		return "", usagef("%s %q has an invalid Rating Level ID", label, ref)
 	}
 	for _, candidate := range spec.RatingScale {
 		if candidate.Level == level {
 			return level, nil
 		}
 	}
-	return "", usagef("rating model reference %q does not resolve in the model", ref)
+	return "", usagef("%s %q does not resolve in the model", label, ref)
 }
 
 func parseReferencePath(raw string) ([]string, error) {

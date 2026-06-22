@@ -572,12 +572,12 @@ func writeAreaBreakdownSection(out *bytes.Buffer, report ReportDocument, labels 
 }
 
 // areaBreakdownRow renders one compact Area Breakdown row. The Area column shows
-// the Area title; the Path column shows the canonical Area model reference; the
+// the Area title; the Path column shows the unqualified Area reference; the
 // rating columns preserve Area-only and Area-with-descendants states; the
 // Factors column lists each factor as `<factor display path>: <rating>`.
 func areaBreakdownRow(area AreaRatingSummary, labels reportDisplayLabels) string {
 	return "| " + tableCell(labels.Area(area.AreaPath.Elements(), area.AreaPath.Display())) +
-		" | `" + tableCell(area.AreaPath.Reference()) + "`" +
+		" | `" + tableCell(area.AreaPath.UnqualifiedReference()) + "`" +
 		" | " + tableCell(displayAreaRatingState(area.AreaRatingState, labels.Ratings)) +
 		" | " + tableCell(displayRatingResult(area.AreaWithDescendantsRatingResult, labels.Ratings)) +
 		" | " + tableCell(areaBreakdownFactors(area, labels)) + " |\n"

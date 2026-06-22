@@ -129,8 +129,8 @@ Model's Rating Scale.
 **Rating Result**: The outcome of rating a Requirement's Findings against the
 Rating Scale: either one Rating Level or `not assessed`.
 
-**Model reference**: The canonical typed text form used at human/tool boundaries
-to address an Area, Factor, or Rating Level.
+**Model reference**: A text form used at human/tool boundaries to address an
+Area, Factor, or Rating Level.
 
 **Evaluation Report**: The structured result of evaluating a Model, including
 scope, Findings summaries, ratings, rationales, and advice.
@@ -150,31 +150,36 @@ The grammar excludes `/`, `:`, spaces, dots, and leading or trailing separators
 so canonical model references are unambiguous and do not resemble filesystem
 paths.
 
-Canonical Area references use `area:<area-path>`. The root Area reference is
+Qualified Area references use `area:<area-path>`. The root Area reference is
 `area:root`; nested Area references join Area names with `/`, for example
 `area:webhooks` and `area:webhooks/delivery`.
 
-Canonical Factor references use
+Qualified Factor references use
 `factor:<declaring-area-path>::<factor-path>`. The root declaring Area is
 written as `root`, for example `factor:root::security` and
 `factor:root::security/secrets`. Nested declaring Areas and nested Factors use
 `/` within each side of the `::` separator, for example
 `factor:webhooks/delivery::reliability/retry-behavior`.
 
-Canonical Rating Level references use `rating:<rating-level-id>`, for example
+Qualified Rating Level references use `rating:<rating-level-id>`, for example
 `rating:target`.
 
-Tools that render canonical model references MUST use the typed prefixes
-`area:`, `factor:`, and `rating:`. Tools that parse canonical model references
+Tools that render qualified model references MUST use the typed prefixes
+`area:`, `factor:`, and `rating:`. Tools that parse qualified model references
 MUST reject references whose segments fail the strict name grammar or whose
 referenced model element does not exist.
 
-Tools MAY accept shorthand references that omit the type prefix only at
-human/input edges where the expected reference type is fixed by the command,
-field, UI control, or API parameter. Tools MUST NOT persist shorthand references
-in evaluation records, `report.json`, generated reports, or other durable
-machine-readable artifacts. Mixed-reference surfaces MUST require canonical typed
-model references.
+Tools MAY render or accept unqualified references that omit the type prefix only
+where the surrounding context fixes the reference type. Unqualified Area
+references render as `root` or `<area-path>`; unqualified Factor references
+render as `<declaring-area-path>::<factor-path>`; unqualified Rating Level
+references render as the Rating Level ID.
+
+Tools MUST NOT render or accept unqualified references on mixed-reference
+surfaces or anywhere the reference type must be recoverable from the value
+alone. Tools MUST NOT persist unqualified references in evaluation records,
+`report.json`, or other durable machine-readable artifacts. Mixed-reference
+surfaces MUST require qualified model references.
 
 ## Document Structure
 

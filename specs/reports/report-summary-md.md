@@ -69,16 +69,16 @@ Area-with-descendants rating. It **MUST NOT** be the Area-only rating unless the
 recorded analysis makes those ratings equivalent.
 
 The Area Breakdown section **MUST** show each in-scope Area's title, stable Area
-model reference, Area-only rating, Area-with-descendants rating, and Factor
-breakdown.
+reference, Area-only rating, Area-with-descendants rating, and Factor breakdown.
 
 Human Markdown **MUST** label the Area Breakdown columns, in order, as `Area`,
 `Path`, `Area Rating`, `Area + Sub-Areas Rating`, and `Factors`.
 
 The `Area` column **MUST** render the Area title, falling back to the Area ID
-when the title is unavailable. The `Path` column **MUST** render the canonical
-Area model reference. The root Area renders as `area:root`; descendants render
-as `area:<area-path>`, such as `area:services/payments/webhooks`.
+when the title is unavailable. The `Path` column **MAY** render an unqualified
+Area reference because the column is Area-specific. The root Area renders as
+`root`; descendants render as `<area-path>`, such as
+`services/payments/webhooks`.
 
 Areas with child Areas but no direct requirements **MUST** render the Area-only
 rating as `(area group)` in human Markdown.
@@ -91,10 +91,10 @@ the Factor breakdown.
 For example:
 
 ```md
-| Area                 | Path                     | Area Rating  | Area + Sub-Areas Rating | Factors                                     |
-| -------------------- | ------------------------ | ------------ | ----------------------- | ------------------------------------------- |
-| Sparrow Payments API | `area:root`              | Unacceptable | Unacceptable            | Security: Unacceptable; Reliability: Target |
-| Delivery             | `area:webhooks/delivery` | Minimum      | Minimum                 | Reliability: Minimum                        |
+| Area                 | Path                | Area Rating  | Area + Sub-Areas Rating | Factors                                     |
+| -------------------- | ------------------- | ------------ | ----------------------- | ------------------------------------------- |
+| Sparrow Payments API | `root`              | Unacceptable | Unacceptable            | Security: Unacceptable; Reliability: Target |
+| Delivery             | `webhooks/delivery` | Minimum      | Minimum                 | Reliability: Minimum                        |
 ```
 
 The Selected Findings section **MUST** include only deterministic selected

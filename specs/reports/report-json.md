@@ -53,9 +53,9 @@ records, including ordered `areaPath` entries, ordered `factorPath` entries,
 rating `level` ids, and record references. It **MUST NOT** replace those stable
 identifiers with human display titles.
 
-`report.json` **MAY** add derived canonical model-reference strings, but it
-**MUST** preserve `areaPath` and `factorPath` arrays as the durable source of
-truth.
+`report.json` **MAY** add derived qualified model-reference strings, but it
+**MUST NOT** persist unqualified references. It **MUST** preserve `areaPath` and
+`factorPath` arrays as the durable source of truth.
 
 Collections **MUST** render as arrays, including empty arrays; they **MUST NOT**
 render as `null`.

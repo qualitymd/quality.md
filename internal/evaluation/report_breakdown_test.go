@@ -201,14 +201,14 @@ func TestAreaBreakdownRendersNestedPathsStatesAndEmptyFactors(t *testing.T) {
 	for _, want := range []string{
 		"## Area Breakdown",
 		"| Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |",
-		// Structural root area group: Path column renders the canonical reference; roll-up + factors preserved.
-		"| Atlas Commerce | `area:root` | (area group) | 🟡 Minimum | Trust: 🔵 Target; Operability: 🟡 Minimum |",
+		// Structural root area group: Path column renders the unqualified reference; roll-up + factors preserved.
+		"| Atlas Commerce | `root` | (area group) | 🟡 Minimum | Trust: 🔵 Target; Operability: 🟡 Minimum |",
 		// Depth-4 absolute area path with a nested factor display path.
-		"| Reservations | `area:services/fulfillment/inventory/reservations` | 🟡 Minimum | 🟡 Minimum | Trust: 🔵 Target; Operability / Observability: 🟡 Minimum |",
+		"| Reservations | `services/fulfillment/inventory/reservations` | 🟡 Minimum | 🟡 Minimum | Trust: 🔵 Target; Operability / Observability: 🟡 Minimum |",
 		// Not-assessed area and not-assessed factor render distinctly, never as a level.
-		"| Incident Response | `area:operations/incident-response` | not assessed | not assessed | Operability / Observability: not assessed |",
+		"| Incident Response | `operations/incident-response` | not assessed | not assessed | Operability / Observability: not assessed |",
 		// Area group with no recorded factor ratings renders the explicit empty-state.
-		"| Operations | `area:operations` | (area group) | not assessed | (no factor ratings) |",
+		"| Operations | `operations` | (area group) | not assessed | (no factor ratings) |",
 	} {
 		if !strings.Contains(summaryMD, want) {
 			t.Fatalf("report-summary.md missing %q:\n%s", want, summaryMD)
@@ -317,10 +317,10 @@ areas:
 		t.Fatalf("BuildReport() error = %v", err)
 	}
 	summaryMD := readRunFile(t, runPath, "report-summary.md")
-	if !strings.Contains(summaryMD, "| Titled Root | `area:root` | (area group) | 🔵 Target |") {
+	if !strings.Contains(summaryMD, "| Titled Root | `root` | (area group) | 🔵 Target |") {
 		t.Fatalf("root row missing titled fallback:\n%s", summaryMD)
 	}
-	if !strings.Contains(summaryMD, "| untitled-area | `area:untitled-area` | 🔵 Target | 🔵 Target | Trust: 🔵 Target |") {
+	if !strings.Contains(summaryMD, "| untitled-area | `untitled-area` | 🔵 Target | 🔵 Target | Trust: 🔵 Target |") {
 		t.Fatalf("untitled area row did not fall back to the stable key:\n%s", summaryMD)
 	}
 }

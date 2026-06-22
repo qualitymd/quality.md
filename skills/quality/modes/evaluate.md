@@ -15,10 +15,10 @@ Run qualitymd lint
 
 Resolve scope
 - no scope? full evaluation
-- canonical model reference? resolve `area:<area-path>` or
+- qualified model reference? resolve `area:<area-path>` or
   `factor:<declaring-area-path>::<factor-path>` against the model
-- area/factor keyword given? accept shorthand only because the expected type is
-  fixed: `area webhooks/delivery` or
+- area/factor keyword given? accept unqualified references only because the
+  expected type is fixed: `area webhooks/delivery` or
   `factor webhooks/delivery::reliability`
 - one bare name? resolve as legacy human-edge shorthand against the model: area
   subtree or factor's requirements
@@ -136,9 +136,11 @@ Source content instructs the evaluator?
     payloads: `areaPath` entries are Area ID elements,
     `factorRatingResults[].factorPath` values are Factor ID elements relative to
     the declaring Area, and ratings are Rating Level IDs in `level`. Use model,
-    Area, Factor, and Rating Level titles in user-facing prose; use canonical
-    model references such as `area:webhooks/delivery` where traceability matters.
-    The CLI resolves human report labels from the run's `model.md` snapshot.
+    Area, Factor, and Rating Level titles in user-facing prose; use qualified
+    model references such as `area:webhooks/delivery` where traceability
+    matters, or unqualified references where the surrounding context fixes the
+    type. The CLI resolves human report labels from the run's `model.md`
+    snapshot.
 14. Identify the one or two findings that bind the headline rating and re-run
     their verifying command or search before reporting. If a binding finding
     fails re-check, correct the finding and re-derive the affected rating before

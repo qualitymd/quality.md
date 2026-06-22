@@ -2,6 +2,22 @@
 
 ## 2026-06-22
 
+- **In-Review**: Completed implementation of
+  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  and advanced it from `In-Progress` to `In-Review`. Added unqualified Area,
+  Factor, and Rating reference helpers; type-specific unqualified parsers while
+  preserving strict qualified parsing; unqualified Area Breakdown `Path`
+  rendering in `report-summary.md` and `report.md`; generated example updates;
+  durable spec alignment; runtime `/quality` guidance; and changelog. Verified
+  `go test ./...` and `mise run check`.
+
+- **In-Progress**: Advanced
+  [0059 - Unqualified model references](0059-unqualified-model-references.md)
+  from `Design` to `In-Progress`. The functional spec and design doc are
+  settled; implementation begins across unqualified reference helpers,
+  type-specific parsing, shared Area Breakdown rendering, durable specs, runtime
+  skill guidance, generated examples, and changelog.
+
 - **Done**: Landed and archived
   [0058 - Model reference identifiers](archive/0058-model-reference-identifiers.md)
   — advanced it to `Done` and moved the parent concept and its

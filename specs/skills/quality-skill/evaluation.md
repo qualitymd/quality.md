@@ -105,9 +105,9 @@ flowchart TD
    stable model identifiers: `areaPath` entries are Area ID elements,
    `factorRatingResults[].factorPath` values are Factor ID elements relative to
    the declaring Area, and ratings are Rating Level IDs in `level`. Human-facing
-   prose can use titles and canonical model references for traceability; records
-   keep structured identifiers so reports, gates, and machine consumers remain
-   stable.
+   prose can use titles, qualified model references, or unqualified references
+   where the surrounding context fixes the type; records keep structured
+   identifiers so reports, gates, and machine consumers remain stable.
 10. **Check and report** with `qualitymd evaluation status <run>` followed by
     `qualitymd evaluation report build <run>` when reportable.
 

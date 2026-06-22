@@ -121,11 +121,13 @@ file paths.
 
 Area local and aggregate ratings **MUST** render as explicit rating objects.
 Human Markdown reports resolve Model, Area, Factor, and Rating Level display
-labels from the run's `model.md` snapshot and use canonical model references
-where a stable handle is displayed. `report.json` preserves the structured Area
-IDs and Factor IDs from assessment and analysis records through `areaPath` and
-`factorPath` arrays; derived canonical references may be added only without
-replacing those arrays.
+labels from the run's `model.md` snapshot. They may use unqualified references
+where the surrounding report context fixes the reference type, such as the
+Area-specific Area Breakdown `Path` column. `report.json` preserves the
+structured Area IDs and Factor IDs from assessment and analysis records through
+`areaPath` and `factorPath` arrays; derived qualified references may be added
+only without replacing those arrays, and unqualified references must not be
+persisted there.
 
 ## report.md
 

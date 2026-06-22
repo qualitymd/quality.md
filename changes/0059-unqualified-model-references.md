@@ -2,7 +2,7 @@
 type: Change Case
 title: Unqualified model references
 description: Define bounded unqualified Area, Factor, and Rating references and use them for Area-only report summary paths.
-status: Design
+status: In-Review
 tags: [format, references, reports, cli]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -62,48 +62,48 @@ In-Review.
 
 Code:
 
-- [ ] `internal/evaluation/types.go` and model-reference helpers - add
+- [x] `internal/evaluation/types.go` and model-reference helpers - add
       `UnqualifiedReference` methods/functions for Area, Factor, and Rating
       references while preserving qualified forms.
-- [ ] `internal/evaluation/model_reference.go` and tests - accept unqualified
+- [x] `internal/evaluation/model_reference.go` and tests - accept unqualified
       references only through type-specific parsing paths where context fixes
       the reference type.
-- [ ] `internal/evaluation/report.go` and report tests - render unqualified
+- [x] `internal/evaluation/report.go` and report tests - render unqualified
       Area references in the shared Area Breakdown `Path` column.
-- [ ] Generated report fixtures under `specs/skills/quality-skill/examples/` -
+- [x] Generated report fixtures under `specs/skills/quality-skill/examples/` -
       update report-summary and report Markdown outputs after renderer changes.
 
 Specs:
 
-- [ ] [`SPECIFICATION.md`](../SPECIFICATION.md) - define unqualified references,
+- [x] [`SPECIFICATION.md`](../SPECIFICATION.md) - define unqualified references,
       allowed render/accept contexts, Area/Factor/Rating forms, and persistence
       limits.
-- [ ] [`specs/reports/report-summary-md.md`](../specs/reports/report-summary-md.md)
+- [x] [`specs/reports/report-summary-md.md`](../specs/reports/report-summary-md.md)
       - allow the Area Breakdown `Path` column to use unqualified Area
       references.
-- [ ] [`specs/reports/report-md.md`](../specs/reports/report-md.md) - keep the
+- [x] [`specs/reports/report-md.md`](../specs/reports/report-md.md) - keep the
       full report's shared compact Area Breakdown aligned with summary behavior.
-- [ ] [`specs/reports/report-json.md`](../specs/reports/report-json.md) and
+- [x] [`specs/reports/report-json.md`](../specs/reports/report-json.md) and
       [`specs/evaluation-records/report-outputs.md`](../specs/evaluation-records/report-outputs.md)
       - preserve structured path arrays and forbid durable machine reliance on
       unqualified strings.
-- [ ] [`specs/skills/quality-skill/reporting.md`](../specs/skills/quality-skill/reporting.md)
+- [x] [`specs/skills/quality-skill/reporting.md`](../specs/skills/quality-skill/reporting.md)
       - align skill-facing report guidance with unqualified Area Breakdown paths
       in human reports and structured identifiers in `report.json`.
-- [ ] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
       and [`specs/skills/quality-skill/evaluation.md`](../specs/skills/quality-skill/evaluation.md)
       - align fixed-type input guidance with unqualified references.
-- [ ] OKF logs under [`specs/`](../specs/log.md) - record durable spec updates.
+- [x] OKF logs under [`specs/`](../specs/log.md) - record durable spec updates.
 
 Runtime skill and docs:
 
-- [ ] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) and
+- [x] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) and
       [`skills/quality/modes/evaluate.md`](../skills/quality/modes/evaluate.md)
       - distinguish canonical typed references from unqualified fixed-type
       references.
-- [ ] [`skills/quality/resources/SPECIFICATION.md`](../skills/quality/resources/SPECIFICATION.md)
+- [x] [`skills/quality/resources/SPECIFICATION.md`](../skills/quality/resources/SPECIFICATION.md)
       - update the bundled specification copy when `SPECIFICATION.md` changes.
-- [ ] [`CHANGELOG.md`](../CHANGELOG.md) - add the unreleased entry when the
+- [x] [`CHANGELOG.md`](../CHANGELOG.md) - add the unreleased entry when the
       implementation lands.
 
 ## Children
@@ -115,5 +115,7 @@ Runtime skill and docs:
 
 ## Status
 
-`Design`. The functional spec and design doc have been created. Implementation
-has not started.
+`In-Review`. Implementation is complete across unqualified reference helpers,
+type-specific parsing, shared Area Breakdown rendering, durable specs, runtime
+skill guidance, generated examples, and changelog. Verified with `go test ./...`
+and `mise run check`.

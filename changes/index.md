@@ -44,7 +44,7 @@ edit.
 # Open change cases
 
 - [0059 Unqualified model references](0059-unqualified-model-references.md)
-  (`Design`) - define bounded unqualified Area, Factor, and Rating references
+  (`In-Review`) - define bounded unqualified Area, Factor, and Rating references
   for fixed-type contexts and use them for Area-only report summary paths.
 
 Completed change cases live in [`archive/`](archive/); copy

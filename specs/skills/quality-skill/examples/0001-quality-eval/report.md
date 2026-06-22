@@ -71,10 +71,10 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 | Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |
 | --- | --- | --- | --- | --- |
-| Sparrow Payments API | `area:root` | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
-| Ledger | `area:ledger` | Target | Target | Correctness: Target |
-| Webhooks | `area:webhooks` | Target | Minimum | Security: Target |
-| Delivery | `area:webhooks/delivery` | Minimum | Minimum | Reliability: Minimum |
+| Sparrow Payments API | `root` | Unacceptable | Unacceptable | Security: Unacceptable; Reliability: Target |
+| Ledger | `ledger` | Target | Target | Correctness: Target |
+| Webhooks | `webhooks` | Target | Minimum | Security: Target |
+| Delivery | `webhooks/delivery` | Minimum | Minimum | Reliability: Minimum |
 
 ## Area Details
 
