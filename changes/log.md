@@ -2,6 +2,54 @@
 
 ## 2026-06-22
 
+- **Refinement**: Updated
+  [0058 - Model reference identifiers](0058-model-reference-identifiers.md) to
+  explicitly list [`specs/cli/lint.md`](../specs/cli/lint.md) alongside
+  [`specs/cli/lint-rules.md`](../specs/cli/lint-rules.md), so the lint command
+  contract and lint rule catalog both account for strict Area name, Factor name,
+  and Rating Level ID validation with named rule IDs.
+
+- **Refinement**: Updated
+  [0058 - Model reference identifiers](0058-model-reference-identifiers.md) to
+  use `rating:` as the canonical model-reference prefix for Rating Level IDs,
+  while keeping the formal identifier term "Rating Level ID". This keeps the
+  CLI/user-facing reference vocabulary aligned with Area and Factor references
+  without renaming the underlying `ratingScale[].level` field.
+
+- **Draft**: Created
+  [0058 - Model reference identifiers](0058-model-reference-identifiers.md)
+  (`Draft`) with its
+  [functional spec](0058-model-reference-identifiers/spec.md) and
+  [child index](0058-model-reference-identifiers/index.md). The case defines
+  strict Area names, Factor names, and Rating Level IDs; formal Area, Factor,
+  and Rating Level IDs; canonical typed model references; edge-only shorthand;
+  and clearer report summary Area Breakdown columns that separate Area title,
+  stable Area reference, Area-only rating, aggregate rating, and compact Factor
+  ratings. Added the case to the open-cases list in the bundle
+  [index](index.md).
+
+- **Design**: Advanced
+  [0057 - Quality data directory](0057-quality-data-directory.md) from `Draft`
+  to `Design` and added its
+  [design doc](0057-quality-data-directory/design.md). The design introduces
+  `internal/workspace` as the shared resolver for selected model path,
+  repository root, config file, quality data directory, evaluation directory,
+  and quality log directory; keeps `config` out of the normative Model and JSON
+  Schema; and makes lint's unknown-key handling internally rule-configurable
+  while defaulting to strict errors except for root `config`. Updated the
+  open-cases entry in the bundle [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0057 - Quality data directory](0057-quality-data-directory.md) (`Draft`) with
+  its [functional spec](0057-quality-data-directory/spec.md) and
+  [child index](0057-quality-data-directory/index.md). The case defines the
+  QUALITY.md workspace as the resolved operating context for one model file,
+  uses `.quality/` as the quality data directory, moves default evaluation runs
+  and the quality log under that directory, adds a root `config` pointer for
+  tooling config resolution, and keeps lint strict through internally
+  configurable unknown-key rule options. Added the case to the open-cases list
+  in the bundle [index](index.md).
+
 - **Done**: Landed and archived
   [0056 - Prospective evaluation plan artifacts](archive/0056-prospective-evaluation-plan-artifacts.md) —
   advanced it to `Done` and moved the parent concept and its
