@@ -109,7 +109,7 @@ skill safe against the content it reads.
 - **Determinism over flair.** Given the same model, evaluated source, and scope, the skill
   should reach the same ratings and surface the same key gaps. Ratings are
   inferred judgments, not sampled opinions (see
-  [Grounding judgment](#grounding-judgment)).
+  [Grounding judgment](evaluation.md#grounding-judgment)).
 
 ## Invocation
 
@@ -204,7 +204,7 @@ valid:
   available to disambiguate the rare name that is both. Two bare names resolve as
   an `area factor` pair — the factor narrowed within that area.
 - **Rigor** — the evaluation depth (default `standard`); see
-  [Rigor levels](#rigor-levels).
+  [Rigor levels](evaluation.md#rigor-levels).
 
 ## User interaction contract
 
@@ -326,134 +326,52 @@ secondary context when needed for disambiguation or traceability. The skill
 **MUST NOT** replace stable identifiers with titles in evaluation record
 payloads.
 
+### Mode specs
+
+Mode-specific routing, mutation surfaces, required artifacts, stop conditions,
+and completion criteria live in behavioral component specs under
+[`modes/`](modes/index.md). The parent spec keeps the shared invocation,
+interaction, safety, CLI ownership, evaluation, reporting, and quality-log
+contracts that every mode composes.
+
 ### Wizard
 
-The `wizard` mode is the quality wayfinder: a read-only coaching entry point for
-a user at any point in the QUALITY.md lifecycle. It **MUST NOT** modify
-anything, create evaluation records, build reports, or rate the evaluated source. It can
-make readiness judgments — whether the project is set up, whether the model is
-valid or useful enough to evaluate, and whether prior evaluations or
-recommendations suggest a better next step — but those judgments are routing
-guidance, not Evaluation ratings.
-
-The wizard **MUST** follow a probe → classify → recommend → offer flow:
-
-1. **Probe state.** Check CLI readiness; resolve the model file; inspect whether
-   `QUALITY.md` exists; run `qualitymd status --json` for mechanical model,
-   source-coverage, readiness, and evaluation-history signals.
-2. **Inspect model lifecycle.** When the model exists and is structurally valid,
-   use the
-   [`Top 10 QUALITY.md checks`](guides/top-10-quality-md-checks-md.md) checklist for
-   a bounded inspection of the `QUALITY.md` file itself. The wizard **MUST NOT**
-   inspect evaluated source files, read evaluation report bodies, create
-   evaluation records, or rate the evaluated source during this checklist pass.
-   Findings from this pass are routing findings about model state and usefulness.
-3. **Classify readiness.** Name the user's lifecycle state using the best match:
-   **no setup**, **invalid model**, **starter/skeleton model**, **usable but
-   immature model**, **ready to evaluate**, **has evaluation history**, or
-   **mature but needs maintenance/reconciliation**. A state can note a secondary
-   concern when useful, such as "ready to evaluate, but prior recommendations are
-   still open."
-4. **Recommend one next step.** Name the best next workflow and explain why it is
-   best from the observed state.
-5. **Offer concrete alternatives.** Present a short menu of runnable workflows,
-   not vague advice.
-
-The wizard's output **MUST** be status-first and action-oriented:
-
-```text
-Status
-- CLI:
-- QUALITY.md:
-- Model:
-- Evaluation history:
-- Model history:
-- Readiness:
-
-QUALITY.md inspection findings
-- <top finding or "none blocking">
-
-Recommended next step
-- <workflow> because <observed reason>
-
-Options
-1. <concrete workflow>
-2. <concrete workflow>
-3. <concrete workflow>
-```
-
-The options should be selected from the workflows the skill can route to:
-creating setup, repairing a model that fails lint, reviewing or improving
-`QUALITY.md` with the authoring guide, evaluating the root area whole or scoped,
-improving the evaluated source from evaluation recommendations, reviewing evaluation
-history, or running `/quality update` when the CLI is missing, below the
-prerequisite range, or the skill/CLI pair is incompatible. The wizard judges CLI
-readiness offline from the visible version against the prerequisite range and
-**MUST NOT** probe the network; discovering a newer-but-compatible release
-belongs to `/quality update` (`qualitymd update --check`). When the user asks to review or improve the
-`QUALITY.md` itself, the wizard uses the authoring guide as the model-quality
-reference and routes to a confirmed editing workflow rather than treating the
-`QUALITY.md` as the root area of an Evaluation report.
+[`wizard`](modes/wizard.md) is the read-only wayfinder for ambiguous or
+status-oriented requests. It inspects local QUALITY.md lifecycle state,
+classifies readiness, recommends one next workflow, and offers concrete
+alternatives without modifying files, creating records, building reports,
+updating tooling, or rating evaluated source.
 
 ### Setup
 
-The `setup` mode is the minimal bootstrap path after the skill is installed. It
-**MUST** verify that the `qualitymd` CLI is present and compatible before
-running CLI-dependent work. For released installs, compatibility is the CLI
-SemVer range declared by `metadata.requires-qualitymd-cli`. A local development
-build is compatible when it exposes the commands the skill depends on. When the
-CLI is missing or outside the supported release range, or when a local
-development build lacks required commands, `setup` **MUST** stop and facilitate
-install or update before running CLI-dependent work.
+[`setup`](modes/setup.md) bootstraps a missing model and guides first
+population. It verifies CLI compatibility, delegates deterministic scaffolding
+and validation to `qualitymd`, reads the authoring and getting-started guides,
+and may write the model file plus a quality-log entry for meaningful model
+creation or model-shape changes.
 
-After the CLI prerequisite is met, `setup` **MUST** drive
-[`qualitymd init`](../../cli/init.md) to create a deterministic skeleton when the
-model file is absent, then run [`qualitymd lint`](../../cli/lint.md). It
-**MUST NOT** reimplement scaffolding, validation, CLI installation tooling, or
-source-driven authoring judgment. After a valid skeleton, `setup` **MUST** read
-the [authoring guide](guides/authoring-md.md) and
-[getting-started guide](guides/getting-started-md.md) and begin guided first
-population in the same run — drafting the body's Overview, Scope, Needs, and
-Risks with each section's unknowns, open questions, and any material support
-that is not agent-accessible, and proposing project-specific Factors and
-Requirements to replace the placeholders. Guided population **SHOULD** include a
-`quality-md` Area that evaluates the `QUALITY.md` artifact itself against the
-active authoring guide unless the user declines or the model file is not in the
-root area it governs. The Area **SHOULD** use the key `quality-md`, a title of
-the form `<Root Title> QUALITY.md`, an Area `description`, and an explicit
-path-based `source` for the model file, such as `./QUALITY.md`. It **MUST NOT**
-use prose aliases such as `(this file)` for `source`. That Area **SHOULD**
-include concise YAML comments that distinguish the Area `source` (the
-`QUALITY.md` artifact being evaluated) from the Requirement `assessment` (the
-authoring guide used to judge it), and it **SHOULD** use one Area-level
-Requirement with `factors` when the active authoring guide defines one coherent
-judgment across multiple Factors. `setup` **MUST NOT** stop at naming that next
-step. Follow-on routing belongs to [`wizard`](#wizard).
+### Evaluate
+
+[`evaluate`](modes/evaluate.md) creates evaluation artifacts for a resolved
+model file, scope, and rigor. It may write only evaluation-run artifacts, follows
+the shared Define -> Assess and Rate -> Analyze -> Advise -> Report workflow,
+and emits recommendations whenever evaluation finds gaps.
+
+### Improve
+
+[`improve`](modes/improve.md) runs the same evaluation workflow, presents a
+decision brief for a recommendation option, applies a confirmed change only
+after explicit approval, then re-evaluates the affected scope and reports the
+before/after delta. When the confirmed change alters the model, it also writes
+the corresponding quality-log entry.
 
 ### Update
 
-The `update` mode is maintenance orchestration for the `/quality` stack. It
-**MUST** inspect the loaded skill metadata, inspect the installed `qualitymd`
-CLI version, use `qualitymd update --check` when available, and build a plan
-before applying changes.
-
-The plan **MUST** classify whether the `/quality` skill, the `qualitymd` CLI,
-both, or neither need action. It **MUST** ask for explicit user confirmation
-before applying any update action.
-
-The skill **MUST NOT** edit installed skill files directly. Skill updates
-belong to the Agent Skills installer or package manager. The skill **MUST NOT**
-replace the `qualitymd` binary directly. CLI updates belong to
-`qualitymd update`, owner package-manager commands, or documented manual
-guidance.
-
-After a CLI update, the skill **MUST** verify the visible `qualitymd` version
-against the area skill's required CLI range. After a skill update, it **MUST**
-tell the user that the active agent session may still be running previously
-loaded skill instructions and may require restart, reload, or a new session.
-
-`update` **MUST** stop before setup, evaluation, or improvement work. It is not
-an Evaluation mode.
+[`update`](modes/update.md) orchestrates compatible `/quality` skill and
+`qualitymd` CLI maintenance. It inspects the loaded skill metadata and visible
+CLI version, plans any skill or CLI update action, asks before mutation,
+delegates mechanics to owner tooling, verifies the visible result, and stops
+before setup, evaluation, or improvement work.
 
 ### Examples
 
@@ -494,7 +412,7 @@ output as the source of truth:
 - **`spec`** emits the format specification; the skill **MUST** ground its
   understanding of the *format and schema rules and rating vocabulary* in this
   output rather than a hard-coded copy. Its *evaluation process* is the skill's
-  own (see [Evaluation workflow](#evaluation-workflow)) and **conforms to**,
+  own (see [Evaluation Workflow](#evaluation-workflow)) and **conforms to**,
   rather than is fetched from, the spec.
 
 The skill should discover the CLI's available commands and flags from the CLI
@@ -510,521 +428,27 @@ text. Before evaluation work, it **MUST** verify that
 `qualitymd evaluation report` are
 available; if any is missing, it stops rather than hand-authoring the run.
 
-## Evaluation workflow
+## Evaluation Workflow
 
-### Conformance to the format spec
-
-The skill **owns** its evaluation process: this spec and the skill's prompt
-define how the skill assesses, rates, rolls up, advises, and reports, and the
-CLI performs the mechanical steps. That process realizes the five phases of the
-format spec's [Evaluation](../../../SPECIFICATION.md#evaluation) contract —
-**Define → Assess and Rate → Analyze → Advise → Report** — and every evaluation
-the skill performs **MUST conform to** that contract: the assessment → finding →
-rating chain, *not assessed* over guessing, inferred (not computed) roll-up
-weighted by what matters, and the required report contents.
-
-Conformance is the binding relationship, not deference. The skill is **not** a
-mere executor of the spec text; it is one *implementation* of an evaluator, free
-to specify its own concrete workflow, ordering, heuristics, rigor levels, and
-artifacts so long as the result satisfies the contract. The format spec remains
-the **conformance target**: where the skill's process and the contract would
-diverge, the contract governs and the skill **MUST** be corrected to conform.
-
-### Workflow
-
-For an `evaluate` or `improve` invocation the skill's process interleaves the
-judgment phases above with mechanical steps it drives through the CLI:
-
-```mermaid
-flowchart TD
-    Read[Read resolved model file] --> Lint{lint valid?}
-    Lint -->|errors| Stop([Stop: resolve structural errors first])
-    Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
-    Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
-    Run --> Plan[Fill design.md, plan.md,<br/>and debug-log.md]
-    Plan --> Eval[Evaluate in-scope areas:<br/>Define → Assess &amp; Rate → Analyze → Advise]
-    Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
-    Records --> Status[Check qualitymd evaluation status]
-    Status --> Report[Build reports through<br/>qualitymd evaluation report build]
-    Report --> Mode{Mode?}
-    Mode -->|evaluate| Done([Done])
-    Mode -->|improve| Confirm{User confirms a<br/>recommendation + option?}
-    Confirm -->|no| Done
-    Confirm -->|yes| Apply[Apply chosen option<br/>to evaluated source or model]
-    Apply --> ReEval[Create a new run folder<br/>and re-evaluate affected scope]
-    ReEval --> Criterion{Reached<br/>done-criterion?}
-    Criterion -->|yes| Done
-    Criterion -->|no| Report
-```
-
-1. **Read** the resolved model file.
-2. **Validate** it with `lint`, stopping on errors (see
-   [Driving the CLI](#driving-the-cli)).
-3. **Ground** the format and schema rules and rating vocabulary from
-   `qualitymd spec`.
-4. **Create the run** with `qualitymd evaluation create`, letting the CLI
-   number the folder, create the layout, snapshot `model.md`, and seed
-   `debug-log.md`.
-5. **Plan** — fill the evaluation's **design** (the resolved parameters and the
-   `model.md` snapshot it is bound to) and **execution plan** (how the in-scope
-   `source` will be covered at the chosen rigor). The plan **MUST** record the
-   chosen rigor and concrete requirement set covered.
-6. **Record planned coverage when useful** — after the plan is settled, the
-   skill should add `coverage:` frontmatter to `plan.md` when resume diagnostics
-   materially matter, especially for standard, deep, concurrent-write, or
-   interruption-prone runs.
-7. **Maintain the debug log** — hand-author concise `debug-log.md` entries for
-   notable events involving the evaluation process itself. Keep the log separate
-   from formal evaluation judgment: it may explain routing, retries,
-   coverage adjustment, redaction, prompt-injection handling, or artifact
-   recovery, but it must not duplicate evaluation findings, rating
-   rationale, or raw output from project commands exercised as assessment
-   evidence.
-8. **Evaluate** — run the skill's evaluation process (the five conformant phases
-   above) over the in-scope areas, resolving each area's `source` to the
-   entities to assess.
-9. **Write records** with
-   `qualitymd evaluation assessment add <run>`,
-   `qualitymd evaluation analysis set <run>`, and
-   `qualitymd evaluation recommendation add <run>`,
-   supplying judgment JSON while the CLI owns serialization, numbering, and
-   `schemaVersion`. The judgment JSON uses stable model identifiers: Area path
-   entries are area keys, Factor references and `factorRatingResults[].factorPath`
-   values are factor keys, and ratings are rating `level` ids. Human-facing
-   prose can use titles; records keep identifiers so reports, gates, and
-   machine consumers remain stable.
-10. **Check and report** with `qualitymd evaluation status <run>` followed by
-    `qualitymd evaluation report build <run>` when reportable. Under `improve`,
-    the skill then **applies a chosen
-    recommendation** — defaulting to its recommended option — only on explicit
-    confirmation, then creates a **new numbered evaluation folder** and
-    re-evaluates the affected scope to confirm the rating moved (see
-    [Operating model](#operating-model)).
-
-`improve` adds no new judgment phase — it runs this same workflow, recommendations
-and all, then applies a confirmed recommendation and verifies the result by
-re-rating.
-
-### Grounding judgment
-
-The skill's judgment is bound to the model and its evidence, not free opinion:
-
-- **Rate against the declared criteria.** Each requirement is rated against the
-  rating scale's `criterion` for each level, honoring any requirement-level
-  `ratings` overrides — never against an external or invented standard (per
-  [Assess and Rate](../../../SPECIFICATION.md#assess-and-rate)).
-- **Every rating cites verified evidence.** A rating **MUST** rest on findings
-  drawn from the area's `source` — observations a reader could check. Claims
-  about code, CLI, or tool behavior **MUST** be verified by an executed command
-  or search cited in the finding evidence. Every finding locator **MUST** be a
-  `file:line` or exact searchable string.
-- **Insufficient evidence is *not assessed*, not a guess.** When there are no
-  findings or the evidence cannot be rated against the scale, the requirement (or
-  roll-up) **MUST** be recorded as *not assessed* and noted, never assigned a
-  level to fill the gap (per
-  [Assess and Rate](../../../SPECIFICATION.md#assess-and-rate) and
-  [Analyze](../../../SPECIFICATION.md#analyze)).
-- **Roll-up is inferred, weighted by what matters.** The skill infers factor,
-  local, and aggregate ratings by judgment — a serious shortfall in an important
-  requirement **MUST NOT** be masked by many satisfactory ones — and should
-  record a brief rationale naming the binding constraints (per
-  [Analyze](../../../SPECIFICATION.md#analyze)).
-
-### Rigor levels
-
-Rigor sets how deeply the skill gathers evidence and how much of each area's
-`source` it covers. It changes the *thoroughness* of assessment, never the rating
-criteria or the report's shape.
-
-|                          | `quick`                                         | `standard` (default)                          | `deep`                                                  |
-| ------------------------ | ----------------------------------------------- | --------------------------------------------- | ------------------------------------------------------- |
-| Source coverage          | Hotspots — highest-risk, highest-churn entities | Representative coverage of each in-scope area | Exhaustive — the whole in-scope `source`                |
-| Evidence per requirement | Enough to rate high-confidence requirements     | Enough to rate every in-scope requirement     | All available evidence, including expensive diagnostics |
-| Findings reported        | High-confidence only                            | Full set                                      | Full set, including low-confidence "investigate" items  |
-
-Whatever the level, the report **MUST** state what was *not* assessed (see
-[Reporting](#reporting)), so a shallow pass never reads as whole coverage.
-
-The skill **MUST** re-run the verifying command or search for the one or two
-findings that bind the headline rating before building the report. If a binding
-finding fails re-check, the report **MUST NOT** assert the stale headline rating.
-The re-check *re-runs* the command rather than re-reading the earlier
-observation, because re-reading cannot catch a stale or hallucinated first read —
-the failure mode this guards against. It is scoped to the headline-binding
-findings, not every finding, because the headline is the highest-stakes output
-and a universal second pass is disproportionate at `standard` rigor.
-
-At `deep` rigor, the skill can fan out per-requirement or per-area
-assessment to subagents that return structured findings. Roll-up judgment and
-headline ratings **MUST** remain with the orchestrating skill, and subagent
-evidence must meet the same locator and verification rules.
-Subagent prompts **MUST** include the resolved scope, relevant requirements, the
-secret-handling rule, the evaluated-source-as-data rule, and an instruction to
-return structured findings only rather than files or final ratings.
+The cross-mode evaluation workflow lives in
+[/quality evaluation workflow](evaluation.md). That component spec owns
+conformance to the format spec's Evaluation contract, the evaluate/improve
+workflow, grounding judgment, rigor levels, and rating-binding evidence checks.
 
 ## Reporting
 
-The skill produces an **Evaluation Report** that conforms to
-[Report](../../../SPECIFICATION.md#report) — the Rating and its rationale, the
-Scope, the per-area requirement/factor/local/aggregate ratings with
-rationales, and the Advice. *Not assessed* outcomes **MUST** appear wherever they
-occur, distinct from rated outcomes.
+The reporting and run-artifact contract lives in
+[/quality reporting](reporting.md). That component spec owns evaluation run
+folders, model/design/plan/debug-log artifacts, assessment and analysis records,
+recommendation files, generated report forms, correction behavior, and
+reportability expectations.
 
-Every evaluation that finds gaps **MUST** also emit its Advice as discrete,
-triageable **recommendation** artifacts — recommendations are a product of
-evaluation, not of `improve` (see [Operating model](#operating-model)).
+## Quality Log
 
-A rating level's name can collide with QUALITY.md structural vocabulary —
-most often the suggested scale's **Area** level against a **Area** entity.
-Wherever a level name could be read as a structural term, the report **MUST**
-qualify it: name the level with a qualifier (the **Area** rating level;
-*rated* **Area**; *meets* **Area**; *held at* **Unacceptable**) rather than
-a bare noun, and keep structural areas introduced by their `Area:` heading
-label. The same applies to any author-named level coinciding with *Area*,
-*Factor*, or *Requirement*.
-
-The CLI creates a numbered evaluation folder per run, so each run is a durable,
-routable record. The default parent directory is `quality/evaluations/`, but a
-repository may set `.quality/config.yaml`:
-
-```yaml
-evaluationDir: quality/evaluations
-```
-
-`evaluationDir` names the parent directory that contains numbered run folders.
-The folder and record contract is defined by
-[`Evaluation records`](../../evaluation-records.md).
-It **MUST** be repository-relative, normalized before use, and rejected when it is
-absolute or escapes the repository. Missing config or missing `evaluationDir`
-uses the default. Unknown config keys should be surfaced as warnings and
-ignored.
-
-Runtime evaluation artifacts are raw outputs in the evaluated repository, not
-OKF concepts. They **MUST NOT** carry OKF frontmatter or require registration in
-`specs/schema.md`. Alongside the report and its recommendations the folder
-captures four further artifacts that make the run auditable and reproducible —
-a snapshot of the model evaluated, the run's **design** (its inputs), its
-execution **plan** (its method), and its process-only **debug log**:
-
-```
-quality/evaluations/
-  0001[-<narrowing>]-quality-eval/
-    model.md
-    design.md
-    debug-log.md
-    plan.md
-    assessments/
-      001-<area>-<requirement>.json
-      002-<area>-<requirement>.json
-    analysis/
-      <area>.json
-      <child-area>.json
-    report-summary.md
-    report.md
-    report.json
-    recommendations/
-      001-<slug>.md
-      002-<slug>.md
-```
-
-The folder name **MUST** be deterministic:
-`NNNN[-<narrowing>]-quality-eval`, where `<narrowing>` is the scoped
-area/factor slug, omitted for a whole-model run. `NNNN` is the next integer in
-the resolved evaluation directory.
-
-Together these separate the three things an audit must tell apart — the *inputs*
-(design), the *method* (plan), and the *result* (report) traced to a fixed model
-(snapshot):
-
-- The folder **MUST** include a **snapshot of the `QUALITY.md` as evaluated** —
-  the model state the ratings were produced against. A rating is only meaningful
-  against the model that defined its criteria, and that model may change after the
-  run; the snapshot makes the report a self-contained, reproducible record whose
-  findings trace to the exact requirements and `source` selectors in force at
-  evaluation time. It is a verbatim capture, not a runtime judgment, and
-  should record the revision (e.g. commit) of the evaluated source it was taken
-  against.
-- The folder **MUST** include a **design** artifact recording the evaluation's
-  resolved parameters — mode, model file, scope, and rigor (see
-  [Arguments](#arguments)) — and a citation of the `model.md` snapshot the run is
-  bound to. It is the authoritative record of *what* was evaluated and *under what
-  inputs*, so a later reader or re-run can reproduce the setup. The report's
-  **Scope** statement is the reader-facing summary of this; the full
-  parameterization lives here, stated once.
-- The folder **MUST** include a **plan** artifact recording the run's *method* —
-  how the skill covers each in-scope area's `source` at the chosen rigor (per
-  [Rigor levels](#rigor-levels)): the entities or hotspots to assess, their
-  order, and any diagnostics to run. The report's statement of what was *not
-  assessed* (see [Rigor levels](#rigor-levels)) **MUST** reconcile actual
-  coverage against this plan, so divergence between intended and achieved coverage
-  is visible rather than silent. The plan **MUST** name the rigor level and the
-  concrete requirements selected by that rigor. The design and plan together
-  **MUST** record enough concise report context for the CLI-rendered summary
-  layer: rigor, scope or narrowing, in-scope requirement set, out-of-scope or
-  deferred areas, headline evidence basis, and limitations that constrain the
-  rating.
-- The folder can include optional **planned coverage** metadata when the run
-  needs machine-checkable resume diagnostics. The skill supplies the intended
-  assessment requirements and analysis areas as `coverage:` frontmatter in
-  `plan.md` after the plan is settled.
-- The folder **MUST** include a **debug log** recording notable events involving
-  the evaluation process itself: scope ambiguity, history inspection, coverage
-  adjustment, interruptions or resumes, retries, record corrections, tooling
-  failures, redaction decisions, prompt-injection handling, or report generation
-  recovery. `debug-log.md` is not an assessment record, rating rationale, report,
-  or evidence store. Evaluation findings and rating rationale belong in the
-  formal records. When a project command is exercised as evidence against the
-  evaluated source, the log may record only the routing fact and point to the
-  assessment record; it must not copy raw command output or preserve a second
-  copy of assessment evidence.
-- The folder **MUST** capture the **assessment result records** the Evaluate phase
-  produces as JSON — one artifact per in-scope requirement, holding its findings
-  (each with its locator), the rating inferred against the requirement's
-  `criterion`, and a brief rationale: the assess → finding → rating chain of
-  [Grounding judgment](#grounding-judgment). A *not assessed* requirement gets a
-  record too, with `ratingResult.kind: not-assessed`, and a rationale stating
-  the absent evidence. Each record is **written atomically and never mutated** —
-  a re-assessment (e.g. under `improve`) produces a new evaluation folder rather
-  than editing an existing record. The skill writes assessment result records through
-  `qualitymd evaluation assessment add`; the CLI owns serialization,
-  numbering, and `schemaVersion`.
-- The folder **MUST** capture the **analysis records** the Analyze phase produces
-  as JSON — one write-once artifact per area node — holding that node's inferred
-  **local** and **aggregate** ratings and its **factor** ratings, each with a brief
-  rationale naming the binding constraints (the inferred, weighted roll-up of
-  [Grounding judgment](#grounding-judgment)). Each record **MUST cite the records
-  it derives from**: the in-scope **assessment result records** behind its local rating,
-  and its **children's analysis records** behind its aggregate — so the chain leaf
-  → node → root is explicit and a *not assessed* outcome is visible wherever it
-  propagates. The skill writes analysis records through
-  `qualitymd evaluation analysis set`; the CLI owns serialization and
-  `schemaVersion`.
-
-Assessment, analysis, and report JSON files **MUST** use stable generic
-top-level fields tied to the evaluation workflow, not fields invented for one
-factor or requirement. Domain-specific details live under `attributes` on the
-smallest relevant object.
-
-An assessment result record's finding uses generic fields:
-
-- `locator`
-- `observation`
-- `category`
-- `severity`
-- `evidence`
-- optional `attributes`
-
-For example, a secret finding may use `category: "secret"` and
-`severity: "critical"` with `attributes.credentialType`; it must not include the
-secret value. A prompt-injection observation may use
-`category: "prompt-injection"` and is recorded, not followed. Severity values
-come from the canonical evaluation-record vocabulary and reports render their
-display titles.
-
-The report is the **render over these records**, not an independent copy:
-`report-summary.md` is the concise human triage artifact, `report.md` is the
-full human rendering, and `report.json` is the machine-readable rendering of the
-same result, produced by `qualitymd evaluation report build`. The assessment result records are the source of record for
-Assess-and-Rate and the analysis records for Analyze, and the report's
-per-requirement and per-area sections derive from them (the report adds the
-Advise and Report layers and the reader-facing framing). `report.json` should
-inline only minimal generic finding summaries by assessment-record reference for
-single-file consumers; full finding detail remains in `assessments/*.json`. This
-keeps the report from drifting and makes every rating in it traceable — leaf
-finding → assessment result record → analysis record → report — to the immutable records
-that produced it.
-
-Human Markdown report labels are resolved from the run's `model.md` snapshot:
-Model, Area, Factor, and Rating Level titles are primary display text, with
-stable identifiers retained where the report needs traceability. `report.json`
-preserves stable identifiers for machines.
-
-The CLI-rendered report artifacts are specified by the durable report specs:
-[`report-summary.md`](../../reports/report-summary-md.md),
-[`report.md`](../../reports/report-md.md), and
-[`report.json`](../../reports/report-json.md). The concise summary **MUST** read
-as a decision brief for human readers: key details, Verdict, Area Breakdown,
-Selected Findings, Recommended Actions, and Scope & Limitations. Its key details
-use reader-facing labels including "Full evaluation" for an unnarrowed run and
-"Evaluation verdict" for the in-scope root Area's Area-with-descendants verdict.
-Its Recommended Actions section surfaces copyable Recommendation IDs for
-follow-up prompts. The full `report.md` remains verdict-first before detailed
-area and requirement sections. The JSON report **MUST** expose the same
-summary-layer data with non-null scope, empty arrays for empty collections,
-explicit rating objects for null or not-assessed ratings, typed lifecycle state
-for assessment and recommendation digests, typed next-step state, typed
-missing-metadata entries, and a structural Area-only rating state for area
-groups. The skill must treat those typed report states as the routing source
-rather than inferring state from `null`, absent fields, or `active` booleans
-alone.
-
-Like the report, the design, plan, assessment, and analysis records reference any
-secret value by `file:line` and type only (see
-[Boundaries](#boundaries-and-hard-rules)).
-
-A worked reference instance of this layout — model snapshot, design, plan,
-assessment result records, analysis records, report, and recommendations — is in
-[`examples/`](examples/index.md).
-
-Each recommendation file **MUST** stand on its own as a unit a reader can triage
-and route without the report or the session in front of them. It **MUST** state:
-the gap it closes, with the evidence and `file:line` locators behind it; a small
-set of remediation **options**; exactly one option marked **recommended**; and a
-**done-criterion** expressed as the outcome the in-scope requirement should reach
-against its `criterion`: for a rated gap, a target rating level; for a *not
-assessed* gap, becoming assessable and reaching at least the acceptable floor.
-That is what a later `improve` re-rates to confirm the fix. When the evidence
-or source structure makes ownership inferable, the recommendation should
-name the route hint in existing text, such as the affected package, path,
-workflow, maintainer surface, or verification command. Like the report, a
-recommendation references any secret value by `file:line` and type only (see
-[Boundaries](#boundaries-and-hard-rules)). The skill writes recommendation
-records through `qualitymd evaluation recommendation add`; the CLI owns
-Markdown frontmatter, numbering, and stable rendering.
-
-When correcting an already written recommendation, the skill should write a
-new recommendation record with `supersedes` pointing at the stale
-recommendation, rather than appending ambiguous advice with no active-state
-signal. Appending a correction without `supersedes` leaves the run reportable and
-renders both files, so the report's primary Next Action can still point at the
-stale original — the ambiguity is silent. Superseding makes the active advice
-unambiguous while preserving the audit trail.
-
-When correcting an already written assessment, the skill should write a new
-assessment result record with `supersedes` pointing at the stale assessment, then
-replace the affected analysis record so it references the active assessment. This
-analysis step is required for assessment results — and not for recommendations — because
-analysis ratings bind to assessment references, so a corrected assessment left
-unpaired with its analysis would let a roll-up silently rely on stale judgment.
-
-- A report **MUST** state the **Scope** it was produced under, so a scoped result
-  is never mistaken for a whole-model verdict.
-- A report **MUST** distinguish *not assessed* outcomes from the report's
-  **Limitations** statement. *Not assessed* is a Rating Result where evidence was
-  absent, shown per requirement and roll-up. **Limitations** bounds how far a
-  rated outcome should be trusted and reconciles actual coverage against the
-  plan.
-- The CLI **MUST** render all report forms: concise prose for triage in
-  `report-summary.md`, full prose for a person in `report.md`, and a
-  machine-readable form in `report.json`. The underlying result is the same;
-  only the rendering differs.
-
-## Quality log
-
-A `QUALITY.md` snapshot and `git log` together record *what* the model is and
-*how* it changed, but not *why*: which evaluation surfaced a gap, whether a
-criterion moved by recalibration or drift, what a new Factor was reacting to.
-That rationale is what the [learn loop](#evaluation-workflow) runs on, and it is
-lost once a commit scrolls away. The **quality log** is a curated,
-evidence-linked timeline of meaningful model changes the skill maintains under
-`quality/log/`: it preserves the *why* and links each change to the evaluation
-evidence behind it. It is the model's own history for a project that has a
-`QUALITY.md` and `quality/evaluations/` but no `changes/` bundle of its own.
-
-The log is deliberately **curated, not complete**. Hand edits to `QUALITY.md`
-bypass the skill, so the log cannot be exhaustive and does not try to be — git
-remains the complete diff history, and the log carries the judgment git cannot.
-It is **not** an evaluation record and **not** a defect backlog: it records model
-changes only and *references* evaluation runs rather than copying them.
-
-The log is a **runtime output** of the skill, not a QUALITY.md format concept;
-the format and evaluation semantics remain governed by
-[`SPECIFICATION.md`](../../../SPECIFICATION.md). A `qualitymd log` CLI command, a
-`.quality/config.yaml` `logDir` key, a standalone artifact-spec, and any
-machine-queryable index file inside `quality/log/` are all deferred until the
-surface graduates to the CLI (see [Deferred](#deferred)); this section is the
-convention-first contract the skill writes against in the meantime.
-
-### The log artifact
-
-The skill **MUST** record meaningful changes to a QUALITY.md model as entries
-under `quality/log/`, a sibling of the resolved evaluation directory. Each
-meaningful change is **one entry file**.
-
-> Rationale: a folder of independent files mirrors `quality/evaluations/` for one
-> mental model of the runtime root, and avoids the append conflicts a single
-> shared log file would create when concurrent branches or agents add
-> entries. — 0050
-
-Each entry **MUST** be named `YYYY-MM-DD-<slug>.md`, where the date is the day
-the change was made and `<slug>` is a short kebab-case summary. The skill **MUST
-NOT** assign a global sequential counter to entries.
-
-> Rationale: a date prefix orders the log chronologically without a shared
-> counter. Skill-side sequential numbering is exactly what drifted and produced a
-> run-number collision before
-> ([`evaluation-records.md`](../../evaluation-records.md)), which is why numbering
-> is CLI-owned; with no CLI in this surface, date-naming sidesteps the hazard
-> entirely. — 0050
-
-`quality/log/` is a **runtime artifact, not an OKF bundle**. It **MUST NOT** carry
-OKF `index.md`, `schema.md`, or `log.md` semantics, and entry frontmatter is
-machine metadata, not OKF concept frontmatter.
-
-> Rationale: same classification the evaluation run folders carry; runtime outputs
-> in the evaluated repository are not OKF concepts. — 0050
-
-Each entry **MUST** carry small machine-readable frontmatter and a prose
-rationale body. The frontmatter records the change kind, the model target it
-affects, and — when the change came from an evaluation — the source run and
-recommendation it traces to. The body states *why* the change was made.
-
-> Rationale: the cross-link to the evaluation run and recommendation is the log's
-> differentiator over `git log`; without it the entry is just a diff in
-> prose. — 0050
-
-### What is meaningful
-
-The skill **MUST** log a change that alters what the model *is* or *how it
-judges*: adding, removing, or renaming an Area, Factor, or Requirement; changing
-the rating scale, a criterion, or a relative weight; shifting scope; changing the
-apex or required margin; or applying an evaluation recommendation. An entry
-**SHOULD** state whether a criterion change is deliberate recalibration or a drift
-correction.
-
-The skill **MUST NOT** log Markdown-body wording, typo, or formatting changes,
-nor evaluated-source fixes that do not change the model.
-
-> Rationale: those are not model changes; git already records them, and logging
-> them turns a curated timeline into noise. — 0050
-
-The skill **SHOULD** write **one entry per coherent change** — a confirmed
-`improve` apply, or the initial model population — rather than one entry per field
-touched.
-
-> Rationale: the unit of record is the decision, not the edit; per-field entries
-> fragment one rationale across many files. — 0050
-
-### Who writes and reconciles
-
-`setup` **MUST** seed an inaugural entry after guided first population, recording
-model creation and the initial model shape. `improve` **MUST** append an entry for
-each confirmed model change, cross-linking the evaluation run and recommendation
-it came from; writing the entry **MUST NOT** require confirmation beyond the
-user's existing confirmation of the change itself, since the entry's rationale is
-the rationale already shown in the decision brief.
-
-`evaluate` **MUST NOT** write to the quality log, and no mode other than `setup`
-and `improve` writes entries.
-
-> Rationale: evaluations own `quality/evaluations/`; keeping the log to model
-> changes only — referencing runs, never duplicating them — is what stops it
-> becoming a second evaluation record. — 0050
-
-`wizard` **MUST** remain read-only with respect to the log. It **SHOULD** surface
-model history (the latest entry) in its status output, and when the model has
-changed out of band since the last logged entry it **SHOULD** classify that under
-its existing *needs reconciliation* readiness and offer a backfill route. The
-backfill itself is performed by a confirmed `improve`/authoring workflow, not by
-`wizard`.
-
-> Rationale: the log is curated, not complete; `wizard` is where the gap left by
-> hand edits gets caught and routed for repair without `wizard` itself mutating
-> anything. — 0050
-
-The run frame's mutation enumeration (see [Run frames](#run-frames)) **MUST**
-include the quality log as a distinct mutation surface, so a write to it is
-visible before it happens.
+The convention-first quality log contract lives in
+[/quality quality log](quality-log.md). That component spec owns dated
+`quality/log/` entries, meaningful-change criteria, mode write/reconcile
+responsibilities, and the deferred CLI surface.
 
 ## Deferred
 
@@ -1035,11 +459,11 @@ visible before it happens.
 - **`improve` apply mechanics.** The shape of the apply step is settled — apply a
   chosen recommendation's option on explicit confirmation, then re-evaluate the
   affected scope to confirm it reached the recommendation's done-criterion (see
-  [Reporting](#reporting)). How that change is staged, isolated, or reviewed
-  before it lands is left for later.
-- **Quality log CLI surface.** The [quality log](#quality-log) is convention-first:
-  the skill writes date-named entries directly. A `qualitymd log` command (so
-  numbering and an index can be CLI-owned), a `.quality/config.yaml` `logDir` key
-  parallel to `evaluationDir`, a standalone artifact-spec, and a machine-queryable
-  index file inside `quality/log/` all wait for the convention to prove out before
-  the surface graduates to the CLI.
+  [Reporting](reporting.md#reporting)). How that change is staged, isolated, or
+  reviewed before it lands is left for later.
+- **Quality log CLI surface.** The [quality log](quality-log.md#quality-log) is
+  convention-first: the skill writes date-named entries directly. A
+  `qualitymd log` command (so numbering and an index can be CLI-owned), a
+  `.quality/config.yaml` `logDir` key parallel to `evaluationDir`, a standalone
+  artifact-spec, and a machine-queryable index file inside `quality/log/` all
+  wait for the convention to prove out before the surface graduates to the CLI.

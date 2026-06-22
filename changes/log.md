@@ -3,6 +3,53 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0052 - Durable spec alignment](archive/0052-durable-spec-alignment.md) —
+  advanced it to `Done` and moved the parent concept and its
+  [folder](archive/0052-durable-spec-alignment/index.md) into [`archive/`](archive/index.md).
+  The case aligned durable specs with artifact-spec versus behavioral-component
+  guidance, added `/quality` child specs for modes, evaluation workflow,
+  reporting, and quality log, narrowed the parent skill spec to shared contracts
+  and links, and strengthened the general spec-splitting guidance with a heading
+  inventory and fictional examples. Updated the archive [index](archive/index.md)
+  and emptied the open-cases list in the bundle [index](index.md).
+
+- **Review correction**: Reopened
+  [0052 - Durable spec alignment](archive/0052-durable-spec-alignment.md) from
+  `In-Review` to `In-Progress` after review found the parent `/quality` skill
+  spec still retained large independently reviewable contracts. Extended the
+  functional spec and affected artifacts to split the evaluation workflow,
+  reporting contract, and quality log into child component specs before archive.
+
+- **In-Review**: Completed implementation of
+  [0052 - Durable spec alignment](archive/0052-durable-spec-alignment.md) and advanced it
+  from `In-Progress` to `In-Review`. Added behavioral component specs under
+  [`specs/skills/quality-skill/modes/`](../specs/skills/quality-skill/modes/index.md)
+  for setup, wizard, evaluate, improve, and update; narrowed the parent
+  [`/quality` skill spec](../specs/skills/quality-skill/quality-skill.md) to
+  shared contracts plus mode summaries; updated the skill-spec
+  [index](../specs/skills/quality-skill/index.md), mode [index](../specs/skills/quality-skill/modes/index.md),
+  mode [log](../specs/skills/quality-skill/modes/log.md), and
+  [`specs/log.md`](../specs/log.md). Reconciled the affected-artifacts list:
+  no code, format spec, runtime skill files, install/scaffold files, or generated
+  artifact formats changed. `mise run fmt-md-check` passes.
+
+- **In-Progress**: Advanced
+  [0052 - Durable spec alignment](archive/0052-durable-spec-alignment.md) from `Draft` to
+  `In-Progress`. Its functional spec is settled and no design doc is required:
+  the implementation is a mechanical durable-spec restructuring that adds
+  behavioral component specs for the `/quality` modes and narrows the parent
+  skill spec to shared contracts plus mode links. Updated the bundle
+  [index](index.md).
+
+- **Creation**: Added
+  [0052 - Durable spec alignment](archive/0052-durable-spec-alignment.md) (`status: Draft`)
+  with its [functional spec](archive/0052-durable-spec-alignment/spec.md) and
+  [child index](archive/0052-durable-spec-alignment/index.md). The case aligns durable
+  specs with the updated artifact-spec versus behavioral-component guidance,
+  starting with child specs for the `/quality` modes while keeping 1:1 artifact
+  specs named after their artifacts. Updated the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0051 - Setup quality-md Area](archive/0051-setup-quality-md-area.md) —
   advanced from `In-Review` to `Done` and moved the parent concept and its
   [folder](archive/0051-setup-quality-md-area/index.md) into [`archive/`](archive/index.md).

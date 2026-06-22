@@ -1,12 +1,12 @@
 # /quality skill — reference examples
 
 Worked reference artifacts that make the skill's
-[Reporting](../quality-skill.md#reporting) contract concrete. Each is a captured
+[Reporting](../reporting.md#reporting) contract concrete. Each is a captured
 instance of what the skill writes at runtime.
 
 At runtime the skill writes these into the **evaluated** repository under
 `quality/evaluations/NNNN-<altitude>[-<narrowing>]-quality-eval/` (see
-[Reporting](../quality-skill.md#reporting)). These example files intentionally
+[Reporting](../reporting.md#reporting)). These example files intentionally
 match that raw runtime shape: no OKF frontmatter, JSON assessment/analysis
 records, recommendation Markdown with runtime YAML frontmatter, and generated
 `report-summary.md`, `report.md`, and `report.json`.
@@ -19,7 +19,7 @@ four-level rating scale
 `design.md`, `plan.md`, `debug-log.md`, and the `assessments/` and `analysis/`
 records are the snapshot, inputs, method, process diagnostics, and write-once
 evidence trail the skill writes alongside the report (see
-[Reporting](../quality-skill.md#reporting)), so the report's findings trace to
+[Reporting](../reporting.md#reporting)), so the report's findings trace to
 the model, parameters, coverage, and per-requirement and per-area records in
 force at evaluation time. The checked-in reports are generated from the adjacent
 runtime records; update them by changing the fixture inputs and rebuilding the

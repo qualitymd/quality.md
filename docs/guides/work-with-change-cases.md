@@ -108,9 +108,16 @@ grouped by kind so it stays skimmable:
 - A Change Case should raise suggestions for any *new* durable specs worth
   creating — a contract its work reveals is under-specified or worth lifting out
   of code. Suggesting is enough; actually creating the new spec is not a
-  precondition for the case to land. When a new durable spec is 1:1 with a
-  generated file or artifact, name it using the artifact-spec convention in
-  [Writing functional specs](write-functional-specs.md#conventions).
+  precondition for the case to land. New specs may be 1:1 artifact specs or
+  behavioral component specs. Name 1:1 artifact specs with the artifact-spec
+  convention in [Writing functional specs](write-functional-specs.md#conventions);
+  name behavioral component specs after the capability or component they govern.
+  For a large existing spec, do not stop at the first obvious split: inventory
+  its major headings and classify each by durable contract so workflows,
+  lifecycles, generated artifacts, examples, and shared invariants each land in
+  the right home. For example, a fictional "subscription portal" parent spec
+  might keep shared account vocabulary while child specs own plan-change
+  routing, renewal reconciliation, and the `renewal-summary.json` artifact.
 - A Change Case should bring the durable docs it lists into sync before it
   reaches **In-Review**, so the enduring source of truth matches the landed
   behavior. Because durable docs may also be edited independently, the case is

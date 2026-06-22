@@ -48,8 +48,14 @@ out of order. The elements below are a palette, not a checklist (see
   **non-goals** (out of scope by design, e.g. *the CLI never calls a model*).
   Naming a non-goal kills the recurring "should it also…?" before it's asked.
 - **Requirements** — the normative content (see below).
-- **Sub-specs** — split detail into child concepts when a spec grows; the parent
-  carries the shared contract, children carry the specifics.
+- **Sub-specs** — split detail into child concepts when a spec grows or when a
+  durable behavior is independently reviewable. The parent carries the shared
+  contract; children carry the specifics. Before reshaping a large spec,
+  inventory its major headings and classify each one by durable contract:
+  shared invariant, behavioral component, artifact contract, example, or
+  deferred work. A heading classified as a behavioral component or artifact
+  contract needs either a child spec or a short written reason it stays in the
+  parent.
 
 ## Requirements
 
@@ -156,6 +162,32 @@ are tracked in the change case's parent **Affected artifacts** index, not here.
 - **Specify behavior, not implementation.** Say *what* must hold; leave *how* to
   the code.
 - **One source of truth.** Don't restate the format spec — link to it.
+- **Inventory before splitting.** Before reshaping a large spec, list its major
+  headings and classify each one as a shared invariant, behavioral component,
+  artifact contract, example, or deferred work. A behavioral component or
+  artifact contract should become a child spec unless it is too small or too
+  entangled to review independently; when it stays in the parent, say why. This
+  keeps the split from stopping at the first obvious boundary while another
+  full workflow remains buried in the parent.
+- **Split by durable contract, not by file layout.** A child spec earns its
+  place when the contract is independently understandable and reviewable: a
+  command, workflow, artifact, evaluator phase, lifecycle, or orchestration path
+  with its own purpose, inputs, outputs, mutation boundary, safety rules,
+  compatibility surface, or done criteria. Do not split only because the
+  implementation has a separate file; implementation files can stay governed by
+  a parent spec when they are mostly procedure under shared rules.
+- **Keep shared invariants in the parent.** Parent specs hold vocabulary,
+  global safety rules, argument models, common output posture, shared artifact
+  relationships, and cross-component invariants. Child specs hold the behavior a
+  reader would naturally review in isolation: routing, state transitions,
+  component-specific stop conditions, mutation rules, required artifacts, and
+  verification.
+- **Use fictional examples to test the boundary.** In a fictional "billing
+  assistant" spec, the parent might own account vocabulary, authentication
+  rules, and common audit-log invariants. Separate child specs could own the
+  "invoice reconciliation" workflow, the "refund approval" lifecycle, and the
+  `refund-receipt.json` artifact. The point is not the folder shape; it is that
+  each child carries a contract a reviewer can understand and verify on its own.
 - **Name 1:1 artifact specs after the artifact.** When a durable spec is scoped
   to one concrete generated file or artifact, preserve the artifact filename in
   the spec filename by replacing `.` with `-` and then using the normal `.md`
@@ -163,6 +195,13 @@ are tracked in the change case's parent **Affected artifacts** index, not here.
   `report-summary-md.md`; `report.json` by `report-json.md`; `report.md` by
   `report-md.md`. This keeps the artifact identity visible without creating
   filenames with multiple operational meanings.
+- **Name behavioral component specs after the capability.** When a durable spec
+  governs behavior rather than one concrete artifact, name it for the command,
+  workflow, phase, lifecycle, or component it specifies. For example, a
+  fictional spec for refund approval behavior should use a capability name such
+  as `refund-approval.md`; reserve artifact-normalized names such as
+  `refund-approval-md.md` for a contract over a literal generated or bundled
+  `refund-approval.md` file.
 - **Don't invent requirements (YAGNI).** Specify only what's actually asked for
   or genuinely needed now. A spec is not the place to anticipate features,
   hedge against hypothetical needs, or add flags, formats, and edge cases

@@ -95,14 +95,6 @@ Link between concepts with ordinary Markdown links. We use **relative** links
 (`./lint.md`, `../cli.md`) so they resolve in the GitHub UI. Broken links are
 tolerated — they may just point at not-yet-written concepts.
 
-## Artifact Specs
-
-When a concept is a durable spec for one concrete generated file or artifact,
-prefer a filename that preserves the artifact's identity by normalizing `.` to
-`-` before the concept's `.md` extension. For example, use
-`report-summary-md.md` for the `report-summary.md` artifact and
-`report-json.md` for `report.json`.
-
 ## When you add or edit a concept
 
 1. Give it parseable frontmatter with a non-empty `type`.

@@ -174,3 +174,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   artifact against the active authoring guide, with YAML comments explaining
   `source` versus `assessment` and stronger authoring guidance for Factor names
   and referenced assessments (`Done`).
+- [0052 — Durable spec alignment](0052-durable-spec-alignment.md) - aligned
+  durable specs with artifact-spec versus behavioral-component guidance,
+  splitting the `/quality` skill parent into child specs for modes, evaluation
+  workflow, reporting, and quality log, and strengthening the general
+  spec-splitting guidance (`Done`).

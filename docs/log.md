@@ -2,6 +2,13 @@
 
 ## 2026-06-22
 
+- **Revision**: Clarified functional-spec granularity in
+  [Writing functional specs](guides/write-functional-specs.md): child specs can
+  be justified by durable behavioral components, not only 1:1 artifact
+  contracts, while parent specs keep shared invariants. Removed artifact-spec
+  naming guidance from the purpose-agnostic [Working with OKF](guides/work-with-okf.md)
+  guide and updated [Working with change cases](guides/work-with-change-cases.md)
+  to account for both artifact specs and behavioral component specs.
 - **Revision**: Added a **To rename** subsection to the
   [`## Durable spec changes`](guides/write-functional-specs.md#durable-spec-changes)
   convention in [Writing functional specs](guides/write-functional-specs.md), so a

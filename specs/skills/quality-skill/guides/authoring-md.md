@@ -61,7 +61,8 @@ recording each section's unknowns and open questions.
 
 **Non-goals:** the guide does **not** document the *evaluation* process (Define →
 Assess and Rate → Analyze → Advise → Report) beyond what bears on authoring; that
-is the skill's own workflow (see [Evaluation workflow](../quality-skill.md#evaluation-workflow)). It does **not** restate the CLI
+is the skill's own workflow (see
+[Evaluation workflow](../evaluation.md#evaluation-workflow)). It does **not** restate the CLI
 surface, and it is **not** a normative spec — `SPECIFICATION.md` and the durable
 specs remain the contracts; the guide is instructional. It also does **not**
 carry first-run workflow sequencing after `qualitymd init`; that procedural

@@ -2,6 +2,20 @@
 
 ## 2026-06-22
 
+- **Revision**: Aligned the durable `/quality` skill specs with the
+  artifact-spec versus behavioral-component guidance for
+  [0052 - Durable spec alignment](../changes/0052-durable-spec-alignment.md).
+  Added mode behavior specs under
+  [`skills/quality-skill/modes/`](skills/quality-skill/modes/index.md) for
+  setup, wizard, evaluate, improve, and update; added cross-mode component specs
+  for the [`evaluation workflow`](skills/quality-skill/evaluation.md),
+  [`reporting`](skills/quality-skill/reporting.md), and
+  [`quality log`](skills/quality-skill/quality-log.md); narrowed the parent
+  [`/quality` skill spec](skills/quality-skill/quality-skill.md) to shared
+  contracts plus component summaries; and updated the skill-spec index to
+  distinguish the parent spec, component specs, guide artifact specs, examples,
+  and the installable prompt.
+
 - **Revision**: Added a `## Quality log` section to the
   [`/quality` skill spec](skills/quality-skill/quality-skill.md) for
   [0050 - Quality log](../changes/archive/0050-quality-log.md). The section specifies the
