@@ -57,18 +57,57 @@ agents with what matters in *this* codebase. You capture it once, then run a
 
 **The quality loop:**
 
-1. **Align** — agree on what *good* means for this context and capture it as the
-   signal. *(First time through: `/quality setup`.)*
-2. **Evaluate** — grade the work against the signal. `/quality evaluate` returns
-   rated findings with evidence — each a gap in the *work* or a gap in the
-   *bar*.
-3. **Improve** — close the gaps in the work; triage them into your backlog like
-   any other task.
-4. **Learn** — feed what you learned back into the signal, re-aligning the bar
-   as the product and its risks evolve.
+1. **Align** — agree on what *good* means for this context, and capture it as the
+   signal.
+2. **Evaluate** — grade the work against the signal; every gap is a gap in the
+   *work* or a gap in the *bar*.
+3. **Improve** — close the gaps in the work.
+4. **Learn** — feed what you learned back into the signal as the product and its
+   risks evolve.
 
-Then loop. The same cycle drives agents working minute-to-minute and teams
-improving release-over-release.
+### Getting started
+
+1. **Run `/quality setup` to capture what *good* means here.** The skill reads
+   your project and drafts a `QUALITY.md`: the quality factors that matter most,
+   the requirements under them, and the risks, needs, and open questions behind
+   them.
+   → *A documented picture of your quality bar — much of it previously only in
+   people's heads — and a shared definition your agents can follow.*
+
+2. **Run `/quality evaluate` to see where you stand.** It grades the work against
+   your new model and returns rated findings, each with evidence.
+   → *An honest first read on quality, each finding a gap in the work or a gap in
+   the bar.*
+
+3. **Review and act on the findings.** Implement the fixes that are clear; triage
+   the rest into your backlog like any other work.
+   → *Real improvements landed, and a tracked plan for the rest.*
+
+4. **Revise the model with what you learned.** Update `QUALITY.md` where the bar
+   proved wrong, unclear, or out of date. Tip: let the `/quality` skill drive the
+   edits — it applies the format's authoring best practices so the model stays
+   well-formed as it grows.
+   → *A sharper model that stays useful as the project evolves.*
+
+### Keeping the loop running
+
+Once you have a model, the loop keeps going at whatever cadence and trigger fits
+your team:
+
+- **On demand.** Run `/quality evaluate` whenever you need a read — before a
+  ship, during code review, when you inherit an unfamiliar codebase, or when
+  something just feels off. Scope it down when you don't need the whole model:
+  `/quality evaluate payments-api` or `/quality evaluate payments-api security`.
+
+- **On a cadence.** Make the model and its latest evaluation a recurring team
+  review — per sprint, per release, whatever your rhythm. Close gaps in the work,
+  and sharpen the model where the bar proved wrong, unclear, or out of date — so
+  the shared definition stays current as the product evolves.
+
+- **Automated.** Wire `/quality evaluate` into CI or a scheduled agent (Claude
+  Code routines, Codex automations) so quality is checked continuously, not just
+  when someone remembers. Surface results where the team already works — PR
+  comments, status checks, dashboards.
 
 ## Why QUALITY.md
 
