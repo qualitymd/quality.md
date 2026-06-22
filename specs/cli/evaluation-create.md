@@ -22,21 +22,32 @@ all capitals.
 ## Flags
 
 - `--narrowing <slug>` — optional path-safe scope slug.
-- `--model <path>` — repository-relative `QUALITY.md` file to snapshot;
-  defaults to `QUALITY.md`.
+- `--model <path>` — selected `QUALITY.md` file to snapshot; defaults to
+  `QUALITY.md` in the current working directory.
 - `--evaluation-dir <path>` — override the evaluation directory.
 - `--json` — emit a receipt on stdout.
 
 ## Requirements
 
+The command **MUST** resolve a QUALITY.md workspace from the selected model file.
+The workspace includes the selected model path, the repository root found from
+that model path, the config file, the `.quality/` quality data directory, the
+evaluation directory, and the quality log directory.
+
+The selected model's root frontmatter key `config` **MAY** point to the
+workspace config file. When present, `config` **MUST** be a non-empty scalar
+repository-relative path, **MUST NOT** be absolute, and **MUST NOT** escape the
+repository after path normalization. When absent, the config file defaults to
+`.quality/config.yaml`. If the resolved config file is absent, the command
+**MUST** use built-in defaults.
+
 The command **MUST** resolve the evaluation directory using this precedence:
-`--evaluation-dir`, then `.quality/config.yaml` `evaluationDir`, then
-`quality/evaluations/`. The path **MUST** be repository-relative and **MUST NOT**
+`--evaluation-dir`, then `evaluationDir` in the resolved config file, then
+`.quality/evaluations/`. The path **MUST** be repository-relative and **MUST NOT**
 escape the repository.
 
 The command **MUST** validate the model path before creating the evaluation
-directory or run folder. The model path **MUST** be repository-relative,
-**MUST NOT** escape the repository, and **MUST** resolve to a file, not a
+directory or run folder. The model path **MUST** resolve to a file, not a
 directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 

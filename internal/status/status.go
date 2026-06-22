@@ -13,6 +13,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/lint"
 	"github.com/qualitymd/quality.md/internal/model"
 	"github.com/qualitymd/quality.md/internal/receipt"
+	"github.com/qualitymd/quality.md/internal/workspace"
 )
 
 // SchemaVersion is the current status snapshot schema version.
@@ -275,14 +276,14 @@ func appendString(path []string, value string) []string {
 
 func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, error) {
 	history := EvaluationHistory{Items: []EvaluationRunSummary{}}
-	repoRoot, err := evaluation.FindRepoRoot(modelPath)
+	ws, err := workspace.Resolve(workspace.Options{
+		Model: modelPath,
+	})
 	if err != nil {
 		return history, err
 	}
-	evalDirAbs, evalDirRel, err := evaluation.ResolveDir(repoRoot, "")
-	if err != nil {
-		return history, err
-	}
+	evalDirAbs := ws.Evaluations.Abs
+	evalDirRel := ws.Evaluations.Rel
 	history.Path = evalDirRel
 	runs, err := evaluation.ListRunDirs(evalDirAbs, evalDirRel)
 	if err != nil {

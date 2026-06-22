@@ -6,12 +6,8 @@ import (
 	"path/filepath"
 
 	"github.com/qualitymd/quality.md/internal/receipt"
-	"gopkg.in/yaml.v3"
+	"github.com/qualitymd/quality.md/internal/workspace"
 )
-
-type config struct {
-	ResolveDir string `yaml:"evaluationDir"`
-}
 
 const debugLogSeed = `# Evaluation debug log
 
@@ -44,22 +40,27 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
 	}
-	repoRoot, err := repoRootForCreate(opts)
+	modelPath := opts.Model
+	if modelPath == "" {
+		modelPath = workspace.DefaultModelPath
+	}
+	if filepath.Clean(modelPath) == "." {
+		return nil, usagef("--model %q must name a QUALITY.md file, not a directory", modelPath)
+	}
+	ws, err := workspace.Resolve(workspace.Options{
+		RepoRoot:              opts.RepoRoot,
+		Model:                 opts.Model,
+		EvaluationDirOverride: opts.ResolveDir,
+	})
 	if err != nil {
 		return nil, err
 	}
-	modelRaw, err := modelSnapshot(repoRoot, opts)
+	modelRaw, err := modelSnapshot(ws.Model.Abs, ws.Model.Rel)
 	if err != nil {
 		return nil, err
 	}
-	evalDirValue, err := evaluationDirValue(repoRoot, opts.ResolveDir)
-	if err != nil {
-		return nil, err
-	}
-	evalDirAbs, evalDirRel, err := ResolveRepoPath(repoRoot, evalDirValue)
-	if err != nil {
-		return nil, err
-	}
+	evalDirAbs := ws.Evaluations.Abs
+	evalDirRel := ws.Evaluations.Rel
 	if err := os.MkdirAll(evalDirAbs, 0o755); err != nil {
 		return nil, fmt.Errorf("creating evaluation directory: %w", err)
 	}
@@ -84,13 +85,6 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 			Command: "qualitymd evaluation assessment add " + runRel,
 		}},
 	}, nil
-}
-
-func repoRootForCreate(opts Options) (string, error) {
-	if opts.RepoRoot != "" {
-		return opts.RepoRoot, nil
-	}
-	return FindRepoRoot("")
 }
 
 func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
@@ -126,39 +120,8 @@ func createRunSkeleton(runAbs string, modelRaw []byte) error {
 	return nil
 }
 
-func evaluationDirValue(repoRoot, override string) (string, error) {
-	if override != "" {
-		return override, nil
-	}
-	raw, err := os.ReadFile(filepath.Join(repoRoot, ".quality", "config.yaml"))
-	if err != nil {
-		if os.IsNotExist(err) {
-			return "quality/evaluations", nil
-		}
-		return "", fmt.Errorf("reading .quality/config.yaml: %w", err)
-	}
-	var cfg config
-	if err := yaml.Unmarshal(raw, &cfg); err != nil {
-		return "", fmt.Errorf("parsing .quality/config.yaml: %w", err)
-	}
-	if cfg.ResolveDir == "" {
-		return "quality/evaluations", nil
-	}
-	return cfg.ResolveDir, nil
-}
-
-func modelSnapshot(repoRoot string, opts Options) ([]byte, error) {
-	modelPath := opts.Model
-	if modelPath == "" {
-		modelPath = "QUALITY.md"
-	}
-	if filepath.Clean(modelPath) == "." {
-		return nil, usagef("--model %q must name a QUALITY.md file, not a directory", modelPath)
-	}
-	modelAbs, _, err := ResolveRepoPath(repoRoot, modelPath)
-	if err != nil {
-		return nil, usagef("--model %s", err)
-	}
+func modelSnapshot(modelAbs, modelRel string) ([]byte, error) {
+	modelPath := modelRel
 	info, err := os.Stat(modelAbs)
 	if err != nil {
 		return nil, fmt.Errorf("reading model %s: %w", modelPath, err)

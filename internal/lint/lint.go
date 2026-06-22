@@ -11,8 +11,39 @@ import (
 	"github.com/qualitymd/quality.md/internal/model"
 )
 
+// Options configures internal lint rule behavior.
+type Options struct {
+	Rules RuleOptions
+}
+
+// RuleOptions groups internal lint rule options.
+type RuleOptions struct {
+	UnknownKey UnknownKeyOptions
+}
+
+// UnknownKeyOptions controls schema-driven unknown-key diagnostics.
+type UnknownKeyOptions struct {
+	AllowedRootKeys map[string]bool
+}
+
+// DefaultOptions returns qualitymd's default lint profile.
+func DefaultOptions() Options {
+	return Options{
+		Rules: RuleOptions{
+			UnknownKey: UnknownKeyOptions{
+				AllowedRootKeys: map[string]bool{"config": true},
+			},
+		},
+	}
+}
+
 // Check parses and lints path, defaulting to QUALITY.md.
 func Check(path string) (Result, error) {
+	return CheckWithOptions(path, DefaultOptions())
+}
+
+// CheckWithOptions parses and lints path with internal rule options.
+func CheckWithOptions(path string, options Options) (Result, error) {
 	doc, early, err := parse(path)
 	if err != nil {
 		return Result{}, err
@@ -20,7 +51,7 @@ func Check(path string) (Result, error) {
 	if early != nil {
 		return *early, nil
 	}
-	state := newRunState(doc)
+	state := newRunState(doc, options)
 	state.run()
 	return state.result(nil), nil
 }
@@ -41,7 +72,7 @@ func Fix(path string) (Result, error) {
 		return Result{}, fmt.Errorf("%s is a symbolic link; refusing to repair it", doc.Path)
 	}
 
-	original := newRunState(doc)
+	original := newRunState(doc, DefaultOptions())
 	original.run()
 	repairRecords, err := applyRepairs(doc, original.repairs)
 	if err != nil {
@@ -57,7 +88,7 @@ func Fix(path string) (Result, error) {
 		}
 	}
 
-	repaired := newRunState(doc)
+	repaired := newRunState(doc, DefaultOptions())
 	repaired.run()
 	return repaired.result(repairRecords), nil
 }
@@ -93,7 +124,7 @@ func Load(path string) (*model.Spec, error) {
 	if early != nil {
 		return nil, lintError{result: *early}
 	}
-	state := newRunState(doc)
+	state := newRunState(doc, DefaultOptions())
 	state.run()
 	result := state.result(nil)
 	if !result.Valid {

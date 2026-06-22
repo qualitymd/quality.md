@@ -37,7 +37,7 @@ and does not rate evaluated source.
 `setup` may mutate:
 
 - the target `QUALITY.md` model file;
-- the quality log under `quality/log/` after guided first population; and
+- the quality log under `.quality/log/` after guided first population; and
 - no evaluated source other than the model file itself.
 
 `setup` **MUST** drive `qualitymd init` for deterministic scaffolding when the

@@ -140,10 +140,12 @@ next actions such as `/quality evaluate` or scoped evaluations.
 ## 5. Optional config
 
 Create `.quality/config.yaml` to move evaluation run folders away from the
-default `quality/evaluations/` parent:
+default `.quality/evaluations/` parent. If your config file lives elsewhere,
+add root `config: <path>` frontmatter to the selected `QUALITY.md` to point
+qualitymd to it.
 
 ```yaml
-evaluationDir: quality/evaluations
+evaluationDir: tmp/evals
 ```
 
 The path must be repository-relative and must not escape the repository.

@@ -35,7 +35,7 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	if result.Path != "quality/evaluations/0001-quality-eval" {
+	if result.Path != ".quality/evaluations/0001-quality-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
 	for _, name := range []string{"model.md", "debug-log.md", "design.md", "plan.md", "assessments", "analysis", "recommendations"} {
@@ -57,8 +57,35 @@ func TestCreateRunUsesSharedNumberingAndSeedsLayout(t *testing.T) {
 	if err != nil {
 		t.Fatalf("second CreateRun() error = %v", err)
 	}
-	if second.Path != "quality/evaluations/0002-quality-eval" {
+	if second.Path != ".quality/evaluations/0002-quality-eval" {
 		t.Fatalf("second path = %q, want next quality run", second.Path)
+	}
+}
+
+func TestCreateRunUsesWorkspaceConfigAndOverridePrecedence(t *testing.T) {
+	repo := testRepoWithModel(t, strings.Replace(testModel, "---\n", "---\nconfig: .quality/custom-config.yaml\n", 1))
+	configPath := filepath.Join(repo, ".quality", "custom-config.yaml")
+	if err := os.MkdirAll(filepath.Dir(configPath), 0o755); err != nil {
+		t.Fatalf("mkdir config dir: %v", err)
+	}
+	if err := os.WriteFile(configPath, []byte("evaluationDir: tmp/evals\n"), 0o644); err != nil {
+		t.Fatalf("write config: %v", err)
+	}
+
+	configured, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun(configured) error = %v", err)
+	}
+	if configured.Path != "tmp/evals/0001-quality-eval" {
+		t.Fatalf("configured path = %q, want config evaluationDir", configured.Path)
+	}
+
+	overridden, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", ResolveDir: "custom/evals"})
+	if err != nil {
+		t.Fatalf("CreateRun(overridden) error = %v", err)
+	}
+	if overridden.Path != "custom/evals/0001-quality-eval" {
+		t.Fatalf("overridden path = %q, want command override", overridden.Path)
 	}
 }
 
@@ -71,8 +98,8 @@ func TestCreateRunValidatesModelBeforeCreatingRunFolder(t *testing.T) {
 	if !strings.Contains(err.Error(), "--model") {
 		t.Fatalf("CreateRun() error = %v, want model diagnostic", err)
 	}
-	if _, err := os.Stat(filepath.Join(repo, "quality")); !os.IsNotExist(err) {
-		t.Fatalf("quality directory stat error = %v, want not exist", err)
+	if _, err := os.Stat(filepath.Join(repo, ".quality")); !os.IsNotExist(err) {
+		t.Fatalf(".quality directory stat error = %v, want not exist", err)
 	}
 }
 

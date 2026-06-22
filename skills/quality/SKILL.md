@@ -43,7 +43,7 @@ recommendations.
 - Recommendation follow-up edits evaluated source files or `QUALITY.md` only
   after explicit confirmation of the recommendation, option, and mutation
   surface.
-- The quality log under `quality/log/` is written only by `setup` (an inaugural
+- The quality log under `.quality/log/` is written only by `setup` (an inaugural
   entry) and confirmed model-authoring or recommendation-apply workflows (one
   entry per meaningful model change). `evaluate` never writes it, issue-tracker
   handoff never writes it, and `wizard` is read-only with respect to it. See
@@ -220,17 +220,28 @@ Recommendation follow-up is not a mode. When the user asks to apply, act on,
 improve from, or hand off an evaluation recommendation, read
 [`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md).
 
-## Config
+## Workspace and Config
 
-Read `.quality/config.yaml` from the repository root when present. Supported now:
+Resolve a QUALITY.md workspace from the selected model file. The workspace
+includes the selected model path, repository root, config file, quality data
+directory, evaluation directory, and quality log directory.
+
+The quality data directory defaults to `.quality/`.
+
+The selected `QUALITY.md` may declare root `config` frontmatter pointing to the
+workspace config file. When present, it must be a non-empty scalar
+repository-relative path. Reject absolute paths and paths that escape the
+repository. When absent, use `.quality/config.yaml`.
+
+Supported config now:
 
 ```yaml
-evaluationDir: quality/evaluations
+evaluationDir: .quality/evaluations
 ```
 
 Rules:
 
-- Default to `quality/evaluations/` when the file or key is absent.
+- Default to `.quality/evaluations/` when the file or key is absent.
 - Treat `evaluationDir` as the parent directory for numbered run folders.
 - Require a repository-relative normalized path.
 - Reject absolute paths and paths that escape the repository.
@@ -247,16 +258,17 @@ the schema or folder layout in this prompt.
 ## Quality Log
 
 The quality log is a curated, evidence-linked timeline of meaningful changes to
-the QUALITY.md model, written as dated entries under `quality/log/`. It preserves
-the *why* a model changed — which evaluation surfaced a gap, whether a criterion
-moved by recalibration or drift — that `git log` does not capture. It is the
-model's own history; it is **not** an evaluation record (those own
-`quality/evaluations/`) and **not** a defect backlog.
+the QUALITY.md model, written as dated entries under the workspace's
+`.quality/log/`. It preserves the *why* a model changed — which evaluation
+surfaced a gap, whether a criterion moved by recalibration or drift — that
+`git log` does not capture. It is the model's own history; it is **not** an
+evaluation record (those own `.quality/evaluations/`) and **not** a defect
+backlog.
 
 Format contract:
 
-- **Location.** `quality/log/`, a sibling of the resolved evaluation directory
-  (default `quality/evaluations/`; the log directory is not configurable yet).
+- **Location.** `.quality/log/` in the quality data directory. The log directory
+  is not configurable yet.
 - **One entry per meaningful change**, one file. Name it
   `YYYY-MM-DD-<slug>.md`, where the date is the day the change was made and
   `<slug>` is a short kebab-case summary. Do **not** assign a global sequential

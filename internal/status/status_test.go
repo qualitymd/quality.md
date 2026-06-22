@@ -148,6 +148,41 @@ factors:
 	}
 }
 
+func TestSnapshotUsesWorkspaceEvaluationDir(t *testing.T) {
+	repo := newRepo(t)
+	path := writeFile(t, repo, strings.Replace(validModel(`requirements:
+  "starts":
+    factors: [reliability]
+    assessment: Run it.
+factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+`), "---\n", "---\nconfig: .quality/custom-config.yaml\n", 1))
+	configPath := filepath.Join(repo, ".quality", "custom-config.yaml")
+	if err := os.MkdirAll(filepath.Dir(configPath), 0o755); err != nil {
+		t.Fatalf("MkdirAll(config dir) error = %v", err)
+	}
+	if err := os.WriteFile(configPath, []byte("evaluationDir: tmp/evals\n"), 0o600); err != nil {
+		t.Fatalf("WriteFile(config) error = %v", err)
+	}
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	if !strings.HasPrefix(run.Path, "tmp/evals/") {
+		t.Fatalf("run path = %q, want configured evaluation dir", run.Path)
+	}
+
+	snapshot, err := Snapshot(Options{Path: path})
+	if err != nil {
+		t.Fatalf("Snapshot() error = %v", err)
+	}
+	if snapshot.Evaluations.Path != "tmp/evals" || snapshot.Evaluations.Runs != 1 {
+		t.Fatalf("evaluation history = %#v, want configured path with one run", snapshot.Evaluations)
+	}
+}
+
 func TestSnapshotMalformedRunDoesNotHideLaterRuns(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
@@ -159,7 +194,7 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	if err := os.MkdirAll(filepath.Join(repo, "quality", "evaluations", "0001-quality-eval"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(repo, ".quality", "evaluations", "0001-quality-eval"), 0o755); err != nil {
 		t.Fatalf("MkdirAll() error = %v", err)
 	}
 	later, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})

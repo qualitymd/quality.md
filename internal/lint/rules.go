@@ -6,6 +6,7 @@ import (
 
 	"github.com/qualitymd/quality.md/internal/document"
 	qschema "github.com/qualitymd/quality.md/internal/schema"
+	"github.com/qualitymd/quality.md/internal/workspace"
 	"gopkg.in/yaml.v3"
 )
 
@@ -33,6 +34,7 @@ func (s *runState) run() {
 
 func (s *runState) checkRoot() {
 	s.checkSchemaProperties(qschema.Model, s.doc.Frontmatter, nil, schemaContext{})
+	s.checkRootConfig()
 	s.checkRequiredTitle(s.doc.Frontmatter, []PathSegment{}, "model root", "The model root declares no `title`; a model title is required for human-facing display.")
 }
 
@@ -45,6 +47,9 @@ func (s *runState) checkSchemaProperties(node qschema.Node, owner *yaml.Node, ba
 		locationLabel := label(path)
 		property, ok := node.Property(key.Value)
 		if !ok {
+			if node.Kind == qschema.ModelKind && s.options.Rules.UnknownKey.AllowedRootKeys[key.Value] {
+				continue
+			}
 			if node.Kind == qschema.AreaKind && qschema.Model.HasProperty(key.Value) {
 				s.add(RuleMisplacedRootKey, "The area `"+context.areaName+"` declares `"+key.Value+"`; `"+key.Value+"` is only valid on the model root.", s.loc(key, path, locationLabel), nil)
 				continue
@@ -53,6 +58,21 @@ func (s *runState) checkSchemaProperties(node qschema.Node, owner *yaml.Node, ba
 			continue
 		}
 		s.checkSchemaProperty(node, property, owner, key, value, path, locationLabel, context)
+	}
+}
+
+func (s *runState) checkRootConfig() {
+	key, value, _ := document.MapEntry(s.doc.Frontmatter, workspace.FrontmatterConfigField)
+	if key == nil {
+		return
+	}
+	path := []PathSegment{workspace.FrontmatterConfigField}
+	if value.Kind != yaml.ScalarNode || strings.TrimSpace(value.Value) == "" {
+		s.add(RuleInvalidConfig, "The root `config` value must be a non-empty repository-relative scalar path.", s.locForNodeOrMissing(value, path, workspace.FrontmatterConfigField), nil)
+		return
+	}
+	if _, err := workspace.CleanRepoRelative(value.Value); err != nil {
+		s.add(RuleInvalidConfig, "The root `config` value is invalid: "+err.Error()+".", s.loc(value, path, workspace.FrontmatterConfigField), nil)
 	}
 }
 

@@ -1,13 +1,14 @@
 package evaluation
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
 	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/qualitymd/quality.md/internal/workspace"
 )
 
 var (
@@ -17,65 +18,26 @@ var (
 
 // FindRepoRoot walks upward from start until it finds a Git repository root.
 func FindRepoRoot(start string) (string, error) {
-	if start == "" {
-		var err error
-		start, err = os.Getwd()
-		if err != nil {
-			return "", err
-		}
-	}
-	abs, err := filepath.Abs(start)
-	if err != nil {
-		return "", err
-	}
-	info, err := os.Stat(abs)
-	if err != nil {
-		return "", err
-	}
-	if !info.IsDir() {
-		abs = filepath.Dir(abs)
-	}
-	for {
-		if _, err := os.Stat(filepath.Join(abs, ".git")); err == nil {
-			return abs, nil
-		}
-		parent := filepath.Dir(abs)
-		if parent == abs {
-			return "", fmt.Errorf("could not find repository root from %s", start)
-		}
-		abs = parent
-	}
+	return workspace.FindRepoRoot(start)
 }
 
 // ResolveRepoPath validates a repository-relative path and returns absolute and
 // slash-normalized relative forms.
 func ResolveRepoPath(repoRoot, value string) (string, string, error) {
-	if filepath.IsAbs(value) {
-		return "", "", fmt.Errorf("path %q must be repository-relative", value)
-	}
-	clean := filepath.Clean(value)
-	if clean == "." || strings.HasPrefix(clean, ".."+string(filepath.Separator)) || clean == ".." {
-		return "", "", fmt.Errorf("path %q escapes the repository", value)
-	}
-	abs := filepath.Join(repoRoot, clean)
-	rel, err := filepath.Rel(repoRoot, abs)
-	if err != nil {
-		return "", "", err
-	}
-	if rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
-		return "", "", fmt.Errorf("path %q escapes the repository", value)
-	}
-	return abs, filepath.ToSlash(rel), nil
+	return workspace.ResolveRepoPath(repoRoot, value)
 }
 
 // ResolveDir resolves the configured evaluation directory from a repository
 // root, returning both absolute and repository-relative paths.
 func ResolveDir(repoRoot, override string) (string, string, error) {
-	value, err := evaluationDirValue(repoRoot, override)
+	ws, err := workspace.Resolve(workspace.Options{
+		RepoRoot:              repoRoot,
+		EvaluationDirOverride: override,
+	})
 	if err != nil {
 		return "", "", err
 	}
-	return ResolveRepoPath(repoRoot, value)
+	return ws.Evaluations.Abs, ws.Evaluations.Rel, nil
 }
 
 // RunDir is one recognized evaluation run folder.

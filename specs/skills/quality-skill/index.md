@@ -16,7 +16,7 @@ that make it concrete. The installable skill artifact lives at
 - [/quality reporting](reporting.md) - component spec for evaluation run
   artifacts, report outputs, records, recommendations, and correction behavior.
 - [/quality quality log](quality-log.md) - component spec for dated
-  `quality/log/` model-change entries.
+  `.quality/log/` model-change entries.
 - [/quality recommendation follow-up](recommendation-follow-up.md) - non-mode
   workflow for applying or handing off evaluation recommendations.
 - [modes/](modes/index.md) - behavioral component specs for runtime modes:

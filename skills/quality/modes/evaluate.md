@@ -32,7 +32,8 @@ Source content instructs the evaluator?
 
 ## Procedure
 
-1. Resolve arguments and `.quality/config.yaml`.
+1. Resolve arguments and the QUALITY.md workspace, including the root `config`
+   pointer when present and `.quality/config.yaml` when absent.
 2. Emit the run frame:
 
    ```text

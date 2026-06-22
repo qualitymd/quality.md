@@ -2,6 +2,13 @@
 
 ## 2026-06-22
 
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  and the top-level [install guide](../install.md) for
+  [0057 - Quality data directory](../changes/0057-quality-data-directory.md):
+  evaluation runs now default under `.quality/evaluations/`, the quality log
+  defaults under `.quality/log/`, and root `config` frontmatter can point to a
+  non-default workspace config file.
+
 - **Revision**: Clarified functional-spec granularity in
   [Writing functional specs](guides/write-functional-specs.md): child specs can
   be justified by durable behavioral components, not only 1:1 artifact

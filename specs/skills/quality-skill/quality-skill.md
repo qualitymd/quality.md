@@ -459,7 +459,7 @@ reportability expectations.
 
 The convention-first quality log contract lives in
 [/quality quality log](quality-log.md). That component spec owns dated
-`quality/log/` entries, meaningful-change criteria, write/reconcile
+`.quality/log/` entries, meaningful-change criteria, write/reconcile
 responsibilities, and the deferred CLI surface.
 
 ## Deferred
@@ -477,5 +477,5 @@ responsibilities, and the deferred CLI surface.
   convention-first: the skill writes date-named entries directly. A
   `qualitymd log` command (so numbering and an index can be CLI-owned), a
   `.quality/config.yaml` `logDir` key parallel to `evaluationDir`, a standalone
-  artifact-spec, and a machine-queryable index file inside `quality/log/` all
+  artifact-spec, and a machine-queryable index file inside `.quality/log/` all
   wait for the convention to prove out before the surface graduates to the CLI.

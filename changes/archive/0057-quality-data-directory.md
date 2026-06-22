@@ -2,7 +2,7 @@
 type: Change Case
 title: Quality data directory
 description: Move qualitymd and /quality support artifacts under .quality/ and add a root config pointer for workspace resolution.
-status: Design
+status: Done
 tags: [workspace, config, evaluation, lint, skill]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -61,68 +61,70 @@ In-Review.
 
 Code:
 
-- [ ] New or existing internal workspace/path-resolution package - resolve the
+- [x] New or existing internal workspace/path-resolution package - resolve the
       selected model file, repository root, config file, quality data directory,
       evaluation directory, and quality log directory from one shared path model.
-- [ ] `internal/evaluation/` - default evaluation runs to
+- [x] `internal/evaluation/` - default evaluation runs to
       `.quality/evaluations/`, consume the shared workspace resolver, and keep
       `--evaluation-dir` precedence.
-- [ ] `internal/status/` - report and inspect evaluation history from the
+- [x] `internal/status/` - report and inspect evaluation history from the
       resolved workspace evaluation directory.
-- [ ] `internal/lint/` - allow root `config`, validate its shape/path, and keep
+- [x] `internal/lint/` - allow root `config`, validate its shape/path, and keep
       other unknown keys as errors through rule options rather than ad hoc
       schema exceptions.
-- [ ] `internal/cli/` tests and command expectations - update path receipts,
+- [x] `internal/cli/` tests and command expectations - update path receipts,
       status JSON, lint findings, and help-adjacent examples as needed.
-- [ ] `dprint.json` - update generated report ignore globs from
+- [x] `dprint.json` - update generated report ignore globs from
       `quality/evaluations/**` to `.quality/evaluations/**`.
 
 Specs:
 
-- [ ] [`specs/cli/evaluation-create.md`](../specs/cli/evaluation-create.md) -
+- [x] [`specs/cli/evaluation-create.md`](../../specs/cli/evaluation-create.md) -
       default and precedence for the workspace evaluation directory.
-- [ ] [`specs/cli/status.md`](../specs/cli/status.md) - default status history
+- [x] [`specs/cli/status.md`](../../specs/cli/status.md) - default status history
       path and workspace config resolution.
-- [ ] [`specs/cli/lint.md`](../specs/cli/lint.md) - clarify that qualitymd lint
+- [x] [`specs/cli/lint.md`](../../specs/cli/lint.md) - clarify that qualitymd lint
       applies the default qualitymd lint profile: normative model checks plus
       documented tooling-key checks.
-- [ ] [`specs/cli/lint-rules.md`](../specs/cli/lint-rules.md) - add the root
+- [x] [`specs/cli/lint-rules.md`](../../specs/cli/lint-rules.md) - add the root
       `config` validation rule and the internally configurable unknown-key rule
       behavior.
-- [ ] [`specs/skills/quality-skill/reporting.md`](../specs/skills/quality-skill/reporting.md)
+- [x] [`specs/skills/quality-skill/reporting.md`](../../specs/skills/quality-skill/reporting.md)
       - align evaluation artifact paths and workspace config resolution.
-- [ ] [`specs/skills/quality-skill/quality-log.md`](../specs/skills/quality-skill/quality-log.md)
+- [x] [`specs/skills/quality-skill/quality-log.md`](../../specs/skills/quality-skill/quality-log.md)
       - move the default quality log to `.quality/log/`.
-- [ ] [`specs/skills/quality-skill/modes/setup.md`](../specs/skills/quality-skill/modes/setup.md),
-      [`modes/evaluate.md`](../specs/skills/quality-skill/modes/evaluate.md),
-      and [`modes/wizard.md`](../specs/skills/quality-skill/modes/wizard.md) -
+- [x] [`specs/skills/quality-skill/modes/setup.md`](../../specs/skills/quality-skill/modes/setup.md),
+      [`modes/evaluate.md`](../../specs/skills/quality-skill/modes/evaluate.md),
+      and [`modes/wizard.md`](../../specs/skills/quality-skill/modes/wizard.md) -
       align mode contracts with the quality data directory.
-- [ ] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       - align shared skill config and artifact terminology.
-- [ ] [`specs/quality-schema-json.md`](../specs/quality-schema-json.md) -
+- [x] [`specs/quality-schema-json.md`](../../specs/quality-schema-json.md) -
       confirm the companion JSON Schema remains a normative-format schema and
       does not describe the qualitymd-only `config` convention.
 
 Runtime skill and docs:
 
-- [ ] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) - use the quality
+- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - use the quality
       data directory terminology, root `config` pointer, `.quality/evaluations/`,
       and `.quality/log/`.
-- [ ] [`skills/quality/modes/setup.md`](../skills/quality/modes/setup.md),
-      [`modes/evaluate.md`](../skills/quality/modes/evaluate.md), and
-      [`modes/wizard.md`](../skills/quality/modes/wizard.md) - update mode
+- [x] [`skills/quality/modes/setup.md`](../../skills/quality/modes/setup.md),
+      [`modes/evaluate.md`](../../skills/quality/modes/evaluate.md), and
+      [`modes/wizard.md`](../../skills/quality/modes/wizard.md) - update mode
       paths and artifact descriptions.
-- [ ] [`skills/quality/guides/authoring.md`](../skills/quality/guides/authoring.md)
+- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
       and
-      [`guides/recommendation-follow-up.md`](../skills/quality/guides/recommendation-follow-up.md)
+      [`guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md)
       - update quality log paths.
-- [ ] [`skills/quality/resources/cli-quick-reference.md`](../skills/quality/resources/cli-quick-reference.md)
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
       - update evaluation path examples and config notes.
-- [ ] [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md)
+- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md)
       - describe the quality data directory and updated defaults.
-- [ ] [`README.md`](../README.md) - update any user-facing CLI/skill artifact
+- [x] [`install.md`](../../install.md) - describe the quality data directory,
+      updated evaluation default, and root `config` pointer in install guidance.
+- [x] [`README.md`](../../README.md) - update any user-facing CLI/skill artifact
       wording if the existing overview needs the new term.
-- [ ] [`CHANGELOG.md`](../CHANGELOG.md) - add the unreleased entry when the
+- [x] [`CHANGELOG.md`](../../CHANGELOG.md) - add the unreleased entry when the
       implementation lands.
 
 `SPECIFICATION.md` is **not** affected in this case: `config` is a qualitymd
@@ -138,5 +140,8 @@ tooling convention, not a normative Model property.
 
 ## Status
 
-`Design`. The functional spec is settled and the design doc has been created.
-Implementation has not started.
+`Done`. Implemented and archived. The change adds shared workspace resolution,
+moves live quality data under `.quality/`, updates evaluation/status defaults,
+validates the root `config` tooling pointer in lint, aligns durable specs and
+runtime skill guidance, moves existing project evaluation artifacts under
+`.quality/`, and records the release note.

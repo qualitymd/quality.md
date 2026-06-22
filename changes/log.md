@@ -2,6 +2,23 @@
 
 ## 2026-06-22
 
+- **Done**: Landed and archived
+  [0057 - Quality data directory](archive/0057-quality-data-directory.md) —
+  advanced it to `Done` and moved the parent concept and its
+  [folder](archive/0057-quality-data-directory/index.md) into
+  [`archive/`](archive/index.md). The case defined shared QUALITY.md workspace
+  resolution, moved evaluation and quality-log defaults under `.quality/`,
+  added the root `config` tooling pointer with lint validation, updated durable
+  specs, runtime skill guidance, docs, and release notes, and moved existing
+  project quality data into `.quality/`.
+
+- **In-Progress**: Advanced
+  [0057 - Quality data directory](archive/0057-quality-data-directory.md) from `Design`
+  to `In-Progress`. The functional spec and design doc are settled;
+  implementation begins across shared workspace resolution, evaluation/status
+  path defaults, lint handling for the root `config` tooling key, durable specs,
+  runtime skill guidance, docs, and changelog.
+
 - **Refinement**: Updated
   [0058 - Model reference identifiers](0058-model-reference-identifiers.md) to
   explicitly list [`specs/cli/lint.md`](../specs/cli/lint.md) alongside
@@ -29,9 +46,9 @@
   [index](index.md).
 
 - **Design**: Advanced
-  [0057 - Quality data directory](0057-quality-data-directory.md) from `Draft`
+  [0057 - Quality data directory](archive/0057-quality-data-directory.md) from `Draft`
   to `Design` and added its
-  [design doc](0057-quality-data-directory/design.md). The design introduces
+  [design doc](archive/0057-quality-data-directory/design.md). The design introduces
   `internal/workspace` as the shared resolver for selected model path,
   repository root, config file, quality data directory, evaluation directory,
   and quality log directory; keeps `config` out of the normative Model and JSON
@@ -40,9 +57,9 @@
   open-cases entry in the bundle [index](index.md). Code not started.
 
 - **Draft**: Created
-  [0057 - Quality data directory](0057-quality-data-directory.md) (`Draft`) with
-  its [functional spec](0057-quality-data-directory/spec.md) and
-  [child index](0057-quality-data-directory/index.md). The case defines the
+  [0057 - Quality data directory](archive/0057-quality-data-directory.md) (`Draft`) with
+  its [functional spec](archive/0057-quality-data-directory/spec.md) and
+  [child index](archive/0057-quality-data-directory/index.md). The case defines the
   QUALITY.md workspace as the resolved operating context for one model file,
   uses `.quality/` as the quality data directory, moves default evaluation runs
   and the quality log under that directory, adds a root `config` pointer for

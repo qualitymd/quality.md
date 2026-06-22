@@ -27,7 +27,7 @@ Run qualitymd lint
    - Model file: <resolved path>
    - Scope: model skeleton/readiness
    - Mutation: `QUALITY.md` when missing or when an existing model change is confirmed; quality log
-   - Artifacts: `QUALITY.md`, `quality/log/` inaugural entry
+   - Artifacts: `QUALITY.md`, `.quality/log/` inaugural entry
    - Next gate: lint result, guided population, then wizard next step
    ```
 
@@ -63,7 +63,8 @@ Run qualitymd lint
    lists each affected factor under `factors` when that guide defines one
    coherent judgment across the factors. Do not stop at naming the next step.
 8. After guided population settles, seed the inaugural quality log entry under
-   `quality/log/` recording model creation and the initial model shape. Use
+   the workspace's `.quality/log/` directory recording model creation and the
+   initial model shape. Use
    `YYYY-MM-DD-<slug>.md` (e.g. `2026-06-22-initial-model.md`) with
    `kind: model-creation` and `target: model`; the body states what the first
    model captures and why. Seeding needs no separate confirmation beyond the

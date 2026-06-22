@@ -7,6 +7,12 @@ QUALITY.md specification.
 
 ### CLI
 
+- Moved the default evaluation data directory from `quality/evaluations/` to
+  `.quality/evaluations/`, added shared QUALITY.md workspace resolution with an
+  optional root `config` pointer to the workspace config file, and kept
+  `--evaluation-dir` as the highest-precedence override.
+- Updated `qualitymd lint` to accept a valid root `config` tooling pointer while
+  keeping other unknown root and nested keys as errors.
 - Made evaluation record writes self-describing and safer to script:
   `evaluation assessment add`, `evaluation analysis set`, and
   `evaluation recommendation add` now document their JSON payload fields in
@@ -15,6 +21,9 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Moved the default quality log from `quality/log/` to `.quality/log/` under the
+  workspace quality data directory and aligned setup, wizard, evaluate, and
+  recommendation follow-up guidance with the new workspace paths.
 - Updated evaluation record-writing guidance and quick-reference payload examples
   to discover schemas through CLI help and validate new payloads with dry-run.
 - Tightened `/quality evaluate` planning guidance so `design.md` and the initial

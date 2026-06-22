@@ -44,11 +44,14 @@ label. The same applies to any author-named level coinciding with *Area*,
 *Factor*, or *Requirement*.
 
 The CLI creates a numbered evaluation folder per run, so each run is a durable,
-routable record. The default parent directory is `quality/evaluations/`, but a
-repository may set `.quality/config.yaml`:
+routable record. The default parent directory is `.quality/evaluations/` under
+the workspace quality data directory. A repository may choose the workspace
+config file with root `config` frontmatter on `QUALITY.md`; without that pointer
+the config file defaults to `.quality/config.yaml`. The resolved config file may
+set:
 
 ```yaml
-evaluationDir: quality/evaluations
+evaluationDir: tmp/evals
 ```
 
 `evaluationDir` names the parent directory that contains numbered run folders.
@@ -57,8 +60,7 @@ The shared folder and record contract is defined by
 details in its [child specs](../../evaluation-records/index.md).
 It **MUST** be repository-relative, normalized before use, and rejected when it is
 absolute or escapes the repository. Missing config or missing `evaluationDir`
-uses the default. Unknown config keys should be surfaced as warnings and
-ignored.
+uses the default.
 
 Runtime evaluation artifacts are raw outputs in the evaluated repository, not
 OKF concepts. They **MUST NOT** carry OKF frontmatter or require registration in
@@ -68,7 +70,7 @@ a snapshot of the model evaluated, the run's **design** (its inputs), its
 execution **plan** (its method), and its process-only **debug log**:
 
 ```
-quality/evaluations/
+.quality/evaluations/
   0001[-<narrowing>]-quality-eval/
     model.md
     design.md

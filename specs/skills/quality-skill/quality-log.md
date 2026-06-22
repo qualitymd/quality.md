@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality quality log
-description: Component spec for the /quality skill's convention-first quality log under quality/log/.
+description: Component spec for the /quality skill's convention-first quality log under .quality/log/.
 tags: [skill, quality, log]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -9,8 +9,9 @@ timestamp: 2026-06-22T00:00:00Z
 # /quality quality log
 
 This spec owns the `/quality` skill's convention-first quality log: dated
-entries under `quality/log/` that record meaningful, evidence-linked changes to
-a QUALITY.md model. It composes the shared contracts in the parent
+entries under `.quality/log/` in the workspace quality data directory that
+record meaningful, evidence-linked changes to a QUALITY.md model. It composes
+the shared contracts in the parent
 [/quality skill](quality-skill.md) spec and is written by setup plus confirmed
 model-authoring or recommendation-apply workflows.
 
@@ -28,9 +29,9 @@ criterion moved by recalibration or drift, what a new Factor was reacting to.
 That rationale is what the [learn loop](evaluation.md#evaluation-workflow) runs on, and it is
 lost once a commit scrolls away. The **quality log** is a curated,
 evidence-linked timeline of meaningful model changes the skill maintains under
-`quality/log/`: it preserves the *why* and links each change to the evaluation
+`.quality/log/`: it preserves the *why* and links each change to the evaluation
 evidence behind it. It is the model's own history for a project that has a
-`QUALITY.md` and `quality/evaluations/` but no `changes/` bundle of its own.
+`QUALITY.md` and `.quality/evaluations/` but no `changes/` bundle of its own.
 
 The log is deliberately **curated, not complete**. Hand edits to `QUALITY.md`
 bypass the skill, so the log cannot be exhaustive and does not try to be — git
@@ -42,17 +43,17 @@ The log is a **runtime output** of the skill, not a QUALITY.md format concept;
 the format and evaluation semantics remain governed by
 [`SPECIFICATION.md`](../../../SPECIFICATION.md). A `qualitymd log` CLI command, a
 `.quality/config.yaml` `logDir` key, a standalone artifact-spec, and any
-machine-queryable index file inside `quality/log/` are all deferred until the
+machine-queryable index file inside `.quality/log/` are all deferred until the
 surface graduates to the CLI (see [Deferred](quality-skill.md#deferred)); this section is the
 convention-first contract the skill writes against in the meantime.
 
 ### The log artifact
 
 The skill **MUST** record meaningful changes to a QUALITY.md model as entries
-under `quality/log/`, a sibling of the resolved evaluation directory. Each
-meaningful change is **one entry file**.
+under the resolved workspace's `.quality/log/` directory. Each meaningful change
+is **one entry file**.
 
-> Rationale: a folder of independent files mirrors `quality/evaluations/` for one
+> Rationale: a folder of independent files mirrors `.quality/evaluations/` for one
 > mental model of the runtime root, and avoids the append conflicts a single
 > shared log file would create when concurrent branches or agents add
 > entries. — 0050
@@ -68,7 +69,7 @@ NOT** assign a global sequential counter to entries.
 > is CLI-owned; with no CLI in this surface, date-naming sidesteps the hazard
 > entirely. — 0050
 
-`quality/log/` is a **runtime artifact, not an OKF bundle**. It **MUST NOT** carry
+`.quality/log/` is a **runtime artifact, not an OKF bundle**. It **MUST NOT** carry
 OKF `index.md`, `schema.md`, or `log.md` semantics, and entry frontmatter is
 machine metadata, not OKF concept frontmatter.
 
@@ -119,7 +120,7 @@ the rationale already shown in the decision brief.
 `evaluate` **MUST NOT** write to the quality log. Issue-tracker handoff **MUST
 NOT** write to the quality log.
 
-> Rationale: evaluations own `quality/evaluations/`; keeping the log to model
+> Rationale: evaluations own `.quality/evaluations/`; keeping the log to model
 > changes only — referencing runs, never duplicating them — is what stops it
 > becoming a second evaluation record. — 0050
 

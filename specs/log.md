@@ -2,6 +2,17 @@
 
 ## 2026-06-22
 
+- **Revision**: Implemented durable spec alignment for
+  [0057 - Quality data directory](../changes/0057-quality-data-directory.md).
+  Updated [`qualitymd evaluation create`](cli/evaluation-create.md),
+  [`qualitymd status`](cli/status.md), [`qualitymd lint`](cli/lint.md),
+  [`qualitymd lint rules`](cli/lint-rules.md), the
+  [`quality.schema.json`](quality-schema-json.md) artifact spec, and durable
+  [`/quality` skill](skills/quality-skill/index.md) specs to define the
+  QUALITY.md workspace, `.quality/` quality data directory,
+  `.quality/evaluations/` default, `.quality/log/` quality log, root `config`
+  tooling pointer, and strict lint handling for unknown keys.
+
 - **Revision**: Clarified prospective evaluation design and plan artifacts for
   [0056 - Prospective evaluation plan artifacts](../changes/archive/0056-prospective-evaluation-plan-artifacts.md).
   Added the [design.md](evaluation-records/design-md.md) artifact spec, updated

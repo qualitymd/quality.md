@@ -81,8 +81,9 @@ Offer concrete alternatives
    a signal is genuinely needed to choose between options and is cheap, gather
    just that one; otherwise state the open question and let the user's choice
    resolve it.
-   - Cheaply surface model history: note the latest `quality/log/` entry (a bare
-     directory listing — do not read entry bodies). When the model appears to
+   - Cheaply surface model history: note the latest entry in the workspace's
+     `.quality/log/` directory (a bare directory listing — do not read entry
+     bodies). When the model appears to
      have changed out of band since that entry — the `QUALITY.md` is newer than
      the last logged change, or there is no log at all for an evolved model —
      classify it under **needs reconciliation** and offer the backfill route. The

@@ -93,9 +93,10 @@ In the repository you want to evaluate:
 `setup` creates and lints a skeleton `QUALITY.md`, then uses the bundled
 authoring guide and getting-started guide to help populate the first useful
 model. `wizard` inspects the model state and suggests concrete next actions.
-`evaluate` writes a numbered evaluation run under `quality/evaluations/` by
-default, including formal assessment records, generated reports, and a
-process-only `debug-log.md` for notable evaluation orchestration events.
+`evaluate` writes a numbered evaluation run under `.quality/evaluations/` by
+default, inside the workspace quality data directory. A run includes formal
+assessment records, generated reports, and a process-only `debug-log.md` for
+notable evaluation orchestration events.
 `update` plans and orchestrates paired skill/CLI maintenance without running a
 quality evaluation.
 
@@ -106,7 +107,7 @@ creates an external issue only when suitable issue-tracker tooling is available
 and you explicitly confirm creation.
 
 `setup` and confirmed model-authoring or recommendation-apply workflows maintain
-a **quality log** — dated entries under `quality/log/` that record meaningful,
+a **quality log** — dated entries under `.quality/log/` that record meaningful,
 evidence-linked changes to the model. `setup` seeds an inaugural entry; later
 confirmed model changes add one entry per coherent model change. The log
 preserves *why* the model changed where `git log` only shows the diff; it is
@@ -116,10 +117,12 @@ log.
 ## Configure the evaluation directory
 
 Create `.quality/config.yaml` to choose a different parent directory for
-numbered evaluation runs:
+numbered evaluation runs. If your config file lives elsewhere, add root
+`config: <path>` frontmatter to the selected `QUALITY.md` to point qualitymd to
+it.
 
 ```yaml
-evaluationDir: quality/evaluations
+evaluationDir: tmp/evals
 ```
 
 The path must be repository-relative and must not escape the repository.

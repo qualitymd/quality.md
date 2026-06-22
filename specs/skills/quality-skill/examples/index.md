@@ -5,7 +5,7 @@ Worked reference artifacts that make the skill's
 instance of what the skill writes at runtime.
 
 At runtime the skill writes these into the **evaluated** repository under
-`quality/evaluations/NNNN-<altitude>[-<narrowing>]-quality-eval/` (see
+`.quality/evaluations/NNNN[-<narrowing>]-quality-eval/` by default (see
 [Reporting](../reporting.md#reporting)). These example files intentionally
 match that raw runtime shape: no OKF frontmatter, JSON assessment/analysis
 records, recommendation Markdown with runtime YAML frontmatter, and generated

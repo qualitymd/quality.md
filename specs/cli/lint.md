@@ -16,9 +16,11 @@ This file specifies only what is particular to `lint`.
 [format specification](../../SPECIFICATION.md), fast and deterministically,
 exiting non-zero on errors so it drops into CI.
 
-**Boundary.** `lint` checks *format conformance* — whether the file is a valid
-QUALITY.md file — only. It does not assess whether the model is a *good* quality
-model; that judgment lives in the evaluation skills, not the deterministic CLI.
+**Boundary.** `lint` applies qualitymd's default lint profile: normative
+QUALITY.md Model checks plus documented qualitymd tooling-key checks, such as
+the root `config` pointer. It does not assess whether the model is a *good*
+quality model; that judgment lives in the evaluation skills, not the
+deterministic CLI.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", "RECOMMENDED", and "MAY" are to be

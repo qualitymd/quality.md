@@ -896,7 +896,7 @@ averaged into the root area's rating.
 
 When the learn loop actually changes the model, record it in the **quality log**
 — a curated, evidence-linked timeline of meaningful model changes under
-`quality/log/`, one dated entry per change (`YYYY-MM-DD-<slug>.md`). The log
+`.quality/log/`, one dated entry per change (`YYYY-MM-DD-<slug>.md`). The log
 preserves the *why* a commit message scrolls away; its format contract lives in
 [`SKILL.md`](../SKILL.md). The judgment is *what* counts as meaningful:
 

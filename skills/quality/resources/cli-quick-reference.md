@@ -60,6 +60,11 @@ whether the install is in the skill's supported range.
 | Build report                  | `qualitymd evaluation report build <run>`                           |
 | Gate report                   | `qualitymd evaluation report gate <run> --at-or-below <level>`      |
 
+Evaluation runs default under `.quality/evaluations/`. A repository can set
+`evaluationDir` in the resolved workspace config file; the selected `QUALITY.md`
+can point to that file with root `config` frontmatter, otherwise
+`.quality/config.yaml` is used.
+
 ## Decision trees
 
 ### Starting or repairing a model

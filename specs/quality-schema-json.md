@@ -58,6 +58,8 @@ Deferred / non-goals:
   document this schema accepts can still fail [`lint`](cli/lint.md).
 - No JSON form of the specification *prose* — that is a separate deferral noted
   in [`spec`](cli/spec.md), distinct from this structural artifact.
+- No qualitymd-only tooling conventions such as the root `config` pointer; those
+  are lint/CLI behavior, not normative Model structure.
 - No published hosted-URL `$id` registry or versioned schema-hosting scheme
   beyond the identifier the artifact declares.
 - The command surface that emits the artifact is specified in
@@ -114,3 +116,10 @@ not set `additionalProperties: false`), consistent with the format's
 
 > Rationale: the format permits extension frontmatter; a closed schema would
 > reject conforming documents that use it. — 0049
+
+`quality.schema.json` **MUST NOT** describe the qualitymd-only root `config`
+convention as a normative Model property.
+
+> Rationale: `config` selects qualitymd tooling configuration for a workspace;
+> including it in the companion schema would blur tooling behavior with the
+> QUALITY.md Model. — 0057

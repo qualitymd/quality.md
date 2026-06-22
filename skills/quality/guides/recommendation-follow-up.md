@@ -13,7 +13,7 @@ Offer only two explicit productive outcomes:
 2. Hand off the recommendation to an issue tracker.
 
 If the user does not choose one of those outcomes, stop without changing
-evaluated source, `QUALITY.md`, `quality/log/`, or external systems. Do not
+evaluated source, `QUALITY.md`, `.quality/log/`, or external systems. Do not
 present defer, skip, or keep open as formal options.
 
 ## Apply Now
@@ -51,13 +51,13 @@ If verification is incomplete, label the result as limited rather than fully
 confirmed.
 
 When a confirmed apply changes the QUALITY.md model, append one quality log
-entry under `quality/log/` for the coherent model change. Cross-link the source
+entry under `.quality/log/` for the coherent model change. Cross-link the source
 evaluation run and recommendation when present. Evaluated-source fixes that do
 not change the model get no quality log entry.
 
 ## Issue-Tracker Handoff
 
-Issue handoff does not edit evaluated source, `QUALITY.md`, or `quality/log/`.
+Issue handoff does not edit evaluated source, `QUALITY.md`, or `.quality/log/`.
 
 Prepare issue-ready text with:
 

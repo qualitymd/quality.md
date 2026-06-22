@@ -34,7 +34,7 @@ source, editing `QUALITY.md`, writing the quality log, or creating an external
 issue.
 
 The guide **MUST** state that issue-tracker handoff alone does not edit
-evaluated source, `QUALITY.md`, or `quality/log/`.
+evaluated source, `QUALITY.md`, or `.quality/log/`.
 
 The guide **MUST** name the issue-ready content fields needed for handoff:
 recommendation identity, source run, affected model target, current rating when

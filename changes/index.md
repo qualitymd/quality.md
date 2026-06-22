@@ -47,14 +47,9 @@ edit.
   (`Draft`) - define strict Area/Factor/Rating names, canonical typed model
   references, edge-only shorthand, and clearer report summary Area Breakdown
   columns.
-- [0057 Quality data directory](0057-quality-data-directory.md) (`Design`) -
-  define the QUALITY.md workspace envelope, move support artifacts under the
-  `.quality/` quality data directory, and add a root `config` pointer for
-  tooling config resolution.
-
-Completed change cases live in [`archive/`](archive/); copy
-[`archive/0001-example-change`](archive/0001-example-change.md) as a starting
-template for a new one.
+  Completed change cases live in [`archive/`](archive/); copy
+  [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
+  template for a new one.
 
 # Bundle
 

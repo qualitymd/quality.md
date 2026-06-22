@@ -18,16 +18,18 @@ type repairOp struct {
 
 type runState struct {
 	doc      *document.Document
+	options  Options
 	root     *areaRef
 	findings []Finding
 	repairs  []repairOp
 	levels   map[string]bool
 }
 
-func newRunState(doc *document.Document) *runState {
+func newRunState(doc *document.Document, options Options) *runState {
 	return &runState{
-		doc:    doc,
-		levels: map[string]bool{},
+		doc:     doc,
+		options: options,
+		levels:  map[string]bool{},
 	}
 }
 

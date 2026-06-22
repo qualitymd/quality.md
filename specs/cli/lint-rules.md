@@ -45,6 +45,17 @@ YAML value shapes, the model-content group, and the rating-scale minimum — MUS
 derive from the single structural schema declaration that the linter consumes.
 Rule logic MUST NOT maintain a second valid-key list independent of that schema.
 
+The unknown-key rule **MUST** be internally configurable by rule options so a
+documented qualitymd tooling key can be allowed without hard-coding a one-off
+exception into schema traversal. The default qualitymd lint profile **MUST**
+allow root `config` and **MUST** keep all other unknown root keys as error
+findings. Unknown nested keys inside Areas, Factors, Requirements, and Rating
+Levels **MUST** remain error findings by default.
+
+Root `config` is a qualitymd tooling convention, not a normative Model property.
+`lint` **MUST** accept it only at the root and **MUST** validate its value with
+the `invalid-config` rule.
+
 ### Severity
 
 Every rule carries a fixed **severity** that governs how its finding surfaces:
@@ -190,6 +201,7 @@ Each enforces a **MUST** — its finding means the file is not a valid
 | `too-few-levels`           | *Rating Scale* — at least two rating levels MUST be supplied                              | Flags a `ratingScale` with fewer than two rating levels.                                         | No      | Adding levels requires choosing scale vocabulary and criteria.                     |
 | `missing-level-name`       | *Rating Scale* — each level MUST declare a `level` name                                   | Flags a rating level that declares no `level` name.                                              | No      | A generated name would define rating vocabulary for the author.                    |
 | `duplicate-level`          | *Rating Scale* — a `level` name MUST be unique within the scale                           | Flags two rating levels that share a `level` name.                                               | No      | Repair requires choosing which level to rename, merge, or remove.                  |
+| `invalid-config`           | *qualitymd tooling* — root `config` MUST be a safe repository-relative scalar path        | Flags a root `config` value that is empty, non-scalar, absolute, or escapes the repository.      | No      | Repair requires choosing the intended workspace config file path.                  |
 | `missing-criterion`        | *Rating Scale* — each level MUST declare a `criterion`                                    | Flags a rating level that declares no `criterion`.                                               | No      | Criterion text defines rating semantics and cannot be inferred mechanically.       |
 | `empty-model`              | *Model* — an entry on `factors`, `requirements`, or `areas` MUST be supplied              | Flags a model root that supplies no entry under `factors`, `requirements`, or `areas`.           | No      | Repair requires choosing what kind of model content to add.                        |
 | `misplaced-root-key`       | *Area* — a Area MUST NOT declare `ratingScale`                                            | Flags an area that declares `ratingScale`.                                                       | No      | Repair requires deciding whether to remove, move, or reinterpret authored content. |

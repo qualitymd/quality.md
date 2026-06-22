@@ -30,6 +30,7 @@ const (
 	RuleTooFewLevels             RuleID = "too-few-levels"
 	RuleMissingLevelName         RuleID = "missing-level-name"
 	RuleDuplicateLevel           RuleID = "duplicate-level"
+	RuleInvalidConfig            RuleID = "invalid-config"
 	RuleMissingCriterion         RuleID = "missing-criterion"
 	RuleMissingLevelDescription  RuleID = "missing-level-description"
 	RuleEmptyModel               RuleID = "empty-model"
@@ -61,6 +62,7 @@ var Rules = []Rule{
 	{RuleTooFewLevels, SeverityError, false, "The rating scale has fewer than two levels."},
 	{RuleMissingLevelName, SeverityError, false, "A rating level declares no level name."},
 	{RuleDuplicateLevel, SeverityError, false, "A rating level name is duplicated within the rating scale."},
+	{RuleInvalidConfig, SeverityError, false, "The root config tooling pointer is not a safe repository-relative scalar path."},
 	{RuleMissingCriterion, SeverityError, false, "A rating level declares no criterion."},
 	{RuleMissingLevelDescription, SeverityWarning, false, "A rating level declares no description."},
 	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or areas."},

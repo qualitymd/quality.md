@@ -167,6 +167,24 @@ requirements:
 `,
 	},
 	{
+		ruleID: RuleInvalidConfig,
+		name:   "root config is empty",
+		model: validFrontmatter(`config:
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleInvalidConfig,
+		name:   "root config escapes repository",
+		model: validFrontmatter(`config: ../outside.yaml
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`),
+	},
+	{
 		ruleID: RuleMissingCriterion,
 		name:   "criterion absent",
 		model: `---
@@ -892,6 +910,53 @@ requirements:
 			}
 			if !hasRule(result, RuleInvalidFrontmatter) {
 				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidFrontmatter)
+			}
+		})
+	}
+}
+
+func TestRootConfigToolingKey(t *testing.T) {
+	valid, err := Check(writeModel(t, validFrontmatter(`config: .quality/config.yaml
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`)))
+	if err != nil {
+		t.Fatalf("Check(valid config) error = %v", err)
+	}
+	if hasRule(valid, RuleInvalidFrontmatter) || hasRule(valid, RuleInvalidConfig) {
+		t.Fatalf("findings = %#v, want root config accepted", valid.Findings)
+	}
+
+	for _, tc := range []struct {
+		name  string
+		model string
+	}{
+		{
+			name: "map",
+			model: validFrontmatter(`config:
+  path: .quality/config.yaml
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`),
+		},
+		{
+			name: "absolute",
+			model: validFrontmatter(`config: /tmp/config.yaml
+requirements:
+  "has an assessment":
+    assessment: Inspect it.
+`),
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Check(writeModel(t, tc.model))
+			if err != nil {
+				t.Fatalf("Check() error = %v", err)
+			}
+			if !hasRule(result, RuleInvalidConfig) {
+				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidConfig)
 			}
 		})
 	}

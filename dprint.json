@@ -10,8 +10,8 @@
     "dist",
     "**/CLAUDE.md",
     "**/GEMINI.md",
-    "quality/evaluations/**/report.md",
-    "quality/evaluations/**/report-summary.md",
+    ".quality/evaluations/**/report.md",
+    ".quality/evaluations/**/report-summary.md",
     "specs/skills/quality-skill/examples/**/report.md",
     "specs/skills/quality-skill/examples/**/report-summary.md"
   ],

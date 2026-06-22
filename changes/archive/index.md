@@ -193,3 +193,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   made `design.md` and the initial `plan.md` prospective `/quality evaluate`
   artifacts authored before assessment begins, with later plan changes recorded
   as amendments (`Done`).
+- [0057 — Quality data directory](0057-quality-data-directory.md) - defined the
+  QUALITY.md workspace envelope, moved live support artifacts under `.quality/`,
+  added the root `config` tooling pointer, and kept strict lint handling for
+  unknown keys (`Done`).
