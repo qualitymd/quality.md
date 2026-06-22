@@ -179,3 +179,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   splitting the `/quality` skill parent into child specs for modes, evaluation
   workflow, reporting, and quality log, and strengthening the general
   spec-splitting guidance (`Done`).
+- [0053 — Align remaining durable specs](0053-align-remaining-durable-specs.md) -
+  split remaining large durable specs for evaluation records, lint, and ambient
+  update notices into parent and component/artifact contracts (`Done`).

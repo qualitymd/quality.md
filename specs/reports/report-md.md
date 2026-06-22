@@ -12,7 +12,8 @@ timestamp: 2026-06-22T00:00:00Z
 `qualitymd evaluation report build`.
 
 Shared report-model, trust-boundary, active/superseded, and typed-state
-invariants live in [Evaluation records](../evaluation-records.md#report-outputs).
+invariants live in
+[Evaluation report outputs](../evaluation-records/report-outputs.md).
 The concise artifact is specified in [report-summary.md](report-summary-md.md), and
 the machine-readable artifact is specified in [report.json](report-json.md).
 

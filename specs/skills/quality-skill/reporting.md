@@ -51,8 +51,9 @@ evaluationDir: quality/evaluations
 ```
 
 `evaluationDir` names the parent directory that contains numbered run folders.
-The folder and record contract is defined by
-[`Evaluation records`](../../evaluation-records.md).
+The shared folder and record contract is defined by
+[`Evaluation records`](../../evaluation-records.md), with artifact-specific
+details in its [child specs](../../evaluation-records/index.md).
 It **MUST** be repository-relative, normalized before use, and rejected when it is
 absolute or escapes the repository. Missing config or missing `evaluationDir`
 uses the default. Unknown config keys should be surfaced as warnings and

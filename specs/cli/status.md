@@ -83,8 +83,9 @@ evaluation command configuration.
 If the evaluation directory is absent, `status` **MUST** report zero recognized
 runs rather than failing.
 
-`status` **MUST** recognize run folders by the Evaluation records run-folder
-contract and inspect them in deterministic order by run number, then folder name.
+`status` **MUST** recognize run folders by the
+[Evaluation run folder](../evaluation-records/run-folder.md) contract and
+inspect them in deterministic order by run number, then folder name.
 
 For recognized runs, `status` **MUST** report total run count, latest run,
 reportable run count, incomplete run count, stale run count, and active

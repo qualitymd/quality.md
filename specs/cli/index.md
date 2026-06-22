@@ -27,3 +27,12 @@ The format-tooling commands specified for this phase. See the parent
   metadata.
 - [qualitymd update](update.md) - apply or check for CLI updates through managed
   install channels.
+
+# Components
+
+- [qualitymd lint rules](lint-rules.md) - rule-system, rule-authoring, and rule
+  catalog contract for `qualitymd lint`.
+- [qualitymd lint output](lint-output.md) - finding, JSON, repair-result, and
+  human-output contract for `qualitymd lint`.
+- [qualitymd update notice](update-notice.md) - cross-command ambient update
+  notice contract.

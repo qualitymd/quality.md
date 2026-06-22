@@ -29,5 +29,7 @@ before it lands.
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs.
+- [evaluation-records/](evaluation-records/) - child specs for evaluation run
+  folders, records, runtime artifacts, and report-output invariants.
 - [reports/](reports/) - generated evaluation report artifact specs.
 - [skills/](skills/) - companion skills that carry judgment around QUALITY.md (`/quality`).

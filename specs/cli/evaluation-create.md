@@ -10,7 +10,8 @@ timestamp: 2026-06-21T00:00:00Z
 
 `qualitymd evaluation create` creates a numbered evaluation run folder. It
 inherits the cross-cutting CLI contract from [qualitymd CLI](../cli.md) and
-produces the layout defined by [Evaluation records](../evaluation-records.md).
+produces the layout defined by the
+[Evaluation run folder](../evaluation-records/run-folder.md) contract.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as

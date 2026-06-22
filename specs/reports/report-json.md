@@ -12,7 +12,8 @@ timestamp: 2026-06-22T00:00:00Z
 `qualitymd evaluation report build`.
 
 Shared report-model, trust-boundary, active/superseded, and typed-state
-invariants live in [Evaluation records](../evaluation-records.md#report-outputs).
+invariants live in
+[Evaluation report outputs](../evaluation-records/report-outputs.md).
 The human artifacts are specified in [report-summary.md](report-summary-md.md) and
 [report.md](report-md.md).
 

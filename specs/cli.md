@@ -230,9 +230,10 @@ development-build state, and bundled `SPECIFICATION.md` version as structured
 metadata. `qualitymd update --check` **MUST** be the explicit non-mutating
 update-check surface. Ordinary commands **MAY** refresh a local update cache in a
 bounded, best-effort background process and **MAY** show a cached
-update-available notice on stderr only, per [`update`](./cli/update.md); they
-**MUST NOT** block on a network fetch for update discovery or include update
-notices in stdout or machine-readable output.
+update-available notice on stderr only, per
+[`update notice`](./cli/update-notice.md); they **MUST NOT** block on a network
+fetch for update discovery or include update notices in stdout or
+machine-readable output.
 
 ## To be specified
 

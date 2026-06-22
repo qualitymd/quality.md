@@ -2,6 +2,18 @@
 
 ## 2026-06-22
 
+- **Revision**: Split remaining large durable specs for
+  [0053 - Align remaining durable specs](../changes/archive/0053-align-remaining-durable-specs.md).
+  `evaluation-records.md` now keeps shared responsibility, runtime-not-OKF,
+  schema-version, and historical compatibility rules while child specs under
+  [`evaluation-records/`](evaluation-records/index.md) own run folders,
+  assessment records, analysis records, `plan.md`, `debug-log.md`,
+  recommendation records, and report-output invariants. Split lint's rule system
+  into [`lint rules`](cli/lint-rules.md) and its finding/output contract into
+  [`lint output`](cli/lint-output.md). Split the cross-command
+  [`update notice`](cli/update-notice.md) from the explicit
+  [`update`](cli/update.md) command.
+
 - **Revision**: Aligned the durable `/quality` skill specs with the
   artifact-spec versus behavioral-component guidance for
   [0052 - Durable spec alignment](../changes/0052-durable-spec-alignment.md).

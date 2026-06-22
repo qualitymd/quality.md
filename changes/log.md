@@ -3,6 +3,33 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0053 - Align remaining durable specs](archive/0053-align-remaining-durable-specs.md) —
+  advanced it to `Done` and moved the parent concept and its
+  [folder](archive/0053-align-remaining-durable-specs/index.md) into
+  [`archive/`](archive/index.md). The case split remaining large durable specs
+  for evaluation records, lint, and ambient update notices into parent and
+  component/artifact contracts. Updated the archive [index](archive/index.md) and
+  emptied the open-cases list in the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0053 - Align remaining durable specs](archive/0053-align-remaining-durable-specs.md)
+  and advanced it from `In-Progress` to `In-Review`. Split evaluation-records
+  runtime contracts into child specs for the run folder, records, artifacts, and
+  report outputs; split the lint command from lint rules and output schema; and
+  split ambient update-notice behavior from the explicit update command. Updated
+  affected links, indexes, and spec logs. `mise run fmt-md-check` and
+  `git diff --check` pass.
+
+- **Creation**: Added
+  [0053 - Align remaining durable specs](archive/0053-align-remaining-durable-specs.md)
+  (`status: In-Progress`) with its
+  [functional spec](archive/0053-align-remaining-durable-specs/spec.md) and
+  [child index](archive/0053-align-remaining-durable-specs/index.md). The case applies
+  the revised durable-spec granularity guidance to evaluation records, lint, and
+  ambient update notice behavior while keeping `SPECIFICATION.md` out of scope as
+  the single primary format deliverable. Updated the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0052 - Durable spec alignment](archive/0052-durable-spec-alignment.md) —
   advanced it to `Done` and moved the parent concept and its
   [folder](archive/0052-durable-spec-alignment/index.md) into [`archive/`](archive/index.md).

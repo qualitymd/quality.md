@@ -93,22 +93,7 @@ reference is advisory and **MUST NOT** change availability or apply behavior.
 
 ## Ambient Notice
 
-Ordinary `qualitymd` commands **MAY** surface a one-line update-available notice
-when a local cache indicates that a newer, ready release exists. The notice
-**MUST** be written to stderr and **MUST NOT** appear in stdout or in any
-machine-readable output. It **MUST** be suppressed when stderr is not an
-interactive terminal, when CI is detected, when the documented opt-out is set,
-and for development builds. It **MUST** name the current and latest versions and
-the exact command to run, and **SHOULD** include the release-notes reference when
-known.
-
-The notice **MUST** be served from a local cache. Ordinary commands **MUST NOT**
-block on a network fetch to produce it, and their exit code and primary output
-**MUST NOT** be affected by the notice's presence, absence, or any failure to
-produce it. The cache **MAY** be refreshed by a bounded, best-effort check no
-more frequently than a documented interval; a failed refresh **MUST** be silent.
-A refreshed value **MAY** surface on a later invocation rather than the one that
-triggered the refresh.
-
-`QUALITYMD_NO_UPDATE_CHECK=1` disables explicit update checks, the ambient cache
-refresh, and the ambient notice.
+The cross-command ambient update notice contract lives in
+[`qualitymd update notice`](update-notice.md). The explicit `qualitymd update`
+command remains the owner of apply and `--check` behavior; ordinary commands may
+only surface cached, non-blocking notices under the shared notice contract.

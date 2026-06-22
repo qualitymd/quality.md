@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 # qualitymd evaluation analysis
 
 `qualitymd evaluation analysis` is the analysis-record resource. The record
-contract is [Evaluation records](../evaluation-records.md).
+contract is [Analysis record](../evaluation-records/analysis-record.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as

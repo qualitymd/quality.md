@@ -9,7 +9,8 @@ timestamp: 2026-06-19T00:00:00Z
 # qualitymd evaluation assessment
 
 `qualitymd evaluation assessment` is the assessment result record
-resource. The record contract is [Evaluation records](../evaluation-records.md).
+resource. The record contract is
+[Assessment result record](../evaluation-records/assessment-result-record.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
