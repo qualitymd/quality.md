@@ -142,6 +142,13 @@ shapes is not a conforming QUALITY.md document.
 Null or empty values do not satisfy required properties. A required property
 with a null or empty value MUST be treated as absent.
 
+> **Non-normative.** A companion JSON Schema for this frontmatter is available as
+> `quality.schema.json` (emitted by `qualitymd schema`). It is structural-only —
+> it describes the shapes in this section, not the semantic rules a conforming
+> tool enforces — and is subordinate to this specification and to its durable
+> spec (`specs/quality-schema-json.md`). Passing structural validation does not
+> imply full conformance; the semantic layer stays with the tool.
+
 #### Model
 
 A Model is the root node of a QUALITY.md document. It has all Area

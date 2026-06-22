@@ -64,9 +64,10 @@ Formatter selection mirrors the stack's existing color handling: pick
 and emits JSON Schema:
 
 - `ScalarShape` → `type: string`; `MapShape` → `object` with
-  `additionalProperties: <$ref to element node>` and `patternProperties` for the
-  map-keyed entries (`factors` / `requirements` / `areas`); `SequenceShape` →
-  `array` with `items: <$ref>` and, for the rating scale, `minItems: 2`.
+  `additionalProperties: <$ref to element node>` for the map-keyed entries
+  (`factors` / `requirements` / `areas` — whose keys are free-form, so they need
+  a value-type constraint, not a key pattern); `SequenceShape` → `array` with
+  `items: <$ref>` and, for the rating scale, `minItems: 2`.
 - `RequiredPresence` → the property is listed in the node's `required`.
 - `RequiredAny` → `anyOf` requiring at least one of the named properties.
 - Recursion (`Area`, `Factor`) → `$ref` into `$defs` so the schema is finite.
@@ -82,13 +83,13 @@ that writes the committed root file and the consistency test that guards it (see
 
 **Dialect and `$id` (decided):** the schema declares `$schema` as **JSON Schema
 draft 2020-12** — the current standard, fully supporting the `$defs`/`$ref`,
-`patternProperties`, `anyOf`, and `minItems` constructs above, and supported by
+`additionalProperties`, `anyOf`, and `minItems` constructs above, and supported by
 the YAML language server that backs the editor scenario. It declares a stable,
-**unversioned** `$id` of `https://quality.md/quality.schema.json`. A `$id` is an
-identifier, not a fetch URL, so reserving the project-domain identity is
-compatible with the spec's no-hosted-registry non-goal — identity now, hosting
-later. (If `quality.md` is not the canonical project domain, fall back to the
-GitHub raw-root URL.) Schema versioning stays deferred per the spec; a
+**unversioned** `$id` of `https://getquality.md/quality.schema.json` — the
+`getquality.md` domain the CLI already links to as the project's docs site. A
+`$id` is an identifier, not a fetch URL, so reserving the project-domain identity
+is compatible with the spec's no-hosted-registry non-goal — identity now, hosting
+later. Schema versioning stays deferred per the spec; a
 `$comment` notes the artifact tracks the structural layer of `SPECIFICATION.md`
 rather than coupling to a spec-version number.
 

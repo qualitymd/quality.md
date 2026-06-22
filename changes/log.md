@@ -3,6 +3,46 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0049 - Companion JSON Schema](archive/0049-companion-json-schema.md) — advanced
+  from `In-Review` to `Done` and moved the parent concept and its
+  [folder](archive/0049-companion-json-schema/index.md) into
+  [`archive/`](archive/index.md). The case published a structural, non-normative
+  JSON Schema for QUALITY.md frontmatter (`quality.schema.json`), generated from
+  `internal/schema` by `GenerateJSON()` and guarded against drift by a
+  consistency test, embedded via a new root `schema.go`, and emitted by the new
+  `qualitymd schema` command; it added the durable `specs/quality-schema-json.md`
+  and `specs/cli/schema.md` specs. Updated the archive [index](archive/index.md)
+  and removed the entry from the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0049 - Companion JSON Schema](0049-companion-json-schema.md) and advanced it
+  from `In-Progress` to `In-Review`. Landed `internal/schema/jsonschema.go`
+  (`GenerateJSON()`), the `internal/schema/gen` `go:generate` entrypoint, the
+  generated repo-root `quality.schema.json`, the root `schema.go` embed +
+  `Schema()`, the `qualitymd schema` command (verbatim plain output;
+  chroma-highlighted + paged on a TTY), command registration, the chroma direct
+  dependency, a root no-drift consistency test, and generator unit tests. Synced
+  the durable specs/docs: new `specs/quality-schema-json.md` and
+  `specs/cli/schema.md`; registered in `specs/index.md`, `specs/cli/index.md`,
+  and `specs/log.md`; added the non-normative note in `SPECIFICATION.md`, the
+  deferral clarification in `specs/cli/spec.md`, and the `README.md`
+  quick-reference row. Build, tests, `go vet`, and `gofmt` clean; `go generate`
+  idempotent; redirect round-trip byte-identical. Corrected the functional spec
+  and the new artifact-spec to scope the "at least one of" `anyOf` rule to the
+  Model only (Area emptiness is the warning-level, semantic `empty-area` check).
+  Not committed or archived. Updated the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0049 - Companion JSON Schema](0049-companion-json-schema.md) from `Design` to
+  `In-Progress` and began implementation. Resolved the one pending external
+  input — the schema `$id` domain is `getquality.md`
+  (`https://getquality.md/quality.schema.json`), matching the live docs site the
+  CLI links to. Work spans `internal/schema` (JSON Schema generation), the
+  generated repo-root `quality.schema.json` embedded via a new root `schema.go`,
+  the `qualitymd schema` command, and the durable specs/docs being synced in
+  parallel. Updated the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0048 - Area factor report breakdown](archive/0048-area-factor-report-breakdown.md)
   — advanced from `In-Review` to `Done` and moved the parent concept and its
   [folder](archive/0048-area-factor-report-breakdown/index.md) into

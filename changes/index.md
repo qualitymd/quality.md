@@ -43,9 +43,6 @@ edit.
 
 # Open change cases
 
-- [0049 - Companion JSON Schema](0049-companion-json-schema.md) - publish a
-  structural JSON Schema for QUALITY.md frontmatter, derived from the linter's
-  schema, and add a `qualitymd schema` command that emits it. Status: `Design`.
 - [0050 - Quality log](0050-quality-log.md) - add a curated quality log — dated
   entries under `quality/log/` that record meaningful, evidence-linked changes to
   a QUALITY.md model, written by the `/quality` skill. Status: `Draft`.

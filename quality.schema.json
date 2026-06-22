@@ -1,0 +1,173 @@
+{
+  "$comment": "Non-normative and subordinate to SPECIFICATION.md (https://getquality.md). Structural-only: passing this schema does not imply full conformance. Semantic rules (factor-reference resolution, rating-override keys, the placement-dependent factor-connection rule, and rating-level ordering and uniqueness) are enforced by `qualitymd lint`, not here. Generated from internal/schema and guarded against drift by a consistency test; do not edit by hand — run `go generate ./...`.",
+  "$defs": {
+    "area": {
+      "properties": {
+        "areas": {
+          "additionalProperties": {
+            "$ref": "#/$defs/area"
+          },
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        },
+        "factors": {
+          "additionalProperties": {
+            "$ref": "#/$defs/factor"
+          },
+          "type": "object"
+        },
+        "requirements": {
+          "additionalProperties": {
+            "$ref": "#/$defs/requirement"
+          },
+          "type": "object"
+        },
+        "source": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "type": "object"
+    },
+    "factor": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "factors": {
+          "additionalProperties": {
+            "$ref": "#/$defs/factor"
+          },
+          "type": "object"
+        },
+        "requirements": {
+          "additionalProperties": {
+            "$ref": "#/$defs/requirement"
+          },
+          "type": "object"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "type": "object"
+    },
+    "ratingLevel": {
+      "properties": {
+        "criterion": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "title",
+        "criterion"
+      ],
+      "type": "object"
+    },
+    "requirement": {
+      "properties": {
+        "assessment": {
+          "type": "string"
+        },
+        "factors": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ratings": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "assessment"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://getquality.md/quality.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "required": [
+        "factors"
+      ]
+    },
+    {
+      "required": [
+        "requirements"
+      ]
+    },
+    {
+      "required": [
+        "areas"
+      ]
+    }
+  ],
+  "description": "Structural JSON Schema for QUALITY.md frontmatter, derived from the qualitymd linter's schema.",
+  "properties": {
+    "areas": {
+      "additionalProperties": {
+        "$ref": "#/$defs/area"
+      },
+      "type": "object"
+    },
+    "description": {
+      "type": "string"
+    },
+    "factors": {
+      "additionalProperties": {
+        "$ref": "#/$defs/factor"
+      },
+      "type": "object"
+    },
+    "ratingScale": {
+      "items": {
+        "$ref": "#/$defs/ratingLevel"
+      },
+      "minItems": 2,
+      "type": "array"
+    },
+    "requirements": {
+      "additionalProperties": {
+        "$ref": "#/$defs/requirement"
+      },
+      "type": "object"
+    },
+    "source": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "ratingScale"
+  ],
+  "title": "QUALITY.md frontmatter",
+  "type": "object"
+}

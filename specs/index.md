@@ -19,6 +19,8 @@ before it lands.
 - [qualitymd CLI](cli.md) - high-level requirements for the deterministic command-line surface.
 - [Evaluation records](evaluation-records.md) - runtime record contract for
   evaluation run folders, assessment/analysis/recommendation records, and reports.
+- [quality.schema.json](quality-schema-json.md) - companion structural JSON Schema
+  for QUALITY.md frontmatter, derived from the linter's schema.
 
 # Bundle
 

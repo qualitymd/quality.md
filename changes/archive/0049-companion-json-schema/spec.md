@@ -74,7 +74,10 @@ Deferred / non-goals:
   from `internal/schema`: per-property shape (scalar / map / sequence),
   required vs. optional presence, the rating-scale `minItems` of 2, map-keyed
   entries for `factors` / `requirements` / `areas`, and the "at least one of
-  factors, requirements, or areas" rule on the Model and Areas.
+  factors, requirements, or areas" rule on the Model. (The Area non-emptiness
+  expectation is the warning-level `empty-area` rule — a subtree
+  requirement-reachability check that is semantic, not a structural key rule, so
+  the schema does not encode it; see below.)
 
   >> Rationale: the value of a companion schema is that it agrees with the tool;
   >> a schema that accepts what the linter rejects (or vice versa) is worse than
@@ -94,9 +97,10 @@ Deferred / non-goals:
   passing validation for full conformance.
 - The artifact **MUST NOT** claim to validate semantic rules it cannot express
   (factor-reference resolution, rating-override keys, the factor-connection
-  rule, level ordering/uniqueness). Where a structural approximation would
-  falsely imply such a check, the artifact omits it rather than encoding a
-  misleading one.
+  rule, level ordering/uniqueness, the area subtree requirement-reachability
+  check behind the warning-level `empty-area` rule). Where a structural
+  approximation would falsely imply such a check, the artifact omits it rather
+  than encoding a misleading one.
 - The artifact **SHOULD** declare a stable JSON Schema dialect (`$schema`) and an
   `$id`, and **SHOULD** allow unknown extension properties consistent with the
   format's [Extensions](../../../SPECIFICATION.md#extensions) rules rather than

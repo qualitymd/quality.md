@@ -70,7 +70,8 @@ func newRootCmd() *cobra.Command {
 		return usageError(err)
 	})
 	// Keep commands in registration order so the help reference reads as a
-	// workflow (init -> lint -> spec -> evaluation) rather than alphabetically.
+	// workflow (init -> lint -> spec -> schema -> evaluation) rather than
+	// alphabetically.
 	cobra.EnableCommandSorting = false
 	root.AddGroup(
 		&cobra.Group{ID: groupCommon, Title: "Common Tasks"},
@@ -79,6 +80,7 @@ func newRootCmd() *cobra.Command {
 	addCommand(root, groupCommon, newInitCmd())
 	addCommand(root, groupCommon, newLintCmd())
 	addCommand(root, groupCommon, newSpecCmd())
+	addCommand(root, groupCommon, newSchemaCmd())
 	addCommand(root, groupCommon, newEvaluationCmd())
 	addCommand(root, groupManage, newVersionCmd())
 	addCommand(root, groupManage, newUpdateCmd())

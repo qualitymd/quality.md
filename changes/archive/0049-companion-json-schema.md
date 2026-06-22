@@ -2,7 +2,7 @@
 type: Change Case
 title: Companion JSON Schema
 description: Publish a companion JSON Schema for QUALITY.md frontmatter, derived from the structural schema, and add a qualitymd schema command that emits it.
-status: Design
+status: Done
 tags: [schema, cli, format, tooling]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -14,13 +14,14 @@ JSON Schema for QUALITY.md frontmatter and a `qualitymd schema` command that
 emits it. The detail lives in its
 [functional spec](0049-companion-json-schema/spec.md).
 
-> **Design.** The [functional spec](0049-companion-json-schema/spec.md) and
-> [design doc](0049-companion-json-schema/design.md) are settled: chroma terminal
-> highlighting, repo-root `quality.schema.json` embedded via a new root
-> `schema.go`, `go:generate` generation guarded by a consistency test, JSON
-> Schema draft 2020-12, and an unversioned project-domain `$id`. The only pending
-> external input is confirming `quality.md` as the `$id` domain. Ready to advance
-> to **In-Progress**; no code is touched until then.
+> **Done.** Landed and archived. The companion schema is generated from
+> `internal/schema` by an exported `GenerateJSON()`, written to the repo-root
+> `quality.schema.json` by a `go:generate` entrypoint, embedded via the new root
+> `schema.go`, and emitted by `qualitymd schema`. A consistency test guards
+> no-drift. The `$id` is `https://getquality.md/quality.schema.json` (draft
+> 2020-12). `chroma` is a direct dependency for terminal highlighting. Build,
+> full test suite, `go vet`, and `gofmt` are clean; `go generate` is idempotent
+> and the redirect round-trip is byte-identical.
 
 ## Motivation
 
@@ -63,23 +64,36 @@ Deferred / non-goals:
 
 ### Code
 
-- `internal/schema/` - expose the structural schema as JSON Schema, derived from
-  the existing `Node`/`Property`/`RequiredAny` model so the artifact cannot drift
-  from what the linter enforces (generation mechanism is a design decision).
+- `internal/schema/jsonschema.go` - exported `GenerateJSON()` rendering the
+  structural schema as JSON Schema, derived from the existing
+  `Node`/`Property`/`RequiredAny` model so the artifact cannot drift from what the
+  linter enforces. The "at least one of factors/requirements/areas" `anyOf` lands
+  on the Model only, faithfully matching `internal/schema` (Areas carry no such
+  hard rule — their emptiness is the warning-level `empty-area` reachability
+  check, which is semantic and not JSON-Schema-expressible).
+- `internal/schema/gen/` - thin `package main` `go:generate` entrypoint that calls
+  `GenerateJSON()` and writes the committed repo-root `quality.schema.json`.
 - `schema.go` (new root file in package `qualitymd`, mirroring
   [`specification.go`](../../specification.go)) - `//go:embed` the generated
   repo-root `quality.schema.json` and expose `func Schema() []byte` next to
   `Specification()`.
 - `internal/cli/schema.go` (+ `schema_test.go`) - the `qualitymd schema` command
-  emitting the embedded artifact verbatim to stdout, with a `writeJSON` helper
-  mirroring `spec.go`'s `colorEnabled`/`page` two-branch shape.
-- `internal/cli/root.go` - register the new command.
+  emitting the embedded artifact verbatim to stdout, with a `writeSchema` helper
+  mirroring `spec.go`'s `colorEnabled`/`page` two-branch shape. (Named
+  `writeSchema`, not `writeJSON`: the evaluation surface already has a
+  value-encoding `writeJSON`.) Terminal highlighting uses `chroma`'s `quick`
+  package; the formatter is chosen by `COLORTERM` (truecolor → `terminal16m`,
+  else `terminal256`) and the style is isolated in one `schemaStyle` constant.
+- `internal/cli/root.go` - register the new command in the Common Tasks group,
+  immediately after `spec`.
 - `go.mod` - promote `github.com/alecthomas/chroma/v2` from an indirect to a
   direct dependency for terminal JSON highlighting (already in the module tree
   via glamour; no new download).
-- Generation/consistency check (e.g. a `go:generate` step or a test) ensuring the
-  embedded `quality.schema.json` matches the structural schema, so the two cannot
-  fall out of sync.
+- `schema_test.go` (new root test) - consistency check: the embedded
+  `quality.schema.json` must equal a fresh `GenerateJSON()` render, so the
+  bundled artifact cannot fall out of sync with the structural schema.
+  `internal/schema/jsonschema_test.go` adds generator unit tests (determinism,
+  dialect/`$id`, required/anyOf, `minItems`, recursive `$defs`, open extensions).
 
 ### Durable specs
 
@@ -99,13 +113,19 @@ Deferred / non-goals:
 
 ### Durable docs, skill, and examples
 
-- `README.md` - mention the `schema` command / companion schema only if the
-  README enumerates commands or authoring aids.
-- `docs/guides/cli-design.md` and `docs/guides/design-go-packages.md` - update
-  only if the generation approach establishes a pattern worth documenting.
-- `skills/quality/` - update only if hand-authoring guidance should point at the
-  schema reference; otherwise no impact.
-- Scaffold/install files - no expected impact.
+- `README.md` - **updated.** The CLI Quick Reference enumerates commands, so a
+  `Show frontmatter schema | qualitymd schema` row was added beside `spec`.
+- `docs/guides/cli-design.md` and `docs/guides/design-go-packages.md` - **no
+  change.** The generate-embed-with-consistency-test approach follows the repo's
+  existing canonical-public-artifact precedent (`specification.go` embedding
+  `SPECIFICATION.md`); documenting a second instance of an established,
+  already-undocumented pattern would pad the guides beyond what this case
+  established.
+- `skills/quality/` - **no change.** The skill is agent-first; the editor
+  `# yaml-language-server: $schema=` workflow targets human hand-authors and is
+  served by the README row and the `SPECIFICATION.md` note. No natural
+  hand-authoring touchpoint exists in the skill.
+- Scaffold/install files - no impact, as expected.
 
 ## Children
 
@@ -116,10 +136,13 @@ Deferred / non-goals:
 
 ## Status
 
-`Design`. See the [status lifecycle](../index.md#status-lifecycle). The
-functional spec and design doc are settled: chroma highlighting, repo-root
-`quality.schema.json` embedded via a new root `schema.go`, `go:generate`
-generation guarded by a consistency test, JSON Schema draft 2020-12, and an
-unversioned project-domain `$id` (pending confirmation of the `quality.md`
-domain). No open design questions remain; ready to advance to **In-Progress**.
-No code touched until then.
+`Done`. See the [status lifecycle](../index.md#status-lifecycle). Landed after
+review and archived. The companion schema is generated from `internal/schema` by
+`GenerateJSON()`, written to the repo-root `quality.schema.json` by a
+`go:generate` entrypoint, embedded via the new root `schema.go`, and emitted
+verbatim by `qualitymd schema`; a root consistency test guards no-drift, and
+generator unit tests cover the encoded structure. The `$id` is
+`https://getquality.md/quality.schema.json` (JSON Schema draft 2020-12). Build,
+`go test ./...`, `go vet`, and `gofmt` are clean; `go generate ./...` is
+idempotent and `qualitymd schema > quality.schema.json` round-trips
+byte-for-byte.

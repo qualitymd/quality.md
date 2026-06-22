@@ -2,6 +2,16 @@
 
 ## 2026-06-22
 
+- **Creation**: Added the companion JSON Schema artifact-spec
+  [`quality.schema.json`](quality-schema-json.md) and the
+  [`qualitymd schema`](cli/schema.md) command sub-spec for
+  [0049 - Companion JSON Schema](../changes/0049-companion-json-schema.md). The
+  artifact-spec carries the durable contract for the structural-only,
+  non-normative schema derived from `internal/schema` (its no-drift property,
+  draft 2020-12 dialect, stable `$id`, and open-extension rule), while the
+  command sub-spec specifies the verbatim-artifact `schema` command. Registered
+  both in [`specs/index.md`](index.md) and [`specs/cli/index.md`](cli/index.md).
+
 - **Revision**: Applied the 1:1 artifact-spec filename convention to the
   `/quality` runtime guide contracts:
   [`authoring.md`](skills/quality-skill/guides/authoring-md.md),

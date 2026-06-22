@@ -159,3 +159,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   exposed a compact Area-by-Factor breakdown from a first-class report model
   across `report-summary.md`, `report.md`, and `report.json`, renamed the Area
   rating fields, and added the durable `specs/reports/` artifact specs (`Done`).
+- [0049 — Companion JSON Schema](0049-companion-json-schema.md) - published a
+  structural, non-normative JSON Schema for QUALITY.md frontmatter, generated
+  from `internal/schema` and guarded against drift, embedded via a root
+  `schema.go`, and emitted by a new `qualitymd schema` command (`Done`).

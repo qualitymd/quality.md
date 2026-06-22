@@ -30,7 +30,10 @@ and flag surface.
 
 Deferred:
 
-- A structured or JSON form of the specification.
+- A structured or JSON form of the specification *prose* — the rules in this
+  document rendered as structured data. This is distinct from the structural
+  `qualitymd schema` command (see [`schema`](schema.md)), which emits the
+  companion frontmatter JSON Schema, not this prose.
 - Sub-views, such as emitting only one command's rule set.
 - `spec`-specific flags beyond cross-cutting CLI flags.
 
