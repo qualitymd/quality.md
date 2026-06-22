@@ -48,6 +48,24 @@ To keep the model visible to agents, add a short note to `AGENTS.md` or
 See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality.
 ```
 
+## Why QUALITY.md
+
+### Manage Quality Debt
+
+As software — and the agents that write it — moves faster, quality erodes
+quietly through three accumulating debts:
+
+- **Technical debt** — code drifting from where it should be.
+- **Cognitive debt** — the mounting burden of understanding complex or
+  under-documented systems.
+- **Intent debt** — software diverging from what stakeholders actually need.
+
+QUALITY.md makes a team's quality expectations explicit and checkable, so those
+gaps stay visible and addressable instead of compounding.
+
+> The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
+> Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
+
 ## Working with QUALITY.md
 
 A `QUALITY.md` file is your project's **reward signal for quality** — the
@@ -124,24 +142,6 @@ your team:
   Code routines, Codex automations) so quality is checked continuously, not just
   when someone remembers. Surface results where the team already works — PR
   comments, status checks, dashboards.
-
-## Why QUALITY.md
-
-### Manage Quality Debt
-
-As software — and the agents that write it — moves faster, quality erodes
-quietly through three accumulating debts:
-
-- **Technical debt** — code drifting from where it should be.
-- **Cognitive debt** — the mounting burden of understanding complex or
-  under-documented systems.
-- **Intent debt** — software diverging from what stakeholders actually need.
-
-QUALITY.md makes a team's quality expectations explicit and checkable, so those
-gaps stay visible and addressable instead of compounding.
-
-> The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
-> Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
 
 ## Example QUALITY.md
 
