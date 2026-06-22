@@ -394,7 +394,7 @@ func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
     "rationale": "Some evidence exists but coverage is thin."
   }
 }`,
-			want: "must include locator, observation, category, and severity",
+			want: "findings[0].severity: is required",
 		},
 		{
 			name: "unknown",
@@ -418,7 +418,7 @@ func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
     "rationale": "Some evidence exists but coverage is thin."
   }
 }`,
-			want: "severity must be one of critical, high, medium, low, or info",
+			want: "findings[0].severity: is not a supported value",
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -434,6 +434,138 @@ func TestAddAssessmentResultRequiresCanonicalFindingSeverity(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestWriteRecordsDryRunDoesNotPersist(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	result, err := WriteRecords(KindAssessmentResult, runPath, []byte(CanonicalPayloadExample(KindAssessmentResult)), WriteOptions{DryRun: true})
+	if err != nil {
+		t.Fatalf("WriteRecords(dry run) error = %v", err)
+	}
+	if !result.DryRun {
+		t.Fatalf("DryRun = false, want true")
+	}
+	if len(result.Paths) != 1 || !strings.HasSuffix(result.Paths[0], "assessments/001-root-has-tests.json") {
+		t.Fatalf("paths = %#v, want intended assessment path", result.Paths)
+	}
+	if _, err := os.Stat(filepath.Join(runPath, "assessments", "001-root-has-tests.json")); !os.IsNotExist(err) {
+		t.Fatalf("dry-run record stat error = %v, want not exist", err)
+	}
+}
+
+func TestWriteRecordsAggregatesValidationProblems(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	_, err = WriteRecords(KindRecommendation, runPath, []byte(`[
+  {
+    "title": "",
+    "gap": "",
+    "evidenceLocators": [],
+    "remediationOptions": [],
+    "recommendedOption": "",
+    "doneCriterion": ""
+  },
+  {
+    "unexpected": true,
+    "title": 10
+  }
+]`), WriteOptions{DryRun: true})
+	if err == nil {
+		t.Fatal("WriteRecords() error = nil, want validation error")
+	}
+	for _, want := range []string{
+		"[0].title: is required",
+		"[0].gap: is required",
+		"[0].evidenceLocators: is required",
+		"[0].remediationOptions: is required",
+		"[0].recommendedOption: is required",
+		"[0].doneCriterion: is required",
+		"[1].unexpected: is not a supported field",
+		"[1].title: has the wrong JSON type; expected string",
+	} {
+		if !strings.Contains(err.Error(), want) {
+			t.Fatalf("error = %q, want substring %q", err.Error(), want)
+		}
+	}
+}
+
+func TestCanonicalPayloadExamplesValidate(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	for _, kind := range []RecordKind{KindAssessmentResult, KindAnalysis, KindRecommendation} {
+		t.Run(string(kind), func(t *testing.T) {
+			if _, err := WriteRecords(kind, runPath, []byte(CanonicalPayloadExample(kind)), WriteOptions{DryRun: true}); err != nil {
+				t.Fatalf("canonical example validation error = %v", err)
+			}
+		})
+	}
+}
+
+func TestQuickReferencePayloadExamplesValidate(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join("..", "..", "skills", "quality", "resources", "cli-quick-reference.md"))
+	if err != nil {
+		t.Fatalf("reading quick reference: %v", err)
+	}
+	examples := quickReferencePayloads(string(raw))
+	if len(examples) != 3 {
+		t.Fatalf("examples = %#v, want assessment, analysis, and recommendation payloads", examples)
+	}
+
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+	for kind, payload := range examples {
+		t.Run(string(kind), func(t *testing.T) {
+			if _, err := WriteRecords(kind, runPath, []byte(payload), WriteOptions{DryRun: true}); err != nil {
+				t.Fatalf("quick-reference payload validation error = %v", err)
+			}
+		})
+	}
+}
+
+func quickReferencePayloads(body string) map[RecordKind]string {
+	examples := map[RecordKind]string{}
+	lines := strings.Split(body, "\n")
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		var kind RecordKind
+		switch {
+		case strings.Contains(line, "qualitymd evaluation assessment add") && strings.Contains(line, "<<'JSON'"):
+			kind = KindAssessmentResult
+		case strings.Contains(line, "qualitymd evaluation analysis set") && strings.Contains(line, "<<'JSON'"):
+			kind = KindAnalysis
+		case strings.Contains(line, "qualitymd evaluation recommendation add") && strings.Contains(line, "<<'JSON'"):
+			kind = KindRecommendation
+		default:
+			continue
+		}
+		var payload strings.Builder
+		for i++; i < len(lines) && lines[i] != "JSON"; i++ {
+			payload.WriteString(lines[i])
+			payload.WriteByte('\n')
+		}
+		examples[kind] = payload.String()
+	}
+	return examples
 }
 
 func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *testing.T) {
@@ -1826,6 +1958,58 @@ func TestAddRecordRejectsCLIOwnedFields(t *testing.T) {
 	}
 	if _, ok := err.(*UsageError); !ok {
 		t.Fatalf("error type = %T, want *UsageError (%v)", err, err)
+	}
+}
+
+func TestInvalidPlannedCoverageAggregatesProblems(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+	if err := os.WriteFile(filepath.Join(runPath, "plan.md"), []byte(`---
+coverage:
+  assessmentResults:
+    - areaPath: []
+      requirement: ""
+    - areaPath: []
+      requirement: ""
+  analyses:
+    - {}
+    - {}
+---
+# Evaluation plan
+`), 0o644); err != nil {
+		t.Fatalf("write plan.md: %v", err)
+	}
+
+	loaded, err := Inspect(runPath)
+	if err != nil {
+		t.Fatalf("Inspect() error = %v", err)
+	}
+	status := loaded.Status()
+	var detail string
+	for _, gap := range status.Gaps {
+		if gap.Kind == GapInvalidPlanCoverage {
+			detail = gap.Detail
+			break
+		}
+	}
+	if detail == "" {
+		t.Fatalf("gaps = %#v, want invalid-plan-coverage", status.Gaps)
+	}
+	for _, want := range []string{
+		"assessmentResults[0].requirement: is required",
+		"assessmentResults[1].requirement: is required",
+		"assessmentResults[1]: duplicates an earlier planned assessment result",
+		"analyses[0].areaPath: is required",
+		"analyses[1].areaPath: is required",
+		"analyses[1]: duplicates an earlier planned analysis",
+	} {
+		if !strings.Contains(detail, want) {
+			t.Fatalf("detail = %q, want substring %q", detail, want)
+		}
 	}
 }
 

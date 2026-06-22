@@ -88,6 +88,12 @@ docs.
   used — common things first, not alphabetically.
 - **Lead with examples.** A couple of real invocations teach faster than a
   paragraph of prose. Show the common case first.
+- **Document structured input, not just invocation.** When a command reads an
+  author-supplied payload (JSON/YAML via `--file` or stdin), help must make the
+  payload's shape discoverable — fields, types, required-ness, allowed values —
+  and show at least one complete valid payload, not only how to call the command.
+  A command whose only account of its input is "submit and read the rejection"
+  fails the teach-itself test. See [Structured input](#structured-input).
 - Format for the terminal: bold headings and structure via the styling layer, not
   raw escape codes baked into strings.
 - Point to where help continues — the web docs, the repo — so a stuck user has a
@@ -102,6 +108,11 @@ Help is for the terminal; docs are for depth.
 - Make docs reachable *from* the tool — a link in help text, a `spec`-style
   command that emits the canonical artifact.
 - Examples first here too. People copy, adapt, then read.
+- **Make drift impossible, don't rely on diligence.** "Keep help in sync" is a
+  wish, not a mechanism — stale examples are what happens when sync is a habit.
+  Any example, payload, or schema shown to a user must be generated from, or
+  golden-tested against, the implementation, so it cannot drift from the binary
+  it documents.
 
 ## Output
 
@@ -134,6 +145,40 @@ fighting.
   exists, write directly instead.
 - **`stderr` is not a logfile.** Don't dump levelled log lines (`INFO`, `DEBUG`)
   to `stderr` by default. Keep developer debugging behind an explicit flag.
+
+## Structured input
+
+Some commands take an author-supplied structured payload — JSON or YAML read from
+`--file` or stdin — rather than a handful of flags. This is the mirror of
+[Output](#output), and it deserves the same care: where output makes results both
+human-readable and machine-readable, structured input must be discoverable,
+validatable, and answerable in the caller's own terms. It is also where
+agent-accessibility is won or lost, because an agent cannot infer a payload's
+shape from context the way a person at a terminal sometimes can — it has to be
+told.
+
+- **The contract is discoverable from inside the tool.** Help — or a schema or
+  dry-run affordance it points to — documents every field: name, type, whether
+  it's required, and the allowed values for any enum. Discovery must not require
+  reading source or guessing.
+- **Show a complete, valid example.** At least one payload that would actually be
+  accepted, with every required field present and real enum values — not a
+  fragment. Callers copy, adapt, then read.
+- **Offer a way to validate without committing.** A command that consumes a
+  payload and writes something should let a caller check the payload first —
+  `-n/--dry-run` or an equivalent — validating fully and reporting what would
+  happen without persisting anything. This is "validate early, before
+  irreversible work" made reachable, and it is what keeps schema discovery from
+  meaning "write a junk record, then delete it."
+- **Aggregate validation.** Report every problem with a payload in one pass, not
+  just the first one encountered. Serial round-trips — fix one field, resubmit,
+  discover the next — are the structured-input equivalent of a wall of noise:
+  they make the caller do the tool's bookkeeping.
+- **Answer in the input's own vocabulary.** A validation error names the field as
+  the author wrote it — the JSON/YAML key — with the expected type and allowed
+  values. Never echo an internal or language-level field name the caller never
+  typed; making them re-map a struct name back to a key is the tool leaking its
+  implementation.
 
 ## Arguments and flags
 
@@ -183,6 +228,10 @@ user is already stuck. Treat them as the conversation's most important turn.
   went wrong, why, and what to try — not a raw stack trace.
 - **Put the signal where the eye lands** — the important line at the end, not
   buried mid-scroll — and group similar errors instead of repeating them.
+- **For author-supplied structured input, aggregate and speak the caller's
+  vocabulary.** Validation errors report the whole set of problems at once and
+  name each field as it appears in the payload, not as an internal symbol — see
+  [Structured input](#structured-input).
 - **For unexpected errors,** give enough to file a good bug report and make
   reporting easy.
 - **Signal outcome through stable exit-code categories,** so a caller can branch

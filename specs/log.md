@@ -2,6 +2,16 @@
 
 ## 2026-06-22
 
+- **Revision**: Added the structured-input contract for
+  [0055 - Self-describing evaluation record input](../changes/0055-evaluation-input-ergonomics.md).
+  The CLI parent spec now requires payload-documenting help, `-n/--dry-run`
+  validation without persistence, and aggregated JSON-key validation errors for
+  structured payload commands. The evaluation assessment, analysis,
+  recommendation, create, and status command specs now carry the corresponding
+  record-write and `plan.md` coverage-discovery behavior, while the evaluation
+  record specs document analysis-set whole-set behavior, surfaced-example drift
+  protection, and planned coverage diagnostics.
+
 - **Revision**: Removed `/quality improve` as a durable mode contract for
   [0054 - Remove improve mode](../changes/archive/0054-remove-improve-mode.md).
   Added

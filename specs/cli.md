@@ -144,6 +144,25 @@ on failure.
 Conventions that hold wherever they apply, so flags and output behave the same
 across commands.
 
+**Structured input.** Commands that read an author-supplied structured payload
+from `--file` or stdin **MUST** make that payload contract discoverable from
+inside the tool. Command help **MUST** document every payload field, its JSON
+type, whether it is required, and allowed values for enum-like fields, and
+**MUST** include at least one complete valid payload example.
+
+Side-effecting structured-input commands **MUST** offer `-n/--dry-run`, which
+validates the payload and reports the records or files that would be written
+without creating, replacing, numbering, or otherwise persisting records. Under
+`--json`, a valid dry-run **MUST** emit the same receipt shape as the real write
+with a dry-run marker and intended paths. Invalid dry-runs use the usage-error
+exit category.
+
+Structured-input validation **MUST** aggregate every problem the command can
+detect in one pass. Each problem **MUST** name the offending field in caller
+vocabulary: the JSON key path from the payload, not an internal Go struct field
+or type name. Where useful, the diagnostic should state the expected JSON type
+and allowed enum values.
+
 **`--json` for machine-readable output.** Commands should offer
 machine-readable output, spelled `--json` — never `--format json` or a
 per-command variant. Machine-readable output is the broad default wherever it is

@@ -108,8 +108,10 @@ Source content instructs the evaluator?
     `qualitymd evaluation assessment add <run>`,
     `qualitymd evaluation analysis set <run>`, and
     `qualitymd evaluation recommendation add <run>`, piping the judgment JSON on
-    stdin (for example, a `<<'JSON'` heredoc). Do not write the payload to a file
-    first. Do not include
+    stdin (for example, a `<<'JSON'` heredoc). Use the command's `--help` to
+    inspect the payload contract and `-n/--dry-run` to validate newly authored or
+    materially revised payloads before committing them. Do not write the payload
+    to a file first. Do not include
     `schemaVersion`, local record numbers, or filenames in the payload. When an
     assessment corrects earlier judgment, write a new assessment with
     `supersedes` pointing at the stale assessment ID or path, then replace the

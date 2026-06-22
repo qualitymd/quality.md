@@ -35,6 +35,13 @@ run's `model.md`, stamp `schemaVersion: 1`, append numbered assessment result
 records in order, and report all written paths. The payload **MUST NOT** include
 CLI-owned fields such as `schemaVersion`.
 
+`add --help` **MUST** document the assessment result payload fields, JSON types,
+required-ness, allowed values, and a complete valid example. `add` **MUST**
+accept `-n/--dry-run`; in dry-run mode it validates the full payload and reports
+the intended numbered assessment record paths without creating records. Payload
+validation **MUST** aggregate detectable problems and name fields by JSON key
+path.
+
 `list` **MUST NOT** accept `--file`, **MUST NOT** write files, and **MUST** list
 the run's assessment result record paths. Under `--json`, stdout **MUST** include
 `schemaVersion`, `path`, `kind`, and `records`; `kind` **MUST** be

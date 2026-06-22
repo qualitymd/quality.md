@@ -429,7 +429,10 @@ itself rather than embedding a list that drifts — preferring an agent-readable
 introspection channel where the [CLI](../../cli.md) offers one. It **MUST** consume
 machine-readable output where a command provides it (the
 [`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
-text. Before evaluation work, it **MUST** verify that
+text. For structured evaluation record payloads, it **MUST** discover field
+contracts through the write command's `--help` and validate newly authored or
+materially revised payloads with `-n/--dry-run` before committing records. Before
+evaluation work, it **MUST** verify that
 `qualitymd version --json`, `qualitymd update --check`,
 `qualitymd evaluation create`, `qualitymd evaluation list`,
 `qualitymd evaluation status`, `qualitymd evaluation assessment`,

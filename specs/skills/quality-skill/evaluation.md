@@ -90,11 +90,13 @@ flowchart TD
    `qualitymd evaluation analysis set <run>`, and
    `qualitymd evaluation recommendation add <run>`,
    supplying judgment JSON while the CLI owns serialization, numbering, and
-   `schemaVersion`. The judgment JSON uses stable model identifiers: area path
-   entries are area keys, factor references and `factorRatingResults[].factorPath`
-   values are factor keys, and ratings are rating `level` ids. Human-facing
-   prose can use titles; records keep identifiers so reports, gates, and
-   machine consumers remain stable.
+   `schemaVersion`. Before writing an unfamiliar payload shape, inspect the
+   command's `--help`; before committing records, use `-n/--dry-run` when the
+   payload was newly authored or materially revised. The judgment JSON uses
+   stable model identifiers: area path entries are area keys, factor references
+   and `factorRatingResults[].factorPath` values are factor keys, and ratings
+   are rating `level` ids. Human-facing prose can use titles; records keep
+   identifiers so reports, gates, and machine consumers remain stable.
 10. **Check and report** with `qualitymd evaluation status <run>` followed by
     `qualitymd evaluation report build <run>` when reportable.
 

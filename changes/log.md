@@ -3,6 +3,59 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md) —
+  advanced it to `Done` and moved the parent concept and its
+  [folder](archive/0055-evaluation-input-ergonomics/index.md) into
+  [`archive/`](archive/index.md). The case made evaluation record payloads
+  discoverable and validatable through payload-documenting help, no-persist
+  dry-runs, aggregated key-named validation for record payloads and `plan.md`
+  coverage, synced runtime and durable `/quality` skill surfaces, and added a
+  published-skill relative-link package guard. Updated the archive [index](archive/index.md)
+  and removed the entry from the open-cases list in the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md)
+  and advanced it from `In-Progress` to `In-Review`. Added payload-documenting
+  help and canonical examples for evaluation write commands, `-n/--dry-run`
+  receipts that do not persist records, aggregated JSON-key validation for record
+  payloads and `plan.md` coverage, seeded planned-coverage shape guidance, updated
+  the runtime and durable `/quality` skill surfaces, and added a published-skill
+  relative-link package guard. Verified with `mise run check`.
+
+- **In-Progress**: Advanced
+  [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md)
+  from `Design` to `In-Progress`. The functional spec and design doc are settled;
+  implementation begins across the evaluation write commands, validation path,
+  status coverage checks, runtime skill surfaces, package guard, and durable
+  specs/docs listed in the case.
+
+- **Design**: Advanced
+  [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0055-evaluation-input-ergonomics/design.md). The design splits each
+  evaluation write into decode → validate → plan → commit (the seam that lets
+  `-n/--dry-run` validate without persisting and report intended paths), replaces
+  first-error validation with a key-named accumulator that also folds the decoder's
+  unknown-field and type-mismatch errors into JSON-key vocabulary, and drift-proofs
+  the surfaced payloads with one golden-tested canonical example per kind embedded
+  in both help and the skill quick reference. Rejected a standalone `schema`
+  command, a full example generator, and a descriptor-table validator rewrite.
+  Updated the open-cases entry in the bundle [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md)
+  (`Draft`) with its [functional spec](archive/0055-evaluation-input-ergonomics/spec.md).
+  Motivated by field run `0001-quality-eval`, the case makes the `qualitymd
+  evaluation` record-writing surface self-describing — payload-documenting help, a
+  no-persist `-n/--dry-run`, aggregated key-named validation — and repairs the
+  `/quality` skill surfaces that drifted from the binary (the unshipped
+  source-of-truth citation, the stale quick-reference payloads) plus a published-
+  bundle link guard. The motivating CLI design-guide additions (a new **Structured
+  input** section and Help/Documentation/Errors edits) landed alongside as durable
+  docs running ahead of code. Added the case to the open-cases list in the bundle
+  [index](index.md).
+
+- **Done**: Landed and archived
   [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) — advanced
   it to `Done` and moved the parent concept and its
   [folder](archive/0054-remove-improve-mode/index.md) into

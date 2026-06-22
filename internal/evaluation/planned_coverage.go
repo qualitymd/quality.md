@@ -7,38 +7,39 @@ import (
 )
 
 func validatePlannedCoverage(coverage PlannedCoverage) error {
+	var acc validationAccumulator
 	if coverage.AssessmentResults == nil {
-		return usagef("assessmentResults is required")
+		acc.Add("assessmentResults", "is required")
 	}
 	if coverage.Analyses == nil {
-		return usagef("analyses is required")
+		acc.Add("analyses", "is required")
 	}
 	assessmentResultKeys := map[string]bool{}
 	for i, assessmentResult := range coverage.AssessmentResults {
 		if assessmentResult.AreaPath == nil {
-			return usagef("assessmentResults[%d].areaPath is required", i)
+			acc.Add(fmt.Sprintf("assessmentResults[%d].areaPath", i), "is required")
 		}
 		if strings.TrimSpace(assessmentResult.Requirement) == "" {
-			return usagef("assessmentResults[%d].requirement is required", i)
+			acc.Add(fmt.Sprintf("assessmentResults[%d].requirement", i), "is required")
 		}
 		key := plannedAssessmentResultIdentity(assessmentResult)
 		if assessmentResultKeys[key] {
-			return usagef("assessmentResults[%d] duplicates an earlier planned assessment result", i)
+			acc.Add(fmt.Sprintf("assessmentResults[%d]", i), "duplicates an earlier planned assessment result")
 		}
 		assessmentResultKeys[key] = true
 	}
 	analysisKeys := map[string]bool{}
 	for i, analysis := range coverage.Analyses {
 		if analysis.AreaPath == nil {
-			return usagef("analyses[%d].areaPath is required", i)
+			acc.Add(fmt.Sprintf("analyses[%d].areaPath", i), "is required")
 		}
 		key := plannedAnalysisIdentity(analysis)
 		if analysisKeys[key] {
-			return usagef("analyses[%d] duplicates an earlier planned analysis", i)
+			acc.Add(fmt.Sprintf("analyses[%d]", i), "duplicates an earlier planned analysis")
 		}
 		analysisKeys[key] = true
 	}
-	return nil
+	return acc.Err()
 }
 
 func sortPlannedCoverage(coverage *PlannedCoverage) {

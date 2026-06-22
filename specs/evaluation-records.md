@@ -42,6 +42,11 @@ numbering is therefore CLI-owned and derived from a single directory scan
 (one past the highest present), so the on-disk folders are the single source of
 truth and two writers cannot claim the same number from a stale counter.
 
+The record specs and the CLI record input structs are the authoritative source
+for payload examples surfaced in command help and skill quick references.
+Surfaced examples **MUST** be generated from that source or tested through the
+same validation path that accepts write-command payloads.
+
 ## Runtime, Not OKF
 
 Evaluation records are raw runtime outputs, not OKF concepts. A run folder

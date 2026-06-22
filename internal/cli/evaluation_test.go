@@ -57,6 +57,55 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	}
 }
 
+func TestEvaluationAssessmentAddDryRunDoesNotPersist(t *testing.T) {
+	repo := testEvaluationRepo(t)
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	cmd := newRootCmd()
+	var out, stderr bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+	cmd.SetIn(strings.NewReader(evaluation.CanonicalPayloadExample(evaluation.KindAssessmentResult)))
+	cmd.SetArgs([]string{"evaluation", "assessment", "add", "--file", "-", "--dry-run", "--json", runPath})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"dryRun": true`) || !strings.Contains(out.String(), "assessments/001-root-has-tests.json") {
+		t.Fatalf("stdout = %s, want dry-run receipt with intended path", out.String())
+	}
+	if _, err := os.Stat(filepath.Join(runPath, "assessments", "001-root-has-tests.json")); !os.IsNotExist(err) {
+		t.Fatalf("dry-run record stat error = %v, want not exist", err)
+	}
+}
+
+func TestEvaluationRecordWriteHelpDocumentsPayload(t *testing.T) {
+	cmd := newRootCmd()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "recommendation", "add", "--help"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+	for _, want := range []string{
+		"Payload fields:",
+		"`doneCriterion`",
+		"`remediationOptions`",
+		"qualitymd evaluation recommendation add <run> --dry-run",
+		`"recommendedOption": "Add focused tests for the requirement"`,
+	} {
+		if !strings.Contains(out.String(), want) {
+			t.Fatalf("help = %s, want substring %q", out.String(), want)
+		}
+	}
+}
+
 func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	repo := testEvaluationRepo(t)
 	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"}); err != nil {

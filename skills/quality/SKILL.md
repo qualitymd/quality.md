@@ -238,11 +238,11 @@ Rules:
 
 ## Artifact Contract
 
-The evaluation record layout and field contract lives in
-[`specs/evaluation-records.md`](../../specs/evaluation-records.md). Treat that
-spec, plus `qualitymd status --json` and the `qualitymd evaluation ...` command
-help, as the source of truth. Do not restate the schema or folder layout in this
-prompt.
+The evaluation record write contract is surfaced by
+`qualitymd evaluation <kind> add|set --help` and validated without persistence by
+`qualitymd evaluation <kind> add|set --dry-run`. Treat those command surfaces,
+plus `qualitymd status --json`, as the field-use source of truth. Do not restate
+the schema or folder layout in this prompt.
 
 ## Quality Log
 

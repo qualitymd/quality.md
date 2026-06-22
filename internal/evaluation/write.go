@@ -8,6 +8,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
+	"sort"
 	"strings"
 
 	"github.com/qualitymd/quality.md/internal/document"
@@ -30,7 +32,11 @@ func AddRecord(kind RecordKind, runPath string, raw []byte) (*WriteRecordReceipt
 }
 
 // WriteRecords writes one or more evaluation records from a JSON payload.
-func WriteRecords(kind RecordKind, runPath string, raw []byte) (*WriteRecordReceipt, error) {
+func WriteRecords(kind RecordKind, runPath string, raw []byte, options ...WriteOptions) (*WriteRecordReceipt, error) {
+	opts := WriteOptions{}
+	if len(options) > 0 {
+		opts = options[0]
+	}
 	runAbs, err := verifyRun(runPath)
 	if err != nil {
 		return nil, err
@@ -42,15 +48,15 @@ func WriteRecords(kind RecordKind, runPath string, raw []byte) (*WriteRecordRece
 		if err != nil {
 			return nil, err
 		}
-		return addAssessmentResults(runAbs, runDisplay, raw, levels)
+		return addAssessmentResults(runAbs, runDisplay, raw, levels, opts)
 	case KindAnalysis:
 		spec, err := decodeRunModel(filepath.Join(runAbs, "model.md"))
 		if err != nil {
 			return nil, err
 		}
-		return setAnalyses(runAbs, runDisplay, raw, ratingLevelSetFromSpec(spec), newFactorVocabulary(spec))
+		return setAnalyses(runAbs, runDisplay, raw, ratingLevelSetFromSpec(spec), newFactorVocabulary(spec), opts)
 	case KindRecommendation:
-		return addRecommendations(runAbs, runDisplay, raw)
+		return addRecommendations(runAbs, runDisplay, raw, opts)
 	default:
 		return nil, usagef("unknown record kind %q", kind)
 	}
@@ -78,26 +84,46 @@ func DecodeSingleJSON(raw []byte, dst any) error {
 // is strict: unknown fields and trailing documents are rejected. Empty or
 // otherwise invalid input returns a usage error.
 func DecodeJSONList[T any](raw []byte) ([]T, error) {
+	values, _, err := decodeJSONList[T](raw)
+	return values, err
+}
+
+func decodeJSONList[T any](raw []byte) ([]T, bool, error) {
 	trimmed := bytes.TrimSpace(raw)
 	if len(trimmed) == 0 {
-		return nil, usagef("input is empty")
+		return nil, false, usagef("input is empty")
 	}
 	var values []T
 	switch trimmed[0] {
 	case '[':
-		if err := decodeJSONDocument(trimmed, &values); err != nil {
-			return nil, err
+		rawItems, err := decodeRawJSONArray(trimmed)
+		if err != nil {
+			return nil, true, err
+		}
+		values = make([]T, 0, len(rawItems))
+		var acc validationAccumulator
+		for i, rawItem := range rawItems {
+			value, err := decodePayloadObject[T](rawItem)
+			if err != nil {
+				acc.Merge(fmt.Sprintf("[%d]", i), err)
+				values = append(values, value)
+				continue
+			}
+			values = append(values, value)
+		}
+		if err := acc.Err(); err != nil {
+			return values, true, err
 		}
 	case '{':
-		var value T
-		if err := decodeJSONDocument(trimmed, &value); err != nil {
-			return nil, err
+		value, err := decodePayloadObject[T](trimmed)
+		if err != nil {
+			return []T{value}, false, err
 		}
 		values = []T{value}
 	default:
-		return nil, usagef("input must be a JSON object or array")
+		return nil, false, usagef("input must be a JSON object or array")
 	}
-	return values, nil
+	return values, trimmed[0] == '[', nil
 }
 
 func decodeJSONDocument(raw []byte, dst any) error {
@@ -116,16 +142,193 @@ func decodeJSONDocument(raw []byte, dst any) error {
 	return nil
 }
 
-func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[string]bool) (*WriteRecordReceipt, error) {
-	payloads, err := DecodeJSONList[AssessmentResultInput](raw)
+func decodeRawJSONArray(raw []byte) ([]json.RawMessage, error) {
+	dec := json.NewDecoder(bytes.NewReader(raw))
+	var values []json.RawMessage
+	if err := dec.Decode(&values); err != nil {
+		if errors.Is(err, io.EOF) {
+			return nil, usagef("input is empty")
+		}
+		return nil, usagef("invalid JSON payload: %w", err)
+	}
+	var extra any
+	if err := dec.Decode(&extra); !errors.Is(err, io.EOF) {
+		return nil, usagef("input must contain exactly one JSON document")
+	}
+	return values, nil
+}
+
+func decodePayloadObject[T any](raw []byte) (T, error) {
+	var zero T
+	trimmed := bytes.TrimSpace(raw)
+	if len(trimmed) == 0 {
+		return zero, usagef("input is empty")
+	}
+	if trimmed[0] != '{' {
+		return zero, usagef("input must be a JSON object or array")
+	}
+	if !json.Valid(trimmed) {
+		return zero, usagef("invalid JSON payload")
+	}
+	var acc validationAccumulator
+	collectJSONShapeProblems(trimmed, reflect.TypeOf(zero), "", &acc)
+	if err := acc.Err(); err != nil {
+		return zero, err
+	}
+	var value T
+	if err := decodeJSONDocument(trimmed, &value); err != nil {
+		return zero, err
+	}
+	return value, nil
+}
+
+func collectJSONShapeProblems(raw json.RawMessage, typ reflect.Type, field string, acc *validationAccumulator) {
+	raw = bytes.TrimSpace(raw)
+	if len(raw) == 0 {
+		return
+	}
+	unwrapped, ok := unwrapJSONType(raw, typ)
+	if !ok {
+		return
+	}
+	if !jsonShapeMatches(raw, unwrapped) {
+		acc.AddExpected(field, "has the wrong JSON type", jsonTypeDescription(unwrapped))
+		return
+	}
+	switch unwrapped.Kind() {
+	case reflect.Struct:
+		collectJSONObjectProblems(raw, unwrapped, field, acc)
+	case reflect.Slice, reflect.Array:
+		collectJSONArrayProblems(raw, unwrapped, field, acc)
+	}
+}
+
+func unwrapJSONType(raw []byte, typ reflect.Type) (reflect.Type, bool) {
+	for typ.Kind() == reflect.Pointer {
+		if bytes.Equal(raw, []byte("null")) {
+			return typ, false
+		}
+		typ = typ.Elem()
+	}
+	return typ, true
+}
+
+func collectJSONObjectProblems(raw json.RawMessage, typ reflect.Type, field string, acc *validationAccumulator) {
+	var object map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &object); err != nil {
+		acc.Add(field, "must be a JSON object")
+		return
+	}
+	fields := jsonStructFields(typ)
+	allowed := sortedMapKeys(fields)
+	for name, value := range object {
+		fieldInfo, ok := fields[name]
+		if !ok {
+			acc.AddAllowed(prefixField(field, name), "is not a supported field", allowed)
+			continue
+		}
+		collectJSONShapeProblems(value, fieldInfo.Type, prefixField(field, name), acc)
+	}
+}
+
+func collectJSONArrayProblems(raw json.RawMessage, typ reflect.Type, field string, acc *validationAccumulator) {
+	if typ.Elem().Kind() == reflect.Uint8 {
+		return
+	}
+	var items []json.RawMessage
+	if err := json.Unmarshal(raw, &items); err != nil {
+		acc.Add(field, "must be a JSON array")
+		return
+	}
+	for i, item := range items {
+		collectJSONShapeProblems(item, typ.Elem(), fmt.Sprintf("%s[%d]", field, i), acc)
+	}
+}
+
+func sortedMapKeys[V any](values map[string]V) []string {
+	keys := make([]string, 0, len(values))
+	for name := range values {
+		keys = append(keys, name)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
+func jsonStructFields(typ reflect.Type) map[string]reflect.StructField {
+	fields := map[string]reflect.StructField{}
+	for i := 0; i < typ.NumField(); i++ {
+		field := typ.Field(i)
+		name := jsonFieldName(field)
+		if name == "" {
+			continue
+		}
+		fields[name] = field
+	}
+	return fields
+}
+
+func jsonShapeMatches(raw []byte, typ reflect.Type) bool {
+	if bytes.Equal(raw, []byte("null")) {
+		return nullableJSONKind(typ.Kind())
+	}
+	switch typ.Kind() {
+	case reflect.String:
+		return raw[0] == '"'
+	case reflect.Bool:
+		return bytes.Equal(raw, []byte("true")) || bytes.Equal(raw, []byte("false"))
+	case reflect.Slice, reflect.Array:
+		if typ.Elem().Kind() == reflect.Uint8 {
+			return raw[0] == '"'
+		}
+		return raw[0] == '['
+	case reflect.Map, reflect.Struct:
+		return raw[0] == '{'
+	case reflect.Interface:
+		return true
+	default:
+		return !numericJSONKind(typ.Kind()) || (raw[0] >= '0' && raw[0] <= '9') || raw[0] == '-'
+	}
+}
+
+func nullableJSONKind(kind reflect.Kind) bool {
+	return kind == reflect.Pointer || kind == reflect.Interface || kind == reflect.Map || kind == reflect.Slice
+}
+
+func numericJSONKind(kind reflect.Kind) bool {
+	switch kind {
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Float32, reflect.Float64:
+		return true
+	default:
+		return false
+	}
+}
+
+type plannedRecordWrite struct {
+	Path    string
+	Data    []byte
+	Created *bool
+}
+
+func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[string]bool, opts WriteOptions) (*WriteRecordReceipt, error) {
+	payloads, fromArray, err := decodeJSONList[AssessmentResultInput](raw)
+	if err != nil && len(payloads) == 0 {
+		return nil, err
+	}
+	var acc validationAccumulator
+	acc.Merge("", err)
+	for i, payload := range payloads {
+		prefix := validationPrefix(fromArray, i)
+		acc.Merge(prefix, validateAssessmentResult(payload, levels))
+	}
+	if err := acc.Err(); err != nil {
+		return nil, err
+	}
+	var writes []plannedRecordWrite
+	nextNumber, err := nextRecordNumber(filepath.Join(runAbs, "assessments"))
 	if err != nil {
 		return nil, err
 	}
-	var paths []string
 	for _, payload := range payloads {
-		if err := validateAssessmentResult(payload, levels); err != nil {
-			return nil, err
-		}
 		rec := AssessmentResultRecord{
 			SchemaVersion:   SchemaVersion,
 			AreaPath:        payload.AreaPath,
@@ -141,36 +344,33 @@ func addAssessmentResults(runAbs, runDisplay string, raw []byte, levels map[stri
 		if err != nil {
 			return nil, err
 		}
-		path, err := writeNumbered(filepath.Join(runAbs, "assessments"), areaPathSlug(payload.AreaPath)+"-"+Slug(payload.Requirement)+".json", data)
-		if err != nil {
-			return nil, err
-		}
-		paths = append(paths, displayRecordPath(runAbs, runDisplay, path))
+		path := filepath.Join(runAbs, "assessments", fmt.Sprintf("%03d-%s", nextNumber, areaPathSlug(payload.AreaPath)+"-"+Slug(payload.Requirement)+".json"))
+		nextNumber++
+		writes = append(writes, plannedRecordWrite{Path: path, Data: data})
 	}
-	return &WriteRecordReceipt{
-		SchemaVersion: SchemaVersion,
-		Path:          singlePath(paths),
-		Paths:         paths,
-		Kind:          KindAssessmentResult,
-		NextActions: []receipt.Action{{
-			ID:      "evaluation-status",
-			Label:   "Inspect report readiness",
-			Command: "qualitymd evaluation status " + runDisplay,
-		}},
-	}, nil
+	return commitPlannedWrites(runAbs, runDisplay, KindAssessmentResult, writes, opts, []receipt.Action{{
+		ID:      "evaluation-status",
+		Label:   "Inspect report readiness",
+		Command: "qualitymd evaluation status " + runDisplay,
+	}})
 }
 
-func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool, vocab factorVocabulary) (*WriteRecordReceipt, error) {
-	payloads, err := DecodeJSONList[AnalysisInput](raw)
-	if err != nil {
+func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool, vocab factorVocabulary, opts WriteOptions) (*WriteRecordReceipt, error) {
+	payloads, fromArray, err := decodeJSONList[AnalysisInput](raw)
+	if err != nil && len(payloads) == 0 {
 		return nil, err
 	}
-	var paths []string
-	var createdPtr *bool
+	var acc validationAccumulator
+	acc.Merge("", err)
+	for i, payload := range payloads {
+		prefix := validationPrefix(fromArray, i)
+		acc.Merge(prefix, validateAnalysis(payload, levels, vocab))
+	}
+	if err := acc.Err(); err != nil {
+		return nil, err
+	}
+	var writes []plannedRecordWrite
 	for _, payload := range payloads {
-		if err := validateAnalysis(payload, levels, vocab); err != nil {
-			return nil, err
-		}
 		rec := AnalysisRecord{
 			SchemaVersion:           SchemaVersion,
 			AreaPath:                payload.AreaPath,
@@ -188,27 +388,35 @@ func setAnalyses(runAbs, runDisplay string, raw []byte, levels map[string]bool, 
 		path := filepath.Join(runAbs, "analysis", areaPathSlug(payload.AreaPath)+".json")
 		_, statErr := os.Stat(path)
 		created := os.IsNotExist(statErr)
+		write := plannedRecordWrite{Path: path, Data: data}
 		if len(payloads) == 1 {
-			createdPtr = &created
+			write.Created = &created
 		}
-		if err := writeReplace(path, data); err != nil {
-			return nil, err
-		}
-		paths = append(paths, displayRecordPath(runAbs, runDisplay, path))
+		writes = append(writes, write)
 	}
-	return &WriteRecordReceipt{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindAnalysis, Created: createdPtr}, nil
+	return commitPlannedWrites(runAbs, runDisplay, KindAnalysis, writes, opts, nil)
 }
 
-func addRecommendations(runAbs, runDisplay string, raw []byte) (*WriteRecordReceipt, error) {
-	payloads, err := DecodeJSONList[RecommendationInput](raw)
+func addRecommendations(runAbs, runDisplay string, raw []byte, opts WriteOptions) (*WriteRecordReceipt, error) {
+	payloads, fromArray, err := decodeJSONList[RecommendationInput](raw)
+	if err != nil && len(payloads) == 0 {
+		return nil, err
+	}
+	var acc validationAccumulator
+	acc.Merge("", err)
+	for i, payload := range payloads {
+		prefix := validationPrefix(fromArray, i)
+		acc.Merge(prefix, validateRecommendation(payload))
+	}
+	if err := acc.Err(); err != nil {
+		return nil, err
+	}
+	var writes []plannedRecordWrite
+	nextNumber, err := nextRecordNumber(filepath.Join(runAbs, "recommendations"))
 	if err != nil {
 		return nil, err
 	}
-	var paths []string
 	for _, payload := range payloads {
-		if err := validateRecommendation(payload); err != nil {
-			return nil, err
-		}
 		rec := RecommendationRecord{
 			SchemaVersion:           SchemaVersion,
 			Title:                   payload.Title,
@@ -224,13 +432,51 @@ func addRecommendations(runAbs, runDisplay string, raw []byte) (*WriteRecordRece
 		if err != nil {
 			return nil, err
 		}
-		path, err := writeNumbered(filepath.Join(runAbs, "recommendations"), Slug(payload.Title)+".md", data)
+		path := filepath.Join(runAbs, "recommendations", fmt.Sprintf("%03d-%s", nextNumber, Slug(payload.Title)+".md"))
+		nextNumber++
+		writes = append(writes, plannedRecordWrite{Path: path, Data: data})
+	}
+	return commitPlannedWrites(runAbs, runDisplay, KindRecommendation, writes, opts, nil)
+}
+
+func validationPrefix(fromArray bool, index int) string {
+	if !fromArray {
+		return ""
+	}
+	return fmt.Sprintf("[%d]", index)
+}
+
+func commitPlannedWrites(runAbs, runDisplay string, kind RecordKind, writes []plannedRecordWrite, opts WriteOptions, nextActions []receipt.Action) (*WriteRecordReceipt, error) {
+	paths := make([]string, 0, len(writes))
+	var createdPtr *bool
+	for _, write := range writes {
+		paths = append(paths, displayRecordPath(runAbs, runDisplay, write.Path))
+		if write.Created != nil {
+			createdPtr = write.Created
+		}
+		if opts.DryRun {
+			continue
+		}
+		var err error
+		switch kind {
+		case KindAnalysis:
+			err = writeReplace(write.Path, write.Data)
+		default:
+			err = writeCreate(write.Path, write.Data)
+		}
 		if err != nil {
 			return nil, err
 		}
-		paths = append(paths, displayRecordPath(runAbs, runDisplay, path))
 	}
-	return &WriteRecordReceipt{SchemaVersion: SchemaVersion, Path: singlePath(paths), Paths: paths, Kind: KindRecommendation}, nil
+	return &WriteRecordReceipt{
+		SchemaVersion: SchemaVersion,
+		Path:          singlePath(paths),
+		Paths:         paths,
+		Kind:          kind,
+		DryRun:        opts.DryRun,
+		Created:       createdPtr,
+		NextActions:   nextActions,
+	}, nil
 }
 
 func singlePath(paths []string) string {
@@ -314,153 +560,150 @@ func ratingLevels(path string) (map[string]bool, error) {
 }
 
 func validateAssessmentResult(p AssessmentResultInput, levels map[string]bool) error {
-	if err := validateAssessmentResultRequiredStrings(p); err != nil {
-		return err
-	}
-	if err := validateRatingResult("ratingResult", &p.RatingResult, levels); err != nil {
-		return err
-	}
+	var acc validationAccumulator
+	acc.Merge("", validateAssessmentResultRequiredStrings(p))
+	acc.Merge("", validateRatingResult("ratingResult", &p.RatingResult, levels))
 	if p.AreaPath == nil {
-		return usagef("areaPath is required")
+		acc.Add("areaPath", "is required")
 	}
 	if p.FactorPaths == nil {
-		return usagef("factorPaths is required")
+		acc.Add("factorPaths", "is required")
 	}
 	if p.Findings == nil {
-		return usagef("findings is required")
+		acc.Add("findings", "is required")
 	}
 	if p.Recommendations == nil {
-		return usagef("recommendations is required")
+		acc.Add("recommendations", "is required")
 	}
-	if err := validateAssessmentResultFindings(p.Findings); err != nil {
-		return err
-	}
-	if err := validateRequiredStrings("supersedes", p.Supersedes); err != nil {
-		return err
-	}
-	return nil
+	acc.Merge("", validateAssessmentResultFindings(p.Findings))
+	acc.Merge("", validateRequiredStrings("supersedes", p.Supersedes))
+	return acc.Err()
 }
 
 func validateAssessmentResultRequiredStrings(p AssessmentResultInput) error {
+	var acc validationAccumulator
 	for name, value := range map[string]string{
 		"requirement":     p.Requirement,
 		"criterionSource": p.CriterionSource,
 	} {
-		if err := requiredString(name, value); err != nil {
-			return err
+		if strings.TrimSpace(value) == "" {
+			acc.Add(name, "is required")
 		}
 	}
-	return nil
+	return acc.Err()
 }
 
 func validateAssessmentResultFindings(findings []Finding) error {
+	var acc validationAccumulator
 	for i, finding := range findings {
-		if strings.TrimSpace(finding.Locator) == "" || strings.TrimSpace(finding.Observation) == "" || strings.TrimSpace(finding.Category) == "" || strings.TrimSpace(string(finding.Severity)) == "" {
-			return usagef("findings[%d] must include locator, observation, category, and severity", i)
+		prefix := fmt.Sprintf("findings[%d]", i)
+		if strings.TrimSpace(finding.Locator) == "" {
+			acc.Add(prefix+".locator", "is required")
 		}
-		if !finding.Severity.Valid() {
-			return usagef("findings[%d].severity must be one of %s", i, findingSeverityLevels())
+		if strings.TrimSpace(finding.Observation) == "" {
+			acc.Add(prefix+".observation", "is required")
+		}
+		if strings.TrimSpace(finding.Category) == "" {
+			acc.Add(prefix+".category", "is required")
+		}
+		if strings.TrimSpace(string(finding.Severity)) == "" {
+			acc.AddAllowed(prefix+".severity", "is required", []string{"critical", "high", "medium", "low", "info"})
+		} else if !finding.Severity.Valid() {
+			acc.AddAllowed(prefix+".severity", "is not a supported value", []string{"critical", "high", "medium", "low", "info"})
 		}
 	}
-	return nil
+	return acc.Err()
 }
 
 func validateRequiredStrings(name string, values []string) error {
+	var acc validationAccumulator
 	for i, value := range values {
 		if strings.TrimSpace(value) == "" {
-			return usagef("%s[%d] is required", name, i)
+			acc.Add(fmt.Sprintf("%s[%d]", name, i), "is required")
 		}
 	}
-	return nil
+	return acc.Err()
 }
 
 func validateAnalysis(p AnalysisInput, levels map[string]bool, vocab factorVocabulary) error {
+	var acc validationAccumulator
 	if p.AreaPath == nil {
-		return usagef("areaPath is required")
+		acc.Add("areaPath", "is required")
 	}
-	if err := validateRatingResult("aggregateRatingResult", &p.AggregateRatingResult, levels); err != nil {
-		return err
-	}
+	acc.Merge("", validateRatingResult("aggregateRatingResult", &p.AggregateRatingResult, levels))
 	if p.LocalRatingResult != nil {
-		if err := validateRatingResult("localRatingResult", p.LocalRatingResult, levels); err != nil {
-			return err
-		}
+		acc.Merge("", validateRatingResult("localRatingResult", p.LocalRatingResult, levels))
 	}
 	seenFactorPaths := map[string]bool{}
 	for i := range p.FactorRatingResults {
 		factorPath := p.FactorRatingResults[i].FactorPath
 		if len(factorPath) == 0 {
-			return usagef("factorRatingResults[%d].factorPath is required", i)
+			acc.Add(fmt.Sprintf("factorRatingResults[%d].factorPath", i), "is required")
 		}
 		key := factorPath.IdentityKey()
 		if seenFactorPaths[key] {
-			return usagef("factorRatingResults[%d].factorPath %q is a duplicate within the analysis record", i, factorPath.Display())
+			acc.Add(fmt.Sprintf("factorRatingResults[%d].factorPath", i), fmt.Sprintf("%q is a duplicate within the analysis record", factorPath.Display()))
 		}
 		seenFactorPaths[key] = true
 		if !vocab.Resolves(p.AreaPath, factorPath) {
-			return usagef("factorRatingResults[%d].factorPath %q does not resolve against the area's declared or inherited factor vocabulary", i, factorPath.Display())
+			acc.Add(fmt.Sprintf("factorRatingResults[%d].factorPath", i), fmt.Sprintf("%q does not resolve against the area's declared or inherited factor vocabulary", factorPath.Display()))
 		}
-		if err := validateRatingResult(fmt.Sprintf("factorRatingResults[%d].ratingResult", i), &p.FactorRatingResults[i].RatingResult, levels); err != nil {
-			return err
-		}
+		acc.Merge("", validateRatingResult(fmt.Sprintf("factorRatingResults[%d].ratingResult", i), &p.FactorRatingResults[i].RatingResult, levels))
 	}
 	if p.FactorRatingResults == nil {
-		return usagef("factorRatingResults is required")
+		acc.Add("factorRatingResults", "is required")
 	}
 	if p.AssessmentResultRecords == nil {
-		return usagef("assessmentResultRecords is required")
+		acc.Add("assessmentResultRecords", "is required")
 	}
 	if p.ChildAnalysisRecords == nil {
-		return usagef("childAnalysisRecords is required")
+		acc.Add("childAnalysisRecords", "is required")
 	}
-	return nil
+	return acc.Err()
 }
 
 func validateRatingResult(name string, result *RatingResult, levels map[string]bool) error {
+	var acc validationAccumulator
 	if strings.TrimSpace(result.Rationale) == "" {
-		return usagef("%s.rationale is required", name)
+		acc.Add(name+".rationale", "is required")
 	}
 	switch result.Kind {
 	case RatingResultRated:
 		if strings.TrimSpace(result.Level) == "" {
-			return usagef("%s.level is required when kind is rated", name)
-		}
-		if !levels[result.Level] {
-			return usagef("%s.level %q is not defined by the run model", name, result.Level)
+			acc.Add(name+".level", "is required when kind is rated")
+		} else if !levels[result.Level] {
+			acc.Add(name+".level", fmt.Sprintf("%q is not defined by the run model", result.Level))
 		}
 	case RatingResultNotAssessed:
 		if strings.TrimSpace(result.Level) != "" {
-			return usagef("%s.level must be empty when kind is not-assessed", name)
+			acc.Add(name+".level", "must be empty when kind is not-assessed")
 		}
 	default:
-		return usagef("%s.kind must be rated or not-assessed", name)
+		acc.AddAllowed(name+".kind", "is not a supported value", []string{"rated", "not-assessed"})
 	}
-	return nil
+	return acc.Err()
 }
 
 func validateRecommendation(p RecommendationInput) error {
+	var acc validationAccumulator
 	for name, value := range map[string]string{
 		"title":             p.Title,
 		"gap":               p.Gap,
 		"recommendedOption": p.RecommendedOption,
 		"doneCriterion":     p.DoneCriterion,
 	} {
-		if err := requiredString(name, value); err != nil {
-			return err
+		if strings.TrimSpace(value) == "" {
+			acc.Add(name, "is required")
 		}
 	}
 	if len(p.EvidenceLocators) == 0 {
-		return usagef("evidenceLocators is required")
+		acc.Add("evidenceLocators", "is required")
 	}
 	if len(p.RemediationOptions) == 0 {
-		return usagef("remediationOptions is required")
+		acc.Add("remediationOptions", "is required")
 	}
-	for i, ref := range p.Supersedes {
-		if strings.TrimSpace(ref) == "" {
-			return usagef("supersedes[%d] is required", i)
-		}
-	}
-	return nil
+	acc.Merge("", validateRequiredStrings("supersedes", p.Supersedes))
+	return acc.Err()
 }
 
 func renderRecommendation(rec RecommendationRecord) ([]byte, error) {

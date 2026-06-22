@@ -185,3 +185,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0054 — Remove improve mode](0054-remove-improve-mode.md) - removed
   `/quality improve` as a public mode while preserving recommendation follow-up
   with apply-now and issue-tracker handoff outcomes (`Done`).
+- [0055 — Self-describing evaluation record input](0055-evaluation-input-ergonomics.md) -
+  made evaluation record payloads discoverable and validatable through
+  payload-documenting help, no-persist dry-runs, aggregated key-named validation,
+  synced skill surfaces, and a published-skill link guard (`Done`).

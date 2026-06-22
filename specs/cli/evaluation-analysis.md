@@ -34,6 +34,13 @@ analysis objects, validate each payload against the run's `model.md`, stamp
 **MUST** report all written paths. The payload **MUST NOT** include CLI-owned
 fields such as `schemaVersion`.
 
+`set --help` **MUST** document the analysis payload fields, JSON types,
+required-ness, allowed values, and a complete valid example. `set` **MUST**
+accept `-n/--dry-run`; in dry-run mode it validates the full payload and reports
+the intended analysis record paths without creating or replacing records.
+Payload validation **MUST** aggregate detectable problems and name fields by JSON
+key path.
+
 `list` **MUST NOT** accept `--file`, **MUST NOT** write files, and **MUST** list
 the run's analysis record paths. Under `--json`, stdout **MUST** include
 `schemaVersion`, `path`, `kind`, and `records`.

@@ -39,6 +39,9 @@ Each analysis entry **MUST** contain ordered `areaPath`.
 Coverage frontmatter is hand-authored as part of `plan.md`; there is no separate
 CLI write command for planned coverage.
 
+New run scaffolds **SHOULD** include a commented or fenced coverage example in
+`plan.md` so the expected shape is discoverable without guessing field names.
+
 A planned assessment result key is ordered `areaPath` plus `requirement`. A
 planned analysis key is ordered `areaPath`. Duplicate planned assessment
 result or analysis keys are invalid.
@@ -46,4 +49,6 @@ result or analysis keys are invalid.
 When `coverage:` is absent, the run keeps the same status and reportability
 behavior it would have without planned coverage metadata. Malformed `coverage:`
 frontmatter makes the run non-reportable through an `invalid-plan-coverage`
-status gap rather than making the run unloadable.
+status gap rather than making the run unloadable. The gap detail should
+aggregate detectable coverage-shape problems and name fields by YAML/JSON key
+path.

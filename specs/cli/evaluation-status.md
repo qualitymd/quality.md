@@ -75,5 +75,10 @@ records outside the plan **MUST** produce `unexpected-assessment-result` or
 `unexpected-analysis`.
 
 Malformed `coverage:` frontmatter **MUST** produce an `invalid-plan-coverage`
-gap. A body-only `plan.md`, or frontmatter without `coverage:`, keeps the same
-behavior as a run with no planned coverage metadata.
+gap whose detail aggregates detectable coverage-shape problems and names fields
+by YAML/JSON key path. A body-only `plan.md`, or frontmatter without
+`coverage:`, keeps the same behavior as a run with no planned coverage metadata.
+
+`evaluation create` **SHOULD** seed `plan.md` with a commented or fenced
+coverage example so the expected shape is discoverable before a failed
+`status` run.

@@ -137,10 +137,13 @@ func newEvaluationRecordWriteCmd(kind evaluation.RecordKind, verb string) *cobra
 	var runFlags evaluationRunFlags
 	var file string
 	var jsonOutput bool
+	var dryRun bool
 	cmd := &cobra.Command{
-		Use:   verb + " <run>",
-		Short: titleVerb(verb) + " " + string(kind) + " record payloads",
-		Args:  usage(cobra.RangeArgs(0, 1)),
+		Use:     verb + " <run>",
+		Short:   titleVerb(verb) + " " + string(kind) + " record payloads",
+		Long:    evaluationRecordWriteLong(kind),
+		Example: evaluationRecordWriteExample(kind, verb),
+		Args:    usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			runPath, err := resolveRunArg(args, runFlags)
 			if err != nil {
@@ -150,21 +153,38 @@ func newEvaluationRecordWriteCmd(kind evaluation.RecordKind, verb string) *cobra
 			if err != nil {
 				return usageError(err)
 			}
-			result, err := evaluation.WriteRecords(kind, runPath, raw)
+			result, err := evaluation.WriteRecords(kind, runPath, raw, evaluation.WriteOptions{DryRun: dryRun})
 			if err != nil {
 				return mapEvaluationError(err)
 			}
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), result)
 			}
-			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s\n", strings.Join(result.Paths, ", "))
+			verb := "Wrote"
+			if dryRun {
+				verb = "Would write"
+			}
+			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "%s %s\n", verb, strings.Join(result.Paths, ", "))
 			return err
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
 	cmd.Flags().StringVar(&file, "file", "", "read judgment JSON from path, or - for stdin")
+	cmd.Flags().BoolVarP(&dryRun, "dry-run", "n", false, "validate and report intended writes without creating records")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable write receipt")
 	return cmd
+}
+
+func evaluationRecordWriteLong(kind evaluation.RecordKind) string {
+	return strings.TrimSpace(fmt.Sprintf(`Read a JSON object or array from --file or stdin, validate it against the %s payload contract, and write records into the run.
+
+Use -n/--dry-run to validate the payload and report the intended record paths without creating or replacing files.
+
+%s`, kind, evaluation.PayloadHelp(kind)))
+}
+
+func evaluationRecordWriteExample(kind evaluation.RecordKind, verb string) string {
+	return fmt.Sprintf("qualitymd evaluation %s %s <run> --dry-run <<'JSON'\n%sJSON", kind, verb, evaluation.CanonicalPayloadExample(kind))
 }
 
 func newEvaluationRecordListCmd(kind evaluation.RecordKind) *cobra.Command {

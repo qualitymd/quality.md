@@ -52,9 +52,9 @@ whether the install is in the skill's supported range.
 | Inspect project status        | `qualitymd status [path] --json`                                    |
 | Create evaluation run         | `qualitymd evaluation create [--model <path>] [--narrowing <slug>]` |
 | List evaluation runs          | `qualitymd evaluation list [--json]`                                |
-| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment add <run>`            |
-| Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set <run>`              |
-| Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add <run>`        |
+| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment add [-n] <run>`       |
+| Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set [-n] <run>`         |
+| Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add [-n] <run>`   |
 | List records                  | `qualitymd evaluation <kind> list <run>`                            |
 | Check reportability           | `qualitymd evaluation status <run>`                                 |
 | Build report                  | `qualitymd evaluation report build <run>`                           |
@@ -81,6 +81,8 @@ Need to evaluate?
 - Inspect current state -> qualitymd status [path] --json
 - Create run -> qualitymd evaluation create [--model <path>] [--narrowing <slug>]
 - Maintain process notes -> edit debug-log.md for notable evaluation-process events only
+- Inspect payload shape -> qualitymd evaluation assessment add | analysis set | recommendation add --help
+- Validate judgment records -> pipe JSON on stdin with -n/--dry-run
 - Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
@@ -96,7 +98,7 @@ Run incomplete or stale?
 - Incompatible historical record? -> treat as run status; inspect or create a fresh run, do not hand-migrate records
 - Process ambiguity or recovery? -> record concise notes in debug-log.md; do not duplicate assessment evidence
 - Missing planned coverage? -> edit plan.md coverage frontmatter
-- Missing records? -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
+- Missing records? -> inspect --help, validate with -n/--dry-run, then pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
@@ -132,12 +134,12 @@ qualitymd status [path] --json
 ```sh
 qualitymd evaluation create [--model <path>] [--narrowing <slug>]
 
-# Write records by piping JSON on stdin — do not create a scratch file.
-qualitymd evaluation assessment add <run> <<'JSON'
+# Write records by piping JSON on stdin. Use --dry-run first, then remove it to commit.
+qualitymd evaluation assessment add --dry-run <run> <<'JSON'
 [
   {
     "areaPath": [],
-    "requirement": "Example requirement",
+    "requirement": "Has tests",
     "factorPaths": [],
     "ratingResult": {
       "kind": "rated",
@@ -145,18 +147,66 @@ qualitymd evaluation assessment add <run> <<'JSON'
       "rationale": "Evidence supports the target level."
     },
     "criterionSource": "rating-scale",
-    "findings": [],
+    "findings": [
+      {
+        "locator": "tests/example_test.go:1",
+        "observation": "The requirement is covered by a focused test.",
+        "category": "coverage",
+        "severity": "low",
+        "evidence": [
+          {
+            "kind": "source",
+            "ref": "tests/example_test.go:1"
+          }
+        ]
+      }
+    ],
     "recommendations": []
   }
 ]
 JSON
 
-qualitymd evaluation analysis set <run> <<'JSON'
-{ "analyses": [ … ] }
+qualitymd evaluation analysis set --dry-run <run> <<'JSON'
+[
+  {
+    "areaPath": [],
+    "localRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The local assessment result reaches target."
+    },
+    "factorRatingResults": [],
+    "aggregateRatingResult": {
+      "kind": "rated",
+      "level": "target",
+      "rationale": "The root local rating binds the aggregate rating."
+    },
+    "assessmentResultRecords": [
+      "assessments/001-root-has-tests.json"
+    ],
+    "childAnalysisRecords": []
+  }
+]
 JSON
 
-qualitymd evaluation recommendation add <run> <<'JSON'
-{ "recommendations": [ … ] }
+qualitymd evaluation recommendation add --dry-run <run> <<'JSON'
+[
+  {
+    "title": "Improve test coverage",
+    "gap": "The evaluation found a requirement with thin test evidence.",
+    "evidenceLocators": [
+      "assessments/001-root-has-tests.json"
+    ],
+    "assessmentResultRecords": [
+      "assessments/001-root-has-tests.json"
+    ],
+    "remediationOptions": [
+      "Add focused tests for the requirement"
+    ],
+    "recommendedOption": "Add focused tests for the requirement",
+    "doneCriterion": "The affected requirement reaches target with current test evidence."
+  }
+]
 JSON
 
 qualitymd evaluation status <run>
@@ -178,5 +228,7 @@ qualitymd evaluation report gate <run> --at-or-below <level>
 - Pipe record JSON on stdin (a `<<'JSON'` heredoc works well); never write the
   payload to a scratch file. `--file <path>` exists for human replay and
   debugging only — agents should not use it.
+- Use `qualitymd evaluation <kind> add|set --help` to inspect payload fields and
+  `-n/--dry-run` to validate new or materially revised payloads before writing.
 - Do not continue past missing evaluation commands by manually creating files.
 - Keep generated run paths exactly as the CLI reports them.

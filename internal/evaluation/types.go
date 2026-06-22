@@ -54,8 +54,14 @@ type WriteRecordReceipt struct {
 	Path          string           `json:"path,omitempty"`
 	Paths         []string         `json:"paths"`
 	Kind          RecordKind       `json:"kind"`
+	DryRun        bool             `json:"dryRun,omitempty"`
 	Created       *bool            `json:"created,omitempty"`
 	NextActions   []receipt.Action `json:"nextActions,omitempty"`
+}
+
+// WriteOptions configures evaluation record writes.
+type WriteOptions struct {
+	DryRun bool
 }
 
 // PlannedCoverage records the assessment and analysis records expected for a
@@ -468,11 +474,4 @@ func marshalJSON(v any) ([]byte, error) {
 		return nil, err
 	}
 	return append(data, '\n'), nil
-}
-
-func requiredString(name, value string) error {
-	if strings.TrimSpace(value) == "" {
-		return usagef("%s is required", name)
-	}
-	return nil
 }

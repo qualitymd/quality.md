@@ -22,6 +22,22 @@ evaluation evidence belongs in assessment, analysis, and recommendation records.
 ## Events
 `
 
+const planSeed = `# Evaluation plan
+
+Optional planned coverage frontmatter shape:
+
+` + "```yaml" + `
+---
+coverage:
+  assessmentResults:
+    - areaPath: []
+      requirement: Example requirement
+  analyses:
+    - areaPath: []
+---
+` + "```" + `
+`
+
 // CreateRun creates a numbered evaluation run folder and seeds its standard
 // runtime files.
 func CreateRun(opts Options) (*CreateRunReceipt, error) {
@@ -101,7 +117,7 @@ func createRunSkeleton(runAbs string, modelRaw []byte) error {
 	for file, content := range map[string]string{
 		"debug-log.md": debugLogSeed,
 		"design.md":    "# Evaluation design\n",
-		"plan.md":      "# Evaluation plan\n",
+		"plan.md":      planSeed,
 	} {
 		if err := os.WriteFile(filepath.Join(runAbs, file), []byte(content), 0o644); err != nil {
 			return fmt.Errorf("writing %s: %w", file, err)

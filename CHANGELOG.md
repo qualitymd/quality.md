@@ -5,6 +5,24 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Made evaluation record writes self-describing and safer to script:
+  `evaluation assessment add`, `evaluation analysis set`, and
+  `evaluation recommendation add` now document their JSON payload fields in
+  `--help`, support `-n/--dry-run` validation without writing records, and report
+  aggregated JSON-key validation errors.
+
+### /quality Skill
+
+- Updated evaluation record-writing guidance and quick-reference payload examples
+  to discover schemas through CLI help and validate new payloads with dry-run.
+
+### Packaging
+
+- Added a package check that fails when a relative link inside the shipped
+  `skills/quality` bundle does not resolve.
+
 ## v0.8.0 - 2026-06-22
 
 ### CLI

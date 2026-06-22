@@ -40,3 +40,9 @@ must render that as a distinct structural local-rating state, not as a missing
 not-assessed rating.
 When present, each `ratingConstraints` entry **SHOULD** identify the binding
 `assessmentResultRecord`, `requirement`, and constrained `level`.
+
+`qualitymd evaluation analysis set` writes the complete set of analysis payloads
+provided in one invocation as a single planned replacement set: every payload is
+decoded and validated before any analysis file is replaced. Within that set,
+`childAnalysisRecords` values resolve by record path to analysis records written
+by the same invocation or already present in the same run folder.
