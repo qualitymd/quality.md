@@ -169,3 +169,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   format contract in `SKILL.md`, the meaningful-change taxonomy in the authoring
   guide, `wizard` reconciliation, and a new `## Quality log` section in the
   durable skill spec (`Done`).
+- [0051 — Setup quality-md Area](0051-setup-quality-md-area.md) - added a
+  setup-authored `quality-md` Area pattern that evaluates the active `QUALITY.md`
+  artifact against the active authoring guide, with YAML comments explaining
+  `source` versus `assessment` and stronger authoring guidance for Factor names
+  and referenced assessments (`Done`).

@@ -416,8 +416,19 @@ the [authoring guide](guides/authoring-md.md) and
 population in the same run — drafting the body's Overview, Scope, Needs, and
 Risks with each section's unknowns, open questions, and any material support
 that is not agent-accessible, and proposing project-specific Factors and
-Requirements to replace the placeholders — rather than stopping at naming that
-next step. Follow-on routing belongs to [`wizard`](#wizard).
+Requirements to replace the placeholders. Guided population **SHOULD** include a
+`quality-md` Area that evaluates the `QUALITY.md` artifact itself against the
+active authoring guide unless the user declines or the model file is not in the
+root area it governs. The Area **SHOULD** use the key `quality-md`, a title of
+the form `<Root Title> QUALITY.md`, an Area `description`, and an explicit
+path-based `source` for the model file, such as `./QUALITY.md`. It **MUST NOT**
+use prose aliases such as `(this file)` for `source`. That Area **SHOULD**
+include concise YAML comments that distinguish the Area `source` (the
+`QUALITY.md` artifact being evaluated) from the Requirement `assessment` (the
+authoring guide used to judge it), and it **SHOULD** use one Area-level
+Requirement with `factors` when the active authoring guide defines one coherent
+judgment across multiple Factors. `setup` **MUST NOT** stop at naming that next
+step. Follow-on routing belongs to [`wizard`](#wizard).
 
 ### Update
 

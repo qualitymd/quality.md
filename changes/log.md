@@ -3,6 +3,54 @@
 ## 2026-06-22
 
 - **Done**: Landed and archived
+  [0051 - Setup quality-md Area](archive/0051-setup-quality-md-area.md) —
+  advanced from `In-Review` to `Done` and moved the parent concept and its
+  [folder](archive/0051-setup-quality-md-area/index.md) into [`archive/`](archive/index.md).
+  The case added the setup-authored `quality-md` Area pattern, kept
+  `qualitymd init` and the CLI scaffold generic, strengthened the authoring guide
+  and guide spec around quality-attribute Factor names and one referenced
+  assessment across multiple Factors, and synced setup mode plus the durable
+  skill spec with the concrete Area shape. Updated the archive [index](archive/index.md)
+  and emptied the open-cases list in the bundle [index](index.md).
+
+- **In-Review**: Completed implementation of
+  [0051 - Setup quality-md Area](archive/0051-setup-quality-md-area.md) and advanced it
+  from `In-Progress` to `In-Review`. Synced the durable skill spec and runtime
+  setup mode on the concrete `quality-md` Area shape (`quality-md` key,
+  `<Root Title> QUALITY.md` title, Area `description`, path-based `source`, YAML
+  comments, and one guide-backed Requirement across Factors). Synced the
+  authoring-guide durable spec and runtime guide on quality-attribute Factor names
+  and single referenced assessments across multiple Factors. Verified the
+  affected-artifacts list: no Go code, CLI scaffold, format spec, or durable docs
+  were changed. `mise run fmt-md-check` passes.
+
+- **In-Progress**: Advanced
+  [0051 - Setup quality-md Area](archive/0051-setup-quality-md-area.md) from `Design` to
+  `In-Progress`. Implementation is limited to the durable skill specs and bundled
+  skill prompt/guide files: the CLI scaffold and Go code remain out of scope.
+
+- **Design**: Advanced
+  [0051 - Setup quality-md Area](archive/0051-setup-quality-md-area.md) from `Draft` to
+  `Design` and added its [design doc](archive/0051-setup-quality-md-area/design.md).
+  The design keeps `qualitymd init` generic, puts the `quality-md` Area in skill
+  setup's guided population phase, uses normal path-based `source`, adds concise
+  YAML comments to distinguish `source` from `assessment`, and records why one
+  authoring-guide Requirement can feed multiple Factor roll-ups. Updated the
+  [child index](archive/0051-setup-quality-md-area/index.md).
+
+- **Creation**: Added
+  [0051 - Setup quality-md Area](archive/0051-setup-quality-md-area.md) (`status: Draft`)
+  with its [functional spec](archive/0051-setup-quality-md-area/spec.md) and
+  [child index](archive/0051-setup-quality-md-area/index.md). The case proposes a
+  setup-authored `quality-md` Area that evaluates the active `QUALITY.md` artifact
+  itself against the active authoring guide, keeps `qualitymd init` generic, and
+  strengthens the authoring guide around quality-attribute Factor names plus one
+  referenced assessment connected to multiple Factors. Functional spec lists
+  `specs/skills/quality-skill/quality-skill.md` and
+  `specs/skills/quality-skill/guides/authoring-md.md` under **To modify**.
+  Updated the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0050 - Quality log](archive/0050-quality-log.md) — advanced from `In-Progress`
   through `In-Review` to `Done` and moved the parent concept and its
   [folder](archive/0050-quality-log/index.md) into [`archive/`](archive/index.md).

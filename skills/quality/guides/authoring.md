@@ -562,6 +562,30 @@ different areas are distinct.
   internal factors tied to the outcome they serve, so an evaluator can tell a real
   weakness from a stylistic preference.*
 
+#### Name the quality, not the practice
+
+- **Do** name a Factor as a quality characteristic the Area can exhibit to a
+  degree: `completeness`, `consistency`, `credibility`, `currentness`,
+  `understandability`, `traceability`, `assessability`, `maintainability`,
+  `modifiability`, `testability`. *The name should read as the thing being
+  judged, not the work someone does to improve it.*
+- **Avoid** Factor names that describe a workflow, lifecycle phase, authoring
+  technique, or evaluation tactic. *For example, `lifecycle-stewardship` is a
+  practice; `maintainability`, `modifiability`, or `currentness` names the
+  quality it is meant to protect. `grounding` is a tactic or metaphor;
+  `credibility` or `traceability` names the observable quality.*
+- **Do** choose the narrower attribute when a broad label hides the real concern.
+  *If the concern is missing expected context, use `completeness`; if claims
+  contradict, use `consistency`; if claims lack believable support, use
+  `credibility`; if context is stale, use `currentness`; if readers cannot
+  interpret it, use `understandability`; if origin, rationale, or dependency
+  paths are unclear, use `traceability`.*
+- **Do** draw from established attribute families as prompts, not quotas. *Product
+  qualities such as maintainability and testability fit software and tooling;
+  data and document qualities such as completeness, credibility, currentness,
+  traceability, and understandability often fit specifications, guides, and
+  QUALITY.md models better.*
+
 #### Write the description as an operational definition
 
 - **Do** define the characteristic as the *degree or capability to achieve some
@@ -721,6 +745,36 @@ something inspectable is the core authoring move.
   version where it matters. *An unversioned, whole-document reference leaves the
   verification scope unbounded — name the section or rule that defines the
   assessment.*
+
+#### Use one referenced assessment when one guide governs several factors
+
+- **Do** write one requirement when a single guide, spec, or checklist defines a
+  coherent quality judgment that bears on several Factors. Put the requirement at
+  the Area level, list every affected Factor in `factors`, and reference the
+  governing entity once. *That keeps the criterion edge visible without repeating
+  the same assessment under every Factor.*
+- **Do** split the requirement only when the referenced entity defines claims
+  whose results could legitimately diverge. *A QUALITY.md can follow its
+  authoring guide for assessability while still lacking credibility; those are
+  separate requirements. A single conformance judgment that feeds assessability,
+  traceability, and maintainability is one requirement with several Factor
+  references.*
+
+```yaml
+requirements:
+  "the quality model follows its authoring guide":
+    factors:
+      - fitness-for-purpose
+      - credibility
+      - assessability
+      - traceability
+      - maintainability
+    assessment: >
+      Assess QUALITY.md against ./skills/quality/guides/authoring.md,
+      especially whether the body credibly supports the model, Factors come
+      from visible needs and risks, Requirements are assessable, Sources are
+      inspectable, and unknowns or open questions are explicit.
+```
 
 #### Connect to factors deliberately
 

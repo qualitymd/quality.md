@@ -176,3 +176,17 @@ root area's decision context.
 
 The guide **MUST** teach that initial Factors should be derived from the body's
 Needs and Risks, and that Requirements should make the body context assessable.
+
+The guide **MUST** teach authors to name Factors as quality characteristics the
+Area can exhibit to a degree, not as practices, workflows, lifecycle phases,
+authoring techniques, or evaluation tactics. It **SHOULD** show how to choose
+narrower, better-established attributes when a broad label hides the real
+concern, and it **SHOULD** distinguish product/tooling qualities from
+data/document/model qualities.
+
+The guide **MUST** teach that when one guide, spec, or checklist defines a
+coherent assessment that bears on several Factors, authors should write one
+Requirement, connect it to the affected Factors through `factors`, and reference
+the governing entity once. It **MUST** teach authors to split such Requirements
+only when the referenced entity defines claims whose results could legitimately
+diverge.
