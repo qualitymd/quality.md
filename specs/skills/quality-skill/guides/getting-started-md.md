@@ -14,7 +14,7 @@ ships at
 The guide is the setup follow-on: the document a human or agent reads after
 `qualitymd init` has created a valid skeleton and before the first real
 evaluation model exists. It assumes the reader has already read the
-[authoring guide](authoring.md).
+[authoring guide](authoring-md.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as

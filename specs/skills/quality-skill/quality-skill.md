@@ -343,7 +343,7 @@ The wizard **MUST** follow a probe → classify → recommend → offer flow:
    source-coverage, readiness, and evaluation-history signals.
 2. **Inspect model lifecycle.** When the model exists and is structurally valid,
    use the
-   [`Top 10 QUALITY.md checks`](guides/top-10-quality-md-checks.md) checklist for
+   [`Top 10 QUALITY.md checks`](guides/top-10-quality-md-checks-md.md) checklist for
    a bounded inspection of the `QUALITY.md` file itself. The wizard **MUST NOT**
    inspect evaluated source files, read evaluation report bodies, create
    evaluation records, or rate the evaluated source during this checklist pass.
@@ -410,8 +410,8 @@ After the CLI prerequisite is met, `setup` **MUST** drive
 model file is absent, then run [`qualitymd lint`](../../cli/lint.md). It
 **MUST NOT** reimplement scaffolding, validation, CLI installation tooling, or
 source-driven authoring judgment. After a valid skeleton, `setup` **MUST** read
-the [authoring guide](guides/authoring.md) and
-[getting-started guide](guides/getting-started.md) and begin guided first
+the [authoring guide](guides/authoring-md.md) and
+[getting-started guide](guides/getting-started-md.md) and begin guided first
 population in the same run — drafting the body's Overview, Scope, Needs, and
 Risks with each section's unknowns, open questions, and any material support
 that is not agent-accessible, and proposing project-specific Factors and
@@ -827,20 +827,24 @@ Model, Area, Factor, and Rating Level titles are primary display text, with
 stable identifiers retained where the report needs traceability. `report.json`
 preserves stable identifiers for machines.
 
-The CLI-rendered concise summary **MUST** read as a decision brief for human
-readers: key details, Verdict, Area Ratings, Selected Findings, Recommended
-Actions, and Scope & Limitations. Its key details use reader-facing labels
-including "Full evaluation" for an unnarrowed run and "Evaluation verdict" for
-the in-scope root Area's aggregate verdict. Its Recommended Actions section
-surfaces copyable Recommendation IDs for follow-up prompts. The full `report.md`
-remains verdict-first before detailed area and requirement sections. The JSON
-report **MUST** expose the same summary-layer data with non-null scope, empty
-arrays for empty collections, explicit rating objects for null or not-assessed
-ratings, typed lifecycle state for assessment and recommendation digests, typed
-next-step state, typed missing-metadata entries, and a structural local-rating
-state for grouping areas with no local requirements. The skill must treat those
-typed report states as the routing source rather than inferring state from
-`null`, absent fields, or `active` booleans alone.
+The CLI-rendered report artifacts are specified by the durable report specs:
+[`report-summary.md`](../../reports/report-summary-md.md),
+[`report.md`](../../reports/report-md.md), and
+[`report.json`](../../reports/report-json.md). The concise summary **MUST** read
+as a decision brief for human readers: key details, Verdict, Area Breakdown,
+Selected Findings, Recommended Actions, and Scope & Limitations. Its key details
+use reader-facing labels including "Full evaluation" for an unnarrowed run and
+"Evaluation verdict" for the in-scope root Area's Area-with-descendants verdict.
+Its Recommended Actions section surfaces copyable Recommendation IDs for
+follow-up prompts. The full `report.md` remains verdict-first before detailed
+area and requirement sections. The JSON report **MUST** expose the same
+summary-layer data with non-null scope, empty arrays for empty collections,
+explicit rating objects for null or not-assessed ratings, typed lifecycle state
+for assessment and recommendation digests, typed next-step state, typed
+missing-metadata entries, and a structural Area-only rating state for area
+groups. The skill must treat those typed report states as the routing source
+rather than inferring state from `null`, absent fields, or `active` booleans
+alone.
 
 Like the report, the design, plan, assessment, and analysis records reference any
 secret value by `file:line` and type only (see

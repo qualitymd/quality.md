@@ -27,4 +27,5 @@ before it lands.
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs.
+- [reports/](reports/) - generated evaluation report artifact specs.
 - [skills/](skills/) - companion skills that carry judgment around QUALITY.md (`/quality`).

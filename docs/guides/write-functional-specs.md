@@ -107,10 +107,14 @@ the spec, not buried in the design doc. (See
 [Working with change cases](work-with-change-cases.md#account-for-the-artifacts-it-touches)
 for how it divides labor with the parent's **Affected artifacts** index.)
 
-Give it three subsections, in order — **To add** (new durable specs), **To
-modify**, **To delete** — and make each one present and explicit: a list, or the
-single word `None`. A subsection is never left blank or dropped; a written `None`
-is a deliberate "nothing of this kind," not an oversight.
+Give it four subsections, in order — **To add** (new durable specs), **To
+modify**, **To rename**, **To delete** — and make each one present and explicit:
+a list, or the single word `None`. A subsection is never left blank or dropped; a
+written `None` is a deliberate "nothing of this kind," not an oversight. **To
+rename** carries any durable spec whose path changes (`old → new`): a rename is a
+delete-plus-add, so without its own home it hides — the new path slips into
+**To add** and the old path goes unaccounted in **To delete**. Naming the rename
+once keeps both ends honest.
 
 Each entry names the durable spec, says what changes, and links to the
 requirement above that drives it. It **MUST NOT** restate the normative text —
@@ -131,6 +135,12 @@ None
 - `SPECIFICATION.md` — require factor characterization; reframe "secondary
   factor" (per the characterization requirements above).
 
+### To rename
+
+- `specs/cli/check.md` → `specs/cli/lint.md` — track the command rename so the
+  old path's removal and the new path's arrival are both accounted (per the
+  rename requirement above).
+
 ### To delete
 
 None
@@ -146,6 +156,13 @@ are tracked in the change case's parent **Affected artifacts** index, not here.
 - **Specify behavior, not implementation.** Say *what* must hold; leave *how* to
   the code.
 - **One source of truth.** Don't restate the format spec — link to it.
+- **Name 1:1 artifact specs after the artifact.** When a durable spec is scoped
+  to one concrete generated file or artifact, preserve the artifact filename in
+  the spec filename by replacing `.` with `-` and then using the normal `.md`
+  concept extension. Examples: the `report-summary.md` artifact is specified by
+  `report-summary-md.md`; `report.json` by `report-json.md`; `report.md` by
+  `report-md.md`. This keeps the artifact identity visible without creating
+  filenames with multiple operational meanings.
 - **Don't invent requirements (YAGNI).** Specify only what's actually asked for
   or genuinely needed now. A spec is not the place to anticipate features,
   hedge against hypothetical needs, or add flags, formats, and edge cases

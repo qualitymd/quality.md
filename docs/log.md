@@ -1,5 +1,18 @@
 # Docs Update Log
 
+## 2026-06-22
+
+- **Revision**: Added a **To rename** subsection to the
+  [`## Durable spec changes`](guides/write-functional-specs.md#durable-spec-changes)
+  convention in [Writing functional specs](guides/write-functional-specs.md), so a
+  durable spec rename (`old → new`) is accounted in one place instead of splitting
+  across To add and To delete. Mirrored the reference in
+  [Working with change cases](guides/work-with-change-cases.md).
+- **Revision**: Documented the two-clock status convention in
+  [Working with change cases](guides/work-with-change-cases.md): `status` names the
+  code clock, so when durable specs and docs advance ahead of code the status block
+  should name both clocks.
+
 ## 2026-06-21
 
 - **Creation**: Added [Go style](guides/go-style.md), a contributor guide for

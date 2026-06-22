@@ -61,7 +61,7 @@ Implementation is complete and archived.
       identifier-based.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       and
-      [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
+      [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
       - update the skill contract and authoring-guide spec for required display
       titles and title-first human output.
 - [x] [`README.md`](../../README.md) - update examples and schema reference.

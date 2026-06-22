@@ -69,7 +69,7 @@ Implementation begins only after the change advances to `In-Progress`.
       "reference" rather than "defer to" for the assessment, and note a referenced
       entity can be a target in its own right.
 - Reviewed, no change:
-  [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
+  [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
   — its conformance and single-level "Working with…" structure already admit
   these as authoring jobs; the guide's conformance duty carries the new
   `SPECIFICATION.md` wording forward.

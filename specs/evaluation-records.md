@@ -306,7 +306,11 @@ reason as assessment evidence above.
 ## Report Outputs
 
 `report-summary.md`, `report.md`, and `report.json` are generated artifacts, not
-input records, judgment records, or OKF concepts.
+input records, judgment records, or OKF concepts. Their artifact-specific
+contracts live in [`report-summary.md`](reports/report-summary-md.md),
+[`report.md`](reports/report-md.md), and [`report.json`](reports/report-json.md).
+This spec owns the shared run-record inputs, assembled report-model invariants,
+and report trust boundary.
 
 All report outputs are projections of one assembled Evaluation Report model. The
 renderer **MUST** assemble that model from the run's `model.md`, `plan.md`,
@@ -350,8 +354,10 @@ typed rating states, and record references.
 ## report.json
 
 `report.json` is the machine rendering of the same Evaluation Report as
-`report.md`. It **MUST** present the in-scope root Area's aggregate verdict
-and rationale, scope, per-area results, and advice. It **MUST** reference
+`report.md`. Its artifact-specific contract lives in
+[`report.json`](reports/report-json.md). It **MUST** present the in-scope root
+Area's aggregate verdict and rationale, scope, per-area results, and advice. It
+**MUST** reference
 findings by assessment result record; full finding detail stays in
 `assessments/*.json`.
 Referencing a finding by record (rather than inlining its raw
@@ -402,33 +408,20 @@ Human Markdown reports resolve Model, Area, Factor, and Rating Level display
 labels from the run's `model.md` snapshot. `report.json` preserves the stable
 identifiers from assessment and analysis records.
 
+## report.md
+
+`report.md` is the complete human Evaluation Report. Its artifact-specific
+contract lives in [`report.md`](reports/report-md.md). It **MUST** be derived
+from the same report model as `report-summary.md` and `report.json`, preserve the
+full human audit trail, and preserve the typed state distinctions required by
+this shared report-output contract.
+
 ## report-summary.md
 
 `report-summary.md` is the concise human triage artifact generated beside the
-full report. It **MUST** be derived from the same report model as `report.md` and
-`report.json`, link to both, and preserve the same active/superseded
+full report. Its artifact-specific contract lives in
+[`report-summary.md`](reports/report-summary-md.md). It **MUST** be derived from the
+same report model as `report.md` and `report.json`, link to both, preserve typed
+rating and lifecycle states, and preserve the same active/superseded
 recommendation distinction. It **MUST NOT** replace `report.md` as the complete
 human Evaluation Report.
-
-`report-summary.md` **MUST** use a decision-brief outline for human readers:
-key details under `# Quality Evaluation Summary`, then Verdict, Area Ratings,
-Selected Findings, Recommended Actions, and Scope & Limitations. The key details
-**MUST** use reader-facing labels, including "Full evaluation" for an
-unnarrowed run and "Evaluation verdict" for the in-scope root Area's aggregate
-verdict.
-
-The Area Ratings section **MUST** distinguish local ratings from aggregate
-ratings. The selected finding section **MUST** be named for its deterministic
-selection rule, such as "Selected Findings" for a severity-filtered subset or
-"Rating-Binding Findings" only when the renderer can prove binding status from
-recorded constraints.
-
-The Recommended Actions section **MUST** make active recommendation identifiers
-prominent for follow-up prompts. When active recommendations exist, the summary
-**MUST** render a `Recommendation ID` column with copyable stable identifiers and
-**MUST NOT** present superseded recommendations as primary actions.
-
-A not-assessed rating uses `ratingResult.kind: not-assessed` and no
-`ratingResult.level`. A structural grouping area with no local requirements
-**MUST** render the `localRating.kind: structural` state rather than looking like
-a missing-evidence not-assessed rating.

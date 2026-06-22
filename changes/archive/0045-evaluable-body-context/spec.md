@@ -129,13 +129,13 @@ None
 - `SPECIFICATION.md` — broaden body semantics from context for interpreting the
   Model to context for building, using, and evaluating the Model (per the
   body-as-evaluable-judgment-context requirement above).
-- `specs/skills/quality-skill/guides/authoring.md` — require the runtime
+- `specs/skills/quality-skill/guides/authoring-md.md` — require the runtime
   authoring guide to teach evaluable body context, body-quality dimensions,
   concise self-explanatory sections, agent-accessible support, and inaccessible
   support limitations (per all authoring-guidance requirements above).
-- `specs/skills/quality-skill/guides/getting-started.md` — align first-pass body
+- `specs/skills/quality-skill/guides/getting-started-md.md` — align first-pass body
   checks with the body-quality and agent-accessible-support requirements above.
-- `specs/skills/quality-skill/guides/top-10-quality-md-checks.md` — add model
+- `specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md` — add model
   inspection treatment for missing or non-agent-accessible support (per the
   model-quality-inspection requirement above).
 - `specs/skills/quality-skill/quality-skill.md` — update only if setup or wizard

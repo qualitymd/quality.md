@@ -1,5 +1,80 @@
 # Changes Update Log
 
+## 2026-06-22
+
+- **Design refinement**: Sharpened
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  for long-term structure: adopted renaming the opaque Area rating fields to
+  `areaRatingResult` / `areaWithDescendantsRatingResult` / `areaRatingState` and
+  collapsing the redundant `structural` bool and derived note into the typed
+  state (spec and design); asserted that `report.json` element arrays are the
+  canonical identifiers while display paths are derived (with a separator-escaping
+  non-goal); moved the guide-spec renames into a new `To rename` durable-spec
+  subsection; and stated the parent status as two clocks (code vs. durable specs).
+
+- **Durable specs**: Applied the artifact-spec filename convention to existing
+  `/quality` runtime guide contracts:
+  [`authoring.md`](../specs/skills/quality-skill/guides/authoring-md.md),
+  [`getting-started.md`](../specs/skills/quality-skill/guides/getting-started-md.md),
+  and
+  [`top-10-quality-md-checks.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md).
+  Updated spec links while leaving the runtime guide artifacts themselves
+  unchanged.
+
+- **Durable specs**: Added 1:1 report artifact specs for
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md):
+  [`report-summary.md`](../specs/reports/report-summary-md.md),
+  [`report.md`](../specs/reports/report-md.md), and
+  [`report.json`](../specs/reports/report-json.md). Updated the specs index,
+  specs log, evaluation-report command contract, and shared evaluation-records
+  report-output contract to point at the new artifact specs.
+
+- **Design refinement**: Updated
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  to use `(area group)` as the human Markdown label for Areas with child Areas
+  but no direct requirements, while preserving the typed structural/grouping
+  state in machine-readable report data.
+
+- **Design refinement**: Updated
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  to use absolute Area display paths in the example and requirements: the root
+  renders as `/ (<root title>)`, descendants render with a leading `/`, and the
+  breakdown table's first column is labeled `Path`.
+
+- **Design refinement**: Clarified the rating vocabulary for
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md).
+  The functional spec and design now distinguish Area-only ratings from
+  Area-with-descendants ratings and recommend concise Markdown labels of `Area`
+  and `+ Sub-Areas` when both ratings appear in the breakdown.
+
+- **Design refinement**: Tightened
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  while keeping it in `Design`. The functional spec now explicitly requires
+  path-aware Area and Factor labels and keeps detailed rationales in the full
+  report; the design narrows cleanup to stale summary-basis helpers and records
+  the `areaSummary` naming trade-off.
+
+- **Design**: Advanced
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  from `Draft` to `Design` and added its
+  [design doc](0048-area-factor-report-breakdown/design.md). The design keeps
+  `areaSummary` as the canonical compact report layer, adds Factor ratings to
+  that shape, reuses the same breakdown rendering in `report-summary.md` and
+  `report.md`, and strengthens new analysis writes with duplicate and
+  model-aware Factor path validation. Updated the [child index](0048-area-factor-report-breakdown/index.md)
+  and bundle [index](index.md).
+
+- **Creation**: Opened
+  [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md)
+  (`status: Draft`) with its
+  [functional spec](0048-area-factor-report-breakdown/spec.md) and
+  [child index](0048-area-factor-report-breakdown/index.md). The case strengthens
+  generated evaluation reports so `report-summary.md`, `report.md`, and
+  `report.json` expose an at-a-glance Area-by-Factor breakdown from the
+  assembled report model, with nested Area and Factor paths, structural and
+  not-assessed states, and tests for stable machine identifiers. Updated the
+  bundle [index](index.md).
+
 ## 2026-06-21
 
 - **Done**: Archived

@@ -43,7 +43,9 @@ edit.
 
 # Open change cases
 
-None.
+- [0048 - Area factor report breakdown](0048-area-factor-report-breakdown.md) -
+  expose a compact Area-by-Factor report breakdown from a first-class report
+  model. Status: `Design`.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

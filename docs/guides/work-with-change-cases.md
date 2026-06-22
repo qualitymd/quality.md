@@ -108,7 +108,9 @@ grouped by kind so it stays skimmable:
 - A Change Case should raise suggestions for any *new* durable specs worth
   creating — a contract its work reveals is under-specified or worth lifting out
   of code. Suggesting is enough; actually creating the new spec is not a
-  precondition for the case to land.
+  precondition for the case to land. When a new durable spec is 1:1 with a
+  generated file or artifact, name it using the artifact-spec convention in
+  [Writing functional specs](write-functional-specs.md#conventions).
 - A Change Case should bring the durable docs it lists into sync before it
   reaches **In-Review**, so the enduring source of truth matches the landed
   behavior. Because durable docs may also be edited independently, the case is
@@ -131,9 +133,11 @@ change rewrites, and what they must say differently, belong with the requirement
 that drive them — not in the design doc, and not discovered at the end. So a
 change case's functional spec must carry a
 [`## Durable spec changes`](write-functional-specs.md#durable-spec-changes)
-section — **To add** / **To modify** / **To delete**, each reading a list or an
-explicit `None` — covering the [`specs/`](../../specs/index.md) bundle and the
-format spec [`SPECIFICATION.md`](../../SPECIFICATION.md). The other artifact kinds
+section — **To add** / **To modify** / **To rename** / **To delete**, each
+reading a list or an explicit `None` — covering the
+[`specs/`](../../specs/index.md) bundle and the format spec
+[`SPECIFICATION.md`](../../SPECIFICATION.md). A spec rename belongs in **To
+rename** (`old → new`), not split across add and delete. The other artifact kinds
 — durable *docs* (README, guides, scaffold, the bundled skill) and *code* — need
 no such breakdown; the parent's index is their only home.
 
@@ -179,7 +183,12 @@ A Change Case's `status` frontmatter advances, in order:
   [Account for the artifacts it touches](#account-for-the-artifacts-it-touches)).
   The Change Case's parent concept, its `index.md`, and the bundle
   [`log.md`](../../changes/log.md)/`index.md` are updated in every phase to
-  record the step.
+  record the step. Because `status` names the **code** clock only, while durable
+  specs and docs run on their own (they may advance in any phase), a single
+  status word can understate a case mid-flight. When durable artifacts have moved
+  ahead of code, say so in the status block — name both clocks (e.g. "Design;
+  code not started; durable report specs scaffolded") so a reviewer isn't
+  surprised by spec edits the tree already carries.
 - Before setting **In-Review**, reconcile the
   [Affected artifacts](#account-for-the-artifacts-it-touches) list with
   reality: every durable spec and doc the case listed should be updated (or

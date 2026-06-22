@@ -66,9 +66,9 @@ for the per-requirement breakdown.
 - [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) — body context names unknowns and
       open questions instead of known gaps.
 - [x] [`specs/cli/init.md`](../../specs/cli/init.md) — recommended body sections.
-- [x] [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
+- [x] [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
       — recommended-section MUST and the body best-practice coverage.
-- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
+- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
       — body-context check.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       — setup first-population body list.

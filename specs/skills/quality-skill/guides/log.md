@@ -1,5 +1,13 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-22
+
+- **Revision**: Renamed the guide contract specs to follow the 1:1
+  artifact-spec filename convention: `authoring-md.md`,
+  `getting-started-md.md`, and `top-10-quality-md-checks-md.md`. Runtime guide
+  artifact filenames remain `authoring.md`, `getting-started.md`, and
+  `top-10-quality-md-checks.md`.
+
 ## 2026-06-21
 
 - **Revision**: Clarified that the authoring, getting-started, and top-10-checks

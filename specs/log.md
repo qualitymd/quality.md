@@ -1,5 +1,22 @@
 # Specs Update Log
 
+## 2026-06-22
+
+- **Revision**: Applied the 1:1 artifact-spec filename convention to the
+  `/quality` runtime guide contracts:
+  [`authoring.md`](skills/quality-skill/guides/authoring-md.md),
+  [`getting-started.md`](skills/quality-skill/guides/getting-started-md.md), and
+  [`top-10-quality-md-checks.md`](skills/quality-skill/guides/top-10-quality-md-checks-md.md).
+  Runtime guide artifact filenames remain unchanged under `skills/quality/guides/`.
+
+- **Creation**: Added 1:1 generated report artifact specs for
+  [0048 - Area factor report breakdown](../changes/0048-area-factor-report-breakdown.md):
+  [`report-summary.md`](reports/report-summary-md.md),
+  [`report.md`](reports/report-md.md), and [`report.json`](reports/report-json.md).
+  The existing [Evaluation records](evaluation-records.md) spec remains the
+  shared report-model and record contract, while the new specs own each
+  artifact's shape, labels, and density.
+
 ## 2026-06-21
 
 - **Revision**: Added the process-only `debug-log.md` evaluation artifact for
@@ -23,8 +40,8 @@
 - **Revision**: Replaced the standalone Known gaps body section with per-section
   unknowns, open questions, and a human/agent review state line across the
   [format spec](../SPECIFICATION.md), [`init`](cli/init.md),
-  the [authoring guide spec](skills/quality-skill/guides/authoring.md),
-  the [top-10 checks spec](skills/quality-skill/guides/top-10-quality-md-checks.md),
+  the [authoring guide spec](skills/quality-skill/guides/authoring-md.md),
+  the [top-10 checks spec](skills/quality-skill/guides/top-10-quality-md-checks-md.md),
   and the [`/quality` skill spec](skills/quality-skill/quality-skill.md). The
   recommended body sections are now Overview, Scope, Needs, and Risks; each
   records its own unknowns (broad uncertainty) and open questions (specific,
@@ -83,34 +100,34 @@
   split.
 
 - **Creation**: Added the
-  [`Top 10 QUALITY.md checks`](skills/quality-skill/guides/top-10-quality-md-checks.md)
+  [`Top 10 QUALITY.md checks`](skills/quality-skill/guides/top-10-quality-md-checks-md.md)
   guide contract and wired the `/quality` wizard spec to use it for bounded
   model/lifecycle inspection findings.
 
 - **Revision**: Clarified that the
-  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide's
+  [`getting-started`](skills/quality-skill/guides/getting-started-md.md) guide's
   Known gaps section includes known unknowns: missing context, unresolved
   questions, and evidence gaps.
 
 - **Revision**: Added desired outcomes for each Markdown body section in the
-  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  [`getting-started`](skills/quality-skill/guides/getting-started-md.md) guide
   contract.
 
 - **Revision**: Updated the
-  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  [`getting-started`](skills/quality-skill/guides/getting-started-md.md) guide
   contract so the rating scale follows the Markdown body before the rest of the
   model tree is expanded.
 
 - **Revision**: Updated the
-  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  [`getting-started`](skills/quality-skill/guides/getting-started-md.md) guide
   contract so first-run authoring fills the Markdown body before building out
   the quality model tree.
 
 - **Revision**: Added runtime guide structure for the
   [`/quality` skill](skills/quality-skill/quality-skill.md): moved the
   authoring guide contract to
-  [`guides/authoring`](skills/quality-skill/guides/authoring.md), added the
-  [`getting-started`](skills/quality-skill/guides/getting-started.md) guide
+  [`guides/authoring`](skills/quality-skill/guides/authoring-md.md), added the
+  [`getting-started`](skills/quality-skill/guides/getting-started-md.md) guide
   contract for first-run model population after `qualitymd init`, and updated
   the skill spec to route setup to the new guide.
 
@@ -160,7 +177,7 @@
 - **Revision**: Updated the root [`SPECIFICATION.md`](../SPECIFICATION.md),
   [`lint`](cli/lint.md), [`init`](cli/init.md), [`status`](cli/status.md),
   [`evaluation build-report`](cli/evaluation-build-report.md), and
-  [`/quality` authoring guide spec](skills/quality-skill/guides/authoring.md) for
+  [`/quality` authoring guide spec](skills/quality-skill/guides/authoring-md.md) for
   required display titles on Models, Targets, Factors, and Rating Levels.
 
 - **Revision**: Updated the durable
@@ -189,7 +206,7 @@
 
 ## 2026-06-18
 
-- **Creation**: Added the [QUALITY.md authoring guide](skills/quality-skill/guides/authoring.md) sub-spec — the 1:1 contract for
+- **Creation**: Added the [QUALITY.md authoring guide](skills/quality-skill/guides/authoring-md.md) sub-spec — the 1:1 contract for
   the skill's [`authoring.md`](../skills/quality/guides/authoring.md)
   resource. States its purpose (a single comprehensive guide to understanding and
   working with `QUALITY.md` files), resolves the embed-vs-drift tension by scoping

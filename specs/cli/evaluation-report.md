@@ -58,5 +58,7 @@ fail when no rendered `report.json` exists. Before trusting an existing
 non-reportable-run diagnostic as `build` when current records are incompatible.
 
 The report content contract is defined by
-[Evaluation records](../evaluation-records.md#reportjson) and
-[Evaluation records](../evaluation-records.md#report-summarymd).
+[Evaluation records](../evaluation-records.md#report-outputs),
+[`report-summary.md`](../reports/report-summary-md.md),
+[`report.md`](../reports/report-md.md), and
+[`report.json`](../reports/report-json.md).

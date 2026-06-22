@@ -70,11 +70,11 @@ for the per-requirement breakdown.
 - [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) — body semantics may need to say
       the body supports building, using, and evaluating the Model, not only
       interpreting it.
-- [x] [`specs/skills/quality-skill/guides/authoring.md`](../../specs/skills/quality-skill/guides/authoring.md)
+- [x] [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
       — contract for the runtime authoring guide's body guidance.
-- [x] [`specs/skills/quality-skill/guides/getting-started.md`](../../specs/skills/quality-skill/guides/getting-started.md)
+- [x] [`specs/skills/quality-skill/guides/getting-started-md.md`](../../specs/skills/quality-skill/guides/getting-started-md.md)
       — first-pass body outcome and checks.
-- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
+- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
       — body-context and model-quality inspection checks.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       — setup/wizard guidance if the mode contract needs explicit

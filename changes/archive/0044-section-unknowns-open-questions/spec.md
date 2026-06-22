@@ -109,11 +109,11 @@ None
   and author-declared-context requirements above).
 - `specs/cli/init.md` — recommended body sections are Overview, Scope, Needs,
   Risks (per the scaffold and recommended-sections requirements above).
-- `specs/skills/quality-skill/guides/authoring.md` — recommended-section MUST and
+- `specs/skills/quality-skill/guides/authoring-md.md` — recommended-section MUST and
   body best-practice coverage adopt per-section unknowns/open questions and the
   state line (per the section-shape, unknowns/open-questions, and state-line
   requirements above).
-- `specs/skills/quality-skill/guides/top-10-quality-md-checks.md` — body-context
+- `specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md` — body-context
   check inspects the recommended sections and their unknowns/open questions (per
   the skill-alignment requirement above).
 - `specs/skills/quality-skill/quality-skill.md` — setup first-population body list

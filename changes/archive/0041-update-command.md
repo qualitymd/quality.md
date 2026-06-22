@@ -152,7 +152,7 @@ the document format or evaluation semantics.
       — `update` / `update --check`, dropped `--apply` and the old `upgrade`
       command, and the notice.
 - [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../../skills/quality/guides/top-10-quality-md-checks.md)
-      and [`specs/skills/quality-skill/guides/top-10-quality-md-checks.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks.md)
+      and [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
       — rename the `upgrade` route token to `update` in the route list.
 - [x] [`install.md`](../../install.md) — `qualitymd update --check`, self-applying
       channels, and how to opt out of the ambient notice.
