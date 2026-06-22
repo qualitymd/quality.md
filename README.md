@@ -48,6 +48,28 @@ To keep the model visible to agents, add a short note to `AGENTS.md` or
 See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality.
 ```
 
+## Working with QUALITY.md
+
+A `QUALITY.md` file is your project's **reward signal for quality** — the
+explicit, shared definition of *good* that aligns both your team and your coding
+agents with what matters in *this* codebase. You capture it once, then run a
+**quality loop** that keeps both the work and the signal sharp.
+
+**The quality loop:**
+
+1. **Align** — agree on what *good* means for this context and capture it as the
+   signal. *(First time through: `/quality setup`.)*
+2. **Evaluate** — grade the work against the signal. `/quality evaluate` returns
+   rated findings with evidence — each a gap in the *work* or a gap in the
+   *bar*.
+3. **Improve** — close the gaps in the work; triage them into your backlog like
+   any other task.
+4. **Learn** — feed what you learned back into the signal, re-aligning the bar
+   as the product and its risks evolve.
+
+Then loop. The same cycle drives agents working minute-to-minute and teams
+improving release-over-release.
+
 ## Why QUALITY.md
 
 ### Manage Quality Debt
