@@ -2,6 +2,29 @@
 
 ## 2026-06-23
 
+- **Revision**: Repositioned the [`setup`](setup.md) discovery contract as
+  teaching-first for
+  [0067 - Setup discovery pedagogy](../../../../changes/archive/0067-setup-discovery-pedagogy.md).
+  Required authored per-question pedagogy (purpose + how-to-change-later) and the
+  teaching-over-round-trips framing; changed the prompt-form contract to ask every
+  one of the ten questions every run (removing the accept-all-defaults-and-skip
+  escape, keeping a per-question fast confirm and show-all-at-once); changed the
+  confidence vocabulary `MUST` from `strongly inferred`/`weakly inferred`/`assumed`
+  to `Low`/`Med`/`High` with the evidence note retained (no-evidence → `Low` plus
+  an explicit note); and added the final-review-recap stage between discovery and
+  authoring. Promoted the rationale into per-requirement annotations. Append-only
+  entries below keep their old confidence-vocabulary references frozen.
+
+- **Creation + Revision**: Added the workflow feedback-log artifact contract for
+  [0066 - Setup feedback log](../../../../changes/archive/0066-setup-feedback-log.md).
+  Created the [`setup/`](setup/index.md) sub-folder with the
+  [workflow feedback log](setup/feedback-log.md) sub-spec (location/naming under
+  `.quality/logs/`, environment header, body schema, redaction, no-transmission
+  posture), making [`setup`](setup.md) a parent concept. Amended the
+  [`setup`](setup.md) mutation surface to permit the `.quality/logs/` write while
+  keeping every other setup prohibition in force, and added the close-step
+  feedback-log authoring. Updated the [index](index.md) to list the sub-folder.
+
 - **Rename + Revision**: Renamed this folder from `modes/` to `workflows/` and
   updated its [index](index.md) for
   [0065 - Setup discovery and close refinements](../../../../changes/0065-setup-discovery-and-close-refinements.md).

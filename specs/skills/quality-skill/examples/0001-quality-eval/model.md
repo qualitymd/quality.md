@@ -221,4 +221,4 @@ stale.
 *Unknowns* — sustained peak-load behavior is in scope but not yet modeled.
 *Open questions* — none.
 
-*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude, 2026-06.*
+*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude (Sonnet 4), 2026-06.*

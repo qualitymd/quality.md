@@ -2,6 +2,10 @@
 
 ## 2026-06-23
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) so the
+  runtime guide must include a worked Markdown body section example and cite the
+  agent surface plus model in each `agent-reviewed` state line.
+
 - **Revision**: Updated the
   [top-10-quality-md-checks](top-10-quality-md-checks-md.md) guide contract for
   [0065 - Setup discovery and close refinements](../../../../changes/0065-setup-discovery-and-close-refinements.md).

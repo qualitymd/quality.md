@@ -65,6 +65,11 @@ Evaluation runs default under `.quality/evaluations/`. A repository can set
 can point to that file with root `config` frontmatter, otherwise
 `.quality/config.yaml` is used.
 
+Other `.quality/` workspace artifacts: the quality log under `.quality/log/`
+(singular) and workflow feedback logs under `.quality/logs/` (plural,
+`<timestamp>-<workflow>-feedback-log.md`). Both are skill-written conventions
+created on demand, with no `qualitymd` command yet.
+
 ## Decision trees
 
 ### Starting or repairing a model

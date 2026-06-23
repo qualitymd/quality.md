@@ -50,6 +50,13 @@ recommendations.
   model-authoring or recommendation-apply workflows (one entry per meaningful
   model change). `setup`, `evaluate`, read-only orientation, and issue-tracker
   handoff never write it. See [Quality Log](#quality-log).
+- A workflow may write a workflow feedback log under `.quality/logs/` (plural,
+  distinct from the quality log's `.quality/log/`) recording the *experience* of
+  running it. `setup` may write `<timestamp>-setup-feedback-log.md`. It is
+  recorded locally and never transmitted; sharing is an explicit user action. It
+  must never contain secret values or raw prompt-injection text, and sensitive
+  project context should be sanitized. See
+  [`workflows/setup.md`](workflows/setup.md).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
 - Never manually create evaluation run folders or record files.
@@ -131,7 +138,7 @@ Before executing a public workflow, emit a short run frame:
 - Model file:
 - Scope:
 - Rigor:        (when applicable)
-- Mutation:      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, tooling)
+- Mutation:      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, feedback log, tooling)
 - Artifacts:
 - Next gate:
 ```

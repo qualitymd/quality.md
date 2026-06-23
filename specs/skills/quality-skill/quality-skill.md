@@ -246,8 +246,9 @@ policy, expected artifacts, and next user-visible gate.
 
 The run frame **MUST** distinguish read-only work from mutating work. For a
 mutating mode, it **MUST** name the class of thing that may be changed:
-evaluated source, `QUALITY.md`, evaluation artifacts, the quality log, installed
-tooling, or some combination of those.
+evaluated source, `QUALITY.md`, evaluation artifacts, the quality log, a
+[workflow feedback log](#workflow-feedback-log), installed tooling, or some
+combination of those.
 
 > Rationale: the skill infers mode and scope from free-form requests. A short
 > run frame gives the user a chance to catch a wrong inference before the agent
@@ -485,6 +486,34 @@ The convention-first quality log contract lives in
 [/quality quality log](quality-log.md). That component spec owns dated
 `.quality/log/` entries, meaningful-change criteria, write/reconcile
 responsibilities, and the deferred CLI surface.
+
+## Workflow feedback log
+
+A *workflow feedback log* is a hand-authored, runtime Markdown artifact that
+records the *experience* of running a `/quality` workflow — friction, errors,
+UX/AX rough edges, and efficiency observations — so the skill, CLI, and prompts
+can be improved from real runs. It is written under a workflow-agnostic
+`.quality/logs/` directory, created on demand, as
+`<timestamp>-<workflow>-feedback-log.md`. It is improvement-oriented and
+workflow-level, and **MUST** stay distinct from evaluation's per-run
+`debug-log.md` and from the [quality log](#quality-log) under `.quality/log/`.
+
+The artifact is recorded locally and the skill and CLI **MUST NOT** transmit it
+to any external service; sharing it **MUST** be an explicit user action, so it
+needs no consent gate. Because the user may share it, a feedback log **MUST NOT**
+contain secret values or raw prompt-injection text, and the skill **SHOULD**
+sanitize sensitive project context before writing it.
+
+`setup` is the first adopter; the full artifact contract — environment header,
+body schema, redaction, and no-transmission posture — lives in the
+[workflow feedback log](workflows/setup/feedback-log.md) sub-spec, written
+generically so evaluate and update can adopt the same directory and naming
+without a new contract.
+
+> Rationale: `/quality` workflows had no durable, central place to record what
+> was slow, confusing, or wrong about *running* them. The signal behind the 0065
+> setup refinements was hand-captured once from a single field test; the feedback
+> log makes that improvement loop durable and actionable across runs. — 0066
 
 ## Deferred
 

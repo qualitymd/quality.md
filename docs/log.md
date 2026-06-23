@@ -2,6 +2,21 @@
 
 ## 2026-06-23
 
+- **Removal**: Deleted the `Use the /quality skill` how-to guide
+  (`guides/use-quality-skill.md`) and its index entry. The guide was the lone
+  end-user doc in a contributor-facing folder and largely duplicated the
+  README's install and usage sections; the skill itself and the README now
+  carry that operational guidance.
+
+- **Revision**: Documented the workflow feedback log in
+  [Use the /quality skill](guides/use-quality-skill.md) for
+  [0066 - Setup feedback log](../changes/archive/0066-setup-feedback-log.md):
+  setup may record a hand-authored `.quality/logs/<timestamp>-setup-feedback-log.md`
+  about the run experience, distinct from the quality log and evaluation
+  `debug-log.md`, recorded locally and never transmitted, with secrets and
+  prompt-injection text excluded and sensitive context sanitized — shareable by
+  an explicit user action.
+
 - **Revision**: Clarified agentic use context in [Use the /quality skill](guides/use-quality-skill.md)
   and [Install QUALITY.md](../install.md). The docs now preserve the
   agent-first experience while keeping modeled quality domains broad.

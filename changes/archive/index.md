@@ -224,3 +224,16 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   made setup discovery agent-agnostic with one-question-at-a-time iteration, added
   read-before-author, disentangled model maturity from CLI lifecycle readiness,
   and renamed the skill `modes/` folder to `workflows/` (`Done`).
+- [0066 — Setup feedback log](0066-setup-feedback-log.md) - added a hand-authored,
+  skill-only workflow feedback log under `.quality/logs/`
+  (`<timestamp>-setup-feedback-log.md`) recording the setup run *experience*,
+  distinct from the quality log and evaluation `debug-log.md`, recorded locally
+  and never transmitted, with secrets/prompt-injection excluded and sensitive
+  context sanitized; no CLI/Go change (`Done`).
+- [0067 — Setup discovery pedagogy](0067-setup-discovery-pedagogy.md) - made
+  `/quality setup` discovery teaching-first: authored per-question background and
+  how-to-change-later copy inline in the skill, ask every question every run (no
+  accept-all-and-skip escape; per-question fast confirm and show-all-at-once
+  remain), relabeled confidence to `Low`/`Med`/`High` with an evidence note, and
+  added a final review recap before writing `QUALITY.md`; no CLI/Go change
+  (`Done`).

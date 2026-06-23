@@ -24,6 +24,21 @@ QUALITY.md specification.
   the Top 10 checklist no longer blends the two axes.
 - Renamed the skill's `modes/` folder to `workflows/` (runtime skill and spec
   mirror); each workflow is still dispatched as a mode.
+- Made `/quality setup` discovery teaching-first: each of the ten setup questions
+  now carries authored copy explaining what it shapes in the model and how to
+  change the answer later, setup asks every question every run (no
+  accept-all-and-skip shortcut; a per-question fast confirm and show-all-at-once
+  remain), and after discovery it recaps every answer for a last comment or
+  correction before writing `QUALITY.md`. Confidence is now reported as
+  `Low`/`Med`/`High` with an evidence note instead of `strongly inferred` /
+  `weakly inferred` / `assumed`.
+- Added a workflow feedback log: at the close of a run, `setup` may hand-author a
+  `.quality/logs/<timestamp>-setup-feedback-log.md` recording the *experience* of
+  the run (friction, UX/AX rough edges, speed) with an environment header so
+  maintainers can act on it. It is recorded locally and never transmitted —
+  sharing is an explicit user action — and never contains secrets or raw
+  prompt-injection text. `.quality/logs/` (plural) is distinct from the quality
+  log's `.quality/log/`, which setup still does not write.
 
 ### Packaging
 

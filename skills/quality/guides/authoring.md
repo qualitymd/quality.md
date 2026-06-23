@@ -178,6 +178,30 @@ reads consistently as it grows:
    not skipped.*
 4. **State** — close with the review-provenance line.
 
+### Example body section
+
+This example shows the section shape in use. It is illustrative; adapt the
+domain, cited support, unknowns, and open questions to the actual root area.
+
+```markdown
+## Needs
+
+Daily support triage quality matters because support leads use this model to
+decide whether the inbox is safe to hand off between shifts.
+
+Support leads need urgent customer-impacting messages surfaced before routine
+account questions. Agents need enough current policy context to answer without
+guessing. Maintainers need triage rules that are inspectable in
+`support/policies/triage.md` and reflected in saved views under `support/views/`.
+
+*Unknowns* — holiday launch escalation load is based on last year's notes, which
+are not agent-accessible.
+*Open questions* — what response-time target should apply to enterprise-contract
+escalations?
+
+*Reviewed — Ada Lovelace, 2026-05; agent-reviewed — Codex (GPT-5.5), 2026-06.*
+```
+
 ### Mark the state of a section
 
 Close each section with its unknowns, its open questions, and a state line. Both
@@ -191,7 +215,7 @@ distinct](#keep-scope-unknowns-open-questions-and-not-assessed-distinct)).
 Because the body is largely agent-authored, the freshness signal worth trusting
 is not when a section last changed but when a person last stood behind it. The
 state line carries two reviews — the last human review (cite the person) and the
-last agent review (name the agent):
+last agent review (name the agent surface and model used):
 
 ```markdown
 ## Risks
@@ -202,7 +226,7 @@ drop instead of failing over. Cost overrun is a distant second.
 *Unknowns* — failover under a full regional outage is untested.
 *Open questions* — should orders fail over to another region, or degrade in place?
 
-*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude, 2026-06.*
+*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Codex (GPT-5.5), 2026-06.*
 ```
 
 A section with nothing outstanding still says so:
@@ -211,7 +235,7 @@ A section with nothing outstanding still says so:
 *Unknowns* — none known.
 *Open questions* — none.
 
-*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Claude, 2026-06.*
+*Reviewed — Margaret Hamilton, 2026-05; agent-reviewed — Codex (GPT-5.5), 2026-06.*
 ```
 
 - **Do** capture `Unknowns` and `Open questions` for every section, writing "none
@@ -219,6 +243,9 @@ A section with nothing outstanding still says so:
   reads as considered; a blank reads as skipped.*
 - **Do** cite a named person in `reviewed`. *An anonymous review carries no
   accountability; the name is what makes it a trust signal.*
+- **Do** cite the agent surface and model in `agent-reviewed`, for example
+  `Codex (GPT-5.5)`. *The agent name alone is too ambiguous once model behavior
+  changes across versions.*
 - **Do** advance `reviewed` only when that person actually read and endorsed the
   section — never for an agent or mechanical edit.
 - **Do** read `agent-reviewed` newer than `reviewed` as the warning state: the

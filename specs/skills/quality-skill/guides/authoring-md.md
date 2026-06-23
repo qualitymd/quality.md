@@ -148,6 +148,11 @@ particular answer, still unresolved), scoped to the section and distinct from a
 `not assessed` result, and **MUST** teach stating "none known" rather than
 omitting them.
 
+The guide **MUST** include at least one worked Markdown body section example
+showing the common section shape, concise judgment context, agent-accessible
+support, section-scoped unknowns, section-scoped open questions, and the review
+state line.
+
 > Rationale: a single catch-all Known gaps section sat far from the content it
 > qualified and was skimmed past; uncertainty belongs with the section it
 > concerns. — 0044
@@ -169,8 +174,9 @@ The guide **MUST NOT** require a separate `Access gaps` line in every section.
 
 The guide **MUST** teach a per-section review state line that records the last
 human review (citing a named person) distinctly from the last agent review
-(naming the agent), and that the human review advances only when a person reads
-and endorses the section.
+(naming the agent surface and model used, for example `Codex (GPT-5.5)`), and
+that the human review advances only when a person reads and endorses the
+section.
 
 > Rationale: the body is largely agent-authored, so the only freshness signal
 > worth trusting is when a person last stood behind the section. — 0044

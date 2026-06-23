@@ -2,6 +2,34 @@
 
 ## 2026-06-23
 
+- **Revision**: Implemented durable spec changes for
+  [0067 - Setup discovery pedagogy](../changes/archive/0067-setup-discovery-pedagogy.md)
+  in [`setup`](skills/quality-skill/workflows/setup.md): required authored
+  per-question pedagogy and the teaching-over-round-trips framing, changed the
+  prompt-form contract to ask every one of the ten questions every run (removing
+  the accept-all-and-skip escape, keeping a per-question fast confirm and
+  show-all-at-once), changed the confidence vocabulary from
+  `strongly inferred`/`weakly inferred`/`assumed` to `Low`/`Med`/`High` with the
+  evidence note retained, and added the final-review-recap stage. The parent
+  [`/quality` skill](skills/quality-skill/quality-skill.md) spec's generic
+  "confidence-labeled defaults" phrasing was reviewed and left unchanged.
+
+- **Creation + Revision**: Implemented durable spec changes for
+  [0066 - Setup feedback log](../changes/archive/0066-setup-feedback-log.md).
+  Added the
+  [workflow feedback log](skills/quality-skill/workflows/setup/feedback-log.md)
+  sub-spec under a new
+  [`workflows/setup/`](skills/quality-skill/workflows/setup/index.md) folder,
+  defining a hand-authored, skill-only, never-transmitted feedback artifact under
+  `.quality/logs/` (`<timestamp>-<workflow>-feedback-log.md`) with an environment
+  header, body schema, and redaction rules. Made
+  [`setup`](skills/quality-skill/workflows/setup.md) the parent of that sub-spec,
+  amended its mutation surface to permit the `.quality/logs/` write while keeping
+  every other prohibition in force, and added the close-step authoring. Recorded
+  the shared feedback-log artifact and its redaction/no-transmission boundary in
+  the parent [`/quality` skill](skills/quality-skill/quality-skill.md) spec so
+  later workflows inherit it.
+
 - **Rename + Revision**: Implemented durable spec changes for
   [0065 - Setup discovery and close refinements](../changes/0065-setup-discovery-and-close-refinements.md).
   Renamed the durable `specs/skills/quality-skill/modes/` folder to `workflows/`

@@ -2,6 +2,89 @@
 
 ## 2026-06-23
 
+- **Implementation + Archival**: Implemented and advanced
+  [0067 - Setup discovery pedagogy](archive/0067-setup-discovery-pedagogy.md)
+  through `In-Progress` and `In-Review` to `Done`, moving it (parent and folder)
+  into [`archive/`](archive/). Implemented skill-only with **no code change**:
+  added authored per-question background and how-to-change-later copy inline in
+  the runtime [setup workflow](../skills/quality/workflows/setup.md) with a
+  teaching-over-round-trips framing, made setup ask every one of the ten questions
+  every run (removed the accept-all-and-skip escape; kept a per-question fast
+  confirm and show-all-at-once), relabeled confidence from
+  `strongly inferred`/`weakly inferred`/`assumed` to `Low`/`Med`/`High` (evidence
+  note retained, no-evidence → `Low`), and added a final review recap before
+  authoring. Synced the durable
+  [setup spec](../specs/skills/quality-skill/workflows/setup.md) with promoted
+  rationale annotations (the parent skill spec's generic "confidence-labeled
+  defaults" phrasing reviewed and left unchanged), `CHANGELOG.md`, and the
+  spec log. Reconciled the **Affected artifacts** list: no `qualitymd` CLI/Go
+  change and the `status` lifecycle `readiness` field is unchanged; the listed
+  public `use-quality-skill.md` guide was removed independently by concurrent docs
+  cleanup, so 0067 lands with no durable-docs delta. Skill `metadata.version`
+  bump deferred to the release cut. The In-Review gate was
+  collapsed at the user's explicit direction. Removed it from the open-cases
+  [index](index.md) and added it to the [archive index](archive/index.md).
+
+- **Implementation + Archival**: Implemented and advanced
+  [0066 - Setup feedback log](archive/0066-setup-feedback-log.md) to `Done`,
+  moving it (parent and folder) into [`archive/`](archive/). Implemented
+  skill-only with **no code change**: added the new durable
+  [workflow feedback log](../specs/skills/quality-skill/workflows/setup/feedback-log.md)
+  sub-spec under a new `workflows/setup/` folder, made
+  [`setup`](../specs/skills/quality-skill/workflows/setup.md) its parent with an
+  amended (narrowly widened) mutation surface and close-step authoring, and
+  recorded the shared artifact plus its redaction/no-transmission boundary in the
+  parent [`/quality` skill](../specs/skills/quality-skill/quality-skill.md) spec.
+  Synced the runtime skill
+  ([`SKILL.md`](../skills/quality/SKILL.md),
+  [`workflows/setup.md`](../skills/quality/workflows/setup.md),
+  [`cli-quick-reference.md`](../skills/quality/resources/cli-quick-reference.md)),
+  the [use-the-skill guide](../docs/guides/use-quality-skill.md), `CHANGELOG.md`,
+  and the spec/doc logs. Skill `metadata.version` bump deferred to the release
+  cut. Removed it from the open-cases [index](index.md) and added it to the
+  [archive index](archive/index.md).
+
+- **Advance**: Moved
+  [0067 - Setup discovery pedagogy](0067-setup-discovery-pedagogy.md) to `Design`
+  and authored its [design doc](0067-setup-discovery-pedagogy/design.md): inline
+  per-question teaching copy composed with the 0065 presentation tiers, the
+  accept-all-and-skip escape removed in favor of a per-question fast confirm,
+  the `assumed`→`Low (no signal)` mapping that lets `Low`/`Med`/`High` plus the
+  evidence note carry the old vocabulary's meaning, and the final recap inserted
+  between discovery and authoring. No code involved.
+
+- **Creation**: Added
+  [0067 - Setup discovery pedagogy](0067-setup-discovery-pedagogy.md) at `Draft`
+  with its child folder ([index](0067-setup-discovery-pedagogy/index.md),
+  [functional spec](0067-setup-discovery-pedagogy/spec.md)). The case
+  repositions `/quality setup` discovery as teaching-first: authored
+  per-question background and how-to-change-later copy inline in the skill, asks
+  every discovery question even at high confidence (removing/revising the
+  accept-all-defaults-and-skip escape), relabels the confidence vocabulary to
+  `Low`/`Med`/`High` (retaining the evidence note), and adds a final review
+  recap of the full question/answer set with a last-chance comment before
+  writing `QUALITY.md`. No CLI/Go change; skill + specs + docs only. Revisits
+  the confidence vocabulary and accept-all escape that archived
+  [0065](archive/0065-setup-discovery-and-close-refinements.md) deliberately
+  left alone, and is independent of [0066](0066-setup-feedback-log.md). Spec
+  authored; design doc deferred until the spec settles. Listed it under open
+  cases in the bundle [index](index.md).
+
+- **Creation**: Added
+  [0066 - Setup feedback log](0066-setup-feedback-log.md) at `Design` with its
+  child folder ([index](0066-setup-feedback-log/index.md),
+  [functional spec](0066-setup-feedback-log/spec.md),
+  [design doc](0066-setup-feedback-log/design.md)). The case adds a
+  hand-authored, **skill-only** workflow feedback log under `.quality/logs/`
+  (`<timestamp>-setup-feedback-log.md`) that records setup-experience friction,
+  UX/AX, and efficiency signals for improving the skill — distinct from
+  evaluation's per-run `debug-log.md` and from the quality log under
+  `.quality/log/`. No CLI/Go change: the directory is created on demand (as
+  evaluation already does), the log is recorded locally and never transmitted, so
+  no opt-in is needed; secrets and raw prompt-injection text are never written
+  and sensitive project context is sanitized. Spec and design authored; no code
+  involved. Listed it under open cases in the bundle [index](index.md).
+
 - **Archival**: Advanced
   [0065 - Setup discovery and close refinements](archive/0065-setup-discovery-and-close-refinements.md)
   to `Done` and moved it (parent and folder) into [`archive/`](archive/).
