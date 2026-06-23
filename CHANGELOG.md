@@ -9,6 +9,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Reworked `/quality setup` guidance into an explicit setup workflow with a
+  setup brief, ten concrete discovery questions, confidence-labeled defaults,
+  compact prompt framing, and clearer workflow terminology while preserving the
+  `QUALITY.md`-only mutation boundary.
+
 ### Packaging
 
 ### Specification

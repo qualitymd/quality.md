@@ -3,6 +3,12 @@
 ## 2026-06-23
 
 - **Revision**: Updated the getting-started guide contract for
+  [0064 - Structured setup workflow](../../../../changes/0064-structured-setup-workflow.md).
+  Getting-started now treats setup assumptions from the structured workflow —
+  including root Area, domain, review posture, and handoff posture — as the
+  starting point for first-run iteration.
+
+- **Revision**: Updated the getting-started guide contract for
   [0063 - Contextual setup flow](../../../../changes/0063-contextual-setup-flow.md).
   Getting-started is now post-setup iteration guidance for starter or immature
   models, including setup assumptions, stakeholder needs, missing context,

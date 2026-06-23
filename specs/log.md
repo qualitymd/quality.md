@@ -2,6 +2,13 @@
 
 ## 2026-06-23
 
+- **Revision**: Implemented durable spec alignment for
+  [0064 - Structured setup workflow](../changes/0064-structured-setup-workflow.md).
+  Updated durable [`/quality` skill](skills/quality-skill/index.md) specs so
+  setup is described as a workflow, runtime setup guidance must be an operator
+  playbook, the setup brief and ten concrete discovery questions are specified,
+  and setup still writes only `QUALITY.md`.
+
 - **Revision**: Clarified agentic use context in the durable
   [`/quality` skill](skills/quality-skill/index.md) specs and installable skill
   metadata. The specs now preserve AI assistant and coding-agent workflow

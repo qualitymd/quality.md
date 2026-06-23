@@ -84,12 +84,12 @@ continuing.
 
 Parse the user's request from free-form arguments:
 
-- Mode: `setup`, `evaluate`, or `update`. Treat bare `/quality`, unclear
-  direction, and requests that ask what to do next as read-only orientation, not
-  as a mode. Orientation may inspect local lifecycle state and recommend one of
-  the public workflows: `setup`, `evaluate`, `update`, or recommendation
-  follow-up. Do not advertise `status`, `next`, `review model`, or
-  `review history` as public invocations. If the user explicitly sends
+- Mode/workflow: `setup`, `evaluate`, or `update`. Treat bare `/quality`,
+  unclear direction, and requests that ask what to do next as read-only
+  orientation, not as a mode run. Orientation may inspect local lifecycle state
+  and recommend one of the public workflows: `setup`, `evaluate`, `update`, or
+  recommendation follow-up. Do not advertise `status`, `next`, `review model`,
+  or `review history` as public invocations. If the user explicitly sends
   `/quality wizard`, respond read-only that `wizard` has been removed from the
   public surface and point to the public workflows. Treat requests to update or
   upgrade the `/quality` skill, the `qualitymd` CLI, or their compatibility pair
@@ -123,7 +123,7 @@ kind decision.
 
 ## User Interaction Contract
 
-Before executing a public mode, emit a short run frame:
+Before executing a public workflow, emit a short run frame:
 
 ```text
 /quality run
@@ -225,9 +225,10 @@ requirements, secret-handling rule, source-as-data rule, and an instruction to
 return structured findings only. Roll-up judgment and headline ratings stay with
 the orchestrating skill.
 
-## Mode Dispatch
+## Workflow Dispatch
 
-After resolving the mode, read the matching mode file before acting:
+After resolving the mode/workflow, read the matching workflow file before
+acting:
 
 - `setup` → [`modes/setup.md`](modes/setup.md)
 - `evaluate` → [`modes/evaluate.md`](modes/evaluate.md)

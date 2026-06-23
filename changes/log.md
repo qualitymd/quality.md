@@ -3,6 +3,42 @@
 ## 2026-06-23
 
 - **In-Review**: Completed implementation of
+  [0064 - Structured setup workflow](0064-structured-setup-workflow.md) and
+  advanced it from `In-Progress` to `In-Review`. Rewrote runtime setup guidance
+  as an operator workflow, added a setup brief and ten concrete discovery
+  questions, aligned durable setup and parent skill specs, updated
+  getting-started guidance, public README copies, specs logs, and changelog, and
+  preserved setup's `QUALITY.md`-only mutation boundary. Verified
+  `mise run check`.
+
+- **In-Progress**: Advanced
+  [0064 - Structured setup workflow](0064-structured-setup-workflow.md) from
+  `Design` to `In-Progress`. The functional spec and design doc are settled;
+  implementation begins across runtime setup guidance, durable skill specs,
+  public docs, logs, and changelog.
+
+- **Design**: Advanced
+  [0064 - Structured setup workflow](0064-structured-setup-workflow.md) from
+  `Draft` to `Design` and added its
+  [design doc](0064-structured-setup-workflow/design.md). The design keeps
+  existing dispatch paths stable, rewrites runtime setup guidance as an operator
+  playbook, adds a setup brief template, defaults to one compact confirmation
+  prompt with all ten discovery questions, and preserves the `QUALITY.md`-only
+  mutation boundary. Updated the open-cases entry in the bundle
+  [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0064 - Structured setup workflow](0064-structured-setup-workflow.md)
+  (`Draft`) with its
+  [functional spec](0064-structured-setup-workflow/spec.md) and
+  [child index](0064-structured-setup-workflow/index.md). The case turns
+  `/quality setup` guidance into an explicit setup workflow with a setup brief,
+  ten concrete discovery questions, confidence-labeled defaults, prompt framing,
+  workflow terminology, and the existing `QUALITY.md`-only mutation boundary.
+  Added the case to the open-cases list in the bundle [index](index.md). Design
+  and code not started.
+
+- **In-Review**: Completed implementation of
   [0063 - Contextual setup flow](0063-contextual-setup-flow.md) and advanced it
   from `In-Progress` to `In-Review`. Updated runtime setup guidance, durable
   setup and quality-log contracts, getting-started and Top 10 checklist

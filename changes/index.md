@@ -43,6 +43,9 @@ edit.
 
 # Open change cases
 
+- [0064 — Structured setup workflow](0064-structured-setup-workflow.md) - turn
+  `/quality setup` guidance into an explicit workflow with concrete discovery
+  questions and prompt framing (`In-Review`).
 - [0063 — Contextual setup flow](0063-contextual-setup-flow.md) - rework
   `/quality setup` into a short context-informed discovery flow that writes only
   `QUALITY.md` and routes next steps (`In-Review`).

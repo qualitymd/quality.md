@@ -63,9 +63,9 @@ The getting-started guide **MUST** require the authoring guide as a prerequisite
 The skill should already have read the authoring guide before using
 getting-started for first-run model population.
 
-Setup mode **MAY** route starter or immature models to the getting-started guide
-after its own context-informed setup work. It **MUST NOT** treat the guide as a
-separate required phase before setup writes `QUALITY.md`.
+The setup workflow **MAY** route starter or immature models to the
+getting-started guide after its own context-informed setup work. It **MUST NOT**
+treat the guide as a separate required phase before setup writes `QUALITY.md`.
 
 Read-only orientation **SHOULD** prefer the getting-started guide over the broad
 authoring guide when the user has just initialized a skeleton or asks how to
@@ -80,9 +80,9 @@ the model.
 The guide **MUST** cover these first-pass jobs:
 
 - filling the recommended Markdown body stubs;
-- reviewing setup assumptions such as lifecycle, risk tolerance, modeling rigor,
-  collaboration context, stakeholder needs, missing context, and recurring
-  review or handoff posture when present;
+- reviewing setup assumptions such as root Area, domain, lifecycle, risk
+  tolerance, modeling rigor, collaboration context, stakeholder needs, missing
+  context, review posture, and handoff posture when present;
 - confirming or lightly adapting the seeded rating scale;
 - naming the root area from the body context;
 - deciding whether the root `source` can stay implicit;

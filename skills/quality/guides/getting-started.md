@@ -12,9 +12,9 @@ step.
 ## Starting point
 
 Setup should leave you with a structurally valid file and the first pass at the
-project's lifecycle, risk tolerance, modeling rigor, collaboration context,
-needs, risks, missing context, and model shape. Treat those as starting
-assumptions to review, not as settled truth.
+root area, domain, lifecycle, risk tolerance, modeling rigor, collaboration
+context, stakeholder needs, risks, missing context, review posture, and model
+shape. Treat those as starting assumptions to review, not as settled truth.
 
 Before editing, run:
 
@@ -37,12 +37,13 @@ Use authoring guidance: [The Markdown body](authoring.md#the-markdown-body).
 Check before moving on:
 
 - Overview names the real root area, dependents, and why quality matters.
-- Scope names what is included, excluded, and where the model boundary sits.
+- Scope names the domain, what is included, excluded, and where the model
+  boundary sits.
 - Needs names primary user, maintainer/collaborator, and other stakeholder
   outcomes the model serves.
 - Risks name the important failure modes.
 - The body captures lifecycle, risk tolerance, modeling rigor, collaboration
-  context, and recurring-review or handoff posture when those shape the model.
+  context, review posture, and handoff posture when those shape the model.
 - Each section records its own unknowns and open questions, or "none known".
 - Material support is cited when agent-accessible; important support that is not
   agent-accessible is named as an unknown or open question.

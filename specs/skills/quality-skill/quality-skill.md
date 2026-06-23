@@ -127,12 +127,13 @@ additional frontmatter fields.
 The installable `SKILL.md` **MUST** remain the router and always-loaded global
 contract: argument parsing, shared CLI prerequisites, safety rules, config, and
 artifact-contract guidance live there. Supporting docs live under
-`skills/quality/resources/` and `skills/quality/guides/`. Mode-specific
-procedure details can live in separate mode files, and the current artifact
+`skills/quality/resources/` and `skills/quality/guides/`. Workflow-specific
+procedure details can live in separate dispatch files, and the current artifact
 keeps them under `skills/quality/modes/` as `setup.md`, `evaluate.md`, and
-`update.md`. When mode procedures live outside `SKILL.md`, the root prompt
-**MUST** instruct the agent to read the matching mode file before executing that
-mode.
+`update.md`. When workflow procedures live outside `SKILL.md`, the root prompt
+**MUST** instruct the agent to read the matching workflow file before executing
+that workflow. The `modes/` path is dispatch vocabulary; user-facing setup prose
+should describe setup as a workflow.
 
 The installable skill ships settled runtime resources under
 `skills/quality/resources/` and runtime guides under `skills/quality/guides/`.
@@ -186,10 +187,10 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 
 ### Arguments
 
-An invocation resolves its mode or read-only orientation, model file, scope, and
-rigor where applicable:
+An invocation resolves its workflow/mode or read-only orientation, model file,
+scope, and rigor where applicable:
 
-- **Mode** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
+- **Mode/workflow** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
   direction, unclear direction, or a request asking what to do next produces
   read-only orientation rather than a mode run. Orientation may inspect local
   lifecycle state and recommend one of the public workflows: `setup`,
@@ -353,13 +354,13 @@ Area displays as `/`, while its references remain `area:root` and `root`. The
 skill **MUST NOT** replace structured stable identifiers with titles, display
 values, or unqualified references in evaluation record payloads.
 
-### Mode specs
+### Workflow specs
 
-Mode-specific routing, mutation surfaces, required artifacts, stop conditions,
-and completion criteria live in behavioral component specs under
+Workflow-specific routing, mutation surfaces, required artifacts, stop
+conditions, and completion criteria live in behavioral component specs under
 [`modes/`](modes/index.md). The parent spec keeps the shared invocation,
 interaction, safety, CLI ownership, evaluation, reporting, and quality-log
-contracts that every mode composes.
+contracts that every workflow composes.
 
 ### Read-only orientation
 
@@ -377,14 +378,14 @@ removed from the public surface and point to public workflows.
 
 ### Setup
 
-[`setup`](modes/setup.md) bootstraps or updates a model through a short,
-context-informed discovery flow. It verifies CLI compatibility, inspects
-available repository context for setup signals, asks compact discovery questions
-with confidence-labeled defaults, delegates deterministic scaffolding and
-validation to `qualitymd`, writes only the selected `QUALITY.md`, inspects
-readiness with the Top 10 checklist, and offers next-step choices. It does not
-evaluate source, write the quality log, create external issues, or configure
-recurring-review automation.
+[`setup`](modes/setup.md) runs a setup workflow that bootstraps or updates a
+model through context inspection, a setup brief, concrete discovery questions,
+and confidence-labeled defaults. It verifies CLI compatibility, inspects
+available repository context for setup signals, delegates deterministic
+scaffolding and validation to `qualitymd`, writes only the selected
+`QUALITY.md`, inspects readiness with the Top 10 checklist, and offers
+next-step choices. It does not evaluate source, write the quality log, create
+external issues, or configure recurring-review automation.
 
 ### Evaluate
 

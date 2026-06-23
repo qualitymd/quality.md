@@ -2,6 +2,13 @@
 
 ## 2026-06-23
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0064 - Structured setup workflow](../../../../changes/0064-structured-setup-workflow.md).
+  Setup now has an explicit workflow structure, setup brief, concrete
+  discovery-question set, prompt-form contract, model synthesis expectations,
+  and completion output while keeping the existing `modes/` path as dispatch
+  vocabulary.
+
 - **Revision**: Updated the [`setup`](setup.md) mode spec for
   [0063 - Contextual setup flow](../../../../changes/0063-contextual-setup-flow.md).
   Setup now analyzes repository context, asks compact discovery questions with

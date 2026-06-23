@@ -91,10 +91,11 @@ coding agents with what matters in *this* context. You capture it once, then run
 
 ### Getting started
 
-1. **Run `/quality setup` to make your quality bar visible.** The skill inspects
-   available context, asks a few setup questions with recommended defaults, and
-   writes a `QUALITY.md` with likely quality factors, assessable requirements,
-   needs, risks, unknowns, open questions, and agent-accessibility gaps.
+1. **Run `/quality setup` to make your quality bar visible.** The skill runs a
+   guided setup workflow that inspects available context, asks concrete setup
+   questions with recommended defaults, and writes a `QUALITY.md` with likely
+   quality factors, assessable requirements, needs, risks, unknowns, open
+   questions, and agent-accessibility gaps.
    → *A shared starting point for what good means here: the expectations already
    visible in the project, the judgments that still need human input, and the
    context gaps agents and contributors need to close before they can know what
