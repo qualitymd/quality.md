@@ -82,6 +82,28 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - Prefer lowercase in README, guides, tutorials, and user-facing prose unless
   capitalization improves precision.
 
+### Quality-domain agnostic examples
+
+- QUALITY.md is quality-domain agnostic. Concrete quality model content in this
+  repo is illustrative unless it defines this project's model or a normative
+  format rule.
+- This includes example Areas, Factors, Requirements, Assessments, criteria,
+  Rating Levels, Findings, recommendations, and quality-domain examples.
+- When citing quality domains or factor families, make clear examples are brief,
+  illustrative, overlapping, not exhaustive, and not mutually exclusive.
+- Prefer domain-neutral principles first, then examples from several domains
+  when examples help. Do not imply software product quality is the default use.
+
+Satisfiable check before adding concrete quality model content:
+
+- State or imply the example's quality domain.
+- Make illustrative status clear unless it is a format rule or this project's
+  own model.
+- Reword if a reader could mistake it for a universal default.
+- Frame brief lists as non-exhaustive and possibly overlapping.
+- Use software product quality as the default only for explicitly software
+  topics.
+
 ### Open Knowledge Format (OKF) bundles
 
 OKF bundles register concept types in the root `schema.md`:
