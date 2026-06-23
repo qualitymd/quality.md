@@ -3,6 +3,15 @@
 ## 2026-06-23
 
 - **Revision**: Implemented durable spec changes for
+  [0070 - Setup missing-context provenance](../changes/archive/0070-setup-missing-context-provenance.md).
+  Updated the
+  [`setup`](skills/quality-skill/workflows/setup.md) workflow spec so
+  missing-context discovery preserves provenance: low/no-evidence project facts
+  cannot be presented as assumed-understood, excluded gaps require explicit
+  setup-provided context or missed agent-accessible evidence, and
+  setup-provided context remains visible in the authored model body.
+
+- **Revision**: Implemented durable spec changes for
   [0069 - Setup review gate and discovery trim](../changes/archive/0069-setup-review-gate-and-pedagogy-trim.md).
   Updated the
   [`setup`](skills/quality-skill/workflows/setup.md) workflow spec to remove the

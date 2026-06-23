@@ -36,6 +36,11 @@ QUALITY.md specification.
   `outstanding`/`target`/`minimum`/`unacceptable`, and made the final recap a
   review gate that requires an explicit user response before setup writes or
   edits `QUALITY.md`.
+- Tightened `/quality setup` missing-context discovery so low/no-evidence
+  product, operational, stakeholder, telemetry, security/compliance, incident,
+  SLA, or production-metric context is recorded as unknown/not-agent-accessible
+  unless the user explicitly provides it or points setup to missed
+  agent-accessible evidence.
 - Added an always-on setup feedback log: after CLI support is verified and the
   run frame is emitted, setup creates
   `.quality/logs/<timestamp>-setup-feedback-log.md`, updates the current run's

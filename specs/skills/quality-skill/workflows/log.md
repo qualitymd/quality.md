@@ -3,6 +3,14 @@
 ## 2026-06-23
 
 - **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0070 - Setup missing-context provenance](../../../../changes/archive/0070-setup-missing-context-provenance.md).
+  Missing-context discovery now treats material context as agent-accessible only
+  when it is available through repository/tool/source evidence or explicit
+  setup-provided context, prohibits generated choices that assume low/no-evidence
+  project facts are sufficiently understood, and requires setup-provided context
+  to retain visible provenance in the authored `QUALITY.md` body.
+
+- **Revision**: Updated the [`setup`](setup.md) workflow for
   [0069 - Setup review gate and discovery trim](../../../../changes/archive/0069-setup-review-gate-and-pedagogy-trim.md).
   Setup discovery now removes the modeling-rigor and review-posture questions,
   adds a Rating Scale confirmation question, carries purpose/context teaching

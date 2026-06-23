@@ -2,6 +2,22 @@
 
 ## 2026-06-23
 
+- **Creation + Implementation + Archival**: Created
+  [0070 - Setup missing-context provenance](archive/0070-setup-missing-context-provenance.md)
+  with its child folder
+  ([index](archive/0070-setup-missing-context-provenance/index.md),
+  [functional spec](archive/0070-setup-missing-context-provenance/spec.md),
+  [design doc](archive/0070-setup-missing-context-provenance/design.md)),
+  advanced it through `Draft`, `Design`, `In-Progress`, and `In-Review` to
+  `Done`, and archived it. Implemented skill-only with **no CLI/Go change**:
+  setup missing-context discovery now treats material context as
+  agent-accessible only when supported by repository/tool/source evidence or
+  explicit setup-provided context, prohibits choices that assume low/no-evidence
+  project facts are sufficiently understood, and preserves setup-provided
+  provenance in authored `QUALITY.md` body context. Synced the durable setup
+  workflow spec, workflow/spec logs, runtime setup workflow, `CHANGELOG.md`, and
+  archive index.
+
 - **Implementation + Archival**: Implemented and advanced
   [0069 - Setup review gate and discovery trim](archive/0069-setup-review-gate-and-pedagogy-trim.md)
   through `Design`, `In-Progress`, and `In-Review` to `Done`, moving it (parent

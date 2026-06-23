@@ -243,6 +243,15 @@ Whichever form you use, surface all nine with their teaching copy, seed the
 missing-context question (9) from your repository analysis rather than asking a
 blank "anything else?", and do not re-ask context the user already supplied.
 
+For the missing-context question, treat material context as agent-accessible only
+when it is available through the repository, cited local paths, configured tools,
+linked public sources, or explicit user-provided setup context. If you use fixed
+choices for the missing-context question, do not offer an option that assumes
+low-confidence or not-visible project-specific facts are sufficiently understood.
+Each option must either record the gap, let the user provide the missing context
+now, or let the user point to agent-accessible evidence you missed. Recommend
+recording low/no-evidence material gaps as Unknowns or open questions.
+
 ### Escapes
 
 Honor these when the user asks, but do not lead with them:
@@ -339,6 +348,9 @@ frontmatter model:
 - Needs and Risks capture primary user needs, maintainer/collaborator needs,
   other stakeholder needs, and the failure modes that matter.
 - Unknowns and open questions capture missing or non-agent-accessible context.
+- When the user provided missing context during setup, preserve that provenance
+  plainly enough that a later reader can tell it came from explicit setup input,
+  not repository inspection.
 - The rating scale uses the recommended four-level scale unless the rating-scale
   answer and body show a real mismatch; unclear customization requests become an
   open question or assumption rather than invented Rating Levels.

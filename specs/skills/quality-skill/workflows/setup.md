@@ -194,6 +194,29 @@ per-question pedagogy is preserved rather than treated as removable overhead.
 The missing-context question **MUST** be seeded from repository analysis rather
 than phrased as a blank "anything else?" prompt.
 
+For missing-context discovery, setup **MUST** treat material context as
+agent-accessible only when it is available through repository content, cited
+local paths, configured tools, linked public sources, or explicit user-provided
+setup context. Missing-context discovery **MUST** distinguish context that is
+visible from agent-accessible evidence, context that should be recorded as
+unknown or not agent-accessible, and context the user provides during setup.
+
+Generated missing-context choices **MUST NOT** invite the user to assume that
+product purpose, operational context, stakeholder needs, telemetry,
+security/compliance posture, incident history, SLAs, production metrics, or
+similar material project-specific facts are understood when the setup brief marks
+them `Low` confidence or not visible from evidence. When an option excludes an
+identified material gap from unknowns, the option **MUST** make the provenance
+explicit: either the user is providing the missing context during setup, or the
+user is pointing setup to agent-accessible evidence it missed. For material gaps
+with low or no evidence, the recommended option **SHOULD** record the gaps as
+unknowns or open questions.
+
+> Annotation: the missing-context question exists to prevent guessing. If setup
+> already marked a project-specific fact as low/no-evidence, an "assume it is
+> understood" option silently turns tacit maintainer knowledge into evidence the
+> agent cannot inspect. — 0070
+
 The collaboration question **MUST** assume agent-heavy development and ask which
 human collaborators, reviewers, maintainers, or stakeholders also need to align
 with the quality bar.
@@ -294,6 +317,12 @@ agent-accessible. The body **MUST** preserve setup assumptions where they shape
 the model: root Area, domain, lifecycle, risk tolerance, modeling rigor,
 rating-scale choice, collaboration context, stakeholder needs, and important
 missing or non-agent-accessible context.
+
+When a user provides missing context during setup, the generated body **MUST**
+preserve that provenance clearly enough that a later reader can tell the context
+came from explicit setup input rather than repository inspection. Setup **MUST NOT**
+treat tacit maintainer, operator, contributor, or stakeholder knowledge as
+available evidence unless it has been explicitly provided or cited.
 
 Setup-authored Factors **MUST** derive from project-specific needs, risks,
 stakeholder concerns, component boundaries, and available evidence, not generic

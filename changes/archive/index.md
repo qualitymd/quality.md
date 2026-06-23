@@ -247,3 +247,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   questions, add Rating Scale confirmation, trim per-question pedagogy to
   purpose/context, and require an explicit final recap response before authoring;
   no CLI/Go change (`Done`).
+- [0070 — Setup missing-context provenance](0070-setup-missing-context-provenance.md) -
+  tightened `/quality setup` missing-context discovery so low/no-evidence project
+  facts are recorded as unknown/not-agent-accessible unless the user explicitly
+  provides them or points setup to missed agent-accessible evidence; no CLI/Go
+  change (`Done`).
