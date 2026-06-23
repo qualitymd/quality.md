@@ -24,7 +24,7 @@
   "aggregateRatingResult": {
     "kind": "rated",
     "level": "minimum",
-    "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
+    "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the area at minimum."
   },
   "assessmentResultRecords": [
     "assessments/007-webhooks-delivery-failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires.json",

@@ -2,6 +2,11 @@
 
 ## 2026-06-23
 
+- **Revision**: Clarified agentic use context in the durable
+  [`/quality` skill](skills/quality-skill/index.md) specs and installable skill
+  metadata. The specs now preserve AI assistant and coding-agent workflow
+  language as use context while keeping the modeled quality domain agnostic.
+
 - **Revision**: Implemented durable spec alignment for
   [0063 - Contextual setup flow](../changes/0063-contextual-setup-flow.md).
   Updated durable [`/quality` skill](skills/quality-skill/index.md) specs so
@@ -507,10 +512,10 @@
   locator in the [examples index](skills/quality-skill/examples/index.md).
 
 - **Revision**: Extended the [`0001` example bundle](skills/quality-skill/examples/0001-subject-quality-eval/report.md)
-  with a **two-level nested target** to exercise multi-level roll-up: a
-  **Webhooks** child target (sibling of Ledger, source `./webhooks`, a signing
+  with a **two-level nested area** to exercise multi-level roll-up: a
+  **Webhooks** child area (sibling of Ledger, source `./webhooks`, a signing
   requirement under a refined **Security** factor) with a **Delivery**
-  sub-target (`./webhooks/delivery`, retry + redelivery-suppression under a
+  sub-area (`./webhooks/delivery`, retry + redelivery-suppression under a
   refined **Reliability** factor) in
   [`model.md`](skills/quality-skill/examples/0001-subject-quality-eval/model.md).
   The Delivery deduplication requirement is *rated* **Minimum**, so the Webhooks
@@ -538,7 +543,7 @@
   the [examples index](skills/quality-skill/examples/index.md), trimming the
   repeated per-file admonitions to a pointer; stated an explicit
   model → report → recommendations reading order in the index; and added a
-  cross-target **secondary factor** — the Ledger's double-entry requirement now
+  cross-area secondary factor — the Ledger's double-entry requirement now
   tags the root **Reliability** factor, so the example exercises a factor lens
   ranging wider than the local rating (the spec's Analyze/Report secondary-factor
   notes).

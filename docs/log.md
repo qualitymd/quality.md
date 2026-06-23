@@ -2,6 +2,10 @@
 
 ## 2026-06-23
 
+- **Revision**: Clarified agentic use context in [Use the /quality skill](guides/use-quality-skill.md)
+  and [Install QUALITY.md](../install.md). The docs now preserve the
+  agent-first experience while keeping modeled quality domains broad.
+
 - **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
   for [0063 - Contextual setup flow](../changes/0063-contextual-setup-flow.md).
   Public guidance now describes setup as a context-informed `QUALITY.md` authoring

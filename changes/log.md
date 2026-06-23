@@ -2009,9 +2009,9 @@
 - **Refinement**: Settled the final `SKILL.md` description text for change
   [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md): "Use when
   a user wants setup, wizard guidance, evaluation, or improvement for quality
-  management of a project/entity or one of its components/targets. Trigger for
-  requests about quality factors, characteristics, attributes, criteria, Targets,
-  Factors, Requirements, improving a quality factor such as
+  management of a project/entity or one of its components/areas. Trigger for
+  requests about quality factors, characteristics, attributes, criteria, areas,
+  factors, requirements, improving a quality factor such as
   security/reliability/usability, evaluating a subject against quality criteria, or
   evaluating/improving the QUALITY.md model itself."
 

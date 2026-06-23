@@ -1,10 +1,10 @@
 ---
 name: quality
-description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, follow up on recommendations, or update the /quality skill and CLI pair; get quality workflow guidance; anything concerning quality factors/attributes/characteristics relevant to project context"
-compatibility: Requires qualitymd CLI >=0.9.0 <0.10.0.
+description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
+compatibility: Requires qualitymd CLI >=0.10.0 <0.11.0.
 metadata:
-  version: "0.9.0"
-  requires-qualitymd-cli: ">=0.9.0 <0.10.0"
+  version: "0.10.0"
+  requires-qualitymd-cli: ">=0.10.0 <0.11.0"
 ---
 
 ## Purpose
@@ -18,7 +18,10 @@ recommendations.
 
 ## Prerequisites
 
-- Read [`resources/SPECIFICATION.md`](resources/SPECIFICATION.md)
+- Read [`resources/SPECIFICATION.md`](resources/SPECIFICATION.md) for the schema
+  and evaluation semantics. For a first model the relevant authoring sections of
+  `guides/authoring.md` suffice; read the spec's roll-up and evaluation sections
+  when authoring rating overrides, reasoning about roll-up, or evaluating.
 - Read [`guides/authoring.md`](guides/authoring.md) when
   creating, populating, reviewing, or improving a QUALITY.md file.
 - Read [`guides/getting-started.md`](guides/getting-started.md) after setup
@@ -199,12 +202,12 @@ must not be replaced by titles, display values, or unqualified references.
 /quality evaluate
 /quality evaluate <label>
 /quality evaluate <area-label> <factor-label>
-/quality evaluate Security
-/quality evaluate Payments Maintainability
+/quality evaluate Accuracy
+/quality evaluate Triage Accuracy
 /quality evaluate area <name>
 /quality evaluate factor <name>
-/quality evaluate area:payments-api
-/quality evaluate factor:payments-api::maintainability
+/quality evaluate area:triage
+/quality evaluate factor:triage::accuracy
 /quality evaluate deep
 /quality update
 ```

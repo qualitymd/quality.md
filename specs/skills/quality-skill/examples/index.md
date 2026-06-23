@@ -15,7 +15,7 @@ Shared across this bundle, so the individual files need not repeat it: the
 subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
 `file:line` locator are fictional and illustrative; the model uses the suggested
 four-level rating scale
-(**Outstanding** > **Area** > **Minimum** > **Unacceptable**); and `model.md`,
+(**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
 `design.md`, `plan.md`, `debug-log.md`, and the `assessments/` and `analysis/`
 records are the snapshot, inputs, method, process diagnostics, and write-once
 evidence trail the skill writes alongside the report (see
@@ -33,10 +33,10 @@ requirement and one analysis per area node.
   — a quality evaluation of a small fictional payments service, held at
   **Unacceptable** by a committed live credential. Exercises `file:line`
   evidence, the secret-by-reference rule, a prompt-injection finding treated as
-  data, a *not assessed* requirement, a cross-target **secondary factor** (the
+  data, a *not assessed* requirement, a cross-area secondary factor (the
   Ledger's double-entry invariant also lensing the root Reliability factor), a
-  **two-level nested target** (Webhooks → Delivery) whose intermediate
-  **aggregate (Minimum) differs from its local rating (Area)** because a child
+  two-level nested area (Webhooks → Delivery) whose intermediate
+  aggregate (Minimum) differs from its local rating (Target) because a child
   subtree pulls it down, a **layered binding constraint** (rotating the
   committed credential lifts the root only to Minimum, where the webhook-delivery
   gap then binds), and standalone recommendation artifacts with done-criteria.

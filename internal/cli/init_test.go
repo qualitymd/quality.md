@@ -52,6 +52,49 @@ func TestInitWritesDefaultQualityFile(t *testing.T) {
 	}
 }
 
+func TestInitMinimalWritesMinimalSkeleton(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "QUALITY.md")
+	var out, stderr bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+	cmd.SetArgs([]string{"init", "--minimal", path})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("os.ReadFile() error = %v", err)
+	}
+	if string(got) != string(scaffold.MinimalBytes()) {
+		t.Fatal("QUALITY.md did not contain the minimal skeleton")
+	}
+	if string(got) == string(scaffold.Bytes()) {
+		t.Fatal("--minimal wrote the guided scaffold")
+	}
+	if !strings.Contains(stderr.String(), "Created "+path) {
+		t.Fatalf("stderr = %q, want created path", stderr.String())
+	}
+}
+
+func TestInitMinimalStdoutPassthrough(t *testing.T) {
+	var out, stderr bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+	cmd.SetArgs([]string{"init", "--minimal", "-"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+	if out.String() != string(scaffold.MinimalBytes()) {
+		t.Fatal("stdout did not contain the minimal skeleton")
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("stderr = %q, want empty", stderr.String())
+	}
+}
+
 func TestInitWritesCustomPath(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "custom.md")
 	var out, stderr bytes.Buffer

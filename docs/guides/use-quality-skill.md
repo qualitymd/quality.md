@@ -8,9 +8,9 @@ timestamp: 2026-06-21T00:00:00Z
 
 # Use the /quality skill
 
-Use the `/quality` skill when you want an agent to set up, evaluate, maintain,
-or follow up on quality recommendations for a project/entity or one of its
-components/targets.
+Use the `/quality` skill when you want an AI assistant or coding agent to set
+up, evaluate, maintain, or follow up on quality recommendations for a
+project/entity or one of its components/areas.
 
 ## Install the skill
 
@@ -49,9 +49,10 @@ qualitymd update --check
 
 ## Verify the CLI prerequisite
 
-The skill drives the deterministic `qualitymd` CLI for setup, linting, format
-grounding, and evaluation record/report mechanics. Released skill installs use
-the CLI SemVer range declared in `skills/quality/SKILL.md`
+The skill is the primary agentic experience. It drives the deterministic
+`qualitymd` CLI for setup, linting, format grounding, and evaluation
+record/report mechanics. Released skill installs use the CLI SemVer range
+declared in `skills/quality/SKILL.md`
 `metadata.requires-qualitymd-cli`; see
 [Versioning](../reference/versioning.md) for the compatibility policy.
 

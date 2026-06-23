@@ -27,11 +27,13 @@ func renderInitHuman(w io.Writer, path, next string) error {
 func newInitCmd() *cobra.Command {
 	var force bool
 	var jsonOutput bool
+	var minimal bool
 	cmd := &cobra.Command{
 		Use:   "init [path]",
 		Short: "Scaffold a starter QUALITY.md",
 		Example: "  qualitymd init\n" +
 			"  qualitymd init docs/QUALITY.md\n" +
+			"  qualitymd init --minimal\n" +
 			"  qualitymd init - > QUALITY.md\n" +
 			"  qualitymd init --force",
 		Args: usage(cobra.MaximumNArgs(1)),
@@ -46,7 +48,7 @@ func newInitCmd() *cobra.Command {
 			}
 
 			if path == "-" {
-				_, err := cmd.OutOrStdout().Write(scaffold.Bytes())
+				_, err := cmd.OutOrStdout().Write(scaffoldBytes(minimal))
 				return err
 			}
 
@@ -57,7 +59,7 @@ func newInitCmd() *cobra.Command {
 				return err
 			}
 
-			if err := scaffold.Create(path, force); err != nil {
+			if err := scaffold.Create(path, force, minimal); err != nil {
 				if jsonOutput {
 					writeInitError(cmd.ErrOrStderr(), path, err)
 					return silentInternal(err)
@@ -78,7 +80,16 @@ func newInitCmd() *cobra.Command {
 	}
 	cmd.Flags().BoolVar(&force, "force", false, "overwrite an existing file")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable JSON init receipt")
+	cmd.Flags().BoolVar(&minimal, "minimal", false, "write a minimal valid skeleton without the guided template prose")
 	return cmd
+}
+
+// scaffoldBytes returns the scaffold variant selected by the minimal flag.
+func scaffoldBytes(minimal bool) []byte {
+	if minimal {
+		return scaffold.MinimalBytes()
+	}
+	return scaffold.Bytes()
 }
 
 const initSchemaVersion = 1

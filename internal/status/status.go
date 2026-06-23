@@ -68,15 +68,34 @@ type ModelShape struct {
 	RatingLevels int `json:"ratingLevels"`
 }
 
+// SourceState describes how an Area's evaluation Source is resolved.
+type SourceState string
+
+const (
+	// SourceStateDeclared means the Area declares its own source.
+	SourceStateDeclared SourceState = "declared"
+	// SourceStateInherited means the Area inherits a source declared by an
+	// ancestor Area.
+	SourceStateInherited SourceState = "inherited"
+	// SourceStateDefault means no Area in the chain declares a source, so the
+	// Area resolves to the document's default Source: the directory containing
+	// the QUALITY.md file. This is a deliberate, valid choice, not a defect.
+	SourceStateDefault SourceState = "default"
+	// SourceStateMissing is reserved for a source that cannot be resolved. A
+	// lint-valid model never produces it, because an undeclared source always
+	// resolves to the document default.
+	SourceStateMissing SourceState = "missing"
+)
+
 // SourceCoverage summarizes source declarations for one area.
 type SourceCoverage struct {
-	AreaPath     []string `json:"areaPath"`
-	Label        string   `json:"label"`
-	SourceState  string   `json:"sourceState"`
-	Source       string   `json:"source,omitempty"`
-	Factors      int      `json:"factors"`
-	Requirements int      `json:"requirements"`
-	ChildAreas   int      `json:"childAreas"`
+	AreaPath     []string    `json:"areaPath"`
+	Label        string      `json:"label"`
+	SourceState  SourceState `json:"sourceState"`
+	Source       string      `json:"source,omitempty"`
+	Factors      int         `json:"factors"`
+	Requirements int         `json:"requirements"`
+	ChildAreas   int         `json:"childAreas"`
 }
 
 // EvaluationHistory summarizes discovered evaluation runs for the model.
@@ -247,13 +266,15 @@ func sourceCoverageRow(path []string, label, declaredSource, inheritedSource str
 	}
 	switch {
 	case declaredSource != "":
-		row.SourceState = "declared"
+		row.SourceState = SourceStateDeclared
 		row.Source = declaredSource
 	case inheritedSource != "":
-		row.SourceState = "inherited"
+		row.SourceState = SourceStateInherited
 		row.Source = inheritedSource
 	default:
-		row.SourceState = "missing"
+		// No Area declares a source, so this Area resolves to the document
+		// default Source — the directory containing the QUALITY.md file.
+		row.SourceState = SourceStateDefault
 	}
 	return row
 }

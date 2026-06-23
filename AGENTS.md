@@ -94,6 +94,57 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - Prefer domain-neutral principles first, then examples from several domains
   when examples help. Do not imply software product quality is the default use.
 
+### Agentic use context
+
+Domain agnostic does not mean context neutral. QUALITY.md is domain agnostic in
+what a quality model can describe: software, documents, data sets, services,
+operations, processes, AI assistants, agent harnesses, or other evaluated
+entities. This project is not context neutral in how QUALITY.md is used.
+
+The primary experience is agent- and skill-first. AI assistants and coding
+agents read, author, evaluate, and improve `QUALITY.md`; the `/quality` skill
+carries judgment; and the CLI provides deterministic support tooling. Preserve
+that agentic use context in docs, specs, examples, and skill content.
+
+Do not remove references to AI assistants, coding agents, agent-accessible
+evidence, harnesses, skill workflows, or agent collaboration when they describe
+how QUALITY.md is used. Do not treat that operating context as the default
+modeled quality domain.
+
+Do not flag a phrase solely because the evaluated project is an AI assistant,
+coding agent, or harness. Those are valid project/use contexts. Flag only when
+the wording makes that domain sound inherent to QUALITY.md, normal for all
+QUALITY.md files, or the default model content.
+
+Decision test:
+
+- Use context: who uses QUALITY.md, through what workflow, with what tools.
+  Agentic/AI language is appropriate and often preferred.
+- Model domain: what a `QUALITY.md` evaluates. Keep this domain agnostic unless
+  the example is explicitly scoped.
+- Project/use context: the concrete project or harness being evaluated. AI
+  assistant or harness language is acceptable when scoped to that project.
+- Project self-description: this repository's own format, skill, CLI, docs, and
+  examples. Agentic/AI language is appropriate when true for this project.
+
+Examples:
+
+- Good: "Use QUALITY.md with the `/quality` agent skill to align coding agents
+  and teams."
+- Good: "Record context that is agent-accessible."
+- Good: "This example models an AI assistant harness."
+- Good: "Evaluate and improve the quality of AI assistant projects and
+  harnesses." Acceptable when describing that use case or this project's
+  agentic tooling, not the universal scope of QUALITY.md.
+- Good: "The CLI is support tooling for the agent-first workflow."
+- Needs scoping: "QUALITY.md helps improve AI assistant quality." Better:
+  "QUALITY.md can model AI assistant quality; it can also model other domains."
+- Avoid: "A QUALITY.md normally evaluates a codebase or agent harness."
+- Avoid: "QUALITY.md is for evaluating AI assistant projects and harnesses."
+- Avoid: "Default factors include security, reliability, usability, and
+  maintainability."
+- Avoid: removing "agent-accessible" because it sounds AI-specific.
+
 Satisfiable check before adding concrete quality model content:
 
 - State or imply the example's quality domain.

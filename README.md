@@ -6,9 +6,9 @@ continuously improve AI assistant and coding agent projects.
 
 A QUALITY.md file is a Markdown file with a quality model and supporting
 context. The `/quality` skill helps set up the file, evaluate quality, and
-evolve the model as you learn. The `qualitymd` CLI provides support tooling for
-validating QUALITY.md files, managing quality evaluations, and maintaining a
-QUALITY.md workspace.
+evolve the model as you learn. That agentic workflow is the primary experience;
+the `qualitymd` CLI provides support tooling for validating QUALITY.md files,
+managing quality evaluations, and maintaining a QUALITY.md workspace.
 
 ## Install
 
@@ -33,14 +33,14 @@ Invoke the `/quality` skill to manage quality for your project:
 /quality                                        Get read-only guidance on the next workflow
 /quality evaluate                               Evaluate the quality of your project
 /quality evaluate Security                      Evaluate a specific quality factor or characteristic
-/quality evaluate Payments API                  Evaluate a specific area or project component
-/quality evaluate Payments Maintainability
+/quality evaluate Triage                        Evaluate a specific area or project component
+/quality evaluate Triage Accuracy
                                                 Evaluate an area's specific quality
 ```
 
 For exact or ambiguous scoped evaluations, use qualified model references such
-as `/quality evaluate area:payments-api` or
-`/quality evaluate factor:payments-api::maintainability`.
+as `/quality evaluate area:triage` or
+`/quality evaluate factor:triage::accuracy`.
 
 Most users should work with `QUALITY.md` through their coding agent, the
 `/quality` skill, or direct edits. The CLI is primarily support tooling for
@@ -57,8 +57,9 @@ See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality
 
 ### Manage Quality Debt
 
-As software — and the agents that write it — moves faster, quality erodes
-quietly through three accumulating debts:
+As work changes faster, quality erodes quietly unless expectations stay visible
+and current. One useful software-specific framing names three accumulating
+debts:
 
 - **Technical debt** — code drifting from where it should be.
 - **Cognitive debt** — the mounting burden of understanding complex or
@@ -74,8 +75,8 @@ gaps stay visible and addressable instead of compounding.
 ## Working with QUALITY.md
 
 A `QUALITY.md` file is your project's **reward signal for quality** — the
-explicit, shared definition of *good* that aligns both your team and your coding
-agents with what matters in *this* codebase. You capture it once, then run a
+explicit, shared definition of *good* that aligns your team, AI assistants, and
+coding agents with what matters in *this* context. You capture it once, then run a
 **quality loop** that keeps both the work and the signal sharp.
 
 **The quality loop:**
@@ -133,10 +134,10 @@ efficiency and efficacy of working with QUALITY.md files.
 Once you have a model, the loop keeps going at whatever cadence fits your team:
 
 - **On demand.** Run `/quality evaluate` whenever you need a read — before a
-  ship, during code review, when you inherit an unfamiliar codebase, or when
+  release, during review, when you inherit an unfamiliar project, or when
   something just feels off. Scope it down when you don't need the whole model:
-  `/quality evaluate Payments` or `/quality evaluate Payments Security`.
-  Qualified references such as `/quality evaluate area:payments-api` remain
+  `/quality evaluate Triage` or `/quality evaluate Triage Accuracy`.
+  Qualified references such as `/quality evaluate area:triage` remain
   available for exact addressing.
 
 - **On a cadence.** Make the model and its latest evaluation a recurring team
@@ -151,6 +152,9 @@ Once you have a model, the loop keeps going at whatever cadence fits your team:
   default.
 
 ## Example QUALITY.md
+
+The example below is an illustrative support-operations model. It is not a
+default domain or factor set for QUALITY.md.
 
 ```markdown
 ---

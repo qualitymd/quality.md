@@ -101,6 +101,37 @@ areas:
 	}
 }
 
+func TestSnapshotLeanRootUsesDefaultSourceState(t *testing.T) {
+	repo := newRepo(t)
+	path := writeFile(t, repo, validModel(`factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+areas:
+  api:
+    title: API
+    requirements:
+      "responds":
+        factors: [reliability]
+        assessment: Call it.
+`))
+	snapshot, err := Snapshot(Options{Path: path})
+	if err != nil {
+		t.Fatalf("Snapshot() error = %v", err)
+	}
+	if len(snapshot.Model.SourceCoverage) != 2 {
+		t.Fatalf("sourceCoverage = %#v, want root plus one child area", snapshot.Model.SourceCoverage)
+	}
+	root := snapshot.Model.SourceCoverage[0]
+	if root.SourceState != SourceStateDefault || root.Source != "" {
+		t.Fatalf("root source coverage = %#v, want default source state and no declared source", root)
+	}
+	child := snapshot.Model.SourceCoverage[1]
+	if child.SourceState != SourceStateDefault {
+		t.Fatalf("child source coverage = %#v, want default source state inherited from document default", child)
+	}
+}
+
 func TestSnapshotEvaluationHistoryStaleAndLatestRun(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:

@@ -34,7 +34,13 @@ Validate and inspect readiness
    - Next gate: context analysis, discovery, lint, readiness inspection
    ```
 
-4. Read [`../guides/authoring.md`](../guides/authoring.md). Read
+4. Read the authoring sections a first model needs, not the whole guide. For a
+   first model read [`../guides/authoring.md`](../guides/authoring.md) sections
+   The QUALITY.md file, Quality Model, The Markdown body, and Rating Scale, plus
+   the Area and Factor sections enough to shape candidates. Defer the deep
+   authoring detail — Requirement override gradients, roll-up algebra, and the
+   evaluation semantics in `SPECIFICATION.md` — until you actually author
+   requirements or ratings, then read those sections. Read
    [`../guides/getting-started.md`](../guides/getting-started.md) when setup is
    continuing from a starter/immature model or needs first-run iteration
    guidance.
@@ -60,7 +66,21 @@ Validate and inspect readiness
    user supplied an explicit model path or context strongly indicates a narrower
    root.
 
-6. Ask a compact discovery prompt, or a short sequence when the interaction
+   When the root spans multiple workspaces, packages, or services (a monorepo or
+   multi-component root), delegate a bounded `Explore` fan-out — one bounded pass
+   per component — to produce structured Area candidates. Capture per component:
+   purpose, entry points, external systems, risk surfaces, and test/CI coverage.
+   Feed the result into the fact sheet's candidate model shape. Keep this
+   optional and proportional: a small single-package root does not need it, and
+   the fan-out should stay scoped to setup signals, not source-quality judgment.
+
+6. Confirm the product or business domain when repository context under-specifies
+   it. The domain is often not inferable from the README alone, and model quality
+   depends on identifying it correctly. When analysis leaves it ambiguous, ask
+   directly with a recommended default and confidence signal, for example: `I read
+   this as a <domain> product (weakly inferred from <evidence>). Is that right?`
+
+7. Ask a compact discovery prompt, or a short sequence when the interaction
    surface needs it. Each question must include a recommended default and
    confidence signal:
 
@@ -83,7 +103,7 @@ Validate and inspect readiness
    option. Recurring review should be cadence-oriented and maintainer-chosen; do
    not recommend CI or release gating by default.
 
-7. If no model file exists, run `qualitymd init [path]` after discovery and
+8. If no model file exists, run `qualitymd init [path]` after discovery and
    before authoring content. If the model file exists and setup would change it,
    use a decision brief before editing:
 
@@ -96,7 +116,7 @@ Validate and inspect readiness
    - Done criterion / verification:
    ```
 
-8. Synthesize directly into `QUALITY.md`. Author the body first, then the
+9. Synthesize directly into `QUALITY.md`. Author the body first, then the
    frontmatter model:
 
    - Overview and Scope establish the root area, default current-directory
@@ -121,14 +141,14 @@ Validate and inspect readiness
      each affected factor under `factors` when that guide defines one coherent
      judgment across the factors.
 
-9. Run `qualitymd lint [path]`. Stop on lint errors, report the CLI findings,
-   and route to continued `QUALITY.md` iteration. Do not recommend evaluation
-   while the model is invalid.
-10. When lint passes, inspect the resulting model with
+10. Run `qualitymd lint [path]`. Stop on lint errors, report the CLI findings,
+    and route to continued `QUALITY.md` iteration. Do not recommend evaluation
+    while the model is invalid.
+11. When lint passes, inspect the resulting model with
     [`../guides/top-10-quality-md-checks.md`](../guides/top-10-quality-md-checks.md).
     This is a bounded model-readiness inspection, not a project evaluation.
     Classify readiness as `starter`, `immature`, or `ready to evaluate`.
-11. Report setup completion status-first:
+12. Report setup completion status-first:
 
     ```text
     Setup complete

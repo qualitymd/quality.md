@@ -11,11 +11,11 @@ ratingScale:
     criterion: "Satisfies the requirement."
   - level: minimum
     title: Minimum
-    description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to ship."
+    description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to rely on."
     criterion: "Falls short of the target but remains acceptable."
   - level: unacceptable
     title: Unacceptable
-    description: "Below the floor — not good enough to ship."
+    description: "Below the floor — not good enough to rely on."
     criterion: "Does not meet the requirement to an acceptable degree."
 factors:
   security:
@@ -152,7 +152,7 @@ areas:
           The delivery engine under `./webhooks/delivery` — the queue, retry, and
           acknowledgement machinery that gets a signed webhook to the merchant's
           endpoint, evaluated as its own subtree distinct from the signing
-          concern on the parent target.
+          concern on the parent area.
         source: ./webhooks/delivery
         factors:
           reliability:

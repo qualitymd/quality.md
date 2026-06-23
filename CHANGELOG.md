@@ -9,6 +9,23 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+### Packaging
+
+### Specification
+
+## v0.10.0 - 2026-06-23
+
+### CLI
+
+- Added `qualitymd init --minimal`, which writes a lint-valid starter
+  `QUALITY.md` without guided template prose for agent or human authoring passes
+  that replace the model content wholesale.
+- Changed `qualitymd status --json` source coverage to report implicit document
+  directory resolution as `sourceState: "default"` instead of a defect-like
+  missing source for lint-valid models.
+
+### /quality Skill
+
 - Reworked `/quality setup` into a context-informed setup flow that asks a few
   discovery questions with recommended defaults, writes only `QUALITY.md`,
   validates/readiness-checks the model, and offers next-step choices without
@@ -20,10 +37,40 @@ QUALITY.md specification.
 - Made natural Area and Factor labels the primary documented `/quality evaluate`
   scoped input, with qualified `area:` and `factor:` references retained for
   exact addressing.
+- Clarified setup and authoring guidance for quality-factor coverage, bounded
+  context discovery, domain identification, agent-accessible evidence, and
+  quality-domain agnostic examples.
+- Bumped the bundled skill release metadata to `0.10.0`; the supported
+  `qualitymd` CLI compatibility range is now `>=0.10.0 <0.11.0`.
 
 ### Packaging
 
+- No packaging changes.
+
 ### Specification
+
+- Clarified that QUALITY.md is quality-domain agnostic and adjusted
+  non-normative examples so software product quality is illustrative rather than
+  the default.
+
+### Documentation
+
+- Clarified agentic use context: AI assistants, coding agents, harnesses,
+  agent-accessible evidence, and `/quality` skill workflows are valid use
+  context while concrete model content remains quality-domain agnostic.
+
+### Compatibility / Migration
+
+Compatibility:
+
+- CLI: `v0.10.0`
+- QUALITY.md specification: `0.3 (Draft)`
+- /quality skill: `0.10.0`, requires `qualitymd >=0.10.0 <0.11.0`
+
+Existing `QUALITY.md` files do not require migration. Consumers of
+`qualitymd status --json` that distinguish source coverage states should accept
+the new `default` state for lint-valid areas that resolve to the document
+directory.
 
 ## v0.9.0 - 2026-06-22
 

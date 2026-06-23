@@ -1,8 +1,9 @@
 # Install QUALITY.md
 
-Install the `/quality` skill first; the `qualitymd` CLI is its deterministic
-prerequisite for setup, linting, format grounding, and evaluation artifact
-mechanics.
+Install the `/quality` agent skill first; it is the primary agentic experience
+for working with QUALITY.md. The `qualitymd` CLI is its deterministic
+prerequisite and support tooling for setup, linting, format grounding, and
+evaluation artifact mechanics.
 
 ## 1. Install the skill
 
@@ -17,7 +18,7 @@ Agent Skills installer supports local paths:
 npx skills add .
 ```
 
-Restart the area agent session if that agent only discovers skills at startup.
+Restart the target agent session if that agent only discovers skills at startup.
 
 ## 2. Update an existing install
 

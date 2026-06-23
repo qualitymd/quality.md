@@ -22,7 +22,9 @@ project's specification-version policy.
 
 Note: This section is non-normative.
 
-QUALITY.md is informed by established software-quality, requirements,
+QUALITY.md is domain agnostic: a Model can describe quality for software,
+documents, data sets, services, operations, processes, or other evaluated
+entities. It is informed by established software-quality, requirements,
 measurement, testing, and evaluation traditions, including ISO/IEC and
 ISO/IEC/IEEE standards, CISQ structural-quality work, and earlier software
 quality models such as McCall and Dromey.
@@ -559,17 +561,20 @@ ratingScale:
     criterion: "Satisfies the requirement."
   - level: minimum
     title: Minimum
-    description: "The acceptable floor: less than the target, but good enough to ship."
+    description: "The acceptable floor: less than the target, but good enough to rely on."
     criterion: "Falls short of the target but remains acceptable."
   - level: unacceptable
     title: Unacceptable
-    description: "Below the floor: not good enough to ship."
+    description: "Below the floor: not good enough to rely on."
     criterion: "Does not meet the requirement to an acceptable degree."
 ```
 
 ## Appendix B: Minimal Example
 
 This appendix is non-normative.
+
+This is an illustrative software product example, not a default domain or
+factor set for QUALITY.md.
 
 ```markdown
 ---

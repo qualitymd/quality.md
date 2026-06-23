@@ -24,7 +24,7 @@ stakeholder needs, or quality-loop posture to appear in fixed sections. Treat
 them as present when they are explicit, current, and usable anywhere in the
 Markdown body or model context.
 
-## Finding Shape
+## Finding shape
 
 Report only findings that affect routing or model usefulness. Use this shape:
 
@@ -41,7 +41,7 @@ fields rather than quoting long passages.
 
 ## The Checks
 
-### 1. Model Lifecycle State
+### 1. Model lifecycle state
 
 Use `qualitymd status --json` to identify whether the model is missing, invalid,
 valid with no history, valid with history, or needs evaluation reconciliation.
@@ -114,7 +114,7 @@ invisible.
   depends on it for scope, needs, risks, or assessment evidence: route to
   authoring.
 
-### 6. Root Area and Scope Alignment
+### 6. Root area and scope alignment
 
 Check whether the root title, body scope, file location, and root or child
 `source` values describe the same evaluated root area. The current directory is
@@ -130,7 +130,7 @@ scope.
 - Finding when exclusions or boundary decisions are important but implicit:
   route to authoring.
 
-### 7. Rating Scale Fit
+### 7. Rating scale fit
 
 Check whether the rating scale is understandable and fits the body's decision
 context, including lifecycle, risk tolerance, and modeling rigor.
@@ -142,7 +142,7 @@ context, including lifecycle, risk tolerance, and modeling rigor.
 - Finding when the scale implies a stricter or looser bar than the stated project
   posture: route to authoring.
 
-### 8. Area and Factor Shape
+### 8. Area and factor shape
 
 Check whether the area tree is small enough to understand, specific enough to
 represent distinct evaluated entities, and shaped by the body's needs and risks.
@@ -156,7 +156,7 @@ Factors should be meaningful quality lenses, not vague labels alone.
 - Finding when factors are generic, overlapping, or unexplained: route to
   authoring.
 
-### 9. Requirement and Assessment Quality
+### 9. Requirement and assessment quality
 
 Check whether requirements are concrete enough to produce findings and ratings,
 and whether each `assessment` gives the evaluator a usable means of assessment,

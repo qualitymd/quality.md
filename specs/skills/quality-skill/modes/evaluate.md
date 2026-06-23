@@ -29,7 +29,7 @@ appear in all capitals.
 quality assessment, or names only a resolvable area or factor after the model is
 present and valid.
 
-The mode's purpose is to produce a current Evaluation report for the resolved
+The mode's purpose is to produce a current Evaluation Report for the resolved
 model file, scope, and rigor. It does not apply fixes.
 
 ## Mutation surface and artifacts

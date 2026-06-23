@@ -20,8 +20,9 @@ all capitals.
 
 ## Scope
 
-Covered: the output area and stdout piping, overwrite protection, and the
-contents of the scaffold `init` produces, including its `--json` result receipt.
+Covered: the output area and stdout piping, overwrite protection, the scaffold
+variant selection, and the contents of the scaffold `init` produces, including
+its `--json` result receipt.
 
 ## Requirements
 
@@ -44,7 +45,32 @@ contents of the scaffold `init` produces, including its `--json` result receipt.
   already exists.
 - A `--force` flag **MUST** permit overwriting an existing model file.
 
+### Scaffold variant
+
+- By default `init` writes the *guided* scaffold: a structurally valid skeleton
+  whose frontmatter placeholders carry inline YAML comments and whose body
+  includes the recommended headed sections, so the file reads as a guided
+  starting point for an author filling it in by hand.
+- A `--minimal` flag **MUST** write a *minimal* scaffold instead: the same
+  structurally valid frontmatter skeleton — seeded rating scale, placeholder
+  factor, requirement, and assessment, with non-empty placeholder `title`
+  values — but **without** the guided inline-comment prose and **without** the
+  headed body-section stubs, keeping only the top-level heading naming the root
+  area. This is for an authoring pass — agent or human — that will replace the
+  frontmatter wholesale and would otherwise discard the guided prose.
+- Both variants **MUST** satisfy every requirement in
+  [Scaffold contents](#scaffold-contents) that does not concern the guided
+  inline comments or the headed body sections; in particular both **MUST** pass
+  `qualitymd lint` with no errors and seed the suggested four-level rating
+  scale.
+- The variant selection applies equally to a file write and to the `-`
+  stdout form.
+
 ### Scaffold contents
+
+The requirements in this section describe the guided scaffold. The minimal
+scaffold relaxes only the inline-comment and headed-body-section requirements,
+per [Scaffold variant](#scaffold-variant).
 
 - The scaffold **MUST** be a structurally valid QUALITY.md file per the
   [format specification](../../SPECIFICATION.md): a freshly initialized file

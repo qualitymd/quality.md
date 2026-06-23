@@ -18,31 +18,33 @@ ratingScale:
     criterion: "Satisfies the requirement."
   - level: minimum
     title: Minimum
-    description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to ship."
+    description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to rely on."
     criterion: "Falls short of the target but remains acceptable."
   - level: unacceptable
     title: Unacceptable
-    description: "Below the floor — not good enough to ship."
+    description: "Below the floor — not good enough to rely on."
     criterion: "Does not meet the requirement to an acceptable degree."
 factors:
   # factors here hang off the model root, so they describe the whole artifact —
   # the qualities that matter most across all of it. This is the usual starting
-  # point. A factor names a quality characteristic — e.g. reliability, security,
-  # usability, maintainability. Say what it means here, why it matters and to
-  # whom, and how it differs from the other factors.
+  # point. A factor names a quality characteristic. Illustrative examples from
+  # different domains include reliability for a service, credibility for a
+  # report, freshness for a data set, or fairness for a process. Say what this
+  # factor means here, why it matters and to whom, and how it differs from the
+  # other factors.
   quality-name:
     title: "<short display label for this quality>"
     # description — what this quality means for the artifact, and to whom.
-    # e.g. "Reliability: the system keeps serving correct responses under load
-    #       and recovers cleanly from failure — the ops team and every
-    #       downstream caller depend on it."
-    # e.g. "Usability: a first-time developer can integrate with it without
-    #       asking the team for help."
+    # e.g. "Reliability: the service keeps serving correct responses under load
+    #       and recovers cleanly from failure; the ops team and downstream
+    #       callers depend on it."
+    # e.g. "Credibility: the report's claims are traceable to current evidence
+    #       so reviewers can trust its conclusions."
     description: "<what this quality means for the artifact, and to whom it matters>"
     requirements:
       # A requirement is one assessable expectation, stated as a claim an
       # evaluator can judge — e.g. "error messages give the user a clear path to
-      # recovery" or "the public API can be adopted without reading the source".
+      # recovery" or "reported figures cite current source data".
       "<state one expectation you can assess>":
         # assessment — how an evaluator should inspect or measure the claim. It
         # can be stated inline, or reference an entity that already defines how to
@@ -52,21 +54,22 @@ factors:
         # Reference existing documentation (often the simplest):
         # e.g. "Conform to the error-handling rules in docs/errors.md."
         # e.g. "Run the load test in perf/loadtest.md and compare to its SLOs."
+        # e.g. "Check the cited data source dates against the reporting window."
         # Or state it inline:
         # e.g. "Trigger the documented error cases and check each message names
         #       the cause and a next step."
-        # e.g. "Hand the public API docs to someone unfamiliar with it and see
-        #       whether they can complete the quickstart unaided."
+        # e.g. "Hand the onboarding guide to someone unfamiliar with the process
+        #       and see whether they can complete the first task unaided."
         assessment: "<how an evaluator should inspect or measure it>"
 
 # areas are optional and narrower. Reach for one when a distinct part of the
-# artifact — a service, a module, a document (e.g. "checkout-api",
-# "auth-service", "design-system") — deserves its own factors or requirements
-# that wouldn't fit cleanly at the top level. The whole-artifact factors above
-# still apply; an area just adds focus where a part needs it. An area takes
-# the same shape as the root: its own `factors` (and their `requirements`),
-# direct `requirements` with factor references under `factors`, or further
-# nested `areas`.
+# artifact — for example a service, module, document, data table, operating
+# procedure, or curriculum unit — deserves its own factors or requirements that
+# wouldn't fit cleanly at the top level. The whole-artifact factors above still
+# apply; an area just adds focus where a part needs it. An area takes the same
+# shape as the root: its own `factors` (and their `requirements`), direct
+# `requirements` with factor references under `factors`, or further nested
+# `areas`.
 # areas:
 #   "<name a thing to evaluate>":
 #     title: "<short display label for this area>"

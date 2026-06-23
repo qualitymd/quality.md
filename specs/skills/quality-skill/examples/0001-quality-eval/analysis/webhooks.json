@@ -6,7 +6,7 @@
   "localRatingResult": {
     "kind": "rated",
     "level": "target",
-    "rationale": "The Webhooks target's own signing requirement is rated target."
+    "rationale": "The Webhooks area's own signing requirement is rated target."
   },
   "factorRatingResults": [
     {

@@ -37,7 +37,7 @@ when **all four** of the following hold:
    evaluative judgment is out of scope — that is the evaluation skills' work.
 4. **Self-contained.** It is decidable from the single file plus its own declared
    cross-references (e.g. resolving a factor reference, a `ratings`
-   override key). A rule MUST NOT resolve a area's `source` or read the
+   override key). A rule MUST NOT resolve an area's `source` or read the
    entities an area evaluates; that is beyond format conformance.
 
 Structural validation — valid keys, required/recommended/optional properties,

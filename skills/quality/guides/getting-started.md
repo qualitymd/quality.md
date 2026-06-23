@@ -9,7 +9,7 @@ Read [Authoring QUALITY.md](authoring.md) first. This guide assumes that
 guidance and focuses on the first-run process and the desired outcome of each
 step.
 
-## Starting Point
+## Starting point
 
 Setup should leave you with a structurally valid file and the first pass at the
 project's lifecycle, risk tolerance, modeling rigor, collaboration context,
@@ -24,9 +24,9 @@ qualitymd lint QUALITY.md
 
 If lint fails, fix validity first. Do not build a model on an invalid skeleton.
 
-## First Pass
+## First pass
 
-### Fill the Body First
+### Fill the body first
 
 Outcome: the Markdown body explains the root area, scope, needs, and risks — with each
 section's unknowns and open questions — well enough to justify and evaluate the
@@ -47,10 +47,10 @@ Check before moving on:
 - Material support is cited when agent-accessible; important support that is not
   agent-accessible is named as an unknown or open question.
 
-### Confirm the Rating Scale
+### Confirm the rating scale
 
 Outcome: the rating levels can distinguish `unacceptable`, `minimum`, `target`,
-and `outstanding` for this the root area.
+and `outstanding` for this root area.
 
 Use authoring guidance: [Rating Scale](authoring.md#rating-scale).
 
@@ -60,7 +60,7 @@ Check before moving on:
   needed.
 - The level criteria are clear enough to rate future findings consistently.
 
-### Name the Root Area
+### Name the root area
 
 Outcome: the root `title`, body, file location, and root `source` describe the
 same evaluated root area.
@@ -74,7 +74,7 @@ Check before moving on:
 - The root `source` stays implicit unless the model needs to narrow or relocate
   the default scope.
 
-### Pick Two to Five Factors
+### Pick two to five factors
 
 Outcome: the initial factors cover the most important Needs and Risks without
 overlapping heavily.
@@ -85,9 +85,9 @@ Check before moving on:
 
 - Each major body need or risk has a quality lens.
 - Each factor has a required `title`.
-- Each factor description explains the lens in terms of this the root area.
+- Each factor description explains the lens in terms of this root area.
 
-### Write Assessable Requirements
+### Write assessable requirements
 
 Outcome: each initial requirement can produce evidence, findings, and a rating.
 
@@ -103,7 +103,7 @@ Check before moving on:
 Prefer a small first model with assessable requirements over a broad model full
 of aspirations.
 
-## First Validation
+## First validation
 
 After the first pass, run:
 
@@ -126,7 +126,7 @@ questions:
 
 If the answer is no, revise the model before running an evaluation.
 
-## Next Workflow
+## Next workflow
 
 When the file is valid and the first model is useful enough, choose the next
 workflow:

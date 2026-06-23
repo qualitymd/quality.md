@@ -275,14 +275,14 @@
         "ratingResult": {
           "kind": "rated",
           "level": "target",
-          "rationale": "The Webhooks target's own signing requirement is rated target."
+          "rationale": "The Webhooks area's own signing requirement is rated target."
         },
         "title": "Rated"
       },
       "areaRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The Webhooks target's own signing requirement is rated target."
+        "rationale": "The Webhooks area's own signing requirement is rated target."
       },
       "areaWithDescendantsRatingResult": {
         "kind": "rated",
@@ -325,7 +325,7 @@
       "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
+        "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the area at minimum."
       },
       "factorRatingResults": [
         {
@@ -438,14 +438,14 @@
         "ratingResult": {
           "kind": "rated",
           "level": "target",
-          "rationale": "The Webhooks target's own signing requirement is rated target."
+          "rationale": "The Webhooks area's own signing requirement is rated target."
         },
         "title": "Rated"
       },
       "areaRatingResult": {
         "kind": "rated",
         "level": "target",
-        "rationale": "The Webhooks target's own signing requirement is rated target."
+        "rationale": "The Webhooks area's own signing requirement is rated target."
       },
       "areaWithDescendantsRatingResult": {
         "kind": "rated",
@@ -489,7 +489,7 @@
       "areaWithDescendantsRatingResult": {
         "kind": "rated",
         "level": "minimum",
-        "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum."
+        "rationale": "Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the area at minimum."
       },
       "factorRatingResults": [
         {

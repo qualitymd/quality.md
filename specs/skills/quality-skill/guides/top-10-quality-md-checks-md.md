@@ -53,9 +53,9 @@ context, root area/scope alignment, rating-scale fit, area/factor shape,
 requirement and assessment quality, and quality-loop maintenance signals.
 
 Non-goals: the checklist does not inspect root area source files, produce
-evaluation artifacts, rate the root area, fully audit every requirement, or replace
-the authoring and getting-started guides. It produces routing findings, not an
-Evaluation report.
+evaluation artifacts, rate the root area, fully audit every requirement, or
+replace the authoring and getting-started guides. It produces routing findings,
+not an Evaluation Report.
 
 ## Requirements
 
@@ -89,7 +89,7 @@ collaboration context, stakeholder needs, or quality-loop posture to appear in
 fixed sections. It should treat them as present when they are explicit, current,
 and usable anywhere in the Markdown body or model context.
 
-### Finding Shape
+### Finding shape
 
 The checklist **MUST** define a concise finding shape containing:
 
@@ -122,8 +122,8 @@ The checklist **MUST** contain ten checks:
 5. body context and missing context;
 6. root area and scope alignment;
 7. rating scale fit;
-8. area and Factor shape;
-9. Requirement and assessment quality; and
+8. area and factor shape;
+9. requirement and assessment quality; and
 10. quality-loop maintenance signals.
 
 The model-lifecycle-state check **MUST** use `qualitymd status --json` to
@@ -158,12 +158,12 @@ The rating-scale-fit check **MUST** inspect whether the rating scale is
 understandable and fits the body's decision context, including lifecycle, risk
 tolerance, and modeling rigor.
 
-The area-and-Factor-shape check **MUST** inspect whether the area tree is small
+The area-and-factor-shape check **MUST** inspect whether the area tree is small
 enough to understand, specific enough to represent distinct evaluated entities,
 and shaped by the body's needs and risks.
 
-The Requirement-and-assessment-quality check **MUST** inspect whether
-Requirements are concrete enough to produce findings and ratings, and whether
+The requirement-and-assessment-quality check **MUST** inspect whether
+requirements are concrete enough to produce findings and ratings, and whether
 each `assessment` gives the evaluator a usable means of assessment.
 
 The quality-loop-maintenance-signals check **MUST** inspect evaluation history,

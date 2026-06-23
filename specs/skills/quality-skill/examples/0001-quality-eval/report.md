@@ -107,7 +107,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 
 - **Path:** webhooks
 - **Area rating:** Target
-  - The Webhooks target's own signing requirement is rated target.
+  - The Webhooks area's own signing requirement is rated target.
 - **+ Sub-Areas rating:** Minimum
   - The area's own work is rated target, but the Delivery child subtree is rated minimum and pulls the aggregate below the local rating.
 - **Factor Security:** Target
@@ -120,7 +120,7 @@ Evaluation scope reconstructed from the run's analysis and assessment result rec
 - **Area rating:** Minimum
   - The retry requirement is rated target, but the deduplication requirement is rated minimum and sets the local rating at the floor.
 - **+ Sub-Areas rating:** Minimum
-  - Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the target at minimum.
+  - Delivery is a leaf area, so its aggregate equals its local rating. The bounded deduplication gap holds the area at minimum.
 - **Factor Reliability:** Minimum
   - Retry-with-backoff reaches target, but redelivery deduplication is bounded and best-effort, so the reliability factor is minimum.
 - **Analysis record:** `analysis/webhooks-delivery.json`

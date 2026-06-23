@@ -246,8 +246,8 @@ A section with nothing outstanding still says so:
 - **Do** treat Needs as *benefits to realize*, not only outcomes to protect, and
   Risks as the problems that erode them. *A model that lists only failure modes
   can rate every requirement at target while the root area is still not worth
-  shipping — because nothing weighs whether the benefits, on the whole, outweigh
-  the residual problems.*
+  relying on — because nothing weighs whether the benefits, on the whole,
+  outweigh the residual problems.*
 - **Consider** separating two reasons a concern matters: how much its failure
   hurts (stakeholder, safety, or business stakes) and how far its failure spreads
   (how much else it forces to change). *A concern can be low-stakes yet
@@ -333,8 +333,8 @@ Each level does two distinct jobs through two properties:
 
 - **Consider** the **outstanding > target > minimum > unacceptable** scale as a
   default — a stretch level, the level to aim for, the floor you've agreed to
-  ship at, and below the floor. *A shared four-band vocabulary is enough for most
-  models and keeps reports comparable.*
+  rely on, and below the floor. *A shared four-band vocabulary is enough for
+  most models and keeps reports comparable.*
 - **Do** choose a different scale only when the root area demands it (e.g. a
   pass/fail gate wants two levels). *The scale should fit how decisions are
   actually made about this entity.*
@@ -350,10 +350,10 @@ Each level does two distinct jobs through two properties:
   exactly what you want, sometimes a loss.*
 - **Do** fix the *required margin* in the body: how far above `minimum` this
   root area must actually land to be good enough, and why (safety, reputation,
-  regulatory exposure, throwaway tool). *The same four levels serve a life-critical
-  system and a one-off script; what differs is the band the root area must reach.
-  State it so an evaluator knows whether an all-`minimum` result is fine or
-  alarming.*
+  regulatory exposure, temporary use). *The same four levels can serve very
+  different domains and stakes; what differs is the band the root area must
+  reach. State it so an evaluator knows whether an all-`minimum` result is fine
+  or alarming.*
 - **Do** calibrate the levels against concrete exemplars where you can — a real
   artifact you would call `outstanding` and one you would call `unacceptable`.
   *Thresholds set against known cases are far more defensible than ones invented
@@ -365,7 +365,7 @@ Each level does two distinct jobs through two properties:
 #### Keep `description` about meaning and `criterion` about rating
 
 - **Do** write `description` as what the level *is* ("the floor you've agreed to
-  ship at") and `criterion` as the test a result must pass ("falls short of
+  rely on") and `criterion` as the test a result must pass ("falls short of
   target but remains acceptable"). *Conflating them makes per-requirement
   criterion overrides impossible to write cleanly.*
 - **Avoid** putting thresholds or measurements in `description`. *Those belong in
@@ -374,7 +374,7 @@ Each level does two distinct jobs through two properties:
   one — a threshold, a count, a proportion, a band. *Unclear, unmeasurable criteria
   are a leading source of requirements debt; a measurable boundary is what makes a
   finding land at one level rather than hover between two.*
-- **Avoid** root areaive or comparative wording in a `criterion` ("user-friendly",
+- **Avoid** subjective or comparative wording in a `criterion` ("user-friendly",
   "better than", "as appropriate", "minimal"). *Such terms cannot reliably separate
   two adjacent levels; if you cannot operationalize a criterion, treat it as a
   smell pointing back at the requirement statement.*
@@ -383,9 +383,9 @@ Each level does two distinct jobs through two properties:
 
 ## Area
 
-A **target** is an entity, or set of entities, with quality requirements root area
-to evaluation. It is the recursive node of the model: the root model is the apex
-target, and every entry under `areas` is another target, nested to any depth.
+An **area** is an entity, or set of entities, with quality requirements subject
+to evaluation. It is the recursive node of the model: the root model is the root
+area, and every entry under `areas` is another area, nested to any depth.
 
 An **entity** is anything evaluated for quality. Most often it is a concrete
 artifact — a document, a source tree, a config file — but it can also be a
@@ -393,9 +393,9 @@ service, a behavior, or a process. The same entity can be an area in one
 relationship and the reference supplying another requirement's criteria in
 another.
 
-A target's **source** defines *what* it evaluates; its **factors** and
-**requirements** define *what is assessed* about it. A area may also be a pure
-**grouping target** — only child areas, no requirements of its own.
+An area's **source** defines *what* it evaluates; its **factors** and
+**requirements** define *what is assessed* about it. An area may also be a pure
+**grouping area** — only child areas, no requirements of its own.
 
 ### Properties
 
@@ -409,9 +409,9 @@ A target's **source** defines *what* it evaluates; its **factors** and
 | `source`       | Optional   | Where the entities live; inherits the nearest ancestor's when omitted. |
 
 \* At least one of `factors`, `requirements`, or `areas` must be present, same
-as the model. A area with only child `areas` is a grouping node; even then,
+as the model. An area with only child `areas` is a grouping node; even then,
 each area should lead to at least one requirement somewhere in its subtree — a
-target whose subtree has no requirements evaluates nothing.
+subtree with no requirements evaluates nothing.
 
 ### Working with areas
 
@@ -441,16 +441,18 @@ empty and renders as `area:root` when a canonical model reference is needed.
 #### Split off a child area only when it has distinct factors or requirements
 
 - **Consider** a child area when a part of the root area is best evaluated
-  through its own factors or requirements that would not apply to its siblings
-  (e.g. a payment integration with its own security concerns).
+  through its own factors or requirements that would not apply to its siblings.
+  *For example, in a software product model, a payment integration might have
+  its own security concerns; in a support-operations model, urgent triage might
+  have distinct responsiveness concerns.*
 - **Avoid** child areas that merely re-state the parent's requirements. *Child
-  targets don't inherit the parent's requirements, but duplicating them by hand
+  areas don't inherit the parent's requirements, but duplicating them by hand
   is a maintenance trap — let the ancestor's source cover the shared scope.*
 - **Do** place a requirement on the most specific area whose source actually
   owns the concern, not on a broad ancestor that merely contains it. *Assessing a
   payment-integration concern at the root re-judges it at every level and blurs
   who owns the finding; a second evaluator should be able to place the same
-  finding at the same target.*
+  finding at the same area.*
 - **Avoid** splitting off a child whose rating is meaningless on its own. *If it is
   only interpretable alongside its siblings, keep the concern in the parent; split
   when the child could be evaluated, and trusted, in isolation.*
@@ -475,11 +477,11 @@ empty and renders as `area:root` when a canonical model reference is needed.
 
 - **Do** decide by *role in this relationship*, not by identity: an entity is a
   area where its quality is the thing being managed, and an assessment
-  reference where it supplies the criteria for judging another target. A spec is
+  reference where it supplies the criteria for judging another area. A spec is
   both — an area in its own right and the criteria for judging the code that
   implements it.
 - **Do** point `source` at the whole entity, not a thin entry point or proxy.
-- **Avoid** treating "target or reference?" as exclusive. *An owned entity used
+- **Avoid** treating "area or reference?" as exclusive. *An owned entity used
   as criteria usually deserves an area of its own as well.*
 - **Do** spend early effort on the normative artifacts that play both roles — a
   spec, standard, or style guide. *Improving one raises every area judged against
@@ -494,7 +496,10 @@ empty and renders as `area:root` when a canonical model reference is needed.
 
 #### Decide how ratings roll up
 
-A area's local rating and a factor's rating are inferred from the requirement
+*Read this subsection when you are reasoning about roll-up or evaluating; a first
+model can defer it.*
+
+An area's local rating and a factor's rating are inferred from the requirement
 results beneath them. The format fixes no aggregation formula, so how those
 results combine is a modeling decision you should make and communicate.
 
@@ -564,11 +569,13 @@ its path of Factor names from that Area's `factors` map.
   it here does not earn a factor, however standard it is elsewhere; pull from a
   catalog as a prompt, never as a quota.*
 - **Do** prefer general-purpose, conventional factor names for the quality
-  domain once a concern earns a factor. *For software product quality,
-  `reliability`, `security`, `usability`, `maintainability`, `performance`,
-  `compatibility`, and `portability` are usually better factor names than
-  product- or business-specific labels; requirements and assessments are where
-  the model maps those lenses to the root area's unique quality expectations.*
+  domain once a concern earns a factor. *For software product quality, examples
+  include `reliability`, `security`, `usability`, `maintainability`,
+  `performance`, `compatibility`, and `portability`; other domains have their
+  own conventional factor families. These examples are illustrative,
+  non-exhaustive, and sometimes overlapping. Requirements and assessments are
+  where the model maps those lenses to the root area's unique quality
+  expectations.*
 - **Avoid** inventing bespoke factor names for the subject's domain when a
   conventional quality attribute covers the concern. *The factor names the
   quality lens; the requirement says what that quality means for this entity.*
@@ -591,13 +598,14 @@ on them, or lacks evidence about them.
 
 - **Do** identify the quality domain before finalizing root factors. *A software
   product, document, data set, model, service operation, and human process each
-  has a different conventional factor family.*
+  has a different conventional factor family; these domains are illustrative,
+  non-exhaustive, and may overlap in a real model.*
 - **Do** include the domain's common stable-stakes factors for the root area, or
   explicitly justify why each omitted one is out of scope, delegated to a child
   area, or still unresolved as an unknown. *A sparse root model should be a
   conscious decision, not the result of only modeling the first risks that came
   to mind.*
-- **Do** treat roughly ten root-level factors as a reasonable target for a
+- **Do** treat roughly ten root-level factors as a reasonable aim for a
   primary subject. *Fewer than eight should trigger a coverage review; four to
   six is usually too thin unless the root area is deliberately narrow, temporary,
   or mostly delegated to child areas.*
@@ -609,7 +617,7 @@ on them, or lacks evidence about them.
   interpretation in requirements. *The factor names the durable quality lens; the
   requirements say what that quality means for this root area.*
 - **Avoid** padding the model with factors no stakeholder would notice and no
-  decision would use. *The target is coverage adequacy, not ceremony.*
+  decision would use. *The aim is coverage adequacy, not ceremony.*
 
 #### Name the quality, not the practice
 
@@ -629,11 +637,11 @@ on them, or lacks evidence about them.
   `credibility`; if context is stale, use `currentness`; if readers cannot
   interpret it, use `understandability`; if origin, rationale, or dependency
   paths are unclear, use `traceability`.*
-- **Do** draw from established attribute families as prompts, not quotas. *Product
-  qualities such as maintainability and testability fit software and tooling;
-  data and document qualities such as completeness, credibility, currentness,
-  traceability, and understandability often fit specifications, guides, and
-  QUALITY.md models better.*
+- **Do** draw from established attribute families as prompts, not quotas. *In
+  software and tooling domains, qualities such as maintainability and testability
+  can fit; in data, document, and model domains, qualities such as completeness,
+  credibility, currentness, traceability, and understandability often fit. These
+  examples are illustrative, non-exhaustive, and may overlap.*
 
 #### Write the description as an operational definition
 
@@ -788,7 +796,7 @@ something inspectable is the core authoring move.
 - **Avoid** extracting, summarizing, or duplicating that content into the
   requirement. *Duplicated criteria drift out of sync with their origin.*
 - **Do** reference that entity by the same canonical path used as its own
-  area's `source`. *That shared path is the edge between the two targets; it is
+  area's `source`. *That shared path is the edge between the two areas; it is
   what makes the dependency traceable.*
 - **Do** point at the specific applicable part of the referenced entity, and pin a
   version where it matters. *An unversioned, whole-document reference leaves the
@@ -867,6 +875,9 @@ requirements:
 
 #### Override criteria only when the shared scale can't express the gradient
 
+*Read this subsection when you are actually authoring rating overrides; a first
+model rarely needs it.*
+
 - **Consider** a `ratings` override when a requirement has a natural measured
   threshold or a distinct qualitative spectrum (e.g. latency bands).
 - **Do** key overrides by existing Rating Level IDs and change *only* the
@@ -903,7 +914,7 @@ conflicts, or duplicates. Run a closing pass over the set:
 - **Avoid** **redundancy**: two statements that would always rate together against
   the same source are one requirement. *(Same test as for splitting — could their
   results legitimately diverge?)*
-- **Do** note unresolved holes as unknowns rather than shipping a vague,
+- **Do** note unresolved holes as unknowns rather than keeping a vague,
   unratable requirement to stand in for them.
 
 ## When to update QUALITY.md

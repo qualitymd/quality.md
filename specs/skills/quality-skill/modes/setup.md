@@ -53,6 +53,16 @@ Setup **MUST** treat the current directory as the default root area convention
 unless the user supplied an explicit model path or repository context strongly
 indicates a narrower root.
 
+When the root spans multiple workspaces, packages, or services, setup **SHOULD**
+delegate a bounded component census — one bounded exploration pass per component
+capturing purpose, entry points, external systems, risk surfaces, and test or CI
+coverage — to produce structured Area candidates. This census **MUST** remain
+optional and proportional: a small single-package root does not require it.
+
+Setup **SHOULD** confirm the product or business domain when repository context
+under-specifies it, because model quality depends on identifying the domain
+correctly and the domain is often not inferable from the README alone.
+
 `setup` **MUST** present inferred setup defaults with confidence signals that
 distinguish strongly inferred, weakly inferred, and assumed defaults.
 

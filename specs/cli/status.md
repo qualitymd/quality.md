@@ -65,9 +65,23 @@ count includes the root Model as the root Area.
 
 When the model is lint-valid, `status` **MUST** report source coverage for every
 Area, including the root Model. Each source-coverage row **MUST** include the
-ordered `areaPath`, a label, `sourceState` (`declared`, `inherited`, or
-`missing`), known `source` value when present, and direct Factor, Requirement,
-and child Area counts.
+ordered `areaPath`, a label, `sourceState`, known `source` value when present,
+and direct Factor, Requirement, and child Area counts.
+
+`sourceState` reports how the Area's evaluation Source is resolved:
+
+- `declared` — the Area declares its own `source`; the `source` value is
+  reported.
+- `inherited` — the Area inherits a `source` declared by an ancestor Area; the
+  inherited `source` value is reported.
+- `default` — no Area in the chain declares a `source`, so the Area resolves to
+  the document's default Source: the directory containing the QUALITY.md file.
+  This is a deliberate, valid choice — a lean root that only groups child Areas
+  takes the directory default and **MUST** report `default`, not a defect-like
+  label.
+- `missing` is reserved for a source that cannot be resolved. A lint-valid model
+  **MUST NOT** produce it, because an undeclared source always resolves to the
+  document default.
 
 Human-facing labels **SHOULD** use required Area `title` values. JSON
 `areaPath` values **MUST** remain identifier-based and **MUST NOT** be replaced
