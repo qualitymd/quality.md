@@ -22,7 +22,8 @@ Read context
 - update feedback log for material workflow-experience events
 
 Ask discovery questions
-- teach and ask all nine, every run; confirm or correct each inferred default
+- teach and ask questions 1-5, then present a human context checkpoint covering
+  questions 6-9
 - iterate one at a time when there is no structured question affordance
 - page through a structured question tool when one is available
 - update feedback log for material workflow-experience events
@@ -130,28 +131,32 @@ gets distilled into `QUALITY.md` where the assumptions shape the model.
 ## Ask Discovery Questions
 
 Ask the user to confirm or correct the setup assumptions before writing
-`QUALITY.md`. Each question carries a recommended answer and confidence label.
-The nine questions do double duty: they capture context the model needs, and they
-teach the user the dimensions a quality model spans.
+`QUALITY.md`. Questions 1-5 carry a recommended answer and confidence label.
+The human context checkpoint then presents the repository-inferred context for
+questions 6-9 as a draft the user can confirm, correct, fill in tersely, or
+point to missed agent-accessible evidence for. These discovery inputs do double
+duty: they capture context the model needs, and they teach the user the
+dimensions a quality model spans.
 
 Setup optimizes for *teaching* the user those dimensions over minimizing
 interaction round-trips. Setup runs roughly once per project, so spending the
 interaction to make each dimension legible — and to leave the user knowing why
 each answer shapes the model — is worth more than saving round-trips. Ask every
-one of the nine questions on every run, including
-ones whose inferred default is high-confidence: high confidence is a reason to
-*recommend* a default firmly, never to hide the question. Present all nine —
-never drop, merge, or silently default one away to fit an interaction surface —
-and do not optimize the per-question teaching back out to save turns.
+one of questions 1-5 on every run, including ones whose inferred default is
+high-confidence: high confidence is a reason to *recommend* a default firmly,
+never to hide the question. Present the human context dimensions from questions
+6-9 every run as a checkpoint — never drop or silently default them away to fit
+an interaction surface — and do not optimize the teaching back out to save turns.
 
-Each question below carries authored teaching copy — **Why it matters** (what the
-dimension shapes in `QUALITY.md`) — that you present to the user as prose around
-the question. Surface this copy on whatever interaction surface you use; it is
-the question's instruction value, not optional flavor. You may state once, around
-the discovery flow or final recap, that `QUALITY.md` is a living document and
-that setup answers can be revised later.
+Each question and checkpoint item below carries authored teaching copy — **Why
+it matters** (what the dimension shapes in `QUALITY.md`) — that you present to
+the user as prose around the question or checkpoint. Surface this copy on
+whatever interaction surface you use; it is the input's instruction value, not
+optional flavor. You may state once, around the discovery flow or final recap,
+that `QUALITY.md` is a living document and that setup answers can be revised
+later.
 
-The nine discovery questions:
+The discovery inputs:
 
 ```text
 1. Root area: Should this QUALITY.md model the whole current project, or a
@@ -191,35 +196,39 @@ The nine discovery questions:
    names the acceptable floor that can be relied on but still warrants
    improvement, and `unacceptable` names quality below the floor.
 
-6. Primary users and outcomes: Who needs the evaluated thing to work, and what
-   outcomes matter most?
-   Recommended: <default> (<confidence>)
+6-9. Human context checkpoint: Please correct this draft with short fragments.
+   Anything left unresolved will be recorded as Unknown, an open question, or a
+   low-confidence inference rather than confirmed fact.
+
+   Primary users and outcomes: <default> (<confidence>)
    Why it matters: Who depends on the evaluated thing, and the outcomes that
    matter, anchor the Needs section and justify which Factors are worth
    evaluating.
 
-7. Maintainers and collaborators: Who has to change, operate, review, or rely on
-   this work?
-   Recommended: <default> (<confidence>)
+   Maintainers and collaborators: <default> (<confidence>)
    Why it matters: Who changes, operates, reviews, or relies on the work — human
    and agent — shapes maintainability and operability Needs and who the model
    must align.
 
-8. Other stakeholders: Are there customers, operators, compliance, support,
-   data, security, business, or other stakeholders not visible in the repo?
-   Recommended: <default> (<confidence>)
+   Other stakeholders: <default> (<confidence>)
    Why it matters: Stakeholders not visible in the repo surface Needs and Risks
    that source alone will not reveal.
 
-9. Missing context: I think these important inputs are not visible:
-   <specific gaps>. What else should the model record as unknown or not
-   agent-accessible?
+   Missing or not-agent-accessible context: <specific gaps>
    Why it matters: Recording what is not visible or agent-accessible keeps the
    model honest — it marks Unknowns and open questions instead of guessing.
+
+   Most valuable corrections:
+   - Who is the evaluated thing for?
+   - What outcome matters most?
+   - Is the data, compliance, availability, or business-criticality context
+     sensitive or constrained?
 ```
 
 The `<confidence>` on each recommended default is one of `Low`/`Med`/`High` with
-the same evidence note used in the setup brief.
+the same evidence note used in the setup brief. In the human context checkpoint,
+leaving a low-confidence or not-visible item unchanged does not upgrade it to a
+confirmed fact.
 
 ### How to present them
 
@@ -227,30 +236,36 @@ Choose the presentation form from your own interaction capabilities. Do not
 assume or name a specific question UI.
 
 - Structured question tool: when you have a structured question tool with item
-  or option limits, page all nine questions through it across as many rounds as
-  the limits require. Present each question's Why-it-matters and
-  purpose/context copy as prose in the message around the tool call (the widget's
-  option/description fields are too small to teach in). Keep the open-ended
-  questions (6-9) as free text; do not force them into fixed options.
+  or option limits, page questions 1-5 through it across as many rounds as the
+  limits require, then present the human context checkpoint as free text. Present
+  each question's or checkpoint item's Why-it-matters and purpose/context copy as
+  prose in the message around the tool call (the widget's option/description
+  fields are too small to teach in). Do not force the checkpoint into fixed
+  options.
 - No structured affordance: iterate the questions one at a time. Emit the
   question's Why-it-matters copy before or with the question, then take the
   answer. Carry each question's recommended default and confidence so the user
   can confirm or terse-correct and advance; do not require a full prose answer.
-  Iterating one at a time is the default — it keeps each dimension legible and
-  gives the teaching copy a real beat.
+  After question 5, present the human context checkpoint. Iterating one at a time
+  is the default — it keeps each dimension legible and gives the teaching copy a
+  real beat.
 
-Whichever form you use, surface all nine with their teaching copy, seed the
-missing-context question (9) from your repository analysis rather than asking a
-blank "anything else?", and do not re-ask context the user already supplied.
+Whichever form you use, surface all discovery dimensions with their teaching
+copy, seed the missing-context checkpoint item from your repository analysis
+rather than asking a blank "anything else?", and do not re-ask context the user
+already supplied. The checkpoint should make correction easy and should not end
+with a broad catch-all question that obscures primary users/outcomes,
+maintainers/collaborators, or other stakeholders.
 
-For the missing-context question, treat material context as agent-accessible only
-when it is available through the repository, cited local paths, configured tools,
-linked public sources, or explicit user-provided setup context. If you use fixed
-choices for the missing-context question, do not offer an option that assumes
-low-confidence or not-visible project-specific facts are sufficiently understood.
-Each option must either record the gap, let the user provide the missing context
-now, or let the user point to agent-accessible evidence you missed. Recommend
-recording low/no-evidence material gaps as Unknowns or open questions.
+For the missing-context checkpoint item, treat material context as
+agent-accessible only when it is available through the repository, cited local
+paths, configured tools, linked public sources, or explicit user-provided setup
+context. If you use fixed choices for the missing-context checkpoint item, do not
+offer an option that assumes low-confidence or not-visible project-specific facts
+are sufficiently understood. Each option must either record the gap, let the user
+provide the missing context now, or let the user point to agent-accessible
+evidence you missed. Recommend recording low/no-evidence material gaps as
+Unknowns or open questions.
 
 ### Escapes
 
@@ -260,16 +275,19 @@ Honor these when the user asks, but do not lead with them:
   default and advance without writing prose. This still presents that question
   and its teaching copy, so the pedagogy survives a terse "yes" — it keeps an
   expert from being trapped in a ten-turn interrogation.
-- Show all at once: the user may ask to see all nine in a single prompt instead of
-  iterating. The batch prompt still includes every question's teaching copy.
+- Show all at once: the user may ask to see all discovery inputs in a single
+  prompt instead of iterating. The batch prompt still includes every question's
+  and checkpoint item's teaching copy.
 
 There is no "accept all defaults and skip the rest" escape: every discovery
-question is asked every run so its teaching beat is not lost. High confidence in a default
-firms up the recommendation; it never removes the question.
+input is presented every run so its teaching beat is not lost. High confidence
+in a default firms up the recommendation; it never removes the question or
+checkpoint item. Unanswered low-confidence checkpoint items remain
+low-confidence or unknown; they are not confirmed by omission.
 
-The collaboration question assumes agent-heavy development and asks which human
-collaborators, reviewers, maintainers, or stakeholders also need to align with
-the quality bar.
+The maintainer/collaborator checkpoint item assumes agent-heavy development and
+asks which human collaborators, reviewers, maintainers, or stakeholders also
+need to align with the quality bar.
 
 The rating-scale question is a confirmation/calibration question, not an
 invitation to design Rating Levels cold. If the user rejects the recommended
@@ -302,10 +320,11 @@ authoring guide, and repository context.
 
 ## Review and Confirm
 
-After all discovery questions are answered and before writing `QUALITY.md`, stop
-for a review gate. Present a final review recap: list every asked discovery
-question with its final answer in one consolidated view, and wait for the user to
-respond before authoring proceeds.
+After all discovery questions and the human context checkpoint are answered and
+before writing `QUALITY.md`, stop for a review gate. Present a final review
+recap: list every asked discovery question and checkpoint item with its final
+answer in one consolidated view, and wait for the user to respond before
+authoring proceeds.
 
 - Recap the answers, not the confidence labels — confidence is a discovery-time
   aid; by the recap the user has already seen and confirmed each default.
@@ -321,9 +340,9 @@ respond before authoring proceeds.
 - Do not require the user to add a comment to proceed; an explicit "looks good"
   (or equivalent) advances to authoring.
 
-The recap supplements discovery; it does not replace asking each question. Do not
-collapse discovery into the recap alone — that would lose the per-question
-teaching beats.
+The recap supplements discovery; it does not replace asking each question or
+presenting the checkpoint. Do not collapse discovery into the recap alone — that
+would lose the teaching beats.
 
 ## Write QUALITY.md
 

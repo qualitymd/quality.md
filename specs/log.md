@@ -3,6 +3,15 @@
 ## 2026-06-23
 
 - **Revision**: Implemented durable spec changes for
+  [0072 - Setup context checkpoint](../changes/archive/0072-setup-context-checkpoint.md).
+  Updated the
+  [`setup`](skills/quality-skill/workflows/setup.md) workflow spec so the final
+  human-context discovery inputs are presented as one correction-oriented
+  checkpoint covering primary users/outcomes, maintainers/collaborators, other
+  stakeholders, and missing or not-agent-accessible context, with omitted
+  low-confidence gaps recorded honestly rather than confirmed by silence.
+
+- **Revision**: Implemented durable spec changes for
   [0071 - Setup open-ended review gate](../changes/archive/0071-setup-open-ended-review-gate.md).
   Updated the
   [`setup`](skills/quality-skill/workflows/setup.md) workflow spec so the final

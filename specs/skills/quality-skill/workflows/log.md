@@ -3,6 +3,15 @@
 ## 2026-06-23
 
 - **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0072 - Setup context checkpoint](../../../../changes/archive/0072-setup-context-checkpoint.md).
+  Human-context discovery now uses a correction-oriented checkpoint covering
+  primary users/outcomes, maintainers/collaborators, other stakeholders, and
+  missing or not-agent-accessible context instead of four separate open-ended
+  prompts. The checkpoint keeps provenance visible and records omitted
+  low-confidence or not-visible material context as Unknown, open questions, or
+  low-confidence inference rather than confirmed fact.
+
+- **Revision**: Updated the [`setup`](setup.md) workflow for
   [0071 - Setup open-ended review gate](../../../../changes/archive/0071-setup-open-ended-review-gate.md).
   The final review recap now uses friendly, open-ended wording that preserves the
   `"looks good"` fast path while inviting priorities, worries, wording, edge

@@ -256,3 +256,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   made `/quality setup`'s final recap prompt friendlier and more open-ended while
   preserving the `"looks good"` fast path before authoring `QUALITY.md`; no
   CLI/Go change (`Done`).
+- [0072 — Setup context checkpoint](0072-setup-context-checkpoint.md) - replaced
+  `/quality setup`'s final four open-ended human-context discovery questions with
+  a compact checkpoint that asks users to correct a draft and records omitted
+  low-confidence gaps as Unknown rather than confirmed fact; no CLI/Go change
+  (`Done`).

@@ -40,6 +40,11 @@ QUALITY.md specification.
   users can still say `"looks good"` to proceed, but the prompt now explicitly
   invites priorities, worries, wording, edge cases, repo-invisible context, or
   anything else that should shape `QUALITY.md` before it is written.
+- Replaced `/quality setup`'s final four open-ended human-context questions with
+  a compact context checkpoint: setup now asks users to correct a draft covering
+  primary users/outcomes, maintainers/collaborators, other stakeholders, and
+  missing or not-agent-accessible context, while recording omitted
+  low-confidence gaps as Unknown rather than confirmed fact.
 - Tightened `/quality setup` missing-context discovery so low/no-evidence
   product, operational, stakeholder, telemetry, security/compliance, incident,
   SLA, or production-metric context is recorded as unknown/not-agent-accessible

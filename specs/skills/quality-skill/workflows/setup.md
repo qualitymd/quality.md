@@ -64,7 +64,7 @@ The setup workflow **MUST** include these stages, in order:
    frame, and create the current run's workflow feedback log.
 2. Inspect repository context for setup signals.
 3. Build a setup brief with inferred defaults, confidence, and evidence.
-4. Ask concrete discovery questions.
+4. Ask concrete discovery questions and present the human context checkpoint.
 5. Present a final review recap of the question/answer set and wait for an
    explicit review-gate response before authoring.
 6. Run `qualitymd init [path]` when the target model is missing.
@@ -120,9 +120,9 @@ the prior `assumed` label carried.
 > which now lives in a `Low` label plus an explicit no-evidence note rather than a
 > separate word. — 0067
 
-## Discovery questions
+## Discovery inputs
 
-Setup **MUST** ask or present the following discovery questions before writing
+Setup **MUST** ask or present the following discovery inputs before writing
 `QUALITY.md`:
 
 1. **Root area.** Should this `QUALITY.md` model the whole current project, or a
@@ -134,17 +134,13 @@ Setup **MUST** ask or present the following discovery questions before writing
    moderate tolerance, or low tolerance?
 5. **Rating Scale.** Should the model use the recommended
    `outstanding`, `target`, `minimum`, `unacceptable` Rating Scale?
-6. **Primary users and outcomes.** Who needs the evaluated thing to work, and
-   what outcomes matter most?
-7. **Maintainers and collaborators.** Who has to change, operate, review, or
-   rely on this work?
-8. **Other stakeholders.** Are there customers, operators, compliance, support,
-   data, security, business, or other stakeholders not visible in the repo?
-9. **Missing context.** The skill thinks these important inputs are not visible:
-   `<specific gaps>`. What else should the model record as unknown or not
-   agent-accessible?
+6. **Human context checkpoint.** A draft for correction that covers primary
+   users and outcomes, maintainers and collaborators, other stakeholders, and
+   missing or not-agent-accessible context.
 
-Each question **MUST** include a recommended answer and confidence signal.
+Each discovery question **MUST** include a recommended answer and confidence
+signal. Each human context checkpoint item **MUST** include a recommended answer
+and confidence signal when setup has inferred one from repository evidence.
 
 The Rating Scale question **MUST** explain that Rating Levels are configurable in
 `QUALITY.md` and are not baked into the format. It **MUST** recommend the
@@ -160,19 +156,19 @@ simple alternate scale only when project context clearly supports it, such as a
 pass/fail gate; otherwise setup **SHOULD** use the recommended scale and record
 the scale decision as an open question or assumption in the model body.
 
-### Per-question pedagogy
+### Discovery pedagogy
 
 The setup workflow **MUST** carry authored teaching copy for each discovery
-question in the runtime skill. For each question, that copy **MUST**
-state the purpose of the question — why the dimension matters and what it shapes
-in `QUALITY.md`.
+question and human context checkpoint item in the runtime skill. For each
+question or checkpoint item, that copy **MUST** state the purpose of the input —
+why the dimension matters and what it shapes in `QUALITY.md`.
 
 The teaching copy **MUST** be authored in the workflow itself, not left to
 per-run agent improvisation, and **MUST** be written as copy the agent presents
-to the user (prose around the question), not as text confined to a structured
-tool's option or description fields. The workflow **MUST** present a question's
-purpose/context to the user before or together with that question, on whatever
-presentation surface the agent uses.
+to the user (prose around the question or checkpoint), not as text confined to a
+structured tool's option or description fields. The workflow **MUST** present a
+question's or checkpoint item's purpose/context to the user before or together
+with that input, on whatever presentation surface the agent uses.
 
 The workflow **MAY** state once outside the individual question copy that
 `QUALITY.md` is a living document and that setup answers can be revised later.
@@ -191,8 +187,47 @@ per-question pedagogy is preserved rather than treated as removable overhead.
 > complaint does not "optimize" the pedagogy back out. Setup runs ~once per
 > project, so the extra interaction is worth the legibility. — 0067
 
-The missing-context question **MUST** be seeded from repository analysis rather
-than phrased as a blank "anything else?" prompt.
+### Human context checkpoint
+
+After the first five setup discovery questions, `setup` **MUST** present a human
+context checkpoint instead of asking separate open-ended questions for primary
+users/outcomes, maintainers/collaborators, other stakeholders, and missing
+context.
+
+The checkpoint **MUST** present repository-inferred human context as a draft for
+confirmation or correction, with confidence labels and evidence notes where
+useful. It **MUST** let the user confirm, correct, fill in terse fragments, or
+point to agent-accessible evidence the setup pass missed.
+
+The checkpoint **MUST** cover all of these dimensions:
+
+- primary users and outcomes;
+- maintainers and collaborators;
+- other stakeholders;
+- missing or not-agent-accessible context.
+
+The checkpoint **MUST** state that unanswered low-confidence or not-visible
+items will be recorded as Unknown, open questions, or low-confidence inference as
+appropriate, not treated as confirmed facts.
+
+The checkpoint **MUST** end with a short, prioritized list of the highest-value
+corrections: who the evaluated thing is for, what outcome matters most, and
+whether data, compliance, availability, or business-criticality constraints
+exist.
+
+The checkpoint **MUST NOT** end human-context discovery with a broad catch-all
+question that can obscure the primary users/outcomes, maintainer/collaborator,
+and other stakeholder dimensions.
+
+> Annotation: the human context dimensions are still required because they ground
+> Needs, Risks, Factors, and Unknowns. The change is their response shape:
+> reviewing and correcting a draft is easier than answering four essay prompts,
+> especially when the final prompt is the broadest one. Silence on a
+> low-confidence item is not evidence, so setup records unresolved material
+> context honestly instead of treating omission as confirmation. — 0072
+
+The missing-context checkpoint item **MUST** be seeded from repository analysis
+rather than phrased as a blank "anything else?" prompt.
 
 For missing-context discovery, setup **MUST** treat material context as
 agent-accessible only when it is available through repository content, cited
@@ -201,25 +236,25 @@ setup context. Missing-context discovery **MUST** distinguish context that is
 visible from agent-accessible evidence, context that should be recorded as
 unknown or not agent-accessible, and context the user provides during setup.
 
-Generated missing-context choices **MUST NOT** invite the user to assume that
-product purpose, operational context, stakeholder needs, telemetry,
-security/compliance posture, incident history, SLAs, production metrics, or
-similar material project-specific facts are understood when the setup brief marks
-them `Low` confidence or not visible from evidence. When an option excludes an
-identified material gap from unknowns, the option **MUST** make the provenance
-explicit: either the user is providing the missing context during setup, or the
-user is pointing setup to agent-accessible evidence it missed. For material gaps
-with low or no evidence, the recommended option **SHOULD** record the gaps as
-unknowns or open questions.
+If any generated missing-context choices are used, they **MUST NOT** invite the
+user to assume that product purpose, operational context, stakeholder needs,
+telemetry, security/compliance posture, incident history, SLAs, production
+metrics, or similar material project-specific facts are understood when the setup
+brief marks them `Low` confidence or not visible from evidence. When an option
+excludes an identified material gap from unknowns, the option **MUST** make the
+provenance explicit: either the user is providing the missing context during
+setup, or the user is pointing setup to agent-accessible evidence it missed. For
+material gaps with low or no evidence, the recommended option **SHOULD** record
+the gaps as unknowns or open questions.
 
-> Annotation: the missing-context question exists to prevent guessing. If setup
-> already marked a project-specific fact as low/no-evidence, an "assume it is
-> understood" option silently turns tacit maintainer knowledge into evidence the
-> agent cannot inspect. — 0070
+> Annotation: the missing-context checkpoint item exists to prevent guessing. If
+> setup already marked a project-specific fact as low/no-evidence, an "assume it
+> is understood" option silently turns tacit maintainer knowledge into evidence
+> the agent cannot inspect. — 0070
 
-The collaboration question **MUST** assume agent-heavy development and ask which
-human collaborators, reviewers, maintainers, or stakeholders also need to align
-with the quality bar.
+The maintainer/collaborator checkpoint item **MUST** assume agent-heavy
+development and ask which human collaborators, reviewers, maintainers, or
+stakeholders also need to align with the quality bar.
 
 Setup **MUST NOT** ask a review-posture discovery question. Review cadence,
 recurrence, and quality-loop options **MAY** appear in setup closeout as
@@ -233,36 +268,37 @@ will not create issues or configure integrations.
 
 ## Prompt form
 
-`setup` **MUST** ask every one of the discovery questions on every run,
-including questions whose inferred default is high-confidence. High confidence in
-an inferred default **MUST NOT** be a reason to skip a question. `setup`
-**MUST NOT** drop, merge, or silently default away a question to fit an
-interaction surface's limits.
+`setup` **MUST** ask every one of the first five discovery questions on every run
+and **MUST** present the human context checkpoint on every run. High confidence
+in an inferred default **MUST NOT** be a reason to skip a question or checkpoint
+item. `setup` **MUST NOT** drop or silently default away a discovery dimension to
+fit an interaction surface's limits.
 
 `setup` **MUST** choose the presentation form from the agent's own interaction
 capabilities. This guidance **MUST NOT** assume or name a specific agent's
 question tool.
 
 When the agent has a structured question affordance with item or option limits,
-`setup` **MUST** page all discovery questions through it across as many rounds as
-the limits require, and **MUST** keep open-ended questions (primary users,
-maintainers and collaborators, other stakeholders, missing context) as free text
-rather than forcing them into fixed options.
+`setup` **MUST** page the first five discovery questions through it across as
+many rounds as the limits require, then present the human context checkpoint as
+free text rather than forcing it into fixed options.
 
 When the agent has no structured question affordance, `setup` **MUST** iterate
 the questions one at a time. Each step **MUST** carry that question's recommended
 default and confidence signal so the user can confirm or correct it and advance,
-and **MUST NOT** require a full prose answer. One-at-a-time iteration is the
+and **MUST NOT** require a full prose answer. After the fifth question, `setup`
+**MUST** present the human context checkpoint. One-at-a-time iteration is the
 default presentation form.
 
 `setup` **MUST NOT** offer an escape that accepts all inferred defaults and skips
-the remaining questions. Any prior guidance permitting "accept all defaults and
-skip the remaining questions" **MUST** be removed or revised so it does not
-contradict asking every question. A per-question fast confirm — the user accepts
-the recommended default for a single question and advances without writing prose
-— **MAY** remain, because it still presents that question and its teaching copy.
-`setup` **MUST** honor an explicit user request to see all discovery questions at once
-instead of iterating, and **MUST NOT** lead with that escape.
+the remaining questions or the human context checkpoint. Any prior guidance
+permitting "accept all defaults and skip the remaining questions" **MUST** be
+removed or revised so it does not contradict presenting every discovery input. A
+per-question fast confirm — the user accepts the recommended default for a single
+question and advances without writing prose — **MAY** remain, because it still
+presents that question and its teaching copy. `setup` **MUST** honor an explicit
+user request to see all discovery inputs at once instead of iterating, and
+**MUST NOT** lead with that escape.
 
 > Annotation: 0065 established the agent-agnostic presentation tiers but kept an
 > "accept all defaults and skip the rest" escape. That escape directly
@@ -276,9 +312,10 @@ interaction.
 
 ## Final review recap
 
-After all discovery questions are answered and before writing `QUALITY.md`,
-`setup` **MUST** stop for a review gate and present a final review recap that
-lists every asked discovery question with its final answer.
+After all discovery questions and the human context checkpoint are answered and
+before writing `QUALITY.md`, `setup` **MUST** stop for a review gate and present
+a final review recap that lists every asked discovery question and checkpoint
+item with its final answer.
 
 `setup` **MUST** wait for a user response to the final recap before writing or
 editing `QUALITY.md`. Completing the final discovery question or a structured
@@ -300,8 +337,9 @@ use this prompt or wording with materially equivalent meaning:
 How's this looking? If it feels right, say "looks good" and I'll write QUALITY.md. If anything else is on your mind, send it over too: priorities, worries, wording, edge cases, things the repo doesn't show, or anything that feels important.
 ```
 
-The recap **MUST NOT** be the only place a question is surfaced; it supplements,
-and does not replace, asking each question during discovery.
+The recap **MUST NOT** be the only place a question or checkpoint item is
+surfaced; it supplements, and does not replace, asking or presenting each input
+during discovery.
 
 > Annotation: the recap is a consolidated confirmation-and-teaching moment, not a
 > replacement for per-question iteration — making it the only confirmation would

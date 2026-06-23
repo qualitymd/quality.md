@@ -3,6 +3,21 @@
 ## 2026-06-23
 
 - **Creation + Implementation + Archival**: Created
+  [0072 - Setup context checkpoint](archive/0072-setup-context-checkpoint.md)
+  with its child folder
+  ([index](archive/0072-setup-context-checkpoint/index.md),
+  [functional spec](archive/0072-setup-context-checkpoint/spec.md),
+  [design doc](archive/0072-setup-context-checkpoint/design.md)), advanced it
+  through `Draft`, `Design`, `In-Progress`, and `In-Review` to `Done`, and
+  archived it. Implemented skill-only with **no CLI/Go change**: setup now
+  presents primary users/outcomes, maintainers/collaborators, other stakeholders,
+  and missing or not-agent-accessible context as a compact correction-oriented
+  checkpoint instead of four separate open-ended prompts, preserving provenance
+  and recording omitted low-confidence gaps honestly. Synced the durable setup
+  workflow spec, workflow/spec logs, runtime setup workflow, `CHANGELOG.md`, and
+  archive index.
+
+- **Creation + Implementation + Archival**: Created
   [0071 - Setup open-ended review gate](archive/0071-setup-open-ended-review-gate.md)
   with its child folder
   ([index](archive/0071-setup-open-ended-review-gate/index.md),
