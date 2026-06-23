@@ -252,3 +252,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   facts are recorded as unknown/not-agent-accessible unless the user explicitly
   provides them or points setup to missed agent-accessible evidence; no CLI/Go
   change (`Done`).
+- [0071 — Setup open-ended review gate](0071-setup-open-ended-review-gate.md) -
+  made `/quality setup`'s final recap prompt friendlier and more open-ended while
+  preserving the `"looks good"` fast path before authoring `QUALITY.md`; no
+  CLI/Go change (`Done`).

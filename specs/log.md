@@ -3,6 +3,15 @@
 ## 2026-06-23
 
 - **Revision**: Implemented durable spec changes for
+  [0071 - Setup open-ended review gate](../changes/archive/0071-setup-open-ended-review-gate.md).
+  Updated the
+  [`setup`](skills/quality-skill/workflows/setup.md) workflow spec so the final
+  review recap uses friendly, open-ended wording that preserves the
+  `"looks good"` fast path while inviting priorities, worries, wording, edge
+  cases, repo-invisible context, and other useful last-call input before
+  authoring.
+
+- **Revision**: Implemented durable spec changes for
   [0070 - Setup missing-context provenance](../changes/archive/0070-setup-missing-context-provenance.md).
   Updated the
   [`setup`](skills/quality-skill/workflows/setup.md) workflow spec so

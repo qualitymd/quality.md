@@ -3,6 +3,13 @@
 ## 2026-06-23
 
 - **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0071 - Setup open-ended review gate](../../../../changes/archive/0071-setup-open-ended-review-gate.md).
+  The final review recap now uses friendly, open-ended wording that preserves the
+  `"looks good"` fast path while inviting priorities, worries, wording, edge
+  cases, repo-invisible context, and other useful last-call input before
+  authoring.
+
+- **Revision**: Updated the [`setup`](setup.md) workflow for
   [0070 - Setup missing-context provenance](../../../../changes/archive/0070-setup-missing-context-provenance.md).
   Missing-context discovery now treats material context as agent-accessible only
   when it is available through repository/tool/source evidence or explicit

@@ -284,11 +284,21 @@ lists every asked discovery question with its final answer.
 editing `QUALITY.md`. Completing the final discovery question or a structured
 question-tool page **MUST NOT** satisfy this review gate.
 
-The recap **MAY** receive a correction, a cross-cutting comment, or an explicit
-confirmation such as "looks good", "continue", "write it", or an equivalent
-phrase. `setup` **MUST** incorporate corrections the user makes at this step
-before authoring, and **MUST NOT** require the user to add a substantive comment
-to proceed.
+The recap **MAY** receive a correction, a cross-cutting comment, broader
+last-call setup context, or an explicit confirmation such as "looks good",
+"continue", "write it", or an equivalent phrase. `setup` **MUST** incorporate
+corrections and additional review-gate context before authoring, and **MUST NOT**
+require the user to add a substantive comment to proceed.
+
+The final review prompt **MUST** use friendly, colloquial, open-ended wording
+that preserves the confirmation fast path while inviting useful context beyond
+corrections: priorities, worries, wording, edge cases, repo-invisible context, or
+anything else the user considers important. The runtime setup workflow **SHOULD**
+use this prompt or wording with materially equivalent meaning:
+
+```text
+How's this looking? If it feels right, say "looks good" and I'll write QUALITY.md. If anything else is on your mind, send it over too: priorities, worries, wording, edge cases, things the repo doesn't show, or anything that feels important.
+```
 
 The recap **MUST NOT** be the only place a question is surfaced; it supplements,
 and does not replace, asking each question during discovery.
@@ -297,7 +307,9 @@ and does not replace, asking each question during discovery.
 > replacement for per-question iteration — making it the only confirmation would
 > collapse discovery back into a single batch screen and lose the teaching beats.
 > It also gives cross-cutting remarks a home that the mid-flow missing-context
-> question cannot fully serve. — 0067
+> question cannot fully serve. The prompt names examples of useful late context
+> so users do not have to frame every non-confirmation as a correction. — 0067,
+> 0071
 
 ## Model authoring
 

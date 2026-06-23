@@ -3,6 +3,20 @@
 ## 2026-06-23
 
 - **Creation + Implementation + Archival**: Created
+  [0071 - Setup open-ended review gate](archive/0071-setup-open-ended-review-gate.md)
+  with its child folder
+  ([index](archive/0071-setup-open-ended-review-gate/index.md),
+  [functional spec](archive/0071-setup-open-ended-review-gate/spec.md),
+  [design doc](archive/0071-setup-open-ended-review-gate/design.md)), advanced
+  it through `Draft`, `Design`, `In-Progress`, and `In-Review` to `Done`, and
+  archived it. Implemented skill-only with **no CLI/Go change**: setup's final
+  review recap now uses friendly, open-ended wording that preserves the
+  `"looks good"` fast path while inviting priorities, worries, wording, edge
+  cases, repo-invisible context, and other useful last-call input before
+  authoring. Synced the durable setup workflow spec, workflow/spec logs, runtime
+  setup workflow, `CHANGELOG.md`, and archive index.
+
+- **Creation + Implementation + Archival**: Created
   [0070 - Setup missing-context provenance](archive/0070-setup-missing-context-provenance.md)
   with its child folder
   ([index](archive/0070-setup-missing-context-provenance/index.md),

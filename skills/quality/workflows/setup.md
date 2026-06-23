@@ -311,9 +311,13 @@ respond before authoring proceeds.
   aid; by the recap the user has already seen and confirmed each default.
 - A structured question-tool response completes discovery only; it does not
   satisfy this review gate.
-- Give cross-cutting remarks — ones that did not fit a single question — a home
+- End the recap with this prompt, or wording with materially equivalent meaning:
+  `How's this looking? If it feels right, say "looks good" and I'll write QUALITY.md. If anything else is on your mind, send it over too: priorities, worries, wording, edge cases, things the repo doesn't show, or anything that feels important.`
+- Give cross-cutting remarks and broader last-call context — priorities, worries,
+  wording, edge cases, repo-invisible facts, or anything else important — a home
   here.
-- Incorporate any correction the user makes at this step before authoring.
+- Incorporate any correction or additional review-gate context the user provides
+  before authoring.
 - Do not require the user to add a comment to proceed; an explicit "looks good"
   (or equivalent) advances to authoring.
 
