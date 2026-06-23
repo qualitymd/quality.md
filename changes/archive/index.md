@@ -237,3 +237,13 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   remain), relabeled confidence to `Low`/`Med`/`High` with an evidence note, and
   added a final review recap before writing `QUALITY.md`; no CLI/Go change
   (`Done`).
+- [0068 — Always-on setup feedback log](0068-always-on-setup-feedback-log.md) -
+  made `/quality setup` create a workflow feedback log after CLI support and the
+  run frame, update the current run's file for material workflow-experience
+  events, and finalize it at close with stable metadata and explicit clean-run or
+  interrupted-run feedback; no CLI/Go change (`Done`).
+- [0069 — Setup review gate and discovery trim](0069-setup-review-gate-and-pedagogy-trim.md) -
+  made `/quality setup` remove the modeling-rigor and review-posture discovery
+  questions, add Rating Scale confirmation, trim per-question pedagogy to
+  purpose/context, and require an explicit final recap response before authoring;
+  no CLI/Go change (`Done`).

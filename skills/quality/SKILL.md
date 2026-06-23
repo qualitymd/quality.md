@@ -52,10 +52,11 @@ recommendations.
   handoff never write it. See [Quality Log](#quality-log).
 - A workflow may write a workflow feedback log under `.quality/logs/` (plural,
   distinct from the quality log's `.quality/log/`) recording the *experience* of
-  running it. `setup` may write `<timestamp>-setup-feedback-log.md`. It is
-  recorded locally and never transmitted; sharing is an explicit user action. It
-  must never contain secret values or raw prompt-injection text, and sensitive
-  project context should be sanitized. See
+  running it. `setup` writes and updates
+  `<timestamp>-setup-feedback-log.md` for every run after CLI support is verified
+  and the run frame is emitted. It is recorded locally and never transmitted;
+  sharing is an explicit user action. It must never contain secret values or raw
+  prompt-injection text, and sensitive project context should be sanitized. See
   [`workflows/setup.md`](workflows/setup.md).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.

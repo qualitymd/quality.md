@@ -2,6 +2,23 @@
 
 ## 2026-06-23
 
+- **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0069 - Setup review gate and discovery trim](../../../../changes/archive/0069-setup-review-gate-and-pedagogy-trim.md).
+  Setup discovery now removes the modeling-rigor and review-posture questions,
+  adds a Rating Scale confirmation question, carries purpose/context teaching
+  copy without per-question how-to-change-later guidance, and treats the final
+  recap as a review gate that waits for an explicit user response before
+  authoring.
+
+- **Revision**: Updated the [`setup`](setup.md) workflow and
+  [workflow feedback log](setup/feedback-log.md) sub-spec for
+  [0068 - Always-on setup feedback log](../../../../changes/archive/0068-always-on-setup-feedback-log.md).
+  Setup now creates the current run's feedback log during preflight after CLI
+  support and the run frame, updates that file for material workflow-experience
+  events, and finalizes it at close. The feedback-log sub-spec now defines the
+  required frontmatter metadata, lifecycle status values, `Timeline` section,
+  current-run update rule, and no-notable-content close behavior.
+
 - **Revision**: Repositioned the [`setup`](setup.md) discovery contract as
   teaching-first for
   [0067 - Setup discovery pedagogy](../../../../changes/archive/0067-setup-discovery-pedagogy.md).

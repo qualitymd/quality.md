@@ -37,9 +37,9 @@ an evaluation workflow and does not rate evaluated source.
 
 ## Mutation surface and artifacts
 
-`setup` may mutate the target `QUALITY.md` model file and **MAY** additionally
-write a workflow feedback log under `.quality/logs/`, creating that directory on
-demand (see [Workflow feedback log](setup/feedback-log.md)).
+`setup` may mutate the target `QUALITY.md` model file and **MUST** additionally
+write and update a workflow feedback log under `.quality/logs/`, creating that
+directory on demand (see [Workflow feedback log](setup/feedback-log.md)).
 
 `setup` **MUST NOT** run evaluation, create evaluation artifacts, write the
 quality log under `.quality/log/`, create external issues, configure issue
@@ -47,11 +47,11 @@ trackers, create CI or release workflows, create scheduled automations, configur
 Codex automations, or configure Claude Code routines.
 
 > Annotation: the feedback log is the only widening of setup's mutation boundary.
-> It is kept narrow — `.quality/logs/` only — and every other prohibition above
-> stays in force, so the feedback artifact cannot become a back door for the
-> writes setup still forbids. The `.quality/logs/` directory (plural) is distinct
-> from the quality log's `.quality/log/` (singular), which setup still must not
-> write. — 0066
+> It is kept narrow — the current run's `.quality/logs/` feedback file only —
+> and every other prohibition above stays in force, so the feedback artifact
+> cannot become a back door for the writes setup still forbids. The
+> `.quality/logs/` directory (plural) is distinct from the quality log's
+> `.quality/log/` (singular), which setup still must not write. — 0066, 0068
 
 ## Workflow structure
 
@@ -60,17 +60,18 @@ not only as conformance requirements.
 
 The setup workflow **MUST** include these stages, in order:
 
-1. Resolve the target `QUALITY.md` and verify setup prerequisites.
+1. Resolve the target `QUALITY.md`, verify setup prerequisites, emit the run
+   frame, and create the current run's workflow feedback log.
 2. Inspect repository context for setup signals.
 3. Build a setup brief with inferred defaults, confidence, and evidence.
 4. Ask concrete discovery questions.
-5. Present a final review recap of the question/answer set and invite a last
-   comment or correction before authoring.
+5. Present a final review recap of the question/answer set and wait for an
+   explicit review-gate response before authoring.
 6. Run `qualitymd init [path]` when the target model is missing.
 7. Synthesize or update `QUALITY.md`.
 8. Run lint and classify model maturity.
-9. Report completion and next-step choices, and author a workflow feedback log
-   when the run had notable experience events.
+9. Report completion and next-step choices, and finalize the workflow feedback
+   log.
 
 The workflow **MUST NOT** ask the user to design Factors, child Areas,
 Requirements, or Rating Levels cold. The skill derives model shape from the
@@ -96,10 +97,9 @@ optional and proportional: a small single-package root does not require it.
 
 Before asking discovery questions, setup **MUST** build a concise setup brief
 containing root Area, domain, lifecycle, risk tolerance, modeling rigor,
-collaboration context, inferred primary users and outcomes, inferred maintainer
-or collaborator needs, inferred other stakeholder needs, missing or
-non-agent-accessible context, review posture when visible, and candidate model
-shape.
+rating-scale recommendation, collaboration context, inferred primary users and
+outcomes, inferred maintainer or collaborator needs, inferred other stakeholder
+needs, missing or non-agent-accessible context, and candidate model shape.
 
 Every inferred setup brief item **MUST** include a recommended default,
 confidence signal, and short evidence note when evidence exists.
@@ -132,8 +132,8 @@ Setup **MUST** ask or present the following discovery questions before writing
    production, maintenance, or sunset?
 4. **Risk tolerance.** How costly is poor quality here: high tolerance,
    moderate tolerance, or low tolerance?
-5. **Modeling rigor.** How detailed should the first quality model be:
-   lightweight, standard, or high-assurance?
+5. **Rating Scale.** Should the model use the recommended
+   `outstanding`, `target`, `minimum`, `unacceptable` Rating Scale?
 6. **Primary users and outcomes.** Who needs the evaluated thing to work, and
    what outcomes matter most?
 7. **Maintainers and collaborators.** Who has to change, operate, review, or
@@ -143,25 +143,41 @@ Setup **MUST** ask or present the following discovery questions before writing
 9. **Missing context.** The skill thinks these important inputs are not visible:
    `<specific gaps>`. What else should the model record as unknown or not
    agent-accessible?
-10. **Review posture.** Should the model record a recurring review expectation:
-    none for now, per sprint or iteration, monthly, before major releases or
-    planning, custom, or another cadence?
 
 Each question **MUST** include a recommended answer and confidence signal.
 
+The Rating Scale question **MUST** explain that Rating Levels are configurable in
+`QUALITY.md` and are not baked into the format. It **MUST** recommend the
+standard four-level scale for most first models and explain each recommended
+level's role: `outstanding` is a stretch band where further investment may need
+ROI justification, `target` is the expected good-enough bar, `minimum` is the
+acceptable floor that still warrants improvement, and `unacceptable` is below
+the floor.
+
+Setup **MUST NOT** ask the user to invent custom Rating Level names during
+discovery. When the user rejects the recommended scale, setup **MAY** choose a
+simple alternate scale only when project context clearly supports it, such as a
+pass/fail gate; otherwise setup **SHOULD** use the recommended scale and record
+the scale decision as an open question or assumption in the model body.
+
 ### Per-question pedagogy
 
-The setup workflow **MUST** carry authored teaching copy for each of the ten
-discovery questions in the runtime skill. For each question, that copy **MUST**
+The setup workflow **MUST** carry authored teaching copy for each discovery
+question in the runtime skill. For each question, that copy **MUST**
 state the purpose of the question — why the dimension matters and what it shapes
-in `QUALITY.md` — and **MUST** state how the user can change that answer later.
+in `QUALITY.md`.
 
 The teaching copy **MUST** be authored in the workflow itself, not left to
 per-run agent improvisation, and **MUST** be written as copy the agent presents
 to the user (prose around the question), not as text confined to a structured
 tool's option or description fields. The workflow **MUST** present a question's
-purpose and how-to-change-later context to the user before or together with that
-question, on whatever presentation surface the agent uses.
+purpose/context to the user before or together with that question, on whatever
+presentation surface the agent uses.
+
+The workflow **MAY** state once outside the individual question copy that
+`QUALITY.md` is a living document and that setup answers can be revised later.
+It **MUST NOT** include per-question "how to change it later" copy or equivalent
+per-question lifecycle guidance.
 
 The workflow framing **MUST** state that setup optimizes for teaching the user
 the quality-model dimensions over minimizing interaction round-trips, so the
@@ -182,11 +198,11 @@ The collaboration question **MUST** assume agent-heavy development and ask which
 human collaborators, reviewers, maintainers, or stakeholders also need to align
 with the quality bar.
 
-The review-posture question **MUST** be framed as context capture, not as
-permission to create automations, CI gates, release gates, calendar events, or
-issue-tracker artifacts. Ad hoc `/quality evaluate` **MUST** be treated as
-always available rather than as a selectable automation option. Setup **MUST
-NOT** recommend CI or release gating as the default quality loop.
+Setup **MUST NOT** ask a review-posture discovery question. Review cadence,
+recurrence, and quality-loop options **MAY** appear in setup closeout as
+next-step routing, but not as setup discovery. Ad hoc `/quality evaluate` **MUST**
+be treated as always available rather than as a selectable automation option.
+Setup **MUST NOT** recommend CI or release gating as the default quality loop.
 
 Setup **MAY** ask an additional work-handoff question about where future
 evaluation recommendations should usually go. If asked, it **MUST** say setup
@@ -194,7 +210,7 @@ will not create issues or configure integrations.
 
 ## Prompt form
 
-`setup` **MUST** ask every one of the ten discovery questions on every run,
+`setup` **MUST** ask every one of the discovery questions on every run,
 including questions whose inferred default is high-confidence. High confidence in
 an inferred default **MUST NOT** be a reason to skip a question. `setup`
 **MUST NOT** drop, merge, or silently default away a question to fit an
@@ -205,8 +221,8 @@ capabilities. This guidance **MUST NOT** assume or name a specific agent's
 question tool.
 
 When the agent has a structured question affordance with item or option limits,
-`setup` **MUST** page all ten questions through it across as many rounds as the
-limits require, and **MUST** keep open-ended questions (primary users,
+`setup` **MUST** page all discovery questions through it across as many rounds as
+the limits require, and **MUST** keep open-ended questions (primary users,
 maintainers and collaborators, other stakeholders, missing context) as free text
 rather than forcing them into fixed options.
 
@@ -222,7 +238,7 @@ skip the remaining questions" **MUST** be removed or revised so it does not
 contradict asking every question. A per-question fast confirm — the user accepts
 the recommended default for a single question and advances without writing prose
 — **MAY** remain, because it still presents that question and its teaching copy.
-`setup` **MUST** honor an explicit user request to see all ten questions at once
+`setup` **MUST** honor an explicit user request to see all discovery questions at once
 instead of iterating, and **MUST NOT** lead with that escape.
 
 > Annotation: 0065 established the agent-agnostic presentation tiers but kept an
@@ -237,14 +253,19 @@ interaction.
 
 ## Final review recap
 
-After all ten discovery questions are answered and before writing `QUALITY.md`,
-`setup` **MUST** present a final review recap that lists every discovery question
-with its final answer.
+After all discovery questions are answered and before writing `QUALITY.md`,
+`setup` **MUST** stop for a review gate and present a final review recap that
+lists every asked discovery question with its final answer.
 
-The recap **MUST** invite the user to add a last free-text comment or correct any
-answer before authoring proceeds. `setup` **MUST** incorporate corrections the
-user makes at this step before authoring, and **MUST NOT** require the user to add
-a comment to proceed.
+`setup` **MUST** wait for a user response to the final recap before writing or
+editing `QUALITY.md`. Completing the final discovery question or a structured
+question-tool page **MUST NOT** satisfy this review gate.
+
+The recap **MAY** receive a correction, a cross-cutting comment, or an explicit
+confirmation such as "looks good", "continue", "write it", or an equivalent
+phrase. `setup` **MUST** incorporate corrections the user makes at this step
+before authoring, and **MUST NOT** require the user to add a substantive comment
+to proceed.
 
 The recap **MUST NOT** be the only place a question is surfaced; it supplements,
 and does not replace, asking each question during discovery.
@@ -271,8 +292,8 @@ the Markdown body's Overview, Scope, Needs, and Risks, including each section's
 unknowns, open questions, and any material support that is not
 agent-accessible. The body **MUST** preserve setup assumptions where they shape
 the model: root Area, domain, lifecycle, risk tolerance, modeling rigor,
-collaboration context, stakeholder needs, important missing or
-non-agent-accessible context, and review posture when it affects model use.
+rating-scale choice, collaboration context, stakeholder needs, and important
+missing or non-agent-accessible context.
 
 Setup-authored Factors **MUST** derive from project-specific needs, risks,
 stakeholder concerns, component boundaries, and available evidence, not generic
@@ -281,8 +302,11 @@ only when they represent distinct evaluated entities. Starter Requirements
 **MUST** be concrete and assessable from agent-accessible evidence or explicitly
 name missing evidence or assessment constraints.
 
-Setup **SHOULD** use the standard Rating Scale unless discovery shows a real
-need to customize it.
+Setup **SHOULD** use the standard Rating Scale unless discovery and the body show
+a real need to customize it. If the user rejects the recommended scale but the
+project context does not clearly support an alternate scale, setup **SHOULD** use
+the recommended scale and record the scale decision as an open question or
+assumption in the model body.
 
 Setup **SHOULD** include a `quality-md` Area that evaluates the `QUALITY.md`
 artifact itself against the active authoring guide unless the user declines or
@@ -328,17 +352,20 @@ any next-step action.
 
 ## Feedback log
 
-At the close of the run, `setup` **SHOULD** author a workflow feedback log under
-`.quality/logs/` capturing notable experience events from that run, and **MAY**
-omit it when nothing notable occurred. The artifact contract — location, naming
-(`<timestamp>-setup-feedback-log.md`), environment header, body schema,
-redaction, and no-transmission posture — is owned by the
-[Workflow feedback log](setup/feedback-log.md) sub-spec. Writing or omitting a
-feedback log **MUST NOT** change setup's completion criteria, maturity
-classification, or next-step routing.
+During preflight, after CLI support is verified, the model file is resolved, and
+the run frame is emitted, `setup` **MUST** create a workflow feedback log under
+`.quality/logs/` for the current run. As setup progresses, it **MUST** update the
+current run's file when material workflow-experience events occur, and at close
+it **MUST** finalize the log with terminal status, outcome, effort when
+available, and explicit no-notable-content notes for empty sections. The artifact
+contract — location, naming (`<timestamp>-setup-feedback-log.md`), frontmatter,
+body schema, redaction, current-run update rule, and no-transmission posture — is
+owned by the [Workflow feedback log](setup/feedback-log.md) sub-spec. Writing,
+updating, or finalizing a feedback log **MUST NOT** change setup's completion
+criteria, maturity classification, or next-step routing.
 
 > Annotation: the feedback log records the *experience* of running setup so the
 > skill, CLI, and prompts can improve from real runs — distinct from the user-
-> facing completion summary, which stays terse. The [0065 setup refinements](../../../../changes/archive/0065-setup-discovery-and-close-refinements.md)
-> existed only because a human hand-captured such friction once; the feedback log
-> makes that loop durable. — 0066
+> facing completion summary, which stays terse. Always creating the log removes
+> ambiguity from absence and preserves partial feedback when a setup run is
+> interrupted. — 0066, 0068

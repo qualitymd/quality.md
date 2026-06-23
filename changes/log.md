@@ -3,6 +3,102 @@
 ## 2026-06-23
 
 - **Implementation + Archival**: Implemented and advanced
+  [0069 - Setup review gate and discovery trim](archive/0069-setup-review-gate-and-pedagogy-trim.md)
+  through `Design`, `In-Progress`, and `In-Review` to `Done`, moving it (parent
+  and folder) into [`archive/`](archive/). Added the
+  [design doc](archive/0069-setup-review-gate-and-pedagogy-trim/design.md), then
+  implemented skill-only with **no CLI/Go change**: setup discovery now asks nine
+  questions, removes modeling rigor and review posture as user-facing discovery
+  questions, adds a Rating Scale confirmation question, trims per-question
+  pedagogy to purpose/context only, and treats the final recap as a hard review
+  gate before authoring. Synced the runtime setup workflow, durable setup spec,
+  spec logs, and `CHANGELOG.md`. Removed it from the open-cases [index](index.md)
+  and added it to the [archive index](archive/index.md).
+
+- **Update**: Amended
+  [0069 - Setup review gate and discovery trim](0069-setup-review-gate-and-pedagogy-trim.md)
+  while still in `Draft` to add a rating-scale confirmation question. The new
+  question teaches that Rating Levels are configurable model vocabulary, not
+  baked into QUALITY.md, while recommending the standard
+  `outstanding`/`target`/`minimum`/`unacceptable` scale and explaining the
+  decision role of each level. Setup still must not ask the user to invent
+  custom Rating Level names during discovery.
+
+- **Implementation + Archival**: Implemented and advanced
+  [0068 - Always-on setup feedback log](archive/0068-always-on-setup-feedback-log.md)
+  through `In-Progress` and `In-Review` to `Done`, moving it (parent and folder)
+  into [`archive/`](archive/). Implemented skill-only with **no CLI/Go change**:
+  setup now creates the current run's feedback log during preflight after CLI
+  support and the run frame, updates the current file for material
+  workflow-experience events, and finalizes it at close with stable frontmatter
+  metadata, lifecycle status, a timeline, and explicit no-notable-content notes.
+  Synced the durable workflow feedback-log sub-spec, setup workflow spec, parent
+  `/quality` skill spec, runtime skill files, CLI quick reference, spec logs, and
+  `CHANGELOG.md`; no public durable docs changed. Removed it from the open-cases
+  [index](index.md) and added it to the [archive index](archive/index.md).
+
+- **In-Review**: Completed implementation of
+  [0068 - Always-on setup feedback log](0068-always-on-setup-feedback-log.md).
+  Implemented skill-only with **no CLI/Go change**: setup now creates the
+  current run's feedback log during preflight after CLI support and the run
+  frame, updates the current file for material workflow-experience events, and
+  finalizes it at close. Synced the durable workflow feedback-log sub-spec,
+  setup workflow spec, parent `/quality` skill spec, runtime skill files, CLI
+  quick reference, spec logs, and `CHANGELOG.md`. No public durable docs changed.
+
+- **In-Progress**: Advanced
+  [0068 - Always-on setup feedback log](0068-always-on-setup-feedback-log.md)
+  from `Design` to `In-Progress`; spec and design were settled and
+  implementation began across durable specs, the runtime skill, and release
+  notes.
+
+- **Update**: Amended
+  [0069 - Setup review gate and discovery trim](0069-setup-review-gate-and-pedagogy-trim.md)
+  while still in `Draft` to include removing the modeling-rigor and
+  review-posture discovery questions. Modeling rigor may remain an internal
+  setup-brief inference, and review/loop expectations move to setup closeout
+  next-step routing rather than discovery. No replacement question added.
+
+- **Creation**: Added
+  [0069 - Setup review gate and discovery trim](0069-setup-review-gate-and-pedagogy-trim.md)
+  at `Draft` with its child folder
+  ([index](0069-setup-review-gate-and-pedagogy-trim/index.md),
+  [functional spec](0069-setup-review-gate-and-pedagogy-trim/spec.md)). The case
+  makes `/quality setup` stop after discovery, present the final recap, and wait
+  for an explicit user response before authoring `QUALITY.md`; structured
+  question-tool completion does not satisfy that review gate. It also trims
+  per-question teaching copy to purpose/context only, removing repeated
+  "how to change it later" guidance while allowing one general living-document
+  note. No CLI/Go change expected; skill + durable setup spec + changelog only.
+  Design and implementation not started. Listed it under open cases in the
+  bundle [index](index.md).
+
+- **Advance**: Moved
+  [0068 - Always-on setup feedback log](0068-always-on-setup-feedback-log.md) to
+  `Design` and authored its
+  [design doc](0068-always-on-setup-feedback-log/design.md). The design keeps the
+  artifact skill-only and local, emits the run frame before the first feedback-log
+  write, creates `.quality/logs/<started-at>-setup-feedback-log.md` immediately
+  after preflight has CLI/model metadata, updates the current run's file in place
+  for material workflow-experience events, and finalizes it at close. It records
+  the current-run overwrite boundary, the timeline/body split, stop-handling edge
+  cases, and the rejected alternatives of close-only creation, append-only events,
+  a JSONL sidecar, and a CLI helper. Implementation not started.
+
+- **Creation**: Added
+  [0068 - Always-on setup feedback log](0068-always-on-setup-feedback-log.md) at
+  `Draft` with its child folder
+  ([index](0068-always-on-setup-feedback-log/index.md),
+  [functional spec](0068-always-on-setup-feedback-log/spec.md)). The case changes
+  `/quality setup` feedback logging from optional close-step authoring to an
+  always-created run artifact under `.quality/logs/` that is created during
+  preflight, updated as the workflow progresses, and finalized at close with
+  stable frontmatter metadata and body sections. It remains skill-only, local,
+  never transmitted, and bounded to workflow-experience feedback rather than
+  `QUALITY.md` model rationale or evaluation records. Design and implementation
+  not started. Listed it under open cases in the bundle [index](index.md).
+
+- **Implementation + Archival**: Implemented and advanced
   [0067 - Setup discovery pedagogy](archive/0067-setup-discovery-pedagogy.md)
   through `In-Progress` and `In-Review` to `Done`, moving it (parent and folder)
   into [`archive/`](archive/). Implemented skill-only with **no code change**:

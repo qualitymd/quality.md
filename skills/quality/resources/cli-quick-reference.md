@@ -68,7 +68,8 @@ can point to that file with root `config` frontmatter, otherwise
 Other `.quality/` workspace artifacts: the quality log under `.quality/log/`
 (singular) and workflow feedback logs under `.quality/logs/` (plural,
 `<timestamp>-<workflow>-feedback-log.md`). Both are skill-written conventions
-created on demand, with no `qualitymd` command yet.
+created on demand, with no `qualitymd` command yet; setup creates and updates its
+current-run feedback log after CLI support is verified.
 
 ## Decision trees
 

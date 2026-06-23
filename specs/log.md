@@ -3,6 +3,27 @@
 ## 2026-06-23
 
 - **Revision**: Implemented durable spec changes for
+  [0069 - Setup review gate and discovery trim](../changes/archive/0069-setup-review-gate-and-pedagogy-trim.md).
+  Updated the
+  [`setup`](skills/quality-skill/workflows/setup.md) workflow spec to remove the
+  modeling-rigor and review-posture discovery questions, add a Rating Scale
+  confirmation question, trim per-question pedagogy to purpose/context only, and
+  make the final recap a hard review gate that waits for an explicit user
+  response before authoring.
+
+- **Revision**: Implemented durable spec changes for
+  [0068 - Always-on setup feedback log](../changes/archive/0068-always-on-setup-feedback-log.md).
+  Updated the
+  [workflow feedback log](skills/quality-skill/workflows/setup/feedback-log.md)
+  sub-spec so setup creates a feedback log during preflight after CLI support and
+  the run frame, updates the current run's file for material workflow-experience
+  events, and finalizes it at close with stable frontmatter metadata, lifecycle
+  status, a timeline, and no-notable-content notes. Updated
+  [`setup`](skills/quality-skill/workflows/setup.md) and the parent
+  [`/quality` skill](skills/quality-skill/quality-skill.md) spec to reflect the
+  always-on mutation boundary and current-run update rule.
+
+- **Revision**: Implemented durable spec changes for
   [0067 - Setup discovery pedagogy](../changes/archive/0067-setup-discovery-pedagogy.md)
   in [`setup`](skills/quality-skill/workflows/setup.md): required authored
   per-question pedagogy and the teaching-over-round-trips framing, changed the

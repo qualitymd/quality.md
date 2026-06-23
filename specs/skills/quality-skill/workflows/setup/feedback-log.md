@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Workflow feedback log
-description: Artifact contract for a hand-authored, skill-only workflow feedback log under .quality/logs/, with setup as the first adopter.
+description: Artifact contract for a hand-authored, skill-only workflow feedback log under .quality/logs/, with setup as the first always-on adopter.
 tags: [skill, setup, logging, feedback]
 timestamp: 2026-06-23T00:00:00Z
 ---
@@ -12,9 +12,11 @@ Sub-spec of the [/quality setup](../setup.md) workflow spec. It defines the
 *workflow feedback log*: a hand-authored Markdown artifact that records the
 *experience* of running a `/quality` workflow — friction, errors, UX/AX rough
 edges, and efficiency observations — so the skill, CLI, and prompts can be
-improved from real runs. `setup` is the first adopter; the contract is written
-generically so evaluate and update can adopt it later without a new directory or
-naming contract.
+improved from real runs. `setup` is the first always-on adopter: it creates a
+feedback log near the start of every run, updates that current-run file as the
+workflow progresses, and finalizes it at close. The contract is written
+generically so evaluate and update can adopt it later without a new directory,
+naming contract, or lifecycle vocabulary.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -43,8 +45,9 @@ gate; the user may share it deliberately.
 ## Scope
 
 Covered: the feedback-log artifact — purpose, location, naming, environment
-header, body schema, redaction, and no-transmission posture — and the `setup`
-behavior that authors it, all written skill-only.
+header, body schema, lifecycle status, redaction, and no-transmission posture —
+and the `setup` behavior that creates, updates, and finalizes it, all written
+skill-only.
 
 Deferred / non-goals:
 
@@ -95,7 +98,7 @@ workflow-agnostic `.quality/logs/` directory, creating that directory on demand.
 A feedback log file name **MUST** take the form
 `<timestamp>-<workflow>-feedback-log.md`, where `<timestamp>` is a sortable UTC
 timestamp and `<workflow>` is the workflow that produced it. `setup` **MUST**
-write `<timestamp>-setup-feedback-log.md`.
+write `<timestamp>-setup-feedback-log.md`, using the setup run's start timestamp.
 
 > Annotation: "log" is kept in the file name so a human can refer to the artifact
 > plainly (a "setup feedback log"). — 0066
@@ -107,7 +110,8 @@ interactive workflow a clash is vanishingly rare, and the skill **MAY** append a
 short disambiguator if one ever occurs.
 
 Each run that writes a feedback log **MUST** write a new file and **MUST NOT**
-overwrite an existing feedback log.
+overwrite a feedback log from another run. A workflow **MAY** update the current
+run's feedback log in place as the run progresses.
 
 The `.quality/logs/` location and naming **MUST** be specified so other workflows
 (for example evaluate, update) can adopt it without a new directory or naming
@@ -115,18 +119,28 @@ contract.
 
 ## Environment header
 
-A feedback log **SHOULD** begin with an environment header (frontmatter or a
-headed block) that lets a maintainer act on it out of context. The header
-**SHOULD** include, when available:
+A feedback log **MUST** begin with YAML frontmatter that lets a maintainer act
+on it out of context. The frontmatter **MUST** include these fields:
 
-- the workflow name;
-- the UTC timestamp of the run;
-- the acting agent and model identity;
-- the `/quality` skill version and the `qualitymd` CLI version;
-- the platform/OS;
-- whether a `QUALITY.md` model file already existed at the start of the run;
-- the run outcome (for `setup`, the maturity classification); and
-- a rough effort signal (such as turn or step count) when available.
+- `workflow` — the workflow name.
+- `status` — one of `in-progress`, `completed`, `interrupted`, or `failed`.
+- `started-at` — the run-start UTC timestamp used in the file name.
+- `updated-at` — the UTC timestamp of the last material log update.
+- `completed-at` — the terminal UTC timestamp, blank until the run reaches a
+  terminal state.
+- `agent` — acting agent identity when available.
+- `model` — acting model identity when available.
+- `skill-version` — `/quality` skill version when available.
+- `cli-version` — `qualitymd version --json` result or a concise
+  unavailable/error summary.
+- `platform` — OS/platform information when available.
+- `model-file` — repository-relative model path when safe to record, otherwise a
+  sanitized placeholder.
+- `model-file-pre-existed` — boolean when known.
+- `outcome` — setup maturity result (`starter`, `immature`, or
+  `evaluation-ready`) when known, blank until close.
+- `effort` — rough turn, step, or elapsed-time signal when available.
+- `redaction` — `none`, `sanitized`, or `withheld-details`.
 
 > Annotation: the header is what makes an out-of-context note actionable —
 > without "which agent/model, which version," a "this was slow" line is noise a
@@ -137,14 +151,36 @@ forbid.
 
 ## Body content
 
-A feedback log **SHOULD** organize its body into sections covering: friction and
-errors encountered, UX/AX observations, efficiency and speed observations, what
-worked well, suggested improvements, and a redaction note describing what was
-sanitized.
+A feedback log **MUST** organize its body with these top-level sections:
+
+```markdown
+# Setup feedback log
+
+## Timeline
+
+## Friction and errors
+
+## UX/AX observations
+
+## Efficiency and speed
+
+## What worked well
+
+## Suggested improvements
+
+## Redaction note
+```
+
+The `Timeline` section **MUST** record concise timestamped workflow-experience
+events, including creation, major phase transitions, notable retries or stops,
+and finalization.
 
 Feedback-log content **MUST** be about the workflow experience. It **MUST NOT**
 duplicate `QUALITY.md` model content or the authoring rationale that belongs in
 the model body (for example the model's Unknowns or assumptions).
+
+When a section has no notable content at close, the final log **SHOULD** say so
+explicitly, for example `None observed.`
 
 ## Redaction
 
@@ -176,20 +212,42 @@ action.
 
 ## Setup behavior
 
-`setup` **SHOULD** author a feedback log at the close of the run, capturing
-notable experience events from that run. `setup` **MAY** omit a feedback log when
-nothing notable occurred.
+`setup` **MUST** create a feedback log during preflight after it resolves the
+model file, verifies CLI support, emits the run frame, and obtains available CLI,
+skill, agent, and platform metadata. The initial log **MUST** be valid Markdown
+with YAML frontmatter and all required body sections present, even when most
+fields are still blank or marked `in-progress`.
+
+`setup` **MUST** update the current run's feedback log as the workflow
+progresses when there is material workflow-experience information to record,
+including friction, errors, confusing interaction points, retries, slow steps,
+redaction decisions, or unusually smooth affordances worth preserving. Each
+material update **MUST** refresh `updated-at`. The log **SHOULD** avoid noisy
+churn for routine internal steps.
+
+At normal close, `setup` **MUST** set `status: completed`, set `completed-at`,
+record setup maturity in `outcome`, update effort when available, and ensure each
+body section has useful content or an explicit no-notable-content note.
+
+When setup stops because lint fails, CLI support is missing after the log exists,
+user confirmation is not granted, or another non-success stop occurs, the skill
+**SHOULD** finalize the log with `status: failed` or `status: interrupted` when
+it can do so without masking the stop condition. If finalization is impossible,
+the existing `status: in-progress` log remains acceptable partial feedback.
 
 `setup`'s mutation surface is amended so that, in addition to the target
-`QUALITY.md`, `setup` **MAY** write a feedback log under `.quality/logs/`. Every
-other `setup` mutation prohibition (no evaluation artifacts, no quality log under
-`.quality/log/`, no external issues, no integrations, no automations) remains in
-force (see [/quality setup](../setup.md#mutation-surface-and-artifacts)).
+`QUALITY.md`, `setup` **MUST** write and update the current run's feedback log
+under `.quality/logs/`. Every other `setup` mutation prohibition (no evaluation
+artifacts, no quality log under `.quality/log/`, no external issues, no
+integrations, no automations) remains in force (see
+[/quality setup](../setup.md#mutation-surface-and-artifacts)).
 
-Writing or omitting a feedback log **MUST NOT** change setup's completion
-criteria, maturity classification, or next-step routing.
+Writing, updating, or finalizing a feedback log **MUST NOT** change setup's
+completion criteria, maturity classification, or next-step routing.
 
-> Annotation: this is the first widening of setup's mutation boundary. It is kept
-> narrow — only `.quality/logs/` — so the feedback artifact cannot become a back
-> door for the evaluation, quality-log, or integration writes setup still
-> prohibits. — 0066
+> Annotation: 0068 makes feedback-log absence unambiguous. A clean run now leaves
+> a terse explicit record, and an interrupted run can preserve partial workflow
+> feedback. The mutation boundary remains narrow — only the current run's file
+> under `.quality/logs/` — so the feedback artifact cannot become a back door for
+> the evaluation, quality-log, or integration writes setup still prohibits. —
+> 0066, 0068

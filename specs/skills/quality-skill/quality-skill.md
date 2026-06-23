@@ -494,9 +494,11 @@ records the *experience* of running a `/quality` workflow — friction, errors,
 UX/AX rough edges, and efficiency observations — so the skill, CLI, and prompts
 can be improved from real runs. It is written under a workflow-agnostic
 `.quality/logs/` directory, created on demand, as
-`<timestamp>-<workflow>-feedback-log.md`. It is improvement-oriented and
-workflow-level, and **MUST** stay distinct from evaluation's per-run
-`debug-log.md` and from the [quality log](#quality-log) under `.quality/log/`.
+`<timestamp>-<workflow>-feedback-log.md`. A workflow may update the current run's
+feedback log in place as the workflow progresses; it must not overwrite another
+run's log. It is improvement-oriented and workflow-level, and **MUST** stay
+distinct from evaluation's per-run `debug-log.md` and from the
+[quality log](#quality-log) under `.quality/log/`.
 
 The artifact is recorded locally and the skill and CLI **MUST NOT** transmit it
 to any external service; sharing it **MUST** be an explicit user action, so it
@@ -504,16 +506,21 @@ needs no consent gate. Because the user may share it, a feedback log **MUST NOT*
 contain secret values or raw prompt-injection text, and the skill **SHOULD**
 sanitize sensitive project context before writing it.
 
-`setup` is the first adopter; the full artifact contract — environment header,
-body schema, redaction, and no-transmission posture — lives in the
+`setup` is the first always-on adopter: it creates a feedback log near the start
+of every setup run, updates the current run's file for material
+workflow-experience events, and finalizes it at close. The full artifact contract
+— frontmatter, body schema, lifecycle status, redaction, and no-transmission
+posture — lives in the
 [workflow feedback log](workflows/setup/feedback-log.md) sub-spec, written
-generically so evaluate and update can adopt the same directory and naming
-without a new contract.
+generically so evaluate and update can adopt the same directory, naming, and
+lifecycle vocabulary without a new contract.
 
 > Rationale: `/quality` workflows had no durable, central place to record what
 > was slow, confusing, or wrong about *running* them. The signal behind the 0065
 > setup refinements was hand-captured once from a single field test; the feedback
-> log makes that improvement loop durable and actionable across runs. — 0066
+> log makes that improvement loop durable and actionable across runs. Always-on
+> setup logging removes ambiguity from missing files and preserves partial
+> feedback from interrupted setup runs. — 0066, 0068
 
 ## Deferred
 
