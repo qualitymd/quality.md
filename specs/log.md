@@ -1,5 +1,15 @@
 # Specs Update Log
 
+## 2026-06-23
+
+- **Revision**: Implemented durable spec alignment for
+  [0061 - Natural scope labels](../changes/archive/0061-natural-scope-labels.md).
+  Updated the durable [`/quality` skill](skills/quality-skill/index.md) specs to
+  make natural Area and Factor labels the primary scoped-evaluation input,
+  preserve qualified model references for exact addressing, require targeted
+  repeated-Factor clarification, and keep durable evaluation artifacts on stable
+  identifiers.
+
 ## 2026-06-22
 
 - **Revision**: Implemented durable spec alignment for

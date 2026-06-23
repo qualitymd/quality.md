@@ -16,15 +16,21 @@ Run qualitymd lint
 Resolve scope
 - no scope? full evaluation
 - qualified model reference? resolve `area:<area-path>` or
-  `factor:<declaring-area-path>::<factor-path>` against the model
-- area/factor keyword given? accept unqualified references only because the
-  expected type is fixed: `area webhooks/delivery` or
-  `factor webhooks/delivery::reliability`
-- one bare name? resolve as legacy human-edge shorthand against the model: area
-  subtree or factor's requirements
-- two bare names? <area> <factor>: that Factor's requirements within the Area
-- area/factor keyword can also disambiguate a name that is both
-- unresolvable or both area and factor? ask for area/factor disambiguation
+  `factor:<declaring-area-path>::<factor-path>` against the model for exact
+  addressing
+- one natural label? match against Area titles/names and Factor titles/names:
+  unique Area -> Area subtree; unique Factor -> that Factor's requirements in
+  its declaring Area
+- repeated Factor label? ask `What area do you want to evaluate <Factor> for?`
+  and list human-readable Area titles or names first
+- label matches both Area and Factor candidates? ask a targeted clarification
+  before rating
+- two natural labels? `<area-label> <factor-label>`: resolve the Area first,
+  then the Factor within that Area
+- area/factor keyword given? accept fixed-type unqualified references such as
+  `area webhooks/delivery` or `factor webhooks/delivery::reliability`
+- unresolvable? report that the label is not in the model and offer nearest
+  runnable scoped-evaluation options visible from the model
 
 Finding claims code, CLI, or tool behavior?
 - verify with command/search and cite locator

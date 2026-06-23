@@ -32,11 +32,15 @@ Invoke the `/quality` skill to manage quality for your project:
 /quality setup                                  Get started working with QUALITY.md
 /quality wizard                                 Have your AI assistant/agent help you manage quality
 /quality evaluate                               Evaluate the quality of your project
-/quality evaluate factor:root::security         Evaluate a specific quality factor or characteristic
-/quality evaluate area:payments-api             Evaluate a specific area or project component
-/quality evaluate factor:payments-api::maintainability
+/quality evaluate Security                      Evaluate a specific quality factor or characteristic
+/quality evaluate Payments API                  Evaluate a specific area or project component
+/quality evaluate Payments Maintainability
                                                 Evaluate an area's specific quality
 ```
+
+For exact or ambiguous scoped evaluations, use qualified model references such
+as `/quality evaluate area:payments-api` or
+`/quality evaluate factor:payments-api::maintainability`.
 
 Most users should work with `QUALITY.md` through their coding agent, the
 `/quality` skill, or direct edits. The CLI is primarily support tooling for
@@ -132,8 +136,9 @@ your team:
 - **On demand.** Run `/quality evaluate` whenever you need a read — before a
   ship, during code review, when you inherit an unfamiliar codebase, or when
   something just feels off. Scope it down when you don't need the whole model:
-  `/quality evaluate area:payments-api` or
-  `/quality evaluate factor:payments-api::security`.
+  `/quality evaluate Payments` or `/quality evaluate Payments Security`.
+  Qualified references such as `/quality evaluate area:payments-api` remain
+  available for exact addressing.
 
 - **On a cadence.** Make the model and its latest evaluation a recurring team
   review — per sprint, per release, whatever your rhythm. Close gaps in the work,

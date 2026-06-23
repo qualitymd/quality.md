@@ -206,15 +206,23 @@ valid:
 - **Scope** — full evaluation (default), or a narrowing by **Area** (an Area
   and its subtree) and/or by **Factor** (the Requirements tied to a Factor,
   including those tagging it as a secondary Factor), per
-  [Define](../../../SPECIFICATION.md#define). Explicit scoped input should use
-  qualified model references: `area:<area-path>` or
-  `factor:<declaring-area-path>::<factor-path>`. The skill may accept
-  unqualified references only at human/input edges where the expected reference
-  type is fixed, such as `area webhooks/delivery` or
-  `factor webhooks/delivery::reliability`. Legacy
-  bare names are human-edge shorthand matched against the grounded model; an
-  explicit `area`/`factor` keyword disambiguates a name that is both. Display
+  [Define](../../../SPECIFICATION.md#define). Natural Area and Factor labels are
+  the primary user-facing scoped-evaluation input for the skill. The skill
+  **SHOULD** match one label against Area titles, Area names, Factor titles, and
+  Factor names in the grounded model; a unique Area match evaluates that Area,
+  and a unique Factor match evaluates that Factor in its declaring Area. For two
+  labels, the skill **SHOULD** resolve the Area label first, then resolve the
+  Factor label within that Area. When a Factor label is present in multiple
+  Areas, the skill **SHOULD** ask `What area do you want to evaluate <Factor>
+  for?` and lead clarification options with human-readable Area titles or names.
+  The skill **MUST** continue to accept qualified model references such as
+  `area:<area-path>` and `factor:<declaring-area-path>::<factor-path>` for exact
+  addressing, disambiguation, and advanced workflows. It may also accept
+  unqualified references at fixed-type human/input edges such as
+  `area webhooks/delivery` or `factor webhooks/delivery::reliability`. Display
   values, such as `/` for the root Area in reports, are not model references.
+  Evaluation artifacts **MUST** use stable `areaPath`, `factorPath`, and rating
+  `level` identifiers rather than natural labels.
 - **Rigor** — the evaluation depth (default `standard`); see
   [Rigor levels](evaluation.md#rigor-levels).
 
@@ -403,11 +411,13 @@ arguments, defaulting the ones left out:
 /quality review history        # wizard: inspect prior runs and recommendations
 /quality evaluate              # run a full evaluation — root area, standard depth
 /quality evaluate --rigor quick   # fast evaluate: hotspots, high-confidence findings only
-/quality evaluate area:payments       # scope to the payments Area
-/quality evaluate area:payments --rigor deep   # exhaustive evaluate for one Area
-/quality evaluate factor:root::security   # scope to the root Security Factor
-/quality evaluate factor:payments::maintainability   # payments Area's Maintainability Factor
-/quality evaluate factor flow  # fixed-type unqualified reference when a name is both an Area and a Factor
+/quality evaluate Payments     # scope to the Payments Area
+/quality evaluate Payments --rigor deep   # exhaustive evaluate for one Area
+/quality evaluate Security     # scope to the unique Security Factor
+/quality evaluate Payments Maintainability   # Payments Area's Maintainability Factor
+/quality evaluate area:payments   # exact qualified Area reference
+/quality evaluate factor:payments::maintainability   # exact qualified Factor reference
+/quality evaluate factor flow  # fixed-type unqualified reference when a label is both an Area and a Factor
 /quality apply recommendation 002   # follow up: apply only on confirmation
 /quality handoff recommendation 002 # follow up: prepare/create an issue
 /quality update              # plan and orchestrate paired skill/CLI updates

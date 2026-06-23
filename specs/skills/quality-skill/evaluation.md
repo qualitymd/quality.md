@@ -40,6 +40,39 @@ artifacts so long as the result satisfies the contract. The format spec remains
 the **conformance target**: where the skill's process and the contract would
 diverge, the contract governs and the skill **MUST** be corrected to conform.
 
+### Scope resolution
+
+For scoped `/quality evaluate` requests, natural Area and Factor labels are the
+primary human-facing input. The skill **SHOULD** match labels against required
+titles and stable YAML names in the grounded model before any evaluation records
+are written.
+
+> Rationale: the skill owns human-edge interpretation. Natural labels keep the
+> normal evaluation path in project vocabulary while preserving the stable model
+> identifiers used by records and reports. — 0061
+
+For `/quality evaluate <label>`, the skill **SHOULD** resolve the label as
+follows:
+
+- if it uniquely identifies one Area, evaluate that Area and its subtree;
+- if it uniquely identifies one Factor, evaluate that Factor in its declaring
+  Area;
+- if it identifies a Factor label present in multiple Areas, ask
+  `What area do you want to evaluate <Factor> for?`;
+- if it matches both Area and Factor candidates, ask a targeted clarification
+  question before rating; and
+- if it does not resolve, report that the label is not in the model and offer
+  nearest runnable scoped-evaluation options visible from the model.
+
+For `/quality evaluate <area-label> <factor-label>`, the skill **SHOULD**
+resolve the Area label first, then resolve the Factor label within that Area.
+
+The skill **MUST** continue to accept qualified model references such as
+`area:<area-path>` and `factor:<declaring-area-path>::<factor-path>` for exact
+addressing. Durable evaluation records and `report.json` **MUST NOT** persist
+natural labels in place of structured `areaPath`, `factorPath`, or rating
+`level` identifiers.
+
 ### Workflow
 
 For an `evaluate` invocation the skill's process interleaves the judgment phases
@@ -105,8 +138,8 @@ flowchart TD
    stable model identifiers: `areaPath` entries are Area ID elements,
    `factorRatingResults[].factorPath` values are Factor ID elements relative to
    the declaring Area, and ratings are Rating Level IDs in `level`. Human-facing
-   prose can use titles, qualified model references, or unqualified references
-   where the surrounding context fixes the type; records keep structured
+   prose can use titles and natural labels; qualified model references remain
+   available where exact traceability matters. Records keep structured
    identifiers so reports, gates, and machine consumers remain stable.
 10. **Check and report** with `qualitymd evaluation status <run>` followed by
     `qualitymd evaluation report build <run>` when reportable.

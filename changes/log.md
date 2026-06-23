@@ -1,5 +1,37 @@
 # Changes Update Log
 
+## 2026-06-23
+
+- **Done**: Landed and archived
+  [0061 - Natural scope labels](archive/0061-natural-scope-labels.md) —
+  advanced it through implementation to `Done`, moved the parent concept and
+  child folder into [`archive/`](archive/index.md), added it to the archive
+  [index](archive/index.md), and removed it from the open-cases [index](index.md).
+  The implementation updates README examples, runtime `/quality` scope
+  resolution guidance, durable `/quality` skill specs, specs logs, and the
+  changelog so natural Area and Factor labels are the primary documented scoped
+  input while qualified references remain exact-addressing syntax.
+
+- **Design**: Advanced
+  [0061 - Natural scope labels](archive/0061-natural-scope-labels.md) from
+  `Draft` to `Design` and added its
+  [design doc](archive/0061-natural-scope-labels/design.md). The design keeps
+  label resolution in the `/quality` skill, treats natural labels as human-edge
+  input only, preserves qualified references and stable artifact identifiers,
+  and records exact matching plus targeted ambiguity prompts as the
+  implementation shape. Updated the open-cases entry in the bundle
+  [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0061 - Natural scope labels](archive/0061-natural-scope-labels.md) (`Draft`)
+  with its [functional spec](archive/0061-natural-scope-labels/spec.md) and
+  [child index](archive/0061-natural-scope-labels/index.md). The case makes
+  natural Area and Factor labels the primary documented scoped-evaluation input
+  for `/quality evaluate`, keeps qualified model references as exact-addressing
+  syntax, and preserves stable IDs in durable evaluation artifacts. Added the
+  case to the open-cases list in the bundle [index](index.md). Design and code
+  not started.
+
 ## 2026-06-22
 
 - **Done**: Landed and archived

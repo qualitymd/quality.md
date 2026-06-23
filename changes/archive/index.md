@@ -207,3 +207,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0060 — Friendly path display](0060-friendly-path-display.md) - separated
   human display values from model-reference grammar so root Area paths render as
   `/` in human reports while references stay stable (`Done`).
+- [0061 — Natural scope labels](0061-natural-scope-labels.md) - made natural
+  Area and Factor labels the primary documented scoped-evaluation input for the
+  `/quality` skill while preserving qualified references for exact addressing
+  and stable identifiers in durable artifacts (`Done`).

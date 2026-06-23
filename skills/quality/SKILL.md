@@ -91,24 +91,29 @@ Parse the user's request from free-form arguments:
   as recommendation follow-up, not as a separate mode.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
-- Scope: full evaluation by default, or a narrowing. Prefer qualified model
-  references for explicit scoped input: `area:<area-path>` for an Area,
+- Scope: full evaluation by default, or a narrowing. Natural Area and Factor
+  labels are the primary scoped input for `/quality evaluate`; match them
+  against required titles and stable YAML names in the grounded model. One label
+  evaluates the uniquely matching Area or Factor. Two labels are
+  `<area-label> <factor-label>`: resolve the Area first, then the Factor within
+  that Area. When a Factor label exists in multiple Areas, ask exactly:
+  `What area do you want to evaluate <Factor> for?` and list human-readable Area
+  titles or names first. When a label matches both Area and Factor candidates,
+  ask a targeted clarification before rating. Continue to accept qualified model
+  references for exact addressing: `area:<area-path>` for an Area,
   `factor:<declaring-area-path>::<factor-path>` for a Factor, and
   `rating:<rating-level-id>` where rating references are needed. Accept
-  unqualified references only at fixed-type input edges such as
-  `area webhooks/delivery` or `factor webhooks/delivery::reliability`; never
-  persist display values or unqualified references in records or `report.json`.
-  In generated human reports, the root Area display value is `/`; its
-  references remain `area:root` and `root`. Resolve legacy bare names against
-  the grounded model only as
-  human-edge shorthand — match it to the Area or Factor that bears it. Two bare
-  names are an `<area> <factor>` pair: that Factor narrowed within the Area. Use
-  an explicit `area`/`factor` keyword only to disambiguate a name that is both an
-  Area and a Factor.
+  unqualified references at fixed-type input edges such as `area webhooks` or
+  `factor webhooks::reliability`. Never persist natural labels, display values,
+  or unqualified references in records or `report.json`; use stable
+  `areaPath`, `factorPath`, and rating `level` identifiers. In generated human
+  reports, the root Area display value is `/`; its references remain
+  `area:root` and `root`.
 - Rigor: `standard` by default; see [Rigor Levels](#rigor-levels).
 
-When a bare request is ambiguous, run `wizard`: inspect state, summarize the
-concrete runnable options, and ask the user which action to take.
+When a scoped request is ambiguous, inspect the grounded model, summarize the
+concrete runnable scope options, and ask only for the missing Area, Factor, or
+kind decision.
 
 ## User Interaction Contract
 
@@ -195,10 +200,14 @@ must not be replaced by titles, display values, or unqualified references.
 /quality review history
 /quality setup
 /quality evaluate
-/quality evaluate <name>
-/quality evaluate <area> <factor>
+/quality evaluate <label>
+/quality evaluate <area-label> <factor-label>
+/quality evaluate Security
+/quality evaluate Payments Maintainability
 /quality evaluate area <name>
 /quality evaluate factor <name>
+/quality evaluate area:payments-api
+/quality evaluate factor:payments-api::maintainability
 /quality evaluate deep
 /quality update
 ```

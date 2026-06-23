@@ -9,6 +9,10 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Made natural Area and Factor labels the primary documented `/quality evaluate`
+  scoped input, with qualified `area:` and `factor:` references retained for
+  exact addressing.
+
 ### Packaging
 
 ### Specification
