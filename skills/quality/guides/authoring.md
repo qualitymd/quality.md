@@ -51,7 +51,7 @@ unless an area narrows it with a `source`.
 ## Quality Model
 
 The **quality model** is the frontmatter: the root node of the file. It carries
-one model-wide property, the `ratingScale`, plus all the properties of a
+one model-wide property, the `ratingScale`, plus all the properties of an
 [Area](#area) — because the model root *is* the apex area and tops the
 area tree.
 
@@ -120,7 +120,7 @@ references such as `area:root`, `area:api`, `factor:api::reliability`, or
   entity is the criteria for which — and how quality depends along those edges —
   is often the most valuable thing the model records.
 - **Do** make each assessment either inline or a reference to another entity, and
-  reference that entity by the same canonical path used as its area `source`,
+  reference that entity by the same selector used as its area's `source`,
   so a reader can follow the edge from one area to the next.
 - **Do** stop the chain where ownership or value stops: model referenced entities
   as areas while you own them; let a guide that governs its own kind be its own
@@ -341,8 +341,8 @@ Each level does two distinct jobs through two properties:
   intent. Fixed for the whole model; never overridden.
 - **`criterion`** — the default rule for deciding whether a requirement's
   findings *land at* that level. A requirement may override its own criterion
-  (see [Override the criteria for one
-  requirement](#override-criteria-only-when-the-shared-scale-cant-express-the-gradient));
+  (see [Override criteria only when the shared scale can't
+  express the gradient](#override-criteria-only-when-the-shared-scale-cant-express-the-gradient));
   the description never changes.
 
 ### Properties (per level)
@@ -502,7 +502,7 @@ empty and renders as `area:root` when a canonical model reference is needed.
 
 #### An entity can be both an area and an assessment reference
 
-- **Do** decide by *role in this relationship*, not by identity: an entity is a
+- **Do** decide by *role in this relationship*, not by identity: an entity is an
   area where its quality is the thing being managed, and an assessment
   reference where it supplies the criteria for judging another area. A spec is
   both — an area in its own right and the criteria for judging the code that
@@ -871,8 +871,8 @@ something inspectable is the core authoring move.
   it once.
 - **Avoid** extracting, summarizing, or duplicating that content into the
   requirement. *Duplicated criteria drift out of sync with their origin.*
-- **Do** reference that entity by the same canonical path used as its own
-  area's `source`. *That shared path is the edge between the two areas; it is
+- **Do** reference that entity by the same selector used as its own
+  area's `source`. *That shared selector is the edge between the two areas; it is
   what makes the dependency traceable.*
 - **Do** point at the specific applicable part of the referenced entity, and pin a
   version where it matters. *An unversioned, whole-document reference leaves the
@@ -914,7 +914,7 @@ requirements:
 - **Do** rely on **placement** for the primary factor (nest the requirement under
   it), and add `factors` only to pull the result into additional (**secondary**)
   factor roll-ups.
-- **Do** declare `factors` explicitly for a requirement placed directly under a
+- **Do** declare `factors` explicitly for a requirement placed directly under an
   area — it's required there, and `null`/`[]`/empty entries don't satisfy it.
 - **Do** name in `factors` only factors that are **in scope** — declared on this
   area or on an ancestor. *A named factor that lives on a sibling or a
