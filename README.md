@@ -90,10 +90,10 @@ agents with what matters in *this* codebase. You capture it once, then run a
 
 ### Getting started
 
-1. **Run `/quality setup` to make your quality bar visible.** Using available
-   context, the skill drafts a `QUALITY.md` with likely quality factors,
-   assessable requirements, needs, risks, unknowns, open questions, and
-   agent-accessibility gaps.
+1. **Run `/quality setup` to make your quality bar visible.** The skill inspects
+   available context, asks a few setup questions with recommended defaults, and
+   writes a `QUALITY.md` with likely quality factors, assessable requirements,
+   needs, risks, unknowns, open questions, and agent-accessibility gaps.
    → *A shared starting point for what good means here: the expectations already
    visible in the project, the judgments that still need human input, and the
    context gaps agents and contributors need to close before they can know what
@@ -130,8 +130,7 @@ efficiency and efficacy of working with QUALITY.md files.
 
 ### Keeping the loop running
 
-Once you have a model, the loop keeps going at whatever cadence and trigger fits
-your team:
+Once you have a model, the loop keeps going at whatever cadence fits your team:
 
 - **On demand.** Run `/quality evaluate` whenever you need a read — before a
   ship, during code review, when you inherit an unfamiliar codebase, or when
@@ -141,14 +140,15 @@ your team:
   available for exact addressing.
 
 - **On a cadence.** Make the model and its latest evaluation a recurring team
-  review — per sprint, per release, whatever your rhythm. Close gaps in the work,
+  review — per sprint, monthly, or whatever rhythm maintainers already use.
+  Close gaps in the work,
   and sharpen the model where the bar proved wrong, unclear, or out of date — so
   the shared definition stays current as the product evolves.
 
-- **Automated.** Wire `/quality evaluate` into CI or a scheduled agent (Claude
-  Code routines, Codex automations) so quality is checked continuously, not just
-  when someone remembers. Surface results where the team already works — PR
-  comments, status checks, dashboards.
+- **Recurring.** Use Codex automations, Claude Code routines, or another
+  maintainer-owned workflow when you want that cadence to run without someone
+  remembering. Keep the loop tied to review habits, not CI or release gates by
+  default.
 
 ## Example QUALITY.md
 

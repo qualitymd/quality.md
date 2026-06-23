@@ -22,8 +22,8 @@ recommendations.
 - Read [`guides/authoring.md`](guides/authoring.md) when
   creating, populating, reviewing, or improving a QUALITY.md file.
 - Read [`guides/getting-started.md`](guides/getting-started.md) after setup
-  creates an initial `QUALITY.md`, or when the user asks how to make the first
-  useful model from a skeleton. Read the authoring guide first.
+  leaves a starter or immature `QUALITY.md`, or when the user asks how to keep
+  iterating on the first useful model. Read the authoring guide first.
 - Read [`guides/top-10-quality-md-checks.md`](guides/top-10-quality-md-checks.md)
   when quickly inspecting a QUALITY.md file's current state, quality, or
   lifecycle for read-only orientation or model-review routing.
@@ -43,10 +43,10 @@ recommendations.
 - Recommendation follow-up edits evaluated source files or `QUALITY.md` only
   after explicit confirmation of the recommendation, option, and mutation
   surface.
-- The quality log under `.quality/log/` is written only by `setup` (an inaugural
-  entry) and confirmed model-authoring or recommendation-apply workflows (one
-  entry per meaningful model change). `evaluate`, read-only orientation, and
-  issue-tracker handoff never write it. See [Quality Log](#quality-log).
+- The quality log under `.quality/log/` is written only by confirmed
+  model-authoring or recommendation-apply workflows (one entry per meaningful
+  model change). `setup`, `evaluate`, read-only orientation, and issue-tracker
+  handoff never write it. See [Quality Log](#quality-log).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
 - Never manually create evaluation run folders or record files.
@@ -309,13 +309,14 @@ Format contract:
   recalibration or a drift correction.
   ```
 
-The log is **curated, not complete**: hand edits to `QUALITY.md` bypass the
-skill, so git remains the full diff history while the log carries the judgment.
-Log a change that alters what the model *is* or *how it judges*; do **not** log
-Markdown-body wording, typo, or formatting changes, nor evaluated-source fixes
-that leave the model unchanged. Write one entry per coherent change (a confirmed
-recommendation apply, model-authoring change, or the initial population), not
-one per field touched. The meaningful-change taxonomy is in
+The log is **curated, not complete**: hand edits to `QUALITY.md` and setup's
+initial model creation bypass the log, so git remains the full diff history
+while the log carries later model-change judgment. Log a change that alters what
+the model *is* or *how it judges*; do **not** log Markdown-body wording, typo,
+or formatting changes, nor evaluated-source fixes that leave the model
+unchanged. Write one entry per coherent change (a confirmed recommendation apply
+or model-authoring change), not one per field touched. The meaningful-change
+taxonomy is in
 [`guides/authoring.md`](guides/authoring.md).
 
 A `qualitymd log` command, a `.quality/config.yaml` `logDir` key, and a queryable

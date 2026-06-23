@@ -3,6 +3,13 @@
 ## 2026-06-23
 
 - **Revision**: Implemented durable spec alignment for
+  [0063 - Contextual setup flow](../changes/0063-contextual-setup-flow.md).
+  Updated durable [`/quality` skill](skills/quality-skill/index.md) specs so
+  setup analyzes context, asks confidence-labeled discovery questions, writes
+  only `QUALITY.md`, validates and readiness-checks the model, offers next-step
+  choices, and no longer writes quality-log entries.
+
+- **Revision**: Implemented durable spec alignment for
   [0062 - Remove wizard mode](../changes/0062-remove-wizard-mode.md). Updated the
   durable [`/quality` skill](skills/quality-skill/index.md) specs to remove
   `wizard` as a public mode, keep bare `/quality` as read-only orientation,

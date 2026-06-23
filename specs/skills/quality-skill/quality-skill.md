@@ -148,8 +148,9 @@ The root prompt **MUST** direct agents when to read each one:
   comprehensive authoring guide read when creating, populating, reviewing, or
   improving a QUALITY.md file.
 - [`guides/getting-started.md`](../../../skills/quality/guides/getting-started.md)
-  — the first-run guide read after setup creates an initial `QUALITY.md`, or when
-  the user asks how to make the first useful model from a skeleton.
+  — the first-run guide read after setup leaves a starter or immature
+  `QUALITY.md`, or when the user asks how to keep iterating on the first useful
+  model.
 - [`guides/top-10-quality-md-checks.md`](../../../skills/quality/guides/top-10-quality-md-checks.md)
   — the quick inspection checklist read when assessing a QUALITY.md file's
   current state, quality, or lifecycle for read-only orientation or model-review
@@ -242,8 +243,8 @@ policy, expected artifacts, and next user-visible gate.
 
 The run frame **MUST** distinguish read-only work from mutating work. For a
 mutating mode, it **MUST** name the class of thing that may be changed:
-evaluated source, `QUALITY.md`, evaluation artifacts, installed tooling, or some
-combination of those.
+evaluated source, `QUALITY.md`, evaluation artifacts, the quality log, installed
+tooling, or some combination of those.
 
 > Rationale: the skill infers mode and scope from free-form requests. A short
 > run frame gives the user a chance to catch a wrong inference before the agent
@@ -374,11 +375,14 @@ removed from the public surface and point to public workflows.
 
 ### Setup
 
-[`setup`](modes/setup.md) bootstraps a missing model and guides first
-population. It verifies CLI compatibility, delegates deterministic scaffolding
-and validation to `qualitymd`, reads the authoring and getting-started guides,
-and may write the model file plus a quality-log entry for meaningful model
-creation or model-shape changes.
+[`setup`](modes/setup.md) bootstraps or updates a model through a short,
+context-informed discovery flow. It verifies CLI compatibility, inspects
+available repository context for setup signals, asks compact discovery questions
+with confidence-labeled defaults, delegates deterministic scaffolding and
+validation to `qualitymd`, writes only the selected `QUALITY.md`, inspects
+readiness with the Top 10 checklist, and offers next-step choices. It does not
+evaluate source, write the quality log, create external issues, or configure
+recurring-review automation.
 
 ### Evaluate
 

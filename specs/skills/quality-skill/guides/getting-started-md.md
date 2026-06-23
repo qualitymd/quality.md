@@ -1,9 +1,9 @@
 ---
 type: Functional Specification
 title: QUALITY.md getting-started guide
-description: Contract for the skill's first-run guide for turning an initialized QUALITY.md skeleton into a first useful model.
+description: Contract for the skill's first-run guide for turning a starter or immature QUALITY.md into a first useful model.
 tags: [skill, quality, guide]
-timestamp: 2026-06-19T00:00:00Z
+timestamp: 2026-06-23T00:00:00Z
 ---
 
 # QUALITY.md getting-started guide
@@ -12,8 +12,8 @@ This spec governs the **getting-started guide** the [`/quality` skill](../qualit
 ships at
 [`skills/quality/guides/getting-started.md`](../../../../skills/quality/guides/getting-started.md).
 The guide is the setup follow-on: the document a human or agent reads after
-`qualitymd init` has created a valid skeleton and before the first real
-evaluation model exists. It assumes the reader has already read the
+setup leaves a starter or immature `QUALITY.md`, or when a user asks how to keep
+iterating on the first useful model. It assumes the reader has already read the
 [authoring guide](authoring-md.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -24,26 +24,26 @@ appear in all capitals.
 
 ## Motivation
 
-`qualitymd init` can create a valid file, but validity is only the first gate.
-The initial authoring job needs process more than reference: the reader should
-already have the authoring guide's best practices, then use a focused sequence
-to turn the skeleton into a first useful model. Keeping that job in its own guide
-lets setup hand off to a playbook without making the authoring reference carry
+Setup can create a valid file, but validity is only the first gate. The initial
+authoring job needs process more than reference: the reader should already have
+the authoring guide's best practices, then use a focused sequence to turn the
+current file into a first useful model. Keeping that job in its own guide lets
+setup hand off to a playbook without making the authoring reference carry
 first-run workflow.
 
 ## Purpose
 
-The guide exists to help a reader turn an initialized QUALITY.md skeleton into
-a first useful model through an ordered process. After following it, the file
+The guide exists to help a reader turn a starter or immature QUALITY.md into a
+first useful model through an ordered process. After following it, the file
 should still lint cleanly and each step should have reached a stated outcome, so
 the skill can recommend a meaningful next public workflow.
 
 ## Scope
 
-In scope: first-run population after `qualitymd init`, including ordered steps,
-desired outcomes for each step, lightweight completion checks, links to the
-authoring guide for best-practice detail, validation, and routing to the next
-skill workflow.
+In scope: first-run iteration after setup, including ordered steps, desired
+outcomes for each step, lightweight completion checks, links to the authoring
+guide for best-practice detail, validation, and routing to the next skill
+workflow.
 
 Non-goals: the guide does not restate the full format reference, carry durable
 authoring best-practice rationale, teach the full evaluation workflow, prescribe
@@ -56,15 +56,16 @@ detail.
 ### Runtime Use
 
 The skill root prompt **MUST** tell agents to read the getting-started guide
-after setup creates an initial `QUALITY.md`, or when a user asks how to make the
-first useful model from a skeleton.
+after setup leaves a starter or immature `QUALITY.md`, or when a user asks how
+to keep iterating on the first useful model.
 
 The getting-started guide **MUST** require the authoring guide as a prerequisite.
 The skill should already have read the authoring guide before using
 getting-started for first-run model population.
 
-Setup mode **MUST** route successful initialization to the getting-started guide
-before recommending evaluation or continued model authoring.
+Setup mode **MAY** route starter or immature models to the getting-started guide
+after its own context-informed setup work. It **MUST NOT** treat the guide as a
+separate required phase before setup writes `QUALITY.md`.
 
 Read-only orientation **SHOULD** prefer the getting-started guide over the broad
 authoring guide when the user has just initialized a skeleton or asks how to
@@ -72,15 +73,18 @@ start from one.
 
 ### Guide Content
 
-The guide **MUST** identify its starting point as a valid scaffold produced by
-`qualitymd init`, and **MUST** tell the reader to resolve lint errors before
-building the model.
+The guide **MUST** identify its starting point as a valid starter or immature
+`QUALITY.md`, and **MUST** tell the reader to resolve lint errors before building
+the model.
 
 The guide **MUST** cover these first-pass jobs:
 
 - filling the recommended Markdown body stubs;
+- reviewing setup assumptions such as lifecycle, risk tolerance, modeling rigor,
+  collaboration context, stakeholder needs, missing context, and recurring
+  review or handoff posture when present;
 - confirming or lightly adapting the seeded rating scale;
-- naming the root root area from the body context;
+- naming the root area from the body context;
 - deciding whether the root `source` can stay implicit;
 - selecting a small first set of factors;
 - replacing placeholder requirements with assessable requirements;
@@ -102,10 +106,12 @@ support is material, and sufficient to evaluate model quality; whether
 requirements are assessable; and whether evidence can distinguish important
 rating levels.
 
-The guide **MUST** end by recommending `/quality evaluate` as the normal next
-workflow once the first model is valid and useful enough, while directing users
-to continue authoring when model usefulness is not yet sufficient and to
-`/quality update` when tooling is stale.
+The guide **MUST** end by offering next workflow choices once the first model is
+valid and useful enough: continue iterating on `QUALITY.md`, run
+`/quality evaluate`, set up a recurring quality review loop, set up
+recommendation handoff, or stop. It should direct users to continue authoring
+when model usefulness is not yet sufficient and to `/quality update` when
+tooling is stale.
 
 ### Relationship to Authoring Guide
 

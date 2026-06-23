@@ -2,6 +2,18 @@
 
 ## 2026-06-23
 
+- **Revision**: Updated the getting-started guide contract for
+  [0063 - Contextual setup flow](../../../../changes/0063-contextual-setup-flow.md).
+  Getting-started is now post-setup iteration guidance for starter or immature
+  models, including setup assumptions, stakeholder needs, missing context,
+  recurring review or handoff posture, and next-step choices.
+
+- **Revision**: Expanded the top-10-checks guide contract for
+  [0063 - Contextual setup flow](../../../../changes/0063-contextual-setup-flow.md).
+  The checklist now treats durable setup assumptions such as project posture,
+  stakeholder needs, agent/collaboration fit, missing context, and quality-loop
+  expectations as ongoing model-readiness concerns.
+
 - **Revision**: Updated the getting-started and top-10-checks guide contracts for
   [0062 - Remove wizard mode](../../../../changes/0062-remove-wizard-mode.md).
   Getting-started now recommends public follow-on workflows directly, and the

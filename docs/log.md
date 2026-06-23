@@ -3,6 +3,13 @@
 ## 2026-06-23
 
 - **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  for [0063 - Contextual setup flow](../changes/0063-contextual-setup-flow.md).
+  Public guidance now describes setup as a context-informed `QUALITY.md` authoring
+  flow that writes only the model, validates readiness, and leaves evaluation,
+  quality-log writes, recommendation handoff, and recurring-review automation to
+  follow-on workflows.
+
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
   and the [guides index](guides/index.md) for
   [0062 - Remove wizard mode](../changes/0062-remove-wizard-mode.md). Public
   guidance now lists `setup`, bare read-only `/quality`, `evaluate`, and

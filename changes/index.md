@@ -43,6 +43,9 @@ edit.
 
 # Open change cases
 
+- [0063 — Contextual setup flow](0063-contextual-setup-flow.md) - rework
+  `/quality setup` into a short context-informed discovery flow that writes only
+  `QUALITY.md` and routes next steps (`In-Review`).
 - [0062 — Remove wizard mode](0062-remove-wizard-mode.md) - remove `wizard` from
   the `/quality` skill's public contract while preserving safe read-only
   orientation for ambiguous requests (`In-Review`).

@@ -133,7 +133,8 @@ In the repository to evaluate, ask the installed skill to set up or guide you:
 /quality
 ```
 
-`setup` creates and lints a skeleton `QUALITY.md` through the CLI. Bare
+`setup` inspects available context, asks a few setup questions with recommended
+defaults, writes only `QUALITY.md`, and validates it through the CLI. Bare
 `/quality` gives read-only guidance on the next public workflow, such as
 `/quality evaluate` or scoped evaluations.
 

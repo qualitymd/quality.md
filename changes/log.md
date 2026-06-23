@@ -3,6 +3,43 @@
 ## 2026-06-23
 
 - **In-Review**: Completed implementation of
+  [0063 - Contextual setup flow](0063-contextual-setup-flow.md) and advanced it
+  from `In-Progress` to `In-Review`. Updated runtime setup guidance, durable
+  setup and quality-log contracts, getting-started and Top 10 checklist
+  guidance, public docs, changelog, and OKF logs so setup analyzes context,
+  asks confidence-labeled discovery questions, writes only `QUALITY.md`,
+  validates/readiness-checks the model, and offers next-step choices without
+  running evaluation, writing the quality log, creating issues, or configuring
+  integrations. Verified `mise run check`.
+
+- **In-Progress**: Advanced
+  [0063 - Contextual setup flow](0063-contextual-setup-flow.md) from `Design` to
+  `In-Progress`. The functional spec and design doc are settled;
+  implementation begins across runtime setup guidance, durable skill specs,
+  quality-log contracts, public docs, logs, and changelog.
+
+- **Design**: Advanced
+  [0063 - Contextual setup flow](0063-contextual-setup-flow.md) from `Draft` to
+  `Design` and added its
+  [design doc](0063-contextual-setup-flow/design.md). The design keeps setup
+  skill-driven, uses a bounded context-analysis fact sheet, asks compact
+  discovery questions with confidence-labeled defaults, writes only
+  `QUALITY.md`, validates with lint plus Top 10 readiness inspection, and offers
+  next-step choices without running evaluation or configuring integrations.
+  Updated the open-cases entry in the bundle [index](index.md). Code not
+  started.
+
+- **Draft**: Created
+  [0063 - Contextual setup flow](0063-contextual-setup-flow.md) (`Draft`) with
+  its [functional spec](0063-contextual-setup-flow/spec.md) and
+  [child index](0063-contextual-setup-flow/index.md). The case reworks
+  `/quality setup` into a context-informed discovery flow that writes only
+  `QUALITY.md`, validates/readiness-checks the model, and offers next-step
+  choices without running evaluation, writing the quality log, creating issues,
+  or configuring recurring review automation. Added the case to the open-cases
+  list in the bundle [index](index.md). Design and code not started.
+
+- **In-Review**: Completed implementation of
   [0062 - Remove wizard mode](0062-remove-wizard-mode.md) and advanced it from
   `In-Progress` to `In-Review`. Removed runtime and durable wizard mode files,
   folded bare/ambiguous `/quality` handling into read-only orientation, removed

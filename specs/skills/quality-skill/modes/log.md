@@ -2,6 +2,13 @@
 
 ## 2026-06-23
 
+- **Revision**: Updated the [`setup`](setup.md) mode spec for
+  [0063 - Contextual setup flow](../../../../changes/0063-contextual-setup-flow.md).
+  Setup now analyzes repository context, asks compact discovery questions with
+  confidence-labeled defaults, writes only `QUALITY.md`, validates with lint,
+  inspects readiness with the Top 10 checklist, and offers next-step choices
+  without writing the quality log or configuring integrations.
+
 - **Mode removal**: Removed the `wizard` mode spec from this folder for
   [0062 - Remove wizard mode](../../../../changes/0062-remove-wizard-mode.md).
   Bare and ambiguous `/quality` requests are now governed by the parent

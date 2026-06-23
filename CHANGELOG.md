@@ -9,6 +9,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Reworked `/quality setup` into a context-informed setup flow that asks a few
+  discovery questions with recommended defaults, writes only `QUALITY.md`,
+  validates/readiness-checks the model, and offers next-step choices without
+  running evaluation, writing the quality log, creating issues, or configuring
+  automation.
 - Removed `wizard` from the documented `/quality` public contract. Bare
   `/quality` remains a read-only orientation entrypoint, while public workflows
   are `setup`, `evaluate`, `update`, and recommendation follow-up.

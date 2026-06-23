@@ -3,7 +3,7 @@ type: Functional Specification
 title: /quality quality log
 description: Component spec for the /quality skill's convention-first quality log under .quality/log/.
 tags: [skill, quality, log]
-timestamp: 2026-06-22T00:00:00Z
+timestamp: 2026-06-23T00:00:00Z
 ---
 
 # /quality quality log
@@ -12,8 +12,8 @@ This spec owns the `/quality` skill's convention-first quality log: dated
 entries under `.quality/log/` in the workspace quality data directory that
 record meaningful, evidence-linked changes to a QUALITY.md model. It composes
 the shared contracts in the parent
-[/quality skill](quality-skill.md) spec and is written by setup plus confirmed
-model-authoring or recommendation-apply workflows.
+[/quality skill](quality-skill.md) spec and is written by confirmed
+model-authoring or recommendation-apply workflows after setup.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
@@ -101,21 +101,21 @@ nor evaluated-source fixes that do not change the model.
 > them turns a curated timeline into noise. — 0050
 
 The skill **SHOULD** write **one entry per coherent change** — a confirmed
-recommendation apply, a model-authoring change, or the initial model population
-— rather than one entry per field touched.
+recommendation apply or model-authoring change — rather than one entry per field
+touched.
 
 > Rationale: the unit of record is the decision, not the edit; per-field entries
 > fragment one rationale across many files. — 0050
 
 ### Who writes and reconciles
 
-`setup` **MUST** seed an inaugural entry after guided first population, recording
-model creation and the initial model shape. A confirmed recommendation-apply or
+`setup` **MUST NOT** write the quality log. Setup's initial model rationale
+belongs in the `QUALITY.md` body itself. A confirmed recommendation-apply or
 model-authoring workflow **MUST** append an entry for each meaningful model
-change, cross-linking the evaluation run and recommendation when the change came
-from one; writing the entry **MUST NOT** require confirmation beyond the user's
-existing confirmation of the model change itself, since the entry's rationale is
-the rationale already shown in the decision brief.
+change after setup, cross-linking the evaluation run and recommendation when the
+change came from one; writing the entry **MUST NOT** require confirmation beyond
+the user's existing confirmation of the model change itself, since the entry's
+rationale is the rationale already shown in the decision brief.
 
 `evaluate` **MUST NOT** write to the quality log. Issue-tracker handoff **MUST
 NOT** write to the quality log.

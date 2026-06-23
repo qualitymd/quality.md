@@ -90,9 +90,10 @@ In the repository you want to evaluate:
 /quality update
 ```
 
-`setup` creates and lints a skeleton `QUALITY.md`, then uses the bundled
-authoring guide and getting-started guide to help populate the first useful
-model. Bare `/quality` gives read-only guidance on the next public workflow.
+`setup` inspects available context, asks a few setup questions with recommended
+defaults, writes only `QUALITY.md`, validates it, and reports whether the model
+is ready to evaluate or needs more authoring. Bare `/quality` gives read-only
+guidance on the next public workflow.
 `evaluate` writes a numbered evaluation run under `.quality/evaluations/` by default,
 inside the workspace quality data directory. A run includes formal assessment
 records, generated reports, and a process-only `debug-log.md` for notable
@@ -106,13 +107,12 @@ or hand it off to an issue tracker. The agent prepares issue-ready text, and it
 creates an external issue only when suitable issue-tracker tooling is available
 and you explicitly confirm creation.
 
-`setup` and confirmed model-authoring or recommendation-apply workflows maintain
-a **quality log** — dated entries under `.quality/log/` that record meaningful,
-evidence-linked changes to the model. `setup` seeds an inaugural entry; later
-confirmed model changes add one entry per coherent model change. The log
-preserves *why* the model changed where `git log` only shows the diff; it is
-curated, not exhaustive. Issue-tracker handoff alone does not write the quality
-log.
+Confirmed model-authoring or recommendation-apply workflows maintain a
+**quality log** — dated entries under `.quality/log/` that record meaningful,
+evidence-linked changes to the model after setup. The log preserves *why* the
+model changed where `git log` only shows the diff; it is curated, not
+exhaustive. Setup, evaluation, and issue-tracker handoff alone do not write the
+quality log.
 
 ## Configure the evaluation directory
 

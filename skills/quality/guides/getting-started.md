@@ -1,8 +1,9 @@
 # Getting Started with QUALITY.md
 
-Use this guide after `qualitymd init` has created a valid skeleton. The goal is
-to replace the placeholders with the first useful quality model: small enough to
-finish, specific enough to evaluate, and clear enough to improve later.
+Use this guide after setup leaves a starter or immature `QUALITY.md`, or when a
+user asks how to keep iterating on the first useful model. The goal is to turn
+the current file into a useful quality model: small enough to finish, specific
+enough to evaluate, and clear enough to improve later.
 
 Read [Authoring QUALITY.md](authoring.md) first. This guide assumes that
 guidance and focuses on the first-run process and the desired outcome of each
@@ -10,9 +11,10 @@ step.
 
 ## Starting Point
 
-Setup leaves you with a structurally valid file. It does not know the project,
-the decisions quality work should support, or the evidence that will make a
-requirement assessable.
+Setup should leave you with a structurally valid file and the first pass at the
+project's lifecycle, risk tolerance, modeling rigor, collaboration context,
+needs, risks, missing context, and model shape. Treat those as starting
+assumptions to review, not as settled truth.
 
 Before editing, run:
 
@@ -34,10 +36,13 @@ Use authoring guidance: [The Markdown body](authoring.md#the-markdown-body).
 
 Check before moving on:
 
-- Overview names the real the root area, dependents, and why quality matters.
+- Overview names the real root area, dependents, and why quality matters.
 - Scope names what is included, excluded, and where the model boundary sits.
-- Needs names the outcomes and stakeholders the model serves.
+- Needs names primary user, maintainer/collaborator, and other stakeholder
+  outcomes the model serves.
 - Risks name the important failure modes.
+- The body captures lifecycle, risk tolerance, modeling rigor, collaboration
+  context, and recurring-review or handoff posture when those shape the model.
 - Each section records its own unknowns and open questions, or "none known".
 - Material support is cited when agent-accessible; important support that is not
   agent-accessible is named as an unknown or open question.
@@ -58,7 +63,7 @@ Check before moving on:
 ### Name the Root Area
 
 Outcome: the root `title`, body, file location, and root `source` describe the
-same evaluated the root area.
+same evaluated root area.
 
 Use authoring guidance: [Quality Model](authoring.md#quality-model) and
 [Area](authoring.md#area).
@@ -123,11 +128,18 @@ If the answer is no, revise the model before running an evaluation.
 
 ## Next Workflow
 
-When the file is valid and the first model is useful enough, run:
+When the file is valid and the first model is useful enough, choose the next
+workflow:
 
 ```text
-/quality evaluate
+continue iterating on QUALITY.md
+run /quality evaluate
+set up a recurring quality review loop
+set up recommendation handoff
+stop here
 ```
 
 If the validation or status output shows model gaps, continue model authoring
 before evaluating. If tooling is missing or stale, run `/quality update` first.
+Recurring review and recommendation handoff are follow-on workflows; this guide
+does not create external issues or automation.
