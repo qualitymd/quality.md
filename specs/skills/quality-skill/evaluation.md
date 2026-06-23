@@ -86,7 +86,7 @@ flowchart TD
     Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
     Run --> Plan[Author initial design.md<br/>and plan.md]
     Plan --> Coverage[Add settled coverage<br/>when useful]
-    Coverage --> Log[Maintain debug-log.md<br/>for process events]
+    Coverage --> Log[Maintain evaluate feedback log<br/>for workflow experience]
     Log --> Eval[Evaluate in-scope areas:<br/>Define → Assess &amp; Rate → Analyze → Advise]
     Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
     Records --> Status[Check qualitymd evaluation status]
@@ -101,7 +101,7 @@ flowchart TD
    `qualitymd spec`.
 4. **Create the run** with `qualitymd evaluation create`, letting the CLI
    number the folder, create the layout, snapshot `model.md`, and seed
-   `debug-log.md`, `design.md`, and `plan.md`.
+   `design.md` and `plan.md`.
 5. **Author the initial design and plan before assessment** — author the
    evaluation's **design** (mode, model file, scope, rigor, in-scope areas,
    exclusions, known method limits, and bound `model.md` snapshot) and
@@ -117,13 +117,13 @@ flowchart TD
    interruption-prone runs. If scope, coverage, rigor, or material evidence
    strategy changes during the run, amend `plan.md` under a clear update heading
    and update `coverage:` with the amendment when planned coverage changes.
-7. **Maintain the debug log** — hand-author concise `debug-log.md` entries for
-   notable events involving the evaluation process itself. Keep the log separate
-   from formal evaluation judgment: it may explain routing, retries,
-   coverage adjustment, redaction, prompt-injection handling, or artifact
-   recovery, but it must not duplicate evaluation findings, rating
-   rationale, or raw output from project commands exercised as assessment
-   evidence.
+7. **Maintain the evaluate feedback log** — hand-author concise entries in the
+   current run's `.quality/logs/<timestamp>-evaluate-feedback-log.md` for
+   material workflow-experience events. Keep the log separate from formal
+   evaluation judgment: it may explain routing, retries, coverage adjustment,
+   redaction, prompt-injection handling, or artifact recovery, but it must not
+   duplicate evaluation findings, rating rationale, or raw output from project
+   commands exercised as assessment evidence.
 8. **Evaluate** — run the skill's evaluation process (the five conformant phases
    above) over the in-scope areas, resolving each area's `source` to the
    entities to assess.

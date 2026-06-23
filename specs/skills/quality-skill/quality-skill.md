@@ -476,9 +476,9 @@ grounding judgment, rigor levels, and rating-binding evidence checks.
 
 The reporting and run-artifact contract lives in
 [/quality reporting](reporting.md). That component spec owns evaluation run
-folders, model/design/plan/debug-log artifacts, assessment and analysis records,
-recommendation files, generated report forms, correction behavior, and
-reportability expectations.
+folders, model/design/plan artifacts, assessment and analysis records,
+recommendation files, generated report forms, correction behavior, legacy
+`debug-log.md` compatibility, and reportability expectations.
 
 ## Quality Log
 
@@ -492,35 +492,28 @@ responsibilities, and the deferred CLI surface.
 A *workflow feedback log* is a hand-authored, runtime Markdown artifact that
 records the *experience* of running a `/quality` workflow — friction, errors,
 UX/AX rough edges, and efficiency observations — so the skill, CLI, and prompts
-can be improved from real runs. It is written under a workflow-agnostic
-`.quality/logs/` directory, created on demand, as
-`<timestamp>-<workflow>-feedback-log.md`. A workflow may update the current run's
-feedback log in place as the workflow progresses; it must not overwrite another
-run's log. It is improvement-oriented and workflow-level, and **MUST** stay
-distinct from evaluation's per-run `debug-log.md` and from the
-[quality log](#quality-log) under `.quality/log/`.
+can be improved from real runs. The shared artifact contract lives in
+[workflow feedback log](workflow-feedback-log.md): logs are written under
+`.quality/logs/` as `<timestamp>-<workflow>-feedback-log.md`, are updated in
+place only for the current run, stay non-authoritative for model/evaluation
+judgment, are recorded locally, are never automatically transmitted, and must not
+contain secrets or raw prompt-injection text.
 
-The artifact is recorded locally and the skill and CLI **MUST NOT** transmit it
-to any external service; sharing it **MUST** be an explicit user action, so it
-needs no consent gate. Because the user may share it, a feedback log **MUST NOT**
-contain secret values or raw prompt-injection text, and the skill **SHOULD**
-sanitize sensitive project context before writing it.
-
-`setup` is the first always-on adopter: it creates a feedback log near the start
-of every setup run, updates the current run's file for material
-workflow-experience events, and finalizes it at close. The full artifact contract
-— frontmatter, body schema, lifecycle status, redaction, and no-transmission
-posture — lives in the
-[workflow feedback log](workflows/setup/feedback-log.md) sub-spec, written
-generically so evaluate and update can adopt the same directory, naming, and
-lifecycle vocabulary without a new contract.
+`setup` and `evaluate` are current adopters. Setup creates, updates, and
+finalizes `.quality/logs/<timestamp>-setup-feedback-log.md` as defined by
+[Setup feedback log](workflows/setup/feedback-log.md). Evaluate creates,
+updates, and finalizes
+`.quality/logs/<timestamp>-evaluate-feedback-log.md` as defined by
+[Evaluate feedback log](workflows/evaluate/feedback-log.md). Historical
+evaluation runs may still contain `debug-log.md`; current feedback belongs in
+the evaluate feedback log.
 
 > Rationale: `/quality` workflows had no durable, central place to record what
 > was slow, confusing, or wrong about *running* them. The signal behind the 0065
 > setup refinements was hand-captured once from a single field test; the feedback
-> log makes that improvement loop durable and actionable across runs. Always-on
-> setup logging removes ambiguity from missing files and preserves partial
-> feedback from interrupted setup runs. — 0066, 0068
+> log makes that improvement loop durable and actionable across runs. Evaluation
+> now uses the same artifact family rather than a separate debug-log concept. —
+> 0066, 0068, 0073
 
 ## Deferred
 

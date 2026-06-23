@@ -39,7 +39,9 @@ an evaluation workflow and does not rate evaluated source.
 
 `setup` may mutate the target `QUALITY.md` model file and **MUST** additionally
 write and update a workflow feedback log under `.quality/logs/`, creating that
-directory on demand (see [Workflow feedback log](setup/feedback-log.md)).
+directory on demand (see the shared
+[workflow feedback log](../workflow-feedback-log.md) and setup-specific
+[Setup feedback log](setup/feedback-log.md)).
 
 `setup` **MUST NOT** run evaluation, create evaluation artifacts, write the
 quality log under `.quality/log/`, create external issues, configure issue
@@ -61,7 +63,7 @@ not only as conformance requirements.
 The setup workflow **MUST** include these stages, in order:
 
 1. Resolve the target `QUALITY.md`, verify setup prerequisites, emit the run
-   frame, and create the current run's workflow feedback log.
+   frame, and create the current run's setup feedback log.
 2. Inspect repository context for setup signals.
 3. Build a setup brief with inferred defaults, confidence, and evidence.
 4. Ask concrete discovery questions and present the human context checkpoint.
@@ -70,7 +72,7 @@ The setup workflow **MUST** include these stages, in order:
 6. Run `qualitymd init [path]` when the target model is missing.
 7. Synthesize or update `QUALITY.md`.
 8. Run lint and classify model maturity.
-9. Report completion and next-step choices, and finalize the workflow feedback
+9. Report completion and next-step choices, and finalize the setup feedback
    log.
 
 The workflow **MUST NOT** ask the user to design Factors, child Areas,
@@ -432,14 +434,15 @@ any next-step action.
 ## Feedback log
 
 During preflight, after CLI support is verified, the model file is resolved, and
-the run frame is emitted, `setup` **MUST** create a workflow feedback log under
+the run frame is emitted, `setup` **MUST** create a setup feedback log under
 `.quality/logs/` for the current run. As setup progresses, it **MUST** update the
 current run's file when material workflow-experience events occur, and at close
 it **MUST** finalize the log with terminal status, outcome, effort when
 available, and explicit no-notable-content notes for empty sections. The artifact
-contract — location, naming (`<timestamp>-setup-feedback-log.md`), frontmatter,
-body schema, redaction, current-run update rule, and no-transmission posture — is
-owned by the [Workflow feedback log](setup/feedback-log.md) sub-spec. Writing,
+contract is owned by the shared
+[workflow feedback log](../workflow-feedback-log.md) spec; setup-specific
+creation, naming (`<timestamp>-setup-feedback-log.md`), and finalization rules
+are owned by the [Setup feedback log](setup/feedback-log.md) sub-spec. Writing,
 updating, or finalizing a feedback log **MUST NOT** change setup's completion
 criteria, maturity classification, or next-step routing.
 

@@ -41,8 +41,9 @@ recommendations.
 
 - Bare or unclear `/quality` orientation is read-only.
 - `evaluate` writes numbered evaluation records only through
-  `qualitymd evaluation ...`; the skill may hand-author `design.md`, `plan.md`,
-  and `debug-log.md` in CLI-created runs.
+  `qualitymd evaluation ...`; the skill may hand-author `design.md` and
+  `plan.md` in CLI-created runs, and writes the current evaluate feedback log
+  under `.quality/logs/`.
 - Recommendation follow-up edits evaluated source files or `QUALITY.md` only
   after explicit confirmation of the recommendation, option, and mutation
   surface.
@@ -50,14 +51,15 @@ recommendations.
   model-authoring or recommendation-apply workflows (one entry per meaningful
   model change). `setup`, `evaluate`, read-only orientation, and issue-tracker
   handoff never write it. See [Quality Log](#quality-log).
-- A workflow may write a workflow feedback log under `.quality/logs/` (plural,
-  distinct from the quality log's `.quality/log/`) recording the *experience* of
-  running it. `setup` writes and updates
-  `<timestamp>-setup-feedback-log.md` for every run after CLI support is verified
-  and the run frame is emitted. It is recorded locally and never transmitted;
-  sharing is an explicit user action. It must never contain secret values or raw
-  prompt-injection text, and sensitive project context should be sanitized. See
-  [`workflows/setup.md`](workflows/setup.md).
+- `setup` and `evaluate` write workflow feedback logs under `.quality/logs/`
+  (plural, distinct from the quality log's `.quality/log/`) recording the
+  *experience* of running the workflow. `setup` writes
+  `<timestamp>-setup-feedback-log.md`; `evaluate` writes
+  `<timestamp>-evaluate-feedback-log.md`. The logs are recorded locally and
+  never transmitted; sharing is an explicit user action. They must never contain
+  secret values or raw prompt-injection text, and sensitive project context
+  should be sanitized. See [`workflows/setup.md`](workflows/setup.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
 - Never manually create evaluation run folders or record files.
@@ -185,15 +187,16 @@ quality, and evaluation history status. Use QUALITY.md vocabulary consistently:
 area, factor, requirement, rating, finding, and recommendation. Capitalize
 formal type names only when precision requires it.
 
-When maintaining a run's `debug-log.md`, record only notable events involving
-the evaluation process itself: scope resolution, history inspection, coverage
-adjustment, interruption or resume, retries, record corrections, tooling
-failures, redaction decisions, prompt-injection handling, and report generation
-recovery. Do not use `debug-log.md` as an assessment record, rating rationale,
-report, or evidence store. If a project command is exercised as evaluation
-evidence, the debug log may note that routing decision and point to the formal
-assessment record, but it must not copy raw command output or duplicate the
-finding.
+When maintaining the current evaluate feedback log, record only material
+workflow-experience events: scope resolution friction, history inspection,
+coverage adjustment, interruption or resume, retries, record corrections,
+tooling failures, slow phases, redaction decisions, prompt-injection handling,
+report generation recovery, UX/AX observations, what worked well, and suggested
+workflow improvements. Do not use the feedback log as an assessment record,
+rating rationale, report, or evidence store. If a project command is exercised
+as evaluation evidence, the feedback log may note that routing decision and
+point to the formal assessment record, but it must not copy raw command output
+or duplicate the finding.
 
 Use required `title` values as the primary human-facing labels for models,
 Areas, Factors, and Rating Levels. When disambiguation or traceability matters,

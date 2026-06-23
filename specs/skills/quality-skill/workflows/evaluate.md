@@ -35,14 +35,18 @@ model file, scope, and rigor. It does not apply fixes.
 ## Mutation surface and artifacts
 
 `evaluate` may mutate only evaluation artifacts under the resolved evaluation
-directory. It **MUST NOT** edit evaluated source files, edit `QUALITY.md`, write
-the quality log, create external issues, apply recommendations, or update
-tooling.
+directory and the current run's evaluate feedback log under `.quality/logs/`. It
+**MUST NOT** edit evaluated source files, edit `QUALITY.md`, write the quality
+log, create external issues, apply recommendations, or update tooling.
 
 `evaluate` **MUST** create numbered run folders through `qualitymd evaluation
 create` and write assessment, analysis, recommendation, and report artifacts
 through the CLI commands specified by the parent skill spec. It **MUST NOT**
 manually create run folders or record files.
+
+`evaluate` **MUST** create, update, and finalize the current run's evaluate
+feedback log as defined by the
+[Evaluate feedback log](evaluate/feedback-log.md) sub-spec.
 
 ## Required flow
 
@@ -65,7 +69,8 @@ strategy, known planned checks, and planned limitations. Later scope, coverage,
 rigor, or material evidence-strategy changes **SHOULD** be recorded as explicit
 plan amendments rather than silent rewrites.
 
-`evaluate` **MUST** maintain `debug-log.md` only for notable process events.
+`evaluate` **MUST** maintain the current run's evaluate feedback log only for
+workflow-experience events.
 It then performs Define -> Assess and Rate -> Analyze -> Advise -> Report over
 the in-scope requirements. Every in-scope requirement covered by the chosen rigor
 **MUST** receive an assessment result or an explicit not-assessed result.

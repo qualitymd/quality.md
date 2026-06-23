@@ -2,6 +2,15 @@
 
 ## 2026-06-23
 
+- **Creation + Revision**: Added the
+  [evaluate feedback log](evaluate/feedback-log.md) sub-spec for
+  [0073 - Evaluation feedback log](../../../../changes/archive/0073-evaluation-feedback-log.md)
+  and listed the new [evaluate/](evaluate/index.md) subfolder. Updated
+  [`evaluate`](evaluate.md) so the workflow writes
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md`, and refactored
+  [setup feedback log](setup/feedback-log.md) to adopt the shared
+  [workflow feedback log](../workflow-feedback-log.md) contract.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow for
   [0072 - Setup context checkpoint](../../../../changes/archive/0072-setup-context-checkpoint.md).
   Human-context discovery now uses a correction-oriented checkpoint covering

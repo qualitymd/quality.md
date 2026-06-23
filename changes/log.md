@@ -2,6 +2,51 @@
 
 ## 2026-06-23
 
+- **Implementation + Archival**: Implemented and advanced
+  [0073 - Evaluation feedback log](archive/0073-evaluation-feedback-log.md)
+  through `In-Progress` and `In-Review` to `Done`, moving it (parent and folder)
+  into [`archive/`](archive/). Added the shared workflow feedback-log durable
+  spec, the evaluate adopter spec, runtime evaluate feedback-log guidance under
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md`, CLI scaffold changes so
+  new evaluation runs no longer seed `debug-log.md`, legacy compatibility docs,
+  example updates, tests, and release notes. Verified with `mise run check`.
+
+- **In-Review**: Completed implementation of
+  [0073 - Evaluation feedback log](archive/0073-evaluation-feedback-log.md). Added the
+  shared workflow feedback-log spec and evaluate adopter spec, updated setup to
+  reference the shared contract, moved current evaluate workflow feedback to
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md`, removed `debug-log.md`
+  from new evaluation run scaffolds, updated specs/runtime skill/examples/release
+  notes, and verified with `mise run check`.
+
+- **In-Progress**: Advanced
+  [0073 - Evaluation feedback log](archive/0073-evaluation-feedback-log.md) from
+  `Design` to `In-Progress`; spec and design are settled and implementation is
+  beginning across durable specs, runtime skill instructions, CLI scaffold tests,
+  examples, and release notes.
+
+- **Advance**: Moved
+  [0073 - Evaluation feedback log](archive/0073-evaluation-feedback-log.md) to `Design`
+  and authored its
+  [design doc](archive/0073-evaluation-feedback-log/design.md). The design makes
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md` the current evaluation
+  workflow feedback artifact, extracts a shared feedback-log durable spec,
+  treats setup and evaluate as adopters, stops new evaluation scaffolds from
+  seeding `debug-log.md`, and keeps historical `debug-log.md` artifacts
+  compatible. Implementation not started.
+
+- **Creation**: Added
+  [0073 - Evaluation feedback log](archive/0073-evaluation-feedback-log.md) at `Draft`
+  with its child folder
+  ([index](archive/0073-evaluation-feedback-log/index.md),
+  [functional spec](archive/0073-evaluation-feedback-log/spec.md)). The case aligns
+  `/quality evaluate` with setup feedback logging by introducing a shared
+  workflow feedback-log durable spec, adding an evaluate-specific feedback-log
+  spec under the evaluate workflow, moving new evaluate feedback to
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md`, and treating
+  `debug-log.md` as historical compatibility for old evaluation runs. Design and
+  implementation not started.
+
 - **Creation + Implementation + Archival**: Created
   [0072 - Setup context checkpoint](archive/0072-setup-context-checkpoint.md)
   with its child folder

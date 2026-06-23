@@ -261,3 +261,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   a compact checkpoint that asks users to correct a draft and records omitted
   low-confidence gaps as Unknown rather than confirmed fact; no CLI/Go change
   (`Done`).
+- [0073 — Evaluation feedback log](0073-evaluation-feedback-log.md) - aligned
+  `/quality evaluate` with setup feedback logging by adding a shared workflow
+  feedback-log spec, adding an evaluate adopter spec, moving current evaluate
+  feedback to `.quality/logs/<timestamp>-evaluate-feedback-log.md`, and making
+  `debug-log.md` legacy-compatible only for historical runs (`Done`).

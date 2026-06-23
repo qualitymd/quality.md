@@ -13,8 +13,10 @@ conditions, and completion criteria. Each workflow is dispatched as a mode.
 
 # Subfolders
 
+- [evaluate/](evaluate/index.md) - sub-specs owned by the evaluate workflow,
+  including the [evaluate feedback log](evaluate/feedback-log.md).
 - [setup/](setup/index.md) - sub-specs owned by the setup workflow, including the
-  [workflow feedback log](setup/feedback-log.md) artifact contract.
+  [setup feedback log](setup/feedback-log.md).
 
 # Bundle
 

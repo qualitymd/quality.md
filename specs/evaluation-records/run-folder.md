@@ -40,7 +40,6 @@ A run folder contains:
 ```text
 model.md
 design.md
-debug-log.md
 plan.md
 assessments/
   NNN-<area>-<requirement>.json
@@ -56,6 +55,11 @@ report.json
 `assessments/` and `recommendations/` each use their own local `NNN`
 sequence.
 
-`design.md` is the evaluation-frame artifact. `debug-log.md` is a process-only
-Markdown artifact. `plan.md` may be body-only, or it may carry YAML frontmatter
-with optional planned coverage metadata.
+`design.md` is the evaluation-frame artifact. `plan.md` may be body-only, or it
+may carry YAML frontmatter with optional planned coverage metadata.
+
+Historical run folders may contain `debug-log.md` from older evaluation
+scaffolds. Readers **SHOULD** tolerate it as a non-authoritative legacy process
+artifact. New run folders **MUST NOT** require or seed it; current evaluation
+workflow feedback belongs in `.quality/logs/<timestamp>-evaluate-feedback-log.md`
+as defined by the `/quality` skill specs.

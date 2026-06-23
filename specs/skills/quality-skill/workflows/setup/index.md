@@ -7,6 +7,5 @@ contracts.
 
 # Concepts
 
-- [Workflow feedback log](feedback-log.md) - the hand-authored, skill-only
-  feedback artifact under `.quality/logs/` that records the workflow experience,
-  with setup as the first adopter.
+- [Setup feedback log](feedback-log.md) - setup-specific adoption of the shared
+  workflow feedback log.

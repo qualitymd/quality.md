@@ -64,7 +64,7 @@ contracts live in child specs:
 - [Analysis record](evaluation-records/analysis-record.md) - JSON analysis records.
 - [design.md](evaluation-records/design-md.md) - evaluation-frame artifact.
 - [plan.md](evaluation-records/plan-md.md) - plan artifact and planned coverage metadata.
-- [debug-log.md](evaluation-records/debug-log-md.md) - process-only debug log artifact.
+- [debug-log.md](evaluation-records/debug-log-md.md) - legacy process-only debug log compatibility.
 - [Recommendation record](evaluation-records/recommendation-record-md.md) - Markdown recommendation records.
 - [Report outputs](evaluation-records/report-outputs.md) - shared report-model and generated report-output invariants.
 

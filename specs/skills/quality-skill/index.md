@@ -17,6 +17,8 @@ that make it concrete. The installable skill artifact lives at
   artifacts, report outputs, records, recommendations, and correction behavior.
 - [/quality quality log](quality-log.md) - component spec for dated
   `.quality/log/` model-change entries.
+- [Workflow feedback log](workflow-feedback-log.md) - shared artifact contract
+  for workflow feedback logs under `.quality/logs/`.
 - [/quality recommendation follow-up](recommendation-follow-up.md) - non-mode
   workflow for applying or handing off evaluation recommendations.
 - [workflows/](workflows/index.md) - behavioral component specs for the runtime

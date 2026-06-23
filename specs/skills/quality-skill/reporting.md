@@ -65,16 +65,17 @@ uses the default.
 Runtime evaluation artifacts are raw outputs in the evaluated repository, not
 OKF concepts. They **MUST NOT** carry OKF frontmatter or require registration in
 `specs/schema.md`. Alongside the report and its recommendations the folder
-captures four further artifacts that make the run auditable and reproducible —
-a snapshot of the model evaluated, the run's **design** (its inputs), its
-execution **plan** (its method), and its process-only **debug log**:
+captures three further artifacts that make the run auditable and reproducible —
+a snapshot of the model evaluated, the run's **design** (its inputs), and its
+execution **plan** (its method). Workflow-experience feedback for current runs
+lives in the evaluate feedback log under `.quality/logs/`, not in the evaluation
+run folder:
 
 ```
 .quality/evaluations/
   0001[-<narrowing>]-quality-eval/
     model.md
     design.md
-    debug-log.md
     plan.md
     assessments/
       001-<area>-<requirement>.json
@@ -139,16 +140,12 @@ Together these separate the three things an audit must tell apart — the *input
   evidence strategy changes during the run, the skill records that as a plan
   amendment rather than silently rewriting the initial plan; coverage frontmatter
   and the amendment are updated together when planned coverage changes.
-- The folder **MUST** include a **debug log** recording notable events involving
-  the evaluation process itself: scope ambiguity, history inspection, coverage
-  adjustment, interruptions or resumes, retries, record corrections, tooling
-  failures, redaction decisions, prompt-injection handling, or report generation
-  recovery. `debug-log.md` is not an assessment record, rating rationale, report,
-  or evidence store. Evaluation findings and rating rationale belong in the
-  formal records. When a project command is exercised as evidence against the
-  evaluated source, the log may record only the routing fact and point to the
-  assessment record; it must not copy raw command output or preserve a second
-  copy of assessment evidence.
+- Current evaluate workflow-experience feedback belongs in
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md`, defined by the
+  [Evaluate feedback log](workflows/evaluate/feedback-log.md) sub-spec. Historical
+  runs may contain a run-local `debug-log.md`; readers should treat it as a
+  non-authoritative legacy process artifact, not as assessment evidence or report
+  content.
 - The folder **MUST** capture the **assessment result records** the Evaluate phase
   produces as JSON — one artifact per in-scope requirement, holding its findings
   (each with its locator), the rating inferred against the requirement's

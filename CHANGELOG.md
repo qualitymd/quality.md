@@ -7,8 +7,18 @@ QUALITY.md specification.
 
 ### CLI
 
+- `qualitymd evaluation create` no longer seeds `debug-log.md` in new evaluation
+  run folders. Historical runs that already contain `debug-log.md` remain
+  compatible as legacy process artifacts.
+
 ### /quality Skill
 
+- `/quality evaluate` now uses a setup-style workflow feedback log at
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md` for material
+  workflow-experience events such as scope friction, retries, redaction
+  decisions, slow phases, and report recovery. The log is local-only, never
+  transmitted automatically, and must not duplicate ratings, findings, evidence,
+  raw command output, recommendations, secrets, or raw prompt-injection text.
 - Reworked `/quality setup` guidance into an explicit setup workflow with a
   setup brief, concrete discovery questions, confidence-labeled defaults, and
   clearer workflow terminology while preserving the `QUALITY.md`-only mutation

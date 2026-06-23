@@ -2,6 +2,18 @@
 
 ## 2026-06-23
 
+- **Creation + Revision**: Implemented durable spec changes for
+  [0073 - Evaluation feedback log](../changes/archive/0073-evaluation-feedback-log.md).
+  Added the shared
+  [workflow feedback log](skills/quality-skill/workflow-feedback-log.md) spec and
+  the evaluate adopter
+  [feedback log](skills/quality-skill/workflows/evaluate/feedback-log.md) spec.
+  Updated the setup adopter spec, evaluation workflow specs, reporting specs,
+  evaluation-record specs, and `qualitymd evaluation create` spec so current
+  evaluation workflow feedback lives under
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md` and `debug-log.md` is
+  legacy-compatible only for historical runs.
+
 - **Revision**: Implemented durable spec changes for
   [0072 - Setup context checkpoint](../changes/archive/0072-setup-context-checkpoint.md).
   Updated the

@@ -10,7 +10,7 @@ Child specs for independently reviewable runtime contracts under the parent
 - [Analysis record](analysis-record.md) - JSON analysis record contract.
 - [design.md](design-md.md) - evaluation-frame artifact contract.
 - [plan.md](plan-md.md) - plan artifact and planned coverage contract.
-- [debug-log.md](debug-log-md.md) - process-only debug log contract.
+- [debug-log.md](debug-log-md.md) - legacy process-only debug log compatibility.
 - [Recommendation record](recommendation-record-md.md) - Markdown recommendation record contract.
 - [Report outputs](report-outputs.md) - shared report-model and generated report-output invariants.
 

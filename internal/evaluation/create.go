@@ -9,15 +9,6 @@ import (
 	"github.com/qualitymd/quality.md/internal/workspace"
 )
 
-const debugLogSeed = `# Evaluation debug log
-
-This log records notable events involving the evaluation process itself. It is
-not an assessment record, rating rationale, report, or evidence store;
-evaluation evidence belongs in assessment, analysis, and recommendation records.
-
-## Events
-`
-
 const planSeed = `# Evaluation plan
 
 Optional planned coverage frontmatter shape:
@@ -109,9 +100,8 @@ func createRunSkeleton(runAbs string, modelRaw []byte) error {
 		return fmt.Errorf("writing model.md: %w", err)
 	}
 	for file, content := range map[string]string{
-		"debug-log.md": debugLogSeed,
-		"design.md":    "# Evaluation design\n",
-		"plan.md":      planSeed,
+		"design.md": "# Evaluation design\n",
+		"plan.md":   planSeed,
 	} {
 		if err := os.WriteFile(filepath.Join(runAbs, file), []byte(content), 0o644); err != nil {
 			return fmt.Errorf("writing %s: %w", file, err)

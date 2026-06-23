@@ -53,10 +53,10 @@ folder.
 
 The command **MUST** compute the next run number as one past the highest matching
 evaluation run folder, create the run directory, create `assessments/`,
-`analysis/`, and `recommendations/`, and seed `model.md`, `debug-log.md`,
-`design.md`, and `plan.md`. The seeded `plan.md` **SHOULD** include a body-only
-commented or fenced planned-coverage example so the `coverage:` frontmatter
-shape is discoverable before `evaluation status` validation.
+`analysis/`, and `recommendations/`, and seed `model.md`, `design.md`, and
+`plan.md`. The seeded `plan.md` **SHOULD** include a body-only commented or
+fenced planned-coverage example so the `coverage:` frontmatter shape is
+discoverable before `evaluation status` validation.
 
 `model.md` is the resolved model file. New run names MUST NOT include an altitude segment. The
 command **MUST NOT** expose an altitude flag, option, or JSON receipt field.

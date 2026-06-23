@@ -1,5 +1,14 @@
 # Evaluation Records Update Log
 
+## 2026-06-23
+
+- **Revision**: Updated the [run folder](run-folder.md),
+  [debug-log.md legacy compatibility](debug-log-md.md), and parent
+  [Evaluation records](../evaluation-records.md) specs for
+  [0073 - Evaluation feedback log](../../changes/archive/0073-evaluation-feedback-log.md).
+  New evaluation runs no longer seed `debug-log.md`; historical runs that contain
+  it remain tolerated as non-authoritative legacy process artifacts.
+
 ## 2026-06-22
 
 - **Revision**: Updated [report outputs](report-outputs.md) for
