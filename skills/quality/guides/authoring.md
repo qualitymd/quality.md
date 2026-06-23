@@ -605,9 +605,12 @@ results combine is a modeling decision you should make and communicate.
 
 ## Factor
 
-A **factor** is a quality characteristic — a *lens* such as `reliability`,
-`security`, or `maintainability` — through which an area's quality is described.
-It groups the requirements assessed through it. A factor may decompose into
+A **factor** is a quality characteristic — a *lens* through which an area's
+quality is described. It groups the requirements assessed through it.
+Conventional factor families differ by quality domain: a software product might
+be viewed through `reliability`, `security`, or `maintainability`, a document or
+data set through `completeness`, `credibility`, or `currentness`. These examples
+are illustrative, non-exhaustive, and may overlap. A factor may decompose into
 **sub-factors**: finer characteristics that together make up the parent (e.g.
 `reliability` into `availability`, `fault tolerance`, `recoverability`). A
 sub-factor is itself a factor of the same shape, nested to any depth.
@@ -789,7 +792,9 @@ something inspectable is the core authoring move.
 - **Do** name a concrete, observable property of the entity that the factor
   depends on, then phrase the requirement as the expectation about that property.
   *Reliability (abstract) → "recovers from a dependency outage without data loss"
-  (property) → the requirement and its assessment.*
+  (property) → the requirement and its assessment. The move is domain-general:
+  for a reference document, credibility → "every load-bearing claim cites a
+  verifiable source."*
 - **Do** preflight each requirement by naming its **scale** (the dimension and
   unit a finding lands on — *time for a novice to complete a one-item order*), its
   **meter** (the agreed procedure that produces the finding — *median over 100 test
@@ -802,8 +807,8 @@ something inspectable is the core authoring move.
 
 #### Write ratable requirement statements
 
-- **Do** phrase the map key as the thing you expect to be true ("Every public
-  endpoint requires authentication", "p99 request latency stays within budget").
+- **Do** phrase the map key as the thing you expect to be true ("Every record
+  has a unique key", "p99 request latency stays within budget").
   *The statement is what shows up in reports; it should read as a claim that can
   be true or false to a degree.*
 
@@ -815,8 +820,10 @@ something inspectable is the core authoring move.
 - **Do**, for behavioral qualities (reliability, recoverability, security under
   attack), phrase the statement around the *triggering condition and operating
   environment*, not just the steady state: "When a downstream dependency times out,
-  requests fail over within 2 s and surface a degraded-mode response." *A bare "is
-  reliable" hides the condition that makes the quality observable.*
+  requests fail over within 2 s and surface a degraded-mode response" — or, for a
+  support process, "when an urgent ticket arrives after hours, it is acknowledged
+  within 15 minutes." *A bare "is reliable" hides the condition that makes the
+  quality observable.*
 - **Do** make every requirement *verifiable*: its assessment must name a concrete
   method by which a finding could be produced. *If you cannot state how the source
   would be examined, the requirement is not assessable yet, however well it reads.*
@@ -887,7 +894,7 @@ something inspectable is the core authoring move.
   governing entity once. *That keeps the criterion edge visible without repeating
   the same assessment under every factor.*
 - **Do** split the requirement only when the referenced entity defines claims
-  whose results could legitimately diverge. *A QUALITY.md can follow its
+  whose results could legitimately diverge. *A `QUALITY.md` can follow its
   authoring guide for assessability while still lacking credibility; those are
   separate requirements. A single conformance judgment that feeds assessability,
   traceability, and maintainability is one requirement with several factor
@@ -995,7 +1002,7 @@ conflicts, or duplicates. Run a closing pass over the set:
 
 ## When to update QUALITY.md
 
-A QUALITY.md is expected to evolve through two loops: the **improve loop** fixes
+A `QUALITY.md` is expected to evolve through two loops: the **improve loop** fixes
 the root area against the model, and the **learn loop** reviews the model itself
 against reality. The two never fold together — the model's own quality is never
 averaged into the root area's rating.
