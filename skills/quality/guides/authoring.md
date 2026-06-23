@@ -548,7 +548,7 @@ its path of Factor names from that Area's `factors` map.
 
 #### Choose factors that name the concerns that matter here
 
-- **Do** pick the handful of quality characteristics that genuinely drive this
+- **Do** pick the focused set of quality characteristics that genuinely drive this
   entity's quality. **Avoid** importing a standard checklist of characteristics
   wholesale.
 - **Do** derive initial factors from the body's Needs and Risks. *Needs point at
@@ -563,6 +563,15 @@ its path of Factor names from that Area's `factors` map.
   list. *A characteristic with no user, no failure mode, and no decision riding on
   it here does not earn a factor, however standard it is elsewhere; pull from a
   catalog as a prompt, never as a quota.*
+- **Do** prefer general-purpose, conventional factor names for the quality
+  domain once a concern earns a factor. *For software product quality,
+  `reliability`, `security`, `usability`, `maintainability`, `performance`,
+  `compatibility`, and `portability` are usually better factor names than
+  product- or business-specific labels; requirements and assessments are where
+  the model maps those lenses to the root area's unique quality expectations.*
+- **Avoid** inventing bespoke factor names for the subject's domain when a
+  conventional quality attribute covers the concern. *The factor names the
+  quality lens; the requirement says what that quality means for this entity.*
 - **Do** anchor each factor to a stakeholder whose concern it carries — the user
   who needs it to work, the maintainer who needs to change it, the operator who
   runs it. *Where stakeholders disagree on what "good enough" means, surface the
@@ -572,6 +581,35 @@ its path of Factor names from that Area's `factors` map.
   only because it produces that experience (low coupling, clear structure). *Keep
   internal factors tied to the outcome they serve, so an evaluator can tell a real
   weakness from a stylistic preference.*
+
+#### Cover the domain's stable stakes before specializing
+
+Every quality domain has stable-stakes characteristics: concerns that predictably
+affect trust, cost, change, use, operation, or stewardship for that kind of
+entity. They matter even when the current root area is immature, performs poorly
+on them, or lacks evidence about them.
+
+- **Do** identify the quality domain before finalizing root factors. *A software
+  product, document, data set, model, service operation, and human process each
+  has a different conventional factor family.*
+- **Do** include the domain's common stable-stakes factors for the root area, or
+  explicitly justify why each omitted one is out of scope, delegated to a child
+  area, or still unresolved as an unknown. *A sparse root model should be a
+  conscious decision, not the result of only modeling the first risks that came
+  to mind.*
+- **Do** treat roughly ten root-level factors as a reasonable target for a
+  primary subject. *Fewer than eight should trigger a coverage review; four to
+  six is usually too thin unless the root area is deliberately narrow, temporary,
+  or mostly delegated to child areas.*
+- **Avoid** dropping a conventional factor because the current artifact lacks
+  evidence or performs poorly on it. *No tests is not a reason to omit
+  `testability`; it is a reason to write requirements that make testability, test
+  evidence, or the absence of evidence assessable.*
+- **Do** keep stable-stakes factors conventional and put subject-specific
+  interpretation in requirements. *The factor names the durable quality lens; the
+  requirements say what that quality means for this root area.*
+- **Avoid** padding the model with factors no stakeholder would notice and no
+  decision would use. *The target is coverage adequacy, not ceremony.*
 
 #### Name the quality, not the practice
 
