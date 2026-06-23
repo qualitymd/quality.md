@@ -514,6 +514,55 @@ empty and renders as `area:root` when a canonical model reference is needed.
   spec, standard, or style guide. *Improving one raises every area judged against
   it, so it is often the highest-leverage place to invest quality early.*
 
+#### Ground high-leverage concerns in normative artifacts
+
+Some concerns are *high-leverage* — improving them propagates to everything they
+touch — and the strongest of these are usually governed by a **normative
+artifact** an evaluator can point at. Treat both the concern and its anchor as
+modeling obligations, not optional polish.
+
+- **Do** model the concerns that are high-leverage and germane to the entity's
+  quality domain as areas, even when no governing artifact exists yet. *A germane
+  high-leverage concern left unmodeled is a coverage gap, not neutrality; carry
+  the area and record the missing anchor as a finding within it. For software
+  product quality these illustratively include requirements/intent definition,
+  data quality, and interface contracts; other domains have their own — a
+  terminology standard for a document, a schema or collection methodology for a
+  dataset, operating thresholds for a service. Treat the list as a prompt, never a
+  quota.*
+- **Do** anchor a high-leverage area in a normative artifact — a spec, standard,
+  requirements doc, contract, or style guide — and assess the area against it
+  rather than embedding all the criteria inline. *An external anchor lets two
+  evaluators reach the same finding and gives the requirement something to trace
+  to; quality invested in the anchor propagates to everything it governs.*
+- **Consider** the absence of a normative anchor a recorded finding, not silence.
+  *Where the domain implies a governing artifact and none exists — or an area is
+  assessed only by criteria embedded in its `assessment` — name that as a gap.
+  Assess that the expectation is **governed and current**, referenced by review,
+  automation, or the model itself; an artifact that exists but is stale or
+  load-bearing on no one is not an anchor.*
+- **Do** locate this concern in **maintainability** (an ungoverned high-leverage
+  concern is cognitive and intent debt) and in the model's **evaluability and
+  traceability** (with no anchor, criteria are forced inline and trace only to the
+  author's judgment). **Avoid** linking it to the governed domain factor itself.
+  *Having a data-quality standard is not the same as having good data; binding the
+  two conflates governance with the governed property and double-counts.*
+- **Do** keep the requirement **standing**, instantiated per project, and
+  re-evaluated. *The rating — not the requirement's presence — carries whether the
+  artifacts exist today; a requirement that appears because a doc is missing and
+  vanishes once it is written is the defect-backlog anti-pattern. Expect new
+  high-leverage concerns to imply new expected areas as the model matures.*
+- **Do** calibrate leverage to *this* entity and trace it to a recorded Need or
+  Risk. **Avoid** importing a universal roster of areas every model must carry.
+  *"High-leverage and germane here" is the inclusion test; an unbounded checklist
+  of expected areas collapses the model into generic best practice — the same trap
+  as importing a standard factor list.*
+
+This is the model's own meta-principle applied one level down: the self-check area
+already anchors the model in this guide because normative artifacts are
+high-leverage. The same reasoning applies to the concerns the evaluated entity is
+made of.
+
 #### Write a description that distinguishes, not enumerates
 
 - **Do** state what the area *is* and how it differs from its siblings/parent.
