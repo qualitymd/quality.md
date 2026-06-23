@@ -7,6 +7,16 @@ QUALITY.md specification.
 
 ### CLI
 
+### /quality Skill
+
+### Packaging
+
+### Specification
+
+## v0.11.0 - 2026-06-23
+
+### CLI
+
 - `qualitymd evaluation create` no longer seeds `debug-log.md` in new evaluation
   run folders. Historical runs that already contain `debug-log.md` remain
   compatible as legacy process artifacts.
@@ -69,10 +79,22 @@ QUALITY.md specification.
   and never contains secrets or raw prompt-injection text. `.quality/logs/`
   (plural) is distinct from the quality log's `.quality/log/`, which setup still
   does not write.
+- Bumped the bundled skill release metadata to `0.11.0`; the supported
+  `qualitymd` CLI compatibility range is now `>=0.11.0 <0.12.0`.
 
 ### Packaging
 
+- No packaging changes.
+
 ### Specification
+
+- No QUALITY.md specification changes.
+
+Compatibility:
+
+- CLI: `v0.11.0`
+- QUALITY.md specification: `0.3 (Draft)`
+- /quality skill: `0.11.0`, requires `qualitymd >=0.11.0 <0.12.0`
 
 ## v0.10.0 - 2026-06-23
 
