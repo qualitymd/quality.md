@@ -126,8 +126,8 @@ If the answer is no, revise the model before running an evaluation.
 When the file is valid and the first model is useful enough, run:
 
 ```text
-/quality wizard
+/quality evaluate
 ```
 
-Wizard should route to model review, whole-quality evaluation, scoped
-evaluation, or another concrete next step based on the current status.
+If the validation or status output shows model gaps, continue model authoring
+before evaluating. If tooling is missing or stale, run `/quality update` first.

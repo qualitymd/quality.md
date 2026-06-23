@@ -1,6 +1,6 @@
 ---
 name: quality
-description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, follow up on recommendations, or update the /quality skill and CLI pair; get wizard quality advice; anything concerning quality factors/attributes/characteristics relevant to project context"
+description: "Setup or work with QUALITY.md files or the qualitymd CLI; model, evaluate, follow up on recommendations, or update the /quality skill and CLI pair; get quality workflow guidance; anything concerning quality factors/attributes/characteristics relevant to project context"
 compatibility: Requires qualitymd CLI >=0.9.0 <0.10.0.
 metadata:
   version: "0.9.0"
@@ -26,7 +26,7 @@ recommendations.
   useful model from a skeleton. Read the authoring guide first.
 - Read [`guides/top-10-quality-md-checks.md`](guides/top-10-quality-md-checks.md)
   when quickly inspecting a QUALITY.md file's current state, quality, or
-  lifecycle, especially in wizard.
+  lifecycle for read-only orientation or model-review routing.
 - Read [`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md)
   when applying, acting on, or handing off an evaluation recommendation.
 - Read [`resources/cli-quick-reference.md`](resources/cli-quick-reference.md)
@@ -36,7 +36,7 @@ recommendations.
 
 ## Hard Rules
 
-- `wizard` is read-only.
+- Bare or unclear `/quality` orientation is read-only.
 - `evaluate` writes numbered evaluation records only through
   `qualitymd evaluation ...`; the skill may hand-author `design.md`, `plan.md`,
   and `debug-log.md` in CLI-created runs.
@@ -45,9 +45,8 @@ recommendations.
   surface.
 - The quality log under `.quality/log/` is written only by `setup` (an inaugural
   entry) and confirmed model-authoring or recommendation-apply workflows (one
-  entry per meaningful model change). `evaluate` never writes it, issue-tracker
-  handoff never writes it, and `wizard` is read-only with respect to it. See
-  [Quality Log](#quality-log).
+  entry per meaningful model change). `evaluate`, read-only orientation, and
+  issue-tracker handoff never write it. See [Quality Log](#quality-log).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
 - Never manually create evaluation run folders or record files.
@@ -82,13 +81,17 @@ continuing.
 
 Parse the user's request from free-form arguments:
 
-- Mode: `wizard` by default when direction is unclear; otherwise `evaluate`,
-  `setup`, `update`, or `wizard`. Treat `status`, `next`,
-  `review model`, and `review history` as wizard intents unless the user clearly
-  asks for another mode. Treat requests to update or upgrade the `/quality`
-  skill, the `qualitymd` CLI, or their compatibility pair as `update`. Treat
-  requests to improve, apply, act on, or hand off an evaluation recommendation
-  as recommendation follow-up, not as a separate mode.
+- Mode: `setup`, `evaluate`, or `update`. Treat bare `/quality`, unclear
+  direction, and requests that ask what to do next as read-only orientation, not
+  as a mode. Orientation may inspect local lifecycle state and recommend one of
+  the public workflows: `setup`, `evaluate`, `update`, or recommendation
+  follow-up. Do not advertise `status`, `next`, `review model`, or
+  `review history` as public invocations. If the user explicitly sends
+  `/quality wizard`, respond read-only that `wizard` has been removed from the
+  public surface and point to the public workflows. Treat requests to update or
+  upgrade the `/quality` skill, the `qualitymd` CLI, or their compatibility pair
+  as `update`. Treat requests to improve, apply, act on, or hand off an
+  evaluation recommendation as recommendation follow-up, not as a separate mode.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
 - Scope: full evaluation by default, or a narrowing. Natural Area and Factor
@@ -117,8 +120,7 @@ kind decision.
 
 ## User Interaction Contract
 
-Before executing a mode, emit a short run frame unless the immediately preceding
-wizard output already stated the same facts:
+Before executing a public mode, emit a short run frame:
 
 ```text
 /quality run
@@ -193,11 +195,6 @@ must not be replaced by titles, display values, or unqualified references.
 
 ```text
 /quality
-/quality wizard
-/quality status
-/quality next
-/quality review model
-/quality review history
 /quality setup
 /quality evaluate
 /quality evaluate <label>
@@ -230,7 +227,6 @@ the orchestrating skill.
 After resolving the mode, read the matching mode file before acting:
 
 - `setup` → [`modes/setup.md`](modes/setup.md)
-- `wizard` → [`modes/wizard.md`](modes/wizard.md)
 - `evaluate` → [`modes/evaluate.md`](modes/evaluate.md)
 - `update` → [`modes/update.md`](modes/update.md)
 

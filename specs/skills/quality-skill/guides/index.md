@@ -12,5 +12,5 @@ contracts.
 - [Recommendation follow-up](recommendation-follow-up-md.md) - contract for the
   guide to applying or handing off evaluation recommendations.
 - [Top 10 QUALITY.md checks](top-10-quality-md-checks-md.md) - contract for the
-  quick inspection checklist that produces routing findings for wizard and
-  related modes.
+  quick inspection checklist that produces routing findings for read-only
+  orientation and model review.

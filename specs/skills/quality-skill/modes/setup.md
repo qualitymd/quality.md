@@ -25,8 +25,8 @@ appear in all capitals.
 ## Purpose and routing
 
 `setup` is selected when no model file is present, when the user explicitly asks
-to create or initialize a QUALITY.md file, or when wizard routes to bootstrap or
-first-population work.
+to create or initialize a QUALITY.md file, or when read-only orientation routes
+to bootstrap or first-population work.
 
 The mode's purpose is to produce a valid starter model and immediately begin
 turning it into a useful project-specific model. It is not an evaluation mode
@@ -81,4 +81,6 @@ errors that make the model structurally invalid.
 `setup` is complete when the target model exists, passes lint, has received
 guided first-population work or a clearly reported user-deferred population step,
 and any meaningful model creation or model-shape change has a corresponding
-quality-log entry. Follow-on routing belongs to [`wizard`](wizard.md).
+quality-log entry. Follow-on guidance should recommend the next public workflow
+directly: `evaluate` when the model is ready, continued model authoring when it
+is not, or `update` when tooling is stale.

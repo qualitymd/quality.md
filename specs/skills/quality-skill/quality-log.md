@@ -124,16 +124,16 @@ NOT** write to the quality log.
 > changes only — referencing runs, never duplicating them — is what stops it
 > becoming a second evaluation record. — 0050
 
-`wizard` **MUST** remain read-only with respect to the log. It **SHOULD** surface
-model history (the latest entry) in its status output, and when the model has
-changed out of band since the last logged entry it **SHOULD** classify that under
-its existing *needs reconciliation* readiness and offer a backfill route. The
-backfill itself is performed by confirmed model-authoring or recommendation
-follow-up work, not by `wizard`.
+Read-only orientation **MUST** remain read-only with respect to the log. It
+**SHOULD** surface model history (the latest entry), and when the model has
+changed out of band since the last logged entry it **SHOULD** classify that
+under *needs reconciliation* readiness and offer a backfill route. The backfill
+itself is performed by confirmed model-authoring or recommendation follow-up
+work, not by orientation.
 
-> Rationale: the log is curated, not complete; `wizard` is where the gap left by
-> hand edits gets caught and routed for repair without `wizard` itself mutating
-> anything. — 0050
+> Rationale: the log is curated, not complete; read-only orientation is where
+> the gap left by hand edits gets caught and routed for repair without the
+> orientation step itself mutating anything. — 0050
 
 The run frame's mutation enumeration (see [Run frames](quality-skill.md#run-frames)) **MUST**
 include the quality log as a distinct mutation surface, so a write to it is

@@ -3,6 +3,13 @@
 ## 2026-06-23
 
 - **Revision**: Implemented durable spec alignment for
+  [0062 - Remove wizard mode](../changes/0062-remove-wizard-mode.md). Updated the
+  durable [`/quality` skill](skills/quality-skill/index.md) specs to remove
+  `wizard` as a public mode, keep bare `/quality` as read-only orientation,
+  avoid promoting `status` or `next` as public invocations, and recommend only
+  public workflows from ambiguous requests.
+
+- **Revision**: Implemented durable spec alignment for
   [0061 - Natural scope labels](../changes/archive/0061-natural-scope-labels.md).
   Updated the durable [`/quality` skill](skills/quality-skill/index.md) specs to
   make natural Area and Factor labels the primary scoped-evaluation input,
@@ -329,8 +336,7 @@
   use the declared `qualitymd` SemVer range, while local development builds can
   still be accepted by command-surface probing.
 
-- **Revision**: Reframed the durable
-  [`/quality` wizard](skills/quality-skill/quality-skill.md#wizard) contract as a
+- **Revision**: Reframed the durable `/quality` wizard contract as a
   read-only quality wayfinder: it now probes setup/model/history state, classifies
   lifecycle readiness, recommends one next workflow, and offers concrete
   alternatives without producing ratings or editing files.

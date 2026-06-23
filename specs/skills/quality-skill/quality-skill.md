@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants setup, wizard guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file.
+description: Use when a user wants setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -127,8 +127,7 @@ contract: argument parsing, shared CLI prerequisites, safety rules, config, and
 artifact-contract guidance live there. Supporting docs live under
 `skills/quality/resources/` and `skills/quality/guides/`. Mode-specific
 procedure details can live in separate mode files, and the current artifact
-keeps them under
-`skills/quality/modes/` as `setup.md`, `wizard.md`, `evaluate.md`, and
+keeps them under `skills/quality/modes/` as `setup.md`, `evaluate.md`, and
 `update.md`. When mode procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching mode file before executing that
 mode.
@@ -153,13 +152,14 @@ The root prompt **MUST** direct agents when to read each one:
   the user asks how to make the first useful model from a skeleton.
 - [`guides/top-10-quality-md-checks.md`](../../../skills/quality/guides/top-10-quality-md-checks.md)
   — the quick inspection checklist read when assessing a QUALITY.md file's
-  current state, quality, or lifecycle, especially in wizard.
+  current state, quality, or lifecycle for read-only orientation or model-review
+  routing.
 - [`guides/recommendation-follow-up.md`](../../../skills/quality/guides/recommendation-follow-up.md)
   — the non-mode guide read when applying, acting on, or handing off an
   evaluation recommendation.
 
 The description **MUST** optimize for trigger matching rather than documentation:
-it includes supported modes (`setup`, `wizard`, `evaluate`, `update`), broad
+it includes supported modes (`setup`, `evaluate`, `update`), broad
 quality vocabulary users naturally ask with (`quality management`, quality
 evaluation/improvement, factors, characteristics,
 attributes, criteria), QUALITY.md vocabulary (areas, factors, requirements),
@@ -183,19 +183,21 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 
 ### Arguments
 
-An invocation resolves four things, each with a default so a bare `/quality` is
-valid:
+An invocation resolves its mode or read-only orientation, model file, scope, and
+rigor where applicable:
 
-- **Mode** — `evaluate`, `setup`, `update`, or `wizard`. A bare
-  `/quality` with no direction runs the [`wizard`](#wizard) — the quality
-  wayfinder that inspects state and suggests what to run. User intents such as
-  `status`, `next`, `review model`, and `review history` resolve to wizard
-  unless the user clearly asks for another mode. `update` is selected for
-  requests to update, upgrade, or repair the installed `/quality` skill and
-  `qualitymd` CLI pair. `setup` is selected when no model file is present or the
-  user asks to create one; otherwise the default action is `evaluate`, so naming
-  only a scope still evaluates. Requests to improve, apply, act on, or hand off
-  a recommendation resolve to
+- **Mode** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
+  direction, unclear direction, or a request asking what to do next produces
+  read-only orientation rather than a mode run. Orientation may inspect local
+  lifecycle state and recommend one of the public workflows: `setup`,
+  `evaluate`, `update`, or recommendation follow-up. User intents such as
+  `status`, `next`, `review model`, and `review history` are not part of the
+  public invocation contract. `update` is selected for requests to update,
+  upgrade, or repair the installed `/quality` skill and `qualitymd` CLI pair.
+  `setup` is selected when no model file is present or the user asks to create one;
+  otherwise the default action is `evaluate`, so naming only a scope still
+  evaluates. Requests to improve, apply, act on, or hand off a recommendation
+  resolve to
   [recommendation follow-up](recommendation-follow-up.md), not to a separate
   mode.
 - **Model file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
@@ -234,11 +236,9 @@ evidence, mutation, and next action.
 
 ### Run frames
 
-Before executing a mode, the skill **SHOULD** emit a concise run frame naming
+Before executing a public mode, the skill **SHOULD** emit a concise run frame naming
 the resolved mode, model file, scope, rigor level when applicable, mutation
-policy, expected artifacts, and next user-visible gate. It **MAY** omit the run
-frame when the immediately preceding wizard output already stated the same mode,
-model file, scope, mutation policy, and next action.
+policy, expected artifacts, and next user-visible gate.
 
 The run frame **MUST** distinguish read-only work from mutating work. For a
 mutating mode, it **MUST** name the class of thing that may be changed:
@@ -358,13 +358,19 @@ and completion criteria live in behavioral component specs under
 interaction, safety, CLI ownership, evaluation, reporting, and quality-log
 contracts that every mode composes.
 
-### Wizard
+### Read-only orientation
 
-[`wizard`](modes/wizard.md) is the read-only wayfinder for ambiguous or
-status-oriented requests. It inspects local QUALITY.md lifecycle state,
-classifies readiness, recommends one next workflow, and offers concrete
-alternatives without modifying files, creating records, building reports,
-updating tooling, or rating evaluated source.
+Bare or ambiguous `/quality` requests are handled as read-only orientation, not
+as a public mode. Orientation may inspect local QUALITY.md lifecycle state,
+classify readiness, recommend one next workflow, and offer concrete alternatives
+without modifying files, creating records, building reports, updating tooling,
+or rating evaluated source. Its recommended next actions are limited to public
+workflows: `setup`, `evaluate`, `update`, and recommendation follow-up.
+
+The skill **MUST NOT** advertise `status`, `next`, `review model`,
+`review history`, or `wizard` as public invocations. If a user explicitly sends
+`/quality wizard`, the skill may respond read-only that `wizard` has been
+removed from the public surface and point to public workflows.
 
 ### Setup
 
@@ -404,11 +410,6 @@ argument spelling is not fixed by this spec. Each line resolves the four
 arguments, defaulting the ones left out:
 
 ```
-/quality                       # no direction → wizard: look at state and suggest what to run
-/quality status                # wizard: summarize setup/model/history readiness
-/quality next                  # wizard: recommend the next useful workflow
-/quality review model          # wizard: route to QUALITY.md model review/improvement
-/quality review history        # wizard: inspect prior runs and recommendations
 /quality evaluate              # run a full evaluation — root area, standard depth
 /quality evaluate --rigor quick   # fast evaluate: hotspots, high-confidence findings only
 /quality evaluate Payments     # scope to the Payments Area

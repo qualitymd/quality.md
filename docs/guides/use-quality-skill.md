@@ -1,7 +1,7 @@
 ---
 type: How-to Guide
 title: Use the /quality skill
-description: Install the /quality skill, maintain the skill/CLI pair, run setup/wizard/evaluation modes, and follow up on recommendations.
+description: Install the /quality skill, maintain the skill/CLI pair, run setup/evaluation modes, and follow up on recommendations.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-21T00:00:00Z
 ---
@@ -85,18 +85,18 @@ In the repository you want to evaluate:
 
 ```text
 /quality setup
-/quality wizard
+/quality
 /quality evaluate
 /quality update
 ```
 
 `setup` creates and lints a skeleton `QUALITY.md`, then uses the bundled
 authoring guide and getting-started guide to help populate the first useful
-model. `wizard` inspects the model state and suggests concrete next actions.
-`evaluate` writes a numbered evaluation run under `.quality/evaluations/` by
-default, inside the workspace quality data directory. A run includes formal
-assessment records, generated reports, and a process-only `debug-log.md` for
-notable evaluation orchestration events.
+model. Bare `/quality` gives read-only guidance on the next public workflow.
+`evaluate` writes a numbered evaluation run under `.quality/evaluations/` by default,
+inside the workspace quality data directory. A run includes formal assessment
+records, generated reports, and a process-only `debug-log.md` for notable
+evaluation orchestration events.
 `update` plans and orchestrates paired skill/CLI maintenance without running a
 quality evaluation.
 

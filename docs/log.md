@@ -1,5 +1,13 @@
 # Docs Update Log
 
+## 2026-06-23
+
+- **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)
+  and the [guides index](guides/index.md) for
+  [0062 - Remove wizard mode](../changes/0062-remove-wizard-mode.md). Public
+  guidance now lists `setup`, bare read-only `/quality`, `evaluate`, and
+  `update` without advertising wizard.
+
 ## 2026-06-22
 
 - **Revision**: Updated [Use the /quality skill](guides/use-quality-skill.md)

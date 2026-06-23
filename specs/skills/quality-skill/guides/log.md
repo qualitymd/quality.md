@@ -1,5 +1,13 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-23
+
+- **Revision**: Updated the getting-started and top-10-checks guide contracts for
+  [0062 - Remove wizard mode](../../../../changes/0062-remove-wizard-mode.md).
+  Getting-started now recommends public follow-on workflows directly, and the
+  top-10 checklist supports read-only orientation and model review rather than
+  wizard-specific routing.
+
 ## 2026-06-22
 
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for

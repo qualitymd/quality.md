@@ -12,7 +12,7 @@ Resolve model file
 
 Run qualitymd lint
 - errors? stop and report lint findings
-- valid? read getting-started + authoring and begin guided population, then wizard for next action
+- valid? read getting-started + authoring and begin guided population, then recommend the next public workflow
 ```
 
 ## Procedure
@@ -28,7 +28,7 @@ Run qualitymd lint
    - Scope: model skeleton/readiness
    - Mutation: `QUALITY.md` when missing or when an existing model change is confirmed; quality log
    - Artifacts: `QUALITY.md`, `.quality/log/` inaugural entry
-   - Next gate: lint result, guided population, then wizard next step
+   - Next gate: lint result, guided population, then next public workflow
    ```
 
 4. If no model file exists, run `qualitymd init [path]`.
@@ -69,8 +69,9 @@ Run qualitymd lint
    `kind: model-creation` and `target: model`; the body states what the first
    model captures and why. Seeding needs no separate confirmation beyond the
    user's confirmation of the model itself. See the quality log contract in
-   [`../SKILL.md`](../SKILL.md). Route to `wizard` after population for the next
-   evaluation workflow.
+   [`../SKILL.md`](../SKILL.md). After population, recommend the next public
+   workflow directly: `evaluate` when the model is ready, continued model
+   authoring when it is not, or `update` when tooling is stale.
 
 `setup` creates a valid skeleton; it does not invent a complete quality model
 without user/project context. For authoring judgment, read

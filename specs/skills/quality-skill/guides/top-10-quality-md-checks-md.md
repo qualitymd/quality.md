@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Top 10 QUALITY.md checks
-description: Contract for the skill's quick QUALITY.md inspection checklist used to produce routing findings for wizard and related modes.
+description: Contract for the skill's quick QUALITY.md inspection checklist used to produce routing findings for read-only orientation and model review.
 tags: [skill, quality, guide, checklist]
 timestamp: 2026-06-19T00:00:00Z
 ---
@@ -23,12 +23,12 @@ appear in all capitals.
 
 ## Motivation
 
-Wizard needs more than raw status counts to recommend the right lifecycle step,
-but it should not become a full model audit or quality evaluation. A short,
-shared checklist gives wizard and related modes a consistent way to inspect the
-current `QUALITY.md`, surface actionable findings, and route to setup,
-getting-started, authoring, evaluation, recommendation follow-up, or history
-work.
+Read-only orientation needs more than raw status counts to recommend the right
+lifecycle step, but it should not become a full model audit or quality
+evaluation. A short, shared checklist gives orientation and model-review
+workflows a consistent way to inspect the current `QUALITY.md`, surface
+actionable findings, and route to setup, getting-started, authoring,
+evaluation, recommendation follow-up, or history work.
 
 ## Purpose
 
@@ -58,10 +58,11 @@ Evaluation report.
 The skill root prompt **MUST** tell agents to read the checklist when quickly
 inspecting a QUALITY.md file's current state, quality, or lifecycle.
 
-Wizard mode **MUST** use the checklist after status probing when a `QUALITY.md`
-exists and is structurally valid, unless the user asked only for raw status.
-Wizard may skip checklist inspection when the model is missing, the model is
-invalid, or CLI support is missing/stale enough that routing is already decided.
+Read-only orientation **MUST** use the checklist after status probing when a
+`QUALITY.md` exists and is structurally valid, unless the user asked only for
+raw status. Orientation may skip checklist inspection when the model is missing,
+the model is invalid, or CLI support is missing/stale enough that routing is
+already decided.
 
 Other modes **MAY** use checklist findings as context when they need to explain
 why model authoring, evaluation, recommendation follow-up, or

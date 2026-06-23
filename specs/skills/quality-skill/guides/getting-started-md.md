@@ -36,7 +36,7 @@ first-run workflow.
 The guide exists to help a reader turn an initialized QUALITY.md skeleton into
 a first useful model through an ordered process. After following it, the file
 should still lint cleanly and each step should have reached a stated outcome, so
-`/quality wizard` can route a meaningful next workflow.
+the skill can recommend a meaningful next public workflow.
 
 ## Scope
 
@@ -64,11 +64,11 @@ The skill should already have read the authoring guide before using
 getting-started for first-run model population.
 
 Setup mode **MUST** route successful initialization to the getting-started guide
-before sending the user to wizard or evaluation.
+before recommending evaluation or continued model authoring.
 
-Wizard mode **SHOULD** prefer the getting-started guide over the broad authoring
-guide when the user has just initialized a skeleton or asks how to start from
-one.
+Read-only orientation **SHOULD** prefer the getting-started guide over the broad
+authoring guide when the user has just initialized a skeleton or asks how to
+start from one.
 
 ### Guide Content
 
@@ -92,8 +92,8 @@ brief completion checks, but it should not duplicate the full rationale or
 concept guidance from the authoring guide.
 
 The guide **MUST** preserve this process order: Markdown body first, rating
-scale second, then root area/source alignment, factors, requirements, validation,
-and wizard routing.
+scale second, then root area/source alignment, factors, requirements,
+validation, and next-workflow guidance.
 
 The guide **MUST** distinguish structural validity from model usefulness. A
 valid skeleton is not enough for evaluation; the guide should ask whether the
@@ -102,8 +102,10 @@ support is material, and sufficient to evaluate model quality; whether
 requirements are assessable; and whether evidence can distinguish important
 rating levels.
 
-The guide **MUST** end by routing to `/quality wizard` as the normal next
-workflow once the first model is valid and useful enough.
+The guide **MUST** end by recommending `/quality evaluate` as the normal next
+workflow once the first model is valid and useful enough, while directing users
+to continue authoring when model usefulness is not yet sufficient and to
+`/quality update` when tooling is stale.
 
 ### Relationship to Authoring Guide
 

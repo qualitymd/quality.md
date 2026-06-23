@@ -2,6 +2,37 @@
 
 ## 2026-06-23
 
+- **In-Review**: Completed implementation of
+  [0062 - Remove wizard mode](0062-remove-wizard-mode.md) and advanced it from
+  `In-Progress` to `In-Review`. Removed runtime and durable wizard mode files,
+  folded bare/ambiguous `/quality` handling into read-only orientation, removed
+  wizard from public docs and setup handoffs, updated quality-log/checklist
+  wording, reconciled indexes/logs/changelog, and verified `mise run check`.
+
+- **In-Progress**: Advanced
+  [0062 - Remove wizard mode](0062-remove-wizard-mode.md) from `Design` to
+  `In-Progress`. The functional spec and design doc are settled; implementation
+  begins across runtime `/quality` guidance, durable skill specs, public docs,
+  indexes, logs, and changelog.
+
+- **Design**: Advanced
+  [0062 - Remove wizard mode](0062-remove-wizard-mode.md) from `Draft` to
+  `Design` and added its
+  [design doc](0062-remove-wizard-mode/design.md). The design treats this as a
+  surface reduction rather than a rename, absorbs safe read-only orientation
+  into the parent skill routing contract, deletes public wizard mode files, and
+  keeps `/quality status` and `/quality next` out of the public contract. Updated
+  the open-cases entry in the bundle [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0062 - Remove wizard mode](0062-remove-wizard-mode.md) (`Draft`) with its
+  [functional spec](0062-remove-wizard-mode/spec.md) and
+  [child index](0062-remove-wizard-mode/index.md). The case removes `wizard`
+  from the `/quality` public contract without promoting `status` or `next` as
+  replacement modes, while preserving read-only orientation for bare or
+  ambiguous requests. Added the case to the open-cases list in the bundle
+  [index](index.md). Design and code not started.
+
 - **Done**: Landed and archived
   [0061 - Natural scope labels](archive/0061-natural-scope-labels.md) —
   advanced it through implementation to `Done`, moved the parent concept and

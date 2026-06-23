@@ -30,7 +30,7 @@ Invoke the `/quality` skill to manage quality for your project:
 
 ```text
 /quality setup                                  Get started working with QUALITY.md
-/quality wizard                                 Have your AI assistant/agent help you manage quality
+/quality                                        Get read-only guidance on the next workflow
 /quality evaluate                               Evaluate the quality of your project
 /quality evaluate Security                      Evaluate a specific quality factor or characteristic
 /quality evaluate Payments API                  Evaluate a specific area or project component

@@ -10,7 +10,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 This spec owns the `/quality` skill's non-mode recommendation follow-up
 workflow: how the skill helps users act on evaluation recommendations after
-`evaluate` produces them or `wizard` routes to them. It composes the shared
+`evaluate` produces them or read-only orientation routes to them. It composes the shared
 contracts in the parent [/quality skill](quality-skill.md) spec and the
 recommendation artifact contract in [/quality reporting](reporting.md).
 

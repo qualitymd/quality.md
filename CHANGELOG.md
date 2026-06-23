@@ -9,6 +9,9 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Removed `wizard` from the documented `/quality` public contract. Bare
+  `/quality` remains a read-only orientation entrypoint, while public workflows
+  are `setup`, `evaluate`, `update`, and recommendation follow-up.
 - Made natural Area and Factor labels the primary documented `/quality evaluate`
   scoped input, with qualified `area:` and `factor:` references retained for
   exact addressing.

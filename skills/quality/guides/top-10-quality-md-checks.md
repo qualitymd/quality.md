@@ -2,8 +2,9 @@
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's
 current state, model quality, and lifecycle readiness. The result is not an
-Evaluation report and does not rate the evaluated source. It produces routing findings
-that wizard and other modes can use to choose the next workflow.
+Evaluation report and does not rate the evaluated source. It produces routing
+findings that read-only orientation and model-review workflows can use to choose
+the next public workflow.
 
 ## Inputs
 

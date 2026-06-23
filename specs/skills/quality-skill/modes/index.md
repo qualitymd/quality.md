@@ -8,7 +8,6 @@ and completion criteria.
 # Modes
 
 - [setup](setup.md) - bootstrap or populate a `QUALITY.md` model.
-- [wizard](wizard.md) - read-only state inspection and routing guidance.
 - [evaluate](evaluate.md) - create evaluation records and reports.
 - [update](update.md) - orchestrate compatible `/quality` skill and CLI updates.
 

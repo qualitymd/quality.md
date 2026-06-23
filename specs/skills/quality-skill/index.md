@@ -20,7 +20,7 @@ that make it concrete. The installable skill artifact lives at
 - [/quality recommendation follow-up](recommendation-follow-up.md) - non-mode
   workflow for applying or handing off evaluation recommendations.
 - [modes/](modes/index.md) - behavioral component specs for runtime modes:
-  setup, wizard, evaluate, and update.
+  setup, evaluate, and update.
 - [guides/](guides/index.md) - 1:1 artifact specs for runtime guide resources
   bundled with the skill, including authoring, getting-started, recommendation
   follow-up, and checklist guides.

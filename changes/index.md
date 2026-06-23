@@ -43,7 +43,9 @@ edit.
 
 # Open change cases
 
-None.
+- [0062 — Remove wizard mode](0062-remove-wizard-mode.md) - remove `wizard` from
+  the `/quality` skill's public contract while preserving safe read-only
+  orientation for ambiguous requests (`In-Review`).
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

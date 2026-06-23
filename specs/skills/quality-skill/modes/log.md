@@ -1,5 +1,13 @@
 # /quality Skill Modes Update Log
 
+## 2026-06-23
+
+- **Mode removal**: Removed the `wizard` mode spec from this folder for
+  [0062 - Remove wizard mode](../../../../changes/0062-remove-wizard-mode.md).
+  Bare and ambiguous `/quality` requests are now governed by the parent
+  [`/quality` skill](../quality-skill.md) spec as read-only orientation, not as a
+  public mode.
+
 ## 2026-06-22
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) mode spec for
@@ -13,7 +21,7 @@
   [`recommendation follow-up`](../recommendation-follow-up.md) spec.
 
 - **Creation**: Originally added behavioral component specs for the `/quality` runtime modes:
-  [`setup`](setup.md), [`wizard`](wizard.md), [`evaluate`](evaluate.md),
-  `improve`, and [`update`](update.md). The parent
+  [`setup`](setup.md), `wizard`, [`evaluate`](evaluate.md), `improve`, and
+  [`update`](update.md). The parent
   [`/quality` skill](../quality-skill.md) spec keeps shared contracts and links
   to these mode-specific contracts.

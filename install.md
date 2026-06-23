@@ -130,12 +130,12 @@ In the repository to evaluate, ask the installed skill to set up or guide you:
 
 ```text
 /quality setup
-/quality wizard
+/quality
 ```
 
-`setup` creates and lints a skeleton `QUALITY.md` through the CLI. `wizard`
-checks the model, identifies available areas/factors, and suggests concrete
-next actions such as `/quality evaluate` or scoped evaluations.
+`setup` creates and lints a skeleton `QUALITY.md` through the CLI. Bare
+`/quality` gives read-only guidance on the next public workflow, such as
+`/quality evaluate` or scoped evaluations.
 
 ## 5. Optional config
 
