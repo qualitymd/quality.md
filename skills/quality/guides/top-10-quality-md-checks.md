@@ -1,10 +1,22 @@
 # Top 10 QUALITY.md Checks
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's
-current state, model quality, and lifecycle readiness. The result is not an
-Evaluation Report and does not rate the evaluated source. It produces routing
-findings that read-only orientation and model-review workflows can use to choose
-the next public workflow.
+lifecycle state and model maturity. The result is not an Evaluation Report and
+does not rate the evaluated source. It produces routing findings that read-only
+orientation and model-review workflows can use to choose the next public
+workflow.
+
+Two distinct axes come out of this inspection, and they must not be conflated:
+
+- *Lifecycle state* is where the model sits in the evaluation lifecycle and is
+  owned by `qualitymd status` (`readiness`): missing, invalid, ready to evaluate
+  (valid, no runs yet), has evaluation history, or needs reconciliation.
+- *Maturity* is how developed the model is, and is this checklist's judgment:
+  `starter`, `immature`, or `evaluation-ready`.
+
+A model can be lifecycle `ready-to-evaluate` (valid, no runs) while still being a
+`starter` in maturity. Report both; do not read the CLI's lifecycle signal as a
+maturity verdict.
 
 This checklist does not re-run setup. It checks whether the current
 `QUALITY.md` still preserves the setup assumptions and model qualities needed
@@ -38,6 +50,31 @@ QUALITY.md inspection findings
 
 Keep evidence short. Cite section names, property paths, counts, or status JSON
 fields rather than quoting long passages.
+
+## Condensed close checklist
+
+Setup's close step uses this condensed pass to classify maturity. Read the full
+checks below only when the maturity call is borderline or a read-only
+orientation needs the complete inspection.
+
+- Lint passes and `qualitymd status` reports a valid model. For a freshly
+  authored model, lifecycle is `ready-to-evaluate` (valid, no runs). (check 1)
+- Overview, Scope, Needs, and Risks are substantive, each closing with its own
+  unknowns and open questions, and important missing context is named. (check 5)
+- Project posture — lifecycle, risk tolerance, modeling rigor — and the primary
+  stakeholder needs are explicit and specific to this project, not generic.
+  (checks 2-4)
+- Factors map to the body's needs and risks, and requirements are concrete with a
+  usable assessment each. (checks 8-9)
+
+Classify maturity from how many of these hold:
+
+- `starter` — scaffold or thin body; posture or needs mostly generic; few
+  concrete requirements.
+- `immature` — substantive in parts, but with material gaps in posture, needs,
+  factors, or assessable requirements.
+- `evaluation-ready` — posture, needs, factors, and assessable requirements are
+  present and specific enough to evaluate.
 
 ## The Checks
 
@@ -195,15 +232,21 @@ recommend CI or release gating by default.
 
 ## Summary Judgment
 
-After the checks, classify the QUALITY.md lifecycle in one phrase:
+After the checks, report the two axes separately.
+
+Lifecycle state (from `qualitymd status`):
 
 - `missing`
 - `invalid`
-- `starter`
-- `immature`
 - `ready to evaluate`
 - `has evaluation history`
 - `needs reconciliation`
+
+Maturity (this checklist's judgment, for a valid model):
+
+- `starter`
+- `immature`
+- `evaluation-ready`
 
 Use the finding routes to recommend one next workflow and list a few concrete
 alternatives.

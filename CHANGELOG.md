@@ -11,8 +11,19 @@ QUALITY.md specification.
 
 - Reworked `/quality setup` guidance into an explicit setup workflow with a
   setup brief, ten concrete discovery questions, confidence-labeled defaults,
-  compact prompt framing, and clearer workflow terminology while preserving the
-  `QUALITY.md`-only mutation boundary.
+  and clearer workflow terminology while preserving the `QUALITY.md`-only
+  mutation boundary.
+- Made setup discovery agent-agnostic: the workflow presents all ten questions
+  using the agent's own interaction surface — iterating one question at a time
+  when no structured question tool is available, or paging through one when it
+  is — instead of assuming a fixed question UI.
+- Setup now reads the `qualitymd init` scaffold before authoring it, avoiding a
+  wasted read-before-write round-trip.
+- Setup now reports model *maturity* (`starter`, `immature`, `evaluation-ready`)
+  as distinct from the lifecycle `readiness` that `qualitymd status` owns, and
+  the Top 10 checklist no longer blends the two axes.
+- Renamed the skill's `modes/` folder to `workflows/` (runtime skill and spec
+  mirror); each workflow is still dispatched as a mode.
 
 ### Packaging
 

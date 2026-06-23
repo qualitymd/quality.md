@@ -10,14 +10,14 @@ timestamp: 2026-06-23T00:00:00Z
 
 `setup` is the `/quality` workflow that creates or updates a useful first
 `QUALITY.md` through context inspection, a concrete discovery prompt, model
-authoring, validation, and readiness routing. It implements the shared
+authoring, validation, and maturity routing. It implements the shared
 contracts in the parent [/quality skill](../quality-skill.md) spec and owns
 only the setup-specific behavior below.
 
 The runtime procedure lives at
-[`skills/quality/modes/setup.md`](../../../../skills/quality/modes/setup.md).
-The file path remains under `modes/` for dispatch compatibility, but user-facing
-setup behavior is described as a workflow.
+[`skills/quality/workflows/setup.md`](../../../../skills/quality/workflows/setup.md).
+`setup` is dispatched as a mode, but its files live under `workflows/` and its
+user-facing behavior is described as a workflow.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -57,7 +57,7 @@ The setup workflow **MUST** include these stages, in order:
 4. Ask concrete discovery questions.
 5. Run `qualitymd init [path]` when the target model is missing.
 6. Synthesize or update `QUALITY.md`.
-7. Run lint and inspect model readiness.
+7. Run lint and classify model maturity.
 8. Report completion and next-step choices.
 
 The workflow **MUST NOT** ask the user to design Factors, child Areas,
@@ -146,24 +146,42 @@ will not create issues or configure integrations.
 
 ## Prompt form
 
-The discovery questions **MAY** be presented as one compact prompt or as a short
-sequence when the interaction surface works better that way.
+`setup` **MUST** present all ten discovery questions every run, unless the user
+explicitly asks to accept all inferred defaults. It **MUST NOT** drop, merge, or
+silently default away a question to fit an interaction surface's limits.
 
-A compact prompt **MUST** ask the user to confirm or correct the setup
-assumptions instead of requiring full prose answers to every question.
+`setup` **MUST** choose the presentation form from the agent's own interaction
+capabilities. This guidance **MUST NOT** assume or name a specific agent's
+question tool.
 
-A compact prompt **MUST** preserve all required questions, defaults, confidence
-signals, and seeded missing-context content.
+When the agent has a structured question affordance with item or option limits,
+`setup` **MUST** page all ten questions through it across as many rounds as the
+limits require, and **MUST** keep open-ended questions (primary users,
+maintainers and collaborators, other stakeholders, missing context) as free text
+rather than forcing them into fixed options.
 
-A short sequence **SHOULD** group closely related questions together, such as
-root Area plus domain, lifecycle plus risk plus rigor, stakeholders plus needs,
-and missing context plus review posture.
+When the agent has no structured question affordance, `setup` **MUST** iterate
+the questions one at a time. Each step **MUST** carry that question's recommended
+default and confidence signal so the user can confirm or correct it and advance,
+and **MUST NOT** require a full prose answer. One-at-a-time iteration is the
+default presentation form.
+
+`setup` **MUST** honor an explicit user request to accept all inferred defaults
+and skip the remaining questions, or to see all ten questions at once instead of
+iterating. `setup` **MUST NOT** lead with these escapes.
+
+`setup` **MUST NOT** re-ask context the user has already supplied earlier in the
+interaction.
 
 ## Model authoring
 
 `setup` **MUST** drive `qualitymd init` for deterministic scaffolding when the
 model file is absent. It **MUST NOT** reimplement scaffolding, validation, CLI
 installation tooling, or source-driven authoring judgment.
+
+When `setup` scaffolds with `qualitymd init`, it **MUST** read the scaffolded
+file before authoring it, so a single authoring pass does not fail a
+read-before-write guard.
 
 After discovery and scaffolding when needed, `setup` **MUST** write a model that
 follows the authoring guide and active specification. The model **MUST** address
@@ -205,16 +223,20 @@ local development build lacks required commands.
 `setup` **MUST** run `qualitymd lint` after writing `QUALITY.md`. It **MUST**
 report lint failures before offering evaluation as a next step.
 
-`setup` **MUST** inspect the resulting model against the bundled Top 10
-QUALITY.md checks before reporting completion. This inspection **MUST** remain a
-model-readiness inspection and **MUST NOT** evaluate root Area source quality.
+`setup` **MUST** classify the resulting model's maturity against the bundled Top
+10 QUALITY.md checks before reporting completion, using that guide's condensed
+close checklist and reading the full checks only when the maturity call is
+borderline. This inspection **MUST** remain a model-maturity inspection and
+**MUST NOT** evaluate root Area source quality. The model-maturity classification
+(`starter`, `immature`, `evaluation-ready`) **MUST** be reported as distinct from
+the lifecycle `readiness` that `qualitymd status` owns.
 
 ## Completion criteria
 
 `setup` is complete when the target model exists, lint has run, the model has
 received context-informed authoring or a clearly reported user-deferred
-authoring step, and setup has reported model readiness. Completion output
-**MUST** summarize the `QUALITY.md` change, lint result, readiness
+authoring step, and setup has reported model maturity. Completion output
+**MUST** summarize the `QUALITY.md` change, lint result, maturity
 classification, important remaining model gaps, and next-step choices.
 
 Next-step choices **SHOULD** include continuing to iterate on `QUALITY.md`,

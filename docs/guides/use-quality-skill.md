@@ -93,8 +93,8 @@ In the repository you want to evaluate:
 
 `setup` runs a guided setup workflow: it inspects available context, asks
 concrete setup questions with recommended defaults, writes only `QUALITY.md`,
-validates it, and reports whether the model is ready to evaluate or needs more
-authoring. Bare `/quality` gives read-only guidance on the next public workflow.
+validates it, and reports the model's maturity (`starter`, `immature`, or
+`evaluation-ready`) so you know whether it needs more authoring. Bare `/quality` gives read-only guidance on the next public workflow.
 `evaluate` writes a numbered evaluation run under `.quality/evaluations/` by default,
 inside the workspace quality data directory. A run includes formal assessment
 records, generated reports, and a process-only `debug-log.md` for notable

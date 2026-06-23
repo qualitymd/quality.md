@@ -230,9 +230,9 @@ the orchestrating skill.
 After resolving the mode/workflow, read the matching workflow file before
 acting:
 
-- `setup` → [`modes/setup.md`](modes/setup.md)
-- `evaluate` → [`modes/evaluate.md`](modes/evaluate.md)
-- `update` → [`modes/update.md`](modes/update.md)
+- `setup` → [`workflows/setup.md`](workflows/setup.md)
+- `evaluate` → [`workflows/evaluate.md`](workflows/evaluate.md)
+- `update` → [`workflows/update.md`](workflows/update.md)
 
 Recommendation follow-up is not a mode. When the user asks to apply, act on,
 improve from, or hand off an evaluation recommendation, read

@@ -19,9 +19,9 @@ Read context
 - identify missing context
 
 Ask discovery questions
-- confirm or correct inferred defaults
-- use compact prompt by default
-- use short sequence when needed
+- present all ten; confirm or correct inferred defaults
+- iterate one at a time when there is no structured question affordance
+- page through a structured question tool when one is available
 
 Write QUALITY.md
 - scaffold missing file with qualitymd init
@@ -30,7 +30,7 @@ Write QUALITY.md
 
 Verify and close
 - run qualitymd lint
-- inspect readiness with Top 10 checks
+- classify maturity with the Top 10 checklist
 - report status and next-step choices
 ```
 
@@ -48,7 +48,7 @@ Verify and close
    - Scope: contextual QUALITY.md setup
    - Mutation: QUALITY.md only
    - Artifacts: QUALITY.md
-   - Next gate: context analysis, discovery, lint, readiness inspection
+   - Next gate: context analysis, discovery, lint, maturity inspection
    ```
 
 4. Read the authoring sections a first model needs, not the whole guide. For a
@@ -109,14 +109,14 @@ gets distilled into `QUALITY.md` where the assumptions shape the model.
 
 Ask the user to confirm or correct the setup assumptions before writing
 `QUALITY.md`, unless they explicitly ask to accept all inferred defaults. Each
-question must include a recommended answer and confidence label.
+question carries a recommended answer and confidence label. The ten questions do
+double duty: they capture context the model needs, and they teach the user the
+dimensions a quality model spans. Present all ten every run — never drop, merge,
+or silently default one away to fit an interaction surface.
 
-Default to one compact prompt:
+The ten discovery questions:
 
 ```text
-I inspected the repo for setup signals. Please confirm or correct these setup
-assumptions before I write QUALITY.md:
-
 1. Root area: Should this QUALITY.md model the whole current project, or a
    narrower area?
    Recommended: <default> (<confidence>)
@@ -158,17 +158,33 @@ assumptions before I write QUALITY.md:
     Recommended: <default> (<confidence>)
 ```
 
-Accept terse corrections. The user does not need to answer every item in prose
-when the defaults are right.
+### How to present them
 
-Use a short sequence instead of the compact prompt when the interaction surface
-needs it. Preserve all ten questions, defaults, confidence labels, and seeded
-missing-context content. Prefer these groups:
+Choose the presentation form from your own interaction capabilities. Do not
+assume or name a specific question UI.
 
-1. Root area and domain.
-2. Lifecycle, risk tolerance, and modeling rigor.
-3. Primary users, maintainers/collaborators, and other stakeholders.
-4. Missing context and review posture.
+- Structured question tool: when you have a structured question tool with item
+  or option limits, page all ten questions through it across as many rounds as
+  the limits require. Keep the open-ended questions (6-9) as free text; do not
+  force them into fixed options.
+- No structured affordance: iterate the questions one at a time. Carry each
+  question's recommended default and confidence so the user can confirm or
+  terse-correct and advance; do not require a full prose answer. Iterating one at
+  a time is the default — it keeps each dimension legible and preserves the
+  teaching value.
+
+Whichever form you use, surface all ten, seed the missing-context question (9)
+from your repository analysis rather than asking a blank "anything else?", and do
+not re-ask context the user already supplied.
+
+### Escapes
+
+Honor these when the user asks, but do not lead with them:
+
+- Accept all defaults: the user may accept all inferred defaults and skip the
+  remaining questions.
+- Show all at once: the user may ask to see all ten in a single prompt instead of
+  iterating.
 
 The collaboration question assumes agent-heavy development and asks which human
 collaborators, reviewers, maintainers, or stakeholders also need to align with
@@ -199,7 +215,9 @@ guide, and repository context.
 ## Write QUALITY.md
 
 If no model file exists, run `qualitymd init [path]` after discovery and before
-authoring content.
+authoring content. `init` scaffolds the file through the CLI, so read the
+scaffolded file before authoring it. This satisfies the read-before-write guard
+in one pass instead of failing the first write and retrying.
 
 If the model file exists and setup would change it, use a decision brief before
 editing:
@@ -245,10 +263,17 @@ Run `qualitymd lint [path]`. Stop on lint errors, report the CLI findings, and
 route to continued `QUALITY.md` iteration. Do not recommend evaluation while the
 model is invalid.
 
-When lint passes, inspect the resulting model with
+When lint passes, classify the model's *maturity* — how developed the model is —
+with the condensed checklist in
 [`../guides/top-10-quality-md-checks.md`](../guides/top-10-quality-md-checks.md).
-This is a bounded model-readiness inspection, not a project evaluation. Classify
-readiness as `starter`, `immature`, or `ready to evaluate`.
+This is a bounded inspection, not a project evaluation; read the full guide only
+when the maturity call is borderline. Classify maturity as `starter`,
+`immature`, or `evaluation-ready`.
+
+Maturity is distinct from the lifecycle `readiness` that `qualitymd status`
+reports. The CLI's `ready-to-evaluate` means only "model is valid, with no
+evaluation runs yet"; it is not a maturity judgment. Do not present the two as
+one signal.
 
 Report setup completion status-first:
 
@@ -256,13 +281,13 @@ Report setup completion status-first:
 Setup complete
 - Changed: QUALITY.md
 - Validation: lint passed | lint failed
-- Readiness: starter | immature | ready to evaluate
+- Maturity: starter | immature | evaluation-ready
 - Important gaps: <none | concise model gaps>
 - Not done: no evaluation, no quality log, no issues, no automations
 - Next: continue iterating | run evaluation | set up recurring review | set up recommendation handoff | stop here
 ```
 
-If readiness is not `ready to evaluate`, list the most important model gaps and
+If maturity is not `evaluation-ready`, list the most important model gaps and
 make continued iteration the recommended next step. Do not automatically take
 any next-step action.
 

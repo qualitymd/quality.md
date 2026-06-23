@@ -2,6 +2,21 @@
 
 ## 2026-06-23
 
+- **Rename + Revision**: Implemented durable spec changes for
+  [0065 - Setup discovery and close refinements](../changes/0065-setup-discovery-and-close-refinements.md).
+  Renamed the durable `specs/skills/quality-skill/modes/` folder to `workflows/`
+  and updated live `modes/` path references in the
+  [`/quality` skill](skills/quality-skill/quality-skill.md) parent spec,
+  [index](skills/quality-skill/index.md), and
+  [evaluation](skills/quality-skill/evaluation.md) specs. Made the durable setup
+  prompt-form contract agent-agnostic, added the read-the-scaffold-before-author
+  requirement, reframed setup's close contract and the
+  [top-10-checks](skills/quality-skill/guides/top-10-quality-md-checks-md.md)
+  guide to separate model maturity (`starter`, `immature`, `evaluation-ready`)
+  from the CLI's lifecycle `readiness`, and renamed the model-maturity sense of
+  "readiness" in the parent spec while keeping CLI/tooling readiness intact.
+  Historical log entries keep their `modes/` references frozen.
+
 - **Revision**: Implemented durable spec alignment for
   [0064 - Structured setup workflow](../changes/0064-structured-setup-workflow.md).
   Updated durable [`/quality` skill](skills/quality-skill/index.md) specs so

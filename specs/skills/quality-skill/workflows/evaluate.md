@@ -15,7 +15,7 @@ parent [/quality skill](../quality-skill.md) spec and owns only the
 evaluate-specific behavior below.
 
 The runtime procedure lives at
-[`skills/quality/modes/evaluate.md`](../../../../skills/quality/modes/evaluate.md).
+[`skills/quality/workflows/evaluate.md`](../../../../skills/quality/workflows/evaluate.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as

@@ -2,7 +2,7 @@
 type: Change Case
 title: Contextual setup flow
 description: Rework /quality setup into a short context-informed discovery flow that writes only QUALITY.md and routes next steps.
-status: In-Review
+status: Done
 tags: [skill, setup, ux]
 timestamp: 2026-06-23T00:00:00Z
 ---
@@ -118,5 +118,6 @@ Runtime skill and docs:
 
 ## Status
 
-`In-Review`. Implementation is complete across runtime skill guidance, durable
+`Done`. Implementation is complete across runtime skill guidance, durable
 skill specs, public docs, logs, and changelog. Verified `mise run check`.
+Landed and archived.

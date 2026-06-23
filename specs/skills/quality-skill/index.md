@@ -19,8 +19,8 @@ that make it concrete. The installable skill artifact lives at
   `.quality/log/` model-change entries.
 - [/quality recommendation follow-up](recommendation-follow-up.md) - non-mode
   workflow for applying or handing off evaluation recommendations.
-- [modes/](modes/index.md) - behavioral component specs for runtime modes:
-  setup, evaluate, and update.
+- [workflows/](workflows/index.md) - behavioral component specs for the runtime
+  workflows: setup, evaluate, and update.
 - [guides/](guides/index.md) - 1:1 artifact specs for runtime guide resources
   bundled with the skill, including authoring, getting-started, recommendation
   follow-up, and checklist guides.
@@ -36,4 +36,5 @@ that make it concrete. The installable skill artifact lives at
   [Reporting](reporting.md#reporting) contract concrete.
 - [guides/](guides/index.md) - contracts for runtime guide resources bundled
   with the skill.
-- [modes/](modes/index.md) - behavioral component specs for the runtime modes.
+- [workflows/](workflows/index.md) - behavioral component specs for the runtime
+  workflows.

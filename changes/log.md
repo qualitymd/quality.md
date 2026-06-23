@@ -2,6 +2,57 @@
 
 ## 2026-06-23
 
+- **Archival**: Advanced
+  [0065 - Setup discovery and close refinements](archive/0065-setup-discovery-and-close-refinements.md)
+  to `Done` and moved it (parent and folder) into [`archive/`](archive/).
+  Implementation landed: made setup discovery agent-agnostic (present all ten
+  questions, iterate one at a time without a structured question affordance, page
+  through one when available, escapes on request), added the
+  read-the-`qualitymd init`-scaffold-before-authoring step, disentangled model
+  maturity (`starter`/`immature`/`evaluation-ready`) from the CLI's lifecycle
+  `readiness` in the setup close and the Top 10 guide, and renamed the skill
+  `modes/` folder to `workflows/` across the runtime skill and `specs/` mirror
+  with all live path references updated and append-only logs left frozen. Updated
+  durable specs, public docs, and `CHANGELOG.md`; verified `mise run check`. The
+  In-Review review gate was collapsed at the user's explicit direction. Updated
+  the bundle [index](index.md) and [archive index](archive/index.md).
+
+- **In-Progress**: Advanced
+  [0065 - Setup discovery and close refinements](archive/0065-setup-discovery-and-close-refinements.md)
+  from `Design` to `In-Progress`; spec and design were settled and implementation
+  began across the runtime skill, durable specs, docs, and the folder rename.
+
+- **Archival**: Advanced
+  [0062 - Remove wizard mode](archive/0062-remove-wizard-mode.md),
+  [0063 - Contextual setup flow](archive/0063-contextual-setup-flow.md), and
+  [0064 - Structured setup workflow](archive/0064-structured-setup-workflow.md)
+  from `In-Review` to `Done` and moved each parent concept and child folder into
+  [`archive/`](archive/index.md). Added their archive [index](archive/index.md)
+  entries and removed the open-cases entries from the bundle
+  [index](index.md). Repointed the live [0065](0065-setup-discovery-and-close-refinements.md)
+  "Relationship to 0064" link into `archive/` and updated its now-stale "0064 is
+  In-Review" note. Append-only `log.md` references under
+  [`specs/`](../specs/log.md), `specs/skills/quality-skill/`, and
+  [`docs/`](../docs/log.md) stay frozen at their original paths as historical
+  record.
+
+- **Creation**: Added change
+  [0065 - Setup discovery and close refinements](0065-setup-discovery-and-close-refinements.md)
+  (`status: Design`) with its
+  [functional spec](0065-setup-discovery-and-close-refinements/spec.md),
+  [design doc](0065-setup-discovery-and-close-refinements/design.md), and
+  [index](0065-setup-discovery-and-close-refinements/index.md). The case captures
+  four frictions from a first field run of `/quality setup`: make discovery
+  agent-agnostic and present all ten questions (iterating one at a time when no
+  structured question affordance exists), read the `qualitymd init` scaffold
+  before authoring it, disentangle the skill's model-maturity judgment from the
+  CLI's lifecycle `readiness`, and take up the `modes/` → `workflows/` folder
+  rename 0064 deferred. Records the affected runtime skill, durable specs, docs,
+  and packaging; notes that append-only `log.md` files keep historical `modes/`
+  references frozen. Spec and design are settled; no code, runtime, or durable
+  spec edits made yet. Updated the open-cases entry in the bundle
+  [index](index.md).
+
 - **In-Review**: Completed implementation of
   [0064 - Structured setup workflow](0064-structured-setup-workflow.md) and
   advanced it from `In-Progress` to `In-Review`. Rewrote runtime setup guidance

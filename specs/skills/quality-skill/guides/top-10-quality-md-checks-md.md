@@ -171,12 +171,36 @@ active recommendations, and visible model context to decide whether the next
 workflow is maintenance rather than new authoring or evaluation. It **MUST NOT**
 require or recommend CI or release gating by default.
 
-Every check that blocks evaluation readiness **MUST** distinguish model
+Every check that would block evaluation **MUST** distinguish model
 usefulness from root area quality. A valid but vague model is a model-authoring
 finding, not evidence that the root area is low quality.
 
+### Maturity vs lifecycle state
+
+The checklist **MUST** keep two axes distinct and **MUST NOT** present them as one
+blended classification:
+
+- *Lifecycle state* — where the model sits in the evaluation lifecycle — is owned
+  by `qualitymd status` (`readiness`): missing, invalid, ready to evaluate (valid
+  with no runs), has evaluation history, or needs reconciliation.
+- *Maturity* — how developed the model is — is the checklist's own judgment:
+  `starter`, `immature`, or `evaluation-ready`.
+
+The checklist **MUST NOT** treat the CLI's lifecycle `ready-to-evaluate` signal
+as a maturity verdict; a valid model with no runs can still be a `starter`.
+
+### Condensed close checklist
+
+The guide **MUST** include a condensed checklist that the setup workflow uses to
+classify maturity at close without reading every check. The condensed checklist
+**MUST** cover model validity, body context, project posture and stakeholder
+needs, and factor/requirement quality, and **MUST** map its result to the
+`starter`/`immature`/`evaluation-ready` maturity levels. The full checks remain
+available for borderline maturity calls and complete read-only orientation.
+
 ### Summary Judgment
 
-The checklist **MUST** end by mapping findings to a lifecycle classification.
-The classification vocabulary should include missing, invalid, starter,
-immature, ready to evaluate, has evaluation history, and needs reconciliation.
+The checklist **MUST** end by reporting the two axes separately: a lifecycle
+classification (missing, invalid, ready to evaluate, has evaluation history, or
+needs reconciliation) and, for a valid model, a maturity classification
+(`starter`, `immature`, or `evaluation-ready`).

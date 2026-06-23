@@ -2,7 +2,7 @@
 type: Change Case
 title: Structured setup workflow
 description: Turn /quality setup guidance into an explicit workflow with concrete discovery questions and prompt framing.
-status: In-Review
+status: Done
 tags: [skill, setup, ux]
 timestamp: 2026-06-23T00:00:00Z
 ---
@@ -114,6 +114,6 @@ Runtime skill and docs:
 
 ## Status
 
-`In-Review`. Implementation is complete across runtime skill guidance, durable
+`Done`. Implementation is complete across runtime skill guidance, durable
 skill specs, public docs, logs, and changelog. Verification is recorded in the
-change log.
+change log. Landed and archived.

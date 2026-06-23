@@ -253,7 +253,7 @@ areas:
         requirements:
           "the skill guides setup wizard evaluate improve and upgrade workflows":
             assessment: >
-              Assess skills/quality/SKILL.md, skills/quality/modes/, and bundled
+              Assess skills/quality/SKILL.md, skills/quality/workflows/, and bundled
               guides against specs/skills/quality-skill/quality-skill.md. The
               skill routes ambiguous requests through wizard, inspects status and
               history when relevant, records recommendations as evaluation

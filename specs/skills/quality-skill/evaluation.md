@@ -12,7 +12,7 @@ This spec owns the `/quality` skill's cross-mode evaluation workflow: how the
 skill grounds format rules, plans and performs assessment, records judgment, and
 uses rigor levels. It composes the shared contracts in the parent
 [/quality skill](quality-skill.md) spec and is used by the
-[`evaluate`](modes/evaluate.md) mode.
+[`evaluate`](workflows/evaluate.md) mode.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as

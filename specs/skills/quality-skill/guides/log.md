@@ -2,6 +2,15 @@
 
 ## 2026-06-23
 
+- **Revision**: Updated the
+  [top-10-quality-md-checks](top-10-quality-md-checks-md.md) guide contract for
+  [0065 - Setup discovery and close refinements](../../../../changes/0065-setup-discovery-and-close-refinements.md).
+  The checklist now keeps two axes distinct — lifecycle state (owned by
+  `qualitymd status`) and model maturity (`starter`, `immature`,
+  `evaluation-ready`) — instead of one blended classification, and must include a
+  condensed close checklist the setup workflow uses to classify maturity without
+  reading every check.
+
 - **Revision**: Updated the getting-started guide contract for
   [0064 - Structured setup workflow](../../../../changes/0064-structured-setup-workflow.md).
   Getting-started now treats setup assumptions from the structured workflow —

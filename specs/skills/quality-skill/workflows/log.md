@@ -1,6 +1,20 @@
-# /quality Skill Modes Update Log
+# /quality Skill Workflows Update Log
 
 ## 2026-06-23
+
+- **Rename + Revision**: Renamed this folder from `modes/` to `workflows/` and
+  updated its [index](index.md) for
+  [0065 - Setup discovery and close refinements](../../../../changes/0065-setup-discovery-and-close-refinements.md).
+  Replaced the [`setup`](setup.md) prompt-form contract with agent-agnostic
+  presentation — present all ten discovery questions, iterate one at a time when
+  there is no structured question affordance, page through a structured tool when
+  there is, keep open-ended questions free text, and honor accept-all/show-all
+  escapes on request. Added the read-the-scaffold-before-authoring requirement,
+  and reframed the close contract to classify model maturity (`starter`,
+  `immature`, `evaluation-ready`) as distinct from the CLI's lifecycle
+  `readiness`. Updated runtime path references in [`evaluate`](evaluate.md) and
+  [`update`](update.md) to the `workflows/` path. Historical entries below keep
+  their `modes/` references frozen.
 
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for
   [0064 - Structured setup workflow](../../../../changes/0064-structured-setup-workflow.md).

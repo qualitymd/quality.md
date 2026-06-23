@@ -43,15 +43,7 @@ edit.
 
 # Open change cases
 
-- [0064 — Structured setup workflow](0064-structured-setup-workflow.md) - turn
-  `/quality setup` guidance into an explicit workflow with concrete discovery
-  questions and prompt framing (`In-Review`).
-- [0063 — Contextual setup flow](0063-contextual-setup-flow.md) - rework
-  `/quality setup` into a short context-informed discovery flow that writes only
-  `QUALITY.md` and routes next steps (`In-Review`).
-- [0062 — Remove wizard mode](0062-remove-wizard-mode.md) - remove `wizard` from
-  the `/quality` skill's public contract while preserving safe read-only
-  orientation for ambiguous requests (`In-Review`).
+No open change cases.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

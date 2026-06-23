@@ -14,7 +14,7 @@ implements the shared contracts in the parent [/quality skill](../quality-skill.
 spec and owns only the update-specific behavior below.
 
 The runtime procedure lives at
-[`skills/quality/modes/update.md`](../../../../skills/quality/modes/update.md).
+[`skills/quality/workflows/update.md`](../../../../skills/quality/workflows/update.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as

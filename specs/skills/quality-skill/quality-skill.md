@@ -129,11 +129,11 @@ contract: argument parsing, shared CLI prerequisites, safety rules, config, and
 artifact-contract guidance live there. Supporting docs live under
 `skills/quality/resources/` and `skills/quality/guides/`. Workflow-specific
 procedure details can live in separate dispatch files, and the current artifact
-keeps them under `skills/quality/modes/` as `setup.md`, `evaluate.md`, and
+keeps them under `skills/quality/workflows/` as `setup.md`, `evaluate.md`, and
 `update.md`. When workflow procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching workflow file before executing
-that workflow. The `modes/` path is dispatch vocabulary; user-facing setup prose
-should describe setup as a workflow.
+that workflow. Each file is dispatched as a mode, but the files live under
+`workflows/` and user-facing prose describes them as workflows.
 
 The installable skill ships settled runtime resources under
 `skills/quality/resources/` and runtime guides under `skills/quality/guides/`.
@@ -358,7 +358,7 @@ values, or unqualified references in evaluation record payloads.
 
 Workflow-specific routing, mutation surfaces, required artifacts, stop
 conditions, and completion criteria live in behavioral component specs under
-[`modes/`](modes/index.md). The parent spec keeps the shared invocation,
+[`workflows/`](workflows/index.md). The parent spec keeps the shared invocation,
 interaction, safety, CLI ownership, evaluation, reporting, and quality-log
 contracts that every workflow composes.
 
@@ -366,7 +366,7 @@ contracts that every workflow composes.
 
 Bare or ambiguous `/quality` requests are handled as read-only orientation, not
 as a public mode. Orientation may inspect local QUALITY.md lifecycle state,
-classify readiness, recommend one next workflow, and offer concrete alternatives
+classify model maturity, recommend one next workflow, and offer concrete alternatives
 without modifying files, creating records, building reports, updating tooling,
 or rating evaluated source. Its recommended next actions are limited to public
 workflows: `setup`, `evaluate`, `update`, and recommendation follow-up.
@@ -378,18 +378,18 @@ removed from the public surface and point to public workflows.
 
 ### Setup
 
-[`setup`](modes/setup.md) runs a setup workflow that bootstraps or updates a
+[`setup`](workflows/setup.md) runs a setup workflow that bootstraps or updates a
 model through context inspection, a setup brief, concrete discovery questions,
 and confidence-labeled defaults. It verifies CLI compatibility, inspects
 available repository context for setup signals, delegates deterministic
 scaffolding and validation to `qualitymd`, writes only the selected
-`QUALITY.md`, inspects readiness with the Top 10 checklist, and offers
+`QUALITY.md`, classifies model maturity with the Top 10 checklist, and offers
 next-step choices. It does not evaluate source, write the quality log, create
 external issues, or configure recurring-review automation.
 
 ### Evaluate
 
-[`evaluate`](modes/evaluate.md) creates evaluation artifacts for a resolved
+[`evaluate`](workflows/evaluate.md) creates evaluation artifacts for a resolved
 model file, scope, and rigor. It may write only evaluation-run artifacts, follows
 the shared Define -> Assess and Rate -> Analyze -> Advise -> Report workflow,
 and emits recommendations whenever evaluation finds gaps.
@@ -404,7 +404,7 @@ meaningful confirmed model changes.
 
 ### Update
 
-[`update`](modes/update.md) orchestrates compatible `/quality` skill and
+[`update`](workflows/update.md) orchestrates compatible `/quality` skill and
 `qualitymd` CLI maintenance. It inspects the loaded skill metadata and visible
 CLI version, plans any skill or CLI update action, asks before mutation,
 delegates mechanics to owner tooling, verifies the visible result, and stops

@@ -2,7 +2,7 @@
 type: Change Case
 title: Remove wizard mode
 description: Remove wizard from the /quality skill's public contract while preserving safe read-only orientation for ambiguous requests.
-status: In-Review
+status: Done
 tags: [skill, ux, contract]
 timestamp: 2026-06-23T00:00:00Z
 ---
@@ -108,5 +108,6 @@ Runtime skill and docs:
 
 ## Status
 
-`In-Review`. Implementation is complete across runtime skill guidance, durable
+`Done`. Implementation is complete across runtime skill guidance, durable
 specs, public docs, indexes, logs, and changelog. Verified `mise run check`.
+Landed and archived.

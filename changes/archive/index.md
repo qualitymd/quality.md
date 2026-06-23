@@ -211,3 +211,16 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   Area and Factor labels the primary documented scoped-evaluation input for the
   `/quality` skill while preserving qualified references for exact addressing
   and stable identifiers in durable artifacts (`Done`).
+- [0062 — Remove wizard mode](0062-remove-wizard-mode.md) - removed `wizard`
+  from the `/quality` skill's public contract while preserving safe read-only
+  orientation for ambiguous requests (`Done`).
+- [0063 — Contextual setup flow](0063-contextual-setup-flow.md) - reworked
+  `/quality setup` into a short context-informed discovery flow that writes only
+  `QUALITY.md` and routes next steps (`Done`).
+- [0064 — Structured setup workflow](0064-structured-setup-workflow.md) - turned
+  `/quality setup` guidance into an explicit workflow with concrete discovery
+  questions and prompt framing (`Done`).
+- [0065 — Setup discovery and close refinements](0065-setup-discovery-and-close-refinements.md) -
+  made setup discovery agent-agnostic with one-question-at-a-time iteration, added
+  read-before-author, disentangled model maturity from CLI lifecycle readiness,
+  and renamed the skill `modes/` folder to `workflows/` (`Done`).
