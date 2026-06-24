@@ -43,7 +43,9 @@ edit.
 
 # Open change cases
 
-No open change cases.
+- [0078 — View command](0078-view-command.md) - add `qualitymd view`, a layered
+  presentation surface over the QUALITY.md workspace, starting with the default
+  document render and the `outline` lens (`Draft`).
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

@@ -23,6 +23,18 @@
   from `Design` to `In-Progress`; spec and design are settled and implementation
   is beginning on the "Cover the domain's constituent kinds" authoring subsection
   and its durable guide spec.
+- **Creation**: Added [0078 - View command](0078-view-command.md) (`status: Draft`)
+  with its child [index](0078-view-command/index.md) and
+  [functional spec](0078-view-command/spec.md). The case adds `qualitymd view`, a
+  read-only presentation surface structured along two axes — a lens (document,
+  `outline`, later ratings/coverage/trends/recommendations) and a surface
+  (`text`/`json`/`mermaid`, later `dot`/`html`/`--serve`) — over shared
+  deterministic workspace data. The first slice builds the default document render
+  and the `outline` lens on text/json/mermaid, and wires `/quality setup` closeout
+  to render the outline. Motivated by setup having no way to show the model it just
+  authored, and by `status` being a routing snapshot rather than a presentation
+  home. Design doc and implementation not started. Listed it in the bundle
+  [index](index.md).
 - **Advance**: Moved
   [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md)
   to `Design` and authored its
