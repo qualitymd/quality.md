@@ -196,24 +196,28 @@ Factors should be meaningful quality lenses, not vague labels alone.
   primary-subject root: route to authoring.
 - Finding when an agent-collaborated project's body shows an owned, high-leverage
   agent harness or QUALITY.md self-check that is not modeled as a constituent:
-  route to authoring. Treat these as expected defaults of the context of use, not
-  required areas, and do not flag a harness-less or throwaway project for their
-  absence.
-- Finding when the domain implies constituent kinds the body evidences or implies
-  — for software product quality: tests, documentation modes
+  route to authoring. These are modeled by default given the context of use; do
+  not flag a harness-less or throwaway project, which hits the not-germane
+  disqualifier.
+- Finding when the domain implies a germane constituent kind the body evidences or
+  implies — for software product quality: tests, documentation modes
   (tutorial/how-to/reference/explanation), specs/requirements, operations, or a
-  security/safety artifact — but the model neither models them as areas nor
-  accounts for them (deferred, out of scope, or unknown): route to authoring.
-  Treat the kinds as a prompt for the named domain, not a roster; do not flag a
-  kind a throwaway or narrowly scoped entity would not carry.
+  security/safety artifact — that the model neither models as an area nor surfaces
+  as a ratable gap (a missing-anchor area, or a requirement on an existing area):
+  route to authoring. For a germane kind, a bare deferral or Scope note does not
+  satisfy coverage. Do not flag a kind that legitimately hits a disqualifier —
+  folded into a sibling for lack of distinct concerns, or genuinely not germane
+  (and so marked out of Scope) for a throwaway or narrowly scoped entity.
 - Finding when child areas merely mirror the parent without distinct factors or
   requirements: route to authoring.
 - Finding when major body needs/risks have no factor: route to authoring.
 - Finding when factors are generic, overlapping, or unexplained: route to
   authoring.
 
-Treat constituent presence as earned — germane, owned, and traced to a need or
-risk — not as a roster every model must carry.
+Model every germane constituent as its own area by default; a constituent is left
+unmodeled only when it hits a disqualifier (no distinct concerns → fold; not
+germane → out of scope), and a germane concern with a thin or missing artifact is
+surfaced as a ratable gap, never recorded only in prose.
 
 ### 9. Requirement and assessment quality
 

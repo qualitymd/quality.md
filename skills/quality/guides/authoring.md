@@ -622,9 +622,9 @@ constituents. Enumerating them by walking the repository's folders finds only th
 constituents that already have a home; the thin, scattered, or missing ones —
 often the highest-leverage early findings — stay invisible. Enumerate by
 **constituent kind** instead, inferred from the entity's quality domain, then
-account for each kind. The kinds are a prompt for what *this* entity asks to be
-cared for — the claim that earns one always comes from a Need or Risk it presents,
-never from the list itself. Two questions surface them:
+model each by default (the rule below). The kinds are a prompt for what *this*
+entity asks to be cared for — what makes one germane always comes from a Need or
+Risk it presents, never from the list itself. Two questions surface them:
 
 **1. Which stewardship concern is at work here?** To *steward* is to care for
 something held in trust, answerable to its stakeholders and its future. That care
@@ -676,9 +676,43 @@ root concern, not because they duplicate one another.
   demote the term of art to a subcategory of the philosophical word. The singular
   gloss "a factor is a quality lens" is fine; it names what a factor is.*
 - **Do** enumerate the constituent kinds the entity's domain implies, then
-  account for each: model it, defer it in Scope, mark it out of Scope, or record
-  it as an unknown. *Silence is a coverage gap, not neutrality — the same failure
-  as a sparse factor list (see [Cover the domain's stable stakes](#cover-the-domains-stable-stakes-before-specializing)).*
+  **model each as its own area by default**. *Modeling is the default outcome, not
+  something a constituent must earn; the thinness of a first pass is never a reason
+  to defer or omit one. Build the fullest, most sufficient model the evidence
+  supports in a single pass — setup runs roughly once per project.*
+- **Do** give a germane constituent its own area unless one of exactly two
+  disqualifiers holds — and then fold it or scope it out, never silently drop it:
+  - **No distinct concerns** — its quality is already fully judged by its parent's
+    or a sibling's factors, so a separate area would assess nothing new. Fold the
+    concern into that area.
+  - **Not germane / outside the boundary** — the domain does not imply it for this
+    entity, or it belongs to another system or owner. Mark it out of Scope.
+- **Do** surface every germane concern as a ratable element of the model — an area
+  or a requirement that produces a rating — and **never** omit one by recording it
+  only in prose. *A Scope or "deferred" note is not coverage. "No artifact yet" is
+  not a skip reason: for a germane concern an absent or thin artifact is the
+  highest-value early finding, so its absence must land where the evaluation can
+  see it. Route it one of two ways, by the same distinct-concerns test:*
+  - **(a) a minimal area with a missing-anchor finding** when the kind would carry
+    its own factor family once it exists — a high-leverage, first-class kind (a
+    test suite, a threat model, specs) or a whole-constituent gap. *The empty area
+    rates poorly on its own axis and reserves the shape; folder-walking drops it.
+    This is the [normative-artifact rule](#ground-high-leverage-concerns-in-normative-artifacts)
+    applied to whole constituents.*
+  - **(b) a requirement on an existing area** when the concern folds into that
+    area's factors, the gap is partial or a matter of degree, or a standalone area
+    would be a single-finding stub. *The gap rates under the parent.*
+- **Do** treat in-scope deferral ("modeled later") as a narrow exception, not a
+  routine option peer to modeling. *Reserve it for a constituent genuinely blocked
+  — e.g. on an undecided boundary — and record the specific blocker. "Next
+  iteration" and "the first model is thin" are not deferral reasons, and a blocked
+  constituent still surfaces its gap per the rule above.*
+- **Do** scale coverage to *this* entity: the kinds are a prompt for what it asks
+  to be cared for, not a universal roster. *A constituent is modeled because it is
+  germane here and traces to a Need or Risk — not because the generator names it; a
+  throwaway script carries almost none. Model-by-default and "prompt, not a roster"
+  are one rule, not opposing pressures: enumerate what the domain implies, then
+  model each unless a disqualifier fires.*
 - **Do** derive the audience side from the body's Needs. *The Needs already name
   the stakeholders; each audience a Need names should have an enabling — and
   verifying — constituent that is modeled or consciously accounted for.*
@@ -688,16 +722,6 @@ root concern, not because they duplicate one another.
   merely present or complete — is the factor question. A populated area can still
   rate poorly; an empty one that carries a missing-anchor finding is itself a true
   signal.*
-- **Do** carry a germane, high-leverage kind as an area even when its artifact is
-  thin or missing, recording the gap as a finding within it. *A missing test
-  suite or absent threat model is a high-value early signal; an empty area with a
-  missing-anchor finding surfaces it, where folder-walking drops it. This is the
-  [normative-artifact rule](#ground-high-leverage-concerns-in-normative-artifacts)
-  applied to whole constituents.*
-- **Avoid** importing the list as a roster every model must carry. *The kinds are
-  a prompt, not a quota; a kind earns an area only when it leaves an owned,
-  inspectable artifact, its factor family diverges from its siblings, and it
-  traces to a Need or Risk. A throwaway script earns almost none.*
 - **Consider** the audience×purpose split as the way to find a constituent's
   internal shape: a constituent that fans out by audience or job is itself
   composite or a collection (see [Choose the decomposition shape](#choose-the-decomposition-shape-primary-subject-collection-or-composite)).
@@ -737,11 +761,11 @@ Distinguish these from **domain constituents**, which vary with what is modeled
 standard and sources) — enumerate those with [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds). Domain constituents change from
 project to project; these two use-context constituents recur across them.
 
-- **Consider** the harness and the self-check expected constituents of a composite
-  root, justified by the context of use — but **earn** them, do not assume them.
-  *The inclusion test is unchanged: high-leverage, germane here, an owned and
-  inspectable artifact, traced to a Need or Risk. A harness-less or throwaway
-  project carries neither; this is not a roster every model must hold.*
+- **Do** model the harness and the self-check by default in a composite root,
+  justified by the context of use. *They follow the same rule as any constituent:
+  modeled unless a disqualifier fires. A harness-less or throwaway project hits
+  not-germane and carries neither; a germane but too-thin harness surfaces its gap
+  rather than being silently dropped (see [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds)). This is not a roster every model must hold.*
 - **Do** keep the QUALITY.md self-check on the **learn loop**, out of the entity's
   roll-up. *The model's own quality is never averaged into the root area's rating
   (see [When to update QUALITY.md](#when-to-update-qualitymd)); model it as a

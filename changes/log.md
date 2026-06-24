@@ -3,6 +3,33 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0080 - Model constituents by default](archive/0080-model-constituents-by-default.md);
+  set `status` to `Done` and moved the parent concept and its child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Skill-guidance and spec-mirror only; no `SPECIFICATION.md`
+  or code change.
+- **In-Review → In-Progress**: Implemented 0080 across the bundled skill (authoring
+  guide, setup workflow, Top 10 checks, getting-started) and its spec mirror
+  (authoring-md, setup, top-10-quality-md-checks-md, with 0080 rationales), plus the
+  guide/workflow spec logs and the CHANGELOG. Constituent coverage is now
+  model-by-default with two disqualifiers, a no-silent-omission rule, demoted
+  deferral, and a maturity completeness bar. Reconciled the Affected artifacts list;
+  verified with `mise run check` and `qualitymd lint`.
+- **Design**: Authored the [0080](0080-model-constituents-by-default.md) functional
+  [spec](0080-model-constituents-by-default/spec.md) and
+  [design doc](0080-model-constituents-by-default/design.md): model-by-default with
+  two disqualifiers (no-distinct-concerns → fold; not-germane → out of scope), the
+  no-silent-omission rule with (a) minimal-area vs (b) requirement-elsewhere
+  routing, deferral demoted to a blocker-only exception, and a first-pass
+  completeness bar. Recorded the SPECIFICATION.md exclusion and the dogfood
+  re-check as a follow-up.
+- **Draft**: Created [0080 - Model constituents by default](0080-model-constituents-by-default.md)
+  to flip the skill's constituent-coverage guidance from earn-it/defer-freely to
+  model-by-default with a short "don't model" list and a no-silent-omission rule.
+  Added the parent concept and child folder ([index](0080-model-constituents-by-default/index.md)),
+  and registered it in the bundle-root [index](index.md). Skill-guidance and
+  spec-mirror only; no `SPECIFICATION.md` or code change.
+- **Done**: Landed and archived
   [0079 - Stewardship vocabulary discipline](archive/0079-stewardship-vocabulary-discipline.md);
   set `status` to `Done` and moved the parent concept and its child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

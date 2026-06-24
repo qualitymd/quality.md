@@ -225,10 +225,11 @@ constituents.
 The guide **MUST** teach that QUALITY.md's agentic context of use — not the
 modeled domain — makes two constituents recur in a composite root regardless of
 domain: the **agent harness** and the **QUALITY.md self-check**. It **MUST**
-present them as expected-but-earned constituents rather than a required roster,
-**MUST** teach that the QUALITY.md self-check stays on the learn loop and out of
-the entity's roll-up, and **MUST** teach that the agent harness is partly
-normative and plays the dual area/assessment-reference role.
+present them as modeled by default unless a disqualifier fires (a harness-less or
+throwaway project hits not-germane), rather than as a required roster, **MUST**
+teach that the QUALITY.md self-check stays on the learn loop and out of the
+entity's roll-up, and **MUST** teach that the agent harness is partly normative
+and plays the dual area/assessment-reference role.
 
 > Rationale: a root factored as one primary subject silently equates the entity
 > with a single constituent and drops the other high-leverage artifacts; naming
@@ -262,20 +263,30 @@ projects from, not a kind of factor. It **MUST** name the root's recurring facto
 as **model-wide** (or cross-cutting) factors — which **MAY** be noted as tracing
 to stewardship concerns — and **MUST NOT** render that link as "stewardship
 factors" or "stewardship lenses"; the singular gloss "a factor is a quality lens"
-is preserved. The guide **MUST** instruct the
-author to account for each implied constituent kind — model it, defer it in
-Scope, mark it out of Scope, or record it as an unknown — treating silence as a
-coverage gap, and **MUST** teach carrying a germane, high-leverage kind as an area
-even when its artifact is thin or missing, recording the gap as a finding. The
-guide **MUST** frame the constituent kinds as prompts for what the entity asks to
-be cared for, with the claim that earns an area originating in a Need or Risk it
-presents rather than in the generator list, and **MUST** distinguish the
-constituent question (whether a tending leaves an owned, inspectable artifact,
-modeled as an area) from the stewardship-quality question (whether it is done
-well, carried by factors), reading a present artifact as evidence rather than
-proof. It **MUST** keep the inclusion test earned (owned, inspectable artifact;
-divergent factor family; traced to a Need or Risk) and **MUST NOT** present the
-kinds as a roster every model must carry.
+is preserved. The guide **MUST** instruct the author to enumerate the implied
+constituent kinds and **model each as its own area by default** — framing modeling
+as the default outcome rather than something a constituent must earn — and
+**MUST NOT** give the thinness of a first pass as a reason to defer or omit one. It
+**MUST** state that a germane constituent is given its own area unless one of
+exactly two disqualifiers holds — *no distinct concerns* (fold into a parent or
+sibling) or *not germane / outside the boundary* (mark out of Scope) — and
+**MUST NOT** list the absence of a constituent's artifact as a reason to omit a
+germane constituent. The guide **MUST** teach that a germane concern is never
+omitted by being recorded only in prose: when its artifact is absent or thin, its
+absence **MUST** be surfaced as a ratable element of the model — a minimal area
+carrying a missing-anchor finding, or a requirement on an existing area — and a
+bare Scope or deferral note does **not** satisfy coverage. It **MUST** give the
+routing criterion between the two (a minimal area when the kind would carry its own
+factor family once it exists; a requirement on an existing area when the concern
+folds in, the gap is partial, or a standalone area would be a single-finding stub).
+The guide **MUST** present in-scope deferral as a narrow exception reserved for a
+genuinely blocked constituent with the blocker recorded, **MUST NOT** accept "next
+iteration" or "the first model is thin" as deferral reasons, and **MUST** scale
+coverage to this entity — the kinds are a prompt traced to a Need or Risk, not a
+roster every model must carry. It **MUST** distinguish the constituent question
+(whether a tending leaves an owned, inspectable artifact, modeled as an area) from
+the stewardship-quality question (whether it is done well, carried by factors),
+reading a present artifact as evidence rather than proof.
 
 > Rationale: 0074 named the composite shape but left domain constituents to
 > "vary with what is modeled", so a setup-authored model enumerated constituents
@@ -299,3 +310,15 @@ kinds as a roster every model must carry.
 > subcategory of the philosophical word. Keeping the motivation-layer vocabulary
 > from modifying a taxonomy noun preserves consistent terms without retracting the
 > grounding. — 0079
+>
+> Rationale: the earn-it inclusion test (0076–0077) supplied only
+> anti-over-modeling pressure — "a prompt, not a quota," "earn each area" — with no
+> counterweight, and "defer it in Scope" sat as a cost-free peer of "model it." A
+> live setup run on a multi-service monorepo produced a flat root and deferred
+> every per-constituent area to "the next iteration," passing maturity because a
+> deferral note counted as "accounted for." Inverting to model-by-default with two
+> disqualifiers, a no-silent-omission rule (a germane concern's absent artifact is
+> surfaced as a ratable gap, never prose), and a completeness bar makes a first-pass
+> model as full as the evidence supports. The stewardship/audience generators, the
+> three-projections rule, and the vocabulary discipline are unchanged; only the
+> inclusion default and its enforcement change. — 0080

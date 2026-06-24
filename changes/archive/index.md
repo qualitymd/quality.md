@@ -297,3 +297,12 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   added a register rule to AGENTS.md and the durable authoring-guide spec, and
   guarded the setup summary so factors are named as factors; documentation-only,
   no CLI/Go change (`Done`).
+- [0080 — Model constituents by default](0080-model-constituents-by-default.md) -
+  flipped the constituent-coverage guidance from earn-it/defer-freely to
+  model-by-default: enumerate the implied kinds and model each as its own area
+  unless a disqualifier holds (no distinct concerns → fold; not germane → out of
+  scope), never omit a germane concern in prose (surface a thin/missing artifact as
+  a missing-anchor area or a requirement on an existing area), demote deferral to a
+  blocker-only exception, and bar an under-covered composite model from
+  `evaluation-ready`; authoring guide, setup, Top 10, getting-started, and their
+  spec mirrors, no CLI/Go change (`Done`).

@@ -423,6 +423,15 @@ borderline. This inspection **MUST** remain a model-maturity inspection and
 (`starter`, `immature`, `evaluation-ready`) **MUST** be reported as distinct from
 the lifecycle `readiness` that `qualitymd status` owns.
 
+For a composite root, `setup` **MUST** classify a model as below
+`evaluation-ready` while a germane constituent that hits neither disqualifier (no
+distinct concerns; not germane / outside the boundary) is left unmodeled or
+recorded only as a deferral; a bare deferral or Scope note **MUST NOT** be treated
+as satisfying constituent coverage.
+
+> Rationale: model-by-default is enforceable only if an under-covered model fails
+> the maturity bar; a deferral note previously passed it silently. — 0080
+
 ## Completion criteria
 
 `setup` is complete when the target model exists, lint has run, the model has

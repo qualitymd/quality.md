@@ -102,8 +102,11 @@ Check before moving on:
 - evidence a future evaluator can actually inspect;
 - enough specificity to distinguish at least adjacent rating levels.
 
-Prefer a small first model with assessable requirements over a broad model full
-of aspirations.
+Prefer assessable requirements over aspirational ones: a requirement you cannot
+inspect adds no signal. This guards requirement quality, not coverage — model the
+constituents the entity has (see [authoring](authoring.md#cover-the-domains-constituent-kinds)),
+and keep each requirement under them assessable rather than padding with
+expectations you can't judge.
 
 ## First validation
 

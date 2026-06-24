@@ -3,6 +3,11 @@
 ## 2026-06-24
 
 - **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0080 - Model constituents by default](../../../../changes/0080-model-constituents-by-default.md).
+  Setup's maturity classification now bars `evaluation-ready` for a composite root
+  that leaves a germane, non-disqualified constituent unmodeled or recorded only as
+  a deferral; a bare deferral or Scope note does not satisfy constituent coverage.
+- **Revision**: Updated the [`setup`](setup.md) workflow for
   [0075 - Rating title emoji defaults](../../../../changes/0075-rating-title-emoji-defaults.md).
   Setup's recommended standard Rating Scale now keeps stable IDs plain while
   using `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and `🔴 Unacceptable` as

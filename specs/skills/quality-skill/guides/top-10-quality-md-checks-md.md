@@ -165,14 +165,19 @@ flattened into a single primary-subject root — distinct constituent artifacts 
 different kinds described in the body, but all factors held at the root as one
 family — and **SHOULD** flag a missing expected use-context constituent (an
 owned, high-leverage agent harness or QUALITY.md self-check not modeled as a
-constituent). It **SHOULD** also flag a domain that implies constituent kinds the
-body evidences or implies — for software product quality, tests, documentation
-modes, specs/requirements, operations, or a security/safety artifact — that the
-model neither models as areas nor accounts for (deferred, out of scope, or
-unknown). It **MUST** treat all such constituents as earned expected defaults of
-the context or domain, not a required roster, and **MUST NOT** flag a harness-less
-or throwaway project, or a kind a narrowly scoped entity would not carry, for
-their absence.
+constituent). It **SHOULD** also flag a germane constituent kind the domain implies
+— for software product quality, tests, documentation modes, specs/requirements,
+operations, or a security/safety artifact — that the model neither models as an
+area nor surfaces as a ratable gap (a missing-anchor area, or a requirement on an
+existing area); for a germane kind, a bare deferral, out-of-scope, or Scope note
+**MUST NOT** be treated as satisfying coverage. It **MUST NOT** flag a constituent
+that legitimately hits a disqualifier — folded into a sibling for lack of distinct
+concerns, or genuinely not germane to a harness-less, throwaway, or narrowly
+scoped entity.
+
+> Rationale: model-by-default (0080) makes a non-disqualified, unmodeled
+> constituent a real coverage finding; the prior "earned expected defaults, do not
+> flag a missing one" let a deferral note pass maturity silently. — 0080
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

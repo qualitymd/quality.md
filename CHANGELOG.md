@@ -44,6 +44,16 @@ QUALITY.md specification.
   root factors are named *model-wide factors* (which may trace to stewardship
   concerns) rather than "stewardship factors" or "stewardship lenses." Wording
   discipline only — the concerns, axes, and three-projections rule are unchanged.
+- The authoring guide, setup, and the Top 10 QUALITY.md checks now **model a
+  composite root's constituents by default** instead of treating each area as
+  something to earn. A constituent is left without its own area only when it has no
+  distinct concerns (folded into a sibling) or is not germane to the entity. A
+  germane concern is never dropped to prose: a thin or missing artifact is surfaced
+  as a ratable gap — a minimal area with a missing-anchor finding, or a requirement
+  on an existing area. Deferral is now a narrow, blocker-recorded exception, and a
+  composite model that leaves a germane constituent unmodeled or merely deferred no
+  longer reaches `evaluation-ready`. This makes a first-pass model as full as the
+  evidence supports.
 
 ### Packaging
 

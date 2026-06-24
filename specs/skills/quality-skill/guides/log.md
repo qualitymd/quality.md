@@ -2,6 +2,19 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for
+  [0080 - Model constituents by default](../../../../changes/0080-model-constituents-by-default.md).
+  The constituent-coverage contract is now **model-by-default**: enumerate the
+  implied kinds and model each as its own area unless one of two disqualifiers
+  holds (no distinct concerns → fold; not germane / outside the boundary → out of
+  scope). A germane concern is never omitted in prose — an absent or thin artifact
+  is surfaced as a ratable gap (a minimal area with a missing-anchor finding, or a
+  requirement on an existing area), with a routing criterion between the two.
+  Deferral is demoted to a blocker-only exception, and the Top 10 check flags a
+  non-disqualified constituent left unmodeled or merely deferred. Replaces the
+  earn-it inclusion test; the 0076/0077 generators and 0079 vocabulary discipline
+  are unchanged.
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for
   [0079 - Stewardship vocabulary discipline](../../../../changes/0079-stewardship-vocabulary-discipline.md).
   The three-projections requirement now also requires the guide to keep the

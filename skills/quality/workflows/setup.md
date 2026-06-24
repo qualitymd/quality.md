@@ -386,13 +386,16 @@ frontmatter model:
   implies — not only the components that already have folders in the repository.
   Walk the stewardship concerns (discover, define, realize, verify, enable,
   operate, maintain; and the protective pair secure and safeguard) and the
-  audiences the Needs name, then account for each kind: model it, defer it in
-  Scope, mark it out of Scope, or record it as an unknown. Carry a germane,
-  high-leverage kind (e.g. tests, specs, a threat model) as an Area even when its
-  artifact is thin or missing, recording the gap as a finding rather than
-  dropping the Area. Treat the kinds as a prompt, not a quota — earn each Area
-  (owned, inspectable artifact; divergent factors; traced to a Need or Risk). See
-  the authoring guide's "Cover the domain's constituent kinds".
+  audiences the Needs name, then model each kind as its own Area by default. Skip
+  a kind's own Area only when it has no distinct concerns (fold it into a parent or
+  sibling) or is not germane / outside the boundary (mark it out of Scope). Never
+  drop a germane concern to prose: when its artifact is thin or missing, surface
+  the gap as a ratable element — a minimal Area carrying a missing-anchor finding
+  (for a high-leverage kind such as tests, specs, or a threat model), or a
+  requirement on an existing Area. Deferral ("modeled later") is a narrow exception
+  for a genuinely blocked kind, with the blocker recorded — not "next iteration."
+  Treat the kinds as a prompt scaled to this entity, not a roster. See the
+  authoring guide's "Cover the domain's constituent kinds".
 - When naming the model in any recap or summary, name factors as Factors (or
   model-wide factors); the stewardship concerns are the *source* factors trace to,
   not a kind of factor. Do not call them "stewardship factors" or "stewardship
@@ -423,6 +426,12 @@ with the condensed checklist in
 This is a bounded inspection, not a project evaluation; read the full guide only
 when the maturity call is borderline. Classify maturity as `starter`,
 `immature`, or `evaluation-ready`.
+
+A composite model is not `evaluation-ready` while a germane constituent that hits
+neither disqualifier (no distinct concerns; not germane / outside the boundary) is
+left unmodeled or recorded only as a deferral. A bare deferral or Scope note does
+not satisfy coverage — treat that gap as an important gap that caps maturity below
+`evaluation-ready`.
 
 Maturity is distinct from the lifecycle `readiness` that `qualitymd status`
 reports. The CLI's `ready-to-evaluate` means only "model is valid, with no
