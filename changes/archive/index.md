@@ -266,3 +266,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   feedback-log spec, adding an evaluate adopter spec, moving current evaluate
   feedback to `.quality/logs/<timestamp>-evaluate-feedback-log.md`, and making
   `debug-log.md` legacy-compatible only for historical runs (`Done`).
+- [0074 — Composite root areas and use-context constituents](0074-composite-root-areas.md) -
+  taught the authoring guide three recursive, composable decomposition shapes
+  (primary-subject, collection, composite) and the two recurring use-context
+  constituents (agent harness and QUALITY.md self-check, the latter kept out of
+  the entity roll-up), scoped the ~ten-factor coverage aim per primary-subject
+  node, and added matching Top 10 routing findings; guide and guide-spec edits
+  only, no CLI/Go change (`Done`).

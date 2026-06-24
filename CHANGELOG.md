@@ -9,6 +9,15 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- The authoring guide now teaches three area decomposition shapes —
+  primary-subject, collection, and composite — that apply recursively at every
+  area, names the two recurring use-context constituents (the agent harness and
+  the QUALITY.md self-check, the latter kept out of the entity's roll-up), and
+  scopes the ~ten-factor coverage aim to a primary-subject node rather than the
+  root. The Top 10 QUALITY.md checks gain matching routing findings for a
+  composite entity flattened into one root and for a missing expected
+  constituent.
+
 ### Packaging
 
 ### Specification

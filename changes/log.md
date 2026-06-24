@@ -1,5 +1,38 @@
 # Changes Update Log
 
+## 2026-06-24
+
+- **Creation**: Added
+  [0074 - Composite root areas and use-context constituents](0074-composite-root-areas.md)
+  (`status: Draft`) with its child [spec](0074-composite-root-areas/spec.md) and
+  [design](0074-composite-root-areas/design.md). The case names three root shapes
+  (primary-subject, collection, composite) in the authoring guidance, separates
+  domain constituents from recurring use-context constituents (the agent harness
+  and the QUALITY.md self-check), states the self-check's out-of-roll-up
+  learn-loop axis and the harness's dual normative role, and corrects the
+  root-factor-count heuristic to apply per primary subject / per constituent.
+  Documentation-only; no `SPECIFICATION.md` or code change. Listed it in the
+  bundle [index](index.md).
+- **Refinement (Draft)**: Captured that the three shapes are recursive and
+  composable, not mutually exclusive root choices — a composite area may hold
+  collection or composite children to any depth (e.g. a composite root with
+  harness and quality-md constituents alongside an `apps` collection of
+  `apps/product1` and `apps/product2`). Updated
+  [0074](archive/0074-composite-root-areas.md) scope, added spec requirements
+  R17–R18, and added a worked example to the
+  [design doc](archive/0074-composite-root-areas/design.md).
+- **Implementation + Archival**: Advanced
+  [0074 - Composite root areas and use-context constituents](archive/0074-composite-root-areas.md)
+  through `In-Progress` and to `Done`, moving it (parent and folder) into
+  [`archive/`](archive/). Added the "Choose the decomposition shape" and "Carry
+  the recurring use-context constituents" subsections to the authoring guide,
+  scoped the factor-coverage aim per primary-subject node, extended Top 10 Check 8
+  with the composite-flattening and missing-constituent findings, aligned both
+  guide specs and the [guides log](../specs/skills/quality-skill/guides/log.md),
+  and added the CHANGELOG note. Documentation-only; no `SPECIFICATION.md` or code
+  change. Verified with `mise run check`. Updated the bundle [index](index.md) and
+  the [archive index](archive/index.md).
+
 ## 2026-06-23
 
 - **Implementation + Archival**: Implemented and advanced

@@ -105,7 +105,9 @@ references such as `area:root`, `area:api`, `factor:api::reliability`, or
 #### Keep the root lean when child areas carry the detail
 
 - **Consider** declaring only model-wide factors at the root and pushing
-  narrower factors/requirements down to child areas. *A flat root with
+  narrower factors/requirements down to child areas. *Model-wide means the factors
+  that recur across the root's constituents (often stewardship lenses like
+  currentness or traceability), not an arbitrary subset; a flat root with
   everything at one level is harder to read and maintain.*
 - **Avoid** modeling every property at the root "to be safe." *An entry on
   factors, requirements, **or** areas is enough.*
@@ -465,6 +467,51 @@ empty and renders as `area:root` when a canonical model reference is needed.
   has — coverage, balance, non-redundancy, navigability. Point `source` at the
   whole set and write requirements at that grain.*
 
+#### Choose the decomposition shape: primary-subject, collection, or composite
+
+Every area — the root included — decomposes in one of three shapes. The shapes
+are a question you ask *at each node*, not a one-time root classification, and
+they compose: a node of one shape can hold children of another, to any depth.
+
+- **Primary-subject** — one entity with one factor family; children, if any, only
+  refine it. The factor-coverage aim (see [Cover the domain's stable stakes](#cover-the-domains-stable-stakes-before-specializing)) applies at this
+  kind of node.
+- **Collection** — many entities of the *same* kind (a test suite, several like
+  services). The node carries whole-set concerns no member has — coverage,
+  balance, non-redundancy, navigability — and each member carries its own family.
+- **Composite** — many entities of *different* kinds, each with its own,
+  largely-disjoint factor family. The node's own concern is the **coherence
+  between** its parts: whether they stay aligned, conformant, and current with
+  each other. That cross-part coherence is exactly the assessment-edge graph from
+  [Make the traceability graph visible](#make-the-traceability-graph-visible).
+
+- **Do** treat a near-disjoint factor family as a first-class signal to split a
+  part into its own area. *When part of the entity is best judged through
+  characteristics that would not apply to its siblings, it has earned an area —
+  the sharpest form of the split test below.*
+- **Do** ask the shape question again at every child, and let the shapes nest. *A
+  composite node commonly holds a collection child, and a collection member or a
+  constituent can itself be composite.*
+- **Avoid** flattening a composite into one factored node. *Holding every part's
+  factors at one level either collapses the model to a single part or jams
+  incompatible factor families into one list.*
+
+A non-trivial entity is usually **composite** at the root: a running artifact,
+the requirements that define it, its docs, and other parts each carry their own
+factor family, so no single domain factor list belongs at the root. The shape
+recurses — here a composite root holds primary-subject constituents alongside a
+collection child (illustrative; adapt the parts to the actual entity, which need
+not be software):
+
+```text
+root  (composite)
+├── harness        (primary-subject constituent)
+├── quality-md     (primary-subject constituent; learn loop, kept out of roll-up)
+└── apps           (collection)
+    ├── apps/product-a   (primary-subject — or itself composite)
+    └── apps/product-b   (primary-subject — or itself composite)
+```
+
 #### Split off a child area only when it has distinct factors or requirements
 
 - **Consider** a child area when a part of the root area is best evaluated
@@ -562,6 +609,38 @@ This is the model's own meta-principle applied one level down: the self-check ar
 already anchors the model in this guide because normative artifacts are
 high-leverage. The same reasoning applies to the concerns the evaluated entity is
 made of.
+
+#### Carry the recurring use-context constituents
+
+QUALITY.md is domain-agnostic in *what* it models, but its assumed context of use
+is an agent/AI-assistant-collaborated project. That context of use — not the
+modeled domain — makes two constituents recur in a composite root regardless of
+what the root entity is:
+
+- the **agent harness** — the instructions that steer the agent working the
+  project (its agent guidance files, skills, and prompts); and
+- the **QUALITY.md self-check** — the model's own quality.
+
+Distinguish these from **domain constituents**, which vary with what is modeled
+(a data set's schema and collection methodology; a document's terminology
+standard and sources). Domain constituents change from project to project; these
+two use-context constituents recur across them.
+
+- **Consider** the harness and the self-check expected constituents of a composite
+  root, justified by the context of use — but **earn** them, do not assume them.
+  *The inclusion test is unchanged: high-leverage, germane here, an owned and
+  inspectable artifact, traced to a Need or Risk. A harness-less or throwaway
+  project carries neither; this is not a roster every model must hold.*
+- **Do** keep the QUALITY.md self-check on the **learn loop**, out of the entity's
+  roll-up. *The model's own quality is never averaged into the root area's rating
+  (see [When to update QUALITY.md](#when-to-update-qualitymd)); model it as a
+  constituent whose quality is tracked and reported on its own axis.*
+- **Do** treat the agent harness as partly **normative** — it governs agent
+  behavior, so it plays the dual area/assessment-reference role (see [An entity
+  can be both an area and an assessment
+  reference](#an-entity-can-be-both-an-area-and-an-assessment-reference)). *Watch
+  for double-counting if its influence is also assessed inside a domain
+  constituent.*
 
 #### Write a description that distinguishes, not enumerates
 
@@ -684,10 +763,15 @@ on them, or lacks evidence about them.
   area, or still unresolved as an unknown. *A sparse root model should be a
   conscious decision, not the result of only modeling the first risks that came
   to mind.*
-- **Do** treat roughly ten root-level factors as a reasonable aim for a
-  primary subject. *Fewer than eight should trigger a coverage review; four to
-  six is usually too thin unless the root area is deliberately narrow, temporary,
-  or mostly delegated to child areas.*
+- **Do** treat roughly ten factors as a reasonable aim for a **primary-subject
+  node** (see [Choose the decomposition shape](#choose-the-decomposition-shape-primary-subject-collection-or-composite)).
+  *Fewer than eight should trigger a coverage review; four to six is usually too
+  thin unless that node is deliberately narrow, temporary, or mostly delegated to
+  child areas.* At a **composite** root the aim applies **per constituent**, not at
+  the root: each primary-subject constituent earns its own ~ten-factor family,
+  while the composite root itself carries only the factors that recur across
+  constituents — typically stewardship lenses (currentness, traceability,
+  consistency, maintainability), each refined per child.
 - **Avoid** dropping a conventional factor because the current artifact lacks
   evidence or performs poorly on it. *No tests is not a reason to omit
   `testability`; it is a reason to write requirements that make testability, test

@@ -160,7 +160,14 @@ tolerance, and modeling rigor.
 
 The area-and-factor-shape check **MUST** inspect whether the area tree is small
 enough to understand, specific enough to represent distinct evaluated entities,
-and shaped by the body's needs and risks.
+and shaped by the body's needs and risks. It **MUST** flag a composite entity
+flattened into a single primary-subject root — distinct constituent artifacts of
+different kinds described in the body, but all factors held at the root as one
+family — and **SHOULD** flag a missing expected use-context constituent (an
+owned, high-leverage agent harness or QUALITY.md self-check not modeled as a
+constituent). It **MUST** treat such constituents as earned expected defaults of
+the context of use, not a required roster, and **MUST NOT** flag a harness-less
+or throwaway project for their absence.
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

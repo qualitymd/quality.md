@@ -187,11 +187,23 @@ Factors should be meaningful quality lenses, not vague labels alone.
 
 - Finding when all concerns are flattened into the root despite clear sub-entities
   in the body: route to authoring.
+- Finding when the body describes distinct constituent artifacts of different
+  kinds (e.g. the running artifact, its requirements, its docs) but all factors
+  are held at the root as one family — a composite entity flattened into a single
+  primary-subject root: route to authoring.
+- Finding when an agent-collaborated project's body shows an owned, high-leverage
+  agent harness or QUALITY.md self-check that is not modeled as a constituent:
+  route to authoring. Treat these as expected defaults of the context of use, not
+  required areas, and do not flag a harness-less or throwaway project for their
+  absence.
 - Finding when child areas merely mirror the parent without distinct factors or
   requirements: route to authoring.
 - Finding when major body needs/risks have no factor: route to authoring.
 - Finding when factors are generic, overlapping, or unexplained: route to
   authoring.
+
+Treat constituent presence as earned — germane, owned, and traced to a need or
+risk — not as a roster every model must carry.
 
 ### 9. Requirement and assessment quality
 

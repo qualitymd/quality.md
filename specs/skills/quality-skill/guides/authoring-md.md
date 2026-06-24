@@ -201,3 +201,28 @@ requirement, connect it to the affected factors through `factors`, and reference
 the governing entity once. It **MUST** teach authors to split such requirements
 only when the referenced entity defines claims whose results could legitimately
 diverge.
+
+The guide **MUST** teach the three decomposition shapes an area — the root
+included — can take: **primary-subject** (one entity, one factor family),
+**collection** (many entities of the same kind, judged by whole-set concerns),
+and **composite** (many entities of different kinds, each with its own
+largely-disjoint factor family, the node's own concern being cross-part
+coherence). It **MUST** teach that the shapes are recursive and composable — a
+node of one shape **MAY** hold children of another, to any depth — that a
+near-disjoint factor family is a first-class signal to split a part into its own
+area, and that the root-factor coverage aim applies per primary-subject node
+while a composite root carries only the factors that recur across its
+constituents.
+
+The guide **MUST** teach that QUALITY.md's agentic context of use — not the
+modeled domain — makes two constituents recur in a composite root regardless of
+domain: the **agent harness** and the **QUALITY.md self-check**. It **MUST**
+present them as expected-but-earned constituents rather than a required roster,
+**MUST** teach that the QUALITY.md self-check stays on the learn loop and out of
+the entity's roll-up, and **MUST** teach that the agent harness is partly
+normative and plays the dual area/assessment-reference role.
+
+> Rationale: a root factored as one primary subject silently equates the entity
+> with a single constituent and drops the other high-leverage artifacts; naming
+> the composite shape and the recurring use-context constituents keeps them
+> visible while preserving domain agnosticism. — 0074

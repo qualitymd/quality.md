@@ -1,5 +1,18 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-24
+
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [top-10-quality-md-checks](top-10-quality-md-checks-md.md) guide contract for
+  [0074 - Composite root areas and use-context constituents](../../../../changes/0074-composite-root-areas.md).
+  The authoring guide must now teach three recursive, composable decomposition
+  shapes (primary-subject, collection, composite), the two recurring use-context
+  constituents (agent harness and QUALITY.md self-check, the latter kept out of
+  the entity roll-up), and the factor-coverage aim scoped per primary-subject
+  node. The Top 10 area-and-factor-shape check must flag a composite entity
+  flattened into one root and a missing expected use-context constituent, treated
+  as earned defaults rather than a required roster.
+
 ## 2026-06-23
 
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) so the
