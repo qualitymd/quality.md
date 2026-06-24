@@ -148,8 +148,10 @@ The root prompt **MUST** direct agents when to read each one:
 - [`resources/output-policy.md`](../../../skills/quality/resources/output-policy.md)
   — the command-output policy read before consuming CLI output.
 - [`guides/authoring.md`](../../../skills/quality/guides/authoring.md) — the
-  comprehensive authoring guide read when creating, populating, reviewing, or
-  improving a QUALITY.md file.
+  authoring entry point and router read when creating, populating, reviewing, or
+  improving a QUALITY.md file. After reading it, agents read every routed
+  sub-guide relevant to the model elements they will create, review, mutate,
+  evaluate, or recommend changing.
 - [`guides/getting-started.md`](../../../skills/quality/guides/getting-started.md)
   — the first-run guide read after setup leaves a starter or immature
   `QUALITY.md`, or when the user asks how to keep iterating on the first useful

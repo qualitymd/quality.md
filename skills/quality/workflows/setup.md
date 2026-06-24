@@ -1,3 +1,9 @@
+---
+type: Runtime Workflow
+title: Setup Workflow
+description: Runtime workflow for creating or updating a useful first QUALITY.md.
+---
+
 # Setup Workflow
 
 Run this workflow to create or update a useful first `QUALITY.md`. Setup writes
@@ -69,12 +75,16 @@ Verify and close
    `2026-06-23T154233Z`, and never overwrite a feedback log from another run.
    The initial log must include the frontmatter and body sections in
    [Workflow feedback log](#workflow-feedback-log), with `status: in-progress`.
-5. Read the authoring sections a first model needs, not the whole guide. For a
-   first model read [`../guides/authoring.md`](../guides/authoring.md) sections
-   The QUALITY.md file, Quality Model, The Markdown body, and Rating Scale, plus
-   the Area and Factor sections enough to shape candidates. Defer deep
-   authoring detail until you actually author requirements or ratings, then read
-   the relevant sections. Read
+5. Read [`../guides/authoring.md`](../guides/authoring.md), then the first-model
+   authoring bundle it routes to:
+   [`body`](../guides/authoring/body.md),
+   [`model-structure`](../guides/authoring/model-structure.md),
+   [`factors`](../guides/authoring/factors.md),
+   [`requirements`](../guides/authoring/requirements.md),
+   [`rating-scale`](../guides/authoring/rating-scale.md),
+   [`agent-harnessability`](../guides/authoring/agent-harnessability.md),
+   [`agent-harness`](../guides/authoring/agent-harness.md), and
+   [`quality-log`](../guides/authoring/quality-log.md). Read
    [`../guides/getting-started.md`](../guides/getting-started.md) when setup is
    continuing from a starter/immature model or needs first-run iteration
    guidance.
@@ -406,14 +416,15 @@ frontmatter model:
   authoring guide's "Cover the domain's constituent kinds".
 - When the root is an agent-collaborated composite, propose
   `agent-harnessability` / **Agent Harnessability** as a model-wide umbrella factor
-  by default, decomposed into the authoring guide's six sub-factors:
+  by default, decomposed into the authoring guide's seven sub-factors:
   `agent-accessibility`, `task-specifiability`, `agent-operability`,
-  `self-verifiability`, `enforcement-of-standards`, and
+  `continuity`, `self-verifiability`, `enforcement-of-standards`, and
   `containment-of-action`. Define it as the degree to which the project's own
   materials and tooling equip an AI agent to understand the project, take scoped
-  work, operate the environment, verify its output, and stay safely bounded while
-  preserving clear human direction, review, and accountability. Never drop it
-  because the harness is thin or absent; that is a ratable gap and finding. Keep
+  work, operate the environment, preserve and resume state, verify its output, and
+  stay safely bounded while preserving clear human direction, review, and
+  accountability. Never drop it because the harness is thin or absent; that is a
+  ratable gap and finding. Keep
   it distinct from the agent harness constituent: the factor rates how each
   constituent equips an agent, while the harness area rates the steering artifact
   itself.
@@ -431,7 +442,7 @@ frontmatter model:
   `source`. Add concise YAML comments around that Area explaining that `source`
   is the `QUALITY.md` artifact being evaluated, while the Requirement's
   `assessment` references the guide used to judge it. Prefer one Area-level
-  Requirement that cites the active authoring guide once and lists each affected
+  Requirement that cites the active authoring guide family once and lists each affected
   Factor under `factors` when that guide defines one coherent judgment across
   the Factors.
 

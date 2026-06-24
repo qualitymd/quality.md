@@ -5,8 +5,10 @@ contracts.
 
 # Guides
 
-- [Authoring](authoring-md.md) - contract for the comprehensive guide to
-  understanding and working with QUALITY.md files.
+- [Authoring](authoring.md) - parent contract for the authoring guide entry point
+  and routed sub-guide family.
+- [authoring/](authoring/index.md) - sub-specs mirroring the runtime authoring
+  sub-guides.
 - [Getting started](getting-started-md.md) - contract for the first-run guide that
   turns a starter or immature `QUALITY.md` into a first useful model.
 - [Recommendation follow-up](recommendation-follow-up-md.md) - contract for the

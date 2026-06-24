@@ -401,13 +401,15 @@ name missing evidence or assessment constraints.
 
 For an agent-collaborated composite root, setup **MUST** propose
 `agent-harnessability` / Agent Harnessability as a model-wide umbrella factor by
-default, decomposed into the authoring guide's six sub-factors:
+default, decomposed into the authoring guide's seven sub-factors:
 `agent-accessibility`, `task-specifiability`, `agent-operability`,
-`self-verifiability`, `enforcement-of-standards`, and `containment-of-action`.
+`continuity`, `self-verifiability`, `enforcement-of-standards`, and
+`containment-of-action`.
 Setup **MUST** define it as the degree to which the project's own materials and
 tooling equip an AI agent to understand the project, take scoped work, operate the
-environment, verify its output, and stay safely bounded while preserving clear
-human direction, review, and accountability. Setup **MUST NOT** omit Agent
+environment, preserve and resume state, verify its output, and stay safely bounded
+while preserving clear human direction, review, and accountability. Setup **MUST
+NOT** omit Agent
 Harnessability because the project's harness is thin or absent; that condition is
 a rating gap and finding, not a factor-omission reason. Setup **MUST** keep Agent
 Harnessability distinct from the agent harness constituent: the factor rates how
@@ -428,7 +430,7 @@ recommended scale and record the scale decision as an open question or assumptio
 in the model body.
 
 Setup **SHOULD** include a `quality-md` Area that evaluates the `QUALITY.md`
-artifact itself against the active authoring guide unless the user declines or
+artifact itself against the active authoring guide family unless the user declines or
 the model file is not in the root Area it governs. The Area **SHOULD** use the
 key `quality-md`, a title of the form `<Root Title> QUALITY.md`, an Area
 `description`, and an explicit path-based `source` such as `./QUALITY.md`. It
@@ -436,7 +438,7 @@ key `quality-md`, a title of the form `<Root Title> QUALITY.md`, an Area
 
 When setup adds that Area, it **SHOULD** include concise YAML comments that
 distinguish the Area `source` from the Requirement `assessment`. It **SHOULD**
-use one Area-level Requirement with `factors` when the active authoring guide
+use one Area-level Requirement with `factors` when the active authoring guide family
 defines one coherent judgment across multiple Factors.
 
 ## Stop conditions

@@ -1,3 +1,9 @@
+---
+type: Runtime Guide
+title: Recommendation Follow-Up
+description: Guide for applying or handing off evaluation recommendations.
+---
+
 # Recommendation Follow-Up
 
 Use recommendation follow-up when the user asks to apply, act on, improve from,
@@ -56,6 +62,10 @@ When a confirmed apply changes the QUALITY.md model, append one quality log
 entry under `.quality/log/` for the coherent model change. Cross-link the source
 evaluation run and recommendation when present. Evaluated-source fixes that do
 not change the model get no quality log entry.
+
+Before applying a model-changing recommendation, read
+[`authoring.md`](authoring.md), the routed authoring sub-guide for the model
+element being changed, and [`authoring/quality-log.md`](authoring/quality-log.md).
 
 ## Issue-Tracker Handoff
 

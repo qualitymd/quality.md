@@ -74,6 +74,10 @@ quality-log entry for the coherent model change, cross-linking the source
 evaluation run and recommendation when applicable. Evaluated-source fixes that do
 not change the model **MUST NOT** write the quality log.
 
+Before applying a model-changing recommendation, the skill **MUST** read the
+authoring entry guide, the routed authoring sub-guide for the model element being
+changed, and the quality-log authoring sub-guide.
+
 ## Issue-tracker handoff
 
 Issue-tracker handoff **MUST** produce issue-ready content that includes the

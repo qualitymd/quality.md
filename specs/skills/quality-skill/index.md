@@ -23,9 +23,9 @@ that make it concrete. The installable skill artifact lives at
   workflow for applying or handing off evaluation recommendations.
 - [workflows/](workflows/index.md) - behavioral component specs for the runtime
   workflows: setup, evaluate, and update.
-- [guides/](guides/index.md) - 1:1 artifact specs for runtime guide resources
-  bundled with the skill, including authoring, getting-started, recommendation
-  follow-up, and checklist guides.
+- [guides/](guides/index.md) - specs for runtime guide resources bundled with
+  the skill, including the routed authoring guide family, getting-started,
+  recommendation follow-up, and checklist guides.
 - [examples/](examples/index.md) - worked runtime reference artifacts produced by
   the skill.
 - [Installable skill artifact](../../../skills/quality/SKILL.md) - the prompt

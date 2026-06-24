@@ -3,6 +3,39 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0090 — Skill-content OKF authoring split](archive/0090-skill-content-okf-authoring-split.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented the runtime `/quality` OKF shape with root,
+  guide, workflow, and resource indexes/logs; split `guides/authoring.md` into an
+  entry/router plus concern-specific sub-guides; mirrored that authoring tree in
+  durable skill specs; updated `SKILL.md`, setup, recommendation follow-up, and
+  supporting specs for routed reads; and recorded the change in CHANGELOG. No
+  CLI, Go, format-schema, rating, roll-up, or evaluation behavior changed.
+  Verified with `mise run check`.
+
+- **In-Progress**: Advanced
+  [0090 — Skill-content OKF authoring split](archive/0090-skill-content-okf-authoring-split.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning across the bundled skill guides, mirrored durable specs, reading
+  contracts, indexes, logs, and changelog. No code, CLI, format-schema, rating,
+  roll-up, or evaluation behavior change is expected.
+
+- **Design**: Created
+  [0090 — Skill-content OKF authoring split](archive/0090-skill-content-okf-authoring-split.md)
+  with its child
+  [index](archive/0090-skill-content-okf-authoring-split/index.md),
+  [functional spec](archive/0090-skill-content-okf-authoring-split/spec.md), and
+  [design doc](archive/0090-skill-content-okf-authoring-split/design.md). The case splits
+  the long `/quality` authoring guide into routed OKF-shaped runtime sub-guides,
+  keeps `guides/authoring.md` as the mandatory entry point, mirrors the runtime
+  authoring tree in durable sub-specs, starts `skills/quality/` as an OKF-shaped
+  runtime bundle, and makes agent read obligations explicit in `SKILL.md` and
+  relevant workflows. Documentation, durable specs, and bundled-skill guidance
+  structure only; no CLI, Go, format-schema, rating, roll-up, or evaluation
+  behavior change expected. Listed it in the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0089 — Agent-harness modeling guidance](archive/0089-agent-harness-modeling-guidance.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from the

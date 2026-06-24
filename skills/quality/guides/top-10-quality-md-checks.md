@@ -1,3 +1,9 @@
+---
+type: Runtime Guide
+title: Top 10 QUALITY.md Checks
+description: Quick model-readiness and routing checks for QUALITY.md files.
+---
+
 # Top 10 QUALITY.md Checks
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's

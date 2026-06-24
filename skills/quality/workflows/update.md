@@ -1,3 +1,9 @@
+---
+type: Runtime Workflow
+title: Update Workflow
+description: Runtime workflow for updating the /quality skill and qualitymd CLI pair.
+---
+
 # Update Mode
 
 Use update to keep the installed `/quality` skill and `qualitymd` CLI

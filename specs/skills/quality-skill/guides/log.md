@@ -2,6 +2,15 @@
 
 ## 2026-06-24
 
+- **Restructure**: Replaced the monolithic `authoring-md.md` guide contract with
+  the [authoring guide family](authoring.md) and mirrored sub-specs under
+  [authoring/](authoring/index.md) for
+  [0090 - Skill-content OKF authoring split](../../../../changes/archive/0090-skill-content-okf-authoring-split.md).
+  The durable spec tree now mirrors the runtime authoring sub-guide tree, with
+  separate review surfaces for body authoring, model structure, factors,
+  requirements, rating scale, Agent Harnessability, agent-harness Area modeling,
+  and quality-log judgment.
+
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [Top 10 checks contract](top-10-quality-md-checks-md.md) for
   [0089 - Agent-harness modeling guidance](../../../../changes/archive/0089-agent-harness-modeling-guidance.md).

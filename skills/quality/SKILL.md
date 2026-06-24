@@ -19,11 +19,13 @@ recommendations.
 ## Prerequisites
 
 - Read [`resources/SPECIFICATION.md`](resources/SPECIFICATION.md) for the schema
-  and evaluation semantics. For a first model the relevant authoring sections of
-  `guides/authoring.md` suffice; read the spec's roll-up and evaluation sections
-  when authoring rating overrides, reasoning about roll-up, or evaluating.
+  and evaluation semantics. Read the spec's roll-up and evaluation sections when
+  authoring rating overrides, reasoning about roll-up, or evaluating.
 - Read [`guides/authoring.md`](guides/authoring.md) when
-  creating, populating, reviewing, or improving a QUALITY.md file.
+  creating, populating, reviewing, or improving a QUALITY.md file. It is the
+  entry point and router; after reading it, read every routed sub-guide relevant
+  to the model elements you will create, review, mutate, evaluate, or recommend
+  changing.
 - Read [`guides/getting-started.md`](guides/getting-started.md) after setup
   leaves a starter or immature `QUALITY.md`, or when the user asks how to keep
   iterating on the first useful model. Read the authoring guide first.
@@ -342,7 +344,7 @@ or formatting changes, nor evaluated-source fixes that leave the model
 unchanged. Write one entry per coherent change (a confirmed recommendation apply
 or model-authoring change), not one per field touched. The meaningful-change
 taxonomy is in
-[`guides/authoring.md`](guides/authoring.md).
+[`guides/authoring/quality-log.md`](guides/authoring/quality-log.md).
 
 A `qualitymd log` command, a `.quality/config.yaml` `logDir` key, and a queryable
 index are deferred; this convention is what the skill writes against today.

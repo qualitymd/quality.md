@@ -1,3 +1,9 @@
+---
+type: Runtime Workflow
+title: Evaluate Workflow
+description: Runtime workflow for evaluating a QUALITY.md model.
+---
+
 # Evaluate Mode
 
 Use evaluate to assess the root area against the resolved `QUALITY.md`.

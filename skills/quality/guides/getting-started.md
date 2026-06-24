@@ -1,3 +1,9 @@
+---
+type: Runtime Guide
+title: Getting Started with QUALITY.md
+description: First-run iteration guidance after setup leaves a starter or immature QUALITY.md.
+---
+
 # Getting Started with QUALITY.md
 
 Use this guide after setup leaves a starter or immature `QUALITY.md`, or when a
@@ -32,7 +38,7 @@ Outcome: the Markdown body explains the root area, scope, needs, and risks — w
 section's unknowns and open questions — well enough to justify and evaluate the
 first quality model.
 
-Use authoring guidance: [The Markdown body](authoring.md#the-markdown-body).
+Use authoring guidance: [Markdown body](authoring/body.md).
 
 Check before moving on:
 
@@ -53,7 +59,7 @@ Check before moving on:
 Outcome: the rating levels can distinguish `unacceptable`, `minimum`, `target`,
 and `outstanding` for this root area.
 
-Use authoring guidance: [Rating Scale](authoring.md#rating-scale).
+Use authoring guidance: [Rating Scale](authoring/rating-scale.md).
 
 Check before moving on:
 
@@ -67,8 +73,8 @@ Check before moving on:
 Outcome: the root `title`, body, file location, and root `source` describe the
 same evaluated root area.
 
-Use authoring guidance: [Quality Model](authoring.md#quality-model) and
-[Area](authoring.md#area).
+Use authoring guidance: [Authoring QUALITY.md](authoring.md) and
+[Model structure](authoring/model-structure.md).
 
 Check before moving on:
 
@@ -81,7 +87,7 @@ Check before moving on:
 Outcome: the initial factors cover the most important Needs and Risks without
 overlapping heavily.
 
-Use authoring guidance: [Factor](authoring.md#factor).
+Use authoring guidance: [Factors](authoring/factors.md).
 
 Check before moving on:
 
@@ -93,7 +99,7 @@ Check before moving on:
 
 Outcome: each initial requirement can produce evidence, findings, and a rating.
 
-Use authoring guidance: [Requirement](authoring.md#requirement).
+Use authoring guidance: [Requirements](authoring/requirements.md).
 
 Check before moving on:
 
@@ -104,9 +110,10 @@ Check before moving on:
 
 Prefer assessable requirements over aspirational ones: a requirement you cannot
 inspect adds no signal. This guards requirement quality, not coverage — model the
-constituents the entity has (see [authoring](authoring.md#cover-the-domains-constituent-kinds)),
-and keep each requirement under them assessable rather than padding with
-expectations you can't judge.
+constituents the entity has (see
+[model structure](authoring/model-structure.md#cover-the-domains-constituent-kinds)),
+and keep each requirement under them assessable rather than padding with expectations
+you can't judge.
 
 ## First validation
 

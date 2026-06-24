@@ -1,3 +1,9 @@
+---
+type: Runtime Resource
+title: Output Policy
+description: Policy for consuming and summarizing command output in /quality workflows.
+---
+
 # Output Policy
 
 Use CLI output in the form that matches the task.

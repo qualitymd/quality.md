@@ -95,6 +95,12 @@ QUALITY.md specification.
   recommendation shape. The example index marks the corpus as domain-illustrative,
   and the Top 10 checks now include a data-product constituent bracket alongside the
   software illustration.
+- The `/quality` authoring guidance is now split into an OKF-shaped guide family:
+  `guides/authoring.md` remains the entry point and router, while routed sub-guides
+  cover body authoring, model structure, factors, requirements, rating scale,
+  Agent Harnessability, the agent-harness area, and quality-log judgment. The
+  durable skill specs mirror that tree so each concern can be reviewed and improved
+  independently.
 
 ### Packaging
 

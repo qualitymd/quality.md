@@ -1,3 +1,9 @@
+---
+type: Runtime Resource
+title: CLI Quick Reference
+description: Quick reference for qualitymd CLI commands used by the /quality skill.
+---
+
 # CLI Quick Reference
 
 Use these commands and routing patterns as the starting point for `qualitymd`

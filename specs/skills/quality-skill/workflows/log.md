@@ -2,6 +2,10 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0090 - Skill-content OKF authoring split](../../../../changes/archive/0090-skill-content-okf-authoring-split.md).
+  Setup now points at the current seven-sub-factor Agent Harnessability shape,
+  including `continuity`, matching the routed authoring guide family.
 - **Revision**: Updated the [`setup`](setup.md) workflow for
   [0085 - Agent Harnessability naming](../../../../changes/archive/0085-agent-harnessability-naming.md).
   Setup now proposes `agent-harnessability` / Agent Harnessability by default for

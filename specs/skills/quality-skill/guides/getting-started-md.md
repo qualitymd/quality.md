@@ -14,7 +14,7 @@ ships at
 The guide is the setup follow-on: the document a human or agent reads after
 setup leaves a starter or immature `QUALITY.md`, or when a user asks how to keep
 iterating on the first useful model. It assumes the reader has already read the
-[authoring guide](authoring-md.md).
+[authoring guide](authoring.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as

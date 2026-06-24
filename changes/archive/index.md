@@ -364,3 +364,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   use-context-constituent served-domain guardrail, and extended the Top 10 checks
   for thinly factored or software-leaking harness areas; docs/spec/skill guidance
   only, no CLI/Go or format-spec change (`Done`).
+- [0090 — Skill-content OKF authoring split](0090-skill-content-okf-authoring-split.md) -
+  split `/quality` authoring guidance into an OKF-shaped entry guide plus routed
+  sub-guides, mirrored that tree in durable skill sub-specs, added runtime skill
+  indexes/schema/logs, and made routed authoring reads explicit in `SKILL.md`,
+  setup, and recommendation follow-up; docs/spec/skill guidance only, no CLI/Go
+  or format-spec change (`Done`).
