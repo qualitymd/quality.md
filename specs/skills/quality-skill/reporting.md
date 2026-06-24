@@ -29,6 +29,12 @@ Scope, the per-area requirement/factor/local/aggregate ratings with
 rationales, and the Advice. *Not assessed* outcomes **MUST** appear wherever they
 occur, distinct from rated outcomes.
 
+The agent's user-facing evaluation closeout is governed by the shared
+[user interaction contract](quality-skill.md#user-interaction-contract). It
+**MUST** preserve the report content required here while presenting the rating,
+scope, evidence basis, recommendations, known limitations, and next action in a
+status-first, scannable shape.
+
 Every evaluation that finds gaps **MUST** also emit its Advice as discrete,
 triageable **recommendation** artifacts — recommendations are a product of
 evaluation and the input to

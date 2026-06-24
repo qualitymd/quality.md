@@ -2,6 +2,13 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the
+  [recommendation follow-up guide contract](recommendation-follow-up-md.md) for
+  [0084 - Agent-mediated UX conformance](../../../../changes/archive/0084-agent-mediated-ux-conformance.md).
+  Apply and issue-creation decisions now follow the shared agent-mediated UX
+  contract: visually emphasized primary calls to action, scannable decision
+  labels, explicit mutation boundaries, and status-first result reporting.
+
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for
   [0082 - Normalize QUALITY.md self-check roll-up](../../../../changes/archive/0082-normalize-quality-md-rollup.md).
   The QUALITY.md self-check must now be taught as an ordinary modeled Area using

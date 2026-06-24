@@ -93,11 +93,21 @@ outputs and become inputs to
 It **SHOULD** stop before rating when requirements are too vague to bind
 evidence to a rating or when available evidence cannot distinguish adjacent
 rating levels. A stop response **MUST** distinguish model usefulness,
-evaluated-source quality, and evaluation-history status.
+evaluated-source quality, and evaluation-history status. It **MUST** visually
+emphasize the stop reason, keep the blocking reason and best next step
+scannable, and offer concrete runnable options when available.
+
+`evaluate` **SHOULD** show visible progress at phase boundaries where the user's
+mental model would otherwise drift: after preflight, after history/scope
+resolution, before report generation, and at closeout. Progress output **MUST**
+remain factual and user-facing, not a transcript of internal reasoning.
 
 ## Completion criteria
 
 `evaluate` is complete when the run has reportable records, the CLI has built
 `report-summary.md`, `report.md`, and `report.json`, and the user-facing summary
 states the rating, scope, evidence basis, recommendations or lack of gaps, and
-known limitations.
+known limitations. The closeout **MUST** use the shared agent-mediated UX
+contract: status first, scannable labels for rating, scope, evidence basis,
+recommendations, known limitations, changed artifacts, what was not done, and
+the recommended next action.

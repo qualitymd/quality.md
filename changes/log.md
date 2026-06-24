@@ -3,6 +3,54 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0084 — Agent-mediated UX conformance](archive/0084-agent-mediated-ux-conformance.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Skill-guidance, spec-mirror, AGENTS, and CHANGELOG only;
+  no `SPECIFICATION.md`, CLI schema, or Go code change. Verified with
+  `mise run fmt-md-check`.
+
+- **In-Review**: Implemented
+  [0084 — Agent-mediated UX conformance](archive/0084-agent-mediated-ux-conformance.md)
+  across the bundled `/quality` skill, runtime setup/evaluate/update/
+  recommendation-follow-up guidance, durable skill specs, AGENTS guide routing,
+  spec/workflow/guide logs, and CHANGELOG. The shared interaction contract now
+  requires status-first agent-mediated output, visually emphasized primary
+  questions or calls to action, scannable labels, semantic emoji only, explicit
+  mutation boundaries, and closeouts with clear next actions. Reconciled the
+  affected-artifact list; `cmd/` and `internal/` were verified no-impact because
+  their output is CLI UX rather than agent-mediated workflow output. Verified
+  with `mise run fmt-md-check`.
+
+- **In-Progress**: Advanced
+  [0084 — Agent-mediated UX conformance](archive/0084-agent-mediated-ux-conformance.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning across the parent `/quality` interaction contract, setup/evaluate/
+  update/recommendation-follow-up runtime guidance, durable skill specs, AGENTS
+  guide routing, README/install verification, and CHANGELOG.
+
+- **Design**: Advanced
+  [0084 — Agent-mediated UX conformance](archive/0084-agent-mediated-ux-conformance.md)
+  from `Draft` to `Design` and added its
+  [design doc](archive/0084-agent-mediated-ux-conformance/design.md). The design keeps
+  the parent `/quality` interaction contract as the shared source of truth,
+  applies workflow-specific guidance in setup/evaluate/update/recommendation
+  follow-up, and treats CLI output as no-impact unless implementation finds a
+  live agent-mediated output path.
+
+- **Draft**: Created
+  [0084 — Agent-mediated UX conformance](archive/0084-agent-mediated-ux-conformance.md)
+  to bring live agent-mediated workflow guidance and durable skill specs into
+  conformance with the new
+  [Designing agent-mediated UX](../docs/guides/agent-mediated-ux.md) guide.
+  Added the parent concept and child
+  [folder](archive/0084-agent-mediated-ux-conformance/index.md) with its
+  [functional spec](archive/0084-agent-mediated-ux-conformance/spec.md); no design doc
+  yet because the expected work is editorial/spec alignment unless implementation
+  discovers a reusable rendering abstraction or code path. Listed it in the
+  bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

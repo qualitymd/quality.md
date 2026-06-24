@@ -33,6 +33,12 @@ The guide **MUST** require explicit confirmation before editing evaluated
 source, editing `QUALITY.md`, writing the quality log, or creating an external
 issue.
 
+The guide **MUST** require apply and issue-creation decisions to follow the
+shared agent-mediated UX contract: visually emphasized primary call to action,
+scannable labels for changed artifacts, evidence/reason, recommended option,
+alternatives, and done criterion, and a clear statement of what will not change
+when the mutation boundary matters.
+
 The guide **MUST** state that issue-tracker handoff alone does not edit
 evaluated source, `QUALITY.md`, or `.quality/log/`.
 

@@ -47,6 +47,10 @@ or external systems.
 Before applying a recommendation, the skill **MUST** present a decision brief
 that names the recommendation, selected option, artifact class being changed,
 evidence or reason, risk when relevant, done criterion, and verification path.
+The primary apply question or call to action **MUST** be visually emphasized,
+and the decision brief **MUST** keep the changed artifacts, evidence/reason,
+recommended option, alternatives, and done criterion in a consistent, scannable
+shape.
 
 The skill **MUST NOT** edit evaluated source files, edit `QUALITY.md`, or write
 the quality log until the user explicitly confirms the recommendation option and
@@ -60,8 +64,10 @@ recommendation's done criterion.
 
 The result report **MUST** state the recommendation, outcome, applied option,
 changed artifacts, verification performed, rating movement when known, and
-remaining gaps or limits. If verification is incomplete, the result **MUST** be
-labeled limited rather than fully confirmed.
+remaining gaps or limits. It **MUST** use the shared agent-mediated UX contract:
+status first, with scannable labels and a clear next action when work remains. If
+verification is incomplete, the result **MUST** be labeled limited rather than
+fully confirmed.
 
 When a confirmed apply changes the QUALITY.md model, the skill **MUST** write one
 quality-log entry for the coherent model change, cross-linking the source

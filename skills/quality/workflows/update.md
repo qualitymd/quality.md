@@ -50,7 +50,9 @@ Verify
    npx skills add qualitymd/quality.md
    ```
 
-5. Present a concise update plan before mutation. Include:
+5. Present a concise update plan before mutation. Make the primary call to
+   action visually clear and use bold labels for the plan fields when the
+   surface supports Markdown. Include:
    - current skill version and required CLI range when known;
    - current CLI version and whether it is in range;
    - whether the plan acts on the skill, the CLI, both, or neither;
@@ -61,12 +63,13 @@ Verify
    decision brief:
 
    ```text
-   Decision: apply update plan?
-   - Changes: <skill | CLI | both>
-   - Evidence/reason:
-   - Recommended option:
-   - Alternatives:
-   - Done criterion / verification:
+   **Apply update plan?**
+
+   **Changes:** <skill | CLI | both>
+   **Evidence/reason:**
+   **Recommended option:**
+   **Alternatives:**
+   **Done criterion / verification:**
    ```
 
    The brief must name which owner command performs each mutation and how
@@ -81,6 +84,9 @@ Verify
 9. After a skill action, tell the user the current agent session may still be
    using previously loaded skill instructions and may need restart, reload, or a
    new session before the updated skill is active.
+10. Report the update closeout status-first: inspected versions, planned or
+    applied actions, confirmation status, verification result, remaining restart
+    or manual remediation step, and the recommended next action.
 
 `update` does not create or edit `QUALITY.md`, create evaluation records, build
 reports, rate the evaluated source, or apply quality recommendations.

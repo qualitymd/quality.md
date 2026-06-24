@@ -54,13 +54,13 @@ Verify and close
 3. Emit the run frame:
 
    ```text
-   /quality run
-   - Mode: setup
-   - Model file: <resolved path>
-   - Scope: contextual QUALITY.md setup
-   - Mutation: QUALITY.md + workflow feedback log under .quality/logs/
-   - Artifacts: QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md
-   - Next gate: create feedback log, context analysis, discovery, lint, maturity inspection
+   **/quality run**
+   - **Mode:** setup
+   - **Model file:** <resolved path>
+   - **Scope:** contextual QUALITY.md setup
+   - **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/
+   - **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md
+   - **Next gate:** create feedback log, context analysis, discovery, lint, maturity inspection
    ```
 
 4. Create the current run's workflow feedback log under
@@ -237,6 +237,12 @@ confirmed fact.
 Choose the presentation form from your own interaction capabilities. Do not
 assume or name a specific question UI.
 
+- In every discovery interaction block, make the primary question or checkpoint
+  call to action the strongest visual element, preferably with bold Markdown.
+  Keep `Why it matters`, `Recommended`, `Confidence`, and `Answer` adjacent to
+  the question and bold those labels when the surface supports Markdown.
+  Mention the shortest acceptable response, such as accepting the recommendation
+  or providing a terse correction.
 - Structured question tool: when you have a structured question tool with item
   or option limits, page questions 1-5 through it across as many rounds as the
   limits require, then present the human context checkpoint as free text. Present
@@ -357,12 +363,13 @@ If the model file exists and setup would change it, use a decision brief before
 editing:
 
 ```text
-Decision: update existing `QUALITY.md`?
-- Changes:
-- Evidence/reason:
-- Recommended option:
-- Alternatives:
-- Done criterion / verification:
+**Update existing `QUALITY.md`?**
+
+**Changes:**
+**Evidence/reason:**
+**Recommended option:**
+**Alternatives:**
+**Done criterion / verification:**
 ```
 
 Synthesize directly into `QUALITY.md`. Author the body first, then the
@@ -454,13 +461,14 @@ one signal.
 Report setup completion status-first:
 
 ```text
-Setup complete
-- Changed: QUALITY.md
-- Validation: lint passed | lint failed
-- Maturity: starter | immature | evaluation-ready
-- Important gaps: <none | concise model gaps>
-- Not done: no evaluation, no quality log, no issues, no automations
-- Next: continue iterating | run evaluation | set up recurring review | set up recommendation handoff | stop here
+**Setup complete** ✅
+
+**Changed:** QUALITY.md
+**Validation:** lint passed | lint failed
+**Maturity:** starter | immature | evaluation-ready
+**Important gaps:** <none | concise model gaps>
+**Not done:** no evaluation, no quality log, no issues, no automations
+**Next:** continue iterating | run evaluation | set up recurring review | set up recommendation handoff | stop here
 ```
 
 If maturity is not `evaluation-ready`, list the most important model gaps and

@@ -296,6 +296,18 @@ and **MUST NOT** require a full prose answer. After the fifth question, `setup`
 **MUST** present the human context checkpoint. One-at-a-time iteration is the
 default presentation form.
 
+Each discovery interaction block **MUST** visually emphasize the primary
+question or checkpoint call to action, preferably with bold Markdown. The
+question's purpose, recommended answer, confidence/evidence, and shortest
+acceptable response **MUST** stay adjacent to the question. When the surface
+supports Markdown, labels such as `Why it matters`, `Recommended`, `Confidence`,
+and `Answer` **SHOULD** be bold for scanning.
+
+The human context checkpoint **MUST** make the correction action explicit. When
+reviewing several inferred values together, it **SHOULD** use a table or
+similarly compact structure unless the interaction surface makes that less
+usable.
+
 `setup` **MUST NOT** offer an escape that accepts all inferred defaults and skips
 the remaining questions or the human context checkpoint. Any prior guidance
 permitting "accept all defaults and skip the remaining questions" **MUST** be
@@ -460,6 +472,9 @@ received context-informed authoring or a clearly reported user-deferred
 authoring step, and setup has reported model maturity. Completion output
 **MUST** summarize the `QUALITY.md` change, lint result, maturity
 classification, important remaining model gaps, and next-step choices.
+Completion output **MUST** follow the shared agent-mediated UX contract:
+status-first, with scannable labels for changed artifacts, validation, maturity,
+important gaps, what setup did not do, and the recommended next action.
 
 Next-step choices **SHOULD** include continuing to iterate on `QUALITY.md`,
 running evaluation, setting up a recurring quality review loop, setting up

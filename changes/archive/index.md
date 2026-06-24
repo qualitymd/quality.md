@@ -317,3 +317,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   area so it evaluates and rolls up like any other modeled area; skill-guidance,
   spec-mirror, and CHANGELOG only, with `QUALITY.md` assessed no-change and no
   CLI/Go change (`Done`).
+- [0084 — Agent-mediated UX conformance](0084-agent-mediated-ux-conformance.md) -
+  made the `/quality` skill's live workflow output follow the agent-mediated UX
+  guide: status-first presentation, visually emphasized primary questions or
+  calls to action, scannable labels, semantic emoji only, explicit mutation
+  boundaries, and closeouts with clear next actions; skill-guidance, spec-mirror,
+  AGENTS, and CHANGELOG only, no CLI/Go change (`Done`).

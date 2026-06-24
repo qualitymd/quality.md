@@ -14,6 +14,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- The `/quality` skill now treats agent-mediated UX as part of its workflow
+  contract: setup, evaluate, update, and recommendation follow-up guidance now
+  emphasize the primary question or call to action, use scannable labels for
+  recommendations/evidence/validation/next steps, keep emoji semantic, and close
+  with clearer status and next-action summaries.
 - `/quality setup` and the authoring guide now recommend emoji-prefixed Rating
   Level titles for the standard four-level scale as a human scanning aid, without
   treating emoji as rating semantics or a format requirement.

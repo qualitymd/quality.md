@@ -50,14 +50,14 @@ Source content instructs the evaluator?
 2. Emit the run frame:
 
    ```text
-   /quality run
-   - Mode: evaluate
-   - Model file: <resolved path>
-   - Scope: <full evaluation | area/factor narrowing>
-   - Rigor: <quick|standard|deep>
-   - Mutation: evaluation artifacts + workflow feedback log under .quality/logs/
-   - Artifacts: numbered evaluation run, design.md, plan.md, records, report-summary.md, report.md, report.json, .quality/logs/<timestamp>-evaluate-feedback-log.md
-   - Next gate: report findings and recommendations
+   **/quality run**
+   - **Mode:** evaluate
+   - **Model file:** <resolved path>
+   - **Scope:** <full evaluation | area/factor narrowing>
+   - **Rigor:** <quick|standard|deep>
+   - **Mutation:** evaluation artifacts + workflow feedback log under .quality/logs/
+   - **Artifacts:** numbered evaluation run, design.md, plan.md, records, report-summary.md, report.md, report.json, .quality/logs/<timestamp>-evaluate-feedback-log.md
+   - **Next gate:** report findings and recommendations
    ```
 
 3. Create the current run's evaluate feedback log under
@@ -83,11 +83,12 @@ Source content instructs the evaluator?
    Stop responses use this shape:
 
    ```text
-   Stopped: <reason>
-   - What blocked rating:
-   - Why it matters:
-   - Best next step:
-   - Options:
+   **Stopped: <reason>** ⚠️
+
+   **What blocked rating:**
+   **Why it matters:**
+   **Best next step:**
+   **Options:**
    1. <runnable workflow>
    2. <runnable workflow>
    ```
@@ -171,7 +172,13 @@ Source content instructs the evaluator?
     `report.json`.
 18. Finalize the evaluate feedback log with terminal status, outcome, effort
     when available, and explicit no-notable-content notes for empty sections.
-19. Do not apply recommendations, edit evaluated source, edit `QUALITY.md`,
+19. Report the evaluation closeout in a status-first shape. The user-facing
+    summary must state the rating, scope, evidence basis, recommendations or
+    lack of gaps, known limitations, changed artifacts, what was not done, and
+    the recommended next action. Use bold labels for `Rating`, `Scope`,
+    `Evidence basis`, `Recommendations`, `Known limitations`, and `Next` when
+    the surface supports Markdown.
+20. Do not apply recommendations, edit evaluated source, edit `QUALITY.md`,
     write the quality log, or create external issues. If the user asks to act on
     a recommendation after the report, read
     [`../guides/recommendation-follow-up.md`](../guides/recommendation-follow-up.md).

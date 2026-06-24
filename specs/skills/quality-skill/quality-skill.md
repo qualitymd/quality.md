@@ -238,6 +238,21 @@ The skill's user-facing output is part of its quality contract. The CLI handles
 deterministic mechanics; the skill keeps users oriented around judgment,
 evidence, mutation, and next action.
 
+The skill **MUST** follow
+[Designing agent-mediated UX](../../../docs/guides/agent-mediated-ux.md) for
+live workflow output. User-facing interaction blocks **MUST** be status-first:
+state first, primary user action second, supporting context after that. When the
+user must answer, approve, correct, choose, or act, the primary question or call
+to action **MUST** be visually emphasized, preferably with bold Markdown.
+Supporting labels such as `Recommended`, `Why it matters`, `Confidence`,
+`Changed`, `Validation`, `Important gaps`, and `Next` **SHOULD** be bold when
+rendered in Markdown so the left edge stays scannable.
+
+The skill **MUST** use Markdown emphasis as hierarchy, not decoration. It
+**MUST NOT** bold whole paragraphs or add decorative emoji to routine headings.
+Emoji **MAY** be used as semantic status markers, and Rating Level emoji remain
+display-title scanning aids only.
+
 ### Run frames
 
 Before executing a public mode, the skill **SHOULD** emit a concise run frame naming
@@ -261,6 +276,10 @@ rather than a bare yes/no question. A decision brief **MUST** name the proposed
 action, the artifact class being changed, the evidence or reason for the action,
 the recommended option, at least one non-mutating alternative, and the done
 criterion or verification expected after the action.
+
+The decision question or call to action **MUST** be visually emphasized, and the
+brief **MUST** keep the changes, evidence/reason, recommended option,
+alternatives, and done criterion in a consistent, scannable shape.
 
 When options differ in coverage or risk, the decision brief **SHOULD** state that
 tradeoff explicitly. When options differ only in kind, the brief should say so

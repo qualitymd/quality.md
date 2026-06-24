@@ -2,6 +2,13 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [`setup`](setup.md), [`evaluate`](evaluate.md), and
+  [`update`](update.md) workflow specs for
+  [0084 - Agent-mediated UX conformance](../../../../changes/archive/0084-agent-mediated-ux-conformance.md).
+  Runtime workflow output now follows the shared agent-mediated UX contract:
+  status-first presentation, visually emphasized primary questions and calls to
+  action, scannable labels, progress at useful phase boundaries, decision briefs
+  with explicit mutation boundaries, and closeouts with clear next actions.
 - **Revision**: Updated the [`setup`](setup.md) workflow for
   [0081 - Harnessability factor](../../../../changes/archive/0081-harnessability-factor.md).
   Setup now proposes harnessability by default as a model-wide umbrella factor for

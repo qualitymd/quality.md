@@ -1,5 +1,18 @@
 # Specs Update Log
 
+## 2026-06-24
+
+- **Revision**: Implemented durable spec changes for
+  [0084 - Agent-mediated UX conformance](../changes/archive/0084-agent-mediated-ux-conformance.md).
+  Updated the parent
+  [`/quality` skill](skills/quality-skill/quality-skill.md) interaction
+  contract and the setup, evaluate, update, recommendation-follow-up, and
+  reporting specs so live workflow output follows
+  [Designing agent-mediated UX](../docs/guides/agent-mediated-ux.md): status
+  first, visually emphasized primary questions or calls to action, scannable
+  labels, semantic emoji only, explicit mutation boundaries, and clear closeouts
+  with next actions. No QUALITY.md format or CLI behavior change.
+
 ## 2026-06-23
 
 - **Creation + Revision**: Implemented durable spec changes for

@@ -163,29 +163,40 @@ kind decision.
 
 ## User Interaction Contract
 
+Agent-mediated UX is part of the skill contract: the agent is the user's
+interface. Follow the repository guide `docs/guides/agent-mediated-ux.md` when
+presenting workflow state, questions, confirmations, summaries, and closeouts.
+Keep output status-first, evidence-led, and action-oriented. In each interaction
+block, make the primary question or call to action the strongest visual element,
+preferably with bold Markdown. Use bold labels such as
+`Recommended`, `Why it matters`, `Confidence`, `Changed`, `Validation`,
+`Important gaps`, and `Next` so the left edge is scannable; use emoji only as
+semantic markers, not decoration.
+
 Before executing a public workflow, emit a short run frame:
 
 ```text
-/quality run
-- Mode:
-- Model file:
-- Scope:
-- Rigor:        (when applicable)
-- Mutation:      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, feedback log, tooling)
-- Artifacts:
-- Next gate:
+**/quality run**
+- **Mode:**
+- **Model file:**
+- **Scope:**
+- **Rigor:**        (when applicable)
+- **Mutation:**      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, feedback log, tooling)
+- **Artifacts:**
+- **Next gate:**
 ```
 
 For any mutation that requires confirmation, use a decision brief rather than a
 bare yes/no question:
 
 ```text
-Decision: <action?>
-- Changes:
-- Evidence/reason:
-- Recommended option:
-- Alternatives:
-- Done criterion / verification:
+**<action?>**
+
+**Changes:**
+**Evidence/reason:**
+**Recommended option:**
+**Alternatives:**
+**Done criterion / verification:**
 ```
 
 Stop before rating when source cannot be resolved, in-scope requirements are
@@ -211,11 +222,10 @@ rating-bound or depends on the model, re-evaluate the affected scope and report
 the before/after delta: recommendation, applied option, changed artifacts,
 verification, rating movement when known, and remaining limits.
 
-Keep output status-first, evidence-led, and action-oriented. Distinguish
-CLI/tooling readiness, model validity, model usefulness, evaluated-source
-quality, and evaluation history status. Use QUALITY.md vocabulary consistently:
-area, factor, requirement, rating, finding, and recommendation. Capitalize
-formal type names only when precision requires it.
+Distinguish CLI/tooling readiness, model validity, model usefulness,
+evaluated-source quality, and evaluation history status. Use QUALITY.md
+vocabulary consistently: area, factor, requirement, rating, finding, and
+recommendation. Capitalize formal type names only when precision requires it.
 
 When maintaining the current evaluate feedback log, record only material
 workflow-experience events: scope resolution friction, history inspection,

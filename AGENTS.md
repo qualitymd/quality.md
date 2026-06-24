@@ -54,6 +54,7 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 | Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md)  |
 | Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)            |
 | Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                   |
+| Designing or reshaping an agent-run workflow    | [Designing agent-mediated UX](docs/guides/agent-mediated-ux.md)    |
 | Designing or reshaping a CLI command            | [Designing CLI interfaces](docs/guides/cli-design.md)              |
 | Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)         |
 | Writing Go code                                 | [Go style](docs/guides/go-style.md)                                |

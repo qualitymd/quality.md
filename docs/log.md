@@ -1,5 +1,15 @@
 # Docs Update Log
 
+## 2026-06-24
+
+- **Creation**: Added
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md), a contributor
+  guide for workflows users experience through AI assistants or coding agents.
+  The guide defines agent-mediated UX, gives formatting and emphasis rules,
+  requires the primary question or call to action to stand out, and covers
+  progress, discovery questions, checkpoints, decision gates, closeout, emoji,
+  and tone. Linked it from the [guides index](guides/index.md).
+
 ## 2026-06-23
 
 - **Removal**: Deleted the `Use the /quality skill` how-to guide

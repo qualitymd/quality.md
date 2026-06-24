@@ -21,12 +21,13 @@ present defer, skip, or keep open as formal options.
 Before editing anything, present a decision brief:
 
 ```text
-Decision: apply <recommendation>?
-- Changes: <evaluated source | QUALITY.md | both | quality log when model changes>
-- Evidence/reason:
-- Recommended option:
-- Alternatives: hand off to issue tracker
-- Done criterion / verification:
+**Apply <recommendation>?**
+
+**Changes:** <evaluated source | QUALITY.md | both | quality log when model changes>
+**Evidence/reason:**
+**Recommended option:**
+**Alternatives:** hand off to issue tracker
+**Done criterion / verification:**
 ```
 
 Do not treat an obvious recommendation as consent. Apply only the confirmed
@@ -37,14 +38,15 @@ the done criterion is rating-bound or depends on the QUALITY.md model, run a
 scoped re-evaluation in a new numbered folder and report the before/after delta:
 
 ```text
-Recommendation result
-- Recommendation:
-- Outcome: applied
-- Applied option:
-- Changed artifacts:        (name the quality log entry when the model changed)
-- Verification:
-- Rating movement:          (when known)
-- Remaining gaps / limits:
+**Recommendation result**
+
+**Recommendation:**
+**Outcome:** applied
+**Applied option:**
+**Changed artifacts:**        (name the quality log entry when the model changed)
+**Verification:**
+**Rating movement:**          (when known)
+**Remaining gaps / limits:**
 ```
 
 If verification is incomplete, label the result as limited rather than fully

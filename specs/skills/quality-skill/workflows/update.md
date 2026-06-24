@@ -52,6 +52,12 @@ The plan **MUST** classify whether the `/quality` skill, the `qualitymd` CLI,
 both, or neither need action. It **MUST** ask for explicit confirmation before
 applying any update action.
 
+The plan and confirmation brief **MUST** follow the shared agent-mediated UX
+contract: status first, visually emphasized primary call to action, scannable
+labels for versions/actions/evidence, and adjacent verification criteria. The
+brief **MUST** name what will not change when that boundary matters, such as
+`QUALITY.md`, evaluated source, evaluation records, and the quality log.
+
 After a CLI update, `update` **MUST** verify the visible `qualitymd` version
 against the loaded skill's required CLI range. After a skill update, it **MUST**
 tell the user that the active agent session may still be running previously
@@ -70,5 +76,5 @@ path rather than guessing or directly replacing binaries.
 ## Completion criteria
 
 `update` is complete when it reports the inspected versions, planned or applied
-actions, confirmation status, verification result, and any remaining restart,
-reload, or manual remediation step.
+actions, confirmation status, verification result, any remaining restart, reload,
+or manual remediation step, and the recommended next action.
