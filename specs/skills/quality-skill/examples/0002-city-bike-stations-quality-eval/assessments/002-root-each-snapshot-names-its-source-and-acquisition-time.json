@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "requirement": "Each snapshot names its source and acquisition time",
+  "factorPaths": [
+    [
+      "Provenance"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The current manifest names the generated file but omits upstream source and acquisition time for the newest snapshot. A reader cannot trace the published data without maintainer knowledge, so the requirement does not meet the acceptable floor."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "metadata/manifest.yaml",
+      "observation": "The newest station snapshot lists the output file and row count but leaves the upstream source and acquisition timestamp blank.",
+      "category": "missing-provenance",
+      "severity": "high",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "metadata/manifest.yaml"
+        },
+        {
+          "kind": "source",
+          "ref": "metadata/lineage.md"
+        },
+        {
+          "kind": "review",
+          "ref": "manifest provenance re-check before report generation"
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "002-record-snapshot-provenance"
+  ]
+}

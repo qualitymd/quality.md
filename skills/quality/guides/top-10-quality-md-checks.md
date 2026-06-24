@@ -206,15 +206,29 @@ Factors should be meaningful quality lenses, not vague labels alone.
   Agent Harnessability or its sub-factors among its model-wide factors: route to
   authoring. Do not flag a non-agent-collaborated, harness-less, throwaway, or
   narrowly scoped entity where the factor is not germane. Treat an existing
-  `harnessability` factor with the expected six sub-factors as semantic coverage,
-  but route model-authoring work to rename it to `agent-harnessability` / Agent
-  Harnessability unless the project has an explicit reason to preserve the old
-  key. A thin or absent harness is rating evidence, not a reason to omit the
-  factor.
+  `harnessability` factor with the legacy six-sub-factor shape as semantic
+  coverage, but route model-authoring work to rename it to
+  `agent-harnessability` / Agent Harnessability and add `continuity` unless the
+  project has an explicit reason to preserve the old key. A thin or absent
+  harness is rating evidence, not a reason to omit the factor.
+- Finding when an agent-collaborated composite root has a germane agent-harness
+  area carried with only one or two thin factors: route to authoring. Treat this
+  as a coverage gap in the steering-materials area, not as evidence the harness is
+  unimportant.
+- Finding when agent-harness area requirements assume a software toolchain
+  (lint/type-check/test/CI/deploy) but the project's served domain is not
+  software: route to authoring. Rephrase toward how this project's steering
+  materials point to verification, enforce standards, or bound action.
+- Finding when a model carries two same-rooted projections of one concern (e.g. an
+  Agent Harnessability factor and an agent-harness area) with no boundary note —
+  neither a YAML comment nor a disambiguating description clause distinguishing
+  them: route to authoring. A reader cannot tell the projections apart, and the
+  double-count risk is invisible.
 - Finding when the domain implies a germane constituent kind the body evidences or
   implies — for software product quality: tests, documentation modes
   (tutorial/how-to/reference/explanation), specs/requirements, operations, or a
-  security/safety artifact — that the model neither models as an area nor surfaces
+  security/safety artifact; for a data product: schema, provenance, freshness, or
+  lineage metadata — that the model neither models as an area nor surfaces
   as a ratable gap (a missing-anchor area, or a requirement on an existing area):
   route to authoring. For a germane kind, a bare deferral or Scope note does not
   satisfy coverage. Do not flag a kind that legitimately hits a disqualifier —

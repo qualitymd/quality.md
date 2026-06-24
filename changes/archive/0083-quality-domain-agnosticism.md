@@ -2,7 +2,7 @@
 type: Change Case
 title: Quality-domain agnosticism guide and secondary illustrations
 description: Add a contributor-doctrine guide on modeling quality across domains, with stress axes, a canonical secondary-domain set, and one worked non-software example; standardize domain enumerations across docs and skill guidance.
-status: In-Review
+status: Done
 tags: [docs, doctrine, domain-agnostic, examples]
 timestamp: 2026-06-24T00:00:00Z
 ---
@@ -104,6 +104,6 @@ None - no scaffolded QUALITY.md content changes.
 
 ## Status
 
-`In-Review`. Implemented as a documentation-only change. The new guide, routing
-updates, domain-list alignment, logs, and changelog entry are in place. No code,
+`Done`. Implemented, verified, and archived. The new guide, routing updates,
+domain-list alignment, logs, and changelog entry are in place. No code,
 format-schema, or CLI behavior changed.

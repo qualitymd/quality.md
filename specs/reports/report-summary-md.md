@@ -98,6 +98,17 @@ For example:
 | Delivery             | `webhooks/delivery` | Minimum      | Minimum                 | Reliability: Minimum                        |
 ```
 
+A paired non-software data-product rendering uses the same columns with
+domain-carried Factors rather than a software-quality default list:
+
+```md
+| Area                   | Path                   | Area Rating  | Area + Sub-Areas Rating | Factors                                            |
+| ---------------------- | ---------------------- | ------------ | ----------------------- | -------------------------------------------------- |
+| City Bike Station Data | `/`                    | Unacceptable | Unacceptable            | Fitness for use: Minimum; Provenance: Unacceptable |
+| Schema & structure     | `schema-structure`     | Target       | Target                  | Structural validity: Target                        |
+| Provenance & freshness | `provenance-freshness` | Unacceptable | Unacceptable            | Provenance: Unacceptable; Freshness: Target        |
+```
+
 The Selected Findings section **MUST** include only deterministic selected
 findings from the assembled report model. Informational findings **MUST NOT** be
 promoted into selected risks unless a documented selection rule includes them.

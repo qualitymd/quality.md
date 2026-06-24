@@ -167,13 +167,14 @@ family — and **SHOULD** flag a missing expected use-context constituent (an
 owned, high-leverage agent harness or QUALITY.md self-check not modeled as a
 constituent). It **SHOULD** also flag a germane constituent kind the domain implies
 — for software product quality, tests, documentation modes, specs/requirements,
-operations, or a security/safety artifact — that the model neither models as an
+operations, or a security/safety artifact; for a data product, schema,
+provenance, freshness, or lineage metadata — that the model neither models as an
 area nor surfaces as a ratable gap (a missing-anchor area, or a requirement on an
 existing area); for a germane kind, a bare deferral, out-of-scope, or Scope note
-**MUST NOT** be treated as satisfying coverage. It **MUST NOT** flag a constituent
-that legitimately hits a disqualifier — folded into a sibling for lack of distinct
-concerns, or genuinely not germane to a harness-less, throwaway, or narrowly
-scoped entity.
+**MUST NOT** be treated as satisfying coverage. It **MUST NOT** flag a
+constituent that legitimately hits a disqualifier — folded into a sibling for
+lack of distinct concerns, or genuinely not germane to a harness-less, throwaway,
+or narrowly scoped entity.
 
 For an agent-collaborated composite root, the area-and-factor-shape check **MUST**
 flag missing Agent Harnessability coverage when Agent Harnessability or its
@@ -181,11 +182,30 @@ sub-factors are absent from the model-wide factors without a clear not-germane
 boundary. It **MUST NOT** flag a non-agent-collaborated, harness-less, throwaway,
 or narrowly scoped entity where Agent Harnessability is not germane, and
 **MUST NOT** treat a thin or absent harness as a reason to omit the factor. The
-check **SHOULD** treat an existing `harnessability` factor with the expected six
-sub-factors as semantic coverage of the same concern, while routing model-authoring
-work to rename it to `agent-harnessability` / Agent Harnessability unless the
-project has an explicit reason to preserve the old key.
+check **SHOULD** treat an existing `harnessability` factor with the legacy
+six-sub-factor shape as semantic coverage of the same concern, while routing
+model-authoring work to rename it to `agent-harnessability` / Agent Harnessability
+and add `continuity` unless the project has an explicit reason to preserve the old
+key.
 
+The area-and-factor-shape check **MUST** flag an agent-collaborated composite root
+whose germane agent-harness area is carried with only one or two thin factors, and
+route it to authoring. It **MUST** treat a thin harness area as a coverage gap, not
+as evidence that the harness is unimportant.
+
+The area-and-factor-shape check **MUST** flag harness-area requirements that assume
+a software toolchain when the project's served domain is not software, and route
+them to authoring.
+
+The area-and-factor-shape check **MUST** flag a model that carries two same-rooted
+projections of one concern (e.g. an Agent Harnessability factor and an agent-harness
+area) with no boundary note distinguishing them — neither a YAML comment nor a
+disambiguating description clause — and route it to authoring.
+
+> Rationale: the projection-boundary rule requires the boundary to be encoded in
+> the emitted model; a model carrying both projections with no note leaves a reader
+> unable to tell them apart and hides the double-count risk. — 0087
+>
 > Rationale: model-by-default (0080) makes a non-disqualified, unmodeled
 > constituent a real coverage finding; the prior "earned expected defaults, do not
 > flag a missing one" let a deferral note pass maturity silently. — 0080
@@ -195,6 +215,12 @@ project has an explicit reason to preserve the old key.
 > constituent but omits the model-wide factor can still miss whether every
 > constituent is legible, operable, verifiable, and bounded for agent work. — 0081,
 > refined by 0085
+>
+> Rationale: 0089 adds `continuity` to the current Agent Harnessability target
+> shape while continuing to recognize existing six-sub-factor models as prior
+> semantic coverage. It also closes two harness-area failure modes: a present but
+> thinly factored steering-materials area, and harness requirements that leak a
+> software toolchain into a non-software served domain. — 0089
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

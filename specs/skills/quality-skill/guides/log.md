@@ -2,6 +2,31 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for
+  [0089 - Agent-harness modeling guidance](../../../../changes/archive/0089-agent-harness-modeling-guidance.md).
+  Agent Harnessability now has seven current sub-factors with `continuity` added
+  for long-running work state preservation and resumption; self-verifiability now
+  carries good-sensor and trace-evidence properties; the agent-harness area gains a
+  domain-agnostic steering-materials factor and requirement template; and the Top
+  10 checks now flag thinly factored or software-leaking harness areas while still
+  recognizing legacy six-sub-factor harnessability as prior semantic coverage.
+
+- **Revision**: Updated the [Top 10 checks contract](top-10-quality-md-checks-md.md)
+  for [0088 - Domain-agnostic corpus alignment](../../../../changes/archive/0088-domain-agnostic-corpus-alignment.md).
+  The area-and-factor-shape check now pairs its software constituent illustration
+  with a data-product bracket — schema, provenance, freshness, and lineage metadata
+  — so the readiness check does not imply software is the default modeled domain.
+
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for
+  [0087 - Encode projection boundaries in the model](../../../../changes/0087-encode-projection-boundaries.md).
+  The guide must now require the author to encode a concern's projection boundary in
+  the emitted model when more than one projection is modeled — a YAML comment on each
+  projection's node, plus a disambiguating `description` clause when both projections
+  are rated nodes that surface in a report — with the Agent Harnessability factor vs.
+  the agent-harness area as the canonical instance, and the Top 10 checks gain a
+  matching missing-boundary-note finding.
 - **Revision**: Corrected the [authoring guide contract](authoring-md.md) for
   [0086 - Umbrella factor roll-up framing](../../../../changes/0086-umbrella-factor-rollup-framing.md).
   The Agent Harnessability umbrella factor is no longer described as one that "does

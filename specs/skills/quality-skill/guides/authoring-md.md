@@ -268,7 +268,15 @@ The guide **MUST** teach the **three-projections rule**: a stewardship concern
 projects as a **factor**, a **constituent**, and an **audience**, so shared names
 reflect a shared concern rather than duplication, and the author models the
 projection meant rather than double-counting (the security *of* an area is a
-factor; a security policy is a constituent). The guide **MUST** keep the
+factor; a security policy is a constituent). The guide **MUST** require the author
+to encode the projection boundary in the emitted model when a model carries two or
+more projections of one concern, rather than only reasoning about it during
+modeling: on each modeled projection's node, a YAML comment that names the sibling
+projection and the one-line distinction, and — when both projections are rated
+nodes that surface in an evaluation report — a short disambiguating clause in each
+node's `description` in addition to the comment. It **SHOULD** keep that clause to
+the distinction from the sibling projection, consistent with the
+"distinguishes, not enumerates" description rule. The guide **MUST** keep the
 motivation-layer stewardship/care vocabulary (stewardship, care, tending,
 vulnerability, concern) from modifying or replacing a taxonomy noun (factor,
 area, requirement, constituent, audience): a concern is the source a factor
@@ -335,41 +343,83 @@ reading a present artifact as evidence rather than proof.
 > model as full as the evidence supports. The stewardship/audience generators, the
 > three-projections rule, and the vocabulary discipline are unchanged; only the
 > inclusion default and its enforcement change. — 0080
+>
+> Rationale: the three-projections rule prevented double-counting for the *author*
+> but left the boundary invisible to a *reader* of the emitted model — a field
+> setup run produced a correct model carrying both an Agent Harnessability factor
+> and an agent-harness area, yet a reader still asked whether the factor was meant
+> to replace the area. Requiring the boundary to be encoded in the model (a YAML
+> comment per projection, plus a description clause where both projections are rated
+> nodes that surface in a report) promotes the reasoning into the artifact, the same
+> way durable specs must carry their rationale forward. — 0087
 
 The guide **MUST** teach **Agent Harnessability** as a model-wide umbrella factor
 for an agent-collaborated composite root, using `agent-harnessability` as the
 recommended stable key for new or revised models. It **MUST** define Agent
 Harnessability as the degree to which the project's checked-in materials, tools,
 workflows, feedback signals, standards, and action limits equip an AI agent to
-understand the project, take scoped work, operate the environment, verify its
-output, and stay safely bounded while preserving clear human direction, review,
-and accountability. The guide **MUST** present Agent Harnessability as the factor
-projection of the agent-collaboration concern, with the agent harness remaining
-the constituent projection and the agent remaining the audience projection. It
-**MUST** keep the factor/constituent boundary explicit: Agent Harnessability rates
-how each constituent equips an agent, while the agent-harness area rates the
-steering artifact's own quality, and Agent Harnessability is not assessed on the
-agent-harness area as a recursion of the same evidence.
+understand the project, take scoped work, operate the environment, preserve and
+resume state, verify its output, and stay safely bounded while preserving clear
+human direction, review, and accountability. The guide **MUST** present Agent
+Harnessability as the factor projection of the agent-collaboration concern, with
+the agent harness remaining the constituent projection and the agent remaining the
+audience projection. It **MUST** keep the factor/constituent boundary explicit:
+Agent Harnessability rates how each constituent equips an agent, while the
+agent-harness area rates the steering artifact's own quality, and Agent
+Harnessability is not assessed on the agent-harness area as a recursion of the same
+evidence. As the canonical instance of the projection-boundary rule above, the guide
+**MUST** require this boundary to be encoded in the model — a YAML comment on both
+the `agent-harnessability` factor and the agent-harness area, plus a disambiguating
+clause in each description.
 
 The guide **MUST** present Agent Harnessability as a deliberate umbrella that
-carries no requirements of its own and decomposes into six independently
+carries no requirements of its own and decomposes into seven independently
 assessable sub-factors, its rating coming from rolling those up:
 **agent-accessibility**, **task-specifiability**, **agent-operability**,
-**self-verifiability**, **enforcement-of-standards**, and
+**continuity**, **self-verifiability**, **enforcement-of-standards**, and
 **containment-of-action**. Each sub-factor **MUST** be named as a quality, carry an
 operational definition, include illustrative requirements that remain
 quality-domain agnostic, and include boundary guidance that prevents
 double-counting with sibling sub-factors, common factors, and the agent-harness
-constituent. The guide **MUST** route improvement of the harness over time to the
-model-wide continuous-improvement or learn-loop concern, not to a seventh Agent
-Harnessability sub-factor. The guide **MUST** state that Agent Harnessability is
-proposed by default for an agent-collaborated composite root and **MUST NOT** give
-the thinness or absence of the harness as a reason to omit it; thinness or absence
-is a low rating and finding. The guide **SHOULD** treat an existing
-`harnessability` factor with the expected six-sub-factor shape as semantic
-coverage of the same concern, and **SHOULD** recommend renaming it to
-`agent-harnessability` / Agent Harnessability during model-authoring work unless
-the project has an explicit reason to preserve the old key.
+constituent.
+
+The guide **MUST** define **continuity** as the degree to which an agent can
+preserve state and resume useful work across long-running tasks, compaction,
+interruption, handoff, and fresh sessions. Its illustrative requirements **SHOULD**
+cover progress or handoff artifacts that capture current state, decisions made,
+remaining work, verification status, blockers, and next steps; resumptions that do
+not depend on unrecoverable chat history; and progress records that reduce false
+completion or context-anxiety failure modes. Its boundary guidance **MUST**
+distinguish it from agent-operability, which covers a fresh session reaching a
+ready-to-work environment, and from agent-accessibility, which covers durable,
+reachable knowledge.
+
+The guide **MUST** strengthen the existing sub-factor examples so
+agent-accessibility covers progressive disclosure and context selectivity;
+task-specifiability covers decomposition, explicit done criteria, and completion
+discipline against the original task; agent-operability covers tool affordance
+quality, fresh-session readiness, act/observe loops, and agent-useful output;
+self-verifiability covers deterministic checks, inferential evals, trace/run
+evidence, and actionable machine-readable feedback; enforcement-of-standards covers
+input, output, and tool guardrails or equivalent domain-neutral controls; and
+containment-of-action covers least privilege, approval gates, sandboxing,
+sensitive-resource boundaries, and auditability. Self-verifiability **MUST** name
+good verification signals as fast, actionable, grounded in concrete evidence,
+context-aware, and suppressible through visible reviewable exceptions; distinguish
+deterministic signals from inferential evals for behavioral or non-deterministic
+outcomes; and keep the boundary explicit that self-verifiability surfaces
+exceptions while enforcement-of-standards constrains escapes.
+
+The guide **MUST** route improvement of the harness over time to the model-wide
+continuous-improvement or learn-loop concern, not to an eighth Agent Harnessability
+sub-factor. The guide **MUST** state that Agent Harnessability is proposed by
+default for an agent-collaborated composite root and **MUST NOT** give the thinness
+or absence of the harness as a reason to omit it; thinness or absence is a low
+rating and finding. The guide **SHOULD** treat an existing `harnessability` factor
+with the legacy six-sub-factor shape as semantic coverage of the same concern, and
+**SHOULD** recommend renaming it to `agent-harnessability` / Agent Harnessability
+and adding `continuity` during model-authoring work unless the project has an
+explicit reason to preserve the old key.
 
 > Rationale: the agent-collaboration concern was present as a modeled-by-default
 > constituent after 0080, but its cross-cutting quality projection was still
@@ -378,3 +428,30 @@ the project has an explicit reason to preserve the old key.
 > assess legibility, task framing, operability, self-checking, output enforcement,
 > and action containment without double-counting the steering artifact itself. —
 > 0081
+>
+> Rationale: long-running-agent practice makes state preservation and handoff too
+> central to leave implicit under accessibility or operability. A project that
+> cannot resume with the right state, decisions, remaining work, and verification
+> status is not fully harnessable. — 0089
+
+The guide **MUST** give the agent-harness area a concrete modeling template at
+parity with the QUALITY.md self-check template: it **MUST** identify the area as an
+enable and partly normative constituent for checked-in steering materials — agent
+entry points, agent guidance files, skills, prompts, and related instructions — and
+**MUST** offer a richer illustrative factor family rather than one or two placeholder
+factors. Candidate factors **SHOULD** include or cover `completeness`, `accuracy`,
+`currentness`, `understandability`, `coherence`, `selectivity`, `discoverability`
+or `triggerability`, `maintainability`, `trustworthiness`, and `assessability`.
+The family **MUST** be presented as an illustrative prompt earned per entity, not
+as a required or default roster.
+
+The guide **MUST** direct that agent-harness area factors and requirements remain
+agnostic to the served domain — the domain the project model is about — and
+**MUST NOT** present software-specific mechanisms such as lint, type-check, test,
+or CI gates as harness requirements except as one domain's instance of
+domain-neutral expectations about verification, standards, or action boundaries.
+
+> Rationale: the guide had a concrete template for the QUALITY.md self-check but
+> left the sibling harness constituent thinly specified. Explicit harness guidance
+> is licensed by the agentic use context, but the harness serves whatever domain the
+> project models, so its requirements must not leak software assumptions. — 0089

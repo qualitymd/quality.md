@@ -43,14 +43,6 @@ edit.
 
 # Open change cases
 
-- [0078 — View command](0078-view-command.md) - add `qualitymd view`, a layered
-  presentation surface over the QUALITY.md workspace, starting with the default
-  document render and the `outline` lens (`Draft`).
-- [0083 — Quality-domain agnosticism guide and secondary illustrations](0083-quality-domain-agnosticism.md) -
-  add a contributor-doctrine guide on modeling quality across domains, with stress
-  axes, a canonical secondary-domain set, and one worked non-software example;
-  standardize the domain enumerations (`In-Review`).
-
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
 template for a new one.

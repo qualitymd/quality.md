@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The root's provenance requirement is unacceptable because the newest snapshot cannot be traced to an upstream source or acquisition time. Fitness for use is minimum because one active station is missing from the published table."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "Fitness for use"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The register is usable for most planning and public-information decisions, but the missing active station keeps it below target."
+      }
+    },
+    {
+      "factorPath": [
+        "Provenance"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "The newest snapshot's source and acquisition time are absent, so a reader cannot audit the data without maintainer knowledge."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The root's provenance gap binds the whole-model rating. Schema & structure is target, but Provenance & freshness is unacceptable for the same missing manifest metadata."
+  },
+  "assessmentResultRecords": [
+    "assessments/001-root-active-stations-are-represented-with-plausible-locations.json",
+    "assessments/002-root-each-snapshot-names-its-source-and-acquisition-time.json"
+  ],
+  "childAnalysisRecords": [
+    "analysis/schema-structure.json",
+    "analysis/provenance-freshness.json"
+  ]
+}

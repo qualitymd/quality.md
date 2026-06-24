@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "summary": {
+    "run": "0002-city-bike-stations-quality-eval",
+    "rootArea": "root",
+    "evaluationLevel": "",
+    "rigor": "standard",
+    "narrowing": "",
+    "ratingResult": {
+      "kind": "rated",
+      "level": "unacceptable",
+      "rationale": "The root's provenance gap binds the whole-model rating. Schema & structure is target, but Provenance & freshness is unacceptable for the same missing manifest metadata."
+    }
+  },
+  "ratingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The root's provenance gap binds the whole-model rating. Schema & structure is target, but Provenance & freshness is unacceptable for the same missing manifest metadata."
+  },
+  "scope": {
+    "recorded": true,
+    "description": "Full evaluation of the illustrative city bike station data product.",
+    "narrowing": "",
+    "inScope": [
+      "root",
+      "schema-structure",
+      "provenance-freshness"
+    ],
+    "outOfScope": [
+      "upstream live telemetry",
+      "trip records",
+      "pricing data",
+      "public website"
+    ],
+    "notRecorded": []
+  },
+  "evidenceBasis": [
+    {
+      "kind": "source",
+      "ref": "data/stations.csv"
+    },
+    {
+      "kind": "source",
+      "ref": "ops/active-stations-roster.csv"
+    },
+    {
+      "kind": "review",
+      "ref": "manual roster-to-table comparison"
+    },
+    {
+      "kind": "source",
+      "ref": "metadata/manifest.yaml"
+    },
+    {
+      "kind": "source",
+      "ref": "metadata/lineage.md"
+    },
+    {
+      "kind": "review",
+      "ref": "manifest provenance re-check before report generation"
+    },
+    {
+      "kind": "source",
+      "ref": "schema/stations.schema.yaml"
+    },
+    {
+      "kind": "review",
+      "ref": "manual schema-to-table comparison"
+    },
+    {
+      "kind": "review",
+      "ref": "identifier uniqueness profile"
+    },
+    {
+      "kind": "source",
+      "ref": "docs/releases.md"
+    },
+    {
+      "kind": "review",
+      "ref": "snapshot timestamp and release-note review"
+    }
+  ],
+  "limitations": [
+    "The run reviewed a representative current release and two prior snapshots; it did not audit the operator's upstream live system.",
+    "Coordinate plausibility was judged against city-boundary and station-address evidence, not by field inspection.",
+    "Private maintainer knowledge was not counted as provenance evidence."
+  ],
+  "nextAction": {
+    "kind": "recommendation",
+    "summary": "The snapshot-provenance requirement reaches target; every current snapshot names its upstream source, acquisition time, and transformation version in the manifest or lineage record.",
+    "recommendationId": "002-record-snapshot-provenance",
+    "recommendationPath": "recommendations/002-record-snapshot-provenance.md"
+  },
+  "areaSummary": [
+    {
+      "areaPath": [],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "unacceptable",
+          "rationale": "The root's provenance requirement is unacceptable because the newest snapshot cannot be traced to an upstream source or acquisition time. Fitness for use is minimum because one active station is missing from the published table."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "The root's provenance requirement is unacceptable because the newest snapshot cannot be traced to an upstream source or acquisition time. Fitness for use is minimum because one active station is missing from the published table."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "The root's provenance gap binds the whole-model rating. Schema & structure is target, but Provenance & freshness is unacceptable for the same missing manifest metadata."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Fitness for use"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "The register is usable for most planning and public-information decisions, but the missing active station keeps it below target."
+          }
+        },
+        {
+          "factorPath": [
+            "Provenance"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "unacceptable",
+            "rationale": "The newest snapshot's source and acquisition time are absent, so a reader cannot audit the data without maintainer knowledge."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/root.json"
+    },
+    {
+      "areaPath": [
+        "schema-structure"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The required columns conform to the station schema, no duplicate identifiers are present, and reviewed identifier changes are documented."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The required columns conform to the station schema, no duplicate identifiers are present, and reviewed identifier changes are documented."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Schema & structure is a leaf area, so its aggregate equals its local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Structural validity"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Schema conformance and identifier stability both reach target over the reviewed release and prior snapshots."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/schema-structure.json"
+    },
+    {
+      "areaPath": [
+        "provenance-freshness"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "unacceptable",
+          "rationale": "Freshness reaches target, but the missing source and acquisition time for the newest snapshot holds the local area below the acceptable floor."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Freshness reaches target, but the missing source and acquisition time for the newest snapshot holds the local area below the acceptable floor."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "unacceptable",
+        "rationale": "Provenance & freshness is a leaf area, so its aggregate equals its local rating; the provenance gap binds."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "Provenance"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "unacceptable",
+            "rationale": "Snapshot source and acquisition metadata are missing for the newest published release."
+          }
+        },
+        {
+          "factorPath": [
+            "Freshness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The newest snapshot is within the documented weekly cadence and no unannounced outage was found."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/provenance-freshness.json"
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "002-record-snapshot-provenance",
+      "path": "recommendations/002-record-snapshot-provenance.md",
+      "title": "Record source and acquisition metadata for every snapshot",
+      "priority": 1,
+      "state": {
+        "kind": "active"
+      },
+      "doneCriterion": "The snapshot-provenance requirement reaches target; every current snapshot names its upstream source, acquisition time, and transformation version in the manifest or lineage record."
+    },
+    {
+      "id": "001-backfill-missing-active-station",
+      "path": "recommendations/001-backfill-missing-active-station.md",
+      "title": "Backfill the missing active station",
+      "priority": 2,
+      "state": {
+        "kind": "active"
+      },
+      "doneCriterion": "The active-station coverage requirement reaches target; every active station in the operations roster is present in the station table with plausible coordinates."
+    }
+  ]
+}

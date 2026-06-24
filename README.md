@@ -1,8 +1,9 @@
 # QUALITY.md
 
 **QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
-what matters most, why, and how. Use it with the `/quality` agent skill to
-continuously improve AI assistant and coding agent projects.
+what matters most, why, and how, for software, documentation, data, services,
+operations, or whatever else your team tends. Use it with the `/quality` agent
+skill to align people and AI agents on what good means in that context.
 
 A QUALITY.md file is a Markdown file with a quality model and supporting
 context. The `/quality` skill helps set up the file, evaluate quality, and
@@ -55,6 +56,21 @@ See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality
 
 ## Why QUALITY.md
 
+### Quality Beyond Software
+
+QUALITY.md is useful whenever people need to be deliberate about the quality of
+something they maintain: software systems, documentation sets, data products,
+research reports, service operations, clinical handoffs, legal contracts,
+engineering design reviews, classroom plans, household budgets, and other
+things people care for.
+
+Those cases do not share one checklist. They share the need to make "good"
+visible enough for people to evaluate, learn, and improve, and for coding agents
+and AI assistants to follow.
+
+[Install QUALITY.md](#install), then run `/quality setup` with your coding agent
+to create a `QUALITY.md` for your project.
+
 ### Manage Quality Debt
 
 As work changes faster, quality erodes quietly unless expectations stay visible
@@ -72,27 +88,31 @@ gaps stay visible and addressable instead of compounding.
 > The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
 > Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
 
-### Evaluate and Improve Agent Harnessability
+### Evaluate Agent Harnessability — and your agent harness
 
-Agent-collaborated work depends on more than a good prompt. A project has to
-make its context visible, its work specifiable, its environment operable, its
-checks runnable, its standards enforceable, and its agent actions bounded. In
-QUALITY.md, those qualities can be modeled as **Agent Harnessability**: how well
-the project's own materials and tooling equip an AI agent to understand the
-project, take scoped work, operate the environment, verify its output, and stay
-safely bounded while preserving clear human direction, review, and
-accountability.
+**Agent Harnessability** names how well a project equips an agent to do useful,
+bounded work — whether its context is visible, its tasks specifiable, its checks
+runnable, and its agent's actions safely bounded.
 
-A `QUALITY.md` turns that agent-facing quality into an explicit signal. The
-`/quality` skill can evaluate where an agent is blocked by missing context,
-unclear tasks, weak feedback, advisory-only standards, or unsafe action scope,
-then turn those gaps into concrete improvement work. This complements harness
-engineering guidance such as Böckeler's guides-and-sensors framing on
-[martinfowler.com](https://martinfowler.com/articles/harness-engineering.html),
-OpenAI's emphasis on in-context agent-accessible records in
-[Harness engineering](https://openai.com/index/harness-engineering/), and Augment
-Code's framing of harness engineering around constraints, feedback loops, and
-[quality gates](https://www.augmentcode.com/guides/harness-engineering-ai-coding-agents).
+QUALITY.md turns that agent-facing quality into an explicit signal, and you can
+evaluate it from two angles:
+
+```text
+/quality evaluate Agent Harnessability     How well the whole project equips an agent
+/quality evaluate Agent Harness            The quality of the harness your project owns
+```
+
+The first rates the project as a whole — where an agent is blocked by missing
+context, unclear tasks, weak feedback, advisory-only standards, or unsafe action
+scope. The second rates the harness itself — the agent guidance, skills,
+environment setup, checks, and guardrails your project owns and maintains —
+as artifacts judged on their own quality. Either way, the `/quality` skill turns
+the gaps into concrete improvement work.
+
+> The term *harnessability* and the guides-and-sensors framing draw on
+> Birgitta Böckeler, *[Harness Engineering](https://martinfowler.com/articles/harness-engineering.html)*
+> (martinfowler.com), and OpenAI,
+> *[Harness engineering](https://openai.com/index/harness-engineering/)*.
 
 ## Working with QUALITY.md
 
@@ -179,7 +199,10 @@ Once you have a model, the loop keeps going at whatever cadence fits your team:
 The example below is an illustrative software product model. It is not a
 default domain or factor set for QUALITY.md — a model can just as well describe
 documentation, a data set, a research report, or a service or operation, each
-with the factors that matter for that kind of work.
+with the factors that matter for that kind of work. See
+[Modeling quality across domains](docs/guides/model-quality-across-domains.md)
+for a worked non-software documentation example and guidance on keeping model
+content domain agnostic.
 
 ```markdown
 ---

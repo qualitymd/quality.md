@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "provenance-freshness"
+  ],
+  "requirement": "Each snapshot names its source and acquisition time",
+  "factorPaths": [
+    [
+      "Provenance"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "unacceptable",
+    "rationale": "The manifest does not name the upstream source or acquisition time for the newest snapshot. This is the same provenance gap recorded at the root lens and binds the provenance area below the acceptable floor."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "metadata/manifest.yaml",
+      "observation": "The newest station snapshot has no upstream source name or acquisition timestamp in the manifest.",
+      "category": "missing-provenance",
+      "severity": "high",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "metadata/manifest.yaml"
+        },
+        {
+          "kind": "review",
+          "ref": "manifest provenance re-check before report generation"
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "002-record-snapshot-provenance"
+  ]
+}

@@ -4,6 +4,15 @@ Worked reference artifacts that make the skill's
 [Reporting](../reporting.md#reporting) contract concrete. Each is a captured
 instance of what the skill writes at runtime.
 
+These examples are domain-illustrative, not defaults for QUALITY.md. `0001`
+models a software payments service; `0002` models a non-software data product.
+Together they demonstrate that the runtime artifact shape is invariant while
+the domain-carried content - Factors, Requirements, Assessments, Findings, and
+recommendations - changes with the modeled entity's own needs and risks. For the
+doctrine behind that pairing, see
+[Modeling quality across domains](../../../../docs/guides/model-quality-across-domains.md)
+and its worked documentation-set example.
+
 At runtime the skill writes these into the **evaluated** repository under
 `.quality/evaluations/NNNN[-<narrowing>]-quality-eval/` by default (see
 [Reporting](../reporting.md#reporting)). These example files intentionally
@@ -12,9 +21,8 @@ records, recommendation Markdown with runtime YAML frontmatter, and generated
 `report-summary.md`, `report.md`, and `report.json`.
 
 Shared across this bundle, so the individual files need not repeat it: the
-subject ("Sparrow Payments"), the `9f2c1ab` commit revision, and every
-`file:line` locator are fictional and illustrative; the model uses the suggested
-four-level rating scale
+subjects, commit revisions, source paths, and every locator are fictional and
+illustrative; the models use the suggested four-level rating scale
 (**Outstanding** > **Target** > **Minimum** > **Unacceptable**); and `model.md`,
 `design.md`, `plan.md`, and the `assessments/` and `analysis/`
 records are the snapshot, inputs, method, and write-once evidence trail the
@@ -53,3 +61,26 @@ requirement and one analysis per area node.
   ([001 — rotate the committed key](0001-quality-eval/recommendations/001-rotate-committed-gateway-key.md),
   [002 — produce reconciliation evidence](0001-quality-eval/recommendations/002-produce-reconciliation-evidence.md),
   [003 — bound the webhook dedup window](0001-quality-eval/recommendations/003-bound-webhook-dedup-window.md)).
+
+- **[0002 — City Bike Station Data, full evaluation](0002-city-bike-stations-quality-eval/report.md)**
+  — a quality evaluation of a small fictional station data product, held at
+  **Unacceptable** by missing source/acquisition metadata in the dataset
+  manifest. Exercises the same runtime artifact shape as `0001` without a
+  software source or runnable oracle: reviewer judgment profiles a table,
+  compares it with a roster and schema, and inspects provenance/freshness
+  metadata. The Factors are earned from the data product's own risks
+  (**Fitness for use**, **Provenance**, **Structural validity**, **Freshness**),
+  not adopted as a default QUALITY.md factor family.
+
+  **Read it in order:** the
+  [model evaluated](0002-city-bike-stations-quality-eval/model.md) →
+  the [design](0002-city-bike-stations-quality-eval/design.md) and
+  [plan](0002-city-bike-stations-quality-eval/plan.md) →
+  the [assessment result records](0002-city-bike-stations-quality-eval/assessments/) →
+  the [analysis records](0002-city-bike-stations-quality-eval/analysis/) →
+  the [summary](0002-city-bike-stations-quality-eval/report-summary.md),
+  [human report](0002-city-bike-stations-quality-eval/report.md), and
+  [JSON report](0002-city-bike-stations-quality-eval/report.json) → its
+  recommendations
+  ([001 — backfill the missing active station](0002-city-bike-stations-quality-eval/recommendations/001-backfill-missing-active-station.md),
+  [002 — record snapshot provenance](0002-city-bike-stations-quality-eval/recommendations/002-record-snapshot-provenance.md)).

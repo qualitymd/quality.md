@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "schema-structure"
+  ],
+  "requirement": "Station identifiers are unique and stable across snapshots",
+  "factorPaths": [
+    [
+      "Structural validity"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "No duplicate station identifiers are present in the current table, and identifier changes across the prior two snapshots are tied to documented station retirements. Broader historical continuity was not reviewed, so the result remains at target."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "data/stations.csv",
+      "observation": "The current table has no duplicate station_id values.",
+      "category": "identifier-review",
+      "severity": "info",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "data/stations.csv"
+        },
+        {
+          "kind": "review",
+          "ref": "identifier uniqueness profile"
+        }
+      ]
+    },
+    {
+      "locator": "metadata/lineage.md",
+      "observation": "Identifier changes found across the prior two snapshots correspond to documented station retirements and one station relocation.",
+      "category": "identifier-review",
+      "severity": "info",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "metadata/lineage.md"
+        },
+        {
+          "kind": "review",
+          "ref": "prior-snapshot identifier comparison"
+        }
+      ]
+    }
+  ],
+  "recommendations": []
+}

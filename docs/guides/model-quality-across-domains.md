@@ -440,6 +440,24 @@ analytical reports, services, operations, processes, AI assistants, agent harnes
 or other evaluated entities. This project is not context neutral in *how* QUALITY.md
 is used.
 
+That distinction licenses explicit guidance for **use-context constituents**, not
+for modeled domains. The agent harness and the QUALITY.md self-check recur from the
+agentic use context, so project guidance may name their expected shapes, factor
+families, and requirement patterns. A modeled domain — the thing a particular
+`QUALITY.md` evaluates — still never receives a default factor roster; factors are
+earned per Model from the entity's own risks and needs.
+
+Even for a use-context constituent, keep its factors and requirements agnostic to
+the **served domain**: the domain the project model is about, and that the
+use-context constituent serves. For the agent harness, write requirements around
+what steering materials do — orient an agent, point to how work is verified, and
+bound permitted action — rather than around one served domain's tools.
+
+- Good: "Steering materials point an agent to how the project verifies work."
+- Avoid: "Steering materials document the lint, type-check, and test commands."
+  That assumes software; a documentation, data, service, research, or operational
+  project verifies work differently.
+
 The primary experience is agent- and skill-first. AI assistants and coding agents
 read, author, evaluate, and improve `QUALITY.md`; the `/quality` skill carries
 judgment; and the CLI provides deterministic support tooling. Preserve that agentic

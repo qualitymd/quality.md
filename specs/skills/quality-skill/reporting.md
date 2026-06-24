@@ -240,9 +240,12 @@ Like the report, the design, plan, assessment, and analysis records reference an
 secret value by `file:line` and type only (see
 [Boundaries](quality-skill.md#boundaries-and-hard-rules)).
 
-A worked reference instance of this layout — model snapshot, design, plan,
-assessment result records, analysis records, report, and recommendations — is in
-[`examples/`](examples/index.md).
+Worked reference instances of this layout — model snapshot, design, plan,
+assessment result records, analysis records, report, and recommendations — are
+in [`examples/`](examples/index.md). The example set intentionally pairs a
+software service with a non-software data product, following
+[Modeling quality across domains](../../../docs/guides/model-quality-across-domains.md),
+so reportability is shown as invariant across modeled domains.
 
 Each recommendation file **MUST** stand on its own as a unit a reader can triage
 and route without the report or the session in front of them. It **MUST** state:

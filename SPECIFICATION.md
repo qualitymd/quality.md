@@ -32,7 +32,9 @@ quality models such as McCall and Dromey.
 
 These are acknowledged as influences, not normative references or conformance
 targets. QUALITY.md uses its own vocabulary and structure where that makes the
-format more practical, readable, and accessible.
+format more practical, readable, and accessible. It takes useful boundaries and
+vocabulary from those traditions, not their characteristic lists as default
+Factors.
 
 ## Conformance
 
@@ -575,7 +577,10 @@ ratingScale:
 This appendix is non-normative.
 
 This is an illustrative software product example, not a default domain or
-factor set for QUALITY.md.
+factor set for QUALITY.md. The same Model shape applies across domains; only the
+domain-carried Factors, Requirements, and Assessments change. For a worked
+non-software example, see
+[Modeling quality across domains](docs/guides/model-quality-across-domains.md#worked-example-a-documentation-set).
 
 ```markdown
 ---

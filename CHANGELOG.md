@@ -67,12 +67,34 @@ QUALITY.md specification.
   the model-wide factor projection of the agent-collaboration concern for
   agent-collaborated composite roots, defined around project materials and tooling
   that equip agent work while preserving human direction, review, and
-  accountability. It keeps the six sub-factors from the earlier harnessability
-  guidance: agent-accessibility, task-specifiability, agent-operability,
+  accountability. It now uses seven sub-factors:
+  agent-accessibility, task-specifiability, agent-operability, continuity,
   self-verifiability, enforcement-of-standards, and containment-of-action. Setup
   proposes it by default, the Top 10 checks flag missing coverage, legacy
-  `harnessability` can still count as semantic coverage, and thin or absent
-  harnesses are treated as rating evidence rather than omission reasons.
+  six-sub-factor `harnessability` can still count as prior semantic coverage, and
+  thin or absent harnesses are treated as rating evidence rather than omission
+  reasons.
+- The authoring guide now gives the agent-harness area its own domain-agnostic
+  steering-materials template, with illustrative factors such as completeness,
+  accuracy, currentness, understandability, coherence, selectivity,
+  discoverability/triggerability, maintainability, trustworthiness, and
+  assessability. The Top 10 checks now flag a germane harness area carried by only
+  one or two thin factors, and harness requirements that assume a software
+  toolchain outside a software served domain.
+- The authoring guide now teaches encoding a concern's *projection boundary* in the
+  model: when a model carries two or more projections of one concern (factor,
+  constituent/area, audience), each node gets a YAML comment naming its sibling
+  projection and the distinction, and — when both projections are rated nodes that
+  surface in an evaluation report — a short disambiguating clause in each
+  description. The Agent Harnessability factor vs. the agent-harness area is the
+  canonical instance, and the Top 10 checks flag two same-rooted projections carried
+  with no boundary note.
+- The `/quality` reference examples now pair the existing software-service fixture
+  with a complete non-software data-product fixture,
+  `0002-city-bike-stations-quality-eval`, using the same model, record, report, and
+  recommendation shape. The example index marks the corpus as domain-illustrative,
+  and the Top 10 checks now include a data-product constituent bracket alongside the
+  software illustration.
 
 ### Packaging
 
@@ -80,6 +102,18 @@ QUALITY.md specification.
 
 ### Documentation
 
+- The domain-agnostic modeling guide now distinguishes explicit guidance for
+  recurring use-context constituents (the agent harness and QUALITY.md self-check)
+  from modeled-domain defaults, and adds a served-domain guardrail so harness and
+  self-check requirements stay agnostic to what the project evaluates.
+- Re-scoped the README opening so QUALITY.md's modeled domain is broad while the
+  `/quality` skill remains the primary experience. The Agent Harnessability section
+  now presents that factor family as illustrative and earned for agent-collaborated
+  entities, not a default for every QUALITY.md.
+- The specification's minimal example now notes that model shape is invariant across
+  domains and links to the worked non-software guide example; the non-normative
+  lineage section clarifies that QUALITY.md borrows boundaries and vocabulary from
+  prior traditions, not their characteristic lists as default Factors.
 - Added a contributor guide, *Modeling quality across domains*, that consolidates
   the quality-domain-agnosticism doctrine, names the stress axes and a canonical
   set of secondary knowledge-work domains (documentation, data sets, research

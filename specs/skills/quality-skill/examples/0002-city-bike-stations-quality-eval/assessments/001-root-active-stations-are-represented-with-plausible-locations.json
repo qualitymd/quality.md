@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "requirement": "Active stations are represented with plausible locations",
+  "factorPaths": [
+    [
+      "Fitness for use"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "The current register covers most active stations and all reviewed coordinates are in plausible city bounds, but one active station in the operations roster is absent from the published table. The data remains usable with a known gap, so it reaches the acceptable floor but not target."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "data/stations.csv",
+      "observation": "The station table includes 183 of 184 active stations from the operations roster; station ST-184 is active in the roster and absent from the published table.",
+      "category": "coverage-gap",
+      "severity": "medium",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "data/stations.csv"
+        },
+        {
+          "kind": "source",
+          "ref": "ops/active-stations-roster.csv"
+        },
+        {
+          "kind": "review",
+          "ref": "manual roster-to-table comparison"
+        }
+      ],
+      "attributes": {
+        "missingStationId": "ST-184"
+      }
+    },
+    {
+      "locator": "data/stations.csv",
+      "observation": "Reviewed station coordinates fall inside the city boundary and match their documented station addresses within the accepted review tolerance.",
+      "category": "coordinate-review",
+      "severity": "info",
+      "evidence": [
+        {
+          "kind": "source",
+          "ref": "data/stations.csv"
+        },
+        {
+          "kind": "source",
+          "ref": "docs/station-addresses.md"
+        },
+        {
+          "kind": "review",
+          "ref": "coordinate plausibility review"
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "001-backfill-missing-active-station"
+  ]
+}

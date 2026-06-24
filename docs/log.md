@@ -2,6 +2,25 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated
+  [Modeling quality across domains](guides/model-quality-across-domains.md) for
+  [0089 - Agent-harness modeling guidance](../changes/archive/0089-agent-harness-modeling-guidance.md).
+  The guide now distinguishes explicit modeling guidance for recurring
+  use-context constituents (the agent harness and QUALITY.md self-check) from
+  modeled-domain defaults, defines the served-domain guardrail, and gives a
+  good/avoid pair for harness requirements that stay domain-neutral.
+
+- **Revision**: Updated README/front-door domain positioning for
+  [0088 - Domain-agnostic corpus alignment](../changes/archive/0088-domain-agnostic-corpus-alignment.md).
+  The README opening now presents QUALITY.md's modeled domain as broad (software,
+  documentation, data, services, operations, and other tended entities) while keeping
+  the `/quality` agent skill as the primary experience. The Agent Harnessability
+  section now reads as an illustrative, earned factor family for
+  agent-collaborated entities, not a built-in default for every QUALITY.md, and the
+  Example QUALITY.md section links to the domain-agnostic guide's worked
+  non-software example. Also corrected this log's 0083 description so it no longer
+  names an obsolete Anthropic sample.
+
 - **Creation**: Added
   [Modeling quality across domains](guides/model-quality-across-domains.md), a
   contributor-doctrine guide for keeping QUALITY.md examples quality-domain
@@ -14,9 +33,8 @@
   earned factor axis, names a canonical set of secondary knowledge-work domains
   with illustrative factor families, adds range-finder illustrations (legal,
   budgeting, personal productivity, devotional/religious), carries a small
-  illustrative catalog of quality contexts spanning agentic professional
-  knowledge work (the Anthropic knowledge-work plugins sample) and the household
-  (budget, meal planning, caregiving, upkeep, records, formation),
+  illustrative catalog of quality contexts spanning professional knowledge work
+  and the household (budget, meal planning, caregiving, upkeep, records, formation),
   cross-references the authoring constituent generator, and carries one full worked
   non-software (documentation) example. Linked it from the
   [guides index](guides/index.md).

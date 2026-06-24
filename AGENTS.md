@@ -115,12 +115,16 @@ Read it before adding or reviewing example quality-model content. Summary:
 - Lead with domain-neutral principles; do not make software product quality the
   default. For worked examples, pair software/product quality with one cite-worthy
   secondary domain, balanced.
+- Factors are earned per Model from the modeled entity's own risks and needs; do
+  not adopt an external standard's characteristic list as a default factor family.
 - Domain agnostic is not context neutral: the *modeled domain* stays agnostic, but
   the *use context* is agent- and skill-first. Preserve agentic/AI references that
   describe how QUALITY.md is used; do not treat that operating context as the
   default modeled domain. Flag AI/harness wording only when it sounds inherent to
   all QUALITY.md files, not when it correctly describes a use context or this
   project. The guide's decision test resolves which register a phrase is in.
+- Use-context constituents (agent harness, QUALITY.md self-check) may have explicit
+  guidance, but their factors and requirements stay agnostic to the served domain.
 
 ### Open Knowledge Format (OKF) bundles
 

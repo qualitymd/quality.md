@@ -317,6 +317,12 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   area so it evaluates and rolls up like any other modeled area; skill-guidance,
   spec-mirror, and CHANGELOG only, with `QUALITY.md` assessed no-change and no
   CLI/Go change (`Done`).
+- [0083 — Quality-domain agnosticism guide and secondary illustrations](0083-quality-domain-agnosticism.md) -
+  added a contributor-doctrine guide on modeling quality across domains, with stress
+  axes, the canonical secondary-domain set, range-finder illustrations, and a full
+  worked documentation example; aligned `AGENTS.md`, README, `SPECIFICATION.md`
+  lineage wording, bundled skill guidance, logs, and CHANGELOG; documentation and
+  skill-guidance only, no code or format-schema change (`Done`).
 - [0084 — Agent-mediated UX conformance](0084-agent-mediated-ux-conformance.md) -
   made the `/quality` skill's live workflow output follow the agent-mediated UX
   guide: status-first presentation, visually emphasized primary questions or
@@ -335,3 +341,26 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   requirements of its own; its rating rolls up from its sub-factors"; bundled
   authoring guide and its spec mirror only, no code or format-spec change
   (`Done`).
+- [0087 — Encode projection boundaries in the model](0087-encode-projection-boundaries.md) -
+  added a general authoring rule that a concern's projection boundary is encoded in
+  the emitted model when more than one projection is modeled (a YAML comment per
+  node, plus a disambiguating description clause when both are rated nodes that
+  surface in a report), with the Agent Harnessability factor vs. the agent-harness
+  area as the canonical instance and a matching Top 10 missing-boundary-note check;
+  bundled authoring guide and Top 10 checks, their spec mirrors, the guides log, and
+  CHANGELOG only, no code or format-spec change (`Done`).
+- [0088 — Domain-agnostic corpus alignment](0088-domain-agnostic-corpus-alignment.md) -
+  added the `0002-city-bike-stations-quality-eval` non-software data-product
+  fixture with the same reportable runtime artifact shape as `0001`, marked and
+  cross-linked the example corpus as domain-illustrative, added the earned Factors
+  rule to `AGENTS.md`, re-scoped the README modeled-domain framing while preserving
+  the agent-first use context, and reinforced the format spec, Top 10, reporting,
+  and report-summary specs; docs/spec logs and CHANGELOG only, no CLI or Go behavior
+  change (`Done`).
+- [0089 — Agent-harness modeling guidance](0089-agent-harness-modeling-guidance.md) -
+  added `continuity` to Agent Harnessability, strengthened self-verifiability and
+  adjacent harnessability sub-factor guidance, gave the agent-harness area a
+  domain-agnostic steering-materials factor and requirement template, added the
+  use-context-constituent served-domain guardrail, and extended the Top 10 checks
+  for thinly factored or software-leaking harness areas; docs/spec/skill guidance
+  only, no CLI/Go or format-spec change (`Done`).

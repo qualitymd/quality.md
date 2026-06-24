@@ -2,6 +2,18 @@
 
 ## 2026-06-24
 
+- **Creation + Revision**: Implemented durable spec changes for
+  [0088 - Domain-agnostic corpus alignment](../changes/archive/0088-domain-agnostic-corpus-alignment.md).
+  Added the non-software
+  [`0002-city-bike-stations-quality-eval`](skills/quality-skill/examples/0002-city-bike-stations-quality-eval/report.md)
+  reference example bundle with a complete data-product model, assessment records,
+  analysis records, report renders, and recommendations in the same runtime shape as
+  `0001`. Updated the example index to mark the corpus as domain-illustrative,
+  updated the reporting spec to cross-reference the paired examples and the
+  domain-agnostic guide, paired the `report-summary.md` Area Breakdown example with a
+  non-software data-product rendering, and added the non-software Top 10 constituent
+  bracket through the quality-skill guides spec mirror. No CLI or Go behavior change.
+
 - **Revision**: Implemented durable spec changes for
   [0084 - Agent-mediated UX conformance](../changes/archive/0084-agent-mediated-ux-conformance.md).
   Updated the parent

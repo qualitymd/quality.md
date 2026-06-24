@@ -669,6 +669,16 @@ root concern, not because they duplicate one another.
   audience; the security of the server is a factor on the server area, while the
   security policy is its own area. Modeling the same projection twice
   double-counts.*
+- **Do** encode the projection boundary in the model when you carry two or more
+  projections of one concern. *Reasoning the boundary is not enough — a later
+  reader sees only the emitted model, not your reasoning, and re-litigates whether
+  the projections are redundant. On each modeled projection's node, add a YAML
+  comment naming its sibling projection and the one-line distinction; and when both
+  projections are rated nodes that surface in an evaluation report, add a short
+  disambiguating clause to each `description` too, because comments do not survive
+  rendering. Keep the clause to the distinction — that is the same "distinguishes,
+  not enumerates" rule descriptions already follow. The Agent Harnessability factor
+  vs. the agent-harness area is the canonical instance.*
 - **Avoid** letting a stewardship word modify or replace the taxonomy noun for
   its projection. *A concern is the *source* a factor projects from, not a kind of
   factor. Write "model-wide factors" (and, if useful, that they trace to
@@ -779,11 +789,41 @@ project to project; these two use-context constituents recur across them.
   reference](#an-entity-can-be-both-an-area-and-an-assessment-reference)). *Watch
   for double-counting if its influence is also assessed inside a domain
   constituent.*
+- **Do** model the agent-harness area as the project's checked-in steering
+  materials: agent entry points, guidance files, skills, prompts, and related
+  instructions that orient and govern agent work. *This is an **enable**
+  constituent and partly **normative** artifact; runtime harness code,
+  sandboxes, tools, hooks, or orchestration the project owns may deserve their
+  own areas or requirements rather than being silently folded into the steering
+  materials.*
+- **Do** give a germane agent-harness area a real factor family, not one or two
+  placeholder factors. *Illustrative candidates include `completeness`,
+  `accuracy`, `currentness`, `understandability`, `coherence`, `selectivity`,
+  `discoverability` or `triggerability`, `maintainability`, `trustworthiness`,
+  and `assessability`. Earn the actual factors from this harness's risks and
+  needs; the list is a prompt, not a required roster.*
+- **Do** phrase harness-area requirements around what steering materials do,
+  agnostic to the domain the project models. *Good shapes: a stable minimal
+  entry point orients an agent and links deeper without exhausting context;
+  recorded conventions match actual practice; steering materials point to how
+  work is verified and what actions are off-limits; steering documents do not
+  contradict each other; skill names and descriptions trigger the right guidance;
+  executable or third-party guidance has reviewable provenance; representative
+  traces or feedback logs show whether the guidance helps in real work; and the
+  materials are updated when structure or workflows change. Do not make lint,
+  type-check, test, or CI commands the requirement unless the served domain is
+  actually software; those are one domain's instance of how work is verified or
+  bounded. See the repository doctrine guide
+  `docs/guides/model-quality-across-domains.md`, section "Agentic use context".*
 - **Do** distinguish the three projections of the agent-collaboration concern:
   **Agent Harnessability** is the model-wide factor, the **agent harness** is the
   constituent, and the **agent** is the audience. *Keep the harness as an area
   when it is germane; Agent Harnessability rates how each constituent equips an
-  agent, while the harness area rates the steering artifact's own quality.*
+  agent, while the harness area rates the steering artifact's own quality. Encode
+  that boundary in the model per the projection-boundary rule under [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds) — a YAML comment
+  on both the `agent-harnessability` factor and the agent-harness area, plus a
+  disambiguating clause in each description — so a reader of the generated model is
+  not left to reconstruct why one concern appears as both.*
 
 #### Write a description that distinguishes, not enumerates
 
@@ -937,9 +977,9 @@ agent-harnessability:
   description: >
     The degree to which the project's checked-in materials, tools, workflows,
     feedback signals, standards, and action limits equip an AI agent to
-    understand the project, take scoped work, operate the environment, verify its
-    output, and stay safely bounded while preserving clear human direction,
-    review, and accountability.
+    understand the project, take scoped work, operate the environment, preserve
+    and resume state, verify its output, and stay safely bounded while preserving
+    clear human direction, review, and accountability.
 ```
 
 Agent Harnessability is a deliberate umbrella: carry no requirements on the
@@ -960,39 +1000,60 @@ the factor, not the factor.
     structure, intent, and observable behavior are present and intelligible in
     materials an agent can reach in-context at the moment of work. Example
     requirements: a stable minimal agent entry point points to deeper material
-    without blowing the context budget; decision-relevant knowledge is durably
-    recorded and discoverable; needed behavior signals are reachable and
-    machine-parseable. Boundary: this is in-context machine reachability, not
-    general human understandability; cede durable decision-record existence to
-    traceability and raw instrumentation to observability.
+    without blowing the context budget; deeper context is progressively
+    disclosed only when relevant; decision-relevant knowledge is durably recorded
+    and discoverable; needed behavior signals are reachable and machine-parseable.
+    Boundary: this is in-context machine reachability and context selectivity,
+    not general human understandability; cede in-flight handoff/progress records
+    to `continuity`, durable decision-record existence to traceability, and raw
+    instrumentation to observability.
   - **task-specifiability** — the degree to which a unit of work can be handed to
     an agent as a self-contained, scoped assignment with explicit success criteria
     and known boundaries. Example requirements: goals, non-goals, success
-    criteria, and starting points are articulable before work begins. Boundary:
-    this frames the task; self-verifiability checks whether the criteria can be
-    mechanically confirmed.
+    criteria, done criteria, decomposition, and starting points are articulable
+    before work begins; completion checks compare the result with the original
+    task before declaring success. Boundary: this frames the task;
+    self-verifiability checks whether the criteria can be confirmed.
   - **agent-operability** — the degree to which an agent, including a fresh
     session, can establish and operate the working environment from recorded
     materials: the tools, data, accounts, systems, and known starting state the
     work runs on. Example requirements: a fresh session reaches ready-to-work
-    state without human-led setup; needed access and inputs are recorded; the
-    act-then-observe loop is bounded. Boundary: this turns operability toward the
-    agent's working environment; containment-of-action confines the access this
-    equips.
+    state without human-led setup; needed access and inputs are recorded; tools
+    expose agent-useful affordances and output; the act-then-observe loop is
+    bounded and inspectable. Boundary: this turns operability toward the agent's
+    working environment; `continuity` covers resuming with prior state and
+    decisions; containment-of-action confines the access this equips.
+  - **continuity** — the degree to which an agent can preserve state and resume
+    useful work across long-running tasks, compaction, interruption, handoff, and
+    fresh sessions. Example requirements: progress or handoff artifacts capture
+    current state, decisions made, remaining work, verification status, blockers,
+    and next steps; resumptions do not depend on unrecoverable chat history;
+    progress records reduce false completion and context-anxiety failure modes.
+    Boundary: agent-operability covers a fresh session reaching a ready-to-work
+    environment, while continuity covers resuming with prior state, decisions,
+    and progress; agent-accessibility covers durable reachable knowledge, while
+    continuity covers the progress and handoff record of an in-flight task.
   - **self-verifiability** — the degree to which the project gives an agent
-    objective, machine-readable signals it can run on demand to confirm whether
-    its own change is correct, with remediation-bearing output. Example
-    requirements: a command or action returns objective pass/fail without human
-    setup; failures point toward the fix; non-deterministic or behavioral
-    outcomes have runnable evals. Boundary: this owns the actionability of
-    feedback; enforcement-of-standards binds regardless of whether the agent reads
-    the signal.
+    machine-readable verification signals it can run or inspect on demand to
+    confirm whether its own work is correct, with remediation-bearing output.
+    Example requirements: a
+    deterministic signal returns objective pass/fail without human setup;
+    inferential evals cover behavioral or non-deterministic outcomes without a
+    deterministic oracle; failures are fast, grounded in concrete evidence,
+    context-aware, and point toward the fix with the rule's rationale; traces,
+    run logs, or evaluation records expose what happened and why. Boundary: this
+    owns the actionability and evidentiary quality of feedback, including visible
+    reviewable exceptions rather than a binary pass/fail-only signal;
+    enforcement-of-standards constrains whether and how those exceptions may
+    bypass a gate.
   - **enforcement-of-standards** — the degree to which stated quality standards
     hold regardless of agent behavior because non-compliant output is prevented by
-    deterministic gates rather than advisory prose. Example requirements: quality
-    invariants are blocked by tooling; controls are mutually consistent and
-    high-signal; suppression escapes are constrained. Boundary: this prevents
-    non-compliant output; containment-of-action prevents out-of-scope action.
+    gates or equivalent domain-neutral controls rather than advisory prose.
+    Example requirements: quality invariants are blocked or routed through
+    reviewable input, output, or tool guardrails; controls are mutually consistent
+    and high-signal; suppression escapes are constrained. Boundary: this prevents
+    non-compliant output or action; self-verifiability makes the feedback
+    actionable and observable; containment-of-action prevents out-of-scope action.
   - **containment-of-action** — the degree to which an agent's permitted actions
     are confined by enforced limits such as sandboxes, permission allowlists, and
     approval gates. Example requirements: an erroneous or unattended run cannot
@@ -1000,19 +1061,20 @@ the factor, not the factor.
     action such as filing to a court, moving money, emailing a client, or deleting
     records without approval. Boundary: cede external threat posture to security
     where an area carries it; this confines the agent's own actions while working.
+    Audit trails make consequential actions reviewable after the fact.
 - **Do** keep Agent Harnessability separate from the agent harness constituent.
   *Agent Harnessability rates how each constituent equips an agent. The
   agent-harness area rates the steering artifact's own quality — whether its map
   is accurate, current, and a map rather than a manual. Do not assess Agent
   Harnessability on the agent-harness area as a recursion of the same evidence.*
-- **Do** recognize an existing `harnessability` factor with the six-sub-factor
-  shape above as semantic coverage of the same model-wide concern. *When you are
-  already authoring or revising the model, recommend renaming it to
-  `agent-harnessability` / Agent Harnessability unless the project has an
-  explicit reason to preserve the old key.*
-- **Avoid** adding "improve the harness over time" as a seventh sub-factor. *That
+- **Do** recognize an existing `harnessability` factor with the legacy
+  six-sub-factor shape as semantic coverage of the same model-wide concern.
+  *When you are already authoring or revising the model, recommend renaming it to
+  `agent-harnessability` / Agent Harnessability and adding `continuity` unless
+  the project has an explicit reason to preserve the old key.*
+- **Avoid** adding "improve the harness over time" as an eighth sub-factor. *That
   is the model-wide learn loop improving this equipping, not a sibling quality
-  beside the six.*
+  beside the seven.*
 
 #### Name the quality, not the practice
 

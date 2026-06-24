@@ -3,6 +3,131 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0089 — Agent-harness modeling guidance](archive/0089-agent-harness-modeling-guidance.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from the
+  bundle-root index. Implemented documentation and skill-guidance changes only:
+  added `continuity` to the current Agent Harnessability decomposition, strengthened
+  sub-factor guidance for progressive disclosure, task completion discipline,
+  tool affordances, good verification signals, guardrails, containment, and
+  trace/run evidence; added a domain-agnostic agent-harness area template for
+  steering materials; added the use-context-constituent served-domain guardrail to
+  the doctrine guide and `AGENTS.md`; mirrored the contract in durable skill specs;
+  extended Top 10 check 8 for thinly factored and software-leaking harness areas;
+  and recorded the work in docs/spec logs and `CHANGELOG.md`. No CLI/Go,
+  `SPECIFICATION.md`, schema, rating, or roll-up change.
+
+- **Refinement (Design)**: Corrected cross-references and tightened the spec/design
+  for
+  [0089 — Agent-harness modeling guidance](archive/0089-agent-harness-modeling-guidance.md)
+  after a review pass. Repointed the stale `0088` links to `archive/` and fixed the
+  "0083 is In-Review" status note (both 0083 and 0088 have since landed and
+  archived); reconciled the parent Scope's good-sensor property list with the
+  spec/design (fast, actionable, grounded, context-aware, suppressible-not-binary);
+  and added spec/design requirements to (a) renumber the now-stale "seventh
+  sub-factor / beside the six" language and reconcile the legacy six-sub-factor
+  recognition notes once `continuity` is added, (b) update the umbrella
+  `agent-harnessability` `description` for the state-preservation capability, (c)
+  state the `continuity` boundary against `agent-operability` and
+  `agent-accessibility`, (d) define "served domain" on first use and carry the
+  guardrail by reference (say-it-once), and (e) keep the self-verifiability
+  "suppressible" / enforcement "constrained suppression" boundary explicit.
+  Change-case documents only; still `Design`.
+
+- **Cleanup**: Removed the dangling 0078 — View command entry from the bundle
+  [index](index.md); its parent concept and child folder were deleted from the
+  working tree and the case was never archived, so the open-cases list no longer
+  points at missing files.
+
+- **Done**: Landed and archived
+  [0088 — Domain-agnostic corpus alignment](archive/0088-domain-agnostic-corpus-alignment.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from the
+  bundle-root index. Implemented the `0002-city-bike-stations-quality-eval`
+  non-software data-product reference fixture with the same reportable runtime
+  artifact shape as `0001`; marked and cross-linked the reference example corpus as
+  domain-illustrative; added the earned Factors rule to `AGENTS.md`; re-scoped the
+  README modeled-domain framing while preserving the agent-first use context; added
+  the Appendix B invariance note and lineage clause in `SPECIFICATION.md`; reinforced
+  the Top 10, reporting, and report-summary specs; and recorded the work in the docs
+  and specs logs plus `CHANGELOG.md`. Reconciled the Affected artifacts list; no CLI
+  or Go behavior change.
+
+- **Done**: Landed and archived
+  [0083 — Quality-domain agnosticism guide and secondary illustrations](archive/0083-quality-domain-agnosticism.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from the
+  bundle-root index. Documentation-only change: added the domain-agnostic modeling
+  guide, routed agents and contributors to it from `AGENTS.md`, aligned public and
+  bundled skill domain-list wording, recorded the durable docs/spec-guide updates,
+  and added the CHANGELOG note. No code, format-schema, or CLI behavior changed.
+
+- **Design**: Created
+  [0089 — Agent-harness modeling guidance](archive/0089-agent-harness-modeling-guidance.md)
+  with its child [index](archive/0089-agent-harness-modeling-guidance/index.md),
+  [functional spec](archive/0089-agent-harness-modeling-guidance/spec.md), and
+  [design doc](archive/0089-agent-harness-modeling-guidance/design.md). The case fixes an
+  asymmetry in the `/quality` authoring guidance: the model-wide Agent
+  Harnessability factor is richly specified (six sub-factors with boundaries and
+  example requirements) while the agent-harness *area* — the steering-materials
+  constituent the same guidance says to model by default — gets no factor family or
+  requirement template, so generated harness areas come out thinly factored.
+  Grounded in harness-engineering practice (Fowler's *Harness Engineering* and
+  *Sensors for Coding Agents*; LangChain's *Anatomy of an Agent Harness*), which
+  confirms the six sub-factors already map onto the field's harness anatomy. The
+  case (a) gives the harness area an illustrative, domain-agnostic factor and
+  requirement template at parity with the self-check template, (b) adds a
+  served-domain guardrail so harness requirements never assume a software toolchain,
+  (c) sharpens `self-verifiability` with good-sensor properties, (d) extends Top 10
+  check 8 for thinly-factored and software-leaking harness areas, and (e) adds a
+  doctrine principle distinguishing use-context constituents (harness, self-check —
+  explicit guidance licensed) from modeled domains (never privileged). Documentation,
+  doctrine, and bundled-skill guidance content only; no `SPECIFICATION.md` normative,
+  CLI, or Go change. Builds on the 0083 guide and the 0087 projection-boundary rule.
+  Listed it in the bundle [index](index.md).
+
+- **Design**: Created
+  [0088 — Domain-agnostic corpus alignment](archive/0088-domain-agnostic-corpus-alignment.md)
+  with its child [index](archive/0088-domain-agnostic-corpus-alignment/index.md),
+  [functional spec](archive/0088-domain-agnostic-corpus-alignment/spec.md), and
+  [design doc](archive/0088-domain-agnostic-corpus-alignment/design.md). The case closes the
+  residual gaps a multi-agent content audit found against the
+  [0083](archive/0083-quality-domain-agnosticism.md) domain-agnosticism guide: add a complete
+  non-software worked example (a data product) to the `/quality` reference example
+  set, give the software example corpus a domain-illustrative marking and guide
+  cross-links, add the factors-earned-per-Model rule to `AGENTS.md`, and re-scope the
+  README modeled domain while preserving the agent-first use context. Documentation,
+  doctrine, bundled-skill, and spec-example content only; no `SPECIFICATION.md`
+  normative, CLI, or Go change. Listed it in the bundle [index](index.md).
+
+- **Done**: Landed and archived
+  [0087 — Encode projection boundaries in the model](archive/0087-encode-projection-boundaries.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from the
+  bundle-root index. Implemented across the bundled authoring guide and Top 10
+  checks, their durable spec mirrors, the guides log, and CHANGELOG: the general
+  projection-boundary rule lands at the three-projections rule (a YAML comment per
+  projection node, plus a disambiguating `description` clause when both projections
+  are rated nodes that surface in a report), with the Agent Harnessability factor
+  vs. the agent-harness area as the canonical instance and a matching Top 10
+  missing-boundary-note check. Reconciled the Affected artifacts list; no
+  `SPECIFICATION.md`, CLI schema, or Go code change. Verified with `mise run check`.
+
+- **Design**: Created
+  [0087 — Encode projection boundaries in the model](archive/0087-encode-projection-boundaries.md)
+  with its child [index](archive/0087-encode-projection-boundaries/index.md),
+  [functional spec](archive/0087-encode-projection-boundaries/spec.md), and
+  [design doc](archive/0087-encode-projection-boundaries/design.md). The case adds a
+  general authoring rule that, when a model carries two or more projections of one
+  concern (factor / constituent-area / audience), the boundary is encoded in the
+  emitted model — a YAML comment on each node and, when both projections are rated
+  nodes that surface in a report, a disambiguating `description` clause — with the
+  Agent Harnessability factor vs. the agent-harness area as the canonical instance
+  and a matching Top 10 readiness check. Skill-guidance and spec-mirror only; no
+  `SPECIFICATION.md`, CLI schema, or Go code change expected. Listed it in the
+  bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0086 — Umbrella factor roll-up framing](archive/0086-umbrella-factor-rollup-framing.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from
@@ -114,7 +239,7 @@
   bundle [index](index.md).
 
 - **In-Review**: Implemented
-  [0083 — Quality-domain agnosticism guide and secondary illustrations](0083-quality-domain-agnosticism.md).
+  [0083 — Quality-domain agnosticism guide and secondary illustrations](archive/0083-quality-domain-agnosticism.md).
   Added the `docs/guides/model-quality-across-domains.md` contributor guide (stress
   axes, the canonical secondary-domain set, range-finder illustrations, and a full
   worked documentation example), registered it in the guides index and the
@@ -126,14 +251,14 @@
   or code change. Reconciled the Affected artifacts list; the worked example lints
   clean and `mise run fmt-md-check` passes.
 - **Creation**: Opened
-  [0083 — Quality-domain agnosticism guide and secondary illustrations](0083-quality-domain-agnosticism.md)
+  [0083 — Quality-domain agnosticism guide and secondary illustrations](archive/0083-quality-domain-agnosticism.md)
   (`status: Draft`) to make the project's domain agnosticism demonstrated rather
   than only asserted: a contributor-doctrine guide
   (`docs/guides/model-quality-across-domains.md`) defining the stress axes and a
   canonical secondary-domain set, one full worked non-software example, and
   alignment of the four drifting domain enumerations. Added the parent concept and
-  child [folder](0083-quality-domain-agnosticism/index.md) with its
-  [functional spec](0083-quality-domain-agnosticism/spec.md); no design doc
+  child [folder](archive/0083-quality-domain-agnosticism/index.md) with its
+  [functional spec](archive/0083-quality-domain-agnosticism/spec.md); no design doc
   (editorial change). Listed it in the bundle [index](index.md).
 - **Done**: Landed and archived
   [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md);
