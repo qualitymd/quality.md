@@ -33,14 +33,14 @@ Invoke the `/quality` skill to manage quality for your project:
 /quality                                        Get read-only guidance on the next workflow
 /quality evaluate                               Evaluate the quality of your project
 /quality evaluate Security                      Evaluate a specific quality factor or characteristic
-/quality evaluate Triage                        Evaluate a specific area or project component
-/quality evaluate Triage Accuracy
+/quality evaluate Payments                      Evaluate a specific area or project component
+/quality evaluate Payments Reliability
                                                 Evaluate an area's specific quality
 ```
 
 For exact or ambiguous scoped evaluations, use qualified model references such
-as `/quality evaluate area:triage` or
-`/quality evaluate factor:triage::accuracy`.
+as `/quality evaluate area:payments` or
+`/quality evaluate factor:payments::reliability`.
 
 Most users should work with `QUALITY.md` through their coding agent, the
 `/quality` skill, or direct edits. The CLI is primarily support tooling for
@@ -137,8 +137,8 @@ Once you have a model, the loop keeps going at whatever cadence fits your team:
 - **On demand.** Run `/quality evaluate` whenever you need a read — before a
   release, during review, when you inherit an unfamiliar project, or when
   something just feels off. Scope it down when you don't need the whole model:
-  `/quality evaluate Triage` or `/quality evaluate Triage Accuracy`.
-  Qualified references such as `/quality evaluate area:triage` remain
+  `/quality evaluate Payments` or `/quality evaluate Payments Reliability`.
+  Qualified references such as `/quality evaluate area:payments` remain
   available for exact addressing.
 
 - **On a cadence.** Make the model and its latest evaluation a recurring team
@@ -154,12 +154,12 @@ Once you have a model, the loop keeps going at whatever cadence fits your team:
 
 ## Example QUALITY.md
 
-The example below is an illustrative support-operations model. It is not a
+The example below is an illustrative software product model. It is not a
 default domain or factor set for QUALITY.md.
 
 ```markdown
 ---
-title: Support Inbox
+title: ACME Payments API
 ratingScale:
   - level: outstanding
     title: 🟢 Outstanding
@@ -178,40 +178,42 @@ ratingScale:
     description: The work is below the shared quality bar.
     criterion: "Falls below the minimum acceptable bar."
 areas:
-  triage:
-    title: Triage
-    source: ./support
+  payments:
+    title: Payments
+    source: ./services/payments
     factors:
-      responsiveness:
-        title: Responsiveness
-        description: Customers receive timely, useful attention.
+      reliability:
+        title: Reliability
+        description: Payment outcomes remain correct under ordinary failures.
         requirements:
-          "urgent messages are visible":
+          "confirmed payments are durable":
             assessment: >
-              New messages are classified so urgent customer-impacting issues
-              are separated from routine requests.
-      accuracy:
-        title: Accuracy
-        description: Replies are correct, complete, and grounded in policy.
+              A payment is reported as confirmed only after the transaction is
+              durably recorded and can be reconciled after a process restart.
+      security:
+        title: Security
+        description: Payment data and privileged operations are protected.
         requirements:
-          "answers cite the current policy":
+          "secrets stay out of source":
             assessment: >
-              Customer-facing replies use the active support policy and do not
-              rely on outdated guidance or unsupported assumptions.
+              Credentials, API keys, and payment-provider tokens are loaded from
+              approved runtime configuration and do not appear in source,
+              fixtures, logs, or checked-in documentation.
 ---
 
-# Quality model: Support Inbox
+# Quality model: ACME Payments API
 
 ## Overview
 
-This model describes the quality bar for daily support triage. Good support
-means urgent issues are easy to see, routine requests still move, and customers
-receive answers grounded in the current policy.
+This model describes the quality bar for the ACME Payments API. Good payment
+behavior means confirmed transactions are durable, failures are visible, and
+payment-provider access is handled without exposing secrets.
 
 ## Scope
 
-This model covers message triage and written replies in the support workspace.
-It does not cover billing system behavior or product incident response.
+This model covers the service code, configuration, tests, and operational docs
+under `./services/payments`. It does not cover the external payment provider or
+the accounting system that consumes payment events.
 ```
 
 ## Format
