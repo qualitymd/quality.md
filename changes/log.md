@@ -2,6 +2,39 @@
 
 ## 2026-06-24
 
+- **Design**: Created
+  [0082 — Normalize QUALITY.md self-check roll-up](0082-normalize-quality-md-rollup.md)
+  with its child [index](0082-normalize-quality-md-rollup/index.md),
+  [functional spec](0082-normalize-quality-md-rollup/spec.md), and
+  [design doc](0082-normalize-quality-md-rollup/design.md). The case removes the
+  `quality-md` self-check's special out-of-roll-up treatment and makes it an
+  ordinary in-scope area for evaluation, analysis, reporting, and roll-up while
+  preserving quality-log behavior for meaningful model changes. Skill-guidance
+  and spec-mirror only; no `SPECIFICATION.md`, CLI schema, or code change.
+- **Refinement (Draft)**: Generalized
+  [0081 — Harnessability factor](0081-harnessability-factor.md)'s sub-factors to be
+  quality-domain agnostic and renamed `operational-readiness` to
+  **agent-operability**. The operate sub-factor no longer assumes a software
+  development environment — it is the agent establishing and operating its working
+  environment from recorded materials (a dev environment, a budgeting project's
+  connected accounts, or a legal case's loaded matter) — and the rename names the
+  quality (operability) while completing the agent-/self-scoped pattern with
+  `agent-accessibility` and `self-verifiability`. Held the other five definitions
+  domain-neutral with software as one illustrative instance, and broadened
+  `containment-of-action` with a consequential real-world action example. Updated
+  the [spec](0081-harnessability-factor/spec.md) and
+  [design doc](0081-harnessability-factor/design.md) only; still `Draft`.
+- **Draft**: Created [0081 — Harnessability factor](0081-harnessability-factor.md)
+  to add harnessability — how well a project equips an agent to work on it — as a
+  model-wide umbrella factor with six sub-factors (agent-accessibility,
+  task-specifiability, operational-readiness, self-verifiability,
+  enforcement-of-standards, containment-of-action), proposed by default for an
+  agent-collaborated composite root. Gives the agent-collaboration concern its
+  factor projection alongside the agent-harness constituent (0080); relates to
+  0077. Added the parent concept and child folder
+  ([index](0081-harnessability-factor/index.md)), and registered it in the
+  bundle-root [index](index.md). Skill-guidance, spec-mirror, and README only; no
+  `SPECIFICATION.md` or code change.
 - **Done**: Landed and archived
   [0080 - Model constituents by default](archive/0080-model-constituents-by-default.md);
   set `status` to `Done` and moved the parent concept and its child folder into
