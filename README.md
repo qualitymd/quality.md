@@ -56,21 +56,6 @@ See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality
 
 ## Why QUALITY.md
 
-### Quality Beyond Software
-
-QUALITY.md is useful whenever people need to be deliberate about the quality of
-something they maintain: software systems, documentation sets, data products,
-research reports, service operations, clinical handoffs, legal contracts,
-engineering design reviews, classroom plans, household budgets, and other
-things people care for.
-
-Those cases do not share one checklist. They share the need to make "good"
-visible enough for people to evaluate, learn, and improve, and for coding agents
-and AI assistants to follow.
-
-[Install QUALITY.md](#install), then run `/quality setup` with your coding agent
-to create a `QUALITY.md` for your project.
-
 ### Manage Quality Debt
 
 As work changes faster, quality erodes quietly unless expectations stay visible
@@ -90,8 +75,8 @@ gaps stay visible and addressable instead of compounding.
 
 ### Evaluate Agent Harnessability — and your agent harness
 
-**Agent Harnessability** names how well a project equips an agent to do useful,
-bounded work — whether its context is visible, its tasks specifiable, its checks
+**Agent Harnessability** names how accessible and operable a project is to an
+agent — whether its context is visible, its tasks specifiable, its checks
 runnable, and its agent's actions safely bounded.
 
 QUALITY.md turns that agent-facing quality into an explicit signal, and you can
@@ -113,6 +98,21 @@ the gaps into concrete improvement work.
 > Birgitta Böckeler, *[Harness Engineering](https://martinfowler.com/articles/harness-engineering.html)*
 > (martinfowler.com), and OpenAI,
 > *[Harness engineering](https://openai.com/index/harness-engineering/)*.
+
+### Quality Beyond Software
+
+QUALITY.md is useful whenever people need to be deliberate about the quality of
+something they maintain: software systems, documentation sets, data products,
+research reports, service operations, clinical handoffs, legal contracts,
+engineering design reviews, classroom plans, household budgets, and other
+things people care for.
+
+Those cases do not share one checklist. They share the need to make "good"
+visible enough for people to evaluate, learn, and improve, and for coding agents
+and AI assistants to follow.
+
+[Install QUALITY.md](#install), then run `/quality setup` with your coding agent
+to create a `QUALITY.md` for your project.
 
 ## Working with QUALITY.md
 
