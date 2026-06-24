@@ -323,3 +323,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   calls to action, scannable labels, semantic emoji only, explicit mutation
   boundaries, and closeouts with clear next actions; skill-guidance, spec-mirror,
   AGENTS, and CHANGELOG only, no CLI/Go change (`Done`).
+- [0085 — Agent Harnessability naming](0085-agent-harnessability-naming.md) -
+  renamed the harnessability factor guidance to Agent Harnessability, using
+  `agent-harnessability` as the recommended key, an accountability-preserving
+  definition, and legacy `harnessability` recognition for semantic coverage;
+  skill-guidance, spec-mirror, README, and CHANGELOG only, no CLI/Go change
+  (`Done`).

@@ -176,20 +176,25 @@ concerns, or genuinely not germane to a harness-less, throwaway, or narrowly
 scoped entity.
 
 For an agent-collaborated composite root, the area-and-factor-shape check **MUST**
-flag missing harnessability coverage when harnessability or its sub-factors are
-absent from the model-wide factors without a clear not-germane boundary. It
-**MUST NOT** flag a non-agent-collaborated, harness-less, throwaway, or narrowly
-scoped entity where harnessability is not germane, and **MUST NOT** treat a thin or
-absent harness as a reason to omit the factor.
+flag missing Agent Harnessability coverage when Agent Harnessability or its
+sub-factors are absent from the model-wide factors without a clear not-germane
+boundary. It **MUST NOT** flag a non-agent-collaborated, harness-less, throwaway,
+or narrowly scoped entity where Agent Harnessability is not germane, and
+**MUST NOT** treat a thin or absent harness as a reason to omit the factor. The
+check **SHOULD** treat an existing `harnessability` factor with the expected six
+sub-factors as semantic coverage of the same concern, while routing model-authoring
+work to rename it to `agent-harnessability` / Agent Harnessability unless the
+project has an explicit reason to preserve the old key.
 
 > Rationale: model-by-default (0080) makes a non-disqualified, unmodeled
 > constituent a real coverage finding; the prior "earned expected defaults, do not
 > flag a missing one" let a deferral note pass maturity silently. — 0080
 >
-> Rationale: harnessability is the factor projection of the agent-collaboration
-> concern. A model that carries the agent harness as a constituent but omits the
-> model-wide factor can still miss whether every constituent is legible,
-> operable, verifiable, and bounded for agent work. — 0081
+> Rationale: Agent Harnessability is the factor projection of the
+> agent-collaboration concern. A model that carries the agent harness as a
+> constituent but omits the model-wide factor can still miss whether every
+> constituent is legible, operable, verifiable, and bounded for agent work. — 0081,
+> refined by 0085
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

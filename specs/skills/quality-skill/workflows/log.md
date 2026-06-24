@@ -2,6 +2,12 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0085 - Agent Harnessability naming](../../../../changes/archive/0085-agent-harnessability-naming.md).
+  Setup now proposes `agent-harnessability` / Agent Harnessability by default for
+  agent-collaborated composite roots, uses the accountability-preserving
+  definition, and treats legacy `harnessability` with the expected six sub-factors
+  as semantic coverage while recommending the new name during model-authoring work.
 - **Revision**: Updated the [`setup`](setup.md), [`evaluate`](evaluate.md), and
   [`update`](update.md) workflow specs for
   [0084 - Agent-mediated UX conformance](../../../../changes/archive/0084-agent-mediated-ux-conformance.md).

@@ -780,10 +780,10 @@ project to project; these two use-context constituents recur across them.
   for double-counting if its influence is also assessed inside a domain
   constituent.*
 - **Do** distinguish the three projections of the agent-collaboration concern:
-  **harnessability** is the model-wide factor, the **agent harness** is the
+  **Agent Harnessability** is the model-wide factor, the **agent harness** is the
   constituent, and the **agent** is the audience. *Keep the harness as an area
-  when it is germane; harnessability rates how each constituent equips an agent,
-  while the harness area rates the steering artifact's own quality.*
+  when it is germane; Agent Harnessability rates how each constituent equips an
+  agent, while the harness area rates the steering artifact's own quality.*
 
 #### Write a description that distinguishes, not enumerates
 
@@ -925,28 +925,35 @@ on them, or lacks evidence about them.
 - **Avoid** padding the model with factors no stakeholder would notice and no
   decision would use. *The aim is coverage adequacy, not ceremony.*
 
-#### Carry harnessability for agent-collaborated composite roots
+#### Carry Agent Harnessability for agent-collaborated composite roots
 
-For an agent-collaborated composite root, propose **harnessability** as a
-model-wide umbrella factor: the degree to which a project equips an agent to do
-good work on it largely unsupervised — to perceive the project, take a scoped
-unit of work, act within it, confirm its own output, and stay safely bounded —
-from checked-in materials and tooling rather than out-of-band human knowledge or
-synchronous supervision. It matters because human attention is the scarce
-resource in agent-collaborated work.
+For an agent-collaborated composite root, propose **Agent Harnessability** as a
+model-wide umbrella factor, using `agent-harnessability` as the recommended
+stable key:
 
-Harnessability is a deliberate umbrella: do not rate the parent directly.
+```yaml
+agent-harnessability:
+  title: Agent Harnessability
+  description: >
+    The degree to which the project's checked-in materials, tools, workflows,
+    feedback signals, standards, and action limits equip an AI agent to
+    understand the project, take scoped work, operate the environment, verify its
+    output, and stay safely bounded while preserving clear human direction,
+    review, and accountability.
+```
+
+Agent Harnessability is a deliberate umbrella: do not rate the parent directly.
 Decompose it into independently assessable sub-factors, each with its own
 non-overlapping share. Name the quality the project exhibits, not the harness
 artifact itself: guides, sensors, sandboxes, scripts, and gates are evidence for
 the factor, not the factor.
 
-- **Do** include harnessability by default for an agent-collaborated composite
-  root. *A thin or absent harness is not a reason to drop the factor; it is a low
-  rating and a finding, the same way no tests is not a reason to omit
+- **Do** include Agent Harnessability by default for an agent-collaborated
+  composite root. *A thin or absent harness is not a reason to drop the factor; it
+  is a low rating and a finding, the same way no tests is not a reason to omit
   `testability`.*
-- **Do** use these sub-factors as the harnessability decomposition, adapting the
-  example requirements to the entity's domain:
+- **Do** use these sub-factors as the Agent Harnessability decomposition,
+  adapting the example requirements to the entity's domain:
   - **agent-accessibility** — the degree to which decision-relevant knowledge,
     structure, intent, and observable behavior are present and intelligible in
     materials an agent can reach in-context at the moment of work. Example
@@ -991,11 +998,16 @@ the factor, not the factor.
     action such as filing to a court, moving money, emailing a client, or deleting
     records without approval. Boundary: cede external threat posture to security
     where an area carries it; this confines the agent's own actions while working.
-- **Do** keep harnessability separate from the agent harness constituent.
-  *Harnessability rates how each constituent equips an agent. The agent-harness
-  area rates the steering artifact's own quality — whether its map is accurate,
-  current, and a map rather than a manual. Do not assess harnessability on the
-  agent-harness area as a recursion of the same evidence.*
+- **Do** keep Agent Harnessability separate from the agent harness constituent.
+  *Agent Harnessability rates how each constituent equips an agent. The
+  agent-harness area rates the steering artifact's own quality — whether its map
+  is accurate, current, and a map rather than a manual. Do not assess Agent
+  Harnessability on the agent-harness area as a recursion of the same evidence.*
+- **Do** recognize an existing `harnessability` factor with the six-sub-factor
+  shape above as semantic coverage of the same model-wide concern. *When you are
+  already authoring or revising the model, recommend renaming it to
+  `agent-harnessability` / Agent Harnessability unless the project has an
+  explicit reason to preserve the old key.*
 - **Avoid** adding "improve the harness over time" as a seventh sub-factor. *That
   is the model-wide learn loop improving this equipping, not a sibling quality
   beside the six.*

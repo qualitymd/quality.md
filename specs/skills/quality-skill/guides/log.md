@@ -2,6 +2,14 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for
+  [0085 - Agent Harnessability naming](../../../../changes/archive/0085-agent-harnessability-naming.md).
+  The model-wide factor is now named Agent Harnessability with the recommended
+  `agent-harnessability` key, an accountability-preserving definition that keeps
+  human direction, review, and accountability explicit, and legacy handling that
+  recognizes an existing `harnessability` factor with the expected six sub-factors
+  as semantic coverage while recommending the new name during model-authoring work.
 - **Revision**: Updated the
   [recommendation follow-up guide contract](recommendation-follow-up-md.md) for
   [0084 - Agent-mediated UX conformance](../../../../changes/archive/0084-agent-mediated-ux-conformance.md).

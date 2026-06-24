@@ -399,21 +399,26 @@ only when they represent distinct evaluated entities. Starter Requirements
 **MUST** be concrete and assessable from agent-accessible evidence or explicitly
 name missing evidence or assessment constraints.
 
-For an agent-collaborated composite root, setup **MUST** propose harnessability
-as a model-wide umbrella factor by default, decomposed into the authoring guide's
-six sub-factors: `agent-accessibility`, `task-specifiability`,
-`agent-operability`, `self-verifiability`, `enforcement-of-standards`, and
-`containment-of-action`. Setup **MUST NOT** omit harnessability because the
-project's harness is thin or absent; that condition is a rating gap and finding,
-not a factor-omission reason. Setup **MUST** keep harnessability distinct from the
-agent harness constituent: the factor rates how each constituent equips an agent,
-while the harness area rates the steering artifact itself.
+For an agent-collaborated composite root, setup **MUST** propose
+`agent-harnessability` / Agent Harnessability as a model-wide umbrella factor by
+default, decomposed into the authoring guide's six sub-factors:
+`agent-accessibility`, `task-specifiability`, `agent-operability`,
+`self-verifiability`, `enforcement-of-standards`, and `containment-of-action`.
+Setup **MUST** define it as the degree to which the project's own materials and
+tooling equip an AI agent to understand the project, take scoped work, operate the
+environment, verify its output, and stay safely bounded while preserving clear
+human direction, review, and accountability. Setup **MUST NOT** omit Agent
+Harnessability because the project's harness is thin or absent; that condition is
+a rating gap and finding, not a factor-omission reason. Setup **MUST** keep Agent
+Harnessability distinct from the agent harness constituent: the factor rates how
+each constituent equips an agent, while the harness area rates the steering
+artifact itself.
 
-> Annotation: harnessability is the factor-side projection of the same
+> Annotation: Agent Harnessability is the factor-side projection of the same
 > agent-collaboration concern that 0080 made a modeled-by-default constituent.
 > Leading with the factor prevents a thin harness from being deferred out of the
 > model and makes the agent-equipping quality visible across every constituent. —
-> 0081
+> 0081, refined by 0085
 
 Setup **SHOULD** use the standard Rating Scale, including its emoji-prefixed
 human display titles, unless discovery and the body show a real need to
@@ -458,9 +463,12 @@ recorded only as a deferral; a bare deferral or Scope note **MUST NOT** be treat
 as satisfying constituent coverage.
 
 For an agent-collaborated composite root, `setup` **MUST** classify a model as
-below `evaluation-ready` while harnessability or its sub-factors are missing from
-the model-wide factors without a clear not-germane boundary. A thin or absent
-harness **MUST NOT** satisfy that boundary.
+below `evaluation-ready` while Agent Harnessability or its sub-factors are missing
+from the model-wide factors without a clear not-germane boundary. A thin or absent
+harness **MUST NOT** satisfy that boundary. An existing `harnessability` factor
+with the expected six sub-factors **SHOULD** count as semantic coverage, while
+setup's authoring guidance **SHOULD** recommend renaming it to
+`agent-harnessability` / Agent Harnessability.
 
 > Rationale: model-by-default is enforceable only if an under-covered model fails
 > the maturity bar; a deferral note previously passed it silently. — 0080

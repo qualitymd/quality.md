@@ -3,6 +3,44 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0085 — Agent Harnessability naming](archive/0085-agent-harnessability-naming.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Skill-guidance, spec-mirror, README, and CHANGELOG only;
+  no `SPECIFICATION.md`, CLI schema, or Go code change.
+
+- **In-Review**: Implemented
+  [0085 — Agent Harnessability naming](archive/0085-agent-harnessability-naming.md)
+  across the bundled authoring guide, setup workflow, Top 10 checks, durable skill
+  spec mirrors, guide/workflow logs, README surfaces, and CHANGELOG. New and
+  revised models now use `agent-harnessability` / Agent Harnessability with an
+  accountability-preserving definition; legacy `harnessability` with the expected
+  six sub-factors remains semantic coverage. Historical Change Cases and
+  append-only 0081 log entries were left unchanged. Reconciled the affected
+  artifacts list and verified with focused `dprint check`, `git diff --check`, and
+  stale-wording searches. No `SPECIFICATION.md`, CLI schema, or Go code change.
+
+- **In-Progress**: Advanced
+  [0085 — Agent Harnessability naming](archive/0085-agent-harnessability-naming.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning across the bundled skill guidance, durable spec mirrors, README
+  surfaces, and CHANGELOG. No `SPECIFICATION.md`, CLI schema, or Go code change
+  is expected.
+
+- **Design**: Created
+  [0085 — Agent Harnessability naming](archive/0085-agent-harnessability-naming.md)
+  with its child [index](archive/0085-agent-harnessability-naming/index.md),
+  [functional spec](archive/0085-agent-harnessability-naming/spec.md), and
+  [design doc](archive/0085-agent-harnessability-naming/design.md). The case
+  renames the 0081 harnessability factor guidance to Agent Harnessability,
+  recommends the `agent-harnessability` key for new and revised models, replaces
+  attention-scarcity shorthand with human direction/review/accountability wording,
+  and keeps legacy `harnessability` models recognizable as semantic coverage.
+  Skill-guidance, spec-mirror, README, generated package README verification, and
+  CHANGELOG only; no `SPECIFICATION.md`, CLI schema, or Go code change expected.
+  Listed it in the bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0084 — Agent-mediated UX conformance](archive/0084-agent-mediated-ux-conformance.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

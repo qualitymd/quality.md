@@ -336,21 +336,23 @@ reading a present artifact as evidence rather than proof.
 > three-projections rule, and the vocabulary discipline are unchanged; only the
 > inclusion default and its enforcement change. — 0080
 
-The guide **MUST** teach **harnessability** as a model-wide umbrella factor for
-an agent-collaborated composite root: the degree to which a project equips an
-agent to do good work on it largely unsupervised from checked-in materials and
-tooling rather than out-of-band human knowledge or synchronous supervision. It
-**MUST** state that harnessability matters because human attention is the scarce
-resource in agent-collaborated work. The guide **MUST** present harnessability as
-the factor projection of the agent-collaboration concern, with the agent harness
-remaining the constituent projection and the agent remaining the audience
-projection. It **MUST** keep the factor/constituent boundary explicit:
-harnessability rates how each constituent equips an agent, while the agent-harness
-area rates the steering artifact's own quality, and harnessability is not assessed
-on the agent-harness area as a recursion of the same evidence.
+The guide **MUST** teach **Agent Harnessability** as a model-wide umbrella factor
+for an agent-collaborated composite root, using `agent-harnessability` as the
+recommended stable key for new or revised models. It **MUST** define Agent
+Harnessability as the degree to which the project's checked-in materials, tools,
+workflows, feedback signals, standards, and action limits equip an AI agent to
+understand the project, take scoped work, operate the environment, verify its
+output, and stay safely bounded while preserving clear human direction, review,
+and accountability. The guide **MUST** present Agent Harnessability as the factor
+projection of the agent-collaboration concern, with the agent harness remaining
+the constituent projection and the agent remaining the audience projection. It
+**MUST** keep the factor/constituent boundary explicit: Agent Harnessability rates
+how each constituent equips an agent, while the agent-harness area rates the
+steering artifact's own quality, and Agent Harnessability is not assessed on the
+agent-harness area as a recursion of the same evidence.
 
-The guide **MUST** present harnessability as a deliberate umbrella that does not
-roll up directly but decomposes into six independently assessable sub-factors:
+The guide **MUST** present Agent Harnessability as a deliberate umbrella that does
+not roll up directly but decomposes into six independently assessable sub-factors:
 **agent-accessibility**, **task-specifiability**, **agent-operability**,
 **self-verifiability**, **enforcement-of-standards**, and
 **containment-of-action**. Each sub-factor **MUST** be named as a quality, carry an
@@ -358,11 +360,15 @@ operational definition, include illustrative requirements that remain
 quality-domain agnostic, and include boundary guidance that prevents
 double-counting with sibling sub-factors, common factors, and the agent-harness
 constituent. The guide **MUST** route improvement of the harness over time to the
-model-wide continuous-improvement or learn-loop concern, not to a seventh
-harnessability sub-factor. The guide **MUST** state that harnessability is
+model-wide continuous-improvement or learn-loop concern, not to a seventh Agent
+Harnessability sub-factor. The guide **MUST** state that Agent Harnessability is
 proposed by default for an agent-collaborated composite root and **MUST NOT** give
 the thinness or absence of the harness as a reason to omit it; thinness or absence
-is a low rating and finding.
+is a low rating and finding. The guide **SHOULD** treat an existing
+`harnessability` factor with the expected six-sub-factor shape as semantic
+coverage of the same concern, and **SHOULD** recommend renaming it to
+`agent-harnessability` / Agent Harnessability during model-authoring work unless
+the project has an explicit reason to preserve the old key.
 
 > Rationale: the agent-collaboration concern was present as a modeled-by-default
 > constituent after 0080, but its cross-cutting quality projection was still

@@ -77,10 +77,13 @@ gaps stay visible and addressable instead of compounding.
 Agent-collaborated work depends on more than a good prompt. A project has to
 make its context visible, its work specifiable, its environment operable, its
 checks runnable, its standards enforceable, and its agent actions bounded. In
-QUALITY.md, those qualities can be modeled as **harnessability**: how well the
-project equips an agent to do good work on it with limited human attention.
+QUALITY.md, those qualities can be modeled as **Agent Harnessability**: how well
+the project's own materials and tooling equip an AI agent to understand the
+project, take scoped work, operate the environment, verify its output, and stay
+safely bounded while preserving clear human direction, review, and
+accountability.
 
-A `QUALITY.md` turns that harness into an explicit quality signal. The
+A `QUALITY.md` turns that agent-facing quality into an explicit signal. The
 `/quality` skill can evaluate where an agent is blocked by missing context,
 unclear tasks, weak feedback, advisory-only standards, or unsafe action scope,
 then turn those gaps into concrete improvement work. This complements harness
