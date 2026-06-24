@@ -364,6 +364,11 @@ Each level does two distinct jobs through two properties:
   default — a stretch level, the level to aim for, the floor you've agreed to
   rely on, and below the floor. *A shared four-band vocabulary is enough for
   most models and keeps reports comparable.*
+- **Do** use the default display titles `🟢 Outstanding`, `🔵 Target`,
+  `🟡 Minimum`, and `🔴 Unacceptable` when the standard scale fits. *The emoji is
+  only a scanning aid for human reports and frontmatter; the plain `level` IDs
+  still carry identity, ordering, and references. Use plain or custom titles when
+  a project style demands it, but avoid emoji-only labels.*
 - **Do** choose a different scale only when the root area demands it (e.g. a
   pass/fail gate wants two levels). *The scale should fit how decisions are
   actually made about this entity.*

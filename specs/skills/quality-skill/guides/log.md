@@ -2,6 +2,13 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) for
+  [0075 - Rating title emoji defaults](../../../../changes/0075-rating-title-emoji-defaults.md).
+  The guide must now present `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and
+  `🔴 Unacceptable` as the recommended display titles for the standard four-level
+  Rating Scale while keeping stable Rating Level IDs plain and treating emoji as
+  a human scanning aid rather than semantics.
+
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [top-10-quality-md-checks](top-10-quality-md-checks-md.md) guide contract for
   [0074 - Composite root areas and use-context constituents](../../../../changes/0074-composite-root-areas.md).

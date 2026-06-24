@@ -7,8 +7,16 @@ QUALITY.md specification.
 
 ### CLI
 
+- `qualitymd init` and `qualitymd init --minimal` now seed the standard
+  four-level Rating Scale with emoji-prefixed human titles (`🟢 Outstanding`,
+  `🔵 Target`, `🟡 Minimum`, `🔴 Unacceptable`) while keeping stable `level` IDs
+  plain.
+
 ### /quality Skill
 
+- `/quality setup` and the authoring guide now recommend emoji-prefixed Rating
+  Level titles for the standard four-level scale as a human scanning aid, without
+  treating emoji as rating semantics or a format requirement.
 - The authoring guide now teaches three area decomposition shapes —
   primary-subject, collection, and composite — that apply recursively at every
   area, names the two recurring use-context constituents (the agent harness and

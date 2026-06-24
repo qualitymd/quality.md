@@ -3,6 +3,43 @@
 ## 2026-06-24
 
 - **Creation**: Added
+  [0075 - Rating title emoji defaults](archive/0075-rating-title-emoji-defaults.md)
+  (`status: Draft`) with its child
+  [spec](archive/0075-rating-title-emoji-defaults/spec.md). The case makes
+  emoji-prefixed Rating Level titles the default starter and `/quality setup`
+  display convention while preserving plain stable `level` identifiers and
+  keeping the formal format neutral. Design and implementation not started.
+  Listed it in the bundle [index](index.md).
+- **Advance**: Moved
+  [0075 - Rating title emoji defaults](archive/0075-rating-title-emoji-defaults.md) to
+  `Design` and authored its
+  [design doc](archive/0075-rating-title-emoji-defaults/design.md). The design
+  treats emoji as a Rating Level title display convention, not rating semantics:
+  scaffold and setup defaults change, stable `level` IDs stay plain, reports
+  continue to resolve model titles, and the formal format stays neutral.
+  Implementation not started.
+- **In-Progress**: Advanced
+  [0075 - Rating title emoji defaults](archive/0075-rating-title-emoji-defaults.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning across scaffold templates, setup guidance, authoring guidance, and
+  release notes.
+- **In-Review**: Completed implementation of
+  [0075 - Rating title emoji defaults](archive/0075-rating-title-emoji-defaults.md).
+  Updated both `qualitymd init` scaffolds and tests, setup runtime guidance, the
+  authoring and getting-started guides, durable setup/authoring guide specs and
+  logs, the README example, and release notes. Left `SPECIFICATION.md` unchanged
+  so the formal format remains neutral. Verified with
+  `go test ./internal/scaffold` and `mise run check`.
+- **Implementation + Archival**: Advanced
+  [0075 - Rating title emoji defaults](archive/0075-rating-title-emoji-defaults.md)
+  through `In-Review` to `Done`, moving it (parent and folder) into
+  [`archive/`](archive/). The landed behavior makes emoji-prefixed Rating Level
+  titles the default for CLI scaffolds and `/quality setup`, keeps stable IDs
+  plain, updates README and skill guidance/specs/logs, and leaves
+  `SPECIFICATION.md` neutral. Updated the bundle [index](index.md) and the
+  [archive index](archive/index.md).
+
+- **Creation**: Added
   [0074 - Composite root areas and use-context constituents](0074-composite-root-areas.md)
   (`status: Draft`) with its child [spec](0074-composite-root-areas/spec.md) and
   [design](0074-composite-root-areas/design.md). The case names three root shapes

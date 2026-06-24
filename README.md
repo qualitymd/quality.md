@@ -162,19 +162,19 @@ default domain or factor set for QUALITY.md.
 title: Support Inbox
 ratingScale:
   - level: outstanding
-    title: Outstanding
+    title: 🟢 Outstanding
     description: The work clearly exceeds the shared quality bar.
     criterion: "Consistently exceeds the requirement with clear margin."
   - level: target
-    title: Target
+    title: 🔵 Target
     description: The work meets the shared quality bar.
     criterion: "Meets the expected quality bar."
   - level: minimum
-    title: Minimum
+    title: 🟡 Minimum
     description: The work is acceptable, but has gaps worth improving.
     criterion: "Meets the lowest acceptable bar, with visible gaps."
   - level: unacceptable
-    title: Unacceptable
+    title: 🔴 Unacceptable
     description: The work is below the shared quality bar.
     criterion: "Falls below the minimum acceptable bar."
 areas:

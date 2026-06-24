@@ -1,5 +1,14 @@
 # /quality Skill Workflows Update Log
 
+## 2026-06-24
+
+- **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0075 - Rating title emoji defaults](../../../../changes/0075-rating-title-emoji-defaults.md).
+  Setup's recommended standard Rating Scale now keeps stable IDs plain while
+  using `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and `🔴 Unacceptable` as
+  default display titles, with emoji treated as a human scanning aid rather than
+  rating semantics.
+
 ## 2026-06-23
 
 - **Creation + Revision**: Added the

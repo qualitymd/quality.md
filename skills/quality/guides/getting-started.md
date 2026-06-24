@@ -57,8 +57,9 @@ Use authoring guidance: [Rating Scale](authoring.md#rating-scale).
 
 Check before moving on:
 
-- The default scale still fits, or the body explains why a different scale is
-  needed.
+- The default scale still fits, including the `🟢 Outstanding`, `🔵 Target`,
+  `🟡 Minimum`, and `🔴 Unacceptable` display titles, or the body explains why a
+  different scale or plain-title style is needed.
 - The level criteria are clear enough to rate future findings consistently.
 
 ### Name the root area

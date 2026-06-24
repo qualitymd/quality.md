@@ -273,3 +273,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   the entity roll-up), scoped the ~ten-factor coverage aim per primary-subject
   node, and added matching Top 10 routing findings; guide and guide-spec edits
   only, no CLI/Go change (`Done`).
+- [0075 — Rating title emoji defaults](0075-rating-title-emoji-defaults.md) -
+  made emoji-prefixed Rating Level titles the default for `qualitymd init`,
+  `qualitymd init --minimal`, and `/quality setup`, while keeping stable
+  `level` IDs plain and leaving `SPECIFICATION.md` neutral (`Done`).

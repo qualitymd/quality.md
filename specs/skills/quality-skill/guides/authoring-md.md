@@ -185,6 +185,14 @@ The guide **MUST** teach that the rating scale should be reviewed after the body
 and before writing requirements, so the shared rating vocabulary fits the
 root area's decision context.
 
+The guide **MUST** teach that the recommended four-level Rating Scale keeps
+stable Rating Level IDs as `outstanding`, `target`, `minimum`, and
+`unacceptable`, and that its default human display titles are
+`🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and `🔴 Unacceptable`. It **MUST**
+frame the emoji markers as a human scanning aid, not as rating identity,
+ordering, semantics, or a conformance requirement, and it **SHOULD** discourage
+emoji-only titles.
+
 The guide **MUST** teach that initial factors should be derived from the body's
 Needs and Risks, and that requirements should make the body context assessable.
 

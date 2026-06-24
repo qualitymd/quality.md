@@ -189,12 +189,14 @@ The discovery inputs:
    Options: recommended four-level scale, pass/fail gate, custom scale needed
    Recommended: recommended four-level scale (<confidence>)
    Why it matters: Rating Levels are configurable in QUALITY.md; they are not
-   baked into the format. The recommended `outstanding`, `target`, `minimum`,
-   `unacceptable` scale works for most first models because `outstanding` names
-   a stretch band where further investment may need ROI justification, `target`
-   names the expected good-enough bar without demanding perfection, `minimum`
-   names the acceptable floor that can be relied on but still warrants
-   improvement, and `unacceptable` names quality below the floor.
+   baked into the format. The recommended scale keeps stable IDs as
+   `outstanding`, `target`, `minimum`, `unacceptable`, and uses display titles
+   `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and `🔴 Unacceptable` by default.
+   It works for most first models because `outstanding` names a stretch band
+   where further investment may need ROI justification, `target` names the
+   expected good-enough bar without demanding perfection, `minimum` names the
+   acceptable floor that can be relied on but still warrants improvement, and
+   `unacceptable` names quality below the floor.
 
 6-9. Human context checkpoint: Please correct this draft with short fragments.
    Anything left unresolved will be recorded as Unknown, an open question, or a
@@ -374,9 +376,10 @@ frontmatter model:
 - When the user provided missing context during setup, preserve that provenance
   plainly enough that a later reader can tell it came from explicit setup input,
   not repository inspection.
-- The rating scale uses the recommended four-level scale unless the rating-scale
-  answer and body show a real mismatch; unclear customization requests become an
-  open question or assumption rather than invented Rating Levels.
+- The rating scale uses the recommended four-level scale with emoji-prefixed
+  human titles unless the rating-scale answer and body show a real mismatch;
+  unclear customization requests become an open question or assumption rather
+  than invented Rating Levels.
 - Factors and child Areas derive from project needs, risks, stakeholder
   concerns, component boundaries, and available evidence.
 - Requirements are small, concrete, and assessable from agent-accessible

@@ -7,21 +7,23 @@ ratingScale:
   # requirement's findings at that level; an individual requirement may replace
   # it under its own `ratings` (e.g. a measured threshold) without changing what
   # the level means. Outstanding, Target, and Minimum are all acceptable; only
-  # Unacceptable falls below the floor.
+  # Unacceptable falls below the floor. The title is the human label used in
+  # reports; the default titles include lightweight emoji markers for scanning,
+  # but the stable `level` values carry the machine meaning.
   - level: outstanding
-    title: Outstanding
+    title: 🟢 Outstanding
     description: "The stretch band — reached only with significant extra effort."
     criterion: "Exceeds the requirement; satisfies it with margin to spare."
   - level: target
-    title: Target
+    title: 🔵 Target
     description: "The level to aim for — achievable at reasonable cost and effort."
     criterion: "Satisfies the requirement."
   - level: minimum
-    title: Minimum
+    title: 🟡 Minimum
     description: "The acceptable floor — less than you'd aim for, but consciously agreed as good enough to rely on."
     criterion: "Falls short of the target but remains acceptable."
   - level: unacceptable
-    title: Unacceptable
+    title: 🔴 Unacceptable
     description: "Below the floor — not good enough to rely on."
     criterion: "Does not meet the requirement to an acceptable degree."
 factors:

@@ -146,11 +146,15 @@ and confidence signal when setup has inferred one from repository evidence.
 
 The Rating Scale question **MUST** explain that Rating Levels are configurable in
 `QUALITY.md` and are not baked into the format. It **MUST** recommend the
-standard four-level scale for most first models and explain each recommended
-level's role: `outstanding` is a stretch band where further investment may need
-ROI justification, `target` is the expected good-enough bar, `minimum` is the
-acceptable floor that still warrants improvement, and `unacceptable` is below
-the floor.
+standard four-level scale for most first models, keep its stable Rating Level IDs
+as `outstanding`, `target`, `minimum`, and `unacceptable`, and use the default
+display titles `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and
+`🔴 Unacceptable` unless the project context calls for plain or custom titles. It
+**MUST** explain each recommended level's role: `outstanding` is a stretch band
+where further investment may need ROI justification, `target` is the expected
+good-enough bar, `minimum` is the acceptable floor that still warrants
+improvement, and `unacceptable` is below the floor. It **MUST NOT** treat emoji
+markers as rating identity, ordering, or semantics.
 
 Setup **MUST NOT** ask the user to invent custom Rating Level names during
 discovery. When the user rejects the recommended scale, setup **MAY** choose a
@@ -383,11 +387,12 @@ only when they represent distinct evaluated entities. Starter Requirements
 **MUST** be concrete and assessable from agent-accessible evidence or explicitly
 name missing evidence or assessment constraints.
 
-Setup **SHOULD** use the standard Rating Scale unless discovery and the body show
-a real need to customize it. If the user rejects the recommended scale but the
-project context does not clearly support an alternate scale, setup **SHOULD** use
-the recommended scale and record the scale decision as an open question or
-assumption in the model body.
+Setup **SHOULD** use the standard Rating Scale, including its emoji-prefixed
+human display titles, unless discovery and the body show a real need to
+customize it. If the user rejects the recommended scale but the project context
+does not clearly support an alternate scale, setup **SHOULD** use the
+recommended scale and record the scale decision as an open question or assumption
+in the model body.
 
 Setup **SHOULD** include a `quality-md` Area that evaluates the `QUALITY.md`
 artifact itself against the active authoring guide unless the user declines or

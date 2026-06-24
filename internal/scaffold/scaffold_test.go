@@ -28,8 +28,14 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 	if got, want := model.RatingScale[0].Level, "outstanding"; got != want {
 		t.Fatalf("RatingScale[0].Level = %q, want %q", got, want)
 	}
+	if got, want := model.RatingScale[0].Title, "🟢 Outstanding"; got != want {
+		t.Fatalf("RatingScale[0].Title = %q, want %q", got, want)
+	}
 	if got, want := model.RatingScale[3].Level, "unacceptable"; got != want {
 		t.Fatalf("RatingScale[3].Level = %q, want %q", got, want)
+	}
+	if got, want := model.RatingScale[3].Title, "🔴 Unacceptable"; got != want {
+		t.Fatalf("RatingScale[3].Title = %q, want %q", got, want)
 	}
 	factor := model.Factors["quality-name"]
 	if factor.Description == "" {
@@ -111,6 +117,12 @@ func TestMinimalSkeletonConformsToCurrentSpec(t *testing.T) {
 	}
 	if len(model.RatingScale) != 4 {
 		t.Fatalf("len(RatingScale) = %d, want 4", len(model.RatingScale))
+	}
+	if got, want := model.RatingScale[1].Title, "🔵 Target"; got != want {
+		t.Fatalf("RatingScale[1].Title = %q, want %q", got, want)
+	}
+	if got, want := model.RatingScale[2].Title, "🟡 Minimum"; got != want {
+		t.Fatalf("RatingScale[2].Title = %q, want %q", got, want)
 	}
 	factor := model.Factors["quality-name"]
 	if factor.Description == "" {
