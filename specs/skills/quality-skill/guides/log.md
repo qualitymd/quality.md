@@ -3,6 +3,15 @@
 ## 2026-06-24
 
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for
+  [0079 - Stewardship vocabulary discipline](../../../../changes/0079-stewardship-vocabulary-discipline.md).
+  The three-projections requirement now also requires the guide to keep the
+  motivation-layer stewardship/care vocabulary from modifying or replacing a
+  taxonomy noun — a concern is the source a factor projects from, not a kind of
+  factor — and to name the root's recurring factors as model-wide (cross-cutting)
+  factors rather than "stewardship factors" or "stewardship lenses." The singular
+  "a factor is a quality lens" gloss is preserved; the 0076/0077 grounding is
+  unchanged.
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) for
   [0077 - Care-grounded stewardship concerns](../../../../changes/0077-stewardship-care-grounding.md).
   The guide's stewardship-concern generator must now read as care — an activity of
   tending whose artifact is its trace — so the claim that earns a constituent comes

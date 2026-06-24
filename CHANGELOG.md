@@ -39,6 +39,11 @@ QUALITY.md specification.
   *secure*/*safeguard* answers to who is vulnerable, and the lifecycle concerns
   recur rather than completing. Framing only — the concerns and the earn-it
   guardrail are unchanged.
+- The authoring guide and setup now keep the stewardship/care language in its
+  motivation register so it never modifies or replaces a model term: recurring
+  root factors are named *model-wide factors* (which may trace to stewardship
+  concerns) rather than "stewardship factors" or "stewardship lenses." Wording
+  discipline only — the concerns, axes, and three-projections rule are unchanged.
 
 ### Packaging
 

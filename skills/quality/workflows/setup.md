@@ -393,6 +393,10 @@ frontmatter model:
   dropping the Area. Treat the kinds as a prompt, not a quota — earn each Area
   (owned, inspectable artifact; divergent factors; traced to a Need or Risk). See
   the authoring guide's "Cover the domain's constituent kinds".
+- When naming the model in any recap or summary, name factors as Factors (or
+  model-wide factors); the stewardship concerns are the *source* factors trace to,
+  not a kind of factor. Do not call them "stewardship factors" or "stewardship
+  lenses" — keep the motivation-layer vocabulary from modifying a taxonomy noun.
 - Requirements are small, concrete, and assessable from agent-accessible
   evidence, or explicitly name missing evidence.
 - Include the `quality-md` self-check Area when appropriate unless the user

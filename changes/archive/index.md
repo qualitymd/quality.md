@@ -290,3 +290,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   the list, the protective pair answers to vulnerability, stewardship is
   holding-in-trust, and the lifecycle band is recurring; authoring guide and
   durable guide-spec edits only, no CLI/Go change (`Done`).
+- [0079 — Stewardship vocabulary discipline](0079-stewardship-vocabulary-discipline.md) -
+  kept the stewardship/care core language in its motivation register so it never
+  modifies or replaces taxonomy nouns (factor, area, requirement, constituent,
+  audience); removed the two "stewardship lenses" fusions in the authoring guide,
+  added a register rule to AGENTS.md and the durable authoring-guide spec, and
+  guarded the setup summary so factors are named as factors; documentation-only,
+  no CLI/Go change (`Done`).

@@ -106,9 +106,9 @@ references such as `area:root`, `area:api`, `factor:api::reliability`, or
 
 - **Consider** declaring only model-wide factors at the root and pushing
   narrower factors/requirements down to child areas. *Model-wide means the factors
-  that recur across the root's constituents (often stewardship lenses like
-  currentness or traceability), not an arbitrary subset; a flat root with
-  everything at one level is harder to read and maintain.*
+  that recur across the root's constituents (often factors that trace to
+  stewardship concerns, like currentness or traceability), not an arbitrary subset;
+  a flat root with everything at one level is harder to read and maintain.*
 - **Avoid** modeling every property at the root "to be safe." *An entry on
   factors, requirements, **or** areas is enough.*
 - **Do** make sure the model reaches requirements somewhere in the area tree
@@ -669,6 +669,12 @@ root concern, not because they duplicate one another.
   audience; the security of the server is a factor on the server area, while the
   security policy is its own area. Modeling the same projection twice
   double-counts.*
+- **Avoid** letting a stewardship word modify or replace the taxonomy noun for
+  its projection. *A concern is the *source* a factor projects from, not a kind of
+  factor. Write "model-wide factors" (and, if useful, that they trace to
+  stewardship concerns) — not "stewardship factors" or "stewardship lenses," which
+  demote the term of art to a subcategory of the philosophical word. The singular
+  gloss "a factor is a quality lens" is fine; it names what a factor is.*
 - **Do** enumerate the constituent kinds the entity's domain implies, then
   account for each: model it, defer it in Scope, mark it out of Scope, or record
   it as an unknown. *Silence is a coverage gap, not neutrality — the same failure
@@ -875,8 +881,8 @@ on them, or lacks evidence about them.
   child areas.* At a **composite** root the aim applies **per constituent**, not at
   the root: each primary-subject constituent earns its own ~ten-factor family,
   while the composite root itself carries only the factors that recur across
-  constituents — typically stewardship lenses (currentness, traceability,
-  consistency, maintainability), each refined per child.
+  constituents — typically those tracing to stewardship concerns (currentness,
+  traceability, consistency, maintainability), each refined per child.
 - **Avoid** dropping a conventional factor because the current artifact lacks
   evidence or performs poorly on it. *No tests is not a reason to omit
   `testability`; it is a reason to write requirements that make testability, test

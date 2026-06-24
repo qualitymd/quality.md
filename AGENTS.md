@@ -82,6 +82,23 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - Prefer lowercase in README, guides, tutorials, and user-facing prose unless
   capitalization improves precision.
 
+### Keep the motivation and taxonomy registers distinct
+
+- The stewardship/care core language — stewardship, care, tending, vulnerability,
+  concern — is **motivation-layer**: it describes *why* a concern exists and what
+  it means to tend an entity. The taxonomy — factor, area, requirement,
+  constituent, audience — names the slots in the Model.
+- Do not let a motivation-layer word modify or replace a taxonomy noun. A
+  stewardship concern *projects into* a factor/constituent/audience; it is not one.
+  Avoid "stewardship factor" / "stewardship lens" / "care requirement" — they
+  demote a term of art to a subcategory of the philosophical word.
+- Name the root's recurring factors **model-wide** or **cross-cutting factors**
+  (the established terms). You may note they *trace to* stewardship concerns, but
+  do not render that link by making "stewardship" an adjective on the taxonomy
+  noun.
+- The singular gloss "a factor is a quality *lens*" is fine — it defines what a
+  factor is. Only a philosophical word substituting for the noun is the problem.
+
 ### Quality-domain agnostic examples
 
 - QUALITY.md is quality-domain agnostic. Concrete quality model content in this

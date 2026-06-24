@@ -254,7 +254,15 @@ The guide **MUST** teach the **three-projections rule**: a stewardship concern
 projects as a **factor**, a **constituent**, and an **audience**, so shared names
 reflect a shared concern rather than duplication, and the author models the
 projection meant rather than double-counting (the security *of* an area is a
-factor; a security policy is a constituent). The guide **MUST** instruct the
+factor; a security policy is a constituent). The guide **MUST** keep the
+motivation-layer stewardship/care vocabulary (stewardship, care, tending,
+vulnerability, concern) from modifying or replacing a taxonomy noun (factor,
+area, requirement, constituent, audience): a concern is the source a factor
+projects from, not a kind of factor. It **MUST** name the root's recurring factors
+as **model-wide** (or cross-cutting) factors — which **MAY** be noted as tracing
+to stewardship concerns — and **MUST NOT** render that link as "stewardship
+factors" or "stewardship lenses"; the singular gloss "a factor is a quality lens"
+is preserved. The guide **MUST** instruct the
 author to account for each implied constituent kind — model it, defer it in
 Scope, mark it out of Scope, or record it as an unknown — treating silence as a
 coverage gap, and **MUST** teach carrying a germane, high-leverage kind as an area
@@ -284,3 +292,10 @@ kinds as a roster every model must carry.
 > (a *factor*). The protective pair is stewardship under vulnerability, which is
 > why it cross-cuts the lifecycle rather than sitting in it. Framing only: the
 > nine concerns, the two axes, and the earn-it test are unchanged. — 0077
+>
+> Rationale: the stewardship/care grounding leaked across the projection boundary
+> it defines — the guide called recurring factors "stewardship lenses" and a live
+> setup run reported "stewardship factors," demoting a term of art to a
+> subcategory of the philosophical word. Keeping the motivation-layer vocabulary
+> from modifying a taxonomy noun preserves consistent terms without retracting the
+> grounding. — 0079

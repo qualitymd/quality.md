@@ -2,6 +2,47 @@
 
 ## 2026-06-24
 
+- **Done**: Landed and archived
+  [0079 - Stewardship vocabulary discipline](archive/0079-stewardship-vocabulary-discipline.md);
+  set `status` to `Done` and moved the parent concept and its child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Documentation-only; no `SPECIFICATION.md` or code change.
+- **In-Review**: Completed implementation of
+  [0079 - Stewardship vocabulary discipline](0079-stewardship-vocabulary-discipline.md).
+  Added the AGENTS.md "Keep the motivation and taxonomy registers distinct"
+  subsection; rephrased the two authoring-guide "stewardship lenses" fusions and
+  added an Avoid bullet at the three-projections rule; added the register clause
+  and a 0079 rationale to the durable authoring-guide spec; added an operational
+  setup-workflow guard; and recorded the guides-log and CHANGELOG notes. The
+  durable setup spec was assessed no-change. Documentation-only; reconciled the
+  Affected artifacts list and verified with `mise run check` (markdown format,
+  bundle link resolution, Go vet/lint/test all pass). Not committed, not archived.
+- **In-Progress**: Advanced
+  [0079 - Stewardship vocabulary discipline](0079-stewardship-vocabulary-discipline.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation is
+  beginning on the AGENTS.md register rule, the two authoring-guide "stewardship
+  lenses" rephrasings plus a three-projections Avoid bullet, the durable
+  authoring-guide spec clause, and an operational setup guard. Documentation-only;
+  the durable setup spec is assessed no-change.
+- **Design**: Added the
+  [design doc](0079-stewardship-vocabulary-discipline/design.md) for
+  [0079 - Stewardship vocabulary discipline](0079-stewardship-vocabulary-discipline.md)
+  and moved it from `Draft` to `Design`. Records the register rule's three homes
+  (AGENTS.md canonical; the authoring guide and its durable spec operational), the
+  exact rephrasing of the two "stewardship lenses" fusions, the decision to leave
+  the singular "quality lens" gloss intact, and the conclusion that the setup guard
+  is operational rather than a new spec contract.
+- **Creation**: Added
+  [0079 - Stewardship vocabulary discipline](0079-stewardship-vocabulary-discipline.md)
+  (`status: Draft`) with its child [index](0079-stewardship-vocabulary-discipline/index.md)
+  and [functional spec](0079-stewardship-vocabulary-discipline/spec.md). The case
+  confines the stewardship/care core language to its motivation register so it
+  never modifies or replaces taxonomy nouns (factor, area, requirement,
+  constituent, audience): it removes the two "stewardship lenses" fusions in the
+  authoring guide, guards the setup model summary against "stewardship factors,"
+  and records the register rule in the guide, its durable spec, and `AGENTS.md`.
+  Documentation-only; no format, schema, CLI, or evaluation change, and no
+  retraction of the 0076/0077 stewardship grounding.
 - **Done**: Landed
   [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md)
   and moved the parent concept and its child folder into
