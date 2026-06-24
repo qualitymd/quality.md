@@ -85,9 +85,9 @@ coding agents with what matters in *this* context. You capture it once, then run
    signal.
 2. **Evaluate** — grade the work against the signal; every gap is a gap in the
    *work* or a gap in the *bar*.
-3. **Improve** — close the gaps in the work.
-4. **Learn** — feed what you learned back into the signal as the product and its
+3. **Learn** — feed what you learned back into the signal as the product and its
    risks evolve.
+4. **Improve** — close the gaps in the work.
 
 ### Getting started
 
@@ -108,13 +108,7 @@ coding agents with what matters in *this* context. You capture it once, then run
    → *A concrete read on where the work meets the bar, where it falls short, and
    where the model needs to become clearer, more complete, or better grounded.*
 
-3. **Review and act on the evaluation.** Weigh the quality ratings for each area
-   and factor, use the findings to understand the evidence behind the gaps, and
-   apply the recommended actions or hand them off to your issue tracker.
-   → *Clear next steps from the evaluation: what to fix now, what to track for
-   later, and why each action matters.*
-
-4. **Refine the model as you learn.** Revise `QUALITY.md` when the evaluation
+3. **Refine the model as you learn.** Revise `QUALITY.md` when the evaluation
    reveals missing context, unclear requirements, changed risks, or a quality bar
    that no longer matches the project.
    → *A quality bar that gets clearer and more useful every time you use it.*
@@ -123,6 +117,12 @@ coding agents with what matters in *this* context. You capture it once, then run
    `/quality` skill applies authoring best practices so model changes stay
    well-formed, grounded, and current, with meaningful changes recorded in the
    quality log.
+
+4. **Review and act on the evaluation.** Weigh the quality ratings for each area
+   and factor, use the findings to understand the evidence behind the gaps, and
+   apply the recommended actions or hand them off to your issue tracker.
+   → *Clear next steps from the evaluation: what to fix now, what to track for
+   later, and why each action matters.*
 
 ### Keeping the skill and CLI current
 
