@@ -312,3 +312,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   sub-factors, proposed by setup by default, and checked by the Top 10 guide;
   skill-guidance, spec-mirror, README, and CHANGELOG only, no CLI/Go change
   (`Done`).
+- [0082 — Normalize QUALITY.md self-check roll-up](0082-normalize-quality-md-rollup.md) -
+  removed the special out-of-roll-up treatment for the `quality-md` self-check
+  area so it evaluates and rolls up like any other modeled area; skill-guidance,
+  spec-mirror, and CHANGELOG only, with `QUALITY.md` assessed no-change and no
+  CLI/Go change (`Done`).

@@ -20,11 +20,15 @@ QUALITY.md specification.
 - The authoring guide now teaches three area decomposition shapes —
   primary-subject, collection, and composite — that apply recursively at every
   area, names the two recurring use-context constituents (the agent harness and
-  the QUALITY.md self-check, the latter kept out of the entity's roll-up), and
+  the QUALITY.md self-check), and
   scopes the ~ten-factor coverage aim to a primary-subject node rather than the
   root. The Top 10 QUALITY.md checks gain matching routing findings for a
   composite entity flattened into one root and for a missing expected
   constituent.
+- The authoring and evaluation guidance now treats the `quality-md` self-check as
+  an ordinary in-scope area: full `/quality evaluate` covers it when present, and
+  its factor, local, and aggregate ratings roll up like any other modeled area.
+  Quality-log entries remain reserved for meaningful confirmed model changes.
 - The authoring guide now teaches enumerating a composite root's domain
   constituents by *constituent kind* — drawn from the entity's stewardship
   concerns (a lifecycle band plus the protective pair *secure* and *safeguard*)

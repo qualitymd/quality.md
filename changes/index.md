@@ -46,9 +46,6 @@ edit.
 - [0078 — View command](0078-view-command.md) - add `qualitymd view`, a layered
   presentation surface over the QUALITY.md workspace, starting with the default
   document render and the `outline` lens (`Draft`).
-- [0082 — Normalize QUALITY.md self-check roll-up](0082-normalize-quality-md-rollup.md) -
-  remove the special out-of-roll-up treatment for the `quality-md` self-check
-  area so it evaluates and rolls up like any other modeled area (`Design`).
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

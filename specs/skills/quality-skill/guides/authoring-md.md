@@ -226,15 +226,28 @@ The guide **MUST** teach that QUALITY.md's agentic context of use — not the
 modeled domain — makes two constituents recur in a composite root regardless of
 domain: the **agent harness** and the **QUALITY.md self-check**. It **MUST**
 present them as modeled by default unless a disqualifier fires (a harness-less or
-throwaway project hits not-germane), rather than as a required roster, **MUST**
-teach that the QUALITY.md self-check stays on the learn loop and out of the
-entity's roll-up, and **MUST** teach that the agent harness is partly normative
-and plays the dual area/assessment-reference role.
+throwaway project hits not-germane), rather than as a required roster. It
+**MUST** teach that the QUALITY.md self-check follows the ordinary area pattern:
+the `quality-md` key, a title of the form `<Root Title> QUALITY.md`, an explicit
+path-based `source` such as `./QUALITY.md`, Factors that describe the model
+artifact's qualities, and a Requirement that assesses the model against the
+active authoring guide. It **MUST** teach that, when `quality-md` is in evaluation
+scope, the skill assesses, analyzes, reports, and rolls it up like any other Area;
+it **MUST NOT** teach that the QUALITY.md self-check is excluded from aggregate
+rating, withheld from the root Area aggregation, reported only on a separate axis, or
+given different evaluation semantics solely because its source is `QUALITY.md`.
+It **MUST** teach that the agent harness is partly normative and plays the dual
+area/assessment-reference role.
 
 > Rationale: a root factored as one primary subject silently equates the entity
 > with a single constituent and drops the other high-leverage artifacts; naming
 > the composite shape and the recurring use-context constituents keeps them
 > visible while preserving domain agnosticism. — 0074
+>
+> Rationale: `quality-md` already has ordinary Area structure and the CLI/report
+> surfaces treat Areas generically. Keeping a separate aggregation exception in
+> guidance made "full evaluation" ambiguous without a mechanical contract to
+> enforce it. — 0082
 
 The guide **MUST** teach that, for a composite root, the author enumerates
 **domain constituents** by **constituent kind** inferred from the entity's

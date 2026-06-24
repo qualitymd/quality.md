@@ -14,7 +14,8 @@ Run qualitymd lint
 - valid? continue
 
 Resolve scope
-- no scope? full evaluation
+- no scope? full evaluation: every in-scope modeled Area with assessable
+  Requirements, including `quality-md` when present
 - qualified model reference? resolve `area:<area-path>` or
   `factor:<declaring-area-path>::<factor-path>` against the model for exact
   addressing

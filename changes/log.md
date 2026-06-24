@@ -3,6 +3,28 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Skill-guidance, spec-mirror, and CHANGELOG only, with
+  `QUALITY.md` assessed no-change; no `SPECIFICATION.md`, CLI schema, or Go code
+  change.
+- **In-Review**: Implemented
+  [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md)
+  across the bundled authoring guide and evaluate workflow, durable authoring and
+  evaluation spec mirrors, guide-spec log, and CHANGELOG. `quality-md` is now an
+  ordinary in-scope area for assessment, analysis, reporting, and roll-up, while
+  quality-log writing remains limited to meaningful confirmed model changes.
+  Reconciled the Affected artifacts list and verified with
+  `qualitymd lint QUALITY.md --json`, `qualitymd status QUALITY.md --json`, and
+  `mise run fmt-md-check`.
+- **In-Progress**: Advanced
+  [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning on the runtime authoring/evaluation guidance, durable spec
+  mirrors, dogfooded `QUALITY.md` wording, and CHANGELOG. Skill/spec/docs only;
+  no `SPECIFICATION.md`, CLI schema, or Go code change is expected.
+- **Done**: Landed and archived
   [0081 — Harnessability factor](archive/0081-harnessability-factor.md); set
   `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from
@@ -18,10 +40,10 @@
   Top 10 check when missing. Reconciled the Affected artifacts list and verified
   with `mise run check`.
 - **Design**: Created
-  [0082 — Normalize QUALITY.md self-check roll-up](0082-normalize-quality-md-rollup.md)
-  with its child [index](0082-normalize-quality-md-rollup/index.md),
-  [functional spec](0082-normalize-quality-md-rollup/spec.md), and
-  [design doc](0082-normalize-quality-md-rollup/design.md). The case removes the
+  [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md)
+  with its child [index](archive/0082-normalize-quality-md-rollup/index.md),
+  [functional spec](archive/0082-normalize-quality-md-rollup/spec.md), and
+  [design doc](archive/0082-normalize-quality-md-rollup/design.md). The case removes the
   `quality-md` self-check's special out-of-roll-up treatment and makes it an
   ordinary in-scope area for evaluation, analysis, reporting, and roll-up while
   preserving quality-log behavior for meaningful model changes. Skill-guidance

@@ -2,6 +2,14 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) for
+  [0082 - Normalize QUALITY.md self-check roll-up](../../../../changes/archive/0082-normalize-quality-md-rollup.md).
+  The QUALITY.md self-check must now be taught as an ordinary modeled Area using
+  the `quality-md` key, `<Root Title> QUALITY.md` title shape, explicit
+  path-based `source`, model-artifact Factors, and an authoring-guide Requirement.
+  When in scope, it is assessed, analyzed, reported, and rolled up like any other
+  Area; the guide must not keep it out of aggregate rating or on a separate
+  evaluation axis solely because its source is `QUALITY.md`.
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [Top 10 checks contract](top-10-quality-md-checks-md.md) for
   [0081 - Harnessability factor](../../../../changes/archive/0081-harnessability-factor.md).

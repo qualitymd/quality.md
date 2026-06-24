@@ -47,6 +47,17 @@ primary human-facing input. The skill **SHOULD** match labels against required
 titles and stable YAML names in the grounded model before any evaluation records
 are written.
 
+An unnarrowed `/quality evaluate` **MUST** cover every in-scope modeled Area with
+assessable Requirements, including the `quality-md` Area when present. Missing
+assessment or analysis coverage for `quality-md` in a full run is the same kind
+of incomplete evaluation coverage as missing coverage for any other modeled
+Area; the skill **MUST NOT** make `quality-md` opt-in, out-of-band, or excluded
+from full evaluation by default.
+
+> Rationale: full evaluation should mean the resolved model scope. Excluding a
+> named Area forces evaluators to remember a convention that the model, records,
+> and report artifacts cannot express. — 0082
+
 > Rationale: the skill owns human-edge interpretation. Natural labels keep the
 > normal evaluation path in project vocabulary while preserving the stable model
 > identifiers used by records and reports. — 0061

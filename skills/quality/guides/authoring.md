@@ -511,7 +511,7 @@ not be software):
 ```text
 root  (composite)
 ├── harness        (primary-subject constituent)
-├── quality-md     (primary-subject constituent; learn loop, kept out of roll-up)
+├── quality-md     (primary-subject constituent)
 └── apps           (collection)
     ├── apps/product-a   (primary-subject — or itself composite)
     └── apps/product-b   (primary-subject — or itself composite)
@@ -766,10 +766,13 @@ project to project; these two use-context constituents recur across them.
   modeled unless a disqualifier fires. A harness-less or throwaway project hits
   not-germane and carries neither; a germane but too-thin harness surfaces its gap
   rather than being silently dropped (see [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds)). This is not a roster every model must hold.*
-- **Do** keep the QUALITY.md self-check on the **learn loop**, out of the entity's
-  roll-up. *The model's own quality is never averaged into the root area's rating
-  (see [When to update QUALITY.md](#when-to-update-qualitymd)); model it as a
-  constituent whose quality is tracked and reported on its own axis.*
+- **Do** model the QUALITY.md self-check as an ordinary area when it is germane.
+  *Use the `quality-md` key, a title of the form `<Root Title> QUALITY.md`, an
+  explicit path-based `source` such as `./QUALITY.md`, factors that describe the
+  model artifact's qualities, and a requirement that assesses the model against
+  the active authoring guide. When `quality-md` is in evaluation scope, assess,
+  analyze, report, and roll it up like any other area; its source being
+  `QUALITY.md` does not remove it from factor, local, or aggregate ratings.*
 - **Do** treat the agent harness as partly **normative** — it governs agent
   behavior, so it plays the dual area/assessment-reference role (see [An entity
   can be both an area and an assessment
@@ -1301,10 +1304,12 @@ conflicts, or duplicates. Run a closing pass over the set:
 
 ## When to update QUALITY.md
 
-A `QUALITY.md` is expected to evolve through two loops: the **improve loop** fixes
-the root area against the model, and the **learn loop** reviews the model itself
-against reality. The two never fold together — the model's own quality is never
-averaged into the root area's rating.
+A `QUALITY.md` is expected to evolve when evaluation or authoring reveals that
+the model no longer represents what quality means for the root area. The
+`quality-md` area is evaluated and rolled up like any other in-scope area; the
+distinct follow-up behavior is mutation history, not evaluation semantics. When a
+confirmed change meaningfully alters the model, record why it changed in the
+quality log.
 
 - **Do** revise when a discovery changes the context or content of the
   evaluation — a new factor that matters, a requirement whose assessment changed,
@@ -1336,8 +1341,9 @@ averaged into the root area's rating.
 
 ### Logging a model change
 
-When the learn loop actually changes the model, record it in the **quality log**
-— a curated, evidence-linked timeline of meaningful model changes under
+When a confirmed follow-up actually changes the model, record it in the
+**quality log** — a curated, evidence-linked timeline of meaningful model
+changes under
 `.quality/log/`, one dated entry per change (`YYYY-MM-DD-<slug>.md`). The log
 preserves the *why* a commit message scrolls away; its format contract lives in
 [`SKILL.md`](../SKILL.md). The judgment is *what* counts as meaningful:

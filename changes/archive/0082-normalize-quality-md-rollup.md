@@ -2,7 +2,7 @@
 type: Change Case
 title: Normalize QUALITY.md self-check roll-up
 description: Remove the special out-of-roll-up treatment for the QUALITY.md self-check area so `quality-md` evaluates and rolls up like any other modeled area, while preserving quality-log handling for model changes.
-status: Design
+status: Done
 tags: [skill, authoring, evaluation, roll-up, quality-md]
 timestamp: 2026-06-24T00:00:00Z
 ---
@@ -114,5 +114,8 @@ None.
 
 ## Status
 
-`Design`. Functional spec and design doc authored. Implementation not started;
-expected implementation is skill/spec/documentation only.
+`Done`. Implemented, verified, and archived. The runtime authoring/evaluation
+guidance and durable spec mirrors now treat `quality-md` as an ordinary in-scope
+area for evaluation and roll-up; quality-log behavior remains limited to
+meaningful confirmed model changes. No `SPECIFICATION.md`, CLI schema, or Go code
+change was needed.
