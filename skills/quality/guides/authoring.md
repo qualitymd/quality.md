@@ -206,14 +206,6 @@ escalations?
 
 ### Mark the state of a section
 
-Close each section with its unknowns, its open questions, and a state line. Both
-are scoped to what the section covers — context that feeds the model, not
-commentary on it. An **unknown** is a broad area of uncertainty within the
-section's topic that may not resolve to a single answer; an **open question** is
-sharper — a specific question about it that has a particular answer, still
-unresolved (see [Keep Scope, unknowns, open questions, and "not assessed"
-distinct](#keep-scope-unknowns-open-questions-and-not-assessed-distinct)).
-
 Because the body is largely agent-authored, the freshness signal worth trusting
 is not when a section last changed but when a person last stood behind it. The
 state line carries two reviews — the last human review (cite the person) and the
@@ -310,16 +302,8 @@ from spec.
 - **Do** use **Scope** for concerns outside the model's remit, and a section's
   **Unknowns** for in-scope concerns you've deliberately deferred or cannot yet
   define.
-- **Do** record known unknowns under the **Unknowns** of the section they bear
-  on, when missing context or weak evidence prevented that part of the body from
-  being fully identified. *This keeps uncertainty visible without pretending it
-  has already been evaluated.*
-- **Consider** keeping an **open question** distinct from an unknown: an unknown
-  is a broad area of uncertainty within the section's topic that may not resolve
-  to a single answer; an open question is a specific question about that section
-  with one particular answer, still unresolved. Both are input to the model, not
-  statements about how the model is built. *Note each in the section it bears on
-  — an open question is a standing prompt for the next review.*
+- **Do** record unknowns and open questions under the section they bear on, so
+  missing context stays visible without pretending it has already been evaluated.
 - **Don't** confuse a declared unknown (your standing declaration) with a **not
   assessed** result (an evaluator's per-run finding that evidence was missing).
 - **Do** record low *confidence* in an assessment, not only its absence. *A
@@ -576,12 +560,7 @@ modeling obligations, not optional polish.
 - **Do** model the concerns that are high-leverage and germane to the entity's
   quality domain as areas, even when no governing artifact exists yet. *A germane
   high-leverage concern left unmodeled is a coverage gap, not neutrality; carry
-  the area and record the missing anchor as a finding within it. For software
-  product quality these illustratively include requirements/intent definition,
-  data quality, and interface contracts; other domains have their own — a
-  terminology standard for a document, a schema or collection methodology for a
-  dataset, operating thresholds for a service. Treat the list as a prompt, never a
-  quota.*
+  the area and record the missing anchor as a finding within it.*
 - **Do** anchor a high-leverage area in a normative artifact — a spec, standard,
   requirements doc, contract, or style guide — and assess the area against it
   rather than embedding all the criteria inline. *An external anchor lets two
@@ -606,25 +585,14 @@ modeling obligations, not optional polish.
   high-leverage concerns to imply new expected areas as the model matures.*
 - **Do** calibrate leverage to *this* entity and trace it to a recorded Need or
   Risk. **Avoid** importing a universal roster of areas every model must carry.
-  *"High-leverage and germane here" is the inclusion test; an unbounded checklist
-  of expected areas collapses the model into generic best practice — the same trap
-  as importing a standard factor list.*
-
-This is the model's own meta-principle applied one level down: the self-check area
-already anchors the model in this guide because normative artifacts are
-high-leverage. The same reasoning applies to the concerns the evaluated entity is
-made of.
 
 #### Cover the domain's constituent kinds
 
 Deciding the root is composite (above) raises the next question: *which*
-constituents. Enumerating them by walking the repository's folders finds only the
-constituents that already have a home; the thin, scattered, or missing ones —
-often the highest-leverage early findings — stay invisible. Enumerate by
-**constituent kind** instead, inferred from the entity's quality domain, then
-model each by default (the rule below). The kinds are a prompt for what *this*
-entity asks to be cared for — what makes one germane always comes from a Need or
-Risk it presents, never from the list itself. Two questions surface them:
+constituents. Enumerating them by walking the repository's folders misses thin,
+scattered, or absent constituents. Enumerate by **constituent kind** instead,
+inferred from the entity's quality domain and traced to a Need or Risk. Two
+questions surface them:
 
 **1. Which stewardship concern is at work here?** To *steward* is to care for
 something held in trust, answerable to its stakeholders and its future. That care
@@ -717,12 +685,8 @@ root concern, not because they duplicate one another.
   — e.g. on an undecided boundary — and record the specific blocker. "Next
   iteration" and "the first model is thin" are not deferral reasons, and a blocked
   constituent still surfaces its gap per the rule above.*
-- **Do** scale coverage to *this* entity: the kinds are a prompt for what it asks
-  to be cared for, not a universal roster. *A constituent is modeled because it is
-  germane here and traces to a Need or Risk — not because the generator names it; a
-  throwaway script carries almost none. Model-by-default and "prompt, not a roster"
-  are one rule, not opposing pressures: enumerate what the domain implies, then
-  model each unless a disqualifier fires.*
+- **Do** scale coverage to *this* entity. *Model what is germane here and traces
+  to a Need or Risk; a throwaway script carries almost none.*
 - **Do** derive the audience side from the body's Needs. *The Needs already name
   the stakeholders; each audience a Need names should have an enabling — and
   verifying — constituent that is modeled or consciously accounted for.*
@@ -752,8 +716,8 @@ the actual entity, which need not be software):
 | secure              | threat model, security policy, secrets/auth config        | security                                     |
 | safeguard           | safety case, privacy/impact assessment, output guardrails | safety, privacy, compliance                  |
 
-Treat the table as a prompt for *this* entity's domain, not a checklist: many
-cells collapse into one area, several merge, and some are legitimately absent.
+Many cells collapse into one area, several merge, and some are legitimately
+absent.
 
 #### Carry the recurring use-context constituents
 
@@ -775,7 +739,7 @@ project to project; these two use-context constituents recur across them.
   justified by the context of use. *They follow the same rule as any constituent:
   modeled unless a disqualifier fires. A harness-less or throwaway project hits
   not-germane and carries neither; a germane but too-thin harness surfaces its gap
-  rather than being silently dropped (see [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds)). This is not a roster every model must hold.*
+  rather than being silently dropped (see [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds)).*
 - **Do** model the QUALITY.md self-check as an ordinary area when it is germane.
   *Use the `quality-md` key, a title of the form `<Root Title> QUALITY.md`, an
   explicit path-based `source` such as `./QUALITY.md`, factors that describe the
@@ -820,10 +784,7 @@ project to project; these two use-context constituents recur across them.
   constituent, and the **agent** is the audience. *Keep the harness as an area
   when it is germane; Agent Harnessability rates how each constituent equips an
   agent, while the harness area rates the steering artifact's own quality. Encode
-  that boundary in the model per the projection-boundary rule under [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds) — a YAML comment
-  on both the `agent-harnessability` factor and the agent-harness area, plus a
-  disambiguating clause in each description — so a reader of the generated model is
-  not left to reconstruct why one concern appears as both.*
+  that boundary in the model per the projection-boundary rule under [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds).*
 
 #### Write a description that distinguishes, not enumerates
 
@@ -907,16 +868,13 @@ its path of Factor names from that Area's `factors` map.
 - **Do** justify each factor by something concrete about *this* root area — who
   depends on it, what it is for, where it runs — not by its presence on a general
   list. *A characteristic with no user, no failure mode, and no decision riding on
-  it here does not earn a factor, however standard it is elsewhere; pull from a
-  catalog as a prompt, never as a quota.*
+  it here does not earn a factor, however standard it is elsewhere.*
 - **Do** prefer general-purpose, conventional factor names for the quality
   domain once a concern earns a factor. *For software product quality, examples
   include `reliability`, `security`, `usability`, `maintainability`,
   `performance`, `compatibility`, and `portability`; other domains have their
-  own conventional factor families. These examples are illustrative,
-  non-exhaustive, and sometimes overlapping. Requirements and assessments are
-  where the model maps those lenses to the root area's unique quality
-  expectations.*
+  own conventional factor families. Requirements and assessments map those
+  lenses to the root area's unique quality expectations.*
 - **Avoid** inventing bespoke factor names for the subject's domain when a
   conventional quality attribute covers the concern. *The factor names the
   quality lens; the requirement says what that quality means for this entity.*
@@ -939,8 +897,7 @@ on them, or lacks evidence about them.
 
 - **Do** identify the quality domain before finalizing root factors. *A software
   product, document, data set, research report, model, service operation, and
-  human process each has a different conventional factor family; these domains are
-  illustrative, non-exhaustive, and may overlap in a real model.*
+  human process each has a different conventional factor family.*
 - **Do** include the domain's common stable-stakes factors for the root area, or
   explicitly justify why each omitted one is out of scope, delegated to a child
   area, or still unresolved as an unknown. *A sparse root model should be a
@@ -1064,9 +1021,8 @@ the factor, not the factor.
     Audit trails make consequential actions reviewable after the fact.
 - **Do** keep Agent Harnessability separate from the agent harness constituent.
   *Agent Harnessability rates how each constituent equips an agent. The
-  agent-harness area rates the steering artifact's own quality — whether its map
-  is accurate, current, and a map rather than a manual. Do not assess Agent
-  Harnessability on the agent-harness area as a recursion of the same evidence.*
+  agent-harness area rates the steering artifact's own quality (see [Carry the
+  recurring use-context constituents](#carry-the-recurring-use-context-constituents)).*
 - **Do** recognize an existing `harnessability` factor with the legacy
   six-sub-factor shape as semantic coverage of the same model-wide concern.
   *When you are already authoring or revising the model, recommend renaming it to
@@ -1094,11 +1050,7 @@ the factor, not the factor.
   `credibility`; if context is stale, use `currentness`; if readers cannot
   interpret it, use `understandability`; if origin, rationale, or dependency
   paths are unclear, use `traceability`.*
-- **Do** draw from established attribute families as prompts, not quotas. *In
-  software and tooling domains, qualities such as maintainability and testability
-  can fit; in data, document, and model domains, qualities such as completeness,
-  credibility, currentness, traceability, and understandability often fit. These
-  examples are illustrative, non-exhaustive, and may overlap.*
+- **Do** draw from established attribute families as prompts, not quotas.
 
 #### Write the description as an operational definition
 
@@ -1269,14 +1221,9 @@ something inspectable is the core authoring move.
 - **Do** write one requirement when a single guide, spec, or checklist defines a
   coherent quality judgment that bears on several factors. Put the requirement at
   the area level, list every affected factor in `factors`, and reference the
-  governing entity once. *That keeps the criterion edge visible without repeating
-  the same assessment under every factor.*
+  governing entity once.
 - **Do** split the requirement only when the referenced entity defines claims
-  whose results could legitimately diverge. *A `QUALITY.md` can follow its
-  authoring guide for assessability while still lacking credibility; those are
-  separate requirements. A single conformance judgment that feeds assessability,
-  traceability, and maintainability is one requirement with several factor
-  references.*
+  whose results could legitimately diverge.
 
 ```yaml
 requirements:
@@ -1313,11 +1260,9 @@ requirements:
   assessed and rated, once.*
 - **Do** connect a claim that reads through several lenses to multiple factors
   (placement for the primary, `factors` for the rest) instead of copying it into
-  a per-factor requirement. *One assessment, counted once, feeding several factor
-  roll-ups.*
+  a per-factor requirement.
 - **Avoid** a set of requirements that reference the same entity with the same
-  assessment, sliced one per factor. *That fragments a single judgment and
-  re-assesses the entity repeatedly.*
+  assessment, sliced one per factor.
 - **But** keep genuinely independent claims separate even when they share a
   reference — the test is whether their results could legitimately diverge (one
   strong, one weak). *Many requirements can draw on one rich entity; that is not
@@ -1418,21 +1363,16 @@ quality log.
 ### Logging a model change
 
 When a confirmed follow-up actually changes the model, record it in the
-**quality log** — a curated, evidence-linked timeline of meaningful model
-changes under
-`.quality/log/`, one dated entry per change (`YYYY-MM-DD-<slug>.md`). The log
-preserves the *why* a commit message scrolls away; its format contract lives in
-[`SKILL.md`](../SKILL.md). The judgment is *what* counts as meaningful:
+**quality log**. Its format contract lives in [`SKILL.md`](../SKILL.md); this
+guide covers what counts as meaningful:
 
 - **Do** log a change that alters what the model *is* or *how it judges*: adding,
   removing, or renaming an Area, Factor, or Requirement; changing the rating
   scale, a criterion, or a relative weight; shifting scope; changing the apex or
-  required margin; or applying an evaluation recommendation. *That is the
-  judgment layer git cannot reconstruct from a diff.*
+  required margin; or applying an evaluation recommendation.
 - **Do** state whether a criterion move is deliberate *recalibration* or a *drift
   correction*, and cross-link the evaluation run and recommendation behind it when
-  the change came from one. *The evidence link is the entry's whole value over
-  `git log`.*
+  the change came from one.
 - **Do** write **one entry per coherent change** — a confirmed recommendation
   apply, a model-authoring change, or the initial population — not one per field
   touched. *The unit of record is the decision, not the edit.*
