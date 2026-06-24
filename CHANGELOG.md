@@ -32,6 +32,13 @@ QUALITY.md specification.
   tests, specs, docs, and a threat model are modeled or consciously accounted for
   instead of silently missing. Setup and the Top 10 QUALITY.md checks gain
   matching guidance and a routing finding.
+- The authoring guide's stewardship-concern guidance is now grounded in the
+  phenomenology of care: a constituent kind is a prompt for what the entity asks
+  to be cared for (the claim comes from a Need or Risk, not the list), its artifact
+  is read as evidence of tending rather than proof of quality, the protective pair
+  *secure*/*safeguard* answers to who is vulnerable, and the lifecycle concerns
+  recur rather than completing. Framing only — the concerns and the earn-it
+  guardrail are unchanged.
 
 ### Packaging
 

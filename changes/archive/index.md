@@ -283,3 +283,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   secure/safeguard protective pair) and an audience×purpose axis (Diátaxis), with
   a three-projections rule and the earn-it guardrail; added matching setup and
   Top 10 guidance; guide and guide-spec edits only, no CLI/Go change (`Done`).
+- [0077 — Care-grounded stewardship concerns](0077-stewardship-care-grounding.md) -
+  refined 0076's stewardship-concern generator with the phenomenology of care
+  (Rousse & Spivak): the artifact is the *trace* of tending rather than the care
+  itself, the claim that earns a constituent comes from a Need or Risk rather than
+  the list, the protective pair answers to vulnerability, stewardship is
+  holding-in-trust, and the lifecycle band is recurring; authoring guide and
+  durable guide-spec edits only, no CLI/Go change (`Done`).

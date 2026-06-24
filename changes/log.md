@@ -2,6 +2,50 @@
 
 ## 2026-06-24
 
+- **Done**: Landed
+  [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md)
+  and moved the parent concept and its child folder into
+  [`archive/`](archive/index.md). Removed it from the bundle [index](index.md) and
+  recorded it in the archive [index](archive/index.md). Care-grounding of the
+  stewardship-concern generator; documentation-only, no format or code change.
+- **In-Review**: Completed implementation of
+  [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md).
+  Reframed the "Cover the domain's constituent kinds" authoring subsection
+  (steward-as-holding-in-trust, claim-from-a-Need-or-Risk, artifact-as-evidence,
+  recurring lifecycle band, vulnerability-grounded protective pair, and the new
+  constituent-vs-stewardship-quality "Do" bullet), aligned the durable authoring
+  guide spec and promoted the rationale, updated the guides log, and added the
+  CHANGELOG note. Documentation-only; reconciled the Affected artifacts list (setup
+  workflow and Top 10 checks assessed as no-change) and verified with
+  `mise run check`.
+- **In-Progress**: Advanced
+  [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning on the "Cover the domain's constituent kinds" authoring subsection
+  and its durable guide spec.
+- **Advance**: Moved
+  [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md)
+  to `Design` and authored its
+  [design doc](archive/0077-stewardship-care-grounding/design.md). The design settles the
+  five care refinements (artifact-as-evidence, claim-from-a-Need-or-Risk,
+  protective-pair-under-vulnerability, steward-as-holding-in-trust, recurring
+  lifecycle) and the new constituent-vs-stewardship-quality "Do" bullet, maps each
+  to where it lands in the authoring subsection, and records why the phenomenology
+  is taken as framing rather than a category-theory formalism. Implementation not
+  started.
+- **Creation**: Added
+  [0077 - Care-grounded stewardship concerns](archive/0077-stewardship-care-grounding.md)
+  (`status: Draft`) with its child
+  [index](archive/0077-stewardship-care-grounding/index.md) and
+  [functional spec](archive/0077-stewardship-care-grounding/spec.md). The case refines
+  [0076](archive/0076-domain-constituent-kinds.md)'s stewardship-concern generator
+  with the phenomenology of care (Rousse & Spivak): the artifact is the *trace* of
+  tending rather than the care itself, the claim that earns a constituent comes
+  from a Need or Risk rather than the list, the protective pair answers to
+  vulnerability, stewardship is defined as holding-in-trust, and the lifecycle band
+  is recurring rather than a once-through pipeline. No format, schema, CLI, or
+  evaluation change. Listed it in the bundle [index](index.md). Design and
+  implementation not started.
 - **Creation**: Added
   [0076 - Domain constituent kinds and stewardship concerns](archive/0076-domain-constituent-kinds.md)
   (`status: Draft`) with its child [index](archive/0076-domain-constituent-kinds/index.md).

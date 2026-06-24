@@ -2,6 +2,14 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) for
+  [0077 - Care-grounded stewardship concerns](../../../../changes/0077-stewardship-care-grounding.md).
+  The guide's stewardship-concern generator must now read as care — an activity of
+  tending whose artifact is its trace — so the claim that earns a constituent comes
+  from a Need or Risk rather than the generator list, a present artifact is evidence
+  (an area) distinct from whether the tending is done well (a factor), and the
+  protective pair is cross-cutting stewardship under vulnerability. Framing only;
+  the nine concerns, the two axes, and the earn-it test are unchanged.
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [top-10-quality-md-checks](top-10-quality-md-checks-md.md) guide contract for
   [0076 - Domain constituent kinds and stewardship concerns](../../../../changes/0076-domain-constituent-kinds.md).

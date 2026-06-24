@@ -244,7 +244,9 @@ band (discover, define, realize, verify, enable, operate, maintain) and a
 cross-cutting **protective** pair, **secure** (guard the entity from harm by the
 world) and **safeguard** (guard stakeholders and the environment from harm by the
 entity); the guide **MUST** name each concern by its function rather than a
-domain-specific artifact and **MUST NOT** present `safeguard` as a synonym for
+domain-specific artifact, **MUST** present the protective pair as cross-cutting
+stewardship under vulnerability — tracking who is exposed rather than which
+lifecycle phase applies — and **MUST NOT** present `safeguard` as a synonym for
 `secure`. The audience × purpose axis **MUST** cite Diátaxis once as that lens
 applied to the *enable* concern and **MUST** be derivable from the body's Needs.
 
@@ -256,10 +258,16 @@ factor; a security policy is a constituent). The guide **MUST** instruct the
 author to account for each implied constituent kind — model it, defer it in
 Scope, mark it out of Scope, or record it as an unknown — treating silence as a
 coverage gap, and **MUST** teach carrying a germane, high-leverage kind as an area
-even when its artifact is thin or missing, recording the gap as a finding. It
-**MUST** keep the inclusion test earned (owned, inspectable artifact; divergent
-factor family; traced to a Need or Risk) and **MUST NOT** present the kinds as a
-roster every model must carry.
+even when its artifact is thin or missing, recording the gap as a finding. The
+guide **MUST** frame the constituent kinds as prompts for what the entity asks to
+be cared for, with the claim that earns an area originating in a Need or Risk it
+presents rather than in the generator list, and **MUST** distinguish the
+constituent question (whether a tending leaves an owned, inspectable artifact,
+modeled as an area) from the stewardship-quality question (whether it is done
+well, carried by factors), reading a present artifact as evidence rather than
+proof. It **MUST** keep the inclusion test earned (owned, inspectable artifact;
+divergent factor family; traced to a Need or Risk) and **MUST NOT** present the
+kinds as a roster every model must carry.
 
 > Rationale: 0074 named the composite shape but left domain constituents to
 > "vary with what is modeled", so a setup-authored model enumerated constituents
@@ -268,3 +276,11 @@ roster every model must carry.
 > audience/purpose) makes those kinds inferable once the domain is named, while
 > the three-projections rule keeps factors, constituents, and audiences from
 > double-counting. — 0076
+>
+> Rationale: the stewardship concerns are care — an activity of tending whose
+> artifact is its *trace* — so the claim that earns a constituent comes from a
+> Need or Risk the entity presents, not from the generator list, and a present
+> artifact is evidence (an *area*) distinct from whether the tending is done well
+> (a *factor*). The protective pair is stewardship under vulnerability, which is
+> why it cross-cuts the lifecycle rather than sitting in it. Framing only: the
+> nine concerns, the two axes, and the earn-it test are unchanged. — 0077

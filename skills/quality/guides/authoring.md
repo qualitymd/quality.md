@@ -622,21 +622,32 @@ constituents. Enumerating them by walking the repository's folders finds only th
 constituents that already have a home; the thin, scattered, or missing ones —
 often the highest-leverage early findings — stay invisible. Enumerate by
 **constituent kind** instead, inferred from the entity's quality domain, then
-account for each kind. Two questions generate the kinds.
+account for each kind. The kinds are a prompt for what *this* entity asks to be
+cared for — the claim that earns one always comes from a Need or Risk it presents,
+never from the list itself. Two questions surface them:
 
-**1. Which stewardship concern leaves an artifact here?** Caring for any entity
-carries a recurring set of concerns, and each tends to leave an authored,
-inspectable artifact that is a candidate constituent. They fall in two bands:
+**1. Which stewardship concern is at work here?** To *steward* is to care for
+something held in trust, answerable to its stakeholders and its future. That care
+carries a recurring set of concerns; each is an ongoing activity of tending that
+usually leaves an authored, inspectable artifact as its trace — the candidate
+constituent. Read the artifact as evidence of tending, not as the tending itself:
+its presence is not the care, and its absence is not the lack of it. They fall in
+two bands:
 
-- *Lifecycle* (roughly sequential): **discover** the problem and solution space →
-  **define** what it should be → **realize** it → **verify** it → **enable** its
-  audiences to use it → **operate** it → **maintain** it.
-- *Protective* (cross-cutting and bidirectional): **secure** — guard the entity
-  from harm by the world (breach, tampering, injection); and **safeguard** —
-  guard stakeholders and the environment, internal and external, from harm by the
-  entity (a destructive action, an unsafe output, privacy harm to a data
-  subject). The two are orthogonal: an entity can be hardened against attackers
-  yet routinely harm its own users.
+- *Lifecycle* (recurring, not a once-through pipeline): **discover** the problem
+  and solution space → **define** what it should be → **realize** it → **verify**
+  it → **enable** its audiences to use it → **operate** it → **maintain** it. The
+  arrows show a typical first pass; the concerns are standing — revisited for as
+  long as the entity is tended, with *operate* and *maintain* never concluding.
+- *Protective* (cross-cutting and bidirectional): stewardship under
+  **vulnerability** — a party that can be harmed and cannot fully protect itself.
+  **secure** guards the entity from harm by the world (breach, tampering,
+  injection); **safeguard** guards stakeholders and the environment, internal and
+  external, from harm by the entity (a destructive action, an unsafe output,
+  privacy harm to a data subject). The two are orthogonal: an entity can be
+  hardened against attackers yet routinely harm its own users. This band tracks
+  who is exposed, not which phase the work is in, so it cross-cuts the lifecycle
+  rather than sitting inside it.
 
 **2. Whom does each artifact serve, and for what job?** A concern splits into
 several constituents when they serve different audiences or purposes — by
@@ -665,6 +676,12 @@ root concern, not because they duplicate one another.
 - **Do** derive the audience side from the body's Needs. *The Needs already name
   the stakeholders; each audience a Need names should have an enabling — and
   verifying — constituent that is modeled or consciously accounted for.*
+- **Do** keep the constituent question separate from the stewardship-quality
+  question. *Whether a tending leaves an owned, inspectable artifact is the area
+  question; whether it is done well — attuned to this entity's situation, not
+  merely present or complete — is the factor question. A populated area can still
+  rate poorly; an empty one that carries a missing-anchor finding is itself a true
+  signal.*
 - **Do** carry a germane, high-leverage kind as an area even when its artifact is
   thin or missing, recording the gap as a finding within it. *A missing test
   suite or absent threat model is a high-value early signal; an empty area with a
