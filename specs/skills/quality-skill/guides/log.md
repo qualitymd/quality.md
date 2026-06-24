@@ -2,6 +2,19 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [top-10-quality-md-checks](top-10-quality-md-checks-md.md) guide contract for
+  [0076 - Domain constituent kinds and stewardship concerns](../../../../changes/0076-domain-constituent-kinds.md).
+  The authoring guide must now teach enumerating a composite root's domain
+  constituents by **constituent kind** using two generators — a
+  stewardship-concern axis (a lifecycle band plus the protective pair secure and
+  safeguard) and an audience×purpose axis (Diátaxis on the *enable* concern) —
+  the three-projections rule (a concern projects as factor, constituent, and
+  audience without double-counting), and the rule that germane high-leverage kinds
+  are carried as areas even when thin or missing, earned not as a roster. The Top
+  10 area-and-factor-shape check must flag a domain whose implied constituent
+  kinds are neither modeled nor accounted for, earned-not-roster.
+
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for
   [0075 - Rating title emoji defaults](../../../../changes/0075-rating-title-emoji-defaults.md).
   The guide must now present `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and

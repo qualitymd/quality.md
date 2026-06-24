@@ -66,6 +66,9 @@ orientation needs the complete inspection.
   (checks 2-4)
 - Factors map to the body's needs and risks, and requirements are concrete with a
   usable assessment each. (checks 8-9)
+- For a composite root, the domain's constituent kinds (e.g. specs, tests, docs,
+  operations, security/safety) are each modeled or consciously accounted for, not
+  silently missing. (check 8)
 
 Classify maturity from how many of these hold:
 
@@ -196,6 +199,13 @@ Factors should be meaningful quality lenses, not vague labels alone.
   route to authoring. Treat these as expected defaults of the context of use, not
   required areas, and do not flag a harness-less or throwaway project for their
   absence.
+- Finding when the domain implies constituent kinds the body evidences or implies
+  — for software product quality: tests, documentation modes
+  (tutorial/how-to/reference/explanation), specs/requirements, operations, or a
+  security/safety artifact — but the model neither models them as areas nor
+  accounts for them (deferred, out of scope, or unknown): route to authoring.
+  Treat the kinds as a prompt for the named domain, not a roster; do not flag a
+  kind a throwaway or narrowly scoped entity would not carry.
 - Finding when child areas merely mirror the parent without distinct factors or
   requirements: route to authoring.
 - Finding when major body needs/risks have no factor: route to authoring.

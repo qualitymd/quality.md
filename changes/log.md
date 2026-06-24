@@ -3,6 +3,42 @@
 ## 2026-06-24
 
 - **Creation**: Added
+  [0076 - Domain constituent kinds and stewardship concerns](archive/0076-domain-constituent-kinds.md)
+  (`status: Draft`) with its child [index](archive/0076-domain-constituent-kinds/index.md).
+  The case closes the domain-constituent coverage gap 0074 left open: it teaches
+  the authoring guidance to enumerate a composite root's constituents by
+  stewardship concerns (a lifecycle band plus the secure/safeguard protective
+  pair) and an audience×purpose axis, with a three-projections rule that keeps
+  factors, constituents, and audiences from double-counting. Design and
+  implementation not started. Listed it in the bundle [index](index.md).
+- **Advance**: Moved
+  [0076 - Domain constituent kinds and stewardship concerns](archive/0076-domain-constituent-kinds.md)
+  to `Design` and authored its
+  [design doc](archive/0076-domain-constituent-kinds/design.md). The design settles the
+  two-axis taxonomy (stewardship concerns × audience/purpose), the secure vs.
+  safeguard direction-of-harm split, the three-projections rule, and where each
+  edit lands across the authoring guide, setup workflow, and Top 10 checks.
+  Implementation not started.
+- **In-Progress**: Advanced
+  [0076 - Domain constituent kinds and stewardship concerns](archive/0076-domain-constituent-kinds.md)
+  from `Design` to `In-Progress`; spec and design are settled and implementation
+  is beginning across the authoring guide, the setup workflow, the Top 10 checks,
+  and the durable guide specs.
+- **In-Review**: Completed implementation of
+  [0076 - Domain constituent kinds and stewardship concerns](archive/0076-domain-constituent-kinds.md).
+  Added the "Cover the domain's constituent kinds" authoring subsection and the
+  use-context cross-reference, the composite-root constituent-enumeration step in
+  the setup workflow, the Top 10 Check 8 missing-domain-constituent finding and
+  the condensed-checklist line, aligned the authoring and top-10 guide specs and
+  the guides log, and added the CHANGELOG note. Documentation-only; reconciled the
+  Affected artifacts list and verified with `mise run check`.
+- **Done**: Landed
+  [0076 - Domain constituent kinds and stewardship concerns](archive/0076-domain-constituent-kinds.md)
+  and moved the parent concept and its child folder into
+  [`archive/`](archive/index.md). Removed it from the bundle [index](index.md)
+  and recorded it in the archive [index](archive/index.md).
+
+- **Creation**: Added
   [0075 - Rating title emoji defaults](archive/0075-rating-title-emoji-defaults.md)
   (`status: Draft`) with its child
   [spec](archive/0075-rating-title-emoji-defaults/spec.md). The case makes

@@ -234,3 +234,37 @@ normative and plays the dual area/assessment-reference role.
 > with a single constituent and drops the other high-leverage artifacts; naming
 > the composite shape and the recurring use-context constituents keeps them
 > visible while preserving domain agnosticism. — 0074
+
+The guide **MUST** teach that, for a composite root, the author enumerates
+**domain constituents** by **constituent kind** inferred from the entity's
+quality domain — not only the components the repository already has folders for —
+using two generators: a **stewardship-concern** axis and an **audience ×
+purpose** axis. The stewardship-concern axis **MUST** comprise a **lifecycle**
+band (discover, define, realize, verify, enable, operate, maintain) and a
+cross-cutting **protective** pair, **secure** (guard the entity from harm by the
+world) and **safeguard** (guard stakeholders and the environment from harm by the
+entity); the guide **MUST** name each concern by its function rather than a
+domain-specific artifact and **MUST NOT** present `safeguard` as a synonym for
+`secure`. The audience × purpose axis **MUST** cite Diátaxis once as that lens
+applied to the *enable* concern and **MUST** be derivable from the body's Needs.
+
+The guide **MUST** teach the **three-projections rule**: a stewardship concern
+projects as a **factor**, a **constituent**, and an **audience**, so shared names
+reflect a shared concern rather than duplication, and the author models the
+projection meant rather than double-counting (the security *of* an area is a
+factor; a security policy is a constituent). The guide **MUST** instruct the
+author to account for each implied constituent kind — model it, defer it in
+Scope, mark it out of Scope, or record it as an unknown — treating silence as a
+coverage gap, and **MUST** teach carrying a germane, high-leverage kind as an area
+even when its artifact is thin or missing, recording the gap as a finding. It
+**MUST** keep the inclusion test earned (owned, inspectable artifact; divergent
+factor family; traced to a Need or Risk) and **MUST NOT** present the kinds as a
+roster every model must carry.
+
+> Rationale: 0074 named the composite shape but left domain constituents to
+> "vary with what is modeled", so a setup-authored model enumerated constituents
+> by folder and silently dropped the kinds without a folder — tests, specs, docs,
+> a threat model. A domain-agnostic generator (stewardship concerns ×
+> audience/purpose) makes those kinds inferable once the domain is named, while
+> the three-projections rule keeps factors, constituents, and audiences from
+> double-counting. — 0076

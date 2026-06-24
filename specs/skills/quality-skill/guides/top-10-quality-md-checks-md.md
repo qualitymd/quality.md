@@ -165,9 +165,14 @@ flattened into a single primary-subject root — distinct constituent artifacts 
 different kinds described in the body, but all factors held at the root as one
 family — and **SHOULD** flag a missing expected use-context constituent (an
 owned, high-leverage agent harness or QUALITY.md self-check not modeled as a
-constituent). It **MUST** treat such constituents as earned expected defaults of
-the context of use, not a required roster, and **MUST NOT** flag a harness-less
-or throwaway project for their absence.
+constituent). It **SHOULD** also flag a domain that implies constituent kinds the
+body evidences or implies — for software product quality, tests, documentation
+modes, specs/requirements, operations, or a security/safety artifact — that the
+model neither models as areas nor accounts for (deferred, out of scope, or
+unknown). It **MUST** treat all such constituents as earned expected defaults of
+the context or domain, not a required roster, and **MUST NOT** flag a harness-less
+or throwaway project, or a kind a narrowly scoped entity would not carry, for
+their absence.
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

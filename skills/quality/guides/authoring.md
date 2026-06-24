@@ -615,6 +615,89 @@ already anchors the model in this guide because normative artifacts are
 high-leverage. The same reasoning applies to the concerns the evaluated entity is
 made of.
 
+#### Cover the domain's constituent kinds
+
+Deciding the root is composite (above) raises the next question: *which*
+constituents. Enumerating them by walking the repository's folders finds only the
+constituents that already have a home; the thin, scattered, or missing ones —
+often the highest-leverage early findings — stay invisible. Enumerate by
+**constituent kind** instead, inferred from the entity's quality domain, then
+account for each kind. Two questions generate the kinds.
+
+**1. Which stewardship concern leaves an artifact here?** Caring for any entity
+carries a recurring set of concerns, and each tends to leave an authored,
+inspectable artifact that is a candidate constituent. They fall in two bands:
+
+- *Lifecycle* (roughly sequential): **discover** the problem and solution space →
+  **define** what it should be → **realize** it → **verify** it → **enable** its
+  audiences to use it → **operate** it → **maintain** it.
+- *Protective* (cross-cutting and bidirectional): **secure** — guard the entity
+  from harm by the world (breach, tampering, injection); and **safeguard** —
+  guard stakeholders and the environment, internal and external, from harm by the
+  entity (a destructive action, an unsafe output, privacy harm to a data
+  subject). The two are orthogonal: an entity can be hardened against attackers
+  yet routinely harm its own users.
+
+**2. Whom does each artifact serve, and for what job?** A concern splits into
+several constituents when they serve different audiences or purposes — by
+audience (learner, practitioner, operator, maintainer, downstream, auditor, the
+public) and by job (acquire vs. apply, act vs. understand).
+[Diátaxis](https://diataxis.fr/) is this lens applied to the *enable* concern:
+tutorial, how-to, reference, and explanation are four constituents with different
+factor families, not one "documentation" area. The same audience×purpose split
+recurs elsewhere — a maintainer-facing CI gate and a user-facing acceptance suite
+are two *verify* constituents.
+
+A concern projects into the model in up to three ways — as a **factor** (the
+quality lens), a **constituent** (the artifact that pursues it), and an
+**audience** (who it serves or protects). They share a name because they share a
+root concern, not because they duplicate one another.
+
+- **Do** name the projection you are modeling and model it once. *`secure` is a
+  security factor on each area, a threat-model constituent, and an auditor
+  audience; the security of the server is a factor on the server area, while the
+  security policy is its own area. Modeling the same projection twice
+  double-counts.*
+- **Do** enumerate the constituent kinds the entity's domain implies, then
+  account for each: model it, defer it in Scope, mark it out of Scope, or record
+  it as an unknown. *Silence is a coverage gap, not neutrality — the same failure
+  as a sparse factor list (see [Cover the domain's stable stakes](#cover-the-domains-stable-stakes-before-specializing)).*
+- **Do** derive the audience side from the body's Needs. *The Needs already name
+  the stakeholders; each audience a Need names should have an enabling — and
+  verifying — constituent that is modeled or consciously accounted for.*
+- **Do** carry a germane, high-leverage kind as an area even when its artifact is
+  thin or missing, recording the gap as a finding within it. *A missing test
+  suite or absent threat model is a high-value early signal; an empty area with a
+  missing-anchor finding surfaces it, where folder-walking drops it. This is the
+  [normative-artifact rule](#ground-high-leverage-concerns-in-normative-artifacts)
+  applied to whole constituents.*
+- **Avoid** importing the list as a roster every model must carry. *The kinds are
+  a prompt, not a quota; a kind earns an area only when it leaves an owned,
+  inspectable artifact, its factor family diverges from its siblings, and it
+  traces to a Need or Risk. A throwaway script earns almost none.*
+- **Consider** the audience×purpose split as the way to find a constituent's
+  internal shape: a constituent that fans out by audience or job is itself
+  composite or a collection (see [Choose the decomposition shape](#choose-the-decomposition-shape-primary-subject-collection-or-composite)).
+
+The kinds and their conventional factor families are inferable once the domain is
+named (illustrative — software product quality as one domain; adapt the column to
+the actual entity, which need not be software):
+
+| Stewardship concern | Software-product instance                                 | Conventional factors                         |
+| ------------------- | --------------------------------------------------------- | -------------------------------------------- |
+| discover            | research notes, design explorations, decision records     | traceability, credibility                    |
+| define              | requirements, specs, interface contracts, schema          | completeness, consistency, traceability      |
+| realize             | source, services                                          | reliability, performance, maintainability    |
+| verify              | tests, validation suites                                  | coverage, determinism, maintainability       |
+| enable              | tutorial / how-to / reference / explanation (Diátaxis)    | currentness, completeness, understandability |
+| operate             | runbooks, deploy config, monitoring-as-code, SLOs         | reliability, operability, observability      |
+| maintain            | migrations, upgrade & deprecation guides, changelog       | maintainability, modifiability, currentness  |
+| secure              | threat model, security policy, secrets/auth config        | security                                     |
+| safeguard           | safety case, privacy/impact assessment, output guardrails | safety, privacy, compliance                  |
+
+Treat the table as a prompt for *this* entity's domain, not a checklist: many
+cells collapse into one area, several merge, and some are legitimately absent.
+
 #### Carry the recurring use-context constituents
 
 QUALITY.md is domain-agnostic in *what* it models, but its assumed context of use
@@ -628,8 +711,8 @@ what the root entity is:
 
 Distinguish these from **domain constituents**, which vary with what is modeled
 (a data set's schema and collection methodology; a document's terminology
-standard and sources). Domain constituents change from project to project; these
-two use-context constituents recur across them.
+standard and sources) — enumerate those with [Cover the domain's constituent kinds](#cover-the-domains-constituent-kinds). Domain constituents change from
+project to project; these two use-context constituents recur across them.
 
 - **Consider** the harness and the self-check expected constituents of a composite
   root, justified by the context of use — but **earn** them, do not assume them.

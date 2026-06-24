@@ -277,3 +277,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   made emoji-prefixed Rating Level titles the default for `qualitymd init`,
   `qualitymd init --minimal`, and `/quality setup`, while keeping stable
   `level` IDs plain and leaving `SPECIFICATION.md` neutral (`Done`).
+- [0076 — Domain constituent kinds and stewardship concerns](0076-domain-constituent-kinds.md) -
+  taught the authoring guide to enumerate a composite root's domain constituents
+  by constituent kind, drawn from stewardship concerns (a lifecycle band plus the
+  secure/safeguard protective pair) and an audience×purpose axis (Diátaxis), with
+  a three-projections rule and the earn-it guardrail; added matching setup and
+  Top 10 guidance; guide and guide-spec edits only, no CLI/Go change (`Done`).

@@ -25,6 +25,13 @@ QUALITY.md specification.
   root. The Top 10 QUALITY.md checks gain matching routing findings for a
   composite entity flattened into one root and for a missing expected
   constituent.
+- The authoring guide now teaches enumerating a composite root's domain
+  constituents by *constituent kind* — drawn from the entity's stewardship
+  concerns (a lifecycle band plus the protective pair *secure* and *safeguard*)
+  and an audience×purpose axis (Diátaxis) — so high-leverage constituents such as
+  tests, specs, docs, and a threat model are modeled or consciously accounted for
+  instead of silently missing. Setup and the Top 10 QUALITY.md checks gain
+  matching guidance and a routing finding.
 
 ### Packaging
 

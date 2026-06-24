@@ -382,6 +382,17 @@ frontmatter model:
   than invented Rating Levels.
 - Factors and child Areas derive from project needs, risks, stakeholder
   concerns, component boundaries, and available evidence.
+- When the root is composite, enumerate the constituent *kinds* the domain
+  implies — not only the components that already have folders in the repository.
+  Walk the stewardship concerns (discover, define, realize, verify, enable,
+  operate, maintain; and the protective pair secure and safeguard) and the
+  audiences the Needs name, then account for each kind: model it, defer it in
+  Scope, mark it out of Scope, or record it as an unknown. Carry a germane,
+  high-leverage kind (e.g. tests, specs, a threat model) as an Area even when its
+  artifact is thin or missing, recording the gap as a finding rather than
+  dropping the Area. Treat the kinds as a prompt, not a quota — earn each Area
+  (owned, inspectable artifact; divergent factors; traced to a Need or Risk). See
+  the authoring guide's "Cover the domain's constituent kinds".
 - Requirements are small, concrete, and assessable from agent-accessible
   evidence, or explicitly name missing evidence.
 - Include the `quality-md` self-check Area when appropriate unless the user
