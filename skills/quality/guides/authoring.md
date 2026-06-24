@@ -776,6 +776,11 @@ project to project; these two use-context constituents recur across them.
   reference](#an-entity-can-be-both-an-area-and-an-assessment-reference)). *Watch
   for double-counting if its influence is also assessed inside a domain
   constituent.*
+- **Do** distinguish the three projections of the agent-collaboration concern:
+  **harnessability** is the model-wide factor, the **agent harness** is the
+  constituent, and the **agent** is the audience. *Keep the harness as an area
+  when it is germane; harnessability rates how each constituent equips an agent,
+  while the harness area rates the steering artifact's own quality.*
 
 #### Write a description that distinguishes, not enumerates
 
@@ -916,6 +921,81 @@ on them, or lacks evidence about them.
   requirements say what that quality means for this root area.*
 - **Avoid** padding the model with factors no stakeholder would notice and no
   decision would use. *The aim is coverage adequacy, not ceremony.*
+
+#### Carry harnessability for agent-collaborated composite roots
+
+For an agent-collaborated composite root, propose **harnessability** as a
+model-wide umbrella factor: the degree to which a project equips an agent to do
+good work on it largely unsupervised — to perceive the project, take a scoped
+unit of work, act within it, confirm its own output, and stay safely bounded —
+from checked-in materials and tooling rather than out-of-band human knowledge or
+synchronous supervision. It matters because human attention is the scarce
+resource in agent-collaborated work.
+
+Harnessability is a deliberate umbrella: do not rate the parent directly.
+Decompose it into independently assessable sub-factors, each with its own
+non-overlapping share. Name the quality the project exhibits, not the harness
+artifact itself: guides, sensors, sandboxes, scripts, and gates are evidence for
+the factor, not the factor.
+
+- **Do** include harnessability by default for an agent-collaborated composite
+  root. *A thin or absent harness is not a reason to drop the factor; it is a low
+  rating and a finding, the same way no tests is not a reason to omit
+  `testability`.*
+- **Do** use these sub-factors as the harnessability decomposition, adapting the
+  example requirements to the entity's domain:
+  - **agent-accessibility** — the degree to which decision-relevant knowledge,
+    structure, intent, and observable behavior are present and intelligible in
+    materials an agent can reach in-context at the moment of work. Example
+    requirements: a stable minimal agent entry point points to deeper material
+    without blowing the context budget; decision-relevant knowledge is durably
+    recorded and discoverable; needed behavior signals are reachable and
+    machine-parseable. Boundary: this is in-context machine reachability, not
+    general human understandability; cede durable decision-record existence to
+    traceability and raw instrumentation to observability.
+  - **task-specifiability** — the degree to which a unit of work can be handed to
+    an agent as a self-contained, scoped assignment with explicit success criteria
+    and known boundaries. Example requirements: goals, non-goals, success
+    criteria, and starting points are articulable before work begins. Boundary:
+    this frames the task; self-verifiability checks whether the criteria can be
+    mechanically confirmed.
+  - **agent-operability** — the degree to which an agent, including a fresh
+    session, can establish and operate the working environment from recorded
+    materials: the tools, data, accounts, systems, and known starting state the
+    work runs on. Example requirements: a fresh session reaches ready-to-work
+    state without human-led setup; needed access and inputs are recorded; the
+    act-then-observe loop is bounded. Boundary: this turns operability toward the
+    agent's working environment; containment-of-action confines the access this
+    equips.
+  - **self-verifiability** — the degree to which the project gives an agent
+    objective, machine-readable signals it can run on demand to confirm whether
+    its own change is correct, with remediation-bearing output. Example
+    requirements: a command or action returns objective pass/fail without human
+    setup; failures point toward the fix; non-deterministic or behavioral
+    outcomes have runnable evals. Boundary: this owns the actionability of
+    feedback; enforcement-of-standards binds regardless of whether the agent reads
+    the signal.
+  - **enforcement-of-standards** — the degree to which stated quality standards
+    hold regardless of agent behavior because non-compliant output is prevented by
+    deterministic gates rather than advisory prose. Example requirements: quality
+    invariants are blocked by tooling; controls are mutually consistent and
+    high-signal; suppression escapes are constrained. Boundary: this prevents
+    non-compliant output; containment-of-action prevents out-of-scope action.
+  - **containment-of-action** — the degree to which an agent's permitted actions
+    are confined by enforced limits such as sandboxes, permission allowlists, and
+    approval gates. Example requirements: an erroneous or unattended run cannot
+    escalate scope, reach sensitive resources, or take consequential real-world
+    action such as filing to a court, moving money, emailing a client, or deleting
+    records without approval. Boundary: cede external threat posture to security
+    where an area carries it; this confines the agent's own actions while working.
+- **Do** keep harnessability separate from the agent harness constituent.
+  *Harnessability rates how each constituent equips an agent. The agent-harness
+  area rates the steering artifact's own quality — whether its map is accurate,
+  current, and a map rather than a manual. Do not assess harnessability on the
+  agent-harness area as a recursion of the same evidence.*
+- **Avoid** adding "improve the harness over time" as a seventh sub-factor. *That
+  is the model-wide learn loop improving this equipping, not a sibling quality
+  beside the six.*
 
 #### Name the quality, not the practice
 

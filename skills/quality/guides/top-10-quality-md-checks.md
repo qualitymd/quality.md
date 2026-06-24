@@ -69,6 +69,8 @@ orientation needs the complete inspection.
 - For a composite root, the domain's constituent kinds (e.g. specs, tests, docs,
   operations, security/safety) are each modeled or consciously accounted for, not
   silently missing. (check 8)
+- For an agent-collaborated composite root, harnessability or its sub-factors are
+  present as model-wide factors unless clearly not germane. (check 8)
 
 Classify maturity from how many of these hold:
 
@@ -199,6 +201,11 @@ Factors should be meaningful quality lenses, not vague labels alone.
   route to authoring. These are modeled by default given the context of use; do
   not flag a harness-less or throwaway project, which hits the not-germane
   disqualifier.
+- Finding when an agent-collaborated composite root does not carry
+  harnessability or its sub-factors among its model-wide factors: route to
+  authoring. Do not flag a non-agent-collaborated, harness-less, throwaway, or
+  narrowly scoped entity where the factor is not germane. A thin or absent harness
+  is rating evidence, not a reason to omit the factor.
 - Finding when the domain implies a germane constituent kind the body evidences or
   implies — for software product quality: tests, documentation modes
   (tutorial/how-to/reference/explanation), specs/requirements, operations, or a

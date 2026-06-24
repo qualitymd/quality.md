@@ -4,6 +4,17 @@
 
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [Top 10 checks contract](top-10-quality-md-checks-md.md) for
+  [0081 - Harnessability factor](../../../../changes/archive/0081-harnessability-factor.md).
+  The guide now must teach harnessability as the model-wide factor projection of
+  the agent-collaboration concern for agent-collaborated composite roots, distinct
+  from the agent harness constituent and agent audience. It is a non-directly-rated
+  umbrella decomposed into six sub-factors (agent-accessibility,
+  task-specifiability, agent-operability, self-verifiability,
+  enforcement-of-standards, containment-of-action), proposed by default and never
+  omitted for harness thinness. The Top 10 area-and-factor-shape check now flags
+  missing harnessability coverage unless the factor is not germane.
+- **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for
   [0080 - Model constituents by default](../../../../changes/0080-model-constituents-by-default.md).
   The constituent-coverage contract is now **model-by-default**: enumerate the
   implied kinds and model each as its own area unless one of two disqualifiers

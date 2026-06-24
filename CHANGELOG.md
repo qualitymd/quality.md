@@ -54,6 +54,13 @@ QUALITY.md specification.
   composite model that leaves a germane constituent unmodeled or merely deferred no
   longer reaches `evaluation-ready`. This makes a first-pass model as full as the
   evidence supports.
+- The authoring guide now teaches harnessability as the model-wide factor
+  projection of the agent-collaboration concern for agent-collaborated composite
+  roots, decomposed into six sub-factors: agent-accessibility,
+  task-specifiability, agent-operability, self-verifiability,
+  enforcement-of-standards, and containment-of-action. Setup proposes it by
+  default, the Top 10 checks flag missing coverage, and thin or absent harnesses
+  are treated as rating evidence rather than omission reasons.
 
 ### Packaging
 

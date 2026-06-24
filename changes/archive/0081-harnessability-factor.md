@@ -2,7 +2,7 @@
 type: Change Case
 title: Harnessability factor
 description: Add harnessability — how well a project equips an agent to work on it — as a model-wide factor (with sub-factors) the skill proposes by default for agent-collaborated composite roots, so the agent-collaboration concern leads with its factor projection instead of an easily-deferred area.
-status: Draft
+status: Done
 tags: [skill, authoring, setup, factors, harnessability, agentic]
 timestamp: 2026-06-24T00:00:00Z
 ---
@@ -12,7 +12,7 @@ timestamp: 2026-06-24T00:00:00Z
 A **Change Case** to give the agent-collaboration concern its *factor* projection
 in the `/quality` skill. Today the skill carries that concern only as a
 *constituent* — the **agent harness** (see [Carry the recurring use-context
-constituents](../skills/quality/guides/authoring.md)) — and 0080 made that
+constituents](../../skills/quality/guides/authoring.md)) — and 0080 made that
 constituent model-by-default. But the concern's most useful projection across a
 composite root is a **factor**: *how well does each part of this project equip an
 agent to work on it well?* That question recurs across constituents, which is the
@@ -135,7 +135,6 @@ None.
 
 ## Status
 
-`Draft`. Functional spec authored. Design doc and implementation to follow; no
-code involved, so the case advances Draft → Design → In-Progress for the durable
-guidance, README, and spec edits, then In-Review. Durable specs and docs are
-edited in In-Progress alongside the skill.
+`Done`. Implemented and archived after updating the bundled skill guidance,
+durable spec mirrors, README use case, CHANGELOG, and bundle logs. Verified with
+`mise run check`.

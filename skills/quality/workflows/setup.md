@@ -396,6 +396,14 @@ frontmatter model:
   for a genuinely blocked kind, with the blocker recorded — not "next iteration."
   Treat the kinds as a prompt scaled to this entity, not a roster. See the
   authoring guide's "Cover the domain's constituent kinds".
+- When the root is an agent-collaborated composite, propose **harnessability** as
+  a model-wide umbrella factor by default, decomposed into the authoring guide's
+  six sub-factors: `agent-accessibility`, `task-specifiability`,
+  `agent-operability`, `self-verifiability`, `enforcement-of-standards`, and
+  `containment-of-action`. Never drop it because the harness is thin or absent;
+  that is a ratable gap and finding. Keep it distinct from the agent harness
+  constituent: the factor rates how each constituent equips an agent, while the
+  harness area rates the steering artifact itself.
 - When naming the model in any recap or summary, name factors as Factors (or
   model-wide factors); the stewardship concerns are the *source* factors trace to,
   not a kind of factor. Do not call them "stewardship factors" or "stewardship
@@ -432,6 +440,11 @@ neither disqualifier (no distinct concerns; not germane / outside the boundary) 
 left unmodeled or recorded only as a deferral. A bare deferral or Scope note does
 not satisfy coverage — treat that gap as an important gap that caps maturity below
 `evaluation-ready`.
+
+For an agent-collaborated composite root, a model is not `evaluation-ready` while
+harnessability or its sub-factors are missing from the model-wide factors without
+a clear not-germane boundary. A thin or absent harness is a rating concern, not a
+factor-omission reason.
 
 Maturity is distinct from the lifecycle `readiness` that `qualitymd status`
 reports. The CLI's `ready-to-evaluate` means only "model is valid, with no

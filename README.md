@@ -72,6 +72,25 @@ gaps stay visible and addressable instead of compounding.
 > The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
 > Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
 
+### Evaluate and Improve Agent Harnessability
+
+Agent-collaborated work depends on more than a good prompt. A project has to
+make its context visible, its work specifiable, its environment operable, its
+checks runnable, its standards enforceable, and its agent actions bounded. In
+QUALITY.md, those qualities can be modeled as **harnessability**: how well the
+project equips an agent to do good work on it with limited human attention.
+
+A `QUALITY.md` turns that harness into an explicit quality signal. The
+`/quality` skill can evaluate where an agent is blocked by missing context,
+unclear tasks, weak feedback, advisory-only standards, or unsafe action scope,
+then turn those gaps into concrete improvement work. This complements harness
+engineering guidance such as Böckeler's guides-and-sensors framing on
+[martinfowler.com](https://martinfowler.com/articles/harness-engineering.html),
+OpenAI's emphasis on in-context agent-accessible records in
+[Harness engineering](https://openai.com/index/harness-engineering/), and Augment
+Code's framing of harness engineering around constraints, feedback loops, and
+[quality gates](https://www.augmentcode.com/guides/harness-engineering-ai-coding-agents).
+
 ## Working with QUALITY.md
 
 A `QUALITY.md` file is your project's **reward signal for quality** — the

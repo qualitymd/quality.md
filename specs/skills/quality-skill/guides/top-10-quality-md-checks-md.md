@@ -175,9 +175,21 @@ that legitimately hits a disqualifier — folded into a sibling for lack of dist
 concerns, or genuinely not germane to a harness-less, throwaway, or narrowly
 scoped entity.
 
+For an agent-collaborated composite root, the area-and-factor-shape check **MUST**
+flag missing harnessability coverage when harnessability or its sub-factors are
+absent from the model-wide factors without a clear not-germane boundary. It
+**MUST NOT** flag a non-agent-collaborated, harness-less, throwaway, or narrowly
+scoped entity where harnessability is not germane, and **MUST NOT** treat a thin or
+absent harness as a reason to omit the factor.
+
 > Rationale: model-by-default (0080) makes a non-disqualified, unmodeled
 > constituent a real coverage finding; the prior "earned expected defaults, do not
 > flag a missing one" let a deferral note pass maturity silently. — 0080
+>
+> Rationale: harnessability is the factor projection of the agent-collaboration
+> concern. A model that carries the agent harness as a constituent but omits the
+> model-wide factor can still miss whether every constituent is legible,
+> operable, verifiable, and bounded for agent work. — 0081
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

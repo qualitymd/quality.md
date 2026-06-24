@@ -387,6 +387,22 @@ only when they represent distinct evaluated entities. Starter Requirements
 **MUST** be concrete and assessable from agent-accessible evidence or explicitly
 name missing evidence or assessment constraints.
 
+For an agent-collaborated composite root, setup **MUST** propose harnessability
+as a model-wide umbrella factor by default, decomposed into the authoring guide's
+six sub-factors: `agent-accessibility`, `task-specifiability`,
+`agent-operability`, `self-verifiability`, `enforcement-of-standards`, and
+`containment-of-action`. Setup **MUST NOT** omit harnessability because the
+project's harness is thin or absent; that condition is a rating gap and finding,
+not a factor-omission reason. Setup **MUST** keep harnessability distinct from the
+agent harness constituent: the factor rates how each constituent equips an agent,
+while the harness area rates the steering artifact itself.
+
+> Annotation: harnessability is the factor-side projection of the same
+> agent-collaboration concern that 0080 made a modeled-by-default constituent.
+> Leading with the factor prevents a thin harness from being deferred out of the
+> model and makes the agent-equipping quality visible across every constituent. —
+> 0081
+
 Setup **SHOULD** use the standard Rating Scale, including its emoji-prefixed
 human display titles, unless discovery and the body show a real need to
 customize it. If the user rejects the recommended scale but the project context
@@ -428,6 +444,11 @@ For a composite root, `setup` **MUST** classify a model as below
 distinct concerns; not germane / outside the boundary) is left unmodeled or
 recorded only as a deferral; a bare deferral or Scope note **MUST NOT** be treated
 as satisfying constituent coverage.
+
+For an agent-collaborated composite root, `setup` **MUST** classify a model as
+below `evaluation-ready` while harnessability or its sub-factors are missing from
+the model-wide factors without a clear not-germane boundary. A thin or absent
+harness **MUST NOT** satisfy that boundary.
 
 > Rationale: model-by-default is enforceable only if an under-covered model fails
 > the maturity bar; a deferral note previously passed it silently. — 0080

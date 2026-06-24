@@ -2,6 +2,21 @@
 
 ## 2026-06-24
 
+- **Done**: Landed and archived
+  [0081 — Harnessability factor](archive/0081-harnessability-factor.md); set
+  `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Skill-guidance, spec-mirror, README, and CHANGELOG only;
+  no `SPECIFICATION.md` or CLI/Go change. Verified with `mise run check`.
+- **In-Review**: Implemented
+  [0081 — Harnessability factor](archive/0081-harnessability-factor.md) across the
+  bundled skill (authoring guide, setup workflow, Top 10 checks), durable spec
+  mirrors (authoring-md, setup, top-10-quality-md-checks-md, plus guide/workflow
+  logs), README, and CHANGELOG. Harnessability is now a model-wide umbrella factor
+  proposed by default for agent-collaborated composite roots, decomposed into six
+  sub-factors, kept distinct from the agent-harness constituent, and routed by the
+  Top 10 check when missing. Reconciled the Affected artifacts list and verified
+  with `mise run check`.
 - **Design**: Created
   [0082 — Normalize QUALITY.md self-check roll-up](0082-normalize-quality-md-rollup.md)
   with its child [index](0082-normalize-quality-md-rollup/index.md),

@@ -3,6 +3,14 @@
 ## 2026-06-24
 
 - **Revision**: Updated the [`setup`](setup.md) workflow for
+  [0081 - Harnessability factor](../../../../changes/archive/0081-harnessability-factor.md).
+  Setup now proposes harnessability by default as a model-wide umbrella factor for
+  agent-collaborated composite roots, decomposed into the six authoring-guide
+  sub-factors, and treats a thin or absent harness as rating evidence rather than
+  an omission reason. The maturity bar now caps an agent-collaborated composite
+  root below `evaluation-ready` when harnessability coverage is missing without a
+  clear not-germane boundary.
+- **Revision**: Updated the [`setup`](setup.md) workflow for
   [0080 - Model constituents by default](../../../../changes/0080-model-constituents-by-default.md).
   Setup's maturity classification now bars `evaluation-ready` for a composite root
   that leaves a germane, non-disqualified constituent unmodeled or recorded only as

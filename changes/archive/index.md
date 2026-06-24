@@ -306,3 +306,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   blocker-only exception, and bar an under-covered composite model from
   `evaluation-ready`; authoring guide, setup, Top 10, getting-started, and their
   spec mirrors, no CLI/Go change (`Done`).
+- [0081 — Harnessability factor](0081-harnessability-factor.md) - added
+  harnessability as the model-wide factor projection of the agent-collaboration
+  concern for agent-collaborated composite roots, decomposed into six
+  sub-factors, proposed by setup by default, and checked by the Top 10 guide;
+  skill-guidance, spec-mirror, README, and CHANGELOG only, no CLI/Go change
+  (`Done`).
