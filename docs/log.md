@@ -3,6 +3,24 @@
 ## 2026-06-24
 
 - **Creation**: Added
+  [Modeling quality across domains](guides/model-quality-across-domains.md), a
+  contributor-doctrine guide for keeping QUALITY.md examples quality-domain
+  agnostic, for
+  [0083 - Quality-domain agnosticism guide](../changes/0083-quality-domain-agnosticism.md).
+  The guide defines the stress axes (source materiality, assessment oracle —
+  including the ISO/IEC 25010 internal/external/quality-in-use split — constituency,
+  stakes), grounds the quality-context axis in ISO lineage
+  (product/data/requirements/process/service quality) while keeping ISO out of the
+  earned factor axis, names a canonical set of secondary knowledge-work domains
+  with illustrative factor families, adds range-finder illustrations (legal,
+  budgeting, personal productivity, devotional/religious), carries a small
+  illustrative catalog of quality contexts spanning agentic professional
+  knowledge work (the Anthropic knowledge-work plugins sample) and the household
+  (budget, meal planning, caregiving, upkeep, records, formation),
+  cross-references the authoring constituent generator, and carries one full worked
+  non-software (documentation) example. Linked it from the
+  [guides index](guides/index.md).
+- **Creation**: Added
   [Designing agent-mediated UX](guides/agent-mediated-ux.md), a contributor
   guide for workflows users experience through AI assistants or coding agents.
   The guide defines agent-mediated UX, gives formatting and emphasis rules,

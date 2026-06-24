@@ -177,7 +177,9 @@ Once you have a model, the loop keeps going at whatever cadence fits your team:
 ## Example QUALITY.md
 
 The example below is an illustrative software product model. It is not a
-default domain or factor set for QUALITY.md.
+default domain or factor set for QUALITY.md — a model can just as well describe
+documentation, a data set, a research report, or a service or operation, each
+with the factors that matter for that kind of work.
 
 ```markdown
 ---

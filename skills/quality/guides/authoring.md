@@ -898,9 +898,9 @@ entity. They matter even when the current root area is immature, performs poorly
 on them, or lacks evidence about them.
 
 - **Do** identify the quality domain before finalizing root factors. *A software
-  product, document, data set, model, service operation, and human process each
-  has a different conventional factor family; these domains are illustrative,
-  non-exhaustive, and may overlap in a real model.*
+  product, document, data set, research report, model, service operation, and
+  human process each has a different conventional factor family; these domains are
+  illustrative, non-exhaustive, and may overlap in a real model.*
 - **Do** include the domain's common stable-stakes factors for the root area, or
   explicitly justify why each omitted one is out of scope, delegated to a child
   area, or still unresolved as an unknown. *A sparse root model should be a
@@ -942,9 +942,11 @@ agent-harnessability:
     review, and accountability.
 ```
 
-Agent Harnessability is a deliberate umbrella: do not rate the parent directly.
-Decompose it into independently assessable sub-factors, each with its own
-non-overlapping share. Name the quality the project exhibits, not the harness
+Agent Harnessability is a deliberate umbrella: carry no requirements on the
+parent — its assessment lives in the sub-factors, and its rating comes from
+rolling those up, the same way a grouping area has no local rating. Decompose it
+into independently assessable sub-factors, each with its own non-overlapping
+share. Name the quality the project exhibits, not the harness
 artifact itself: guides, sensors, sandboxes, scripts, and gates are evidence for
 the factor, not the factor.
 

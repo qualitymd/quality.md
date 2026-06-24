@@ -23,8 +23,9 @@ project's specification-version policy.
 Note: This section is non-normative.
 
 QUALITY.md is domain agnostic: a Model can describe quality for software,
-documents, data sets, services, operations, processes, or other evaluated
-entities. It is informed by established software-quality, requirements,
+documents, data sets, research or analytical reports, services, operations,
+processes, or other evaluated entities. It is informed by established
+software-quality, requirements,
 measurement, testing, and evaluation traditions, including ISO/IEC and
 ISO/IEC/IEEE standards, CISQ structural-quality work, and earlier software
 quality models such as McCall and Dromey.

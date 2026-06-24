@@ -2,6 +2,12 @@
 
 ## 2026-06-24
 
+- **Revision**: Corrected the [authoring guide contract](authoring-md.md) for
+  [0086 - Umbrella factor roll-up framing](../../../../changes/0086-umbrella-factor-rollup-framing.md).
+  The Agent Harnessability umbrella factor is no longer described as one that "does
+  not roll up directly"; the contract now requires the guide to present it as
+  carrying no requirements of its own and being rated by rolling up its
+  sub-factors, matching the grouping-area roll-up semantics in `SPECIFICATION.md`.
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [Top 10 checks contract](top-10-quality-md-checks-md.md) for
   [0085 - Agent Harnessability naming](../../../../changes/archive/0085-agent-harnessability-naming.md).
@@ -16,7 +22,13 @@
   Apply and issue-creation decisions now follow the shared agent-mediated UX
   contract: visually emphasized primary calls to action, scannable decision
   labels, explicit mutation boundaries, and status-first result reporting.
-
+- **Revision**: Aligned the illustrative domain example lists in the bundled
+  [authoring guide](../../../../skills/quality/guides/authoring.md) and
+  [setup workflow](../../../../skills/quality/workflows/setup.md) with the canonical
+  secondary-domain set for
+  [0083 - Quality-domain agnosticism guide](../../../../changes/0083-quality-domain-agnosticism.md)
+  — adding a research/analytical report to the named example domains. Illustrative
+  example lists only; no guide-contract requirement changed.
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) for
   [0082 - Normalize QUALITY.md self-check roll-up](../../../../changes/archive/0082-normalize-quality-md-rollup.md).
   The QUALITY.md self-check must now be taught as an ordinary modeled Area using

@@ -78,6 +78,15 @@ QUALITY.md specification.
 
 ### Specification
 
+### Documentation
+
+- Added a contributor guide, *Modeling quality across domains*, that consolidates
+  the quality-domain-agnosticism doctrine, names the stress axes and a canonical
+  set of secondary knowledge-work domains (documentation, data sets, research
+  reports, services and operations), and carries a full worked non-software
+  example. Standardized the domain enumerations across the README, specification,
+  and skill guidance so they name a consistent illustrative set.
+
 ## v0.11.0 - 2026-06-23
 
 ### CLI

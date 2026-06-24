@@ -47,17 +47,18 @@ relevant docs, tests, and specs, and verify.
 
 Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
-| When you are…                                   | Read                                                               |
-| ----------------------------------------------- | ------------------------------------------------------------------ |
-| Cutting or verifying a release                  | [Cut a release](docs/guides/cut-a-release.md)                      |
-| Creating or advancing a Change Case             | [Working with change cases](docs/guides/work-with-change-cases.md) |
-| Writing a functional spec (the `specs/` bundle) | [Writing functional specs](docs/guides/write-functional-specs.md)  |
-| Writing a design doc                            | [Writing design docs](docs/guides/write-design-docs.md)            |
-| Reading or editing any OKF bundle               | [Working with OKF](docs/guides/work-with-okf.md)                   |
-| Designing or reshaping an agent-run workflow    | [Designing agent-mediated UX](docs/guides/agent-mediated-ux.md)    |
-| Designing or reshaping a CLI command            | [Designing CLI interfaces](docs/guides/cli-design.md)              |
-| Adding a type or package to the Go code         | [Designing Go packages](docs/guides/design-go-packages.md)         |
-| Writing Go code                                 | [Go style](docs/guides/go-style.md)                                |
+| When you are…                                     | Read                                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Cutting or verifying a release                    | [Cut a release](docs/guides/cut-a-release.md)                                  |
+| Creating or advancing a Change Case               | [Working with change cases](docs/guides/work-with-change-cases.md)             |
+| Writing a functional spec (the `specs/` bundle)   | [Writing functional specs](docs/guides/write-functional-specs.md)              |
+| Writing a design doc                              | [Writing design docs](docs/guides/write-design-docs.md)                        |
+| Reading or editing any OKF bundle                 | [Working with OKF](docs/guides/work-with-okf.md)                               |
+| Designing or reshaping an agent-run workflow      | [Designing agent-mediated UX](docs/guides/agent-mediated-ux.md)                |
+| Adding or reviewing example quality-model content | [Modeling quality across domains](docs/guides/model-quality-across-domains.md) |
+| Designing or reshaping a CLI command              | [Designing CLI interfaces](docs/guides/cli-design.md)                          |
+| Adding a type or package to the Go code           | [Designing Go packages](docs/guides/design-go-packages.md)                     |
+| Writing Go code                                   | [Go style](docs/guides/go-style.md)                                            |
 
 ## Repository Conventions
 
@@ -100,78 +101,26 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - The singular gloss "a factor is a quality *lens*" is fine — it defines what a
   factor is. Only a philosophical word substituting for the noun is the problem.
 
-### Quality-domain agnostic examples
+### Quality-domain agnostic examples and agentic use context
 
-- QUALITY.md is quality-domain agnostic. Concrete quality model content in this
-  repo is illustrative unless it defines this project's model or a normative
-  format rule.
-- This includes example Areas, Factors, Requirements, Assessments, criteria,
-  Rating Levels, Findings, recommendations, and quality-domain examples.
-- When citing quality domains or factor families, make clear examples are brief,
-  illustrative, overlapping, not exhaustive, and not mutually exclusive.
-- Prefer domain-neutral principles first, then examples from several domains
-  when examples help. Do not imply software product quality is the default use.
+Authoritative rules:
+[Modeling quality across domains](docs/guides/model-quality-across-domains.md)
+(sections "Rules for domain-agnostic example content" and "Agentic use context").
+Read it before adding or reviewing example quality-model content. Summary:
 
-### Agentic use context
-
-Domain agnostic does not mean context neutral. QUALITY.md is domain agnostic in
-what a quality model can describe: software, documents, data sets, services,
-operations, processes, AI assistants, agent harnesses, or other evaluated
-entities. This project is not context neutral in how QUALITY.md is used.
-
-The primary experience is agent- and skill-first. AI assistants and coding
-agents read, author, evaluate, and improve `QUALITY.md`; the `/quality` skill
-carries judgment; and the CLI provides deterministic support tooling. Preserve
-that agentic use context in docs, specs, examples, and skill content.
-
-Do not remove references to AI assistants, coding agents, agent-accessible
-evidence, harnesses, skill workflows, or agent collaboration when they describe
-how QUALITY.md is used. Do not treat that operating context as the default
-modeled quality domain.
-
-Do not flag a phrase solely because the evaluated project is an AI assistant,
-coding agent, or harness. Those are valid project/use contexts. Flag only when
-the wording makes that domain sound inherent to QUALITY.md, normal for all
-QUALITY.md files, or the default model content.
-
-Decision test:
-
-- Use context: who uses QUALITY.md, through what workflow, with what tools.
-  Agentic/AI language is appropriate and often preferred.
-- Model domain: what a `QUALITY.md` evaluates. Keep this domain agnostic unless
-  the example is explicitly scoped.
-- Project/use context: the concrete project or harness being evaluated. AI
-  assistant or harness language is acceptable when scoped to that project.
-- Project self-description: this repository's own format, skill, CLI, docs, and
-  examples. Agentic/AI language is appropriate when true for this project.
-
-Examples:
-
-- Good: "Use QUALITY.md with the `/quality` agent skill to align coding agents
-  and teams."
-- Good: "Record context that is agent-accessible."
-- Good: "This example models an AI assistant harness."
-- Good: "Evaluate and improve the quality of AI assistant projects and
-  harnesses." Acceptable when describing that use case or this project's
-  agentic tooling, not the universal scope of QUALITY.md.
-- Good: "The CLI is support tooling for the agent-first workflow."
-- Needs scoping: "QUALITY.md helps improve AI assistant quality." Better:
-  "QUALITY.md can model AI assistant quality; it can also model other domains."
-- Avoid: "A QUALITY.md normally evaluates a codebase or agent harness."
-- Avoid: "QUALITY.md is for evaluating AI assistant projects and harnesses."
-- Avoid: "Default factors include security, reliability, usability, and
-  maintainability."
-- Avoid: removing "agent-accessible" because it sounds AI-specific.
-
-Satisfiable check before adding concrete quality model content:
-
-- State or imply the example's quality domain.
-- Make illustrative status clear unless it is a format rule or this project's
-  own model.
-- Reword if a reader could mistake it for a universal default.
-- Frame brief lists as non-exhaustive and possibly overlapping.
-- Use software product quality as the default only for explicitly software
-  topics.
+- QUALITY.md is quality-domain agnostic. Concrete model content here is
+  illustrative unless it defines this project's own model or a normative format
+  rule; mark it so and frame domain/factor lists as non-exhaustive and
+  overlapping.
+- Lead with domain-neutral principles; do not make software product quality the
+  default. For worked examples, pair software/product quality with one cite-worthy
+  secondary domain, balanced.
+- Domain agnostic is not context neutral: the *modeled domain* stays agnostic, but
+  the *use context* is agent- and skill-first. Preserve agentic/AI references that
+  describe how QUALITY.md is used; do not treat that operating context as the
+  default modeled domain. Flag AI/harness wording only when it sounds inherent to
+  all QUALITY.md files, not when it correctly describes a use context or this
+  project. The guide's decision test resolves which register a phrase is in.
 
 ### Open Knowledge Format (OKF) bundles
 

@@ -329,3 +329,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   definition, and legacy `harnessability` recognition for semantic coverage;
   skill-guidance, spec-mirror, README, and CHANGELOG only, no CLI/Go change
   (`Done`).
+- [0086 — Umbrella factor roll-up framing](0086-umbrella-factor-rollup-framing.md) -
+  corrected guidance that overstated the Agent Harnessability umbrella factor as
+  "not rated directly" / "does not roll up" to the accurate "carries no
+  requirements of its own; its rating rolls up from its sub-factors"; bundled
+  authoring guide and its spec mirror only, no code or format-spec change
+  (`Done`).

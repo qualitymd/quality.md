@@ -351,8 +351,9 @@ how each constituent equips an agent, while the agent-harness area rates the
 steering artifact's own quality, and Agent Harnessability is not assessed on the
 agent-harness area as a recursion of the same evidence.
 
-The guide **MUST** present Agent Harnessability as a deliberate umbrella that does
-not roll up directly but decomposes into six independently assessable sub-factors:
+The guide **MUST** present Agent Harnessability as a deliberate umbrella that
+carries no requirements of its own and decomposes into six independently
+assessable sub-factors, its rating coming from rolling those up:
 **agent-accessibility**, **task-specifiability**, **agent-operability**,
 **self-verifiability**, **enforcement-of-standards**, and
 **containment-of-action**. Each sub-factor **MUST** be named as a quality, carry an

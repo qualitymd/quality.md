@@ -3,6 +3,31 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0086 — Umbrella factor roll-up framing](archive/0086-umbrella-factor-rollup-framing.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Bundled authoring guide and its spec mirror only; no code,
+  format-spec, or CLI change.
+
+- **In-Review**: Created and implemented
+  [0086 — Umbrella factor roll-up framing](archive/0086-umbrella-factor-rollup-framing.md)
+  in one step. Corrected the bundled
+  [authoring guide](../skills/quality/guides/authoring.md) and its
+  [spec mirror](../specs/skills/quality-skill/guides/authoring-md.md), which had
+  overstated the Agent Harnessability umbrella factor as "do not rate the parent
+  directly" / "does not roll up directly"; both now say the umbrella carries no
+  requirements of its own and is rated by rolling up its sub-factors, anchored to
+  the grouping-area rule in
+  [`SPECIFICATION.md`](../SPECIFICATION.md). Recorded the spec-mirror revision in
+  the [guides log](../specs/skills/quality-skill/guides/log.md). A full-repo sweep
+  confirmed no other live file repeats the framing; the frozen
+  `changes/archive/0081-harnessability-factor/{spec.md,design.md}` keep the
+  original wording as history. No code, format-spec, or CLI change. Added the
+  parent concept, [child folder](archive/0086-umbrella-factor-rollup-framing/index.md), and
+  [functional spec](archive/0086-umbrella-factor-rollup-framing/spec.md); updated the
+  bundle [index](index.md).
+
+- **Done**: Landed and archived
   [0085 — Agent Harnessability naming](archive/0085-agent-harnessability-naming.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from
@@ -88,6 +113,28 @@
   discovers a reusable rendering abstraction or code path. Listed it in the
   bundle [index](index.md).
 
+- **In-Review**: Implemented
+  [0083 — Quality-domain agnosticism guide and secondary illustrations](0083-quality-domain-agnosticism.md).
+  Added the `docs/guides/model-quality-across-domains.md` contributor guide (stress
+  axes, the canonical secondary-domain set, range-finder illustrations, and a full
+  worked documentation example), registered it in the guides index and the
+  `AGENTS.md` Guides table with a doctrine pointer, aligned the four domain
+  enumerations (`SPECIFICATION.md` Lineage, `AGENTS.md`, the authoring guide, and
+  the setup workflow), added the README secondary-domain note, recorded the
+  skill-guide alignment in the [guides log](../specs/skills/quality-skill/guides/log.md),
+  and added the CHANGELOG note. Documentation-only; no `SPECIFICATION.md` normative
+  or code change. Reconciled the Affected artifacts list; the worked example lints
+  clean and `mise run fmt-md-check` passes.
+- **Creation**: Opened
+  [0083 — Quality-domain agnosticism guide and secondary illustrations](0083-quality-domain-agnosticism.md)
+  (`status: Draft`) to make the project's domain agnosticism demonstrated rather
+  than only asserted: a contributor-doctrine guide
+  (`docs/guides/model-quality-across-domains.md`) defining the stress axes and a
+  canonical secondary-domain set, one full worked non-software example, and
+  alignment of the four drifting domain enumerations. Added the parent concept and
+  child [folder](0083-quality-domain-agnosticism/index.md) with its
+  [functional spec](0083-quality-domain-agnosticism/spec.md); no design doc
+  (editorial change). Listed it in the bundle [index](index.md).
 - **Done**: Landed and archived
   [0082 — Normalize QUALITY.md self-check roll-up](archive/0082-normalize-quality-md-rollup.md);
   set `status` to `Done` and moved the parent concept and child folder into

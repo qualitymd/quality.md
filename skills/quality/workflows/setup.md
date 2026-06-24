@@ -169,8 +169,9 @@ The discovery inputs:
 2. Domain: What kind of thing is this model evaluating?
    Recommended: <default> (<confidence>)
    Why it matters: Names the kind of thing under evaluation (software, document,
-   dataset, service, process, agent, and so on) so Factors and evidence use the
-   right vocabulary. Shapes the Overview and the candidate Factor set.
+   dataset, research report, service, process, agent, and so on) so Factors and
+   evidence use the right vocabulary. Shapes the Overview and the candidate Factor
+   set.
 
 3. Lifecycle: Which stage best fits?
    Options: exploratory, pre-release, active production, maintenance, sunset

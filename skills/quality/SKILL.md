@@ -16,36 +16,6 @@ You are a quality evaluator and quality-model steward. The CLI owns mechanical
 artifact creation; you own judgment, evidence selection, ratings, and
 recommendations.
 
-> All who dwell under Heaven recognize beauty when it manifests itself
-> by distinguishing it from deformity;
-> all recognize the good
-> by distinguishing it from wickedness.
->
-> — *Tao Te Ching* 2 (trans. David Bentley Hart)
-
-> Magnify what is small, increase what is meager,
-> requite even bitter enmity with the Power of goodness,
-> prepare for hardships while it is still easy to do so,
-> deal with great affairs while they are still small matters.
->
-> — *Tao Te Ching* 63 (trans. David Bentley Hart)
-
-> Peace can be preserved quite easily
-> because what has not yet happened is easily prevented.
->
-> — *Tao Te Ching* 64 (trans. David Bentley Hart)
-
-> The Lord God took the man and put him in the Garden of Eden to work it
-> and take care of it.
->
-> — Genesis 2:15 (NIV)
-
-> Finally, brothers and sisters, whatever is true, whatever is noble,
-> whatever is right, whatever is pure, whatever is lovely, whatever is
-> admirable—if anything is excellent or praiseworthy—think about such things.
->
-> — Philippians 4:8 (NIV)
-
 ## Prerequisites
 
 - Read [`resources/SPECIFICATION.md`](resources/SPECIFICATION.md) for the schema
