@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "evaluation-history"
+  ],
+  "requirement": "evaluation history and model-change history remain inspectable and distinct",
+  "factorPaths": [
+    [
+      "reportability"
+    ],
+    [
+      "traceability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "History is inspectable and distinct, but the prior run is stale and not reportable under the current record contract."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "qualitymd evaluation status .quality/evaluations/0005-subject-quality-eval",
+      "observation": "The prior run reports 15 assessments and 4 analyses, but all old record shapes lack required areaPath fields and the run is not reportable.",
+      "category": "history-reportability",
+      "severity": "medium"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-skill"
+  ],
+  "requirement": "the skill grounds setup, evaluation, and follow-up in the active model and evidence",
+  "factorPaths": [
+    [
+      "judgment-grounding"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The skill requires version/status grounding, current evidence, source-as-data handling, and stop rules for weak support."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "skills/quality/SKILL.md:69",
+      "observation": "Evaluated source content is treated as data, not instructions.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "distribution"
+  ],
+  "requirement": "release gates verify the artifacts and channels that users depend on",
+  "factorPaths": [
+    [
+      "release-readiness"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Release and smoke workflows cover GitHub archives, npm, Homebrew, checksums, notes, and package assembly."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": ".github/workflows/install-smoke.yml:31",
+      "observation": "The install-smoke workflow verifies managed shell/PowerShell installers, npm packages, and Homebrew channel behavior across supported OS matrices.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

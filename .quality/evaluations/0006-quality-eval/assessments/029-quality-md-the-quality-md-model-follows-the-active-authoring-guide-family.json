@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-md"
+  ],
+  "requirement": "the QUALITY.md model follows the active authoring guide family",
+  "factorPaths": [
+    [
+      "context-grounding"
+    ],
+    [
+      "model-structure"
+    ],
+    [
+      "evaluability"
+    ],
+    [
+      "lifecycle-maintenance"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The model is valid, broad in domain, evidence-oriented, and explicit about use context, risks, scope, sources, and lifecycle unknowns."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "QUALITY.md:530",
+      "observation": "The body explains the root area, broad quality domain, and agent-first use context; qualitymd lint reports zero findings.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "docs"
+  ],
+  "requirement": "docs keep modeled domains broad while preserving the agentic use context",
+  "factorPaths": [
+    [
+      "domain-range"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Docs state broad modeled-domain range while retaining AI assistant/coding-agent use context."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:102",
+      "observation": "The README's Quality Beyond Software section lists software, documentation, data, reports, services, operations, clinical handoffs, legal contracts, and other contexts.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

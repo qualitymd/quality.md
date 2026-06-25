@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "format-spec"
+  ],
+  "requirement": "the specification keeps model domain separate from agentic use context",
+  "factorPaths": [
+    [
+      "domain-agnosticism"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The spec and domain guide describe broad modeled domains while preserving agent-first usage as context of use."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "docs/guides/model-quality-across-domains.md:437",
+      "observation": "The guide states domain agnostic is about what a model can describe, while the project is agent-first in how QUALITY.md is used.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

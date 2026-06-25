@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "agent-harness"
+  ],
+  "requirement": "the agent harness orients agents and routes them to deeper guidance",
+  "factorPaths": [
+    [
+      "completeness"
+    ],
+    [
+      "coherence"
+    ],
+    [
+      "currentness"
+    ],
+    [
+      "assessability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "AGENTS.md provides project context, component routing, guide routing, agent action rules, vocabulary conventions, and quality-domain guidance."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "AGENTS.md:46",
+      "observation": "The guides table routes agents to release, change-case, spec, design, OKF, UX, domain-modeling, CLI, and Go guidance.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

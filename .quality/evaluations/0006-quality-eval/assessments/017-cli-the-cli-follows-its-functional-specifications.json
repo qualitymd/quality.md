@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows its functional specifications",
+  "factorPaths": [
+    [
+      "specification-conformance"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Implemented commands and tests satisfy the functional surface exercised by lint, status, evaluation record writes, and reporting."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "command:mise run check",
+      "observation": "The full local check passed, including go test ./... across internal/cli, internal/evaluation, internal/model, internal/schema, and related packages.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

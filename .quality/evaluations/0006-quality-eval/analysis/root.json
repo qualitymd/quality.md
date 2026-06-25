@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "All seven local Agent Harnessability requirements meet target."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "agent-harnessability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The project equips agents with context, operability, continuity, verification, standards, and containment."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "agent-accessibility"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Project context and routed guidance are reachable."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "task-specifiability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Boundaries and done criteria are explicit."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "agent-operability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Tools and commands are discoverable."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "continuity"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Workflow state is preserved in durable local artifacts."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "self-verifiability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Verification signals are runnable and actionable."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "enforcement-of-standards"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Core standards are checked or review-gated."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-harnessability",
+        "containment-of-action"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Mutation gates and action limits are visible."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "The root local rating is target, but aggregate quality is held to minimum by minimum-rated child areas for docs, distribution, and evaluation history."
+  },
+  "assessmentResultRecords": [
+    "assessments/001-root-agents-can-reach-the-minimum-project-context-and-deeper-routed-guidance.json",
+    "assessments/002-root-project-guidance-makes-task-boundaries-and-done-criteria-explicit.json",
+    "assessments/003-root-agents-can-discover-the-tools-and-commands-needed-to-work-the-project.json",
+    "assessments/004-root-quality-workflows-preserve-useful-state-in-durable-local-artifacts.json",
+    "assessments/005-root-verification-signals-are-discoverable-and-remediation-bearing.json",
+    "assessments/006-root-core-project-standards-are-backed-by-enforceable-checks-or-reviewable-gates.json",
+    "assessments/007-root-agent-action-limits-and-mutation-gates-are-visible-before-consequential-changes.json"
+  ],
+  "childAnalysisRecords": [
+    "analysis/format-spec.json",
+    "analysis/quality-skill.json",
+    "analysis/cli.json",
+    "analysis/docs.json",
+    "analysis/specs-bundle.json",
+    "analysis/distribution.json",
+    "analysis/agent-harness.json",
+    "analysis/quality-md.json",
+    "analysis/evaluation-history.json"
+  ]
+}

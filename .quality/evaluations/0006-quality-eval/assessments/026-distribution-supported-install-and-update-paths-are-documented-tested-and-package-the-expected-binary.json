@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "distribution"
+  ],
+  "requirement": "supported install and update paths are documented, tested, and package the expected binary",
+  "factorPaths": [
+    [
+      "installability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Install scripts and smoke checks cover the expected channels, but pinned install examples are stale and can steer agents/CI to an old version."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "install.md:83",
+      "observation": "Agent/CI examples pin v0.5.1 while the visible CLI and skill metadata are 0.11.0.",
+      "category": "install-currentness",
+      "severity": "medium"
+    }
+  ],
+  "recommendations": []
+}

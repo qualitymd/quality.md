@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "requirement": "verification signals are discoverable and remediation-bearing",
+  "factorPaths": [
+    [
+      "agent-harnessability",
+      "self-verifiability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Local status, lint, evaluation status, CI, hooks, and mise checks give actionable feedback."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "command:mise run check",
+      "observation": "The full local check passed across gofmt, tidy, dprint, vet, tests, npm package verification, and golangci-lint.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

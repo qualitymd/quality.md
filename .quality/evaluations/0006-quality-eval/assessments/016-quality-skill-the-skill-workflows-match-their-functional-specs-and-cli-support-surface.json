@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-skill"
+  ],
+  "requirement": "the skill workflows match their functional specs and CLI support surface",
+  "factorPaths": [
+    [
+      "workflow-completeness"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Runtime workflows use available CLI commands, require dry-runs for record payloads, and prohibit hand-authored CLI-owned records."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "skills/quality/workflows/evaluate.md:162",
+      "observation": "The evaluate workflow writes records only through qualitymd evaluation assessment, analysis, and recommendation commands.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

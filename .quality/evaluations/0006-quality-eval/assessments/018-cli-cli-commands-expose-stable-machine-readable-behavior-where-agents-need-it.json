@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "cli"
+  ],
+  "requirement": "CLI commands expose stable machine-readable behavior where agents need it",
+  "factorPaths": [
+    [
+      "automation-compatibility"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Version, lint, status, record writes, and package checks expose non-interactive JSON or stable command behavior."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "qualitymd status QUALITY.md --json",
+      "observation": "Status returned structured readiness, model shape, source coverage, evaluation run counts, and next actions.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

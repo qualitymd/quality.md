@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "evaluation-history"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "History remains inspectable and distinct, but the prior run is stale and non-reportable under the current record contract."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "reportability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The prior run lacks required areaPath fields and is not reportable."
+      }
+    },
+    {
+      "factorPath": [
+        "traceability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The repository separates evaluation records, quality-log entries, and workflow feedback logs."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Leaf area aggregate equals the minimum local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/030-evaluation-history-evaluation-history-and-model-change-history-remain-inspectable-and-distinct.json"
+  ],
+  "childAnalysisRecords": []
+}

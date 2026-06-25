@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "requirement": "core project standards are backed by enforceable checks or reviewable gates",
+  "factorPaths": [
+    [
+      "agent-harnessability",
+      "enforcement-of-standards"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Core formatting, Go quality, schema, packaging, and release expectations have runnable gates or explicit review routes."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": ".github/workflows/ci.yml:24",
+      "observation": "CI intentionally stays in lockstep with mise run check.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

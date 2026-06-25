@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "docs"
+  ],
+  "requirement": "docs reflect the current command, install, release, and workflow surfaces",
+  "factorPaths": [
+    [
+      "currentness"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Most docs match current workflows, but install examples still pin an obsolete v0.5.1 release despite the active 0.11.0 CLI/skill pair."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "install.md:83",
+      "observation": "The non-interactive pinned installer example uses QUALITYMD_VERSION=v0.5.1; PowerShell and sh -s examples repeat the stale v0.5.1 pin at nearby lines.",
+      "category": "currentness",
+      "severity": "medium"
+    }
+  ],
+  "recommendations": []
+}

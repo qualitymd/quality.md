@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "specs-bundle"
+  ],
+  "requirement": "tooling specs identify the behavior they govern and stay linked to runtime artifacts",
+  "factorPaths": [
+    [
+      "traceability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Specs are organized by CLI, reports, evaluation records, and skill workflows, and runtime guidance points back to those governed surfaces."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "QUALITY.md:21",
+      "observation": "The repository model identifies SPECIFICATION.md, skills/quality, specs/skills, cmd/qualitymd, internal, and specs/cli as the major governed components.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

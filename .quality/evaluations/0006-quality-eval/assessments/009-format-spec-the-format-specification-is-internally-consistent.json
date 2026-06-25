@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification is internally consistent",
+  "factorPaths": [
+    [
+      "consistency"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Terminology and rating/report semantics are consistent across schema and evaluation sections."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:454",
+      "observation": "Roll-up inputs are named consistently as requirement rating results, factor ratings, child area ratings, and body context.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

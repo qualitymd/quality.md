@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "cli"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "All CLI requirements meet target with passing local checks and structured support surfaces."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "specification-conformance"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Implemented behavior and tests pass the current functional surface."
+      }
+    },
+    {
+      "factorPath": [
+        "automation-compatibility"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Agent-consumed commands expose JSON or stable non-interactive behavior."
+      }
+    },
+    {
+      "factorPath": [
+        "usability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Help and status output support human recovery and next actions."
+      }
+    },
+    {
+      "factorPath": [
+        "maintainability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Go formatting, tests, vetting, linting, and package checks pass."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Leaf area aggregate equals the target local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/017-cli-the-cli-follows-its-functional-specifications.json",
+    "assessments/018-cli-cli-commands-expose-stable-machine-readable-behavior-where-agents-need-it.json",
+    "assessments/019-cli-the-cli-follows-the-project-cli-design-guide.json",
+    "assessments/020-cli-the-go-implementation-follows-the-project-go-style-guide.json"
+  ],
+  "childAnalysisRecords": []
+}

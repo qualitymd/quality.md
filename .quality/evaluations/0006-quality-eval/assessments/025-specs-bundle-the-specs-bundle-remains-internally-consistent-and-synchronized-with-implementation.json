@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "specs-bundle"
+  ],
+  "requirement": "the specs bundle remains internally consistent and synchronized with implementation",
+  "factorPaths": [
+    [
+      "consistency"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The checked implementation, skill, and package tests pass against the current specs and documented surfaces."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "command:mise run check",
+      "observation": "The full gate passed, including tests and the npm package/skill relative-link check.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

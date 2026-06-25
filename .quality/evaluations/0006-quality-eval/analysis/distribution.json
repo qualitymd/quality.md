@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "distribution"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Distribution gates are strong, but installability is held down by stale pinned installer examples."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "installability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Stale v0.5.1 pins can steer agents and CI to old tooling."
+      }
+    },
+    {
+      "factorPath": [
+        "release-readiness"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Release and smoke workflows verify GitHub, npm, and Homebrew channels."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Leaf area aggregate equals the minimum local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/026-distribution-supported-install-and-update-paths-are-documented-tested-and-package-the-expected-binary.json",
+    "assessments/027-distribution-release-gates-verify-the-artifacts-and-channels-that-users-depend-on.json"
+  ],
+  "childAnalysisRecords": []
+}

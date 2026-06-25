@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-md"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The project QUALITY.md is valid, context-grounded, assessable, and aligned with authoring guidance."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "context-grounding"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The body explains root area, scope, needs, risks, use context, unknowns, and lifecycle posture."
+      }
+    },
+    {
+      "factorPath": [
+        "model-structure"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Areas, factors, requirements, sources, and assessment references are scoped to the project."
+      }
+    },
+    {
+      "factorPath": [
+        "evaluability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Requirements can be assessed from agent-accessible evidence."
+      }
+    },
+    {
+      "factorPath": [
+        "lifecycle-maintenance"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The model names evaluation history, quality log, feedback logs, and future recommendation loops."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Leaf area aggregate equals the target local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/029-quality-md-the-quality-md-model-follows-the-active-authoring-guide-family.json"
+  ],
+  "childAnalysisRecords": []
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "agent-harness"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The checked-in harness orients agents and routes them to deeper guidance with assessable controls."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "completeness"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Harness covers setup, scoped work, verification, mutation, and handoff guidance."
+      }
+    },
+    {
+      "factorPath": [
+        "coherence"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Instructions preserve the split between skill judgment and CLI mechanics."
+      }
+    },
+    {
+      "factorPath": [
+        "currentness"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Harness names current repo layout, workflows, commands, and compatibility expectations."
+      }
+    },
+    {
+      "factorPath": [
+        "assessability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Harness quality is inspectable through guides, hooks, workflows, and feedback logs."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Leaf area aggregate equals the target local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/028-agent-harness-the-agent-harness-orients-agents-and-routes-them-to-deeper-guidance.json"
+  ],
+  "childAnalysisRecords": []
+}

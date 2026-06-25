@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "requirement": "agents can reach the minimum project context and deeper routed guidance",
+  "factorPaths": [
+    [
+      "agent-harnessability",
+      "agent-accessibility"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Project orientation, agent rules, guide routing, and component map are reachable from checked-in files."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "AGENTS.md:5",
+      "observation": "AGENTS.md names README.md and CONTRIBUTING.md as required context and links task-specific guides.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

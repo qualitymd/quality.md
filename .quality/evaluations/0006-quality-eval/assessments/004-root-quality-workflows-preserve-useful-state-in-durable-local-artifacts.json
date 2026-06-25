@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [],
+  "requirement": "quality workflows preserve useful state in durable local artifacts",
+  "factorPaths": [
+    [
+      "agent-harnessability",
+      "continuity"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Evaluation records, quality logs, and workflow feedback logs exist as durable local artifacts rather than chat-only state."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "skills/quality/SKILL.md:47",
+      "observation": "The skill requires evaluate to write numbered records through the CLI and feedback logs under .quality/logs/.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

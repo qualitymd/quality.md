@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "cli"
+  ],
+  "requirement": "the Go implementation follows the project Go style guide",
+  "factorPaths": [
+    [
+      "maintainability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Formatting, vetting, linting, tests, and package checks pass on the implementation."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "command:mise run check",
+      "observation": "gofmt, go vet, go test ./..., and golangci-lint all passed.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

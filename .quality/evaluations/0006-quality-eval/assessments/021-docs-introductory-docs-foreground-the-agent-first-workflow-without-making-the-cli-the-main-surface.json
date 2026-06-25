@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "docs"
+  ],
+  "requirement": "introductory docs foreground the agent-first workflow without making the CLI the main surface",
+  "factorPaths": [
+    [
+      "approachability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The README frames /quality as the primary experience and the CLI as support tooling."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "README.md:8",
+      "observation": "The README says the /quality skill helps setup, evaluate, and evolve the model, and that the agentic workflow is primary.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

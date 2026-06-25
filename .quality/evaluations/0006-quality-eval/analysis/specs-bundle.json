@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "specs-bundle"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Both specs-bundle requirements meet target for traceability and consistency."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "traceability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Specs and runtime artifacts identify governed command, workflow, record, and report surfaces."
+      }
+    },
+    {
+      "factorPath": [
+        "consistency"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The specs, skill, and implementation pass the current repository gate."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Leaf area aggregate equals the target local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/024-specs-bundle-tooling-specs-identify-the-behavior-they-govern-and-stay-linked-to-runtime-artifacts.json",
+    "assessments/025-specs-bundle-the-specs-bundle-remains-internally-consistent-and-synchronized-with-implementation.json"
+  ],
+  "childAnalysisRecords": []
+}

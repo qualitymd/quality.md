@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-skill"
+  ],
+  "requirement": "the skill gates mutating actions with explicit decision briefs",
+  "factorPaths": [
+    [
+      "mutation-safety"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Setup, update, and recommendation follow-up mutation surfaces are gated, while evaluation limits itself to evaluation artifacts."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "skills/quality/workflows/setup.md:373",
+      "observation": "Existing-file setup edits require a decision brief before mutation.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

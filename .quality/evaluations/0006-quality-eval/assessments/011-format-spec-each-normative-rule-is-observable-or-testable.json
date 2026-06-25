@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "format-spec"
+  ],
+  "requirement": "each normative rule is observable or testable",
+  "factorPaths": [
+    [
+      "verifiability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Conformance turns on observable document, record, and report properties; judgment boundaries are explicit."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:488",
+      "observation": "When evidence cannot justify roll-up, the specified outcome is not assessed rather than an inferred rating.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

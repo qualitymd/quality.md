@@ -1,0 +1,2101 @@
+{
+  "schemaVersion": 1,
+  "summary": {
+    "run": "0006-quality-eval",
+    "rootArea": "root",
+    "evaluationLevel": "",
+    "rigor": "standard",
+    "narrowing": "",
+    "ratingResult": {
+      "kind": "rated",
+      "level": "minimum",
+      "rationale": "The root local rating is target, but aggregate quality is held to minimum by minimum-rated child areas for docs, distribution, and evaluation history."
+    }
+  },
+  "ratingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "The root local rating is target, but aggregate quality is held to minimum by minimum-rated child areas for docs, distribution, and evaluation history."
+  },
+  "scope": {
+    "recorded": true,
+    "description": "Standard.",
+    "narrowing": "",
+    "inScope": [
+      "root",
+      "agent-harness",
+      "cli",
+      "distribution",
+      "docs",
+      "evaluation-history",
+      "format-spec",
+      "quality-md",
+      "quality-skill",
+      "specs-bundle"
+    ],
+    "outOfScope": [
+      "Applying recommendations, editing evaluated source, editing `QUALITY.md`, or creating external issues.",
+      "Migrating or rewriting stale historical evaluation records.",
+      "Exhaustive release matrix verification, hosted registry validation, or live install-channel tests beyond repository-visible smoke-check definitions."
+    ],
+    "notRecorded": []
+  },
+  "evidenceBasis": [],
+  "limitations": [],
+  "nextAction": {
+    "kind": "recommendation",
+    "summary": "The install guide no longer contains stale v0.5.1 pins, pinned examples cannot age silently, and the docs and distribution assessments reach target on re-evaluation.",
+    "recommendationId": "001-refresh-pinned-installer-examples",
+    "recommendationPath": "recommendations/001-refresh-pinned-installer-examples.md"
+  },
+  "areaSummary": [
+    {
+      "areaPath": [],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All seven local Agent Harnessability requirements meet target."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All seven local Agent Harnessability requirements meet target."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The root local rating is target, but aggregate quality is held to minimum by minimum-rated child areas for docs, distribution, and evaluation history."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "agent-harnessability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The project equips agents with context, operability, continuity, verification, standards, and containment."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "agent-accessibility"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Project context and routed guidance are reachable."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "task-specifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Boundaries and done criteria are explicit."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "agent-operability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Tools and commands are discoverable."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "continuity"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Workflow state is preserved in durable local artifacts."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "self-verifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Verification signals are runnable and actionable."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "enforcement-of-standards"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Core standards are checked or review-gated."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "containment-of-action"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Mutation gates and action limits are visible."
+          }
+        }
+      ],
+      "coveredRequirements": 7
+    },
+    {
+      "areaPath": [
+        "agent-harness"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The checked-in harness orients agents and routes them to deeper guidance with assessable controls."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The checked-in harness orients agents and routes them to deeper guidance with assessable controls."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "completeness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Harness covers setup, scoped work, verification, mutation, and handoff guidance."
+          }
+        },
+        {
+          "factorPath": [
+            "coherence"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Instructions preserve the split between skill judgment and CLI mechanics."
+          }
+        },
+        {
+          "factorPath": [
+            "currentness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Harness names current repo layout, workflows, commands, and compatibility expectations."
+          }
+        },
+        {
+          "factorPath": [
+            "assessability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Harness quality is inspectable through guides, hooks, workflows, and feedback logs."
+          }
+        }
+      ],
+      "coveredRequirements": 1
+    },
+    {
+      "areaPath": [
+        "cli"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All CLI requirements meet target with passing local checks and structured support surfaces."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All CLI requirements meet target with passing local checks and structured support surfaces."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "specification-conformance"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Implemented behavior and tests pass the current functional surface."
+          }
+        },
+        {
+          "factorPath": [
+            "automation-compatibility"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Agent-consumed commands expose JSON or stable non-interactive behavior."
+          }
+        },
+        {
+          "factorPath": [
+            "usability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Help and status output support human recovery and next actions."
+          }
+        },
+        {
+          "factorPath": [
+            "maintainability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Go formatting, tests, vetting, linting, and package checks pass."
+          }
+        }
+      ],
+      "coveredRequirements": 4
+    },
+    {
+      "areaPath": [
+        "distribution"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "Distribution gates are strong, but installability is held down by stale pinned installer examples."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Distribution gates are strong, but installability is held down by stale pinned installer examples."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Leaf area aggregate equals the minimum local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "installability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "Stale v0.5.1 pins can steer agents and CI to old tooling."
+          }
+        },
+        {
+          "factorPath": [
+            "release-readiness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Release and smoke workflows verify GitHub, npm, and Homebrew channels."
+          }
+        }
+      ],
+      "coveredRequirements": 2
+    },
+    {
+      "areaPath": [
+        "docs"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "Docs are strong on approachability and domain range, but currentness is held down by stale v0.5.1 pinned installer examples."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Docs are strong on approachability and domain range, but currentness is held down by stale v0.5.1 pinned installer examples."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Leaf area aggregate equals the minimum local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "approachability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Introductory docs foreground the /quality workflow and position the CLI as support tooling."
+          }
+        },
+        {
+          "factorPath": [
+            "domain-range"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Docs represent non-software domains while preserving agentic context of use."
+          }
+        },
+        {
+          "factorPath": [
+            "currentness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "Install examples pin stale v0.5.1 values."
+          }
+        }
+      ],
+      "coveredRequirements": 3
+    },
+    {
+      "areaPath": [
+        "evaluation-history"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "History remains inspectable and distinct, but the prior run is stale and non-reportable under the current record contract."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "History remains inspectable and distinct, but the prior run is stale and non-reportable under the current record contract."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Leaf area aggregate equals the minimum local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "reportability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "The prior run lacks required areaPath fields and is not reportable."
+          }
+        },
+        {
+          "factorPath": [
+            "traceability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The repository separates evaluation records, quality-log entries, and workflow feedback logs."
+          }
+        }
+      ],
+      "coveredRequirements": 1
+    },
+    {
+      "areaPath": [
+        "format-spec"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All five format-spec requirements meet target across clarity, consistency, completeness, verifiability, and domain-agnosticism."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All five format-spec requirements meet target across clarity, consistency, completeness, verifiability, and domain-agnosticism."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "clarity"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Rules and schema terms are sufficiently unambiguous."
+          }
+        },
+        {
+          "factorPath": [
+            "consistency"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Terminology and roll-up semantics stay aligned."
+          }
+        },
+        {
+          "factorPath": [
+            "completeness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Required model, evaluation, and report behavior is specified."
+          }
+        },
+        {
+          "factorPath": [
+            "verifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Normative rules map to observable document or tool behavior."
+          }
+        },
+        {
+          "factorPath": [
+            "domain-agnosticism"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The spec keeps broad model domain separate from agent-first use context."
+          }
+        }
+      ],
+      "coveredRequirements": 5
+    },
+    {
+      "areaPath": [
+        "quality-md"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The project QUALITY.md is valid, context-grounded, assessable, and aligned with authoring guidance."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The project QUALITY.md is valid, context-grounded, assessable, and aligned with authoring guidance."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "context-grounding"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The body explains root area, scope, needs, risks, use context, unknowns, and lifecycle posture."
+          }
+        },
+        {
+          "factorPath": [
+            "model-structure"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Areas, factors, requirements, sources, and assessment references are scoped to the project."
+          }
+        },
+        {
+          "factorPath": [
+            "evaluability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Requirements can be assessed from agent-accessible evidence."
+          }
+        },
+        {
+          "factorPath": [
+            "lifecycle-maintenance"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The model names evaluation history, quality log, feedback logs, and future recommendation loops."
+          }
+        }
+      ],
+      "coveredRequirements": 1
+    },
+    {
+      "areaPath": [
+        "quality-skill"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All four skill requirements meet target: grounding, mutation safety, agent-mediated UX, and workflow completeness."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All four skill requirements meet target: grounding, mutation safety, agent-mediated UX, and workflow completeness."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "judgment-grounding"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Skill workflow requires active model, current evidence, source-as-data handling, and stop rules."
+          }
+        },
+        {
+          "factorPath": [
+            "mutation-safety"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Mutating actions are gated with decision briefs and verification."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-mediated-ux"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Run frames, scannable status, and decision briefs are built into the interaction contract."
+          }
+        },
+        {
+          "factorPath": [
+            "workflow-completeness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Workflow instructions match the CLI-supported record/report surface."
+          }
+        }
+      ],
+      "coveredRequirements": 4
+    },
+    {
+      "areaPath": [
+        "specs-bundle"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "Both specs-bundle requirements meet target for traceability and consistency."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Both specs-bundle requirements meet target for traceability and consistency."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "traceability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Specs and runtime artifacts identify governed command, workflow, record, and report surfaces."
+          }
+        },
+        {
+          "factorPath": [
+            "consistency"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The specs, skill, and implementation pass the current repository gate."
+          }
+        }
+      ],
+      "coveredRequirements": 2
+    }
+  ],
+  "areas": [
+    {
+      "areaPath": [],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All seven local Agent Harnessability requirements meet target."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All seven local Agent Harnessability requirements meet target."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "The root local rating is target, but aggregate quality is held to minimum by minimum-rated child areas for docs, distribution, and evaluation history."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "agent-harnessability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The project equips agents with context, operability, continuity, verification, standards, and containment."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "agent-accessibility"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Project context and routed guidance are reachable."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "task-specifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Boundaries and done criteria are explicit."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "agent-operability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Tools and commands are discoverable."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "continuity"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Workflow state is preserved in durable local artifacts."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "self-verifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Verification signals are runnable and actionable."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "enforcement-of-standards"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Core standards are checked or review-gated."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-harnessability",
+            "containment-of-action"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Mutation gates and action limits are visible."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/root.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "agent-harness"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The checked-in harness orients agents and routes them to deeper guidance with assessable controls."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The checked-in harness orients agents and routes them to deeper guidance with assessable controls."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "completeness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Harness covers setup, scoped work, verification, mutation, and handoff guidance."
+          }
+        },
+        {
+          "factorPath": [
+            "coherence"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Instructions preserve the split between skill judgment and CLI mechanics."
+          }
+        },
+        {
+          "factorPath": [
+            "currentness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Harness names current repo layout, workflows, commands, and compatibility expectations."
+          }
+        },
+        {
+          "factorPath": [
+            "assessability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Harness quality is inspectable through guides, hooks, workflows, and feedback logs."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/agent-harness.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "cli"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All CLI requirements meet target with passing local checks and structured support surfaces."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All CLI requirements meet target with passing local checks and structured support surfaces."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "specification-conformance"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Implemented behavior and tests pass the current functional surface."
+          }
+        },
+        {
+          "factorPath": [
+            "automation-compatibility"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Agent-consumed commands expose JSON or stable non-interactive behavior."
+          }
+        },
+        {
+          "factorPath": [
+            "usability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Help and status output support human recovery and next actions."
+          }
+        },
+        {
+          "factorPath": [
+            "maintainability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Go formatting, tests, vetting, linting, and package checks pass."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/cli.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "distribution"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "Distribution gates are strong, but installability is held down by stale pinned installer examples."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Distribution gates are strong, but installability is held down by stale pinned installer examples."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Leaf area aggregate equals the minimum local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "installability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "Stale v0.5.1 pins can steer agents and CI to old tooling."
+          }
+        },
+        {
+          "factorPath": [
+            "release-readiness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Release and smoke workflows verify GitHub, npm, and Homebrew channels."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/distribution.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "docs"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "Docs are strong on approachability and domain range, but currentness is held down by stale v0.5.1 pinned installer examples."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Docs are strong on approachability and domain range, but currentness is held down by stale v0.5.1 pinned installer examples."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Leaf area aggregate equals the minimum local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "approachability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Introductory docs foreground the /quality workflow and position the CLI as support tooling."
+          }
+        },
+        {
+          "factorPath": [
+            "domain-range"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Docs represent non-software domains while preserving agentic context of use."
+          }
+        },
+        {
+          "factorPath": [
+            "currentness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "Install examples pin stale v0.5.1 values."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/docs.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "evaluation-history"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "minimum",
+          "rationale": "History remains inspectable and distinct, but the prior run is stale and non-reportable under the current record contract."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "History remains inspectable and distinct, but the prior run is stale and non-reportable under the current record contract."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Leaf area aggregate equals the minimum local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "reportability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "minimum",
+            "rationale": "The prior run lacks required areaPath fields and is not reportable."
+          }
+        },
+        {
+          "factorPath": [
+            "traceability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The repository separates evaluation records, quality-log entries, and workflow feedback logs."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/evaluation-history.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "format-spec"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All five format-spec requirements meet target across clarity, consistency, completeness, verifiability, and domain-agnosticism."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All five format-spec requirements meet target across clarity, consistency, completeness, verifiability, and domain-agnosticism."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "clarity"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Rules and schema terms are sufficiently unambiguous."
+          }
+        },
+        {
+          "factorPath": [
+            "consistency"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Terminology and roll-up semantics stay aligned."
+          }
+        },
+        {
+          "factorPath": [
+            "completeness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Required model, evaluation, and report behavior is specified."
+          }
+        },
+        {
+          "factorPath": [
+            "verifiability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Normative rules map to observable document or tool behavior."
+          }
+        },
+        {
+          "factorPath": [
+            "domain-agnosticism"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The spec keeps broad model domain separate from agent-first use context."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/format-spec.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "quality-md"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "The project QUALITY.md is valid, context-grounded, assessable, and aligned with authoring guidance."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The project QUALITY.md is valid, context-grounded, assessable, and aligned with authoring guidance."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "context-grounding"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The body explains root area, scope, needs, risks, use context, unknowns, and lifecycle posture."
+          }
+        },
+        {
+          "factorPath": [
+            "model-structure"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Areas, factors, requirements, sources, and assessment references are scoped to the project."
+          }
+        },
+        {
+          "factorPath": [
+            "evaluability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Requirements can be assessed from agent-accessible evidence."
+          }
+        },
+        {
+          "factorPath": [
+            "lifecycle-maintenance"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The model names evaluation history, quality log, feedback logs, and future recommendation loops."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/quality-md.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "quality-skill"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "All four skill requirements meet target: grounding, mutation safety, agent-mediated UX, and workflow completeness."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "All four skill requirements meet target: grounding, mutation safety, agent-mediated UX, and workflow completeness."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "judgment-grounding"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Skill workflow requires active model, current evidence, source-as-data handling, and stop rules."
+          }
+        },
+        {
+          "factorPath": [
+            "mutation-safety"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Mutating actions are gated with decision briefs and verification."
+          }
+        },
+        {
+          "factorPath": [
+            "agent-mediated-ux"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Run frames, scannable status, and decision briefs are built into the interaction contract."
+          }
+        },
+        {
+          "factorPath": [
+            "workflow-completeness"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Workflow instructions match the CLI-supported record/report surface."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/quality-skill.json",
+      "notAssessedRequirements": []
+    },
+    {
+      "areaPath": [
+        "specs-bundle"
+      ],
+      "areaRatingState": {
+        "kind": "rated",
+        "ratingResult": {
+          "kind": "rated",
+          "level": "target",
+          "rationale": "Both specs-bundle requirements meet target for traceability and consistency."
+        },
+        "title": "Rated"
+      },
+      "areaRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Both specs-bundle requirements meet target for traceability and consistency."
+      },
+      "areaWithDescendantsRatingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Leaf area aggregate equals the target local rating."
+      },
+      "factorRatingResults": [
+        {
+          "factorPath": [
+            "traceability"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "Specs and runtime artifacts identify governed command, workflow, record, and report surfaces."
+          }
+        },
+        {
+          "factorPath": [
+            "consistency"
+          ],
+          "ratingResult": {
+            "kind": "rated",
+            "level": "target",
+            "rationale": "The specs, skill, and implementation pass the current repository gate."
+          }
+        }
+      ],
+      "analysisRecord": "analysis/specs-bundle.json",
+      "notAssessedRequirements": []
+    }
+  ],
+  "assessmentResults": [
+    {
+      "assessmentResultRecord": "assessments/001-root-agents-can-reach-the-minimum-project-context-and-deeper-routed-guidance.json",
+      "areaPath": [],
+      "requirement": "agents can reach the minimum project context and deeper routed guidance",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Project orientation, agent rules, guide routing, and component map are reachable from checked-in files."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/002-root-project-guidance-makes-task-boundaries-and-done-criteria-explicit.json",
+      "areaPath": [],
+      "requirement": "project guidance makes task boundaries and done criteria explicit",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Task guidance routes work by artifact type and names verification expectations."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/003-root-agents-can-discover-the-tools-and-commands-needed-to-work-the-project.json",
+      "areaPath": [],
+      "requirement": "agents can discover the tools and commands needed to work the project",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The repo exposes setup, check, package, release, install, and quality commands through docs and mise tasks."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/004-root-quality-workflows-preserve-useful-state-in-durable-local-artifacts.json",
+      "areaPath": [],
+      "requirement": "quality workflows preserve useful state in durable local artifacts",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Evaluation records, quality logs, and workflow feedback logs exist as durable local artifacts rather than chat-only state."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/005-root-verification-signals-are-discoverable-and-remediation-bearing.json",
+      "areaPath": [],
+      "requirement": "verification signals are discoverable and remediation-bearing",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Local status, lint, evaluation status, CI, hooks, and mise checks give actionable feedback."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/006-root-core-project-standards-are-backed-by-enforceable-checks-or-reviewable-gates.json",
+      "areaPath": [],
+      "requirement": "core project standards are backed by enforceable checks or reviewable gates",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Core formatting, Go quality, schema, packaging, and release expectations have runnable gates or explicit review routes."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/007-root-agent-action-limits-and-mutation-gates-are-visible-before-consequential-changes.json",
+      "areaPath": [],
+      "requirement": "agent action limits and mutation gates are visible before consequential changes",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Agent rules and skill workflows make mutation class, confirmation, and action limits visible before consequential changes."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/008-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "areaPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification admits a single interpretation",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The specification defines vocabulary, schema shape, references, and evaluation semantics with settled obligation language."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/009-format-spec-the-format-specification-is-internally-consistent.json",
+      "areaPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is internally consistent",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Terminology and rating/report semantics are consistent across schema and evaluation sections."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/010-format-spec-the-format-specification-is-complete-enough-to-implement-and-author-from.json",
+      "areaPath": [
+        "format-spec"
+      ],
+      "requirement": "the format specification is complete enough to implement and author from",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Model elements, references, extension points, evaluation records, and report expectations are specified without implementation reverse engineering."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/011-format-spec-each-normative-rule-is-observable-or-testable.json",
+      "areaPath": [
+        "format-spec"
+      ],
+      "requirement": "each normative rule is observable or testable",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Conformance turns on observable document, record, and report properties; judgment boundaries are explicit."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/012-format-spec-the-specification-keeps-model-domain-separate-from-agentic-use-context.json",
+      "areaPath": [
+        "format-spec"
+      ],
+      "requirement": "the specification keeps model domain separate from agentic use context",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The spec and domain guide describe broad modeled domains while preserving agent-first usage as context of use."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/013-quality-skill-the-skill-grounds-setup-evaluation-and-follow-up-in-the-active-model-and-evidence.json",
+      "areaPath": [
+        "quality-skill"
+      ],
+      "requirement": "the skill grounds setup, evaluation, and follow-up in the active model and evidence",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The skill requires version/status grounding, current evidence, source-as-data handling, and stop rules for weak support."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/014-quality-skill-the-skill-gates-mutating-actions-with-explicit-decision-briefs.json",
+      "areaPath": [
+        "quality-skill"
+      ],
+      "requirement": "the skill gates mutating actions with explicit decision briefs",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Setup, update, and recommendation follow-up mutation surfaces are gated, while evaluation limits itself to evaluation artifacts."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/015-quality-skill-the-skill-follows-the-agent-mediated-ux-guide.json",
+      "areaPath": [
+        "quality-skill"
+      ],
+      "requirement": "the skill follows the agent-mediated UX guide",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The skill contract requires status-first, evidence-led interaction, run frames, decision briefs, and scannable closeouts."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/016-quality-skill-the-skill-workflows-match-their-functional-specs-and-cli-support-surface.json",
+      "areaPath": [
+        "quality-skill"
+      ],
+      "requirement": "the skill workflows match their functional specs and CLI support surface",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Runtime workflows use available CLI commands, require dry-runs for record payloads, and prohibit hand-authored CLI-owned records."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/017-cli-the-cli-follows-its-functional-specifications.json",
+      "areaPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows its functional specifications",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Implemented commands and tests satisfy the functional surface exercised by lint, status, evaluation record writes, and reporting."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/018-cli-cli-commands-expose-stable-machine-readable-behavior-where-agents-need-it.json",
+      "areaPath": [
+        "cli"
+      ],
+      "requirement": "CLI commands expose stable machine-readable behavior where agents need it",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Version, lint, status, record writes, and package checks expose non-interactive JSON or stable command behavior."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/019-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "areaPath": [
+        "cli"
+      ],
+      "requirement": "the CLI follows the project CLI design guide",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Command help documents payload fields, examples, dry-run behavior, JSON receipts, and next-action diagnostics."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/020-cli-the-go-implementation-follows-the-project-go-style-guide.json",
+      "areaPath": [
+        "cli"
+      ],
+      "requirement": "the Go implementation follows the project Go style guide",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Formatting, vetting, linting, tests, and package checks pass on the implementation."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/021-docs-introductory-docs-foreground-the-agent-first-workflow-without-making-the-cli-the-main-surface.json",
+      "areaPath": [
+        "docs"
+      ],
+      "requirement": "introductory docs foreground the agent-first workflow without making the CLI the main surface",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The README frames /quality as the primary experience and the CLI as support tooling."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/022-docs-docs-keep-modeled-domains-broad-while-preserving-the-agentic-use-context.json",
+      "areaPath": [
+        "docs"
+      ],
+      "requirement": "docs keep modeled domains broad while preserving the agentic use context",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Docs state broad modeled-domain range while retaining AI assistant/coding-agent use context."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/023-docs-docs-reflect-the-current-command-install-release-and-workflow-surfaces.json",
+      "areaPath": [
+        "docs"
+      ],
+      "requirement": "docs reflect the current command, install, release, and workflow surfaces",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Most docs match current workflows, but install examples still pin an obsolete v0.5.1 release despite the active 0.11.0 CLI/skill pair."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/024-specs-bundle-tooling-specs-identify-the-behavior-they-govern-and-stay-linked-to-runtime-artifacts.json",
+      "areaPath": [
+        "specs-bundle"
+      ],
+      "requirement": "tooling specs identify the behavior they govern and stay linked to runtime artifacts",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Specs are organized by CLI, reports, evaluation records, and skill workflows, and runtime guidance points back to those governed surfaces."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/025-specs-bundle-the-specs-bundle-remains-internally-consistent-and-synchronized-with-implementation.json",
+      "areaPath": [
+        "specs-bundle"
+      ],
+      "requirement": "the specs bundle remains internally consistent and synchronized with implementation",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The checked implementation, skill, and package tests pass against the current specs and documented surfaces."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/026-distribution-supported-install-and-update-paths-are-documented-tested-and-package-the-expected-binary.json",
+      "areaPath": [
+        "distribution"
+      ],
+      "requirement": "supported install and update paths are documented, tested, and package the expected binary",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Install scripts and smoke checks cover the expected channels, but pinned install examples are stale and can steer agents/CI to an old version."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/027-distribution-release-gates-verify-the-artifacts-and-channels-that-users-depend-on.json",
+      "areaPath": [
+        "distribution"
+      ],
+      "requirement": "release gates verify the artifacts and channels that users depend on",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Release and smoke workflows cover GitHub archives, npm, Homebrew, checksums, notes, and package assembly."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/028-agent-harness-the-agent-harness-orients-agents-and-routes-them-to-deeper-guidance.json",
+      "areaPath": [
+        "agent-harness"
+      ],
+      "requirement": "the agent harness orients agents and routes them to deeper guidance",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "AGENTS.md provides project context, component routing, guide routing, agent action rules, vocabulary conventions, and quality-domain guidance."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/029-quality-md-the-quality-md-model-follows-the-active-authoring-guide-family.json",
+      "areaPath": [
+        "quality-md"
+      ],
+      "requirement": "the QUALITY.md model follows the active authoring guide family",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "The model is valid, broad in domain, evidence-oriented, and explicit about use context, risks, scope, sources, and lifecycle unknowns."
+      },
+      "state": "active",
+      "active": true
+    },
+    {
+      "assessmentResultRecord": "assessments/030-evaluation-history-evaluation-history-and-model-change-history-remain-inspectable-and-distinct.json",
+      "areaPath": [
+        "evaluation-history"
+      ],
+      "requirement": "evaluation history and model-change history remain inspectable and distinct",
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "History is inspectable and distinct, but the prior run is stale and not reportable under the current record contract."
+      },
+      "state": "active",
+      "active": true
+    }
+  ],
+  "findingSummaries": [
+    {
+      "assessmentResultRecord": "assessments/001-root-agents-can-reach-the-minimum-project-context-and-deeper-routed-guidance.json",
+      "locator": "AGENTS.md:5",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "AGENTS.md names README.md and CONTRIBUTING.md as required context and links task-specific guides."
+    },
+    {
+      "assessmentResultRecord": "assessments/002-root-project-guidance-makes-task-boundaries-and-done-criteria-explicit.json",
+      "locator": "AGENTS.md:33",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "Routine changes are scoped directly, while guide routing and change-case rules define when durable design history is needed."
+    },
+    {
+      "assessmentResultRecord": "assessments/003-root-agents-can-discover-the-tools-and-commands-needed-to-work-the-project.json",
+      "locator": "mise.toml:38",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The check task aggregates format, tidy, vet, lint, test, Markdown, and npm package checks."
+    },
+    {
+      "assessmentResultRecord": "assessments/004-root-quality-workflows-preserve-useful-state-in-durable-local-artifacts.json",
+      "locator": "skills/quality/SKILL.md:47",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The skill requires evaluate to write numbered records through the CLI and feedback logs under .quality/logs/."
+    },
+    {
+      "assessmentResultRecord": "assessments/005-root-verification-signals-are-discoverable-and-remediation-bearing.json",
+      "locator": "command:mise run check",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The full local check passed across gofmt, tidy, dprint, vet, tests, npm package verification, and golangci-lint."
+    },
+    {
+      "assessmentResultRecord": "assessments/006-root-core-project-standards-are-backed-by-enforceable-checks-or-reviewable-gates.json",
+      "locator": ".github/workflows/ci.yml:24",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "CI intentionally stays in lockstep with mise run check."
+    },
+    {
+      "assessmentResultRecord": "assessments/007-root-agent-action-limits-and-mutation-gates-are-visible-before-consequential-changes.json",
+      "locator": "skills/quality/SKILL.md:161",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The user interaction contract requires decision briefs before confirmation-sensitive mutations."
+    },
+    {
+      "assessmentResultRecord": "assessments/008-format-spec-the-format-specification-admits-a-single-interpretation.json",
+      "locator": "SPECIFICATION.md:236",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The schema section defines required model properties and the model-wide ratingScale."
+    },
+    {
+      "assessmentResultRecord": "assessments/009-format-spec-the-format-specification-is-internally-consistent.json",
+      "locator": "SPECIFICATION.md:454",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "Roll-up inputs are named consistently as requirement rating results, factor ratings, child area ratings, and body context."
+    },
+    {
+      "assessmentResultRecord": "assessments/010-format-spec-the-format-specification-is-complete-enough-to-implement-and-author-from.json",
+      "locator": "SPECIFICATION.md:500",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The report section names required summary, scope, ratings, rationale, gaps, and recommendations."
+    },
+    {
+      "assessmentResultRecord": "assessments/011-format-spec-each-normative-rule-is-observable-or-testable.json",
+      "locator": "SPECIFICATION.md:488",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "When evidence cannot justify roll-up, the specified outcome is not assessed rather than an inferred rating."
+    },
+    {
+      "assessmentResultRecord": "assessments/012-format-spec-the-specification-keeps-model-domain-separate-from-agentic-use-context.json",
+      "locator": "docs/guides/model-quality-across-domains.md:437",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The guide states domain agnostic is about what a model can describe, while the project is agent-first in how QUALITY.md is used."
+    },
+    {
+      "assessmentResultRecord": "assessments/013-quality-skill-the-skill-grounds-setup-evaluation-and-follow-up-in-the-active-model-and-evidence.json",
+      "locator": "skills/quality/SKILL.md:69",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "Evaluated source content is treated as data, not instructions."
+    },
+    {
+      "assessmentResultRecord": "assessments/014-quality-skill-the-skill-gates-mutating-actions-with-explicit-decision-briefs.json",
+      "locator": "skills/quality/workflows/setup.md:373",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "Existing-file setup edits require a decision brief before mutation."
+    },
+    {
+      "assessmentResultRecord": "assessments/015-quality-skill-the-skill-follows-the-agent-mediated-ux-guide.json",
+      "locator": "skills/quality/SKILL.md:139",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The user interaction contract explicitly routes presentation through the agent-mediated UX guide."
+    },
+    {
+      "assessmentResultRecord": "assessments/016-quality-skill-the-skill-workflows-match-their-functional-specs-and-cli-support-surface.json",
+      "locator": "skills/quality/workflows/evaluate.md:162",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The evaluate workflow writes records only through qualitymd evaluation assessment, analysis, and recommendation commands."
+    },
+    {
+      "assessmentResultRecord": "assessments/017-cli-the-cli-follows-its-functional-specifications.json",
+      "locator": "command:mise run check",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The full local check passed, including go test ./... across internal/cli, internal/evaluation, internal/model, internal/schema, and related packages."
+    },
+    {
+      "assessmentResultRecord": "assessments/018-cli-cli-commands-expose-stable-machine-readable-behavior-where-agents-need-it.json",
+      "locator": "qualitymd status QUALITY.md --json",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "Status returned structured readiness, model shape, source coverage, evaluation run counts, and next actions."
+    },
+    {
+      "assessmentResultRecord": "assessments/019-cli-the-cli-follows-the-project-cli-design-guide.json",
+      "locator": "qualitymd evaluation assessment add --help",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "Assessment help lists required payload fields, dry-run behavior, stdin usage, and flags."
+    },
+    {
+      "assessmentResultRecord": "assessments/020-cli-the-go-implementation-follows-the-project-go-style-guide.json",
+      "locator": "command:mise run check",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "gofmt, go vet, go test ./..., and golangci-lint all passed."
+    },
+    {
+      "assessmentResultRecord": "assessments/021-docs-introductory-docs-foreground-the-agent-first-workflow-without-making-the-cli-the-main-surface.json",
+      "locator": "README.md:8",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The README says the /quality skill helps setup, evaluate, and evolve the model, and that the agentic workflow is primary."
+    },
+    {
+      "assessmentResultRecord": "assessments/022-docs-docs-keep-modeled-domains-broad-while-preserving-the-agentic-use-context.json",
+      "locator": "README.md:102",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The README's Quality Beyond Software section lists software, documentation, data, reports, services, operations, clinical handoffs, legal contracts, and other contexts."
+    },
+    {
+      "assessmentResultRecord": "assessments/023-docs-docs-reflect-the-current-command-install-release-and-workflow-surfaces.json",
+      "locator": "install.md:83",
+      "category": "currentness",
+      "severity": {
+        "level": "medium",
+        "title": "Medium"
+      },
+      "summary": "The non-interactive pinned installer example uses QUALITYMD_VERSION=v0.5.1; PowerShell and sh -s examples repeat the stale v0.5.1 pin at nearby lines."
+    },
+    {
+      "assessmentResultRecord": "assessments/024-specs-bundle-tooling-specs-identify-the-behavior-they-govern-and-stay-linked-to-runtime-artifacts.json",
+      "locator": "QUALITY.md:21",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The repository model identifies SPECIFICATION.md, skills/quality, specs/skills, cmd/qualitymd, internal, and specs/cli as the major governed components."
+    },
+    {
+      "assessmentResultRecord": "assessments/025-specs-bundle-the-specs-bundle-remains-internally-consistent-and-synchronized-with-implementation.json",
+      "locator": "command:mise run check",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The full gate passed, including tests and the npm package/skill relative-link check."
+    },
+    {
+      "assessmentResultRecord": "assessments/026-distribution-supported-install-and-update-paths-are-documented-tested-and-package-the-expected-binary.json",
+      "locator": "install.md:83",
+      "category": "install-currentness",
+      "severity": {
+        "level": "medium",
+        "title": "Medium"
+      },
+      "summary": "Agent/CI examples pin v0.5.1 while the visible CLI and skill metadata are 0.11.0."
+    },
+    {
+      "assessmentResultRecord": "assessments/027-distribution-release-gates-verify-the-artifacts-and-channels-that-users-depend-on.json",
+      "locator": ".github/workflows/install-smoke.yml:31",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The install-smoke workflow verifies managed shell/PowerShell installers, npm packages, and Homebrew channel behavior across supported OS matrices."
+    },
+    {
+      "assessmentResultRecord": "assessments/028-agent-harness-the-agent-harness-orients-agents-and-routes-them-to-deeper-guidance.json",
+      "locator": "AGENTS.md:46",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The guides table routes agents to release, change-case, spec, design, OKF, UX, domain-modeling, CLI, and Go guidance."
+    },
+    {
+      "assessmentResultRecord": "assessments/029-quality-md-the-quality-md-model-follows-the-active-authoring-guide-family.json",
+      "locator": "QUALITY.md:530",
+      "category": "evidence",
+      "severity": {
+        "level": "low",
+        "title": "Low"
+      },
+      "summary": "The body explains the root area, broad quality domain, and agent-first use context; qualitymd lint reports zero findings."
+    },
+    {
+      "assessmentResultRecord": "assessments/030-evaluation-history-evaluation-history-and-model-change-history-remain-inspectable-and-distinct.json",
+      "locator": "qualitymd evaluation status .quality/evaluations/0005-subject-quality-eval",
+      "category": "history-reportability",
+      "severity": {
+        "level": "medium",
+        "title": "Medium"
+      },
+      "summary": "The prior run reports 15 assessments and 4 analyses, but all old record shapes lack required areaPath fields and the run is not reportable."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "001-refresh-pinned-installer-examples",
+      "path": "recommendations/001-refresh-pinned-installer-examples.md",
+      "doneCriterion": "The install guide no longer contains stale v0.5.1 pins, pinned examples cannot age silently, and the docs and distribution assessments reach target on re-evaluation.",
+      "state": "active",
+      "active": true
+    },
+    {
+      "id": "002-reconcile-stale-evaluation-history",
+      "path": "recommendations/002-reconcile-stale-evaluation-history.md",
+      "doneCriterion": "qualitymd status QUALITY.md --json no longer reports a stale non-reportable prior run, or the repository has an explicit documented archive state that keeps stale runs out of current-readiness gaps.",
+      "state": "active",
+      "active": true
+    }
+  ]
+}

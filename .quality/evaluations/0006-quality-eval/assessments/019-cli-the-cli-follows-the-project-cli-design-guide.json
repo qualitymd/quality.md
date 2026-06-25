@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "cli"
+  ],
+  "requirement": "the CLI follows the project CLI design guide",
+  "factorPaths": [
+    [
+      "usability"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Command help documents payload fields, examples, dry-run behavior, JSON receipts, and next-action diagnostics."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "qualitymd evaluation assessment add --help",
+      "observation": "Assessment help lists required payload fields, dry-run behavior, stdin usage, and flags.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

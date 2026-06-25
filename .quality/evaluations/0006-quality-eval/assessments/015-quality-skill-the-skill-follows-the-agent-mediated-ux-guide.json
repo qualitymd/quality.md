@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-skill"
+  ],
+  "requirement": "the skill follows the agent-mediated UX guide",
+  "factorPaths": [
+    [
+      "agent-mediated-ux"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The skill contract requires status-first, evidence-led interaction, run frames, decision briefs, and scannable closeouts."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "skills/quality/SKILL.md:139",
+      "observation": "The user interaction contract explicitly routes presentation through the agent-mediated UX guide.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "docs"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Docs are strong on approachability and domain range, but currentness is held down by stale v0.5.1 pinned installer examples."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "approachability"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Introductory docs foreground the /quality workflow and position the CLI as support tooling."
+      }
+    },
+    {
+      "factorPath": [
+        "domain-range"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Docs represent non-software domains while preserving agentic context of use."
+      }
+    },
+    {
+      "factorPath": [
+        "currentness"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "minimum",
+        "rationale": "Install examples pin stale v0.5.1 values."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "minimum",
+    "rationale": "Leaf area aggregate equals the minimum local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/021-docs-introductory-docs-foreground-the-agent-first-workflow-without-making-the-cli-the-main-surface.json",
+    "assessments/022-docs-docs-keep-modeled-domains-broad-while-preserving-the-agentic-use-context.json",
+    "assessments/023-docs-docs-reflect-the-current-command-install-release-and-workflow-surfaces.json"
+  ],
+  "childAnalysisRecords": []
+}

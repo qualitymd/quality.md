@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "format-spec"
+  ],
+  "requirement": "the format specification admits a single interpretation",
+  "factorPaths": [
+    [
+      "clarity"
+    ]
+  ],
+  "ratingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "The specification defines vocabulary, schema shape, references, and evaluation semantics with settled obligation language."
+  },
+  "criterionSource": "rating-scale",
+  "findings": [
+    {
+      "locator": "SPECIFICATION.md:236",
+      "observation": "The schema section defines required model properties and the model-wide ratingScale.",
+      "category": "evidence",
+      "severity": "low"
+    }
+  ],
+  "recommendations": []
+}

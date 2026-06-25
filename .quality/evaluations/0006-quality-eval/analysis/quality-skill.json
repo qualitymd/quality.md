@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "areaPath": [
+    "quality-skill"
+  ],
+  "localRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "All four skill requirements meet target: grounding, mutation safety, agent-mediated UX, and workflow completeness."
+  },
+  "factorRatingResults": [
+    {
+      "factorPath": [
+        "judgment-grounding"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Skill workflow requires active model, current evidence, source-as-data handling, and stop rules."
+      }
+    },
+    {
+      "factorPath": [
+        "mutation-safety"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Mutating actions are gated with decision briefs and verification."
+      }
+    },
+    {
+      "factorPath": [
+        "agent-mediated-ux"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Run frames, scannable status, and decision briefs are built into the interaction contract."
+      }
+    },
+    {
+      "factorPath": [
+        "workflow-completeness"
+      ],
+      "ratingResult": {
+        "kind": "rated",
+        "level": "target",
+        "rationale": "Workflow instructions match the CLI-supported record/report surface."
+      }
+    }
+  ],
+  "aggregateRatingResult": {
+    "kind": "rated",
+    "level": "target",
+    "rationale": "Leaf area aggregate equals the target local rating."
+  },
+  "assessmentResultRecords": [
+    "assessments/013-quality-skill-the-skill-grounds-setup-evaluation-and-follow-up-in-the-active-model-and-evidence.json",
+    "assessments/014-quality-skill-the-skill-gates-mutating-actions-with-explicit-decision-briefs.json",
+    "assessments/015-quality-skill-the-skill-follows-the-agent-mediated-ux-guide.json",
+    "assessments/016-quality-skill-the-skill-workflows-match-their-functional-specs-and-cli-support-surface.json"
+  ],
+  "childAnalysisRecords": []
+}
