@@ -1,5 +1,10 @@
 ---
-title: QUALITY.md
+title: QUALITY.md Project
+description: >
+  The open QUALITY.md format and the agent-first quality-management toolchain
+  around it: the /quality skill, qualitymd CLI, docs, specs, packaging,
+  distribution, repository-owned agent harness, and this repository's own
+  QUALITY.md model.
 ratingScale:
   - level: outstanding
     title: 🟢 Outstanding
@@ -11,508 +16,665 @@ ratingScale:
     criterion: "Satisfies the requirement."
   - level: minimum
     title: 🟡 Minimum
-    description: "The acceptable floor: the artifact falls short of the goal but remains good enough to proceed."
-    criterion: "Falls short of the goal but holds the acceptable floor."
+    description: "The acceptable floor: the artifact falls short of the goal but remains good enough to rely on."
+    criterion: "Falls short of the target but remains acceptable for pre-release use."
   - level: unacceptable
     title: 🔴 Unacceptable
-    description: "Below the floor: the artifact does not satisfy the quality requirement acceptably."
-    criterion: "Falls below the acceptable floor."
+    description: "Below the floor: the artifact is not good enough to rely on."
+    criterion: "Does not meet the requirement to an acceptable degree."
+factors:
+  # Agent Harnessability rates the broader equipping capability across the
+  # project. The agent-harness Area below rates the checked-in steering and
+  # owned-control artifacts themselves.
+  agent-harnessability:
+    title: Agent Harnessability
+    description: >
+      The degree to which the project's checked-in materials, tools, workflows,
+      feedback signals, standards, and action limits equip an AI assistant or
+      coding agent to understand the project, take scoped work, operate the
+      environment, preserve and resume state, verify its output, and stay safely
+      bounded while preserving clear human direction, review, and accountability.
+    factors:
+      agent-accessibility:
+        title: Agent Accessibility
+        description: >
+          Decision-relevant project knowledge is reachable, selective, and
+          intelligible to an agent working in context.
+        requirements:
+          "agents can reach the minimum project context and deeper routed guidance":
+            assessment: >
+              Inspect AGENTS.md, README.md, CONTRIBUTING.md, docs/guides/,
+              skills/quality/, and specs/ to confirm a fresh agent can find the
+              project purpose, operating rules, authoring/evaluation guidance,
+              and task-specific references without relying on private memory.
+      task-specifiability:
+        title: Task Specifiability
+        description: >
+          Work can be handed to an agent as a scoped assignment with visible
+          success criteria, boundaries, and verification expectations.
+        requirements:
+          "project guidance makes task boundaries and done criteria explicit":
+            assessment: >
+              Inspect AGENTS.md, CONTRIBUTING.md, docs/guides/, specs/, and
+              changes/ to confirm agent-facing work can be scoped by artifact,
+              expected outcome, relevant guide, and verification command.
+      agent-operability:
+        title: Agent Operability
+        description: >
+          A fresh agent session can establish and operate the working
+          environment from recorded project materials.
+        requirements:
+          "agents can discover the tools and commands needed to work the project":
+            assessment: >
+              Inspect CONTRIBUTING.md, mise.toml, install.md, README.md, and
+              workflow specs to confirm setup, build, test, lint, release, and
+              qualitymd commands are recorded with enough context for agent use.
+      continuity:
+        title: Continuity
+        description: >
+          Agent work can preserve state and resume across interruption,
+          compaction, handoff, and fresh sessions.
+        requirements:
+          "quality workflows preserve useful state in durable local artifacts":
+            assessment: >
+              Inspect .quality/evaluations/, .quality/log/, .quality/logs/,
+              specs/skills/quality-skill/, and skills/quality/workflows/ to
+              confirm evaluation records, quality-log entries, and workflow
+              feedback logs capture decisions, progress, verification, and
+              remaining gaps without depending on chat history.
+      self-verifiability:
+        title: Self-Verifiability
+        description: >
+          The project gives agents runnable or inspectable feedback signals they
+          can use to check their own work.
+        requirements:
+          "verification signals are discoverable and remediation-bearing":
+            assessment: >
+              Inspect mise.toml, CONTRIBUTING.md, .github/workflows/, .githooks/,
+              qualitymd lint/status behavior, and relevant specs to confirm an
+              agent can run or inspect checks and understand failures well enough
+              to act on them.
+      enforcement-of-standards:
+        title: Enforcement of Standards
+        description: >
+          Stated quality standards hold through gates or equivalent controls,
+          not advisory prose alone.
+        requirements:
+          "core project standards are backed by enforceable checks or reviewable gates":
+            assessment: >
+              Inspect mise.toml, .github/workflows/, .githooks/, dprint.json,
+              .golangci.yml, specs, and qualitymd lint behavior to confirm
+              formatting, code quality, schema validity, packaging, and release
+              expectations are enforced or explicitly routed through review.
+      containment-of-action:
+        title: Containment of Action
+        description: >
+          Agent-permitted actions are bounded by project rules, local tooling,
+          and approval expectations so work stays inside intended scope.
+        requirements:
+          "agent action limits and mutation gates are visible before consequential changes":
+            assessment: >
+              Inspect AGENTS.md, skills/quality/SKILL.md, skills/quality/workflows/,
+              specs/skills/quality-skill/, and repository hooks/workflows to
+              confirm file mutation, tooling updates, recommendation follow-up,
+              release actions, and external handoff require explicit gates where
+              consequential.
 areas:
   format-spec:
-    title: Format specification
+    title: Format Specification
+    description: >
+      The normative QUALITY.md format and evaluation-semantics specification.
     source: ./SPECIFICATION.md
-    requirements:
-      "the format specification is complete":
-        factors:
-          - clarity
-          - consistency
-          - verifiability
-          - extensibility
-          - usability
-        assessment: >
-          Every frontmatter field and recommended body section has its shape,
-          allowed values, requiredness, cardinality, and any default; the spec
-          states how a conforming reader treats malformed or omitted content and
-          edge cases. An implementer could build a parser, and an author write a
-          valid file, from the spec alone.
     factors:
       clarity:
         title: Clarity
         description: >
-          Can each rule be read in only one way? A spec governs independent
-          implementations that never confer, so every obligation must land with
-          one settled meaning and force.
+          The specification's rules have one settled meaning for independent
+          authors, implementers, evaluators, and report renderers.
         requirements:
           "the format specification admits a single interpretation":
             assessment: >
-              Each rule admits one reading. Obligation strength is explicit
-              where it affects conformance, BCP 14 keywords are used sparingly
-              and consistently, and no normative statement leans on a vague
-              quantifier without a stated bound.
-          "the format specification separates rules from rationale":
-            assessment: >
-              A reader can always tell whether a sentence states a binding rule
-              or merely explains one, and a rule never appears only inside an
-              example or aside.
-          "the format specification defines its terms before use":
-            assessment: >
-              Every technical term used in a rule is defined before, or at, the
-              point it is first used.
+              Assess SPECIFICATION.md for defined terms, clear obligation
+              strength, unambiguous field semantics, explicit malformed-content
+              handling, and examples that do not carry hidden rules.
       consistency:
         title: Consistency
         description: >
-          Does the document agree with itself? One concept keeps one name, no two
-          statements contradict, and every illustration tracks the rule it
-          illustrates.
+          The specification uses one concept vocabulary and keeps examples,
+          schema descriptions, and evaluation semantics aligned.
         requirements:
           "the format specification is internally consistent":
             assessment: >
-              No two statements contradict each other. One term denotes one
-              concept throughout, and every example agrees with the rule it
-              illustrates.
+              Compare terminology, schema rules, examples, model-reference
+              grammar, and evaluation/report semantics within SPECIFICATION.md
+              and against quality.schema.json where structural schema is named.
+      completeness:
+        title: Completeness
+        description: >
+          The specification covers enough document shape, frontmatter schema,
+          body semantics, and evaluation/report behavior for conforming
+          implementations and authors.
+        requirements:
+          "the format specification is complete enough to implement and author from":
+            assessment: >
+              Confirm every required model element, allowed shape, cardinality,
+              reference form, extension rule, and required evaluation/report
+              distinction is defined in SPECIFICATION.md without requiring
+              implementation reverse engineering.
       verifiability:
         title: Verifiability
         description: >
-          Can conformance be decided rather than argued? Each rule turns on
-          something a reader can observe or test.
+          Conformance turns on observable document or implementation behavior
+          rather than private author intent.
         requirements:
-          "each rule is observable or testable":
+          "each normative rule is observable or testable":
             assessment: >
-              Each rule maps to something a reader could observe or test about a
-              file or implementation, so independent readers decide conformance
-              the same way.
-          "the format's constructs are shown with valid and invalid examples":
-            assessment: >
-              Constructs are shown with worked examples that include both valid
-              cases and invalid counter-examples.
-      extensibility:
-        title: Extensibility
+              Review conformance, schema, model-reference, and evaluation
+              sections to confirm an independent linter, parser, evaluator, or
+              renderer could decide whether each rule is satisfied.
+      domain-agnosticism:
+        title: Domain Agnosticism
         description: >
-          Can the format grow without breaking what exists? A stable minimal core,
-          defined room to extend, and a versioning path that does not strand
-          earlier files.
+          The format supports many modeled domains without making software,
+          agent harnesses, or any other domain the default model content.
         requirements:
-          "the format specifies its core and how it extends and evolves":
+          "the specification keeps model domain separate from agentic use context":
             assessment: >
-              The spec names the minimal core every file must have, says how
-              authors may add factors, keys, or sections, how a reader treats
-              unrecognized content, and how the format versions forward.
+              Assess SPECIFICATION.md and docs/guides/model-quality-across-domains.md
+              for domain-neutral model rules, illustrative examples marked as
+              such, and clear separation between what QUALITY.md can model and
+              how this project expects the format to be used through agents.
+
+  quality-skill:
+    title: /quality Skill
+    description: >
+      The runtime agent skill that carries quality judgment, setup, evaluation,
+      update, recommendation follow-up, and authoring guidance.
+    source: ./skills/quality
+    factors:
+      judgment-grounding:
+        title: Judgment Grounding
+        description: >
+          The skill keeps evaluative judgment tied to the active model, current
+          evidence, relevant guides, and the CLI's deterministic state.
+        requirements:
+          "the skill grounds setup, evaluation, and follow-up in the active model and evidence":
+            assessment: >
+              Assess skills/quality/SKILL.md, workflows/, guides/, and resources/
+              against specs/skills/quality-skill/ to confirm the skill reads the
+              required guidance, distinguishes model validity from evaluated-source
+              quality, treats source content as data, and stops when evidence or
+              tooling cannot support the workflow.
+      mutation-safety:
+        title: Mutation Safety
+        description: >
+          Mutating workflows make artifact class, confirmation, alternatives,
+          and verification visible before changing project state or tooling.
+        requirements:
+          "the skill gates mutating actions with explicit decision briefs":
+            assessment: >
+              Inspect setup, evaluate, update, and recommendation follow-up
+              guidance to confirm QUALITY.md edits, evaluated-source edits,
+              evaluation artifacts, tooling updates, and handoff actions are
+              gated and verified according to their risk.
+      agent-mediated-ux:
+        title: Agent-Mediated UX
+        description: >
+          The skill presents workflow state, questions, gates, and closeouts so a
+          user can see status, recommendation, and next action quickly.
+        requirements:
+          "the skill follows the agent-mediated UX guide":
+            assessment: >
+              Assess runtime prompts and workflow instructions against
+              docs/guides/agent-mediated-ux.md, including run frames, discovery
+              teaching, decision gates, status-first closeouts, and scannable
+              labels.
+      workflow-completeness:
+        title: Workflow Completeness
+        description: >
+          Public workflows are complete enough to run end to end without hidden
+          manual artifact creation or stale command assumptions.
+        requirements:
+          "the skill workflows match their functional specs and CLI support surface":
+            assessment: >
+              Compare skills/quality/workflows/, resources/cli-quick-reference.md,
+              and specs/skills/quality-skill/workflows/ to confirm setup,
+              evaluate, and update route correctly, use available CLI commands,
+              and do not hand-author CLI-owned artifacts.
+
+  cli:
+    title: qualitymd CLI
+    description: >
+      The deterministic support tooling for validating models, reporting status,
+      managing evaluation records, exposing the active spec, and maintaining the
+      skill/CLI compatibility pair.
+    source: ./cmd/qualitymd
+    factors:
+      specification-conformance:
+        title: Specification Conformance
+        description: >
+          CLI behavior matches the functional command specs and the active
+          QUALITY.md format semantics.
+        requirements:
+          "the CLI follows its functional specifications":
+            assessment: >
+              Assess cmd/qualitymd/, internal/, and tests against specs/cli.md,
+              specs/cli/, specs/evaluation-records.md, and SPECIFICATION.md for
+              command behavior, flags, exit codes, output contracts, workspace
+              resolution, lint rules, and evaluation-record mechanics.
+      automation-compatibility:
+        title: Automation Compatibility
+        description: >
+          Agents, CI, scripts, and the /quality skill can drive commands without
+          polluted streams, hidden prompts, or unstable structured data.
+        requirements:
+          "CLI commands expose stable machine-readable behavior where agents need it":
+            assessment: >
+              Inspect CLI implementations and tests for JSON modes, stdout/stderr
+              separation, deterministic ordering, exit status behavior, and
+              non-interactive command paths used by the /quality skill.
       usability:
         title: Usability
         description: >
-          Can a reader find and follow what they need? Navigability and
-          readability: logical order, scannable tables, and copy-and-adapt
-          examples.
+          Human users can discover commands, understand results, and recover
+          from mistakes when they need the support tooling directly.
         requirements:
-          "the format specification is well-structured and readable":
+          "the CLI follows the project CLI design guide":
             assessment: >
-              Sections introduce a concept before dependent detail; field tables
-              make structure scannable; prose is plain; and the document carries
-              minimal and realistic examples.
+              Assess command arguments, flags, help, errors, examples, ambient
+              notices, and next actions against docs/guides/cli-design.md.
+      maintainability:
+        title: Maintainability
+        description: >
+          The Go implementation can be changed safely by maintainers and agents
+          beyond what deterministic checks alone enforce.
+        requirements:
+          "the Go implementation follows the project Go style guide":
+            assessment: >
+              Assess cmd/qualitymd/ and internal/ against docs/guides/go-style.md,
+              focusing on naming, package boundaries, error handling, interfaces,
+              state, tests, and comments while leaving formatting and mechanical
+              gates to mise run check.
 
-  readme:
-    title: README
-    source: ./README.md
+  docs:
+    title: Documentation and Examples
+    description: >
+      User-facing, contributor-facing, and normative-adjacent documentation that
+      explains QUALITY.md, teaches workflows, and demonstrates domain breadth.
+    source: ./docs
     factors:
       approachability:
         title: Approachability
         description: >
-          Does the front door bring a newcomer in? A first-time reader can grasp
-          what the thing is, who it is for, why the agent skill is the primary
-          workflow, see it work, reach a first result, and trust that the example
-          reflects reality.
+          Newcomers can understand what QUALITY.md is, why the /quality workflow
+          is primary, and how to reach a first useful result.
         requirements:
-          "the README says what QUALITY.md is and who it's for":
+          "introductory docs foreground the agent-first workflow without making the CLI the main surface":
             assessment: >
-              A first-time reader learns within the opening lines what a
-              QUALITY.md file is, what problem it solves, and who it is for.
-          "the README foregrounds the agent-first workflow":
+              Assess README.md, install.md, and docs/ to confirm users are guided
+              first to the /quality skill and QUALITY.md file, with the CLI
+              positioned as deterministic support tooling.
+      domain-range:
+        title: Domain Range
+        description: >
+          Documentation makes the format's broad modeled-domain range visible
+          without defaulting to software product quality.
+        requirements:
+          "docs keep modeled domains broad while preserving the agentic use context":
             assessment: >
-              The README presents `/quality`, `QUALITY.md`, and thoughtful direct
-              edits as the normal user workflow, and positions the CLI as support
-              tooling for validation, status, and evaluation records rather than
-              as the main product surface.
-          "the README shows the format and its payoff by example":
+              Assess README.md, SPECIFICATION.md examples, docs/guides/model-quality-across-domains.md,
+              and skill guide examples to confirm software examples are framed
+              as illustrative, non-software examples are represented where needed,
+              and AI-assistant/coding-agent language is used for context of use
+              rather than as a universal modeled domain.
+      currentness:
+        title: Currentness
+        description: >
+          Documentation matches the shipped skill, CLI, format, install channels,
+          and repository conventions.
+        requirements:
+          "docs reflect the current command, install, release, and workflow surfaces":
             assessment: >
-              The README shows a realistic QUALITY.md excerpt and what running
-              an evaluation against it produces, before reference detail.
-          "the README gets a newcomer to a first result quickly":
-            assessment: >
-              A newcomer can install the skill and CLI, invoke `/quality`, and
-              understand the shortest path to a useful first result.
-          "the README reflects what the skill, CLI, and spec provide":
-            assessment: >
-              Every skill mode, command, flag, and capability shown matches what
-              the skill, CLI, and spec provide today; planned work is marked
-              planned and placeholders are marked provisional.
+              Compare README.md, install.md, CONTRIBUTING.md, docs/, specs/, and
+              package/install metadata against implemented commands, workflows,
+              release scripts, and skill metadata.
 
-  # This area evaluates the concrete QUALITY.md artifact for this repository.
-  # The requirement's assessment names the authoring guide used to judge it.
-  quality-md:
-    title: QUALITY.md QUALITY.md
+  specs-bundle:
+    title: Tooling Specs Bundle
     description: >
-      The repository's own QUALITY.md model, including its structured model and
-      Markdown judgment context.
+      The OKF specifications for the deterministic qualitymd surface, evaluation
+      records, reports, JSON Schema, and the /quality skill.
+    source: ./specs
+    factors:
+      traceability:
+        title: Traceability
+        description: >
+          Runtime behavior, tests, reports, and skill guidance can be traced back
+          to durable functional specifications.
+        requirements:
+          "tooling specs identify the behavior they govern and stay linked to runtime artifacts":
+            assessment: >
+              Inspect specs/, internal/ tests, skills/quality/, and report
+              examples to confirm specs name the command, workflow, record, or
+              guide behavior they govern and runtime artifacts cite the right
+              specs or guides.
+      consistency:
+        title: Consistency
+        description: >
+          The specs agree with each other and with the active runtime artifacts.
+        requirements:
+          "the specs bundle remains internally consistent and synchronized with implementation":
+            assessment: >
+              Compare specs/cli/, specs/evaluation-records/, specs/reports/,
+              specs/skills/, and implemented behavior for command names, record
+              fields, report contracts, workflow modes, and terminology.
+
+  distribution:
+    title: Installation and Distribution
+    description: >
+      The install scripts, npm packaging, release automation, Homebrew/GitHub
+      distribution support, and smoke checks that get the CLI and skill to users.
+    source: ./install
+    factors:
+      installability:
+        title: Installability
+        description: >
+          Users and agents can install or update the supported tooling through
+          documented channels on supported platforms.
+        requirements:
+          "supported install and update paths are documented, tested, and package the expected binary":
+            assessment: >
+              Inspect install/, npm/quality.md/, scripts/build-npm.mjs,
+              scripts/check-npm-package.mjs, .goreleaser.yaml, .github/workflows/,
+              install.md, and README.md for cross-platform install behavior,
+              managed-install markers, package contents, and update guidance.
+      release-readiness:
+        title: Release Readiness
+        description: >
+          Release preparation and smoke checks reduce the risk of shipping a
+          broken or incompatible skill/CLI pair.
+        requirements:
+          "release gates verify the artifacts and channels that users depend on":
+            assessment: >
+              Inspect scripts/check-release.mjs, scripts/extract-release-notes.mjs,
+              CHANGELOG.md, docs/guides/cut-a-release.md, .github/workflows/,
+              and mise release tasks for checks that cover versioning,
+              packaging, changelog, smoke installs, and compatibility metadata.
+
+  # This Area rates the checked-in steering and owned-control artifacts
+  # themselves. The Agent Harnessability factor above rates the broader
+  # equipping capability those artifacts help create.
+  agent-harness:
+    title: Agent Harness
+    description: >
+      The repository-owned steering and control artifacts that guide, verify, and
+      bound AI assistant or coding-agent work, distinct from the broader Agent
+      Harnessability capability they support.
+    source: ./AGENTS.md
+    factors:
+      completeness:
+        title: Completeness
+        description: >
+          The harness covers the feedforward and feedback controls agents need
+          for setup, scoped work, verification, mutation, and handoff.
+      coherence:
+        title: Coherence
+        description: >
+          Harness instructions, skills, guides, hooks, workflows, and specs do
+          not contradict each other or blur responsibility between skill judgment
+          and CLI mechanics.
+      currentness:
+        title: Currentness
+        description: >
+          Harness guidance matches the current repository layout, workflow
+          names, command surfaces, and compatibility expectations.
+      assessability:
+        title: Assessability
+        description: >
+          Harness quality can be checked through inspectable artifacts,
+          representative workflow logs, and runnable verification signals.
+    requirements:
+      "the agent harness orients agents and routes them to deeper guidance":
+        factors:
+          - completeness
+          - coherence
+          - currentness
+          - assessability
+        assessment: >
+          Assess AGENTS.md, skills/quality/, docs/guides/, specs/skills/,
+          .githooks/, .github/workflows/, mise.toml, and .quality/logs/ to
+          confirm the checked-in harness defines project rules, routes to
+          relevant guides, exposes verification, records workflow feedback, and
+          distinguishes agent-harness artifacts from Agent Harnessability as a
+          project-wide factor.
+
+  # This Area evaluates the concrete QUALITY.md artifact. Its `source` is the
+  # model file itself; the requirement's assessment names the guide family used
+  # to judge it.
+  quality-md:
+    title: QUALITY.md Project QUALITY.md
+    description: >
+      This repository's own QUALITY.md model, including the structured model,
+      Markdown judgment context, setup assumptions, and maintenance posture.
     source: ./QUALITY.md
     factors:
       context-grounding:
-        title: Context grounding
+        title: Context Grounding
         description: >
-          Does the Markdown body explain the root area, scope, needs, risks,
-          unknowns, and open questions well enough for later humans and agents
-          to understand what quality means here?
+          The Markdown body explains root area, scope, domain breadth, use
+          context, lifecycle, needs, risks, unknowns, and review state well
+          enough for later humans and agents.
       model-structure:
-        title: Model structure
+        title: Model Structure
         description: >
-          Does the frontmatter organize areas, factors, requirements, sources,
-          and assessments so the model is readable, scoped, and traceable?
+          Areas, factors, requirements, sources, and assessment references are
+          scoped, traceable, and shaped by the project's actual constituents.
       evaluability:
         title: Evaluability
         description: >
-          Can an evaluator bind evidence to each requirement and distinguish
-          adjacent rating levels without relying on unstated project knowledge?
+          Requirements are assessable from agent-accessible evidence and give
+          future evaluations enough information to distinguish rating levels.
       lifecycle-maintenance:
-        title: Lifecycle maintenance
+        title: Lifecycle Maintenance
         description: >
-          Does the model remain current as the project, skill, CLI, docs, and
-          evaluation history change?
+          The model can evolve with the project, evaluation history, quality
+          log, feedback logs, and future recommendations.
     requirements:
-      "the QUALITY.md model follows the active authoring guide":
+      "the QUALITY.md model follows the active authoring guide family":
         factors:
           - context-grounding
           - model-structure
           - evaluability
           - lifecycle-maintenance
         assessment: >
-          Assess ./QUALITY.md against skills/quality/guides/authoring.md. The
-          body should state the root area, scope, needs, risks, unknowns, open
-          questions, and review state; the frontmatter should use clear area
-          boundaries, explicit sources, coherent factors, and assessable
-          requirements; and model changes should preserve useful evaluation
-          routing and quality-log history.
+          Assess ./QUALITY.md against skills/quality/guides/authoring.md and
+          its routed sub-guides under skills/quality/guides/authoring/, especially
+          whether the body credibly supports the model, factors come from visible
+          needs and risks, requirements are assessable, sources are inspectable,
+          Agent Harnessability is distinct from the agent-harness Area, and
+          unknowns or open questions are explicit.
 
-  quality-skill:
-    title: /quality skill
-    source: ./skills/quality
+  evaluation-history:
+    title: Evaluation History
+    description: >
+      Local evaluation runs, reports, recommendations, and quality-log entries
+      that preserve what the project has learned from prior quality work.
+    source: ./.quality
     factors:
-      judgment-grounding:
-        title: Judgment grounding
+      reportability:
+        title: Reportability
         description: >
-          Does the skill keep evaluative judgment tied to the active model,
-          current evidence, and the skill's functional contract? The skill is the
-          primary experience, so its advice and ratings must be explainable,
-          repeatable, and grounded.
-        requirements:
-          "the skill grounds evaluation in the active model and evidence":
-            assessment: >
-              Assess the runtime skill files under skills/quality/ against
-              specs/skills/quality-skill/quality-skill.md. The skill resolves
-              mode, model file, scope, and rigor from the user's request; reads
-              the required resources before acting; uses QUALITY.md terms
-              consistently; distinguishes model validity, model usefulness,
-              evaluated-source quality, tooling readiness, and evaluation history; and
-              stops when evidence cannot support a rating.
-      mutation-safety:
-        title: Mutation safety
+          Evaluation records remain complete enough for tools and humans to
+          inspect, report, and distinguish history status from source quality.
+      traceability:
+        title: Traceability
         description: >
-          Does the skill make mutation explicit, confirmed, and verifiable? Users
-          should know whether the skill may change source, QUALITY.md, evaluation
-          artifacts, or installed tooling before any edit happens.
-        requirements:
-          "the skill gates and explains mutating actions":
-            assessment: >
-              Assess setup, improve, and upgrade guidance in skills/quality/
-              against specs/skills/quality-skill/quality-skill.md. Mutating
-              workflows name the artifact class being changed, present a decision
-              brief before mutation, preserve read-only wizard behavior, and
-              verify the result after applying an approved change.
-      cli-orchestration:
-        title: CLI orchestration
-        description: >
-          Does the skill delegate deterministic mechanics to the CLI while
-          retaining judgment in the skill? This keeps validation, status, version
-          checks, scaffolding, and evaluation records predictable for agents and
-          automation.
-        requirements:
-          "the skill delegates deterministic mechanics to qualitymd":
-            assessment: >
-              Assess the runtime skill prompt, mode files, and resource guidance
-              against specs/skills/quality-skill/quality-skill.md and
-              skills/quality/resources/cli-quick-reference.md. Mechanical steps
-              use `qualitymd` commands, CLI compatibility is checked before
-              CLI-dependent workflows, structured output is consumed when
-              available, and the skill does not reimplement deterministic CLI
-              behavior in prompt instructions.
-      lifecycle-guidance:
-        title: Lifecycle guidance
-        description: >
-          Does the skill help users move from setup to evaluation to improvement
-          without losing context? The skill should make the next useful action
-          obvious while keeping evaluation history and active recommendations in
-          view.
-        requirements:
-          "the skill guides setup wizard evaluate improve and upgrade workflows":
-            assessment: >
-              Assess skills/quality/SKILL.md, skills/quality/workflows/, and bundled
-              guides against specs/skills/quality-skill/quality-skill.md. The
-              skill routes ambiguous requests through wizard, inspects status and
-              history when relevant, records recommendations as evaluation
-              output, applies recommendations only through confirmed improve
-              flows, and handles paired skill/CLI upgrade checks.
-
-  cli:
-    title: qualitymd CLI
-    source: ./internal/cli
-    factors:
-      usability:
-        title: Usability
-        description: >
-          Can people discover, understand, and use commands from terminal help,
-          examples, output, and error messages? The CLI is support tooling, so it
-          must make validation, status, evaluation record, and recovery paths
-          clear without becoming the primary user workflow.
-      automation-compatibility:
-        title: Automation compatibility
-        description: >
-          Can agents, CI, and scripts drive commands without hidden human
-          assumptions? The CLI is the deterministic surface that the `/quality`
-          skill and automation call, so streams, exit codes, prompts, and
-          structured output must remain safe to compose.
-      consistency:
-        title: Consistency
-        description: >
-          Does the command tree feel like one program? Arguments, flags, output,
-          help, errors, and next actions should follow shared conventions so
-          users and callers can transfer expectations between commands.
-      determinism:
-        title: Determinism
-        description: >
-          Does the same input and file state produce the same CLI result? Stable
-          output, ordering, and next actions let agents and CI diff, cache, and
-          assert against command behavior without flaky variation.
-      maintainability:
-        title: Maintainability
-        description: >
-          Is the Go implementation readable and idiomatic beyond what the
-          deterministic check gate enforces? Naming, error handling, interface
-          and API shape, concurrency discipline, value and state hygiene, doc
-          comments, and test style determine how safely contributors and agents
-          can change the code.
+          Records, reports, recommendations, quality-log entries, and feedback
+          logs preserve the links between findings, model changes, workflow
+          experience, and follow-up decisions.
     requirements:
-      "the CLI follows its functional specifications":
+      "evaluation history and model-change history remain inspectable and distinct":
         factors:
-          - consistency
-          - determinism
-          - automation-compatibility
+          - reportability
+          - traceability
         assessment: >
-          Assess the implementation against specs/cli.md and the command
-          sub-specifications under specs/cli/. Commands provide the behavior,
-          flags, output, exit codes, and records those specifications require.
-      "the CLI follows the project CLI design guide":
-        factors:
-          - usability
-          - automation-compatibility
-          - consistency
-          - determinism
-        assessment: >
-          Assess command arguments, flags, help, output, errors, interactivity,
-          exit codes, and next actions against docs/guides/cli-design.md.
-      "the Go implementation follows the project Go style guide":
-        factors:
-          - maintainability
-          - consistency
-        assessment: >
-          Assess the Go code under cmd/qualitymd/ and internal/ against
-          docs/guides/go-style.md: naming, error wrapping and handling,
-          interface and API shape, concurrency lifetimes, value and state
-          hygiene, doc comments, and test style. Judge only the conventions the
-          guide covers; the deterministic check gate (gofmt, go vet,
-          staticcheck, the complexity linters, and the rest of `mise run check`)
-          owns formatting, correctness, and size, so do not re-litigate those
-          here.
+          Inspect .quality/evaluations/, .quality/log/, .quality/logs/, and
+          specs/skills/quality-skill/ to confirm evaluation records, quality-log
+          entries, and workflow feedback logs are stored separately, preserve
+          their intended purpose, avoid secret values, and can be interpreted
+          without treating stale or malformed history as evaluated-source quality.
 ---
 
-# Quality model - QUALITY.md
+# Quality model - QUALITY.md Project
 
 ## Overview
 
-This model governs the QUALITY.md project itself: the open format
-([`SPECIFICATION.md`](./SPECIFICATION.md)), the `/quality` agent skill that
-turns the format into a working quality-management experience, the README that
-introduces that experience, and the deterministic `qualitymd` CLI that supports
-validation, status, and evaluation records.
+This model governs the QUALITY.md project: the open format
+([`SPECIFICATION.md`](./SPECIFICATION.md)), the `/quality` agent skill that makes
+the format usable through an AI-assistant/coding-agent workflow, the
+deterministic `qualitymd` CLI, the docs and specs that explain and constrain the
+system, the install and release paths that deliver it, the repository-owned agent
+harness, this repository's own `QUALITY.md`, and the local evaluation history.
 
-Good quality here means a team or agent can make quality expectations explicit,
-evaluate current evidence against them, and improve the evaluated source without losing
-the intent behind the model. The governing sense of "good" is fitness for
-purpose first, backed by conformance where the project defines a normative
-contract: the format specification, skill functional spec, CLI specs, and design
-guides are the sources of truth for the artifacts they govern.
+Good quality here means people and teams using AI assistants or coding agents can
+make quality expectations explicit for many kinds of maintained entities, evaluate
+evidence against those expectations, learn from the results, and improve the work
+without losing the intent behind the model. The modeled domains QUALITY.md can
+serve are broad: software, documentation, data sets, research or analytical
+reports, services, operations, processes, AI assistants, agent harnesses, and
+other entities. The project is not broad in its context of use: the primary
+experience is agent- and skill-first, with the CLI as deterministic support
+tooling.
 
-*Unknowns* — none known.
-*Open questions* — none.
+The governing sense of good is fitness for purpose first, backed by conformance
+where this repository defines a normative contract. The format specification,
+skill functional specs, CLI specs, design guides, and authoring guides are
+sources of truth for the artifacts they govern.
 
-*Agent-reviewed — Claude, 2026-06.*
+*Unknowns* — human ownership/review expectations, real adopter feedback across
+domains, support burden, and private roadmap or issue-tracker priorities are not
+agent-accessible.
+*Open questions* — what human review cadence should endorse this model after
+agent-authored changes?
+
+*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
 
 ## Scope
 
-The deliverables are modeled as area nodes: `format-spec`, `readme`,
-`quality-md`, `quality-skill`, and `cli`. Each area carries the requirements that make its
-own job assessable. The format spec declares Clarity, Consistency,
-Verifiability, Extensibility, and Usability factors; the README declares
-Approachability; the `QUALITY.md` artifact declares Context Grounding, Model
-Structure, Evaluability, and Lifecycle Maintenance; the `/quality` skill declares
-Judgment Grounding, Mutation Safety, CLI Orchestration, and Lifecycle Guidance;
-and the CLI declares
-Usability, Automation Compatibility, Consistency, Determinism, and
-Maintainability. Applicability is structural: factors apply where they are
-declared and below.
+This model covers the whole current repository. It includes the format
+specification, runtime `/quality` skill, CLI implementation, documentation,
+specification bundles, install and release infrastructure, repository-owned
+agent harness, this `QUALITY.md`, and local quality/evaluation history.
 
-The skill functional spec (`specs/skills/quality-skill/quality-skill.md`) is
-binding for `/quality` behavior. The CLI functional specs (`specs/cli.md` and
-`specs/cli/`) are binding for what commands do. The CLI design guide
-(`docs/guides/cli-design.md`) supplies the quality expectations for how command
-arguments, flags, help, output, errors, interactivity, exit codes, and next
-actions should work. The Go style guide (`docs/guides/go-style.md`) supplies the
-judgment-based expectations for the Go implementation under `cmd/qualitymd/` and
-`internal/`, complementing the deterministic check gate that owns formatting,
-correctness, and size.
+The model treats the project root as a composite. The root carries the
+model-wide Agent Harnessability factor because the project is explicitly used
+through AI assistants and coding agents. Child Areas represent distinct
+constituents with their own factor families. The agent-harness Area is the
+checked-in steering and owned-control artifact set; Agent Harnessability is the
+broader capability the whole project exhibits when it equips agents to work
+well.
 
-Ratings should be read with a worst-of bias for contract failures: a single
-unacceptable finding in the format spec, skill safety rules, or CLI automation
-contract can cap its rating, even if surrounding requirements are strong.
-Usability and approachability findings can compensate more often, but not when
-they mislead users about the supported workflow. `Minimum` is acceptable for
-early pre-1.0 work only when the body names the gap and the remaining risk is
-contained.
+Ratings should be read with a low-tolerance, pre-release posture. Contract
+failures in the format spec, mutation/evaluation safety in the skill, automation
+contracts in the CLI, and install/update paths can cap their Areas even when
+surrounding material is strong. Documentation polish can tolerate more
+iteration, but not when it misrepresents the domain-agnostic model or hides the
+agent-first use context.
 
-Out of scope by design: dependencies the project does not own, including the Go
-toolchain, Cobra/Fang, Agent Skills installers, and release tooling.
+Out of scope by design: dependencies and services the project does not own,
+including the Go toolchain, package registries, Agent Skills installers,
+Homebrew infrastructure, GitHub platform behavior, and third-party libraries.
 
-*Unknowns* — none known.
-*Open questions* — whether to encode per-requirement rating overrides for the
-most important safety and conformance requirements, given the model's stated
-worst-of bias and veto behavior.
+*Unknowns* — release-readiness thresholds beyond the visible repo checks are not
+fully captured.
+*Open questions* — whether future evaluations should add per-requirement rating
+overrides for the strongest safety, conformance, and release-readiness vetoes.
 
-*Agent-reviewed — Claude, 2026-06.*
+*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
 
 ## Needs
 
-- Software development teams can hold the line against the three debts that
-  erode quality over time: technical debt (code drifting from where it should
-  be), cognitive debt (the mental burden of understanding complex or
-  under-documented systems), and intent debt (software diverging from what
-  stakeholders actually need) ([Storey][triple-debt]). QUALITY.md makes
-  those expectations explicit and checkable so the gaps stay visible and
-  addressable.
-- Format implementers can build a parser and evaluator from the specification.
-- Authors can write a valid model without reverse-engineering implementation.
-- Users can manage quality through their coding agent and the `/quality` skill
-  without learning the CLI first.
-- Authors can improve the Markdown body manually or with thoughtful AI
-  assistance because it carries the model's purpose, scope, needs, risks, and the
-  unknowns and open questions behind them.
-- Contributors can evaluate and improve this repository's own `QUALITY.md`
-  artifact against the active authoring guide rather than treating the model as
-  unjudged project metadata.
-- Coding agents can discover the model from `AGENTS.md` guidance and evaluate a
-  root area from the model alone.
-- The `/quality` skill can safely set up, inspect, evaluate, improve, and
-  upgrade the quality-management workflow while making mutation and evidence
-  boundaries explicit.
-- Newcomers can tell from the README what QUALITY.md is, why `/quality` is the
-  normal workflow, and how to reach a first result.
-- Humans can understand and recover from CLI behavior through help, output, and
-  errors when they need the support tooling directly.
-- Agents, CI, scripts, and the `/quality` skill can drive the CLI
-  deterministically without prompts or polluted streams.
+Primary users need QUALITY.md to remain domain agnostic in what it can model,
+while being effective in its intended context of use: AI assistants and coding
+agents working with people. They need the model shape to work for software,
+documents, data, research, services, operations, processes, and other maintained
+entities without importing a default factor checklist.
 
-*Unknowns* — none known.
-*Open questions* — none.
+People and teams using AI assistants or coding agents need `/quality setup`,
+`/quality evaluate`, `/quality update`, recommendation follow-up, and direct
+`QUALITY.md` edits to feel coherent, bounded, and useful. Agents need
+agent-accessible context, scoped tasks, runnable or inspectable verification,
+durable evaluation records, and action limits. Maintainers and contributors need
+the specs, guides, CLI implementation, skill, and docs to stay aligned as the
+project changes.
 
-*Agent-reviewed — Claude, 2026-06.*
+Format implementers need a portable specification. Skill users need the agent
+workflow to foreground judgment and keep deterministic mechanics in the CLI. CLI
+users, scripts, and CI need stable command behavior, structured output, and
+clear failure modes. Package and install-channel users need release artifacts
+that install, update, and report compatibility correctly.
+
+Later evaluation recommendations should default to GitHub Issues for handoff
+when external tracking is useful, but setup does not create issues or configure
+integrations.
+
+*Unknowns* — real adopter feedback and support burden across non-software and
+software domains are not visible in the repository.
+*Open questions* — which adopter domains should be sampled first when future
+examples or evaluations test domain breadth?
+
+*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
 
 ## Risks
 
-An ambiguous or incomplete format spec is the worst outcome because
-implementations diverge and the format stops being portable. A skill that rates
-without enough evidence, follows instructions from evaluated content, hides
-mutation, or drifts from the CLI can damage trust in the whole quality workflow.
-A README that drifts back to CLI-first framing turns newcomers away or teaches
-the wrong path. A stale or structurally weak `QUALITY.md` can make future agents
-optimize the wrong surface, miss model gaps, or treat outdated judgment context
-as current. A CLI that is inconsistent, noisy on the wrong stream, interactive
-by surprise, or non-deterministic undermines the automation role the project
-depends on.
+The highest risk is confusing the model domain with the use context. If docs,
+examples, or the model imply QUALITY.md is mainly for software practitioners,
+the format's broad value is narrowed. If they imply QUALITY.md is inherently for
+AI assistant or harness quality, the agentic use context is mistaken for the
+default modeled domain.
+
+An ambiguous or incomplete format spec can fragment implementations. A skill
+that rates without enough evidence, follows instructions from evaluated content,
+hides mutation, or drifts from CLI support can damage trust in the whole quality
+loop. A CLI that is inconsistent, interactive by surprise, noisy on the wrong
+stream, or stale relative to the skill can break agent and automation workflows.
+Install or release failures can leave users with incompatible skill/CLI pairs.
+
+A thin agent harness can make future agent work depend on private memory,
+unstated permissions, or non-durable chat context. A stale `QUALITY.md` can make
+evaluations optimize the wrong constituents or miss project-wide factors. Stale
+or malformed evaluation history can mislead maintainers if it is mistaken for
+current evaluated-source quality rather than history status.
+
+*Unknowns* — the private roadmap and issue-tracker priorities that may drive
+near-term release risk are not visible.
+*Open questions* — which risks are hard release blockers for the next public
+version?
+
+*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
+
+## Model Shape
+
+The model is composite by design. `format-spec` covers the normative format
+contract. `quality-skill` covers the runtime agent skill and its judgment-bearing
+workflow guidance. `cli` covers deterministic command behavior and Go
+implementation quality. `docs` covers README, install, guides, examples, and
+domain-range communication. `specs-bundle` covers durable functional specs for
+tools, records, reports, and skills. `distribution` covers install, packaging,
+release, and smoke-check infrastructure. `agent-harness` covers checked-in
+steering and owned-control artifacts. `quality-md` evaluates this model itself.
+`evaluation-history` covers the local records and logs that preserve what prior
+quality work learned.
+
+Agent Harnessability is model-wide and decomposed into agent accessibility, task
+specifiability, agent operability, continuity, self-verifiability, enforcement
+of standards, and containment of action. It is intentionally distinct from the
+agent-harness Area: the factor asks how the project equips agents to work well;
+the Area asks whether the owned harness artifacts themselves are complete,
+coherent, current, and assessable.
 
 *Unknowns* — none known.
-*Open questions* — none.
+*Open questions* — whether distribution and evaluation history should split into
+smaller child Areas after the next full evaluation produces findings.
 
-*Agent-reviewed — Claude, 2026-06.*
-
-## Areas and factors
-
-### format-spec
-
-The format spec is the contract for every reader, author, implementation, and
-file. It carries the most detailed factors: Clarity, Consistency, Verifiability,
-Extensibility, and Usability.
-
-*Unknowns* — the BCP 14 references (`docs/reference/rfc2119.md` and
-`docs/reference/rfc8174.md`) are not yet cited as reference standards for
-requirements that depend on normative vocabulary.
-*Open questions* — none.
-
-### readme
-
-The README is the project's front door. Approachability is scoped here because
-the README's job is newcomer orientation, not format precision. It should make
-the agent-first path clear: install the skill, install the CLI support tooling,
-invoke `/quality`, and treat direct edits to `QUALITY.md` as a useful companion
-workflow.
-
-*Unknowns* — the README/AGENTS agent-first positioning is represented in this
-model, but the readme requirements have not yet been evaluated against the
-current artifacts.
-*Open questions* — none.
-
-### quality-md
-
-The repository's own `QUALITY.md` is a first-class evaluated artifact. Its
-quality depends on how well the body grounds the model, how clearly the
-frontmatter scopes areas and factors, whether requirements are assessable, and
-whether model changes leave a useful quality-log history.
-
-*Unknowns* — the `quality-md` area has not yet been evaluated against the
-current authoring guide.
-*Open questions* — whether future evaluations should add per-level criteria for
-model usefulness once this area produces enough findings to distinguish adjacent
-ratings.
-
-### quality-skill
-
-The `/quality` skill is the primary user experience for setup, evaluation,
-improvement, and upgrade guidance. Its quality depends on grounded judgment,
-safe mutation gates, correct CLI delegation, and lifecycle guidance that keeps
-status, history, recommendations, and next actions visible.
-
-*Unknowns* — none known.
-*Open questions* — whether the skill requirements need sharper per-level criteria
-once the first evaluation distinguishes adjacent ratings.
-
-### cli
-
-The CLI is deterministic support tooling for humans, agents, CI, and the
-`/quality` skill. Its quality depends on satisfying the binding CLI functional
-specs while following the CLI design guide's expectations for usable,
-scriptable, consistent, and deterministic command behavior. The CLI should be
-excellent at validation, status, version checks, scaffolding, and evaluation
-records without becoming the default workflow users must learn first. The Go
-implementation under `cmd/qualitymd/` and `internal/` is also held to the Go
-style guide (`docs/guides/go-style.md`) for maintainability, which the
-deterministic check gate does not assess.
-
-*Unknowns* — none known.
-*Open questions* — none.
-
-[triple-debt]: https://arxiv.org/abs/2603.22106 "Margaret-Anne Storey, The Triple Debt of Software Development (arXiv:2603.22106)"
+*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
