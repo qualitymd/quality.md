@@ -221,6 +221,15 @@ Factors should be meaningful quality lenses, not vague labels alone.
   area carried with only one or two thin factors: route to authoring. Treat this
   as a coverage gap in the steering-materials area, not as evidence the harness is
   unimportant.
+- Finding when an agent-harness area is defined or scoped as instructions only,
+  omitting the feedback half of the harness or project-owned runtime controls:
+  route to authoring. Define the harness as the whole engineered system around
+  the model, then scope the area to checked-in steering and owned-control
+  artifacts.
+- Finding when project-owned runtime harness machinery is present in the repo
+  (hooks, tool/MCP definitions, sandbox or permission policy, orchestration
+  config, subagent config) but is neither modeled in the agent-harness area, given
+  its own area, nor explicitly out of scope: route to authoring.
 - Finding when agent-harness area requirements assume a software toolchain
   (lint/type-check/test/CI/deploy) but the project's served domain is not
   software: route to authoring. Rephrase toward how this project's steering

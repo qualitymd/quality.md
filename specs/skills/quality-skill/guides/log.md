@@ -2,6 +2,17 @@
 
 ## 2026-06-24
 
+- **Revision**: Updated the
+  [agent-harness Area guide contract](authoring/agent-harness.md),
+  [Agent Harnessability guide contract](authoring/agent-harnessability.md),
+  [model-structure guide contract](authoring/model-structure.md), and
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for
+  [0091 - Agent-harness holistic definition](../../../../changes/archive/0091-agent-harness-holistic-definition.md).
+  The durable spec mirror now requires the holistic harness definition,
+  checked-in governing-artifacts Area projection, mixed-artifact scoping rule,
+  expanded requirement shapes across feedforward, feedback, and owned controls,
+  and findings for instructions-only or unmodeled runtime-harness gaps.
+
 - **Restructure**: Replaced the monolithic `authoring-md.md` guide contract with
   the [authoring guide family](authoring.md) and mirrored sub-specs under
   [authoring/](authoring/index.md) for

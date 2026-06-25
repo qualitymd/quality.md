@@ -450,11 +450,14 @@ earned per Model from the entity's own risks and needs.
 Even for a use-context constituent, keep its factors and requirements agnostic to
 the **served domain**: the domain the project model is about, and that the
 use-context constituent serves. For the agent harness, write requirements around
-what steering materials do — orient an agent, point to how work is verified, and
-bound permitted action — rather than around one served domain's tools.
+what harness governing artifacts do — orient an agent, point to how work is
+verified, expose feedback, and bound permitted action — rather than around one
+served domain's tools.
 
-- Good: "Steering materials point an agent to how the project verifies work."
-- Avoid: "Steering materials document the lint, type-check, and test commands."
+- Good: "Harness governing artifacts point an agent to how the project verifies
+  work."
+- Avoid: "Harness governing artifacts document the lint, type-check, and test
+  commands."
   That assumes software; a documentation, data, service, research, or operational
   project verifies work differently.
 

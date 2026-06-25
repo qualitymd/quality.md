@@ -14,6 +14,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- The authoring guide now defines the agent harness holistically as the whole
+  engineered system around the model, then scopes the agent-harness area to
+  checked-in steering and project-owned control artifacts. Setup now checks for
+  owned runtime harness machinery, and the Top 10 checks flag instructions-only
+  harness areas or unmodeled owned harness controls.
 - The `/quality` skill now treats agent-mediated UX as part of its workflow
   contract: setup, evaluate, update, and recommendation follow-up guidance now
   emphasize the primary question or call to action, use scannable labels for

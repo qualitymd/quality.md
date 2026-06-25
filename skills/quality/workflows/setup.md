@@ -426,8 +426,20 @@ frontmatter model:
   accountability. Never drop it because the harness is thin or absent; that is a
   ratable gap and finding. Keep
   it distinct from the agent harness constituent: the factor rates how each
-  constituent equips an agent, while the harness area rates the steering artifact
-  itself.
+  constituent equips an agent, while the harness Area rates the checked-in,
+  project-owned governing artifacts themselves.
+- When the root is an agent-collaborated composite and the agent harness is
+  germane, actively check for project-owned runtime harness machinery: hooks,
+  tool/MCP definitions, sandbox or permission policy, orchestration config, and
+  subagent config. Scope the generated agent-harness area as the checked-in
+  steering and owned-control artifacts, not instructions alone; include a
+  disambiguating `description` and YAML boundary comment that distinguish it from
+  the broader Agent Harnessability factor. Surface owned runtime harness
+  machinery in that area or, if it is large enough to carry distinct factors, in
+  its own area. Do not silently fold it into prose guidance or drop it. In the
+  user-facing recap, include one line naming that scope: the agent-harness area is
+  the checked-in steering and owned-control artifacts, while Agent
+  Harnessability rates the broader equipping capability.
 - When naming the model in any recap or summary, name factors as Factors (or
   model-wide factors); the stewardship concerns are the *source* factors trace to,
   not a kind of factor. Do not call them "stewardship factors" or "stewardship

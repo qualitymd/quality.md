@@ -413,8 +413,22 @@ NOT** omit Agent
 Harnessability because the project's harness is thin or absent; that condition is
 a rating gap and finding, not a factor-omission reason. Setup **MUST** keep Agent
 Harnessability distinct from the agent harness constituent: the factor rates how
-each constituent equips an agent, while the harness area rates the steering
-artifact itself.
+each constituent equips an agent, while the harness Area rates the checked-in,
+project-owned governing artifacts themselves.
+
+For an agent-collaborated composite root whose agent harness is germane, setup
+**MUST** actively check for project-owned runtime harness machinery such as
+hooks, tool/MCP definitions, sandbox or permission policy, orchestration config,
+and subagent config. Setup **MUST** scope the generated agent-harness Area as the
+checked-in steering and owned-control artifacts, not instructions alone. Setup
+**MUST** align the generated Area `description` and projection-boundary comment
+with that scope and distinguish the Area from the broader Agent Harnessability
+factor. Setup **MUST** surface project-owned runtime harness machinery in the
+agent-harness Area or, when large enough to carry distinct factors, in its own
+Area; it **MUST NOT** silently fold that machinery into prose guidance or drop
+it. Setup **SHOULD** include in its user-facing recap one line naming that the
+agent-harness Area is the checked-in steering and owned-control artifacts while
+Agent Harnessability rates the broader equipping capability.
 
 > Annotation: Agent Harnessability is the factor-side projection of the same
 > agent-collaboration concern that 0080 made a modeled-by-default constituent.

@@ -3,6 +3,13 @@
 ## 2026-06-24
 
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0091 - Agent-harness holistic definition](../../../../changes/archive/0091-agent-harness-holistic-definition.md).
+  Setup must now check for project-owned runtime harness machinery, scope
+  generated agent-harness Areas to checked-in steering and owned-control artifacts,
+  distinguish that Area from the broader Agent Harnessability factor in comments,
+  descriptions, and recap, and avoid dropping owned controls silently.
+
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
   [0090 - Skill-content OKF authoring split](../../../../changes/archive/0090-skill-content-okf-authoring-split.md).
   Setup now points at the current seven-sub-factor Agent Harnessability shape,
   including `continuity`, matching the routed authoring guide family.

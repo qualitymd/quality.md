@@ -370,3 +370,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   indexes/schema/logs, and made routed authoring reads explicit in `SKILL.md`,
   setup, and recommendation follow-up; docs/spec/skill guidance only, no CLI/Go
   or format-spec change (`Done`).
+- [0091 — Agent-harness holistic definition](0091-agent-harness-holistic-definition.md) -
+  redefined the agent harness as the whole engineered system around the model,
+  scoped the agent-harness area to checked-in steering and project-owned control
+  artifacts, added the mixed-artifact scoping rule and owned-runtime-machinery
+  checks, and mirrored the guidance across setup, Top 10, durable specs, logs,
+  docs, and CHANGELOG; docs/spec/skill guidance only, no CLI/Go or format-spec
+  change (`Done`).

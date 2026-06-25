@@ -13,7 +13,9 @@ Governs [`skills/quality/guides/authoring/agent-harnessability.md`](../../../../
 The guide **MUST** cover Agent Harnessability as the model-wide factor projection
 of the agent-collaboration concern for agent-collaborated composite roots, using
 `agent-harnessability` as the recommended key. It **MUST** keep the factor distinct
-from the agent-harness Area and agent audience.
+from the agent-harness Area and agent audience. That boundary **MUST** present
+the agent-harness Area as the checked-in, project-owned governing-artifacts
+projection, not as the whole equipping capability and not as instructions alone.
 
 The guide **MUST** present Agent Harnessability as an umbrella carrying no direct
 Requirements, rated by rolling up independently assessable sub-factors:

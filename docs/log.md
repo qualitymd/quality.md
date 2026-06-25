@@ -4,6 +4,13 @@
 
 - **Revision**: Updated
   [Modeling quality across domains](guides/model-quality-across-domains.md) for
+  [0091 - Agent-harness holistic definition](../changes/archive/0091-agent-harness-holistic-definition.md).
+  The agentic use-context section now describes agent-harness requirements around
+  harness governing artifacts rather than steering materials alone, keeping the
+  served-domain guardrail while recognizing feedback and owned controls.
+
+- **Revision**: Updated
+  [Modeling quality across domains](guides/model-quality-across-domains.md) for
   [0089 - Agent-harness modeling guidance](../changes/archive/0089-agent-harness-modeling-guidance.md).
   The guide now distinguishes explicit modeling guidance for recurring
   use-context constituents (the agent harness and QUALITY.md self-check) from

@@ -19,4 +19,6 @@ use-context constituents.
 
 The guide **MUST** route detailed agent-harness Area guidance to
 `agent-harness.md` while preserving the self-check Area guidance and the general
-use-context constituent rule.
+use-context constituent rule. It **MUST NOT** define the agent harness as
+instructions alone; it **MUST** refer to the harness system or project-owned
+harness artifacts consistently with `agent-harness.md`.

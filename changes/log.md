@@ -3,6 +3,49 @@
 ## 2026-06-24
 
 - **Done**: Landed and archived
+  [0091 — Agent-harness holistic definition](archive/0091-agent-harness-holistic-definition.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented the holistic harness definition across the
+  bundled skill guidance, setup workflow, Top 10 checks, durable skill spec
+  mirrors, docs/logs, and CHANGELOG: the agent harness is now defined as the whole
+  engineered system around the model, while the agent-harness area is scoped to
+  checked-in steering and project-owned control artifacts with an explicit
+  mixed-artifact decision rule and checks for owned runtime harness machinery. No
+  CLI, Go, format-schema, rating, roll-up, or evaluation behavior changed.
+  Verified with `mise run check`.
+
+- **In-Progress**: Advanced
+  [0091 — Agent-harness holistic definition](archive/0091-agent-harness-holistic-definition.md)
+  through `Design` to `In-Progress`; the functional spec and design are settled,
+  and implementation is beginning across the bundled skill authoring guidance,
+  setup workflow, Top 10 checks, durable skill spec mirrors, logs, and changelog.
+  No CLI, Go, format-schema, rating, roll-up, or evaluation behavior change is
+  expected.
+
+- **Draft**: Created
+  [0091 — Agent-harness holistic definition](archive/0091-agent-harness-holistic-definition.md)
+  with its child
+  [index](archive/0091-agent-harness-holistic-definition/index.md),
+  [functional spec](archive/0091-agent-harness-holistic-definition/spec.md), and
+  [design doc](archive/0091-agent-harness-holistic-definition/design.md). The case
+  corrects a part-for-whole error in the `/quality` authoring guidance: the agent
+  harness is defined as "the instructions that steer the agent," but the harness is
+  the whole engineered system around the model (feedforward guides plus feedback
+  sensors, everything-but-the-model). It redefines the harness holistically,
+  derives the agent-harness area as one projection with explicit boundaries against
+  the Agent Harnessability factor and the tests/operations constituents, adds an
+  area-scoping decision rule and a never-define-as-instructions doctrine, brings
+  project-owned runtime harness machinery into scope, and aligns `model-structure.md`,
+  `setup.md`, and Top 10 check 8 — with durable spec mirrors and logs. Builds on
+  [0089](archive/0089-agent-harness-modeling-guidance.md) and
+  [0087](archive/0087-encode-projection-boundaries.md) without reopening their
+  projection boundary; redefines rather than renames the area. Documentation,
+  doctrine, and bundled-skill guidance only; no CLI, Go, format-schema, rating,
+  roll-up, or evaluation behavior change expected. Listed it in the bundle
+  [index](index.md).
+
+- **Done**: Landed and archived
   [0090 — Skill-content OKF authoring split](archive/0090-skill-content-okf-authoring-split.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

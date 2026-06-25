@@ -356,8 +356,10 @@ QUALITY.md is domain-agnostic in *what* it models, but its assumed context of us
 is an agent/AI-assistant-collaborated project. That context of use — not the
 modeled domain — makes two constituents recur in a composite root when germane:
 
-- the **agent harness** — the instructions that steer the agent working the
-  project (its agent guidance files, skills, and prompts); read
+- the **agent harness** — the project-owned harness system around the model,
+  scoped in the Area to checked-in governing artifacts such as agent entry points,
+  guidance files, skills, prompts, owned hooks, tool/MCP definitions,
+  sandbox/permission policy, and orchestration config; read
   [Agent harness authoring](agent-harness.md) for its area guidance; and
 - the **QUALITY.md self-check** — the model's own quality.
 

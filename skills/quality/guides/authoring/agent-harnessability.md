@@ -116,7 +116,8 @@ the factor, not the factor.
     Audit trails make consequential actions reviewable after the fact.
 - **Do** keep Agent Harnessability separate from the agent harness constituent.
   *Agent Harnessability rates how each constituent equips an agent. The
-  agent-harness area rates the steering artifact's own quality (see
+  agent-harness area rates the checked-in, project-owned governing artifacts'
+  own quality (see
   [Carry the recurring use-context constituents](model-structure.md#carry-the-recurring-use-context-constituents)).*
 - **Do** recognize an existing `harnessability` factor with the legacy
   six-sub-factor shape as semantic coverage of the same model-wide concern.

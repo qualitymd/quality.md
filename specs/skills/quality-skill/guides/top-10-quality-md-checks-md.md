@@ -193,6 +193,18 @@ whose germane agent-harness area is carried with only one or two thin factors, a
 route it to authoring. It **MUST** treat a thin harness area as a coverage gap, not
 as evidence that the harness is unimportant.
 
+The area-and-factor-shape check **MUST** flag an agent-harness Area defined or
+scoped as instructions only, missing the feedback half of the harness or
+project-owned runtime controls. It **MUST** route that finding to authoring and
+point toward defining the harness holistically, then scoping the Area to
+checked-in steering and owned-control artifacts.
+
+The area-and-factor-shape check **MUST** flag project-owned runtime harness
+machinery that is present in the repo but unmodeled: neither in the agent-harness
+Area, nor given its own Area, nor explicitly out of scope. Runtime harness
+machinery includes hooks, tool/MCP definitions, sandbox or permission policy,
+orchestration config, and subagent config.
+
 The area-and-factor-shape check **MUST** flag harness-area requirements that assume
 a software toolchain when the project's served domain is not software, and route
 them to authoring.
