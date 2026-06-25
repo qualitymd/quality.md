@@ -27,7 +27,8 @@ areas:
         title: Reliability
         description: The API continues to behave under expected failure modes.
         requirements:
-          "writes are durable":
+          durable-writes:
+            title: Writes are durable
             assessment: Inspect the write path and tests for durable commits.
 ---
 
@@ -51,7 +52,11 @@ areas:
 	if got := model.Areas["api"].Factors["reliability"].Title; got != "Reliability" {
 		t.Fatalf("factor title = %q, want Reliability", got)
 	}
-	if got := model.Areas["api"].Factors["reliability"].Requirements["writes are durable"].Assessment; got == "" {
+	requirement := model.Areas["api"].Factors["reliability"].Requirements["durable-writes"]
+	if got := requirement.Title; got != "Writes are durable" {
+		t.Fatalf("requirement title = %q, want Writes are durable", got)
+	}
+	if got := requirement.Assessment; got == "" {
 		t.Fatal("assessment was not loaded")
 	}
 }

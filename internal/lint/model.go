@@ -27,11 +27,11 @@ type factorRef struct {
 }
 
 type requirementRef struct {
-	statement string
-	node      *yaml.Node
-	path      []PathSegment
-	area      *areaRef
-	factor    *factorRef
+	name   string
+	node   *yaml.Node
+	path   []PathSegment
+	area   *areaRef
+	factor *factorRef
 }
 
 func (s *runState) walkModel() {
@@ -97,11 +97,14 @@ func (s *runState) walkRequirements(area *areaRef, factor *factorRef, node *yaml
 	var out []*requirementRef
 	for key, value := range document.MapEntries(requirements) {
 		path := appendPath(base, qschema.PropertyRequirements, key.Value)
+		if key.Kind != yaml.ScalarNode || !validModelName(key.Value) {
+			s.add(RuleInvalidRequirementName, "The requirement name `"+key.Value+"` is invalid; Requirement names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
+		}
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The requirement `"+key.Value+"` has the wrong YAML shape; each requirement must be a map.")
 			continue
 		}
-		req := &requirementRef{statement: key.Value, node: value, path: path, area: area, factor: factor}
+		req := &requirementRef{name: key.Value, node: value, path: path, area: area, factor: factor}
 		s.checkRequirementShape(req)
 		out = append(out, req)
 	}
@@ -179,6 +182,22 @@ func allRequirements(area *areaRef) []*requirementRef {
 		}
 	}
 	walkArea(area)
+	return out
+}
+
+func localRequirements(area *areaRef) []*requirementRef {
+	var out []*requirementRef
+	var walkFactor func(*factorRef)
+	walkFactor = func(factor *factorRef) {
+		out = append(out, factor.requirements...)
+		for _, child := range factor.factors {
+			walkFactor(child)
+		}
+	}
+	out = append(out, area.requirements...)
+	for _, factor := range area.factors {
+		walkFactor(factor)
+	}
 	return out
 }
 

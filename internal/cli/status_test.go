@@ -111,7 +111,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 factors:

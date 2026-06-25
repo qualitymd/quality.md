@@ -2,6 +2,13 @@
 
 ## 2026-06-25
 
+- **Revision**: Updated durable [authoring](authoring.md), authoring
+  [index](authoring/index.md), and
+  [Requirements](authoring/requirements.md) guide specs for
+  [0093 - Named Requirement identity](../../../../changes/archive/0093-requirement-identity.md).
+  The durable guide contract now requires stable Requirement names,
+  natural-language Requirement titles, and named Requirement authoring examples.
+
 - **Revision**: Updated durable [Getting started](getting-started-md.md) and
   [Top 10 checks](top-10-quality-md-checks-md.md) guide specs for
   [0092 - Setup workflow scope trim](../../../../changes/archive/0092-setup-workflow-scope-trim.md).

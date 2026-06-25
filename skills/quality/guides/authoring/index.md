@@ -9,7 +9,7 @@ model elements you will touch.
 - [Markdown body](body.md) - judgment context, unknowns, open questions, and review state.
 - [Model structure](model-structure.md) - Areas, Sources, decomposition, traceability, constituents, and use-context structure.
 - [Factors](factors.md) - Factor naming, coverage, descriptions, and sub-factors.
-- [Requirements](requirements.md) - Requirement statements, Assessments, factor connections, and rating overrides.
+- [Requirements](requirements.md) - Requirement names and titles, Assessments, factor connections, and rating overrides.
 - [Rating Scale](rating-scale.md) - Rating Levels, criteria, roll-up, vetoes, and `not assessed`.
 - [Agent Harnessability](agent-harnessability.md) - model-wide Agent Harnessability factor guidance.
 - [Agent harness area](agent-harness.md) - agent-harness constituent guidance.

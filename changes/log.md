@@ -3,6 +3,35 @@
 ## 2026-06-25
 
 - **Done**: Landed and archived
+  [0093 - Named Requirement identity](archive/0093-requirement-identity.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented stable Requirement names, required
+  Requirement titles, optional descriptions, retained assessments, qualified
+  `requirement:<area-path>::<requirement-name>` references, lint/schema
+  enforcement, generated schema updates, scaffolds, docs, examples, and bundled
+  skill guidance. This is a breaking format change for legacy statement-key
+  Requirements. Verified with `mise run check`.
+
+- **In-Progress**: Advanced
+  [0093 - Named Requirement identity](archive/0093-requirement-identity.md) through
+  `Design` to `In-Progress`; the functional spec and
+  [design doc](archive/0093-requirement-identity/design.md) are settled, and
+  implementation is beginning across the format spec, schema, lint/model code,
+  scaffolds, bundled skill guidance, docs, and examples. The compatibility
+  decision is explicit: legacy statement-key Requirements are rejected rather
+  than normalized invisibly.
+
+- **Draft**: Created
+  [0093 - Named Requirement identity](archive/0093-requirement-identity.md)
+  with its child [index](archive/0093-requirement-identity/index.md) and
+  [functional spec](archive/0093-requirement-identity/spec.md). The case gives
+  Requirements stable id-like names, required titles, retained assessment text,
+  optional descriptions, and qualified Requirement references, while deferring
+  compatibility and migration decisions before implementation. No code changes
+  yet.
+
+- **Done**: Landed and archived
   [0092 - Setup workflow scope trim](archive/0092-setup-workflow-scope-trim.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

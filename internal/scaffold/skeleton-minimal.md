@@ -22,7 +22,8 @@ factors:
     title: "<short display label for this quality>"
     description: "<what this quality means for the artifact, and to whom it matters>"
     requirements:
-      "<state one expectation you can assess>":
+      requirement-name:
+        title: "<state one expectation you can assess>"
         assessment: "<how an evaluator should inspect or measure it>"
 ---
 

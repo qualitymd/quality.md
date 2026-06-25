@@ -55,17 +55,20 @@ factors:
         title: Error handling
         description: Error handling.
         requirements:
-          "reports errors":
+          reports-errors:
+            title: Reports errors
             assessment: Inspect errors.
 requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 areas:
   api:
     title: API
     requirements:
-      "responds":
+      responds:
+        title: Responds
         factors: [reliability]
         assessment: Call it.
   cli:
@@ -111,7 +114,8 @@ areas:
   api:
     title: API
     requirements:
-      "responds":
+      responds:
+        title: Responds
         factors: [reliability]
         assessment: Call it.
 `))
@@ -135,7 +139,8 @@ areas:
 func TestSnapshotEvaluationHistoryStaleAndLatestRun(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 factors:
@@ -151,7 +156,8 @@ factors:
 		t.Fatalf("first path = %q, want run 0001", first.Path)
 	}
 	writeFile(t, repo, validModel(`requirements:
-  "starts well":
+  starts-well:
+    title: Starts well
     factors: [reliability]
     assessment: Run it again.
 factors:
@@ -182,7 +188,8 @@ factors:
 func TestSnapshotUsesWorkspaceEvaluationDir(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, strings.Replace(validModel(`requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 factors:
@@ -217,7 +224,8 @@ factors:
 func TestSnapshotMalformedRunDoesNotHideLaterRuns(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 factors:
@@ -248,7 +256,8 @@ factors:
 func TestSnapshotIncompatibleRunRecordIsHistoryGap(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 factors:
@@ -282,7 +291,8 @@ factors:
 func TestSnapshotActiveRecommendationCountHonorsSuperseding(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
-  "starts":
+  starts:
+    title: Starts
     factors: [reliability]
     assessment: Run it.
 factors:

@@ -37,7 +37,8 @@ factors:
           control, which governs request-time authorization, not stored secret
           material.
         requirements:
-          "No credentials are committed to the repository":
+          no-credentials-are-committed-to-the-repository:
+            title: No credentials are committed to the repository
             assessment: >
               Scan the tracked source and configuration for committed
               credentials. Classify each match as a live secret or a non-secret
@@ -60,7 +61,8 @@ factors:
           Distinct from Secrets handling, which concerns stored credential
           material rather than request-time authorization.
         requirements:
-          "Every money-moving endpoint enforces authentication":
+          every-money-moving-endpoint-enforces-authentication:
+            title: Every money-moving endpoint enforces authentication
             assessment: >
               Enumerate the registered HTTP routes and identify the money-moving
               ones (transfers, refunds, payouts). Confirm each resolves through
@@ -77,7 +79,8 @@ factors:
       legitimate request behave correctly" lens, distinct from Security's "who
       may act".
     requirements:
-      "Transfers are idempotent on retry":
+      transfers-are-idempotent-on-retry:
+        title: Transfers are idempotent on retry
         assessment: >
           Inspect the transfer entrypoint for an idempotency mechanism (e.g. a
           required idempotency key) and confirm, by test or trace, that replaying
@@ -101,7 +104,8 @@ areas:
           that drifts from actual money movement cannot be trusted for settlement
           or audit.
         requirements:
-          "Every transfer debits and credits to a net zero (double-entry invariant)":
+          every-transfer-debits-and-credits-to-a-net-zero-double-entry-invariant:
+            title: Every transfer debits and credits to a net zero (double-entry invariant)
             assessment: >
               Inspect the posting routine for enforcement that a transfer's
               entries sum to zero before commit, and confirm by test that no
@@ -109,7 +113,8 @@ areas:
               double-entry invariant holds on every observed path.
             factors:
               - reliability
-          "Reconciliation runs daily and flags drift":
+          reconciliation-runs-daily-and-flags-drift:
+            title: Reconciliation runs daily and flags drift
             assessment: >
               Confirm a reconciliation job runs on a daily schedule and emits a
               durable report showing whether ledger balances match the gateway
@@ -138,7 +143,8 @@ areas:
           authenticating Sparrow to the merchant, not authenticating callers to
           Sparrow.
         requirements:
-          "Every outbound webhook is signed so merchants can verify its origin":
+          every-outbound-webhook-is-signed-so-merchants-can-verify-its-origin:
+            title: Every outbound webhook is signed so merchants can verify its origin
             assessment: >
               Confirm every outbound webhook path signs the payload with the
               recipient merchant's signing secret before send, and that the
@@ -166,14 +172,16 @@ areas:
               delivery context — retry on failure and suppression of duplicate
               redeliveries.
             requirements:
-              "Failed deliveries retry with exponential backoff until acknowledged or the retry window expires":
+              failed-deliveries-retry-with-exponential-backoff-until-acknowledged-or-the-retry-window-expires:
+                title: Failed deliveries retry with exponential backoff until acknowledged or the retry window expires
                 assessment: >
                   Confirm a failed delivery is retried on an exponential backoff
                   schedule until the endpoint acknowledges or a bounded retry
                   window expires, and that an exhausted delivery is recorded as
                   failed rather than dropped silently. The requirement is met
                   when no transient failure results in a silently lost event.
-              "A redelivery of an already-acknowledged event is suppressed for that endpoint":
+              a-redelivery-of-an-already-acknowledged-event-is-suppressed-for-that-endpoint:
+                title: A redelivery of an already-acknowledged event is suppressed for that endpoint
                 assessment: >
                   Confirm each event carries a stable delivery id and that the
                   engine suppresses a redelivery to an endpoint that has already

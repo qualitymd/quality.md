@@ -38,7 +38,8 @@ ratingScale:
   - level: unacceptable
     criterion: Does not meet the requirement.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 

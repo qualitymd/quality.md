@@ -47,7 +47,7 @@ The entry guide **MUST** route authoring concerns to these child runtime guides:
   normative artifacts, constituent kinds, and recurring use-context constituents.
 - `authoring/factors.md` - factor naming, coverage, descriptions, stable-stakes
   factors, and sub-factors.
-- `authoring/requirements.md` - Requirement statements, Assessments, factor
+- `authoring/requirements.md` - Requirement names and titles, Assessments, factor
   connections, splitting/combining claims, and rating overrides.
 - `authoring/rating-scale.md` - Rating Scale design, criteria, required margin,
   roll-up, veto requirements, and `not assessed` handling.

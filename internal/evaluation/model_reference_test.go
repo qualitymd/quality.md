@@ -17,6 +17,9 @@ func modelReferenceSpec() *model.Spec {
 		Factors: map[string]model.Factor{
 			"security": {
 				Title: "Security",
+				Requirements: map[string]model.Requirement{
+					"no-committed-secrets": {Title: "No credentials are committed"},
+				},
 				Factors: map[string]model.Factor{
 					"secrets": {Title: "Secrets"},
 				},
@@ -31,6 +34,9 @@ func modelReferenceSpec() *model.Spec {
 						Factors: map[string]model.Factor{
 							"reliability": {
 								Title: "Reliability",
+								Requirements: map[string]model.Requirement{
+									"retry-window": {Title: "Retry window is bounded"},
+								},
 								Factors: map[string]model.Factor{
 									"retry-behavior": {Title: "Retry behavior"},
 								},
@@ -74,6 +80,12 @@ func TestModelReferenceRendering(t *testing.T) {
 	if got := UnqualifiedFactorReference(AreaPath{}, FactorPath{"security"}); got != "root::security" {
 		t.Fatalf("root factor unqualified reference = %q", got)
 	}
+	if got := RequirementReference(AreaPath{"webhooks", "delivery"}, "retry-window"); got != "requirement:webhooks/delivery::retry-window" {
+		t.Fatalf("requirement reference = %q", got)
+	}
+	if got := UnqualifiedRequirementReference(AreaPath{}, "no-committed-secrets"); got != "root::no-committed-secrets" {
+		t.Fatalf("root requirement unqualified reference = %q", got)
+	}
 	if got := RatingReference("target"); got != "rating:target" {
 		t.Fatalf("rating reference = %q", got)
 	}
@@ -105,6 +117,17 @@ func TestParseModelReferences(t *testing.T) {
 	}
 	if !slices.Equal(factor.Elements(), []string{"reliability", "retry-behavior"}) {
 		t.Fatalf("factor path = %#v", factor)
+	}
+
+	area, requirement, err := ParseRequirementReference(spec, "requirement:webhooks/delivery::retry-window")
+	if err != nil {
+		t.Fatalf("ParseRequirementReference() error = %v", err)
+	}
+	if !slices.Equal(area.Elements(), []string{"webhooks", "delivery"}) {
+		t.Fatalf("requirement declaring area = %#v", area)
+	}
+	if requirement != "retry-window" {
+		t.Fatalf("requirement = %q", requirement)
 	}
 
 	level, err := ParseRatingReference(spec, "rating:target")
@@ -157,6 +180,17 @@ func TestParseUnqualifiedModelReferences(t *testing.T) {
 		t.Fatalf("root factor path = %#v", factor)
 	}
 
+	area, requirement, err := ParseUnqualifiedRequirementReference(spec, "root::no-committed-secrets")
+	if err != nil {
+		t.Fatalf("ParseUnqualifiedRequirementReference(root) error = %v", err)
+	}
+	if len(area.Elements()) != 0 {
+		t.Fatalf("root requirement declaring area = %#v", area)
+	}
+	if requirement != "no-committed-secrets" {
+		t.Fatalf("root requirement = %q", requirement)
+	}
+
 	level, err := ParseUnqualifiedRatingReference(spec, "target")
 	if err != nil {
 		t.Fatalf("ParseUnqualifiedRatingReference() error = %v", err)
@@ -202,6 +236,22 @@ func TestParseModelReferencesRejectInvalidOrUnresolvedInput(t *testing.T) {
 		}},
 		{name: "factor missing", call: func() error {
 			_, _, err := ParseFactorReference(spec, "factor:webhooks/delivery::security")
+			return err
+		}},
+		{name: "requirement missing separator", call: func() error {
+			_, _, err := ParseRequirementReference(spec, "requirement:webhooks/delivery/retry-window")
+			return err
+		}},
+		{name: "unqualified requirement rejects typed reference", call: func() error {
+			_, _, err := ParseUnqualifiedRequirementReference(spec, "requirement:webhooks/delivery::retry-window")
+			return err
+		}},
+		{name: "requirement bad name", call: func() error {
+			_, _, err := ParseRequirementReference(spec, "requirement:webhooks/delivery::retry.window")
+			return err
+		}},
+		{name: "requirement missing", call: func() error {
+			_, _, err := ParseRequirementReference(spec, "requirement:webhooks/delivery::unknown-requirement")
 			return err
 		}},
 		{name: "rating bad id", call: func() error {

@@ -80,10 +80,12 @@ per [Scaffold variant](#scaffold-variant).
   [format spec](../../SPECIFICATION.md#model), which a scaffolding tool can seed.
 - The scaffold **MUST** seed non-empty placeholder `title` values wherever the
   format requires them, including the model root, every seeded rating level, the
-  placeholder factor, and any commented area/factor examples.
+  placeholder factor, the placeholder requirement, and any commented area/factor
+  or requirement examples.
 - The frontmatter **MUST** include a minimal skeleton that leads to at least one
   requirement: a placeholder factor carrying a `description`, and beneath it a
-  placeholder requirement carrying a single non-empty `assessment`.
+  placeholder requirement carrying a `title` and a single non-empty
+  `assessment`.
 - Frontmatter placeholders should be accompanied by inline YAML comments that
   tell the author what to replace, so the file reads as a guided skeleton rather
   than a filled-in example.

@@ -121,6 +121,7 @@ func TestGenerateJSONIncludesStrictModelNamePatterns(t *testing.T) {
 	props := doc["properties"].(map[string]any)
 	assertPropertyNamesPattern(t, props[PropertyAreas], ModelNamePattern)
 	assertPropertyNamesPattern(t, props[PropertyFactors], ModelNamePattern)
+	assertPropertyNamesPattern(t, props[PropertyRequirements], ModelNamePattern)
 
 	scale := props[PropertyRatingScale].(map[string]any)
 	items := scale["items"].(map[string]any)
@@ -131,9 +132,12 @@ func TestGenerateJSONIncludesStrictModelNamePatterns(t *testing.T) {
 		t.Fatalf("rating level pattern = %v, want %s", got, ModelNamePattern)
 	}
 
-	requirements := props[PropertyRequirements].(map[string]any)
-	if _, ok := requirements["propertyNames"]; ok {
-		t.Fatal("requirements map has propertyNames; Requirement statements must remain natural language")
+	requirement := defs[string(RequirementKind)].(map[string]any)
+	requirementRequired := stringSet(t, requirement["required"])
+	for _, name := range []string{PropertyTitle, PropertyAssessment} {
+		if !requirementRequired[name] {
+			t.Errorf("requirement required missing %q", name)
+		}
 	}
 }
 

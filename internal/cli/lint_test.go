@@ -17,7 +17,8 @@ ratingScale:
     description: Target.
     criterion: Meets it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     factors: [reliability]
     assessment: Inspect it.
 factors:
@@ -60,7 +61,8 @@ ratingScale:
     description: Target.
     criterion: Meets it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     factors: [reliability]
     assessment: Inspect it.
 factors:
@@ -100,7 +102,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     factors: [reliability]
     assessment: Inspect it.
 factors:
@@ -145,7 +148,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     factors: [reliability]
     assessment: Inspect it.
 factors:

@@ -78,8 +78,9 @@ enforces from [`internal/schema`](../internal/schema/schema.go): per-property
 shape (scalar / map / sequence), required vs. optional presence, the rating-scale
 `minItems` of 2, map-keyed entries for `factors` / `requirements` / `areas`,
 strict `propertyNames` patterns for `factors` and `areas`, the strict scalar
-pattern for `ratingScale[].level`, and the "at least one of factors,
-requirements, or areas" rule on the Model.
+strict `propertyNames` patterns for `factors`, `requirements`, and `areas`, the
+strict scalar pattern for `ratingScale[].level`, and the "at least one of
+factors, requirements, or areas" rule on the Model.
 
 > Rationale: the value of a companion schema is that it agrees with the tool; a
 > schema that accepts what the linter rejects (or vice versa) is worse than none.
@@ -108,8 +109,11 @@ omits it rather than encoding a misleading one.
 > Rationale: a near-miss structural check that looks semantic teaches consumers
 > to trust the schema for guarantees only the linter makes. — 0049
 
-`quality.schema.json` **MUST NOT** constrain Requirement statement keys or
-Requirement `ratings` override keys with the strict model-name pattern.
+`quality.schema.json` **MUST** constrain Requirement names with the strict
+model-name pattern.
+
+`quality.schema.json` **MUST NOT** constrain Requirement `ratings` override keys
+with the strict model-name pattern.
 
 `quality.schema.json` **MUST** declare its JSON Schema dialect (`$schema`) as
 draft 2020-12 and **MUST** declare its `$id` as

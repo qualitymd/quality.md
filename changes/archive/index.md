@@ -384,3 +384,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   instead of maturity/evaluation-readiness labels, and setup feedback logs record
   workflow outcomes; docs/spec/skill guidance only, no CLI/Go or format-spec
   change (`Done`).
+- [0093 — Named Requirement identity](0093-requirement-identity.md) - changed
+  Requirements from natural-language statement keys to stable id-like names with
+  required `title`, optional `description`, retained `assessment`, qualified
+  Requirement model references, lint/schema enforcement, migrated scaffolds,
+  examples, docs, and skill guidance; breaking format change (`Done`).

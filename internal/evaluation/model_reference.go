@@ -89,6 +89,49 @@ func parseFactorReferenceBody(spec *model.Spec, ref, body, label string) (AreaPa
 	return AreaPath(areaPath), FactorPath(factorPath), nil
 }
 
+// ParseRequirementReference resolves a canonical Requirement model reference
+// against spec.
+func ParseRequirementReference(spec *model.Spec, ref string) (AreaPath, string, error) {
+	if spec == nil {
+		return nil, "", usagef("model reference %q cannot resolve without a model", ref)
+	}
+	body, ok := strings.CutPrefix(ref, "requirement:")
+	if !ok {
+		return nil, "", usagef("requirement model reference %q must start with requirement:", ref)
+	}
+	return parseRequirementReferenceBody(spec, ref, body, "requirement model reference")
+}
+
+// ParseUnqualifiedRequirementReference resolves a Requirement reference in a
+// context where the expected reference type is fixed.
+func ParseUnqualifiedRequirementReference(spec *model.Spec, ref string) (AreaPath, string, error) {
+	if spec == nil {
+		return nil, "", usagef("model reference %q cannot resolve without a model", ref)
+	}
+	return parseRequirementReferenceBody(spec, ref, ref, "unqualified requirement reference")
+}
+
+func parseRequirementReferenceBody(spec *model.Spec, ref, body, label string) (AreaPath, string, error) {
+	areaPart, requirementName, ok := strings.Cut(body, "::")
+	if !ok {
+		return nil, "", usagef("%s %q must separate area path and Requirement name with ::", label, ref)
+	}
+	areaPath, err := parseReferencePath(areaPart)
+	if err != nil {
+		return nil, "", usagef("%s %q has invalid area path: %w", label, ref, err)
+	}
+	if !validReferenceName(requirementName) {
+		return nil, "", usagef("%s %q has an invalid Requirement name", label, ref)
+	}
+	if !areaExists(spec, areaPath) {
+		return nil, "", usagef("%s %q declares an area that does not resolve in the model", label, ref)
+	}
+	if !requirementExists(spec, areaPath, requirementName) {
+		return nil, "", usagef("%s %q does not resolve in the model", label, ref)
+	}
+	return AreaPath(areaPath), requirementName, nil
+}
+
 // ParseRatingReference resolves a canonical Rating Level model reference against
 // spec.
 func ParseRatingReference(spec *model.Spec, ref string) (string, error) {
@@ -171,6 +214,47 @@ func factorExists(spec *model.Spec, areaPath []string, factorPath []string) bool
 		factors = factor.Factors
 	}
 	return false
+}
+
+func requirementExists(spec *model.Spec, areaPath []string, requirementName string) bool {
+	areaRequirements, areaFactors, ok := requirementsForArea(spec, areaPath)
+	if !ok {
+		return false
+	}
+	if _, ok := areaRequirements[requirementName]; ok {
+		return true
+	}
+	return factorRequirementExists(areaFactors, requirementName)
+}
+
+func factorRequirementExists(factors map[string]model.Factor, requirementName string) bool {
+	for _, factor := range factors {
+		if _, ok := factor.Requirements[requirementName]; ok {
+			return true
+		}
+		if factorRequirementExists(factor.Factors, requirementName) {
+			return true
+		}
+	}
+	return false
+}
+
+func requirementsForArea(spec *model.Spec, areaPath []string) (map[string]model.Requirement, map[string]model.Factor, bool) {
+	if len(areaPath) == 0 {
+		return spec.Requirements, spec.Factors, true
+	}
+	areas := spec.Areas
+	for i, element := range areaPath {
+		area, ok := areas[element]
+		if !ok {
+			return nil, nil, false
+		}
+		if i == len(areaPath)-1 {
+			return area.Requirements, area.Factors, true
+		}
+		areas = area.Areas
+	}
+	return nil, nil, false
 }
 
 func factorsForArea(spec *model.Spec, areaPath []string) (map[string]model.Factor, bool) {

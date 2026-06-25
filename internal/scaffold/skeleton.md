@@ -46,8 +46,10 @@ factors:
     requirements:
       # A requirement is one assessable expectation, stated as a claim an
       # evaluator can judge — e.g. "error messages give the user a clear path to
-      # recovery" or "reported figures cite current source data".
-      "<state one expectation you can assess>":
+      # recovery" or "reported figures cite current source data". The map key is
+      # a stable name; the title is the human-facing statement.
+      requirement-name:
+        title: "<state one expectation you can assess>"
         # assessment — how an evaluator should inspect or measure the claim. It
         # can be stated inline, or reference an entity that already defines how to
         # check it — a spec, style guide, runbook, or test plan. An entity you own
@@ -80,7 +82,8 @@ factors:
 #         title: "<short display label for this quality>"
 #         description: "<what it means for this area, and to whom>"
 #         requirements:
-#           "<an expectation you can assess on this area>":
+#           requirement-name:
+#             title: "<an expectation you can assess on this area>"
 #             assessment: "<how an evaluator should inspect or measure it>"
 ---
 

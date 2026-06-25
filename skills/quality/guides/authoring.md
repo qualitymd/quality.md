@@ -25,8 +25,8 @@ specification governs on any conflict.
   [`authoring/model-structure.md`](authoring/model-structure.md).
 - Factor naming, factor coverage, descriptions, stable-stakes factors, and
   sub-factors → [`authoring/factors.md`](authoring/factors.md).
-- Requirement statements, assessments, factor connections, splitting/combining
-  claims, and rating overrides →
+- Requirement names and titles, assessments, factor connections,
+  splitting/combining claims, and rating overrides →
   [`authoring/requirements.md`](authoring/requirements.md).
 - Rating Scale design, criteria, required margin, roll-up, veto requirements, and
   `not assessed` handling → [`authoring/rating-scale.md`](authoring/rating-scale.md).
@@ -87,11 +87,12 @@ carries one model-wide property, `ratingScale`, plus all Area properties.
 
 \* At least one of `factors`, `requirements`, or `areas` must be present.
 
-Area names, Factor names, and Rating Level IDs use the same strict name grammar:
-letters or digits at both ends, with letters, digits, `_`, or `-` inside.
-Requirement statements stay natural language. When a tool needs a stable text
-handle, it uses canonical model references such as `area:root`, `area:api`,
-`factor:api::reliability`, or `rating:target`.
+Area names, Factor names, Requirement names, and Rating Level IDs use the same
+strict name grammar: letters or digits at both ends, with letters, digits, `_`,
+or `-` inside. Requirement titles stay natural language. When a tool needs a
+stable text handle, it uses canonical model references such as `area:root`,
+`area:api`, `factor:api::reliability`,
+`requirement:api::retry-window`, or `rating:target`.
 
 ## Authoring Order
 

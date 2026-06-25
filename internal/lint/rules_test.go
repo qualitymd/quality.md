@@ -32,7 +32,8 @@ var ruleCases = []struct {
 		model: `---
 title: Example
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -45,7 +46,8 @@ requirements:
 title: Example
 ratingScale:
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -58,7 +60,8 @@ requirements:
 title: Example
 ratingScale: ""
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -73,7 +76,8 @@ ratingScale:
     description: Target.
     criterion: Meets it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -87,7 +91,8 @@ ratingScale:
   - level: target
     description: Target.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -104,7 +109,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -122,7 +128,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -140,7 +147,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -158,7 +166,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -176,7 +185,8 @@ ratingScale:
     description: Duplicate.
     criterion: Also meets it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -197,7 +207,8 @@ ratingScale:
     description: Duplicate.
     criterion: Also meets it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -207,7 +218,8 @@ requirements:
 		name:   "root config is empty",
 		model: validFrontmatter(`config:
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 	},
@@ -216,7 +228,8 @@ requirements:
 		name:   "root config escapes repository",
 		model: validFrontmatter(`config: ../outside.yaml
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 	},
@@ -232,7 +245,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -250,7 +264,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -297,7 +312,8 @@ areas: {}
       - level: target
         criterion: Meets it.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 	},
@@ -312,7 +328,8 @@ areas: {}
           - level: target
             criterion: Meets it.
         requirements:
-          "has an assessment":
+          has-assessment:
+            title: Has an assessment
             assessment: Inspect it.
 `),
 	},
@@ -322,7 +339,8 @@ areas: {}
 		model: validFrontmatter(`areas:
   api/service:
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 	},
@@ -334,7 +352,8 @@ areas: {}
     areas:
       _handlers:
         requirements:
-          "has an assessment":
+          has-assessment:
+            title: Has an assessment
             assessment: Inspect it.
 `),
 	},
@@ -342,14 +361,15 @@ areas: {}
 		ruleID: RuleInvalidAssessment,
 		name:   "assessment absent",
 		model: validFrontmatter(`requirements:
-  "has an assessment": {}
+  missing-assessment: {}
 `),
 	},
 	{
 		ruleID: RuleInvalidAssessment,
 		name:   "assessment empty",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: ""
 `),
 	},
@@ -357,7 +377,8 @@ areas: {}
 		ruleID: RuleInvalidAssessment,
 		name:   "assessment list",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment:
       - Inspect it.
 `),
@@ -369,7 +390,8 @@ areas: {}
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors: [security]
 `),
@@ -383,20 +405,88 @@ requirements:
       reliability:
         description: Reliability.
     requirements:
-      "api is reliable":
+      api-reliable:
+        title: API is reliable
         assessment: Inspect it.
   worker:
     requirements:
-      "worker is secure":
+      worker-secure:
+        title: Worker is secure
         assessment: Inspect it.
         factors: [reliability]
+`),
+	},
+	{
+		ruleID: RuleInvalidRequirementName,
+		name:   "requirement name contains spaces",
+		model: validFrontmatter(`requirements:
+  "has an assessment":
+    title: Has an assessment
+    assessment: Inspect it.
+    factors: [reliability]
+factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+`),
+	},
+	{
+		ruleID: RuleInvalidRequirementName,
+		name:   "nested requirement name starts with separator",
+		model: validFrontmatter(`factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+    requirements:
+      _has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleDuplicateRequirement,
+		name:   "area and factor requirements share name",
+		model: validFrontmatter(`factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+    requirements:
+      has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
+requirements:
+  has-assessment:
+    title: Has an assessment
+    assessment: Inspect it.
+    factors: [reliability]
+`),
+	},
+	{
+		ruleID: RuleDuplicateRequirement,
+		name:   "sibling factors share requirement name",
+		model: validFrontmatter(`factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+    requirements:
+      has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
+  security:
+    title: Security
+    description: Security.
+    requirements:
+      has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
 `),
 	},
 	{
 		ruleID: RuleUnknownRatingKey,
 		name:   "unknown override key",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     ratings:
       excellent: Exceeds it.
@@ -406,7 +496,8 @@ requirements:
 		ruleID: RuleUnknownRatingKey,
 		name:   "mixed known and unknown override keys",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     ratings:
       target: Meets it.
@@ -420,7 +511,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 	},
@@ -431,7 +523,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors: []
 `),
@@ -448,7 +541,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -467,7 +561,8 @@ ratingScale:
 areas:
   api:
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 ---
 `,
@@ -484,7 +579,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -501,7 +597,8 @@ ratingScale:
   - level: unacceptable
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -512,7 +609,8 @@ requirements:
 		model: validFrontmatter(`factors:
   reliability:
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 	},
@@ -525,7 +623,8 @@ requirements:
     factors:
       availability:
         requirements:
-          "has an assessment":
+          has-assessment:
+            title: Has an assessment
             assessment: Inspect it.
 `),
 	},
@@ -536,7 +635,8 @@ requirements:
   service health:
     description: Service health.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 	},
@@ -550,7 +650,8 @@ requirements:
       availability-:
         description: Availability.
         requirements:
-          "has an assessment":
+          has-assessment:
+            title: Has an assessment
             assessment: Inspect it.
 `),
 	},
@@ -561,7 +662,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 	},
@@ -575,7 +677,8 @@ requirements:
       availability:
         description: Availability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 	},
@@ -583,7 +686,8 @@ requirements:
 		ruleID: RuleEmptyArea,
 		name:   "leaf area has no requirements",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 areas:
   api:
@@ -594,7 +698,8 @@ areas:
 		ruleID: RuleEmptyArea,
 		name:   "nested area subtree has no requirements",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 areas:
   api:
@@ -620,7 +725,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -639,7 +745,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -648,7 +755,8 @@ requirements:
 		ruleID: RuleEmptyProperty,
 		name:   "empty optional factor references",
 		model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors: []
 `),
@@ -660,7 +768,8 @@ requirements:
   api:
     source:
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 	},
@@ -703,7 +812,8 @@ func TestRuleValidReferenceResolution(t *testing.T) {
 areas:
   api:
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
         factors: [reliability]
 `)))
@@ -730,7 +840,8 @@ func TestRuleRequirementFactorReferences(t *testing.T) {
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `,
 		},
@@ -741,7 +852,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors:
 `,
@@ -753,7 +865,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors: []
 `,
@@ -764,7 +877,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors: ["", null]
 `,
@@ -794,7 +908,8 @@ requirements:
   reliability:
     description: Reliability.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     factors: [reliability]
 `,
@@ -807,7 +922,8 @@ requirements:
 areas:
   api:
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
         factors: [reliability]
 `,
@@ -818,7 +934,8 @@ areas:
   reliability:
     description: Reliability.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `,
 		},
@@ -846,7 +963,8 @@ func TestAreaDisplayFieldsAreValid(t *testing.T) {
   api:
     title: API
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
@@ -856,7 +974,8 @@ func TestAreaDisplayFieldsAreValid(t *testing.T) {
   api:
     description: Functional specifications for the API.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
@@ -867,7 +986,8 @@ func TestAreaDisplayFieldsAreValid(t *testing.T) {
     title: API
     description: Functional specifications for the API.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
@@ -895,7 +1015,8 @@ func TestAreaDisplayFieldShapesAreValidated(t *testing.T) {
   api:
     title: [API]
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
@@ -906,7 +1027,8 @@ func TestAreaDisplayFieldShapesAreValidated(t *testing.T) {
     description:
       text: Functional specifications for the API.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
@@ -935,7 +1057,8 @@ func TestSchemaDrivenUnknownKeys(t *testing.T) {
 			name: "root",
 			model: validFrontmatter(`unexpected: true
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 		},
@@ -951,7 +1074,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `,
@@ -962,7 +1086,8 @@ requirements:
   api:
     unexpected: true
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
@@ -973,14 +1098,16 @@ requirements:
     description: Reliability.
     unexpected: true
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 `),
 		},
 		{
 			name: "requirement",
 			model: validFrontmatter(`requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     unexpected: true
 `),
@@ -1001,7 +1128,8 @@ requirements:
 func TestRootConfigToolingKey(t *testing.T) {
 	valid, err := Check(writeModel(t, validFrontmatter(`config: .quality/config.yaml
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `)))
 	if err != nil {
@@ -1020,7 +1148,8 @@ requirements:
 			model: validFrontmatter(`config:
   path: .quality/config.yaml
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 		},
@@ -1028,7 +1157,8 @@ requirements:
 			name: "absolute",
 			model: validFrontmatter(`config: /tmp/config.yaml
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 `),
 		},

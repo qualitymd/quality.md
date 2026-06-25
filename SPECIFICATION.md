@@ -112,9 +112,9 @@ in that `factors` map.
 **Factor ID**: The declaring Area ID plus the ordered path of Factor names from
 that Area's `factors` map to the Factor.
 
-**Requirement**: An assessable quality expectation. A Requirement has a
-statement, an Assessment, zero or more explicit Factor references, and optional
-per-level criterion overrides.
+**Requirement**: An assessable quality expectation. A Requirement has a stable
+Requirement name, a title, an Assessment, zero or more explicit Factor
+references, and optional per-level criterion overrides.
 
 **Assessment**: The means for assessing an Area's Source against a Requirement,
 stated inline or as a reference to an entity that defines those means. An
@@ -134,8 +134,11 @@ Model's Rating Scale.
 **Rating Result**: The outcome of rating a Requirement's Findings against the
 Rating Scale: either one Rating Level or `not assessed`.
 
+**Requirement name**: A Requirement's stable map key, unique within its
+declaring Area.
+
 **Model reference**: A text form used at human/tool boundaries to address an
-Area, Factor, or Rating Level.
+Area, Factor, Requirement, or Rating Level.
 
 **Display value**: A human-facing label for a known Model concept. Display
 values are not model references unless a section explicitly says so.
@@ -145,14 +148,11 @@ scope, Findings summaries, ratings, rationales, and advice.
 
 ## Names and Model References
 
-Area names, Factor names, and Rating Level IDs MUST match:
+Area names, Factor names, Requirement names, and Rating Level IDs MUST match:
 
 ```regex
 ^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$
 ```
-
-Requirement statement keys MUST NOT be constrained by this grammar. They remain
-natural-language Requirement statements.
 
 The grammar excludes `/`, `:`, spaces, dots, and leading or trailing separators
 so canonical model references are unambiguous and do not resemble filesystem
@@ -169,13 +169,18 @@ written as `root`, for example `factor:root::security` and
 `/` within each side of the `::` separator, for example
 `factor:webhooks/delivery::reliability/retry-behavior`.
 
+Qualified Requirement references use
+`requirement:<declaring-area-path>::<requirement-name>`. The root declaring Area
+is written as `root`, for example `requirement:root::release-notes-current` and
+`requirement:webhooks/delivery::retry-window`.
+
 Qualified Rating Level references use `rating:<rating-level-id>`, for example
 `rating:target`.
 
 Tools that render qualified model references MUST use the typed prefixes
-`area:`, `factor:`, and `rating:`. Tools that parse qualified model references
-MUST reject references whose segments fail the strict name grammar or whose
-referenced model element does not exist.
+`area:`, `factor:`, `requirement:`, and `rating:`. Tools that parse qualified
+model references MUST reject references whose segments fail the strict name
+grammar or whose referenced model element does not exist.
 
 Tools MAY render or accept unqualified references that omit the type prefix only
 where the surrounding context fixes the reference type. Unqualified Area
@@ -246,7 +251,7 @@ ratingScale:                    # Required
 factors:                        # Optional*
   <factor-name>: <Factor>
 requirements:                   # Optional*
-  <requirement-statement>: <Requirement>
+  <requirement-name>: <Requirement>
 areas:                          # Optional*
   <area-name>: <Area>
 source: <string>                # Optional
@@ -291,7 +296,7 @@ description: <string>           # Optional
 factors:                        # Optional*
   <factor-name>: <Factor>
 requirements:                   # Optional*
-  <requirement-statement>: <Requirement>
+  <requirement-name>: <Requirement>
 areas:                          # Optional*
   <area-name>: <Area>
 source: <string>                # Optional
@@ -324,7 +329,7 @@ description: <string>           # Recommended
 factors:                        # Optional
   <factor-name>: <Factor>
 requirements:                   # Optional
-  <requirement-statement>: <Requirement>
+  <requirement-name>: <Requirement>
 ```
 
 `factors`, when present on a Factor, declares sub-factors. A sub-factor is a
@@ -340,16 +345,26 @@ declaring Area ID plus the ordered path of Factor names from that Area's
 
 #### Requirement
 
-A Requirement is identified by its map key, the Requirement statement. A
-Requirement MUST declare exactly one `assessment`.
+A Requirement is identified by its map key, the stable Requirement name. A
+Requirement MUST declare a `title` and exactly one `assessment`.
 
 ```yaml
+title: <string>                 # Required
+description: <string>           # Optional
 assessment: <string>            # Required
 factors:                        # Optional; required for direct Area requirements
   - <factor-name>
 ratings:                        # Optional
   <rating-level-id>: <criterion>
 ```
+
+The Requirement name MUST match the strict name grammar and MUST be unique
+within the declaring Area. For uniqueness, Requirements declared directly under
+an Area and Requirements declared under that Area's Factors or sub-factors are
+considered to belong to the declaring Area.
+
+`title` is the Requirement's human-facing statement. The Requirement's map key
+is its stable Requirement name.
 
 `assessment` MUST be a single non-empty scalar. A missing, empty, null, or
 list-valued `assessment` is invalid.
@@ -600,7 +615,8 @@ factors:
     title: Reliability
     description: The API continues to accept and durably record orders.
     requirements:
-      "Checkout requests are durably recorded":
+      checkout-requests-durable:
+        title: Checkout requests are durably recorded
         assessment: Review production write-path telemetry and recovery tests.
 ---
 
@@ -634,7 +650,8 @@ Invalid because every Rating Level MUST declare `level`, `title`, and
 
 ```yaml
 requirements:
-  "Checkout requests are durably recorded":
+  checkout-requests-durable:
+    title: Checkout requests are durably recorded
     assessment: Review production write-path telemetry and recovery tests.
 ```
 
@@ -648,7 +665,8 @@ factors:
   reliability:
     title: Reliability
     requirements:
-      "Checkout requests are durably recorded":
+      checkout-requests-durable:
+        title: Checkout requests are durably recorded
         assessment:
           - Review telemetry.
           - Review recovery tests.

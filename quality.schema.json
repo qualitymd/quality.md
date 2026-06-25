@@ -28,6 +28,9 @@
           "additionalProperties": {
             "$ref": "#/$defs/requirement"
           },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+          },
           "type": "object"
         },
         "source": {
@@ -59,6 +62,9 @@
         "requirements": {
           "additionalProperties": {
             "$ref": "#/$defs/requirement"
+          },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
           },
           "type": "object"
         },
@@ -99,6 +105,9 @@
         "assessment": {
           "type": "string"
         },
+        "description": {
+          "type": "string"
+        },
         "factors": {
           "items": {
             "type": "string"
@@ -110,9 +119,13 @@
             "type": "string"
           },
           "type": "object"
+        },
+        "title": {
+          "type": "string"
         }
       },
       "required": [
+        "title",
         "assessment"
       ],
       "type": "object"
@@ -170,6 +183,9 @@
     "requirements": {
       "additionalProperties": {
         "$ref": "#/$defs/requirement"
+      },
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
       },
       "type": "object"
     },

@@ -333,7 +333,8 @@ areas:
         title: Accuracy
         description: Documented behavior matches how the product actually works.
         requirements:
-          "documented parameters match the current API":
+          documented-parameters-match-the-current-api:
+            title: documented parameters match the current API
             assessment: >
               A reviewer checks each documented endpoint's parameters, types, and
               defaults against the current API and treats any divergence as a
@@ -342,7 +343,8 @@ areas:
         title: Findability
         description: A reader can reach the right page from a realistic starting point.
         requirements:
-          "common tasks are reachable in a few steps":
+          common-tasks-are-reachable-in-a-few-steps:
+            title: common tasks are reachable in a few steps
             assessment: >
               For a sample of common reader tasks, a reviewer starts from the docs
               entry point and confirms the relevant page is reachable through
@@ -356,7 +358,8 @@ areas:
         title: Completeness
         description: The guides cover the tasks readers actually need to accomplish.
         requirements:
-          "the top supported tasks each have a guide":
+          the-top-supported-tasks-each-have-a-guide:
+            title: the top supported tasks each have a guide
             assessment: >
               A reviewer compares the guide set against the product's top supported
               tasks and confirms each has a guide, recording any task with no guide
@@ -365,7 +368,8 @@ areas:
         title: Clarity
         description: A reader of the stated audience can follow a guide without help.
         requirements:
-          "steps are followable by the stated audience":
+          steps-are-followable-by-the-stated-audience:
+            title: steps are followable by the stated audience
             assessment: >
               A reviewer reads each guide as a member of its stated audience and
               confirms the steps can be followed in order without unstated

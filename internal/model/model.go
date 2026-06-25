@@ -51,9 +51,11 @@ type Factor struct {
 
 // Requirement is one assessable expectation.
 type Requirement struct {
-	Assessment string            `yaml:"assessment" json:"assessment"`
-	Factors    []string          `yaml:"factors,omitempty" json:"factors,omitempty"`
-	Ratings    map[string]string `yaml:"ratings,omitempty" json:"ratings,omitempty"`
+	Title       string            `yaml:"title" json:"title"`
+	Description string            `yaml:"description,omitempty" json:"description,omitempty"`
+	Assessment  string            `yaml:"assessment" json:"assessment"`
+	Factors     []string          `yaml:"factors,omitempty" json:"factors,omitempty"`
+	Ratings     map[string]string `yaml:"ratings,omitempty" json:"ratings,omitempty"`
 }
 
 // Decode unmarshals a parsed document into the typed model. Callers should only

@@ -2,6 +2,14 @@
 
 ## 2026-06-25
 
+- **Revision**: Updated [Authoring QUALITY.md](authoring.md), the
+  [authoring index](authoring/index.md), and
+  [Requirements](authoring/requirements.md) for 0093 - Named Requirement
+  identity.
+  Runtime guidance now teaches stable Requirement names as durable identity,
+  natural-language Requirement titles for report display, and named Requirement
+  YAML examples.
+
 - **Revision**: Updated [Getting started](getting-started.md) and
   [Top 10 checks](top-10-quality-md-checks.md) guides for 0092 - Setup workflow
   scope trim.

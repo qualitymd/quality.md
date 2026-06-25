@@ -28,7 +28,8 @@ factors:
       lens, distinct from Provenance's "can a reader trace where the data came
       from and when".
     requirements:
-      "Active stations are represented with plausible locations":
+      active-stations-are-represented-with-plausible-locations:
+        title: Active stations are represented with plausible locations
         assessment: >
           Review the station register against the published operations roster
           and profile each active station's latitude/longitude against city
@@ -45,7 +46,8 @@ factors:
       audited or corrected. It is the "where did this data come from" lens,
       distinct from Fitness for use's "does it support the decision".
     requirements:
-      "Each snapshot names its source and acquisition time":
+      each-snapshot-names-its-source-and-acquisition-time:
+        title: Each snapshot names its source and acquisition time
         assessment: >
           Inspect the dataset manifest and sample snapshots for source-system
           name, acquisition timestamp, and transformation version. The
@@ -66,14 +68,16 @@ areas:
           values match the published schema closely enough for downstream users
           to interpret every row consistently.
         requirements:
-          "Required columns conform to the station schema":
+          required-columns-conform-to-the-station-schema:
+            title: Required columns conform to the station schema
             assessment: >
               Compare the station table with the published schema and profile
               the required fields for missing values, out-of-range values, and
               type mismatches. The requirement is met when every required column
               is present and deviations are either absent or explained by a
               documented exception.
-          "Station identifiers are unique and stable across snapshots":
+          station-identifiers-are-unique-and-stable-across-snapshots:
+            title: Station identifiers are unique and stable across snapshots
             assessment: >
               Compare the current station identifiers with the previous two
               snapshots and the change log. The requirement is met when no
@@ -93,7 +97,8 @@ areas:
           Provenance here is the traceability of the dataset's upstream source,
           acquisition time, and transformation notes for each snapshot.
         requirements:
-          "Each snapshot names its source and acquisition time":
+          each-snapshot-names-its-source-and-acquisition-time-2:
+            title: Each snapshot names its source and acquisition time
             assessment: >
               Inspect the manifest and lineage note for every snapshot in the
               current release. The requirement is met when a reader can identify
@@ -106,7 +111,8 @@ areas:
           visible timestamps make the dataset current enough for station
           planning and public-information updates.
         requirements:
-          "Published data is refreshed within the documented weekly cadence":
+          published-data-is-refreshed-within-the-documented-weekly-cadence:
+            title: Published data is refreshed within the documented weekly cadence
             assessment: >
               Compare the newest snapshot timestamp with the documented weekly
               cadence and review release notes for any announced outage. The

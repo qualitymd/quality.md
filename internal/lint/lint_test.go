@@ -41,7 +41,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `))
@@ -74,7 +75,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
     ratings:
       excellent: Exceeds it.
@@ -95,7 +97,8 @@ ratingScale:
   - level: target
   - level: unacceptable
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `)
@@ -124,7 +127,7 @@ ratingScale:
   target:
     criterion: Meets it.
 requirements:
-  "missing assessment": {}
+  missing-assessment: {}
 ---
 `))
 	if err != nil {
@@ -169,7 +172,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 
@@ -256,7 +260,8 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  "has an assessment":
+  has-assessment:
+    title: Has an assessment
     assessment: Inspect it.
 ---
 `
@@ -313,7 +318,8 @@ factors:
     title: Reliability
     description: Reliability.
     requirements:
-      "has an assessment":
+      has-assessment:
+        title: Has an assessment
         assessment: Inspect it.
 ---
 

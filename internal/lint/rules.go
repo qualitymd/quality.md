@@ -251,7 +251,7 @@ func (s *runState) checkRatingLevelID(level *yaml.Node, path []PathSegment, inde
 	name := value.Value
 	location := s.loc(value, levelPath, label)
 	if !validModelName(name) {
-		s.add(RuleInvalidRatingLevelID, "The rating level ID `"+name+"` is invalid; Area names, Factor names, and Rating Level IDs must match "+qschema.ModelNamePattern+".", location, nil)
+		s.add(RuleInvalidRatingLevelID, "The rating level ID `"+name+"` is invalid; Area names, Factor names, Requirement names, and Rating Level IDs must match "+qschema.ModelNamePattern+".", location, nil)
 	}
 	if prior, ok := seen[name]; ok {
 		s.add(RuleDuplicateLevel, "The rating level `"+name+"` is duplicated; each `level` name must be unique within `ratingScale`.", location, nil)
@@ -320,9 +320,10 @@ func (s *runState) checkRequiredTitle(owner *yaml.Node, base []PathSegment, kind
 }
 
 func (s *runState) checkRequirementShape(req *requirementRef) {
-	s.checkSchemaProperties(qschema.Requirement, req.node, req.path, schemaContext{requirement: req.statement})
+	s.checkSchemaProperties(qschema.Requirement, req.node, req.path, schemaContext{requirement: req.name})
+	s.checkRequiredTitle(req.node, req.path, "requirement", "The requirement `"+req.name+"` declares no `title`; each requirement requires a human-facing title.")
 	if _, value, _ := document.MapEntry(req.node, qschema.PropertyAssessment); value == nil {
-		s.add(RuleInvalidAssessment, "The requirement `"+req.statement+"` has no `assessment`; a requirement must declare exactly one non-empty scalar assessment.", s.locForMissing(appendPath(req.path, "assessment"), label(appendPath(req.path, "assessment"))), nil)
+		s.add(RuleInvalidAssessment, "The requirement `"+req.name+"` has no `assessment`; a requirement must declare exactly one non-empty scalar assessment.", s.locForMissing(appendPath(req.path, "assessment"), label(appendPath(req.path, "assessment"))), nil)
 	}
 }
 
@@ -374,6 +375,7 @@ func (s *runState) checkFactor(factor *factorRef) bool {
 }
 
 func (s *runState) checkRequirements(area *areaRef) {
+	s.checkRequirementUniqueness(area)
 	for _, req := range area.requirements {
 		s.checkRequirementRefs(req)
 	}
@@ -397,13 +399,13 @@ func (s *runState) checkFactorRequirements(factor *factorRef) {
 func (s *runState) checkRequirementRefs(req *requirementRef) {
 	if req.factor == nil && !requirementReferencesFactor(req) {
 		path := appendPath(req.path, "factors")
-		s.add(RuleMissingFactorReference, "The requirement `"+req.statement+"` references no quality factor; place it under a factor or add one or more factor references under `factors`.", s.locForMissing(path, label(path)), nil)
+		s.add(RuleMissingFactorReference, "The requirement `"+req.name+"` references no quality factor; place it under a factor or add one or more factor references under `factors`.", s.locForMissing(path, label(path)), nil)
 	}
 	if _, ratings, _ := document.MapEntry(req.node, qschema.PropertyRatings); ratings != nil && ratings.Kind == yaml.MappingNode {
 		for key := range document.MapEntries(ratings) {
 			if !s.levels[key.Value] {
 				path := appendPath(req.path, "ratings", key.Value)
-				s.add(RuleUnknownRatingKey, "The requirement `"+req.statement+"` has a `ratings` override for unknown level `"+key.Value+"`; override keys must name a rating-scale level.", s.loc(key, path, label(path)), nil)
+				s.add(RuleUnknownRatingKey, "The requirement `"+req.name+"` has a `ratings` override for unknown level `"+key.Value+"`; override keys must name a rating-scale level.", s.loc(key, path, label(path)), nil)
 			}
 		}
 	}
@@ -414,8 +416,21 @@ func (s *runState) checkRequirementRefs(req *requirementRef) {
 			}
 			if s.resolveFactor(req.area, item.Value) == nil {
 				path := appendPath(req.path, "factors", i)
-				s.add(RuleUnknownFactor, "The requirement `"+req.statement+"` references unknown factor `"+item.Value+"`; factor references must resolve on the declaring area or an ancestor.", s.loc(item, path, label(path)), nil)
+				s.add(RuleUnknownFactor, "The requirement `"+req.name+"` references unknown factor `"+item.Value+"`; factor references must resolve on the declaring area or an ancestor.", s.loc(item, path, label(path)), nil)
 			}
 		}
+	}
+}
+
+func (s *runState) checkRequirementUniqueness(area *areaRef) {
+	seen := map[string]Location{}
+	for _, req := range localRequirements(area) {
+		location := s.locForMissing(req.path, label(req.path))
+		if prior, ok := seen[req.name]; ok {
+			s.add(RuleDuplicateRequirement, "The requirement `"+req.name+"` is duplicated; Requirement names must be unique within their declaring Area.", location, nil)
+			s.add(RuleDuplicateRequirement, "The requirement `"+req.name+"` is duplicated; Requirement names must be unique within their declaring Area.", prior, nil)
+			continue
+		}
+		seen[req.name] = location
 	}
 }

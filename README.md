@@ -233,7 +233,8 @@ areas:
         title: Reliability
         description: Payment outcomes remain correct under ordinary failures.
         requirements:
-          "confirmed payments are durable":
+          confirmed-payments-are-durable:
+            title: confirmed payments are durable
             assessment: >
               A payment is reported as confirmed only after the transaction is
               durably recorded and can be reconciled after a process restart.
@@ -241,7 +242,8 @@ areas:
         title: Security
         description: Payment data and privileged operations are protected.
         requirements:
-          "secrets stay out of source":
+          secrets-stay-out-of-source:
+            title: secrets stay out of source
             assessment: >
               Credentials, API keys, and payment-provider tokens are loaded from
               approved runtime configuration and do not appear in source,
@@ -301,9 +303,10 @@ factors:                        # Optional*
     factors:                    # Optional
       <sub-factor-name>: <Factor>
     requirements:               # Optional
-      <requirement-statement>: <Requirement>
+      <requirement-name>: <Requirement>
 requirements:                   # Optional*
-  <requirement-statement>:
+  <requirement-name>:
+    title: <string>             # Required human-facing statement
     assessment: <string>        # Required, exactly one
     factors: [<factor-name>]    # Required for direct area requirements
     ratings:                    # Optional per-level criteria

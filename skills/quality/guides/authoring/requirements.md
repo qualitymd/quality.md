@@ -1,7 +1,7 @@
 ---
 type: Runtime Guide
 title: Authoring Requirements
-description: Requirement statements, assessments, factor connections, claim splitting, and rating override guidance.
+description: Requirement names and titles, assessments, factor connections, claim splitting, and rating override guidance.
 tags: [quality, authoring, guide]
 ---
 
@@ -20,10 +20,12 @@ Depends on:
 ## Requirement
 
 A **requirement** is an assessable quality expectation — the single unit the
-model is built to judge. Its **statement** (the map key) is its identity in
-reports. Its `assessment` produces **findings** — observations about the source —
-and those findings are rated together to yield the requirement's **rating
-result**: one level on the rating scale, or *not assessed*.
+model is built to judge. Its map key is a stable **Requirement name** used for
+identity and model references. Its `title` is the natural-language statement
+that should read well in reports. Its `assessment` produces **findings** —
+observations about the source — and those findings are rated together to yield
+the requirement's **rating result**: one level on the rating scale, or *not
+assessed*.
 
 Every requirement must be connected to at least one factor:
 
@@ -39,11 +41,13 @@ the area it sits on, and counts once in that area's local rating.
 
 ### Properties
 
-| Property     | Presence                     | What it is                                                       |
-| ------------ | ---------------------------- | ---------------------------------------------------------------- |
-| `assessment` | Required                     | The means of assessing the source; produces the findings.        |
-| `factors`    | Required for area-level reqs | factor references; secondary factors when nested under a factor. |
-| `ratings`    | Optional                     | Per-requirement criterion overrides, keyed by Rating Level ID.   |
+| Property      | Presence                     | What it is                                                       |
+| ------------- | ---------------------------- | ---------------------------------------------------------------- |
+| `title`       | Required                     | The human-facing requirement statement.                          |
+| `description` | Optional                     | Extra explanation when the title alone is not enough.            |
+| `assessment`  | Required                     | The means of assessing the source; produces the findings.        |
+| `factors`     | Required for area-level reqs | factor references; secondary factors when nested under a factor. |
+| `ratings`     | Optional                     | Per-requirement criterion overrides, keyed by Rating Level ID.   |
 
 ### Working with requirements
 
@@ -69,12 +73,15 @@ something inspectable is the core authoring move.
   in between. *That is how you get measurements no one can tie back to why they
   matter.*
 
-#### Write ratable requirement statements
+#### Write stable names and ratable requirement titles
 
-- **Do** phrase the map key as the thing you expect to be true ("Every record
-  has a unique key", "p99 request latency stays within budget").
-  *The statement is what shows up in reports; it should read as a claim that can
-  be true or false to a degree.*
+- **Do** make the map key a stable, id-like name such as
+  `records-have-unique-keys` or `p99-latency-within-budget`. *The name is the
+  durable identity; changing it breaks references and history.*
+- **Do** phrase `title` as the thing you expect to be true ("Every record has a
+  unique key", "p99 request latency stays within budget"). *The title is what
+  shows up in reports; it should read as a claim that can be true or false to a
+  degree.*
 
 - **Do** write requirements specific enough that a single result stands on its
   own. *A vague requirement produces a vague rating.*
@@ -161,7 +168,8 @@ something inspectable is the core authoring move.
 
 ```yaml
 requirements:
-  "the quality model follows its authoring guide family":
+  the-quality-model-follows-its-authoring-guide-family:
+    title: the quality model follows its authoring guide family
     factors:
       - fitness-for-purpose
       - credibility
@@ -230,7 +238,8 @@ model rarely needs it.*
   decided what "good enough" means.*
 
 ```yaml
-"p99 request latency stays within budget":
+p99-latency-within-budget:
+  title: p99 request latency stays within budget
   factors: [reliability]
   assessment: >
     Measure p99 request latency over a representative production window.

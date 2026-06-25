@@ -5,6 +5,14 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### QUALITY.md Format
+
+- Requirements now use stable id-like names as map keys and carry the
+  human-facing statement in required `title`. Requirement `assessment` remains
+  required, `description` is optional, and tools now support qualified
+  `requirement:<area-path>::<requirement-name>` model references. This is a
+  breaking format change for existing statement-key Requirements.
+
 ### CLI
 
 - `qualitymd init` and `qualitymd init --minimal` now seed the standard

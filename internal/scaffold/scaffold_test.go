@@ -41,7 +41,10 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 	if factor.Description == "" {
 		t.Fatal("skeleton factor description is empty")
 	}
-	requirement := factor.Requirements["<state one expectation you can assess>"]
+	requirement := factor.Requirements["requirement-name"]
+	if requirement.Title == "" {
+		t.Fatal("skeleton requirement title is empty")
+	}
 	if requirement.Assessment == "" {
 		t.Fatal("skeleton requirement assessment is empty")
 	}
@@ -128,7 +131,10 @@ func TestMinimalSkeletonConformsToCurrentSpec(t *testing.T) {
 	if factor.Description == "" {
 		t.Fatal("minimal skeleton factor description is empty")
 	}
-	requirement := factor.Requirements["<state one expectation you can assess>"]
+	requirement := factor.Requirements["requirement-name"]
+	if requirement.Title == "" {
+		t.Fatal("minimal skeleton requirement title is empty")
+	}
 	if requirement.Assessment == "" {
 		t.Fatal("minimal skeleton requirement assessment is empty")
 	}

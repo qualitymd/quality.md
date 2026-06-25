@@ -39,6 +39,8 @@ const (
 	RuleInvalidAreaName          RuleID = "invalid-area-name"
 	RuleEmptyArea                RuleID = "empty-area"
 	RuleInvalidFactorName        RuleID = "invalid-factor-name"
+	RuleInvalidRequirementName   RuleID = "invalid-requirement-name"
+	RuleDuplicateRequirement     RuleID = "duplicate-requirement"
 	RuleEmptyFactor              RuleID = "empty-factor"
 	RuleMissingFactorDescription RuleID = "missing-factor-description"
 	RuleInvalidAssessment        RuleID = "invalid-assessment"
@@ -74,6 +76,8 @@ var Rules = []Rule{
 	{RuleInvalidAreaName, SeverityError, false, "An area name does not match the model name grammar."},
 	{RuleEmptyArea, SeverityWarning, false, "An area reaches no requirements in its subtree."},
 	{RuleInvalidFactorName, SeverityError, false, "A factor name does not match the model name grammar."},
+	{RuleInvalidRequirementName, SeverityError, false, "A requirement name does not match the model name grammar."},
+	{RuleDuplicateRequirement, SeverityError, false, "A requirement name is duplicated within its declaring area."},
 	{RuleEmptyFactor, SeverityWarning, false, "A factor leads to no requirements."},
 	{RuleMissingFactorDescription, SeverityWarning, false, "A factor declares no description."},
 	{RuleInvalidAssessment, SeverityError, false, "A requirement has no single non-empty scalar assessment."},

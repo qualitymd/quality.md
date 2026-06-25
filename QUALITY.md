@@ -41,7 +41,8 @@ factors:
           Decision-relevant project knowledge is reachable, selective, and
           intelligible to an agent working in context.
         requirements:
-          "agents can reach the minimum project context and deeper routed guidance":
+          agents-can-reach-the-minimum-project-context-and-deeper-routed-guidance:
+            title: agents can reach the minimum project context and deeper routed guidance
             assessment: >
               Inspect AGENTS.md, README.md, CONTRIBUTING.md, docs/guides/,
               skills/quality/, and specs/ to confirm a fresh agent can find the
@@ -53,7 +54,8 @@ factors:
           Work can be handed to an agent as a scoped assignment with visible
           success criteria, boundaries, and verification expectations.
         requirements:
-          "project guidance makes task boundaries and done criteria explicit":
+          project-guidance-makes-task-boundaries-and-done-criteria-explicit:
+            title: project guidance makes task boundaries and done criteria explicit
             assessment: >
               Inspect AGENTS.md, CONTRIBUTING.md, docs/guides/, specs/, and
               changes/ to confirm agent-facing work can be scoped by artifact,
@@ -64,7 +66,8 @@ factors:
           A fresh agent session can establish and operate the working
           environment from recorded project materials.
         requirements:
-          "agents can discover the tools and commands needed to work the project":
+          agents-can-discover-the-tools-and-commands-needed-to-work-the-project:
+            title: agents can discover the tools and commands needed to work the project
             assessment: >
               Inspect CONTRIBUTING.md, mise.toml, install.md, README.md, and
               workflow specs to confirm setup, build, test, lint, release, and
@@ -75,7 +78,8 @@ factors:
           Agent work can preserve state and resume across interruption,
           compaction, handoff, and fresh sessions.
         requirements:
-          "quality workflows preserve useful state in durable local artifacts":
+          quality-workflows-preserve-useful-state-in-durable-local-artifacts:
+            title: quality workflows preserve useful state in durable local artifacts
             assessment: >
               Inspect .quality/evaluations/, .quality/log/, .quality/logs/,
               specs/skills/quality-skill/, and skills/quality/workflows/ to
@@ -88,7 +92,8 @@ factors:
           The project gives agents runnable or inspectable feedback signals they
           can use to check their own work.
         requirements:
-          "verification signals are discoverable and remediation-bearing":
+          verification-signals-are-discoverable-and-remediation-bearing:
+            title: verification signals are discoverable and remediation-bearing
             assessment: >
               Inspect mise.toml, CONTRIBUTING.md, .github/workflows/, .githooks/,
               qualitymd lint/status behavior, and relevant specs to confirm an
@@ -100,7 +105,8 @@ factors:
           Stated quality standards hold through gates or equivalent controls,
           not advisory prose alone.
         requirements:
-          "core project standards are backed by enforceable checks or reviewable gates":
+          core-project-standards-are-backed-by-enforceable-checks-or-reviewable-gates:
+            title: core project standards are backed by enforceable checks or reviewable gates
             assessment: >
               Inspect mise.toml, .github/workflows/, .githooks/, dprint.json,
               .golangci.yml, specs, and qualitymd lint behavior to confirm
@@ -112,7 +118,8 @@ factors:
           Agent-permitted actions are bounded by project rules, local tooling,
           and approval expectations so work stays inside intended scope.
         requirements:
-          "agent action limits and mutation gates are visible before consequential changes":
+          agent-action-limits-and-mutation-gates-are-visible-before-consequential-changes:
+            title: agent action limits and mutation gates are visible before consequential changes
             assessment: >
               Inspect AGENTS.md, skills/quality/SKILL.md, skills/quality/workflows/,
               specs/skills/quality-skill/, and repository hooks/workflows to
@@ -132,7 +139,8 @@ areas:
           The specification's rules have one settled meaning for independent
           authors, implementers, evaluators, and report renderers.
         requirements:
-          "the format specification admits a single interpretation":
+          the-format-specification-admits-a-single-interpretation:
+            title: the format specification admits a single interpretation
             assessment: >
               Assess SPECIFICATION.md for defined terms, clear obligation
               strength, unambiguous field semantics, explicit malformed-content
@@ -143,7 +151,8 @@ areas:
           The specification uses one concept vocabulary and keeps examples,
           schema descriptions, and evaluation semantics aligned.
         requirements:
-          "the format specification is internally consistent":
+          the-format-specification-is-internally-consistent:
+            title: the format specification is internally consistent
             assessment: >
               Compare terminology, schema rules, examples, model-reference
               grammar, and evaluation/report semantics within SPECIFICATION.md
@@ -155,7 +164,8 @@ areas:
           body semantics, and evaluation/report behavior for conforming
           implementations and authors.
         requirements:
-          "the format specification is complete enough to implement and author from":
+          the-format-specification-is-complete-enough-to-implement-and-author-from:
+            title: the format specification is complete enough to implement and author from
             assessment: >
               Confirm every required model element, allowed shape, cardinality,
               reference form, extension rule, and required evaluation/report
@@ -167,7 +177,8 @@ areas:
           Conformance turns on observable document or implementation behavior
           rather than private author intent.
         requirements:
-          "each normative rule is observable or testable":
+          each-normative-rule-is-observable-or-testable:
+            title: each normative rule is observable or testable
             assessment: >
               Review conformance, schema, model-reference, and evaluation
               sections to confirm an independent linter, parser, evaluator, or
@@ -178,7 +189,8 @@ areas:
           The format supports many modeled domains without making software,
           agent harnesses, or any other domain the default model content.
         requirements:
-          "the specification keeps model domain separate from agentic use context":
+          the-specification-keeps-model-domain-separate-from-agentic-use-context:
+            title: the specification keeps model domain separate from agentic use context
             assessment: >
               Assess SPECIFICATION.md and docs/guides/model-quality-across-domains.md
               for domain-neutral model rules, illustrative examples marked as
@@ -198,7 +210,8 @@ areas:
           The skill keeps evaluative judgment tied to the active model, current
           evidence, relevant guides, and the CLI's deterministic state.
         requirements:
-          "the skill grounds setup, evaluation, and follow-up in the active model and evidence":
+          the-skill-grounds-setup-evaluation-and-follow-up-in-the-active-model-and-evidence:
+            title: the skill grounds setup, evaluation, and follow-up in the active model and evidence
             assessment: >
               Assess skills/quality/SKILL.md, workflows/, guides/, and resources/
               against specs/skills/quality-skill/ to confirm the skill reads the
@@ -211,7 +224,8 @@ areas:
           Mutating workflows make artifact class, confirmation, alternatives,
           and verification visible before changing project state or tooling.
         requirements:
-          "the skill gates mutating actions with explicit decision briefs":
+          the-skill-gates-mutating-actions-with-explicit-decision-briefs:
+            title: the skill gates mutating actions with explicit decision briefs
             assessment: >
               Inspect setup, evaluate, update, and recommendation follow-up
               guidance to confirm QUALITY.md edits, evaluated-source edits,
@@ -223,7 +237,8 @@ areas:
           The skill presents workflow state, questions, gates, and closeouts so a
           user can see status, recommendation, and next action quickly.
         requirements:
-          "the skill follows the agent-mediated UX guide":
+          the-skill-follows-the-agent-mediated-ux-guide:
+            title: the skill follows the agent-mediated UX guide
             assessment: >
               Assess runtime prompts and workflow instructions against
               docs/guides/agent-mediated-ux.md, including run frames, discovery
@@ -235,7 +250,8 @@ areas:
           Public workflows are complete enough to run end to end without hidden
           manual artifact creation or stale command assumptions.
         requirements:
-          "the skill workflows match their functional specs and CLI support surface":
+          the-skill-workflows-match-their-functional-specs-and-cli-support-surface:
+            title: the skill workflows match their functional specs and CLI support surface
             assessment: >
               Compare skills/quality/workflows/, resources/cli-quick-reference.md,
               and specs/skills/quality-skill/workflows/ to confirm setup,
@@ -256,7 +272,8 @@ areas:
           CLI behavior matches the functional command specs and the active
           QUALITY.md format semantics.
         requirements:
-          "the CLI follows its functional specifications":
+          the-cli-follows-its-functional-specifications:
+            title: the CLI follows its functional specifications
             assessment: >
               Assess cmd/qualitymd/, internal/, and tests against specs/cli.md,
               specs/cli/, specs/evaluation-records.md, and SPECIFICATION.md for
@@ -268,7 +285,8 @@ areas:
           Agents, CI, scripts, and the /quality skill can drive commands without
           polluted streams, hidden prompts, or unstable structured data.
         requirements:
-          "CLI commands expose stable machine-readable behavior where agents need it":
+          cli-commands-expose-stable-machine-readable-behavior-where-agents-need-it:
+            title: CLI commands expose stable machine-readable behavior where agents need it
             assessment: >
               Inspect CLI implementations and tests for JSON modes, stdout/stderr
               separation, deterministic ordering, exit status behavior, and
@@ -279,7 +297,8 @@ areas:
           Human users can discover commands, understand results, and recover
           from mistakes when they need the support tooling directly.
         requirements:
-          "the CLI follows the project CLI design guide":
+          the-cli-follows-the-project-cli-design-guide:
+            title: the CLI follows the project CLI design guide
             assessment: >
               Assess command arguments, flags, help, errors, examples, ambient
               notices, and next actions against docs/guides/cli-design.md.
@@ -289,7 +308,8 @@ areas:
           The Go implementation can be changed safely by maintainers and agents
           beyond what deterministic checks alone enforce.
         requirements:
-          "the Go implementation follows the project Go style guide":
+          the-go-implementation-follows-the-project-go-style-guide:
+            title: the Go implementation follows the project Go style guide
             assessment: >
               Assess cmd/qualitymd/ and internal/ against docs/guides/go-style.md,
               focusing on naming, package boundaries, error handling, interfaces,
@@ -309,7 +329,8 @@ areas:
           Newcomers can understand what QUALITY.md is, why the /quality workflow
           is primary, and how to reach a first useful result.
         requirements:
-          "introductory docs foreground the agent-first workflow without making the CLI the main surface":
+          introductory-docs-foreground-the-agent-first-workflow-without-making-the-cli-the-main-surface:
+            title: introductory docs foreground the agent-first workflow without making the CLI the main surface
             assessment: >
               Assess README.md, install.md, and docs/ to confirm users are guided
               first to the /quality skill and QUALITY.md file, with the CLI
@@ -320,7 +341,8 @@ areas:
           Documentation makes the format's broad modeled-domain range visible
           without defaulting to software product quality.
         requirements:
-          "docs keep modeled domains broad while preserving the agentic use context":
+          docs-keep-modeled-domains-broad-while-preserving-the-agentic-use-context:
+            title: docs keep modeled domains broad while preserving the agentic use context
             assessment: >
               Assess README.md, SPECIFICATION.md examples, docs/guides/model-quality-across-domains.md,
               and skill guide examples to confirm software examples are framed
@@ -333,7 +355,8 @@ areas:
           Documentation matches the shipped skill, CLI, format, install channels,
           and repository conventions.
         requirements:
-          "docs reflect the current command, install, release, and workflow surfaces":
+          docs-reflect-the-current-command-install-release-and-workflow-surfaces:
+            title: docs reflect the current command, install, release, and workflow surfaces
             assessment: >
               Compare README.md, install.md, CONTRIBUTING.md, docs/, specs/, and
               package/install metadata against implemented commands, workflows,
@@ -352,7 +375,8 @@ areas:
           Runtime behavior, tests, reports, and skill guidance can be traced back
           to durable functional specifications.
         requirements:
-          "tooling specs identify the behavior they govern and stay linked to runtime artifacts":
+          tooling-specs-identify-the-behavior-they-govern-and-stay-linked-to-runtime-artifacts:
+            title: tooling specs identify the behavior they govern and stay linked to runtime artifacts
             assessment: >
               Inspect specs/, internal/ tests, skills/quality/, and report
               examples to confirm specs name the command, workflow, record, or
@@ -363,7 +387,8 @@ areas:
         description: >
           The specs agree with each other and with the active runtime artifacts.
         requirements:
-          "the specs bundle remains internally consistent and synchronized with implementation":
+          the-specs-bundle-remains-internally-consistent-and-synchronized-with-implementation:
+            title: the specs bundle remains internally consistent and synchronized with implementation
             assessment: >
               Compare specs/cli/, specs/evaluation-records/, specs/reports/,
               specs/skills/, and implemented behavior for command names, record
@@ -382,7 +407,8 @@ areas:
           Users and agents can install or update the supported tooling through
           documented channels on supported platforms.
         requirements:
-          "supported install and update paths are documented, tested, and package the expected binary":
+          supported-install-and-update-paths-are-documented-tested-and-package-the-expected-binary:
+            title: supported install and update paths are documented, tested, and package the expected binary
             assessment: >
               Inspect install/, npm/quality.md/, scripts/build-npm.mjs,
               scripts/check-npm-package.mjs, .goreleaser.yaml, .github/workflows/,
@@ -394,7 +420,8 @@ areas:
           Release preparation and smoke checks reduce the risk of shipping a
           broken or incompatible skill/CLI pair.
         requirements:
-          "release gates verify the artifacts and channels that users depend on":
+          release-gates-verify-the-artifacts-and-channels-that-users-depend-on:
+            title: release gates verify the artifacts and channels that users depend on
             assessment: >
               Inspect scripts/check-release.mjs, scripts/extract-release-notes.mjs,
               CHANGELOG.md, docs/guides/cut-a-release.md, .github/workflows/,
@@ -434,7 +461,8 @@ areas:
           Harness quality can be checked through inspectable artifacts,
           representative workflow logs, and runnable verification signals.
     requirements:
-      "the agent harness orients agents and routes them to deeper guidance":
+      the-agent-harness-orients-agents-and-routes-them-to-deeper-guidance:
+        title: the agent harness orients agents and routes them to deeper guidance
         factors:
           - completeness
           - coherence
@@ -480,7 +508,8 @@ areas:
           The model can evolve with the project, evaluation history, quality
           log, feedback logs, and future recommendations.
     requirements:
-      "the QUALITY.md model follows the active authoring guide family":
+      the-quality-md-model-follows-the-active-authoring-guide-family:
+        title: the QUALITY.md model follows the active authoring guide family
         factors:
           - context-grounding
           - model-structure
@@ -513,7 +542,8 @@ areas:
           logs preserve the links between findings, model changes, workflow
           experience, and follow-up decisions.
     requirements:
-      "evaluation history and model-change history remain inspectable and distinct":
+      evaluation-history-and-model-change-history-remain-inspectable-and-distinct:
+        title: evaluation history and model-change history remain inspectable and distinct
         factors:
           - reportability
           - traceability

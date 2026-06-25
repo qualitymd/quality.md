@@ -176,6 +176,18 @@ func UnqualifiedFactorReference(areaPath AreaPath, factorPath FactorPath) string
 	return areaPath.referencePath() + "::" + factorPath.referencePath()
 }
 
+// RequirementReference returns the canonical typed model reference for a
+// Requirement name declared by areaPath.
+func RequirementReference(areaPath AreaPath, requirementName string) string {
+	return "requirement:" + areaPath.referencePath() + "::" + requirementName
+}
+
+// UnqualifiedRequirementReference returns the fixed-type Requirement reference
+// for a Requirement name declared by areaPath.
+func UnqualifiedRequirementReference(areaPath AreaPath, requirementName string) string {
+	return areaPath.referencePath() + "::" + requirementName
+}
+
 // RatingReference returns the canonical typed model reference for a Rating Level
 // ID.
 func RatingReference(level string) string {

@@ -1,5 +1,16 @@
 # Specs Update Log
 
+## 2026-06-25
+
+- **Revision**: Implemented durable spec changes for
+  [0093 - Named Requirement identity](../changes/archive/0093-requirement-identity.md).
+  Requirements now use stable names as map keys, require `title`, retain
+  `assessment`, may carry `description`, and have qualified
+  `requirement:<area-path>::<requirement-name>` references. Updated the format
+  spec, JSON Schema spec, lint-rule catalog, lint-output placeholder, init
+  scaffold spec, durable `/quality` authoring-guide mirrors, and reference
+  examples.
+
 ## 2026-06-24
 
 - **Creation + Revision**: Implemented durable spec changes for
