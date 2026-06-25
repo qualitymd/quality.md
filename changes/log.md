@@ -3,6 +3,30 @@
 ## 2026-06-25
 
 - **Done**: Landed and archived
+  [0095 - Evaluate feedback log outcomes](archive/0095-evaluate-feedback-log-outcomes.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented workflow-process outcome values for
+  `/quality evaluate` feedback logs across runtime skill guidance, durable skill
+  spec mirrors, logs, and CHANGELOG: `outcome` now uses values such as
+  `completed-reportable`, `stopped-model`, and `interrupted`, and remains separate
+  from report, rating, and recommendation semantics. No CLI, Go, format-schema,
+  rating, roll-up, report, or evaluation-record behavior changed. Verified with
+  `mise run check`.
+
+- **In-Progress**: Created
+  [0095 - Evaluate feedback log outcomes](archive/0095-evaluate-feedback-log-outcomes.md)
+  with its child [index](archive/0095-evaluate-feedback-log-outcomes/index.md),
+  [functional spec](archive/0095-evaluate-feedback-log-outcomes/spec.md), and
+  [design doc](archive/0095-evaluate-feedback-log-outcomes/design.md), then
+  advanced it to `In-Progress`. The case keeps `/quality evaluate` feedback
+  logging under `.quality/logs/<timestamp>-evaluate-feedback-log.md` and tightens
+  `outcome` to workflow-process terminal states such as `completed-reportable`,
+  `stopped-model`, and `interrupted`, not report or rating semantics. No CLI, Go,
+  format-schema, rating, roll-up, report, or evaluation-record behavior change is
+  expected.
+
+- **Done**: Landed and archived
   [0094 - Replace evaluation workflow](archive/0094-replace-evaluation-workflow.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

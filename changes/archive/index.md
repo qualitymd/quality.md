@@ -394,3 +394,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   deterministic Area/Factor/Requirement reports, a new `evaluation data` CLI
   surface, superseded legacy evaluation report/record specs, and updated
   `/quality` runtime guidance (`Done`).
+- [0095 — Evaluate feedback log outcomes](0095-evaluate-feedback-log-outcomes.md) -
+  keeps `/quality evaluate` feedback logging as a process-only workflow artifact
+  under `.quality/logs/` and makes the feedback-log `outcome` field describe
+  workflow terminal states rather than report, rating, or recommendation
+  semantics; docs/spec/skill guidance only, no CLI/Go or format-spec change
+  (`Done`).

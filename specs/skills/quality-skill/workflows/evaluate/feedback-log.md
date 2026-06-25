@@ -40,8 +40,9 @@ fields when known:
 - `evaluation-run` — repository-relative path to the numbered evaluation run.
 - `scope` — concise human-readable scope label.
 - `rigor` — `quick`, `standard`, or `deep`.
-- `outcome` — concise close outcome such as `reported`, `stopped`, `failed`, or
-  `interrupted`.
+- `outcome` — workflow-process outcome when known, blank until close. Allowed
+  terminal values are `completed-reportable`, `stopped-lint`, `stopped-model`,
+  `stopped-source`, `stopped-tooling`, `failed`, and `interrupted`.
 
 After `qualitymd evaluation create` returns a numbered run path, `evaluate`
 **MUST** record that path in `evaluation-run` or in the timeline.
@@ -58,7 +59,7 @@ The log **SHOULD** avoid noisy churn for routine internal steps already captured
 by `design.md`, `plan.md`, CLI receipts, records, or generated reports.
 
 At normal close, `evaluate` **MUST** set `status: completed`, set
-`completed-at`, record the close outcome when known, update effort when
+`completed-at`, record `outcome: completed-reportable`, update effort when
 available, and ensure each body section has useful content or an explicit
 no-notable-content note.
 
@@ -66,7 +67,9 @@ When evaluation stops after the log exists because lint fails, source cannot be
 resolved, requirements are not assessable, CLI support fails, user input is
 needed, or another non-success condition occurs, the skill **SHOULD** finalize
 the log with `status: failed` or `status: interrupted` when it can do so without
-masking the stop condition. If finalization is impossible, the existing
+masking the stop condition, and **SHOULD** set the closest workflow outcome:
+`stopped-lint`, `stopped-model`, `stopped-source`, `stopped-tooling`, `failed`,
+or `interrupted`. If finalization is impossible, the existing
 `status: in-progress` log remains acceptable partial feedback.
 
 ## Evaluation boundary
@@ -77,6 +80,10 @@ recommendations, next actions, generated reports, or QUALITY.md model content.
 The evaluate feedback log **MUST NOT** duplicate assessment evidence, rating
 rationale, raw project-command output, or recommendation prose as primary
 content.
+
+The evaluate feedback log `outcome` field **MUST** describe how the evaluate
+workflow ended. It **MUST NOT** describe a rating result, report verdict,
+recommendation state, or evaluated-source quality.
 
 When a project command is exercised as evaluation evidence, the feedback log
 **MAY** record the routing decision and point to the formal assessment record

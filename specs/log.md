@@ -2,6 +2,12 @@
 
 ## 2026-06-25
 
+- **Revision**: Updated durable skill workflow specs for
+  [0095 - Evaluate feedback log outcomes](../changes/archive/0095-evaluate-feedback-log-outcomes.md).
+  The evaluate feedback log remains the process-only workflow artifact under
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md`, and its `outcome` field
+  now records workflow terminal states rather than report or rating semantics.
+
 - **Creation**: Added the
   [Evaluation v2](evaluation-v2/evaluation-v2.md) durable spec bundle for
   [0094 - Replace evaluation workflow](../changes/0094-replace-evaluation-workflow.md).

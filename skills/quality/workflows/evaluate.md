@@ -226,13 +226,19 @@ redaction: <none | sanitized | withheld-details>
 ## Redaction note
 ```
 
+Use `outcome` for the workflow's terminal process state, not the evaluation
+rating, report verdict, recommendation state, or evaluated-source quality. Use
+one of: `completed-reportable`, `stopped-lint`, `stopped-model`,
+`stopped-source`, `stopped-tooling`, `failed`, or `interrupted`.
+
 When finalizing a normal run, set `status: completed`, set `completed-at`, record
-the report outcome in `outcome`, update effort when available, and make sure each
-body section has either useful content or an explicit note such as
+`outcome: completed-reportable`, update effort when available, and make sure
+each body section has either useful content or an explicit note such as
 `None observed.` If evaluation stops after the log exists, update the log with
-`status: failed` or `status: interrupted` when that can be done without masking
-the stop condition. If finalization is impossible, the existing
-`status: in-progress` log remains acceptable partial feedback.
+`status: failed` or `status: interrupted` and the closest workflow outcome when
+that can be done without masking the stop condition. If finalization is
+impossible, the existing `status: in-progress` log remains acceptable partial
+feedback.
 
 The log records the experience of running evaluate, not evaluation judgment. Do
 not put ratings, findings, rating rationale, recommendation prose, raw

@@ -526,9 +526,10 @@ finalizes `.quality/logs/<timestamp>-setup-feedback-log.md` as defined by
 [Setup feedback log](workflows/setup/feedback-log.md). Evaluate creates,
 updates, and finalizes
 `.quality/logs/<timestamp>-evaluate-feedback-log.md` as defined by
-[Evaluate feedback log](workflows/evaluate/feedback-log.md). Historical
-evaluation runs may still contain `debug-log.md`; current feedback belongs in
-the evaluate feedback log.
+[Evaluate feedback log](workflows/evaluate/feedback-log.md). The evaluate
+feedback log's `outcome` is a workflow-process outcome, not a report, rating, or
+recommendation state. Historical evaluation runs may still contain
+`debug-log.md`; current feedback belongs in the evaluate feedback log.
 
 > Rationale: `/quality` workflows had no durable, central place to record what
 > was slow, confusing, or wrong about *running* them. The signal behind the 0065

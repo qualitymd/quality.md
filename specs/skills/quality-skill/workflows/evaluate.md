@@ -48,6 +48,9 @@ report files directly when the CLI command exists.
 `evaluate` **MUST** create, update, and finalize the current run's evaluate
 feedback log as defined by the
 [Evaluate feedback log](evaluate/feedback-log.md) sub-spec.
+The feedback log's `outcome` field describes workflow process state such as
+`completed-reportable`, `stopped-model`, or `interrupted`; it is not a rating,
+report verdict, or recommendation state.
 
 ## Required flow
 

@@ -5,6 +5,13 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality Skill
+
+- `/quality evaluate` feedback logs now use workflow-process `outcome` values
+  such as `completed-reportable`, `stopped-model`, and `interrupted`, keeping
+  `.quality/logs/<timestamp>-evaluate-feedback-log.md` clearly separate from
+  report, rating, and recommendation semantics.
+
 ## v0.12.0 - 2026-06-25
 
 ### QUALITY.md Format

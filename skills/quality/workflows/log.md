@@ -2,6 +2,13 @@
 
 ## 2026-06-25
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0095 - Evaluate
+  feedback log outcomes.
+  Evaluate feedback logs remain under `.quality/logs/` as process-only workflow
+  artifacts, and their `outcome` field now records workflow terminal states such
+  as `completed-reportable`, `stopped-model`, or `interrupted`, not report or
+  rating semantics.
+
 - **Revision**: Updated the [setup](setup.md) workflow for 0092 - Setup workflow
   scope trim.
   Setup no longer asks about recommendation handling, handoff destination, review

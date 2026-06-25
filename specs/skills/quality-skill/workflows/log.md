@@ -2,6 +2,13 @@
 
 ## 2026-06-25
 
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec and
+  [evaluate feedback log](evaluate/feedback-log.md) spec for
+  [0095 - Evaluate feedback log outcomes](../../../../changes/archive/0095-evaluate-feedback-log-outcomes.md).
+  Evaluate feedback logs remain under `.quality/logs/`, and their `outcome`
+  field now records workflow terminal states such as `completed-reportable`,
+  `stopped-model`, or `interrupted`, not report, rating, or recommendation state.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec and
   [setup feedback log](setup/feedback-log.md) spec for
   [0092 - Setup workflow scope trim](../../../../changes/archive/0092-setup-workflow-scope-trim.md).
