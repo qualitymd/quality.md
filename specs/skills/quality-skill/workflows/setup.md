@@ -10,7 +10,7 @@ timestamp: 2026-06-23T00:00:00Z
 
 `setup` is the `/quality` workflow that creates or updates a useful first
 `QUALITY.md` through context inspection, a concrete discovery prompt, model
-authoring, validation, and maturity routing. It implements the shared
+authoring, validation, and important-gap reporting. It implements the shared
 contracts in the parent [/quality skill](../quality-skill.md) spec and owns
 only the setup-specific behavior below.
 
@@ -71,8 +71,8 @@ The setup workflow **MUST** include these stages, in order:
    explicit review-gate response before authoring.
 6. Run `qualitymd init [path]` when the target model is missing.
 7. Synthesize or update `QUALITY.md`.
-8. Run lint and classify model maturity.
-9. Report completion and next-step choices, and finalize the setup feedback
+8. Run lint and identify important model gaps.
+9. Report completion and one immediate next step, and finalize the setup feedback
    log.
 
 The workflow **MUST NOT** ask the user to design Factors, child Areas,
@@ -84,8 +84,9 @@ setup brief, discovery answers, authoring guide, and repository context.
 `setup` **MUST** inspect available repository context before asking setup
 questions. Relevant context includes README and docs, repository structure,
 package metadata, tests, contributor docs, existing agent instructions, and
-visible workflow or work-management signals. This inspection **MUST** stay
-bounded to setup signals and **MUST NOT** become source-quality evaluation.
+visible workflow signals that affect first-model authoring. This inspection
+**MUST** stay bounded to setup signals and **MUST NOT** become source-quality
+evaluation.
 
 Setup **MUST** treat the current directory as the default root Area convention
 unless the user supplied an explicit model path or repository context strongly
@@ -262,15 +263,12 @@ The maintainer/collaborator checkpoint item **MUST** assume agent-heavy
 development and ask which human collaborators, reviewers, maintainers, or
 stakeholders also need to align with the quality bar.
 
-Setup **MUST NOT** ask a review-posture discovery question. Review cadence,
-recurrence, and quality-loop options **MAY** appear in setup closeout as
-next-step routing, but not as setup discovery. Ad hoc `/quality evaluate` **MUST**
-be treated as always available rather than as a selectable automation option.
-Setup **MUST NOT** recommend CI or release gating as the default quality loop.
-
-Setup **MAY** ask an additional work-handoff question about where future
-evaluation recommendations should usually go. If asked, it **MUST** say setup
-will not create issues or configure integrations.
+Setup **MUST NOT** ask a review-posture discovery question. Setup **MUST NOT**
+ask for review cadence, recurrence, quality-loop options, recommendation
+handling, work-handoff destination, issue tracker, or automation preferences. Ad
+hoc `/quality evaluate` **MUST** be treated as always available after setup
+rather than as a selectable automation option. Setup **MUST NOT** recommend CI or
+release gating as the default quality loop.
 
 ## Prompt form
 
@@ -464,46 +462,50 @@ local development build lacks required commands.
 `setup` **MUST** run `qualitymd lint` after writing `QUALITY.md`. It **MUST**
 report lint failures before offering evaluation as a next step.
 
-`setup` **MUST** classify the resulting model's maturity against the bundled Top
-10 QUALITY.md checks before reporting completion, using that guide's condensed
-close checklist and reading the full checks only when the maturity call is
-borderline. This inspection **MUST** remain a model-maturity inspection and
-**MUST NOT** evaluate root Area source quality. The model-maturity classification
-(`starter`, `immature`, `evaluation-ready`) **MUST** be reported as distinct from
-the lifecycle `readiness` that `qualitymd status` owns.
+When lint passes, `setup` **MUST** inspect the model for important gaps that
+materially affect first-model usefulness. This inspection **MUST** remain a
+model-usefulness inspection and **MUST NOT** evaluate root Area source quality.
+Important gaps include thin or generic Markdown body context, missing material
+unknowns or open questions, factors that do not trace to the body's needs and
+risks, vague or unassessable Requirements, missing germane constituent kinds, and
+missing Agent Harnessability coverage for an agent-collaborated composite root.
+Setup **MUST NOT** collapse those gaps into a `starter`, `immature`,
+`evaluation-ready`, `Maturity`, or `Evaluation readiness` label.
 
-For a composite root, `setup` **MUST** classify a model as below
-`evaluation-ready` while a germane constituent that hits neither disqualifier (no
-distinct concerns; not germane / outside the boundary) is left unmodeled or
-recorded only as a deferral; a bare deferral or Scope note **MUST NOT** be treated
-as satisfying constituent coverage.
+For a composite root, `setup` **MUST** report an important gap when a germane
+constituent that hits neither disqualifier (no distinct concerns; not germane /
+outside the boundary) is left unmodeled or recorded only as a deferral; a bare
+deferral or Scope note **MUST NOT** be treated as satisfying constituent coverage.
 
-For an agent-collaborated composite root, `setup` **MUST** classify a model as
-below `evaluation-ready` while Agent Harnessability or its sub-factors are missing
-from the model-wide factors without a clear not-germane boundary. A thin or absent
-harness **MUST NOT** satisfy that boundary. An existing `harnessability` factor
-with the expected six sub-factors **SHOULD** count as semantic coverage, while
-setup's authoring guidance **SHOULD** recommend renaming it to
-`agent-harnessability` / Agent Harnessability.
+For an agent-collaborated composite root, `setup` **MUST** report an important
+gap when Agent Harnessability or its sub-factors are missing from the model-wide
+factors without a clear not-germane boundary. A thin or absent harness **MUST
+NOT** satisfy that boundary. An existing `harnessability` factor with the expected
+six sub-factors **SHOULD** count as semantic coverage, while setup's authoring
+guidance **SHOULD** recommend renaming it to `agent-harnessability` / Agent
+Harnessability.
 
-> Rationale: model-by-default is enforceable only if an under-covered model fails
-> the maturity bar; a deferral note previously passed it silently. — 0080
+> Rationale: model-by-default is enforceable only if under-coverage is reported
+> as a concrete model gap; a deferral note previously passed the close check
+> silently. — 0080, 0092
 
 ## Completion criteria
 
 `setup` is complete when the target model exists, lint has run, the model has
 received context-informed authoring or a clearly reported user-deferred
-authoring step, and setup has reported model maturity. Completion output
-**MUST** summarize the `QUALITY.md` change, lint result, maturity
-classification, important remaining model gaps, and next-step choices.
+authoring step, and setup has reported important model gaps. Completion output
+**MUST** summarize the `QUALITY.md` change, lint result, important remaining
+model gaps, what setup did not do, and one immediate next step.
 Completion output **MUST** follow the shared agent-mediated UX contract:
-status-first, with scannable labels for changed artifacts, validation, maturity,
-important gaps, what setup did not do, and the recommended next action.
+status-first, with scannable labels for changed artifacts, validation, important
+gaps, what setup did not do, and the recommended next action.
 
-Next-step choices **SHOULD** include continuing to iterate on `QUALITY.md`,
-running evaluation, setting up a recurring quality review loop, setting up
-recommendation handoff, and stopping. `setup` **MUST NOT** automatically take
-any next-step action.
+The recommended next step **SHOULD** be one of: continue iterating on
+`QUALITY.md`, run `/quality evaluate`, or stop here. If important model gaps
+remain, setup **SHOULD** recommend continued iteration. If no important gaps are
+visible and lint passed, setup **SHOULD** recommend either `/quality evaluate` or
+stopping based on the user's immediate goal. `setup` **MUST NOT** automatically
+take any next-step action.
 
 ## Feedback log
 
@@ -518,7 +520,7 @@ contract is owned by the shared
 creation, naming (`<timestamp>-setup-feedback-log.md`), and finalization rules
 are owned by the [Setup feedback log](setup/feedback-log.md) sub-spec. Writing,
 updating, or finalizing a feedback log **MUST NOT** change setup's completion
-criteria, maturity classification, or next-step routing.
+criteria, important-gap judgment, or next-step routing.
 
 > Annotation: the feedback log records the *experience* of running setup so the
 > skill, CLI, and prompts can improve from real runs — distinct from the user-

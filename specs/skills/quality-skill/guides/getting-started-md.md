@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md getting-started guide
-description: Contract for the skill's first-run guide for turning a starter or immature QUALITY.md into a first useful model.
+description: Contract for the skill's first-run guide for turning a QUALITY.md with important model gaps into a first useful model.
 tags: [skill, quality, guide]
 timestamp: 2026-06-23T00:00:00Z
 ---
@@ -12,9 +12,9 @@ This spec governs the **getting-started guide** the [`/quality` skill](../qualit
 ships at
 [`skills/quality/guides/getting-started.md`](../../../../skills/quality/guides/getting-started.md).
 The guide is the setup follow-on: the document a human or agent reads after
-setup leaves a starter or immature `QUALITY.md`, or when a user asks how to keep
-iterating on the first useful model. It assumes the reader has already read the
-[authoring guide](authoring.md).
+setup leaves a valid `QUALITY.md` with important model gaps, or when a user asks
+how to keep iterating on the first useful model. It assumes the reader has
+already read the [authoring guide](authoring.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -33,10 +33,10 @@ first-run workflow.
 
 ## Purpose
 
-The guide exists to help a reader turn a starter or immature QUALITY.md into a
-first useful model through an ordered process. After following it, the file
-should still lint cleanly and each step should have reached a stated outcome, so
-the skill can recommend a meaningful next public workflow.
+The guide exists to help a reader turn a QUALITY.md with important model gaps
+into a first useful model through an ordered process. After following it, the
+file should still lint cleanly and each step should have reached a stated
+outcome, so the skill can recommend a meaningful next public workflow.
 
 ## Scope
 
@@ -56,14 +56,14 @@ detail.
 ### Runtime Use
 
 The skill root prompt **MUST** tell agents to read the getting-started guide
-after setup leaves a starter or immature `QUALITY.md`, or when a user asks how
-to keep iterating on the first useful model.
+after setup leaves a valid `QUALITY.md` with important model gaps, or when a user
+asks how to keep iterating on the first useful model.
 
 The getting-started guide **MUST** require the authoring guide as a prerequisite.
 The skill should already have read the authoring guide before using
 getting-started for first-run model population.
 
-The setup workflow **MAY** route starter or immature models to the
+The setup workflow **MAY** route models with important gaps to the
 getting-started guide after its own context-informed setup work. It **MUST NOT**
 treat the guide as a separate required phase before setup writes `QUALITY.md`.
 
@@ -73,16 +73,16 @@ start from one.
 
 ### Guide Content
 
-The guide **MUST** identify its starting point as a valid starter or immature
-`QUALITY.md`, and **MUST** tell the reader to resolve lint errors before building
-the model.
+The guide **MUST** identify its starting point as a valid `QUALITY.md` with
+important model gaps, and **MUST** tell the reader to resolve lint errors before
+building the model.
 
 The guide **MUST** cover these first-pass jobs:
 
 - filling the recommended Markdown body stubs;
 - reviewing setup assumptions such as root Area, domain, lifecycle, risk
-  tolerance, modeling rigor, collaboration context, stakeholder needs, missing
-  context, review posture, and handoff posture when present;
+  tolerance, modeling rigor, collaboration context, stakeholder needs, and missing
+  context;
 - confirming or lightly adapting the seeded rating scale;
 - naming the root area from the body context;
 - deciding whether the root `source` can stay implicit;
@@ -108,10 +108,9 @@ rating levels.
 
 The guide **MUST** end by offering next workflow choices once the first model is
 valid and useful enough: continue iterating on `QUALITY.md`, run
-`/quality evaluate`, set up a recurring quality review loop, set up
-recommendation handoff, or stop. It should direct users to continue authoring
-when model usefulness is not yet sufficient and to `/quality update` when
-tooling is stale.
+`/quality evaluate`, or stop. It should direct users to continue authoring when
+model usefulness is not yet sufficient and to `/quality update` when tooling is
+stale.
 
 ### Relationship to Authoring Guide
 

@@ -1,5 +1,15 @@
 # /quality Runtime Guides Update Log
 
+## 2026-06-25
+
+- **Revision**: Updated [Getting started](getting-started.md) and
+  [Top 10 checks](top-10-quality-md-checks.md) guides for 0092 - Setup workflow
+  scope trim.
+  Getting-started guidance now focuses on first-model gaps instead of
+  starter/immature labels or follow-on handoff/review setup. Top 10 now reports
+  lifecycle state and model-usefulness findings instead of maturity or
+  evaluation-readiness classifications.
+
 ## 2026-06-24
 
 - **Revision**: Updated the

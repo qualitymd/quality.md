@@ -1,5 +1,13 @@
 # Docs Update Log
 
+## 2026-06-25
+
+- **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0092 - Setup workflow scope trim](../changes/archive/0092-setup-workflow-scope-trim.md).
+  The setup closeout example now reports validation and important gaps without a
+  maturity label.
+
 ## 2026-06-24
 
 - **Revision**: Updated

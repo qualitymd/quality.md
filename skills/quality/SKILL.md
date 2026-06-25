@@ -27,8 +27,9 @@ recommendations.
   to the model elements you will create, review, mutate, evaluate, or recommend
   changing.
 - Read [`guides/getting-started.md`](guides/getting-started.md) after setup
-  leaves a starter or immature `QUALITY.md`, or when the user asks how to keep
-  iterating on the first useful model. Read the authoring guide first.
+  leaves a valid `QUALITY.md` with important model gaps, or when the user asks
+  how to keep iterating on the first useful model. Read the authoring guide
+  first.
 - Read [`guides/top-10-quality-md-checks.md`](guides/top-10-quality-md-checks.md)
   when quickly inspecting a QUALITY.md file's current state, quality, or
   lifecycle for read-only orientation or model-review routing.

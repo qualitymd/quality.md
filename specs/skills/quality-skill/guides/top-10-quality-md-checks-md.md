@@ -107,7 +107,7 @@ Routes should use skill workflow language such as setup, getting-started,
 authoring, evaluate, recommendation follow-up, history, or update.
 
 The checklist **MUST** treat the authoring guide as the quality reference for
-what good authoring looks like. It should route starter or placeholder models to
+what good authoring looks like. It should route skeleton or placeholder models to
 getting-started for first-run process, and route populated models with
 best-practice gaps to authoring/model review.
 
@@ -247,32 +247,25 @@ Every check that would block evaluation **MUST** distinguish model
 usefulness from root area quality. A valid but vague model is a model-authoring
 finding, not evidence that the root area is low quality.
 
-### Maturity vs lifecycle state
+### Model usefulness vs lifecycle state
 
-The checklist **MUST** keep two axes distinct and **MUST NOT** present them as one
-blended classification:
+The checklist **MUST** keep lifecycle state distinct from model-usefulness
+findings and **MUST NOT** present them as one blended classification:
 
 - *Lifecycle state* — where the model sits in the evaluation lifecycle — is owned
   by `qualitymd status` (`readiness`): missing, invalid, ready to evaluate (valid
   with no runs), has evaluation history, or needs reconciliation.
-- *Maturity* — how developed the model is — is the checklist's own judgment:
-  `starter`, `immature`, or `evaluation-ready`.
+- *Model usefulness* — whether the current model is specific, grounded, and
+  assessable enough to support authoring, evaluation, or follow-up work — is the
+  checklist's own finding set.
 
 The checklist **MUST NOT** treat the CLI's lifecycle `ready-to-evaluate` signal
-as a maturity verdict; a valid model with no runs can still be a `starter`.
-
-### Condensed close checklist
-
-The guide **MUST** include a condensed checklist that the setup workflow uses to
-classify maturity at close without reading every check. The condensed checklist
-**MUST** cover model validity, body context, project posture and stakeholder
-needs, and factor/requirement quality, and **MUST** map its result to the
-`starter`/`immature`/`evaluation-ready` maturity levels. The full checks remain
-available for borderline maturity calls and complete read-only orientation.
+as a model-usefulness verdict; a valid model with no runs can still have gaps
+that should route to authoring before evaluation.
 
 ### Summary Judgment
 
-The checklist **MUST** end by reporting the two axes separately: a lifecycle
-classification (missing, invalid, ready to evaluate, has evaluation history, or
-needs reconciliation) and, for a valid model, a maturity classification
-(`starter`, `immature`, or `evaluation-ready`).
+The checklist **MUST** end by reporting lifecycle state and model-usefulness
+findings separately. Lifecycle state is a classification from `qualitymd status`.
+Model usefulness is a set of routing findings, not a `starter`, `immature`,
+`evaluation-ready`, maturity, or evaluation-readiness classification.

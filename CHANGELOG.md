@@ -14,6 +14,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- `/quality setup` now stays focused on producing a useful initial `QUALITY.md`:
+  it no longer asks for future recommendation handling, handoff destination,
+  review cadence, recurring review, or automation preferences, and its closeout
+  reports lint validation plus important model gaps instead of a
+  maturity/evaluation-ready label.
 - The authoring guide now defines the agent harness holistically as the whole
   engineered system around the model, then scopes the agent-harness area to
   checked-in steering and project-owned control artifacts. Setup now checks for
@@ -66,8 +71,8 @@ QUALITY.md specification.
   as a ratable gap — a minimal area with a missing-anchor finding, or a requirement
   on an existing area. Deferral is now a narrow, blocker-recorded exception, and a
   composite model that leaves a germane constituent unmodeled or merely deferred no
-  longer reaches `evaluation-ready`. This makes a first-pass model as full as the
-  evidence supports.
+  longer passes setup without an important-gap note. This makes a first-pass model
+  as full as the evidence supports.
 - The authoring guide now teaches Agent Harnessability (`agent-harnessability`) as
   the model-wide factor projection of the agent-collaboration concern for
   agent-collaborated composite roots, defined around project materials and tooling
@@ -158,9 +163,9 @@ QUALITY.md specification.
   is — instead of assuming a fixed question UI.
 - Setup now reads the `qualitymd init` scaffold before authoring it, avoiding a
   wasted read-before-write round-trip.
-- Setup now reports model *maturity* (`starter`, `immature`, `evaluation-ready`)
-  as distinct from the lifecycle `readiness` that `qualitymd status` owns, and
-  the Top 10 checklist no longer blends the two axes.
+- The Top 10 checklist now keeps lifecycle `readiness` from `qualitymd status`
+  distinct from model-usefulness findings instead of blending lifecycle state
+  with setup closeout judgment.
 - Renamed the skill's `modes/` folder to `workflows/` (runtime skill and spec
   mirror); each workflow is still dispatched as a mode.
 - Made `/quality setup` discovery teaching-first: each setup question now

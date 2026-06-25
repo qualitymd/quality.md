@@ -1,5 +1,14 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-25
+
+- **Revision**: Updated durable [Getting started](getting-started-md.md) and
+  [Top 10 checks](top-10-quality-md-checks-md.md) guide specs for
+  [0092 - Setup workflow scope trim](../../../../changes/archive/0092-setup-workflow-scope-trim.md).
+  Getting-started now treats important model gaps as the first-run iteration
+  starting point, and Top 10 now separates lifecycle state from model-usefulness
+  findings without maturity or evaluation-readiness classifications.
+
 ## 2026-06-24
 
 - **Revision**: Updated the

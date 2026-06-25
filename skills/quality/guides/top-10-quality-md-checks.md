@@ -1,32 +1,31 @@
 ---
 type: Runtime Guide
 title: Top 10 QUALITY.md Checks
-description: Quick model-readiness and routing checks for QUALITY.md files.
+description: Quick lifecycle and model-usefulness routing checks for QUALITY.md files.
 ---
 
 # Top 10 QUALITY.md Checks
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's
-lifecycle state and model maturity. The result is not an Evaluation Report and
+lifecycle state and model usefulness. The result is not an Evaluation Report and
 does not rate the evaluated source. It produces routing findings that read-only
 orientation and model-review workflows can use to choose the next public
 workflow.
 
-Two distinct axes come out of this inspection, and they must not be conflated:
+Keep two concerns distinct:
 
 - *Lifecycle state* is where the model sits in the evaluation lifecycle and is
   owned by `qualitymd status` (`readiness`): missing, invalid, ready to evaluate
   (valid, no runs yet), has evaluation history, or needs reconciliation.
-- *Maturity* is how developed the model is, and is this checklist's judgment:
-  `starter`, `immature`, or `evaluation-ready`.
+- *Model usefulness* is whether the current model is specific, grounded, and
+  assessable enough to support authoring, evaluation, or follow-up work.
 
-A model can be lifecycle `ready-to-evaluate` (valid, no runs) while still being a
-`starter` in maturity. Report both; do not read the CLI's lifecycle signal as a
-maturity verdict.
+The CLI's lifecycle `ready-to-evaluate` signal means "valid, with no runs yet."
+It is not a model-usefulness verdict.
 
-This checklist does not re-run setup. It checks whether the current
-`QUALITY.md` still preserves the setup assumptions and model qualities needed
-for useful evaluation, authoring, and maintenance.
+This checklist does not re-run setup. It checks whether the current `QUALITY.md`
+preserves the assumptions and model qualities needed for useful evaluation,
+authoring, and maintenance.
 
 ## Inputs
 
@@ -56,37 +55,6 @@ QUALITY.md inspection findings
 
 Keep evidence short. Cite section names, property paths, counts, or status JSON
 fields rather than quoting long passages.
-
-## Condensed close checklist
-
-Setup's close step uses this condensed pass to classify maturity. Read the full
-checks below only when the maturity call is borderline or a read-only
-orientation needs the complete inspection.
-
-- Lint passes and `qualitymd status` reports a valid model. For a freshly
-  authored model, lifecycle is `ready-to-evaluate` (valid, no runs). (check 1)
-- Overview, Scope, Needs, and Risks are substantive, each closing with its own
-  unknowns and open questions, and important missing context is named. (check 5)
-- Project posture — lifecycle, risk tolerance, modeling rigor — and the primary
-  stakeholder needs are explicit and specific to this project, not generic.
-  (checks 2-4)
-- Factors map to the body's needs and risks, and requirements are concrete with a
-  usable assessment each. (checks 8-9)
-- For a composite root, the domain's constituent kinds (e.g. specs, tests, docs,
-  operations, security/safety) are each modeled or consciously accounted for, not
-  silently missing. (check 8)
-- For an agent-collaborated composite root, Agent Harnessability or its
-  sub-factors are present as model-wide factors unless clearly not germane. (check
-  8)
-
-Classify maturity from how many of these hold:
-
-- `starter` — scaffold or thin body; posture or needs mostly generic; few
-  concrete requirements.
-- `immature` — substantive in parts, but with material gaps in posture, needs,
-  factors, or assessable requirements.
-- `evaluation-ready` — posture, needs, factors, and assessable requirements are
-  present and specific enough to evaluate.
 
 ## The Checks
 
@@ -281,9 +249,8 @@ either inline or by referencing a traceable entity that defines it.
 
 Use evaluation history, active recommendations, and visible model context to
 decide whether the next workflow is maintenance rather than new authoring or
-evaluation. When a model depends on recurring quality review or recommendation
-handoff, that posture should be visible, but the checklist does not require or
-recommend CI or release gating by default.
+evaluation. The checklist does not require or recommend CI or release gating by
+default.
 
 - Finding when active recommendations exist: route to recommendation review,
   apply, or issue-tracker handoff.
@@ -291,15 +258,11 @@ recommend CI or release gating by default.
   route to history/reconciliation. Treat malformed or incompatible records as
   history status, not evaluated-source quality evidence; do not suggest manual
   migration.
-- Finding when the model implies a recurring quality review cadence but does not
-  name how maintainers expect to revisit it: route to authoring.
-- Finding when recommendation handoff is central to the workflow but the handoff
-  destination is unknown or stale: route to recommendation follow-up or
-  authoring, depending on whether active recommendations exist.
 
 ## Summary Judgment
 
-After the checks, report the two axes separately.
+After the checks, report lifecycle state and the model-usefulness findings
+separately.
 
 Lifecycle state (from `qualitymd status`):
 
@@ -309,11 +272,7 @@ Lifecycle state (from `qualitymd status`):
 - `has evaluation history`
 - `needs reconciliation`
 
-Maturity (this checklist's judgment, for a valid model):
-
-- `starter`
-- `immature`
-- `evaluation-ready`
-
-Use the finding routes to recommend one next workflow and list a few concrete
-alternatives.
+For model usefulness, list only findings that affect routing or the quality of a
+future evaluation. Do not collapse those findings into a maturity or
+evaluation-readiness label. Use the finding routes to recommend one next workflow
+and list a few concrete alternatives.

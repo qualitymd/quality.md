@@ -177,7 +177,6 @@ Close with the outcome, validation, remaining gaps, and recommended next action.
 
 **Changed:** `QUALITY.md`
 **Validation:** lint passed
-**Maturity:** immature
 **Important gaps:** stakeholder context and support expectations are still thin.
 **Not done:** no evaluation, no issues, no automations.
 **Next:** continue iterating on the model before the first full evaluation.

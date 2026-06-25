@@ -1,5 +1,15 @@
 # /quality Skill Workflows Update Log
 
+## 2026-06-25
+
+- **Revision**: Updated the [`setup`](setup.md) workflow spec and
+  [setup feedback log](setup/feedback-log.md) spec for
+  [0092 - Setup workflow scope trim](../../../../changes/archive/0092-setup-workflow-scope-trim.md).
+  Setup no longer asks about future recommendation handling, review cadence,
+  recurring review, or automation posture, and its completion contract now reports
+  lint validation plus important model gaps. Setup feedback-log `outcome` values
+  now describe workflow results instead of maturity or evaluation-readiness.
+
 ## 2026-06-24
 
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for

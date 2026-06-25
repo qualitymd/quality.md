@@ -1,5 +1,41 @@
 # Changes Update Log
 
+## 2026-06-25
+
+- **Done**: Landed and archived
+  [0092 - Setup workflow scope trim](archive/0092-setup-workflow-scope-trim.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented the setup scope trim across runtime skill
+  guidance, durable skill spec mirrors, docs/logs, and CHANGELOG: setup no longer
+  asks about future recommendation handling, handoff destination, review cadence,
+  recurring review, or automation preferences; setup closeout reports lint
+  validation plus important model gaps instead of maturity/evaluation-readiness
+  labels; and setup feedback logs record workflow outcomes. No CLI, Go,
+  format-schema, rating, roll-up, or evaluation-record behavior changed. Verified
+  with `mise run check`.
+
+- **In-Progress**: Advanced
+  [0092 - Setup workflow scope trim](archive/0092-setup-workflow-scope-trim.md)
+  through `Design` to `In-Progress`; the functional spec and
+  [design doc](archive/0092-setup-workflow-scope-trim/design.md) are settled, and
+  implementation is beginning across bundled skill setup guidance, Top 10 and
+  getting-started guides, setup feedback-log rules, durable skill spec mirrors,
+  public docs, logs, and changelog. No CLI, Go, format-schema, rating, roll-up,
+  or evaluation-record behavior change is expected.
+
+- **Draft**: Created
+  [0092 - Setup workflow scope trim](archive/0092-setup-workflow-scope-trim.md)
+  with its child [index](archive/0092-setup-workflow-scope-trim/index.md) and
+  [functional spec](archive/0092-setup-workflow-scope-trim/spec.md). The case trims
+  `/quality setup` back to first-model authoring: remove future recommendation
+  handling and work-handoff destination discovery, remove review cadence and
+  recurring automation posture from setup, and replace setup's
+  maturity/evaluation-ready closeout with validation plus important model gaps.
+  It deliberately keeps the pedagogical setup questions and workflow feedback log.
+  No CLI, Go, format-schema, rating, roll-up, or evaluation-record behavior
+  change is expected.
+
 ## 2026-06-24
 
 - **Done**: Landed and archived

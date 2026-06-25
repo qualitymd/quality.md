@@ -153,9 +153,9 @@ The root prompt **MUST** direct agents when to read each one:
   sub-guide relevant to the model elements they will create, review, mutate,
   evaluate, or recommend changing.
 - [`guides/getting-started.md`](../../../skills/quality/guides/getting-started.md)
-  — the first-run guide read after setup leaves a starter or immature
-  `QUALITY.md`, or when the user asks how to keep iterating on the first useful
-  model.
+  — the first-run guide read after setup leaves a valid `QUALITY.md` with
+  important model gaps, or when the user asks how to keep iterating on the first
+  useful model.
 - [`guides/top-10-quality-md-checks.md`](../../../skills/quality/guides/top-10-quality-md-checks.md)
   — the quick inspection checklist read when assessing a QUALITY.md file's
   current state, quality, or lifecycle for read-only orientation or model-review
@@ -388,10 +388,11 @@ contracts that every workflow composes.
 
 Bare or ambiguous `/quality` requests are handled as read-only orientation, not
 as a public mode. Orientation may inspect local QUALITY.md lifecycle state,
-classify model maturity, recommend one next workflow, and offer concrete alternatives
-without modifying files, creating records, building reports, updating tooling,
-or rating evaluated source. Its recommended next actions are limited to public
-workflows: `setup`, `evaluate`, `update`, and recommendation follow-up.
+report model-usefulness findings, recommend one next workflow, and offer
+concrete alternatives without modifying files, creating records, building
+reports, updating tooling, or rating evaluated source. Its recommended next
+actions are limited to public workflows: `setup`, `evaluate`, `update`, and
+recommendation follow-up.
 
 The skill **MUST NOT** advertise `status`, `next`, `review model`,
 `review history`, or `wizard` as public invocations. If a user explicitly sends
@@ -405,9 +406,9 @@ model through context inspection, a setup brief, concrete discovery questions,
 and confidence-labeled defaults. It verifies CLI compatibility, inspects
 available repository context for setup signals, delegates deterministic
 scaffolding and validation to `qualitymd`, writes only the selected
-`QUALITY.md`, classifies model maturity with the Top 10 checklist, and offers
-next-step choices. It does not evaluate source, write the quality log, create
-external issues, or configure recurring-review automation.
+`QUALITY.md`, reports important model gaps, and recommends one immediate next
+step. It does not evaluate source, write the quality log, create external issues,
+configure integrations, or configure automation.
 
 ### Evaluate
 

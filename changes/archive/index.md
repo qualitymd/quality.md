@@ -377,3 +377,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   checks, and mirrored the guidance across setup, Top 10, durable specs, logs,
   docs, and CHANGELOG; docs/spec/skill guidance only, no CLI/Go or format-spec
   change (`Done`).
+- [0092 — Setup workflow scope trim](0092-setup-workflow-scope-trim.md) - trimmed
+  `/quality setup` so it no longer asks about future recommendation handling,
+  handoff destination, review cadence, recurring review, or automation
+  preferences; setup closeout now reports validation plus important model gaps
+  instead of maturity/evaluation-readiness labels, and setup feedback logs record
+  workflow outcomes; docs/spec/skill guidance only, no CLI/Go or format-spec
+  change (`Done`).

@@ -9,8 +9,7 @@ description: Runtime workflow for creating or updating a useful first QUALITY.md
 Run this workflow to create or update a useful first `QUALITY.md`. Setup writes
 the selected `QUALITY.md` and writes a current-run workflow feedback log under
 `.quality/logs/`; evaluation, quality-log entries under `.quality/log/`, external
-issues, recommendation handoff, and recurring-review automation are follow-on
-workflows.
+issues, integrations, and automations stay outside setup.
 
 ## Workflow
 
@@ -47,8 +46,8 @@ Write QUALITY.md
 
 Verify and close
 - run qualitymd lint
-- classify maturity with the Top 10 checklist
-- report status and next-step choices
+- identify important model gaps
+- report status and one immediate next step
 - finalize the workflow feedback log
 ```
 
@@ -66,7 +65,7 @@ Verify and close
    - **Scope:** contextual QUALITY.md setup
    - **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/
    - **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md
-   - **Next gate:** create feedback log, context analysis, discovery, lint, maturity inspection
+   - **Next gate:** create feedback log, context analysis, discovery, lint, important-gap inspection
    ```
 
 4. Create the current run's workflow feedback log under
@@ -85,9 +84,8 @@ Verify and close
    [`agent-harnessability`](../guides/authoring/agent-harnessability.md),
    [`agent-harness`](../guides/authoring/agent-harness.md), and
    [`quality-log`](../guides/authoring/quality-log.md). Read
-   [`../guides/getting-started.md`](../guides/getting-started.md) when setup is
-   continuing from a starter/immature model or needs first-run iteration
-   guidance.
+   [`../guides/getting-started.md`](../guides/getting-started.md) when setup
+   needs first-run iteration guidance.
 
 ## Read Context
 
@@ -96,7 +94,7 @@ bounded to setup signals, not source-quality judgment.
 
 Useful signals include README/docs, package metadata, repository structure,
 tests/build scripts, contributor docs, existing agent instructions, and visible
-work-management or recurring-review hints.
+workflow hints that affect first-model authoring.
 
 Treat the current directory as the default root area convention unless the user
 supplied an explicit model path or context strongly indicates a narrower root.
@@ -316,22 +314,10 @@ the scale decision as an open question or assumption in the model body.
 
 Do not ask for permission to create issues, automations, CI gates, release gates,
 calendar events, Codex automations, or Claude Code routines during discovery.
-Review cadence and quality-loop options belong in the setup closeout as next-step
-routing, not discovery. Ad hoc `/quality evaluate` is always available, not a
+Do not ask for review cadence, recurring quality-loop posture, recommendation
+handling, work-handoff destination, issue tracker, or automation preferences.
+Ad hoc `/quality evaluate` is always available after setup; it is not a
 selectable automation option.
-
-You may ask an additional work-handoff question when repo context suggests an
-issue tracker or handoff process:
-
-```text
-Work handoff: If evaluations produce recommendations later, where should
-follow-up usually go?
-Options: leave in evaluation report, GitHub Issues, Linear/Jira, maintainer
-decides each time
-Recommended: <default> (<confidence>)
-
-Setup will not create issues or configure integrations.
-```
 
 Do not ask users to design factors, child Areas, Requirements, or custom Rating
 Level names cold. Derive model shape from the setup brief, discovery answers,
@@ -464,30 +450,25 @@ Run `qualitymd lint [path]`. Stop on lint errors, report the CLI findings, and
 route to continued `QUALITY.md` iteration. Do not recommend evaluation while the
 model is invalid.
 
-When lint passes, classify the model's *maturity* — how developed the model is —
-with the condensed checklist in
-[`../guides/top-10-quality-md-checks.md`](../guides/top-10-quality-md-checks.md).
-This is a bounded inspection, not a project evaluation; read the full guide only
-when the maturity call is borderline. Classify maturity as `starter`,
-`immature`, or `evaluation-ready`.
+When lint passes, inspect the model for important gaps that materially affect
+first-model usefulness. This is a bounded model-usefulness inspection, not a
+project evaluation and not a readiness or maturity classification. Important
+gaps include thin or generic Overview/Scope/Needs/Risks, missing material
+unknowns or open questions, factors that do not trace to the body's needs and
+risks, vague or unassessable Requirements, missing germane constituent kinds, and
+missing Agent Harnessability coverage for an agent-collaborated composite root.
 
-A composite model is not `evaluation-ready` while a germane constituent that hits
-neither disqualifier (no distinct concerns; not germane / outside the boundary) is
-left unmodeled or recorded only as a deferral. A bare deferral or Scope note does
-not satisfy coverage — treat that gap as an important gap that caps maturity below
-`evaluation-ready`.
+For a composite model, treat a germane constituent left unmodeled or recorded
+only as a deferral as an important gap unless it clearly hits one of the
+authoring guide's disqualifiers: no distinct concerns, or not germane / outside
+the boundary. A bare deferral or Scope note does not satisfy coverage.
 
-For an agent-collaborated composite root, a model is not `evaluation-ready` while
-Agent Harnessability or its sub-factors are missing from the model-wide factors
-without a clear not-germane boundary. A thin or absent harness is a rating
-concern, not a factor-omission reason. Treat an existing `harnessability` factor
-with the six expected sub-factors as semantic coverage, but recommend renaming it
-to `agent-harnessability` / Agent Harnessability during model-authoring work.
-
-Maturity is distinct from the lifecycle `readiness` that `qualitymd status`
-reports. The CLI's `ready-to-evaluate` means only "model is valid, with no
-evaluation runs yet"; it is not a maturity judgment. Do not present the two as
-one signal.
+For an agent-collaborated composite root, treat missing Agent Harnessability or
+missing sub-factor coverage as an important gap unless the model states a clear
+not-germane boundary. A thin or absent harness is a rating concern, not a
+factor-omission reason. Treat an existing `harnessability` factor with the six
+expected sub-factors as semantic coverage, but recommend renaming it to
+`agent-harnessability` / Agent Harnessability during model-authoring work.
 
 Report setup completion status-first:
 
@@ -496,15 +477,15 @@ Report setup completion status-first:
 
 **Changed:** QUALITY.md
 **Validation:** lint passed | lint failed
-**Maturity:** starter | immature | evaluation-ready
 **Important gaps:** <none | concise model gaps>
 **Not done:** no evaluation, no quality log, no issues, no automations
-**Next:** continue iterating | run evaluation | set up recurring review | set up recommendation handoff | stop here
+**Next:** continue iterating on QUALITY.md | run /quality evaluate | stop here
 ```
 
-If maturity is not `evaluation-ready`, list the most important model gaps and
-make continued iteration the recommended next step. Do not automatically take
-any next-step action.
+If important model gaps remain, make continued iteration the recommended next
+step. If no important gaps are visible and lint passed, recommend either running
+`/quality evaluate` or stopping here based on the user's immediate goal. Do not
+automatically take any next-step action.
 
 ### Workflow feedback log
 
@@ -545,7 +526,7 @@ cli-version: <qualitymd version --json>
 platform: <os/platform>
 model-file: <repo-relative path or sanitized placeholder>
 model-file-pre-existed: <true | false>
-outcome: <starter | immature | evaluation-ready>
+outcome: <completed | completed-with-important-gaps | lint-failed | failed | interrupted>
 effort: <rough turn or step count, when available>
 redaction: <none | sanitized | withheld-details>
 ---
@@ -570,17 +551,18 @@ redaction: <none | sanitized | withheld-details>
 ```
 
 When finalizing a normal run, set `status: completed`, set `completed-at`, record
-the model maturity in `outcome`, update effort when available, and make sure
-each body section has either useful content or an explicit note such as
-`None observed.` If setup stops after the log exists because lint fails, CLI
-support is missing, user confirmation is not granted, or another non-success
-condition occurs, update the log with `status: failed` or `status: interrupted`
-when that can be done without masking the stop condition. If finalization is
+`outcome: completed` or `outcome: completed-with-important-gaps`, update effort
+when available, and make sure each body section has either useful content or an
+explicit note such as `None observed.` If setup stops after the log exists
+because lint fails, CLI support is missing, user confirmation is not granted, or
+another non-success condition occurs, update the log with `status: failed` or
+`status: interrupted` and `outcome: lint-failed`, `failed`, or `interrupted` when
+that can be done without masking the stop condition. If finalization is
 impossible, the existing `status: in-progress` log remains acceptable partial
 feedback.
 
 Writing, updating, or finalizing the log does not change completion criteria,
-maturity, or next-step routing.
+important-gap judgment, or next-step routing.
 
 Redaction (the log is recorded locally and never transmitted, but the user may
 share it, so keep it shareable by default):

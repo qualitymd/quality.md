@@ -1,15 +1,15 @@
 ---
 type: Runtime Guide
 title: Getting Started with QUALITY.md
-description: First-run iteration guidance after setup leaves a starter or immature QUALITY.md.
+description: First-run iteration guidance after setup leaves a valid QUALITY.md with important model gaps.
 ---
 
 # Getting Started with QUALITY.md
 
-Use this guide after setup leaves a starter or immature `QUALITY.md`, or when a
-user asks how to keep iterating on the first useful model. The goal is to turn
-the current file into a useful quality model: small enough to finish, specific
-enough to evaluate, and clear enough to improve later.
+Use this guide after setup leaves a valid `QUALITY.md` with important model gaps,
+or when a user asks how to keep iterating on the first useful model. The goal is
+to turn the current file into a useful quality model: small enough to finish,
+specific enough to evaluate, and clear enough to improve later.
 
 Read [Authoring QUALITY.md](authoring.md) first. This guide assumes that
 guidance and focuses on the first-run process and the desired outcome of each
@@ -19,8 +19,8 @@ step.
 
 Setup should leave you with a structurally valid file and the first pass at the
 root area, domain, lifecycle, risk tolerance, modeling rigor, collaboration
-context, stakeholder needs, risks, missing context, review posture, and model
-shape. Treat those as starting assumptions to review, not as settled truth.
+context, stakeholder needs, risks, missing context, and model shape. Treat those
+as starting assumptions to review, not as settled truth.
 
 Before editing, run:
 
@@ -49,7 +49,7 @@ Check before moving on:
   outcomes the model serves.
 - Risks name the important failure modes.
 - The body captures lifecycle, risk tolerance, modeling rigor, collaboration
-  context, review posture, and handoff posture when those shape the model.
+  context, and any other context that directly shapes the model.
 - Each section records its own unknowns and open questions, or "none known".
 - Material support is cited when agent-accessible; important support that is not
   agent-accessible is named as an unknown or open question.
@@ -146,12 +146,10 @@ workflow:
 ```text
 continue iterating on QUALITY.md
 run /quality evaluate
-set up a recurring quality review loop
-set up recommendation handoff
 stop here
 ```
 
 If the validation or status output shows model gaps, continue model authoring
 before evaluating. If tooling is missing or stale, run `/quality update` first.
-Recurring review and recommendation handoff are follow-on workflows; this guide
-does not create external issues or automation.
+This guide does not create external issues, configure integrations, or configure
+automation.
