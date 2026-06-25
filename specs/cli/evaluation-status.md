@@ -36,9 +36,14 @@ gaps. Under `--json`, stdout **MUST** include `schemaVersion`, `path`,
 `reportable`, counts, gaps, and `nextActions`.
 
 Every gap `kind` **MUST** be one of the typed evaluation-run gap kinds defined by
-the implementation and the [Evaluation records](../evaluation-records.md)
-contract. Status routing **MUST** use those typed gap kinds rather than
-interpreting free-form text in `detail`.
+the implementation and the active evaluation contract. For Evaluation v2 runs,
+typed gaps come from the [Evaluation v2](../evaluation-v2/evaluation-v2.md)
+record and reportability rules. Status routing **MUST** use those typed gap kinds
+rather than interpreting free-form text in `detail`.
+
+When a run contains Evaluation v2 data, `status` **MUST** inspect the required
+structured payload graph under `data/` and report missing, malformed, unreadable,
+schema-incompatible, or structurally incomplete payloads as typed gaps.
 
 A run is reportable only when exactly one analysis record represents the
 in-scope root area. The root analysis record is identified by an empty

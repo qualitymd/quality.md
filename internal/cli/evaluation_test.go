@@ -10,7 +10,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/evaluation"
 )
 
-func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
+func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	repo := testEvaluationRepo(t)
 	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
@@ -18,90 +18,96 @@ func TestEvaluationAssessmentAddCommandAcceptsBatch(t *testing.T) {
 	}
 	runPath := filepath.Join(repo, run.Path)
 
-	cmd := newRootCmd()
-	var out, stderr bytes.Buffer
-	cmd.SetOut(&out)
-	cmd.SetErr(&stderr)
-	cmd.SetIn(strings.NewReader(`[
-  {
-    "areaPath": [],
-    "requirement": "Has tests",
-    "criterionSource": "rating-scale",
-    "findings": [],
-    "recommendations": [],
-    "factorPaths": [],
-    "ratingResult": {
-      "kind": "rated",
-      "level": "target",
-      "rationale": "Tests cover the requirement."
-    }
-  }
-]`))
-	cmd.SetArgs([]string{"evaluation", "assessment", "add", "--file", "-", "--json", runPath})
-
-	if err := cmd.Execute(); err != nil {
-		t.Fatalf("Execute() error = %v", err)
-	}
-	if !strings.Contains(out.String(), `"paths": [`) || !strings.Contains(out.String(), "assessments/001-root-has-tests.json") {
-		t.Fatalf("stdout = %s, want batched write receipt", out.String())
-	}
-	if strings.Contains(out.String(), repo) {
-		t.Fatalf("stdout = %s, want repository-relative receipt paths", out.String())
-	}
-	raw, err := os.ReadFile(filepath.Join(runPath, "assessments", "001-root-has-tests.json"))
-	if err != nil {
-		t.Fatalf("reading assessment result record: %v", err)
-	}
-	if !strings.Contains(string(raw), `"schemaVersion": 1`) || !strings.Contains(string(raw), `"requirement": "Has tests"`) {
-		t.Fatalf("assessment result record = %s, want canonical JSON", raw)
-	}
-}
-
-func TestEvaluationAssessmentAddDryRunDoesNotPersist(t *testing.T) {
-	repo := testEvaluationRepo(t)
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
-	if err != nil {
-		t.Fatalf("CreateRun() error = %v", err)
-	}
-	runPath := filepath.Join(repo, run.Path)
-
-	cmd := newRootCmd()
-	var out, stderr bytes.Buffer
-	cmd.SetOut(&out)
-	cmd.SetErr(&stderr)
-	cmd.SetIn(strings.NewReader(evaluation.CanonicalPayloadExample(evaluation.KindAssessmentResult)))
-	cmd.SetArgs([]string{"evaluation", "assessment", "add", "--file", "-", "--dry-run", "--json", runPath})
-
-	if err := cmd.Execute(); err != nil {
-		t.Fatalf("Execute() error = %v", err)
-	}
-	if !strings.Contains(out.String(), `"dryRun": true`) || !strings.Contains(out.String(), "assessments/001-root-has-tests.json") {
-		t.Fatalf("stdout = %s, want dry-run receipt with intended path", out.String())
-	}
-	if _, err := os.Stat(filepath.Join(runPath, "assessments", "001-root-has-tests.json")); !os.IsNotExist(err) {
-		t.Fatalf("dry-run record stat error = %v, want not exist", err)
-	}
-}
-
-func TestEvaluationRecordWriteHelpDocumentsPayload(t *testing.T) {
 	cmd := newRootCmd()
 	var out bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&bytes.Buffer{})
-	cmd.SetArgs([]string{"evaluation", "recommendation", "add", "--help"})
+	cmd.SetIn(strings.NewReader(`{
+  "schemaVersion": 1,
+  "kind": "RequirementAssessmentResult",
+  "requirementId": {
+    "declaringAreaId": [],
+    "requirementName": "has-tests"
+  },
+  "status": "assessed",
+  "statusReason": "Evidence was inspected.",
+  "evidenceSummary": "A test exists.",
+  "evidenceTargetCoverage": [],
+  "findings": [],
+  "unknowns": [],
+  "evaluationLimits": [],
+  "confidence": "medium",
+  "confidenceReason": "Evidence is narrow."
+}`))
+	cmd.SetArgs([]string{"evaluation", "data", "set", "--file", "-", "--json", runPath})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("data set Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"kind": "RequirementAssessmentResult"`) ||
+		!strings.Contains(out.String(), "data/areas/root/requirements/has-tests/requirement-assessment-result.json") {
+		t.Fatalf("data set stdout = %s, want write receipt", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "get", "--kind", "RequirementAssessmentResult", "--requirement", "requirement:root::has-tests", runPath})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("data get Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"kind": "RequirementAssessmentResult"`) ||
+		!strings.Contains(out.String(), `"requirementName": "has-tests"`) {
+		t.Fatalf("data get stdout = %s, want stored artifact JSON", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "example", "RequirementRatingResult"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("data example Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"kind": "RequirementRatingResult"`) {
+		t.Fatalf("data example stdout = %s, want artifact JSON", out.String())
+	}
+}
+
+func TestEvaluationDataArtifactCommandsRejectJSONWrapper(t *testing.T) {
+	cmd := newRootCmd()
+	cmd.SetOut(&bytes.Buffer{})
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "example", "RequirementRatingResult", "--json"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("Execute() error = nil, want usage error")
+	}
+	if !strings.Contains(err.Error(), "already emits JSON") {
+		t.Fatalf("Execute() error = %v, want artifact JSON diagnostic", err)
+	}
+}
+
+func TestEvaluationDataKindsDocumentsPayloadKinds(t *testing.T) {
+	cmd := newRootCmd()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "kinds", "--json"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
 	for _, want := range []string{
-		"Payload fields:",
-		"`doneCriterion`",
-		"`remediationOptions`",
-		"qualitymd evaluation recommendation add <run> --dry-run",
-		`"recommendedOption": "Add focused tests for the requirement"`,
+		`"kind": "RequirementAssessmentResult"`,
+		`"kind": "RequirementRatingResult"`,
+		`"kind": "EvaluationOutputResult"`,
+		`"agentWritable": false`,
 	} {
 		if !strings.Contains(out.String(), want) {
-			t.Fatalf("help = %s, want substring %q", out.String(), want)
+			t.Fatalf("stdout = %s, want substring %q", out.String(), want)
 		}
 	}
 }
@@ -221,6 +227,21 @@ func TestEvaluationOldCommandNamesAreRejected(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), `unknown command "create-run"`) {
 		t.Fatalf("Execute() error = %v, want unknown old command", err)
+	}
+}
+
+func TestEvaluationOldRecordCommandsAreRejected(t *testing.T) {
+	cmd := newRootCmd()
+	cmd.SetOut(&bytes.Buffer{})
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "assessment", "add"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("Execute() error = nil, want usage error")
+	}
+	if !strings.Contains(err.Error(), `unknown command "assessment"`) {
+		t.Fatalf("Execute() error = %v, want unknown old record command", err)
 	}
 }
 

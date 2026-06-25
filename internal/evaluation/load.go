@@ -73,6 +73,9 @@ const (
 	GapMissingRecordSchemaVersion          RunGapKind = "missing-record-schema-version"
 	GapUnsupportedRecordSchemaVersion      RunGapKind = "unsupported-record-schema-version"
 	GapIncompleteEvaluationRecord          RunGapKind = "incomplete-evaluation-record"
+	GapMissingEvaluationData               RunGapKind = "missing-evaluation-data"
+	GapMalformedEvaluationData             RunGapKind = "malformed-evaluation-data"
+	GapIncompleteEvaluationData            RunGapKind = "incomplete-evaluation-data"
 )
 
 // RequiresReview reports whether a gap requires human or agent reconciliation.
@@ -498,6 +501,30 @@ func resolveKnownRecommendation(known map[string]string, ref string) (string, bo
 // single next step: build the report when reportable, resolve record gaps when
 // a gap requires review, or add the missing records otherwise.
 func (r *Run) Status() RunStatus {
+	if isV2DataRun(r.AbsPath) {
+		gaps := v2RenderableGaps(r.AbsPath)
+		status := RunStatus{
+			SchemaVersion: SchemaVersion,
+			Path:          r.Path,
+			Reportable:    len(gaps) == 0,
+			Counts:        r.RecordCounts(),
+			Gaps:          gaps,
+		}
+		if status.Reportable {
+			status.NextActions = []receipt.Action{{
+				ID:      "report-build",
+				Label:   "Build the evaluation report",
+				Command: "qualitymd evaluation report build " + r.Path,
+			}}
+		} else {
+			status.NextActions = []receipt.Action{{
+				ID:      "evaluation-data-set",
+				Label:   "Add missing Evaluation v2 data",
+				Command: "qualitymd evaluation data set " + r.Path + " --file <payload.json>",
+			}}
+		}
+		return status
+	}
 	gaps := r.Renderable()
 	status := RunStatus{
 		SchemaVersion: SchemaVersion,

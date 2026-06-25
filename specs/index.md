@@ -17,10 +17,15 @@ before it lands.
 # Specs
 
 - [qualitymd CLI](cli.md) - high-level requirements for the deterministic command-line surface.
-- [Evaluation records](evaluation-records.md) - runtime record contract for
-  evaluation run folders, assessment/analysis/recommendation records, and reports.
+- [Evaluation v2](evaluation-v2/evaluation-v2.md) - replacement evaluation
+  workflow, protocol, structured data, orchestration, and reports.
 - [quality.schema.json](quality-schema-json.md) - companion structural JSON Schema
   for QUALITY.md frontmatter, derived from the linter's schema.
+
+# Legacy Specs
+
+- [Evaluation records](evaluation-records.md) - superseded runtime record
+  contract retained for historical run compatibility.
 
 # Bundle
 
@@ -29,7 +34,10 @@ before it lands.
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs.
-- [evaluation-records/](evaluation-records/) - child specs for evaluation run
-  folders, records, runtime artifacts, and report-output invariants.
-- [reports/](reports/) - generated evaluation report artifact specs.
+- [evaluation-v2/](evaluation-v2/) - replacement evaluation workflow, routine,
+  record, orchestration, and report contracts.
+- [evaluation-records/](evaluation-records/) - superseded child specs for the
+  legacy evaluation run folder and record model.
+- [reports/](reports/) - superseded generated report artifact specs retained for
+  legacy report compatibility.
 - [skills/](skills/) - companion skills that carry judgment around QUALITY.md (`/quality`).

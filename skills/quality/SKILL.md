@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.11.0 <0.12.0.
+compatibility: Requires qualitymd CLI >=0.12.0 <0.13.0.
 metadata:
-  version: "0.11.0"
-  requires-qualitymd-cli: ">=0.11.0 <0.12.0"
+  version: "0.12.0"
+  requires-qualitymd-cli: ">=0.12.0 <0.13.0"
 ---
 
 ## Purpose
@@ -79,7 +79,7 @@ recommendations.
 4. Use `qualitymd spec` as the CLI-bundled source of format truth when a
    workflow needs the active specification text.
 5. Use `qualitymd <command> --help` when command shape is uncertain.
-6. Never create evaluation run folders or record files by hand.
+6. Never create evaluation run folders or structured evaluation data files by hand.
 7. Stop on missing or stale CLI support; use `qualitymd update --check` to
    identify the install-aware remediation path.
 
@@ -124,10 +124,9 @@ Parse the user's request from free-form arguments:
   `rating:<rating-level-id>` where rating references are needed. Accept
   unqualified references at fixed-type input edges such as `area webhooks` or
   `factor webhooks::reliability`. Never persist natural labels, display values,
-  or unqualified references in records or `report.json`; use stable
-  `areaPath`, `factorPath`, and rating `level` identifiers. In generated human
-  reports, the root Area display value is `/`; its references remain
-  `area:root` and `root`.
+  or unqualified references in structured evaluation data; use stable Area,
+  Factor, Requirement, and Rating Level IDs. In generated human reports, the root
+  Area display value is `/`; its references remain `area:root` and `root`.
 - Rigor: `standard` by default; see [Rigor Levels](#rigor-levels).
 
 When a scoped request is ambiguous, inspect the grounded model, summarize the
@@ -291,11 +290,11 @@ Rules:
 
 ## Artifact Contract
 
-The evaluation record write contract is surfaced by
-`qualitymd evaluation <kind> add|set --help` and validated without persistence by
-`qualitymd evaluation <kind> add|set --dry-run`. Treat those command surfaces,
-plus `qualitymd status --json`, as the field-use source of truth. Do not restate
-the schema or folder layout in this prompt.
+The Evaluation v2 data write contract is surfaced by
+`qualitymd evaluation data kinds`, `qualitymd evaluation data example <kind>`,
+and `qualitymd evaluation data set --dry-run`. Treat those command surfaces,
+plus `qualitymd evaluation status <run> --json`, as the field-use source of
+truth. Do not restate the full schema or folder layout in this prompt.
 
 ## Quality Log
 

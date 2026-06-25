@@ -126,13 +126,14 @@ type RecommendationReference struct {
 
 // BuildReportReceipt is the JSON contract emitted after building report files.
 type BuildReportReceipt struct {
-	SchemaVersion   int              `json:"schemaVersion"`
-	Path            string           `json:"path"`
-	ReportSummaryMD string           `json:"reportSummaryMd"`
-	ReportMD        string           `json:"reportMd"`
-	ReportJSON      string           `json:"reportJson"`
-	RatingResult    RatingResult     `json:"ratingResult"`
-	NextActions     []receipt.Action `json:"nextActions,omitempty"`
+	SchemaVersion          int              `json:"schemaVersion"`
+	Path                   string           `json:"path"`
+	ReportSummaryMD        string           `json:"reportSummaryMd,omitempty"`
+	ReportMD               string           `json:"reportMd"`
+	ReportJSON             string           `json:"reportJson,omitempty"`
+	EvaluationOutputResult string           `json:"evaluationOutputResult,omitempty"`
+	RatingResult           RatingResult     `json:"ratingResult"`
+	NextActions            []receipt.Action `json:"nextActions,omitempty"`
 }
 
 // GateReceipt is the JSON contract emitted by report gate checks.
@@ -146,6 +147,9 @@ type GateReceipt struct {
 
 // BuildReport renders report-summary.md, report.md, and report.json for a run.
 func BuildReport(path string) (*BuildReportReceipt, error) {
+	if isV2DataRun(path) {
+		return buildV2Report(path)
+	}
 	run, err := Inspect(path)
 	if err != nil {
 		return nil, err

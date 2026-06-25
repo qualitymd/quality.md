@@ -145,7 +145,7 @@ coding agents with what matters in *this* context. You capture it once, then run
 
 2. **Run `/quality evaluate` to see where you stand.** The skill analyzes each
    area of your project against the quality requirements defined in your model,
-   then provides ratings, findings, recommendations, and opportunities to improve
+   then provides ratings, findings, evidence limits, and opportunities to improve
    both the work and `QUALITY.md` itself.
    → *A concrete read on where the work meets the bar, where it falls short, and
    where the model needs to become clearer, more complete, or better grounded.*
@@ -160,11 +160,11 @@ coding agents with what matters in *this* context. You capture it once, then run
    well-formed, grounded, and current, with meaningful changes recorded in the
    quality log.
 
-4. **Review and act on the evaluation.** Weigh the quality ratings for each area
-   and factor, use the findings to understand the evidence behind the gaps, and
-   apply the recommended actions or hand them off to your issue tracker.
-   → *Clear next steps from the evaluation: what to fix now, what to track for
-   later, and why each action matters.*
+4. **Review the evaluation.** Weigh the quality ratings for each area and
+   factor, use the findings to understand the evidence behind the gaps, and turn
+   the most important gaps into follow-up work.
+   → *A clear read on what to fix now, what to track for later, and what evidence
+   or model context is still missing.*
 
 ### Keeping the skill and CLI current
 

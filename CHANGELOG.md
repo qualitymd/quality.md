@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.12.0 - 2026-06-25
+
 ### QUALITY.md Format
 
 - Requirements now use stable id-like names as map keys and carry the
@@ -15,6 +17,12 @@ QUALITY.md specification.
 
 ### CLI
 
+- Evaluation runs now have an Evaluation v2 data surface:
+  `qualitymd evaluation data set/list/get/kinds/example`. Agents persist
+  structured routine JSON under `data/`, `evaluation report build` assembles
+  `data/evaluation-output-result.json`, and the old public
+  `evaluation assessment`, `evaluation analysis`, `evaluation recommendation`,
+  and `evaluation report gate` command surfaces are removed.
 - `qualitymd init` and `qualitymd init --minimal` now seed the standard
   four-level Rating Scale with emoji-prefixed human titles (`🟢 Outstanding`,
   `🔵 Target`, `🟡 Minimum`, `🔴 Unacceptable`) while keeping stable `level` IDs
@@ -22,6 +30,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- `/quality evaluate` now follows the Evaluation v2 framing, assessment, rating,
+  Factor analysis, Area analysis, and deterministic reporting protocol. New
+  evaluations persist structured routine outputs through
+  `qualitymd evaluation data set` and no longer generate recommendation
+  artifacts as part of the v0 evaluation flow.
 - `/quality setup` now stays focused on producing a useful initial `QUALITY.md`:
   it no longer asks for future recommendation handling, handoff destination,
   review cadence, recurring review, or automation preferences, and its closeout
@@ -144,6 +157,12 @@ QUALITY.md specification.
   reports, services and operations), and carries a full worked non-software
   example. Standardized the domain enumerations across the README, specification,
   and skill guidance so they name a consistent illustrative set.
+
+Compatibility:
+
+- CLI: `v0.12.0`
+- QUALITY.md specification: `0.3 (Draft)`
+- /quality skill: `0.12.0`, requires `qualitymd >=0.12.0 <0.13.0`
 
 ## v0.11.0 - 2026-06-23
 

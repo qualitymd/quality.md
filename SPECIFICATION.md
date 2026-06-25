@@ -197,9 +197,9 @@ Rating Level ID unless a title is resolved from the Model.
 
 Tools MUST NOT render or accept unqualified references on mixed-reference
 surfaces or anywhere the reference type must be recoverable from the value
-alone. Tools MUST NOT persist unqualified references in evaluation records,
-`report.json`, or other durable machine-readable artifacts. Mixed-reference
-surfaces MUST require qualified model references.
+alone. Tools MUST NOT persist unqualified references in evaluation routine data,
+`EvaluationOutputResult`, or other durable machine-readable artifacts.
+Mixed-reference surfaces MUST require qualified model references.
 
 ## Document Structure
 
@@ -414,8 +414,8 @@ and advice.
 ## Evaluation Semantics
 
 Evaluation interprets a Model against selected Sources, produces Findings for
-Requirements, rates those Findings, rolls ratings up through Factors and
-Areas, and produces an Evaluation Report.
+Requirements, rates Requirement Assessments, analyzes Factors and Areas, and
+produces an Evaluation Report.
 
 This specification defines the required observable semantics of Evaluation. An
 implementation can use different internal algorithms when the resulting
@@ -424,10 +424,16 @@ interpretation is equivalent.
 Evaluation proceeds through these semantic phases:
 
 1. Define scope.
-2. Assess and rate Requirements.
-3. Analyze roll-ups.
-4. Advise.
-5. Report.
+2. Frame Area and Requirement Evaluation.
+3. Assess Requirements.
+4. Rate Requirement Assessments.
+5. Analyze Factors and Areas.
+6. Report.
+
+The current Evaluation v2 workflow is specified in
+[`specs/evaluation-v2/`](specs/evaluation-v2/index.md). It records structured
+routine outputs under `data/` and renders reports deterministically from those
+outputs.
 
 ### Define Scope
 
@@ -445,29 +451,45 @@ to [Area](#area).
 A scoped Evaluation is not a whole-model verdict. A conforming report renderer
 MUST distinguish a scoped Evaluation from a whole-model Evaluation.
 
-### Assess and Rate Requirements
+### Frame Area and Requirement Evaluation
+
+For each in-scope Area, the evaluator frames the Area boundary before evaluating
+local Requirements, local Factors, or child Areas.
+
+For each local Requirement, the evaluator frames evidence targets, applied Rating
+Level criteria, stop conditions, and known limits before inspecting assessment
+evidence.
+
+Applied Rating Level criteria MUST be adapted before evidence judgment. They
+MUST NOT be adapted to observed evidence.
+
+### Assess Requirements
 
 Each in-scope Requirement is assessed once, against the Source of the Area on
 which it is declared.
 
-For each Requirement:
+For each Requirement, the evaluator applies the Requirement's Assessment to the
+Area Source, producing zero or more Findings, Unknowns, and Evaluation Limits.
 
-1. The evaluator applies the Requirement's Assessment to the Area Source,
-   producing zero or more Findings.
-2. The evaluator rates the Findings together against the Model's Rating Scale,
-   using the Requirement's criterion overrides when present.
-3. The evaluator produces one Rating Result for the Requirement.
+Findings are evidence-backed assessment observations. Individual Findings are
+not Rating Results.
 
-Findings are evidence. Individual Findings are not Rating Results.
+### Rate Requirement Assessments
+
+For each Requirement Assessment, the evaluator rates the assessment against the
+Model's Rating Scale, using the Requirement's criterion overrides when present.
+
+The evaluator produces one Requirement Rating Result when the assessment
+evidence is sufficient to distinguish the applied criteria.
 
 When there are no Findings, or when the available Findings are insufficient to
 rate the Requirement against the Rating Scale, the Requirement's Rating Result
 MUST be `not assessed`.
 
-### Analyze Roll-Ups
+### Analyze Factors and Areas
 
-Roll-up infers ratings for Factors and Areas from Requirement Rating Results,
-sub-factor ratings, child Area ratings, and the Model's body context where
+Analysis infers ratings for Factors and Areas from Requirement Rating Results,
+sub-factor analyses, child Area analyses, and the Model's body context where
 relevant.
 
 This specification does not define a numeric aggregation formula. A conforming
@@ -475,7 +497,7 @@ evaluator can use explicit weights, thresholds, or computed aggregation, but
 the resulting ratings MUST preserve the relationships and distinctions defined
 in this section.
 
-For each Area in scope, processed child Areas before their ancestors:
+For each Area in scope, processed bottom-up:
 
 - Each Factor receives a Factor rating or `not assessed`.
 - Each Area with its own Requirements receives a local rating or
@@ -505,12 +527,13 @@ infer a roll-up rating, the roll-up outcome MUST be `not assessed`.
 Each roll-up SHOULD include a rationale naming the observations, constraints,
 or gaps most responsible for the outcome.
 
-### Advise
+### Advice
 
-Advice identifies improvement information inferred from the Analysis. Advice
-does not change any rating.
+Advice identifies improvement information inferred from the Analysis. Advice does
+not change any rating.
 
-An Evaluation Report SHOULD identify:
+Advice and recommendations are optional extensions for Evaluation v2 v0. When
+produced, advice SHOULD identify:
 
 - Key gaps: shortcomings most responsible for held-down ratings, including
   material `not assessed` areas.

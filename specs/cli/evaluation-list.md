@@ -34,5 +34,6 @@ recognized run is malformed, schema-incompatible, or structurally incomplete
 under the current record contract. Such a run remains listed as incomplete or
 problematic; detailed diagnostics live in `qualitymd evaluation status <run>`.
 
-The command **MAY** accept `--state all|reportable|incomplete` to filter the
-listed runs. Unknown state filters **MUST** be usage errors.
+The command **MAY** accept `--state all|complete|reportable|incomplete` to
+filter the listed runs. `complete` and `reportable` are equivalent. Unknown
+state filters **MUST** be usage errors.

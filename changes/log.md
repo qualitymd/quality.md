@@ -3,6 +3,45 @@
 ## 2026-06-25
 
 - **Done**: Landed and archived
+  [0094 - Replace evaluation workflow](archive/0094-replace-evaluation-workflow.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented the Evaluation v2 protocol/spec bundle,
+  structured `data/` routine payloads, `qualitymd evaluation data` commands,
+  v2 status and report build support, deterministic Area/Factor/Requirement
+  report rendering, superseded legacy report/record specs, and updated bundled
+  `/quality` runtime guidance. Verified with `mise run fmt`,
+  `mise run fmt-md-check`, `go test ./...`, and `git diff --check`.
+
+- **In-Progress**: Advanced
+  [0094 - Replace evaluation workflow](archive/0094-replace-evaluation-workflow.md) from
+  `Design` to `In-Progress`; the functional spec and design are drafted, and
+  implementation is beginning across durable evaluation specs, CLI command
+  specs and implementation, report contracts and rendering, and bundled
+  `/quality` skill guidance.
+
+- **Design**: Advanced
+  [0094 - Replace evaluation workflow](archive/0094-replace-evaluation-workflow.md) to
+  `Design` and added the
+  [design doc](archive/0094-replace-evaluation-workflow/design.md). The design records
+  the replacement strategy, skill/CLI responsibility split, `data/` run model,
+  validation layers, shared status/report gap collection, deterministic report
+  rendering, skill runtime shape, orchestration approach, rejected alternatives,
+  and risks. No implementation has started.
+
+- **Draft**: Created
+  [0094 - Replace evaluation workflow](archive/0094-replace-evaluation-workflow.md)
+  with its child
+  [index](archive/0094-replace-evaluation-workflow/index.md) and
+  [functional spec](archive/0094-replace-evaluation-workflow/spec.md). The case replaces
+  the current evaluation workflow, records, report contract, CLI surface, and
+  skill runtime with the Evaluation v2 protocol captured in
+  `evaluation-v2-sketch.md`: frames before judgment, Requirement assessment and
+  rating, bottom-up Factor and Area analysis, structured JSON under `data/`,
+  deterministic Area/Factor/Requirement reports, and agent-agnostic
+  orchestration. No implementation has started.
+
+- **Done**: Landed and archived
   [0093 - Named Requirement identity](archive/0093-requirement-identity.md);
   set `status` to `Done` and moved the parent concept and child folder into
   [`archive/`](archive/), updating the archive index and removing the entry from

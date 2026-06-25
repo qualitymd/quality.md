@@ -19,11 +19,12 @@ described in [RFC 2119](../../docs/reference/rfc2119.md) and
 [RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
-## Flags
+## Arguments and flags
 
+- `[model]` — selected `QUALITY.md` file to snapshot; defaults to `QUALITY.md`.
 - `--narrowing <slug>` — optional path-safe scope slug.
-- `--model <path>` — selected `QUALITY.md` file to snapshot; defaults to
-  `QUALITY.md` in the current working directory.
+- `--model <path>` — retained compatibility spelling for the selected
+  `QUALITY.md` file; callers should prefer `[model]`.
 - `--evaluation-dir <path>` — override the evaluation directory.
 - `--json` — emit a receipt on stdout.
 
@@ -52,11 +53,12 @@ directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 
 The command **MUST** compute the next run number as one past the highest matching
-evaluation run folder, create the run directory, create `assessments/`,
-`analysis/`, and `recommendations/`, and seed `model.md`, `design.md`, and
-`plan.md`. The seeded `plan.md` **SHOULD** include a body-only commented or
-fenced planned-coverage example so the `coverage:` frontmatter shape is
-discoverable before `evaluation status` validation.
+evaluation run folder, create the run directory, create `data/`, and snapshot
+`model.md`.
+
+During the transition from the previous evaluation record layout, the command
+**MAY** also create legacy record folders and seed legacy planning files for
+compatibility.
 
 `model.md` is the resolved model file. New run names MUST NOT include an altitude segment. The
 command **MUST NOT** expose an altitude flag, option, or JSON receipt field.

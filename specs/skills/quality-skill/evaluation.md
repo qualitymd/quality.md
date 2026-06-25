@@ -22,6 +22,23 @@ in all capitals.
 
 ## Evaluation workflow
 
+### Evaluation v2 replacement
+
+The `/quality evaluate` workflow **MUST** follow the
+[Evaluation v2](../../evaluation-v2/evaluation-v2.md) protocol for new
+evaluations.
+
+The skill **MUST** create runs with `qualitymd evaluation create [model]` and
+persist routine outputs through `qualitymd evaluation data set <run>
+--file <payload>`.
+
+The skill **MUST** produce frames before judgment, assess Requirements before
+rating them, analyze Factors and Areas bottom-up, run
+`qualitymd evaluation status <run>`, and build reports with
+`qualitymd evaluation report build <run>`.
+
+The skill **MUST NOT** generate recommendations as part of Evaluation v2 v0.
+
 ### Conformance to the format spec
 
 The skill **owns** its evaluation process: this spec and the skill's prompt
@@ -80,9 +97,8 @@ resolve the Area label first, then resolve the Factor label within that Area.
 
 The skill **MUST** continue to accept qualified model references such as
 `area:<area-path>` and `factor:<declaring-area-path>::<factor-path>` for exact
-addressing. Durable evaluation records and `report.json` **MUST NOT** persist
-natural labels in place of structured `areaPath`, `factorPath`, or rating
-`level` identifiers.
+addressing. Durable evaluation data **MUST NOT** persist natural labels in place
+of structural Area, Factor, Requirement, or Rating Level IDs.
 
 ### Workflow
 
@@ -95,12 +111,10 @@ flowchart TD
     Lint -->|errors| Stop([Stop: resolve structural errors first])
     Lint -->|valid| Ground[Ground format/schema rules &amp; rating<br/>vocabulary from qualitymd spec]
     Ground --> Run[Create run folder through<br/>qualitymd evaluation create]
-    Run --> Plan[Author initial design.md<br/>and plan.md]
-    Plan --> Coverage[Add settled coverage<br/>when useful]
-    Coverage --> Log[Maintain evaluate feedback log<br/>for workflow experience]
-    Log --> Eval[Evaluate in-scope areas:<br/>Define → Assess &amp; Rate → Analyze → Advise]
-    Eval --> Records[Write records through<br/>evaluation assessment/analysis/recommendation]
-    Records --> Status[Check qualitymd evaluation status]
+    Run --> Data[Persist routine outputs through<br/>qualitymd evaluation data set]
+    Data --> Log[Maintain evaluate feedback log<br/>for workflow experience]
+    Log --> Eval[Evaluate in-scope areas:<br/>Frame → Assess → Rate → Analyze]
+    Eval --> Status[Check qualitymd evaluation status]
     Status --> Report[Build reports through<br/>qualitymd evaluation report build]
     Report --> Done([Done])
 ```
@@ -110,24 +124,16 @@ flowchart TD
    [Driving the CLI](quality-skill.md#driving-the-cli)).
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
-4. **Create the run** with `qualitymd evaluation create`, letting the CLI
-   number the folder, create the layout, snapshot `model.md`, and seed
-   `design.md` and `plan.md`.
-5. **Author the initial design and plan before assessment** — author the
-   evaluation's **design** (mode, model file, scope, rigor, in-scope areas,
-   exclusions, known method limits, and bound `model.md` snapshot) and
-   **execution plan** (how the in-scope `source` will be covered at the chosen
-   rigor) before assessment evidence collection or record writes begin. The plan
-   **MUST** record the chosen rigor, concrete requirement set covered, intended
-   evidence basis or inspection strategy, known planned commands or source
-   reads, and planned limitations.
-6. **Record planned coverage when useful** — after the intended requirement and
-   analysis coverage is settled and before dependent record writes begin, the
-   skill should add `coverage:` frontmatter to `plan.md` when resume diagnostics
-   materially matter, especially for standard, deep, concurrent-write, or
-   interruption-prone runs. If scope, coverage, rigor, or material evidence
-   strategy changes during the run, amend `plan.md` under a clear update heading
-   and update `coverage:` with the amendment when planned coverage changes.
+4. **Create the run** with `qualitymd evaluation create [model]`, letting the
+   CLI number the folder, snapshot `model.md`, and prepare `data/`.
+5. **Frame the evaluation** before assessment evidence collection. The skill
+   **MUST** persist `EvaluationFrame` through
+   `qualitymd evaluation data set <run> --file <payload>`.
+6. **Evaluate through routine outputs** — for each in-scope Area, Requirement,
+   Factor, and Area analysis step, the skill **MUST** produce the Evaluation v2
+   frame or result payload required by the
+   [Evaluation v2 protocol](../../evaluation-v2/protocol.md) and persist it
+   through `qualitymd evaluation data set`.
 7. **Maintain the evaluate feedback log** — hand-author concise entries in the
    current run's `.quality/logs/<timestamp>-evaluate-feedback-log.md` for
    material workflow-experience events. Keep the log separate from formal
@@ -135,28 +141,10 @@ flowchart TD
    redaction, prompt-injection handling, or artifact recovery, but it must not
    duplicate evaluation findings, rating rationale, or raw output from project
    commands exercised as assessment evidence.
-8. **Evaluate** — run the skill's evaluation process (the five conformant phases
-   above) over the in-scope areas, resolving each area's `source` to the
-   entities to assess.
-9. **Write records** with
-   `qualitymd evaluation assessment add <run>`,
-   `qualitymd evaluation analysis set <run>`, and
-   `qualitymd evaluation recommendation add <run>`,
-   supplying judgment JSON while the CLI owns serialization, numbering, and
-   `schemaVersion`. Before writing an unfamiliar payload shape, inspect the
-   command's `--help`; before committing records, use `-n/--dry-run` when the
-   payload was newly authored or materially revised. The judgment JSON uses
-   stable model identifiers: `areaPath` entries are Area ID elements,
-   `factorRatingResults[].factorPath` values are Factor ID elements relative to
-   the declaring Area, and ratings are Rating Level IDs in `level`. Human-facing
-   prose can use titles and natural labels; qualified model references remain
-   available where exact traceability matters. Records keep structured
-   identifiers so reports, gates, and machine consumers remain stable.
-10. **Check and report** with `qualitymd evaluation status <run>` followed by
-    `qualitymd evaluation report build <run>` when reportable.
+8. **Check and report** with `qualitymd evaluation status <run>` followed by
+   `qualitymd evaluation report build <run>` when reportable.
 
-Recommendation follow-up happens after evaluation has produced recommendation
-artifacts. It is governed by
+Recommendation follow-up is governed by
 [/quality recommendation follow-up](recommendation-follow-up.md), not by a
 separate evaluation mode.
 

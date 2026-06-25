@@ -16,7 +16,7 @@ forward. Do not parse styled or tabular human output when a JSON form exists.
 Use JSON for:
 
 - run creation receipts;
-- record write receipts;
+- data write receipts;
 - status or report data when the command offers JSON; and
 - any future command that emits structured findings or summaries.
 
@@ -27,9 +27,10 @@ name the important generated paths, ratings, failures, or next actions.
 
 ## Treat verbatim artifacts as artifacts
 
-`qualitymd spec` emits the format specification itself. Treat that output as a
-verbatim grounding artifact, not as data to parse unless a future structured
-form is added.
+`qualitymd spec`, `qualitymd evaluation data get`, and
+`qualitymd evaluation data example <kind>` emit verbatim artifacts. Treat those
+outputs as artifacts, not as JSON receipts. Do not add `--json` to commands whose
+stdout is already the JSON artifact.
 
 ## Keep stdout and stderr separate
 

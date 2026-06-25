@@ -543,50 +543,26 @@ func TestQuickReferencePayloadExamplesValidate(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading quick reference: %v", err)
 	}
-	examples := quickReferencePayloads(string(raw))
-	if len(examples) != 3 {
-		t.Fatalf("examples = %#v, want assessment, analysis, and recommendation payloads", examples)
-	}
-
-	repo := testRepo(t)
-	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
-	if err != nil {
-		t.Fatalf("CreateRun() error = %v", err)
-	}
-	runPath := filepath.Join(repo, run.Path)
-	for kind, payload := range examples {
-		t.Run(string(kind), func(t *testing.T) {
-			if _, err := WriteRecords(kind, runPath, []byte(payload), WriteOptions{DryRun: true}); err != nil {
-				t.Fatalf("quick-reference payload validation error = %v", err)
-			}
-		})
-	}
-}
-
-func quickReferencePayloads(body string) map[RecordKind]string {
-	examples := map[RecordKind]string{}
-	lines := strings.Split(body, "\n")
-	for i := 0; i < len(lines); i++ {
-		line := lines[i]
-		var kind RecordKind
-		switch {
-		case strings.Contains(line, "qualitymd evaluation assessment add") && strings.Contains(line, "<<'JSON'"):
-			kind = KindAssessmentResult
-		case strings.Contains(line, "qualitymd evaluation analysis set") && strings.Contains(line, "<<'JSON'"):
-			kind = KindAnalysis
-		case strings.Contains(line, "qualitymd evaluation recommendation add") && strings.Contains(line, "<<'JSON'"):
-			kind = KindRecommendation
-		default:
-			continue
+	body := string(raw)
+	for _, want := range []string{
+		"qualitymd evaluation data kinds",
+		"qualitymd evaluation data example RequirementAssessmentResult",
+		"qualitymd evaluation data set <run> --file",
+	} {
+		if !strings.Contains(body, want) {
+			t.Fatalf("quick reference missing %q", want)
 		}
-		var payload strings.Builder
-		for i++; i < len(lines) && lines[i] != "JSON"; i++ {
-			payload.WriteString(lines[i])
-			payload.WriteByte('\n')
-		}
-		examples[kind] = payload.String()
 	}
-	return examples
+	for _, notWant := range []string{
+		"qualitymd evaluation assessment add",
+		"qualitymd evaluation analysis set",
+		"qualitymd evaluation recommendation add",
+		"qualitymd evaluation report gate",
+	} {
+		if strings.Contains(body, notWant) {
+			t.Fatalf("quick reference contains stale command %q", notWant)
+		}
+	}
 }
 
 func TestLoadedAssessmentResultWithInvalidFindingSeverityIsNotReportable(t *testing.T) {
@@ -2114,6 +2090,194 @@ func writeRunFile(t *testing.T, runPath, name, content string) {
 	}
 	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
 		t.Fatalf("write %s: %v", path, err)
+	}
+}
+
+func TestEvaluationV2DataStatusAndBuildReport(t *testing.T) {
+	repo := testRepo(t)
+	run, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, run.Path)
+
+	for _, payload := range []string{
+		`{
+  "schemaVersion": 1,
+  "kind": "EvaluationFrame",
+  "subject": {"modelLocator": "QUALITY.md"},
+  "inputs": {"requestedScope": "full evaluation", "ratingLevelIds": ["target", "minimum", "unacceptable"], "areaIds": [[]], "factorIds": []},
+  "derivedContext": {"resolvedScope": "full evaluation", "rigor": "standard", "evaluationPolicies": [], "expectedEvaluationLimits": []}
+}`,
+		`{
+  "schemaVersion": 1,
+  "kind": "AreaEvaluationFrame",
+  "subject": {"areaId": []},
+  "inputs": {"sourceRefs": [], "localRequirementIds": [], "rootFactorIds": [], "childAreaIds": []},
+  "derivedContext": {"scope": "root Area", "expectedEvaluationLimits": []}
+}`,
+		`{
+  "schemaVersion": 1,
+  "kind": "AreaAnalysisResult",
+  "areaId": [],
+  "localAnalysis": {
+    "status": "empty",
+    "statusReason": "No local signal.",
+    "rationale": "No local signal was available.",
+    "inputRefs": [],
+    "ratingDrivers": [],
+    "incompleteInputs": [],
+    "evaluationLimits": [],
+    "confidence": "none",
+    "confidenceReason": "No local signal."
+  },
+  "localAndDescendantAnalysis": {
+    "status": "analyzed",
+    "statusReason": "Root signal was synthesized.",
+    "ratingLevelId": "minimum",
+    "rationale": "Root analysis reaches minimum.",
+    "inputRefs": [],
+    "ratingDrivers": [],
+    "incompleteInputs": [],
+    "evaluationLimits": [],
+    "confidence": "medium",
+    "confidenceReason": "Structured analysis was provided."
+  }
+}`,
+		`{
+  "schemaVersion": 1,
+  "kind": "FactorAnalysisResult",
+  "factorId": {
+    "declaringAreaId": [],
+    "factorPath": ["verification"]
+  },
+  "localAnalysis": {
+    "status": "analyzed",
+    "statusReason": "Direct Requirement ratings were analyzed.",
+    "ratingLevelId": "minimum",
+    "rationale": "Verification is limited by thin evidence.",
+    "inputRefs": [],
+    "ratingDrivers": [],
+    "incompleteInputs": [],
+    "evaluationLimits": [],
+    "confidence": "medium",
+    "confidenceReason": "One Requirement rating was present."
+  },
+  "localAndDescendantAnalysis": {
+    "status": "analyzed",
+    "statusReason": "Local analysis was synthesized.",
+    "ratingLevelId": "minimum",
+    "rationale": "Verification reaches minimum.",
+    "inputRefs": [],
+    "ratingDrivers": [],
+    "incompleteInputs": [],
+    "evaluationLimits": [],
+    "confidence": "medium",
+    "confidenceReason": "One Requirement rating was present."
+  }
+}`,
+		`{
+  "schemaVersion": 1,
+  "kind": "RequirementAssessmentResult",
+  "requirementId": {
+    "declaringAreaId": [],
+    "requirementName": "has-tests"
+  },
+  "status": "assessed",
+  "statusReason": "Evidence was inspected.",
+  "evidenceSummary": "A focused test exists.",
+  "evidenceTargetCoverage": [],
+  "findings": [
+    {
+      "id": "finding-1",
+      "type": "Strength",
+      "description": "A focused test covers the basic path.",
+      "evidence": [{"ref": "tests/example_test.go:1"}]
+    }
+  ],
+  "unknowns": [],
+  "evaluationLimits": [],
+  "factors": ["verification"],
+  "confidence": "medium",
+  "confidenceReason": "Evidence is narrow."
+}`,
+		`{
+  "schemaVersion": 1,
+  "kind": "RequirementRatingResult",
+  "requirementId": {
+    "declaringAreaId": [],
+    "requirementName": "has-tests"
+  },
+  "status": "rated",
+  "statusReason": "Assessment maps to a Rating Level.",
+  "ratingLevelId": "minimum",
+  "rationale": "The requirement reaches minimum.",
+  "ratingDrivers": [],
+  "criteriaResults": [],
+  "missingEvidence": [],
+  "evaluationLimits": [],
+  "confidence": "medium",
+  "confidenceReason": "Rating follows the assessment."
+}`,
+	} {
+		if _, err := SetData(runPath, []byte(payload), DataSetOptions{}); err != nil {
+			t.Fatalf("SetData() error = %v", err)
+		}
+	}
+
+	inspected, err := Inspect(runPath)
+	if err != nil {
+		t.Fatalf("Inspect() error = %v", err)
+	}
+	status := inspected.Status()
+	if !status.Reportable || len(status.Gaps) != 0 {
+		t.Fatalf("status = %#v, want reportable v2 run", status)
+	}
+
+	receipt, err := BuildReport(runPath)
+	if err != nil {
+		t.Fatalf("BuildReport() error = %v", err)
+	}
+	if !strings.HasSuffix(receipt.EvaluationOutputResult, "data/evaluation-output-result.json") ||
+		!strings.HasSuffix(receipt.ReportMD, "report.md") ||
+		receipt.RatingResult.Level != "minimum" {
+		t.Fatalf("receipt = %#v, want v2 report receipt", receipt)
+	}
+	reportRaw, err := os.ReadFile(filepath.Join(runPath, "report.md"))
+	if err != nil {
+		t.Fatalf("reading report.md: %v", err)
+	}
+	if !strings.Contains(string(reportRaw), "# Test model") ||
+		!strings.Contains(string(reportRaw), "Root analysis reaches minimum.") {
+		t.Fatalf("report.md = %s, want v2 root report", reportRaw)
+	}
+	factorRaw, err := os.ReadFile(filepath.Join(runPath, "factors", "verification", "report.md"))
+	if err != nil {
+		t.Fatalf("reading factor report: %v", err)
+	}
+	if !strings.Contains(string(factorRaw), "# verification") ||
+		!strings.Contains(string(factorRaw), "Verification reaches minimum.") {
+		t.Fatalf("factor report = %s, want v2 factor report", factorRaw)
+	}
+	requirementRaw, err := os.ReadFile(filepath.Join(runPath, "requirements", "has-tests", "report.md"))
+	if err != nil {
+		t.Fatalf("reading requirement report: %v", err)
+	}
+	if !strings.Contains(string(requirementRaw), "# has-tests") ||
+		!strings.Contains(string(requirementRaw), "A focused test covers the basic path.") {
+		t.Fatalf("requirement report = %s, want v2 requirement report", requirementRaw)
+	}
+	if _, err := os.Stat(filepath.Join(runPath, "data", "evaluation-output-result.json")); err != nil {
+		t.Fatalf("missing evaluation-output-result.json: %v", err)
+	}
+	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
+	if err != nil {
+		t.Fatalf("reading evaluation-output-result.json: %v", err)
+	}
+	for _, want := range []string{`"kind": "factor"`, `"kind": "requirement"`, `"path": "factors/verification/report.md"`, `"path": "requirements/has-tests/report.md"`} {
+		if !strings.Contains(string(outputRaw), want) {
+			t.Fatalf("evaluation-output-result.json missing %q:\n%s", want, outputRaw)
+		}
 	}
 }
 

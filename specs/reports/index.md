@@ -1,6 +1,9 @@
 # Report Artifacts
 
-Generated evaluation report artifact contracts.
+Generated legacy evaluation report artifact contracts.
+
+> Superseded by [Evaluation v2 reports](../evaluation-v2/reports/report-tree.md).
+> This folder is retained for historical report compatibility.
 
 # Concepts
 

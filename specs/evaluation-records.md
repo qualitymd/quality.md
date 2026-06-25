@@ -8,6 +8,10 @@ timestamp: 2026-06-21T00:00:00Z
 
 # Evaluation records
 
+> Superseded by [Evaluation v2](evaluation-v2/evaluation-v2.md). This spec is
+> retained for historical run compatibility and for interpreting legacy
+> evaluation artifacts.
+
 This spec defines the runtime record contract for a QUALITY.md evaluation run:
 folder names, record names, record schemas, `schemaVersion`, and the division of
 responsibility between the deterministic `qualitymd` CLI and the judging skill.

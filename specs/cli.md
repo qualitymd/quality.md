@@ -30,21 +30,19 @@ operate on QUALITY.md files, plus evaluation-run commands that scaffold,
 validate, and render runtime records. The CLI never calls a model; skills carry
 judgment and pass judgment payloads to the deterministic surface.
 
-| Command                                                           | Purpose                                                  |
-| ----------------------------------------------------------------- | -------------------------------------------------------- |
-| [`init`](./cli/init.md)                                           | Scaffold a starter `QUALITY.md` to fill in.              |
-| [`lint`](./cli/lint.md)                                           | Validate a file's structure against the format spec.     |
-| [`spec`](./cli/spec.md)                                           | Emit the QUALITY.md format specification.                |
-| [`status`](./cli/status.md)                                       | Emit a deterministic project-state snapshot.             |
-| [`evaluation create`](./cli/evaluation-create.md)                 | Create a numbered evaluation run folder.                 |
-| [`evaluation list`](./cli/evaluation-list.md)                     | List evaluation runs.                                    |
-| [`evaluation status`](./cli/evaluation-status.md)                 | Inspect whether a run can be rendered.                   |
-| [`evaluation assessment`](./cli/evaluation-assessment.md)         | Add and list assessment result records.                  |
-| [`evaluation analysis`](./cli/evaluation-analysis.md)             | Set and list analysis records.                           |
-| [`evaluation recommendation`](./cli/evaluation-recommendation.md) | Add and list recommendation records.                     |
-| [`evaluation report`](./cli/evaluation-report.md)                 | Build and gate evaluation reports.                       |
-| [`version`](./cli/version.md)                                     | Show structured CLI and bundled spec version metadata.   |
-| [`update`](./cli/update.md)                                       | Apply or check for CLI updates through managed channels. |
+| Command                                           | Purpose                                                  |
+| ------------------------------------------------- | -------------------------------------------------------- |
+| [`init`](./cli/init.md)                           | Scaffold a starter `QUALITY.md` to fill in.              |
+| [`lint`](./cli/lint.md)                           | Validate a file's structure against the format spec.     |
+| [`spec`](./cli/spec.md)                           | Emit the QUALITY.md format specification.                |
+| [`status`](./cli/status.md)                       | Emit a deterministic project-state snapshot.             |
+| [`evaluation create`](./cli/evaluation-create.md) | Create a numbered evaluation run folder.                 |
+| [`evaluation data`](./cli/evaluation-data.md)     | Persist and inspect Evaluation v2 structured data.       |
+| [`evaluation list`](./cli/evaluation-list.md)     | List evaluation runs.                                    |
+| [`evaluation status`](./cli/evaluation-status.md) | Inspect whether a run can be rendered.                   |
+| [`evaluation report`](./cli/evaluation-report.md) | Build evaluation reports.                                |
+| [`version`](./cli/version.md)                     | Show structured CLI and bundled spec version metadata.   |
+| [`update`](./cli/update.md)                       | Apply or check for CLI updates through managed channels. |
 
 ## Commands
 
@@ -54,16 +52,11 @@ judgment and pass judgment payloads to the deterministic surface.
 - [`status`](./cli/status.md) — emit a deterministic project-state snapshot.
 - [`evaluation create`](./cli/evaluation-create.md) — create a numbered
   evaluation run folder.
+- [`evaluation data`](./cli/evaluation-data.md) — persist and inspect Evaluation
+  v2 structured data.
 - [`evaluation list`](./cli/evaluation-list.md) — list evaluation runs.
 - [`evaluation status`](./cli/evaluation-status.md) — inspect renderability.
-- [`evaluation assessment`](./cli/evaluation-assessment.md) — add and list
-  assessment result records.
-- [`evaluation analysis`](./cli/evaluation-analysis.md) — set and list analysis
-  records.
-- [`evaluation recommendation`](./cli/evaluation-recommendation.md) — add and
-  list recommendation records.
-- [`evaluation report`](./cli/evaluation-report.md) — build and gate evaluation
-  reports.
+- [`evaluation report`](./cli/evaluation-report.md) — build evaluation reports.
 - [`version`](./cli/version.md) — show structured CLI version metadata.
 - [`update`](./cli/update.md) — apply or check for CLI updates.
 
@@ -176,6 +169,12 @@ a JSON document on stdout, the form agents and CI consume.
 A command can omit `--json` only when its output is a verbatim artifact that
 *is* the payload and is meant to be redirected, so wrapping it adds nothing. For
 example, [`spec`](./cli/spec.md) emits the format specification itself.
+
+Commands whose stdout is already a JSON artifact, such as a JSON Schema, example
+payload, or stored JSON record, **MUST NOT** define a second JSON result-wrapper
+mode. Such commands **MAY** recognize `--json` only to fail with a targeted usage
+error explaining that the command already emits JSON on stdout and should be
+rerun without `--json`.
 
 Under `--json`, a side-effecting command **MUST** emit a result receipt — a JSON
 document describing what it did and carrying its `nextActions` in-band — rather

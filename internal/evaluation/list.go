@@ -105,7 +105,7 @@ func includeRunState(reportable bool, state string) bool {
 	switch state {
 	case "", "all":
 		return true
-	case "reportable":
+	case "reportable", "complete":
 		return reportable
 	case "incomplete":
 		return !reportable
@@ -117,10 +117,10 @@ func includeRunState(reportable bool, state string) bool {
 // ValidateRunState checks an evaluation run listing state filter.
 func ValidateRunState(state string) error {
 	switch state {
-	case "", "all", "reportable", "incomplete":
+	case "", "all", "reportable", "complete", "incomplete":
 		return nil
 	default:
-		return usagef("--state must be one of: all, reportable, incomplete")
+		return usagef("--state must be one of: all, complete, reportable, incomplete")
 	}
 }
 

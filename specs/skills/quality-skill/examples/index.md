@@ -1,8 +1,8 @@
 # /quality skill — reference examples
 
-Worked reference artifacts that make the skill's
-[Reporting](../reporting.md#reporting) contract concrete. Each is a captured
-instance of what the skill writes at runtime.
+Worked legacy reference artifacts from the pre-Evaluation v2 workflow. They are
+kept to illustrate historical report and recommendation artifacts, not as the
+current runtime shape for new `/quality evaluate` runs.
 
 These examples are domain-illustrative, not defaults for QUALITY.md. `0001`
 models a software payments service; `0002` models a non-software data product.
@@ -13,12 +13,12 @@ doctrine behind that pairing, see
 [Modeling quality across domains](../../../../docs/guides/model-quality-across-domains.md)
 and its worked documentation-set example.
 
-At runtime the skill writes these into the **evaluated** repository under
-`.quality/evaluations/NNNN[-<narrowing>]-quality-eval/` by default (see
-[Reporting](../reporting.md#reporting)). These example files intentionally
-match that raw runtime shape: no OKF frontmatter, JSON assessment/analysis
-records, recommendation Markdown with runtime YAML frontmatter, and generated
-`report-summary.md`, `report.md`, and `report.json`.
+These example files intentionally match the legacy raw runtime shape: no OKF
+frontmatter, JSON assessment/analysis records, recommendation Markdown with
+runtime YAML frontmatter, and generated `report-summary.md`, `report.md`, and
+`report.json`. New Evaluation v2 runs instead persist structured routine outputs
+under `data/` and render the deterministic report tree specified by
+[Evaluation v2 reports](../../../evaluation-v2/reports/report-tree.md).
 
 Shared across this bundle, so the individual files need not repeat it: the
 subjects, commit revisions, source paths, and every locator are fictional and

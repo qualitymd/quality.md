@@ -475,17 +475,17 @@ The skill should discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
 introspection channel where the [CLI](../../cli.md) offers one. It **MUST** consume
 machine-readable output where a command provides it (the
-[`--json` convention](../../cli.md#conventions)) rather than parsing human-formatted
-text. For structured evaluation record payloads, it **MUST** discover field
-contracts through the write command's `--help` and validate newly authored or
-materially revised payloads with `-n/--dry-run` before committing records. Before
-evaluation work, it **MUST** verify that
+[`--json` convention](../../cli.md#conventions)) rather than parsing
+human-formatted text. For structured Evaluation v2 payloads, it **MUST** discover
+payload kinds with `qualitymd evaluation data kinds`, inspect examples with
+`qualitymd evaluation data example <kind>`, and validate newly authored or
+materially revised payloads with `qualitymd evaluation data set --dry-run`
+before committing data. Before evaluation work, it **MUST** verify that
 `qualitymd version --json`, `qualitymd update --check`,
-`qualitymd evaluation create`, `qualitymd evaluation list`,
-`qualitymd evaluation status`, `qualitymd evaluation assessment`,
-`qualitymd evaluation analysis`, `qualitymd evaluation recommendation`, and
-`qualitymd evaluation report` are
-available; if any is missing, it stops rather than hand-authoring the run.
+`qualitymd evaluation create`, `qualitymd evaluation data`,
+`qualitymd evaluation list`, `qualitymd evaluation status`, and
+`qualitymd evaluation report` are available; if any is missing, it stops rather
+than hand-authoring the run.
 
 ## Evaluation Workflow
 

@@ -126,6 +126,11 @@ fighting.
   meaningful, so a caller can reach for it without checking whether it exists. The
   carve-out is a command whose output already *is* a verbatim artifact meant to be
   redirected; wrapping that in JSON adds nothing.
+- **Do not add a second JSON mode for JSON artifacts.** A command whose stdout is
+  already the JSON artifact, such as a schema, example payload, or stored JSON
+  record, should not also offer a JSON result wrapper. It may recognize `--json`
+  only to fail with a targeted usage error that says the command already emits
+  JSON and should be rerun without `--json`.
 - **No format auto-detection.** Passing `--json` is the only switch into JSON.
   Don't silently change the payload based on whether `stdout` is a pipe; changing
   *styling* off a TTY is fine, changing *content* is not.

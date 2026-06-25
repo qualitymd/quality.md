@@ -11,13 +11,13 @@ work.
 
 ## Output modes
 
-| Goal                                      | Command form                     |
-| ----------------------------------------- | -------------------------------- |
-| Human-readable command help               | `qualitymd <command> --help`     |
-| Machine-readable state or receipts        | `qualitymd <command> --json`     |
-| Active format specification text          | `qualitymd spec`                 |
-| Record JSON into a write command          | pipe on stdin (heredoc); no file |
-| Version and compatibility facts for skill | `qualitymd version --json`       |
+| Goal                                      | Command form                                                 |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| Human-readable command help               | `qualitymd <command> --help`                                 |
+| Machine-readable state or receipts        | `qualitymd <command> --json`                                 |
+| Active format specification text          | `qualitymd spec`                                             |
+| Persist Evaluation v2 JSON                | `qualitymd evaluation data set <run> --file <path-or-stdin>` |
+| Version and compatibility facts for skill | `qualitymd version --json`                                   |
 
 Use `--json` when a command offers it and the agent must inspect, route from,
 or carry the result forward. Use human output for display or diagnostics only.
@@ -31,11 +31,11 @@ qualitymd --help
 qualitymd lint --help
 qualitymd status --help
 qualitymd evaluation create --help
+qualitymd evaluation data --help
+qualitymd evaluation data kinds --help
+qualitymd evaluation data example --help
 qualitymd evaluation list --help
 qualitymd evaluation status --help
-qualitymd evaluation assessment --help
-qualitymd evaluation analysis --help
-qualitymd evaluation recommendation --help
 qualitymd evaluation report --help
 ```
 
@@ -45,26 +45,26 @@ whether the install is in the skill's supported range.
 
 ## Quick reference
 
-| Task                          | Command                                                             |
-| ----------------------------- | ------------------------------------------------------------------- |
-| Check CLI version             | `qualitymd --version`                                               |
-| Read version metadata         | `qualitymd version --json`                                          |
-| Check for CLI updates         | `qualitymd update --check`                                          |
-| Apply CLI update              | `qualitymd update`                                                  |
-| Read format rules             | `qualitymd spec`                                                    |
-| Create a starter model        | `qualitymd init [path]`                                             |
-| Validate a model              | `qualitymd lint [path]`                                             |
-| Fix simple lint issues        | `qualitymd lint --fix [path]`                                       |
-| Inspect project status        | `qualitymd status [path] --json`                                    |
-| Create evaluation run         | `qualitymd evaluation create [--model <path>] [--narrowing <slug>]` |
-| List evaluation runs          | `qualitymd evaluation list [--json]`                                |
-| Add assessment result records | pipe JSON \| `qualitymd evaluation assessment add [-n] <run>`       |
-| Set analysis records          | pipe JSON \| `qualitymd evaluation analysis set [-n] <run>`         |
-| Add recommendation records    | pipe JSON \| `qualitymd evaluation recommendation add [-n] <run>`   |
-| List records                  | `qualitymd evaluation <kind> list <run>`                            |
-| Check reportability           | `qualitymd evaluation status <run>`                                 |
-| Build report                  | `qualitymd evaluation report build <run>`                           |
-| Gate report                   | `qualitymd evaluation report gate <run> --at-or-below <level>`      |
+| Task                   | Command                                                           |
+| ---------------------- | ----------------------------------------------------------------- |
+| Check CLI version      | `qualitymd --version`                                             |
+| Read version metadata  | `qualitymd version --json`                                        |
+| Check for CLI updates  | `qualitymd update --check`                                        |
+| Apply CLI update       | `qualitymd update`                                                |
+| Read format rules      | `qualitymd spec`                                                  |
+| Create a starter model | `qualitymd init [path]`                                           |
+| Validate a model       | `qualitymd lint [path]`                                           |
+| Fix simple lint issues | `qualitymd lint --fix [path]`                                     |
+| Inspect project status | `qualitymd status [path] --json`                                  |
+| Create evaluation run  | `qualitymd evaluation create [model] [--narrowing <slug>]`        |
+| List evaluation runs   | `qualitymd evaluation list [--json]`                              |
+| Discover data kinds    | `qualitymd evaluation data kinds [--json]`                        |
+| Print payload example  | `qualitymd evaluation data example <kind>`                        |
+| Persist routine output | `qualitymd evaluation data set [-n] <run> --file <path-or-stdin>` |
+| List routine outputs   | `qualitymd evaluation data list <run> [--json]`                   |
+| Read routine output    | `qualitymd evaluation data get <run> --kind <kind> ...`           |
+| Check reportability    | `qualitymd evaluation status <run>`                               |
+| Build report           | `qualitymd evaluation report build <run>`                         |
 
 Evaluation runs default under `.quality/evaluations/`. A repository can set
 `evaluationDir` in the resolved workspace config file; the selected `QUALITY.md`
@@ -98,13 +98,11 @@ Need to evaluate?
 - Check model first -> qualitymd lint [path]
 - Inspect current state -> qualitymd status [path] --json
 - Create feedback log -> edit .quality/logs/<timestamp>-evaluate-feedback-log.md after the run frame
-- Create run -> qualitymd evaluation create [--model <path>] [--narrowing <slug>]
-- Author initial design and plan -> edit design.md and plan.md before assessment evidence collection or record writes
-- Planned coverage needed? -> edit plan.md coverage frontmatter before dependent record writes
+- Create run -> qualitymd evaluation create [model] [--narrowing <slug>]
+- Discover payload shapes -> qualitymd evaluation data kinds; qualitymd evaluation data example <kind>
 - Maintain workflow feedback -> update .quality/logs/<timestamp>-evaluate-feedback-log.md for material workflow-experience events only
-- Inspect payload shape -> qualitymd evaluation assessment add | analysis set | recommendation add --help
-- Validate judgment records -> pipe JSON on stdin with -n/--dry-run
-- Add judgment records -> pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
+- Validate routine output -> qualitymd evaluation data set <run> --file <payload.json> --dry-run
+- Persist routine output -> qualitymd evaluation data set <run> --file <payload.json>
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
 ```
@@ -119,7 +117,7 @@ Run incomplete or stale?
 - Incompatible historical record? -> treat as run status; inspect or create a fresh run, do not hand-migrate records
 - Process ambiguity or recovery? -> record concise notes in .quality/logs/<timestamp>-evaluate-feedback-log.md; do not duplicate assessment evidence
 - Missing or changed planned coverage? -> edit plan.md coverage frontmatter and add a plan amendment when the planned scope changed
-- Missing records? -> inspect --help, validate with -n/--dry-run, then pipe JSON on stdin to qualitymd evaluation assessment add | analysis set | recommendation add <run>
+- Missing data? -> inspect data kinds/examples, validate with -n/--dry-run, then persist with qualitymd evaluation data set <run> --file <payload.json>
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
@@ -153,92 +151,13 @@ qualitymd status [path] --json
 ### Create and complete an evaluation run
 
 ```sh
-qualitymd evaluation create [--model <path>] [--narrowing <slug>]
-
-# Write records by piping JSON on stdin. Use --dry-run first, then remove it to commit.
-qualitymd evaluation assessment add --dry-run <run> <<'JSON'
-[
-  {
-    "areaPath": [],
-    "requirement": "Has tests",
-    "factorPaths": [],
-    "ratingResult": {
-      "kind": "rated",
-      "level": "target",
-      "rationale": "Evidence supports the target level."
-    },
-    "criterionSource": "rating-scale",
-    "findings": [
-      {
-        "locator": "tests/example_test.go:1",
-        "observation": "The requirement is covered by a focused test.",
-        "category": "coverage",
-        "severity": "low",
-        "evidence": [
-          {
-            "kind": "source",
-            "ref": "tests/example_test.go:1"
-          }
-        ]
-      }
-    ],
-    "recommendations": []
-  }
-]
-JSON
-
-qualitymd evaluation analysis set --dry-run <run> <<'JSON'
-[
-  {
-    "areaPath": [],
-    "localRatingResult": {
-      "kind": "rated",
-      "level": "target",
-      "rationale": "The local assessment result reaches target."
-    },
-    "factorRatingResults": [],
-    "aggregateRatingResult": {
-      "kind": "rated",
-      "level": "target",
-      "rationale": "The root local rating binds the aggregate rating."
-    },
-    "assessmentResultRecords": [
-      "assessments/001-root-has-tests.json"
-    ],
-    "childAnalysisRecords": []
-  }
-]
-JSON
-
-qualitymd evaluation recommendation add --dry-run <run> <<'JSON'
-[
-  {
-    "title": "Improve test coverage",
-    "gap": "The evaluation found a requirement with thin test evidence.",
-    "evidenceLocators": [
-      "assessments/001-root-has-tests.json"
-    ],
-    "assessmentResultRecords": [
-      "assessments/001-root-has-tests.json"
-    ],
-    "remediationOptions": [
-      "Add focused tests for the requirement"
-    ],
-    "recommendedOption": "Add focused tests for the requirement",
-    "doneCriterion": "The affected requirement reaches target with current test evidence."
-  }
-]
-JSON
-
+qualitymd evaluation create [model] [--narrowing <slug>]
+qualitymd evaluation data kinds --json
+qualitymd evaluation data example RequirementAssessmentResult
+qualitymd evaluation data set <run> --file requirement-assessment-result.json --dry-run
+qualitymd evaluation data set <run> --file requirement-assessment-result.json
 qualitymd evaluation status <run>
 qualitymd evaluation report build <run>
-```
-
-### Gate on report results
-
-```sh
-qualitymd evaluation report build <run>
-qualitymd evaluation report gate <run> --at-or-below <level>
 ```
 
 ## Command rules
@@ -246,10 +165,9 @@ qualitymd evaluation report gate <run> --at-or-below <level>
 - Use `--json` when a command offers it and the agent must consume the result.
 - Prefer `qualitymd status [path] --json` for readiness, model shape, evaluation
   history, stale-run signals, and active recommendation counts.
-- Pipe record JSON on stdin (a `<<'JSON'` heredoc works well); never write the
-  payload to a scratch file. `--file <path>` exists for human replay and
-  debugging only — agents should not use it.
-- Use `qualitymd evaluation <kind> add|set --help` to inspect payload fields and
-  `-n/--dry-run` to validate new or materially revised payloads before writing.
+- Persist routine JSON through `qualitymd evaluation data set`; use
+  `qualitymd evaluation data example <kind>` to inspect payload shape.
+- Use `-n/--dry-run` to validate new or materially revised payloads before
+  writing.
 - Do not continue past missing evaluation commands by manually creating files.
 - Keep generated run paths exactly as the CLI reports them.

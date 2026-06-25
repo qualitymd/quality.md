@@ -389,3 +389,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   required `title`, optional `description`, retained `assessment`, qualified
   Requirement model references, lint/schema enforcement, migrated scaffolds,
   examples, docs, and skill guidance; breaking format change (`Done`).
+- [0094 — Replace evaluation workflow](0094-replace-evaluation-workflow.md) -
+  replaces the evaluation workflow with Evaluation v2 structured routine data,
+  deterministic Area/Factor/Requirement reports, a new `evaluation data` CLI
+  surface, superseded legacy evaluation report/record specs, and updated
+  `/quality` runtime guidance (`Done`).

@@ -2,6 +2,25 @@
 
 ## 2026-06-25
 
+- **Creation**: Added the
+  [Evaluation v2](evaluation-v2/evaluation-v2.md) durable spec bundle for
+  [0094 - Replace evaluation workflow](../changes/0094-replace-evaluation-workflow.md).
+  The new bundle captures shared invariants, protocol order, orchestration,
+  routine prompt contracts, JSON conventions, data layout, payload kinds, and
+  deterministic report tree rules for the replacement workflow.
+
+- **Revision**: Removed the active CLI specs for the legacy
+  `evaluation assessment`, `evaluation analysis`, and `evaluation recommendation`
+  commands as part of
+  [0094 - Replace evaluation workflow](../changes/0094-replace-evaluation-workflow.md).
+  New evaluation data is written through
+  [`qualitymd evaluation data`](cli/evaluation-data.md).
+
+- **Revision**: Marked the previous
+  [Evaluation records](evaluation-records.md) and [reports](reports/index.md)
+  specs as superseded legacy contracts. The active evaluation workflow source of
+  truth is now [Evaluation v2](evaluation-v2/evaluation-v2.md).
+
 - **Revision**: Implemented durable spec changes for
   [0093 - Named Requirement identity](../changes/archive/0093-requirement-identity.md).
   Requirements now use stable names as map keys, require `title`, retain

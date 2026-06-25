@@ -71,9 +71,9 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 		Path:   runRel,
 		Number: number,
 		NextActions: []receipt.Action{{
-			ID:      "assessment-add",
-			Label:   "Record evaluation judgments",
-			Command: "qualitymd evaluation assessment add " + runRel,
+			ID:      "evaluation-data-set",
+			Label:   "Record Evaluation v2 data",
+			Command: "qualitymd evaluation data set " + runRel + " --file <payload.json>",
 		}},
 	}, nil
 }
@@ -91,7 +91,7 @@ func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
 }
 
 func createRunSkeleton(runAbs string, modelRaw []byte) error {
-	for _, subdir := range []string{"assessments", "analysis", "recommendations"} {
+	for _, subdir := range []string{"assessments", "analysis", "recommendations", "data"} {
 		if err := os.Mkdir(filepath.Join(runAbs, subdir), 0o755); err != nil {
 			return fmt.Errorf("creating %s: %w", subdir, err)
 		}
