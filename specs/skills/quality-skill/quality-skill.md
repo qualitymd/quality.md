@@ -143,8 +143,10 @@ The root prompt **MUST** direct agents when to read each one:
   — a skill-local bundled copy or symlink to the format specification used as a
   local reference. Runtime format and rating grounding still comes from
   `qualitymd spec` where the CLI is available (see [Driving the CLI](#driving-the-cli)).
-- [`resources/cli-quick-reference.md`](../../../skills/quality/resources/cli-quick-reference.md)
-  — the command quick reference read before CLI workflows.
+- [`resources/cli-workflow-conventions.md`](../../../skills/quality/resources/cli-workflow-conventions.md)
+  — the workflow conventions resource read before CLI workflows; it carries
+  artifact layout, sequencing, narrowing-slug, and command-rule conventions that
+  the CLI cannot introspect.
 - [`resources/output-policy.md`](../../../skills/quality/resources/output-policy.md)
   — the command-output policy read before consuming CLI output.
 - [`guides/authoring.md`](../../../skills/quality/guides/authoring.md) — the
@@ -588,22 +590,23 @@ output as the source of truth:
 
 The skill should discover the CLI's available commands and flags from the CLI
 itself rather than embedding a list that drifts — preferring an agent-readable
-introspection channel where the [CLI](../../cli.md) offers one. It **MUST** consume
-machine-readable output where a command provides it (the
-[`--json` convention](../../cli.md#conventions)) rather than parsing
-human-formatted text. For structured Evaluation payloads, it **MUST** discover
-payload kinds with `qualitymd evaluation data kinds`, inspect the authoritative
-payload contract with `qualitymd evaluation data schema [<kind>]`, inspect
-populated examples with `qualitymd evaluation data example <kind>`, and validate
-newly authored or materially revised payloads with
-`qualitymd evaluation data set --dry-run` before committing data. The dry run is
-payload validation, not the mechanism for discovering shape. Before evaluation
-work, it **MUST** verify that
-`qualitymd version --json`, `qualitymd update --check`,
-`qualitymd evaluation create`, `qualitymd evaluation data`,
-`qualitymd evaluation list`, `qualitymd evaluation status`, and
-`qualitymd evaluation report` are available; if any is missing, it stops rather
-than hand-authoring the run.
+introspection channel where the [CLI](../../cli.md) offers one. The
+`resources/cli-workflow-conventions.md` resource **MUST NOT** be treated as a
+command or flag listing; it is scoped to workflow conventions the CLI cannot
+teach by itself. The skill **MUST** consume machine-readable output where a
+command provides it (the [`--json` convention](../../cli.md#conventions)) rather
+than parsing human-formatted text. For structured Evaluation payloads, it
+**MUST** discover payload kinds with `qualitymd evaluation data kinds`, inspect
+the authoritative payload contract with
+`qualitymd evaluation data schema [<kind>]`, inspect populated examples with
+`qualitymd evaluation data example <kind>`, and validate newly authored or
+materially revised payloads with `qualitymd evaluation data set --dry-run`
+before committing data. The dry run is payload validation, not the mechanism for
+discovering shape. Before evaluation work, it **MUST** verify that
+the CLI surfaces the workflow depends on are available through CLI introspection:
+version/compatibility, update check, run creation, Evaluation data discovery and
+write/verify support, run listing/status, and report build. If any required
+surface is missing, it stops rather than hand-authoring the run.
 
 ## Evaluation Workflow
 

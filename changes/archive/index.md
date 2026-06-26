@@ -546,3 +546,14 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   nor `evaluation`), folds `status`'s shape counts onto that projection, and wires
   the evaluate workflow to query in-scope IDs from the run's `model-snapshot.md`
   instead of hand-deriving them (`Done`).
+- [0126 — Bulk data set](0126-bulk-data-set.md) - replaces
+  `qualitymd evaluation data set`'s single-object stdin contract with a
+  non-empty JSON array batch, validates and writes all-or-nothing, rejects
+  duplicate derived paths, emits a batch receipt, and updates the evaluate
+  workflow to persist routine payloads with one whole-batch dry-run and write
+  (`Done`).
+- [0127 — Introspection-first CLI workflow conventions](0127-introspection-first-cli-reference.md)
+  - renames/refocuses the bundled skill's former `cli-quick-reference.md` as
+    `cli-workflow-conventions.md`, removes embedded command/flag listings, keeps
+    non-introspectable workflow conventions, and routes command, flag, and
+    payload discovery to CLI introspection (`Done`).

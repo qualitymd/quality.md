@@ -103,7 +103,7 @@ func (r *Run) Status() RunStatus {
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-data-set",
 			Label:   "Persist required Evaluation data",
-			Command: "qualitymd evaluation data set " + r.Path + " < payload.json",
+			Command: "qualitymd evaluation data set " + r.Path + " < payloads.json",
 		}}
 	}
 	return status

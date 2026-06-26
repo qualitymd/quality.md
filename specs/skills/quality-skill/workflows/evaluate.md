@@ -69,6 +69,18 @@ typos, not the primary guard. `evaluate` **SHOULD** use `model` (`list` labels,
 `get`) to resolve a natural-label scope to its canonical `area:`/`factor:`
 reference.
 
+## Batched routine data writes
+
+`evaluate` **MUST** assemble routine Evaluation payloads for the resolved scope
+into a JSON array and persist them with a single `qualitymd evaluation data set`
+invocation per batch. It **MUST NOT** persist one payload per Requirement,
+Factor, or Area during routine evaluation.
+
+Where `evaluate` validates authored routine output before persisting, it **MUST**
+run one whole-batch `qualitymd evaluation data set --dry-run` against the
+assembled array rather than dry-running each payload separately. It **MUST** use
+the indexed diagnostics from that dry run to correct the batch before writing.
+
 ## Required flow
 
 Before tool inspection, `evaluate` **MUST** emit the public `/quality` run frame
@@ -95,8 +107,10 @@ After run creation, `evaluate` **MUST** follow the Evaluation protocol:
 4. frame and analyze local Factor trees bottom-up;
 5. analyze child Areas before their parents;
 6. frame and analyze each Area from completed local Factor and child Area
-   outputs; and
-7. run `qualitymd evaluation report build` to assemble
+   outputs;
+7. dry-run and persist the assembled routine payload batch through
+   `qualitymd evaluation data set`; and
+8. run `qualitymd evaluation report build` to assemble
    `data/evaluation-output-result.json` and render the report tree.
 
 Every in-scope Requirement covered by the resolved scope **MUST** receive a

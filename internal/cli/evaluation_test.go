@@ -22,7 +22,7 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	var out bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&bytes.Buffer{})
-	cmd.SetIn(strings.NewReader(`{
+	cmd.SetIn(strings.NewReader(`[{
   "schemaVersion": 2,
   "kind": "RequirementAssessmentResult",
   "requirementId": "requirement:root::has-tests",
@@ -35,13 +35,14 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
   "evaluationLimits": [],
   "confidence": "medium",
   "confidenceReason": "Evidence is narrow."
-}`))
+}]`))
 	cmd.SetArgs([]string{"evaluation", "data", "set", "--json", runPath})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("data set Execute() error = %v", err)
 	}
-	if !strings.Contains(out.String(), `"kind": "RequirementAssessmentResult"`) ||
+	if !strings.Contains(out.String(), `"count": 1`) ||
+		!strings.Contains(out.String(), `"kind": "RequirementAssessmentResult"`) ||
 		!strings.Contains(out.String(), "data/areas/root/requirements/has-tests/requirement-assessment-result.json") {
 		t.Fatalf("data set stdout = %s, want write receipt", out.String())
 	}

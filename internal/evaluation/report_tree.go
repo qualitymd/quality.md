@@ -32,7 +32,7 @@ func evaluationRenderableGaps(runAbs string) []RunGap {
 			gaps = append(gaps, RunGap{Kind: GapUnreadableEvaluationData, Ref: req.rel, Detail: err.Error()})
 			continue
 		}
-		payload, _, err := decodeDataPayload(raw)
+		payload, err := decodeDataPayload(raw)
 		if err != nil {
 			gaps = append(gaps, RunGap{Kind: GapMalformedEvaluationData, Ref: req.rel, Detail: err.Error()})
 			continue

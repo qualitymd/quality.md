@@ -140,14 +140,15 @@ on failure.
 Conventions that hold wherever they apply, so flags and output behave the same
 across commands.
 
-**Structured input.** Commands that read an author-supplied structured payload
-from stdin or a documented path option **MUST** make that payload contract
-discoverable from inside the tool. Command help **MUST** document every payload
-field, its JSON type, whether it is required, and allowed values for enum-like
-fields, and **MUST** include at least one complete valid payload example.
+**Structured input.** Commands that read author-supplied structured input from
+stdin or a documented path option **MUST** make that input contract discoverable
+from inside the tool. When the input contains payload objects, command help or
+the command's discovery subcommands **MUST** document every payload field, its
+JSON type, whether it is required, and allowed values for enum-like fields, and
+**MUST** include at least one complete valid payload example.
 
 Side-effecting structured-input commands **MUST** offer `-n/--dry-run`, which
-validates the payload and reports the records or files that would be written
+validates the input and reports the records or files that would be written
 without creating, replacing, numbering, or otherwise persisting records. Under
 `--json`, a valid dry-run **MUST** emit the same receipt shape as the real write
 with a dry-run marker and intended paths. Invalid dry-runs use the usage-error

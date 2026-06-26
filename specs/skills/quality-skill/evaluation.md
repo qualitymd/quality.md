@@ -29,8 +29,8 @@ The `/quality evaluate` workflow **MUST** follow the
 evaluations.
 
 The skill **MUST** create runs with `qualitymd evaluation create [model]` and
-persist routine outputs through `qualitymd evaluation data set <run> <
-payload.json`.
+persist routine outputs as JSON-array batches through
+`qualitymd evaluation data set <run> < payloads.json`.
 
 The skill **MUST** produce frames before judgment, assess Requirements before
 rating them, analyze Factors and Areas bottom-up, run
@@ -147,13 +147,13 @@ flowchart TD
    or boundary separator. The narrowing slug **MUST NOT** include `quality` as a
    path segment.
 5. **Frame the evaluation** before assessment evidence collection. The skill
-   **MUST** persist `EvaluationFrame` through
-   `qualitymd evaluation data set <run> < payload.json`.
+   **MUST** add `EvaluationFrame` to the routine payload batch.
 6. **Evaluate through routine outputs** — for each in-scope Area, Requirement,
    Factor, and Area analysis step, the skill **MUST** produce the Evaluation
    frame or result payload required by the
-   [Evaluation protocol](../../evaluation/protocol.md) and persist it
-   through `qualitymd evaluation data set`.
+   [Evaluation protocol](../../evaluation/protocol.md), validate the assembled
+   batch with one `qualitymd evaluation data set --dry-run`, and persist it
+   through one `qualitymd evaluation data set` invocation.
 7. **Maintain the evaluate feedback log** — hand-author concise entries in the
    current run's `.quality/logs/<timestamp>-evaluate-feedback-log.md` for
    material workflow-experience events. Keep the log separate from formal

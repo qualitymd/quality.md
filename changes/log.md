@@ -3,6 +3,61 @@
 ## 2026-06-26
 
 - **Done**: Landed and archived
+  [0126 - Bulk data set](archive/0126-bulk-data-set.md). Shipped the array-only
+  `evaluation data set` batch contract with all-or-nothing validation/write
+  behavior, indexed diagnostics, duplicate-derived-path rejection, staged writes
+  with rollback, and batch receipts. Updated the durable CLI/evaluation/skill
+  specs and the evaluate workflow so routine payloads are persisted with one
+  whole-batch dry-run and one write. `mise run check` passes.
+
+- **Done**: Landed and archived
+  [0127 - Introspection-first CLI workflow conventions](archive/0127-introspection-first-cli-reference.md).
+  Renamed/refocused the bundled skill resource to
+  `cli-workflow-conventions.md`, removed embedded command/flag listings,
+  preserved non-introspectable workflow conventions, and routed command, flag,
+  and payload discovery to CLI introspection. `mise run check` passes.
+
+- **In-Review**: Completed implementation for
+  [0126 - Bulk data set](archive/0126-bulk-data-set.md). `evaluation data set` now accepts
+  a non-empty JSON array, rejects bare objects and empty arrays, validates every
+  payload against one loaded `model-snapshot.md`, aggregates indexed diagnostics,
+  rejects duplicate derived paths, stages writes before committing them with
+  rollback, and emits a batch receipt with `count` plus input-order `writes`.
+  Updated CLI human output, next actions, tests, durable CLI/evaluation/skill
+  specs, and the evaluate workflow to batch routine payloads with one dry-run and
+  one write. `mise run check` passes.
+
+- **In-Progress**: Advanced
+  [0126 - Bulk data set](archive/0126-bulk-data-set.md). Functional spec and design doc
+  are settled; implementation is beginning across `internal/evaluation/data.go`,
+  `internal/cli/evaluation.go`, tests, durable CLI specs, and the evaluate
+  workflow.
+
+- **Design**: Added the
+  [0126 - Bulk data set](archive/0126-bulk-data-set.md)
+  [design doc](archive/0126-bulk-data-set/design.md) and advanced the case to `Design`.
+  The design splits `SetData` into array decoding, candidate validation, duplicate
+  path preflight, dry-run receipt generation, and staged write commit with
+  best-effort rollback. The batch receipt is a summary object with `count` and
+  input-order `writes[]` entries (`index`, `kind`, `path`).
+
+- **In-Review**: Completed implementation for
+  [0127 - Introspection-first CLI workflow conventions](archive/0127-introspection-first-cli-reference.md).
+  Renamed `skills/quality/resources/cli-quick-reference.md` to
+  `cli-workflow-conventions.md`, removed the embedded command/flag listing
+  including the 0125 `model` rows and the stale single-payload `data set` row,
+  kept the workspace-artifact, feedback-log, narrowing-slug, command-rule, and
+  orchestration conventions, and updated `SKILL.md`, the resource index/log, and
+  `specs/skills/quality-skill/quality-skill.md`. No CLI code changed.
+  `mise run fmt-md-check` and `mise run npm-pack-check` pass.
+
+- **In-Progress**: Advanced
+  [0127 - Introspection-first CLI workflow conventions](archive/0127-introspection-first-cli-reference.md).
+  Functional spec is settled and no design doc is planned; implementation is the
+  bundled skill resource/refocus plus skill-spec/reference updates, with no CLI
+  code change.
+
+- **Done**: Landed and archived
   [0125 - Model query commands](archive/0125-model-query-commands.md). Shipped the
   read-only `qualitymd model` group (`tree`/`list`/`get`) projecting a model's
   elements, canonical reference IDs, and containment. Moved the reference grammar
@@ -17,6 +72,60 @@
   reference, README) brought in sync. Moved the parent and folder into
   [`archive/`](archive/); updated the archive [index](archive/index.md) and the
   bundle [index](index.md). Full build and test suite green.
+
+- **Draft**: Created
+  [0127 - Introspection-first CLI workflow conventions](archive/0127-introspection-first-cli-reference.md)
+  with its [functional spec](archive/0127-introspection-first-cli-reference/spec.md).
+  Renames/refocuses the skill's former `cli-quick-reference.md` as
+  `cli-workflow-conventions.md`: strips the duplicated command/flag listings the
+  CLI's own `--help` and discovery commands (`evaluation data
+  kinds`/`example`/`schema`) already provide, retains the content that is
+  non-introspectable skill convention (workspace-artifact layout, feedback-log
+  sequencing, narrowing-slug rule, do/don't rules, orchestration sequences), and
+  routes command/flag/payload discovery to the CLI's structured introspection
+  channels (`--json`/schema/example, not human tables). Refreshed after landing
+  [0125](archive/0125-model-query-commands.md): 0127 now also strips the
+  `model tree`/`model list`/`model get` rows 0125 added to the embedded listing.
+  Resolves the skill spec's contradiction — `quality-skill.md:146-147` prescribes
+  reading the embedded reference while `:589-594` mandates introspection over an
+  embedded list that drifts. No code change (the introspection surface already
+  exists); no CLI behavior change. Durable spec edit:
+  `specs/skills/quality-skill/quality-skill.md`. Touches the same resource as
+  [0126](archive/0126-bulk-data-set.md); 0127 absorbs the shared-file edit. Listed in the
+  bundle [index](index.md).
+
+- **Update**: Strengthened
+  [0126 - Bulk data set](archive/0126-bulk-data-set.md) — added the normative Skill
+  integration requirements to its [functional spec](archive/0126-bulk-data-set/spec.md)
+  (SK1: persist a scope's payloads in one batched `data set` rather than per
+  element; SK2: one whole-batch `--dry-run` instead of per-payload), making skill
+  adoption a conformance requirement rather than only an acceptance checkbox, in
+  line with 0125's precedent. Refreshed after landing
+  [0125](archive/0125-model-query-commands.md) and advancing
+  [0127](archive/0127-introspection-first-cli-reference.md): 0125 is now the committed
+  baseline, and 0127 absorbs the old quick-reference edit by removing the stale
+  single-payload listing wholesale.
+
+- **Draft**: Created
+  [0126 - Bulk data set](archive/0126-bulk-data-set.md) with its
+  [functional spec](archive/0126-bulk-data-set/spec.md). Replaces `evaluation data set`'s
+  single-object stdin contract (and the v0 "MUST NOT accept batch payloads" rule)
+  with an **array-only** batch contract: one invocation reads a JSON array of
+  payloads, validates the whole batch first, and writes **all-or-nothing** — one
+  bad element rejects the batch with per-index diagnostics and nothing is written.
+  A one-payload write becomes a one-element array (clean break, not a second
+  path); intra-batch duplicate derived paths are rejected; `--json` emits a batch
+  receipt; `--dry-run` validates the whole batch without persisting. The driving
+  need is agent round-trips: the evaluate workflow loops one `data set` per
+  Requirement/Factor/Area (~115 invocations for the cited acquire-roi-next run);
+  batching collapses that to one. Write-side companion to
+  [0125](archive/0125-model-query-commands.md) (read-side ID friction); 0126 now
+  builds on 0125's committed `model list --json` snapshot-query workflow text. No
+  format-spec or payload-schema change (the array is a transport envelope).
+  Durable spec edits: `specs/cli/evaluation-data.md`, `specs/cli.md`,
+  `specs/skills/quality-skill/workflows/evaluate.md`. Design doc deferred
+  (atomic write-staging mechanism and receipt schema are design questions).
+  Listed the case in the bundle [index](index.md). Code not started.
 
 - **Done**: Implemented and archived
   [0124 - Constrain reference kind fields to closed kind vocabularies](archive/0124-reference-kind-enum.md).

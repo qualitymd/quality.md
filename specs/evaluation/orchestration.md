@@ -65,10 +65,11 @@ Factors whose dependencies are ready.
 ## Persistence
 
 Workers **SHOULD** return structured routine JSON to the orchestrator. The
-orchestrator should persist accepted payloads through:
+orchestrator should assemble accepted payloads into a JSON array and persist the
+batch through:
 
 ```text
-qualitymd evaluation data set <run> < payload.json
+qualitymd evaluation data set <run> < payloads.json
 ```
 
 Workers **SHOULD NOT** write arbitrary files in an evaluation run folder.

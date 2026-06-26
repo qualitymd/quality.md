@@ -35,8 +35,9 @@ recommendations.
   lifecycle for read-only orientation or model-review routing.
 - Read [`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md)
   when applying, acting on, or handing off an evaluation recommendation.
-- Read [`resources/cli-quick-reference.md`](resources/cli-quick-reference.md)
-  before running CLI workflows.
+- Read [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  before running CLI workflows. Discover command shapes and payload contracts
+  from the CLI's help, `--json`, schema, and example outputs.
 - Read [`resources/output-policy.md`](resources/output-policy.md) before
   consuming command output.
 

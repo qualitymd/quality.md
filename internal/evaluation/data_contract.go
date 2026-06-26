@@ -843,7 +843,7 @@ func VerifyData(runPath string) (*DataVerifyReceipt, error) {
 			result.addFailure(rel, "", err.Error())
 			return nil
 		}
-		payload, _, err := decodeDataPayload(raw)
+		payload, err := decodeDataPayload(raw)
 		if err != nil {
 			result.addFailure(rel, "", err.Error())
 			return nil

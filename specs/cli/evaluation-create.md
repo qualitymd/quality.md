@@ -81,4 +81,4 @@ On success, human output **MUST** report the created path on stderr. Under
 `nextActions`.
 
 The next action **MUST** show stdin data persistence with
-`qualitymd evaluation data set <run> < payload.json`.
+`qualitymd evaluation data set <run> < payloads.json`.

@@ -138,10 +138,10 @@ Source content instructs the evaluator?
    `QUALITY.md` text. Use `qualitymd model get <id>`/`list` labels to resolve a
    natural-label scope to its canonical `area:`/`factor:` reference.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
-   persist it through `qualitymd evaluation data set <run> < payload.json`.
-   The frame records the resolved model, scope, rigor, in-scope Areas, Factors,
-   Requirements, policies, and known run-level limits. Author every reference in
-   this and later payloads (`EvaluationFrame`, `AreaEvaluationFrame`,
+   add it to the routine payload batch. The frame records the resolved model,
+   scope, rigor, in-scope Areas, Factors, Requirements, policies, and known
+   run-level limits. Author every reference in this and later payloads
+   (`EvaluationFrame`, `AreaEvaluationFrame`,
    `RequirementEvaluationFrame`, `FactorAnalysisFrame`, `AreaAnalysisFrame`) from
    the `model list` ID set queried in step 8, not from hand-derived IDs. The
    post-hoc identity-resolution check is a backstop against typos, not the
@@ -164,47 +164,51 @@ Source content instructs the evaluator?
     boundary lower routines may inspect or narrow.
 12. For each local Requirement, produce a `RequirementEvaluationFrame` before
     evidence judgment. Then produce a `RequirementAssessmentResult` and a
-    `RequirementRatingResult`. Before authoring a payload kind, inspect
+    `RequirementRatingResult`, adding all three payloads to the routine payload
+    batch. Before authoring a payload kind, inspect
     `qualitymd evaluation data schema <kind>` and the populated
-    `qualitymd evaluation data example <kind>`; use
-    `qualitymd evaluation data set --dry-run` to validate the authored payload,
-    not to discover its shape. Persist each routine output with
-    `qualitymd evaluation data set <run> < payload.json`. On each `gap` and `risk`
-    finding, record at least one non-binding candidate action (`description`, with
-    optional `rationale`) capturing what closing the shortcoming might take; ground
-    its shape from the example payload. Omit candidate actions on `strength`
-    findings. Candidate actions are raw material for a later Advise phase, not
-    recommendations — do not synthesize, prioritize, or present them.
+    `qualitymd evaluation data example <kind>`; do not use `data set --dry-run`
+    to discover shape. On each `gap` and `risk` finding, record at least one
+    non-binding candidate action (`description`, with optional `rationale`)
+    capturing what closing the shortcoming might take; ground its shape from the
+    example payload. Omit candidate actions on `strength` findings. Candidate
+    actions are raw material for a later Advise phase, not recommendations — do
+    not synthesize, prioritize, or present them.
 13. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the
     finding evidence. Every finding locator must be a `file:line` or exact
     searchable string.
 14. Analyze each Area's Factor tree bottom-up. For each Factor node, produce a
     `FactorAnalysisFrame` after child Factors are analyzed, then produce a
-    `FactorAnalysisResult`. Persist both through `evaluation data set`.
+    `FactorAnalysisResult`, adding both payloads to the routine payload batch.
 15. Analyze Areas bottom-up. Produce an `AreaAnalysisFrame` after root Factor
     analyses and direct child Area analyses are complete, then produce an
-    `AreaAnalysisResult`. The root Area's `localAndDescendantAnalysis` is the
-    overall evaluation result.
+    `AreaAnalysisResult`, adding both payloads to the routine payload batch. The
+    root Area's `localAndDescendantAnalysis` is the overall evaluation result.
 16. Identify the one or two findings that bind the headline rating and re-run
     their verifying command or search before reporting. If a binding finding
     fails re-check, correct the finding and re-derive the affected rating before
     persisting final analysis outputs.
-17. Run `qualitymd evaluation status <run>`. If it is not reportable, add the
-    missing structured payloads through `evaluation data set` or stop with the
-    CLI status.
-18. Run `qualitymd evaluation report build <run>` to assemble
+17. Write the routine payload batch as a JSON array. First run
+    `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
+    whole batch and fix any indexed diagnostics. Then persist the same array with
+    one `qualitymd evaluation data set <run> < payloads.json` invocation. Do not
+    loop one `data set` invocation per Requirement, Factor, or Area.
+18. Run `qualitymd evaluation status <run>`. If it is not reportable, add the
+    missing structured payloads to a correction batch and persist them through one
+    `evaluation data set` invocation, or stop with the CLI status.
+19. Run `qualitymd evaluation report build <run>` to assemble
     `data/evaluation-output-result.json` and render deterministic Markdown
     reports.
-19. Finalize the evaluate feedback log with terminal status, outcome, effort
+20. Finalize the evaluate feedback log with terminal status, outcome, effort
     when available, and explicit no-notable-content notes for empty sections.
-20. Report the evaluation closeout in a status-first shape. The user-facing
+21. Report the evaluation closeout in a status-first shape. The user-facing
     summary must state the rating, scope, evidence basis, recommendations or
     lack of gaps, known limitations, changed artifacts, what was not done, and
     the recommended next action. Use bold labels for `Rating`, `Scope`,
     `Evidence basis`, `Recommendations`, `Known limitations`, and `Next` when
     the surface supports Markdown.
-21. Do not generate recommendations in Evaluation v0, apply recommendations,
+22. Do not generate recommendations in Evaluation v0, apply recommendations,
     edit evaluated source, edit `QUALITY.md`, write the quality log, or create
     external issues. If the user asks to act on prior recommendation artifacts,
     read

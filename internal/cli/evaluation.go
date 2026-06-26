@@ -54,7 +54,7 @@ func newEvaluationDataSetCmd() *cobra.Command {
 	var dryRun bool
 	cmd := &cobra.Command{
 		Use:   "set <run>",
-		Short: "Validate and persist one Evaluation JSON payload",
+		Short: "Validate and persist a batch of Evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			runPath, err := resolveRunArg(args, runFlags)
@@ -76,8 +76,15 @@ func newEvaluationDataSetCmd() *cobra.Command {
 			if dryRun {
 				verb = "Would write"
 			}
-			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "%s %s\n", verb, result.Path)
-			return err
+			if _, err := fmt.Fprintf(cmd.ErrOrStderr(), "%s %d payloads\n", verb, result.Count); err != nil {
+				return err
+			}
+			for _, write := range result.Writes {
+				if _, err := fmt.Fprintf(cmd.ErrOrStderr(), "- %s\n", write.Path); err != nil {
+					return err
+				}
+			}
+			return nil
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
@@ -452,7 +459,7 @@ func resolveRunArg(args []string, flags evaluationRunFlags) (string, error) {
 func readPayload(cmd *cobra.Command) ([]byte, error) {
 	in := cmd.InOrStdin()
 	if f, ok := in.(*os.File); ok && term.IsTerminal(int(f.Fd())) {
-		return nil, fmt.Errorf("pipe one Evaluation JSON payload on standard input")
+		return nil, fmt.Errorf("pipe a JSON array of Evaluation payloads on standard input")
 	}
 	return io.ReadAll(in)
 }
