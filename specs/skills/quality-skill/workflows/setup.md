@@ -288,6 +288,12 @@ confirmation or correction, with confidence labels and evidence notes where
 useful. It **MUST** let the user confirm, correct, fill in terse fragments, or
 point to agent-accessible evidence the setup pass missed.
 
+The checkpoint **MUST** make the correction action the strongest visible element
+and **MUST** include an `Answer` line, or materially equivalent wording, that
+states how to accept the draft or provide terse corrections. The unresolved-item
+warning **MUST** support that action rather than precede it as the first or
+strongest element.
+
 The checkpoint **MUST** cover all of these dimensions:
 
 - primary users and outcomes;
@@ -392,6 +398,12 @@ reviewing several inferred values together, it **SHOULD** use a table or
 similarly compact structure unless the interaction surface makes that less
 usable.
 
+For the open-ended root-area and domain questions, setup **MUST** still use the
+shared agent-mediated question shape: visually emphasized question, adjacent
+`Why it matters`, `Recommended`, `Confidence`, and `Answer` labels when Markdown
+is available, and a shortest accept path such as replying `yes` to accept the
+recommendation or naming the correction.
+
 `setup` **MUST NOT** offer an escape that accepts all inferred defaults and skips
 the remaining questions or the human context checkpoint. Any prior guidance
 permitting "accept all defaults and skip the remaining questions" **MUST** be
@@ -423,6 +435,12 @@ item with its final answer.
 editing `QUALITY.md`. Completing the final discovery question or a structured
 question-tool page **MUST NOT** satisfy this review gate.
 
+Because this gate authorizes creating or editing `QUALITY.md`, the final review
+prompt **MUST** use a decision-brief shape, whether the file is newly scaffolded
+or already exists. The brief **MUST** name the proposed `QUALITY.md` change, the
+evidence or reason for writing it, the recommended option, at least one
+non-mutating alternative, and the done criterion or verification.
+
 The recap **MAY** receive a correction, a cross-cutting comment, broader
 last-call setup context, or an explicit confirmation such as "looks good",
 "continue", "write it", or an equivalent phrase. `setup` **MUST** incorporate
@@ -430,13 +448,14 @@ corrections and additional review-gate context before authoring, and **MUST NOT*
 require the user to add a substantive comment to proceed.
 
 The final review prompt **MUST** use friendly, colloquial, open-ended wording
-that preserves the confirmation fast path while inviting useful context beyond
-corrections: priorities, worries, wording, edge cases, repo-invisible context, or
-anything else the user considers important. The runtime setup workflow **SHOULD**
-use this prompt or wording with materially equivalent meaning:
+that keeps the confirmation or correction action visually primary while inviting
+useful context beyond corrections as secondary material: priorities, worries,
+wording, edge cases, repo-invisible context, or anything else the user considers
+important. The runtime setup workflow **SHOULD** use a decision brief whose
+primary action has this meaning:
 
 ```text
-How's this looking? If it feels right, say "looks good" and I'll write QUALITY.md. If anything else is on your mind, send it over too: priorities, worries, wording, edge cases, things the repo doesn't show, or anything that feels important.
+Reply `looks good` to write `QUALITY.md`, or send corrections.
 ```
 
 The recap **MUST NOT** be the only place a question or checkpoint item is

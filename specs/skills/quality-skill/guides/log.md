@@ -1,5 +1,15 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-26
+
+- **Revision**: Updated the
+  [recommendation follow-up contract](recommendation-follow-up-md.md) for
+  [0101 - Quality skill UX action clarity](../../../../changes/archive/0101-quality-skill-ux-action-clarity.md).
+  Recommendation follow-up now requires numbered apply-vs-handoff outcome
+  selection when the user has not already chosen, decision briefs before external
+  issue creation, and result closeouts with `Next` plus boundary-sensitive
+  `Not done`.
+
 ## 2026-06-25
 
 - **Revision**: Updated durable [authoring](authoring.md), authoring

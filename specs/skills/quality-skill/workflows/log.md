@@ -2,6 +2,15 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [`setup`](setup.md), [`evaluate`](evaluate.md), and
+  [`update`](update.md) workflow specs for
+  [0101 - Quality skill UX action clarity](../../../../changes/archive/0101-quality-skill-ux-action-clarity.md).
+  Setup now requires explicit answer paths for open-ended discovery, a
+  correction-first human context checkpoint, and a decision brief before writing
+  `QUALITY.md`; evaluate now requires numbered ambiguity prompts and stop-response
+  answer paths; update now emits its run frame before tool inspection and reports
+  concise version-inspection progress before the mutation gate.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for
   [0099 - Closed-choice setup UX](../../../../changes/archive/0099-closed-choice-setup-ux.md).
   Setup discovery closed-choice prompts now use numbered options with the

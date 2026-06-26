@@ -5,15 +5,56 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.13.1 - 2026-06-26
+
+### CLI
+
+- Evaluation v2 Markdown report headers are cleaner and more navigable: reports
+  now use labeled `Area:` trails, Factor reports add Factor-only `Factor:`
+  trails, redundant `Breadcrumb:` / parent header links are gone, and the top
+  status block is a compact report-specific summary.
+- Evaluation v2 Area and Factor report tables now link generated human report
+  pages from the Factor, Area, or Requirement subject cell instead of repeating a
+  generic `Details` column on every row. Structured `Data` links remain
+  explicitly labeled and machine-readable report refs are unchanged.
+- Evaluation v2 Markdown reports now render Rating Level titles from the run's
+  model snapshot and render CLI-owned statuses, confidence levels, booleans,
+  report kinds, limits, unknowns, and known finding classifications as
+  human-readable titles while keeping raw values in routine JSON,
+  `EvaluationOutputResult`, and build receipts.
+
 ### /quality Skill
 
 - `/quality setup` now opens with a short explanation of what QUALITY.md gives
   teams and agents, then performs a read-only context scan and shows a
   project-specific setup preview before discovery questions or file writes.
+- `/quality setup`, `evaluate`, `update`, and recommendation follow-up guidance
+  now use clearer CTAs, shortest answer paths, numbered ambiguity and outcome
+  choices, decision briefs before writes or external handoff, progress updates,
+  closeout `Next` fields, and precise code spans for literal artifacts.
+- `/quality setup` closed-choice prompts now use numbered options with the
+  recommended answer first and `1` as the shortest confirmation. Setup risk
+  discovery presents cost labels while keeping the existing risk-tolerance
+  meaning internally.
 - `/quality evaluate` feedback logs now use workflow-process `outcome` values
   such as `completed-reportable`, `stopped-model`, and `interrupted`, keeping
   `.quality/logs/<timestamp>-evaluate-feedback-log.md` clearly separate from
   report, rating, and recommendation semantics.
+
+### Documentation
+
+- The functional-spec and Change Case guides now include a set-level requirement
+  check, assumptions/dependencies guidance, normative vs. informational reference
+  classification, an explicit unambiguous-requirement bar item, and an optional
+  EARS statement template.
+- The durable Evaluation v2 report-tree spec and v2 sketch now match the current
+  generated Markdown report navigation and table-link shape.
+
+Compatibility:
+
+- CLI: `v0.13.1`
+- QUALITY.md specification: `0.4 (Draft)`
+- /quality skill: `0.13.1`, requires `qualitymd >=0.13.0 <0.14.0`
 
 ## v0.13.0 - 2026-06-26
 

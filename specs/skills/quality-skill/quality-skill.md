@@ -250,6 +250,12 @@ Supporting labels such as `Recommended`, `Why it matters`, `Confidence`,
 `Changed`, `Validation`, `Important gaps`, and `Next` **SHOULD** be bold when
 rendered in Markdown so the left edge stays scannable.
 
+When a user must answer, choose, approve, correct, or act, the interaction block
+**MUST** make the shortest acceptable response explicit with an `Answer` line or
+materially equivalent wording. Concrete files, commands, fields, model
+references, IDs, and literal user replies in examples **SHOULD** use code spans
+so exact operational text is visually distinct from prose.
+
 For small closed-choice prompts, the skill **MUST** number options, put the
 recommended option first, and make `1` the shortest accept response.
 
@@ -265,7 +271,7 @@ display-title scanning aids only.
 
 ### Run frames
 
-At the start of a public mode, the skill **SHOULD** emit a concise run frame
+At the start of a public mode, the skill **MUST** emit a concise run frame
 naming the resolved mode, model file, scope, rigor level when applicable,
 mutation policy, expected artifacts, and next user-visible gate.
 

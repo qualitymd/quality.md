@@ -247,12 +247,14 @@ The discovery inputs:
 1. Root area: Should this QUALITY.md model the whole current project, or a
    narrower area?
    Recommended: <default> (<confidence>)
+   Answer: Reply `yes` to accept, or name the narrower area/path.
    Why it matters: Sets the model's boundary — what this QUALITY.md evaluates and
    what falls outside it. Shapes the root Area, the Scope body, and the
    `quality-md` self-check Area's `source`.
 
 2. Domain: What kind of thing is this model evaluating?
    Recommended: <default> (<confidence>)
+   Answer: Reply `yes` to accept, or name the kind of thing being evaluated.
    Why it matters: Names the kind of thing under evaluation (software, document,
    dataset, research report, service, process, agent, and so on) so Factors and
    evidence use the right vocabulary. Shapes the Overview and the candidate Factor
@@ -296,33 +298,34 @@ The discovery inputs:
    acceptable floor that can be relied on but still warrants improvement, and
    `unacceptable` names quality below the floor.
 
-6-9. Human context checkpoint: Please correct this draft with short fragments.
+6-9. Human context checkpoint:
+
+   **Reply `ok` to accept this draft, or send short corrections for any line.**
+
+   **Answer:** Reply `ok`, or send terse corrections such as
+   `Primary users: ...`, `Outcome: ...`, or `Compliance: ...`.
+
    Anything left unresolved will be recorded as Unknown, an open question, or a
    low-confidence inference rather than confirmed fact.
 
-   Primary users and outcomes: <default> (<confidence>)
-   Why it matters: Who depends on the evaluated thing, and the outcomes that
-   matter, anchor the Needs section and justify which Factors are worth
-   evaluating.
+   | Item | Draft | Confidence | What to do |
+   | --- | --- | --- | --- |
+   | Primary users and outcomes | <default> | <confidence> | Confirm or correct who depends on the evaluated thing and which outcomes matter. |
+   | Maintainers and collaborators | <default> | <confidence> | Name human/agent collaborators, reviewers, or operators, or leave Unknown. |
+   | Other stakeholders | <default> | <confidence> | Confirm, remove, or add repo-invisible stakeholders. |
+   | Missing or not-agent-accessible context | <specific gaps> | <confidence> | Point to evidence, provide context now, or record as gaps. |
 
-   Maintainers and collaborators: <default> (<confidence>)
-   Why it matters: Who changes, operates, reviews, or relies on the work — human
-   and agent — shapes maintainability and operability Needs and who the model
-   must align.
+   Why it matters:
+   - Primary users and outcomes anchor the Needs section and justify which Factors
+     are worth evaluating.
+   - Maintainers and collaborators shape maintainability and operability Needs
+     and who the model must align.
+   - Other stakeholders surface Needs and Risks that source alone will not reveal.
+   - Missing context marks Unknowns and open questions instead of guessing.
 
-   Other stakeholders: <default> (<confidence>)
-   Why it matters: Stakeholders not visible in the repo surface Needs and Risks
-   that source alone will not reveal.
-
-   Missing or not-agent-accessible context: <specific gaps>
-   Why it matters: Recording what is not visible or agent-accessible keeps the
-   model honest — it marks Unknowns and open questions instead of guessing.
-
-   Most valuable corrections:
-   - Who is the evaluated thing for?
-   - What outcome matters most?
-   - Is the data, compliance, availability, or business-criticality context
-     sensitive or constrained?
+   Most valuable corrections: who the evaluated thing is for, what outcome matters
+   most, and whether data, compliance, availability, or business-criticality is
+   sensitive or constrained.
 ```
 
 The `<confidence>` on each recommended default is one of `Low`/`Med`/`High` with
@@ -427,11 +430,22 @@ authoring proceeds.
   aid; by the recap the user has already seen and confirmed each default.
 - A structured question-tool response completes discovery only; it does not
   satisfy this review gate.
-- End the recap with this prompt, or wording with materially equivalent meaning:
-  `How's this looking? If it feels right, say "looks good" and I'll write QUALITY.md. If anything else is on your mind, send it over too: priorities, worries, wording, edge cases, things the repo doesn't show, or anything that feels important.`
+- End the recap with a decision brief, or wording with materially equivalent
+  meaning:
+
+  ```text
+  **Write `QUALITY.md`?**
+
+  **Changes:** Create or update `<model path>` with the reviewed setup answers.
+  **Evidence/reason:** Repo scan plus confirmed discovery answers are enough to draft a first useful model.
+  **Recommended option:** Reply `looks good` to write `QUALITY.md`.
+  **Alternatives:** Send corrections; stop without writing; keep only the current notes.
+  **Done criterion / verification:** `qualitymd lint <model path>` passes, or lint findings are reported.
+  **Answer:** Reply `looks good` to write `QUALITY.md`, or send corrections.
+  ```
 - Give cross-cutting remarks and broader last-call context — priorities, worries,
   wording, edge cases, repo-invisible facts, or anything else important — a home
-  here.
+  here as secondary context, not the final call to action.
 - Incorporate any correction or additional review-gate context the user provides
   before authoring.
 - Do not require the user to add a comment to proceed; an explicit "looks good"
@@ -448,8 +462,10 @@ authoring content. `init` scaffolds the file through the CLI, so read the
 scaffolded file before authoring it. This satisfies the read-before-write guard
 in one pass instead of failing the first write and retrying.
 
-If the model file exists and setup would change it, use a decision brief before
-editing:
+If the model file exists and setup would change it, the final review decision
+brief satisfies this gate when it names updating the existing file and gives the
+user a non-mutating alternative. If the authoring plan changes after that review
+gate, use a fresh decision brief before editing:
 
 ```text
 **Update existing `QUALITY.md`?**

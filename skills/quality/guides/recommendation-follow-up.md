@@ -18,6 +18,22 @@ Offer only two explicit productive outcomes:
 1. Apply a confirmed recommendation option now.
 2. Hand off the recommendation to an issue tracker.
 
+If the user has not already chosen one, present them as numbered options with an
+explicit answer path:
+
+```text
+**What should happen with this recommendation?**
+
+1. Apply the confirmed recommendation option now. **Recommended** when the option
+   is clear and safe to perform locally.
+2. Hand off the recommendation to an issue tracker.
+
+**Answer:** Reply `1` or `2`.
+```
+
+Only mark option `1` as recommended when recommendation evidence supports local
+apply; otherwise list the two options without inventing a recommendation.
+
 If the user does not choose one of those outcomes, stop without changing
 evaluated source, `QUALITY.md`, `.quality/log/`, or external systems. Do not
 present defer, skip, or keep open as formal options.
@@ -53,6 +69,8 @@ scoped re-evaluation in a new numbered folder and report the before/after delta:
 **Verification:**
 **Rating movement:**          (when known)
 **Remaining gaps / limits:**
+**Not done:**                 (when a boundary matters)
+**Next:**
 ```
 
 If verification is incomplete, label the result as limited rather than fully
@@ -85,5 +103,18 @@ Prepare issue-ready text with:
 - links or paths to the generated report and recommendation artifact.
 
 Creating an external issue requires explicit user confirmation and available
-issue-tracker tooling. If tooling is unavailable or the user has not confirmed
-creation, stop after producing the issue-ready text.
+issue-tracker tooling. Use a decision brief before creating it:
+
+```text
+**Create external issue?**
+
+**Changes:** create <issue tracker item>
+**Evidence/reason:** recommendation evidence and issue-ready handoff text are prepared.
+**Recommended option:** create the issue when tooling and user confirmation are available.
+**Alternatives:** stop after issue-ready text; apply locally instead
+**Done criterion / verification:** issue link or ID is returned.
+**Not changed:** evaluated source, `QUALITY.md`, and `.quality/log/`
+```
+
+If tooling is unavailable or the user has not confirmed creation, stop after
+producing the issue-ready text.

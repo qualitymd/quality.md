@@ -3,7 +3,7 @@ name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
 compatibility: Requires qualitymd CLI >=0.13.0 <0.14.0.
 metadata:
-  version: "0.13.0"
+  version: "0.13.1"
   requires-qualitymd-cli: ">=0.13.0 <0.14.0"
 ---
 
@@ -118,10 +118,13 @@ Parse the user's request from free-form arguments:
   evaluates the uniquely matching Area or Factor. Two labels are
   `<area-label> <factor-label>`: resolve the Area first, then the Factor within
   that Area. When a Factor label exists in multiple Areas, ask exactly:
-  `What area do you want to evaluate <Factor> for?` and list human-readable Area
-  titles or names first. When a label matches both Area and Factor candidates,
-  ask a targeted clarification before rating. Continue to accept qualified model
-  references for exact addressing: `area:<area-path>` for an Area,
+  `What area do you want to evaluate <Factor> for?`, list numbered runnable Area
+  choices with human-readable titles or names first, include qualified model
+  references as secondary context when useful, and add an `Answer` line that
+  accepts a number. When a label matches both Area and Factor candidates, ask a
+  targeted clarification before rating; when candidates are enumerable, use
+  numbered runnable options and an `Answer` line. Continue to accept qualified
+  model references for exact addressing: `area:<area-path>` for an Area,
   `factor:<declaring-area-path>::<factor-path>` for a Factor, and
   `rating:<rating-level-id>` where rating references are needed. Accept
   unqualified references at fixed-type input edges such as `area webhooks` or
@@ -147,7 +150,10 @@ preferably with bold Markdown. Use bold labels such as
 `Important gaps`, and `Next` so the left edge is scannable; use emoji only as
 semantic markers, not decoration. For small closed-choice prompts, number the
 options, put the recommended option first, and make `1` the shortest accept
-response.
+response. When the user must answer, choose, approve, correct, or act, make the
+shortest acceptable response explicit with an `Answer` line or equivalent
+wording. Use code spans for concrete files, commands, fields, model references,
+IDs, and literal user replies in examples.
 
 At the start of a public workflow, emit a short run frame:
 

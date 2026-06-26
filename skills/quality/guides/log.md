@@ -1,5 +1,13 @@
 # /quality Runtime Guides Update Log
 
+## 2026-06-26
+
+- **Revision**: Updated [Recommendation Follow-Up](recommendation-follow-up.md)
+  for 0101 - Quality skill UX action clarity.
+  The guide now gives apply-vs-handoff outcome selection a numbered answer path,
+  requires a decision brief before external issue creation, and includes `Next`
+  plus boundary-sensitive `Not done` in recommendation result closeouts.
+
 ## 2026-06-25
 
 - **Revision**: Updated [Authoring QUALITY.md](authoring.md), the

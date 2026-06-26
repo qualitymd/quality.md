@@ -2,6 +2,23 @@
 
 ## 2026-06-26
 
+- **Revision**: Strengthened [Writing functional specs](guides/write-functional-specs.md)
+  and [Working with change cases](guides/work-with-change-cases.md) for
+  [0100 - Strengthen spec requirement standards](../changes/0100-strengthen-spec-requirement-standards.md).
+  Added a set-level requirement check, an Assumptions & dependencies element,
+  normative/informational reference classification, an Unambiguous quality-bar
+  item with active-voice/subject guidance, an optional EARS statement template,
+  and a Draft→Design validation check — aligning the guides with requirements-
+  engineering practice (ISO/IEC/IEEE 29148) and EARS.
+
+- **Revision**: Updated [Writing functional specs](guides/write-functional-specs.md),
+  [Working with change cases](guides/work-with-change-cases.md), and
+  [Writing design docs](guides/write-design-docs.md). The guides now distinguish
+  durable functional specs from change-case delta specs, add a shared requirement
+  quality bar, require a Draft-to-Design requirements review for Change Cases,
+  and make design docs explicitly answer spec requirement groups without
+  restating normative text.
+
 - **Revision**: Updated
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
   [0099 - Closed-choice setup UX](../changes/archive/0099-closed-choice-setup-ux.md).

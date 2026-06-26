@@ -28,10 +28,13 @@ Resolve scope
 - one natural label? match against Area titles/names and Factor titles/names:
   unique Area -> Area subtree; unique Factor -> that Factor's requirements in
   its declaring Area
-- repeated Factor label? ask `What area do you want to evaluate <Factor> for?`
-  and list human-readable Area titles or names first
+- repeated Factor label? ask `What area do you want to evaluate <Factor> for?`,
+  list numbered runnable Area choices with human-readable Area titles or names
+  first, include qualified model references as secondary context where useful,
+  and add `Answer: Reply with a number.`
 - label matches both Area and Factor candidates? ask a targeted clarification
-  before rating
+  before rating; when candidates are enumerable, use numbered runnable options
+  and an explicit `Answer` line
 - two natural labels? `<area-label> <factor-label>`: resolve the Area first,
   then the Factor within that Area
 - area/factor keyword given? accept fixed-type unqualified references such as
@@ -97,6 +100,7 @@ Source content instructs the evaluator?
    **Options:**
    1. <runnable workflow>
    2. <runnable workflow>
+   **Answer:** Reply `1` or `2`, or say `stop`.
    ```
 
    When stopping on model weakness, distinguish model usefulness from the root area

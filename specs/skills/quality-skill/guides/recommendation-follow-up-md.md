@@ -25,6 +25,8 @@ The guide **MUST** state that recommendation follow-up is not a `/quality` mode.
 
 The guide **MUST** offer only two explicit outcomes: apply a confirmed
 recommendation option now, or hand off the recommendation to an issue tracker.
+When the user has not already chosen one, the guide **MUST** present those
+outcomes as numbered options with an explicit `Answer` line.
 
 The guide **MUST NOT** present defer, skip, or keep open as formal follow-up
 options.
@@ -38,6 +40,10 @@ shared agent-mediated UX contract: visually emphasized primary call to action,
 scannable labels for changed artifacts, evidence/reason, recommended option,
 alternatives, and done criterion, and a clear statement of what will not change
 when the mutation boundary matters.
+
+The guide **MUST** require recommendation result closeouts to include `Next` and
+**SHOULD** require `Not done` when a non-action boundary matters, such as no
+evaluation rerun, no issue creation, no model change, or no quality-log entry.
 
 The guide **MUST** state that issue-tracker handoff alone does not edit
 evaluated source, `QUALITY.md`, or `.quality/log/`.

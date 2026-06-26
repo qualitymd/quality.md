@@ -2,6 +2,52 @@
 
 ## 2026-06-26
 
+- **Done**: Implemented and archived
+  [0105 - Evaluation v2 report subject links](archive/0105-evaluation-v2-report-subject-links.md).
+  Evaluation v2 Area and Factor report tables now link generated human report
+  targets from the row subject cells instead of repeated `Details` columns, while
+  preserving explicit data links, report paths, machine-readable outputs, and
+  existing summary/status columns. Updated the durable Evaluation v2 report-tree
+  spec, reconciled the v2 sketch examples, and added focused report tests.
+
+- **Done**: Implemented and archived
+  [0104 - Evaluation v2 report header navigation](archive/0104-evaluation-v2-report-header-navigation.md).
+  Evaluation v2 Markdown reports now start with labeled `Area:` trails, Factor
+  reports add Factor-only `Factor:` trails, standalone `Breadcrumb:` and parent
+  header links are removed, and report headers use compact report-specific
+  summary tables. Updated the durable Evaluation v2 report-tree spec, reconciled
+  the v2 sketch examples, and added focused report tests.
+
+- **Done**: Archived
+  [0100 - Strengthen spec requirement standards (29148 + EARS)](archive/0100-strengthen-spec-requirement-standards.md).
+  The guide changes were already implemented and verified; moved the parent case
+  and child folder into `changes/archive/` and removed it from the open-case
+  index.
+
+- **Design**: Created
+  [0105 - Evaluation v2 report subject links](archive/0105-evaluation-v2-report-subject-links.md)
+  with its child [index](archive/0105-evaluation-v2-report-subject-links/index.md),
+  [functional spec](archive/0105-evaluation-v2-report-subject-links/spec.md),
+  and [design doc](archive/0105-evaluation-v2-report-subject-links/design.md).
+  The case
+  requires Evaluation v2 Area and Factor report tables to move generated human
+  report links from repeated `Details` columns into the row subject cells while
+  preserving data links, report paths, machine-readable outputs, existing
+  summary/status columns, and the separate header-navigation scope of 0104.
+  Implementation has not started.
+
+- **Design**: Created
+  [0104 - Evaluation v2 report header navigation](archive/0104-evaluation-v2-report-header-navigation.md)
+  with its child [index](archive/0104-evaluation-v2-report-header-navigation/index.md),
+  [functional spec](archive/0104-evaluation-v2-report-header-navigation/spec.md),
+  and [design doc](archive/0104-evaluation-v2-report-header-navigation/design.md).
+  The case
+  replaces generic Evaluation v2 report `Breadcrumb:` and `Parent` header links
+  with labeled `Area:` trails and Factor-only `Factor:` trails, keeps
+  Requirement reports free of Factor breadcrumbs, and specifies compact
+  report-specific summary headers. Implementation and durable report-spec
+  updates have not started.
+
 - **Done**: Created, specced, designed, implemented, and archived
   [0103 - Evaluation v2 report enum display titles](archive/0103-v2-report-enum-display-titles.md).
   Evaluation v2 Markdown reports now render CLI-owned statuses, confidence
@@ -21,6 +67,68 @@
   stable Rating Level IDs. Updated the durable Evaluation v2 report-tree spec and
   focused report tests. Verified with targeted evaluation tests, full Go tests,
   and `mise run fmt-md-check`.
+
+- **Done**: Implemented and archived
+  [0101 - Quality skill UX action clarity](archive/0101-quality-skill-ux-action-clarity.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Updated the parent `/quality` interaction contract,
+  setup, evaluate, update, and recommendation follow-up durable specs, bundled
+  runtime skill guidance, and skill/spec logs so prompts expose explicit CTAs,
+  shortest answer paths, numbered ambiguity and outcome choices, decision briefs,
+  progress, closeout `Next` fields, and code-span precision. No CLI, Go,
+  format-schema, rating, roll-up, evaluation-record, or report behavior changed.
+  Verified with `mise run fmt-md-check`.
+
+- **In-Progress**: Advanced
+  [0101 - Quality skill UX action clarity](archive/0101-quality-skill-ux-action-clarity.md)
+  through `Design` to `In-Progress`; added the
+  [design doc](archive/0101-quality-skill-ux-action-clarity/design.md). The
+  design patches durable skill specs first, mirrors the concrete prompt shapes
+  into runtime guidance, and verifies with targeted searches plus Markdown
+  formatting.
+
+- **Draft**: Created
+  [0101 - Quality skill UX action clarity](archive/0101-quality-skill-ux-action-clarity.md)
+  with its child [index](archive/0101-quality-skill-ux-action-clarity/index.md)
+  and [functional spec](archive/0101-quality-skill-ux-action-clarity/spec.md).
+  The case
+  turns the reviewed agent-mediated UX gaps in `/quality` setup, evaluate,
+  update, and recommendation follow-up into implementation requirements:
+  explicit checkpoint and prompt CTAs, shortest answer paths, numbered ambiguity
+  and outcome choices, decision briefs before `QUALITY.md` writes and external
+  issue creation, update run-frame/progress sequencing, result closeout `Next`
+  fields, and code-span precision for literal artifacts. It accounts for the
+  current agent-mediated UX, functional-spec, and change-case guide updates and
+  does not start implementation.
+
+- **In-Review**: Advanced
+  [0100 - Strengthen spec requirement standards (29148 + EARS)](archive/0100-strengthen-spec-requirement-standards.md)
+  to `In-Review` (no design doc needed). Edited
+  [Writing functional specs](../docs/guides/write-functional-specs.md) — added a
+  set-level **The requirement set** check (§5.2.6), an **Assumptions &
+  dependencies** Shape element (§9.6.8), normative/informational reference
+  classification (§9.2.4), an **Unambiguous** quality-bar item plus
+  active-voice/subject guidance and a BCP 14-vs-`shall` note (§5.2.4), and an
+  optional EARS **statement template**, each with brief provenance — and
+  [Working with change cases](../docs/guides/work-with-change-cases.md) — added
+  the Draft→Design validation check. No code/CLI/skill/format change. Reconciled
+  the Affected artifacts list and updated the bundle [index](index.md). Verified
+  with `mise run fmt-md-check`. Not committed or archived.
+
+- **Draft**: Created
+  [0100 - Strengthen spec requirement standards (29148 + EARS)](archive/0100-strengthen-spec-requirement-standards.md)
+  (`status: Draft`) with its [functional spec](archive/0100-strengthen-spec-requirement-standards/spec.md)
+  and [index](archive/0100-strengthen-spec-requirement-standards/index.md). The case
+  patches [Writing functional specs](../docs/guides/write-functional-specs.md) and
+  [Working with change cases](../docs/guides/work-with-change-cases.md) to close
+  requirement-quality gaps found against ISO/IEC/IEEE 29148 — a set-level
+  requirement check, a Draft→Design validation gate, an Assumptions &
+  dependencies element, normative/informational reference classification, an
+  Unambiguous bar item plus language guidance — and to add an optional EARS
+  statement template. `SPECIFICATION.md` and the QUALITY.md format are out of
+  scope; no code/CLI/skill change. Added the entry to the bundle
+  [index](index.md). No durable docs edited yet.
 
 - **Done**: Implemented and archived
   [0099 - Closed-choice setup UX](archive/0099-closed-choice-setup-ux.md);

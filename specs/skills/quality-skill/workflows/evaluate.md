@@ -97,7 +97,9 @@ It **SHOULD** stop before rating when Requirements are too vague to bind evidenc
 to a rating or when available evidence cannot distinguish adjacent Rating
 Levels. A stop response **MUST** distinguish model usefulness, evaluated-source
 quality, and evaluation-history status. It **MUST** keep the blocking reason and
-best next step scannable, and offer concrete runnable options when available.
+best next step scannable, offer concrete runnable options when available, and
+include an explicit answer path such as replying with an option number or saying
+`stop`.
 
 `evaluate` **SHOULD** show visible progress at phase boundaries where the user's
 mental model would otherwise drift: after preflight, after history/scope

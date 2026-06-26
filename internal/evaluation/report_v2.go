@@ -344,52 +344,48 @@ func renderV2AreaReport(spec *model.Spec, artifacts *v2Artifacts, area *v2AreaAr
 	local := scopedMap(area.Analysis, "localAnalysis")
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
 	var b strings.Builder
-	writeV2Breadcrumbs(&b, spec, area.ID, reportPath)
+	writeV2AreaTrail(&b, spec, area.ID, reportPath)
 	b.WriteString("# " + title + "\n\n")
-	b.WriteString("| Field | Value |\n")
-	b.WriteString("| --- | --- |\n")
-	b.WriteString("| Area | " + title + " |\n")
-	b.WriteString("| Path | `" + areaDisplayPath(area.ID) + "` |\n")
-	b.WriteString("| Overall Rating | " + markdownCell(v2RatingLabel(spec, overall)) + " |\n")
-	b.WriteString("| Local Rating | " + markdownCell(v2RatingLabel(spec, local)) + " |\n")
-	b.WriteString("| Confidence | " + markdownCell(v2ConfidencePair(overall, local)) + " |\n")
-	b.WriteString("| Data | " + reportLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json"), "analysis") + " |\n\n")
+	b.WriteString("Path: `" + areaDisplayPath(area.ID) + "`\n\n")
+	b.WriteString("| Overall | Local | Confidence | Data |\n")
+	b.WriteString("| --- | --- | --- | --- |\n")
+	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json"), "analysis") + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(v2Summary(overall))
 	b.WriteString("\n\n## Rating Drivers\n\n")
 	writeV2DriversTable(&b, spec, overall)
 	b.WriteString("## Factors\n\n")
-	b.WriteString("| Factor | Path | Rating | + Sub-Factors | Sub-Factors | Details |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| Factor | Path | Rating | + Sub-Factors | Sub-Factors |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	if factors := artifacts.rootFactorsForArea(area.ID); len(factors) == 0 {
-		b.WriteString("| (no local Factors) |  |  |  |  |  |\n\n")
+		b.WriteString("| (no local Factors) |  |  |  |  |\n\n")
 	} else {
 		for _, factor := range factors {
 			factorOverall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
-			b.WriteString("| " + markdownCell(factorTitle(spec, factor.ID)) + " | `" + factorDisplayPath(factor.ID) + "` | " + markdownCell(v2RatingLabel(spec, factorOverall)) + " | " + markdownCell(v2BoolLabel(len(artifacts.childFactors(factor.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.childFactors(factor.ID), spec, reportPath)) + " | " + reportLink(reportPath, factorReportPath(factor.ID), "details") + " |\n")
+			b.WriteString("| " + reportLink(reportPath, factorReportPath(factor.ID), factorTitle(spec, factor.ID)) + " | `" + factorDisplayPath(factor.ID) + "` | " + markdownCell(v2RatingLabel(spec, factorOverall)) + " | " + markdownCell(v2BoolLabel(len(artifacts.childFactors(factor.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.childFactors(factor.ID), spec, reportPath)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
 	b.WriteString("## Sub-Areas\n\n")
-	b.WriteString("| Area | Path | Rating | + Sub-Areas | Factors | Details |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| Area | Path | Rating | + Sub-Areas | Factors |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	if children := artifacts.childAreas(area.ID); len(children) == 0 {
-		b.WriteString("| (no child Areas) |  |  |  |  |  |\n\n")
+		b.WriteString("| (no child Areas) |  |  |  |  |\n\n")
 	} else {
 		for _, child := range children {
 			childOverall := scopedMap(child.Analysis, "localAndDescendantAnalysis")
-			b.WriteString("| " + markdownCell(areaTitle(spec, child.ID)) + " | `" + areaDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childOverall)) + " | " + markdownCell(v2BoolLabel(len(artifacts.childAreas(child.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.rootFactorsForArea(child.ID), spec, reportPath)) + " | " + reportLink(reportPath, areaReportPath(child.ID), "details") + " |\n")
+			b.WriteString("| " + reportLink(reportPath, areaReportPath(child.ID), areaTitle(spec, child.ID)) + " | `" + areaDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childOverall)) + " | " + markdownCell(v2BoolLabel(len(artifacts.childAreas(child.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.rootFactorsForArea(child.ID), spec, reportPath)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
 	b.WriteString("## Requirements\n\n")
-	b.WriteString("| Requirement | Rating | Status | Factors | Details |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
+	b.WriteString("| Requirement | Rating | Status | Factors |\n")
+	b.WriteString("| --- | --- | --- | --- |\n")
 	if requirements := artifacts.requirementsForArea(area.ID); len(requirements) == 0 {
-		b.WriteString("| (no local Requirements) |  |  |  |  |\n\n")
+		b.WriteString("| (no local Requirements) |  |  |  |\n\n")
 	} else {
 		for _, req := range requirements {
-			b.WriteString("| " + markdownCell(requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " | " + reportLink(reportPath, requirementReportPath(req.ID), "details") + " |\n")
+			b.WriteString("| " + reportLink(reportPath, requirementReportPath(req.ID), requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
@@ -403,46 +399,37 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
 	title := factorTitle(spec, factor.ID)
 	var b strings.Builder
-	writeV2Breadcrumbs(&b, spec, factor.ID.DeclaringArea, reportPath)
-	b.WriteString("Parent Area: " + reportLink(reportPath, areaReportPath(factor.ID.DeclaringArea), areaTitle(spec, factor.ID.DeclaringArea)) + "\n\n")
-	if len(factor.ID.Path) > 1 {
-		parent := factorID{DeclaringArea: factor.ID.DeclaringArea, Path: factor.ID.Path[:len(factor.ID.Path)-1]}
-		b.WriteString("Parent Factor: " + reportLink(reportPath, factorReportPath(parent), factorTitle(spec, parent)) + "\n\n")
-	}
+	writeV2AreaTrail(&b, spec, factor.ID.DeclaringArea, reportPath)
+	writeV2FactorTrail(&b, spec, factor.ID, reportPath)
 	b.WriteString("# " + title + "\n\n")
-	b.WriteString("| Field | Value |\n")
-	b.WriteString("| --- | --- |\n")
-	b.WriteString("| Factor | " + markdownCell(title) + " |\n")
-	b.WriteString("| Path | `" + factorDisplayPath(factor.ID) + "` |\n")
-	b.WriteString("| Local + Descendant Rating | " + markdownCell(v2RatingLabel(spec, overall)) + " |\n")
-	b.WriteString("| Local Rating | " + markdownCell(v2RatingLabel(spec, local)) + " |\n")
-	b.WriteString("| Status | " + markdownCell(v2AnalysisStatusPair(overall, local)) + " |\n")
-	b.WriteString("| Confidence | " + markdownCell(v2ConfidencePair(overall, local)) + " |\n")
-	b.WriteString("| Data | " + reportLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json"), "analysis") + " |\n\n")
+	b.WriteString("Path: `" + factorDisplayPath(factor.ID) + "`\n\n")
+	b.WriteString("| Overall | Local | Status | Confidence | Data |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
+	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2AnalysisStatusPair(overall, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json"), "analysis") + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(v2Summary(overall))
 	b.WriteString("\n\n## Rating Drivers\n\n")
 	writeV2DriversTable(&b, spec, overall)
 	b.WriteString("## Requirements\n\n")
-	b.WriteString("| Requirement | Rating | Status | Details |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
+	b.WriteString("| Requirement | Rating | Status |\n")
+	b.WriteString("| --- | --- | --- |\n")
 	if requirements := artifacts.requirementsForFactor(factor.ID); len(requirements) == 0 {
-		b.WriteString("| (no direct Requirements) |  |  |  |\n\n")
+		b.WriteString("| (no direct Requirements) |  |  |\n\n")
 	} else {
 		for _, req := range requirements {
-			b.WriteString("| " + markdownCell(requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + reportLink(reportPath, requirementReportPath(req.ID), "details") + " |\n")
+			b.WriteString("| " + reportLink(reportPath, requirementReportPath(req.ID), requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " |\n")
 		}
 		b.WriteString("\n")
 	}
 	b.WriteString("## Child Factors\n\n")
-	b.WriteString("| Factor | Path | Rating | Details |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
+	b.WriteString("| Factor | Path | Rating |\n")
+	b.WriteString("| --- | --- | --- |\n")
 	if children := artifacts.childFactors(factor.ID); len(children) == 0 {
-		b.WriteString("| (no child Factors) |  |  |  |\n\n")
+		b.WriteString("| (no child Factors) |  |  |\n\n")
 	} else {
 		for _, child := range children {
 			childOverall := scopedMap(child.Analysis, "localAndDescendantAnalysis")
-			b.WriteString("| " + markdownCell(factorTitle(spec, child.ID)) + " | `" + factorDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childOverall)) + " | " + reportLink(reportPath, factorReportPath(child.ID), "details") + " |\n")
+			b.WriteString("| " + reportLink(reportPath, factorReportPath(child.ID), factorTitle(spec, child.ID)) + " | `" + factorDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childOverall)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
@@ -454,19 +441,12 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 func renderV2RequirementReport(spec *model.Spec, artifacts *v2Artifacts, req *v2RequirementArtifacts, reportPath string) string {
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
-	writeV2Breadcrumbs(&b, spec, req.ID.DeclaringArea, reportPath)
-	b.WriteString("Parent Area: " + reportLink(reportPath, areaReportPath(req.ID.DeclaringArea), areaTitle(spec, req.ID.DeclaringArea)) + "\n\n")
+	writeV2AreaTrail(&b, spec, req.ID.DeclaringArea, reportPath)
 	b.WriteString("# " + title + "\n\n")
-	b.WriteString("| Field | Value |\n")
-	b.WriteString("| --- | --- |\n")
-	b.WriteString("| Requirement | " + markdownCell(title) + " |\n")
-	b.WriteString("| Requirement Name | `" + markdownCell(req.ID.Name) + "` |\n")
-	b.WriteString("| Rating | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " |\n")
-	b.WriteString("| Rating Status | " + markdownCell(ratingStatusTitle(v2String(req.Rating, "status"))) + " |\n")
-	b.WriteString("| Assessment Status | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " |\n")
-	b.WriteString("| Factors | " + markdownCell(requirementFactorLinks(req, reportPath)) + " |\n")
-	b.WriteString("| Confidence | " + markdownCell(confidenceTitle(v2String(req.Rating, "confidence"))+" / "+confidenceTitle(v2String(req.Assessment, "confidence"))) + " |\n")
-	b.WriteString("| Data | " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json"), "assessment") + ", " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json"), "rating") + " |\n\n")
+	b.WriteString("Name: `" + markdownCell(req.ID.Name) + "`\n\n")
+	b.WriteString("| Rating | Assessment | Factors | Confidence | Data |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
+	b.WriteString("| " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " | " + markdownCell(confidenceTitle(v2String(req.Rating, "confidence"))+" / "+confidenceTitle(v2String(req.Assessment, "confidence"))) + " | " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json"), "assessment") + ", " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json"), "rating") + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	if summary := v2String(req.Assessment, "evidenceSummary"); summary != "" {
 		b.WriteString(summary)
@@ -657,17 +637,22 @@ func (a *v2Artifacts) requirementsForFactor(factor factorID) []*v2RequirementArt
 	return out
 }
 
-func writeV2Breadcrumbs(b *strings.Builder, spec *model.Spec, areaID []string, reportPath string) {
+func writeV2AreaTrail(b *strings.Builder, spec *model.Spec, areaID []string, reportPath string) {
 	parts := []string{reportLink(reportPath, areaReportPath(nil), areaTitle(spec, nil))}
 	for i := range areaID {
 		id := areaID[:i+1]
 		parts = append(parts, reportLink(reportPath, areaReportPath(id), areaTitle(spec, id)))
 	}
-	b.WriteString("Breadcrumb: " + strings.Join(parts, " / ") + "\n\n")
-	if len(areaID) > 0 {
-		parent := areaID[:len(areaID)-1]
-		b.WriteString("Parent Area: " + reportLink(reportPath, areaReportPath(parent), areaTitle(spec, parent)) + "\n\n")
+	b.WriteString("Area: " + strings.Join(parts, " / ") + "\n\n")
+}
+
+func writeV2FactorTrail(b *strings.Builder, spec *model.Spec, factor factorID, reportPath string) {
+	parts := make([]string, 0, len(factor.Path))
+	for i := range factor.Path {
+		id := factorID{DeclaringArea: factor.DeclaringArea, Path: factor.Path[:i+1]}
+		parts = append(parts, reportLink(reportPath, factorReportPath(id), factorTitle(spec, id)))
 	}
+	b.WriteString("Factor: " + strings.Join(parts, " / ") + "\n\n")
 }
 
 func writeV2DriversTable(b *strings.Builder, spec *model.Spec, scope map[string]any) {

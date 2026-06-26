@@ -3,6 +3,15 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0104 - Evaluation v2 report header navigation](../changes/archive/0104-evaluation-v2-report-header-navigation.md)
+  and
+  [0105 - Evaluation v2 report subject links](../changes/archive/0105-evaluation-v2-report-subject-links.md).
+  Updated the Evaluation v2 report-tree spec so generated Markdown reports use
+  labeled `Area:` trails, Factor-only `Factor:` trails, compact report-specific
+  headers, and linked subject cells instead of generic breadcrumbs, parent
+  header links, and repeated generated-report `Details` columns.
+
+- **Revision**: Implemented durable spec changes for
   [0099 - Closed-choice setup UX](../changes/archive/0099-closed-choice-setup-ux.md).
   Updated the parent
   [`/quality` skill](skills/quality-skill/quality-skill.md) interaction

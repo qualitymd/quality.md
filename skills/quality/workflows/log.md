@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [setup](setup.md), [evaluate](evaluate.md), and
+  [update](update.md) workflows for 0101 - Quality skill UX action clarity.
+  Setup now gives open-ended discovery questions explicit answer paths, presents
+  the human context checkpoint as a correction-first table, and uses a decision
+  brief before writing `QUALITY.md`; evaluate stop and ambiguity prompts now
+  include numbered response paths; update now starts with a run frame and reports
+  version-inspection progress before confirmation.
+
 - **Revision**: Updated the [setup](setup.md) workflow for 0096 - Setup intro
   preview.
   Setup now opens with short educational orientation, runs the first context pass

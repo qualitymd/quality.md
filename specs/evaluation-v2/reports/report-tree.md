@@ -27,10 +27,18 @@ analysis, or recommendations.
 
 ## Navigation
 
-Every report **MUST** start with linked breadcrumbs from the root Area to the
-current report subject.
+Every report **MUST** start with an `Area:` navigation trail whose elements link
+from the root Area report through the current Area report or owning Area report.
 
-Every non-root report **MUST** include a parent link.
+Factor reports **MUST** include a `Factor:` navigation trail after the `Area:`
+trail. The `Factor:` trail **MUST** link each Factor ancestor and the current
+Factor to its generated Factor report.
+
+Requirement reports **MUST NOT** render a `Factor:` breadcrumb or choose one
+attached Factor as a navigation parent.
+
+Reports **MUST NOT** render standalone `Breadcrumb:`, `Parent Area:`,
+`Parent Factor:`, or `Parent:` header lines.
 
 Area reports **MUST** link to local root Factor reports, local Requirement
 reports, and direct child Area reports.
@@ -40,6 +48,16 @@ when present, child Factor reports, and direct Requirement reports.
 
 Requirement reports **MUST** link to their owning Area report and every attached
 Factor report.
+
+Report tables **MUST** render the row subject as the generated human report link
+when that row has exactly one generated human report target. Reports **MUST**
+keep explicit `Data` links for machine-readable payloads instead of moving those
+links onto subject labels.
+
+> Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
+> links make report navigation land on the named thing readers naturally open.
+> Machine data links remain explicit because they target structured payloads, not
+> generated human report pages. — 0104, 0105
 
 ## Area Reports
 
@@ -61,8 +79,10 @@ Area reports **MUST** include:
 Factor reports **MUST** include:
 
 - owning Area link;
+- Factor navigation trail;
 - Factor title and path;
-- local and local-and-descendant ratings;
+- overall and local ratings, where `Overall` is the Factor
+  `localAndDescendantAnalysis` rating;
 - local and local-and-descendant statuses;
 - confidence;
 - data links;
@@ -91,6 +111,16 @@ Requirement reports **MUST** include:
 ## Rendering Rules
 
 Reports **MUST** render empty tables with explicit empty-state rows.
+
+Report headers **SHOULD** use report-specific summary tables instead of a
+generic `Field | Value` key-value table. Area headers should summarize
+`Overall`, `Local`, `Confidence`, and `Data`; Factor headers should summarize
+`Overall`, `Local`, `Status`, `Confidence`, and `Data`; Requirement headers
+should summarize `Rating`, `Assessment`, `Factors`, `Confidence`, and `Data`.
+
+> Rationale: the title and path/name line identify the report subject, so the
+> header table should prioritize state and navigation rather than repeat the
+> subject kind as metadata. — 0104
 
 Reports **MUST** render selected Rating Levels with the Rating Level `title`
 resolved from the run's `model.md` snapshot, falling back to the stable Rating

@@ -36,18 +36,30 @@ Verify
 
 ## Procedure
 
-1. Read the loaded `SKILL.md` frontmatter. Record `metadata.version` and
+1. Emit the run frame before tool inspection:
+
+   ```text
+   **/quality run**
+   - **Mode:** update
+   - **Model file:** n/a
+   - **Scope:** installed `/quality` skill and `qualitymd` CLI compatibility
+   - **Mutation:** installed tooling only, after confirmation
+   - **Artifacts:** none in the current project by default
+   - **Next gate:** version inspection, update plan, confirmation, verification
+   ```
+
+2. Read the loaded `SKILL.md` frontmatter. Record `metadata.version` and
    `metadata.requires-qualitymd-cli` when present. If either is missing, report
    that skill release metadata is unavailable and continue with the best
    available CLI facts.
-2. Inspect the CLI:
+3. Inspect the CLI:
    - Prefer `qualitymd version --json`.
    - Fall back to `qualitymd --version` when structured output is unavailable.
    - If the CLI is missing, classify the CLI action as install/repair.
-3. Run `qualitymd update --check` when available. Use its recommended action
+4. Run `qualitymd update --check` when available. Use its recommended action
    and install-method facts for the CLI portion of the plan. If unavailable,
    fall back to documented install or package-manager guidance.
-4. Check skill update support through the Agent Skills installer only when a
+5. Check skill update support through the Agent Skills installer only when a
    supported check/update command is available in the current environment. Do
    not guess at private installer state. If unsupported, report that skill
    update automation is unavailable and show the manual reinstall command:
@@ -56,7 +68,19 @@ Verify
    npx skills add qualitymd/quality.md
    ```
 
-5. Present a concise update plan before mutation. Make the primary call to
+6. Present a concise progress/status block after version inspection and before
+   the mutation gate. Keep it factual and user-facing:
+
+   ```text
+   **Update status**
+
+   **Skill:** <current version and required CLI range, or unavailable>
+   **CLI:** <current version and in-range status, or missing>
+   **Plan needed:** <none | skill | CLI | both | manual remediation>
+   **Next:** review the update plan before anything changes.
+   ```
+
+7. Present a concise update plan before mutation. Make the primary call to
    action visually clear and use bold labels for the plan fields when the
    surface supports Markdown. Include:
    - current skill version and required CLI range when known;
@@ -65,7 +89,7 @@ Verify
    - exact owner command(s) that would be run, or manual commands when apply is
      unsupported;
    - restart/reload expectation if the skill changes.
-6. Ask for explicit confirmation before applying any update action using a
+8. Ask for explicit confirmation before applying any update action using a
    decision brief:
 
    ```text
@@ -80,17 +104,17 @@ Verify
 
    The brief must name which owner command performs each mutation and how
    compatibility will be checked afterward.
-7. If confirmed, delegate only to owner commands:
+9. If confirmed, delegate only to owner commands:
    - CLI: `qualitymd update` when available and applicable, or the
      package-manager/install command recommended by `qualitymd update --check`.
    - Skill: the Agent Skills installer/package-manager command when available.
    - Otherwise stop with the manual command.
-8. After a CLI action, re-run the CLI version check and verify the visible CLI
-   satisfies the area `metadata.requires-qualitymd-cli` range when known.
-9. After a skill action, tell the user the current agent session may still be
-   using previously loaded skill instructions and may need restart, reload, or a
-   new session before the updated skill is active.
-10. Report the update closeout status-first: inspected versions, planned or
+10. After a CLI action, re-run the CLI version check and verify the visible CLI
+    satisfies the area `metadata.requires-qualitymd-cli` range when known.
+11. After a skill action, tell the user the current agent session may still be
+    using previously loaded skill instructions and may need restart, reload, or a
+    new session before the updated skill is active.
+12. Report the update closeout status-first: inspected versions, planned or
     applied actions, confirmation status, verification result, remaining restart
     or manual remediation step, and the recommended next action.
 

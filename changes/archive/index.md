@@ -420,6 +420,18 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   cost labels for risk discovery and mapping them to risk-tolerance values
   internally; docs/spec/skill guidance only, no CLI/Go or format-spec change
   (`Done`).
+- [0100 — Strengthen spec requirement standards (29148 + EARS)](0100-strengthen-spec-requirement-standards.md) -
+  patches the functional-spec and change-case guides with set-level requirement
+  checks, assumptions/dependencies, normative/informational references,
+  unambiguous requirement language, and an optional EARS statement template
+  (`Done`).
+- [0101 — Quality skill UX action clarity](0101-quality-skill-ux-action-clarity.md) -
+  aligns `/quality` setup, evaluate, update, and recommendation follow-up prompt
+  shapes with the current agent-mediated UX guide: explicit CTAs, shortest
+  answer paths, numbered ambiguity and outcome choices, decision briefs before
+  `QUALITY.md` writes and external issue creation, update run-frame/progress
+  sequencing, result closeout `Next` fields, and code-span precision; docs/spec/
+  skill guidance only, no CLI/Go or format-spec change (`Done`).
 - [0102 — Evaluation v2 report rating titles](0102-v2-report-rating-titles.md) -
   restores Rating Level title rendering in Evaluation v2 Markdown reports while
   preserving stable Rating Level IDs in routine JSON, `EvaluationOutputResult`,
@@ -429,3 +441,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   kinds, limits, unknowns, and known finding classifications through typed human
   display titles with semantic emoji in Markdown reports while preserving raw
   values in routine JSON, `EvaluationOutputResult`, and build receipts (`Done`).
+- [0104 — Evaluation v2 report header navigation](0104-evaluation-v2-report-header-navigation.md) -
+  replaces generic Evaluation v2 report breadcrumbs and parent links with labeled
+  `Area:` trails, Factor-only `Factor:` trails, and compact report-specific
+  summary headers (`Done`).
+- [0105 — Evaluation v2 report subject links](0105-evaluation-v2-report-subject-links.md) -
+  moves generated report navigation from repeated `Details` columns into linked
+  row subject cells in Evaluation v2 Area and Factor report tables (`Done`).

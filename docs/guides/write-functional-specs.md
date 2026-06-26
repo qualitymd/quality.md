@@ -12,6 +12,19 @@ A **functional spec** describes *what* a piece of `qualitymd` does and the
 requirements it must meet — not how it's implemented. Our specs live in the
 [`specs/`](../../specs/index.md) bundle, authored as [OKF](work-with-okf.md) concepts.
 
+The same requirements bar applies in two contexts:
+
+- **Durable specs** in `specs/` and `SPECIFICATION.md` are the cumulative source
+  of truth for current behavior. They carry enduring rationale and stable
+  contracts a future maintainer can evaluate without reading archived changes.
+- **Change-case specs** in `changes/NNNN-*/spec.md` are delta contracts. They say
+  what this change must alter, prove the requirements are good enough to design
+  against, and map any durable spec edits through
+  [Durable spec changes](#durable-spec-changes).
+
+The principles below apply to both. Only the job-specific sections call out
+extra obligations for one context.
+
 ## Shape
 
 Keep specs prose-first and skimmable, and order them for a reader, not a parser:
@@ -23,7 +36,10 @@ out of order. The elements below are a palette, not a checklist (see
 - **A title.**
 - **A companion note** — what this spec governs, and a link to the source of
   truth it defers to (the format itself lives in
-  [`SPECIFICATION.md`](../../SPECIFICATION.md)).
+  [`SPECIFICATION.md`](../../SPECIFICATION.md)). Distinguish **normative**
+  references — the binding sources of truth this spec defers to, whose rules it
+  inherits — from **informational** ones that supply only context; a reader
+  should be able to tell which links *bind*.
 - **Background / Motivation** — a short prose section near the top stating the
   big-picture *why*: the problem or failure-mode the capability addresses, and
   any spec-scale lessons worth carrying forward. This is distinct from **Scope**
@@ -47,6 +63,13 @@ out of order. The elements below are a palette, not a checklist (see
   **deferred** (real, but not yet — recorded so it isn't re-litigated) and
   **non-goals** (out of scope by design, e.g. *the CLI never calls a model*).
   Naming a non-goal kills the recurring "should it also…?" before it's asked.
+- **Assumptions & dependencies** — external facts the requirements rest on that
+  this spec does not control: another component's behavior, a file or folder
+  layout, an environment guarantee. List them when a *change* to one would
+  invalidate a requirement here. This is distinct from **Scope** (what's covered)
+  and **Background** (the *why*): an assumption is a load-bearing fact that, if it
+  shifts, should flag the requirements that depend on it rather than let them fail
+  silently.
 - **Requirements** — the normative content (see below).
 - **Sub-specs** — split detail into child concepts when a spec grows or when a
   durable behavior is independently reviewable. The parent carries the shared
@@ -77,6 +100,99 @@ Do not add BCP 14 keywords just to make a sentence feel spec-like. A requirement
 can be normative without a keyword when the obligation is still clear and
 testable.
 
+Phrase each requirement in the active voice with an explicit subject — the actor
+or surface under obligation — followed by the keyword and the result:
+*"`qualitymd lint` MUST exit non-zero…"*, not *"a non-zero exit is required"*.
+Keep the BCP 14 keyword as the obligation verb; do not rewrite `MUST` as `shall`.
+
+### Requirement quality bar
+
+Every requirement should survive this pass before it drives design or
+implementation:
+
+- **One obligation.** A reader can point to the single thing the requirement
+  requires or forbids.
+- **Named surface.** The actor, command, workflow, artifact, file, or model
+  surface under obligation is explicit.
+- **Unambiguous.** The requirement admits one interpretation. Vague predicates
+  ("better", "robust", "user-friendly", "as needed") are the usual tell — replace
+  them with the observable result.
+- **Bounded condition.** The trigger, input state, lifecycle phase, or scope is
+  named when behavior depends on it.
+- **Observable result.** The required outcome is visible in output, persisted
+  data, source state, documented behavior, or a user interaction.
+- **Divergence handled.** Existing error, conflict, empty-input, stale-state, or
+  unsafe cases that could yield plausible different behavior are decided or
+  deliberately deferred.
+- **Verification path.** The author can name how to check it: a test, fixture,
+  command run, rendered artifact, source inspection, or documented review.
+- **Earned constraint.** The requirement follows from the change's motivation,
+  an existing contract, a real user or agent need, a safety boundary, or an
+  observed failure mode — not from speculative completeness.
+- **Public contract, not private method.** Implementation details appear only
+  when they are themselves the compatibility surface.
+
+If a requirement cannot pass the bar, either sharpen it, move the uncertainty to
+**Open questions** or **Deferred**, or delete it. A weak requirement often hides
+as a vague verb:
+
+```markdown
+Weak: Status output **MUST** be better for incomplete runs.
+
+Strong: `qualitymd evaluation status <run>` **MUST** report a run as incomplete
+when any planned in-scope Requirement lacks a Requirement Rating Result, and the
+JSON output **MUST** include the missing Requirement IDs.
+```
+
+### The requirement set
+
+The bar above tests one requirement at a time; a set of individually sound
+requirements can still fail *as a set*. Before a spec drives design, check the
+requirements together for:
+
+- **Consistent.** No requirement conflicts with or duplicates another, and one
+  term means one thing throughout — the same surface, state, or artifact is named
+  the same way every time.
+- **Complete.** The set covers the need with no unresolved "to be decided"
+  placeholders left inline; a genuinely open point goes under **Open questions**
+  or **Deferred**, not buried in a requirement.
+- **Able to be validated.** Satisfying the whole set would actually achieve the
+  motivation — the requirements add up to the outcome, with nothing essential
+  missing and nothing pulling against it.
+
+This complements the per-requirement bar; it is the requirements-engineering
+distinction between well-formed *requirements* and a well-formed *set*. For a
+change-case spec, the set-level pass pairs
+with the [validation check](work-with-change-cases.md#write-the-spec-then-the-design)
+at the Draft→Design boundary.
+
+### A statement template (optional)
+
+When a requirement is awkward to phrase — especially one that fires on a trigger
+or handles an edge case — a small set of statement patterns gives a reliable
+shape. They are a **recommended aid, not a required form**: reach for one when it
+sharpens a requirement, and leave prose alone when prose is already clear. Each
+pattern puts a BCP 14 keyword in the response slot.
+
+| Pattern            | Shape                                                          | Use for                                         |
+| ------------------ | -------------------------------------------------------------- | ----------------------------------------------- |
+| Ubiquitous         | `<surface>` **MUST** `<result>`                                | an always-on obligation                         |
+| State-driven       | **While** `<state>`, `<surface>` **MUST** `<result>`           | behavior that holds during a condition          |
+| Event-driven       | **When** `<trigger>`, `<surface>` **MUST** `<result>`          | a response to an event or input                 |
+| Optional-feature   | **Where** `<feature present>`, `<surface>` **MUST** `<result>` | behavior tied to an optional flag or capability |
+| Unwanted-behaviour | **If** `<condition>`, **then** `<surface>` **MUST** `<result>` | errors, conflicts, empty input, unsafe state    |
+| Complex            | combine the above                                              | a trigger qualified by a state                  |
+
+Two of these map straight onto the [quality bar](#requirement-quality-bar): the
+**When** form is its **Bounded condition** made explicit, and the **If/then**
+form is **Divergence handled** — the syntactic home for the cases
+["an unspecified case is a decision delegated"](#conventions) tells you to decide.
+
+> When `qualitymd lint` finds errors, it **MUST** exit non-zero.
+>
+> If the run folder already exists, then `qualitymd evaluation create` **MUST**
+> refuse and report the collision.
+
 ### Per-requirement rationale
 
 A requirement **may** carry a subordinate rationale annotation directly beneath
@@ -104,12 +220,15 @@ stale rationale is superseded, not left to accrete.
 ## Durable spec changes
 
 When a functional spec is a change case's `spec.md` (not a durable
-[`specs/`](../../specs/index.md) concept), it also accounts for the durable
-**specs** the change rewrites — the bridge from this delta to the cumulative
-source of truth. Unlike the [Shape](#shape) sections, which are a palette, this
-section is **required** for a change-case spec: a silent omission is how a
-contract change lands undocumented, and the *what* of a spec change belongs with
-the spec, not buried in the design doc. (See
+[`specs/`](../../specs/index.md) concept), it has one extra job: account for the
+durable **specs** the change rewrites. This section is the bridge from the
+change-case delta to the cumulative source of truth.
+
+Unlike the [Shape](#shape) sections, which are a palette, this section is
+**required** for a change-case spec. A silent omission is how a contract change
+lands undocumented, and the *what* of a spec change belongs with the spec, not
+buried in the design doc. Durable specs do not carry this section; they absorb
+the resulting contract and rationale directly. (See
 [Working with change cases](work-with-change-cases.md#account-for-the-artifacts-it-touches)
 for how it divides labor with the parent's **Affected artifacts** index.)
 

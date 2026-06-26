@@ -86,11 +86,16 @@ follows:
 - if it uniquely identifies one Factor, evaluate that Factor in its declaring
   Area;
 - if it identifies a Factor label present in multiple Areas, ask
-  `What area do you want to evaluate <Factor> for?`;
+  `What area do you want to evaluate <Factor> for?`, list numbered runnable Area
+  choices with human-readable titles first and qualified model references as
+  secondary context where useful, and include an `Answer` line that accepts a
+  number;
 - if it matches both Area and Factor candidates, ask a targeted clarification
-  question before rating; and
+  question before rating, using numbered runnable options and an `Answer` line
+  when the candidates are enumerable; and
 - if it does not resolve, report that the label is not in the model and offer
-  nearest runnable scoped-evaluation options visible from the model.
+  nearest runnable scoped-evaluation options visible from the model with an
+  explicit response path.
 
 For `/quality evaluate <area-label> <factor-label>`, the skill **SHOULD**
 resolve the Area label first, then resolve the Factor label within that Area.

@@ -44,9 +44,21 @@ package-manager commands, or documented manual guidance.
 
 ## Required flow
 
+Before tool inspection, `update` **MUST** emit the public `/quality` run frame
+required by the parent skill contract. The frame **MUST** name tooling as the
+mutation surface, distinguish installed-tooling changes from local project
+artifacts, and identify version inspection and the update-plan confirmation as
+the next visible gates.
+
 `update` **MUST** inspect the loaded skill metadata, inspect the visible
 `qualitymd` CLI version, use `qualitymd update --check` when available, and
 build an update plan before applying changes.
+
+After version inspection and before any mutation gate, `update` **SHOULD** report
+concise progress or status: inspected skill version/range, visible CLI version,
+whether each appears in range when known, and whether an update plan is needed.
+This progress output **MUST** remain user-facing and factual, not an internal
+transcript.
 
 The plan **MUST** classify whether the `/quality` skill, the `qualitymd` CLI,
 both, or neither need action. It **MUST** ask for explicit confirmation before

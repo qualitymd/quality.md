@@ -37,6 +37,12 @@ Recommendation follow-up **MUST** offer only two explicit outcomes:
 1. apply a confirmed recommendation option now;
 2. hand off the recommendation to an issue tracker.
 
+When the user has not already chosen one of those outcomes, the workflow
+**MUST** present them as numbered options and include an `Answer` line. When
+recommendation evidence supports one path, that path **SHOULD** be option `1`;
+otherwise the workflow **MUST NOT** invent a recommendation solely to satisfy
+the numbered prompt shape.
+
 The workflow **MUST NOT** present `defer`, `skip`, or `keep open` as formal
 follow-up options. If the user does not choose apply or handoff, the workflow
 **MUST** stop without mutating evaluated source, `QUALITY.md`, the quality log,
@@ -63,11 +69,13 @@ evaluation run for the affected scope and compare the new evidence to the
 recommendation's done criterion.
 
 The result report **MUST** state the recommendation, outcome, applied option,
-changed artifacts, verification performed, rating movement when known, and
-remaining gaps or limits. It **MUST** use the shared agent-mediated UX contract:
-status first, with scannable labels and a clear next action when work remains. If
-verification is incomplete, the result **MUST** be labeled limited rather than
-fully confirmed.
+changed artifacts, verification performed, rating movement when known, remaining
+gaps or limits, and next action. It **SHOULD** include `Not done` when the
+mutation or verification boundary matters, such as no evaluation rerun, no issue
+creation, no model change, or no quality-log entry. It **MUST** use the shared
+agent-mediated UX contract: status first, with scannable labels and a clear next
+action when work remains. If verification is incomplete, the result **MUST** be
+labeled limited rather than fully confirmed.
 
 When a confirmed apply changes the QUALITY.md model, the skill **MUST** write one
 quality-log entry for the coherent model change, cross-linking the source
@@ -86,10 +94,12 @@ requirement, current rating when known, target or done criterion, evidence
 summary with locators, suggested implementation option, verification path, and
 links or paths to the generated report and recommendation artifact.
 
-Creating an external issue **MUST** require explicit user confirmation and
-available issue-tracker tooling. If tooling is unavailable or the user has not
-confirmed external creation, the skill **MUST** stop after producing issue-ready
-text.
+Creating an external issue **MUST** require explicit user confirmation,
+available issue-tracker tooling, and a decision brief that names the external
+artifact to create, the local artifacts that will not change, the evidence or
+reason, the recommended option, alternatives, and verification. If tooling is
+unavailable or the user has not confirmed external creation, the skill **MUST**
+stop after producing issue-ready text.
 
 Issue-tracker handoff **MUST NOT** mutate evaluated source, `QUALITY.md`, or the
 quality log.

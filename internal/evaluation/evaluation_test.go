@@ -124,10 +124,13 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	if !strings.Contains(string(report), "Overall Rating | 🔵 Target") {
+	if !strings.Contains(string(report), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [analysis](data/areas/root/area-analysis-result.json) |") {
 		t.Fatalf("report.md = %s, want target rating title", report)
 	}
-	if !strings.Contains(string(report), "Confidence | 🟢 High / 🟢 High") {
+	if !strings.Contains(string(report), "Area: [Test model](report.md)") {
+		t.Fatalf("report.md = %s, want Area trail", report)
+	}
+	if !strings.Contains(string(report), "| Overall | Local | Confidence | Data |") {
 		t.Fatalf("report.md = %s, want confidence display titles", report)
 	}
 	if strings.Contains(string(report), "Overall Rating | target") {
@@ -149,6 +152,67 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	}
 	if output["kind"] == dataKindTitle(DataKindEvaluationOutput) {
 		t.Fatalf("EvaluationOutputResult kind = %v, want stable data kind", output["kind"])
+	}
+}
+
+func TestV2ReportNavigationHeadersAndSubjectLinks(t *testing.T) {
+	repo := testRepoWithModel(t, navigationReportModel)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, result.Path)
+	for _, payload := range navigationReportPayloads() {
+		if _, err := SetData(runPath, []byte(payload), DataSetOptions{}); err != nil {
+			t.Fatalf("SetData(%s) error = %v", payload, err)
+		}
+	}
+	build, err := BuildReport(runPath)
+	if err != nil {
+		t.Fatalf("BuildReport() error = %v", err)
+	}
+	rootReport := readReport(t, runPath, "report.md")
+	assertContains(t, rootReport, "Area: [Navigation model](report.md)")
+	assertContains(t, rootReport, "Path: `/`")
+	assertContains(t, rootReport, "| Overall | Local | Confidence | Data |")
+	assertContains(t, rootReport, "| Factor | Path | Rating | + Sub-Factors | Sub-Factors |")
+	assertContains(t, rootReport, "| [Reliability](factors/reliability/report.md) | `reliability` | 🔵 Target | ✅ Yes | [Latency](factors/reliability/factors/latency/report.md) 🔵 Target |")
+	assertContains(t, rootReport, "| [Payments](areas/payments/report.md) | `/payments` | 🔵 Target | ⬜ No |  |")
+	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/report.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/report.md) |")
+	assertNotContains(t, rootReport, "Breadcrumb:")
+	assertNotContains(t, rootReport, "Parent Area:")
+	assertNotContains(t, rootReport, "| Details |")
+
+	factorReport := readReport(t, runPath, "factors/reliability/report.md")
+	assertContains(t, factorReport, "Area: [Navigation model](../../report.md)")
+	assertContains(t, factorReport, "Factor: [Reliability](report.md)")
+	assertContains(t, factorReport, "Path: `reliability`")
+	assertContains(t, factorReport, "| Overall | Local | Status | Confidence | Data |")
+	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/report.md) | 🔵 Target | ✅ Assessed |")
+	assertContains(t, factorReport, "| [Latency](factors/latency/report.md) | `reliability/latency` | 🔵 Target |")
+	assertNotContains(t, factorReport, "Parent Factor:")
+	assertNotContains(t, factorReport, "| Details |")
+
+	childFactorReport := readReport(t, runPath, "factors/reliability/factors/latency/report.md")
+	assertContains(t, childFactorReport, "Factor: [Reliability](../../report.md) / [Latency](report.md)")
+
+	requirementReport := readReport(t, runPath, "requirements/has-tests/report.md")
+	assertContains(t, requirementReport, "Area: [Navigation model](../../report.md)")
+	assertContains(t, requirementReport, "Name: `has-tests`")
+	assertContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
+	assertContains(t, requirementReport, "[reliability](../../factors/reliability/report.md)")
+	assertNotContains(t, requirementReport, "\nFactor:")
+	assertNotContains(t, requirementReport, "Parent Area:")
+
+	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
+	if err != nil {
+		t.Fatalf("reading EvaluationOutputResult: %v", err)
+	}
+	if !strings.Contains(string(outputRaw), `"path": "factors/reliability/report.md"`) {
+		t.Fatalf("EvaluationOutputResult = %s, want unchanged report refs", outputRaw)
+	}
+	if build.RatingResult.Level != "target" {
+		t.Fatalf("BuildReport().RatingResult.Level = %q, want stable rating level ID", build.RatingResult.Level)
 	}
 }
 
@@ -261,6 +325,69 @@ func completeRootV2Payloads() []string {
 		`{"schemaVersion":1,"kind":"EvaluationFrame"}`,
 		`{"schemaVersion":1,"kind":"AreaEvaluationFrame","subject":{"areaId":[]}}`,
 		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"The model meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+	}
+}
+
+const navigationReportModel = `---
+title: Navigation model
+ratingScale:
+  - level: target
+    title: 🔵 Target
+    description: Target.
+    criterion: Meets it.
+factors:
+  reliability:
+    title: Reliability
+    factors:
+      latency:
+        title: Latency
+areas:
+  payments:
+    title: Payments
+requirements:
+  has-tests:
+    title: Has tests
+    assessment: Inspect tests.
+---
+`
+
+func navigationReportPayloads() []string {
+	return []string{
+		`{"schemaVersion":1,"kind":"EvaluationFrame"}`,
+		`{"schemaVersion":1,"kind":"AreaEvaluationFrame","subject":{"areaId":[]}}`,
+		`{"schemaVersion":1,"kind":"AreaEvaluationFrame","subject":{"areaId":["payments"]}}`,
+		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Root local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Root work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":["payments"],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Payments local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Payments work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
+		`{"schemaVersion":1,"kind":"FactorAnalysisFrame","subject":{"factorId":{"declaringAreaId":[],"factorPath":["reliability"]}}}`,
+		`{"schemaVersion":1,"kind":"FactorAnalysisFrame","subject":{"factorId":{"declaringAreaId":[],"factorPath":["reliability","latency"]}}}`,
+		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Reliability local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Reliability work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability","latency"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Latency local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Latency work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
+		`{"schemaVersion":1,"kind":"RequirementEvaluationFrame","subject":{"requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"factorIds":["reliability"]}}`,
+		`{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"assessed","confidence":"high","summary":"Tests are present.","factors":["reliability"],"findings":[]}`,
+		`{"schemaVersion":1,"kind":"RequirementRatingResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"rated","ratingLevelId":"target","confidence":"high","rationale":"Tests meet the bar.","ratingDrivers":[]}`,
+	}
+}
+
+func readReport(t *testing.T, runPath, rel string) string {
+	t.Helper()
+	raw, err := os.ReadFile(filepath.Join(runPath, rel))
+	if err != nil {
+		t.Fatalf("reading %s: %v", rel, err)
+	}
+	return string(raw)
+}
+
+func assertContains(t *testing.T, got, want string) {
+	t.Helper()
+	if !strings.Contains(got, want) {
+		t.Fatalf("got:\n%s\nwant substring:\n%s", got, want)
+	}
+}
+
+func assertNotContains(t *testing.T, got, unwanted string) {
+	t.Helper()
+	if strings.Contains(got, unwanted) {
+		t.Fatalf("got:\n%s\nunwanted substring:\n%s", got, unwanted)
 	}
 }
 

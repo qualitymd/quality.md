@@ -50,8 +50,17 @@ The two stages line up with the `status` lifecycle below.
    updating any change case spec — it is required reading, not an optional
    reference. Then follow it: state clear, testable requirements; use BCP 14
    keywords only where they change conformance meaning; specify behavior, not
-   implementation; and don't invent requirements. Pin down the *what* before
-   moving on.
+   implementation; and don't invent requirements. Before advancing to
+   **Design**, review the spec against the functional-spec
+   [requirement quality bar](write-functional-specs.md#requirement-quality-bar):
+   the requirements must be earned, observable, bounded, and verifiable enough
+   to design against. Then validate the set as a whole: run the
+   [requirement-set check](write-functional-specs.md#the-requirement-set)
+   (consistent, complete, able to be validated) and confirm that satisfying every
+   requirement would achieve the case's **motivation** — no more, no less. This
+   is the validation question ("did we scope the right thing?") that the
+   per-requirement verification path ("can we prove each one?") does not ask. Pin
+   down the *what* before moving on.
 2. **Design doc next** (`design.md`, `type: Design Doc`), once the spec is
    settled and the change case moves to **Design**. Follow
    [Writing design docs](write-design-docs.md): it answers the spec, so don't
@@ -168,8 +177,9 @@ A Change Case's `status` frontmatter advances, in order:
 
 **Draft → Design → In-Progress → In-Review → Done**
 
-- **Draft** while you write up the [functional spec](write-functional-specs.md)
-  (the *what*); **Design** while you work out the
+- **Draft** while you write up and review the
+  [functional spec](write-functional-specs.md) (the *what*); **Design** while you
+  work out the
   [design doc](write-design-docs.md) (the *how*); **In-Progress** while it's
   being implemented; **In-Review** after implementation is complete and ready for
   review; **Done** only after the work lands.

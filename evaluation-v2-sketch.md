@@ -815,9 +815,10 @@ areas/<area>/areas/<child-area>/report.md
 
 Navigation rules:
 
-- Every report starts with linked breadcrumbs from the root Area to the current
-  report subject.
-- Every non-root report has a parent link.
+- Every report starts with an `Area:` trail from the root Area to the current or
+  owning Area report.
+- Factor reports also have a `Factor:` trail from the local root Factor to the
+  current Factor.
 - Area reports link to local root Factor reports, local Requirement reports, and
   direct child Area reports.
 - Factor reports link to their owning Area report, parent Factor report when
@@ -836,18 +837,15 @@ the Markdown report tree.
 Starter Markdown shape:
 
 ```md
-Breadcrumb: <root Area title> / <child Area title> / <current Area title>
+Area: <root Area title> / <child Area title> / <current Area title>
 
 # <Area title>
 
-| Field          | Value                                     |
-| -------------- | ----------------------------------------- |
-| Area           | <Area title>                              |
-| Path           | `<area path>`                             |
-| Overall Rating | <local-and-descendant Area rating>        |
-| Local Rating   | <local Area rating>                       |
-| Confidence     | <overall confidence> / <local confidence> |
-| Data           | [analysis](area-analysis-data-path)       |
+Path: `<area path>`
+
+| Overall                            | Local               | Confidence                                | Data                                |
+| ---------------------------------- | ------------------- | ----------------------------------------- | ----------------------------------- |
+| <local-and-descendant Area rating> | <local Area rating> | <overall confidence> / <local confidence> | [analysis](area-analysis-data-path) |
 
 Summary:
 
@@ -860,18 +858,18 @@ Summary:
 
 ## Factors
 
-| Factor | Path | Rating | + Sub-Factors | Sub-Factors | Details |
-| ------ | ---- | ------ | ------------- | ----------- | ------- |
+| Factor | Path | Rating | + Sub-Factors | Sub-Factors |
+| ------ | ---- | ------ | ------------- | ----------- |
 
 ## Sub-Areas
 
-| Area | Path | Rating | + Sub-Areas | Factors | Details |
-| ---- | ---- | ------ | ----------- | ------- | ------- |
+| Area | Path | Rating | + Sub-Areas | Factors |
+| ---- | ---- | ------ | ----------- | ------- |
 
 ## Requirements
 
-| Requirement | Rating | Status | Factors | Details |
-| ----------- | ------ | ------ | ------- | ------- |
+| Requirement | Rating | Status | Factors |
+| ----------- | ------ | ------ | ------- |
 
 ## Limits & Incomplete Inputs
 
@@ -881,12 +879,11 @@ Summary:
 
 Report field meanings:
 
-- `Breadcrumb` gives the human Area title path from the root Area to the current
+- `Area` gives the linked Area title path from the root Area to the current
   Area.
-- `Area` is the current Area title.
 - `Path` is the human display path for the Area. The root Area renders as `/`.
-- `Overall Rating` is the Area `localAndDescendantAnalysis` rating.
-- `Local Rating` is the Area `localAnalysis` rating.
+- `Overall` is the Area `localAndDescendantAnalysis` rating.
+- `Local` is the Area `localAnalysis` rating.
 - `Confidence` shows overall and local Area analysis confidence.
 - `Data` links to the underlying structured Area Analysis Result.
 - `Summary` is deterministically projected from the Area Analysis Result
@@ -898,41 +895,36 @@ Report field meanings:
 - Factor `+ Sub-Factors` is the Factor `localAndDescendantAnalysis` rating.
 - Factor `Sub-Factors` is a compact list of direct child Factors and their
   `localAndDescendantAnalysis` ratings.
-- Factor `Details` links to the Factor's generated report.
+- Factor titles link to the Factor's generated report.
 - The Sub-Areas table lists direct child Areas only.
 - Sub-Area `Rating` is the child Area `localAnalysis` rating.
 - Sub-Area `+ Sub-Areas` is the child Area `localAndDescendantAnalysis` rating.
 - Sub-Area `Factors` is a compact list of the child Area's root Factors and
   their `localAndDescendantAnalysis` ratings.
-- Sub-Area `Details` links to the child Area's generated report.
+- Sub-Area titles link to the child Area's generated report.
 - The Requirements table lists local Requirements declared by this Area.
 - Requirement `Rating` is the Requirement Rating Result's selected rating, when
   rated.
 - Requirement `Status` includes assessment and rating status in compact form.
 - Requirement `Factors` lists attached Factor paths.
-- Requirement `Details` links to the Requirement's generated report.
+- Requirement titles link to the Requirement's generated report.
 - `Limits & Incomplete Inputs` lists Area evaluation limits and incomplete inputs
   from the Area Analysis Result.
 
 Starter Factor report shape:
 
 ```md
-Breadcrumb: <Area title> / <parent Factor title> / <current Factor title>
+Area: <root Area title> / <owning Area title>
 
-Parent: [<parent Area or Factor title>](parent-report-path)
+Factor: <root Factor title> / <current Factor title>
 
 # <Factor title>
 
-| Field         | Value                                       |
-| ------------- | ------------------------------------------- |
-| Area          | [<Area title>](area-report-path)            |
-| Factor        | <Factor title>                              |
-| Path          | `<factor path>`                             |
-| Rating        | <local Factor rating>                       |
-| + Sub-Factors | <local-and-descendant Factor rating>        |
-| Status        | <local status> / <aggregate status>         |
-| Confidence    | <local confidence> / <aggregate confidence> |
-| Data          | [analysis](factor-analysis-data-path)       |
+Path: `<factor path>`
+
+| Overall                              | Local                 | Status                              | Confidence                                  | Data                                  |
+| ------------------------------------ | --------------------- | ----------------------------------- | ------------------------------------------- | ------------------------------------- |
+| <local-and-descendant Factor rating> | <local Factor rating> | <aggregate status> / <local status> | <aggregate confidence> / <local confidence> | [analysis](factor-analysis-data-path) |
 
 Summary:
 
@@ -945,13 +937,13 @@ Summary:
 
 ## Direct Requirements
 
-| Requirement | Rating | Status | Details |
-| ----------- | ------ | ------ | ------- |
+| Requirement | Rating | Status |
+| ----------- | ------ | ------ |
 
 ## Sub-Factors
 
-| Factor | Path | Rating | + Sub-Factors | Details |
-| ------ | ---- | ------ | ------------- | ------- |
+| Factor | Path | Rating |
+| ------ | ---- | ------ |
 
 ## Limits & Incomplete Inputs
 
@@ -962,22 +954,15 @@ Summary:
 Starter Requirement report shape:
 
 ```md
-Breadcrumb: <Area title> / Requirements / <Requirement title>
-
-Parent: [<Area title>](area-report-path)
+Area: <root Area title> / <owning Area title>
 
 # <Requirement title>
 
-| Field             | Value                                                          |
-| ----------------- | -------------------------------------------------------------- |
-| Area              | [<Area title>](area-report-path)                               |
-| Requirement       | `<requirement name>`                                           |
-| Rating            | <rating or not rated>                                          |
-| Assessment Status | <assessment status>                                            |
-| Rating Status     | <rating status>                                                |
-| Factors           | <linked Factor reports>                                        |
-| Confidence        | <rating confidence>                                            |
-| Data              | [assessment](assessment-data-path); [rating](rating-data-path) |
+Name: `<requirement name>`
+
+| Rating                | Assessment          | Factors                 | Confidence                                    | Data                                                           |
+| --------------------- | ------------------- | ----------------------- | --------------------------------------------- | -------------------------------------------------------------- |
+| <rating or not rated> | <assessment status> | <linked Factor reports> | <rating confidence> / <assessment confidence> | [assessment](assessment-data-path); [rating](rating-data-path) |
 
 Summary:
 
