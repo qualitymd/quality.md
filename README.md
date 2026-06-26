@@ -1,7 +1,8 @@
 # QUALITY.md
 
 > 🚧 **Early alpha — under active construction.** The format, `/quality` skill, and
-> `qualitymd` CLI are still evolving and **breaking changes are expected.**
+> `qualitymd` CLI are still evolving and **breaking changes are expected.** Run
+> `/quality update` to stay current with the latest skill and CLI versions.
 
 **QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
 what matters most, why, and how, for software, documentation, data, services,
