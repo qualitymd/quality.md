@@ -77,10 +77,10 @@ Requirements, and Rating Levels, matching the structure in
 enforces from [`internal/schema`](../internal/schema/schema.go): per-property
 shape (scalar / map / sequence), required vs. optional presence, the rating-scale
 `minItems` of 2, map-keyed entries for `factors` / `requirements` / `areas`,
-strict `propertyNames` patterns for `factors` and `areas`, the strict scalar
 strict `propertyNames` patterns for `factors`, `requirements`, and `areas`, the
-strict scalar pattern for `ratingScale[].level`, and the "at least one of
-factors, requirements, or areas" rule on the Model.
+`root` Area-name reservation where JSON Schema can express it, the strict scalar
+pattern for `ratingScale[].level`, and the "at least one of factors,
+requirements, or areas" rule on the Model.
 
 > Rationale: the value of a companion schema is that it agrees with the tool; a
 > schema that accepts what the linter rejects (or vice versa) is worse than none.

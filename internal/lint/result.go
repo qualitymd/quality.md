@@ -37,6 +37,7 @@ const (
 	RuleEmptyModel               RuleID = "empty-model"
 	RuleMisplacedRootKey         RuleID = "misplaced-root-key"
 	RuleInvalidAreaName          RuleID = "invalid-area-name"
+	RuleReservedAreaName         RuleID = "reserved-area-name"
 	RuleEmptyArea                RuleID = "empty-area"
 	RuleInvalidFactorName        RuleID = "invalid-factor-name"
 	RuleInvalidRequirementName   RuleID = "invalid-requirement-name"
@@ -74,6 +75,7 @@ var Rules = []Rule{
 	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or areas."},
 	{RuleMisplacedRootKey, SeverityError, false, "The `ratingScale` key appears on a nested area."},
 	{RuleInvalidAreaName, SeverityError, false, "An area name does not match the model name grammar."},
+	{RuleReservedAreaName, SeverityError, false, "An area name uses a reserved model-reference token."},
 	{RuleEmptyArea, SeverityWarning, false, "An area reaches no requirements in its subtree."},
 	{RuleInvalidFactorName, SeverityError, false, "A factor name does not match the model name grammar."},
 	{RuleInvalidRequirementName, SeverityError, false, "A requirement name does not match the model name grammar."},

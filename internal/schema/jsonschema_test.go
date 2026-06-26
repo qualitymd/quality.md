@@ -120,6 +120,7 @@ func TestGenerateJSONIncludesStrictModelNamePatterns(t *testing.T) {
 	doc := generate(t)
 	props := doc["properties"].(map[string]any)
 	assertPropertyNamesPattern(t, props[PropertyAreas], ModelNamePattern)
+	assertPropertyNamesRejectsRoot(t, props[PropertyAreas])
 	assertPropertyNamesPattern(t, props[PropertyFactors], ModelNamePattern)
 	assertPropertyNamesPattern(t, props[PropertyRequirements], ModelNamePattern)
 
@@ -165,8 +166,47 @@ func assertPropertyNamesPattern(t *testing.T, v any, want string) {
 		t.Fatalf("propertyNames = %T, want map", v.(map[string]any)["propertyNames"])
 	}
 	if got := propertyNames["pattern"]; got != want {
-		t.Fatalf("propertyNames.pattern = %v, want %s", got, want)
+		for _, clause := range anySlice(t, propertyNames["allOf"]) {
+			if clauseMap, ok := clause.(map[string]any); ok && clauseMap["pattern"] == want {
+				return
+			}
+		}
+		t.Fatalf("propertyNames pattern = %v, want %s", propertyNames, want)
 	}
+}
+
+func assertPropertyNamesRejectsRoot(t *testing.T, v any) {
+	t.Helper()
+	propertyNames, ok := v.(map[string]any)["propertyNames"].(map[string]any)
+	if !ok {
+		t.Fatalf("propertyNames = %T, want map", v.(map[string]any)["propertyNames"])
+	}
+	for _, clause := range anySlice(t, propertyNames["allOf"]) {
+		clauseMap, ok := clause.(map[string]any)
+		if !ok {
+			continue
+		}
+		not, ok := clauseMap["not"].(map[string]any)
+		if !ok {
+			continue
+		}
+		if stringSet(t, not["enum"])["root"] {
+			return
+		}
+	}
+	t.Fatalf("propertyNames = %#v, want root rejection", propertyNames)
+}
+
+func anySlice(t *testing.T, v any) []any {
+	t.Helper()
+	if v == nil {
+		return nil
+	}
+	raw, ok := v.([]any)
+	if !ok {
+		t.Fatalf("value = %T, want []any", v)
+	}
+	return raw
 }
 
 func stringSet(t *testing.T, v any) map[string]bool {

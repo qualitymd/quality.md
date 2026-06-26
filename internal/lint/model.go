@@ -51,6 +51,9 @@ func (s *runState) walkAreas(parent *areaRef, node *yaml.Node, base []PathSegmen
 		if key.Kind != yaml.ScalarNode || !validModelName(key.Value) {
 			s.add(RuleInvalidAreaName, "The area name `"+key.Value+"` is invalid; Area names must match "+qschema.ModelNamePattern+".", s.loc(key, path, label(path)), nil)
 		}
+		if key.Kind == yaml.ScalarNode && key.Value == "root" {
+			s.add(RuleReservedAreaName, "The area name `root` is reserved for the root Area reference and cannot be used as a child Area name.", s.loc(key, path, label(path)), nil)
+		}
 		if value.Kind != yaml.MappingNode {
 			s.invalid(key, path, label(path), "The area `"+key.Value+"` has the wrong YAML shape; each area must be a map.")
 			continue

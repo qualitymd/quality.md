@@ -3,6 +3,103 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0120 - String model-identity fields in evaluation data](archive/0120-string-model-identity-fields.md).
+  Evaluation routine and report JSON now persist Area, Factor, Requirement, and
+  Rating Level identities as canonical qualified-reference strings, with
+  `schemaVersion` bumped to 2 and old structured identity shapes rejected.
+  `qualitymd lint` now rejects `root` as a reserved Area name, the companion
+  schemas are regenerated, `/quality` compatibility moves to the `0.16` CLI
+  line, and the QUALITY.md specification version is `0.5 (Draft)`. Verified with
+  `go test ./...` and `mise run fmt-md-check`.
+
+- **Done**: Implemented and archived
+  [0119 - Report header kind prefix and title-first layout](archive/0119-report-header-kind-prefix.md).
+  Generated Evaluation reports now render a kind-prefixed H1 as the first line,
+  move navigation/context trails below the title, drop the redundant `Path:` /
+  `Name:` header lines, and keep the root `Area:` trail element tied to the Model
+  `title`. Verified with `go test ./...` and `mise run fmt-md-check`.
+
+- **Done**: Implemented and archived
+  [0118 - Report empty-cell marker and legend](archive/0118-report-empty-cell-legend.md).
+  Generated Evaluation reports now render empty scalar table cells as `—`,
+  render empty paired Confidence/Status components as `—`, and append one static
+  legend defining the marker to every report while leaving status labels and
+  worded empty-section rows distinct. Verified with `go test ./...` and
+  `mise run fmt-md-check`.
+
+- **Creation**: Added
+  [0120 - String model-identity fields in evaluation data](0120-string-model-identity-fields.md)
+  (`Draft`) with its child [index](0120-string-model-identity-fields/index.md)
+  and [functional spec](0120-string-model-identity-fields/spec.md). The case
+  collapses the structured `areaId` (array), `factorId`, and `requirementId`
+  (objects) identity fields in persisted Evaluation routine and report JSON into
+  single canonical qualified model-reference strings — the lossless string
+  encoding [`SPECIFICATION.md`](../SPECIFICATION.md) already defines — keeps the
+  `*Id` names (not `*Ref`, which denotes routine-record links), and reserves
+  `root` as a forbidden Area name to close the one rendering ambiguity. It
+  reverses the structured-shape mandate in
+  [`json-conventions.md`](../specs/evaluation/records/json-conventions.md) (the
+  rule [0058](archive/0058-model-reference-identifiers.md) /
+  [0059](archive/0059-unqualified-model-references.md) established) and bumps the
+  data `SchemaVersion`. Affected artifacts derived by a repo-wide sweep. No code
+  touched (gated to In-Progress). Updated the bundle [index](index.md).
+
+- **Design**: Advanced
+  [0119 - Report header kind prefix and title-first layout](0119-report-header-kind-prefix.md)
+  to `Design`. The functional spec passed the Draft→Design gate (each requirement
+  single-obligation and observable; the set, satisfied, achieves the motivation).
+  Added the child [design doc](0119-report-header-kind-prefix/design.md): the
+  change is a reorder of the three report renderers (kind-prefixed H1 first,
+  existing trail writers moved below it, `Path:` / `Name:` lines deleted); the
+  root-element Model `title` is already satisfied by `areaTitle(spec, nil)` and
+  only locked by a test; and the one real decision — keeping the trails as
+  separate paragraphs rather than hard-break tight-stacking — is recorded with
+  the rejected alternatives (kicker line, trail-first, `Area:` trail relabel). No
+  code touched (gated to In-Progress).
+
+- **Design**: Advanced
+  [0118 - Report empty-cell marker and legend](0118-report-empty-cell-legend.md)
+  to `Design`. The spec passed the Draft→Design quality bar (each requirement has
+  one obligation and an observable result; the set cleanly partitions empty cell
+  vs. empty section vs. not-assessed outcome). Added the child
+  [design doc](0118-report-empty-cell-legend/design.md): the empty-cell policy
+  lives in the `markdownCell` chokepoint (one line) plus a shared `emDashIfEmpty`
+  helper for the three composite pair cells, leaving `humanizeEnum` a pure
+  humanizer; an unconditional `writeEvaluationLegend` appends one static `## Legend`
+  to every report. Records why `N/A`, per-cell asterisks, a `humanizeEnum`
+  chokepoint, and a conditional legend were rejected. No code touched (gated to
+  In-Progress).
+
+- **Creation**: Drafted
+  [0119 - Report header kind prefix and title-first layout](0119-report-header-kind-prefix.md)
+  (`status: Draft`). Generated reports open with a navigation trail and then a
+  bare H1 — just the subject title, with no statement of the report's kind, which
+  matters because an Area, Factor, and Requirement can share a title. The case
+  prefixes each report's H1 with its kind (`# Area:` / `# Factor:` /
+  `# Requirement:`), renders that title first with the `Area:` trail (and the
+  Factor `Factor:` trail / Requirement `Factors:` line) following it, drops the
+  now-redundant `Path:` / `Name:` identifier line (the canonical ID still lives in
+  filenames and `Data` links), and locks the `Area:` trail's root element to the
+  Model `title`. Added the child [spec](0119-report-header-kind-prefix/spec.md);
+  the durable contract lands in
+  [`specs/evaluation/reports/report-tree.md`](../specs/evaluation/reports/report-tree.md)
+  at In-Progress.
+
+- **Creation**: Drafted
+  [0118 - Report empty-cell marker and legend](0118-report-empty-cell-legend.md)
+  (`status: Draft`). Reports render absent scalar values as blank cells, which a
+  reader cannot tell apart from "not applicable" or a rendering fault, and the
+  builder carries several uncoordinated empty-value treatments. The case settles
+  on one em-dash (`—`) marker for any empty scalar cell — including the composite
+  Confidence and analysis-status pair cells (`— / —`) — plus one static legend
+  per generated report that defines it, while leaving the not-assessed status
+  labels, Rating Level labels, and parenthetical empty-section rows untouched.
+  Added the child [spec](0118-report-empty-cell-legend/spec.md); the durable
+  contract lands in
+  [`specs/evaluation/reports/report-tree.md`](../specs/evaluation/reports/report-tree.md)
+  at In-Progress.
+
+- **Done**: Implemented and archived
   [0117 - Requirement report Factors line](archive/0117-requirement-report-factors-line.md).
   Requirement reports now render a plural `Factors:` context line after the
   `Area:` trail, with attached Factor links joined as a flat set, and their

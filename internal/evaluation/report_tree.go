@@ -344,9 +344,8 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	local := scopedMap(area.Analysis, "localAnalysis")
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
 	var b strings.Builder
+	b.WriteString("# Area: " + title + "\n\n")
 	writeEvaluationAreaTrail(&b, spec, area.ID, reportPath)
-	b.WriteString("# " + title + "\n\n")
-	b.WriteString("Path: `" + areaDisplayPath(area.ID) + "`\n\n")
 	b.WriteString("| Overall Rating | Local Rating | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	b.WriteString("| " + markdownCell(evaluationRatingLabel(spec, overall)) + " | " + markdownCell(evaluationRatingLabel(spec, local)) + " | " + markdownCell(evaluationConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json")) + " |\n\n")
@@ -394,6 +393,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	}
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
+	writeEvaluationLegend(&b)
 	return b.String()
 }
 
@@ -402,10 +402,9 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
 	title := factorTitle(spec, factor.ID)
 	var b strings.Builder
+	b.WriteString("# Factor: " + title + "\n\n")
 	writeEvaluationAreaTrail(&b, spec, factor.ID.DeclaringArea, reportPath)
 	writeEvaluationFactorTrail(&b, spec, factor.ID, reportPath)
-	b.WriteString("# " + title + "\n\n")
-	b.WriteString("Path: `" + factorDisplayPath(factor.ID) + "`\n\n")
 	b.WriteString("| Overall Rating | Local Rating | Status | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	b.WriteString("| " + markdownCell(evaluationRatingLabel(spec, overall)) + " | " + markdownCell(evaluationRatingLabel(spec, local)) + " | " + markdownCell(evaluationAnalysisStatusPair(overall, local)) + " | " + markdownCell(evaluationConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json")) + " |\n\n")
@@ -439,19 +438,19 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	}
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
+	writeEvaluationLegend(&b)
 	return b.String()
 }
 
 func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts, reportPath string) string {
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
+	b.WriteString("# Requirement: " + title + "\n\n")
 	writeEvaluationAreaTrail(&b, spec, req.ID.DeclaringArea, reportPath)
 	writeEvaluationRequirementFactorsLine(&b, req, reportPath)
-	b.WriteString("# " + title + "\n\n")
-	b.WriteString("Name: `" + markdownCell(req.ID.Name) + "`\n\n")
 	b.WriteString("| Rating | Assessment | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
-	b.WriteString("| " + markdownCell(evaluationRequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(evaluationString(req.Assessment, "status"))) + " | " + markdownCell(confidenceTitle(evaluationString(req.Rating, "confidence"))+" / "+confidenceTitle(evaluationString(req.Assessment, "confidence"))) + " | " + reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json")) + ", " + reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json")) + " |\n\n")
+	b.WriteString("| " + markdownCell(evaluationRequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(evaluationString(req.Assessment, "status"))) + " | " + markdownCell(evaluationRequirementConfidencePair(req)) + " | " + reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json")) + ", " + reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	if summary := evaluationString(req.Assessment, "evidenceSummary"); summary != "" {
 		b.WriteString(summary)
@@ -466,6 +465,7 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	writeEvaluationFindingDetails(&b, req.Assessment)
 	b.WriteString("## Unknowns & Missing Evidence\n\n")
 	writeEvaluationUnknownsTable(&b, req.Assessment, req.Rating)
+	writeEvaluationLegend(&b)
 	_ = artifacts
 	return b.String()
 }
@@ -483,7 +483,7 @@ func evaluationOutputResult(artifacts *evaluationArtifacts, reports []evaluation
 		if area.Analysis == nil {
 			continue
 		}
-		areaID := anyStrings(area.ID)
+		areaID := AreaPath(area.ID).Reference()
 		areaOutputs = append(areaOutputs, map[string]any{
 			"areaId":                    areaID,
 			"areaEvaluationFrameRef":    routineRef(DataKindAreaEvaluationFrame, map[string]any{"areaId": areaID}, ""),
@@ -497,14 +497,14 @@ func evaluationOutputResult(artifacts *evaluationArtifacts, reports []evaluation
 	return map[string]any{
 		"schemaVersion":       SchemaVersion,
 		"kind":                string(DataKindEvaluationOutput),
-		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": []any{}}, "localAndDescendantAnalysis"),
+		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": AreaPath{}.Reference()}, "localAndDescendantAnalysis"),
 		"areaOutputs":         areaOutputs,
 		"reportOutputs":       reportOutputs,
 	}
 }
 
 func evaluationReportRef(report evaluationRenderedReport) map[string]any {
-	ref := map[string]any{"kind": report.Kind, "areaId": anyStrings(report.AreaID), "path": filepath.ToSlash(report.Path)}
+	ref := map[string]any{"kind": report.Kind, "areaId": AreaPath(report.AreaID).Reference(), "path": filepath.ToSlash(report.Path)}
 	if report.FactorID != nil {
 		ref["factorId"] = factorIDJSON(*report.FactorID)
 	}
@@ -633,6 +633,11 @@ func (a *evaluationArtifacts) requirementsForFactor(factor factorID) []*evaluati
 			continue
 		}
 		for _, linked := range requirementFactorIDs(req) {
+			parsed, err := parseRequirementFactorID(req.ID.DeclaringArea, linked)
+			if err == nil && sameStrings(parsed.DeclaringArea, factor.DeclaringArea) && sameStrings(parsed.Path, factor.Path) {
+				out = append(out, req)
+				break
+			}
 			if linked == want || linked == strings.Join(factor.Path, "/") || linked == factor.Path[len(factor.Path)-1] {
 				out = append(out, req)
 				break
@@ -947,7 +952,7 @@ func requirementFactorLinks(req *evaluationRequirementArtifacts, fromReport stri
 		if err != nil {
 			continue
 		}
-		ids[i] = reportLink(fromReport, factorReportPath(parsed), id)
+		ids[i] = reportLink(fromReport, factorReportPath(parsed), strings.Join(parsed.Path, "/"))
 	}
 	return strings.Join(ids, "; ")
 }
@@ -988,7 +993,7 @@ func evaluationRequirementRatingLabel(spec *model.Spec, rating map[string]any) s
 		return ratingStatusTitle(status)
 	}
 	if level := evaluationString(rating, "ratingLevelId"); level != "" {
-		return ratingTitle(spec, level)
+		return ratingTitle(spec, ratingLevelID(level))
 	}
 	return ratingStatusTitle(string(RatingStatusRated))
 }
@@ -1072,12 +1077,12 @@ func sameStrings(a, b []string) bool {
 	return true
 }
 
-func factorIDJSON(id factorID) map[string]any {
-	return map[string]any{"declaringAreaId": anyStrings(id.DeclaringArea), "factorPath": anyStrings(id.Path)}
+func factorIDJSON(id factorID) string {
+	return FactorReference(AreaPath(id.DeclaringArea), FactorPath(id.Path))
 }
 
-func requirementIDJSON(id requirementID) map[string]any {
-	return map[string]any{"declaringAreaId": anyStrings(id.DeclaringArea), "requirementName": id.Name}
+func requirementIDJSON(id requirementID) string {
+	return RequirementReference(AreaPath(id.DeclaringArea), id.Name)
 }
 
 func objectSlice(v any) []map[string]any {
@@ -1157,7 +1162,7 @@ func scopedMap(payload map[string]any, field string) map[string]any {
 
 func evaluationRatingLabel(spec *model.Spec, scope map[string]any) string {
 	status := evaluationString(scope, "status")
-	level := evaluationString(scope, "ratingLevelId")
+	level := ratingLevelID(evaluationString(scope, "ratingLevelId"))
 	if status != "analyzed" || level == "" {
 		if status == "" {
 			return analysisStatusTitle(string(AnalysisStatusNotAnalyzed))
@@ -1168,11 +1173,26 @@ func evaluationRatingLabel(spec *model.Spec, scope map[string]any) string {
 }
 
 func evaluationAnalysisStatusPair(overall, local map[string]any) string {
-	return analysisStatusTitle(evaluationString(overall, "status")) + " / " + analysisStatusTitle(evaluationString(local, "status"))
+	return emDashIfEmpty(analysisStatusTitle(evaluationString(overall, "status"))) + " / " + emDashIfEmpty(analysisStatusTitle(evaluationString(local, "status")))
 }
 
 func evaluationConfidencePair(overall, local map[string]any) string {
-	return confidenceTitle(evaluationString(overall, "confidence")) + " / " + confidenceTitle(evaluationString(local, "confidence"))
+	return emDashIfEmpty(confidenceTitle(evaluationString(overall, "confidence"))) + " / " + emDashIfEmpty(confidenceTitle(evaluationString(local, "confidence")))
+}
+
+func evaluationRequirementConfidencePair(req *evaluationRequirementArtifacts) string {
+	return emDashIfEmpty(confidenceTitle(evaluationString(req.Rating, "confidence"))) + " / " + emDashIfEmpty(confidenceTitle(evaluationString(req.Assessment, "confidence")))
+}
+
+func emDashIfEmpty(s string) string {
+	if s == "" {
+		return "—"
+	}
+	return s
+}
+
+func ratingLevelID(ref string) string {
+	return strings.TrimPrefix(ref, "rating:")
 }
 
 func evaluationSummary(scope map[string]any) string {
@@ -1193,12 +1213,17 @@ func evaluationReceiptRating(analysis map[string]any) RatingResult {
 	if evaluationString(overall, "status") != "analyzed" {
 		return RatingResult{Kind: "not-assessed", Rationale: evaluationString(overall, "statusReason")}
 	}
-	return RatingResult{Kind: "rated", Level: evaluationString(overall, "ratingLevelId"), Rationale: evaluationString(overall, "rationale")}
+	return RatingResult{Kind: "rated", Level: ratingLevelID(evaluationString(overall, "ratingLevelId")), Rationale: evaluationString(overall, "rationale")}
 }
 
 func markdownCell(s string) string {
 	if s == "" {
-		return ""
+		return "—"
 	}
 	return strings.ReplaceAll(s, "|", "\\|")
+}
+
+func writeEvaluationLegend(b *strings.Builder) {
+	b.WriteString("\n## Legend\n\n")
+	b.WriteString("- `—` - not applicable or not recorded.\n")
 }

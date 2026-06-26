@@ -38,7 +38,8 @@ out-of-range enum values, and missing required fields before writing a payload.
 
 The CLI **MUST** resolve every Area ID, Factor ID, Requirement ID, and Rating
 Level ID in an accepted payload against the run's model snapshot before writing
-it.
+it. Those IDs **MUST** use the canonical qualified reference strings defined in
+[`Evaluation JSON conventions`](json-conventions.md#identity-and-references).
 
 ## CLI-Owned Kinds
 

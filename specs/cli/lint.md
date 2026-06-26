@@ -56,7 +56,7 @@ The lint rule-system, rule-authoring guidance, and rule catalog live in
 grounded in the format specification, deterministic, format-conformance focused,
 and self-contained within the linted file and declared cross-references. The
 default lint profile enforces the strict name grammar for Area names, Factor
-names, and Rating Level IDs.
+names, and Rating Level IDs, and rejects `root` as a reserved Area name.
 
 ### Repair behavior
 

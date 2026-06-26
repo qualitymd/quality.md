@@ -23,12 +23,9 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	cmd.SetOut(&out)
 	cmd.SetErr(&bytes.Buffer{})
 	cmd.SetIn(strings.NewReader(`{
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "RequirementAssessmentResult",
-  "requirementId": {
-    "declaringAreaId": [],
-    "requirementName": "has-tests"
-  },
+  "requirementId": "requirement:root::has-tests",
   "status": "assessed",
   "statusReason": "Evidence was inspected.",
   "evidenceSummary": "A test exists.",
@@ -58,7 +55,7 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 		t.Fatalf("data get Execute() error = %v", err)
 	}
 	if !strings.Contains(out.String(), `"kind": "RequirementAssessmentResult"`) ||
-		!strings.Contains(out.String(), `"requirementName": "has-tests"`) {
+		!strings.Contains(out.String(), `"requirementId": "requirement:root::has-tests"`) {
 		t.Fatalf("data get stdout = %s, want stored artifact JSON", out.String())
 	}
 

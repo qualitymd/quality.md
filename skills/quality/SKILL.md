@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.15.0 <0.16.0.
+compatibility: Requires qualitymd CLI >=0.16.0 <0.17.0.
 metadata:
-  version: "0.15.0"
-  requires-qualitymd-cli: ">=0.15.0 <0.16.0"
+  version: "0.16.0"
+  requires-qualitymd-cli: ">=0.16.0 <0.17.0"
 ---
 
 ## Purpose
@@ -239,9 +239,11 @@ or duplicate the finding.
 Use required `title` values as the primary human-facing labels for models,
 Areas, Factors, and Rating Levels. When disambiguation or traceability matters,
 include qualified model references as secondary context, for example
-`Format specification (area:format-spec)`. Evaluation record payloads still use
-structured stable identifiers: `areaPath`, `factorPath`, and rating `level` ids
-must not be replaced by titles, display values, or unqualified references.
+`Format specification (area:format-spec)`. Evaluation record payloads use
+canonical qualified model-reference strings such as `area:format-spec`,
+`factor:format-spec::completeness`, `requirement:format-spec::schema-validity`,
+and `rating:target`; these must not be replaced by titles, display values, or
+unqualified references.
 
 ## Invocation Variants
 

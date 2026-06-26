@@ -50,8 +50,14 @@ descendant `report.md` filenames.
 
 ## Navigation
 
-Every report **MUST** start with an `Area:` navigation trail whose elements link
-from the root Area report through the current Area report or owning Area report.
+Every report **MUST** render its H1 title line as the first content of the
+report. The H1 **MUST** prefix the subject display title with the report kind:
+`Area:` for root and non-root Area reports, `Factor:` for Factor reports, and
+`Requirement:` for Requirement reports.
+
+The `Area:` navigation trail **MUST** render after the H1. Its elements **MUST**
+link from the root Area report through the current Area report or owning Area
+report. The root trail element **MUST** render the Model `title` when present.
 
 Factor reports **MUST** include a `Factor:` navigation trail after the `Area:`
 trail. The `Factor:` trail **MUST** link each Factor ancestor and the current
@@ -67,7 +73,7 @@ Requirement reports **MUST NOT** render a singular `Factor:` breadcrumb, use the
 a navigation parent.
 
 Reports **MUST NOT** render standalone `Breadcrumb:`, `Parent Area:`,
-`Parent Factor:`, or `Parent:` header lines.
+`Parent Factor:`, `Parent:`, `Path:`, or `Name:` header lines.
 
 Area reports **MUST** link to local root Factor reports, local Requirement
 reports, and direct child Area reports.
@@ -95,7 +101,8 @@ generic word.
 
 Area reports **MUST** include:
 
-- Area title and path;
+- kind-prefixed Area title;
+- Area navigation trail;
 - overall and local ratings;
 - overall and local confidence;
 - data links;
@@ -112,7 +119,7 @@ Factor reports **MUST** include:
 
 - owning Area link;
 - Factor navigation trail;
-- Factor title and path;
+- kind-prefixed Factor title;
 - overall and local ratings, where `Overall Rating` is the Factor
   `localAndDescendantAnalysis` rating and `Local Rating` is its `localAnalysis`
   rating;
@@ -131,7 +138,7 @@ Requirement reports **MUST** include:
 
 - owning Area link;
 - attached Factor links in a plural `Factors:` context line;
-- Requirement title and name;
+- kind-prefixed Requirement title;
 - Requirement rating status and selected rating when present;
 - assessment status;
 - confidence;
@@ -153,9 +160,25 @@ Requirement headers should summarize `Rating`, `Assessment`, `Confidence`, and
 `Data`; attached Factors belong in the plural `Factors:` context line, not in
 the summary table.
 
-> Rationale: the title and path/name line identify the report subject, so the
-> header table should prioritize state and navigation rather than repeat the
-> subject kind as metadata. — 0104
+> Rationale: the title identifies the report subject, so the header table should
+> prioritize state and navigation rather than repeat the subject kind as
+> metadata. The subject kind now rides the H1 title; location rides the
+> navigation trail, so separate `Path:` / `Name:` header lines would be
+> redundant. — 0104, 0119
+
+When a report table cell would otherwise render an empty scalar value, including
+one component of a paired Confidence or Status cell, the cell **MUST** render an
+em dash (`—`) instead of a blank segment. Empty whole-section placeholder rows
+such as `(no findings)`, `(no rating drivers)`, and `(none recorded)` **MUST**
+remain worded empty-state rows rather than being replaced by the cell marker.
+
+Each generated report **MUST** include exactly one static legend at the foot of
+the report defining `—` as "not applicable or not recorded". The legend **MUST**
+render regardless of whether the report contains an em-dash cell.
+
+> Rationale: blank cells are ambiguous in committed Markdown reports. A neutral
+> em dash makes absence visible without overclaiming `N/A`, and a static legend
+> avoids data-dependent footnote churn across re-runs. — 0118
 
 Every rating column **MUST** name what it rates. A header summary table **MUST**
 label its descendant-inclusive rating column `Overall Rating` and its local
@@ -212,9 +235,9 @@ content.
 
 Ordering **MUST** be deterministic:
 
-- Areas by structural Area ID, with the root Area first;
-- Factors by declaring Area ID and structural Factor path;
-- Requirements by declaring Area ID and Requirement name;
+- Areas by canonical Area identity, with the root Area first;
+- Factors by canonical Factor identity;
+- Requirements by canonical Requirement identity;
 - rating drivers in source result order;
 - findings in Requirement Assessment Result order; and
 - evidence in recorded order.

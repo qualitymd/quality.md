@@ -128,7 +128,7 @@ func init() {
 			Object: topContract(DataKindRequirementEvaluationFrame,
 				field("subject", dataObject, true, object(
 					field("requirementId", dataRequirementID, true),
-					field("factorIds", dataStringArray, false),
+					field("factorIds", dataArray, false, arrayOf(dataFactorID)),
 				)),
 				field("inputs", dataObject, false, object(
 					field("ratingLevelIds", dataArray, false, arrayOf(dataRatingLevelID)),
@@ -153,7 +153,7 @@ func init() {
 				field("statusReason", dataString, false),
 				field("evidenceSummary", dataString, false),
 				field("summary", dataString, false),
-				field("factors", dataStringArray, false),
+				field("factors", dataArray, false, arrayOf(dataFactorID)),
 				field("evidenceTargetCoverage", dataArray, false, arrayOfObject(openObject())),
 				field("findings", dataArray, true, arrayOfObject(findingContract())),
 				field("unknowns", dataArray, false, arrayOfObject(unknownContract())),
@@ -583,38 +583,6 @@ func validatePayloadModelBindings(kind DataKind, payload map[string]any, spec *m
 	if err := walkModelReferences(payload, spec, string(kind), nil); err != nil {
 		return err
 	}
-	if kind == DataKindRequirementEvaluationFrame {
-		if subject, ok := payload["subject"].(map[string]any); ok {
-			req, err := requirementIDFrom(subject["requirementId"])
-			if err != nil {
-				return err
-			}
-			for _, ref := range stringValues(subject["factorIds"]) {
-				factor, err := parseRequirementFactorID(req.DeclaringArea, ref)
-				if err != nil {
-					return err
-				}
-				if !factorExists(spec, factor.DeclaringArea, factor.Path) {
-					return usagef("factor reference %q does not resolve in the model", ref)
-				}
-			}
-		}
-	}
-	if kind == DataKindRequirementAssessment {
-		req, err := topRequirementID(payload)
-		if err != nil {
-			return err
-		}
-		for _, ref := range stringValues(payload["factors"]) {
-			factor, err := parseRequirementFactorID(req.DeclaringArea, ref)
-			if err != nil {
-				return err
-			}
-			if !factorExists(spec, factor.DeclaringArea, factor.Path) {
-				return usagef("factor reference %q does not resolve in the model", ref)
-			}
-		}
-	}
 	return nil
 }
 
@@ -622,40 +590,6 @@ func validatePayloadModelBindings(kind DataKind, payload map[string]any, spec *m
 func walkModelReferences(value any, spec *model.Spec, path string, key *string) error {
 	switch v := value.(type) {
 	case map[string]any:
-		if key != nil {
-			switch *key {
-			case "areaId", "declaringAreaId":
-				area, err := areaIDFrom(v)
-				_ = area
-				if err == nil {
-					return nil
-				}
-			case "requirementId":
-				req, err := requirementIDFrom(v)
-				if err != nil {
-					return usagef("%s: %w", path, err)
-				}
-				if !areaExists(spec, req.DeclaringArea) {
-					return usagef("%s declares an Area absent from the model", path)
-				}
-				if !requirementExists(spec, req.DeclaringArea, req.Name) {
-					return usagef("%s does not resolve in the model", path)
-				}
-				return nil
-			case "factorId":
-				factor, err := factorIDFrom(v)
-				if err != nil {
-					return usagef("%s: %w", path, err)
-				}
-				if !areaExists(spec, factor.DeclaringArea) {
-					return usagef("%s declares an Area absent from the model", path)
-				}
-				if !factorExists(spec, factor.DeclaringArea, factor.Path) {
-					return usagef("%s does not resolve in the model", path)
-				}
-				return nil
-			}
-		}
 		for childKey, child := range v {
 			k := childKey
 			if err := walkModelReferences(child, spec, path+"."+childKey, &k); err != nil {
@@ -663,15 +597,15 @@ func walkModelReferences(value any, spec *model.Spec, path string, key *string) 
 			}
 		}
 	case []any:
-		if key != nil && (*key == "areaId" || *key == "declaringAreaId") {
-			area, err := areaIDFrom(v)
-			if err != nil {
-				return usagef("%s: %w", path, err)
+		if key != nil {
+			if singular, ok := repeatedModelReferenceKey(*key); ok {
+				for i, item := range v {
+					if err := validateModelReferenceString(spec, singular, item, fmt.Sprintf("%s[%d]", path, i)); err != nil {
+						return err
+					}
+				}
+				return nil
 			}
-			if !areaExists(spec, area) {
-				return usagef("%s does not resolve in the model", path)
-			}
-			return nil
 		}
 		for i, item := range v {
 			if err := walkModelReferences(item, spec, fmt.Sprintf("%s[%d]", path, i), key); err != nil {
@@ -679,13 +613,109 @@ func walkModelReferences(value any, spec *model.Spec, path string, key *string) 
 			}
 		}
 	case string:
-		if key != nil && (*key == "ratingLevelId" || *key == "ratingLevelIds") {
-			if _, err := parseRatingReferenceBody(spec, v, v, path); err != nil {
+		if key != nil {
+			if err := validateModelReferenceString(spec, *key, v, path); err != nil {
 				return err
 			}
 		}
 	}
 	return nil
+}
+
+func repeatedModelReferenceKey(key string) (string, bool) {
+	switch key {
+	case "areaIds", "childAreaIds":
+		return "areaId", true
+	case "factorIds", "rootFactorIds", "factors":
+		return "factorId", true
+	case "localRequirementIds":
+		return "requirementId", true
+	case "ratingLevelIds":
+		return "ratingLevelId", true
+	default:
+		return "", false
+	}
+}
+
+func validateModelReferenceString(spec *model.Spec, key string, value any, path string) error {
+	switch key {
+	case "areaId":
+		return validateAreaReferenceString(spec, value, path)
+	case "requirementId":
+		return validateRequirementReferenceString(spec, value, path)
+	case "factorId":
+		return validateFactorReferenceString(spec, value, path)
+	case "ratingLevelId":
+		ref, ok := value.(string)
+		if !ok {
+			return usagef("%s must be a qualified rating reference string", path)
+		}
+		if _, err := ParseRatingReference(spec, ref); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateAreaReferenceString(spec *model.Spec, value any, path string) error {
+	area, err := areaIDFrom(value)
+	if err != nil {
+		return usagef("%s: %w", path, err)
+	}
+	if !areaExists(spec, area) {
+		return usagef("%s does not resolve in the model", path)
+	}
+	return nil
+}
+
+func validateRequirementReferenceString(spec *model.Spec, value any, path string) error {
+	req, err := requirementIDFrom(value)
+	if err != nil {
+		return usagef("%s: %w", path, err)
+	}
+	if !areaExists(spec, req.DeclaringArea) {
+		return usagef("%s declares an Area absent from the model", path)
+	}
+	if !requirementExists(spec, req.DeclaringArea, req.Name) {
+		return usagef("%s does not resolve in the model", path)
+	}
+	return nil
+}
+
+func validateFactorReferenceString(spec *model.Spec, value any, path string) error {
+	factor, err := factorIDFrom(value)
+	if err != nil {
+		return usagef("%s: %w", path, err)
+	}
+	if !areaExists(spec, factor.DeclaringArea) {
+		return usagef("%s declares an Area absent from the model", path)
+	}
+	if !factorExists(spec, factor.DeclaringArea, factor.Path) {
+		return usagef("%s does not resolve in the model", path)
+	}
+	return nil
+}
+
+func prefixedModelReferencePattern(prefix string) string {
+	body := strings.TrimPrefix(strings.TrimSuffix(qschema.ModelNamePattern, "$"), "^")
+	return "^" + prefix + "(?:root|" + body + "(?:/" + body + ")*)$"
+}
+
+func ratingReferencePattern() string {
+	body := strings.TrimPrefix(strings.TrimSuffix(qschema.ModelNamePattern, "$"), "^")
+	return "^rating:" + body + "$"
+}
+
+func factorReferencePattern() string {
+	body := strings.TrimPrefix(strings.TrimSuffix(qschema.ModelNamePattern, "$"), "^")
+	path := "(?:root|" + body + "(?:/" + body + ")*)"
+	return "^factor:" + path + "::" + body + "(?:/" + body + ")*$"
+}
+
+func requirementReferencePattern() string {
+	body := strings.TrimPrefix(strings.TrimSuffix(qschema.ModelNamePattern, "$"), "^")
+	path := "(?:root|" + body + "(?:/" + body + ")*)"
+	return "^requirement:" + path + "::" + body + "$"
 }
 
 func EvaluationDataSchema(kind DataKind) ([]byte, error) {
@@ -756,33 +786,17 @@ func schemaForField(field dataField) map[string]any {
 			out["enum"] = anyStrings(field.Enum)
 		}
 		if field.Type == dataRatingLevelID {
-			out["pattern"] = qschema.ModelNamePattern
+			out["pattern"] = ratingReferencePattern()
 		}
 		return out
 	case dataStringArray:
 		return map[string]any{"type": "array", "items": map[string]any{"type": "string"}}
 	case dataAreaID:
-		return map[string]any{"type": "array", "items": modelNameSchema()}
+		return map[string]any{"type": "string", "pattern": prefixedModelReferencePattern("area:")}
 	case dataRequirementID:
-		return map[string]any{
-			"type":                 "object",
-			"additionalProperties": false,
-			"required":             []any{"declaringAreaId", "requirementName"},
-			"properties": map[string]any{
-				"declaringAreaId": schemaForField(fieldOf(dataAreaID)),
-				"requirementName": modelNameSchema(),
-			},
-		}
+		return map[string]any{"type": "string", "pattern": requirementReferencePattern()}
 	case dataFactorID:
-		return map[string]any{
-			"type":                 "object",
-			"additionalProperties": false,
-			"required":             []any{"declaringAreaId", "factorPath"},
-			"properties": map[string]any{
-				"declaringAreaId": schemaForField(fieldOf(dataAreaID)),
-				"factorPath":      map[string]any{"type": "array", "minItems": 1, "items": modelNameSchema()},
-			},
-		}
+		return map[string]any{"type": "string", "pattern": factorReferencePattern()}
 	case dataObject:
 		if field.Object == nil {
 			return map[string]any{"type": "object"}
@@ -797,14 +811,6 @@ func schemaForField(field dataField) map[string]any {
 	default:
 		return map[string]any{}
 	}
-}
-
-func modelNameSchema() map[string]any {
-	return map[string]any{"type": "string", "pattern": qschema.ModelNamePattern}
-}
-
-func fieldOf(typ dataFieldType) dataField {
-	return dataField{Type: typ}
 }
 
 func VerifyData(runPath string) (*DataVerifyReceipt, error) {

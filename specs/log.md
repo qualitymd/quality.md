@@ -3,6 +3,28 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0120 - String model-identity fields in evaluation data](../changes/archive/0120-string-model-identity-fields.md).
+  `SPECIFICATION.md` now reserves `root` as an Area name and carries
+  specification version `0.5 (Draft)`. The Evaluation overview and record specs
+  now define persisted model identities as canonical qualified-reference strings;
+  the lint specs include the `reserved-area-name` rule; the companion
+  `quality.schema.json` spec covers the expressible `root` reservation; and the
+  `/quality` skill spec describes qualified references in Evaluation artifacts.
+
+- **Revision**: Implemented durable spec changes for
+  [0119 - Report header kind prefix and title-first layout](../changes/archive/0119-report-header-kind-prefix.md).
+  The Evaluation report-tree spec now requires title-first, kind-prefixed H1s,
+  trails below the title, the Model `title` as the root trail element, and no
+  standalone `Path:` / `Name:` header lines.
+
+- **Revision**: Implemented durable spec changes for
+  [0118 - Report empty-cell marker and legend](../changes/archive/0118-report-empty-cell-legend.md).
+  The Evaluation report-tree spec now requires empty scalar cells and paired
+  empty components to render as `—`, requires a static per-report legend, and
+  keeps worded empty-section rows and not-assessed-style outcomes distinct from
+  the marker.
+
+- **Revision**: Implemented durable spec changes for
   [0117 - Requirement report Factors line](../changes/archive/0117-requirement-report-factors-line.md).
   The Evaluation report-tree spec now requires a plural `Factors:` context line
   on Requirement reports and removes `Factors` from the Requirement summary table

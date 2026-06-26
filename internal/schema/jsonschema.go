@@ -146,7 +146,16 @@ func propertySchema(p Property) (map[string]any, error) {
 			"additionalProperties": element,
 		}
 		if p.KeyPattern != "" {
-			schema["propertyNames"] = map[string]any{"pattern": p.KeyPattern}
+			propertyNames := map[string]any{"pattern": p.KeyPattern}
+			if p.ElementKind == AreaKind {
+				propertyNames = map[string]any{
+					"allOf": []any{
+						map[string]any{"pattern": p.KeyPattern},
+						map[string]any{"not": map[string]any{"enum": []any{"root"}}},
+					},
+				}
+			}
+			schema["propertyNames"] = propertyNames
 		}
 		return schema, nil
 	case SequenceShape:

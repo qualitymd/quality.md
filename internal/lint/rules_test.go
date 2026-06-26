@@ -358,6 +358,30 @@ areas: {}
 `),
 	},
 	{
+		ruleID: RuleReservedAreaName,
+		name:   "root area name at top level",
+		model: validFrontmatter(`areas:
+  root:
+    requirements:
+      has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleReservedAreaName,
+		name:   "root area name nested",
+		model: validFrontmatter(`areas:
+  api:
+    areas:
+      root:
+        requirements:
+          has-assessment:
+            title: Has an assessment
+            assessment: Inspect it.
+`),
+	},
+	{
 		ruleID: RuleInvalidAssessment,
 		name:   "assessment absent",
 		model: validFrontmatter(`requirements:

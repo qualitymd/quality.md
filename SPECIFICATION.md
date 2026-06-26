@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Specification version:** 0.4 (Draft)
+**Specification version:** 0.5 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -157,6 +157,9 @@ Area names, Factor names, Requirement names, and Rating Level IDs MUST match:
 The grammar excludes `/`, `:`, spaces, dots, and leading or trailing separators
 so canonical model references are unambiguous and do not resemble filesystem
 paths.
+
+Area names MUST NOT be `root`. The token `root` is reserved for the root Area in
+Area, Factor, and Requirement references.
 
 Qualified Area references use `area:<area-path>`. The root Area reference is
 `area:root`; nested Area references join Area names with `/`, for example

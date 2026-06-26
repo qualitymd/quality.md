@@ -201,8 +201,14 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
+	if !strings.HasPrefix(string(report), "# Area: Test model\n\nArea: [Test model](report.md)") {
+		t.Fatalf("report.md = %s, want kind-prefixed title before Area trail", report)
+	}
 	if !strings.Contains(string(report), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [area-analysis-result.json](data/areas/root/area-analysis-result.json) |") {
 		t.Fatalf("report.md = %s, want target rating title", report)
+	}
+	if !strings.Contains(string(report), "## Legend\n\n- `—` - not applicable or not recorded.") {
+		t.Fatalf("report.md = %s, want empty-cell legend", report)
 	}
 	if !strings.Contains(string(report), "Area: [Test model](report.md)") {
 		t.Fatalf("report.md = %s, want Area trail", report)
@@ -249,21 +255,24 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 		t.Fatalf("BuildReport() error = %v", err)
 	}
 	rootReport := readReport(t, runPath, "report.md")
+	assertContains(t, rootReport, "# Area: Navigation model\n\nArea: [Navigation model](report.md)")
 	assertContains(t, rootReport, "Area: [Navigation model](report.md)")
-	assertContains(t, rootReport, "Path: `/`")
+	assertNotContains(t, rootReport, "Path: `/`")
 	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
 	assertContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
 	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | 🔴 Below | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
-	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — |  |")
+	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — | — |")
 	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/reliability-factor.md) |")
+	assertContains(t, rootReport, "## Legend\n\n- `—` - not applicable or not recorded.")
 	assertNotContains(t, rootReport, "Breadcrumb:")
 	assertNotContains(t, rootReport, "Parent Area:")
 	assertNotContains(t, rootReport, "| Details |")
 
 	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
+	assertContains(t, factorReport, "# Factor: Reliability\n\nArea: [Navigation model](../../report.md)")
 	assertContains(t, factorReport, "Area: [Navigation model](../../report.md)")
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
-	assertContains(t, factorReport, "Path: `reliability`")
+	assertNotContains(t, factorReport, "Path: `reliability`")
 	assertContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence | Data |")
 	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed |")
 	assertContains(t, factorReport, "| [Latency](factors/latency/latency-factor.md) | `reliability/latency` | 🔵 Target | — |")
@@ -274,10 +283,11 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, childFactorReport, "Factor: [Reliability](../../reliability-factor.md) / [Latency](latency-factor.md)")
 
 	requirementReport := readReport(t, runPath, "requirements/has-tests/has-tests-requirement.md")
+	assertContains(t, requirementReport, "# Requirement: Has tests\n\nArea: [Navigation model](../../report.md)")
 	assertContains(t, requirementReport, "Area: [Navigation model](../../report.md)")
 	assertContains(t, requirementReport, "Factors: [reliability](../../factors/reliability/reliability-factor.md)")
-	assertContains(t, requirementReport, "Area: [Navigation model](../../report.md)\n\nFactors: [reliability](../../factors/reliability/reliability-factor.md)\n\n# Has tests")
-	assertContains(t, requirementReport, "Name: `has-tests`")
+	assertContains(t, requirementReport, "# Requirement: Has tests\n\nArea: [Navigation model](../../report.md)\n\nFactors: [reliability](../../factors/reliability/reliability-factor.md)")
+	assertNotContains(t, requirementReport, "Name: `has-tests`")
 	assertContains(t, requirementReport, "| Rating | Assessment | Confidence | Data |")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
 	assertContains(t, requirementReport, "[requirement-assessment-result.json](")
@@ -304,7 +314,7 @@ func TestSetDataRejectsCLIOwnedOutput(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	_, err = SetData(filepath.Join(repo, result.Path), []byte(`{"schemaVersion":1,"kind":"EvaluationOutputResult"}`), DataSetOptions{})
+	_, err = SetData(filepath.Join(repo, result.Path), []byte(`{"schemaVersion":2,"kind":"EvaluationOutputResult"}`), DataSetOptions{})
 	if err == nil || !strings.Contains(err.Error(), "generated by evaluation report build") {
 		t.Fatalf("SetData(EvaluationOutputResult) error = %v, want CLI-owned diagnostic", err)
 	}
@@ -318,9 +328,10 @@ func TestSetDataRejectsInvalidEvaluationShapes(t *testing.T) {
 	}
 	runPath := filepath.Join(repo, result.Path)
 	cases := []string{
-		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"rated","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
-		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability"]},"localAnalysis":{"status":"analyzed","ratingDrivers":["finding-1"]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
-		`{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"assessed","findings":["finding-1"]}`,
+		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
+		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"rated","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
+		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingDrivers":["finding-1"]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
+		`{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":["finding-1"]}`,
 	}
 	for _, raw := range cases {
 		if _, err := SetData(runPath, []byte(raw), DataSetOptions{}); err == nil {
@@ -343,17 +354,17 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 	}{
 		{
 			name: "unknown finding field",
-			raw:  `{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"assessed","findings":[{"title":"Wrong field","summary":"Would render blank"}]}`,
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"title":"Wrong field","summary":"Would render blank"}]}`,
 			want: "unknown field title",
 		},
 		{
 			name: "invented requirement",
-			raw:  `{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"invented"},"status":"assessed","findings":[]}`,
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`,
 			want: "does not resolve in the model",
 		},
 		{
 			name: "invented rating",
-			raw:  `{"schemaVersion":1,"kind":"RequirementRatingResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"rated","ratingLevelId":"invented","ratingDrivers":[]}`,
+			raw:  `{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:invented","ratingDrivers":[]}`,
 			want: "does not resolve in the model",
 		},
 	}
@@ -425,7 +436,7 @@ func TestVerifyDataReportsPersistedPayloadFailures(t *testing.T) {
 	if err := os.MkdirAll(filepath.Dir(badPath), 0o755); err != nil {
 		t.Fatalf("MkdirAll() error = %v", err)
 	}
-	if err := os.WriteFile(badPath, []byte(`{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"assessed","findings":[{"title":"Wrong"}]}`), 0o644); err != nil {
+	if err := os.WriteFile(badPath, []byte(`{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"title":"Wrong"}]}`), 0o644); err != nil {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 	resultReceipt, err := VerifyData(runPath)
@@ -500,6 +511,19 @@ func TestReportDisplayTitles(t *testing.T) {
 	}
 }
 
+func TestReportPairCellsRenderEmptyComponents(t *testing.T) {
+	req := &evaluationRequirementArtifacts{}
+	if got := evaluationConfidencePair(map[string]any{}, map[string]any{}); got != "— / —" {
+		t.Fatalf("evaluationConfidencePair() = %q, want empty components marked", got)
+	}
+	if got := evaluationAnalysisStatusPair(map[string]any{}, map[string]any{}); got != "— / —" {
+		t.Fatalf("evaluationAnalysisStatusPair() = %q, want empty components marked", got)
+	}
+	if got := evaluationRequirementConfidencePair(req); got != "— / —" {
+		t.Fatalf("evaluationRequirementConfidencePair() = %q, want empty components marked", got)
+	}
+}
+
 func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 	kinds := append([]DataKind{}, acceptedDataKinds...)
 	kinds = append(kinds, DataKindEvaluationOutput)
@@ -512,9 +536,9 @@ func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 
 func completeRootEvaluationPayloads() []string {
 	return []string{
-		`{"schemaVersion":1,"kind":"EvaluationFrame"}`,
-		`{"schemaVersion":1,"kind":"AreaEvaluationFrame","subject":{"areaId":[]}}`,
-		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"The model meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":2,"kind":"EvaluationFrame"}`,
+		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
+		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"The model meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
 	}
 }
 
@@ -547,18 +571,18 @@ requirements:
 
 func navigationReportPayloads() []string {
 	return []string{
-		`{"schemaVersion":1,"kind":"EvaluationFrame"}`,
-		`{"schemaVersion":1,"kind":"AreaEvaluationFrame","subject":{"areaId":[]}}`,
-		`{"schemaVersion":1,"kind":"AreaEvaluationFrame","subject":{"areaId":["payments"]}}`,
-		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Root local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Root work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
-		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":["payments"],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Payments local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Payments work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
-		`{"schemaVersion":1,"kind":"FactorAnalysisFrame","subject":{"factorId":{"declaringAreaId":[],"factorPath":["reliability"]}}}`,
-		`{"schemaVersion":1,"kind":"FactorAnalysisFrame","subject":{"factorId":{"declaringAreaId":[],"factorPath":["reliability","latency"]}}}`,
-		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Reliability local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"below","rationale":"Reliability work misses the bar once sub-Factors roll up.","ratingDrivers":[],"confidence":"high"}}`,
-		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability","latency"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Latency local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Latency work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
-		`{"schemaVersion":1,"kind":"RequirementEvaluationFrame","subject":{"requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"factorIds":["reliability"]}}`,
-		`{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"assessed","confidence":"high","summary":"Tests are present.","factors":["reliability"],"findings":[]}`,
-		`{"schemaVersion":1,"kind":"RequirementRatingResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"rated","ratingLevelId":"target","confidence":"high","rationale":"Tests meet the bar.","ratingDrivers":[]}`,
+		`{"schemaVersion":2,"kind":"EvaluationFrame"}`,
+		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
+		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}`,
+		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:payments","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
+		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
+		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}`,
+		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:below","rationale":"Reliability work misses the bar once sub-Factors roll up.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability/latency","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
+		`{"schemaVersion":2,"kind":"RequirementEvaluationFrame","subject":{"requirementId":"requirement:root::has-tests","factorIds":["factor:root::reliability"]}}`,
+		`{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","confidence":"high","summary":"Tests are present.","factors":["factor:root::reliability"],"findings":[]}`,
+		`{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","confidence":"high","rationale":"Tests meet the bar.","ratingDrivers":[]}`,
 	}
 }
 

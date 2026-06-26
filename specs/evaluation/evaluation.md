@@ -73,9 +73,10 @@ persistence, status inspection, output assembly, and report rendering.
 The agent or skill runtime **MUST** own judgment: evidence selection, assessment,
 rating, confidence, synthesis, and stop decisions.
 
-Evaluation JSON **MUST** use structural model IDs for Areas, Factors,
-Requirements, and Rating Levels. Rendered model refs are for CLI and human
-boundaries, not primary persisted identity inside routine JSON.
+Evaluation JSON **MUST** use canonical qualified model-reference strings for
+Areas, Factors, Requirements, and Rating Levels. Display values and unqualified
+references are for fixed-type human/input edges, not persisted identity inside
+routine JSON.
 
 `schemaVersion` **MUST** be treated as a payload-shape marker only. Evaluation
 does not define migrations, compatibility transforms, or mixed-version run

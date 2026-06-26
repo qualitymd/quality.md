@@ -8,7 +8,18 @@
             "$ref": "#/$defs/area"
           },
           "propertyNames": {
-            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+            "allOf": [
+              {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+              },
+              {
+                "not": {
+                  "enum": [
+                    "root"
+                  ]
+                }
+              }
+            ]
           },
           "type": "object"
         },
@@ -157,7 +168,18 @@
         "$ref": "#/$defs/area"
       },
       "propertyNames": {
-        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+        "allOf": [
+          {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$"
+          },
+          {
+            "not": {
+              "enum": [
+                "root"
+              ]
+            }
+          }
+        ]
       },
       "type": "object"
     },

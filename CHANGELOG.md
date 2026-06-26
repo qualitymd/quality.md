@@ -5,6 +5,55 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.16.0 - 2026-06-26
+
+### CLI
+
+- Evaluation routine and report JSON now encode `areaId`, `factorId`,
+  `requirementId`, and `ratingLevelId` as canonical qualified model-reference
+  strings such as `area:root`, `factor:root::reliability`,
+  `requirement:root::has-tests`, and `rating:target`. Repeated identity fields
+  use arrays of the same strings.
+- Evaluation data `schemaVersion` is now `2`; old structured identity payloads
+  are rejected rather than migrated.
+- Generated Evaluation Markdown reports now open with kind-prefixed H1 titles,
+  place navigation trails below the title, omit redundant `Path:` / `Name:`
+  header lines, render empty scalar table cells as `—`, and include a static
+  legend defining the marker.
+- `qualitymd lint` now rejects `root` as a reserved Area name.
+
+### /quality Skill
+
+- `/quality` now requires `qualitymd >=0.16.0 <0.17.0` and instructs agents to
+  write Evaluation payload identities as qualified model-reference strings.
+
+### Specification
+
+- QUALITY.md specification version is now `0.5 (Draft)`.
+- Area names may no longer be `root`, preserving `area:root` as the unambiguous
+  root Area reference.
+- Evaluation data specs now define persisted model identities as canonical
+  qualified reference strings.
+
+### Documentation
+
+- Report-tree specs now document title-first, kind-prefixed report headers, the
+  empty-cell em dash, and the static report legend.
+
+### Compatibility / Migration
+
+- Existing completed Evaluation runs are not migrated. Recreate or rewrite run
+  data with schema version `2` before rebuilding reports with `qualitymd
+  evaluation report build`.
+- Consumers of Evaluation JSON must read identity fields as qualified strings,
+  not arrays or objects.
+
+Compatibility:
+
+- CLI: `v0.16.0`
+- QUALITY.md specification: `0.5 (Draft)`
+- /quality skill: `0.16.0`, requires `qualitymd >=0.16.0 <0.17.0`
+
 ## v0.15.0 - 2026-06-26
 
 ### CLI

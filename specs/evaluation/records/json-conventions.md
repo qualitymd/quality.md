@@ -28,16 +28,27 @@ versions.
 
 ## Identity And References
 
-Persisted routine JSON **MUST** use structural model identity fields:
+Persisted routine JSON **MUST** encode model identity fields as canonical
+qualified model-reference strings:
 
-- `AreaId`
-- `FactorId`
-- `RequirementId`
-- `RatingLevelId`
+- `areaId`: `area:<area-path>`
+- `factorId`: `factor:<declaring-area-path>::<factor-path>`
+- `requirementId`: `requirement:<declaring-area-path>::<requirement-name>`
+- `ratingLevelId`: `rating:<rating-level-id>`
 
-Rendered model refs such as `area:api`, `factor:api::reliability`,
-`requirement:api::retry-window`, and `rating:target` **MUST NOT** replace
-structural IDs inside persisted routine JSON.
+Repeated identity fields such as `areaIds`, `factorIds`,
+`localRequirementIds`, `rootFactorIds`, `childAreaIds`, `ratingLevelIds`, and
+the secondary Factor lists **MUST** be arrays of those same qualified reference
+strings and default to `[]` when empty.
+
+Persisted routine JSON **MUST NOT** use structured identity sub-fields such as
+`declaringAreaId`, `factorPath`, or `requirementName`, and **MUST NOT** use
+unqualified references.
+
+> Rationale: the qualified reference grammar is the lossless string encoding of
+> the same composite identity; carrying the parsed object in persisted JSON adds
+> shape complexity without adding information. The `root` Area-name reservation
+> keeps `area:root` unambiguous. — 0120
 
 The CLI **MUST** resolve persisted identity fields against the run's
 `model-snapshot.md` before accepting a write. A payload that names an absent

@@ -229,8 +229,10 @@ scope, and rigor where applicable:
   unqualified references at fixed-type human/input edges such as
   `area webhooks/delivery` or `factor webhooks/delivery::reliability`. Display
   values, such as `/` for the root Area in reports, are not model references.
-  Evaluation artifacts **MUST** use stable `areaPath`, `factorPath`, and rating
-  `level` identifiers rather than natural labels.
+  Evaluation artifacts **MUST** use canonical qualified model-reference strings
+  such as `area:webhooks`, `factor:webhooks::reliability`,
+  `requirement:webhooks::retry-window`, and `rating:target` rather than natural
+  labels, display values, or unqualified references.
 - **Rigor** — the evaluation depth (default `standard`); see
   [Rigor levels](evaluation.md#rigor-levels).
 

@@ -504,3 +504,13 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0117 — Requirement report Factors line](0117-requirement-report-factors-line.md)
   - added a plural `Factors:` context line to Requirement reports and removed the
     duplicated `Factors` column from their summary table (`Done`).
+- [0118 — Report empty-cell marker and legend](0118-report-empty-cell-legend.md)
+  - renders empty scalar report cells as `—` and adds one static legend per
+    generated report (`Done`).
+- [0119 — Report header kind prefix and title-first layout](0119-report-header-kind-prefix.md)
+  - makes report H1s title-first and kind-prefixed, moves trails below the title,
+    and drops redundant `Path:` / `Name:` header lines (`Done`).
+- [0120 — String model-identity fields in evaluation data](0120-string-model-identity-fields.md)
+  - stores Evaluation data model identities as canonical qualified-reference
+    strings, reserves `root` as an Area name, and bumps Evaluation data schema
+    version to 2 (`Done`).

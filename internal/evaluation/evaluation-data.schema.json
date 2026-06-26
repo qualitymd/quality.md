@@ -92,57 +92,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -170,57 +129,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -250,11 +168,8 @@
           "additionalProperties": false,
           "properties": {
             "areaId": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "type": "array"
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
             }
           },
           "required": [
@@ -274,11 +189,8 @@
       "additionalProperties": false,
       "properties": {
         "areaId": {
-          "items": {
-            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-            "type": "string"
-          },
-          "type": "array"
+          "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+          "type": "string"
         },
         "kind": {
           "enum": [
@@ -375,57 +287,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -469,57 +340,16 @@
                           "additionalProperties": false,
                           "properties": {
                             "areaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
+                              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                              "type": "string"
                             },
                             "factorId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "factorPath": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "minItems": 1,
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "factorPath"
-                              ],
-                              "type": "object"
+                              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                              "type": "string"
                             },
                             "requirementId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "requirementName": {
-                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "requirementName"
-                              ],
-                              "type": "object"
+                              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -534,7 +364,7 @@
                     "type": "array"
                   },
                   "ratingLevelId": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                     "type": "string"
                   },
                   "requirementRatingDriver": {
@@ -549,7 +379,7 @@
               "type": "array"
             },
             "ratingLevelId": {
-              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
               "type": "string"
             },
             "rationale": {
@@ -662,57 +492,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -756,57 +545,16 @@
                           "additionalProperties": false,
                           "properties": {
                             "areaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
+                              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                              "type": "string"
                             },
                             "factorId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "factorPath": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "minItems": 1,
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "factorPath"
-                              ],
-                              "type": "object"
+                              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                              "type": "string"
                             },
                             "requirementId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "requirementName": {
-                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "requirementName"
-                              ],
-                              "type": "object"
+                              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -821,7 +569,7 @@
                     "type": "array"
                   },
                   "ratingLevelId": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                     "type": "string"
                   },
                   "requirementRatingDriver": {
@@ -836,7 +584,7 @@
               "type": "array"
             },
             "ratingLevelId": {
-              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
               "type": "string"
             },
             "rationale": {
@@ -920,63 +668,22 @@
           "properties": {
             "childAreaIds": {
               "items": {
-                "items": {
-                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                  "type": "string"
-                },
-                "type": "array"
+                "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                "type": "string"
               },
               "type": "array"
             },
             "localRequirementIds": {
               "items": {
-                "additionalProperties": false,
-                "properties": {
-                  "declaringAreaId": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "requirementName": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "declaringAreaId",
-                  "requirementName"
-                ],
-                "type": "object"
+                "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
               },
               "type": "array"
             },
             "rootFactorIds": {
               "items": {
-                "additionalProperties": false,
-                "properties": {
-                  "declaringAreaId": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "factorPath": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "minItems": 1,
-                    "type": "array"
-                  }
-                },
-                "required": [
-                  "declaringAreaId",
-                  "factorPath"
-                ],
-                "type": "object"
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
               },
               "type": "array"
             },
@@ -1000,11 +707,8 @@
           "additionalProperties": false,
           "properties": {
             "areaId": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "type": "array"
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
             }
           },
           "required": [
@@ -1076,45 +780,21 @@
           "properties": {
             "areaIds": {
               "items": {
-                "items": {
-                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                  "type": "string"
-                },
-                "type": "array"
+                "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                "type": "string"
               },
               "type": "array"
             },
             "factorIds": {
               "items": {
-                "additionalProperties": false,
-                "properties": {
-                  "declaringAreaId": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "factorPath": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "minItems": 1,
-                    "type": "array"
-                  }
-                },
-                "required": [
-                  "declaringAreaId",
-                  "factorPath"
-                ],
-                "type": "object"
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
               },
               "type": "array"
             },
             "ratingLevelIds": {
               "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                 "type": "string"
               },
               "type": "array"
@@ -1170,57 +850,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -1245,57 +884,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -1308,11 +906,8 @@
                 "type": "object"
               },
               "areaId": {
-                "items": {
-                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                  "type": "string"
-                },
-                "type": "array"
+                "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                "type": "string"
               },
               "factorAnalysisRefs": {
                 "items": {
@@ -1328,57 +923,16 @@
                       "additionalProperties": false,
                       "properties": {
                         "areaId": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "type": "array"
+                          "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                          "type": "string"
                         },
                         "factorId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "factorPath": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "minItems": 1,
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "factorPath"
-                          ],
-                          "type": "object"
+                          "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                          "type": "string"
                         },
                         "requirementId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "requirementName": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "requirementName"
-                          ],
-                          "type": "object"
+                          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -1397,36 +951,12 @@
                   "additionalProperties": false,
                   "properties": {
                     "areaId": {
-                      "items": {
-                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                        "type": "string"
-                      },
-                      "type": "array"
+                      "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                      "type": "string"
                     },
                     "factorId": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "declaringAreaId": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "type": "array"
-                        },
-                        "factorPath": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "minItems": 1,
-                          "type": "array"
-                        }
-                      },
-                      "required": [
-                        "declaringAreaId",
-                        "factorPath"
-                      ],
-                      "type": "object"
+                      "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                      "type": "string"
                     },
                     "kind": {
                       "type": "string"
@@ -1435,25 +965,8 @@
                       "type": "string"
                     },
                     "requirementId": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "declaringAreaId": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "type": "array"
-                        },
-                        "requirementName": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "declaringAreaId",
-                        "requirementName"
-                      ],
-                      "type": "object"
+                      "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -1479,57 +992,16 @@
                       "additionalProperties": false,
                       "properties": {
                         "areaId": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "type": "array"
+                          "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                          "type": "string"
                         },
                         "factorId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "factorPath": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "minItems": 1,
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "factorPath"
-                          ],
-                          "type": "object"
+                          "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                          "type": "string"
                         },
                         "requirementId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "requirementName": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "requirementName"
-                          ],
-                          "type": "object"
+                          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -1557,57 +1029,16 @@
                       "additionalProperties": false,
                       "properties": {
                         "areaId": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "type": "array"
+                          "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                          "type": "string"
                         },
                         "factorId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "factorPath": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "minItems": 1,
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "factorPath"
-                          ],
-                          "type": "object"
+                          "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                          "type": "string"
                         },
                         "requirementId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "requirementName": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "requirementName"
-                          ],
-                          "type": "object"
+                          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -1646,36 +1077,12 @@
             "additionalProperties": false,
             "properties": {
               "areaId": {
-                "items": {
-                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                  "type": "string"
-                },
-                "type": "array"
+                "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                "type": "string"
               },
               "factorId": {
-                "additionalProperties": false,
-                "properties": {
-                  "declaringAreaId": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "factorPath": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "minItems": 1,
-                    "type": "array"
-                  }
-                },
-                "required": [
-                  "declaringAreaId",
-                  "factorPath"
-                ],
-                "type": "object"
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
               },
               "kind": {
                 "type": "string"
@@ -1684,25 +1091,8 @@
                 "type": "string"
               },
               "requirementId": {
-                "additionalProperties": false,
-                "properties": {
-                  "declaringAreaId": {
-                    "items": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "requirementName": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "declaringAreaId",
-                  "requirementName"
-                ],
-                "type": "object"
+                "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
               }
             },
             "required": [
@@ -1727,57 +1117,16 @@
               "additionalProperties": false,
               "properties": {
                 "areaId": {
-                  "items": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                    "type": "string"
-                  },
-                  "type": "array"
+                  "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                  "type": "string"
                 },
                 "factorId": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "declaringAreaId": {
-                      "items": {
-                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                        "type": "string"
-                      },
-                      "type": "array"
-                    },
-                    "factorPath": {
-                      "items": {
-                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                        "type": "string"
-                      },
-                      "minItems": 1,
-                      "type": "array"
-                    }
-                  },
-                  "required": [
-                    "declaringAreaId",
-                    "factorPath"
-                  ],
-                  "type": "object"
+                  "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                  "type": "string"
                 },
                 "requirementId": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "declaringAreaId": {
-                      "items": {
-                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                        "type": "string"
-                      },
-                      "type": "array"
-                    },
-                    "requirementName": {
-                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "declaringAreaId",
-                    "requirementName"
-                  ],
-                  "type": "object"
+                  "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
                 }
               },
               "type": "object"
@@ -1894,57 +1243,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -1972,57 +1280,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -2052,36 +1319,12 @@
           "additionalProperties": false,
           "properties": {
             "areaId": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "type": "array"
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
             },
             "factorId": {
-              "additionalProperties": false,
-              "properties": {
-                "declaringAreaId": {
-                  "items": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                    "type": "string"
-                  },
-                  "type": "array"
-                },
-                "factorPath": {
-                  "items": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array"
-                }
-              },
-              "required": [
-                "declaringAreaId",
-                "factorPath"
-              ],
-              "type": "object"
+              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+              "type": "string"
             }
           },
           "required": [
@@ -2101,29 +1344,8 @@
       "additionalProperties": false,
       "properties": {
         "factorId": {
-          "additionalProperties": false,
-          "properties": {
-            "declaringAreaId": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "factorPath": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "minItems": 1,
-              "type": "array"
-            }
-          },
-          "required": [
-            "declaringAreaId",
-            "factorPath"
-          ],
-          "type": "object"
+          "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+          "type": "string"
         },
         "kind": {
           "enum": [
@@ -2220,57 +1442,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -2314,57 +1495,16 @@
                           "additionalProperties": false,
                           "properties": {
                             "areaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
+                              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                              "type": "string"
                             },
                             "factorId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "factorPath": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "minItems": 1,
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "factorPath"
-                              ],
-                              "type": "object"
+                              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                              "type": "string"
                             },
                             "requirementId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "requirementName": {
-                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "requirementName"
-                              ],
-                              "type": "object"
+                              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -2379,7 +1519,7 @@
                     "type": "array"
                   },
                   "ratingLevelId": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                     "type": "string"
                   },
                   "requirementRatingDriver": {
@@ -2394,7 +1534,7 @@
               "type": "array"
             },
             "ratingLevelId": {
-              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
               "type": "string"
             },
             "rationale": {
@@ -2507,57 +1647,16 @@
                     "additionalProperties": false,
                     "properties": {
                       "areaId": {
-                        "items": {
-                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                          "type": "string"
-                        },
-                        "type": "array"
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
                       },
                       "factorId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "factorPath": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "minItems": 1,
-                            "type": "array"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "factorPath"
-                        ],
-                        "type": "object"
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
                       },
                       "requirementId": {
-                        "additionalProperties": false,
-                        "properties": {
-                          "declaringAreaId": {
-                            "items": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            },
-                            "type": "array"
-                          },
-                          "requirementName": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "declaringAreaId",
-                          "requirementName"
-                        ],
-                        "type": "object"
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
                       }
                     },
                     "type": "object"
@@ -2601,57 +1700,16 @@
                           "additionalProperties": false,
                           "properties": {
                             "areaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
+                              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                              "type": "string"
                             },
                             "factorId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "factorPath": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "minItems": 1,
-                                  "type": "array"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "factorPath"
-                              ],
-                              "type": "object"
+                              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                              "type": "string"
                             },
                             "requirementId": {
-                              "additionalProperties": false,
-                              "properties": {
-                                "declaringAreaId": {
-                                  "items": {
-                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                    "type": "string"
-                                  },
-                                  "type": "array"
-                                },
-                                "requirementName": {
-                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "declaringAreaId",
-                                "requirementName"
-                              ],
-                              "type": "object"
+                              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
                             }
                           },
                           "type": "object"
@@ -2666,7 +1724,7 @@
                     "type": "array"
                   },
                   "ratingLevelId": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                     "type": "string"
                   },
                   "requirementRatingDriver": {
@@ -2681,7 +1739,7 @@
               "type": "array"
             },
             "ratingLevelId": {
-              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
               "type": "string"
             },
             "rationale": {
@@ -2775,6 +1833,7 @@
         },
         "factors": {
           "items": {
+            "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
             "type": "string"
           },
           "type": "array"
@@ -2836,25 +1895,8 @@
           "type": "string"
         },
         "requirementId": {
-          "additionalProperties": false,
-          "properties": {
-            "declaringAreaId": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "requirementName": {
-              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-              "type": "string"
-            }
-          },
-          "required": [
-            "declaringAreaId",
-            "requirementName"
-          ],
-          "type": "object"
+          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+          "type": "string"
         },
         "schemaVersion": {
           "type": "integer"
@@ -2925,7 +1967,7 @@
                     "type": "string"
                   },
                   "ratingLevelId": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                     "type": "string"
                   },
                   "source": {
@@ -3036,7 +2078,7 @@
           "properties": {
             "ratingLevelIds": {
               "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                 "type": "string"
               },
               "type": "array"
@@ -3065,30 +2107,14 @@
           "properties": {
             "factorIds": {
               "items": {
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
                 "type": "string"
               },
               "type": "array"
             },
             "requirementId": {
-              "additionalProperties": false,
-              "properties": {
-                "declaringAreaId": {
-                  "items": {
-                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                    "type": "string"
-                  },
-                  "type": "array"
-                },
-                "requirementName": {
-                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "declaringAreaId",
-                "requirementName"
-              ],
-              "type": "object"
+              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
             }
           },
           "required": [
@@ -3127,7 +2153,7 @@
                 "type": "boolean"
               },
               "ratingLevelId": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                 "type": "string"
               },
               "rationale": {
@@ -3232,57 +2258,16 @@
                       "additionalProperties": false,
                       "properties": {
                         "areaId": {
-                          "items": {
-                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                            "type": "string"
-                          },
-                          "type": "array"
+                          "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                          "type": "string"
                         },
                         "factorId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "factorPath": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "minItems": 1,
-                              "type": "array"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "factorPath"
-                          ],
-                          "type": "object"
+                          "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                          "type": "string"
                         },
                         "requirementId": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "declaringAreaId": {
-                              "items": {
-                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                                "type": "string"
-                              },
-                              "type": "array"
-                            },
-                            "requirementName": {
-                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "declaringAreaId",
-                            "requirementName"
-                          ],
-                          "type": "object"
+                          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
                         }
                       },
                       "type": "object"
@@ -3297,7 +2282,7 @@
                 "type": "array"
               },
               "ratingLevelId": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                 "type": "string"
               },
               "requirementRatingDriver": {
@@ -3312,32 +2297,15 @@
           "type": "array"
         },
         "ratingLevelId": {
-          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+          "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
           "type": "string"
         },
         "rationale": {
           "type": "string"
         },
         "requirementId": {
-          "additionalProperties": false,
-          "properties": {
-            "declaringAreaId": {
-              "items": {
-                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "requirementName": {
-              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-              "type": "string"
-            }
-          },
-          "required": [
-            "declaringAreaId",
-            "requirementName"
-          ],
-          "type": "object"
+          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+          "type": "string"
         },
         "schemaVersion": {
           "type": "integer"
