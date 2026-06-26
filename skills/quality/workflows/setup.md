@@ -14,14 +14,16 @@ issues, integrations, and automations stay outside setup.
 ## Workflow
 
 ```text
-Opening orientation
-- explain what QUALITY.md gives teams and agents
+Opening (first output, before any tool call)
+- warm welcome and what QUALITY.md gives teams and agents
+- short phase roadmap of what setup will do
 - state read-only context scan first and review before changes
+- emit run frame in the same block
+- note the scan may take a moment on a large repo
 
 Preflight
-- verify CLI support
-- resolve model file
-- emit run frame
+- verify CLI support (fail-fast gate, after the opening)
+- confirm the resolved model file the run frame named
 
 Read context
 - inspect setup signals
@@ -58,43 +60,63 @@ Verify and close
 
 ## Opening orientation
 
-Open setup with a short educational orientation before long-running context work:
+Emit the opening as the **first output of the run, before any tool call** — before
+the CLI check, before any repository read, before the feedback log. Nothing in it
+depends on a tool result: the run frame's only variable is the model path, which
+you know from the invocation (the explicit path, else `QUALITY.md` in the current
+directory). Do not front-load quick checks "to be efficient" — that is exactly
+what leaves the user staring at a silent screen while the welcome waits.
+
+The opening is one block: warm welcome, value proposition, a short phase roadmap,
+the read-only/review boundary, and the run frame.
 
 ```text
-**QUALITY.md setup**
+# QUALITY.md setup
 
-QUALITY.md gives AI assistants, coding agents, and teams a holistic definition of
-quality tailored to their project, so they can stay aligned, identify critical
-risks and issues, and keep improving.
+Welcome! QUALITY.md gives AI assistants, coding agents, and teams a holistic
+definition of quality tailored to this project — so they stay aligned, catch
+critical risks, and keep improving it.
 
-I’ll start with a read-only scan of the context this project already exposes,
-then show you a setup preview before writing anything.
+Here's how setup will go:
+1. **Scan** — I read your repo context (read-only; can take a moment on a large repo)
+2. **Calibrate** — a few short questions, with recommended defaults
+3. **Review** — you confirm before I write anything
+4. **Write** — I author QUALITY.md
+5. **Verify** — lint plus a quick gap check
 
-**First step:** read-only context scan
-**Before changes:** you review and confirm
+Starting with the read-only scan now — nothing is written until you confirm.
 ```
 
-Keep this as orientation, not a splash screen: one value-proposition sentence,
-the immediate read-only step, and the review-before-changes boundary.
+Then, in the same first-output block, emit the run frame. The **Model file** is
+the resolved model path: the explicit path when supplied, otherwise `QUALITY.md`
+in the current working directory (do not walk parent directories). This is pure
+invocation logic, not a filesystem probe, so the frame needs no tool call:
+
+```text
+**/quality run**
+- **Mode:** setup
+- **Model file:** <resolved path>
+- **Scope:** contextual QUALITY.md setup
+- **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/ if continuing
+- **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md if continuing
+- **Next gate:** read-only setup preview, discovery, review, lint, important-gap inspection
+```
+
+Keep this as orientation, not a splash screen: a value-proposition sentence, the
+phase roadmap, the immediate read-only step, and the review-before-changes
+boundary. The roadmap is what makes the silent scan that follows read as an
+expected step rather than a hang.
 
 ## Preflight
 
-1. Verify the CLI prerequisite from `SKILL.md`.
-2. Resolve the model file: explicit path when supplied, otherwise `QUALITY.md`
-   in the current working directory. Do not walk parent directories.
-3. Emit the run frame:
+The opening already emitted the run frame and named the resolved model file.
+Preflight is the fail-fast gate and guide reading that follow it, before the
+read-only scan.
 
-   ```text
-   **/quality run**
-   - **Mode:** setup
-   - **Model file:** <resolved path>
-   - **Scope:** contextual QUALITY.md setup
-   - **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/ if continuing
-   - **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md if continuing
-   - **Next gate:** read-only setup preview, discovery, review, lint, important-gap inspection
-   ```
-
-4. Read [`../guides/authoring.md`](../guides/authoring.md), then the first-model
+1. Verify the CLI prerequisite from `SKILL.md`. This is a fail-fast gate that runs
+   after the opening and before the read-only scan: when the CLI is missing or
+   unsupported, stop with a clear message rather than scanning the repository.
+2. Read [`../guides/authoring.md`](../guides/authoring.md), then the first-model
    authoring bundle it routes to:
    [`body`](../guides/authoring/body.md),
    [`model-structure`](../guides/authoring/model-structure.md),

@@ -409,3 +409,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   removes previous evaluation record/report compatibility, makes Evaluation v2
   the only active runtime path, switches data persistence to stdin-only input,
   deletes old active specs/examples, and prepares the v0.13.0 release (`Done`).
+- [0098 — Setup opening as first output](0098-setup-opening-first-output.md) -
+  makes `/quality setup` emit its warm welcome, phase roadmap, and run frame as
+  the first output before any tool call, decoupling the run frame from the CLI
+  prerequisite gate so the user is oriented before the read-only scan runs;
+  docs/spec/skill guidance only, no CLI/Go or format-spec change (`Done`).

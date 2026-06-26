@@ -62,11 +62,12 @@ not only as conformance requirements.
 
 The setup workflow **MUST** include these stages, in order:
 
-1. Present a short educational opening that explains what QUALITY.md gives teams
-   and agents, then states that setup starts with a read-only context scan and
-   waits for review before changes.
-2. Resolve the target `QUALITY.md`, verify setup prerequisites, and emit the run
-   frame.
+1. As the first user-visible output, before any tool call, present a short
+   educational opening — a warm welcome, what QUALITY.md gives teams and agents, a
+   short phase roadmap, the read-only-scan-first and review-before-changes
+   boundary — and emit the run frame in the same block.
+2. Verify setup prerequisites as a fail-fast gate, and confirm the resolved
+   target `QUALITY.md` the opening's run frame already named.
 3. Inspect repository context for setup signals.
 4. Build a setup brief with inferred defaults, confidence, and evidence.
 5. Present a concise setup preview distilled from the setup brief, then create
@@ -86,17 +87,46 @@ setup brief, discovery answers, authoring guide, and repository context.
 
 ## Context analysis and setup brief
 
-Before setup performs long-running context work, it **MUST** present an opening
-orientation that explains the setup value proposition in operational terms:
-QUALITY.md gives AI assistants, coding agents, and teams a holistic definition of
-quality tailored to their project, so they can stay aligned, identify critical
-risks and issues, and keep improving. The opening **MUST** also state that the
-first phase is a read-only context scan and that the user will review before
-changes are written.
+Setup **MUST** present the opening orientation as the first user-visible output of
+the run, before any tool call — including before the CLI prerequisite check,
+repository inspection, and any filesystem read or write. The opening's content
+has no tool dependency. The opening **MUST** explain the setup value proposition
+in operational terms: QUALITY.md gives AI assistants, coding agents, and teams a
+holistic definition of quality tailored to their project, so they can stay
+aligned, identify critical risks and issues, and keep improving. The opening
+**MUST** also state that the first phase is a read-only context scan and that the
+user will review before changes are written.
 
-The opening **SHOULD** stay short: a value-proposition sentence, immediate
-workflow status, and the review-before-changes boundary. It **MUST NOT** become a
-marketing splash screen or replace the run frame.
+The opening **MUST** include a short phase roadmap of what setup will do —
+read-only scan, calibration questions, review, write, verify — so the read-only
+scan that follows reads as an expected step rather than a hang. The opening
+**SHOULD** include a brief cue that the read-only scan may take a moment on a
+large repository.
+
+Setup **MUST** emit the run frame as part of this first-output block, alongside
+the opening and before any tool call. Run-frame emission **MUST NOT** be gated on
+CLI prerequisite verification or any other tool result; the run frame's resolved
+model path is derived from the invocation (the explicit path when supplied,
+otherwise `QUALITY.md` in the current working directory), not from a filesystem
+probe. After the first-output block, setup **MUST** run the CLI prerequisite
+check as a fail-fast gate before the read-only context scan, stopping with a clear
+message when the CLI is missing or unsupported.
+
+The opening **SHOULD** stay short: a value-proposition sentence, the phase
+roadmap, immediate workflow status, and the review-before-changes boundary. It
+**MUST NOT** become a marketing splash screen or replace the run frame, the setup
+preview, the discovery questions, the human context checkpoint, or the review
+gate.
+
+> Annotation: 0096 added the opening but a field run showed it did not reach the
+> user *first* — the agent front-loaded CLI checks, repository scans, and even the
+> feedback-log write before flushing any text, so the welcome, run frame, and
+> preview all arrived after 1–2 minutes of silence. The fix is ordering: the
+> opening and run frame have no tool dependency (the frame's only variable, the
+> resolved model path, is known from the invocation), so they become genuine
+> first output before any tool call, and the CLI gate runs after the opening
+> rather than gating it. The phase roadmap makes the subsequent silent scan read
+> as an expected step. — 0098
 
 `setup` **MUST** inspect available repository context before asking setup
 questions. Relevant context includes README and docs, repository structure,
@@ -547,9 +577,9 @@ take any next-step action.
 
 ## Feedback log
 
-During preflight, after CLI support is verified, the model file is resolved, and
-the run frame is emitted, `setup` **MUST** create a setup feedback log under
-`.quality/logs/` for the current run. As setup progresses, it **MUST** update the
+After it presents the setup preview, when the run continues into discovery,
+`setup` **MUST** create a setup feedback log under `.quality/logs/` for the
+current run. As setup progresses, it **MUST** update the
 current run's file when material workflow-experience events occur, and at close
 it **MUST** finalize the log with terminal status, outcome, effort when
 available, and explicit no-notable-content notes for empty sections. The artifact

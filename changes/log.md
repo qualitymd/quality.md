@@ -13,6 +13,20 @@
   notes, skill compatibility metadata, and the `0.4 (Draft)` specification
   version.
 
+- **Done**: Created, specced, designed, implemented, and archived
+  [0098 - Setup opening as first output](archive/0098-setup-opening-first-output.md).
+  `/quality setup` now emits its warm welcome, phase roadmap, and run frame as the
+  first output before any tool call; the run frame is decoupled from the CLI
+  prerequisite check, which becomes a fail-fast gate after the opening and before
+  the read-only scan. Updated the runtime
+  [`skills/quality/workflows/setup.md`](../skills/quality/workflows/setup.md) and
+  the durable
+  [`specs/skills/quality-skill/workflows/setup.md`](../specs/skills/quality-skill/workflows/setup.md)
+  (Workflow structure + Context-analysis opening requirements, plus a stale
+  feedback-log timing preamble), and recorded the entry in the archive
+  [index](archive/index.md). Docs/spec/skill guidance only, no CLI/Go or
+  format-spec change.
+
 - **In-Progress**: Advanced
   [0097 - Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) to
   `In-Progress`; implementation is beginning across the v2 evaluation CLI,
