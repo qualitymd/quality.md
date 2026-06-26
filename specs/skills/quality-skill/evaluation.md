@@ -153,7 +153,10 @@ flowchart TD
    frame or result payload required by the
    [Evaluation protocol](../../evaluation/protocol.md), validate the assembled
    batch with one `qualitymd evaluation data set --dry-run`, and persist it
-   through one `qualitymd evaluation data set` invocation.
+   through one `qualitymd evaluation data set` invocation. Area analysis
+   **MUST** include `AreaAnalysisResult.findings` when material findings should
+   be visible for that Area or its Factors, relating them only to Factors
+   declared in that Area.
 7. **Maintain the evaluate feedback log** — hand-author concise entries in the
    current run's `.quality/logs/<timestamp>-evaluate-feedback-log.md` for
    material workflow-experience events. Keep the log separate from formal
@@ -192,6 +195,12 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   requirement **MUST NOT** be masked by many satisfactory ones — and should
   record a brief rationale naming the binding constraints (per
   [Analyze](../../../SPECIFICATION.md#analyze)).
+- **Area Findings summarize, they do not advise.** During Area analysis, the
+  skill **MUST** synthesize Area Findings from verified Requirement Findings and
+  analysis observations when material observations should be visible at Area or
+  Factor report level. Area Findings use `type`, `severity`, and `confidence` to
+  make local significance legible, and **MUST NOT** include recommendations,
+  priority, impact, effort, benefit, ROI, or global ranking fields.
 
 ### Coverage and execution strategy
 

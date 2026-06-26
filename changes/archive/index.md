@@ -572,3 +572,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     the no-argument full-surface schema intact, reuses the shared schema
     presenter, and aligns the `/quality` skill to treat schema as the constraint
     source and examples as concrete instances (`Done`).
+- [0131 — Area findings in evaluation reports](0131-area-findings.md) - adds
+  traceable Area Findings on `AreaAnalysisResult.findings`, validates same-Area
+  Factor relationships, and renders Area Findings in Area reports plus matching
+  Findings in Factor reports while leaving recommendations and global rankings
+  deferred (`Done`).

@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the bundled
+  [QUALITY.md specification](SPECIFICATION.md) for 0131 - Area findings in
+  evaluation reports.
+  The runtime resource now recognizes Area Findings as analysis-level findings
+  that summarize material observations for one Area and may relate to Factors in
+  that Area, without carrying advice or ranking fields.
+
 - **Revision**: Updated
   [CLI Workflow Conventions](cli-workflow-conventions.md) for 0130 -
   Self-contained per-kind data schema.

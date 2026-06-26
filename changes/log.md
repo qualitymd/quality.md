@@ -3,6 +3,44 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0131 - Area findings in evaluation reports](archive/0131-area-findings.md).
+  `AreaAnalysisResult.findings` now carries traceable Area Findings with closed
+  type/severity/confidence and Factor relationship enums, same-Area Factor
+  relationship validation, and closed object rejection of advice/ranking fields.
+  Area reports render all Area Findings; Factor reports render matching Area
+  Findings; durable specs, runtime skill guidance, release notes, generated
+  schema, and focused tests are updated. `mise run check` passes.
+
+- **In-Progress**: Advanced
+  [0131 - Area findings in evaluation reports](archive/0131-area-findings.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  the evaluation data contract, report tree, durable evaluation/skill specs, and
+  runtime skill guidance.
+
+- **Design update**:
+  [0131 - Area findings in evaluation reports](archive/0131-area-findings.md) now
+  explicitly requires Area Finding and Factor relationship closed vocabularies to
+  appear as JSON Schema enums, requires `data set` to reject out-of-set values,
+  and clarifies that forbidden advice/ranking fields are rejected by closed
+  object validation rather than ignored.
+
+- **Design**: Advanced
+  [0131 - Area findings in evaluation reports](archive/0131-area-findings.md) to
+  `Design` with its [design doc](archive/0131-area-findings/design.md). The design keeps
+  Area Findings inside `AreaAnalysisResult.findings`, adds targeted validation
+  for local IDs and same-Area Factor relationships, renders Area-owned findings
+  directly in Area reports and filtered findings in Factor reports, and leaves
+  recommendations plus global top-finding synthesis deferred. Code not started.
+
+- **Draft**: Created
+  [0131 - Area findings in evaluation reports](archive/0131-area-findings.md) with its
+  [functional spec](archive/0131-area-findings/spec.md). The case adds analysis-phase
+  Area Findings on `AreaAnalysisResult.findings`, projects matching findings into
+  Factor reports, uses shared finding type/severity/confidence vocabulary, and
+  defers recommendations, global top-finding synthesis, and impact/priority
+  ranking. Code and durable-spec implementation have not started.
+
+- **Done**: Implemented and archived
   [0130 - Self-contained per-kind data schema](archive/0130-self-contained-data-schema.md).
   `evaluation data schema <kind>` now emits the requested kind's object schema at
   the document root with `$schema` and a kind-qualified `$id`, so required fields,

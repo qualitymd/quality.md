@@ -107,7 +107,8 @@ After run creation, `evaluate` **MUST** follow the Evaluation protocol:
 4. frame and analyze local Factor trees bottom-up;
 5. analyze child Areas before their parents;
 6. frame and analyze each Area from completed local Factor and child Area
-   outputs;
+   outputs, including Area Findings when material observations should be
+   summarized for that Area;
 7. dry-run and persist the assembled routine payload batch through
    `qualitymd evaluation data set`; and
 8. run `qualitymd evaluation report build` to assemble
@@ -120,6 +121,11 @@ an explicit non-completed status allowed by the routine contract.
 Reports **MUST** be deterministic projections over persisted structured data.
 The reporting phase **MUST NOT** inspect new evidence, introduce new findings,
 or make fresh ratings.
+
+Area Findings **MUST** be authored before persistence as part of
+`AreaAnalysisResult.findings`, not during report generation. They **MUST** remain
+local to their Area and **MUST NOT** include recommendation, impact, priority,
+effort, benefit, ROI, or global ranking fields.
 
 ## Stop conditions
 

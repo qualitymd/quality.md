@@ -107,6 +107,7 @@ Area reports **MUST** include:
 - overall and local confidence;
 - data links;
 - summary;
+- findings;
 - rating drivers;
 - local root Factors;
 - direct child Areas;
@@ -127,6 +128,7 @@ Factor reports **MUST** include:
 - confidence;
 - data links;
 - summary;
+- findings;
 - rating drivers;
 - direct Requirements;
 - direct child Factors; and
@@ -156,6 +158,35 @@ forbids.
 ## Rendering Rules
 
 Reports **MUST** render empty tables with explicit empty-state rows.
+
+Area reports **MUST** render a `Findings` section from
+`AreaAnalysisResult.findings`. When an Area has no Area Findings, the section
+**MUST** render an explicit empty-state row.
+
+Area report Findings **MUST** be sorted by:
+
+1. `type`, in this order: `risk`, `gap`, `unknown`, `note`, `strength`;
+2. `severity`, in this order: `critical`, `high`, `medium`, `low`, `info`;
+3. `confidence`, in this order: `high`, `medium`, `low`, `none`; and
+4. original payload order.
+
+Factor reports **MUST** render a `Findings` section from Area Findings on the
+owning Area whose `factorRelationships` include the current Factor. When no Area
+Findings reference the Factor, the section **MUST** render an explicit
+empty-state row.
+
+Factor report Findings **MUST** be sorted by:
+
+1. `type`, in this order: `risk`, `gap`, `unknown`, `note`, `strength`;
+2. `severity`, in this order: `critical`, `high`, `medium`, `low`, `info`;
+3. `relationship`, in this order: `primary-driver`, `contributing-driver`,
+   `evidence-limit`, `offsetting-strength`, `related`;
+4. `confidence`, in this order: `high`, `medium`, `low`, `none`; and
+5. original payload order.
+
+Area and Factor report Finding sections **MUST NOT** render recommendations,
+impact, priority, effort, benefit, ROI, action fields, or global top-finding
+rankings.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Area headers should summarize

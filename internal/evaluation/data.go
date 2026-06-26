@@ -881,7 +881,7 @@ func areaAnalysisFrameExample(kind DataKind) map[string]any {
 }
 
 func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any {
-	return map[string]any{
+	example := map[string]any{
 		"schemaVersion": SchemaVersion,
 		"kind":          string(kind),
 		idField:         id,
@@ -908,6 +908,23 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 			"confidenceReason": "No signal.",
 		},
 	}
+	if kind == DataKindAreaAnalysis {
+		example["findings"] = []any{map[string]any{
+			"id":         "area-finding-1",
+			"type":       "gap",
+			"severity":   "medium",
+			"confidence": "medium",
+			"summary":    "Area-level synthesis found a representative gap.",
+			"rationale":  "The gap is synthesized from Requirement and Factor results.",
+			"inputRefs":  []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[gap-1]")},
+			"factorRelationships": []any{map[string]any{
+				"factorId":     exampleFactorID(),
+				"relationship": "primary-driver",
+				"rationale":    "The finding directly affects the Factor analysis.",
+			}},
+		}}
+	}
+	return example
 }
 
 func exampleRequirementID() string {

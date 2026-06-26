@@ -216,6 +216,141 @@
           "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
           "type": "string"
         },
+        "findings": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  "none"
+                ],
+                "type": "string"
+              },
+              "factorRelationships": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "factorId": {
+                      "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                      "type": "string"
+                    },
+                    "rationale": {
+                      "type": "string"
+                    },
+                    "relationship": {
+                      "enum": [
+                        "primary-driver",
+                        "contributing-driver",
+                        "evidence-limit",
+                        "offsetting-strength",
+                        "related"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "factorId",
+                    "relationship"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "id": {
+                "type": "string"
+              },
+              "inputRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "EvaluationFrame",
+                        "AreaEvaluationFrame",
+                        "RequirementEvaluationFrame",
+                        "RequirementAssessmentResult",
+                        "RequirementRatingResult",
+                        "FactorAnalysisFrame",
+                        "FactorAnalysisResult",
+                        "AreaAnalysisFrame",
+                        "AreaAnalysisResult",
+                        "EvaluationOutputResult"
+                      ],
+                      "type": "string"
+                    },
+                    "selector": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "areaId": {
+                          "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                          "type": "string"
+                        },
+                        "factorId": {
+                          "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                          "type": "string"
+                        },
+                        "requirementId": {
+                          "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "subject"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "info"
+                ],
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "strength",
+                  "gap",
+                  "risk",
+                  "unknown",
+                  "note"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "severity",
+              "confidence",
+              "summary",
+              "inputRefs"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
         "kind": {
           "enum": [
             "AreaAnalysisResult"

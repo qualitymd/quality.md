@@ -36,6 +36,7 @@ type dataField struct {
 	Enum     []string
 	Object   *dataObjectContract
 	Element  *dataField
+	MinItems int
 }
 
 type dataObjectContract struct {
@@ -231,7 +232,7 @@ func init() {
 		{
 			Kind:        DataKindAreaAnalysis,
 			Description: "Analysis result for one Area.",
-			Object:      analysisResultContract(DataKindAreaAnalysis, "areaId", dataAreaID),
+			Object:      areaAnalysisResultContract(),
 			Example: func() map[string]any {
 				return scopedAnalysisExample(DataKindAreaAnalysis, "areaId", []any{})
 			},
@@ -267,6 +268,15 @@ func analysisResultContract(kind DataKind, idName string, idType dataFieldType) 
 	)
 }
 
+func areaAnalysisResultContract() dataObjectContract {
+	return topContract(DataKindAreaAnalysis,
+		field("areaId", dataAreaID, true),
+		field("findings", dataArray, false, arrayOfObject(areaFindingContract())),
+		field("localAnalysis", dataObject, true, analysisScopeContract()),
+		field("localAndDescendantAnalysis", dataObject, true, analysisScopeContract()),
+	)
+}
+
 func analysisScopeContract() dataObjectContract {
 	return object(
 		field("status", dataString, true, enum("analyzed", "empty", "not_analyzed", "blocked")),
@@ -279,6 +289,27 @@ func analysisScopeContract() dataObjectContract {
 		field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
 		field("confidence", dataString, false, enum("high", "medium", "low", "none")),
 		field("confidenceReason", dataString, false),
+	)
+}
+
+func areaFindingContract() dataObjectContract {
+	return object(
+		field("id", dataString, true),
+		field("type", dataString, true, enum("strength", "gap", "risk", "unknown", "note")),
+		field("severity", dataString, true, enum("critical", "high", "medium", "low", "info")),
+		field("confidence", dataString, true, enum("high", "medium", "low", "none")),
+		field("summary", dataString, true),
+		field("rationale", dataString, false),
+		field("inputRefs", dataArray, true, arrayOfObject(routineRefContract()), minItems(1)),
+		field("factorRelationships", dataArray, false, arrayOfObject(areaFindingFactorRelationshipContract())),
+	)
+}
+
+func areaFindingFactorRelationshipContract() dataObjectContract {
+	return object(
+		field("factorId", dataFactorID, true),
+		field("relationship", dataString, true, enum("primary-driver", "contributing-driver", "evidence-limit", "offsetting-strength", "related")),
+		field("rationale", dataString, false),
 	)
 }
 
@@ -416,9 +447,17 @@ func field(name string, typ dataFieldType, required bool, opts ...any) dataField
 			f.Object = &v
 		case dataField:
 			f.Element = &v
+		case dataMinItems:
+			f.MinItems = int(v)
 		}
 	}
 	return f
+}
+
+type dataMinItems int
+
+func minItems(n int) dataMinItems {
+	return dataMinItems(n)
 }
 
 func enum(values ...string) []string {
@@ -478,7 +517,10 @@ func validateDataPayloadForModel(kind DataKind, payload map[string]any, spec *mo
 	if err := validateDataPayload(kind, payload); err != nil {
 		return err
 	}
-	return validatePayloadModelBindings(kind, payload, spec)
+	if err := validatePayloadModelBindings(kind, payload, spec); err != nil {
+		return err
+	}
+	return validatePayloadSemantics(kind, payload)
 }
 
 func validateDataObject(contract dataObjectContract, payload map[string]any, path string) error {
@@ -532,15 +574,7 @@ func validateDataValue(field dataField, value any, path string) error {
 			return usagef("%s = %q, want one of %s", path, s, strings.Join(field.Enum, ", "))
 		}
 	case dataStringArray:
-		items, ok := value.([]any)
-		if !ok {
-			return usagef("%s must be an array", path)
-		}
-		for i, item := range items {
-			if s, ok := item.(string); !ok || s == "" {
-				return usagef("%s[%d] must be a non-empty string", path, i)
-			}
-		}
+		return validateDataStringArray(field, value, path)
 	case dataAreaID:
 		_, err := areaIDFrom(value)
 		if err != nil {
@@ -567,15 +601,82 @@ func validateDataValue(field dataField, value any, path string) error {
 			}
 		}
 	case dataArray:
-		items, ok := value.([]any)
-		if !ok {
-			return usagef("%s must be an array", path)
+		return validateDataArray(field, value, path)
+	}
+	return nil
+}
+
+func validateDataStringArray(field dataField, value any, path string) error {
+	items, ok := value.([]any)
+	if !ok {
+		return usagef("%s must be an array", path)
+	}
+	if err := validateDataMinItems(field, len(items), path); err != nil {
+		return err
+	}
+	for i, item := range items {
+		if s, ok := item.(string); !ok || s == "" {
+			return usagef("%s[%d] must be a non-empty string", path, i)
 		}
-		if field.Element != nil {
-			for i, item := range items {
-				if err := validateDataValue(*field.Element, item, fmt.Sprintf("%s[%d]", path, i)); err != nil {
-					return err
-				}
+	}
+	return nil
+}
+
+func validateDataArray(field dataField, value any, path string) error {
+	items, ok := value.([]any)
+	if !ok {
+		return usagef("%s must be an array", path)
+	}
+	if err := validateDataMinItems(field, len(items), path); err != nil {
+		return err
+	}
+	if field.Element == nil {
+		return nil
+	}
+	for i, item := range items {
+		if err := validateDataValue(*field.Element, item, fmt.Sprintf("%s[%d]", path, i)); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateDataMinItems(field dataField, itemCount int, path string) error {
+	if field.MinItems > 0 && itemCount < field.MinItems {
+		return usagef("%s must contain at least %d item(s)", path, field.MinItems)
+	}
+	return nil
+}
+
+func validatePayloadSemantics(kind DataKind, payload map[string]any) error {
+	switch kind {
+	case DataKindAreaAnalysis:
+		return validateAreaAnalysisResultSemantics(payload)
+	default:
+		return nil
+	}
+}
+
+func validateAreaAnalysisResultSemantics(payload map[string]any) error {
+	areaID, err := areaIDFrom(payload["areaId"])
+	if err != nil {
+		return usagef("AreaAnalysisResult.areaId: %w", err)
+	}
+	seen := map[string]struct{}{}
+	for i, finding := range objectSlice(payload["findings"]) {
+		path := fmt.Sprintf("AreaAnalysisResult.findings[%d]", i)
+		id := firstString(finding, "id")
+		if _, ok := seen[id]; ok {
+			return usagef("%s.id %q is duplicated within AreaAnalysisResult.findings", path, id)
+		}
+		seen[id] = struct{}{}
+		for j, relationship := range objectSlice(finding["factorRelationships"]) {
+			factor, err := factorIDFrom(relationship["factorId"])
+			if err != nil {
+				return usagef("%s.factorRelationships[%d].factorId: %w", path, j, err)
+			}
+			if !sameStrings(factor.DeclaringArea, areaID) {
+				return usagef("%s.factorRelationships[%d].factorId declares a different Area than AreaAnalysisResult.areaId", path, j)
 			}
 		}
 	}
@@ -801,7 +902,11 @@ func schemaForField(field dataField) map[string]any {
 		}
 		return out
 	case dataStringArray:
-		return map[string]any{"type": "array", "items": map[string]any{"type": "string"}}
+		out := map[string]any{"type": "array", "items": map[string]any{"type": "string"}}
+		if field.MinItems > 0 {
+			out["minItems"] = field.MinItems
+		}
+		return out
 	case dataAreaID:
 		return map[string]any{"type": "string", "pattern": prefixedModelReferencePattern("area:")}
 	case dataRequirementID:
@@ -818,7 +923,11 @@ func schemaForField(field dataField) map[string]any {
 		if field.Element != nil {
 			items = schemaForField(*field.Element)
 		}
-		return map[string]any{"type": "array", "items": items}
+		out := map[string]any{"type": "array", "items": items}
+		if field.MinItems > 0 {
+			out["minItems"] = field.MinItems
+		}
+		return out
 	default:
 		return map[string]any{}
 	}

@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the routine, payload-kind, report-tree, and CLI data
+  contracts for
+  [0131 - Area findings in evaluation reports](../../changes/archive/0131-area-findings.md).
+  `AreaAnalysisResult.findings` now carries traceable Area Findings with closed
+  type/severity/confidence and Factor relationship enums; reports render Area
+  Findings in Area pages and matching Findings in Factor pages without adding
+  recommendations or global rankings.
+
 - **Revision**: Updated the routine and report-tree contracts for
   [0122 - Finding-level candidate actions](../../changes/archive/0122-finding-candidate-actions.md).
   Requirement assessment MAY record non-binding, finding-local candidate actions

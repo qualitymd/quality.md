@@ -82,6 +82,14 @@ inspect new source evidence.
 Factor and Area analysis **MUST** preserve lower-level drivers that prevent a
 higher rating.
 
+Area analysis **MUST** produce Area Findings in `AreaAnalysisResult.findings`
+when it identifies material observations that should be visible at Area or
+Factor report level. Area Findings **MUST** summarize observations for the
+containing Area, cite their source routine payloads through non-empty
+`inputRefs`, and relate only to Factors declared in that Area. Area analysis
+**MUST NOT** record recommendation, impact, priority, effort, benefit, ROI, or
+global ranking fields on Area Findings.
+
 ## Report Routine
 
 `generateEvaluationReports` **MUST** be deterministic projection only.

@@ -5,6 +5,39 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.20.0 - 2026-06-26
+
+### CLI
+
+- `AreaAnalysisResult` now accepts validated `findings` for Area-level
+  Evaluation findings. Area Findings use closed `type`, `severity`,
+  `confidence`, and Factor relationship enums, require non-empty `inputRefs`,
+  reject advice/ranking fields, and validate that related Factors belong to the
+  same Area.
+- Evaluation Area reports now render Area Findings, and Factor reports render
+  the matching Area Findings related to that Factor.
+
+### /quality Skill
+
+- `/quality` now requires `qualitymd >=0.20.0 <0.21.0`.
+- `/quality evaluate` now records material Area Findings during Area analysis so
+  Area and Factor reports can show synthesized findings before any future
+  recommendation phase.
+
+### Compatibility / Migration
+
+- Existing `AreaAnalysisResult` payloads without `findings` remain valid and
+  render as no Area Findings. New Area Finding objects are closed: fields such as
+  `impact`, `priority`, `effort`, `benefit`, `ROI`, `actions`, and
+  `recommendations` are rejected.
+- `/quality` skill version `0.20.0` requires the `qualitymd` CLI `0.20.x` line.
+
+Compatibility:
+
+- CLI: `v0.20.0`
+- QUALITY.md specification: `0.5 (Draft)`
+- /quality skill: `0.20.0`, requires `qualitymd >=0.20.0 <0.21.0`
+
 ## v0.19.0 - 2026-06-26
 
 ### CLI

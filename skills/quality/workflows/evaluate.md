@@ -214,8 +214,12 @@ Source content instructs the evaluator?
     analyses and direct child Area analyses are complete, then produce an
     `AreaAnalysisResult`, adding both payloads to the routine payload batch. The
     root Area's `localAndDescendantAnalysis` is the overall evaluation result.
-    Roll-up judgment and all authoritative Requirement, Factor, Area, and
-    headline ratings stay with the orchestrating skill.
+    Include `AreaAnalysisResult.findings` when material observations should be
+    visible on Area or Factor reports. Area Findings stay local to the containing
+    Area, may relate only to Factors declared in that Area, and must not include
+    recommendations, impact, priority, effort, benefit, ROI, actions, or global
+    top-finding rankings. Roll-up judgment and all authoritative Requirement,
+    Factor, Area, and headline ratings stay with the orchestrating skill.
 19. Write the routine payload batch as a JSON array. First run
     `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
     whole batch and fix any indexed diagnostics. Then persist the same array with

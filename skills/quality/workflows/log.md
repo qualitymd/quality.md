@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0131 - Area
+  findings in evaluation reports.
+  Evaluate now records material Area Findings on `AreaAnalysisResult.findings`
+  during Area analysis, before persistence and report generation, and keeps
+  advice/ranking fields out of that data.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0130 -
   Self-contained per-kind data schema.
   Before authoring a payload kind, Evaluate now reads

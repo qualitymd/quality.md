@@ -147,7 +147,16 @@ var findingTypeTitles = map[string]string{
 	"strength":       "✅ Strength",
 	"evidence":       "🔎 Evidence",
 	"unknown":        "❓ Unknown",
+	"note":           "ℹ️ Note",
 	"recommendation": "➡️ Recommendation",
+}
+
+var factorRelationshipTitles = map[string]string{
+	"primary-driver":      "Primary Driver",
+	"contributing-driver": "Contributing Driver",
+	"evidence-limit":      "Evidence Limit",
+	"offsetting-strength": "Offsetting Strength",
+	"related":             "Related",
 }
 
 func dataKindTitle(kind DataKind) string {
@@ -203,6 +212,10 @@ func findingSeverityTitle(value string) string {
 
 func findingTypeTitle(value string) string {
 	return stringTitle(value, findingTypeTitles)
+}
+
+func factorRelationshipTitle(value string) string {
+	return stringTitle(value, factorRelationshipTitles)
 }
 
 func stringTitle(value string, titles map[string]string) string {

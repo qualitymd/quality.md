@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.19.0 <0.20.0.
+compatibility: Requires qualitymd CLI >=0.20.0 <0.21.0.
 metadata:
-  version: "0.19.0"
-  requires-qualitymd-cli: ">=0.19.0 <0.20.0"
+  version: "0.20.0"
+  requires-qualitymd-cli: ">=0.20.0 <0.21.0"
 ---
 
 ## Purpose
@@ -358,6 +358,13 @@ the sweep surfaces no new in-scope findings and every in-scope Requirement has a
 terminal evidentiary state, or after two re-collection rounds. If the bound is
 hit first, proceed to roll-up only with every unresolved zone reported as an
 explicit limitation.
+
+During Area analysis, synthesize `AreaAnalysisResult.findings` when material
+observations should be visible at Area or Factor report level. Area Findings are
+scoped to the containing Area analysis, may relate only to Factors declared in
+that Area, and use the shared finding `type`, `severity`, and `confidence`
+vocabulary. Do not include recommendations, impact, priority, effort, benefit,
+ROI, actions, or global top-finding rankings on Area Findings.
 
 ## Workflow Dispatch
 

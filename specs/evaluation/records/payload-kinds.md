@@ -66,3 +66,62 @@ its canonical data path without caller-supplied path flags.
 
 Status-bearing outputs **MUST** distinguish completed, incomplete, empty, and
 blocked states using the status vocabulary defined by the routine contract.
+
+## Area Findings
+
+`AreaAnalysisResult` **MAY** include `findings`, a list of Area Finding objects
+scoped to that payload's `areaId`.
+
+Each Area Finding object **MUST** include:
+
+- `id`;
+- `type`;
+- `severity`;
+- `confidence`;
+- `summary`; and
+- non-empty `inputRefs`.
+
+Each Area Finding object **MAY** include `rationale` and
+`factorRelationships`.
+
+Area Finding `type` **MUST** be one of:
+
+- `strength`
+- `gap`
+- `risk`
+- `unknown`
+- `note`
+
+Area Finding `severity` **MUST** be one of:
+
+- `critical`
+- `high`
+- `medium`
+- `low`
+- `info`
+
+Area Finding `confidence` **MUST** be one of:
+
+- `high`
+- `medium`
+- `low`
+- `none`
+
+Each `factorRelationships` entry **MUST** include `factorId` and
+`relationship`. The `factorId` **MUST** resolve to a Factor declared in the
+same Area as the containing `AreaAnalysisResult.areaId`.
+
+Area Finding Factor relationship `relationship` **MUST** be one of:
+
+- `primary-driver`
+- `contributing-driver`
+- `evidence-limit`
+- `offsetting-strength`
+- `related`
+
+`AreaAnalysisResult.findings` **MUST NOT** contain duplicate Area Finding IDs
+within the same Area analysis result.
+
+Area Findings **MUST NOT** carry recommendation, impact, importance, priority,
+effort, benefit, ROI, action, or global-rank fields. Those concepts belong to a
+later advice or cross-evaluation ranking contract, not this payload kind.

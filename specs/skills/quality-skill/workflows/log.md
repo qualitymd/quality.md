@@ -3,6 +3,12 @@
 ## 2026-06-26
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0131 - Area findings in evaluation reports](../../../../changes/archive/0131-area-findings.md).
+  Evaluate now records material Area Findings on `AreaAnalysisResult.findings`
+  during Area analysis, before report generation, and keeps recommendations,
+  impact, priority, effort, benefit, ROI, and global rankings out of that field.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0129 - Evaluation orchestration overhaul](../../../../changes/archive/0129-evaluation-orchestration-overhaul.md).
   The evaluate feedback-log sub-spec no longer permits a `rigor` frontmatter
   field, matching the single-workflow evaluation contract.

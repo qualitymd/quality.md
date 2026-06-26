@@ -62,6 +62,12 @@ Level ID in the payload against the run's `model-snapshot.md`. If the snapshot i
 missing or cannot be parsed, `data set` **MUST** fail closed instead of accepting
 unbound model references.
 
+For `AreaAnalysisResult`, validation **MUST** reject duplicate
+`findings[].id` values within the payload, empty `findings[].inputRefs`, unknown
+Area Finding fields, unknown Area Finding Factor relationship fields, and any
+`findings[].factorRelationships[].factorId` that does not resolve to a Factor
+declared in the same Area as `areaId`.
+
 `data set` **MUST** validate every payload in the batch before writing any
 payload. If any element fails validation, `data set` **MUST** write nothing and
 **MUST** report invalid elements with their array indexes. It **SHOULD** report

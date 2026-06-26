@@ -123,6 +123,10 @@ Assessment produces Findings.
 **Finding**: A single observation produced by an Assessment. A Finding records
 what was observed and is not itself rated.
 
+**Area Finding**: A synthesized Finding produced by Area analysis. An Area
+Finding summarizes one or more Requirement Findings or analysis observations for
+one Area, and can record how it relates to Factors declared in that Area.
+
 **Rating Scale**: The ordered set of Rating Levels used by a Model.
 
 **Rating Level**: A single level on a Rating Scale, with a stable meaning and a
@@ -417,8 +421,8 @@ and advice.
 ## Evaluation Semantics
 
 Evaluation interprets a Model against selected Sources, produces Findings for
-Requirements, rates Requirement Assessments, analyzes Factors and Areas, and
-produces an Evaluation Report.
+Requirements, rates Requirement Assessments, analyzes Factors and Areas,
+produces Area Findings, and produces an Evaluation Report.
 
 This specification defines the required observable semantics of Evaluation. An
 implementation can use different internal algorithms when the resulting
@@ -472,16 +476,17 @@ Each in-scope Requirement is assessed once, against the Source of the Area on
 which it is declared.
 
 For each Requirement, the evaluator applies the Requirement's Assessment to the
-Area Source, producing zero or more Findings, Unknowns, and Evaluation Limits.
+Area Source, producing zero or more Requirement Findings, Unknowns, and
+Evaluation Limits.
 
-Findings are evidence-backed assessment observations. Individual Findings are
-not Rating Results.
+Requirement Findings are evidence-backed assessment observations. Individual
+Requirement Findings are not Rating Results.
 
-A Finding MAY carry one or more non-binding **candidate actions** — finding-local
-remediation leads captured where the evidence is richest. Candidate actions are
-raw material, not recommendations: they are not synthesized, prioritized, or
-selected, and they are distinct from the recommendations the Advice phase
-produces.
+A Requirement Finding MAY carry one or more non-binding **candidate actions** —
+finding-local remediation leads captured where the evidence is richest.
+Candidate actions are raw material, not recommendations: they are not
+synthesized, prioritized, or selected, and they are distinct from the
+recommendations the Advice phase produces.
 
 ### Rate Requirement Assessments
 
@@ -512,6 +517,7 @@ For each Area in scope, processed bottom-up:
 - Each Area with its own Requirements receives a local rating or
   `not assessed`.
 - Each Area receives an aggregate rating or `not assessed`.
+- Each Area can receive zero or more Area Findings.
 
 A Factor rating characterizes the Factor considering, together:
 
@@ -535,6 +541,13 @@ infer a roll-up rating, the roll-up outcome MUST be `not assessed`.
 
 Each roll-up SHOULD include a rationale naming the observations, constraints,
 or gaps most responsible for the outcome.
+
+Area Findings summarize material analysis observations for an Area. They are
+scoped by their containing Area analysis result, share the Finding type,
+severity, and confidence vocabularies used by Requirement Findings, and MAY cite
+one or more Factors declared in that Area with a relationship label. Area
+Findings MUST NOT carry recommendations, impact, priority, effort, benefit, ROI,
+or global ranking fields.
 
 ### Advice
 
@@ -560,6 +573,7 @@ A conforming Evaluation Report MUST include:
 - A rationale for the in-scope root Area outcome.
 - For each Area in scope, recursively:
   - each Requirement's Findings summary, Rating Result, and rationale;
+  - each Area's Area Findings, when produced;
   - each Factor's rating or `not assessed` outcome and rationale, including
     sub-factors;
   - the Area's local rating or `not assessed` outcome, when a local rating

@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0131 - Area findings in
+  evaluation reports.
+  Runtime evaluation guidance now tells Area analysis to synthesize
+  `AreaAnalysisResult.findings` for material Area/Factor report observations and
+  keeps recommendations, impact, priority, effort, benefit, ROI, actions, and
+  global top-finding rankings out of Area Findings.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0130 - Self-contained
   per-kind data schema.
   Artifact Contract guidance now treats `qualitymd evaluation data schema <kind>`
