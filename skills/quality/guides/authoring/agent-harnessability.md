@@ -119,11 +119,11 @@ the factor, not the factor.
   agent-harness area rates the checked-in, project-owned governing artifacts'
   own quality (see
   [Carry the recurring use-context constituents](model-structure.md#carry-the-recurring-use-context-constituents)).*
-- **Do** recognize an existing `harnessability` factor with the legacy
-  six-sub-factor shape as semantic coverage of the same model-wide concern.
-  *When you are already authoring or revising the model, recommend renaming it to
-  `agent-harnessability` / Agent Harnessability and adding `continuity` unless
-  the project has an explicit reason to preserve the old key.*
+- **Do** treat an existing `harnessability` factor as stale legacy naming, not
+  current Agent Harnessability coverage. *When you are authoring or revising the
+  model, recommend renaming it to `agent-harnessability` /
+  Agent Harnessability and adding any missing current sub-factors such as
+  `continuity`.*
 - **Avoid** adding "improve the harness over time" as an eighth sub-factor. *That
   is the model-wide learn loop improving this equipping, not a sibling quality
   beside the seven.*

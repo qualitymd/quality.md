@@ -595,10 +595,10 @@ deferral or Scope note **MUST NOT** be treated as satisfying constituent coverag
 For an agent-collaborated composite root, `setup` **MUST** report an important
 gap when Agent Harnessability or its sub-factors are missing from the model-wide
 factors without a clear not-germane boundary. A thin or absent harness **MUST
-NOT** satisfy that boundary. An existing `harnessability` factor with the expected
-six sub-factors **SHOULD** count as semantic coverage, while setup's authoring
-guidance **SHOULD** recommend renaming it to `agent-harnessability` / Agent
-Harnessability.
+NOT** satisfy that boundary. An existing `harnessability` factor **MUST** be
+treated as stale legacy naming, not current coverage; setup **MUST** report the
+gap and recommend renaming it to `agent-harnessability` / Agent Harnessability
+during model-authoring work.
 
 > Rationale: model-by-default is enforceable only if under-coverage is reported
 > as a concrete model gap; a deferral note previously passed the close check

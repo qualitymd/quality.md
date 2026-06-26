@@ -2,6 +2,11 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [setup](setup.md) workflow for early-alpha
+  compatibility cleanup.
+  Setup now reports old `harnessability` factors as stale legacy naming to fix,
+  not as current Agent Harnessability coverage.
+
 - **Revision**: Reshaped interaction output for 0121 - Scannable interaction
   hierarchy.
   [setup](setup.md): write/update gates lead with the question and use a separated

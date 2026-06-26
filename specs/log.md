@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Removed active legacy `harnessability` coverage from the
+  `/quality` skill specs.
+  The Agent Harnessability guide, Top 10 checks, and setup workflow specs now
+  require old `harnessability` factors to be reported as stale legacy naming, not
+  accepted as current coverage.
+
 - **Revision**: Implemented durable spec changes for
   [0121 - Scannable interaction hierarchy](../changes/0121-scannable-interaction-hierarchy.md).
   The [`/quality` skill](skills/quality-skill/quality-skill.md) interaction

@@ -584,8 +584,8 @@ the boundary. A bare deferral or Scope note does not satisfy coverage.
 For an agent-collaborated composite root, treat missing Agent Harnessability or
 missing sub-factor coverage as an important gap unless the model states a clear
 not-germane boundary. A thin or absent harness is a rating concern, not a
-factor-omission reason. Treat an existing `harnessability` factor with the six
-expected sub-factors as semantic coverage, but recommend renaming it to
+factor-omission reason. Treat an existing `harnessability` factor as stale
+legacy naming, not current coverage; report the gap and recommend renaming it to
 `agent-harnessability` / Agent Harnessability during model-authoring work.
 
 Report setup completion status-first:

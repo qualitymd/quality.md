@@ -29,5 +29,8 @@ The guide **MUST** present Agent Harnessability as an umbrella carrying no direc
 Requirements, rated by rolling up independently assessable sub-factors:
 `agent-accessibility`, `task-specifiability`, `agent-operability`, `continuity`,
 `self-verifiability`, `enforcement-of-standards`, and `containment-of-action`. It
-**MUST** preserve boundary guidance, legacy `harnessability` recognition, and the
-rule that harness thinness is rating evidence rather than an omission reason.
+**MUST** preserve boundary guidance and the rule that harness thinness is rating
+evidence rather than an omission reason. It **MUST** treat an existing
+`harnessability` factor as stale legacy naming, not current Agent Harnessability
+coverage, and route authoring work toward the current `agent-harnessability`
+shape.

@@ -7,6 +7,11 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Agent-collaborated models that still use the old `harnessability` factor no
+  longer count that factor as current Agent Harnessability coverage. The skill now
+  treats it as stale legacy naming to fix by renaming to `agent-harnessability`
+  and adding any missing current sub-factors.
+
 - Decision gates (setup write/update, update apply-plan, recommendation apply and
   issue creation) now lead with the question and present choices as a visually
   separated block instead of a flat stack of labels, so the action to take is

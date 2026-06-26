@@ -180,11 +180,11 @@ Factors should be meaningful quality lenses, not vague labels alone.
   Agent Harnessability or its sub-factors among its model-wide factors: route to
   authoring. Do not flag a non-agent-collaborated, harness-less, throwaway, or
   narrowly scoped entity where the factor is not germane. Treat an existing
-  `harnessability` factor with the legacy six-sub-factor shape as semantic
-  coverage, but route model-authoring work to rename it to
-  `agent-harnessability` / Agent Harnessability and add `continuity` unless the
-  project has an explicit reason to preserve the old key. A thin or absent
-  harness is rating evidence, not a reason to omit the factor.
+  `harnessability` factor as stale legacy naming, not current coverage; route
+  model-authoring work to rename it to `agent-harnessability` /
+  Agent Harnessability and add any missing current sub-factors such as
+  `continuity`. A thin or absent harness is rating evidence, not a reason to omit
+  the factor.
 - Finding when an agent-collaborated composite root has a germane agent-harness
   area carried with only one or two thin factors: route to authoring. Treat this
   as a coverage gap in the steering-materials area, not as evidence the harness is

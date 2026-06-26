@@ -2,6 +2,11 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for early-alpha
+  compatibility cleanup.
+  Setup now must report old `harnessability` factors as stale legacy naming to
+  fix, not as current Agent Harnessability coverage.
+
 - **Revision**: Updated the [`setup`](setup.md) and [`evaluate`](evaluate.md)
   workflow specs for
   [0121 - Scannable interaction hierarchy](../../../../changes/0121-scannable-interaction-hierarchy.md).

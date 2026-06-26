@@ -182,11 +182,10 @@ sub-factors are absent from the model-wide factors without a clear not-germane
 boundary. It **MUST NOT** flag a non-agent-collaborated, harness-less, throwaway,
 or narrowly scoped entity where Agent Harnessability is not germane, and
 **MUST NOT** treat a thin or absent harness as a reason to omit the factor. The
-check **SHOULD** treat an existing `harnessability` factor with the legacy
-six-sub-factor shape as semantic coverage of the same concern, while routing
-model-authoring work to rename it to `agent-harnessability` / Agent Harnessability
-and add `continuity` unless the project has an explicit reason to preserve the old
-key.
+check **MUST** treat an existing `harnessability` factor as stale legacy naming,
+not current coverage. It **MUST** report the gap and route model-authoring work
+to rename it to `agent-harnessability` / Agent Harnessability and add any missing
+current sub-factors such as `continuity`.
 
 The area-and-factor-shape check **MUST** flag an agent-collaborated composite root
 whose germane agent-harness area is carried with only one or two thin factors, and
@@ -229,10 +228,11 @@ disambiguating description clause — and route it to authoring.
 > refined by 0085
 >
 > Rationale: 0089 adds `continuity` to the current Agent Harnessability target
-> shape while continuing to recognize existing six-sub-factor models as prior
-> semantic coverage. It also closes two harness-area failure modes: a present but
-> thinly factored steering-materials area, and harness requirements that leak a
-> software toolchain into a non-software served domain. — 0089
+> shape. In early alpha, old six-sub-factor `harnessability` models are treated
+> as stale authoring inputs to correct, not compatibility coverage. 0089 also
+> closes two harness-area failure modes: a present but thinly factored
+> steering-materials area, and harness requirements that leak a software toolchain
+> into a non-software served domain. — 0089
 
 The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether

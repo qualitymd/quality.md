@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [Agent Harnessability](authoring/agent-harnessability.md)
+  and [Top 10 checks](top-10-quality-md-checks.md) for early-alpha compatibility
+  cleanup.
+  Runtime guidance now treats old `harnessability` factors as stale legacy naming
+  that must be corrected, not as current Agent Harnessability coverage.
+
 - **Revision**: Reshaped the gates and result block in
   [Recommendation Follow-Up](recommendation-follow-up.md) for 0121 - Scannable
   interaction hierarchy.

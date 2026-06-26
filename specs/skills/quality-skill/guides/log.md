@@ -3,6 +3,13 @@
 ## 2026-06-26
 
 - **Revision**: Updated the
+  [Agent Harnessability guide contract](authoring/agent-harnessability.md) and
+  [Top 10 checks contract](top-10-quality-md-checks-md.md) for early-alpha
+  compatibility cleanup.
+  The durable guide specs now require old `harnessability` factors to be reported
+  as stale legacy naming, not accepted as current Agent Harnessability coverage.
+
+- **Revision**: Updated the
   [recommendation follow-up contract](recommendation-follow-up-md.md) for
   [0121 - Scannable interaction hierarchy](../../../../changes/0121-scannable-interaction-hierarchy.md).
   Apply and issue-creation decisions must now lead with the question, render
