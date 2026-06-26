@@ -154,7 +154,12 @@ Source content instructs the evaluator?
     `qualitymd evaluation data example <kind>`; use
     `qualitymd evaluation data set --dry-run` to validate the authored payload,
     not to discover its shape. Persist each routine output with
-    `qualitymd evaluation data set <run> < payload.json`.
+    `qualitymd evaluation data set <run> < payload.json`. On each `gap` and `risk`
+    finding, record at least one non-binding candidate action (`description`, with
+    optional `rationale`) capturing what closing the shortcoming might take; ground
+    its shape from the example payload. Omit candidate actions on `strength`
+    findings. Candidate actions are raw material for a later Advise phase, not
+    recommendations — do not synthesize, prioritize, or present them.
 13. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the
     finding evidence. Every finding locator must be a `file:line` or exact

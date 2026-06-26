@@ -3,6 +3,31 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0122 - Finding-level candidate actions](archive/0122-finding-candidate-actions.md).
+  Typed the finding `actions` field as an array of non-binding candidate-action
+  objects (`description` + optional `rationale`) with CLI validation and an
+  example payload, dropped the report's per-finding `Actions` row, and had the
+  evaluate workflow record candidate actions on `gap`/`risk` findings (omitting
+  `strength`) as raw material for a future Advise phase — kept out of the
+  Evaluation v0 report and closeout. Brought the evaluation and quality-skill
+  durable specs, `SPECIFICATION.md`, the bundled skill, changelog, and logs into
+  conformance. `mise run check` passes.
+
+- **Draft**: Created
+  [0122 - Finding-level candidate actions](archive/0122-finding-candidate-actions.md)
+  with its [functional spec](archive/0122-finding-candidate-actions/spec.md) and an
+  [advise sketch](archive/0122-finding-candidate-actions/advise-sketch.md). Option **A**
+  from the recommendation-infrastructure discussion: turn the untyped,
+  never-populated `findings[].actions` stub into a typed, non-binding
+  candidate-action field (`description` + optional `rationale`) that the assessor
+  records on `gap`/`risk` findings as raw material for a future Advise phase,
+  validated by the CLI and kept out of the Evaluation v0 report and closeout to
+  stay inside the v0 "no recommendations" boundary. The advise sketch captures
+  option **B** (the dedicated Advise phase) as forward-looking, non-binding
+  context. Registered a `Sketch` concept type in [schema.md](schema.md) and
+  listed the case in the bundle [index](index.md). No code touched.
+
+- **Done**: Implemented and archived
   [0121 - Scannable interaction hierarchy](archive/0121-scannable-interaction-hierarchy.md).
   Fixed the *flat-wall* failure in agent-mediated output — decision gates,
   discovery questions, progress, and result blocks that stacked the question and

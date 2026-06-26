@@ -519,3 +519,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     result blocks so the call to action leads and survives bold-stripping, across
     the agent-mediated UX guide, the bundled `/quality` skill, and durable skill
     specs (`Done`).
+- [0122 — Finding-level candidate actions](0122-finding-candidate-actions.md) -
+  types the finding `actions` field as non-binding, finding-local candidate
+  actions (`description` + optional `rationale`), validates them in the CLI, has
+  the skill record them on `gap`/`risk` findings as raw material for a future
+  Advise phase, and keeps them out of the Evaluation v0 report and closeout
+  (`Done`).

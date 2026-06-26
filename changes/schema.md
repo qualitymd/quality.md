@@ -11,6 +11,8 @@ types:
     description: What a change case must do — its requirements, not the implementation. The same type the specs/ bundle uses.
   - name: Design Doc
     description: How a change case is built — the technical approach and the rationale behind it.
+  - name: Sketch
+    description: A non-binding, exploratory supplementary note within a change case folder — forward-looking ideas and considerations that shape the change but are not its spec or design doc.
 ---
 
 This bundle's recommended concept-type vocabulary lives in the `types`

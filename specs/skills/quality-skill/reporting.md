@@ -108,3 +108,7 @@ missing evidence, unknowns, and evaluation limits.
 Evaluation v0 **MUST NOT** present generated recommendations as part of the
 reporting closeout. Recommendation follow-up remains a separate workflow for
 historical recommendation artifacts.
+
+Finding-local candidate actions are **not** recommendations: the v0 report and
+the closeout **MUST NOT** present them. They persist in `data/` as raw material
+for a later Advise phase.

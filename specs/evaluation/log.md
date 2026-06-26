@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the routine and report-tree contracts for
+  [0122 - Finding-level candidate actions](../../changes/archive/0122-finding-candidate-actions.md).
+  Requirement assessment MAY record non-binding, finding-local candidate actions
+  and MUST NOT synthesize, aggregate, or prioritize them; finding detail sections
+  MUST NOT render candidate actions in Evaluation v0.
+
 - **Revision**: Updated the records data-layout and report-tree contracts for
   [0108 - Short evaluation report filenames](../../changes/archive/0108-short-evaluation-report-filenames.md).
   The root Area report remains `report.md`, while descendant Area, Factor, and

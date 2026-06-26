@@ -747,8 +747,7 @@ func writeEvaluationFindingDetails(b *strings.Builder, assessment map[string]any
 		b.WriteString("| Severity | " + markdownCell(findingSeverityTitle(firstString(finding, "severity", "Severity"))) + " |\n")
 		b.WriteString("| Location | " + markdownCell(compactJSON(firstPresent(finding, "location", "Location"))) + " |\n")
 		b.WriteString("| Evidence | " + markdownCell(compactJSON(firstPresent(finding, "evidence", "Evidence"))) + " |\n")
-		b.WriteString("| Rationale | " + markdownCell(firstString(finding, "rationale", "Rationale")) + " |\n")
-		b.WriteString("| Actions | " + markdownCell(compactJSON(firstPresent(finding, "actions", "Actions"))) + " |\n\n")
+		b.WriteString("| Rationale | " + markdownCell(firstString(finding, "rationale", "Rationale")) + " |\n\n")
 	}
 }
 

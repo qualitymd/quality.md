@@ -291,7 +291,14 @@ func findingContract() dataObjectContract {
 		field("location", dataObject, false, openObject()),
 		field("evidence", dataObject, false, openObject()),
 		field("rationale", dataString, false),
-		field("actions", dataArray, false, arrayOfAny()),
+		field("actions", dataArray, false, arrayOfObject(candidateActionContract())),
+	)
+}
+
+func candidateActionContract() dataObjectContract {
+	return object(
+		field("description", dataString, true),
+		field("rationale", dataString, false),
 	)
 }
 

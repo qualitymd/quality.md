@@ -477,6 +477,12 @@ Area Source, producing zero or more Findings, Unknowns, and Evaluation Limits.
 Findings are evidence-backed assessment observations. Individual Findings are
 not Rating Results.
 
+A Finding MAY carry one or more non-binding **candidate actions** — finding-local
+remediation leads captured where the evidence is richest. Candidate actions are
+raw material, not recommendations: they are not synthesized, prioritized, or
+selected, and they are distinct from the recommendations the Advice phase
+produces.
+
 ### Rate Requirement Assessments
 
 For each Requirement Assessment, the evaluator rates the assessment against the

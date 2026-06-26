@@ -148,6 +148,11 @@ Requirement reports **MUST** include:
 - finding detail sections; and
 - unknowns and missing evidence.
 
+Finding detail sections **MUST NOT** render finding-local candidate actions in
+Evaluation v0. Candidate actions persist in `data/` as raw material for a later
+Advise phase; presenting them would surface generated recommendations, which v0
+forbids.
+
 ## Rendering Rules
 
 Reports **MUST** render empty tables with explicit empty-state rows.

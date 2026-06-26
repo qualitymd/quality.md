@@ -358,6 +358,21 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 			want: "unknown field title",
 		},
 		{
+			name: "candidate action missing description",
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"type":"gap","actions":[{"rationale":"why"}]}]}`,
+			want: "is missing required field description",
+		},
+		{
+			name: "candidate action unknown field",
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"type":"gap","actions":[{"description":"do it","effort":"high"}]}]}`,
+			want: "unknown field effort",
+		},
+		{
+			name: "candidate action non-string description",
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"type":"gap","actions":[{"description":5}]}]}`,
+			want: "must be a non-empty string",
+		},
+		{
 			name: "invented requirement",
 			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`,
 			want: "does not resolve in the model",
@@ -374,6 +389,39 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 				t.Fatalf("SetData() error = %v, want %q", err, tc.want)
 			}
 		})
+	}
+}
+
+func TestSetDataAcceptsFindingCandidateActions(t *testing.T) {
+	repo := testRepo(t)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, result.Path)
+	raw := `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"id":"gap-1","type":"gap","description":"Edge cases untested.","actions":[{"description":"Add boundary tests."},{"description":"Cover error paths.","rationale":"Lifts coverage."}]}]}`
+	if _, err := SetData(runPath, []byte(raw), DataSetOptions{DryRun: true}); err != nil {
+		t.Fatalf("SetData() error = %v, want valid candidate actions accepted", err)
+	}
+}
+
+func TestFindingDetailsOmitCandidateActions(t *testing.T) {
+	var b strings.Builder
+	writeEvaluationFindingDetails(&b, map[string]any{
+		"findings": []any{map[string]any{
+			"id":          "gap-1",
+			"type":        "gap",
+			"description": "Edge cases untested.",
+			"rationale":   "Only the happy path is exercised.",
+			"actions":     []any{map[string]any{"description": "Add boundary tests."}},
+		}},
+	})
+	rendered := b.String()
+	if strings.Contains(rendered, "| Actions |") {
+		t.Fatalf("finding details = %s, want no Actions row in the v0 report", rendered)
+	}
+	if strings.Contains(rendered, "Add boundary tests.") {
+		t.Fatalf("finding details = %s, want candidate actions kept out of the report", rendered)
 	}
 }
 
@@ -397,7 +445,7 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if err != nil {
 		t.Fatalf("DataExample() error = %v", err)
 	}
-	for _, want := range []string{`"findings": [`, `"description": "A focused test covers the requirement."`, `"unknowns": [`} {
+	for _, want := range []string{`"findings": [`, `"description": "A focused test covers the requirement."`, `"unknowns": [`, `"actions": [`, `"description": "Add focused tests for the boundary and error paths."`} {
 		if !strings.Contains(string(example), want) {
 			t.Fatalf("example = %s, want %q", example, want)
 		}

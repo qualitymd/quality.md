@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Implemented durable spec changes for
+  [0122 - Finding-level candidate actions](../changes/archive/0122-finding-candidate-actions.md).
+  The [`/quality` evaluation spec](skills/quality-skill/evaluation.md) now allows
+  the skill to record non-binding candidate actions on `gap`/`risk` findings as
+  raw material for a later Advise phase, and the
+  [reporting spec](skills/quality-skill/reporting.md) states that candidate actions
+  are not recommendations and that the v0 report and closeout exclude them.
+
 - **Revision**: Removed active legacy `harnessability` coverage from the
   `/quality` skill specs.
   The Agent Harnessability guide, Top 10 checks, and setup workflow specs now

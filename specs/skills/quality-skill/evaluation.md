@@ -39,6 +39,12 @@ rating them, analyze Factors and Areas bottom-up, run
 
 The skill **MUST NOT** generate recommendations as part of Evaluation v0.
 
+The skill **MAY** record non-binding, finding-local **candidate actions** —
+remediation leads captured where the evidence is richest — on `gap` and `risk`
+findings, as raw material for a later Advise phase. These are not recommendations:
+the skill **MUST NOT** synthesize, aggregate, prioritize, or present them, and
+**MUST NOT** attach candidate actions to `strength` findings.
+
 ### Conformance to the format spec
 
 The skill **owns** its evaluation process: this spec and the skill's prompt

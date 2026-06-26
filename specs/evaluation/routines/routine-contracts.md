@@ -71,6 +71,11 @@ Judgment routines **MUST** use only their frames and declared inputs.
 Requirement assessment **MUST** produce `RequirementAssessmentResult` and **MUST
 NOT** assign a Rating Level.
 
+Requirement assessment **MAY** record finding-local **candidate actions** —
+non-binding remediation leads carried on a finding — and **MUST NOT** synthesize,
+aggregate, deduplicate, or prioritize them across findings. Cross-finding
+synthesis is recommendation generation, which Evaluation v0 forbids.
+
 Requirement rating **MUST** produce `RequirementRatingResult` and **MUST NOT**
 inspect new source evidence.
 

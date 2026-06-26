@@ -1843,7 +1843,21 @@
             "additionalProperties": false,
             "properties": {
               "actions": {
-                "items": {},
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    },
+                    "rationale": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "description"
+                  ],
+                  "type": "object"
+                },
                 "type": "array"
               },
               "description": {

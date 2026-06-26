@@ -5,7 +5,22 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Evaluation finding `actions` is now a typed candidate-action field: an array of
+  objects with a required `description` and optional `rationale`, validated when
+  persisting a `RequirementAssessmentResult` (previously an untyped, unvalidated
+  array). Candidate actions are non-binding, finding-local remediation leads kept
+  out of the v0 report; the generated finding detail no longer renders an
+  `Actions` row.
+
 ### /quality Skill
+
+- The evaluate workflow now records non-binding candidate actions on `gap` and
+  `risk` findings — short remediation leads captured where the evidence is
+  richest — as raw material for a future Advise phase, and omits them on
+  `strength` findings. They are not recommendations and are not surfaced in the
+  Evaluation v0 report or closeout.
 
 - Agent-collaborated models that still use the old `harnessability` factor no
   longer count that factor as current Agent Harnessability coverage. The skill now
@@ -19,6 +34,12 @@ QUALITY.md specification.
   discovery questions show why a choice matters before the answer line, and the
   evaluate workflow reports progress before run creation and the per-requirement
   phase.
+
+### Specification
+
+- *Assess Requirements* now notes that a Finding MAY carry non-binding candidate
+  actions — finding-local remediation leads — distinct from the recommendations
+  the Advice phase produces.
 
 ## v0.16.0 - 2026-06-26
 
