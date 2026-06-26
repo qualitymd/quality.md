@@ -2,6 +2,15 @@
 
 ## 2026-06-26
 
+- **Revision**: Added "Channels and progressive enhancement" to
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0123 - Render interactions through native affordances](../changes/archive/0123-native-interaction-affordances.md).
+  The guide now frames each interaction as an intent rendered through a
+  fit-for-purpose native affordance with a text fallback, enumerates the
+  affordance categories and not-fit-for-purpose tests, reframes the closed-choice
+  and decision-gate sections as renderings of an intent, adds a "don't double-gate
+  a harness authorization prompt" rule, and updates the Checklist.
+
 - **Revision**: Reshaped the Decision gates and Emphasis guidance in
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
   [0121 - Scannable interaction hierarchy](../changes/0121-scannable-interaction-hierarchy.md).

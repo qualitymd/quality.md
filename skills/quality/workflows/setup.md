@@ -343,32 +343,27 @@ confirmed fact.
 
 ### How to present them
 
-Choose the presentation form from your own interaction capabilities. Do not
-assume or name a specific question UI.
+Render these through your interaction capabilities per the User Interaction
+Contract's progressive-enhancement rule and `docs/guides/agent-mediated-ux.md`:
+each question is an intent with a text fallback, you choose the form from your own
+capabilities without assuming or naming a specific question UI, and the
+Why-it-matters and recommendation stay in the message rather than in widget
+labels. The setup-specific application:
 
-- In every discovery interaction block, make the primary question or checkpoint
-  call to action the strongest visual element, preferably with bold Markdown.
-  Keep `Why it matters`, `Recommended`, `Confidence`, and `Answer` adjacent to
-  the question and bold those labels when the surface supports Markdown.
-  For closed-choice questions, use numbered options, put the recommended option
-  first, mark it as Recommended, and make `1` the shortest accept response. For
-  open-ended questions or checkpoint corrections, mention the shortest acceptable
-  response, such as accepting the recommendation or providing a terse correction.
-- Structured question tool: when you have a structured question tool with item
-  or option limits, page questions 1-5 through it across as many rounds as the
-  limits require, then present the human context checkpoint as free text. Present
-  each question's or checkpoint item's Why-it-matters and purpose/context copy as
-  prose in the message around the tool call (the widget's option/description
-  fields are too small to teach in). Do not force the checkpoint into fixed
-  options.
-- No structured affordance: iterate the questions one at a time. Emit the
-  question's Why-it-matters copy before or with the question, then take the
-  answer. Carry each question's recommended default and confidence so the user
-  can confirm with `1` for closed choices, or terse-correct and advance; do not
-  require a full prose answer.
-  After question 5, present the human context checkpoint. Iterating one at a time
-  is the default — it keeps each dimension legible and gives the teaching copy a
-  real beat.
+- Questions 1-2 (root area, domain) are confirm-or-correct intents. Questions 3-5
+  (lifecycle, risk tolerance, rating scale) are single-select closed choices with
+  the recommended option first. The human context checkpoint (6-9) is an
+  open-ended confirm-or-correct intent: render it as free text and do not force it
+  into fixed options.
+- With a structured question affordance, page questions 1-5 through it across as
+  many rounds as its limits require, then present the human context checkpoint as
+  free text.
+- Without one, iterate the questions one at a time — emit each question's
+  Why-it-matters before or with it, carry the recommended default and confidence
+  so the user can confirm with `1` for closed choices or terse-correct and
+  advance, then present the human context checkpoint after question 5. Iterating
+  one at a time is the default — it keeps each dimension legible and gives the
+  teaching copy a real beat.
 
 Whichever form you use, surface all discovery dimensions with their teaching
 copy, seed the missing-context checkpoint item from your repository analysis

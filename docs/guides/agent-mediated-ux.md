@@ -39,6 +39,69 @@ covers how to answer it immediately.
 If the user has to infer the main question from surrounding explanation, the
 interaction is doing too much work in prose.
 
+## Channels and progressive enhancement
+
+Design the interaction, not the rendering.
+
+The unit of design is the *intent* — for example, "a single-select closed choice
+with a recommended default and rationale" — not the Markdown that happens to
+render it. A given runtime may render that intent through a native interaction
+affordance (a selectable option list, a confirm gate, a multi-select) or through
+plain Markdown. Treat the affordance as **progressive enhancement** over a text
+rendering that always works on its own.
+
+Two rules keep this both useful and agent-agnostic:
+
+- **Always author a working text rendering.** A harness with no question tool
+  must still get a complete, well-structured interaction. The numbered list and
+  the `y`/`n` gate described later are the *fallback renderings* of these
+  intents, not a lesser path.
+- **Keep the semantics in the message, not the widget.** Native option labels
+  are small, vary in how much they display, and are sometimes truncated or
+  stripped. The widget carries the *selection mechanic*; the surrounding message
+  carries the *teaching* — the question, why it matters, the recommendation, and
+  the evidence. Never compress design-critical rationale into an option label.
+
+Express the choice as intent plus affordance category, never as a named tool:
+"present a single-select closed choice with the recommended option first," and
+let whatever the runtime offers fulfill it. When in doubt, detect the
+capability rather than assume it: *if the runtime exposes a structured
+single-select affordance, render through it; otherwise emit the numbered-list
+fallback.* Both branches are part of the design.
+
+### Native interaction affordances to watch for
+
+Look for these affordance categories and map each interaction to the richest one
+that fits. Describe them by capability, never by a specific tool name.
+
+- **Single-select closed choice** — the numbered-list interaction; maps to an
+  option/radio picker.
+- **Multi-select** — "which of these apply"; maps to a checklist picker.
+- **Binary confirmation / approval gate** — the mutation gate; maps to a native
+  confirm or approve affordance.
+- **Plan or diff review-and-approve** — a richer gate where the artifact under
+  review is itself rendered for inspection before approval.
+- **Permission or tool-authorization prompt** — harness-level. Do not
+  reimplement it in prose: if the harness will already prompt to authorize the
+  mutation, a second hand-rolled gate is redundant friction.
+- **Free-text input** — when the answer is open-ended; the right choice when a
+  picker would be wrong.
+- **Progress or task-list indicator** — native status UI that can replace or
+  supplement the textual progress block.
+
+### When a native affordance is *not* fit-for-purpose
+
+Reaching for a widget is not always right. Prefer the text rendering when:
+
+- **Cardinality is open or unknown** — do not force a picker over a list you
+  cannot enumerate; use free text.
+- **The rationale will not survive in labels** — you may still use the widget
+  for the pick, but the teaching and evidence stay in the message.
+- **The harness already gates it** — do not stack a prose gate on top of a
+  permission prompt for the same mutation.
+- **The widget cannot place the recommendation and evidence next to the choice**
+  — keep them adjacent in the message so the core principle still holds.
+
 ## Output hierarchy
 
 Start with the status, then the primary action, then supporting context.
@@ -172,16 +235,24 @@ realistic to assess now.
 active production, maintenance, or sunset.
 ```
 
-When a workflow uses a structured question tool, keep the teaching and rationale
-in the surrounding message. Tool option labels are too small to carry the full
-interaction design.
+When a workflow renders a question through a native single-select or multi-select
+affordance, keep the teaching and rationale in the surrounding message. Tool
+option labels are too small to carry the full interaction design. See
+[Channels and progressive enhancement](#channels-and-progressive-enhancement)
+for when to reach for the affordance and when to stay in text.
 
 ### Closed-choice questions
 
-For small closed-choice sets, use numbered options and put the recommended
+A closed-choice question is an *intent*: a single-select pick with a recommended
+default. Render it through a native option picker when one is present and
+fit-for-purpose; otherwise render the numbered-list fallback below. Either way
+the recommended option comes first and the rationale stays in the message.
+
+For the numbered-list fallback, use numbered options and put the recommended
 option first. The user's shortest accept path should be `1`.
 
-For a true binary confirmation, especially a mutation gate, use `y`/`n` when the
+For a true binary confirmation, especially a mutation gate, prefer a native
+confirm affordance when present. In the text fallback, use `y`/`n` when the
 question naturally means yes or no. Accept obvious aliases such as `yes`, `no`,
 `1`, `apply`, or `skip` when they match the displayed options, but make `y` and
 `n` the visible shortest responses.
@@ -245,6 +316,14 @@ dimensions feel optional.
 
 Before a workflow mutates files, creates external artifacts, sends messages, or
 changes tooling, show the decision plainly.
+
+A gate is a binary-confirmation intent. Render it through a native confirm or
+approve affordance when one is present and fit-for-purpose; the text block below
+is its fallback rendering. When the mutation is something the harness will
+already prompt to authorize — a tool-permission or approval prompt — do not
+stack a second prose gate on top of it; that is redundant friction. For a
+file-mutating plan, prefer a native plan-or-diff review affordance when present
+so the user inspects the artifact before approving.
 
 A gate has one job: make the user see *what is being asked* and *how to respond*
 at a glance. Lead with the question, render the choices as a visually separated
@@ -350,6 +429,11 @@ Before shipping an agent-mediated workflow, check:
 
 - The workflow opens with a run frame as its first output, confirming intent and
   previewing the path before any tool call.
+- Interactions render through a fit-for-purpose native affordance when one is
+  present, with a complete text fallback and the rationale carried in the
+  message rather than the widget labels.
+- No prose gate is stacked on a mutation the harness already prompts to
+  authorize.
 - The primary question or call to action is the strongest element in each
   interaction block, by position and structure — not bold alone.
 - Reading only the first line and the choice block, with emphasis stripped,

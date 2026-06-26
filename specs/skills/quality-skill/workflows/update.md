@@ -70,8 +70,13 @@ contract: status first, visually emphasized primary call to action, scannable
 labels for versions/actions/evidence, and adjacent verification criteria. The
 brief **MUST** name what will not change when that boundary matters, such as
 `QUALITY.md`, evaluated source, evaluation records, and the quality log.
-Because applying an update plan is a true binary tooling mutation gate, the brief
-**MUST** show `y`/`n` as the visible shortest answer path.
+Because applying an update plan is a true binary tooling mutation gate, the
+text-fallback brief **MUST** show `y`/`n` as the visible shortest answer path.
+Where the harness will itself prompt to authorize the owner command, `update`
+**SHOULD** render the confirmation through that native gate and keep the plan's
+teaching in the preceding message rather than stacking a second text gate, per the
+shared [no-double-gate rule](../quality-skill.md#decision-briefs); this **MUST
+NOT** weaken the confirmation requirement.
 
 After a CLI update, `update` **MUST** verify the visible `qualitymd` version
 against the loaded skill's required CLI range. After a skill update, it **MUST**

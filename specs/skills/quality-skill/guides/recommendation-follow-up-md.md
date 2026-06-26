@@ -27,7 +27,10 @@ The guide **MUST** state that recommendation follow-up is not a public
 The guide **MUST** offer only two explicit outcomes: apply a confirmed
 recommendation option now, or hand off the recommendation to an issue tracker.
 When the user has not already chosen one, the guide **MUST** present those
-outcomes as numbered options with an explicit `Answer` line.
+outcomes as a single-select closed-choice intent — rendered through a
+fit-for-purpose native option picker when present, otherwise the text fallback
+with numbered options and an explicit `Answer` line — per the shared
+[progressive-enhancement contract](../quality-skill.md#user-interaction-contract).
 
 The guide **MUST NOT** present defer, skip, or keep open as formal follow-up
 options.

@@ -3,6 +3,54 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0123 - Render interactions through native affordances](archive/0123-native-interaction-affordances.md).
+  Made progressive enhancement the default agent-mediated interaction contract:
+  each interaction is an intent rendered through a fit-for-purpose native affordance
+  (option picker, confirm/approve gate, the harness's own authorization prompt)
+  when present, with the numbered-option and `y`/`n` forms reframed as the text
+  fallback, the teaching kept in the message not the widget, and a
+  harness-authorized mutation no longer double-gated — all stated tool-agnostically.
+  Lifted the pattern from the `setup` workflow into the shared `/quality`
+  interaction contract; brought the agent-mediated UX guide, `SKILL.md`, the
+  `setup`/`update`/`evaluate`/recommendation-follow-up runtime files, the durable
+  skill specs, changelog, and logs into conformance. `mise run check` passes.
+
+- **Design**: Created
+  [0124 - Constrain reference kind fields to the payload-kind vocabulary](0124-reference-kind-enum.md)
+  with its [functional spec](0124-reference-kind-enum/spec.md) and
+  [design doc](0124-reference-kind-enum/design.md). The `kind` member of
+  Evaluation reference objects (`routineRefContract` / `reportRefContract`) is the
+  one required reference field still typed as a free `dataString`, so a misspelled
+  or invented kind persists silently while every other closed vocabulary
+  (`finding.type`, `severity`, `confidence`, `status`) is enum-validated and the
+  reference `subject` is resolved against the model snapshot. The case
+  enum-constrains reference `kind` to the full supported payload-kind set
+  (including the CLI-owned `EvaluationOutputResult`, distinct from the
+  agent-writable `acceptedDataKinds` gate), sourced from one typed list, so an
+  out-of-vocabulary kind is rejected at `evaluation data set` time and surfaces as
+  an `enum` in `evaluation data schema`. Durable change lands in
+  [`json-conventions.md`](../specs/evaluation/records/json-conventions.md); no
+  `SchemaVersion` bump. Listed the case in the bundle [index](index.md). Code not
+  started.
+
+- **Design**: Created
+  [0123 - Render interactions through native affordances](archive/0123-native-interaction-affordances.md)
+  with its [functional spec](archive/0123-native-interaction-affordances/spec.md)
+  and [design doc](archive/0123-native-interaction-affordances/design.md). Lifts
+  the `setup`
+  workflow's agent-agnostic "render through your own interaction capabilities"
+  three-tier pattern into the shared `/quality` interaction contract so every
+  workflow renders questions, closed choices, and confirmation gates through a
+  fit-for-purpose native affordance when present — reframing the numbered-option
+  and `[y]`/`[n]` prose blocks as the text fallback, keeping the teaching in the
+  message not the widget, staying agent-agnostic, and not stacking a prose gate on
+  a mutation the harness already authorizes. The
+  [agent-mediated UX guide](../docs/guides/agent-mediated-ux.md) gained a
+  "Channels and progressive enhancement" section (already applied); the shared
+  contract, skill workflows, and durable skill specs are not yet reshaped. Listed
+  the case in the bundle [index](index.md). No code touched.
+
+- **Done**: Implemented and archived
   [0122 - Finding-level candidate actions](archive/0122-finding-candidate-actions.md).
   Typed the finding `actions` field as an array of non-binding candidate-action
   objects (`description` + optional `rationale`) with CLI validation and an

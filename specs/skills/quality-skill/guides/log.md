@@ -3,6 +3,13 @@
 ## 2026-06-26
 
 - **Revision**: Updated the
+  [recommendation follow-up guide contract](recommendation-follow-up-md.md) for
+  [0123 - Render interactions through native affordances](../../../../changes/archive/0123-native-interaction-affordances.md).
+  The apply-vs-hand-off outcome is now a single-select closed-choice intent
+  rendered per the shared progressive-enhancement contract, with the numbered
+  options as its text fallback.
+
+- **Revision**: Updated the
   [Agent Harnessability guide contract](authoring/agent-harnessability.md) and
   [Top 10 checks contract](top-10-quality-md-checks-md.md) for early-alpha
   compatibility cleanup.

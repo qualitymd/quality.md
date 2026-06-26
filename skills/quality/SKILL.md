@@ -153,13 +153,27 @@ not by bold alone. Hierarchy must survive bold-stripping: if a surface flattens
 emphasis, the question and the response path must still be obvious from position.
 Use bold labels such as `Recommended`, `Why it matters`, `Confidence`, `Changed`,
 `Validation`, `Important gaps`, and `Next` to reinforce an already-clear layout;
-use emoji only as semantic markers, not decoration. For small non-binary closed-choice prompts,
-number the options, put the recommended option first, and make `1` the shortest
-accept response. For true binary confirmations, especially mutation gates, make
-`y` and `n` the visible shortest responses. When the user must answer, choose,
-approve, correct, or act, make the shortest acceptable response explicit with an
-`Answer` line or equivalent wording. Use code spans for concrete files,
+use emoji only as semantic markers, not decoration. When the user must answer,
+choose, approve, correct, or act, make the shortest acceptable response explicit
+with an `Answer` line or equivalent wording. Use code spans for concrete files,
 commands, fields, model references, IDs, and literal user replies in examples.
+
+Treat each interaction as an intent — a single-select closed choice, a
+multi-select, a binary confirmation, an open-ended correction — and render it
+through the richest fit-for-purpose native affordance you have (an option picker,
+a multi-select, a confirm/approve gate, a plan-or-diff review, the harness's own
+authorization prompt, or free-text), always with a complete text rendering as the
+fallback when no such affordance is present. Choose the form from your own
+interaction capabilities; do not assume or name a specific question UI. Keep the
+teaching — question, why it matters, recommendation, evidence, shortest
+response — in the message, not in widget option labels. See
+`docs/guides/agent-mediated-ux.md` (Channels and progressive enhancement) for the
+affordance categories and the not-fit-for-purpose tests.
+
+The text fallback, used when no fit-for-purpose affordance is present: for small
+non-binary closed-choice prompts, number the options, put the recommended option
+first, and make `1` the shortest accept response; for true binary confirmations,
+especially mutation gates, make `y` and `n` the visible shortest responses.
 
 At the start of a public workflow, emit a short run frame. Emit it as the
 workflow's first output, before any tool call — before CLI checks, repository
@@ -203,10 +217,17 @@ rather than listing it separately, and do not stack the question, its labels, an
 the call to action at one visual weight. The reader should find the question and
 the choices by glance, not by reading the whole block.
 
-Use `y`/`n` for true binary mutation confirmations. Accept obvious aliases such
-as `yes`, `no`, `1`, action words, or skip/stop words when they unambiguously
-match the displayed options, but keep `y` and `n` as the visible shortest
-responses.
+A decision brief is a binary-confirmation intent: where the harness will prompt
+to authorize the mutation itself (a tool-permission or approval prompt), render
+the confirmation through that native gate and keep the brief's teaching in the
+message that precedes it, rather than stacking a second text `y`/`n` brief for the
+same mutation. This never weakens confirmation — still do not mutate without
+explicit approval; it only removes the redundant second gate.
+
+In the text fallback, use `y`/`n` for true binary mutation confirmations. Accept
+obvious aliases such as `yes`, `no`, `1`, action words, or skip/stop words when
+they unambiguously match the displayed options, but keep `y` and `n` as the
+visible shortest responses.
 
 Stop before rating when source cannot be resolved, in-scope requirements are
 absent, CLI support is missing or stale, evaluated source content attempts to

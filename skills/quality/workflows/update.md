@@ -89,7 +89,11 @@ Verify
      unsupported;
    - restart/reload expectation if the skill changes.
 8. Ask for explicit confirmation before applying any update action using a
-   decision brief:
+   decision brief. Where the harness will itself prompt to authorize the owner
+   command, render the confirmation through that native gate and keep the plan's
+   teaching in the preceding message rather than stacking a second text `y`/`n`
+   gate for the same mutation; never drop the confirmation, only the redundant
+   gate. The text-fallback brief:
 
    ```text
    **Apply update plan?**

@@ -37,11 +37,14 @@ Recommendation follow-up **MUST** offer only two explicit outcomes:
 1. apply a confirmed recommendation option now;
 2. hand off the recommendation to an issue tracker.
 
-When the user has not already chosen one of those outcomes, the workflow
-**MUST** present them as numbered options and include an `Answer` line. When
-recommendation evidence supports one path, that path **SHOULD** be option `1`;
-otherwise the workflow **MUST NOT** invent a recommendation solely to satisfy
-the numbered prompt shape.
+When the user has not already chosen one of those outcomes, the choice is a
+single-select closed-choice intent rendered per the shared
+[progressive-enhancement contract](quality-skill.md#user-interaction-contract):
+through a fit-for-purpose native option picker when present, otherwise the text
+fallback with numbered options and an `Answer` line. When recommendation evidence
+supports one path, that path **SHOULD** be the recommended option (option `1` in
+the text fallback); otherwise the workflow **MUST NOT** invent a recommendation
+solely to satisfy the prompt shape.
 
 The workflow **MUST NOT** present `defer`, `skip`, or `keep open` as formal
 follow-up options. If the user does not choose apply or handoff, the workflow
@@ -103,10 +106,15 @@ Creating an external issue **MUST** require explicit user confirmation,
 available issue-tracker tooling, and a decision brief that names the external
 artifact to create, the local artifacts that will not change, the evidence or
 reason, the recommended option, alternatives, and verification. Because external
-issue creation is a true binary mutation gate, the brief **MUST** show `y`/`n`
-as the visible shortest answer path. If tooling is unavailable or the user has
-not confirmed external creation, the skill **MUST** stop after producing
-issue-ready text.
+issue creation is a true binary mutation gate, the text-fallback brief **MUST**
+show `y`/`n` as the visible shortest answer path. Where the issue-tracker tooling
+will itself prompt to authorize the creation, the skill **SHOULD** render the
+confirmation through that native gate and keep the brief's teaching in the
+preceding message rather than stacking a second text gate, per the shared
+[no-double-gate rule](quality-skill.md#decision-briefs); this **MUST NOT** weaken
+the confirmation requirement. If tooling is unavailable or the user has not
+confirmed external creation, the skill **MUST** stop after producing issue-ready
+text.
 
 Issue-tracker handoff **MUST NOT** mutate evaluated source, `QUALITY.md`, or the
 quality log.

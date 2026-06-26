@@ -2,6 +2,15 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`setup`](setup.md) and [`update`](update.md)
+  workflow specs for
+  [0123 - Render interactions through native affordances](../../../../changes/archive/0123-native-interaction-affordances.md).
+  `setup` defers presentation to the shared progressive-enhancement contract, tags
+  the lifecycle/risk-tolerance/Rating-Scale questions as single-select intents,
+  and locks the human context checkpoint as free text; `update` renders its
+  apply-plan confirmation through a harness authorization gate when present rather
+  than stacking a second text gate.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for early-alpha
   compatibility cleanup.
   Setup now must report old `harnessability` factors as stale legacy naming to

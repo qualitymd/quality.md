@@ -525,3 +525,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   the skill record them on `gap`/`risk` findings as raw material for a future
   Advise phase, and keeps them out of the Evaluation v0 report and closeout
   (`Done`).
+- [0123 — Render interactions through native affordances](0123-native-interaction-affordances.md)
+  - makes progressive enhancement the default agent-mediated interaction contract:
+    interactions are intents rendered through a fit-for-purpose native affordance
+    when present, the numbered-option and `y`/`n` forms become the text fallback,
+    and a harness-authorized mutation is not double-gated, across the
+    agent-mediated UX guide, the shared `/quality` interaction contract, the
+    bundled skill workflows, and durable skill specs (`Done`).

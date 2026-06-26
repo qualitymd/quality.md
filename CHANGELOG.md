@@ -35,6 +35,14 @@ QUALITY.md specification.
   evaluate workflow reports progress before run creation and the per-requirement
   phase.
 
+- Questions, closed choices, and confirmation gates now render through a native
+  interaction affordance — an option picker, a confirm/approve gate, the harness's
+  own authorization prompt — when the agent runtime offers one that fits, falling
+  back to the established numbered-option and `y`/`n` text forms when it does not.
+  The skill keeps the explanation in the message rather than in small widget
+  labels, stays independent of any specific assistant, and no longer stacks its own
+  confirmation on top of a mutation the harness already prompts to authorize.
+
 ### Specification
 
 - *Assess Requirements* now notes that a Finding MAY carry non-binding candidate

@@ -215,17 +215,24 @@ Each discovery question **MUST** include a recommended answer and confidence
 signal. Each human context checkpoint item **MUST** include a recommended answer
 and confidence signal when setup has inferred one from repository evidence.
 
-When a discovery question is rendered as a small closed-choice set, setup
-**MUST** present numbered options, put the recommended option first, mark it as
-recommended, and make `1` the shortest confirmation. Closed-choice option labels
-**MUST** match the question's visible axis; setup **MUST** map any different
-internal value behind the scenes instead of making the user translate while
-answering.
+The lifecycle, risk-tolerance, and Rating Scale questions are single-select
+closed-choice intents and **MUST** be rendered per the shared
+[progressive-enhancement contract](../quality-skill.md#user-interaction-contract):
+through a fit-for-purpose native option picker when present, otherwise the text
+fallback. In the text fallback, setup **MUST** present numbered options, put the
+recommended option first, mark it as recommended, and make `1` the shortest
+confirmation. Closed-choice option labels **MUST** match the question's visible
+axis; setup **MUST** map any different internal value behind the scenes instead
+of making the user translate while answering.
 
 > Rationale: setup questions teach the quality-model dimension while collecting
 > input. A recommended default is the easiest path only when it is option `1`,
 > and a cost question should be answered with cost labels even when the model
 > records risk tolerance. — 0099
+>
+> Rationale: the numbered form is the text fallback, not the only form — a runtime
+> with an option picker renders the same single-select intent through it. The
+> visible-axis and recommended-first rules govern the fallback regardless. — 0123
 
 The Rating Scale question **MUST** explain that Rating Levels are configurable in
 `QUALITY.md` and are not baked into the format. It **MUST** recommend the
@@ -366,14 +373,19 @@ in an inferred default **MUST NOT** be a reason to skip a question or checkpoint
 item. `setup` **MUST NOT** drop or silently default away a discovery dimension to
 fit an interaction surface's limits.
 
-`setup` **MUST** choose the presentation form from the agent's own interaction
-capabilities. This guidance **MUST NOT** assume or name a specific agent's
-question tool.
+`setup` **MUST** choose the presentation form per the shared
+[progressive-enhancement contract](../quality-skill.md#user-interaction-contract):
+render each question through the richest fit-for-purpose native affordance and
+fall back to text when none is present, without assuming or naming a specific
+question tool. The requirements below are the setup-specific application of that
+contract.
 
 When the agent has a structured question affordance with item or option limits,
 `setup` **MUST** page the first five discovery questions through it across as
 many rounds as the limits require, then present the human context checkpoint as
-free text rather than forcing it into fixed options.
+free text rather than forcing it into fixed options. The human context
+checkpoint is an open-ended confirm-or-correct intent and **MUST NOT** be
+rendered as a fixed-option picker.
 
 When the agent has no structured question affordance, `setup` **MUST** iterate
 the questions one at a time. Each step **MUST** carry that question's recommended

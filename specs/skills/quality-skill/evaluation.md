@@ -92,13 +92,15 @@ follows:
 - if it uniquely identifies one Factor, evaluate that Factor in its declaring
   Area;
 - if it identifies a Factor label present in multiple Areas, ask
-  `What area do you want to evaluate <Factor> for?`, list numbered runnable Area
-  choices with human-readable titles first and qualified model references as
-  secondary context where useful, and include an `Answer` line that accepts a
-  number;
+  `What area do you want to evaluate <Factor> for?` as a single-select
+  closed-choice intent over the runnable Areas (rendered per the shared
+  [progressive-enhancement contract](quality-skill.md#user-interaction-contract):
+  a native option picker when fit-for-purpose, otherwise the numbered text
+  fallback with human-readable titles first, qualified model references as
+  secondary context where useful, and an `Answer` line that accepts a number);
 - if it matches both Area and Factor candidates, ask a targeted clarification
-  question before rating, using numbered runnable options and an `Answer` line
-  when the candidates are enumerable; and
+  question before rating as a single-select closed choice, using the numbered
+  text fallback with an `Answer` line when the candidates are enumerable; and
 - if it does not resolve, report that the label is not in the model and offer
   nearest runnable scoped-evaluation options visible from the model with an
   explicit response path.

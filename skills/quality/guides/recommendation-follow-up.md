@@ -18,8 +18,10 @@ Offer only two explicit productive outcomes:
 1. Apply a confirmed recommendation option now.
 2. Hand off the recommendation to an issue tracker.
 
-If the user has not already chosen one, present them as numbered options with an
-explicit answer path:
+If the user has not already chosen one, this is a single-select closed-choice
+intent: render it through an option picker when one is fit-for-purpose, otherwise
+use the numbered text fallback below (recommended option first). Keep the teaching
+in the message either way.
 
 ```text
 **What should happen with this recommendation?**
@@ -107,7 +109,11 @@ Prepare issue-ready text with:
 - links or paths to the generated report and recommendation artifact.
 
 Creating an external issue requires explicit user confirmation and available
-issue-tracker tooling. Use a decision brief before creating it:
+issue-tracker tooling. Use a decision brief before creating it. Where the
+issue-tracker tooling will itself prompt to authorize the creation, render the
+confirmation through that native gate and keep the brief's teaching in the
+preceding message rather than stacking a second text `y`/`n` gate; this never
+removes the confirmation requirement, only the redundant gate:
 
 ```text
 **Create external issue?**

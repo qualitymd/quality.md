@@ -3,6 +3,21 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0123 - Render interactions through native affordances](../changes/archive/0123-native-interaction-affordances.md).
+  The shared [user interaction contract](skills/quality-skill/quality-skill.md)
+  now treats each interaction as an intent rendered through a fit-for-purpose
+  native affordance when present, with the numbered-option and `y`/`n` renderings
+  reframed as the text fallback and a no-double-gate rule for harness-authorized
+  mutations. The [`setup`](skills/quality-skill/workflows/setup.md),
+  [`update`](skills/quality-skill/workflows/update.md),
+  [`evaluation`](skills/quality-skill/evaluation.md), and
+  recommendation-follow-up
+  ([behavior](skills/quality-skill/recommendation-follow-up.md),
+  [guide contract](skills/quality-skill/guides/recommendation-follow-up-md.md))
+  specs inherit it, tag their closed choices as single-select intents, and lock
+  the human context checkpoint as free text.
+
+- **Revision**: Implemented durable spec changes for
   [0122 - Finding-level candidate actions](../changes/archive/0122-finding-candidate-actions.md).
   The [`/quality` evaluation spec](skills/quality-skill/evaluation.md) now allows
   the skill to record non-binding candidate actions on `gap`/`risk` findings as

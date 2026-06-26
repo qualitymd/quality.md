@@ -261,10 +261,40 @@ materially equivalent wording. Concrete files, commands, fields, model
 references, IDs, and literal user replies in examples **SHOULD** use code spans
 so exact operational text is visually distinct from prose.
 
-For small non-binary closed-choice prompts, the skill **MUST** number options,
-put the recommended option first, and make `1` the shortest accept response. For
-true binary confirmations, especially mutation gates, the skill **MUST** make
-`y` and `n` the visible shortest responses.
+Each user interaction is an *intent* — a single-select closed choice with a
+recommended default, a multi-select, a binary confirmation, an open-ended
+correction — not a fixed rendering. The skill **MUST** render each interaction
+through the richest fit-for-purpose native interaction affordance the runtime
+exposes — an option picker, a multi-select, a confirm or approve gate, a
+plan-or-diff review, the harness's own authorization prompt, or free-text — and
+**MUST** author a complete text rendering as the fallback for when no such
+affordance is present. The
+[agent-mediated UX guide](../../../docs/guides/agent-mediated-ux.md#channels-and-progressive-enhancement)
+enumerates the affordance categories and the tests for when a native affordance
+is not fit-for-purpose.
+
+The skill **MUST** express interactions as an intent plus an affordance category
+and **MUST NOT** assume or name a specific question UI, tool, or harness;
+capability-conditional phrasing ("if the runtime exposes a structured
+single-select affordance, render through it; otherwise emit the text fallback")
+is the required form. The teaching — the question, why it matters, the
+recommendation, the evidence, and the shortest acceptable response — **MUST**
+live in the surrounding message; the skill **MUST NOT** rely on widget option
+labels to carry design-critical rationale.
+
+> Rationale: the skill is rendered by an agent, and many harnesses expose native
+> affordances that render a choice more legibly than prose. Treating the
+> interaction as an intent lets the skill use them when present and degrade
+> cleanly when absent, while the capability-conditional, tool-agnostic phrasing
+> keeps the contract from binding to one harness. Widget labels are small and
+> sometimes truncated or stripped, so the teaching stays in the message. — 0123
+
+When no fit-for-purpose native affordance is present, the skill renders the
+interaction in text. For small non-binary closed-choice prompts, the text
+fallback **MUST** number options, put the recommended option first, and make `1`
+the shortest accept response. For true binary confirmations, especially mutation
+gates, the text fallback **MUST** make `y` and `n` the visible shortest
+responses.
 
 > Rationale: in an agent-mediated workflow, the recommendation is the default
 > path. The user should be able to accept that path with the least ambiguous
@@ -274,6 +304,12 @@ true binary confirmations, especially mutation gates, the skill **MUST** make
 > Rationale: true binary confirmations have a different semantic shape from
 > multi-option choices. `y`/`n` matches a yes/no mutation gate directly and avoids
 > mixed answer vocabulary such as `1` versus `skip`. — 0106
+>
+> Rationale: these renderings are the floor, not the ceiling. The earlier
+> contract mandated them as the sole form, which foreclosed richer native
+> affordances; reframing them as the text fallback keeps the known-good prose
+> while letting a capable runtime render the same intent through a picker or
+> confirm gate. — 0123
 
 The skill **MUST** use Markdown emphasis as hierarchy, not decoration. It
 **MUST NOT** bold whole paragraphs or add decorative emoji to routine headings.
@@ -341,11 +377,25 @@ brief **SHOULD** carry at most three supporting fields beyond the question and
 choices; for a binary confirmation the non-mutating alternative **MUST** be
 folded into the stop choice rather than listed as a separate field.
 
-When a decision brief is a true binary confirmation, it **MUST** include an
-explicit answer path using `y`/`n`, such as `Reply y to apply, or n to skip`.
-The skill **SHOULD** accept obvious aliases when they unambiguously match the
-displayed options, but those aliases **MUST NOT** replace `y`/`n` as the visible
-shortest responses.
+A decision brief is itself a binary-confirmation intent and follows the rendering
+contract above: where the harness provides its own authorization prompt for the
+mutation (a tool-permission or approval prompt), the skill **SHOULD** render the
+confirmation through that native gate rather than stacking an additional text
+decision brief for the same mutation, keeping the brief's teaching in the message
+that precedes the action. This **MUST NOT** weaken the confirmation requirement:
+the skill still **MUST NOT** mutate without explicit approval — it removes a
+redundant second gate, not the gate.
+
+> Rationale: a hand-rolled `y`/`n` brief stacked on top of a native authorization
+> prompt is redundant friction; the binary-confirm intent is better rendered
+> through the native gate. Dropping confirmation entirely stays out of bounds —
+> the rule de-duplicates the gate, it does not remove it. — 0123
+
+When the text fallback is used for a true binary confirmation, the brief **MUST**
+include an explicit answer path using `y`/`n`, such as `Reply y to apply, or n to
+skip`. The skill **SHOULD** accept obvious aliases when they unambiguously match
+the displayed options, but those aliases **MUST NOT** replace `y`/`n` as the
+visible shortest responses.
 
 When options differ in coverage or risk, the decision brief **SHOULD** state that
 tradeoff explicitly. When options differ only in kind, the brief should say so
