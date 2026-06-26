@@ -2,6 +2,24 @@
 
 ## 2026-06-26
 
+- **In-Review**: Advanced
+  [0107 - Durable spec alignment](0107-durable-spec-alignment.md) to
+  `In-Review`. Audited `SPECIFICATION.md` and 49 active durable spec concepts;
+  fixed the routed authoring guide specs that used BCP 14 keywords without a
+  convention declaration; added companion-note wording for those runtime guide
+  contracts; updated spec logs; and verified with `mise run fmt-md-check` plus
+  two follow-up audit passes.
+
+- **Draft**: Created
+  [0107 - Durable spec alignment](0107-durable-spec-alignment.md) with its child
+  [index](0107-durable-spec-alignment/index.md) and
+  [functional spec](0107-durable-spec-alignment/spec.md). The case audits
+  `SPECIFICATION.md` and durable `specs/` concepts against the latest
+  functional-spec and OKF guidance, fixes concrete current-guidance drift, and
+  requires Markdown formatting plus two follow-up audit passes before completion.
+  No CLI, Go, bundled skill runtime, format-schema, rating, roll-up,
+  evaluation-record, or report-rendering behavior change is expected.
+
 - **Done**: Implemented and archived
   [0106 - Binary confirmation UX](archive/0106-binary-confirmation-ux.md).
   `/quality` interaction guidance now distinguishes non-binary closed choices,

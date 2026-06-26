@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Implemented durable spec alignment for
+  [0107 - Durable spec alignment](../changes/0107-durable-spec-alignment.md).
+  Audited `SPECIFICATION.md` and the active `specs/` bundle for OKF mechanics,
+  BCP 14 declarations, change-case-only sections, vocabulary/register drift, and
+  index coverage. Updated the authoring sub-guide specs so all live durable specs
+  using BCP 14 requirement keywords declare the convention near the top.
+
 - **Revision**: Implemented durable spec changes for
   [0104 - Evaluation v2 report header navigation](../changes/archive/0104-evaluation-v2-report-header-navigation.md)
   and

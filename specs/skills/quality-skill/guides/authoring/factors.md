@@ -8,7 +8,15 @@ timestamp: 2026-06-24T00:00:00Z
 
 # QUALITY.md factor authoring guide
 
-Governs [`skills/quality/guides/authoring/factors.md`](../../../../../skills/quality/guides/authoring/factors.md).
+This spec governs the runtime
+[`skills/quality/guides/authoring/factors.md`](../../../../../skills/quality/guides/authoring/factors.md)
+guide.
+
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
+described in [RFC 2119](../../../../../docs/reference/rfc2119.md) and
+[RFC 8174](../../../../../docs/reference/rfc8174.md) when, and only when, they
+appear in all capitals.
 
 The guide **MUST** cover Factors as quality characteristics/lenses, local factor
 identity, factor properties, deriving Factors from Needs and Risks, conventional

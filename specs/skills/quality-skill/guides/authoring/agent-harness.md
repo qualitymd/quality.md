@@ -8,7 +8,15 @@ timestamp: 2026-06-24T00:00:00Z
 
 # Agent-harness Area authoring guide
 
-Governs [`skills/quality/guides/authoring/agent-harness.md`](../../../../../skills/quality/guides/authoring/agent-harness.md).
+This spec governs the runtime
+[`skills/quality/guides/authoring/agent-harness.md`](../../../../../skills/quality/guides/authoring/agent-harness.md)
+guide.
+
+This document uses BCP 14 keywords only for testable conformance requirements.
+The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
+described in [RFC 2119](../../../../../docs/reference/rfc2119.md) and
+[RFC 8174](../../../../../docs/reference/rfc8174.md) when, and only when, they
+appear in all capitals.
 
 The guide **MUST** cover the agent harness as a recurring use-context constituent
 and partly normative Area. It **MUST** define the agent harness holistically as

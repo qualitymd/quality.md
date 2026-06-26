@@ -43,7 +43,8 @@ edit.
 
 # Open change cases
 
-None.
+- [0107 - Durable spec alignment](0107-durable-spec-alignment.md) - align durable
+  specs with the latest functional-spec and OKF guidance.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
