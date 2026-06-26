@@ -1,5 +1,8 @@
 # QUALITY.md
 
+> 🚧 **Early alpha — under active construction.** The format, `/quality` skill, and
+> `qualitymd` CLI are still evolving and **breaking changes are expected.**
+
 **QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
 what matters most, why, and how, for software, documentation, data, services,
 operations, or whatever else your team tends. Use it with the `/quality` agent
@@ -10,12 +13,6 @@ context. The `/quality` skill helps set up the file, evaluate quality, and
 evolve the model as you learn. That agentic workflow is the primary experience;
 the `qualitymd` CLI provides support tooling for validating QUALITY.md files,
 managing quality evaluations, and maintaining a QUALITY.md workspace.
-
-> **Status: 🧪 Early alpha.** QUALITY.md is ready for experimentation and early
-> adoption, but the format, `/quality` skill, and `qualitymd` CLI are still
-> evolving. Use `/quality update` to stay current. Breaking changes may happen;
-> the `/quality` skill is designed to help migrate your `QUALITY.md` when
-> needed.
 
 ## Install
 
