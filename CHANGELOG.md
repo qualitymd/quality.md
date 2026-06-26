@@ -5,8 +5,11 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.18.0 - 2026-06-26
+
 ### /quality Skill
 
+- `/quality` now requires `qualitymd >=0.18.0 <0.19.0`.
 - `/quality evaluate` now has one best-quality workflow: evaluation rigor
   (`quick`/`standard`/`deep`, `--rigor`, and `/quality evaluate deep`) is removed,
   every in-scope Requirement must be assessed or explicitly marked not assessed,
@@ -19,6 +22,24 @@ QUALITY.md specification.
   timing consistent. Read-only orientation now has a status-first output shape,
   and recommendation follow-up now opens with a frame before inspection or
   mutation.
+
+### Documentation
+
+- The agent-mediated UX guide's evaluate run-frame example no longer includes a
+  `Rigor:` field.
+
+### Compatibility / Migration
+
+- `/quality evaluate` no longer accepts evaluation-rigor invocations such as
+  `/quality evaluate --rigor quick`, `/quality evaluate --rigor deep`, or
+  `/quality evaluate deep`. Narrow the evaluation scope by Area or Factor instead.
+- `/quality` skill version `0.18.0` requires the `qualitymd` CLI `0.18.x` line.
+
+Compatibility:
+
+- CLI: `v0.18.0`
+- QUALITY.md specification: `0.5 (Draft)`
+- /quality skill: `0.18.0`, requires `qualitymd >=0.18.0 <0.19.0`
 
 ## v0.17.0 - 2026-06-26
 
