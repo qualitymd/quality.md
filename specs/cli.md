@@ -34,6 +34,7 @@ judgment and pass judgment payloads to the deterministic surface.
 | ------------------------------------------------- | -------------------------------------------------------- |
 | [`init`](./cli/init.md)                           | Scaffold a starter `QUALITY.md` to fill in.              |
 | [`lint`](./cli/lint.md)                           | Validate a file's structure against the format spec.     |
+| [`model`](./cli/model.md)                         | Query a model's structure and canonical reference IDs.   |
 | [`spec`](./cli/spec.md)                           | Emit the QUALITY.md format specification.                |
 | [`status`](./cli/status.md)                       | Emit a deterministic project-state snapshot.             |
 | [`evaluation create`](./cli/evaluation-create.md) | Create a numbered evaluation run folder.                 |
@@ -48,6 +49,8 @@ judgment and pass judgment payloads to the deterministic surface.
 
 - [`init`](./cli/init.md) — scaffold a starter `QUALITY.md`.
 - [`lint`](./cli/lint.md) — validate a file's structure.
+- [`model`](./cli/model.md) — query a model's structure and canonical reference
+  IDs.
 - [`spec`](./cli/spec.md) — emit the format specification.
 - [`status`](./cli/status.md) — emit a deterministic project-state snapshot.
 - [`evaluation create`](./cli/evaluation-create.md) — create a numbered

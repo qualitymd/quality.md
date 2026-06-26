@@ -344,6 +344,7 @@ Areas can nest recursively. `ratingScale` exists only on the root model.
 | Create a starter file   | `qualitymd init [path]`          |
 | Validate a file         | `qualitymd lint [path]`          |
 | Fix lint issues         | `qualitymd lint --fix [path]`    |
+| Query model structure   | `qualitymd model tree [path]`    |
 | Show project status     | `qualitymd status [path] --json` |
 | Show version info       | `qualitymd version --json`       |
 | Check for updates       | `qualitymd update --check`       |

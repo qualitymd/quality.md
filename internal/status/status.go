@@ -206,26 +206,39 @@ func invalidModelActions(path string, summary lint.Summary) []receipt.Action {
 }
 
 func modelSnapshot(spec *model.Spec) (ModelShape, []SourceCoverage) {
-	acc := modelAccumulator{
-		shape: ModelShape{Areas: 1, RatingLevels: len(spec.RatingScale)},
+	return modelShape(spec), sourceCoverage(spec)
+}
+
+// modelShape counts the model's structural elements from the shared projection,
+// so status and the model command read one model-tree walk.
+func modelShape(spec *model.Spec) ModelShape {
+	shape := ModelShape{RatingLevels: len(spec.RatingScale)}
+	for _, element := range model.Flatten(model.Project(spec)) {
+		switch element.Kind {
+		case model.KindArea:
+			shape.Areas++
+		case model.KindFactor:
+			shape.Factors++
+		case model.KindRequirement:
+			shape.Requirements++
+		}
 	}
+	return shape
+}
+
+// sourceCoverage builds the per-Area source provenance rows. Source state is a
+// status-only concern the identity projection deliberately omits, so it keeps
+// its own source-aware walk.
+func sourceCoverage(spec *model.Spec) []SourceCoverage {
 	label := spec.Title
 	if label == "" {
 		label = "Model"
 	}
-	acc.coverage = append(acc.coverage, sourceCoverageRow(nil, label, spec.Source, "", len(spec.Factors), len(spec.Requirements), len(spec.Areas)))
-	acc.walkFactors(spec.Factors)
-	acc.shape.Requirements += len(spec.Requirements)
-	acc.walkAreas(spec.Areas, nil, spec.Source)
-	return acc.shape, acc.coverage
+	rows := []SourceCoverage{sourceCoverageRow(nil, label, spec.Source, "", len(spec.Factors), len(spec.Requirements), len(spec.Areas))}
+	return appendAreaCoverage(rows, spec.Areas, nil, spec.Source)
 }
 
-type modelAccumulator struct {
-	shape    ModelShape
-	coverage []SourceCoverage
-}
-
-func (a *modelAccumulator) walkAreas(areas map[string]model.Area, parentPath []string, inheritedSource string) {
+func appendAreaCoverage(rows []SourceCoverage, areas map[string]model.Area, parentPath []string, inheritedSource string) []SourceCoverage {
 	for _, name := range sortedKeys(areas) {
 		area := areas[name]
 		path := appendString(parentPath, name)
@@ -233,25 +246,14 @@ func (a *modelAccumulator) walkAreas(areas map[string]model.Area, parentPath []s
 		if label == "" {
 			label = name
 		}
-		a.shape.Areas++
-		a.coverage = append(a.coverage, sourceCoverageRow(path, label, area.Source, inheritedSource, len(area.Factors), len(area.Requirements), len(area.Areas)))
-		a.walkFactors(area.Factors)
-		a.shape.Requirements += len(area.Requirements)
+		rows = append(rows, sourceCoverageRow(path, label, area.Source, inheritedSource, len(area.Factors), len(area.Requirements), len(area.Areas)))
 		nextSource := inheritedSource
 		if area.Source != "" {
 			nextSource = area.Source
 		}
-		a.walkAreas(area.Areas, path, nextSource)
+		rows = appendAreaCoverage(rows, area.Areas, path, nextSource)
 	}
-}
-
-func (a *modelAccumulator) walkFactors(factors map[string]model.Factor) {
-	for _, name := range sortedKeys(factors) {
-		factor := factors[name]
-		a.shape.Factors++
-		a.shape.Requirements += len(factor.Requirements)
-		a.walkFactors(factor.Factors)
-	}
+	return rows
 }
 
 func sourceCoverageRow(path []string, label, declaredSource, inheritedSource string, factors, requirements, children int) SourceCoverage {

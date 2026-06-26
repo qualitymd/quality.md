@@ -79,6 +79,7 @@ func newRootCmd() *cobra.Command {
 	)
 	addCommand(root, groupCommon, newInitCmd())
 	addCommand(root, groupCommon, newLintCmd())
+	addCommand(root, groupCommon, newModelCmd())
 	addCommand(root, groupCommon, newSpecCmd())
 	addCommand(root, groupCommon, newSchemaCmd())
 	addCommand(root, groupCommon, newEvaluationCmd())

@@ -669,7 +669,7 @@ func validateAreaReferenceString(spec *model.Spec, value any, path string) error
 	if err != nil {
 		return usagef("%s: %w", path, err)
 	}
-	if !areaExists(spec, area) {
+	if !model.AreaExists(spec, area) {
 		return usagef("%s does not resolve in the model", path)
 	}
 	return nil
@@ -680,10 +680,10 @@ func validateRequirementReferenceString(spec *model.Spec, value any, path string
 	if err != nil {
 		return usagef("%s: %w", path, err)
 	}
-	if !areaExists(spec, req.DeclaringArea) {
+	if !model.AreaExists(spec, req.DeclaringArea) {
 		return usagef("%s declares an Area absent from the model", path)
 	}
-	if !requirementExists(spec, req.DeclaringArea, req.Name) {
+	if !model.RequirementExists(spec, req.DeclaringArea, req.Name) {
 		return usagef("%s does not resolve in the model", path)
 	}
 	return nil
@@ -694,10 +694,10 @@ func validateFactorReferenceString(spec *model.Spec, value any, path string) err
 	if err != nil {
 		return usagef("%s: %w", path, err)
 	}
-	if !areaExists(spec, factor.DeclaringArea) {
+	if !model.AreaExists(spec, factor.DeclaringArea) {
 		return usagef("%s declares an Area absent from the model", path)
 	}
-	if !factorExists(spec, factor.DeclaringArea, factor.Path) {
+	if !model.FactorExists(spec, factor.DeclaringArea, factor.Path) {
 		return usagef("%s does not resolve in the model", path)
 	}
 	return nil

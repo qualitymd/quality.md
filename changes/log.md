@@ -2,6 +2,22 @@
 
 ## 2026-06-26
 
+- **Done**: Landed and archived
+  [0125 - Model query commands](archive/0125-model-query-commands.md). Shipped the
+  read-only `qualitymd model` group (`tree`/`list`/`get`) projecting a model's
+  elements, canonical reference IDs, and containment. Moved the reference grammar
+  (path types, encoders, parsers, existence helpers) and a new shared projection
+  walk into `internal/model` (`reference.go`, `projection.go`), so `model` depends
+  on neither `status` nor `evaluation`; rating references stay in `evaluation`.
+  Retired the duplicate model-tree walk in `status` by deriving its shape counts
+  from the shared projection. Wired the evaluate workflow to query in-scope
+  canonical IDs from the run's `model-snapshot.md` via `model list --json` instead
+  of hand-deriving them. Durable specs (`specs/cli/model.md` new, `specs/cli.md`,
+  `specs/cli/index.md`, the evaluate skill spec) and docs (bundled skill quick
+  reference, README) brought in sync. Moved the parent and folder into
+  [`archive/`](archive/); updated the archive [index](archive/index.md) and the
+  bundle [index](index.md). Full build and test suite green.
+
 - **Done**: Implemented and archived
   [0124 - Constrain reference kind fields to closed kind vocabularies](archive/0124-reference-kind-enum.md).
   Enum-constrained the `kind` member of both Evaluation reference shapes from
@@ -42,9 +58,15 @@
   no provenance, no validation (defers to `lint`), no ratings. `--area` accepts
   the canonical `area:<path>` form only (one addressing vocabulary). New durable
   spec `specs/cli/model.md`; `specs/cli.md` and `specs/cli/index.md` gain the
-  command. Design doc deferred (projection home and reference-encoding location
-  are design questions). Listed the case in the bundle [index](index.md). Code not
-  started.
+  command. Because the driving need is the evaluate workflow itself, the case now
+  also covers wiring `/quality` evaluate to consume `model list --json` (against
+  the run's `model-snapshot.md`) instead of hand-deriving IDs — a required
+  outcome, captured as spec requirements SK1–SK4. Added the
+  [design doc](0125-model-query-commands/design.md): the shared projection and
+  the canonical-reference grammar (encoders plus parsers) move into
+  `internal/model` so `model` depends on neither `status` nor `evaluation`,
+  `status` folds onto the same projection walk, and the three verbs land in one
+  slice. Listed the case in the bundle [index](index.md). Code not started.
 
 - **Design**: Created
   [0124 - Constrain reference kind fields to the payload-kind vocabulary](0124-reference-kind-enum.md)

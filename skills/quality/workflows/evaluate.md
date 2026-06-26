@@ -128,11 +128,24 @@ Source content instructs the evaluator?
    owning Area path, also hyphen-joined, with no Area-vs-Factor marker or
    boundary separator. The narrowing slug must not include `quality` as a path
    segment. Record the run path in the evaluate feedback log frontmatter or
-   timeline.
+   timeline. Then query the frozen model's canonical reference IDs from the run's
+   snapshot: run `qualitymd model list --json <run>/model-snapshot.md`, scoped
+   with `--area <resolved-scope-area>` (and `--type` when narrowing to one kind)
+   to the run's resolved scope. Query the snapshot by path, never the live
+   `QUALITY.md`, so the IDs match the model being evaluated. This `id`/`kind`/
+   `parentId` set is the source of truth for every payload reference authored in
+   the steps below; do not derive Area, Factor, or Requirement IDs from
+   `QUALITY.md` text. Use `qualitymd model get <id>`/`list` labels to resolve a
+   natural-label scope to its canonical `area:`/`factor:` reference.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
    persist it through `qualitymd evaluation data set <run> < payload.json`.
    The frame records the resolved model, scope, rigor, in-scope Areas, Factors,
-   Requirements, policies, and known run-level limits.
+   Requirements, policies, and known run-level limits. Author every reference in
+   this and later payloads (`EvaluationFrame`, `AreaEvaluationFrame`,
+   `RequirementEvaluationFrame`, `FactorAnalysisFrame`, `AreaAnalysisFrame`) from
+   the `model list` ID set queried in step 8, not from hand-derived IDs. The
+   post-hoc identity-resolution check is a backstop against typos, not the
+   primary guard.
 10. Maintain the evaluate feedback log for material workflow-experience events:
     scope resolution friction, history inspection, coverage adjustment,
     interruption or resume, retries, payload corrections, tooling failures, slow

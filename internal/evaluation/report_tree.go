@@ -483,7 +483,7 @@ func evaluationOutputResult(artifacts *evaluationArtifacts, reports []evaluation
 		if area.Analysis == nil {
 			continue
 		}
-		areaID := AreaPath(area.ID).Reference()
+		areaID := model.AreaPath(area.ID).Reference()
 		areaOutputs = append(areaOutputs, map[string]any{
 			"areaId":                    areaID,
 			"areaEvaluationFrameRef":    routineRef(DataKindAreaEvaluationFrame, map[string]any{"areaId": areaID}, ""),
@@ -497,14 +497,14 @@ func evaluationOutputResult(artifacts *evaluationArtifacts, reports []evaluation
 	return map[string]any{
 		"schemaVersion":       SchemaVersion,
 		"kind":                string(DataKindEvaluationOutput),
-		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": AreaPath{}.Reference()}, "localAndDescendantAnalysis"),
+		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath{}.Reference()}, "localAndDescendantAnalysis"),
 		"areaOutputs":         areaOutputs,
 		"reportOutputs":       reportOutputs,
 	}
 }
 
 func evaluationReportRef(report evaluationRenderedReport) map[string]any {
-	ref := map[string]any{"kind": report.Kind, "areaId": AreaPath(report.AreaID).Reference(), "path": filepath.ToSlash(report.Path)}
+	ref := map[string]any{"kind": report.Kind, "areaId": model.AreaPath(report.AreaID).Reference(), "path": filepath.ToSlash(report.Path)}
 	if report.FactorID != nil {
 		ref["factorId"] = factorIDJSON(*report.FactorID)
 	}
@@ -1077,11 +1077,11 @@ func sameStrings(a, b []string) bool {
 }
 
 func factorIDJSON(id factorID) string {
-	return FactorReference(AreaPath(id.DeclaringArea), FactorPath(id.Path))
+	return model.FactorReference(model.AreaPath(id.DeclaringArea), model.FactorPath(id.Path))
 }
 
 func requirementIDJSON(id requirementID) string {
-	return RequirementReference(AreaPath(id.DeclaringArea), id.Name)
+	return model.RequirementReference(model.AreaPath(id.DeclaringArea), id.Name)
 }
 
 func objectSlice(v any) []map[string]any {

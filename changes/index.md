@@ -43,11 +43,6 @@ edit.
 
 # Open change cases
 
-- [0125 - Model query commands](0125-model-query-commands.md)
-  (`Draft`) - add a read-only `qualitymd model` group (`tree`/`list`/`get`) that
-  projects a model's structure and canonical reference IDs for agents and people,
-  without overlapping the `status` or `evaluation` surfaces.
-
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
 template for a new one.

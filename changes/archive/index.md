@@ -539,3 +539,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     invented reference kind is rejected at `evaluation data set` time instead of
     persisting as a free-form string, with the constraint surfaced in the
     regenerated `evaluation-data.schema.json` and `json-conventions.md` (`Done`).
+- [0125 — Model query commands](0125-model-query-commands.md) - adds the read-only
+  `qualitymd model` group (`tree`/`list`/`get`) that projects a model's elements,
+  canonical reference IDs, and containment; moves the reference grammar and a
+  shared projection into `internal/model` (so `model` depends on neither `status`
+  nor `evaluation`), folds `status`'s shape counts onto that projection, and wires
+  the evaluate workflow to query in-scope IDs from the run's `model-snapshot.md`
+  instead of hand-deriving them (`Done`).

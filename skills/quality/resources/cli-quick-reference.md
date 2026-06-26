@@ -29,6 +29,7 @@ Use command help before guessing a command shape:
 ```sh
 qualitymd --help
 qualitymd lint --help
+qualitymd model --help
 qualitymd status --help
 qualitymd evaluation create --help
 qualitymd evaluation data --help
@@ -57,6 +58,9 @@ whether the install is in the skill's supported range.
 | Create a starter model | `qualitymd init [path]`                                    |
 | Validate a model       | `qualitymd lint [path]`                                    |
 | Fix simple lint issues | `qualitymd lint --fix [path]`                              |
+| View model structure   | `qualitymd model tree [path] [--area <area-id>]`           |
+| List canonical IDs     | `qualitymd model list [path] [--type <kind>] [--json]`     |
+| Inspect one element    | `qualitymd model get <id> [path] [--json]`                 |
 | Inspect project status | `qualitymd status [path] --json`                           |
 | Create evaluation run  | `qualitymd evaluation create [model] [--narrowing <slug>]` |
 | List evaluation runs   | `qualitymd evaluation list [--json]`                       |
@@ -103,6 +107,7 @@ Need to evaluate?
 - Inspect current state -> qualitymd status [path] --json
 - Create feedback log -> edit .quality/logs/<timestamp>-evaluate-feedback-log.md after the run frame
 - Create run -> qualitymd evaluation create [model] [--narrowing <slug>]
+- Get in-scope canonical IDs -> qualitymd model list --json <run>/model-snapshot.md [--area <area-id>] [--type <kind>]
 - Discover payload shapes -> qualitymd evaluation data kinds; qualitymd evaluation data schema [<kind>]; qualitymd evaluation data example <kind>
 - Maintain workflow feedback -> update .quality/logs/<timestamp>-evaluate-feedback-log.md for material workflow-experience events only
 - Validate authored routine output -> qualitymd evaluation data set <run> --dry-run < payload.json

@@ -52,6 +52,23 @@ The feedback log's `outcome` field describes workflow process state such as
 `completed-reportable`, `stopped-model`, or `interrupted`; it is not a rating,
 report verdict, or recommendation state.
 
+## Canonical references
+
+`evaluate` **MUST** obtain the canonical reference IDs of in-scope Areas,
+Factors, and Requirements from `qualitymd model` (a `model list --json` query for
+the scope) and **MUST** author every payload reference — `EvaluationFrame`,
+`AreaEvaluationFrame`, `RequirementEvaluationFrame`, `FactorAnalysisFrame`, and
+`AreaAnalysisFrame` — from that result. It **MUST NOT** derive Area, Factor, or
+Requirement IDs from `QUALITY.md` text.
+
+The query **MUST** target the run's `model-snapshot.md` by path, not the live
+`QUALITY.md`, so authored IDs match the frozen model being evaluated. It **MUST**
+be scoped with `--area` (and `--type` when narrowing to one kind) to the run's
+resolved scope. The post-hoc identity-resolution check is a backstop against ID
+typos, not the primary guard. `evaluate` **SHOULD** use `model` (`list` labels,
+`get`) to resolve a natural-label scope to its canonical `area:`/`factor:`
+reference.
+
 ## Required flow
 
 Before tool inspection, `evaluate` **MUST** emit the public `/quality` run frame
