@@ -35,6 +35,13 @@ with numbered options and an explicit `Answer` line — per the shared
 The guide **MUST NOT** present defer, skip, or keep open as formal follow-up
 options.
 
+The guide **MUST** require a first-output recommendation follow-up frame before
+recommendation inspection, history inspection, outcome selection, local apply,
+issue creation, quality-log writes, or any other tool-dependent follow-up work.
+The frame **MUST** name the recommendation or `resolving…`, outcome or
+`resolving…`, mutation surfaces, expected artifacts, and next gate without
+implying a new public `/quality` invocation.
+
 The guide **MUST** require explicit confirmation before editing evaluated
 source, editing `QUALITY.md`, writing the quality log, or creating an external
 issue.

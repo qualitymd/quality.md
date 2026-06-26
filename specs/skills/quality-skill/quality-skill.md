@@ -360,6 +360,20 @@ combination of those.
 > workflow inherits it, with a provisional / `resolving…` value for any field
 > (notably scope) that genuinely needs a tool to resolve. — 0114
 
+Recommendation follow-up is not a public `/quality` workflow, but it is a
+user-visible follow-up path that can mutate evaluated source, `QUALITY.md`, the
+quality log, or an external issue tracker. Before recommendation inspection,
+history inspection, outcome selection, local apply, issue creation, quality-log
+writes, or any other tool-dependent follow-up work, the skill **MUST** emit a
+concise follow-up frame naming the recommendation or `resolving…`, outcome or
+`resolving…`, mutation surfaces, expected artifacts, and next gate. The frame
+**MUST NOT** render a command-style header that implies a new public invocation.
+
+> Rationale: the user still needs the opening checkpoint for a non-public
+> follow-up because it may change source, the model, local logs, or external
+> trackers. The public command surface stays unchanged; the frame describes the
+> selected follow-up path. — 0128
+
 ### Decision briefs
 
 Before any user-confirmed mutation, the skill **MUST** present a decision brief
@@ -509,6 +523,13 @@ concrete alternatives without modifying files, creating records, building
 reports, updating tooling, or rating evaluated source. Its recommended next
 actions are limited to public workflows: `setup`, `evaluate`, `update`, and
 recommendation follow-up.
+
+Orientation output **MUST** be status-first and **MUST** include the model file or
+target inspected, observed lifecycle or model state, evidence limits when
+relevant, one recommended next action, and concrete alternatives when useful. It
+**MUST** explicitly preserve the read-only boundary: no file edits, evaluation
+records, generated reports, tooling updates, quality-log entries, or external
+issues.
 
 The skill **MUST NOT** advertise `status`, `next`, `review model`,
 `review history`, or `wizard` as public invocations. If a user explicitly sends

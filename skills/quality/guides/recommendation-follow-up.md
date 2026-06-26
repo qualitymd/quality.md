@@ -11,6 +11,26 @@ or hand off an active evaluation recommendation. This is not a public `/quality`
 workflow: it is a post-evaluation follow-up over recommendation records that
 already exist or have just been produced by `evaluate`.
 
+## Opening
+
+Emit the follow-up frame as the first user-visible output, before recommendation
+inspection, history inspection, outcome selection, issue-ready drafting, local
+apply, issue creation, quality-log writes, or any other tool-dependent work. Use
+`resolving…` for fields that need inspection:
+
+```text
+**QUALITY.md · recommendation follow-up**
+- **Recommendation:** <id/title | resolving…>
+- **Outcome:** <apply locally | hand off to issue tracker | resolving…>
+- **Mutation:** <evaluated source | QUALITY.md | quality log | external issue | read-only until confirmed>
+- **Artifacts:** <changed files/log entry/issue-ready text/issue link | none yet>
+- **Next gate:** recommendation selection, outcome choice, decision brief, or verification
+```
+
+This frame does not introduce a new public invocation. It is the status-first
+opening for the selected follow-up path, and all mutation still waits for the
+confirmation gates below.
+
 ## Outcomes
 
 Offer only two explicit productive outcomes:

@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated
+  [Recommendation Follow-Up](recommendation-follow-up.md) for 0128 -
+  Agent-mediated skill alignment.
+  Recommendation follow-up now opens with a frame before recommendation
+  inspection, outcome selection, local apply, issue creation, or quality-log
+  writes.
+
 - **Revision**: Updated [Agent Harnessability](authoring/agent-harnessability.md)
   and [Top 10 checks](top-10-quality-md-checks.md) for early-alpha compatibility
   cleanup.

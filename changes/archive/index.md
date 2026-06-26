@@ -557,3 +557,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     `cli-workflow-conventions.md`, removes embedded command/flag listings, keeps
     non-introspectable workflow conventions, and routes command, flag, and
     payload discovery to CLI introspection (`Done`).
+- [0128 — Agent-mediated skill alignment](0128-agent-mediated-skill-alignment.md)
+  - closes the remaining `/quality` skill alignment gaps against the
+    agent-mediated UX guide: setup frame ordering, feedback-log disclosure,
+    recommendation follow-up framing, and read-only orientation output (`Done`).

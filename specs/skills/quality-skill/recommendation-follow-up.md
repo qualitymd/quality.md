@@ -30,6 +30,14 @@ evaluation.
 The workflow's purpose is to turn a selected recommendation into one of two
 productive outcomes: a confirmed local apply or an issue-tracker handoff.
 
+Before recommendation inspection, history inspection, outcome selection, local
+apply, issue creation, quality-log writes, or any other tool-dependent follow-up
+work, the workflow **MUST** emit a concise follow-up frame. The frame **MUST**
+name the recommendation or `resolving…`, the outcome if already requested or
+`resolving…`, mutation surfaces, expected artifacts, and next gate. It
+**MUST NOT** render a command-style header that implies recommendation follow-up
+is a new public `/quality` invocation.
+
 ## Outcomes
 
 Recommendation follow-up **MUST** offer only two explicit outcomes:

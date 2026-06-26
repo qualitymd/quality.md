@@ -67,10 +67,17 @@ you know from the invocation (the explicit path, else `QUALITY.md` in the curren
 directory). Do not front-load quick checks "to be efficient" — that is exactly
 what leaves the user staring at a silent screen while the welcome waits.
 
-The opening is one block: warm welcome, value proposition, a short phase roadmap,
-the read-only/review boundary, and the run frame.
+The opening is one block: the run frame first, then warm welcome, value
+proposition, a short phase roadmap, and the read-only/review boundary.
 
 ```text
+**QUALITY.md · setup**
+- **Model file:** <resolved path>
+- **Scope:** contextual QUALITY.md setup
+- **Mutation:** QUALITY.md after review + workflow feedback log under .quality/logs/ if continuing
+- **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md if continuing
+- **Next gate:** read-only setup preview, discovery, review, lint, important-gap inspection
+
 # QUALITY.md setup
 
 Welcome! QUALITY.md gives AI assistants, coding agents, and teams a holistic
@@ -84,25 +91,18 @@ Here's how setup will go:
 4. **Write** — I author QUALITY.md
 5. **Verify** — lint plus a quick gap check
 
-Starting with the read-only scan now — nothing is written until you confirm.
+Starting with the read-only scan now. I will not change `QUALITY.md` until you
+review and confirm; if setup continues after the preview, I may create a local
+workflow feedback log under `.quality/logs/`.
 ```
 
-Then, in the same first-output block, emit the run frame. The **Model file** is
-the resolved model path: the explicit path when supplied, otherwise `QUALITY.md`
-in the current working directory (do not walk parent directories). This is pure
-invocation logic, not a filesystem probe, so the frame needs no tool call:
+The **Model file** in the frame is the resolved model path: the explicit path
+when supplied, otherwise `QUALITY.md` in the current working directory (do not
+walk parent directories). This is pure invocation logic, not a filesystem probe,
+so the frame needs no tool call.
 
-```text
-**QUALITY.md · setup**
-- **Model file:** <resolved path>
-- **Scope:** contextual QUALITY.md setup
-- **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/ if continuing
-- **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md if continuing
-- **Next gate:** read-only setup preview, discovery, review, lint, important-gap inspection
-```
-
-Keep this as orientation, not a splash screen: a value-proposition sentence, the
-phase roadmap, the immediate read-only step, and the review-before-changes
+Keep this as orientation, not a splash screen: a run frame, value-proposition
+sentence, phase roadmap, immediate read-only step, and review-before-model-change
 boundary. The roadmap is what makes the silent scan that follows read as an
 expected step rather than a hang.
 

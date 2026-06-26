@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated
+  [CLI Workflow Conventions](cli-workflow-conventions.md) for 0128 -
+  Agent-mediated skill alignment.
+  Setup feedback-log timing now matches the setup workflow: create the log after
+  the setup preview when the run continues into discovery.
+
 - **Refocus**: Renamed `cli-quick-reference.md` to
   `cli-workflow-conventions.md`, removing the embedded command/flag listing and
   retaining the workflow conventions the CLI's own introspection cannot carry.

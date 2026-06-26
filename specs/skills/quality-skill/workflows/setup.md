@@ -90,18 +90,22 @@ setup brief, discovery answers, authoring guide, and repository context.
 Setup **MUST** present the opening orientation as the first user-visible output of
 the run, before any tool call — including before the CLI prerequisite check,
 repository inspection, and any filesystem read or write. The opening's content
-has no tool dependency. The opening **MUST** explain the setup value proposition
-in operational terms: QUALITY.md gives AI assistants, coding agents, and teams a
-holistic definition of quality tailored to their project, so they can stay
-aligned, identify critical risks and issues, and keep improving. The opening
-**MUST** also state that the first phase is a read-only context scan and that the
-user will review before changes are written.
+has no tool dependency. The setup run frame **MUST** be the first element in that
+first-output block, before welcome prose, value proposition, or roadmap text. The
+opening **MUST** explain the setup value proposition in operational terms:
+QUALITY.md gives AI assistants, coding agents, and teams a holistic definition of
+quality tailored to their project, so they can stay aligned, identify critical
+risks and issues, and keep improving.
 
-The opening **MUST** include a short phase roadmap of what setup will do —
-read-only scan, calibration questions, review, write, verify — so the read-only
-scan that follows reads as an expected step rather than a hang. The opening
-**SHOULD** include a brief cue that the read-only scan may take a moment on a
-large repository.
+The opening **MUST** state that the first phase is a read-only context scan and
+that `QUALITY.md` changes wait for user review or confirmation. It **MUST NOT**
+broadly promise that nothing is written before confirmation, because setup may
+create a local workflow feedback log under `.quality/logs/` after the setup
+preview when the run continues into discovery. The opening **MUST** include a
+short phase roadmap of what setup will do — read-only scan, calibration
+questions, review, write, verify — so the read-only scan that follows reads as an
+expected step rather than a hang. The opening **SHOULD** include a brief cue that
+the read-only scan may take a moment on a large repository.
 
 Setup **MUST** emit the run frame as part of this first-output block, alongside
 the opening and before any tool call. Run-frame emission **MUST NOT** be gated on
@@ -127,6 +131,12 @@ gate.
 > first output before any tool call, and the CLI gate runs after the opening
 > rather than gating it. The phase roadmap makes the subsequent silent scan read
 > as an expected step. — 0098
+>
+> The frame must be the first element in the block, not merely part of the block:
+> the user should see the resolved workflow, target, mutation surface, artifacts,
+> and next gate before even useful welcome prose. The write-boundary copy also
+> distinguishes model mutation from the local feedback-log artifact, avoiding the
+> false promise that setup writes nothing at all before final review. — 0128
 
 `setup` **MUST** inspect available repository context before asking setup
 questions. Relevant context includes README and docs, repository structure,

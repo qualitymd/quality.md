@@ -3,6 +3,14 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0128 - Agent-mediated skill alignment](../changes/archive/0128-agent-mediated-skill-alignment.md).
+  The `/quality` skill spec now gives read-only orientation a standard
+  status-first output shape and requires a non-public recommendation-follow-up
+  frame before inspection or mutation. The setup workflow spec now requires the
+  setup run frame to be the first element in the opening block and distinguishes
+  `QUALITY.md` changes from local workflow feedback-log writes.
+
+- **Revision**: Implemented durable spec changes for
   [0123 - Render interactions through native affordances](../changes/archive/0123-native-interaction-affordances.md).
   The shared [user interaction contract](skills/quality-skill/quality-skill.md)
   now treats each interaction as an intent rendered through a fit-for-purpose

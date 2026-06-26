@@ -44,9 +44,10 @@ Other `.quality/` workspace artifacts:
   current-run feedback logs here.
 
 Feedback logs are skill-written conventions created on demand. Setup creates and
-updates its current-run feedback log after CLI support is verified. Evaluate
-creates and updates its current-run feedback log after the run frame. Record
-material workflow-experience events only; do not duplicate assessment evidence.
+updates its current-run feedback log after the setup preview when the run
+continues into discovery. Evaluate creates and updates its current-run feedback
+log after the run frame. Record material workflow-experience events only; do not
+duplicate assessment evidence.
 
 ## Starting Or Repairing A Model
 

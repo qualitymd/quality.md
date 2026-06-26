@@ -5,6 +5,14 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality Skill
+
+- The setup opening now shows the run frame first, distinguishes `QUALITY.md`
+  changes from local workflow feedback-log writes, and keeps setup feedback-log
+  timing consistent. Read-only orientation now has a status-first output shape,
+  and recommendation follow-up now opens with a frame before inspection or
+  mutation.
+
 ## v0.17.0 - 2026-06-26
 
 ### CLI

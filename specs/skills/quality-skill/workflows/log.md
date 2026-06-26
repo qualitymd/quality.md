@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0128 - Agent-mediated skill alignment](../../../../changes/archive/0128-agent-mediated-skill-alignment.md).
+  Setup now requires the run frame as the first element in the opening block,
+  clarifies that `QUALITY.md` changes wait for review while a local workflow
+  feedback log may be created after the preview, and keeps feedback-log timing
+  aligned with runtime guidance.
+
 - **Revision**: Updated the [`setup`](setup.md) and [`update`](update.md)
   workflow specs for
   [0123 - Render interactions through native affordances](../../../../changes/archive/0123-native-interaction-affordances.md).

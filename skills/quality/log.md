@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0128 - Agent-mediated skill
+  alignment.
+  Runtime guidance now gives read-only orientation a status-first shape and
+  requires recommendation follow-up to emit a frame before inspection, outcome
+  selection, or mutation.
+
 - **Revision**: Reshaped the [`SKILL.md`](SKILL.md) User Interaction Contract for
   0121 - Scannable interaction hierarchy.
   The decision-brief template now leads with the question, renders choices as a

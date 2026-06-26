@@ -4,6 +4,13 @@
 
 - **Revision**: Updated the
   [recommendation follow-up guide contract](recommendation-follow-up-md.md) for
+  [0128 - Agent-mediated skill alignment](../../../../changes/archive/0128-agent-mediated-skill-alignment.md).
+  Recommendation follow-up now requires a first-output follow-up frame before
+  recommendation inspection, outcome selection, local apply, issue creation, or
+  quality-log writes.
+
+- **Revision**: Updated the
+  [recommendation follow-up guide contract](recommendation-follow-up-md.md) for
   [0123 - Render interactions through native affordances](../../../../changes/archive/0123-native-interaction-affordances.md).
   The apply-vs-hand-off outcome is now a single-select closed-choice intent
   rendered per the shared progressive-enhancement contract, with the numbered

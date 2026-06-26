@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [setup](setup.md) workflow for 0128 -
+  Agent-mediated skill alignment.
+  Setup now renders the run frame as the first element in its opening block,
+  clarifies that `QUALITY.md` changes wait for review while a local workflow
+  feedback log may be created after the preview, and keeps feedback-log timing
+  consistent with shared workflow conventions.
+
 - **Revision**: Updated the [setup](setup.md) workflow for early-alpha
   compatibility cleanup.
   Setup now reports old `harnessability` factors as stale legacy naming to fix,

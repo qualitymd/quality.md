@@ -195,6 +195,30 @@ command-style header, and do not use a `Mode:` field:
 - **Next gate:**
 ```
 
+Recommendation follow-up is not a public `/quality` workflow, but it is still a
+user-visible follow-up that can mutate evaluated source, `QUALITY.md`, the
+quality log, or an external issue tracker. At its start, emit a concise follow-up
+frame before recommendation inspection, history inspection, outcome selection, or
+any mutation:
+
+```text
+**QUALITY.md · recommendation follow-up**
+- **Recommendation:** <id/title | resolving…>
+- **Outcome:** <apply locally | hand off to issue tracker | resolving…>
+- **Mutation:** <evaluated source | QUALITY.md | quality log | external issue | read-only until confirmed>
+- **Artifacts:** <changed files/log entry/issue-ready text/issue link | none yet>
+- **Next gate:** recommendation selection, outcome choice, decision brief, or verification
+```
+
+Bare or unclear `/quality` orientation is read-only, not a workflow run. Present
+orientation as a status-first block rather than a public run frame: name the
+model file or target inspected, summarize observed lifecycle/model state, name
+evidence limits when relevant, recommend one next action, and offer concrete
+alternatives. Include a boundary line such as `Not changed: no files, evaluation
+records, reports, tooling, quality log, or external issues.` Do not advertise
+`status`, `next`, `review model`, `review history`, or `wizard` as public
+invocations.
+
 For any mutation that requires confirmation, use a decision brief rather than a
 bare yes/no question. Lead with the question, render the choices as a visually
 separated block — one per line, recommended choice marked inline — then demote

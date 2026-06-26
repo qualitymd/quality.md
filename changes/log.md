@@ -3,6 +3,34 @@
 ## 2026-06-26
 
 - **Done**: Landed and archived
+  [0128 - Agent-mediated skill alignment](archive/0128-agent-mediated-skill-alignment.md).
+  Completed the remaining `/quality` skill alignment fixes against the
+  agent-mediated UX guide, moved the parent and child folder into
+  [`archive/`](archive/), updated the archive [index](archive/index.md), and
+  removed the case from the open [index](index.md). `mise run check` passes.
+
+- **In-Review**: Completed implementation for
+  [0128 - Agent-mediated skill alignment](archive/0128-agent-mediated-skill-alignment.md).
+  Setup now renders the run frame first and separates `QUALITY.md` mutation from
+  workflow feedback-log creation, setup feedback-log timing is consistent across
+  runtime and workflow conventions, recommendation follow-up opens with a
+  non-public follow-up frame, and read-only orientation has a status-first output
+  shape. Updated durable skill specs, runtime skill files, logs, and changelog.
+  `mise run check` passes.
+
+- **In-Progress**: Created
+  [0128 - Agent-mediated skill alignment](archive/0128-agent-mediated-skill-alignment.md)
+  with its
+  [functional spec](archive/0128-agent-mediated-skill-alignment/spec.md) and
+  [design doc](archive/0128-agent-mediated-skill-alignment/design.md), then advanced it
+  to implementation. The case closes the remaining `/quality` skill
+  agent-mediated UX gaps from the audit: setup's run frame must be first in the
+  first-output block, setup must disclose workflow feedback-log writes separately
+  from `QUALITY.md` mutation, setup feedback-log timing must be consistent,
+  recommendation follow-up needs an opening frame, and read-only orientation
+  needs a status-first output shape. No Go code change is planned.
+
+- **Done**: Landed and archived
   [0126 - Bulk data set](archive/0126-bulk-data-set.md). Shipped the array-only
   `evaluation data set` batch contract with all-or-nothing validation/write
   behavior, indexed diagnostics, duplicate-derived-path rejection, staged writes
