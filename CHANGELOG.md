@@ -5,17 +5,43 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.17.0 - 2026-06-26
+
 ### CLI
 
+- Added the read-only `qualitymd model` command group:
+  `qualitymd model tree`, `qualitymd model list`, and `qualitymd model get`
+  project a Model's Area, Factor, Requirement, and Rating Level identities,
+  labels, containment, and canonical reference IDs in human and JSON forms.
+- `qualitymd evaluation data set` now reads a non-empty JSON array of payloads
+  from stdin instead of one bare JSON object. The command validates the whole
+  batch before writing, rejects duplicate derived paths, reports indexed
+  diagnostics for invalid elements, writes all-or-nothing, and emits a batch
+  receipt with `count`, `writes[]`, `dryRun`, and `nextActions`.
 - Evaluation finding `actions` is now a typed candidate-action field: an array of
   objects with a required `description` and optional `rationale`, validated when
   persisting a `RequirementAssessmentResult` (previously an untyped, unvalidated
   array). Candidate actions are non-binding, finding-local remediation leads kept
   out of the v0 report; the generated finding detail no longer renders an
   `Actions` row.
+- Evaluation routine references now validate their `kind` member against the
+  supported Evaluation payload-kind vocabulary, and report references validate
+  their `kind` member against the report-kind vocabulary, so misspelled or
+  invented reference kinds fail at `evaluation data set` time.
 
 ### /quality Skill
 
+- `/quality` now requires `qualitymd >=0.17.0 <0.18.0`.
+- The evaluate workflow now queries in-scope canonical model IDs from the run's
+  `model-snapshot.md` with `qualitymd model list --json` instead of hand-deriving
+  Area, Factor, Requirement, and Rating Level references.
+- The evaluate workflow now batches routine Evaluation payload persistence:
+  payloads are accumulated into a JSON array, validated once with
+  `evaluation data set --dry-run`, and written once with `evaluation data set`.
+- The CLI workflow resource is now `cli-workflow-conventions.md`. It keeps the
+  skill-specific workflow conventions the CLI cannot describe and routes command,
+  flag, and payload discovery to CLI help, `--json`, schema, and example outputs
+  instead of an embedded command listing.
 - The evaluate workflow now records non-binding candidate actions on `gap` and
   `risk` findings — short remediation leads captured where the evidence is
   richest — as raw material for a future Advise phase, and omits them on
@@ -48,6 +74,37 @@ QUALITY.md specification.
 - *Assess Requirements* now notes that a Finding MAY carry non-binding candidate
   actions — finding-local remediation leads — distinct from the recommendations
   the Advice phase produces.
+- The CLI spec now defines `qualitymd model tree|list|get` as the deterministic
+  structure/identity projection surface for Models.
+- The Evaluation data CLI spec now defines the `data set` stdin envelope as a
+  non-empty JSON array, with whole-batch validation, all-or-nothing writes,
+  indexed diagnostics, duplicate-path rejection, dry-run parity, and the new
+  batch receipt shape.
+- Evaluation reference JSON conventions now constrain routine-reference and
+  report-reference `kind` fields to their closed vocabularies.
+
+### Documentation
+
+- The README now foregrounds the early-alpha status and points quality-workflow
+  users to the `/quality` skill and `qualitymd update`.
+
+### Compatibility / Migration
+
+- `qualitymd evaluation data set` no longer accepts a bare payload object on
+  stdin. Wrap one payload in a one-element array, e.g. `[payload]`, and submit
+  multi-payload runs as one array.
+- `qualitymd evaluation data set --json` now returns a batch receipt
+  (`count`, `writes[]`) instead of a single `path`/`kind` receipt. Consumers must
+  iterate `writes[]`.
+- Existing persisted Evaluation data files are not migrated. New writes through
+  `evaluation data set` must satisfy the closed reference-kind vocabularies.
+- `/quality` skill version `0.17.0` requires the `qualitymd` CLI `0.17.x` line.
+
+Compatibility:
+
+- CLI: `v0.17.0`
+- QUALITY.md specification: `0.5 (Draft)`
+- /quality skill: `0.17.0`, requires `qualitymd >=0.17.0 <0.18.0`
 
 ## v0.16.0 - 2026-06-26
 
