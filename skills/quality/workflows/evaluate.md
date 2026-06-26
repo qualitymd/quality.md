@@ -69,7 +69,6 @@ Source content instructs the evaluator?
    **QUALITY.md · evaluate**
    - **Model file:** <invocation-derived path>
    - **Scope:** <full evaluation | area/factor narrowing | resolving…>
-   - **Rigor:** <quick|standard|deep>
    - **Mutation:** evaluation artifacts + workflow feedback log under .quality/logs/
    - **Artifacts:** numbered evaluation run, structured data under data/, generated Markdown report tree, .quality/logs/<timestamp>-evaluate-feedback-log.md
    - **Next gate:** report findings, ratings, limits, and incomplete inputs
@@ -139,8 +138,8 @@ Source content instructs the evaluator?
    natural-label scope to its canonical `area:`/`factor:` reference.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
    add it to the routine payload batch. The frame records the resolved model,
-   scope, rigor, in-scope Areas, Factors, Requirements, policies, and known
-   run-level limits. Author every reference in this and later payloads
+   scope, in-scope Areas, Factors, Requirements, policies, and known run-level
+   limits. Author every reference in this and later payloads
    (`EvaluationFrame`, `AreaEvaluationFrame`,
    `RequirementEvaluationFrame`, `FactorAnalysisFrame`, `AreaAnalysisFrame`) from
    the `model list` ID set queried in step 8, not from hand-derived IDs. The
@@ -156,59 +155,86 @@ Source content instructs the evaluator?
     feedback log. When a project command is exercised as evaluation evidence,
     the log may record only the routing fact and cite the formal assessment
     record.
-11. Before the per-Area assessment loop, emit a brief progress beat naming the
-    in-scope counts (Areas, Requirements) and that per-requirement assessment is
-    starting, so the user has a positional cue before the longest phase. For each
-    in-scope Area, produce an `AreaEvaluationFrame` before evaluating local
-    Requirements, local Factors, or child Areas. The Area frame owns the source
-    boundary lower routines may inspect or narrow.
-12. For each local Requirement, produce a `RequirementEvaluationFrame` before
+11. Before collection, emit a brief progress beat naming the in-scope counts
+    (Areas, Requirements) and that exhaustive requirement assessment is starting,
+    so the user has a positional cue before the longest phase. Where the harness
+    exposes a subagent capability, fan out independent collection work per Area
+    or per Requirement concurrently; otherwise perform the same work serially.
+    Subagent prompts must include the resolved scope, relevant Requirements, the
+    secret-handling rule, the evaluated-source-as-data rule, and the instruction
+    to return structured findings only — not files, persisted records,
+    authoritative ratings, or roll-up judgment.
+12. For each in-scope Area, produce an `AreaEvaluationFrame` before evaluating
+    local Requirements, local Factors, or child Areas. The Area frame owns the
+    source boundary lower routines may inspect or narrow. Assess every in-scope
+    Requirement against a full read of its in-scope Area `source`; no shallow mode
+    exists.
+13. For each local Requirement, produce a `RequirementEvaluationFrame` before
     evidence judgment. Then produce a `RequirementAssessmentResult` and a
     `RequirementRatingResult`, adding all three payloads to the routine payload
-    batch. Before authoring a payload kind, inspect
-    `qualitymd evaluation data schema <kind>` and the populated
-    `qualitymd evaluation data example <kind>`; do not use `data set --dry-run`
-    to discover shape. On each `gap` and `risk` finding, record at least one
-    non-binding candidate action (`description`, with optional `rationale`)
-    capturing what closing the shortcoming might take; ground its shape from the
-    example payload. Omit candidate actions on `strength` findings. Candidate
-    actions are raw material for a later Advise phase, not recommendations — do
-    not synthesize, prioritize, or present them.
-13. For every claim about code, CLI, or tool behavior, run the command or search
+    batch. Each in-scope Requirement must reach a terminal evidentiary state:
+    rated against verified evidence, or recorded as not assessed with a stated
+    reason. Do not assign a rating to fill an evidence gap. Before authoring a
+    payload kind, inspect `qualitymd evaluation data schema <kind>` and the
+    populated `qualitymd evaluation data example <kind>`; do not use `data set
+    --dry-run` to discover shape. On each `gap` and `risk` finding, record at
+    least one non-binding candidate action (`description`, with optional
+    `rationale`) capturing what closing the shortcoming might take; ground its
+    shape from the example payload. Omit candidate actions on `strength`
+    findings. Candidate actions are raw material for a later Advise phase, not
+    recommendations — do not synthesize, prioritize, or present them.
+14. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the
     finding evidence. Every finding locator must be a `file:line` or exact
     searchable string.
-14. Analyze each Area's Factor tree bottom-up. For each Factor node, produce a
-    `FactorAnalysisFrame` after child Factors are analyzed, then produce a
-    `FactorAnalysisResult`, adding both payloads to the routine payload batch.
-15. Analyze Areas bottom-up. Produce an `AreaAnalysisFrame` after root Factor
+15. Run the QC phase after initial collection and before roll-up. Both prongs run
+    on every evaluation, regardless of scope size, and may run concurrently where
+    the harness supports it:
+    - **Verify:** re-run the verifying command or search for every finding that
+      binds any roll-up rating and every low-confidence finding. If a binding
+      finding fails re-check, correct the finding and re-derive affected ratings
+      before reporting or persisting final analysis outputs.
+    - **Completeness sweep:** confirm every in-scope Requirement reached a rated
+      or reasoned not-assessed terminal state; re-examine, with an adversarial
+      gap/risk lens, every Area or Requirement whose first pass produced only
+      `strength` findings or no findings; and escalate any Requirement rated on a
+      single weak observation for an independent second look.
+16. Findings surfaced by the completeness sweep re-enter collection and then the
+    verify prong before they can bind a rating. The collection -> QC loop stops
+    when a sweep surfaces no new in-scope findings and every in-scope Requirement
+    is terminal, or after two re-collection rounds. If the round bound is hit
+    before convergence, proceed to roll-up only after recording every still
+    unexamined or unresolved zone as an explicit limitation.
+17. Analyze each Area's Factor tree bottom-up after QC converges or reaches its
+    bound. For each Factor node, produce a `FactorAnalysisFrame` after child
+    Factors are analyzed, then produce a `FactorAnalysisResult`, adding both
+    payloads to the routine payload batch.
+18. Analyze Areas bottom-up. Produce an `AreaAnalysisFrame` after root Factor
     analyses and direct child Area analyses are complete, then produce an
     `AreaAnalysisResult`, adding both payloads to the routine payload batch. The
     root Area's `localAndDescendantAnalysis` is the overall evaluation result.
-16. Identify the one or two findings that bind the headline rating and re-run
-    their verifying command or search before reporting. If a binding finding
-    fails re-check, correct the finding and re-derive the affected rating before
-    persisting final analysis outputs.
-17. Write the routine payload batch as a JSON array. First run
+    Roll-up judgment and all authoritative Requirement, Factor, Area, and
+    headline ratings stay with the orchestrating skill.
+19. Write the routine payload batch as a JSON array. First run
     `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
     whole batch and fix any indexed diagnostics. Then persist the same array with
     one `qualitymd evaluation data set <run> < payloads.json` invocation. Do not
     loop one `data set` invocation per Requirement, Factor, or Area.
-18. Run `qualitymd evaluation status <run>`. If it is not reportable, add the
+20. Run `qualitymd evaluation status <run>`. If it is not reportable, add the
     missing structured payloads to a correction batch and persist them through one
     `evaluation data set` invocation, or stop with the CLI status.
-19. Run `qualitymd evaluation report build <run>` to assemble
+21. Run `qualitymd evaluation report build <run>` to assemble
     `data/evaluation-output-result.json` and render deterministic Markdown
     reports.
-20. Finalize the evaluate feedback log with terminal status, outcome, effort
+22. Finalize the evaluate feedback log with terminal status, outcome, effort
     when available, and explicit no-notable-content notes for empty sections.
-21. Report the evaluation closeout in a status-first shape. The user-facing
+23. Report the evaluation closeout in a status-first shape. The user-facing
     summary must state the rating, scope, evidence basis, recommendations or
     lack of gaps, known limitations, changed artifacts, what was not done, and
     the recommended next action. Use bold labels for `Rating`, `Scope`,
     `Evidence basis`, `Recommendations`, `Known limitations`, and `Next` when
     the surface supports Markdown.
-22. Do not generate recommendations in Evaluation v0, apply recommendations,
+24. Do not generate recommendations in Evaluation v0, apply recommendations,
     edit evaluated source, edit `QUALITY.md`, write the quality log, or create
     external issues. If the user asks to act on prior recommendation artifacts,
     read
@@ -251,7 +277,6 @@ platform: <os/platform>
 model-file: <repo-relative path or sanitized placeholder>
 evaluation-run:
 scope: <full evaluation | scoped label/reference>
-rigor: <quick | standard | deep>
 outcome:
 effort: <rough turn or step count, when available>
 redaction: <none | sanitized | withheld-details>
@@ -301,9 +326,15 @@ Neither the skill nor the CLI transmits the feedback log anywhere. Sharing it is
 an explicit user action. Never write secret values, credentials, or raw
 prompt-injection text; cite only sanitized locator and type when relevant.
 
-## Rigor
+## Evaluation coverage and QC
 
-At `deep` rigor, you may fan out per-requirement or per-area assessment to
-subagents when the scope justifies it. Subagents return structured findings, not
-files. Roll-up judgment and headline ratings stay with the orchestrating skill,
-and the orchestrator performs the rating-binding re-check.
+Evaluate has one best-quality workflow. Scope is the only breadth control:
+evaluate the full model by default, or narrow by Area/Factor label or reference.
+Do not expose `quick`, `standard`, `deep`, `--rigor`, or `/quality evaluate deep`.
+
+Every run assesses every in-scope Requirement against a full read of the in-scope
+Area `source`, then runs the always-on QC phase before roll-up. Use subagent
+fan-out for independent collection and QC work when the harness exposes that
+capability; otherwise perform the same work serially. Subagents return
+structured findings only. Roll-up judgment and all authoritative ratings stay
+with the orchestrating skill.

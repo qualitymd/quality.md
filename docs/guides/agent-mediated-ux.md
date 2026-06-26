@@ -172,7 +172,6 @@ files and runs commands first and only frames the work afterward.
 
 - **Model file:** `QUALITY.md`
 - **Scope:** full evaluation
-- **Rigor:** standard
 - **Mutation:** evaluation artifacts and feedback log under `.quality/`
 - **Artifacts:** numbered evaluation run, structured data, Markdown report tree
 - **Next gate:** report findings, ratings, and limits before any follow-up action

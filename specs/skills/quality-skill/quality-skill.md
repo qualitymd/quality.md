@@ -191,8 +191,8 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 
 ### Arguments
 
-An invocation resolves its workflow or read-only orientation, model file,
-scope, and rigor where applicable:
+An invocation resolves its workflow or read-only orientation, model file, and
+scope:
 
 - **Workflow** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
   direction, unclear direction, or a request asking what to do next produces
@@ -235,8 +235,6 @@ scope, and rigor where applicable:
   such as `area:webhooks`, `factor:webhooks::reliability`,
   `requirement:webhooks::retry-window`, and `rating:target` rather than natural
   labels, display values, or unqualified references.
-- **Rigor** — the evaluation depth (default `standard`); see
-  [Rigor levels](evaluation.md#rigor-levels).
 
 ## User interaction contract
 
@@ -321,8 +319,8 @@ display-title scanning aids only.
 ### Run frames
 
 At the start of a public workflow, the skill **MUST** emit a concise run frame
-naming the resolved workflow, model file, scope, rigor level when applicable,
-mutation policy, expected artifacts, and next user-visible gate.
+naming the resolved workflow, model file, scope, mutation policy, expected
+artifacts, and next user-visible gate.
 
 The skill **MUST** emit the run frame as the workflow's first output, before any
 tool call — before CLI prerequisite checks, repository reads, lint, history
@@ -434,8 +432,8 @@ evidence to a rating or when available evidence cannot distinguish adjacent
 rating levels. A stop response **MUST** explain the reason in concrete terms and
 offer at least one runnable next step, such as reviewing the model with the
 authoring guide, narrowing the scope, repairing source references, updating
-stale CLI support, or proceeding with a clearly limited quick evaluation when
-that is still defensible.
+stale CLI support, or stopping until the model/source can support a fair
+evaluation.
 
 When stopping because a QUALITY.md model is valid but not useful enough for a
 fair evaluation, the skill **MUST** distinguish model usefulness from
@@ -550,9 +548,10 @@ configure integrations, or configure automation.
 ### Evaluate
 
 [`evaluate`](workflows/evaluate.md) creates evaluation artifacts for a resolved
-model file, scope, and rigor. It may write only evaluation-run artifacts, follows
-the shared Define -> Assess and Rate -> Analyze -> Advise -> Report workflow,
-and emits recommendations whenever evaluation finds gaps.
+model file and scope. It may write only evaluation-run artifacts and workflow
+feedback logs, follows the shared Define -> Assess and Rate -> Analyze -> Advise
+-> Report workflow, uses exhaustive coverage with an always-on QC phase, and
+does not generate recommendations in Evaluation v0.
 
 ### Recommendation follow-up
 
@@ -578,10 +577,8 @@ argument spelling is not fixed by this spec. Each line resolves the four
 arguments, defaulting the ones left out:
 
 ```
-/quality evaluate              # run a full evaluation — root area, standard depth
-/quality evaluate --rigor quick   # fast evaluate: hotspots, high-confidence findings only
+/quality evaluate              # run a full evaluation
 /quality evaluate Triage     # scope to the Triage Area
-/quality evaluate Triage --rigor deep   # exhaustive evaluate for one Area
 /quality evaluate Accuracy     # scope to the unique Accuracy Factor
 /quality evaluate Triage Accuracy   # Triage Area's Accuracy Factor
 /quality evaluate area:triage   # exact qualified Area reference
@@ -634,7 +631,8 @@ surface is missing, it stops rather than hand-authoring the run.
 The shared evaluation workflow lives in
 [/quality evaluation workflow](evaluation.md). That component spec owns
 conformance to the format spec's Evaluation contract, the evaluation workflow,
-grounding judgment, rigor levels, and rating-binding evidence checks.
+grounding judgment, exhaustive coverage, the QC phase, and rating-binding
+evidence checks.
 
 ## Reporting
 

@@ -3,6 +3,36 @@
 ## 2026-06-26
 
 - **Done**: Landed and archived
+  [0129 - Evaluation orchestration overhaul](archive/0129-evaluation-orchestration-overhaul.md).
+  Removed the evaluate rigor dial from the bundled skill and durable skill specs,
+  made exhaustive in-scope Requirement coverage mandatory, added
+  parallel-by-default collection/QC with serial fallback, and promoted
+  verification into an always-on two-pronged QC phase. Updated runtime/durable
+  logs, the agent-mediated UX guide, and changelog. `mise run check` passes.
+
+- **In-Progress**: Advanced
+  [0129 - Evaluation orchestration overhaul](archive/0129-evaluation-orchestration-overhaul.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  the bundled evaluate workflow, durable skill specs, and agent-mediated UX guide
+  to remove evaluation rigor, make exhaustive coverage mandatory, default
+  collection/QC to subagent fan-out when available, and add the always-on
+  two-pronged QC phase.
+
+- **Design**: Created
+  [0129 - Evaluation orchestration overhaul](archive/0129-evaluation-orchestration-overhaul.md)
+  with its
+  [functional spec](archive/0129-evaluation-orchestration-overhaul/spec.md) and
+  [design doc](archive/0129-evaluation-orchestration-overhaul/design.md), and
+  advanced it to `Design`. The case removes the evaluation rigor dial
+  (`quick`/`standard`/`deep`, `--rigor`, `/quality evaluate deep`, the `Rigor:`
+  run-frame field, the feedback-log `rigor:` field), makes exhaustive coverage
+  and an always-on two-pronged QC phase (verify ∥ completeness sweep) the
+  mandatory evaluate contract, and makes parallel subagent fan-out the default
+  execution strategy with an identical serial fallback. No CLI change; **modeling
+  rigor** and **assessment rigor** are unrelated and untouched. Code not started.
+  Added the case to the open [index](index.md).
+
+- **Done**: Landed and archived
   [0128 - Agent-mediated skill alignment](archive/0128-agent-mediated-skill-alignment.md).
   Completed the remaining `/quality` skill alignment fixes against the
   agent-mediated UX guide, moved the parent and child folder into

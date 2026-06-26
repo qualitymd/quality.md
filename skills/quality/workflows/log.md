@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0129 -
+  Evaluation orchestration overhaul.
+  Evaluate now removes the `Rigor:` run-frame field and feedback-log `rigor`
+  field, assesses every in-scope Requirement against the full in-scope source,
+  uses subagent fan-out for independent collection/QC when available, and runs
+  verify plus completeness-sweep QC before roll-up.
+
 - **Revision**: Updated the [setup](setup.md) workflow for 0128 -
   Agent-mediated skill alignment.
   Setup now renders the run frame as the first element in its opening block,

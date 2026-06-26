@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0129 - Evaluation
+  orchestration overhaul.
+  Runtime guidance now removes the evaluation rigor argument and run-frame field,
+  makes exhaustive in-scope coverage the only evaluate workflow, defaults
+  collection/QC to subagent fan-out when available, and requires the two-pronged
+  QC phase before roll-up.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0128 - Agent-mediated skill
   alignment.
   Runtime guidance now gives read-only orientation a status-first shape and

@@ -7,6 +7,13 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- `/quality evaluate` now has one best-quality workflow: evaluation rigor
+  (`quick`/`standard`/`deep`, `--rigor`, and `/quality evaluate deep`) is removed,
+  every in-scope Requirement must be assessed or explicitly marked not assessed,
+  independent collection and QC fan out to subagents when available, and an
+  always-on QC phase verifies roll-up-binding findings while sweeping for missed
+  gaps before ratings are finalized.
+
 - The setup opening now shows the run frame first, distinguishes `QUALITY.md`
   changes from local workflow feedback-log writes, and keeps setup feedback-log
   timing consistent. Read-only orientation now has a status-first output shape,

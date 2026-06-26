@@ -3,6 +3,15 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0129 - Evaluation orchestration overhaul](../changes/archive/0129-evaluation-orchestration-overhaul.md).
+  The `/quality` evaluation spec now removes the evaluation rigor selector,
+  makes exhaustive in-scope Requirement coverage mandatory, defaults independent
+  collection and QC work to subagent fan-out when available, and requires an
+  always-on two-pronged QC phase before roll-up. The parent skill spec and
+  evaluate feedback-log spec no longer carry `Rigor:` / `rigor` fields or
+  `--rigor` examples.
+
+- **Revision**: Implemented durable spec changes for
   [0128 - Agent-mediated skill alignment](../changes/archive/0128-agent-mediated-skill-alignment.md).
   The `/quality` skill spec now gives read-only orientation a standard
   status-first output shape and requires a non-public recommendation-follow-up

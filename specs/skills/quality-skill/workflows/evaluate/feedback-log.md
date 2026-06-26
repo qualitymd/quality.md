@@ -39,7 +39,6 @@ fields when known:
 
 - `evaluation-run` — repository-relative path to the numbered evaluation run.
 - `scope` — concise human-readable scope label.
-- `rigor` — `quick`, `standard`, or `deep`.
 - `outcome` — workflow-process outcome when known, blank until close. Allowed
   terminal values are `completed-reportable`, `stopped-lint`, `stopped-model`,
   `stopped-source`, `stopped-tooling`, `failed`, and `interrupted`.

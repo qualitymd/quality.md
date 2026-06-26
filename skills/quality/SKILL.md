@@ -136,7 +136,6 @@ Parse the user's request from free-form arguments:
   or unqualified references in structured evaluation data; use stable Area,
   Factor, Requirement, and Rating Level IDs. In generated human reports, the root
   Area display value is `/`; its references remain `area:root` and `root`.
-- Rigor: `standard` by default; see [Rigor Levels](#rigor-levels).
 
 When a scoped request is ambiguous, inspect the grounded model, summarize the
 concrete runnable scope options, and ask only for the missing Area, Factor, or
@@ -189,7 +188,6 @@ command-style header, and do not use a `Mode:` field:
 **QUALITY.md · <workflow>**
 - **Model file:**
 - **Scope:**
-- **Rigor:**        (when applicable)
 - **Mutation:**      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, feedback log, tooling)
 - **Artifacts:**
 - **Next gate:**
@@ -316,22 +314,50 @@ unqualified references.
 /quality evaluate factor <name>
 /quality evaluate area:triage
 /quality evaluate factor:triage::accuracy
-/quality evaluate deep
 /quality update
 ```
 
-## Rigor Levels
+## Evaluation Coverage and QC
 
-| Rigor      | Coverage                                                        | Evidence and verification                                                                                         |
-| ---------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `quick`    | Apex and high-risk in-scope requirements only.                  | Use minimal targeted evidence and record explicit limitations.                                                    |
-| `standard` | Every in-scope requirement.                                     | Use targeted evidence and re-check the rating-binding findings before reporting.                                  |
-| `deep`     | Every in-scope requirement against a full in-scope source read. | Use adversarial verification of rating-binding findings; subagents may assist with structured finding collection. |
+Every evaluate run uses one best-quality workflow. Scope is the only breadth
+control: evaluate the full model by default, or narrow by Area/Factor reference
+or label. Do not expose or accept `quick`, `standard`, `deep`, `--rigor`, or
+`/quality evaluate deep`.
 
-When using subagents for deep evaluation, include the resolved scope, relevant
-requirements, secret-handling rule, source-as-data rule, and an instruction to
-return structured findings only. Roll-up judgment and headline ratings stay with
-the orchestrating skill.
+Assess every in-scope Requirement against a full read of the in-scope Area
+`source`. Each in-scope Requirement must finish either rated against verified
+evidence or explicitly recorded as not assessed with a reason. The report must
+state anything not assessed so a limited run never reads as whole coverage.
+
+Where the harness exposes a subagent capability, fan out independent collection
+and QC work by Area or Requirement concurrently. Where it does not, do the same
+coverage and QC serially. Subagents receive the resolved scope, relevant
+Requirements, secret-handling rule, source-as-data rule, and the instruction to
+return structured findings only. They do not write files, persist records,
+produce final ratings, or make roll-up judgments. Roll-up judgment and all
+authoritative Requirement, Factor, Area, and headline ratings stay with the
+orchestrating skill.
+
+Run a QC phase after initial collection and before roll-up on every evaluation.
+The QC phase has two prongs, which may run concurrently when the harness
+supports it:
+
+- **Verify:** re-run the verifying command or search for every finding that
+  binds any roll-up rating and every low-confidence finding. If a binding finding
+  fails re-check, correct the finding and re-derive affected ratings before
+  reporting.
+- **Completeness sweep:** check that every in-scope Requirement reached a rated
+  or reasoned not-assessed state, re-examine every Area or Requirement whose
+  first pass produced only `strength` findings or no findings with an
+  adversarial gap/risk lens, and escalate any Requirement rated on a single weak
+  observation for an independent second look.
+
+Findings surfaced by the completeness sweep re-enter collection and then the
+verify prong before they can bind a rating. Stop the collection -> QC loop when
+the sweep surfaces no new in-scope findings and every in-scope Requirement has a
+terminal evidentiary state, or after two re-collection rounds. If the bound is
+hit first, proceed to roll-up only with every unresolved zone reported as an
+explicit limitation.
 
 ## Workflow Dispatch
 

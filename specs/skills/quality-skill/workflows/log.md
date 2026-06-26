@@ -2,6 +2,11 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0129 - Evaluation orchestration overhaul](../../../../changes/archive/0129-evaluation-orchestration-overhaul.md).
+  The evaluate feedback-log sub-spec no longer permits a `rigor` frontmatter
+  field, matching the single-workflow evaluation contract.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for
   [0128 - Agent-mediated skill alignment](../../../../changes/archive/0128-agent-mediated-skill-alignment.md).
   Setup now requires the run frame as the first element in the opening block,

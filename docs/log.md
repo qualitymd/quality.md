@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the evaluate run-frame example in
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0129 - Evaluation orchestration overhaul](../changes/archive/0129-evaluation-orchestration-overhaul.md).
+  The example no longer renders a `Rigor:` field; evaluation breadth is
+  controlled by scope.
+
 - **Revision**: Added "Channels and progressive enhancement" to
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
   [0123 - Render interactions through native affordances](../changes/archive/0123-native-interaction-affordances.md).

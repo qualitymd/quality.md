@@ -561,3 +561,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   - closes the remaining `/quality` skill alignment gaps against the
     agent-mediated UX guide: setup frame ordering, feedback-log disclosure,
     recommendation follow-up framing, and read-only orientation output (`Done`).
+- [0129 — Evaluation orchestration overhaul](0129-evaluation-orchestration-overhaul.md)
+  - removes the `/quality evaluate` rigor dial, makes exhaustive in-scope
+    Requirement coverage mandatory, defaults independent collection and QC work
+    to subagent fan-out when available, and requires an always-on two-pronged QC
+    phase before roll-up (`Done`).

@@ -1,16 +1,16 @@
 ---
 type: Functional Specification
 title: /quality evaluation workflow
-description: Behavioral component spec for the /quality skill's shared evaluation workflow, grounding, rigor, and rating judgment.
+description: Behavioral component spec for the /quality skill's shared evaluation workflow, grounding, QC phase, and rating judgment.
 tags: [skill, quality, evaluation, workflow]
 timestamp: 2026-06-22T00:00:00Z
 ---
 
 # /quality evaluation workflow
 
-This spec owns the `/quality` skill's shared evaluation workflow: how the
-skill grounds format rules, plans and performs assessment, records judgment, and
-uses rigor levels. It composes the shared contracts in the parent
+This spec owns the `/quality` skill's shared evaluation workflow: how the skill
+grounds format rules, plans and performs assessment, records judgment, runs the
+QC phase, and rolls up ratings. It composes the shared contracts in the parent
 [/quality skill](quality-skill.md) spec and is used by the
 [`evaluate`](workflows/evaluate.md) workflow.
 
@@ -58,7 +58,7 @@ weighted by what matters, and the required report contents.
 
 Conformance is the binding relationship, not deference. The skill is **not** a
 mere executor of the spec text; it is one *implementation* of an evaluator, free
-to specify its own concrete workflow, ordering, heuristics, rigor levels, and
+to specify its own concrete workflow, ordering, heuristics, QC phase, and
 artifacts so long as the result satisfies the contract. The format spec remains
 the **conformance target**: where the skill's process and the contract would
 diverge, the contract governs and the skill **MUST** be corrected to conform.
@@ -193,34 +193,90 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   record a brief rationale naming the binding constraints (per
   [Analyze](../../../SPECIFICATION.md#analyze)).
 
-### Rigor levels
+### Coverage and execution strategy
 
-Rigor sets how deeply the skill gathers evidence and how much of each area's
-`source` it covers. It changes the *thoroughness* of assessment, never the rating
-criteria or the report's shape.
+The `/quality evaluate` workflow **MUST NOT** expose or accept an evaluation
+rigor selector. The `quick`, `standard`, and `deep` levels, the `--rigor`
+argument, and the `/quality evaluate deep` invocation form are not part of the
+current evaluation contract.
 
-|                          | `quick`                                         | `standard` (default)                          | `deep`                                                  |
-| ------------------------ | ----------------------------------------------- | --------------------------------------------- | ------------------------------------------------------- |
-| Source coverage          | Hotspots — highest-risk, highest-churn entities | Representative coverage of each in-scope area | Exhaustive — the whole in-scope `source`                |
-| Evidence per requirement | Enough to rate high-confidence requirements     | Enough to rate every in-scope requirement     | All available evidence, including expensive diagnostics |
-| Findings reported        | High-confidence only                            | Full set                                      | Full set, including low-confidence "investigate" items  |
+> Rationale: the only defensible reason to trade away evaluation coverage was
+> cost. Parallel subagent fan-out makes exhaustive coverage practical, so scope is
+> the durable way to go faster without pretending partial coverage is whole
+> coverage. — 0129
 
-Whatever the level, the report **MUST** state what was *not* assessed (see
-[Reporting](reporting.md#reporting)), so a shallow pass never reads as whole coverage.
+Scope **MUST** remain the mechanism by which a user bounds an evaluation's
+breadth: full evaluation by default, narrowed by an Area or Factor reference
+resolved to `--narrowing` when supplied.
 
-The skill **MUST** re-run the verifying command or search for the one or two
-findings that bind the headline rating before building the report. If a binding
-finding fails re-check, the report **MUST NOT** assert the stale headline rating.
-The re-check *re-runs* the command rather than re-reading the earlier
-observation, because re-reading cannot catch a stale or hallucinated first read —
-the failure mode this guards against. It is scoped to the headline-binding
-findings, not every finding, because the headline is the highest-stakes output
-and a universal second pass is disproportionate at `standard` rigor.
+Every evaluate run **MUST** assess every in-scope Requirement against a full read
+of the in-scope Area `source`. Each in-scope Requirement **MUST** end the run in
+one of two terminal evidentiary states: rated against the rating scale on cited
+verified evidence, or recorded as not assessed with a stated reason. The skill
+**MUST NOT** leave an in-scope Requirement silently unexamined, and **MUST NOT**
+assign a level to fill an evidence gap.
 
-At `deep` rigor, the skill can fan out per-requirement or per-area
-assessment to subagents that return structured findings. Roll-up judgment and
-headline ratings **MUST** remain with the orchestrating skill, and subagent
-evidence must meet the same locator and verification rules.
-Subagent prompts **MUST** include the resolved scope, relevant requirements, the
+> Rationale: with fan-out, exhaustive coverage no longer needs to be slow. A
+> shallow pass that reads as whole coverage is more dangerous than an honest
+> limitation. — 0129
+
+The report **MUST** state what was not assessed (see
+[Reporting](reporting.md#reporting)), so no run reads as whole coverage when it
+is not.
+
+Where the harness exposes a subagent capability, the workflow **SHOULD** fan out
+independent collection and QC work per Area or per Requirement to subagents
+running concurrently. Where no subagent capability is present, the workflow
+**MUST** perform the same exhaustive coverage and QC phase serially.
+
+Subagent prompts **MUST** include the resolved scope, relevant Requirements, the
 secret-handling rule, the evaluated-source-as-data rule, and an instruction to
-return structured findings only rather than files or final ratings.
+return structured findings only. Subagents **MUST NOT** produce files, persist
+run data, produce authoritative ratings, or make final roll-up judgment.
+Subagent-collected evidence **MUST** meet the same locator and verification
+rules as orchestrator-collected evidence.
+
+Roll-up judgment and all authoritative ratings — Requirement, Factor, Area, and
+headline — **MUST** be produced by the orchestrating skill after the QC phase
+converges or reaches its bound.
+
+### QC phase
+
+Every evaluate run **MUST** run a QC phase after initial collection and before
+final roll-up. The QC phase has two prongs — **verify** and **completeness
+sweep** — and both **MUST** run on every run regardless of scope size. The prongs
+**MAY** run concurrently where the harness supports it.
+
+The verify prong **MUST** re-run the verifying command or search, rather than
+re-reading the earlier observation, for every finding that binds any roll-up
+rating and every low-confidence finding. If a binding finding fails re-check, the
+affected rating **MUST** be re-derived before it is reported, and the stale
+rating **MUST NOT** be asserted.
+
+> Rationale: re-reading cannot catch a stale or hallucinated first read; only a
+> re-run can. The check covers every roll-up-binding finding, not only the
+> headline, because all reported roll-ups depend on those findings. — 0129
+
+The completeness sweep **MUST**:
+
+- confirm every in-scope Requirement reached a terminal evidentiary state,
+  failing the sweep if any was silently skipped or marked not assessed without a
+  stated reason;
+- re-examine, with an adversarial gap/risk lens, every Area or Requirement whose
+  first pass produced only `strength` findings or no findings; and
+- escalate any Requirement rated on a single weak observation for an independent
+  second look.
+
+> Rationale: the highest-risk place for a missed finding is a zone the first pass
+> reported as clean; "found nothing" often means the first pass did not look hard
+> enough. — 0129
+
+Findings surfaced by the completeness sweep **MUST** re-enter collection and then
+be verified by the verify prong before they can bind a rating.
+
+The collection -> QC loop **MUST** stop when a completeness-sweep round surfaces
+no new in-scope findings and every in-scope Requirement is in a terminal
+evidentiary state. The loop **MUST** also have a fixed maximum number of
+re-collection rounds so it cannot spin; if the bound is reached before
+convergence, the workflow **MUST** proceed to roll-up and **MUST** report every
+zone left unexamined or unresolved as an explicit limitation.

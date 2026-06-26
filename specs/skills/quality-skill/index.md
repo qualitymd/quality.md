@@ -12,7 +12,7 @@ that make it concrete. The installable skill artifact lives at
   contracts: operating model, invocation, CLI ownership, evaluation semantics,
   reporting, quality log, and cross-workflow invariants.
 - [/quality evaluation workflow](evaluation.md) - component spec for evaluation
-  conformance, workflow, grounding, rigor, and rating judgment.
+  conformance, workflow, grounding, QC, and rating judgment.
 - [/quality reporting](reporting.md) - component spec for evaluation run
   artifacts, report outputs, records, recommendations, and correction behavior.
 - [/quality quality log](quality-log.md) - component spec for dated
