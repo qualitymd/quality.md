@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.14.1 - 2026-06-26
+
 ### CLI
 
 - `qualitymd evaluation create` now names new run folders
@@ -16,6 +18,17 @@ QUALITY.md specification.
 
 - `/quality evaluate` now passes `--narrowing` as the scope's full structural
   path for Area and Factor scoped evaluations.
+
+### Compatibility / Migration
+
+- Existing evaluation runs keep their folder names. New run numbering continues
+  after both old `-quality-eval` folders and new `-eval` folders.
+
+Compatibility:
+
+- CLI: `v0.14.1`
+- QUALITY.md specification: `0.4 (Draft)`
+- /quality skill: `0.14.1`, requires `qualitymd >=0.14.1 <0.15.0`
 
 ## v0.14.0 - 2026-06-26
 
