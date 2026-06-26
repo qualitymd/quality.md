@@ -5,6 +5,60 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.15.0 - 2026-06-26
+
+### CLI
+
+- `qualitymd evaluation data set` now rejects unknown or misspelled fields,
+  invalid field types, invalid enum values, and unresolved Area, Factor,
+  Requirement, and Rating Level IDs against the run's `model-snapshot.md`.
+  `--dry-run` performs the same validation without writing.
+- Added `qualitymd evaluation data schema [<kind>]` for discovering the
+  structured Evaluation payload contract and `qualitymd evaluation data verify
+  <run>` for checking persisted run data.
+- `qualitymd evaluation data example <kind>` now includes representative nested
+  entries for findings, rating drivers, unknowns, inputs, and limits instead of
+  leaving those arrays empty.
+- Evaluation Requirement reports now show a plural `Factors:` context line under
+  the `Area:` trail and no longer duplicate attached Factors in the header
+  summary table.
+
+### /quality Skill
+
+- `/quality evaluate` now discovers Evaluation payload shapes through
+  `qualitymd evaluation data schema <kind>`, uses examples as populated samples,
+  and treats `data set --dry-run` as authored-payload validation.
+- Public workflow run frames are now required as the first output before any tool
+  call, with provisional `resolving…` values allowed when a field needs tool
+  inspection.
+
+### Specification
+
+- The active Evaluation spec bundle is now named `specs/evaluation/` and the
+  live docs/specs use plain "Evaluation" instead of the vestigial "Evaluation
+  v2" name. The `schemaVersion` field and payload shapes are unchanged.
+- Evaluation data specs now document schema discovery, run-data verification,
+  strict payload validation, model binding, populated examples, and dry-run
+  parity.
+
+### Documentation
+
+- Agent-mediated UX guidance now requires workflows to open with an immediate
+  run frame that confirms intent and previews the path.
+
+### Compatibility / Migration
+
+- Payloads accepted by earlier releases may now fail validation if they contain
+  misspelled fields or references to model nodes that are absent from the run
+  snapshot. Use `qualitymd evaluation data verify <run>` to inspect existing run
+  data before rebuilding reports.
+
+Compatibility:
+
+- CLI: `v0.15.0`
+- QUALITY.md specification: `0.4 (Draft)`
+- /quality skill: `0.15.0`, requires `qualitymd >=0.15.0 <0.16.0`
+
 ## v0.14.1 - 2026-06-26
 
 ### CLI

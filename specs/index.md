@@ -17,7 +17,7 @@ before it lands.
 # Specs
 
 - [qualitymd CLI](cli.md) - high-level requirements for the deterministic command-line surface.
-- [Evaluation v2](evaluation-v2/evaluation-v2.md) - replacement evaluation
+- [Evaluation](evaluation/evaluation.md) - replacement evaluation
   workflow, protocol, structured data, orchestration, and reports.
 - [quality.schema.json](quality-schema-json.md) - companion structural JSON Schema
   for QUALITY.md frontmatter, derived from the linter's schema.
@@ -29,6 +29,6 @@ before it lands.
 # Subfolders
 
 - [cli/](cli/) - per-command sub-specs.
-- [evaluation-v2/](evaluation-v2/) - replacement evaluation workflow, routine,
+- [evaluation/](evaluation/) - replacement evaluation workflow, routine,
   record, orchestration, and report contracts.
 - [skills/](skills/) - companion skills that carry judgment around QUALITY.md (`/quality`).

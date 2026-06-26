@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2 report tree
-description: Deterministic Area, Factor, and Requirement Markdown reports for Evaluation v2.
+title: Evaluation report tree
+description: Deterministic Area, Factor, and Requirement Markdown reports for Evaluation.
 tags: [evaluation, reports, markdown]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 report tree
+# Evaluation report tree
 
-Evaluation v2 reports are deterministic Markdown projections over completed
+Evaluation reports are deterministic Markdown projections over completed
 structured routine outputs.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -57,8 +57,14 @@ Factor reports **MUST** include a `Factor:` navigation trail after the `Area:`
 trail. The `Factor:` trail **MUST** link each Factor ancestor and the current
 Factor to its generated Factor report.
 
-Requirement reports **MUST NOT** render a `Factor:` breadcrumb or choose one
-attached Factor as a navigation parent.
+Requirement reports **MUST** include a plural `Factors:` context line after the
+`Area:` trail. The line **MUST** list every attached Factor as a link to its
+generated Factor report, joined with `;` as a flat set. When no Factors are
+attached, it **MUST** render an explicit empty-state marker.
+
+Requirement reports **MUST NOT** render a singular `Factor:` breadcrumb, use the
+`/` nesting separator for the `Factors:` line, or choose one attached Factor as
+a navigation parent.
 
 Reports **MUST NOT** render standalone `Breadcrumb:`, `Parent Area:`,
 `Parent Factor:`, or `Parent:` header lines.
@@ -124,10 +130,10 @@ Factor reports **MUST** include:
 Requirement reports **MUST** include:
 
 - owning Area link;
+- attached Factor links in a plural `Factors:` context line;
 - Requirement title and name;
 - Requirement rating status and selected rating when present;
 - assessment status;
-- attached Factor links;
 - confidence;
 - data links;
 - summary;
@@ -143,8 +149,9 @@ Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Area headers should summarize
 `Overall Rating`, `Local Rating`, `Confidence`, and `Data`; Factor headers should
 summarize `Overall Rating`, `Local Rating`, `Status`, `Confidence`, and `Data`;
-Requirement headers should summarize `Rating`, `Assessment`, `Factors`,
-`Confidence`, and `Data`.
+Requirement headers should summarize `Rating`, `Assessment`, `Confidence`, and
+`Data`; attached Factors belong in the plural `Factors:` context line, not in
+the summary table.
 
 > Rationale: the title and path/name line identify the report subject, so the
 > header table should prioritize state and navigation rather than repeat the

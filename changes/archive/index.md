@@ -487,3 +487,20 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   `NNNN-<scope-path>-eval`, kept legacy `-quality-eval` folders recognized and
   numbered against, and documented full structural `--narrowing` slugs for
   scoped `/quality evaluate` runs (`Done`).
+- [0114 — Run frame as first output](0114-run-frame-first-output.md) - lifted the
+  "run frame is the first output, before any tool call" timing rule and a
+  provisional / `resolving…` value allowance to the shared homes (the `SKILL.md`
+  dispatcher instruction and the durable `Run frames` spec section), and brought
+  the lagging `evaluate` workflow and its spec into line (`Done`).
+- [0115 — Type-safe, model-bound Evaluation v2 data](0115-evaluation-data-typed-contract.md)
+  - added a typed Evaluation data contract for strict field/type/enum validation,
+    model-binding against the run snapshot, populated examples, a generated JSON
+    Schema artifact, and the `data schema` / `data verify` CLI surfaces (`Done`).
+- [0116 — Drop the "Evaluation v2" naming](0116-drop-evaluation-v2-naming.md) -
+  renamed the live Evaluation spec bundle and live references from
+  `specs/evaluation-v2/` / "Evaluation v2" to plain `specs/evaluation/` /
+  "Evaluation", removed the superseded sketch, and dropped private `v2` Go report
+  symbols (`Done`).
+- [0117 — Requirement report Factors line](0117-requirement-report-factors-line.md)
+  - added a plural `Factors:` context line to Requirement reports and removed the
+    duplicated `Factors` column from their summary table (`Done`).

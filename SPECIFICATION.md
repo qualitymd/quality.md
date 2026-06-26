@@ -430,8 +430,8 @@ Evaluation proceeds through these semantic phases:
 5. Analyze Factors and Areas.
 6. Report.
 
-The current Evaluation v2 workflow is specified in
-[`specs/evaluation-v2/`](specs/evaluation-v2/index.md). It records structured
+The current Evaluation workflow is specified in
+[`specs/evaluation/`](specs/evaluation/index.md). It records structured
 routine outputs under `data/` and renders reports deterministically from those
 outputs.
 
@@ -532,7 +532,7 @@ or gaps most responsible for the outcome.
 Advice identifies improvement information inferred from the Analysis. Advice does
 not change any rating.
 
-Advice and recommendations are optional extensions for Evaluation v2 v0. When
+Advice and recommendations are optional extensions for Evaluation v0. When
 produced, advice SHOULD identify:
 
 - Key gaps: shortcomings most responsible for held-down ratings, including

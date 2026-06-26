@@ -1,0 +1,3400 @@
+{
+  "$defs": {
+    "AreaAnalysisFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "derivedContext": {
+          "additionalProperties": false,
+          "properties": {
+            "emptySignalPolicy": {
+              "type": "string"
+            },
+            "expectedEvaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stopConditions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "synthesisGuidanceRef": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "inputs": {
+          "additionalProperties": false,
+          "properties": {
+            "childAreaAnalysisRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "factorAnalysisRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "AreaAnalysisFrame"
+          ],
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "areaId"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "AreaAnalysisResult": {
+      "additionalProperties": false,
+      "properties": {
+        "areaId": {
+          "items": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "AreaAnalysisResult"
+          ],
+          "type": "string"
+        },
+        "localAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "confidence": {
+              "enum": [
+                "high",
+                "medium",
+                "low",
+                "none"
+              ],
+              "type": "string"
+            },
+            "confidenceReason": {
+              "type": "string"
+            },
+            "evaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "incompleteInputs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "inputRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingDrivers": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "effect": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "inputRefs": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "selector": {
+                          "type": "string"
+                        },
+                        "subject": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "areaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "factorPath": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "minItems": 1,
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "factorPath"
+                              ],
+                              "type": "object"
+                            },
+                            "requirementId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "requirementName": {
+                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "requirementName"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "subject"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "ratingLevelId": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "requirementRatingDriver": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingLevelId": {
+              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "analyzed",
+                "empty",
+                "not_analyzed",
+                "blocked"
+              ],
+              "type": "string"
+            },
+            "statusReason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "type": "object"
+        },
+        "localAndDescendantAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "confidence": {
+              "enum": [
+                "high",
+                "medium",
+                "low",
+                "none"
+              ],
+              "type": "string"
+            },
+            "confidenceReason": {
+              "type": "string"
+            },
+            "evaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "incompleteInputs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "inputRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingDrivers": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "effect": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "inputRefs": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "selector": {
+                          "type": "string"
+                        },
+                        "subject": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "areaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "factorPath": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "minItems": 1,
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "factorPath"
+                              ],
+                              "type": "object"
+                            },
+                            "requirementId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "requirementName": {
+                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "requirementName"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "subject"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "ratingLevelId": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "requirementRatingDriver": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingLevelId": {
+              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "analyzed",
+                "empty",
+                "not_analyzed",
+                "blocked"
+              ],
+              "type": "string"
+            },
+            "statusReason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "areaId",
+        "localAnalysis",
+        "localAndDescendantAnalysis"
+      ],
+      "type": "object"
+    },
+    "AreaEvaluationFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "derivedContext": {
+          "additionalProperties": false,
+          "properties": {
+            "expectedEvaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "scope": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "inputs": {
+          "additionalProperties": false,
+          "properties": {
+            "childAreaIds": {
+              "items": {
+                "items": {
+                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            "localRequirementIds": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "declaringAreaId": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "requirementName": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "declaringAreaId",
+                  "requirementName"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "rootFactorIds": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "declaringAreaId": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "factorPath": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "declaringAreaId",
+                  "factorPath"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "sourceRefs": {
+              "items": {},
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "AreaEvaluationFrame"
+          ],
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "areaId"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "EvaluationFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "derivedContext": {
+          "additionalProperties": false,
+          "properties": {
+            "evaluationPolicies": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "expectedEvaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "resolvedScope": {
+              "type": "string"
+            },
+            "rigor": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "inputs": {
+          "additionalProperties": false,
+          "properties": {
+            "areaIds": {
+              "items": {
+                "items": {
+                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "type": "array"
+            },
+            "factorIds": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "declaringAreaId": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "factorPath": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "declaringAreaId",
+                  "factorPath"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingLevelIds": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "requestedScope": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "EvaluationFrame"
+          ],
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "additionalProperties": false,
+          "properties": {
+            "modelLocator": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "EvaluationOutputResult": {
+      "additionalProperties": false,
+      "properties": {
+        "areaOutputs": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "areaAnalysisResultRef": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "areaEvaluationFrameRef": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "areaId": {
+                "items": {
+                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "factorAnalysisRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "selector": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "areaId": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "factorId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorPath": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "minItems": 1,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "factorPath"
+                          ],
+                          "type": "object"
+                        },
+                        "requirementId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "requirementName": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "requirementName"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "subject"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "reportRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "areaId": {
+                      "items": {
+                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "factorId": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "declaringAreaId": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "factorPath": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "minItems": 1,
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "declaringAreaId",
+                        "factorPath"
+                      ],
+                      "type": "object"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "requirementId": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "declaringAreaId": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "requirementName": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "declaringAreaId",
+                        "requirementName"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "areaId",
+                    "path"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "requirementAssessmentRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "selector": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "areaId": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "factorId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorPath": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "minItems": 1,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "factorPath"
+                          ],
+                          "type": "object"
+                        },
+                        "requirementId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "requirementName": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "requirementName"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "subject"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "requirementRatingRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "selector": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "areaId": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "factorId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorPath": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "minItems": 1,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "factorPath"
+                          ],
+                          "type": "object"
+                        },
+                        "requirementId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "requirementName": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "requirementName"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "subject"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "areaId",
+              "areaEvaluationFrameRef",
+              "areaAnalysisResultRef",
+              "factorAnalysisRefs",
+              "requirementAssessmentRefs",
+              "requirementRatingRefs",
+              "reportRefs"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "EvaluationOutputResult"
+          ],
+          "type": "string"
+        },
+        "reportOutputs": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "areaId": {
+                "items": {
+                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "factorId": {
+                "additionalProperties": false,
+                "properties": {
+                  "declaringAreaId": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "factorPath": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "declaringAreaId",
+                  "factorPath"
+                ],
+                "type": "object"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "requirementId": {
+                "additionalProperties": false,
+                "properties": {
+                  "declaringAreaId": {
+                    "items": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "requirementName": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "declaringAreaId",
+                  "requirementName"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "kind",
+              "areaId",
+              "path"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "rootAreaAnalysisRef": {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            },
+            "subject": {
+              "additionalProperties": false,
+              "properties": {
+                "areaId": {
+                  "items": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "factorId": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "declaringAreaId": {
+                      "items": {
+                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "factorPath": {
+                      "items": {
+                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "declaringAreaId",
+                    "factorPath"
+                  ],
+                  "type": "object"
+                },
+                "requirementId": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "declaringAreaId": {
+                      "items": {
+                        "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "requirementName": {
+                      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "declaringAreaId",
+                    "requirementName"
+                  ],
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "kind",
+            "subject"
+          ],
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "rootAreaAnalysisRef",
+        "areaOutputs",
+        "reportOutputs"
+      ],
+      "type": "object"
+    },
+    "FactorAnalysisFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "derivedContext": {
+          "additionalProperties": false,
+          "properties": {
+            "emptySignalPolicy": {
+              "type": "string"
+            },
+            "expectedEvaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stopConditions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "synthesisGuidanceRef": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "inputs": {
+          "additionalProperties": false,
+          "properties": {
+            "childFactorAnalysisRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "directRequirementRatingRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "FactorAnalysisFrame"
+          ],
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "factorId": {
+              "additionalProperties": false,
+              "properties": {
+                "declaringAreaId": {
+                  "items": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "factorPath": {
+                  "items": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "declaringAreaId",
+                "factorPath"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "factorId"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "FactorAnalysisResult": {
+      "additionalProperties": false,
+      "properties": {
+        "factorId": {
+          "additionalProperties": false,
+          "properties": {
+            "declaringAreaId": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "factorPath": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "declaringAreaId",
+            "factorPath"
+          ],
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "FactorAnalysisResult"
+          ],
+          "type": "string"
+        },
+        "localAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "confidence": {
+              "enum": [
+                "high",
+                "medium",
+                "low",
+                "none"
+              ],
+              "type": "string"
+            },
+            "confidenceReason": {
+              "type": "string"
+            },
+            "evaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "incompleteInputs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "inputRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingDrivers": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "effect": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "inputRefs": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "selector": {
+                          "type": "string"
+                        },
+                        "subject": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "areaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "factorPath": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "minItems": 1,
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "factorPath"
+                              ],
+                              "type": "object"
+                            },
+                            "requirementId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "requirementName": {
+                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "requirementName"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "subject"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "ratingLevelId": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "requirementRatingDriver": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingLevelId": {
+              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "analyzed",
+                "empty",
+                "not_analyzed",
+                "blocked"
+              ],
+              "type": "string"
+            },
+            "statusReason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "type": "object"
+        },
+        "localAndDescendantAnalysis": {
+          "additionalProperties": false,
+          "properties": {
+            "confidence": {
+              "enum": [
+                "high",
+                "medium",
+                "low",
+                "none"
+              ],
+              "type": "string"
+            },
+            "confidenceReason": {
+              "type": "string"
+            },
+            "evaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "incompleteInputs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "inputRefs": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "items": {
+                          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "factorId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "factorPath": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "minItems": 1,
+                            "type": "array"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "factorPath"
+                        ],
+                        "type": "object"
+                      },
+                      "requirementId": {
+                        "additionalProperties": false,
+                        "properties": {
+                          "declaringAreaId": {
+                            "items": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "requirementName": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "declaringAreaId",
+                          "requirementName"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingDrivers": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "effect": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "inputRefs": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "selector": {
+                          "type": "string"
+                        },
+                        "subject": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "areaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "factorPath": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "minItems": 1,
+                                  "type": "array"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "factorPath"
+                              ],
+                              "type": "object"
+                            },
+                            "requirementId": {
+                              "additionalProperties": false,
+                              "properties": {
+                                "declaringAreaId": {
+                                  "items": {
+                                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                    "type": "string"
+                                  },
+                                  "type": "array"
+                                },
+                                "requirementName": {
+                                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "declaringAreaId",
+                                "requirementName"
+                              ],
+                              "type": "object"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "subject"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "ratingLevelId": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "requirementRatingDriver": {
+                    "type": "string"
+                  },
+                  "summary": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "ratingLevelId": {
+              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "analyzed",
+                "empty",
+                "not_analyzed",
+                "blocked"
+              ],
+              "type": "string"
+            },
+            "statusReason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "factorId",
+        "localAnalysis",
+        "localAndDescendantAnalysis"
+      ],
+      "type": "object"
+    },
+    "RequirementAssessmentResult": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "type": "string"
+        },
+        "confidenceReason": {
+          "type": "string"
+        },
+        "evaluationLimits": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "evidenceSummary": {
+          "type": "string"
+        },
+        "evidenceTargetCoverage": {
+          "items": {
+            "properties": {},
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "factors": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "findings": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "actions": {
+                "items": {},
+                "type": "array"
+              },
+              "description": {
+                "type": "string"
+              },
+              "evidence": {
+                "properties": {},
+                "type": "object"
+              },
+              "id": {
+                "type": "string"
+              },
+              "location": {
+                "properties": {},
+                "type": "object"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "info"
+                ],
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "strength",
+                  "gap",
+                  "risk",
+                  "unknown",
+                  "note"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "RequirementAssessmentResult"
+          ],
+          "type": "string"
+        },
+        "requirementId": {
+          "additionalProperties": false,
+          "properties": {
+            "declaringAreaId": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "requirementName": {
+              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "declaringAreaId",
+            "requirementName"
+          ],
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "assessed",
+            "partially_assessed",
+            "not_assessed",
+            "blocked"
+          ],
+          "type": "string"
+        },
+        "statusReason": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "requirementId",
+        "status",
+        "findings"
+      ],
+      "type": "object"
+    },
+    "RequirementEvaluationFrame": {
+      "additionalProperties": false,
+      "properties": {
+        "derivedContext": {
+          "additionalProperties": false,
+          "properties": {
+            "appliedRatingCriteria": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "adaptationRationale": {
+                    "type": "string"
+                  },
+                  "criterion": {
+                    "type": "string"
+                  },
+                  "ratingLevelId": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "ratingLevelId",
+                  "criterion"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "evidenceTargets": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "purpose": {
+                    "type": "string"
+                  },
+                  "question": {
+                    "type": "string"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "sourceRefs": {
+                    "items": {},
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "expectedEvaluationLimits": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "stopConditions": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "impact": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "ref": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "inputs": {
+          "additionalProperties": false,
+          "properties": {
+            "ratingLevelIds": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "ratingOverrides": {
+              "properties": {},
+              "type": "object"
+            },
+            "requirementAssessmentBasis": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "kind": {
+          "enum": [
+            "RequirementEvaluationFrame"
+          ],
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "additionalProperties": false,
+          "properties": {
+            "factorIds": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "requirementId": {
+              "additionalProperties": false,
+              "properties": {
+                "declaringAreaId": {
+                  "items": {
+                    "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "requirementName": {
+                  "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "declaringAreaId",
+                "requirementName"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "requirementId"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "subject"
+      ],
+      "type": "object"
+    },
+    "RequirementRatingResult": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "type": "string"
+        },
+        "confidenceReason": {
+          "type": "string"
+        },
+        "criteriaResults": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "matched": {
+                "type": "boolean"
+              },
+              "ratingLevelId": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "ratingLevelId",
+              "matched"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "evaluationLimits": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "RequirementRatingResult"
+          ],
+          "type": "string"
+        },
+        "missingEvidence": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "ratingDrivers": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "effect": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "inputRefs": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "selector": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "areaId": {
+                          "items": {
+                            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "factorId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "factorPath": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "minItems": 1,
+                              "type": "array"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "factorPath"
+                          ],
+                          "type": "object"
+                        },
+                        "requirementId": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "declaringAreaId": {
+                              "items": {
+                                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "requirementName": {
+                              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "declaringAreaId",
+                            "requirementName"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "subject"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "ratingLevelId": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "requirementRatingDriver": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "ratingLevelId": {
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "requirementId": {
+          "additionalProperties": false,
+          "properties": {
+            "declaringAreaId": {
+              "items": {
+                "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "requirementName": {
+              "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "declaringAreaId",
+            "requirementName"
+          ],
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "rated",
+            "not_rated",
+            "blocked"
+          ],
+          "type": "string"
+        },
+        "statusReason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "requirementId",
+        "status"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://getquality.md/evaluation-data.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/EvaluationFrame"
+    },
+    {
+      "$ref": "#/$defs/AreaEvaluationFrame"
+    },
+    {
+      "$ref": "#/$defs/RequirementEvaluationFrame"
+    },
+    {
+      "$ref": "#/$defs/RequirementAssessmentResult"
+    },
+    {
+      "$ref": "#/$defs/RequirementRatingResult"
+    },
+    {
+      "$ref": "#/$defs/FactorAnalysisFrame"
+    },
+    {
+      "$ref": "#/$defs/FactorAnalysisResult"
+    },
+    {
+      "$ref": "#/$defs/AreaAnalysisFrame"
+    },
+    {
+      "$ref": "#/$defs/AreaAnalysisResult"
+    },
+    {
+      "$ref": "#/$defs/EvaluationOutputResult"
+    }
+  ]
+}

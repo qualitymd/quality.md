@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2 payload kinds
-description: Supported structured payload kinds for Evaluation v2.
+title: Evaluation payload kinds
+description: Supported structured payload kinds for Evaluation.
 tags: [evaluation, records, json]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 payload kinds
+# Evaluation payload kinds
 
-This spec lists the payload kinds supported by the first Evaluation v2
+This spec lists the payload kinds supported by the first Evaluation
 implementation slice.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -29,7 +29,16 @@ capitals.
 - `AreaAnalysisFrame`
 - `AreaAnalysisResult`
 
-The CLI **MUST** validate each accepted kind before writing it.
+The CLI **MUST** validate each accepted kind before writing it. Validation
+**MUST** be derived from one typed source of truth for the kind's structural
+fields, required fields, field types, enum values, schema output, and examples.
+
+The CLI **MUST** reject unknown or misspelled fields, wrong field types,
+out-of-range enum values, and missing required fields before writing a payload.
+
+The CLI **MUST** resolve every Area ID, Factor ID, Requirement ID, and Rating
+Level ID in an accepted payload against the run's model snapshot before writing
+it.
 
 ## CLI-Owned Kinds
 

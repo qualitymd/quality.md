@@ -1,18 +1,18 @@
 ---
 type: Functional Specification
 title: /quality evaluate
-description: Behavioral component spec for running Evaluation v2 through the /quality skill.
-tags: [skill, quality, evaluate, evaluation-v2, workflow]
+description: Behavioral component spec for running Evaluation through the /quality skill.
+tags: [skill, quality, evaluate, evaluation, workflow]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # /quality evaluate
 
-`evaluate` is the `/quality` skill workflow that runs Evaluation v2 for a resolved
+`evaluate` is the `/quality` skill workflow that runs Evaluation for a resolved
 QUALITY.md model scope and records the result as structured routine data plus
 deterministic reports. It implements the shared evaluation workflow, reporting,
 safety, and CLI-ownership contracts in the parent [/quality skill](../quality-skill.md)
-spec and the [Evaluation v2](../../../evaluation-v2/evaluation-v2.md) spec.
+spec and the [Evaluation](../../../evaluation/evaluation.md) spec.
 
 The runtime procedure lives at
 [`skills/quality/workflows/evaluate.md`](../../../../skills/quality/workflows/evaluate.md).
@@ -31,7 +31,7 @@ present and valid.
 
 The workflow's purpose is to produce a current Evaluation Report for the resolved
 model file and scope. It does not apply fixes and does not generate
-recommendations in the v0 Evaluation v2 protocol.
+recommendations in the v0 Evaluation protocol.
 
 ## Mutation surface and artifacts
 
@@ -54,6 +54,13 @@ report verdict, or recommendation state.
 
 ## Required flow
 
+Before tool inspection, `evaluate` **MUST** emit the public `/quality` run frame
+required by the parent skill contract as its first output, before workspace
+resolution or any other tool call. When the requested scope is not yet resolved,
+the frame **MUST** render a provisional scope value (such as `resolving…`) rather
+than block on resolution, and `evaluate` **SHOULD** confirm the resolved scope in
+a later message.
+
 Before rating, `evaluate` **MUST**:
 
 - verify compatible CLI support;
@@ -63,7 +70,7 @@ Before rating, `evaluate` **MUST**:
 - inspect relevant evaluation history when present; and
 - create the run through the CLI.
 
-After run creation, `evaluate` **MUST** follow the Evaluation v2 protocol:
+After run creation, `evaluate` **MUST** follow the Evaluation protocol:
 
 1. frame the Evaluation;
 2. frame each Area as it becomes ready;
@@ -108,7 +115,7 @@ remain factual and user-facing, not a transcript of internal reasoning.
 
 ## Completion criteria
 
-`evaluate` is complete when the run has reportable Evaluation v2 data, the CLI
+`evaluate` is complete when the run has reportable Evaluation data, the CLI
 has built `data/evaluation-output-result.json` and the Markdown report tree, and
 the user-facing summary states the rating, scope, evidence basis, report paths,
 known limits, changed artifacts, what was not done, and the recommended next

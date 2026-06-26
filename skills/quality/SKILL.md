@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.14.1 <0.15.0.
+compatibility: Requires qualitymd CLI >=0.15.0 <0.16.0.
 metadata:
-  version: "0.14.1"
-  requires-qualitymd-cli: ">=0.14.1 <0.15.0"
+  version: "0.15.0"
+  requires-qualitymd-cli: ">=0.15.0 <0.16.0"
 ---
 
 ## Purpose
@@ -159,9 +159,14 @@ approve, correct, or act, make the shortest acceptable response explicit with an
 `Answer` line or equivalent wording. Use code spans for concrete files,
 commands, fields, model references, IDs, and literal user replies in examples.
 
-At the start of a public workflow, emit a short run frame. The header names the
-resolved workflow (`setup`, `evaluate`, or `update`); do not render `/quality
-run` or any command-style header, and do not use a `Mode:` field:
+At the start of a public workflow, emit a short run frame. Emit it as the
+workflow's first output, before any tool call — before CLI checks, repository
+reads, lint, or any feedback-log write; do not gate it on a tool result. When a
+field cannot be resolved without a tool call (such as a scope that spans many
+Areas), still emit the frame first with a best-known or `resolving…` value and
+confirm the resolved value in a later message. The header names the resolved
+workflow (`setup`, `evaluate`, or `update`); do not render `/quality run` or any
+command-style header, and do not use a `Mode:` field:
 
 ```text
 **Quality · <workflow>**
@@ -311,9 +316,12 @@ Rules:
 
 ## Artifact Contract
 
-The Evaluation v2 data write contract is surfaced by
-`qualitymd evaluation data kinds`, `qualitymd evaluation data example <kind>`,
-and `qualitymd evaluation data set --dry-run`. Treat those command surfaces,
+The Evaluation data write contract is surfaced by
+`qualitymd evaluation data kinds`, `qualitymd evaluation data schema [<kind>]`,
+`qualitymd evaluation data example <kind>`, and
+`qualitymd evaluation data set --dry-run`. Treat `data schema` as the
+authoritative payload-shape source, `data example` as populated examples, and
+`--dry-run` as validation of an authored payload. Treat those command surfaces,
 plus `qualitymd evaluation status <run> --json`, as the field-use source of
 truth. Do not restate the full schema or folder layout in this prompt.
 

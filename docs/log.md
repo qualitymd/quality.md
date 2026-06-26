@@ -2,6 +2,20 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [Writing functional specs](guides/write-functional-specs.md)
+  for
+  [0116 - Drop the "Evaluation v2" naming](../changes/archive/0116-drop-evaluation-v2-naming.md).
+  The guide now links to the renamed `specs/evaluation/` bundle and uses plain
+  "Evaluation" for the routine-output examples.
+
+- **Revision**: Added an Opening section to
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) as a lifecycle
+  bookend to Closeout. It names the opening's two jobs — intent reflection and
+  path preview — carried by a run frame emitted as the first output before any
+  tool call, allows a provisional/`resolving…` frame when a field needs a tool to
+  resolve, and names the silent-runway anti-pattern. Added a Core-principle
+  cross-reference and a Checklist item.
+
 - **Revision**: Aligned workflow vocabulary in
   [Paired skill and CLI upgrades](reference/versioning.md) and
   [Cut a release](guides/cut-a-release.md) for

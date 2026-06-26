@@ -1,18 +1,18 @@
 ---
 type: Functional Specification
 title: /quality reporting
-description: Component spec for /quality Evaluation v2 reports and run artifacts.
+description: Component spec for /quality Evaluation reports and run artifacts.
 tags: [skill, quality, evaluation, reporting]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # /quality reporting
 
-This spec owns the `/quality` skill's Evaluation v2 reporting and run-artifact
+This spec owns the `/quality` skill's Evaluation reporting and run-artifact
 contract. It composes the shared contracts in the parent
 [/quality skill](quality-skill.md), the judgment workflow in
 [/quality evaluation workflow](evaluation.md), and the durable
-[Evaluation v2 report tree](../../evaluation-v2/reports/report-tree.md).
+[Evaluation report tree](../../evaluation/reports/report-tree.md).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
@@ -31,7 +31,7 @@ on `QUALITY.md`; without that pointer the config file defaults to
 The run folder **MUST** include `model-snapshot.md`, a snapshot of the
 `QUALITY.md` as evaluated.
 
-Evaluation v2 structured data **MUST** live under `data/`. The skill **MUST**
+Evaluation structured data **MUST** live under `data/`. The skill **MUST**
 persist routine outputs through `qualitymd evaluation data set`; it **MUST NOT**
 hand-author structured data files directly.
 
@@ -82,7 +82,7 @@ the owning Area report folder, such as
 `requirements/<requirement>/<requirement>-requirement.md`.
 
 Every report **MUST** include the navigation trails required by the
-[Evaluation v2 report tree](../../evaluation-v2/reports/report-tree.md).
+[Evaluation report tree](../../evaluation/reports/report-tree.md).
 
 Area reports **MUST** link to local root Factor reports, local Requirement
 reports, and direct child Area reports.
@@ -105,6 +105,6 @@ next action.
 The closeout **MUST** distinguish evaluated-source quality from model weakness,
 missing evidence, unknowns, and evaluation limits.
 
-Evaluation v2 v0 **MUST NOT** present generated recommendations as part of the
+Evaluation v0 **MUST NOT** present generated recommendations as part of the
 reporting closeout. Recommendation follow-up remains a separate workflow for
 historical recommendation artifacts.

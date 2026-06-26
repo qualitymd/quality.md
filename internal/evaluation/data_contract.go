@@ -1,0 +1,866 @@
+package evaluation
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+
+	"github.com/qualitymd/quality.md/internal/model"
+	qschema "github.com/qualitymd/quality.md/internal/schema"
+)
+
+const evaluationDataSchemaID = "https://getquality.md/evaluation-data.schema.json"
+
+type dataFieldType string
+
+const (
+	dataAny           dataFieldType = "any"
+	dataBool          dataFieldType = "bool"
+	dataNumber        dataFieldType = "number"
+	dataString        dataFieldType = "string"
+	dataStringArray   dataFieldType = "stringArray"
+	dataObject        dataFieldType = "object"
+	dataArray         dataFieldType = "array"
+	dataAreaID        dataFieldType = "areaID"
+	dataRequirementID dataFieldType = "requirementID"
+	dataFactorID      dataFieldType = "factorID"
+	dataRatingLevelID dataFieldType = "ratingLevelID"
+)
+
+type dataField struct {
+	Name     string
+	Type     dataFieldType
+	Required bool
+	Enum     []string
+	Object   *dataObjectContract
+	Element  *dataField
+}
+
+type dataObjectContract struct {
+	Fields []dataField
+	Open   bool
+}
+
+type dataKindContract struct {
+	Kind        DataKind
+	Description string
+	Object      dataObjectContract
+	Example     func() map[string]any
+}
+
+type DataVerifyReceipt struct {
+	SchemaVersion int                 `json:"schemaVersion"`
+	Path          string              `json:"path"`
+	Valid         bool                `json:"valid"`
+	Checked       int                 `json:"checked"`
+	Failures      []DataVerifyFailure `json:"failures,omitempty"`
+}
+
+type DataVerifyFailure struct {
+	Path   string   `json:"path"`
+	Kind   DataKind `json:"kind,omitempty"`
+	Reason string   `json:"reason"`
+}
+
+var dataContracts = map[DataKind]dataKindContract{}
+
+var dataContractOrder = []DataKind{
+	DataKindEvaluationFrame,
+	DataKindAreaEvaluationFrame,
+	DataKindRequirementEvaluationFrame,
+	DataKindRequirementAssessment,
+	DataKindRequirementRating,
+	DataKindFactorAnalysisFrame,
+	DataKindFactorAnalysis,
+	DataKindAreaAnalysisFrame,
+	DataKindAreaAnalysis,
+	DataKindEvaluationOutput,
+}
+
+//nolint:funlen // The registry is intentionally declared in one place.
+func init() {
+	for _, contract := range []dataKindContract{
+		{
+			Kind:        DataKindEvaluationFrame,
+			Description: "Run-level frame for one evaluation.",
+			Object: topContract(DataKindEvaluationFrame,
+				field("subject", dataObject, false, object(
+					field("modelLocator", dataString, false),
+				)),
+				field("inputs", dataObject, false, object(
+					field("requestedScope", dataString, false),
+					field("ratingLevelIds", dataArray, false, arrayOf(dataRatingLevelID)),
+					field("areaIds", dataArray, false, arrayOf(dataAreaID)),
+					field("factorIds", dataArray, false, arrayOf(dataFactorID)),
+				)),
+				field("derivedContext", dataObject, false, object(
+					field("resolvedScope", dataString, false),
+					field("rigor", dataString, false),
+					field("evaluationPolicies", dataStringArray, false),
+					field("expectedEvaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				)),
+			),
+			Example: func() map[string]any { return evaluationFrameExample(DataKindEvaluationFrame) },
+		},
+		{
+			Kind:        DataKindAreaEvaluationFrame,
+			Description: "Area-local frame for source boundaries and local model structure.",
+			Object: topContract(DataKindAreaEvaluationFrame,
+				field("subject", dataObject, true, object(field("areaId", dataAreaID, true))),
+				field("inputs", dataObject, false, object(
+					field("sourceRefs", dataArray, false, arrayOfAny()),
+					field("localRequirementIds", dataArray, false, arrayOf(dataRequirementID)),
+					field("rootFactorIds", dataArray, false, arrayOf(dataFactorID)),
+					field("childAreaIds", dataArray, false, arrayOf(dataAreaID)),
+				)),
+				field("derivedContext", dataObject, false, object(
+					field("scope", dataString, false),
+					field("expectedEvaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				)),
+			),
+			Example: func() map[string]any { return areaEvaluationFrameExample(DataKindAreaEvaluationFrame) },
+		},
+		{
+			Kind:        DataKindRequirementEvaluationFrame,
+			Description: "Requirement-local frame for evidence targets and applied rating criteria.",
+			Object: topContract(DataKindRequirementEvaluationFrame,
+				field("subject", dataObject, true, object(
+					field("requirementId", dataRequirementID, true),
+					field("factorIds", dataStringArray, false),
+				)),
+				field("inputs", dataObject, false, object(
+					field("ratingLevelIds", dataArray, false, arrayOf(dataRatingLevelID)),
+					field("requirementAssessmentBasis", dataString, false),
+					field("ratingOverrides", dataObject, false, openObject()),
+				)),
+				field("derivedContext", dataObject, false, object(
+					field("evidenceTargets", dataArray, false, arrayOfObject(evidenceTargetContract())),
+					field("appliedRatingCriteria", dataArray, false, arrayOfObject(criteriaContract())),
+					field("stopConditions", dataArray, false, arrayOfObject(limitContract())),
+					field("expectedEvaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				)),
+			),
+			Example: func() map[string]any { return requirementEvaluationFrameExample(DataKindRequirementEvaluationFrame) },
+		},
+		{
+			Kind:        DataKindRequirementAssessment,
+			Description: "Evidence assessment result for one Requirement.",
+			Object: topContract(DataKindRequirementAssessment,
+				field("requirementId", dataRequirementID, true),
+				field("status", dataString, true, enum("assessed", "partially_assessed", "not_assessed", "blocked")),
+				field("statusReason", dataString, false),
+				field("evidenceSummary", dataString, false),
+				field("summary", dataString, false),
+				field("factors", dataStringArray, false),
+				field("evidenceTargetCoverage", dataArray, false, arrayOfObject(openObject())),
+				field("findings", dataArray, true, arrayOfObject(findingContract())),
+				field("unknowns", dataArray, false, arrayOfObject(unknownContract())),
+				field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				field("confidence", dataString, false, enum("high", "medium", "low", "none")),
+				field("confidenceReason", dataString, false),
+			),
+			Example: func() map[string]any { return requirementAssessmentExample(DataKindRequirementAssessment) },
+		},
+		{
+			Kind:        DataKindRequirementRating,
+			Description: "Rating result for one Requirement Assessment.",
+			Object: topContract(DataKindRequirementRating,
+				field("requirementId", dataRequirementID, true),
+				field("status", dataString, true, enum("rated", "not_rated", "blocked")),
+				field("statusReason", dataString, false),
+				field("ratingLevelId", dataRatingLevelID, false),
+				field("rationale", dataString, false),
+				field("ratingDrivers", dataArray, false, arrayOfObject(ratingDriverContract())),
+				field("criteriaResults", dataArray, false, arrayOfObject(criteriaResultContract())),
+				field("missingEvidence", dataArray, false, arrayOfObject(unknownContract())),
+				field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				field("confidence", dataString, false, enum("high", "medium", "low", "none")),
+				field("confidenceReason", dataString, false),
+			),
+			Example: func() map[string]any { return requirementRatingExample(DataKindRequirementRating) },
+		},
+		{
+			Kind:        DataKindFactorAnalysisFrame,
+			Description: "Factor-local frame for synthesis inputs.",
+			Object: topContract(DataKindFactorAnalysisFrame,
+				field("subject", dataObject, true, object(
+					field("areaId", dataAreaID, false),
+					field("factorId", dataFactorID, true),
+				)),
+				field("inputs", dataObject, false, object(
+					field("directRequirementRatingRefs", dataArray, false, arrayOfObject(routineRefContract())),
+					field("childFactorAnalysisRefs", dataArray, false, arrayOfObject(routineRefContract())),
+				)),
+				field("derivedContext", dataObject, false, object(
+					field("synthesisGuidanceRef", dataString, false),
+					field("emptySignalPolicy", dataString, false),
+					field("stopConditions", dataArray, false, arrayOfObject(limitContract())),
+					field("expectedEvaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				)),
+			),
+			Example: func() map[string]any { return factorAnalysisFrameExample(DataKindFactorAnalysisFrame) },
+		},
+		{
+			Kind:        DataKindFactorAnalysis,
+			Description: "Analysis result for one Factor node.",
+			Object:      analysisResultContract(DataKindFactorAnalysis, "factorId", dataFactorID),
+			Example: func() map[string]any {
+				return scopedAnalysisExample(DataKindFactorAnalysis, "factorId", exampleFactorID())
+			},
+		},
+		{
+			Kind:        DataKindAreaAnalysisFrame,
+			Description: "Area-local frame for synthesis inputs.",
+			Object: topContract(DataKindAreaAnalysisFrame,
+				field("subject", dataObject, true, object(field("areaId", dataAreaID, true))),
+				field("inputs", dataObject, false, object(
+					field("factorAnalysisRefs", dataArray, false, arrayOfObject(routineRefContract())),
+					field("childAreaAnalysisRefs", dataArray, false, arrayOfObject(routineRefContract())),
+				)),
+				field("derivedContext", dataObject, false, object(
+					field("synthesisGuidanceRef", dataString, false),
+					field("emptySignalPolicy", dataString, false),
+					field("stopConditions", dataArray, false, arrayOfObject(limitContract())),
+					field("expectedEvaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+				)),
+			),
+			Example: func() map[string]any { return areaAnalysisFrameExample(DataKindAreaAnalysisFrame) },
+		},
+		{
+			Kind:        DataKindAreaAnalysis,
+			Description: "Analysis result for one Area.",
+			Object:      analysisResultContract(DataKindAreaAnalysis, "areaId", dataAreaID),
+			Example: func() map[string]any {
+				return scopedAnalysisExample(DataKindAreaAnalysis, "areaId", []any{})
+			},
+		},
+		{
+			Kind:        DataKindEvaluationOutput,
+			Description: "CLI-owned completed evaluation output index generated by report build.",
+			Object: topContract(DataKindEvaluationOutput,
+				field("rootAreaAnalysisRef", dataObject, true, routineRefContract()),
+				field("areaOutputs", dataArray, true, arrayOfObject(areaOutputContract())),
+				field("reportOutputs", dataArray, true, arrayOfObject(reportRefContract())),
+			),
+			Example: evaluationOutputExample,
+		},
+	} {
+		dataContracts[contract.Kind] = contract
+	}
+}
+
+func topContract(kind DataKind, fields ...dataField) dataObjectContract {
+	base := []dataField{
+		field("schemaVersion", dataNumber, true),
+		field("kind", dataString, true, enum(string(kind))),
+	}
+	return object(append(base, fields...)...)
+}
+
+func analysisResultContract(kind DataKind, idName string, idType dataFieldType) dataObjectContract {
+	return topContract(kind,
+		field(idName, idType, true),
+		field("localAnalysis", dataObject, true, analysisScopeContract()),
+		field("localAndDescendantAnalysis", dataObject, true, analysisScopeContract()),
+	)
+}
+
+func analysisScopeContract() dataObjectContract {
+	return object(
+		field("status", dataString, true, enum("analyzed", "empty", "not_analyzed", "blocked")),
+		field("statusReason", dataString, false),
+		field("ratingLevelId", dataRatingLevelID, false),
+		field("rationale", dataString, false),
+		field("inputRefs", dataArray, false, arrayOfObject(routineRefContract())),
+		field("ratingDrivers", dataArray, false, arrayOfObject(ratingDriverContract())),
+		field("incompleteInputs", dataArray, false, arrayOfObject(limitContract())),
+		field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
+		field("confidence", dataString, false, enum("high", "medium", "low", "none")),
+		field("confidenceReason", dataString, false),
+	)
+}
+
+func findingContract() dataObjectContract {
+	return object(
+		field("id", dataString, false),
+		field("type", dataString, false, enum("strength", "gap", "risk", "unknown", "note")),
+		field("severity", dataString, false, enum("critical", "high", "medium", "low", "info")),
+		field("description", dataString, false),
+		field("location", dataObject, false, openObject()),
+		field("evidence", dataObject, false, openObject()),
+		field("rationale", dataString, false),
+		field("actions", dataArray, false, arrayOfAny()),
+	)
+}
+
+func ratingDriverContract() dataObjectContract {
+	return object(
+		field("id", dataString, false),
+		field("description", dataString, false),
+		field("summary", dataString, false),
+		field("requirementRatingDriver", dataString, false),
+		field("effect", dataString, false),
+		field("impact", dataString, false),
+		field("ratingLevelId", dataRatingLevelID, false),
+		field("inputRefs", dataArray, false, arrayOfObject(routineRefContract())),
+	)
+}
+
+func criteriaResultContract() dataObjectContract {
+	return object(
+		field("ratingLevelId", dataRatingLevelID, true),
+		field("matched", dataBool, true),
+		field("rationale", dataString, false),
+	)
+}
+
+func criteriaContract() dataObjectContract {
+	return object(
+		field("ratingLevelId", dataRatingLevelID, true),
+		field("criterion", dataString, true),
+		field("source", dataString, false),
+		field("adaptationRationale", dataString, false),
+	)
+}
+
+func evidenceTargetContract() dataObjectContract {
+	return object(
+		field("id", dataString, true),
+		field("question", dataString, false),
+		field("purpose", dataString, false),
+		field("sourceRefs", dataArray, false, arrayOfAny()),
+		field("required", dataBool, false),
+	)
+}
+
+func unknownContract() dataObjectContract {
+	return object(
+		field("id", dataString, false),
+		field("description", dataString, false),
+		field("reason", dataString, false),
+		field("ref", dataString, false),
+		field("impact", dataString, false),
+	)
+}
+
+func limitContract() dataObjectContract {
+	return object(
+		field("id", dataString, false),
+		field("type", dataString, false),
+		field("scope", dataString, false),
+		field("ref", dataString, false),
+		field("description", dataString, false),
+		field("reason", dataString, false),
+		field("impact", dataString, false),
+	)
+}
+
+func routineRefContract() dataObjectContract {
+	return object(
+		field("kind", dataString, true),
+		field("subject", dataObject, true, object(
+			field("areaId", dataAreaID, false),
+			field("factorId", dataFactorID, false),
+			field("requirementId", dataRequirementID, false),
+		)),
+		field("selector", dataString, false),
+	)
+}
+
+func reportRefContract() dataObjectContract {
+	return object(
+		field("kind", dataString, true),
+		field("areaId", dataAreaID, true),
+		field("factorId", dataFactorID, false),
+		field("requirementId", dataRequirementID, false),
+		field("path", dataString, true),
+	)
+}
+
+func areaOutputContract() dataObjectContract {
+	return object(
+		field("areaId", dataAreaID, true),
+		field("areaEvaluationFrameRef", dataObject, true, routineRefContract()),
+		field("areaAnalysisResultRef", dataObject, true, routineRefContract()),
+		field("factorAnalysisRefs", dataArray, true, arrayOfObject(routineRefContract())),
+		field("requirementAssessmentRefs", dataArray, true, arrayOfObject(routineRefContract())),
+		field("requirementRatingRefs", dataArray, true, arrayOfObject(routineRefContract())),
+		field("reportRefs", dataArray, true, arrayOfObject(reportRefContract())),
+	)
+}
+
+func object(fields ...dataField) dataObjectContract {
+	return dataObjectContract{Fields: fields}
+}
+
+func openObject() dataObjectContract {
+	return dataObjectContract{Open: true}
+}
+
+func field(name string, typ dataFieldType, required bool, opts ...any) dataField {
+	f := dataField{Name: name, Type: typ, Required: required}
+	for _, opt := range opts {
+		switch v := opt.(type) {
+		case []string:
+			f.Enum = v
+		case dataObjectContract:
+			f.Object = &v
+		case dataField:
+			f.Element = &v
+		}
+	}
+	return f
+}
+
+func enum(values ...string) []string {
+	return values
+}
+
+func arrayOf(typ dataFieldType) dataField {
+	return field("", typ, false)
+}
+
+func arrayOfObject(obj dataObjectContract) dataField {
+	return field("", dataObject, false, obj)
+}
+
+func arrayOfAny() dataField {
+	return field("", dataAny, false)
+}
+
+func resolveDataKindArg(raw string) (DataKind, error) {
+	candidate := DataKind(raw)
+	if _, ok := dataContracts[candidate]; ok {
+		return candidate, nil
+	}
+	for _, kind := range dataContractOrder {
+		if raw == kebabDataKind(kind) {
+			return kind, nil
+		}
+	}
+	return "", usagef("unknown evaluation data kind %q", raw)
+}
+
+// ResolveDataKind accepts a canonical or kebab-case Evaluation data kind.
+func ResolveDataKind(raw string) (DataKind, error) {
+	return resolveDataKindArg(raw)
+}
+
+func kebabDataKind(kind DataKind) string {
+	var b strings.Builder
+	for i, r := range string(kind) {
+		if i > 0 && r >= 'A' && r <= 'Z' {
+			b.WriteByte('-')
+		}
+		b.WriteRune(r)
+	}
+	return strings.ToLower(b.String())
+}
+
+func validateDataPayload(kind DataKind, payload map[string]any) error {
+	contract, ok := dataContracts[kind]
+	if !ok {
+		return usagef("unsupported evaluation data kind %q", kind)
+	}
+	return validateDataObject(contract.Object, payload, string(kind))
+}
+
+func validateDataPayloadForModel(kind DataKind, payload map[string]any, spec *model.Spec) error {
+	if err := validateDataPayload(kind, payload); err != nil {
+		return err
+	}
+	return validatePayloadModelBindings(kind, payload, spec)
+}
+
+func validateDataObject(contract dataObjectContract, payload map[string]any, path string) error {
+	fields := map[string]dataField{}
+	for _, f := range contract.Fields {
+		fields[f.Name] = f
+		if f.Required {
+			if _, ok := payload[f.Name]; !ok {
+				return usagef("%s is missing required field %s", path, f.Name)
+			}
+		}
+	}
+	if !contract.Open {
+		for name := range payload {
+			if _, ok := fields[name]; !ok {
+				return usagef("%s contains unknown field %s", path, name)
+			}
+		}
+	}
+	for _, f := range contract.Fields {
+		value, ok := payload[f.Name]
+		if !ok {
+			continue
+		}
+		if err := validateDataValue(f, value, path+"."+f.Name); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+//nolint:cyclop,gocognit // The recursive validator mirrors the field type enum.
+func validateDataValue(field dataField, value any, path string) error {
+	switch field.Type {
+	case dataAny:
+		return nil
+	case dataBool:
+		if _, ok := value.(bool); !ok {
+			return usagef("%s must be a boolean", path)
+		}
+	case dataNumber:
+		if _, ok := numericSchemaVersion(value); !ok {
+			return usagef("%s must be a number", path)
+		}
+	case dataString, dataRatingLevelID:
+		s, ok := value.(string)
+		if !ok || s == "" {
+			return usagef("%s must be a non-empty string", path)
+		}
+		if len(field.Enum) > 0 && !slices.Contains(field.Enum, s) {
+			return usagef("%s = %q, want one of %s", path, s, strings.Join(field.Enum, ", "))
+		}
+	case dataStringArray:
+		items, ok := value.([]any)
+		if !ok {
+			return usagef("%s must be an array", path)
+		}
+		for i, item := range items {
+			if s, ok := item.(string); !ok || s == "" {
+				return usagef("%s[%d] must be a non-empty string", path, i)
+			}
+		}
+	case dataAreaID:
+		_, err := areaIDFrom(value)
+		if err != nil {
+			return usagef("%s: %w", path, err)
+		}
+	case dataRequirementID:
+		_, err := requirementIDFrom(value)
+		if err != nil {
+			return usagef("%s: %w", path, err)
+		}
+	case dataFactorID:
+		_, err := factorIDFrom(value)
+		if err != nil {
+			return usagef("%s: %w", path, err)
+		}
+	case dataObject:
+		obj, ok := value.(map[string]any)
+		if !ok {
+			return usagef("%s must be an object", path)
+		}
+		if field.Object != nil {
+			if err := validateDataObject(*field.Object, obj, path); err != nil {
+				return err
+			}
+		}
+	case dataArray:
+		items, ok := value.([]any)
+		if !ok {
+			return usagef("%s must be an array", path)
+		}
+		if field.Element != nil {
+			for i, item := range items {
+				if err := validateDataValue(*field.Element, item, fmt.Sprintf("%s[%d]", path, i)); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
+}
+
+//nolint:gocognit,nestif // Model binding is centralized to keep write/verify parity.
+func validatePayloadModelBindings(kind DataKind, payload map[string]any, spec *model.Spec) error {
+	if spec == nil {
+		return usagef("%s cannot be model-bound without a model snapshot", kind)
+	}
+	if err := walkModelReferences(payload, spec, string(kind), nil); err != nil {
+		return err
+	}
+	if kind == DataKindRequirementEvaluationFrame {
+		if subject, ok := payload["subject"].(map[string]any); ok {
+			req, err := requirementIDFrom(subject["requirementId"])
+			if err != nil {
+				return err
+			}
+			for _, ref := range stringValues(subject["factorIds"]) {
+				factor, err := parseRequirementFactorID(req.DeclaringArea, ref)
+				if err != nil {
+					return err
+				}
+				if !factorExists(spec, factor.DeclaringArea, factor.Path) {
+					return usagef("factor reference %q does not resolve in the model", ref)
+				}
+			}
+		}
+	}
+	if kind == DataKindRequirementAssessment {
+		req, err := topRequirementID(payload)
+		if err != nil {
+			return err
+		}
+		for _, ref := range stringValues(payload["factors"]) {
+			factor, err := parseRequirementFactorID(req.DeclaringArea, ref)
+			if err != nil {
+				return err
+			}
+			if !factorExists(spec, factor.DeclaringArea, factor.Path) {
+				return usagef("factor reference %q does not resolve in the model", ref)
+			}
+		}
+	}
+	return nil
+}
+
+//nolint:cyclop,gocognit,nestif // Recursive descent keeps model-reference validation uniform.
+func walkModelReferences(value any, spec *model.Spec, path string, key *string) error {
+	switch v := value.(type) {
+	case map[string]any:
+		if key != nil {
+			switch *key {
+			case "areaId", "declaringAreaId":
+				area, err := areaIDFrom(v)
+				_ = area
+				if err == nil {
+					return nil
+				}
+			case "requirementId":
+				req, err := requirementIDFrom(v)
+				if err != nil {
+					return usagef("%s: %w", path, err)
+				}
+				if !areaExists(spec, req.DeclaringArea) {
+					return usagef("%s declares an Area absent from the model", path)
+				}
+				if !requirementExists(spec, req.DeclaringArea, req.Name) {
+					return usagef("%s does not resolve in the model", path)
+				}
+				return nil
+			case "factorId":
+				factor, err := factorIDFrom(v)
+				if err != nil {
+					return usagef("%s: %w", path, err)
+				}
+				if !areaExists(spec, factor.DeclaringArea) {
+					return usagef("%s declares an Area absent from the model", path)
+				}
+				if !factorExists(spec, factor.DeclaringArea, factor.Path) {
+					return usagef("%s does not resolve in the model", path)
+				}
+				return nil
+			}
+		}
+		for childKey, child := range v {
+			k := childKey
+			if err := walkModelReferences(child, spec, path+"."+childKey, &k); err != nil {
+				return err
+			}
+		}
+	case []any:
+		if key != nil && (*key == "areaId" || *key == "declaringAreaId") {
+			area, err := areaIDFrom(v)
+			if err != nil {
+				return usagef("%s: %w", path, err)
+			}
+			if !areaExists(spec, area) {
+				return usagef("%s does not resolve in the model", path)
+			}
+			return nil
+		}
+		for i, item := range v {
+			if err := walkModelReferences(item, spec, fmt.Sprintf("%s[%d]", path, i), key); err != nil {
+				return err
+			}
+		}
+	case string:
+		if key != nil && (*key == "ratingLevelId" || *key == "ratingLevelIds") {
+			if _, err := parseRatingReferenceBody(spec, v, v, path); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func EvaluationDataSchema(kind DataKind) ([]byte, error) {
+	doc, err := evaluationDataSchemaDoc(kind)
+	if err != nil {
+		return nil, err
+	}
+	return canonicalJSON(doc)
+}
+
+func evaluationDataSchemaDoc(kind DataKind) (map[string]any, error) {
+	defs := map[string]any{}
+	for _, k := range dataContractOrder {
+		contract := dataContracts[k]
+		defs[string(k)] = schemaForObject(contract.Object)
+	}
+	doc := map[string]any{
+		"$schema": qschema.JSONSchemaDialect,
+		"$id":     evaluationDataSchemaID,
+		"$defs":   defs,
+	}
+	if kind != "" {
+		if _, ok := dataContracts[kind]; !ok {
+			return nil, usagef("unknown evaluation data kind %q", kind)
+		}
+		doc["$ref"] = "#/$defs/" + string(kind)
+		return doc, nil
+	}
+	refs := make([]any, 0, len(dataContractOrder))
+	for _, k := range dataContractOrder {
+		refs = append(refs, map[string]any{"$ref": "#/$defs/" + string(k)})
+	}
+	doc["oneOf"] = refs
+	return doc, nil
+}
+
+func schemaForObject(contract dataObjectContract) map[string]any {
+	props := map[string]any{}
+	var required []any
+	for _, f := range contract.Fields {
+		props[f.Name] = schemaForField(f)
+		if f.Required {
+			required = append(required, f.Name)
+		}
+	}
+	out := map[string]any{"type": "object", "properties": props}
+	if len(required) > 0 {
+		out["required"] = required
+	}
+	if !contract.Open {
+		out["additionalProperties"] = false
+	}
+	return out
+}
+
+//nolint:cyclop // Schema generation follows the same field type enum as validation.
+func schemaForField(field dataField) map[string]any {
+	switch field.Type {
+	case dataAny:
+		return map[string]any{}
+	case dataBool:
+		return map[string]any{"type": "boolean"}
+	case dataNumber:
+		return map[string]any{"type": "integer"}
+	case dataString, dataRatingLevelID:
+		out := map[string]any{"type": "string"}
+		if len(field.Enum) > 0 {
+			out["enum"] = anyStrings(field.Enum)
+		}
+		if field.Type == dataRatingLevelID {
+			out["pattern"] = qschema.ModelNamePattern
+		}
+		return out
+	case dataStringArray:
+		return map[string]any{"type": "array", "items": map[string]any{"type": "string"}}
+	case dataAreaID:
+		return map[string]any{"type": "array", "items": modelNameSchema()}
+	case dataRequirementID:
+		return map[string]any{
+			"type":                 "object",
+			"additionalProperties": false,
+			"required":             []any{"declaringAreaId", "requirementName"},
+			"properties": map[string]any{
+				"declaringAreaId": schemaForField(fieldOf(dataAreaID)),
+				"requirementName": modelNameSchema(),
+			},
+		}
+	case dataFactorID:
+		return map[string]any{
+			"type":                 "object",
+			"additionalProperties": false,
+			"required":             []any{"declaringAreaId", "factorPath"},
+			"properties": map[string]any{
+				"declaringAreaId": schemaForField(fieldOf(dataAreaID)),
+				"factorPath":      map[string]any{"type": "array", "minItems": 1, "items": modelNameSchema()},
+			},
+		}
+	case dataObject:
+		if field.Object == nil {
+			return map[string]any{"type": "object"}
+		}
+		return schemaForObject(*field.Object)
+	case dataArray:
+		items := map[string]any{}
+		if field.Element != nil {
+			items = schemaForField(*field.Element)
+		}
+		return map[string]any{"type": "array", "items": items}
+	default:
+		return map[string]any{}
+	}
+}
+
+func modelNameSchema() map[string]any {
+	return map[string]any{"type": "string", "pattern": qschema.ModelNamePattern}
+}
+
+func fieldOf(typ dataFieldType) dataField {
+	return dataField{Type: typ}
+}
+
+func VerifyData(runPath string) (*DataVerifyReceipt, error) {
+	spec, err := loadRunModel(runPath)
+	if err != nil {
+		return nil, fmt.Errorf("loading %s: %w", ModelSnapshotFile, err)
+	}
+	result := &DataVerifyReceipt{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(runPath), Valid: true}
+	root := filepath.Join(runPath, "data")
+	err = filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || filepath.Ext(path) != ".json" {
+			return nil
+		}
+		rel, err := filepath.Rel(runPath, path)
+		if err != nil {
+			return err
+		}
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			result.addFailure(rel, "", err.Error())
+			return nil
+		}
+		payload, _, err := decodeDataPayload(raw)
+		if err != nil {
+			result.addFailure(rel, "", err.Error())
+			return nil
+		}
+		kind, err := payloadKind(payload)
+		if err != nil {
+			result.addFailure(rel, "", err.Error())
+			return nil
+		}
+		if _, ok := dataContracts[kind]; !ok {
+			result.addFailure(rel, kind, fmt.Sprintf("unsupported evaluation data kind %q", kind))
+			return nil
+		}
+		result.Checked++
+		if err := validateDataPayloadForModel(kind, payload, spec); err != nil {
+			result.addFailure(rel, kind, err.Error())
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("verifying evaluation data: %w", err)
+	}
+	result.Valid = len(result.Failures) == 0
+	return result, nil
+}
+
+func (r *DataVerifyReceipt) addFailure(rel string, kind DataKind, reason string) {
+	r.Failures = append(r.Failures, DataVerifyFailure{Path: filepath.ToSlash(rel), Kind: kind, Reason: reason})
+}
+
+func (kind DataKind) String() string {
+	return string(kind)
+}

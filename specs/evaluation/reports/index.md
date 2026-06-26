@@ -1,6 +1,6 @@
-# Evaluation v2 Reports
+# Evaluation Reports
 
-Deterministic Markdown report contracts for Evaluation v2.
+Deterministic Markdown report contracts for Evaluation.
 
 # Concepts
 

@@ -1,4 +1,4 @@
-// Package evaluation owns QUALITY.md Evaluation v2 run folders and data.
+// Package evaluation owns QUALITY.md Evaluation run folders and data.
 package evaluation
 
 import (
@@ -148,7 +148,8 @@ func UnqualifiedRatingReference(level string) string {
 	return level
 }
 
-// RatingResult records a v2 report receipt rating verdict or not-assessed state.
+// RatingResult records an Evaluation report receipt rating verdict or
+// not-assessed state.
 type RatingResult struct {
 	Kind      RatingResultKind `json:"kind"`
 	Level     string           `json:"level,omitempty"`

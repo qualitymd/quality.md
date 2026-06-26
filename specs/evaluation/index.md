@@ -1,11 +1,11 @@
-# Evaluation v2
+# Evaluation
 
-Durable specifications for the Evaluation v2 workflow, protocol, structured
+Durable specifications for the Evaluation workflow, protocol, structured
 data, orchestration model, and generated report tree.
 
 # Concepts
 
-- [Evaluation v2](evaluation-v2.md) - shared invariants and replacement scope.
+- [Evaluation](evaluation.md) - shared invariants and replacement scope.
 - [Protocol](protocol.md) - evaluation phases, traversal, and routine ordering.
 - [Orchestration](orchestration.md) - agent-agnostic work graph and resume rules.
 

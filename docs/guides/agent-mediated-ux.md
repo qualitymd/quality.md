@@ -32,6 +32,10 @@ Every user-facing step should let a busy reader answer four questions quickly:
 - What is the recommended action?
 - What will happen if I confirm?
 
+At a workflow's opening, one question comes before those four: did the agent
+understand what I asked, and what is the plan? The [Opening](#opening) section
+covers how to answer it immediately.
+
 If the user has to infer the main question from surrounding explanation, the
 interaction is doing too much work in prose.
 
@@ -73,6 +77,44 @@ Use Markdown emphasis as interaction structure.
 
 Bold should make the output skimmable if the user reads only the labels and the
 primary call to action. If everything is emphasized, nothing is.
+
+## Opening
+
+Open every workflow by confirming intent and previewing the path, before doing
+the work.
+
+The opening does two jobs:
+
+- **Intent reflection.** Say back what you understood the user to want — the
+  resolved workflow, the target, the scope — so a wrong inference is caught now,
+  while it is cheap to correct, rather than after a long silent run.
+- **Path preview.** State what will happen: what is read-only versus mutating,
+  which artifacts will change, and where the workflow ends.
+
+The carrier for both is a concise **run frame** emitted as the **first output**,
+before discovery or any tool call. The frame's value is that the user can catch a
+wrong inference before the agent acts; that value is lost if the agent reads
+files and runs commands first and only frames the work afterward.
+
+```text
+**Quality · evaluate**
+
+- **Model file:** `QUALITY.md`
+- **Scope:** full evaluation
+- **Rigor:** standard
+- **Mutation:** evaluation artifacts and feedback log under `.quality/`
+- **Artifacts:** numbered evaluation run, structured data, Markdown report tree
+- **Next gate:** report findings, ratings, and limits before any follow-up action
+```
+
+When a field genuinely needs a tool to resolve — a scope that spans many
+modeled areas, for instance — emit the frame anyway with a best-known or
+`resolving…` value, then confirm the resolved value in a later message. A
+provisional frame still beats silence.
+
+Avoid the **silent runway**: a long sequence of reads and commands before the
+user sees any frame. From the user's side it is indistinguishable from a stall,
+and it removes the early checkpoint the opening exists to provide.
 
 ## Progress
 
@@ -262,6 +304,8 @@ The user should feel guided, not managed.
 
 Before shipping an agent-mediated workflow, check:
 
+- The workflow opens with a run frame as its first output, confirming intent and
+  previewing the path before any tool call.
 - The primary question or call to action is bolded in each interaction block.
 - The recommendation and evidence are adjacent to the choice.
 - Closed-choice questions put the recommended option first and accept `1` as the

@@ -3,6 +3,31 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0117 - Requirement report Factors line](../changes/archive/0117-requirement-report-factors-line.md).
+  The Evaluation report-tree spec now requires a plural `Factors:` context line
+  on Requirement reports and removes `Factors` from the Requirement summary table
+  columns.
+
+- **Revision**: Implemented durable spec changes for
+  [0116 - Drop the "Evaluation v2" naming](../changes/archive/0116-drop-evaluation-v2-naming.md).
+  Renamed the active Evaluation spec bundle from `evaluation-v2/` to
+  `evaluation/`, renamed the parent concept to `evaluation.md`, and updated live
+  spec links/prose to use plain "Evaluation".
+
+- **Revision**: Implemented durable spec changes for
+  [0115 - Type-safe, model-bound Evaluation v2 data](../changes/archive/0115-evaluation-data-typed-contract.md).
+  The CLI data and Evaluation record specs now require strict field/type/enum
+  validation, model-binding against the run snapshot, dry-run parity, populated
+  examples, the `data schema` discovery command, and `data verify`.
+
+- **Revision**: Implemented durable spec changes for
+  [0114 - Run frame as first output](../changes/archive/0114-run-frame-first-output.md).
+  The `/quality` skill spec's Run frames section now requires the frame as the
+  workflow's first output before any tool call, forbids gating emission on a tool
+  result, and allows a provisional `resolving…` value for a tool-dependent field —
+  carrying the 0096 ordering lesson into the shared contract.
+
+- **Revision**: Implemented durable spec changes for
   [0113 - Evaluation run folder naming](../changes/0113-evaluation-run-folder-naming.md).
   `qualitymd evaluation create` now documents the `NNNN-full-eval` /
   `NNNN-<scope-path>-eval` run-folder grammar, the reserved `quality` slug

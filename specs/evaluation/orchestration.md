@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2 orchestration
+title: Evaluation orchestration
 description: Agent-agnostic dependency graph, parallelism, persistence, resume, and failure rules.
 tags: [evaluation, orchestration, agents]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 orchestration
+# Evaluation orchestration
 
-Evaluation v2 is a dependency-ordered work graph. This spec defines the graph and
+Evaluation is a dependency-ordered work graph. This spec defines the graph and
 runtime invariants without requiring a specific agent or concurrency mechanism.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be

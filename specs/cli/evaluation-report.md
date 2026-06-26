@@ -25,20 +25,20 @@ qualitymd evaluation report build <run>
 `build` **MUST** accept either a positional run path or `--latest`, and **MUST**
 error when both or neither are supplied.
 
-For Evaluation v2 runs, `build` validates the structured payload graph under
+For Evaluation runs, `build` validates the structured payload graph under
 `data/`, assembles `data/evaluation-output-result.json`, and renders the
 deterministic Markdown report tree from completed structured outputs. It renders
 recorded judgment; it **MUST NOT** reread evaluated source, infer or recompute
 ratings, invent findings, or choose new recommendations by evaluator judgment.
 It **MUST** fail before writing generated report files when the run is not
-renderable, including when required Evaluation v2 data is missing, malformed,
+renderable, including when required Evaluation data is missing, malformed,
 schema-incompatible, or structurally incomplete. The failure **MUST** identify
 the blocking gap and point the caller to `qualitymd evaluation status <run>` for
 the complete gap list. It **MUST** be deterministic and idempotent: unchanged
 structured data produces byte-identical report files.
 
 `build` **MUST NOT** accept a gate flag. Report gating is not part of Evaluation
-v2 v0.
+v0.
 
-The Evaluation v2 report content contract is defined by
-[Evaluation v2 report tree](../evaluation-v2/reports/report-tree.md).
+The Evaluation report content contract is defined by
+[Evaluation report tree](../evaluation/reports/report-tree.md).

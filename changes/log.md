@@ -3,6 +3,92 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0117 - Requirement report Factors line](archive/0117-requirement-report-factors-line.md).
+  Requirement reports now render a plural `Factors:` context line after the
+  `Area:` trail, with attached Factor links joined as a flat set, and their
+  summary table now contains `Rating`, `Assessment`, `Confidence`, and `Data`
+  only. The report-tree spec carries the plural-line rule while preserving the
+  prohibition on singular `Factor:` breadcrumbs. Verified with
+  `go test ./internal/evaluation ./internal/cli`.
+
+- **Done**: Implemented and archived
+  [0116 - Drop the "Evaluation v2" naming](archive/0116-drop-evaluation-v2-naming.md).
+  The live spec bundle is now `specs/evaluation/` with
+  `specs/evaluation/evaluation.md` as the parent concept; live docs, specs,
+  runtime skill text, CLI help strings, and private Go report symbols use plain
+  "Evaluation". Removed the superseded `evaluation-v2-sketch.md` and renamed
+  `internal/evaluation/report_v2.go` to `report_tree.go`. Verification searches
+  for the retired name/path now return only unrelated dependency/tool version
+  numbers outside the evaluation surface. Verified with
+  `go test ./internal/evaluation ./internal/cli`.
+
+- **Done**: Implemented and archived
+  [0115 - Type-safe, model-bound Evaluation v2 data](archive/0115-evaluation-data-typed-contract.md).
+  `qualitymd evaluation data set` now validates payloads against a single typed
+  data-kind contract, rejects unknown fields and unresolved model/rating IDs
+  against the run snapshot, and applies the same checks under `--dry-run`.
+  Added populated examples, the generated
+  `internal/evaluation/evaluation-data.schema.json` artifact with a drift test,
+  kebab-case kind resolution, and the `data schema` / `data verify` commands.
+  The CLI data specs and `/quality` skill resources now direct agents to schema
+  first, examples second, and dry-run for authored-payload validation. Verified
+  with `go test ./internal/evaluation ./internal/cli`.
+
+- **Creation**: Drafted
+  [0117 - Requirement report Factors line](0117-requirement-report-factors-line.md)
+  (`status: Draft`). A Requirement sits along two axes — its declaring Area and
+  the set of Factors it serves — but the report only surfaces the Area axis as a
+  header trail; the Factor axis is buried in a summary-table column. The case adds
+  a plural `Factors:` context line to the Requirement report header (a flat,
+  `;`-separated set of attached-Factor links, parallel to the `Area:` trail and
+  mirroring the Factor report's stacked trails) and drops the now-redundant
+  `Factors` table column. It reconciles the existing report-tree rule forbidding a
+  singular `Factor:` breadcrumb: the new line is plural and parent-free, so the
+  prohibition stands. Added the child
+  [spec](0117-requirement-report-factors-line/spec.md) and updated the bundle
+  [index](index.md).
+
+- **Creation**: Drafted
+  [0116 - Drop the "Evaluation v2" naming](0116-drop-evaluation-v2-naming.md)
+  (`status: Draft`). The [clean break](archive/0097-evaluation-v2-clean-break.md)
+  made v2 the only runtime evaluation workflow, so the `v2` qualifier is now
+  vestigial — it falsely implies a coexisting v1. The case retires it from the
+  live surface (the `specs/evaluation-v2/` → `specs/evaluation/` folder rename and
+  inbound links, CLI and skill specs, `SPECIFICATION.md`, the bundled `/quality`
+  skill, and Go symbols/`report_v2.go`), removes the superseded
+  `evaluation-v2-sketch.md`, and fences off the load-bearing `schemaVersion`
+  marker and frozen history (archive, `log.md`, existing `CHANGELOG.md` entries)
+  as non-goals. Added the child [spec](0116-drop-evaluation-v2-naming/spec.md)
+  and updated the bundle [index](index.md).
+
+- **Creation**: Drafted
+  [0115 - Type-safe, model-bound Evaluation v2 data](0115-evaluation-data-typed-contract.md)
+  (`status: Draft`). Motivated by a field evaluation where `qualitymd evaluation
+  data set` accepted findings with wrong field names (rendered blank in the
+  report) and references to non-existent model nodes, because v2 data has no typed
+  source of truth. The case defines each kind as typed Go definitions feeding
+  strict decode, model-binding validation against the run snapshot, and generated
+  schema + populated examples, plus `data schema` and `data verify` commands.
+  Added the child [spec](0115-evaluation-data-typed-contract/spec.md) and
+  [design](0115-evaluation-data-typed-contract/design.md) and updated the bundle
+  [index](index.md).
+
+- **Done**: Implemented and archived
+  [0114 - Run frame as first output](archive/0114-run-frame-first-output.md).
+  The run-frame "first output, before any tool call" timing rule and a provisional
+  / `resolving…` value allowance for tool-dependent fields are now stated in the
+  shared homes — the `SKILL.md` dispatcher run-frame instruction and the durable
+  `Run frames` spec section — rather than re-derived per workflow. The `evaluate`
+  runtime procedure now emits the frame first (invocation-derived model path,
+  provisional `Scope: resolving…`) before workspace resolution, and the `evaluate`
+  durable spec's Required flow states the requirement; `setup` and `update` were
+  already compliant. The companion guide `docs/guides/agent-mediated-ux.md` was
+  synced ahead with the Opening section. Verified with `mise run fmt-md-check`.
+  Moved the parent and child folder into [`archive/`](archive/), updated the
+  [archive index](archive/index.md); the bundle [index](index.md) already lists no
+  open cases.
+
+- **Done**: Implemented and archived
   [0113 - Evaluation run folder naming](archive/0113-evaluation-run-folder-naming.md).
   New Evaluation v2 run folders are now named `NNNN-full-eval` for full runs or
   `NNNN-<scope-path>-eval` for narrowed runs. The parser recognizes only the

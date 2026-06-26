@@ -2,6 +2,18 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [evaluate](evaluate.md) procedure for 0115 -
+  Type-safe, model-bound Evaluation v2 data.
+  Evaluate now discovers payload shape with `qualitymd evaluation data schema
+  <kind>`, uses populated examples for samples, and treats `data set --dry-run`
+  as validation of authored payloads.
+
+- **Revision**: Reordered the [evaluate](evaluate.md) procedure for 0114 - Run
+  frame as first output.
+  The run frame is now emitted as the first output before workspace resolution or
+  any other tool call, using the invocation-derived model path, with a provisional
+  `Scope: resolving…` confirmed once the workspace and model are read.
+
 - **Revision**: Retitled the rendered run frames in [setup](setup.md),
   [evaluate](evaluate.md), and [update](update.md) for 0110 - Run frame title and
   workflow vocabulary.

@@ -361,8 +361,8 @@ are tracked in the change case's parent **Affected artifacts** index, not here.
 - **Show, don't only tell.** A concrete example often pins a contract more
   precisely than prose and doubles as a test: a sample invocation, a fenced record
   or folder layout, a representative JSON receipt, an overview table. The sharpest
-  specs here already do it — the Evaluation v2 routine-output examples in
-  [Evaluation v2](../../specs/evaluation-v2/evaluation-v2.md), the `nextActions`
+  specs here already do it — the Evaluation routine-output examples in
+  [Evaluation](../../specs/evaluation/evaluation.md), the `nextActions`
   receipt in the [CLI spec](../../specs/cli.md). Reach for an example where words
   get slippery; don't decorate.
 - **Draft openly.** Mark early specs `Draft`; placeholders are fine — stub the

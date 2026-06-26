@@ -2,6 +2,16 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0116 - Drop the "Evaluation v2" naming](../../../../changes/archive/0116-drop-evaluation-v2-naming.md).
+  The workflow spec now links to the renamed Evaluation bundle and uses plain
+  "Evaluation" for the active protocol.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0114 - Run frame as first output](../../../../changes/archive/0114-run-frame-first-output.md).
+  Its Required flow now requires the run frame as the first output before tool
+  inspection, with a provisional scope value allowed.
+
 - **Revision**: Unified workflow vocabulary in the [`setup`](setup.md),
   [`evaluate`](evaluate.md), [`update`](update.md), and [index](index.md) workflow
   specs for

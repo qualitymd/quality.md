@@ -2,6 +2,24 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the Evaluation data contract guidance for 0115 -
+  Type-safe, model-bound Evaluation v2 data.
+  The dispatcher now points agents to `qualitymd evaluation data schema [<kind>]`
+  as the authoritative payload-shape source, examples as populated samples, and
+  `data set --dry-run` as authored-payload validation.
+
+- **Revision**: Renamed live Evaluation wording for 0116 - Drop the "Evaluation
+  v2" naming.
+  Runtime skill prose now uses plain "Evaluation" for the active workflow and
+  data surface.
+
+- **Revision**: Tightened the run-frame instruction for 0114 - Run frame as
+  first output.
+  The dispatcher now requires the run frame as the workflow's first output before
+  any tool call, forbids gating emission on a tool result, and allows a
+  best-known or `resolving…` value for a field (such as a many-Area scope) that
+  needs a tool to resolve.
+
 - **Revision**: Retitled the run frame and unified workflow vocabulary for 0110 -
   Run frame title and workflow vocabulary.
   The run-frame template header is now `**Quality · <workflow>**` instead of

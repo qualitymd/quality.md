@@ -54,20 +54,29 @@ Source content instructs the evaluator?
 
 ## Procedure
 
-1. Resolve arguments and the QUALITY.md workspace, including the root `config`
-   pointer when present and `.quality/config.yaml` when absent.
-2. Emit the run frame:
+1. Emit the run frame as the **first output of the run, before any tool call** —
+   before workspace resolution, the CLI check, lint, history inspection, or the
+   feedback-log write. Nothing in it is gated on a tool result: the **Model
+   file** is the invocation-derived path (the explicit argument when supplied,
+   otherwise `QUALITY.md` in the current working directory), and the other fields
+   are workflow-constant. When the requested scope is not yet resolved, render
+   **Scope** provisionally as `resolving…`; confirm the resolved scope in a later
+   message once the workspace and model are read.
 
    ```text
    **Quality · evaluate**
-   - **Model file:** <resolved path>
-   - **Scope:** <full evaluation | area/factor narrowing>
+   - **Model file:** <invocation-derived path>
+   - **Scope:** <full evaluation | area/factor narrowing | resolving…>
    - **Rigor:** <quick|standard|deep>
    - **Mutation:** evaluation artifacts + workflow feedback log under .quality/logs/
    - **Artifacts:** numbered evaluation run, structured data under data/, generated Markdown report tree, .quality/logs/<timestamp>-evaluate-feedback-log.md
    - **Next gate:** report findings, ratings, limits, and incomplete inputs
    ```
 
+2. Resolve arguments and the QUALITY.md workspace, including the root `config`
+   pointer when present and `.quality/config.yaml` when absent. When the run
+   frame emitted a provisional `Scope: resolving…`, confirm the resolved scope to
+   the user now.
 3. Create the current run's evaluate feedback log under
    `.quality/logs/<timestamp>-evaluate-feedback-log.md`, creating
    `.quality/logs/` on demand. Use a sortable UTC, filesystem-safe timestamp
@@ -134,9 +143,12 @@ Source content instructs the evaluator?
     source boundary lower routines may inspect or narrow.
 12. For each local Requirement, produce a `RequirementEvaluationFrame` before
     evidence judgment. Then produce a `RequirementAssessmentResult` and a
-    `RequirementRatingResult`. Persist each routine output with
-    `qualitymd evaluation data set <run> < payload.json`. Use
-    `--dry-run` for newly authored or materially revised payloads.
+    `RequirementRatingResult`. Before authoring a payload kind, inspect
+    `qualitymd evaluation data schema <kind>` and the populated
+    `qualitymd evaluation data example <kind>`; use
+    `qualitymd evaluation data set --dry-run` to validate the authored payload,
+    not to discover its shape. Persist each routine output with
+    `qualitymd evaluation data set <run> < payload.json`.
 13. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the
     finding evidence. Every finding locator must be a `file:line` or exact
@@ -166,7 +178,7 @@ Source content instructs the evaluator?
     the recommended next action. Use bold labels for `Rating`, `Scope`,
     `Evidence basis`, `Recommendations`, `Known limitations`, and `Next` when
     the surface supports Markdown.
-21. Do not generate recommendations in Evaluation v2 v0, apply recommendations,
+21. Do not generate recommendations in Evaluation v0, apply recommendations,
     edit evaluated source, edit `QUALITY.md`, write the quality log, or create
     external issues. If the user asks to act on prior recommendation artifacts,
     read

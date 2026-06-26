@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2 JSON conventions
-description: Shared JSON conventions for Evaluation v2 routine payloads.
+title: Evaluation JSON conventions
+description: Shared JSON conventions for Evaluation routine payloads.
 tags: [evaluation, json, records]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 JSON conventions
+# Evaluation JSON conventions
 
-Evaluation v2 stores direct routine payloads as JSON files under `data/`.
+Evaluation stores direct routine payloads as JSON files under `data/`.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
@@ -16,9 +16,9 @@ capitals.
 
 ## Common Fields
 
-Every Evaluation v2 JSON payload **MUST** include `schemaVersion`.
+Every Evaluation JSON payload **MUST** include `schemaVersion`.
 
-Every Evaluation v2 JSON payload **MUST** include `kind`.
+Every Evaluation JSON payload **MUST** include `kind`.
 
 `kind` **MUST** name the payload type.
 
@@ -39,6 +39,11 @@ Rendered model refs such as `area:api`, `factor:api::reliability`,
 `requirement:api::retry-window`, and `rating:target` **MUST NOT** replace
 structural IDs inside persisted routine JSON.
 
+The CLI **MUST** resolve persisted identity fields against the run's
+`model-snapshot.md` before accepting a write. A payload that names an absent
+Area, Factor, Requirement, or Rating Level **MUST** be rejected rather than
+persisted as a free-form string.
+
 Generated routine outputs, protocol guidance, report artifacts, and payload-local
 artifacts **MUST** use `*Ref` names.
 
@@ -53,6 +58,9 @@ Repeated fields **SHOULD** be present as arrays and default to `[]`.
 
 Fields **SHOULD NOT** use `null` unless the payload kind explicitly defines
 `null` as meaningful.
+
+Payload object fields **MUST** match the accepted kind contract. Unknown or
+misspelled fields **MUST** be rejected instead of silently persisted.
 
 ## Confidence
 

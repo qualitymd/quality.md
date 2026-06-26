@@ -175,10 +175,10 @@ func verifyRun(runPath string) (string, error) {
 	}
 	dataInfo, err := os.Stat(filepath.Join(abs, "data"))
 	if err != nil {
-		return "", fmt.Errorf("%s is not an Evaluation v2 run folder: missing data", runPath)
+		return "", fmt.Errorf("%s is not an Evaluation run folder: missing data", runPath)
 	}
 	if !dataInfo.IsDir() {
-		return "", fmt.Errorf("%s is not an Evaluation v2 run folder: data is not a directory", runPath)
+		return "", fmt.Errorf("%s is not an Evaluation run folder: data is not a directory", runPath)
 	}
 	return abs, nil
 }

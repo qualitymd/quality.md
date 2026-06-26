@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2
+title: Evaluation
 description: Shared invariants for the replacement QUALITY.md evaluation workflow.
-tags: [evaluation, workflow, v2]
+tags: [evaluation, workflow]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2
+# Evaluation
 
-Evaluation v2 is the replacement QUALITY.md evaluation workflow. It is an
+Evaluation is the replacement QUALITY.md evaluation workflow. It is an
 agent-orchestrated judgment protocol backed by CLI-managed structured data and
 deterministic reports.
 
@@ -29,7 +29,7 @@ capitals.
 ## Background / Motivation
 
 The previous evaluation workflow centered on record categories and report
-artifacts. Evaluation v2 centers the actual judgment moves: frame before
+artifacts. Evaluation centers the actual judgment moves: frame before
 judging, assess evidence, rate the assessment, analyze Factors and Areas
 bottom-up, then project completed structured data into reports. This keeps the
 agent's reasoning protocol explicit while leaving mechanics such as persistence,
@@ -37,7 +37,7 @@ validation, and report rendering to the CLI.
 
 ## Scope
 
-Evaluation v2 covers full and scoped evaluations of a resolved QUALITY.md Model.
+Evaluation covers full and scoped evaluations of a resolved QUALITY.md Model.
 It defines the protocol, persisted routine outputs, run data layout,
 orchestration rules, CLI responsibilities, and generated Markdown reports.
 
@@ -48,7 +48,7 @@ Deferred:
 - automatic migrations or mixed-version runs;
 - batch payload writes;
 - custom synthesis policy sources; and
-- JSON Schema discovery commands.
+- custom JSON Schema validation beyond the CLI's discovery schema.
 
 ## Shared Invariants
 
@@ -61,7 +61,7 @@ ambiguous for defensible judgment.
 Frames **MUST** be produced before their corresponding judgment routines.
 
 Structured routine outputs under `data/` **MUST** be the source of truth for
-Evaluation v2 reports.
+Evaluation reports.
 
 Reports **MUST** be deterministic projections over completed structured outputs.
 Reports **MUST NOT** introduce new findings, ratings, evidence, limits, analysis,
@@ -73,11 +73,11 @@ persistence, status inspection, output assembly, and report rendering.
 The agent or skill runtime **MUST** own judgment: evidence selection, assessment,
 rating, confidence, synthesis, and stop decisions.
 
-Evaluation v2 JSON **MUST** use structural model IDs for Areas, Factors,
+Evaluation JSON **MUST** use structural model IDs for Areas, Factors,
 Requirements, and Rating Levels. Rendered model refs are for CLI and human
 boundaries, not primary persisted identity inside routine JSON.
 
-`schemaVersion` **MUST** be treated as a payload-shape marker only. Evaluation v2
+`schemaVersion` **MUST** be treated as a payload-shape marker only. Evaluation
 does not define migrations, compatibility transforms, or mixed-version run
 support.
 

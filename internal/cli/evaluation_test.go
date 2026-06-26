@@ -73,6 +73,30 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	if !strings.Contains(out.String(), `"kind": "RequirementRatingResult"`) {
 		t.Fatalf("data example stdout = %s, want artifact JSON", out.String())
 	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "schema", "requirement-assessment-result"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("data schema Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"#/$defs/RequirementAssessmentResult"`) {
+		t.Fatalf("data schema stdout = %s, want kind schema", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "verify", "--json", runPath})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("data verify Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"valid": true`) || !strings.Contains(out.String(), `"checked": 1`) {
+		t.Fatalf("data verify stdout = %s, want valid receipt", out.String())
+	}
 }
 
 func TestEvaluationDataArtifactCommandsRejectJSONWrapper(t *testing.T) {
@@ -212,7 +236,7 @@ ratingScale:
     description: Unacceptable.
     criterion: Does not meet it.
 requirements:
-  Has tests:
+  has-tests:
     assessment: Inspect tests.
 ---
 `), 0o644); err != nil {

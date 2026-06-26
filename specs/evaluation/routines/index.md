@@ -1,6 +1,6 @@
-# Evaluation v2 Routines
+# Evaluation Routines
 
-Prompt-style routine contracts for Evaluation v2.
+Prompt-style routine contracts for Evaluation.
 
 # Concepts
 

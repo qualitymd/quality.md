@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2 data layout
-description: Run-folder data and generated report layout for Evaluation v2.
+title: Evaluation data layout
+description: Run-folder data and generated report layout for Evaluation.
 tags: [evaluation, records, layout]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 data layout
+# Evaluation data layout
 
-Evaluation v2 stores structured routine data under `data/` and human-readable
+Evaluation stores structured routine data under `data/` and human-readable
 reports outside `data/`.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -17,7 +17,7 @@ capitals.
 
 ## Data Tree
 
-An Evaluation v2 run **MUST** store structured data under `data/`.
+An Evaluation run **MUST** store structured data under `data/`.
 
 The run **MUST** store the evaluation frame at:
 

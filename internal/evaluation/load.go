@@ -8,7 +8,7 @@ import (
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
 
-// Run is a loaded Evaluation v2 run folder.
+// Run is a loaded Evaluation run folder.
 type Run struct {
 	Path    string
 	AbsPath string
@@ -16,14 +16,14 @@ type Run struct {
 	Scale   []model.RatingLevel
 }
 
-// RunGap describes a reportability or validation gap in an Evaluation v2 run.
+// RunGap describes a reportability or validation gap in an Evaluation run.
 type RunGap struct {
 	Kind   RunGapKind `json:"kind"`
 	Ref    string     `json:"ref"`
 	Detail string     `json:"detail"`
 }
 
-// RunGapKind identifies a class of Evaluation v2 run gap.
+// RunGapKind identifies a class of Evaluation run gap.
 type RunGapKind string
 
 const (
@@ -33,7 +33,7 @@ const (
 	GapIncompleteEvaluationData RunGapKind = "incomplete-evaluation-data"
 )
 
-// DataStatus summarizes persisted Evaluation v2 data artifacts.
+// DataStatus summarizes persisted Evaluation data artifacts.
 type DataStatus struct {
 	Artifacts int `json:"artifacts"`
 }
@@ -48,12 +48,12 @@ type RunStatus struct {
 	NextActions   []receipt.Action `json:"nextActions"`
 }
 
-// Load reads an Evaluation v2 run.
+// Load reads an Evaluation run.
 func Load(path string) (*Run, error) {
 	return load(path)
 }
 
-// Inspect reads an Evaluation v2 run for history/status views.
+// Inspect reads an Evaluation run for history/status views.
 func Inspect(path string) (*Run, error) {
 	return load(path)
 }
@@ -79,9 +79,9 @@ func load(path string) (*Run, error) {
 	}, nil
 }
 
-// Status summarizes whether the Evaluation v2 data graph is reportable.
+// Status summarizes whether the Evaluation data graph is reportable.
 func (r *Run) Status() RunStatus {
-	gaps := v2RenderableGaps(r.AbsPath)
+	gaps := evaluationRenderableGaps(r.AbsPath)
 	data := DataStatus{}
 	if list, err := ListData(r.AbsPath, ""); err == nil {
 		data.Artifacts = len(list.Artifacts)
@@ -96,13 +96,13 @@ func (r *Run) Status() RunStatus {
 	if status.Reportable {
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-report-build",
-			Label:   "Build Evaluation v2 report",
+			Label:   "Build Evaluation report",
 			Command: "qualitymd evaluation report build " + r.Path,
 		}}
 	} else {
 		status.NextActions = []receipt.Action{{
 			ID:      "evaluation-data-set",
-			Label:   "Persist required Evaluation v2 data",
+			Label:   "Persist required Evaluation data",
 			Command: "qualitymd evaluation data set " + r.Path + " < payload.json",
 		}}
 	}

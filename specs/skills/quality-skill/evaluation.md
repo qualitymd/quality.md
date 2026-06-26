@@ -22,10 +22,10 @@ in all capitals.
 
 ## Evaluation workflow
 
-### Evaluation v2 replacement
+### Evaluation replacement
 
 The `/quality evaluate` workflow **MUST** follow the
-[Evaluation v2](../../evaluation-v2/evaluation-v2.md) protocol for new
+[Evaluation](../../evaluation/evaluation.md) protocol for new
 evaluations.
 
 The skill **MUST** create runs with `qualitymd evaluation create [model]` and
@@ -37,7 +37,7 @@ rating them, analyze Factors and Areas bottom-up, run
 `qualitymd evaluation status <run>`, and build reports with
 `qualitymd evaluation report build <run>`.
 
-The skill **MUST NOT** generate recommendations as part of Evaluation v2 v0.
+The skill **MUST NOT** generate recommendations as part of Evaluation v0.
 
 ### Conformance to the format spec
 
@@ -142,9 +142,9 @@ flowchart TD
    **MUST** persist `EvaluationFrame` through
    `qualitymd evaluation data set <run> < payload.json`.
 6. **Evaluate through routine outputs** — for each in-scope Area, Requirement,
-   Factor, and Area analysis step, the skill **MUST** produce the Evaluation v2
+   Factor, and Area analysis step, the skill **MUST** produce the Evaluation
    frame or result payload required by the
-   [Evaluation v2 protocol](../../evaluation-v2/protocol.md) and persist it
+   [Evaluation protocol](../../evaluation/protocol.md) and persist it
    through `qualitymd evaluation data set`.
 7. **Maintain the evaluate feedback log** — hand-author concise entries in the
    current run's `.quality/logs/<timestamp>-evaluate-feedback-log.md` for

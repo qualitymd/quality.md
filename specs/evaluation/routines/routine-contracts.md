@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
-title: Evaluation v2 routine contracts
-description: Prompt-contract requirements for agent-run Evaluation v2 routines.
+title: Evaluation routine contracts
+description: Prompt-contract requirements for agent-run Evaluation routines.
 tags: [evaluation, routines, prompts]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 routine contracts
+# Evaluation routine contracts
 
-Evaluation v2 routines are prompt contracts for an agent-run workflow. They are
+Evaluation routines are prompt contracts for an agent-run workflow. They are
 not ordinary CLI functions, although the CLI validates and persists their
 outputs.
 
@@ -34,7 +34,7 @@ precision.
 
 ## Routine Set
 
-Evaluation v2 **MUST** define prompt contracts for:
+Evaluation **MUST** define prompt contracts for:
 
 - `frameEvaluation`
 - `frameAreaEvaluation`

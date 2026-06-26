@@ -31,7 +31,7 @@ not judge quality, recompute ratings, or replace evaluation reports.
 ## Scope
 
 Covered: `qualitymd status [path]`, `--json`, model validity and shape, per-
-Area source coverage, recognized Evaluation v2 run history, stale and incomplete
+Area source coverage, recognized Evaluation run history, stale and incomplete
 run counts, readiness, next actions, deterministic ordering, and exit behavior.
 
 Deferred / non-goals: no model-quality judgment, no report rendering, no lint
@@ -102,8 +102,8 @@ history path when no resolved config file changes it.
 If the evaluation directory is absent, `status` **MUST** report zero recognized
 runs rather than failing.
 
-`status` **MUST** recognize Evaluation v2 run folders by the current
-[Evaluation v2](../evaluation-v2/evaluation-v2.md) contract and inspect them in
+`status` **MUST** recognize Evaluation run folders by the current
+[Evaluation](../evaluation/evaluation.md) contract and inspect them in
 deterministic order by run number, then folder name.
 
 For recognized runs, `status` **MUST** report total run count, latest run,
@@ -111,11 +111,11 @@ reportable run count, incomplete run count, and stale run count. A stale run is
 one whose `model-snapshot.md` snapshot bytes differ from the selected model file bytes.
 
 Malformed, unreadable, schema-incompatible, missing, or structurally incomplete
-Evaluation v2 data **MUST** make its run incomplete with status gaps. Broken
-Evaluation v2 skeletons **MUST** be reported as run inspection problems.
+Evaluation data **MUST** make its run incomplete with status gaps. Broken
+Evaluation skeletons **MUST** be reported as run inspection problems.
 
 For each run summary under `--json`, `status` **MUST** include run path,
-reportability, stale state, v2 data artifact count, gap count, and any
+reportability, stale state, evaluation data artifact count, gap count, and any
 inspection problem.
 
 `status` **MUST NOT** read generated Markdown report bodies to compute the

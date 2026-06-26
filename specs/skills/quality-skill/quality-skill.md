@@ -281,6 +281,14 @@ At the start of a public workflow, the skill **MUST** emit a concise run frame
 naming the resolved workflow, model file, scope, rigor level when applicable,
 mutation policy, expected artifacts, and next user-visible gate.
 
+The skill **MUST** emit the run frame as the workflow's first output, before any
+tool call — before CLI prerequisite checks, repository reads, lint, history
+inspection, or any feedback-log write. Run-frame emission **MUST NOT** be gated on
+a tool result. When a run-frame field cannot be resolved without a tool call, the
+skill **MUST** still emit the frame first, rendering that field with a best-known
+or `resolving…` value, and **SHOULD** confirm the resolved value in a later
+message.
+
 The run frame header **MUST** identify the resolved workflow. It **MUST NOT**
 render a string that reads as an invokable `/quality` command for a token that is
 not a real invocation — in particular it **MUST NOT** render `/quality run` — and
@@ -301,6 +309,13 @@ combination of those.
 > `Mode:` field: there is no `/quality run` invocation, and "Mode" is internal
 > vocabulary the public surface does not use. This extends 0062's constraint that
 > the run frame must not emit `Mode: wizard`. — 0110
+>
+> First-output timing is the same lesson as the header rules: the frame only lets
+> the user catch a wrong inference if it arrives *before* the agent spends effort,
+> so it must not sit behind a runway of tool calls. 0096 fixed this for `setup`
+> by ordering; 0114 lifts the ordering rule to this shared contract so every
+> workflow inherits it, with a provisional / `resolving…` value for any field
+> (notably scope) that genuinely needs a tool to resolve. — 0114
 
 ### Decision briefs
 
@@ -514,11 +529,14 @@ itself rather than embedding a list that drifts — preferring an agent-readable
 introspection channel where the [CLI](../../cli.md) offers one. It **MUST** consume
 machine-readable output where a command provides it (the
 [`--json` convention](../../cli.md#conventions)) rather than parsing
-human-formatted text. For structured Evaluation v2 payloads, it **MUST** discover
-payload kinds with `qualitymd evaluation data kinds`, inspect examples with
-`qualitymd evaluation data example <kind>`, and validate newly authored or
-materially revised payloads with `qualitymd evaluation data set --dry-run`
-before committing data. Before evaluation work, it **MUST** verify that
+human-formatted text. For structured Evaluation payloads, it **MUST** discover
+payload kinds with `qualitymd evaluation data kinds`, inspect the authoritative
+payload contract with `qualitymd evaluation data schema [<kind>]`, inspect
+populated examples with `qualitymd evaluation data example <kind>`, and validate
+newly authored or materially revised payloads with
+`qualitymd evaluation data set --dry-run` before committing data. The dry run is
+payload validation, not the mechanism for discovering shape. Before evaluation
+work, it **MUST** verify that
 `qualitymd version --json`, `qualitymd update --check`,
 `qualitymd evaluation create`, `qualitymd evaluation data`,
 `qualitymd evaluation list`, `qualitymd evaluation status`, and

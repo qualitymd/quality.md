@@ -1,15 +1,15 @@
 ---
 type: Functional Specification
-title: Evaluation v2 protocol
-description: Phase ordering, traversal, and stop behavior for Evaluation v2.
+title: Evaluation protocol
+description: Phase ordering, traversal, and stop behavior for Evaluation.
 tags: [evaluation, protocol, workflow]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
-# Evaluation v2 protocol
+# Evaluation protocol
 
-This spec defines the Evaluation v2 protocol order. It inherits shared
-invariants from [Evaluation v2](evaluation-v2.md).
+This spec defines the Evaluation protocol order. It inherits shared
+invariants from [Evaluation](evaluation.md).
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
@@ -17,7 +17,7 @@ capitals.
 
 ## Protocol Order
 
-An Evaluation v2 run **MUST** perform these protocol moves:
+An Evaluation run **MUST** perform these protocol moves:
 
 1. `frameEvaluation`
 2. `frameAreaEvaluation` for each in-scope Area

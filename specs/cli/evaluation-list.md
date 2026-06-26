@@ -25,11 +25,11 @@ folders in deterministic run-number order and **MUST NOT** write or modify any
 run.
 
 Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
-**MUST** identify the run path, root area, v2 data artifact count,
+**MUST** identify the run path, root area, evaluation data artifact count,
 reportability, and gap count, and **MAY** include narrowing when present.
 
-The command **MUST** use the current Evaluation v2 run inspection path. If a
-recognized run has a broken Evaluation v2 skeleton, the command **MUST** fail
+The command **MUST** use the current Evaluation run inspection path. If a
+recognized run has a broken Evaluation skeleton, the command **MUST** fail
 with the same diagnostic as `qualitymd evaluation status <run>`.
 
 The command **MAY** accept `--state all|complete|reportable|incomplete` to
