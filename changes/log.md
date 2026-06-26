@@ -2,6 +2,15 @@
 
 ## 2026-06-26
 
+- **Done**: Created, specced, designed, implemented, and archived
+  [0102 - Evaluation v2 report rating titles](archive/0102-v2-report-rating-titles.md).
+  Evaluation v2 Markdown reports now resolve selected Rating Levels through the
+  run's `model.md` Rating Scale `title` values, falling back to stable IDs when
+  needed, while routine JSON, `EvaluationOutputResult`, and build receipts keep
+  stable Rating Level IDs. Updated the durable Evaluation v2 report-tree spec and
+  focused report tests. Verified with targeted evaluation tests, full Go tests,
+  and `mise run fmt-md-check`.
+
 - **Done**: Implemented and archived
   [0099 - Closed-choice setup UX](archive/0099-closed-choice-setup-ux.md);
   set `status` to `Done` and moved the parent concept and child folder into

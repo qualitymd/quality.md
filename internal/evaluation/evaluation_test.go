@@ -6,13 +6,15 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/qualitymd/quality.md/internal/model"
 )
 
 const testModel = `---
 title: Test model
 ratingScale:
   - level: target
-    title: Target
+    title: 🔵 Target
     description: Target.
     criterion: Meets it.
   - level: minimum
@@ -122,8 +124,14 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	if !strings.Contains(string(report), "Overall Rating | target") {
-		t.Fatalf("report.md = %s, want target rating", report)
+	if !strings.Contains(string(report), "Overall Rating | 🔵 Target") {
+		t.Fatalf("report.md = %s, want target rating title", report)
+	}
+	if strings.Contains(string(report), "Overall Rating | target") {
+		t.Fatalf("report.md = %s, want rating title instead of level ID", report)
+	}
+	if build.RatingResult.Level != "target" {
+		t.Fatalf("BuildReport().RatingResult.Level = %q, want stable rating level ID", build.RatingResult.Level)
 	}
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
@@ -197,6 +205,13 @@ factors:
 	got := requirementTitle(run.Model, requirementID{Name: "retry-window"})
 	if got != "Retry window is bounded" {
 		t.Fatalf("requirementTitle() = %q, want Factor-declared Requirement title", got)
+	}
+}
+
+func TestRatingTitleFallsBackToLevelID(t *testing.T) {
+	spec := &model.Spec{RatingScale: []model.RatingLevel{{Level: "target"}}}
+	if got := ratingTitle(spec, "target"); got != "target" {
+		t.Fatalf("ratingTitle() = %q, want level ID fallback", got)
 	}
 }
 

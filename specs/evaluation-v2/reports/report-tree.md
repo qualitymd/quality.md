@@ -92,6 +92,14 @@ Requirement reports **MUST** include:
 
 Reports **MUST** render empty tables with explicit empty-state rows.
 
+Reports **MUST** render selected Rating Levels with the Rating Level `title`
+resolved from the run's `model.md` snapshot, falling back to the stable Rating
+Level ID only when a title is unavailable.
+
+> Rationale: Markdown reports are the human review surface, and the model
+> snapshot is the historical source for display vocabulary. Structured routine
+> data and machine receipts keep stable Rating Level IDs. — 0102
+
 Reports **MUST** render `not_assessed`, `not_rated`, `empty`, `not_analyzed`,
 and `blocked` distinctly from Rating Level labels.
 

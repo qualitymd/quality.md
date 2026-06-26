@@ -420,3 +420,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   cost labels for risk discovery and mapping them to risk-tolerance values
   internally; docs/spec/skill guidance only, no CLI/Go or format-spec change
   (`Done`).
+- [0102 — Evaluation v2 report rating titles](0102-v2-report-rating-titles.md) -
+  restores Rating Level title rendering in Evaluation v2 Markdown reports while
+  preserving stable Rating Level IDs in routine JSON, `EvaluationOutputResult`,
+  and build receipts (`Done`).
