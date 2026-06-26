@@ -2,7 +2,7 @@
 type: Change Case
 title: Durable spec alignment
 description: Align durable specs with the latest functional-spec and OKF guidance.
-status: In-Review
+status: Done
 tags: [specs, okf, documentation]
 timestamp: 2026-06-26T00:00:00Z
 ---
@@ -81,6 +81,6 @@ Deferred / non-goals:
 
 ## Status
 
-`In-Review`. Durable spec audit and alignment edits are complete; verified with
-`mise run fmt-md-check` and two follow-up audit passes. See the
-[status lifecycle](index.md#status-lifecycle).
+`Done`. Durable spec audit and alignment edits are complete; verified with
+`mise run fmt-md-check` and two follow-up audit passes, then archived. See the
+[status lifecycle](../index.md#status-lifecycle).

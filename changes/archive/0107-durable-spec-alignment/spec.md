@@ -94,34 +94,34 @@ None.
 
 ### To modify
 
-- [`specs/skills/quality-skill/guides/authoring/agent-harness.md`](../../specs/skills/quality-skill/guides/authoring/agent-harness.md)
+- [`specs/skills/quality-skill/guides/authoring/agent-harness.md`](../../../specs/skills/quality-skill/guides/authoring/agent-harness.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/agent-harnessability.md`](../../specs/skills/quality-skill/guides/authoring/agent-harnessability.md)
+- [`specs/skills/quality-skill/guides/authoring/agent-harnessability.md`](../../../specs/skills/quality-skill/guides/authoring/agent-harnessability.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/body.md`](../../specs/skills/quality-skill/guides/authoring/body.md)
+- [`specs/skills/quality-skill/guides/authoring/body.md`](../../../specs/skills/quality-skill/guides/authoring/body.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/factors.md`](../../specs/skills/quality-skill/guides/authoring/factors.md)
+- [`specs/skills/quality-skill/guides/authoring/factors.md`](../../../specs/skills/quality-skill/guides/authoring/factors.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/model-structure.md`](../../specs/skills/quality-skill/guides/authoring/model-structure.md)
+- [`specs/skills/quality-skill/guides/authoring/model-structure.md`](../../../specs/skills/quality-skill/guides/authoring/model-structure.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/quality-log.md`](../../specs/skills/quality-skill/guides/authoring/quality-log.md)
+- [`specs/skills/quality-skill/guides/authoring/quality-log.md`](../../../specs/skills/quality-skill/guides/authoring/quality-log.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/rating-scale.md`](../../specs/skills/quality-skill/guides/authoring/rating-scale.md)
+- [`specs/skills/quality-skill/guides/authoring/rating-scale.md`](../../../specs/skills/quality-skill/guides/authoring/rating-scale.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/authoring/requirements.md`](../../specs/skills/quality-skill/guides/authoring/requirements.md)
+- [`specs/skills/quality-skill/guides/authoring/requirements.md`](../../../specs/skills/quality-skill/guides/authoring/requirements.md)
   - add missing BCP 14 declaration and clarify the governed guide note. Driven
     by [Alignment edits](#alignment-edits).
-- [`specs/skills/quality-skill/guides/log.md`](../../specs/skills/quality-skill/guides/log.md)
+- [`specs/skills/quality-skill/guides/log.md`](../../../specs/skills/quality-skill/guides/log.md)
   - record the guide-spec alignment edits. Driven by
     [OKF and records](#okf-and-records).
-- [`specs/log.md`](../../specs/log.md) - record the bundle-level durable spec
+- [`specs/log.md`](../../../specs/log.md) - record the bundle-level durable spec
   alignment pass. Driven by [OKF and records](#okf-and-records).
 
 ### To rename

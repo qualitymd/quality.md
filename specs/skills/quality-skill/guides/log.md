@@ -3,7 +3,7 @@
 ## 2026-06-26
 
 - **Revision**: Updated the durable authoring sub-guide specs for
-  [0107 - Durable spec alignment](../../../../changes/0107-durable-spec-alignment.md).
+  [0107 - Durable spec alignment](../../../../changes/archive/0107-durable-spec-alignment.md).
   The eight routed authoring guide contracts now declare their BCP 14 keyword
   convention and use explicit companion notes for the runtime guide each spec
   governs.

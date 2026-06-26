@@ -2,8 +2,13 @@
 
 ## 2026-06-26
 
+- **Done**: Archived
+  [0107 - Durable spec alignment](archive/0107-durable-spec-alignment.md).
+  The durable spec alignment pass is complete and moved to `changes/archive/`;
+  the open-case index is clear again.
+
 - **In-Review**: Advanced
-  [0107 - Durable spec alignment](0107-durable-spec-alignment.md) to
+  [0107 - Durable spec alignment](archive/0107-durable-spec-alignment.md) to
   `In-Review`. Audited `SPECIFICATION.md` and 49 active durable spec concepts;
   fixed the routed authoring guide specs that used BCP 14 keywords without a
   convention declaration; added companion-note wording for those runtime guide
@@ -11,9 +16,9 @@
   two follow-up audit passes.
 
 - **Draft**: Created
-  [0107 - Durable spec alignment](0107-durable-spec-alignment.md) with its child
-  [index](0107-durable-spec-alignment/index.md) and
-  [functional spec](0107-durable-spec-alignment/spec.md). The case audits
+  [0107 - Durable spec alignment](archive/0107-durable-spec-alignment.md) with
+  its child [index](archive/0107-durable-spec-alignment/index.md) and
+  [functional spec](archive/0107-durable-spec-alignment/spec.md). The case audits
   `SPECIFICATION.md` and durable `specs/` concepts against the latest
   functional-spec and OKF guidance, fixes concrete current-guidance drift, and
   requires Markdown formatting plus two follow-up audit passes before completion.

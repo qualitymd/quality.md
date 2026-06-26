@@ -452,3 +452,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   `/quality` true binary mutation confirmations use visible `y`/`n` answer paths
   while preserving numbered responses for multi-option prompts; docs/spec/skill
   guidance only, no CLI/Go or format-spec change (`Done`).
+- [0107 — Durable spec alignment](0107-durable-spec-alignment.md) - aligned the
+  active durable spec bundle with current functional-spec and OKF guidance by
+  auditing `SPECIFICATION.md` and 49 active durable spec concepts, adding missing
+  BCP 14 convention declarations to routed authoring guide specs, and recording
+  the alignment in spec logs; docs/spec guidance only, no CLI/Go or runtime
+  behavior change (`Done`).
