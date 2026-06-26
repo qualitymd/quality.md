@@ -2,6 +2,51 @@
 
 ## 2026-06-26
 
+- **Done**: Implemented and archived
+  [0130 - Self-contained per-kind data schema](archive/0130-self-contained-data-schema.md).
+  `evaluation data schema <kind>` now emits the requested kind's object schema at
+  the document root with `$schema` and a kind-qualified `$id`, so required fields,
+  enum sets, and reference patterns are legible without following a `$ref` into
+  `$defs`; the no-argument full-surface schema remains `$defs` + `oneOf`.
+  `data schema` now uses the shared schema presenter, durable CLI/skill specs and
+  runtime skill guidance identify schema as the required-fields/enum source, and
+  examples as concrete instances. Added focused schema/CLI tests and release
+  notes; `go test ./internal/evaluation` and `go test ./internal/cli` pass.
+
+- **In-Progress**: Advanced
+  [0130 - Self-contained per-kind data schema](archive/0130-self-contained-data-schema.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  `internal/evaluation/data_contract.go`, `internal/cli/evaluation.go`, tests,
+  durable CLI/skill specs, and the bundled skill runtime guidance.
+
+- **Design**: Advanced
+  [0130 - Self-contained per-kind data schema](archive/0130-self-contained-data-schema.md)
+  to `Design` with its
+  [design doc](archive/0130-self-contained-data-schema/design.md). The design found the
+  evaluation data kind objects carry no inter-kind `$ref` — `schemaForObject`
+  inlines everything — so "flattening" the single-kind form is just shedding the
+  top-level `$defs`/`$ref` envelope and emitting the kind's object schema with the
+  document header; the generic `internal/schema` flattener and `cli/schema.go`
+  extraction scoped in Draft are unnecessary and were dropped from the footprint.
+  Terminal rendering reuses the existing in-package `writeSchema`. Corrected the
+  parent's [Affected artifacts](archive/0130-self-contained-data-schema.md) and the open
+  [index](index.md). Code not started.
+
+- **Draft**: Created
+  [0130 - Self-contained per-kind data schema](archive/0130-self-contained-data-schema.md)
+  with its
+  [functional spec](archive/0130-self-contained-data-schema/spec.md), at `Draft`. The case
+  makes `evaluation data schema <kind>` self-contained — required fields and enum
+  value sets legible at the root, no `$ref`/`$defs` dereference for the requested
+  kind — so closed sets stop being discovered via `data set --dry-run` failures
+  (per the 0.18.0 evaluate feedback log). Keeps `qualitymd schema` and
+  `evaluation data schema` as separate commands (rejecting a unified
+  `qualitymd schema <kind>`), adds no `data describe` and no `data example`
+  annotation, and sharpens the `/quality` skill to read the schema as the
+  constraint source. Records [`specs/cli/evaluation-data.md`](../specs/cli/evaluation-data.md),
+  the `internal/schema`/`internal/evaluation` code, and the bundled skill as
+  affected. Code not started. Added the case to the open [index](index.md).
+
 - **Done**: Landed and archived
   [0129 - Evaluation orchestration overhaul](archive/0129-evaluation-orchestration-overhaul.md).
   Removed the evaluate rigor dial from the bundled skill and durable skill specs,

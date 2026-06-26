@@ -2,6 +2,15 @@
 
 ## 2026-06-26
 
+- **Revision**: Strengthened
+  [Writing functional specs](guides/write-functional-specs.md) and
+  [Working with change cases](guides/work-with-change-cases.md) for
+  [0130 - Self-contained per-kind data schema](../changes/archive/0130-self-contained-data-schema.md).
+  Change-case specs now carry per-requirement `Durable spec:` annotations and
+  roll them up into the `## Durable spec changes` section; the guides also call
+  out that runtime skill files under `skills/` are durable docs while skill
+  behavior specs under `specs/skills/` are durable specs.
+
 - **Revision**: Updated the evaluate run-frame example in
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
   [0129 - Evaluation orchestration overhaul](../changes/archive/0129-evaluation-orchestration-overhaul.md).

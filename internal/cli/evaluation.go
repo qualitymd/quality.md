@@ -258,8 +258,7 @@ func newEvaluationDataSchemaCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			_, err = cmd.OutOrStdout().Write(raw)
-			return err
+			return writeSchema(cmd.OutOrStdout(), raw)
 		},
 	}
 	cmd.Flags().BoolVar(&jsonFlag, "json", false, "not supported: data schema already emits JSON")

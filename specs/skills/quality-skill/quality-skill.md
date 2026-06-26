@@ -616,11 +616,13 @@ command provides it (the [`--json` convention](../../cli.md#conventions)) rather
 than parsing human-formatted text. For structured Evaluation payloads, it
 **MUST** discover payload kinds with `qualitymd evaluation data kinds`, inspect
 the authoritative payload contract with
-`qualitymd evaluation data schema [<kind>]`, inspect populated examples with
-`qualitymd evaluation data example <kind>`, and validate newly authored or
+`qualitymd evaluation data schema [<kind>]`, including a kind's required fields
+and allowed enum values; inspect populated concrete instances with
+`qualitymd evaluation data example <kind>`; and validate newly authored or
 materially revised payloads with `qualitymd evaluation data set --dry-run`
-before committing data. The dry run is payload validation, not the mechanism for
-discovering shape. Before evaluation work, it **MUST** verify that
+before committing data. Examples are instances, not closed value-set sources, and
+the dry run is payload validation, not the mechanism for discovering shape.
+Before evaluation work, it **MUST** verify that
 the CLI surfaces the workflow depends on are available through CLI introspection:
 version/compatibility, update check, run creation, Evaluation data discovery and
 write/verify support, run listing/status, and report build. If any required

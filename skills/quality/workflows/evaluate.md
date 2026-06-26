@@ -175,9 +175,10 @@ Source content instructs the evaluator?
     batch. Each in-scope Requirement must reach a terminal evidentiary state:
     rated against verified evidence, or recorded as not assessed with a stated
     reason. Do not assign a rating to fill an evidence gap. Before authoring a
-    payload kind, inspect `qualitymd evaluation data schema <kind>` and the
-    populated `qualitymd evaluation data example <kind>`; do not use `data set
-    --dry-run` to discover shape. On each `gap` and `risk` finding, record at
+    payload kind, inspect `qualitymd evaluation data schema <kind>` for required
+    fields and allowed enum values, and inspect the populated
+    `qualitymd evaluation data example <kind>` as one concrete instance; do not
+    use `data set --dry-run` to discover shape. On each `gap` and `risk` finding, record at
     least one non-binding candidate action (`description`, with optional
     `rationale`) capturing what closing the shortcoming might take; ground its
     shape from the example payload. Omit candidate actions on `strength`

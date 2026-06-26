@@ -5,6 +5,46 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.19.0 - 2026-06-26
+
+### CLI
+
+- `qualitymd evaluation data schema <kind>` now emits a self-contained schema for
+  the requested Evaluation payload kind. Required fields, enum value sets, and
+  model-reference patterns are visible in the emitted document without following
+  a top-level `$ref` into `$defs`; the no-argument full-surface schema remains
+  available for all kinds.
+- `qualitymd evaluation data schema` now uses the same terminal rendering as
+  `qualitymd schema`: redirects stay verbatim JSON, while terminal output may be
+  highlighted and paged.
+
+### /quality Skill
+
+- `/quality` now requires `qualitymd >=0.19.0 <0.20.0`.
+- The skill now treats `qualitymd evaluation data schema <kind>` as the source
+  for required fields and allowed enum values, with
+  `qualitymd evaluation data example <kind>` used as one concrete valid instance.
+
+### Documentation
+
+- Change-case and functional-spec authoring guidance now requires
+  per-requirement `Durable spec:` annotations in change-case specs and clarifies
+  the split between runtime skill files under `skills/` and durable skill specs
+  under `specs/skills/`.
+
+### Compatibility / Migration
+
+- Consumers that read `qualitymd evaluation data schema <kind>` should read the
+  kind schema directly from the document root. The no-argument
+  `qualitymd evaluation data schema` output remains the full-surface schema.
+- `/quality` skill version `0.19.0` requires the `qualitymd` CLI `0.19.x` line.
+
+Compatibility:
+
+- CLI: `v0.19.0`
+- QUALITY.md specification: `0.5 (Draft)`
+- /quality skill: `0.19.0`, requires `qualitymd >=0.19.0 <0.20.0`
+
 ## v0.18.0 - 2026-06-26
 
 ### /quality Skill

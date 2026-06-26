@@ -207,7 +207,11 @@ testable sentence; put the *why* in a blockquote under it:
 The form: a blockquote led by `Rationale:` (the terser `Why:` is fine), one or
 two sentences, optionally citing the originating change id (`— 0012`) for
 provenance. The requirement stays the lead; the annotation is subordinate and
-must never wrap around or bury it.
+must never wrap around or bury it. A change-case spec requirement carries a second
+subordinate annotation alongside this one — the `Durable spec:` line that records
+its spec impact (see [Durable spec changes](#durable-spec-changes)); the two are
+distinct (one carries *why*, the other maps to the durable contract) and each sits
+on its own blockquote.
 
 Annotate by this litmus: **when a future editor would otherwise repeat a mistake
 or be misled.** A rule whose reason is obvious needs no note. Dead-end
@@ -232,19 +236,34 @@ the resulting contract and rationale directly. (See
 [Working with change cases](work-with-change-cases.md#account-for-the-artifacts-it-touches)
 for how it divides labor with the parent's **Affected artifacts** index.)
 
-Give it four subsections, in order — **To add** (new durable specs), **To
-modify**, **To rename**, **To delete** — and make each one present and explicit:
-a list, or the single word `None`. A subsection is never left blank or dropped; a
+Attribute the substance **per requirement first**. Each requirement carries a
+subordinate `Durable spec:` annotation — parallel to [`Rationale:`](#per-requirement-rationale),
+a blockquote directly beneath the testable sentence — naming the durable-spec
+change it drives: the verb (**add** / **modify** / **rename** / **delete**), the
+spec path, and what changes. A requirement that drives no durable-spec change
+says `Durable spec: none`, so it is explicit which requirements result in a spec
+change and which deliberately do not — never a silent omission. The annotation
+**MUST NOT** restate the normative text; it maps the requirement to the durable
+contract it lands in.
+
+> The single-kind form **MUST** emit a self-contained schema.
+>
+>> Durable spec: modify `specs/cli/evaluation-data.md` — replace "rooted at that
+>> kind" with the self-contained-legibility requirement.
+
+Then **roll those annotations up** into a `## Durable spec changes` section with
+four subsections, in order — **To add** (new durable specs), **To modify**, **To
+rename**, **To delete** — each present and explicit: a list, or the single word
+`None`. The rollup is the at-a-glance footprint and the completeness check; it
+also houses any change no single requirement owns (a rename or delete that serves
+the requirement set as a whole). A subsection is never left blank or dropped; a
 written `None` is a deliberate "nothing of this kind," not an oversight. **To
 rename** carries any durable spec whose path changes (`old → new`): a rename is a
 delete-plus-add, so without its own home it hides — the new path slips into
 **To add** and the old path goes unaccounted in **To delete**. Naming the rename
-once keeps both ends honest.
-
-Each entry names the durable spec, says what changes, and links to the
-requirement above that drives it. It **MUST NOT** restate the normative text —
-that lives once, in [Requirements](#requirements); the entry only maps a
-requirement to the durable contract it lands in.
+once keeps both ends honest. The per-requirement annotations are authoritative;
+each rollup entry back-links the requirement(s) that drive it and **MUST NOT**
+restate the normative text — that lives once, in [Requirements](#requirements).
 
 ```markdown
 ## Durable spec changes
@@ -272,9 +291,11 @@ None
 ```
 
 Scope is durable **specs** only — the [`specs/`](../../specs/index.md) bundle and
-the format spec [`SPECIFICATION.md`](../../SPECIFICATION.md). The other artifact
-kinds — durable *docs* (README, guides, scaffold, the bundled skill) and *code* —
-are tracked in the change case's parent **Affected artifacts** index, not here.
+the format spec [`SPECIFICATION.md`](../../SPECIFICATION.md), including the skill's
+functional spec under [`specs/skills/`](../../specs/index.md) when a change alters
+skill *behavior*. The other artifact kinds — durable *docs* (README, guides,
+scaffold, the bundled skill's runtime content under `skills/`) and *code* — are
+tracked in the change case's parent **Affected artifacts** index, not here.
 
 ## Conventions
 

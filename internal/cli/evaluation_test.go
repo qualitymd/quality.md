@@ -80,8 +80,10 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("data schema Execute() error = %v", err)
 	}
-	if !strings.Contains(out.String(), `"#/$defs/RequirementAssessmentResult"`) {
-		t.Fatalf("data schema stdout = %s, want kind schema", out.String())
+	if !strings.Contains(out.String(), `"kind": {`) ||
+		!strings.Contains(out.String(), `"RequirementAssessmentResult"`) ||
+		strings.Contains(out.String(), `"#/$defs/RequirementAssessmentResult"`) {
+		t.Fatalf("data schema stdout = %s, want self-contained kind schema", out.String())
 	}
 
 	cmd = newRootCmd()

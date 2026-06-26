@@ -146,16 +146,27 @@ every artifact the case touches, and the checklist reconciled before
 **In-Review**. The *substance* of a durable **spec** change lives one level down,
 in the [functional spec](write-functional-specs.md): which durable specs the
 change rewrites, and what they must say differently, belong with the requirements
-that drive them — not in the design doc, and not discovered at the end. So a
-change case's functional spec must carry a
+that drive them — not in the design doc, and not discovered at the end. So each
+**requirement** in a change case's functional spec carries its own durable-spec
+impact in a subordinate annotation — the named **add** / **modify** / **rename** /
+**delete**, or an explicit `none` — so it is traceable which requirements result
+in a spec change and which deliberately do not. Those per-requirement annotations
+then roll up into the spec's
 [`## Durable spec changes`](write-functional-specs.md#durable-spec-changes)
 section — **To add** / **To modify** / **To rename** / **To delete**, each
-reading a list or an explicit `None` — covering the
+reading a list or an explicit `None` — which gives the at-a-glance footprint and
+catches any change no single requirement owns. Both cover the
 [`specs/`](../../specs/index.md) bundle and the format spec
 [`SPECIFICATION.md`](../../SPECIFICATION.md). A spec rename belongs in **To
-rename** (`old → new`), not split across add and delete. The other artifact kinds
-— durable *docs* (README, guides, scaffold, the bundled skill) and *code* — need
-no such breakdown; the parent's index is their only home.
+rename** (`old → new`), not split across add and delete.
+
+The other artifact kinds — durable *docs* (README, guides, scaffold) and *code* —
+need no such breakdown; the parent's index is their only home. The **bundled
+skill is the exception that hides**: its runtime content under
+[`skills/`](../../skills/) is a durable doc, but its functional spec under
+[`specs/skills/`](../../specs/index.md) is part of the `specs/` bundle — so a
+change to skill *behavior* belongs in the **Durable spec changes** breakdown like
+any other durable spec, even when the runtime skill files change alongside it.
 
 What gets absorbed is not only the *what* but the **enduring *why***. A Change
 Case's **motivation** and its [design doc](write-design-docs.md)'s durable

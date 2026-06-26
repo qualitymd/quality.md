@@ -23,7 +23,10 @@ Discover command shapes, flags, and payload contracts from the CLI at runtime:
   whether the install is in the skill's supported range.
 - Use `qualitymd spec` for active format rules and rating vocabulary.
 - Use `qualitymd evaluation data kinds`, `qualitymd evaluation data schema`, and
-  `qualitymd evaluation data example` for Evaluation payload discovery.
+  `qualitymd evaluation data example` for Evaluation payload discovery. For one
+  kind, `data schema <kind>` is self-contained and is the source for required
+  fields and allowed enum values; `data example <kind>` is one concrete valid
+  instance.
 
 Prefer stable structured channels (`--json`, schemas, examples) over parsing
 human-formatted help tables when the result will drive routing or authored

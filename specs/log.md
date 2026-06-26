@@ -3,6 +3,15 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0130 - Self-contained per-kind data schema](../changes/archive/0130-self-contained-data-schema.md).
+  The Evaluation data CLI spec now requires `data schema <kind>` to emit a
+  self-contained schema whose required fields and enum value sets are legible
+  without following a top-level `$ref` into `$defs`, while allowing the
+  no-argument full-surface schema to keep `$defs`/`$ref`. The `/quality` skill
+  spec now names `data schema <kind>` as the required-fields and enum-value
+  source, with examples as concrete instances only.
+
+- **Revision**: Implemented durable spec changes for
   [0129 - Evaluation orchestration overhaul](../changes/archive/0129-evaluation-orchestration-overhaul.md).
   The `/quality` evaluation spec now removes the evaluation rigor selector,
   makes exhaustive in-scope Requirement coverage mandatory, defaults independent

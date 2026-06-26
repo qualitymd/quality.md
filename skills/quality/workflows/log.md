@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0130 -
+  Self-contained per-kind data schema.
+  Before authoring a payload kind, Evaluate now reads
+  `qualitymd evaluation data schema <kind>` for required fields and allowed enum
+  values, then treats `qualitymd evaluation data example <kind>` as one concrete
+  instance rather than a closed value-set source.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0129 -
   Evaluation orchestration overhaul.
   Evaluate now removes the `Rigor:` run-frame field and feedback-log `rigor`

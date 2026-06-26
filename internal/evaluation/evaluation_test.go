@@ -526,8 +526,63 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if err != nil {
 		t.Fatalf("EvaluationDataSchema(kind) error = %v", err)
 	}
-	if !strings.Contains(string(kindSchema), `"#/$defs/RequirementAssessmentResult"`) {
-		t.Fatalf("kind schema = %s, want kind ref", kindSchema)
+	var doc map[string]any
+	if err := json.Unmarshal(kindSchema, &doc); err != nil {
+		t.Fatalf("Unmarshal(kind schema) error = %v", err)
+	}
+	if _, ok := doc["$defs"]; ok {
+		t.Fatalf("kind schema = %s, want no $defs envelope", kindSchema)
+	}
+	if _, ok := doc["$ref"]; ok {
+		t.Fatalf("kind schema = %s, want no root $ref", kindSchema)
+	}
+	if got, want := doc["$id"], evaluationDataSchemaID+"/"+string(DataKindRequirementAssessment); got != want {
+		t.Fatalf("kind schema $id = %v, want %q", got, want)
+	}
+	required, ok := doc["required"].([]any)
+	if !ok {
+		t.Fatalf("kind schema required = %#v, want array", doc["required"])
+	}
+	for _, want := range []string{"schemaVersion", "kind", "requirementId", "status", "findings"} {
+		if !jsonArrayContains(required, want) {
+			t.Fatalf("kind schema required = %#v, want %q", required, want)
+		}
+	}
+	props, ok := doc["properties"].(map[string]any)
+	if !ok {
+		t.Fatalf("kind schema properties = %#v, want object", doc["properties"])
+	}
+	status, ok := props["status"].(map[string]any)
+	if !ok {
+		t.Fatalf("kind schema status property = %#v, want object", props["status"])
+	}
+	statusEnum, ok := status["enum"].([]any)
+	if !ok {
+		t.Fatalf("kind schema status enum = %#v, want array", status["enum"])
+	}
+	for _, want := range []string{"assessed", "partially_assessed", "not_assessed", "blocked"} {
+		if !jsonArrayContains(statusEnum, want) {
+			t.Fatalf("kind schema status enum = %#v, want %q", statusEnum, want)
+		}
+	}
+	areaSchema, err := EvaluationDataSchema(DataKindAreaAnalysis)
+	if err != nil {
+		t.Fatalf("EvaluationDataSchema(area kind) error = %v", err)
+	}
+	var areaDoc map[string]any
+	if err := json.Unmarshal(areaSchema, &areaDoc); err != nil {
+		t.Fatalf("Unmarshal(area schema) error = %v", err)
+	}
+	areaProps, ok := areaDoc["properties"].(map[string]any)
+	if !ok {
+		t.Fatalf("area schema properties = %#v, want object", areaDoc["properties"])
+	}
+	areaID, ok := areaProps["areaId"].(map[string]any)
+	if !ok {
+		t.Fatalf("area schema areaId property = %#v, want object", areaProps["areaId"])
+	}
+	if pattern, ok := areaID["pattern"].(string); !ok || !strings.Contains(pattern, "area:") {
+		t.Fatalf("area schema areaId pattern = %#v, want area:<id> reference pattern", areaID["pattern"])
 	}
 
 	example, err := DataExample(DataKindRequirementAssessment)
@@ -539,6 +594,15 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 			t.Fatalf("example = %s, want %q", example, want)
 		}
 	}
+}
+
+func jsonArrayContains(values []any, want string) bool {
+	for _, value := range values {
+		if value == want {
+			return true
+		}
+	}
+	return false
 }
 
 func TestEvaluationDataSchemaArtifactIsCurrent(t *testing.T) {

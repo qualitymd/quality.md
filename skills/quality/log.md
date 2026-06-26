@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0130 - Self-contained
+  per-kind data schema.
+  Artifact Contract guidance now treats `qualitymd evaluation data schema <kind>`
+  as the source for required fields and allowed enum values, with
+  `data example <kind>` as one concrete instance and `data set --dry-run` as
+  authored-payload validation only.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0129 - Evaluation
   orchestration overhaul.
   Runtime guidance now removes the evaluation rigor argument and run-frame field,

@@ -734,6 +734,17 @@ func EvaluationDataSchema(kind DataKind) ([]byte, error) {
 }
 
 func evaluationDataSchemaDoc(kind DataKind) (map[string]any, error) {
+	if kind != "" {
+		contract, ok := dataContracts[kind]
+		if !ok {
+			return nil, usagef("unknown evaluation data kind %q", kind)
+		}
+		doc := schemaForObject(contract.Object)
+		doc["$schema"] = qschema.JSONSchemaDialect
+		doc["$id"] = evaluationDataSchemaID + "/" + string(kind)
+		return doc, nil
+	}
+
 	defs := map[string]any{}
 	for _, k := range dataContractOrder {
 		contract := dataContracts[k]
@@ -743,13 +754,6 @@ func evaluationDataSchemaDoc(kind DataKind) (map[string]any, error) {
 		"$schema": qschema.JSONSchemaDialect,
 		"$id":     evaluationDataSchemaID,
 		"$defs":   defs,
-	}
-	if kind != "" {
-		if _, ok := dataContracts[kind]; !ok {
-			return nil, usagef("unknown evaluation data kind %q", kind)
-		}
-		doc["$ref"] = "#/$defs/" + string(kind)
-		return doc, nil
 	}
 	refs := make([]any, 0, len(dataContractOrder))
 	for _, k := range dataContractOrder {

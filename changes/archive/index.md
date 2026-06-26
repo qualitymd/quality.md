@@ -566,3 +566,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     Requirement coverage mandatory, defaults independent collection and QC work
     to subagent fan-out when available, and requires an always-on two-pronged QC
     phase before roll-up (`Done`).
+- [0130 — Self-contained per-kind data schema](0130-self-contained-data-schema.md)
+  - makes `qualitymd evaluation data schema <kind>` emit a self-contained schema
+    with required fields and enum value sets legible at the document root, keeps
+    the no-argument full-surface schema intact, reuses the shared schema
+    presenter, and aligns the `/quality` skill to treat schema as the constraint
+    source and examples as concrete instances (`Done`).

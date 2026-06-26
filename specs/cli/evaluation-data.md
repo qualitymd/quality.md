@@ -37,6 +37,11 @@ validate and persist a scope's payloads in one invocation instead of looping one
 CLI call per Requirement, Factor, or Area. The batch is validated before writing,
 so a failed submission is a no-op the agent can correct and retry.
 
+`data schema <kind>` is the legible constraint source for authoring one payload
+kind. Required fields and closed enum value sets need to be visible in that
+single-kind schema itself; otherwise agents learn constraints by trial-and-error
+validation failures instead of reading the contract.
+
 ## Requirements
 
 `data set` **MUST** read a single non-empty JSON array from stdin whose elements
@@ -101,8 +106,17 @@ and **SHOULD** accept the kebab-case form.
 
 `data schema` **MUST** emit the JSON Schema generated from the same accepted-kind
 contract used by `data set` and `data example`. With no argument it **MUST** emit
-the schema for the full data surface; with `<kind>` it **MUST** emit a schema
-rooted at that kind. It **MUST NOT** provide a second JSON result-wrapper mode.
+the schema for the full data surface; with `<kind>` it **MUST** emit a
+self-contained schema for that kind so the required fields and allowed enum
+values are legible from the emitted document without dereferencing a top-level
+`$ref` into a separate `$defs` map. The no-argument full-surface schema **MAY**
+use `$defs` and `$ref`. `data schema` **MUST NOT** provide a second JSON
+result-wrapper mode.
+
+When `data schema` output must be plain, including when stdout is not a terminal
+or `NO_COLOR` is set, the command **MUST** write the schema as verbatim JSON and
+nothing else. On a terminal, it **MAY** syntax-highlight and page the JSON for
+readability.
 
 `data verify <run>` **MUST** re-validate every persisted Evaluation JSON payload
 under the run's `data/` directory against the same structural and model-bound
