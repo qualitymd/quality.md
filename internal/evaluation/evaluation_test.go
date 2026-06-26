@@ -127,6 +127,9 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	if !strings.Contains(string(report), "Overall Rating | 🔵 Target") {
 		t.Fatalf("report.md = %s, want target rating title", report)
 	}
+	if !strings.Contains(string(report), "Confidence | 🟢 High / 🟢 High") {
+		t.Fatalf("report.md = %s, want confidence display titles", report)
+	}
 	if strings.Contains(string(report), "Overall Rating | target") {
 		t.Fatalf("report.md = %s, want rating title instead of level ID", report)
 	}
@@ -143,6 +146,9 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	}
 	if output["kind"] != string(DataKindEvaluationOutput) {
 		t.Fatalf("EvaluationOutputResult kind = %v", output["kind"])
+	}
+	if output["kind"] == dataKindTitle(DataKindEvaluationOutput) {
+		t.Fatalf("EvaluationOutputResult kind = %v, want stable data kind", output["kind"])
 	}
 }
 
@@ -212,6 +218,41 @@ func TestRatingTitleFallsBackToLevelID(t *testing.T) {
 	spec := &model.Spec{RatingScale: []model.RatingLevel{{Level: "target"}}}
 	if got := ratingTitle(spec, "target"); got != "target" {
 		t.Fatalf("ratingTitle() = %q, want level ID fallback", got)
+	}
+}
+
+func TestReportDisplayTitles(t *testing.T) {
+	tests := []struct {
+		name string
+		got  string
+		want string
+	}{
+		{"analysis status", analysisStatusTitle(string(AnalysisStatusNotAnalyzed)), "⚪ Not Analyzed"},
+		{"assessment status", assessmentStatusTitle(string(AssessmentStatusPartiallyAssessed)), "🟡 Partially Assessed"},
+		{"rating status", ratingStatusTitle(string(RatingStatusNotRated)), "⚪ Not Rated"},
+		{"confidence", confidenceTitle(string(ConfidenceMedium)), "🔵 Medium"},
+		{"run gap kind", runGapKindTitle(GapMissingEvaluationData), "📭 Missing Evaluation Data"},
+		{"rating result kind", ratingResultKindTitle(RatingResultNotAssessed), "⚪ Not Assessed"},
+		{"report kind", reportKindTitle(string(ReportKindFactor)), "🧩 Factor"},
+		{"boolean", v2BoolLabel(true), "✅ Yes"},
+		{"known finding severity", findingSeverityTitle("high"), "🔴 High"},
+		{"unknown fallback", findingTypeTitle("new_finding_type"), "New Finding Type"},
+		{"camel fallback", limitTypeTitle("futureLimitType"), "Future Limit Type"},
+	}
+	for _, tc := range tests {
+		if tc.got != tc.want {
+			t.Fatalf("%s title = %q, want %q", tc.name, tc.got, tc.want)
+		}
+	}
+}
+
+func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
+	kinds := append([]DataKind{}, acceptedDataKinds...)
+	kinds = append(kinds, DataKindEvaluationOutput)
+	for _, kind := range kinds {
+		if got := dataKindTitle(kind); got == "" || got == humanizeEnum(string(kind)) {
+			t.Fatalf("dataKindTitle(%s) = %q, want explicit title", kind, got)
+		}
 	}
 }
 

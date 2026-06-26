@@ -3,6 +3,17 @@
 ## 2026-06-26
 
 - **Done**: Created, specced, designed, implemented, and archived
+  [0103 - Evaluation v2 report enum display titles](archive/0103-v2-report-enum-display-titles.md).
+  Evaluation v2 Markdown reports now render CLI-owned statuses, confidence
+  levels, booleans, report kinds, limits, unknowns, and known finding
+  classifications through typed human display titles with semantic emoji and
+  fallback title-casing for unknown strings. Rating Levels still resolve through
+  the run's model snapshot, and routine JSON, `EvaluationOutputResult`, and build
+  receipts keep stable raw values. Updated the durable Evaluation v2 report-tree
+  spec and focused report tests. Verified with targeted evaluation tests, full Go
+  tests, and `mise run fmt-md-check`.
+
+- **Done**: Created, specced, designed, implemented, and archived
   [0102 - Evaluation v2 report rating titles](archive/0102-v2-report-rating-titles.md).
   Evaluation v2 Markdown reports now resolve selected Rating Levels through the
   run's `model.md` Rating Scale `title` values, falling back to stable IDs when

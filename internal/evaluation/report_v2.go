@@ -302,7 +302,7 @@ func renderV2ReportTree(spec *model.Spec, artifacts *v2Artifacts) []v2RenderedRe
 		}
 		path := areaReportPath(area.ID)
 		reports = append(reports, v2RenderedReport{
-			Kind:    "area",
+			Kind:    string(ReportKindArea),
 			Path:    path,
 			AreaID:  copyStrings(area.ID),
 			Content: renderV2AreaReport(spec, artifacts, area, path),
@@ -315,7 +315,7 @@ func renderV2ReportTree(spec *model.Spec, artifacts *v2Artifacts) []v2RenderedRe
 		id := factor.ID
 		path := factorReportPath(id)
 		reports = append(reports, v2RenderedReport{
-			Kind:     "factor",
+			Kind:     string(ReportKindFactor),
 			Path:     path,
 			AreaID:   copyStrings(id.DeclaringArea),
 			FactorID: &id,
@@ -329,7 +329,7 @@ func renderV2ReportTree(spec *model.Spec, artifacts *v2Artifacts) []v2RenderedRe
 		id := requirement.ID
 		path := requirementReportPath(id)
 		reports = append(reports, v2RenderedReport{
-			Kind:          "requirement",
+			Kind:          string(ReportKindRequirement),
 			Path:          path,
 			AreaID:        copyStrings(id.DeclaringArea),
 			RequirementID: &id,
@@ -352,7 +352,7 @@ func renderV2AreaReport(spec *model.Spec, artifacts *v2Artifacts, area *v2AreaAr
 	b.WriteString("| Path | `" + areaDisplayPath(area.ID) + "` |\n")
 	b.WriteString("| Overall Rating | " + markdownCell(v2RatingLabel(spec, overall)) + " |\n")
 	b.WriteString("| Local Rating | " + markdownCell(v2RatingLabel(spec, local)) + " |\n")
-	b.WriteString("| Confidence | " + markdownCell(v2String(overall, "confidence")) + " / " + markdownCell(v2String(local, "confidence")) + " |\n")
+	b.WriteString("| Confidence | " + markdownCell(v2ConfidencePair(overall, local)) + " |\n")
 	b.WriteString("| Data | " + reportLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json"), "analysis") + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(v2Summary(overall))
@@ -389,7 +389,7 @@ func renderV2AreaReport(spec *model.Spec, artifacts *v2Artifacts, area *v2AreaAr
 		b.WriteString("| (no local Requirements) |  |  |  |  |\n\n")
 	} else {
 		for _, req := range requirements {
-			b.WriteString("| " + markdownCell(requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(v2String(req.Assessment, "status")) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " | " + reportLink(reportPath, requirementReportPath(req.ID), "details") + " |\n")
+			b.WriteString("| " + markdownCell(requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " | " + reportLink(reportPath, requirementReportPath(req.ID), "details") + " |\n")
 		}
 		b.WriteString("\n")
 	}
@@ -416,8 +416,8 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 	b.WriteString("| Path | `" + factorDisplayPath(factor.ID) + "` |\n")
 	b.WriteString("| Local + Descendant Rating | " + markdownCell(v2RatingLabel(spec, overall)) + " |\n")
 	b.WriteString("| Local Rating | " + markdownCell(v2RatingLabel(spec, local)) + " |\n")
-	b.WriteString("| Status | " + markdownCell(v2String(overall, "status")) + " / " + markdownCell(v2String(local, "status")) + " |\n")
-	b.WriteString("| Confidence | " + markdownCell(v2String(overall, "confidence")) + " / " + markdownCell(v2String(local, "confidence")) + " |\n")
+	b.WriteString("| Status | " + markdownCell(v2AnalysisStatusPair(overall, local)) + " |\n")
+	b.WriteString("| Confidence | " + markdownCell(v2ConfidencePair(overall, local)) + " |\n")
 	b.WriteString("| Data | " + reportLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json"), "analysis") + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(v2Summary(overall))
@@ -430,7 +430,7 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 		b.WriteString("| (no direct Requirements) |  |  |  |\n\n")
 	} else {
 		for _, req := range requirements {
-			b.WriteString("| " + markdownCell(requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(v2String(req.Assessment, "status")) + " | " + reportLink(reportPath, requirementReportPath(req.ID), "details") + " |\n")
+			b.WriteString("| " + markdownCell(requirementTitle(spec, req.ID)) + " | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + reportLink(reportPath, requirementReportPath(req.ID), "details") + " |\n")
 		}
 		b.WriteString("\n")
 	}
@@ -462,10 +462,10 @@ func renderV2RequirementReport(spec *model.Spec, artifacts *v2Artifacts, req *v2
 	b.WriteString("| Requirement | " + markdownCell(title) + " |\n")
 	b.WriteString("| Requirement Name | `" + markdownCell(req.ID.Name) + "` |\n")
 	b.WriteString("| Rating | " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " |\n")
-	b.WriteString("| Rating Status | " + markdownCell(v2String(req.Rating, "status")) + " |\n")
-	b.WriteString("| Assessment Status | " + markdownCell(v2String(req.Assessment, "status")) + " |\n")
+	b.WriteString("| Rating Status | " + markdownCell(ratingStatusTitle(v2String(req.Rating, "status"))) + " |\n")
+	b.WriteString("| Assessment Status | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " |\n")
 	b.WriteString("| Factors | " + markdownCell(requirementFactorLinks(req, reportPath)) + " |\n")
-	b.WriteString("| Confidence | " + markdownCell(v2String(req.Rating, "confidence")) + " / " + markdownCell(v2String(req.Assessment, "confidence")) + " |\n")
+	b.WriteString("| Confidence | " + markdownCell(confidenceTitle(v2String(req.Rating, "confidence"))+" / "+confidenceTitle(v2String(req.Assessment, "confidence"))) + " |\n")
 	b.WriteString("| Data | " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json"), "assessment") + ", " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json"), "rating") + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	if summary := v2String(req.Assessment, "evidenceSummary"); summary != "" {
@@ -696,7 +696,7 @@ func writeV2LimitsTable(b *strings.Builder, scopes ...map[string]any) {
 		for _, field := range []string{"incompleteInputs", "evaluationLimits"} {
 			for _, item := range objectSlice(scope[field]) {
 				wrote = true
-				b.WriteString("| " + markdownCell(field) + " | " + markdownCell(firstString(item, "scope", "ref", "id")) + " | " + markdownCell(firstString(item, "impact", "description", "reason")) + " |\n")
+				b.WriteString("| " + markdownCell(limitTypeTitle(field)) + " | " + markdownCell(firstString(item, "scope", "ref", "id")) + " | " + markdownCell(firstString(item, "impact", "description", "reason")) + " |\n")
 			}
 		}
 	}
@@ -718,7 +718,7 @@ func writeV2FindingsTable(b *strings.Builder, assessment map[string]any) {
 		if id == "" {
 			id = fmt.Sprintf("finding-%d", i+1)
 		}
-		b.WriteString("| `" + markdownCell(id) + "` | " + markdownCell(firstString(finding, "type", "Type")) + " | " + markdownCell(firstString(finding, "severity", "Severity")) + " | " + markdownCell(firstString(finding, "description", "Description")) + " |\n")
+		b.WriteString("| `" + markdownCell(id) + "` | " + markdownCell(findingTypeTitle(firstString(finding, "type", "Type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity", "Severity"))) + " | " + markdownCell(firstString(finding, "description", "Description")) + " |\n")
 	}
 	b.WriteString("\n")
 }
@@ -740,8 +740,8 @@ func writeV2FindingDetails(b *strings.Builder, assessment map[string]any) {
 		}
 		b.WriteString("| Field | Value |\n")
 		b.WriteString("| --- | --- |\n")
-		b.WriteString("| Type | " + markdownCell(firstString(finding, "type", "Type")) + " |\n")
-		b.WriteString("| Severity | " + markdownCell(firstString(finding, "severity", "Severity")) + " |\n")
+		b.WriteString("| Type | " + markdownCell(findingTypeTitle(firstString(finding, "type", "Type"))) + " |\n")
+		b.WriteString("| Severity | " + markdownCell(findingSeverityTitle(firstString(finding, "severity", "Severity"))) + " |\n")
 		b.WriteString("| Location | " + markdownCell(compactJSON(firstPresent(finding, "location", "Location"))) + " |\n")
 		b.WriteString("| Evidence | " + markdownCell(compactJSON(firstPresent(finding, "evidence", "Evidence"))) + " |\n")
 		b.WriteString("| Rationale | " + markdownCell(firstString(finding, "rationale", "Rationale")) + " |\n")
@@ -760,7 +760,7 @@ func writeV2UnknownsTable(b *strings.Builder, assessment map[string]any, rating 
 		}
 		for _, item := range objectSlice(source[field]) {
 			wrote = true
-			b.WriteString("| " + markdownCell(field) + " | " + markdownCell(firstString(item, "description", "reason", "ref", "id")) + " |\n")
+			b.WriteString("| " + markdownCell(unknownTypeTitle(field)) + " | " + markdownCell(firstString(item, "description", "reason", "ref", "id")) + " |\n")
 		}
 	}
 	if !wrote {
@@ -974,25 +974,22 @@ func parseRequirementFactorID(areaID []string, ref string) (factorID, error) {
 
 func v2RequirementRatingLabel(spec *model.Spec, rating map[string]any) string {
 	if rating == nil {
-		return "not_rated"
+		return ratingStatusTitle(string(RatingStatusNotRated))
 	}
 	if status := v2String(rating, "status"); status != "rated" {
 		if status == "" {
-			return "not_rated"
+			return ratingStatusTitle(string(RatingStatusNotRated))
 		}
-		return status
+		return ratingStatusTitle(status)
 	}
 	if level := v2String(rating, "ratingLevelId"); level != "" {
 		return ratingTitle(spec, level)
 	}
-	return "rated"
+	return ratingStatusTitle(string(RatingStatusRated))
 }
 
 func v2BoolLabel(v bool) string {
-	if v {
-		return "yes"
-	}
-	return "no"
+	return boolTitle(v)
 }
 
 func areaKey(id []string) string {
@@ -1151,11 +1148,19 @@ func v2RatingLabel(spec *model.Spec, scope map[string]any) string {
 	level := v2String(scope, "ratingLevelId")
 	if status != "analyzed" || level == "" {
 		if status == "" {
-			return "not_analyzed"
+			return analysisStatusTitle(string(AnalysisStatusNotAnalyzed))
 		}
-		return status
+		return analysisStatusTitle(status)
 	}
 	return ratingTitle(spec, level)
+}
+
+func v2AnalysisStatusPair(overall, local map[string]any) string {
+	return analysisStatusTitle(v2String(overall, "status")) + " / " + analysisStatusTitle(v2String(local, "status"))
+}
+
+func v2ConfidencePair(overall, local map[string]any) string {
+	return confidenceTitle(v2String(overall, "confidence")) + " / " + confidenceTitle(v2String(local, "confidence"))
 }
 
 func v2Summary(scope map[string]any) string {

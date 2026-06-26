@@ -103,6 +103,17 @@ Level ID only when a title is unavailable.
 Reports **MUST** render `not_assessed`, `not_rated`, `empty`, `not_analyzed`,
 and `blocked` distinctly from Rating Level labels.
 
+Reports **MUST** render CLI-owned enum-like report values, including statuses,
+confidence levels, boolean values, report kinds, limits/incomplete-input types,
+unknown/missing-evidence types, and known finding classifications, with
+human-readable display titles in Markdown while preserving the raw values in
+routine JSON, `EvaluationOutputResult`, and report-build receipts.
+
+> Rationale: Markdown reports are optimized for human review and scanning, but
+> agents and tools need stable values in the structured data. Unknown or
+> free-form values should remain readable through fallback title-casing rather
+> than turning presentation decoration into schema validation. — 0103
+
 Reports **MUST** omit Rating Level values when the source result status says the
 rating or scoped analysis was not produced.
 

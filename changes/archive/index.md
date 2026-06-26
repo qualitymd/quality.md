@@ -424,3 +424,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   restores Rating Level title rendering in Evaluation v2 Markdown reports while
   preserving stable Rating Level IDs in routine JSON, `EvaluationOutputResult`,
   and build receipts (`Done`).
+- [0103 — Evaluation v2 report enum display titles](0103-v2-report-enum-display-titles.md) -
+  renders owned Evaluation v2 statuses, confidence levels, booleans, report
+  kinds, limits, unknowns, and known finding classifications through typed human
+  display titles with semantic emoji in Markdown reports while preserving raw
+  values in routine JSON, `EvaluationOutputResult`, and build receipts (`Done`).
