@@ -2,6 +2,11 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [setup](setup.md) and [update](update.md) workflows for
+  0106 - Binary confirmation UX.
+  Runtime guidance now shows `y`/`n` answer paths for true binary mutation gates
+  while preserving numbered responses for non-binary choices.
+
 - **Revision**: Updated [setup](setup.md), [evaluate](evaluate.md), and
   [update](update.md) workflows for 0101 - Quality skill UX action clarity.
   Setup now gives open-ended discovery questions explicit answer paths, presents

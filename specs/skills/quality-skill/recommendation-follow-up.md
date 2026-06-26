@@ -56,7 +56,9 @@ evidence or reason, risk when relevant, done criterion, and verification path.
 The primary apply question or call to action **MUST** be visually emphasized,
 and the decision brief **MUST** keep the changed artifacts, evidence/reason,
 recommended option, alternatives, and done criterion in a consistent, scannable
-shape.
+shape. Because local apply is a true binary mutation gate after the
+recommendation option and mutation surface are selected, the brief **MUST** show
+`y`/`n` as the visible shortest answer path.
 
 The skill **MUST NOT** edit evaluated source files, edit `QUALITY.md`, or write
 the quality log until the user explicitly confirms the recommendation option and
@@ -97,9 +99,11 @@ links or paths to the generated report and recommendation artifact.
 Creating an external issue **MUST** require explicit user confirmation,
 available issue-tracker tooling, and a decision brief that names the external
 artifact to create, the local artifacts that will not change, the evidence or
-reason, the recommended option, alternatives, and verification. If tooling is
-unavailable or the user has not confirmed external creation, the skill **MUST**
-stop after producing issue-ready text.
+reason, the recommended option, alternatives, and verification. Because external
+issue creation is a true binary mutation gate, the brief **MUST** show `y`/`n`
+as the visible shortest answer path. If tooling is unavailable or the user has
+not confirmed external creation, the skill **MUST** stop after producing
+issue-ready text.
 
 Issue-tracker handoff **MUST NOT** mutate evaluated source, `QUALITY.md`, or the
 quality log.

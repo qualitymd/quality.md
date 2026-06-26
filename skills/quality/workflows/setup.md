@@ -475,6 +475,7 @@ gate, use a fresh decision brief before editing:
 **Recommended option:**
 **Alternatives:**
 **Done criterion / verification:**
+**Answer:** Reply `y` to update, or `n` to stop.
 ```
 
 Synthesize directly into `QUALITY.md`. Author the body first, then the

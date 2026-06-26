@@ -256,13 +256,19 @@ materially equivalent wording. Concrete files, commands, fields, model
 references, IDs, and literal user replies in examples **SHOULD** use code spans
 so exact operational text is visually distinct from prose.
 
-For small closed-choice prompts, the skill **MUST** number options, put the
-recommended option first, and make `1` the shortest accept response.
+For small non-binary closed-choice prompts, the skill **MUST** number options,
+put the recommended option first, and make `1` the shortest accept response. For
+true binary confirmations, especially mutation gates, the skill **MUST** make
+`y` and `n` the visible shortest responses.
 
 > Rationale: in an agent-mediated workflow, the recommendation is the default
 > path. The user should be able to accept that path with the least ambiguous
 > possible input instead of translating between a separate recommendation line
 > and an unordered option list. — 0099
+>
+> Rationale: true binary confirmations have a different semantic shape from
+> multi-option choices. `y`/`n` matches a yes/no mutation gate directly and avoids
+> mixed answer vocabulary such as `1` versus `skip`. — 0106
 
 The skill **MUST** use Markdown emphasis as hierarchy, not decoration. It
 **MUST NOT** bold whole paragraphs or add decorative emoji to routine headings.
@@ -296,6 +302,12 @@ criterion or verification expected after the action.
 The decision question or call to action **MUST** be visually emphasized, and the
 brief **MUST** keep the changes, evidence/reason, recommended option,
 alternatives, and done criterion in a consistent, scannable shape.
+
+When a decision brief is a true binary confirmation, it **MUST** include an
+explicit answer path using `y`/`n`, such as `Reply y to apply, or n to skip`.
+The skill **SHOULD** accept obvious aliases when they unambiguously match the
+displayed options, but those aliases **MUST NOT** replace `y`/`n` as the visible
+shortest responses.
 
 When options differ in coverage or risk, the decision brief **SHOULD** state that
 tradeoff explicitly. When options differ only in kind, the brief should say so

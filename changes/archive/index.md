@@ -448,3 +448,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0105 — Evaluation v2 report subject links](0105-evaluation-v2-report-subject-links.md) -
   moves generated report navigation from repeated `Details` columns into linked
   row subject cells in Evaluation v2 Area and Factor report tables (`Done`).
+- [0106 — Binary confirmation UX](0106-binary-confirmation-ux.md) - makes
+  `/quality` true binary mutation confirmations use visible `y`/`n` answer paths
+  while preserving numbered responses for multi-option prompts; docs/spec/skill
+  guidance only, no CLI/Go or format-spec change (`Done`).

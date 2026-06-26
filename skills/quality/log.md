@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the root runtime interaction contract for 0106 - Binary
+  confirmation UX.
+  Runtime guidance now distinguishes non-binary closed choices, which keep `1` as
+  the shortest accept path, from true binary mutation confirmations, which show
+  `y`/`n`.
+
 - **Revision**: Updated the root runtime interaction contract for 0101 - Quality
   skill UX action clarity.
   Runtime guidance now requires explicit shortest-answer paths for user

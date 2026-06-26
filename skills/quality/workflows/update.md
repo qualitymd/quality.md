@@ -100,6 +100,7 @@ Verify
    **Recommended option:**
    **Alternatives:**
    **Done criterion / verification:**
+   **Answer:** Reply `y` to apply, or `n` to skip.
    ```
 
    The brief must name which owner command performs each mutation and how

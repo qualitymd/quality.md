@@ -458,6 +458,12 @@ primary action has this meaning:
 Reply `looks good` to write `QUALITY.md`, or send corrections.
 ```
 
+When setup presents a separate fallback decision brief for updating an existing
+`QUALITY.md` after the review gate and that brief is a true binary update-or-stop
+confirmation, it **MUST** show `y`/`n` as the visible shortest answer path. This
+does not replace the final review gate's `looks good` fast path when that gate is
+framed as a review-and-correction interaction.
+
 The recap **MUST NOT** be the only place a question or checkpoint item is
 surfaced; it supplements, and does not replace, asking or presenting each input
 during discovery.

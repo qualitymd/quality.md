@@ -3,6 +3,25 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0106 - Binary confirmation UX](archive/0106-binary-confirmation-ux.md).
+  `/quality` interaction guidance now distinguishes non-binary closed choices,
+  which keep `1` as the shortest accept path, from true binary mutation gates,
+  which show visible `y`/`n` answer paths. Updated durable skill specs, runtime
+  skill guidance, and skill/spec logs; the agent-mediated UX guide clarification
+  is included in the landed change. No CLI, Go, format-schema, rating, roll-up,
+  evaluation-record, report-rendering, or `QUALITY.md` format behavior changed.
+
+- **Design**: Created
+  [0106 - Binary confirmation UX](archive/0106-binary-confirmation-ux.md) with
+  its child [index](archive/0106-binary-confirmation-ux/index.md),
+  [functional spec](archive/0106-binary-confirmation-ux/spec.md), and
+  [design doc](archive/0106-binary-confirmation-ux/design.md). The case applies the
+  newly clarified agent-mediated UX rule that true binary confirmations use
+  visible `y`/`n`, while multi-option choices keep numbered responses. The
+  shared UX guide clarification already exists; durable `/quality` skill specs
+  and bundled runtime skill guidance remain to be aligned.
+
+- **Done**: Implemented and archived
   [0105 - Evaluation v2 report subject links](archive/0105-evaluation-v2-report-subject-links.md).
   Evaluation v2 Area and Factor report tables now link generated human report
   targets from the row subject cells instead of repeated `Details` columns, while

@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated
+  [Recommendation Follow-Up](recommendation-follow-up.md) for 0106 - Binary
+  confirmation UX.
+  Runtime guidance now shows `y`/`n` answer paths for true binary local-apply and
+  external issue-creation gates.
+
 - **Revision**: Updated [Recommendation Follow-Up](recommendation-follow-up.md)
   for 0101 - Quality skill UX action clarity.
   The guide now gives apply-vs-handoff outcome selection a numbered answer path,

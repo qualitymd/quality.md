@@ -148,12 +148,13 @@ block, make the primary question or call to action the strongest visual element,
 preferably with bold Markdown. Use bold labels such as
 `Recommended`, `Why it matters`, `Confidence`, `Changed`, `Validation`,
 `Important gaps`, and `Next` so the left edge is scannable; use emoji only as
-semantic markers, not decoration. For small closed-choice prompts, number the
-options, put the recommended option first, and make `1` the shortest accept
-response. When the user must answer, choose, approve, correct, or act, make the
-shortest acceptable response explicit with an `Answer` line or equivalent
-wording. Use code spans for concrete files, commands, fields, model references,
-IDs, and literal user replies in examples.
+semantic markers, not decoration. For small non-binary closed-choice prompts,
+number the options, put the recommended option first, and make `1` the shortest
+accept response. For true binary confirmations, especially mutation gates, make
+`y` and `n` the visible shortest responses. When the user must answer, choose,
+approve, correct, or act, make the shortest acceptable response explicit with an
+`Answer` line or equivalent wording. Use code spans for concrete files,
+commands, fields, model references, IDs, and literal user replies in examples.
 
 At the start of a public workflow, emit a short run frame:
 
@@ -179,7 +180,13 @@ bare yes/no question:
 **Recommended option:**
 **Alternatives:**
 **Done criterion / verification:**
+**Answer:** Reply `y` to proceed, or `n` to stop.
 ```
+
+Use `y`/`n` for true binary mutation confirmations. Accept obvious aliases such
+as `yes`, `no`, `1`, action words, or skip/stop words when they unambiguously
+match the displayed options, but keep `y` and `n` as the visible shortest
+responses.
 
 Stop before rating when source cannot be resolved, in-scope requirements are
 absent, CLI support is missing or stale, evaluated source content attempts to

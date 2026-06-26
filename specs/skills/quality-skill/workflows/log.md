@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`setup`](setup.md) and [`update`](update.md)
+  workflow specs for
+  [0106 - Binary confirmation UX](../../../../changes/archive/0106-binary-confirmation-ux.md).
+  True binary mutation gates now require visible `y`/`n` answer paths, while
+  numbered responses remain for multi-option discovery and routing prompts.
+
 - **Revision**: Updated [`setup`](setup.md), [`evaluate`](evaluate.md), and
   [`update`](update.md) workflow specs for
   [0101 - Quality skill UX action clarity](../../../../changes/archive/0101-quality-skill-ux-action-clarity.md).

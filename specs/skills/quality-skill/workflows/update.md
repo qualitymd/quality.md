@@ -69,6 +69,8 @@ contract: status first, visually emphasized primary call to action, scannable
 labels for versions/actions/evidence, and adjacent verification criteria. The
 brief **MUST** name what will not change when that boundary matters, such as
 `QUALITY.md`, evaluated source, evaluation records, and the quality log.
+Because applying an update plan is a true binary tooling mutation gate, the brief
+**MUST** show `y`/`n` as the visible shortest answer path.
 
 After a CLI update, `update` **MUST** verify the visible `qualitymd` version
 against the loaded skill's required CLI range. After a skill update, it **MUST**

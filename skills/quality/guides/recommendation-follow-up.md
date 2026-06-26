@@ -50,6 +50,7 @@ Before editing anything, present a decision brief:
 **Recommended option:**
 **Alternatives:** hand off to issue tracker
 **Done criterion / verification:**
+**Answer:** Reply `y` to apply, or `n` to stop.
 ```
 
 Do not treat an obvious recommendation as consent. Apply only the confirmed
@@ -114,6 +115,7 @@ issue-tracker tooling. Use a decision brief before creating it:
 **Alternatives:** stop after issue-ready text; apply locally instead
 **Done criterion / verification:** issue link or ID is returned.
 **Not changed:** evaluated source, `QUALITY.md`, and `.quality/log/`
+**Answer:** Reply `y` to create the issue, or `n` to stop after issue-ready text.
 ```
 
 If tooling is unavailable or the user has not confirmed creation, stop after

@@ -131,6 +131,11 @@ interaction design.
 For small closed-choice sets, use numbered options and put the recommended
 option first. The user's shortest accept path should be `1`.
 
+For a true binary confirmation, especially a mutation gate, use `y`/`n` when the
+question naturally means yes or no. Accept obvious aliases such as `yes`, `no`,
+`1`, `apply`, or `skip` when they match the displayed options, but make `y` and
+`n` the visible shortest responses.
+
 Match the option labels to the question's framing. If the workflow stores an
 internal value such as `lowTolerance`, but the user-facing question asks about
 cost, present cost options and map the answer internally. Do not make the user
@@ -200,6 +205,8 @@ and initial Requirements.
 **Recommended option:** Update `QUALITY.md` now.
 **Alternatives:** Stop here, or only scaffold the file.
 **Done criterion:** `qualitymd lint QUALITY.md` passes.
+
+**Answer:** Reply `y` to update, or `n` to stop.
 ```
 
 Decision gates should name both what will happen and what will not happen when
@@ -258,7 +265,7 @@ Before shipping an agent-mediated workflow, check:
 - The primary question or call to action is bolded in each interaction block.
 - The recommendation and evidence are adjacent to the choice.
 - Closed-choice questions put the recommended option first and accept `1` as the
-  shortest confirmation.
+  shortest confirmation, except binary confirmations that use `y`/`n`.
 - The shortest acceptable user response is clear.
 - Progress is visible for multi-step workflows.
 - Mutation gates state the change, reason, alternatives, and done criterion.
