@@ -749,14 +749,14 @@ func evaluationFrameExample(kind DataKind) map[string]any {
 		"inputs": map[string]any{
 			"requestedScope": "full evaluation",
 			"ratingLevelIds": []any{RatingReference("target"), RatingReference("unacceptable")},
-			"areaIds":        []any{model.AreaPath{}.Reference()},
-			"factorIds":      []any{},
+			"areaIds":        []any{exampleAreaID()},
+			"factorIds":      []any{exampleFactorID()},
 		},
 		"derivedContext": map[string]any{
 			"resolvedScope":            "full evaluation",
 			"rigor":                    "standard",
 			"evaluationPolicies":       []any{"source-as-data", "secret-redaction"},
-			"expectedEvaluationLimits": []any{map[string]any{"id": "source-gap", "description": "One source was unavailable.", "impact": "Confidence is lower."}},
+			"expectedEvaluationLimits": []any{exampleLimit("source-gap", "One source was unavailable.", "Confidence is lower.")},
 		},
 	}
 }
@@ -765,14 +765,17 @@ func areaEvaluationFrameExample(kind DataKind) map[string]any {
 	return map[string]any{
 		"schemaVersion": SchemaVersion,
 		"kind":          string(kind),
-		"subject":       map[string]any{"areaId": model.AreaPath{}.Reference()},
+		"subject":       map[string]any{"areaId": exampleAreaID()},
 		"inputs": map[string]any{
-			"sourceRefs":          []any{},
+			"sourceRefs":          []any{"QUALITY.md", "tests/example_test.go"},
 			"localRequirementIds": []any{exampleRequirementID()},
 			"rootFactorIds":       []any{exampleFactorID()},
-			"childAreaIds":        []any{},
+			"childAreaIds":        []any{exampleChildAreaID()},
 		},
-		"derivedContext": map[string]any{"scope": "root Area", "expectedEvaluationLimits": []any{}},
+		"derivedContext": map[string]any{
+			"scope":                    "root Area",
+			"expectedEvaluationLimits": []any{exampleLimit("area-source-gap", "A child Area source was not inspected.", "Child roll-up confidence is lower.")},
+		},
 	}
 }
 
@@ -787,13 +790,13 @@ func requirementEvaluationFrameExample(kind DataKind) map[string]any {
 		"inputs": map[string]any{
 			"ratingLevelIds":             []any{RatingReference("target"), RatingReference("unacceptable")},
 			"requirementAssessmentBasis": "Inspect tests.",
-			"ratingOverrides":            map[string]any{},
+			"ratingOverrides":            map[string]any{"target": "Focused tests cover the stated behavior."},
 		},
 		"derivedContext": map[string]any{
-			"evidenceTargets":          []any{map[string]any{"id": "tests", "question": "Do tests exist?", "purpose": "Assessment basis", "sourceRefs": []any{}, "required": true}},
+			"evidenceTargets":          []any{map[string]any{"id": "tests", "question": "Do tests exist?", "purpose": "Assessment basis", "sourceRefs": []any{"tests/example_test.go"}, "required": true}},
 			"appliedRatingCriteria":    []any{map[string]any{"ratingLevelId": RatingReference("target"), "criterion": "Tests cover the requirement.", "source": "model_default", "adaptationRationale": "Applies the model criterion to this Requirement."}},
-			"stopConditions":           []any{},
-			"expectedEvaluationLimits": []any{},
+			"stopConditions":           []any{exampleLimit("missing-required-evidence", "Stop if required evidence cannot be inspected.", "Requirement status becomes blocked or partial.")},
+			"expectedEvaluationLimits": []any{exampleLimit("narrow-test-review", "Only test files are in scope for this example.", "Runtime behavior may remain uninspected.")},
 		},
 	}
 }
@@ -858,12 +861,17 @@ func factorAnalysisFrameExample(kind DataKind) map[string]any {
 	return map[string]any{
 		"schemaVersion": SchemaVersion,
 		"kind":          string(kind),
-		"subject":       map[string]any{"areaId": model.AreaPath{}.Reference(), "factorId": exampleFactorID()},
+		"subject":       map[string]any{"areaId": exampleAreaID(), "factorId": exampleFactorID()},
 		"inputs": map[string]any{
 			"directRequirementRatingRefs": []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")},
-			"childFactorAnalysisRefs":     []any{routineRef(DataKindFactorAnalysis, map[string]any{"factorId": model.FactorReference(nil, model.FactorPath{"verification", "coverage"})}, "localAndDescendantAnalysis")},
+			"childFactorAnalysisRefs":     []any{routineRef(DataKindFactorAnalysis, map[string]any{"factorId": exampleChildFactorID()}, "localAndDescendantAnalysis")},
 		},
-		"derivedContext": map[string]any{"synthesisGuidanceRef": "protocol:factor-synthesis-default-v0", "emptySignalPolicy": "ignore_empty", "stopConditions": []any{}, "expectedEvaluationLimits": []any{}},
+		"derivedContext": map[string]any{
+			"synthesisGuidanceRef":     "protocol:factor-synthesis-default-v0",
+			"emptySignalPolicy":        "ignore_empty",
+			"stopConditions":           []any{exampleLimit("missing-ratings", "Stop if direct Requirement ratings are unavailable.", "Factor analysis becomes incomplete.")},
+			"expectedEvaluationLimits": []any{exampleLimit("factor-source-limit", "Only direct Requirement ratings and child Factor analyses are synthesized.", "Other evidence is out of scope.")},
+		},
 	}
 }
 
@@ -871,12 +879,17 @@ func areaAnalysisFrameExample(kind DataKind) map[string]any {
 	return map[string]any{
 		"schemaVersion": SchemaVersion,
 		"kind":          string(kind),
-		"subject":       map[string]any{"areaId": model.AreaPath{}.Reference()},
+		"subject":       map[string]any{"areaId": exampleAreaID()},
 		"inputs": map[string]any{
 			"factorAnalysisRefs":    []any{routineRef(DataKindFactorAnalysis, map[string]any{"factorId": exampleFactorID()}, "localAndDescendantAnalysis")},
-			"childAreaAnalysisRefs": []any{routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath{"operations"}.Reference()}, "localAndDescendantAnalysis")},
+			"childAreaAnalysisRefs": []any{routineRef(DataKindAreaAnalysis, map[string]any{"areaId": exampleChildAreaID()}, "localAndDescendantAnalysis")},
 		},
-		"derivedContext": map[string]any{"synthesisGuidanceRef": "protocol:area-synthesis-default-v0", "emptySignalPolicy": "ignore_empty", "stopConditions": []any{}, "expectedEvaluationLimits": []any{}},
+		"derivedContext": map[string]any{
+			"synthesisGuidanceRef":     "protocol:area-synthesis-default-v0",
+			"emptySignalPolicy":        "ignore_empty",
+			"stopConditions":           []any{exampleLimit("missing-factor-analysis", "Stop if in-scope Factor analyses are unavailable.", "Area analysis becomes incomplete.")},
+			"expectedEvaluationLimits": []any{exampleLimit("area-rollup-limit", "Only available Factor and child Area analyses are synthesized.", "Roll-up confidence is limited.")},
+		},
 	}
 }
 
@@ -886,26 +899,28 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 		"kind":          string(kind),
 		idField:         id,
 		"localAnalysis": map[string]any{
-			"status":           "empty",
-			"statusReason":     "No local inputs.",
-			"rationale":        "No local signal was present.",
+			"status":           "analyzed",
+			"statusReason":     "Local inputs were synthesized.",
+			"ratingLevelId":    RatingReference("target"),
+			"rationale":        "Local signal satisfies the target criterion.",
 			"inputRefs":        []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")},
 			"ratingDrivers":    []any{map[string]any{"description": "Representative driver.", "effect": "supports target", "ratingLevelId": RatingReference("target"), "inputRefs": []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")}}},
 			"incompleteInputs": []any{map[string]any{"id": "missing-descendant", "description": "One descendant input was unavailable.", "impact": "Roll-up confidence is lower."}},
 			"evaluationLimits": []any{map[string]any{"id": "source-limit", "description": "Only local evidence was inspected.", "impact": "Rating may change with more sources."}},
-			"confidence":       "none",
-			"confidenceReason": "No local signal.",
+			"confidence":       "medium",
+			"confidenceReason": "Evidence is representative but partial.",
 		},
 		"localAndDescendantAnalysis": map[string]any{
-			"status":           "empty",
-			"statusReason":     "No local or descendant inputs.",
-			"rationale":        "No signal was present.",
+			"status":           "analyzed",
+			"statusReason":     "Local and descendant inputs were synthesized.",
+			"ratingLevelId":    RatingReference("target"),
+			"rationale":        "Available local and descendant signal satisfies the target criterion.",
 			"inputRefs":        []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")},
-			"ratingDrivers":    []any{map[string]any{"description": "Representative roll-up driver.", "effect": "keeps status empty", "inputRefs": []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")}}},
+			"ratingDrivers":    []any{map[string]any{"description": "Representative roll-up driver.", "effect": "supports target", "ratingLevelId": RatingReference("target"), "inputRefs": []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")}}},
 			"incompleteInputs": []any{map[string]any{"id": "missing-child", "description": "One child input was unavailable.", "impact": "Roll-up is provisional."}},
 			"evaluationLimits": []any{map[string]any{"id": "rollup-limit", "description": "The roll-up used available inputs only.", "impact": "Confidence is limited."}},
-			"confidence":       "none",
-			"confidenceReason": "No signal.",
+			"confidence":       "medium",
+			"confidenceReason": "Roll-up uses available inputs only.",
 		},
 	}
 	if kind == DataKindAreaAnalysis {
@@ -927,12 +942,28 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 	return example
 }
 
+func exampleAreaID() string {
+	return model.AreaPath{}.Reference()
+}
+
+func exampleChildAreaID() string {
+	return model.AreaPath{"operations"}.Reference()
+}
+
 func exampleRequirementID() string {
 	return model.RequirementReference(nil, "has-tests")
 }
 
 func exampleFactorID() string {
 	return model.FactorReference(nil, model.FactorPath{"verification"})
+}
+
+func exampleChildFactorID() string {
+	return model.FactorReference(nil, model.FactorPath{"verification", "coverage"})
+}
+
+func exampleLimit(id, description, impact string) map[string]any {
+	return map[string]any{"id": id, "description": description, "impact": impact}
 }
 
 func routineRef(kind DataKind, subject any, selector string) map[string]any {
@@ -943,24 +974,35 @@ func routineRef(kind DataKind, subject any, selector string) map[string]any {
 	return ref
 }
 
-func reportRef(kind string, areaID any, path string) map[string]any {
-	return map[string]any{"kind": kind, "areaId": areaID, "path": path}
+func areaReportRef(areaID any, path string) map[string]any {
+	return map[string]any{"kind": string(ReportKindArea), "areaId": areaID, "path": path}
+}
+
+func factorReportRef(areaID, factorID any, path string) map[string]any {
+	return map[string]any{"kind": string(ReportKindFactor), "areaId": areaID, "factorId": factorID, "path": path}
+}
+
+func requirementReportRef(areaID, requirementID any, path string) map[string]any {
+	return map[string]any{"kind": string(ReportKindRequirement), "areaId": areaID, "requirementId": requirementID, "path": path}
 }
 
 func evaluationOutputExample() map[string]any {
+	areaReport := areaReportRef(exampleAreaID(), "report.md")
+	factorReport := factorReportRef(exampleAreaID(), exampleFactorID(), "factors/verification/verification-factor.md")
+	requirementReport := requirementReportRef(exampleAreaID(), exampleRequirementID(), "requirements/has-tests/has-tests-requirement.md")
 	return map[string]any{
 		"schemaVersion":       SchemaVersion,
 		"kind":                string(DataKindEvaluationOutput),
-		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath{}.Reference()}, "localAndDescendantAnalysis"),
+		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": exampleAreaID()}, "localAndDescendantAnalysis"),
 		"areaOutputs": []any{map[string]any{
-			"areaId":                    model.AreaPath{}.Reference(),
-			"areaEvaluationFrameRef":    routineRef(DataKindAreaEvaluationFrame, map[string]any{"areaId": model.AreaPath{}.Reference()}, ""),
-			"areaAnalysisResultRef":     routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath{}.Reference()}, ""),
-			"factorAnalysisRefs":        []any{},
-			"requirementAssessmentRefs": []any{},
-			"requirementRatingRefs":     []any{},
-			"reportRefs":                []any{reportRef("area", model.AreaPath{}.Reference(), "report.md")},
+			"areaId":                    exampleAreaID(),
+			"areaEvaluationFrameRef":    routineRef(DataKindAreaEvaluationFrame, map[string]any{"areaId": exampleAreaID()}, ""),
+			"areaAnalysisResultRef":     routineRef(DataKindAreaAnalysis, map[string]any{"areaId": exampleAreaID()}, ""),
+			"factorAnalysisRefs":        []any{routineRef(DataKindFactorAnalysis, map[string]any{"factorId": exampleFactorID()}, "localAndDescendantAnalysis")},
+			"requirementAssessmentRefs": []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "")},
+			"requirementRatingRefs":     []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")},
+			"reportRefs":                []any{areaReport, factorReport, requirementReport},
 		}},
-		"reportOutputs": []any{reportRef("area", model.AreaPath{}.Reference(), "report.md")},
+		"reportOutputs": []any{areaReport, factorReport, requirementReport},
 	}
 }

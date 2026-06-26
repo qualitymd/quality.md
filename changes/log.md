@@ -3,6 +3,51 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0133 - Richer evaluation data examples](archive/0133-richer-evaluation-data-examples.md).
+  `qualitymd evaluation data example <kind>` now emits fuller representative
+  payloads across all supported kinds, including populated representative limits
+  and stop conditions, canonical Area/Factor/Requirement/Rating references, and
+  Area/Factor/Requirement report refs. Added all-kind structural validation and
+  reference-shape assertions; updated the durable CLI spec to keep examples
+  representative rather than exhaustive. `go test ./...` and
+  `mise run fmt-md-check` pass.
+
+- **In-Review**: Completed implementation for
+  [0133 - Richer evaluation data examples](archive/0133-richer-evaluation-data-examples.md).
+  `qualitymd evaluation data example <kind>` now emits fuller representative
+  artifacts with populated limits/stop conditions where relevant, canonical
+  Area/Factor/Requirement/Rating references in subjects, routine refs, and
+  report refs, and a valid string `areaId` for `AreaAnalysisResult`. Added an
+  all-kind structural example test and reference-shape assertions, and updated
+  the durable CLI spec to keep examples representative rather than exhaustive.
+  `go test ./...` and `mise run fmt-md-check` pass.
+
+- **In-Progress**: Advanced
+  [0133 - Richer evaluation data examples](archive/0133-richer-evaluation-data-examples.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  `internal/evaluation/data.go`, Evaluation example tests, and the durable CLI
+  data spec.
+
+- **Design**: Advanced
+  [0133 - Richer evaluation data examples](archive/0133-richer-evaluation-data-examples.md)
+  to `Design` with its
+  [design doc](archive/0133-richer-evaluation-data-examples/design.md). The design
+  enriches the existing one-artifact-per-kind example constructors with shared
+  reference and limit helpers, demonstrates Area/Factor/Requirement/Rating
+  references in subjects, routine refs, and report refs, and adds all-kind
+  structural validation tests. Code not started.
+
+- **Draft**: Created
+  [0133 - Richer evaluation data examples](archive/0133-richer-evaluation-data-examples.md)
+  with its
+  [functional spec](archive/0133-richer-evaluation-data-examples/spec.md), at `Draft`.
+  The case makes `qualitymd evaluation data example <kind>` payloads fuller
+  representative artifacts, demonstrates Area, Factor, Requirement, and Rating
+  Level reference IDs in examples, clarifies that examples are not exhaustive
+  enum/status/error corpora, and adds all-kind example validation. Code not
+  started. Added the case to the open [index](index.md).
+
+- **Done**: Implemented and archived
   [0132 - Remove info finding severity](archive/0132-remove-info-finding-severity.md).
   Removed `info` from the Evaluation finding severity enum for Requirement and
   Area Findings, regenerated `evaluation-data.schema.json`, updated report

@@ -582,3 +582,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   Requirement and Area Finding severity values are `critical`, `high`, `medium`,
   and `low`, with informational observations represented by finding `type: note`
   (`Done`).
+- [0133 — Richer evaluation data examples](0133-richer-evaluation-data-examples.md) -
+  makes `qualitymd evaluation data example` payloads fuller representative
+  artifacts with typed Area, Factor, Requirement, and Rating Level references
+  (`Done`).

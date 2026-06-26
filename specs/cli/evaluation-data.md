@@ -104,11 +104,17 @@ NOT** provide a second JSON result-wrapper mode.
 `data kinds` **MUST** include every kind accepted by `data set`, and **MUST**
 distinguish CLI-owned kinds from agent-writable kinds.
 
-`data example <kind>` **MUST** emit a complete valid example JSON artifact for
-the requested kind. Repeated nested object fields such as findings, rating
-drivers, unknowns, analysis input refs, and limits **MUST** include at least one
-representative element. It **MUST NOT** provide a second JSON result-wrapper
-mode.
+`data example <kind>` **MUST** emit one complete valid representative JSON
+artifact for the requested kind. Repeated nested object fields such as findings,
+rating drivers, unknowns, missing evidence, analysis input refs, stop
+conditions, and limits **MUST** include at least one representative element
+where those fields appear in the requested kind. Examples **MUST** demonstrate
+canonical Area, Factor, Requirement, and Rating Level reference strings in
+relevant subject, input, rating, finding relationship, and report-reference
+fields. They **MUST NOT** be treated as an exhaustive corpus of every valid enum
+value, status value, or error case; `data schema <kind>` remains the
+machine-readable constraint source for those details. `data example <kind>`
+**MUST NOT** provide a second JSON result-wrapper mode.
 
 Commands that take a `<kind>` argument **MUST** accept the canonical kind name
 and **SHOULD** accept the kebab-case form.

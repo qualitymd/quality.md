@@ -725,6 +725,44 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	}
 }
 
+func TestDataExamplesCoverAllKindsAndReferenceShapes(t *testing.T) {
+	var combined strings.Builder
+	for _, kind := range dataContractOrder {
+		raw, err := DataExample(kind)
+		if err != nil {
+			t.Fatalf("DataExample(%s) error = %v", kind, err)
+		}
+		combined.Write(raw)
+		var payload map[string]any
+		if err := json.Unmarshal(raw, &payload); err != nil {
+			t.Fatalf("DataExample(%s) JSON error = %v\n%s", kind, err, raw)
+		}
+		if got := payload["kind"]; got != string(kind) {
+			t.Fatalf("DataExample(%s) kind = %v", kind, got)
+		}
+		if err := validateDataPayload(kind, payload); err != nil {
+			t.Fatalf("DataExample(%s) validation error = %v\n%s", kind, err, raw)
+		}
+	}
+
+	examples := combined.String()
+	for _, want := range []string{
+		`"areaId": "area:root"`,
+		`"areaId": "area:operations"`,
+		`"factorId": "factor:root::verification"`,
+		`"factorId": "factor:root::verification/coverage"`,
+		`"requirementId": "requirement:root::has-tests"`,
+		`"ratingLevelId": "rating:target"`,
+		`"kind": "area"`,
+		`"kind": "factor"`,
+		`"kind": "requirement"`,
+	} {
+		if !strings.Contains(examples, want) {
+			t.Fatalf("generated examples missing %q", want)
+		}
+	}
+}
+
 func jsonArrayContains(values []any, want string) bool {
 	for _, value := range values {
 		if value == want {

@@ -234,7 +234,7 @@ func init() {
 			Description: "Analysis result for one Area.",
 			Object:      areaAnalysisResultContract(),
 			Example: func() map[string]any {
-				return scopedAnalysisExample(DataKindAreaAnalysis, "areaId", []any{})
+				return scopedAnalysisExample(DataKindAreaAnalysis, "areaId", exampleAreaID())
 			},
 		},
 		{
