@@ -400,3 +400,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   workflow terminal states rather than report, rating, or recommendation
   semantics; docs/spec/skill guidance only, no CLI/Go or format-spec change
   (`Done`).
+- [0096 — Setup intro preview](0096-setup-intro-preview.md) - makes `/quality
+  setup` open with educational orientation, show a project-specific setup preview
+  before discovery, and create the setup feedback log after that preview when the
+  run continues; docs/spec/skill guidance only, no CLI/Go or format-spec change
+  (`Done`).

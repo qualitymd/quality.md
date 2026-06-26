@@ -1,5 +1,14 @@
 # /quality Skill Workflows Update Log
 
+## 2026-06-26
+
+- **Revision**: Updated the [`setup`](setup.md) workflow spec and
+  [setup feedback log](setup/feedback-log.md) spec for
+  [0096 - Setup intro preview](../../../../changes/archive/0096-setup-intro-preview.md).
+  Setup now opens with short educational orientation, presents a project-specific
+  setup preview after the read-only context scan and before discovery, and allows
+  setup feedback-log creation after that preview when the run continues.
+
 ## 2026-06-25
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec and

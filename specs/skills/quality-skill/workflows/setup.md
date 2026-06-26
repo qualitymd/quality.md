@@ -62,24 +62,41 @@ not only as conformance requirements.
 
 The setup workflow **MUST** include these stages, in order:
 
-1. Resolve the target `QUALITY.md`, verify setup prerequisites, emit the run
-   frame, and create the current run's setup feedback log.
-2. Inspect repository context for setup signals.
-3. Build a setup brief with inferred defaults, confidence, and evidence.
-4. Ask concrete discovery questions and present the human context checkpoint.
-5. Present a final review recap of the question/answer set and wait for an
+1. Present a short educational opening that explains what QUALITY.md gives teams
+   and agents, then states that setup starts with a read-only context scan and
+   waits for review before changes.
+2. Resolve the target `QUALITY.md`, verify setup prerequisites, and emit the run
+   frame.
+3. Inspect repository context for setup signals.
+4. Build a setup brief with inferred defaults, confidence, and evidence.
+5. Present a concise setup preview distilled from the setup brief, then create
+   the current run's setup feedback log if the run continues into discovery.
+6. Ask concrete discovery questions and present the human context checkpoint.
+7. Present a final review recap of the question/answer set and wait for an
    explicit review-gate response before authoring.
-6. Run `qualitymd init [path]` when the target model is missing.
-7. Synthesize or update `QUALITY.md`.
-8. Run lint and identify important model gaps.
-9. Report completion and one immediate next step, and finalize the setup feedback
-   log.
+8. Run `qualitymd init [path]` when the target model is missing.
+9. Synthesize or update `QUALITY.md`.
+10. Run lint and identify important model gaps.
+11. Report completion and one immediate next step, and finalize the setup feedback
+    log.
 
 The workflow **MUST NOT** ask the user to design Factors, child Areas,
 Requirements, or Rating Levels cold. The skill derives model shape from the
 setup brief, discovery answers, authoring guide, and repository context.
 
 ## Context analysis and setup brief
+
+Before setup performs long-running context work, it **MUST** present an opening
+orientation that explains the setup value proposition in operational terms:
+QUALITY.md gives AI assistants, coding agents, and teams a holistic definition of
+quality tailored to their project, so they can stay aligned, identify critical
+risks and issues, and keep improving. The opening **MUST** also state that the
+first phase is a read-only context scan and that the user will review before
+changes are written.
+
+The opening **SHOULD** stay short: a value-proposition sentence, immediate
+workflow status, and the review-before-changes boundary. It **MUST NOT** become a
+marketing splash screen or replace the run frame.
 
 `setup` **MUST** inspect available repository context before asking setup
 questions. Relevant context includes README and docs, repository structure,
@@ -122,6 +139,27 @@ the prior `assumed` label carried.
 > the old meaning — including the distinct "pure default, no evidence" signal,
 > which now lives in a `Low` label plus an explicit no-evidence note rather than a
 > separate word. — 0067
+
+Before discovery questions, setup **MUST** present a user-facing setup preview
+distilled from the setup brief. The preview **MUST** include:
+
+- likely root Area or boundary;
+- likely domain or quality context;
+- visible evidence used for the inference;
+- likely candidate model shape, such as initial Areas, Factors, or quality
+  concerns;
+- missing or not-agent-accessible context;
+- the next user action.
+
+The setup preview **MUST** be framed as draft context for correction, not as
+confirmed fact. It **MUST** distinguish high-confidence evidence-backed
+inferences from low-confidence or missing context. It **MUST NOT** replace the
+required discovery questions, human context checkpoint, or final review gate.
+
+> Annotation: the preview is the first project-specific value the user sees. It
+> turns discovery into calibration of an evidence-backed draft rather than a cold
+> questionnaire, while still preserving the teaching beats and confirmation
+> boundaries that prevent low-confidence inferences from becoming facts. — 0096
 
 ## Discovery inputs
 

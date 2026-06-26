@@ -57,7 +57,9 @@ recommendations.
 - `setup` and `evaluate` write workflow feedback logs under `.quality/logs/`
   (plural, distinct from the quality log's `.quality/log/`) recording the
   *experience* of running the workflow. `setup` writes
-  `<timestamp>-setup-feedback-log.md`; `evaluate` writes
+  `<timestamp>-setup-feedback-log.md` after the setup preview when the run
+  continues into discovery or authoring; early setup stops before that point may
+  leave no feedback log. `evaluate` writes
   `<timestamp>-evaluate-feedback-log.md`. The logs are recorded locally and
   never transmitted; sharing is an explicit user action. They must never contain
   secret values or raw prompt-injection text, and sensitive project context
@@ -145,7 +147,7 @@ preferably with bold Markdown. Use bold labels such as
 `Important gaps`, and `Next` so the left edge is scannable; use emoji only as
 semantic markers, not decoration.
 
-Before executing a public workflow, emit a short run frame:
+At the start of a public workflow, emit a short run frame:
 
 ```text
 **/quality run**

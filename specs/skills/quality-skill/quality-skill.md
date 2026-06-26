@@ -257,9 +257,9 @@ display-title scanning aids only.
 
 ### Run frames
 
-Before executing a public mode, the skill **SHOULD** emit a concise run frame naming
-the resolved mode, model file, scope, rigor level when applicable, mutation
-policy, expected artifacts, and next user-visible gate.
+At the start of a public mode, the skill **SHOULD** emit a concise run frame
+naming the resolved mode, model file, scope, rigor level when applicable,
+mutation policy, expected artifacts, and next user-visible gate.
 
 The run frame **MUST** distinguish read-only work from mutating work. For a
 mutating mode, it **MUST** name the class of thing that may be changed:
@@ -522,9 +522,10 @@ judgment, are recorded locally, are never automatically transmitted, and must no
 contain secrets or raw prompt-injection text.
 
 `setup` and `evaluate` are current adopters. Setup creates, updates, and
-finalizes `.quality/logs/<timestamp>-setup-feedback-log.md` as defined by
-[Setup feedback log](workflows/setup/feedback-log.md). Evaluate creates,
-updates, and finalizes
+finalizes `.quality/logs/<timestamp>-setup-feedback-log.md` after setup preview
+when the run continues into discovery or authoring, as defined by
+[Setup feedback log](workflows/setup/feedback-log.md). Early setup stops before
+that point may leave no feedback log. Evaluate creates, updates, and finalizes
 `.quality/logs/<timestamp>-evaluate-feedback-log.md` as defined by
 [Evaluate feedback log](workflows/evaluate/feedback-log.md). The evaluate
 feedback log's `outcome` is a workflow-process outcome, not a report, rating, or

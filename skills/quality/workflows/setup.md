@@ -14,15 +14,20 @@ issues, integrations, and automations stay outside setup.
 ## Workflow
 
 ```text
+Opening orientation
+- explain what QUALITY.md gives teams and agents
+- state read-only context scan first and review before changes
+
 Preflight
 - verify CLI support
 - resolve model file
 - emit run frame
-- create the current-run workflow feedback log
 
 Read context
 - inspect setup signals
 - build setup brief
+- present setup preview
+- create the current-run workflow feedback log if continuing into discovery
 - identify missing context
 - update feedback log for material workflow-experience events
 
@@ -51,6 +56,27 @@ Verify and close
 - finalize the workflow feedback log
 ```
 
+## Opening orientation
+
+Open setup with a short educational orientation before long-running context work:
+
+```text
+**QUALITY.md setup**
+
+QUALITY.md gives AI assistants, coding agents, and teams a holistic definition of
+quality tailored to their project, so they can stay aligned, identify critical
+risks and issues, and keep improving.
+
+I’ll start with a read-only scan of the context this project already exposes,
+then show you a setup preview before writing anything.
+
+**First step:** read-only context scan
+**Before changes:** you review and confirm
+```
+
+Keep this as orientation, not a splash screen: one value-proposition sentence,
+the immediate read-only step, and the review-before-changes boundary.
+
 ## Preflight
 
 1. Verify the CLI prerequisite from `SKILL.md`.
@@ -63,18 +89,12 @@ Verify and close
    - **Mode:** setup
    - **Model file:** <resolved path>
    - **Scope:** contextual QUALITY.md setup
-   - **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/
-   - **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md
-   - **Next gate:** create feedback log, context analysis, discovery, lint, important-gap inspection
+   - **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/ if continuing
+   - **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md if continuing
+   - **Next gate:** read-only setup preview, discovery, review, lint, important-gap inspection
    ```
 
-4. Create the current run's workflow feedback log under
-   `.quality/logs/<timestamp>-setup-feedback-log.md`, creating `.quality/logs/`
-   on demand. Use a sortable UTC, filesystem-safe `<timestamp>` such as
-   `2026-06-23T154233Z`, and never overwrite a feedback log from another run.
-   The initial log must include the frontmatter and body sections in
-   [Workflow feedback log](#workflow-feedback-log), with `status: in-progress`.
-5. Read [`../guides/authoring.md`](../guides/authoring.md), then the first-model
+4. Read [`../guides/authoring.md`](../guides/authoring.md), then the first-model
    authoring bundle it routes to:
    [`body`](../guides/authoring/body.md),
    [`model-structure`](../guides/authoring/model-structure.md),
@@ -135,6 +155,41 @@ what makes the three-level scale carry full meaning.
 
 The setup brief is not a new artifact. It guides the discovery prompt and then
 gets distilled into `QUALITY.md` where the assumptions shape the model.
+
+Before asking discovery questions, present a concise user-facing setup preview
+distilled from the setup brief:
+
+```text
+**Setup preview**
+
+I found enough project context to draft the first shape of a QUALITY.md model.
+
+**Likely root:** <root area or boundary> (<confidence>, <evidence>)
+**Likely domain:** <domain or quality context> (<confidence>, <evidence>)
+**Visible evidence:** <key local paths or signals>
+**Likely model shape:** <candidate Areas, Factors, or quality concerns>
+**Missing context:** <specific gaps or none visible>
+
+**Next:** I’ll ask a few calibration questions with recommended defaults. Short
+answers are fine.
+```
+
+Frame the preview as draft context for correction, not confirmed fact. Keep it
+shorter than the setup brief: enough to show what the scan learned and what the
+user should calibrate next. Do not let the preview replace any required discovery
+question, the human context checkpoint, or the review gate.
+
+After the setup preview, create the current run's workflow feedback log if setup
+is continuing into discovery. Write it under
+`.quality/logs/<timestamp>-setup-feedback-log.md`, creating `.quality/logs/` on
+demand. Use a sortable UTC, filesystem-safe `<timestamp>` such as
+`2026-06-23T154233Z`, and never overwrite a feedback log from another run. The
+initial log must include the frontmatter and body sections in
+[Workflow feedback log](#workflow-feedback-log), with `status: in-progress`.
+The initial timeline should state that the log was created after the setup
+preview. If there were material pre-log workflow-experience events, such as a
+slow context scan, CLI friction, or redaction decision, summarize them without
+duplicating model content from the preview.
 
 ## Ask Discovery Questions
 
@@ -489,13 +544,19 @@ automatically take any next-step action.
 
 ### Workflow feedback log
 
-Setup creates a workflow feedback log during preflight after CLI support is
-verified, the model file is resolved, and the run frame is emitted. Update the
-current run's log as the workflow progresses when there is material
-workflow-experience information to record — friction, errors, confusing
-interaction points, retries, slow steps, redaction decisions, or unusually smooth
-affordances worth preserving. Avoid noisy churn for routine internal steps; a
-clean run should produce a terse log, not a transcript.
+Setup creates a workflow feedback log after the setup preview when the run
+continues into discovery. Update the current run's log as the workflow
+progresses when there is material workflow-experience information to record —
+friction, errors, confusing interaction points, retries, slow steps, redaction
+decisions, or unusually smooth affordances worth preserving. Avoid noisy churn
+for routine internal steps; a clean run should produce a terse log, not a
+transcript.
+
+If setup stops before the feedback log exists because CLI support is missing,
+preflight fails, or the user stops after the initial read-only context scan, the
+absence of a feedback log is acceptable and should not be reported as a failed
+setup artifact. Once the feedback log exists, use the update and finalization
+rules below.
 
 Write the log to `.quality/logs/<timestamp>-setup-feedback-log.md`, creating
 `.quality/logs/` on demand (the same way evaluation creates its run directories).
@@ -535,7 +596,7 @@ redaction: <none | sanitized | withheld-details>
 
 ## Timeline
 
-- 2026-06-23T154233Z - Created setup feedback log after preflight.
+- 2026-06-23T154233Z - Created setup feedback log after setup preview.
 
 ## Friction and errors
 

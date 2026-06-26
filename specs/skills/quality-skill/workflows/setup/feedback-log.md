@@ -26,9 +26,10 @@ shape, redaction, and sharing posture live in the shared feedback-log spec.
 
 ## Setup behavior
 
-`setup` **MUST** create a feedback log during preflight after it resolves the
-model file, verifies CLI support, emits the run frame, and obtains available
-CLI, skill, agent, and platform metadata.
+`setup` **MUST** create a feedback log after it presents the setup preview and
+before it continues into discovery or authoring. Setup **MAY** stop before the
+feedback log exists when CLI support is missing, preflight fails, or the user
+stops after the initial read-only context scan.
 
 `setup` **MUST** write the log to
 `.quality/logs/<timestamp>-setup-feedback-log.md`, using the setup run's start
@@ -48,10 +49,20 @@ redaction decisions, or unusually smooth affordances worth preserving. Each
 material update **MUST** refresh `updated-at`. The log **SHOULD** avoid noisy
 churn for routine internal steps.
 
+When the feedback log is created after setup preview, the initial timeline entry
+**SHOULD** state that creation point. It **MAY** summarize material pre-log
+workflow-experience events, such as slow context analysis, CLI friction, or
+redaction decisions. It **MUST NOT** duplicate setup-preview model content or
+serve as assessment evidence.
+
 At normal close, `setup` **MUST** set `status: completed`, set `completed-at`,
 record `outcome: completed` or `outcome: completed-with-important-gaps`, update
 effort when available, and ensure each body section has useful content or an
 explicit no-notable-content note.
+
+When setup stops before the feedback log exists because CLI support is missing,
+preflight fails, or the user stops after the initial read-only context scan, the
+absence of a feedback log **MUST NOT** be treated as a failed setup artifact.
 
 When setup stops because lint fails, CLI support is missing after the log exists,
 user confirmation is not granted, or another non-success stop occurs, the skill

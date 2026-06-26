@@ -1,5 +1,36 @@
 # Changes Update Log
 
+## 2026-06-26
+
+- **Done**: Landed and archived
+  [0096 - Setup intro preview](archive/0096-setup-intro-preview.md); set
+  `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Implemented an educational `/quality setup` opening,
+  a project-specific setup preview before discovery questions, and delayed setup
+  feedback-log creation until after that preview when the run continues. No CLI,
+  Go, format-schema, rating, roll-up, report, or evaluation-record behavior
+  changed. Verified with `mise run fmt-md-check`, `git diff --check`, and
+  `mise run check`.
+
+- **In-Progress**: Advanced
+  [0096 - Setup intro preview](archive/0096-setup-intro-preview.md) through
+  `Design` to `In-Progress`; the functional spec and
+  [design doc](archive/0096-setup-intro-preview/design.md) are settled, and
+  implementation is beginning across bundled setup guidance, durable setup
+  workflow specs, workflow logs, and CHANGELOG. No CLI, Go, format-schema,
+  rating, roll-up, evaluation-record, or report behavior change is expected.
+
+- **Draft**: Created
+  [0096 - Setup intro preview](archive/0096-setup-intro-preview.md) with its
+  child [index](archive/0096-setup-intro-preview/index.md) and
+  [functional spec](archive/0096-setup-intro-preview/spec.md). The case makes
+  `/quality setup` open with short educational orientation, show a
+  project-specific setup preview before discovery, and move setup feedback-log
+  creation after that preview when the run continues. No CLI, Go,
+  format-schema, rating, roll-up, evaluation-record, or report behavior change is
+  expected.
+
 ## 2026-06-25
 
 - **Done**: Landed and archived

@@ -1,5 +1,14 @@
 # /quality Runtime Workflows Update Log
 
+## 2026-06-26
+
+- **Revision**: Updated the [setup](setup.md) workflow for 0096 - Setup intro
+  preview.
+  Setup now opens with short educational orientation, runs the first context pass
+  as an explicit read-only scan, presents a project-specific setup preview before
+  discovery questions, and creates the setup feedback log after that preview when
+  the run continues.
+
 ## 2026-06-25
 
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0095 - Evaluate

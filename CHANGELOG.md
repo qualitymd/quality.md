@@ -7,6 +7,9 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- `/quality setup` now opens with a short explanation of what QUALITY.md gives
+  teams and agents, then performs a read-only context scan and shows a
+  project-specific setup preview before discovery questions or file writes.
 - `/quality evaluate` feedback logs now use workflow-process `outcome` values
   such as `completed-reportable`, `stopped-model`, and `interrupted`, keeping
   `.quality/logs/<timestamp>-evaluate-feedback-log.md` clearly separate from
