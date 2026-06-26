@@ -152,7 +152,7 @@ factors:
 	if err != nil {
 		t.Fatalf("CreateRun(first) error = %v", err)
 	}
-	if !strings.Contains(first.Path, "0001-quality-eval") {
+	if !strings.Contains(first.Path, "0001-full-eval") {
 		t.Fatalf("first path = %q, want run 0001", first.Path)
 	}
 	writeFile(t, repo, validModel(`requirements:

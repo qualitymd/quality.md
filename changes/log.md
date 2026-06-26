@@ -2,6 +2,24 @@
 
 ## 2026-06-26
 
+- **Done**: Implemented and archived
+  [0113 - Evaluation run folder naming](archive/0113-evaluation-run-folder-naming.md).
+  New Evaluation v2 run folders are now named `NNNN-full-eval` for full runs or
+  `NNNN-<scope-path>-eval` for narrowed runs. Existing `-quality-eval` folders,
+  including old `subject`/`model`-prefixed names, remain recognized for listing,
+  status/latest resolution, and next-number computation. The `/quality evaluate`
+  workflow and durable skill spec now pass `--narrowing` as the Area/Factor full
+  structural path, and the CLI spec, quick reference, changelog, and v2 sketch
+  are aligned. Verified with `mise run check`. Moved the parent and child folder
+  into [`archive/`](archive/), updated the [archive index](archive/index.md), and
+  removed the entry from the bundle [index](index.md).
+
+- **In-Progress**: Advanced
+  [0113 - Evaluation run folder naming](archive/0113-evaluation-run-folder-naming.md).
+  Added the design doc and began implementation of the `NNNN-full-eval` /
+  `NNNN-<scope-path>-eval` run-folder grammar while preserving recognition of
+  legacy `-quality-eval` folders.
+
 - **Done**: Created, implemented, and archived
   [0110 - Run frame title and workflow vocabulary](archive/0110-run-frame-and-workflow-vocabulary.md).
   The `/quality` run-frame header is now `**Quality · <workflow>**` instead of
@@ -29,7 +47,7 @@
   committed or archived. Updated the bundle [index](index.md).
 
 - **Draft**: Created
-  [0113 - Evaluation run folder naming](0113-evaluation-run-folder-naming.md).
+  [0113 - Evaluation run folder naming](archive/0113-evaluation-run-folder-naming.md).
   Shortens the Evaluation v2 run-folder tag from `quality-eval` to `eval` (the
   `.quality/evaluations/` parent already says "evaluation") and gives every run a
   uniform `NNNN-<scope>-eval` shape: full runs carry an explicit reserved `full`

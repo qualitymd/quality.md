@@ -159,6 +159,10 @@ qualitymd evaluation status <run>
 qualitymd evaluation report build <run>
 ```
 
+Use `--narrowing` for scoped evaluations. The slug should be the scope's full
+structural path: Area path segments from the root, plus Factor path segments
+when scoping to a Factor, joined with single hyphens.
+
 ## Command rules
 
 - Use `--json` when a command offers it and the agent must consume the result.

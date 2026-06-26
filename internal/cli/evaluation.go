@@ -242,7 +242,7 @@ func newEvaluationCreateCmd() *cobra.Command {
 			return renderNextActions(cmd.ErrOrStderr(), result.NextActions)
 		},
 	}
-	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional scope slug for the run folder")
+	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional full structural scope path slug for the run folder")
 	cmd.Flags().StringVar(&opts.Model, "model", "", "QUALITY.md file to snapshot")
 	cmd.Flags().StringVar(&opts.ResolveDir, "evaluation-dir", "", "override the evaluation directory")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run creation receipt")

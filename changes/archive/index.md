@@ -482,3 +482,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     `model-snapshot.md` (read/written through one `evaluation.ModelSnapshotFile`
     constant, clean break with no old-name reader) so the filename signals a
     frozen point-in-time copy of the working-tree model (`Done`).
+- [0113 — Evaluation run folder naming](0113-evaluation-run-folder-naming.md) -
+  shortened new Evaluation v2 run-folder names to `NNNN-full-eval` /
+  `NNNN-<scope-path>-eval`, kept legacy `-quality-eval` folders recognized and
+  numbered against, and documented full structural `--narrowing` slugs for
+  scoped `/quality evaluate` runs (`Done`).

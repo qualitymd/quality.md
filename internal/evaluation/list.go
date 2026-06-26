@@ -1,9 +1,6 @@
 package evaluation
 
-import (
-	"fmt"
-	"strings"
-)
+import "fmt"
 
 // RunListEntry summarizes one discovered evaluation run.
 type RunListEntry struct {
@@ -116,18 +113,9 @@ func ValidateRunState(state string) error {
 }
 
 func narrowingFromRunName(name string) string {
-	match := runNameRE.FindStringSubmatch(name)
-	if match == nil || match[2] == "" {
+	parsed, ok := parseRunName(name)
+	if !ok {
 		return ""
 	}
-	suffix := match[2]
-	if suffix == "subject" || suffix == "model" {
-		return ""
-	}
-	for _, prefix := range []string{"subject-", "model-"} {
-		if strings.HasPrefix(suffix, prefix) {
-			return strings.TrimPrefix(suffix, prefix)
-		}
-	}
-	return suffix
+	return parsed.narrowing
 }

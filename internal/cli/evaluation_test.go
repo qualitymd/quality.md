@@ -153,7 +153,7 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	if !strings.Contains(out.String(), `"path": `) || !strings.Contains(out.String(), `"reportable": false`) {
 		t.Fatalf("status stdout = %s, want latest status", out.String())
 	}
-	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-quality-eval"`) {
+	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-full-eval"`) {
 		t.Fatalf("status stdout = %s, want repository-relative run path", out.String())
 	}
 	if !strings.Contains(out.String(), `"kind": "missing-evaluation-data"`) {

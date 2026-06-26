@@ -5,6 +5,18 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- `qualitymd evaluation create` now names new run folders
+  `NNNN-full-eval` or `NNNN-<scope-path>-eval`, shortening the old
+  `quality-eval` tag while continuing to recognize and number against existing
+  `-quality-eval` runs.
+
+### /quality Skill
+
+- `/quality evaluate` now passes `--narrowing` as the scope's full structural
+  path for Area and Factor scoped evaluations.
+
 ## v0.14.0 - 2026-06-26
 
 ### CLI

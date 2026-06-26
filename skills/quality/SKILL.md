@@ -117,7 +117,10 @@ Parse the user's request from free-form arguments:
   against required titles and stable YAML names in the grounded model. One label
   evaluates the uniquely matching Area or Factor. Two labels are
   `<area-label> <factor-label>`: resolve the Area first, then the Factor within
-  that Area. When a Factor label exists in multiple Areas, ask exactly:
+  that Area. When passing `--narrowing` to `qualitymd evaluation create`, use the
+  scope's full structural path: the Area path from the root, plus the Factor path
+  for Factor scope, joined with single hyphens. When a Factor label exists in
+  multiple Areas, ask exactly:
   `What area do you want to evaluate <Factor> for?`, list numbered runnable Area
   choices with human-readable titles or names first, include qualified model
   references as secondary context when useful, and add an `Answer` line that
@@ -346,7 +349,7 @@ Format contract:
                                # recalibrate, drift-correction, scope-change,
                                # apex-change, weight-change, criterion-change
   target: <area/factor/requirement key or "model">
-  run: 0003-quality-eval       # when the change came from an evaluation
+  run: 0003-full-eval          # when the change came from an evaluation
   recommendation: 002-<slug>   # when the change came from an evaluation
   ---
 

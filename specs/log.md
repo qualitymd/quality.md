@@ -3,6 +3,13 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0113 - Evaluation run folder naming](../changes/0113-evaluation-run-folder-naming.md).
+  `qualitymd evaluation create` now documents the `NNNN-full-eval` /
+  `NNNN-<scope-path>-eval` run-folder grammar, continued recognition of legacy
+  `-quality-eval` folders, and the `/quality evaluate` convention that scoped
+  runs pass the Area/Factor full structural path through `--narrowing`.
+
+- **Revision**: Implemented durable spec changes for
   [0110 - Run frame title and workflow vocabulary](../changes/0110-run-frame-and-workflow-vocabulary.md).
   The `/quality` skill spec's Run frames section now requires the header to name
   the resolved workflow and forbids rendering a command-style `/quality run`

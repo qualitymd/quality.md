@@ -2057,9 +2057,14 @@ model path. `[model]` defaults to `QUALITY.md`.
 
 ```text
 qualitymd evaluation create [model]
+  --narrowing <scope-path>
   --json
   --evaluation-dir <path>
 ```
+
+New run folders use `NNNN-full-eval` for a full evaluation and
+`NNNN-<scope-path>-eval` for a narrowed evaluation. Existing `-quality-eval`
+runs stay recognized for history and next-number computation.
 
 `evaluation data set` reads one structured routine payload from stdin, validates
 it, routes by `kind`, derives the canonical `data/**` path, and writes canonical

@@ -34,7 +34,7 @@ func TestCreateRunSeedsV2LayoutOnly(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	if result.Path != ".quality/evaluations/0001-quality-eval" {
+	if result.Path != ".quality/evaluations/0001-full-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
 	for _, name := range []string{ModelSnapshotFile, "data"} {
@@ -49,6 +49,95 @@ func TestCreateRunSeedsV2LayoutOnly(t *testing.T) {
 	}
 	if got := result.NextActions[0].Command; strings.Contains(got, "--file") || !strings.Contains(got, "< payload.json") {
 		t.Fatalf("next action = %q, want stdin data set command", got)
+	}
+}
+
+func TestCreateRunUsesScopePathNamingAndLegacyNumbering(t *testing.T) {
+	repo := testRepo(t)
+	legacy := filepath.Join(repo, ".quality", "evaluations", "0006-quality-eval")
+	if err := os.MkdirAll(legacy, 0o755); err != nil {
+		t.Fatalf("mkdir legacy run: %v", err)
+	}
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "security-reliability-latency"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	if result.Path != ".quality/evaluations/0007-security-reliability-latency-eval" {
+		t.Fatalf("path = %q, want numbered scope-path run after legacy run", result.Path)
+	}
+	if strings.Contains(filepath.Base(result.Path), "quality") {
+		t.Fatalf("path = %q, want no quality segment in new run name", result.Path)
+	}
+}
+
+func TestRunNameRecognitionNormalizesCurrentAndLegacyNarrowing(t *testing.T) {
+	tests := []struct {
+		name          string
+		wantNumber    int
+		wantNarrowing string
+		wantOK        bool
+	}{
+		{name: "0007-full-eval", wantNumber: 7, wantNarrowing: "", wantOK: true},
+		{name: "0007-security-eval", wantNumber: 7, wantNarrowing: "security", wantOK: true},
+		{name: "0007-security-network-eval", wantNumber: 7, wantNarrowing: "security-network", wantOK: true},
+		{name: "0007-security-reliability-eval", wantNumber: 7, wantNarrowing: "security-reliability", wantOK: true},
+		{name: "0007-security-reliability-latency-eval", wantNumber: 7, wantNarrowing: "security-reliability-latency", wantOK: true},
+		{name: "0006-quality-eval", wantNumber: 6, wantNarrowing: "", wantOK: true},
+		{name: "0005-subject-quality-eval", wantNumber: 5, wantNarrowing: "", wantOK: true},
+		{name: "0005-model-quality-eval", wantNumber: 5, wantNarrowing: "", wantOK: true},
+		{name: "0005-subject-security-network-quality-eval", wantNumber: 5, wantNarrowing: "security-network", wantOK: true},
+		{name: "0005-model-security-reliability-quality-eval", wantNumber: 5, wantNarrowing: "security-reliability", wantOK: true},
+		{name: "0005-security-network-quality-eval", wantNumber: 5, wantNarrowing: "security-network", wantOK: true},
+		{name: "0005-quality-report", wantOK: false},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := parseRunName(tc.name)
+			if ok != tc.wantOK {
+				t.Fatalf("parseRunName() ok = %v, want %v", ok, tc.wantOK)
+			}
+			if !ok {
+				return
+			}
+			if got.number != tc.wantNumber || got.narrowing != tc.wantNarrowing {
+				t.Fatalf("parseRunName() = %#v, want number %d narrowing %q", got, tc.wantNumber, tc.wantNarrowing)
+			}
+			if narrowingFromRunName(tc.name) != tc.wantNarrowing {
+				t.Fatalf("narrowingFromRunName() = %q, want %q", narrowingFromRunName(tc.name), tc.wantNarrowing)
+			}
+		})
+	}
+}
+
+func TestListRunsRecognizesCurrentAndLegacyRunFolders(t *testing.T) {
+	repo := testRepo(t)
+	evalDir := filepath.Join(repo, ".quality", "evaluations")
+	legacy := filepath.Join(evalDir, "0006-quality-eval")
+	if err := os.MkdirAll(filepath.Join(legacy, "data"), 0o755); err != nil {
+		t.Fatalf("mkdir legacy data: %v", err)
+	}
+	modelRaw, err := os.ReadFile(filepath.Join(repo, "QUALITY.md"))
+	if err != nil {
+		t.Fatalf("read model: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(legacy, ModelSnapshotFile), modelRaw, 0o644); err != nil {
+		t.Fatalf("write legacy model snapshot: %v", err)
+	}
+	if _, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "security-network"}); err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runs, err := ListRuns(repo, "", "")
+	if err != nil {
+		t.Fatalf("ListRuns() error = %v", err)
+	}
+	if len(runs.Runs) != 2 {
+		t.Fatalf("ListRuns() = %#v, want two runs", runs.Runs)
+	}
+	if runs.Runs[0].Path != ".quality/evaluations/0006-quality-eval" || runs.Runs[0].Narrowing != "" {
+		t.Fatalf("legacy run = %#v, want no narrowing", runs.Runs[0])
+	}
+	if runs.Runs[1].Path != ".quality/evaluations/0007-security-network-eval" || runs.Runs[1].Narrowing != "security-network" {
+		t.Fatalf("current run = %#v, want scope-path narrowing", runs.Runs[1])
 	}
 }
 

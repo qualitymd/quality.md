@@ -108,8 +108,12 @@ Source content instructs the evaluator?
 8. Create the run folder with
    `qualitymd evaluation create [model] [--narrowing <slug>]`. The CLI computes
    the number, snapshots `model-snapshot.md`, and prepares `data/` for structured
-   routine outputs. Record the run path in the
-   evaluate feedback log frontmatter or timeline.
+   routine outputs. For an Area narrowing, pass `--narrowing` as the Area's full
+   structural path from the root Area, with path segments joined by single
+   hyphens. For a Factor narrowing, append the Factor's structural path to the
+   owning Area path, also hyphen-joined, with no Area-vs-Factor marker or
+   boundary separator. Record the run path in the evaluate feedback log
+   frontmatter or timeline.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
    persist it through `qualitymd evaluation data set <run> < payload.json`.
    The frame records the resolved model, scope, rigor, in-scope Areas, Factors,

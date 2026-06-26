@@ -22,7 +22,7 @@ all capitals.
 ## Arguments and flags
 
 - `[model]` — selected `QUALITY.md` file to snapshot; defaults to `QUALITY.md`.
-- `--narrowing <slug>` — optional path-safe scope slug.
+- `--narrowing <slug>` — optional path-safe full structural scope path slug.
 - `--model <path>` — retained compatibility spelling for the selected
   `QUALITY.md` file; callers should prefer `[model]`.
 - `--evaluation-dir <path>` — override the evaluation directory.
@@ -52,16 +52,33 @@ directory or run folder. The model path **MUST** resolve to a file, not a
 directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 
-The command **MUST** compute the next run number as one past the highest matching
-evaluation run folder, create the run directory, create `data/`, and snapshot
-`model-snapshot.md`.
+The command **MUST** compute the next run number as one past the highest
+recognized evaluation run folder, create the run directory, create `data/`, and
+snapshot `model-snapshot.md`. Recognized run folders include the current
+`NNNN-<scope>-eval` grammar and legacy `-quality-eval` folders, including older
+`subject`/`model`-prefixed forms, so numbering remains monotonic across naming
+changes.
+
+New run folders **MUST** be named `NNNN-<scope>-eval`. When `--narrowing` is
+absent, `<scope>` **MUST** be `full`, producing `NNNN-full-eval`. When
+`--narrowing` is present, `<scope>` **MUST** be the validated narrowing slug,
+producing `NNNN-<narrowing>-eval`. New run names **MUST NOT** include the legacy
+`quality-eval` tag.
+
+`--narrowing` **MUST** remain a path-safe slug. Callers that narrow by Area or
+Factor **SHOULD** use the scope's full structural path, joining the Area path
+from the root and, for Factor scope, the Factor path with single hyphens and no
+kind marker or boundary separator. The run number remains the run identity;
+the scope slug is a human mnemonic, and `model-snapshot.md` remains the
+structural source of truth.
 
 The command **MUST NOT** create previous-runtime record folders or planning
 coverage files such as `assessments/`, `analysis/`, `recommendations/`,
 `design.md`, or `plan.md`.
 
-`model-snapshot.md` is a frozen copy of the resolved model file. New run names MUST NOT include an altitude segment. The
-command **MUST NOT** expose an altitude flag, option, or JSON receipt field.
+`model-snapshot.md` is a frozen copy of the resolved model file. New run names
+**MUST NOT** include an altitude segment. The command **MUST NOT** expose an
+altitude flag, option, or JSON receipt field.
 
 On success, human output **MUST** report the created path on stderr. Under
 `--json`, stdout **MUST** contain a receipt with `schemaVersion`, `path`, and

@@ -67,11 +67,11 @@ func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
 	if err != nil {
 		return 0, "", err
 	}
-	name := fmt.Sprintf("%04d-quality-eval", number)
+	scope := "full"
 	if narrowing != "" {
-		name = fmt.Sprintf("%04d-%s-quality-eval", number, narrowing)
+		scope = narrowing
 	}
-	return number, name, nil
+	return number, fmt.Sprintf("%04d-%s-eval", number, scope), nil
 }
 
 func createRunSkeleton(runAbs string, modelRaw []byte) error {

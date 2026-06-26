@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	runNameRE = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
+	currentRunNameRE = regexp.MustCompile(`^(\d{4})-([a-z0-9-]+)-eval$`)
+	legacyRunNameRE  = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
 )
 
 // ModelSnapshotFile is the run-folder filename for the frozen copy of the
@@ -53,6 +54,11 @@ type RunDir struct {
 	Rel    string
 }
 
+type runName struct {
+	number    int
+	narrowing string
+}
+
 // ListRunDirs returns recognized evaluation run folders in deterministic order.
 func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
 	entries, err := os.ReadDir(evalDirAbs)
@@ -64,16 +70,12 @@ func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
 		if !entry.IsDir() {
 			continue
 		}
-		match := runNameRE.FindStringSubmatch(entry.Name())
-		if match == nil {
-			continue
-		}
-		n, err := strconv.Atoi(match[1])
-		if err != nil {
+		parsed, ok := parseRunName(entry.Name())
+		if !ok {
 			continue
 		}
 		runs = append(runs, RunDir{
-			Number: n,
+			Number: parsed.number,
 			Name:   entry.Name(),
 			Abs:    filepath.Join(evalDirAbs, entry.Name()),
 			Rel:    filepath.ToSlash(filepath.Join(evalDirRel, entry.Name())),
@@ -112,6 +114,40 @@ func IsPathSafeSlug(s string) bool {
 	return s != "" && Slug(s) == s
 }
 
+func parseRunName(name string) (runName, bool) {
+	if match := legacyRunNameRE.FindStringSubmatch(name); match != nil {
+		n, err := strconv.Atoi(match[1])
+		if err != nil {
+			return runName{}, false
+		}
+		return runName{number: n, narrowing: legacyNarrowing(match[2])}, true
+	}
+	if match := currentRunNameRE.FindStringSubmatch(name); match != nil {
+		n, err := strconv.Atoi(match[1])
+		if err != nil {
+			return runName{}, false
+		}
+		scope := match[2]
+		if scope == "full" {
+			scope = ""
+		}
+		return runName{number: n, narrowing: scope}, true
+	}
+	return runName{}, false
+}
+
+func legacyNarrowing(scope string) string {
+	if scope == "" || scope == "subject" || scope == "model" {
+		return ""
+	}
+	for _, prefix := range []string{"subject-", "model-"} {
+		if strings.HasPrefix(scope, prefix) {
+			return strings.TrimPrefix(scope, prefix)
+		}
+	}
+	return scope
+}
+
 func nextRunNumber(dir string) (int, error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -119,13 +155,9 @@ func nextRunNumber(dir string) (int, error) {
 	}
 	maxN := 0
 	for _, entry := range entries {
-		m := runNameRE.FindStringSubmatch(entry.Name())
-		if m == nil {
-			continue
-		}
-		n, err := strconv.Atoi(m[1])
-		if err == nil && n > maxN {
-			maxN = n
+		parsed, ok := parseRunName(entry.Name())
+		if ok && parsed.number > maxN {
+			maxN = parsed.number
 		}
 	}
 	return maxN + 1, nil

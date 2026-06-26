@@ -131,6 +131,12 @@ flowchart TD
    `qualitymd spec`.
 4. **Create the run** with `qualitymd evaluation create [model]`, letting the
    CLI number the folder, snapshot `model-snapshot.md`, and prepare `data/`.
+   When evaluation is narrowed to an Area, the skill **MUST** pass
+   `--narrowing` the Area's full structural path from the root Area, with path
+   segments joined by single hyphens. When evaluation is narrowed to a Factor,
+   the skill **MUST** pass the owning Area's structural path followed by the
+   Factor's structural path, again hyphen-joined, with no Area-vs-Factor marker
+   or boundary separator.
 5. **Frame the evaluation** before assessment evidence collection. The skill
    **MUST** persist `EvaluationFrame` through
    `qualitymd evaluation data set <run> < payload.json`.

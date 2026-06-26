@@ -10,3 +10,4 @@ Change case detail for
 ## Concepts
 
 - [spec.md](spec.md) - functional specification.
+- [design.md](design.md) - design doc.

@@ -27,9 +27,9 @@ of the name, but it follows no convention.
 
 This change shortens the constant tag to `eval` and makes a narrowed run's slug
 the scope's full structural path. The run number remains the run's identity and
-`model.md` remains the structural source of truth; the slug is a human mnemonic
-that now carries maximal scope context. Existing runs are not migrated, so both
-the old and new grammars must be recognized.
+`model-snapshot.md` remains the structural source of truth; the slug is a human
+mnemonic that now carries maximal scope context. Existing runs are not migrated,
+so both the old and new grammars must be recognized.
 
 ## Scope
 
@@ -102,9 +102,9 @@ filenames, or report content.
   boundary separator between the Area-path segments and the Factor-path segments.
 
   > Rationale: the slug is a mnemonic, not an identifier — the run number is the
-  > identity and `model.md` carries full structural identity. Path-safe slugs
-  > have no boundary character available, so a kind marker would only add another
-  > ambiguous token rather than a reliable boundary. — 0113
+  > identity and `model-snapshot.md` carries full structural identity. Path-safe
+  > slugs have no boundary character available, so a kind marker would only add
+  > another ambiguous token rather than a reliable boundary. — 0113
 
 ### Recognition and legacy runs
 
@@ -156,7 +156,7 @@ None.
 ### To modify
 
 - [`specs/cli/evaluation-create.md`](../../../specs/cli/evaluation-create.md) -
-  state the run-folder grammar `NNNN[-<narrowing>]-eval`, document that
+  state the run-folder grammar `NNNN-<scope>-eval`, document that
   `--narrowing` carries the scope's full structural path, and note continued
   recognition of legacy `-quality-eval` folders. Driven by
   [Run-folder name grammar](#run-folder-name-grammar) and
