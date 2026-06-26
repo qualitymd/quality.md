@@ -382,6 +382,11 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 			raw:  `{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:invented","ratingDrivers":[]}`,
 			want: "does not resolve in the model",
 		},
+		{
+			name: "out-of-vocabulary reference kind",
+			raw:  `{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","ratingDrivers":[{"description":"d","effect":"supports target","ratingLevelId":"rating:target","inputRefs":[{"kind":"RequirementAssessment","subject":{"requirementId":"requirement:root::has-tests"}}]}]}`,
+			want: `kind = "RequirementAssessment", want one of`,
+		},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {

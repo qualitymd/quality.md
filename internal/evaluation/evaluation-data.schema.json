@@ -83,6 +83,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -120,6 +132,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -278,6 +302,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -331,6 +367,18 @@
                       "additionalProperties": false,
                       "properties": {
                         "kind": {
+                          "enum": [
+                            "EvaluationFrame",
+                            "AreaEvaluationFrame",
+                            "RequirementEvaluationFrame",
+                            "RequirementAssessmentResult",
+                            "RequirementRatingResult",
+                            "FactorAnalysisFrame",
+                            "FactorAnalysisResult",
+                            "AreaAnalysisFrame",
+                            "AreaAnalysisResult",
+                            "EvaluationOutputResult"
+                          ],
                           "type": "string"
                         },
                         "selector": {
@@ -483,6 +531,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -536,6 +596,18 @@
                       "additionalProperties": false,
                       "properties": {
                         "kind": {
+                          "enum": [
+                            "EvaluationFrame",
+                            "AreaEvaluationFrame",
+                            "RequirementEvaluationFrame",
+                            "RequirementAssessmentResult",
+                            "RequirementRatingResult",
+                            "FactorAnalysisFrame",
+                            "FactorAnalysisResult",
+                            "AreaAnalysisFrame",
+                            "AreaAnalysisResult",
+                            "EvaluationOutputResult"
+                          ],
                           "type": "string"
                         },
                         "selector": {
@@ -841,6 +913,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -875,6 +959,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -914,6 +1010,18 @@
                   "additionalProperties": false,
                   "properties": {
                     "kind": {
+                      "enum": [
+                        "EvaluationFrame",
+                        "AreaEvaluationFrame",
+                        "RequirementEvaluationFrame",
+                        "RequirementAssessmentResult",
+                        "RequirementRatingResult",
+                        "FactorAnalysisFrame",
+                        "FactorAnalysisResult",
+                        "AreaAnalysisFrame",
+                        "AreaAnalysisResult",
+                        "EvaluationOutputResult"
+                      ],
                       "type": "string"
                     },
                     "selector": {
@@ -959,6 +1067,11 @@
                       "type": "string"
                     },
                     "kind": {
+                      "enum": [
+                        "area",
+                        "factor",
+                        "requirement"
+                      ],
                       "type": "string"
                     },
                     "path": {
@@ -983,6 +1096,18 @@
                   "additionalProperties": false,
                   "properties": {
                     "kind": {
+                      "enum": [
+                        "EvaluationFrame",
+                        "AreaEvaluationFrame",
+                        "RequirementEvaluationFrame",
+                        "RequirementAssessmentResult",
+                        "RequirementRatingResult",
+                        "FactorAnalysisFrame",
+                        "FactorAnalysisResult",
+                        "AreaAnalysisFrame",
+                        "AreaAnalysisResult",
+                        "EvaluationOutputResult"
+                      ],
                       "type": "string"
                     },
                     "selector": {
@@ -1020,6 +1145,18 @@
                   "additionalProperties": false,
                   "properties": {
                     "kind": {
+                      "enum": [
+                        "EvaluationFrame",
+                        "AreaEvaluationFrame",
+                        "RequirementEvaluationFrame",
+                        "RequirementAssessmentResult",
+                        "RequirementRatingResult",
+                        "FactorAnalysisFrame",
+                        "FactorAnalysisResult",
+                        "AreaAnalysisFrame",
+                        "AreaAnalysisResult",
+                        "EvaluationOutputResult"
+                      ],
                       "type": "string"
                     },
                     "selector": {
@@ -1085,6 +1222,11 @@
                 "type": "string"
               },
               "kind": {
+                "enum": [
+                  "area",
+                  "factor",
+                  "requirement"
+                ],
                 "type": "string"
               },
               "path": {
@@ -1108,6 +1250,18 @@
           "additionalProperties": false,
           "properties": {
             "kind": {
+              "enum": [
+                "EvaluationFrame",
+                "AreaEvaluationFrame",
+                "RequirementEvaluationFrame",
+                "RequirementAssessmentResult",
+                "RequirementRatingResult",
+                "FactorAnalysisFrame",
+                "FactorAnalysisResult",
+                "AreaAnalysisFrame",
+                "AreaAnalysisResult",
+                "EvaluationOutputResult"
+              ],
               "type": "string"
             },
             "selector": {
@@ -1234,6 +1388,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -1271,6 +1437,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -1433,6 +1611,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -1486,6 +1676,18 @@
                       "additionalProperties": false,
                       "properties": {
                         "kind": {
+                          "enum": [
+                            "EvaluationFrame",
+                            "AreaEvaluationFrame",
+                            "RequirementEvaluationFrame",
+                            "RequirementAssessmentResult",
+                            "RequirementRatingResult",
+                            "FactorAnalysisFrame",
+                            "FactorAnalysisResult",
+                            "AreaAnalysisFrame",
+                            "AreaAnalysisResult",
+                            "EvaluationOutputResult"
+                          ],
                           "type": "string"
                         },
                         "selector": {
@@ -1638,6 +1840,18 @@
                 "additionalProperties": false,
                 "properties": {
                   "kind": {
+                    "enum": [
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "EvaluationOutputResult"
+                    ],
                     "type": "string"
                   },
                   "selector": {
@@ -1691,6 +1905,18 @@
                       "additionalProperties": false,
                       "properties": {
                         "kind": {
+                          "enum": [
+                            "EvaluationFrame",
+                            "AreaEvaluationFrame",
+                            "RequirementEvaluationFrame",
+                            "RequirementAssessmentResult",
+                            "RequirementRatingResult",
+                            "FactorAnalysisFrame",
+                            "FactorAnalysisResult",
+                            "AreaAnalysisFrame",
+                            "AreaAnalysisResult",
+                            "EvaluationOutputResult"
+                          ],
                           "type": "string"
                         },
                         "selector": {
@@ -2263,6 +2489,18 @@
                   "additionalProperties": false,
                   "properties": {
                     "kind": {
+                      "enum": [
+                        "EvaluationFrame",
+                        "AreaEvaluationFrame",
+                        "RequirementEvaluationFrame",
+                        "RequirementAssessmentResult",
+                        "RequirementRatingResult",
+                        "FactorAnalysisFrame",
+                        "FactorAnalysisResult",
+                        "AreaAnalysisFrame",
+                        "AreaAnalysisResult",
+                        "EvaluationOutputResult"
+                      ],
                       "type": "string"
                     },
                     "selector": {

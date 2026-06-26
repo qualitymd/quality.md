@@ -29,7 +29,10 @@ const (
 	DataKindEvaluationOutput           DataKind = "EvaluationOutputResult"
 )
 
-var acceptedDataKinds = []DataKind{
+// supportedDataKinds lists every Evaluation payload kind the CLI can persist,
+// including the CLI-owned EvaluationOutputResult. It is the single typed source
+// for the reference-kind vocabulary: any reference may name any of these kinds.
+var supportedDataKinds = []DataKind{
 	DataKindEvaluationFrame,
 	DataKindAreaEvaluationFrame,
 	DataKindRequirementEvaluationFrame,
@@ -39,6 +42,31 @@ var acceptedDataKinds = []DataKind{
 	DataKindFactorAnalysis,
 	DataKindAreaAnalysisFrame,
 	DataKindAreaAnalysis,
+	DataKindEvaluationOutput,
+}
+
+// acceptedDataKinds is the agent-writable subset of supportedDataKinds: every
+// supported kind except the CLI-owned EvaluationOutputResult, which only
+// evaluation report build generates. It gates evaluation data set <kind>.
+var acceptedDataKinds = supportedDataKindsExcept(DataKindEvaluationOutput)
+
+func supportedDataKindsExcept(excluded ...DataKind) []DataKind {
+	kinds := make([]DataKind, 0, len(supportedDataKinds))
+	for _, kind := range supportedDataKinds {
+		if !slices.Contains(excluded, kind) {
+			kinds = append(kinds, kind)
+		}
+	}
+	return kinds
+}
+
+// kindStrings renders a typed kind slice as plain strings for enum constraints.
+func kindStrings[T ~string](kinds []T) []string {
+	out := make([]string, len(kinds))
+	for i, kind := range kinds {
+		out[i] = string(kind)
+	}
+	return out
 }
 
 // DataSetOptions configures Evaluation data writes.

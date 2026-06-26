@@ -366,7 +366,7 @@ func limitContract() dataObjectContract {
 
 func routineRefContract() dataObjectContract {
 	return object(
-		field("kind", dataString, true),
+		field("kind", dataString, true, enum(kindStrings(supportedDataKinds)...)),
 		field("subject", dataObject, true, object(
 			field("areaId", dataAreaID, false),
 			field("factorId", dataFactorID, false),
@@ -378,7 +378,7 @@ func routineRefContract() dataObjectContract {
 
 func reportRefContract() dataObjectContract {
 	return object(
-		field("kind", dataString, true),
+		field("kind", dataString, true, enum(kindStrings(reportKinds)...)),
 		field("areaId", dataAreaID, true),
 		field("factorId", dataFactorID, false),
 		field("requirementId", dataRequirementID, false),

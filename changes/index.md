@@ -43,10 +43,10 @@ edit.
 
 # Open change cases
 
-- [0124 - Constrain reference kind fields to the payload-kind vocabulary](0124-reference-kind-enum.md)
-  (`Design`) - enum-constrain the `kind` member of Evaluation reference objects
-  to the supported payload kinds, so a misspelled or invented reference kind is
-  rejected at write time instead of persisting as a free-form string.
+- [0125 - Model query commands](0125-model-query-commands.md)
+  (`Draft`) - add a read-only `qualitymd model` group (`tree`/`list`/`get`) that
+  projects a model's structure and canonical reference IDs for agents and people,
+  without overlapping the `status` or `evaluation` surfaces.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

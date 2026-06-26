@@ -3,6 +3,19 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0124 - Constrain reference kind fields to closed kind vocabularies](archive/0124-reference-kind-enum.md).
+  Enum-constrained the `kind` member of both Evaluation reference shapes from
+  typed sources: `routineRefContract` (used for `inputRefs[]` / `*Ref`) against
+  `supportedDataKinds` — all ten payload kinds, including the CLI-owned
+  `EvaluationOutputResult`, with the agent-writable `acceptedDataKinds` derived
+  from it — and `reportRefContract` against `reportKinds` (`area`, `factor`,
+  `requirement`). Implementation corrected the design's premise that both `kind`
+  fields name payload kinds: a report reference `kind` names a report kind, so it
+  is pinned to the report-kind set instead. Regenerated
+  `evaluation-data.schema.json`, added a routine-reference rejection test, and
+  recorded the rule in `json-conventions.md`. `mise run check` passes.
+
+- **Done**: Implemented and archived
   [0123 - Render interactions through native affordances](archive/0123-native-interaction-affordances.md).
   Made progressive enhancement the default agent-mediated interaction contract:
   each interaction is an intent rendered through a fit-for-purpose native affordance
@@ -14,6 +27,24 @@
   interaction contract; brought the agent-mediated UX guide, `SKILL.md`, the
   `setup`/`update`/`evaluate`/recommendation-follow-up runtime files, the durable
   skill specs, changelog, and logs into conformance. `mise run check` passes.
+
+- **Draft**: Created
+  [0125 - Model query commands](0125-model-query-commands.md) with its
+  [functional spec](0125-model-query-commands/spec.md). Adds a read-only
+  `qualitymd model` group — `tree` (hierarchical view), `list` (flat, filterable
+  enumeration), `get <id>` (single-element detail) — that projects a model's
+  elements, their canonical reference IDs (`area:…`/`factor:…::…`/`requirement:…::…`),
+  labels, and containment, with a human default form and `--json` everywhere. The
+  driving need is payload authoring: nothing emits canonical IDs today, so agents
+  hand-derive tens of them from `QUALITY.md`. Bounded to *structure and identity*
+  to avoid overlap — `status` keeps state/readiness/source-coverage/counts,
+  `evaluation` keeps runs/payloads/reports/snapshots; `model` has no `--run` flag,
+  no provenance, no validation (defers to `lint`), no ratings. `--area` accepts
+  the canonical `area:<path>` form only (one addressing vocabulary). New durable
+  spec `specs/cli/model.md`; `specs/cli.md` and `specs/cli/index.md` gain the
+  command. Design doc deferred (projection home and reference-encoding location
+  are design questions). Listed the case in the bundle [index](index.md). Code not
+  started.
 
 - **Design**: Created
   [0124 - Constrain reference kind fields to the payload-kind vocabulary](0124-reference-kind-enum.md)

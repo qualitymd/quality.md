@@ -57,6 +57,14 @@ const (
 	ReportKindRequirement ReportKind = "requirement"
 )
 
+// reportKinds is the single typed source for the report-reference kind
+// vocabulary: every report kind a report reference object may name.
+var reportKinds = []ReportKind{
+	ReportKindArea,
+	ReportKindFactor,
+	ReportKindRequirement,
+}
+
 var dataKindTitles = displayCatalog[DataKind]{
 	DataKindEvaluationFrame:            "🧭 Evaluation Frame",
 	DataKindAreaEvaluationFrame:        "🗺️ Area Evaluation Frame",

@@ -55,6 +55,20 @@ The CLI **MUST** resolve persisted identity fields against the run's
 Area, Factor, Requirement, or Rating Level **MUST** be rejected rather than
 persisted as a free-form string.
 
+A reference object's `kind` field **MUST** name a value from a closed
+vocabulary, and a write whose reference `kind` falls outside that vocabulary
+**MUST** be rejected rather than persisted as a free-form string, parallel to
+the identity-resolution rule above. A routine reference (`*Ref` / `inputRefs[]`)
+`kind` names a supported payload kind (per
+[`payload-kinds.md`](payload-kinds.md), the full set the CLI can persist,
+including the CLI-owned `EvaluationOutputResult`). A report reference `kind`
+names a report kind (`area`, `factor`, `requirement`).
+
+> Rationale: `kind` was the one required reference field left as a free string
+> while every other closed vocabulary in the contract is enum-validated; pinning
+> it moves a misspelled or invented kind to a write-time rejection instead of a
+> dangling reference discovered later. — 0124
+
 Generated routine outputs, protocol guidance, report artifacts, and payload-local
 artifacts **MUST** use `*Ref` names.
 

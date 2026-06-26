@@ -532,3 +532,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     and a harness-authorized mutation is not double-gated, across the
     agent-mediated UX guide, the shared `/quality` interaction contract, the
     bundled skill workflows, and durable skill specs (`Done`).
+- [0124 — Constrain reference kind fields to closed kind vocabularies](0124-reference-kind-enum.md)
+  - enum-constrains the `kind` member of Evaluation reference objects from typed
+    sources — supported payload kinds for routine references (`*Ref` /
+    `inputRefs[]`), report kinds for report references — so a misspelled or
+    invented reference kind is rejected at `evaluation data set` time instead of
+    persisting as a free-form string, with the constraint surfaced in the
+    regenerated `evaluation-data.schema.json` and `json-conventions.md` (`Done`).
