@@ -843,7 +843,7 @@ Area: <root Area title> / <child Area title> / <current Area title>
 
 Path: `<area path>`
 
-| Overall                            | Local               | Confidence                                | Data                                |
+| Overall Rating                     | Local Rating        | Confidence                                | Data                                |
 | ---------------------------------- | ------------------- | ----------------------------------------- | ----------------------------------- |
 | <local-and-descendant Area rating> | <local Area rating> | <overall confidence> / <local confidence> | [analysis](area-analysis-data-path) |
 
@@ -858,13 +858,13 @@ Summary:
 
 ## Factors
 
-| Factor | Path | Rating | + Sub-Factors | Sub-Factors |
-| ------ | ---- | ------ | ------------- | ----------- |
+| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |
+| ------ | ---- | ------------ | -------------------- | ----------- |
 
 ## Sub-Areas
 
-| Area | Path | Rating | + Sub-Areas | Factors |
-| ---- | ---- | ------ | ----------- | ------- |
+| Area | Path | Local Rating | + Sub-Areas Rating | Factors |
+| ---- | ---- | ------------ | ------------------ | ------- |
 
 ## Requirements
 
@@ -882,8 +882,8 @@ Report field meanings:
 - `Area` gives the linked Area title path from the root Area to the current
   Area.
 - `Path` is the human display path for the Area. The root Area renders as `/`.
-- `Overall` is the Area `localAndDescendantAnalysis` rating.
-- `Local` is the Area `localAnalysis` rating.
+- `Overall Rating` is the Area `localAndDescendantAnalysis` rating.
+- `Local Rating` is the Area `localAnalysis` rating.
 - `Confidence` shows overall and local Area analysis confidence.
 - `Data` links to the underlying structured Area Analysis Result.
 - `Summary` is deterministically projected from the Area Analysis Result
@@ -891,14 +891,16 @@ Report field meanings:
 - The Rating Drivers table lists Area rating drivers from the Area Analysis
   Result.
 - The Factors table lists local root Factors for this Area only.
-- Factor `Rating` is the Factor `localAnalysis` rating.
-- Factor `+ Sub-Factors` is the Factor `localAndDescendantAnalysis` rating.
+- Factor `Local Rating` is the Factor `localAnalysis` rating.
+- Factor `+ Sub-Factors Rating` is the Factor `localAndDescendantAnalysis`
+  rating, or an em dash when the Factor has no descendant Factors.
 - Factor `Sub-Factors` is a compact list of direct child Factors and their
   `localAndDescendantAnalysis` ratings.
 - Factor titles link to the Factor's generated report.
 - The Sub-Areas table lists direct child Areas only.
-- Sub-Area `Rating` is the child Area `localAnalysis` rating.
-- Sub-Area `+ Sub-Areas` is the child Area `localAndDescendantAnalysis` rating.
+- Sub-Area `Local Rating` is the child Area `localAnalysis` rating.
+- Sub-Area `+ Sub-Areas Rating` is the child Area `localAndDescendantAnalysis`
+  rating, or an em dash when the Area has no descendant Areas.
 - Sub-Area `Factors` is a compact list of the child Area's root Factors and
   their `localAndDescendantAnalysis` ratings.
 - Sub-Area titles link to the child Area's generated report.
@@ -1913,9 +1915,9 @@ Instructions:
 - Include Findings Summary, Finding Details, and Unknowns & Missing Evidence
   sections in Requirement reports.
 - In the Factors table, list local root Factors only, with columns `Factor`,
-  `Path`, `Rating`, `+ Sub-Factors`, `Sub-Factors`, and `Details`.
+  `Path`, `Local Rating`, `+ Sub-Factors Rating`, `Sub-Factors`, and `Details`.
 - In the Sub-Areas table, list direct child Areas only, with columns `Area`,
-  `Path`, `Rating`, `+ Sub-Areas`, `Factors`, and `Details`.
+  `Path`, `Local Rating`, `+ Sub-Areas Rating`, `Factors`, and `Details`.
 - In the Requirements table, list local Requirements only, with columns
   `Requirement`, `Rating`, `Status`, `Factors`, and `Details`.
 - In each Factor report, list rating drivers, direct Requirements, and direct

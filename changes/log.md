@@ -3,6 +3,22 @@
 ## 2026-06-26
 
 - **Done**: Created, implemented, and archived
+  [0111 - Evaluation report rating labels](archive/0111-evaluation-report-rating-labels.md).
+  Evaluation v2 Area and Factor report header tables now read `Overall Rating` /
+  `Local Rating`, and the Area report Factors and Sub-Areas tables and the Factor
+  report child Factors table now render a `Local Rating` column from
+  `localAnalysis` beside a descendant-inclusive `+ Sub-Factors Rating` /
+  `+ Sub-Areas Rating` column from `localAndDescendantAnalysis` (em dash when the
+  node has no descendants), replacing the prior aggregate-in-`Rating` column and
+  `Yes`/`No` boolean — satisfying the unmet distinction clean-break case 0097
+  required. Removed the now-unused `v2BoolLabel` wrapper. Aligned the durable
+  [report-tree spec](../specs/evaluation-v2/reports/report-tree.md) and the
+  [v2 sketch](../evaluation-v2-sketch.md), and updated focused report tests
+  (including a second navigation-fixture rating level to verify the
+  local-vs-roll-up split). Verified with `mise run check`. Updated the
+  [archive index](archive/index.md).
+
+- **Done**: Created, implemented, and archived
   [0109 - Filename text for evaluation data links](archive/0109-evaluation-data-link-filenames.md).
   Evaluation v2 `Data`-column links now render their payload base filename as
   link text (`area-analysis-result.json`, `factor-analysis-result.json`,

@@ -130,7 +130,7 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	if !strings.Contains(string(report), "Area: [Test model](report.md)") {
 		t.Fatalf("report.md = %s, want Area trail", report)
 	}
-	if !strings.Contains(string(report), "| Overall | Local | Confidence | Data |") {
+	if !strings.Contains(string(report), "| Overall Rating | Local Rating | Confidence | Data |") {
 		t.Fatalf("report.md = %s, want confidence display titles", report)
 	}
 	if strings.Contains(string(report), "Overall Rating | target") {
@@ -174,10 +174,10 @@ func TestV2ReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	rootReport := readReport(t, runPath, "report.md")
 	assertContains(t, rootReport, "Area: [Navigation model](report.md)")
 	assertContains(t, rootReport, "Path: `/`")
-	assertContains(t, rootReport, "| Overall | Local | Confidence | Data |")
-	assertContains(t, rootReport, "| Factor | Path | Rating | + Sub-Factors | Sub-Factors |")
-	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | ✅ Yes | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
-	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | ⬜ No |  |")
+	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
+	assertContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
+	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | 🔴 Below | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
+	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — |  |")
 	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/reliability-factor.md) |")
 	assertNotContains(t, rootReport, "Breadcrumb:")
 	assertNotContains(t, rootReport, "Parent Area:")
@@ -187,9 +187,9 @@ func TestV2ReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, factorReport, "Area: [Navigation model](../../report.md)")
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
 	assertContains(t, factorReport, "Path: `reliability`")
-	assertContains(t, factorReport, "| Overall | Local | Status | Confidence | Data |")
+	assertContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence | Data |")
 	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed |")
-	assertContains(t, factorReport, "| [Latency](factors/latency/latency-factor.md) | `reliability/latency` | 🔵 Target |")
+	assertContains(t, factorReport, "| [Latency](factors/latency/latency-factor.md) | `reliability/latency` | 🔵 Target | — |")
 	assertNotContains(t, factorReport, "Parent Factor:")
 	assertNotContains(t, factorReport, "| Details |")
 
@@ -301,7 +301,7 @@ func TestReportDisplayTitles(t *testing.T) {
 		{"run gap kind", runGapKindTitle(GapMissingEvaluationData), "📭 Missing Evaluation Data"},
 		{"rating result kind", ratingResultKindTitle(RatingResultNotAssessed), "⚪ Not Assessed"},
 		{"report kind", reportKindTitle(string(ReportKindFactor)), "🧩 Factor"},
-		{"boolean", v2BoolLabel(true), "✅ Yes"},
+		{"boolean", boolTitle(true), "✅ Yes"},
 		{"known finding severity", findingSeverityTitle("high"), "🔴 High"},
 		{"unknown fallback", findingTypeTitle("new_finding_type"), "New Finding Type"},
 		{"camel fallback", limitTypeTitle("futureLimitType"), "Future Limit Type"},
@@ -338,6 +338,10 @@ ratingScale:
     title: 🔵 Target
     description: Target.
     criterion: Meets it.
+  - level: below
+    title: 🔴 Below
+    description: Below.
+    criterion: Misses it.
 factors:
   reliability:
     title: Reliability
@@ -363,7 +367,7 @@ func navigationReportPayloads() []string {
 		`{"schemaVersion":1,"kind":"AreaAnalysisResult","areaId":["payments"],"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Payments local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Payments work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
 		`{"schemaVersion":1,"kind":"FactorAnalysisFrame","subject":{"factorId":{"declaringAreaId":[],"factorPath":["reliability"]}}}`,
 		`{"schemaVersion":1,"kind":"FactorAnalysisFrame","subject":{"factorId":{"declaringAreaId":[],"factorPath":["reliability","latency"]}}}`,
-		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Reliability local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Reliability work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Reliability local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"below","rationale":"Reliability work misses the bar once sub-Factors roll up.","ratingDrivers":[],"confidence":"high"}}`,
 		`{"schemaVersion":1,"kind":"FactorAnalysisResult","factorId":{"declaringAreaId":[],"factorPath":["reliability","latency"]},"localAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Latency local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"target","rationale":"Latency work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
 		`{"schemaVersion":1,"kind":"RequirementEvaluationFrame","subject":{"requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"factorIds":["reliability"]}}`,
 		`{"schemaVersion":1,"kind":"RequirementAssessmentResult","requirementId":{"declaringAreaId":[],"requirementName":"has-tests"},"status":"assessed","confidence":"high","summary":"Tests are present.","factors":["reliability"],"findings":[]}`,

@@ -347,7 +347,7 @@ func renderV2AreaReport(spec *model.Spec, artifacts *v2Artifacts, area *v2AreaAr
 	writeV2AreaTrail(&b, spec, area.ID, reportPath)
 	b.WriteString("# " + title + "\n\n")
 	b.WriteString("Path: `" + areaDisplayPath(area.ID) + "`\n\n")
-	b.WriteString("| Overall | Local | Confidence | Data |\n")
+	b.WriteString("| Overall Rating | Local Rating | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
@@ -355,26 +355,29 @@ func renderV2AreaReport(spec *model.Spec, artifacts *v2Artifacts, area *v2AreaAr
 	b.WriteString("\n\n## Rating Drivers\n\n")
 	writeV2DriversTable(&b, spec, overall)
 	b.WriteString("## Factors\n\n")
-	b.WriteString("| Factor | Path | Rating | + Sub-Factors | Sub-Factors |\n")
+	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	if factors := artifacts.rootFactorsForArea(area.ID); len(factors) == 0 {
 		b.WriteString("| (no local Factors) |  |  |  |  |\n\n")
 	} else {
 		for _, factor := range factors {
+			factorLocal := scopedMap(factor.Analysis, "localAnalysis")
 			factorOverall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
-			b.WriteString("| " + reportLink(reportPath, factorReportPath(factor.ID), factorTitle(spec, factor.ID)) + " | `" + factorDisplayPath(factor.ID) + "` | " + markdownCell(v2RatingLabel(spec, factorOverall)) + " | " + markdownCell(v2BoolLabel(len(artifacts.childFactors(factor.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.childFactors(factor.ID), spec, reportPath)) + " |\n")
+			children := artifacts.childFactors(factor.ID)
+			b.WriteString("| " + reportLink(reportPath, factorReportPath(factor.ID), factorTitle(spec, factor.ID)) + " | `" + factorDisplayPath(factor.ID) + "` | " + markdownCell(v2RatingLabel(spec, factorLocal)) + " | " + markdownCell(v2SubRatingCell(spec, factorOverall, len(children) > 0)) + " | " + markdownCell(factorList(children, spec, reportPath)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
 	b.WriteString("## Sub-Areas\n\n")
-	b.WriteString("| Area | Path | Rating | + Sub-Areas | Factors |\n")
+	b.WriteString("| Area | Path | Local Rating | + Sub-Areas Rating | Factors |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	if children := artifacts.childAreas(area.ID); len(children) == 0 {
 		b.WriteString("| (no child Areas) |  |  |  |  |\n\n")
 	} else {
 		for _, child := range children {
+			childLocal := scopedMap(child.Analysis, "localAnalysis")
 			childOverall := scopedMap(child.Analysis, "localAndDescendantAnalysis")
-			b.WriteString("| " + reportLink(reportPath, areaReportPath(child.ID), areaTitle(spec, child.ID)) + " | `" + areaDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childOverall)) + " | " + markdownCell(v2BoolLabel(len(artifacts.childAreas(child.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.rootFactorsForArea(child.ID), spec, reportPath)) + " |\n")
+			b.WriteString("| " + reportLink(reportPath, areaReportPath(child.ID), areaTitle(spec, child.ID)) + " | `" + areaDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childLocal)) + " | " + markdownCell(v2SubRatingCell(spec, childOverall, len(artifacts.childAreas(child.ID)) > 0)) + " | " + markdownCell(factorList(artifacts.rootFactorsForArea(child.ID), spec, reportPath)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
@@ -403,7 +406,7 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 	writeV2FactorTrail(&b, spec, factor.ID, reportPath)
 	b.WriteString("# " + title + "\n\n")
 	b.WriteString("Path: `" + factorDisplayPath(factor.ID) + "`\n\n")
-	b.WriteString("| Overall | Local | Status | Confidence | Data |\n")
+	b.WriteString("| Overall Rating | Local Rating | Status | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2AnalysisStatusPair(overall, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
@@ -422,14 +425,15 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 		b.WriteString("\n")
 	}
 	b.WriteString("## Child Factors\n\n")
-	b.WriteString("| Factor | Path | Rating |\n")
-	b.WriteString("| --- | --- | --- |\n")
+	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating |\n")
+	b.WriteString("| --- | --- | --- | --- |\n")
 	if children := artifacts.childFactors(factor.ID); len(children) == 0 {
-		b.WriteString("| (no child Factors) |  |  |\n\n")
+		b.WriteString("| (no child Factors) |  |  |  |\n\n")
 	} else {
 		for _, child := range children {
+			childLocal := scopedMap(child.Analysis, "localAnalysis")
 			childOverall := scopedMap(child.Analysis, "localAndDescendantAnalysis")
-			b.WriteString("| " + reportLink(reportPath, factorReportPath(child.ID), factorTitle(spec, child.ID)) + " | `" + factorDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childOverall)) + " |\n")
+			b.WriteString("| " + reportLink(reportPath, factorReportPath(child.ID), factorTitle(spec, child.ID)) + " | `" + factorDisplayPath(child.ID) + "` | " + markdownCell(v2RatingLabel(spec, childLocal)) + " | " + markdownCell(v2SubRatingCell(spec, childOverall, len(artifacts.childFactors(child.ID)) > 0)) + " |\n")
 		}
 		b.WriteString("\n")
 	}
@@ -980,8 +984,15 @@ func v2RequirementRatingLabel(spec *model.Spec, rating map[string]any) string {
 	return ratingStatusTitle(string(RatingStatusRated))
 }
 
-func v2BoolLabel(v bool) string {
-	return boolTitle(v)
+// v2SubRatingCell renders the descendant-inclusive ("+ Sub-Factors Rating" /
+// "+ Sub-Areas Rating") cell for a breakdown row. When the node has no
+// descendants there is no roll-up distinct from its local rating, so it renders
+// an em dash rather than repeating the local rating.
+func v2SubRatingCell(spec *model.Spec, aggregate map[string]any, hasDescendants bool) string {
+	if !hasDescendants {
+		return "—"
+	}
+	return v2RatingLabel(spec, aggregate)
 }
 
 func areaKey(id []string) string {

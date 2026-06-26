@@ -107,8 +107,9 @@ Factor reports **MUST** include:
 - owning Area link;
 - Factor navigation trail;
 - Factor title and path;
-- overall and local ratings, where `Overall` is the Factor
-  `localAndDescendantAnalysis` rating;
+- overall and local ratings, where `Overall Rating` is the Factor
+  `localAndDescendantAnalysis` rating and `Local Rating` is its `localAnalysis`
+  rating;
 - local and local-and-descendant statuses;
 - confidence;
 - data links;
@@ -140,13 +141,38 @@ Reports **MUST** render empty tables with explicit empty-state rows.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Area headers should summarize
-`Overall`, `Local`, `Confidence`, and `Data`; Factor headers should summarize
-`Overall`, `Local`, `Status`, `Confidence`, and `Data`; Requirement headers
-should summarize `Rating`, `Assessment`, `Factors`, `Confidence`, and `Data`.
+`Overall Rating`, `Local Rating`, `Confidence`, and `Data`; Factor headers should
+summarize `Overall Rating`, `Local Rating`, `Status`, `Confidence`, and `Data`;
+Requirement headers should summarize `Rating`, `Assessment`, `Factors`,
+`Confidence`, and `Data`.
 
 > Rationale: the title and path/name line identify the report subject, so the
 > header table should prioritize state and navigation rather than repeat the
 > subject kind as metadata. — 0104
+
+Every rating column **MUST** name what it rates. A header summary table **MUST**
+label its descendant-inclusive rating column `Overall Rating` and its local
+rating column `Local Rating`.
+
+> Rationale: the adjacent header columns are self-describing nouns, so bare
+> `Overall` / `Local` made a reader supply the missing noun. — 0111
+
+The Area report Factors table, the Area report Sub-Areas table, and the Factor
+report child Factors table each list a subject's children, one row per child.
+Each **MUST** render a `Local Rating` column from the child's `localAnalysis`
+rating, and a descendant-inclusive sub-rating column — `+ Sub-Factors Rating` for
+a Factor row, `+ Sub-Areas Rating` for an Area row — from the child's
+`localAndDescendantAnalysis` rating. These tables **MUST NOT** render a
+boolean in a rating column. When a row's subject has no descendant Factors (for a
+Factor row) or no descendant Areas (for an Area row), its `+ Sub-Factors Rating`
+/ `+ Sub-Areas Rating` cell **MUST** render an em dash (`—`) rather than
+repeating the local rating.
+
+> Rationale: these breakdown tables previously rendered the aggregate rating in
+> the local `Rating` column and a `Yes`/`No` boolean where the roll-up rating
+> belonged, leaving the local rating unshown — the unmet distinction clean-break
+> case 0097 required. The em dash preserves the old boolean's "has children"
+> signal without presenting a redundant rating. — 0097, 0111
 
 Reports **MUST** render selected Rating Levels with the Rating Level `title`
 resolved from the run's `model.md` snapshot, falling back to the stable Rating
