@@ -354,7 +354,7 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 	}{
 		{
 			name: "unknown finding field",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"title":"Wrong field","summary":"Would render blank"}]}`,
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"title":"Wrong field"}]}`,
 			want: "unknown field title",
 		},
 		{
