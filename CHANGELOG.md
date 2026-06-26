@@ -5,6 +5,41 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.14.0 - 2026-06-26
+
+### CLI
+
+- Evaluation v2 keeps the root Area report at `report.md`, but descendant Area,
+  Factor, and Requirement Markdown reports now use short subject-aware filenames
+  such as `<area>-area.md`, `<factor>-factor.md`, and
+  `<requirement>-requirement.md`. Generated Markdown links and
+  `EvaluationOutputResult` report refs use the new paths.
+
+### /quality Skill
+
+- `/quality evaluate` now describes the generated Markdown report tree instead
+  of implying the only human report artifact is `report.md`.
+
+### Documentation
+
+- Evaluation v2 report layout specs, the `/quality` reporting contract, and the
+  v2 sketch now document the short descendant report filenames.
+
+### Compatibility / Migration
+
+- Existing completed evaluation runs are not migrated. Rebuild a report with
+  `qualitymd evaluation report build <run>` to generate the new descendant
+  report filenames for a run.
+- Callers that hard-code descendant `report.md` paths should follow generated
+  report refs from `data/evaluation-output-result.json` or use the documented
+  structural path rules.
+
+Compatibility:
+
+- CLI: `v0.14.0`
+- QUALITY.md specification: `0.4 (Draft)`
+- /quality skill: `0.14.0`, requires `qualitymd >=0.14.0 <0.15.0`
+
 ## v0.13.1 - 2026-06-26
 
 ### CLI
