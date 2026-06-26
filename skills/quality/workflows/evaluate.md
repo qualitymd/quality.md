@@ -107,7 +107,7 @@ Source content instructs the evaluator?
 7. Ground format rules and rating vocabulary with `qualitymd spec`.
 8. Create the run folder with
    `qualitymd evaluation create [model] [--narrowing <slug>]`. The CLI computes
-   the number, snapshots `model.md`, and prepares `data/` for structured
+   the number, snapshots `model-snapshot.md`, and prepares `data/` for structured
    routine outputs. Record the run path in the
    evaluate feedback log frontmatter or timeline.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and

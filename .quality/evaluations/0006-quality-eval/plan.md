@@ -82,7 +82,7 @@ Standard.
 
 ## Requirement Set
 
-Assess all 30 in-scope Requirements from the current `model.md` snapshot:
+Assess all 30 in-scope Requirements from the current `model-snapshot.md` snapshot:
 
 - Root Agent Harnessability: 7 Requirements across agent accessibility, task
   specifiability, agent operability, continuity, self-verifiability, enforcement

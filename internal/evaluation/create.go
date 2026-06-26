@@ -78,8 +78,8 @@ func createRunSkeleton(runAbs string, modelRaw []byte) error {
 	if err := os.Mkdir(filepath.Join(runAbs, "data"), 0o755); err != nil {
 		return fmt.Errorf("creating data: %w", err)
 	}
-	if err := os.WriteFile(filepath.Join(runAbs, "model.md"), modelRaw, 0o644); err != nil {
-		return fmt.Errorf("writing model.md: %w", err)
+	if err := os.WriteFile(filepath.Join(runAbs, ModelSnapshotFile), modelRaw, 0o644); err != nil {
+		return fmt.Errorf("writing %s: %w", ModelSnapshotFile, err)
 	}
 	return nil
 }

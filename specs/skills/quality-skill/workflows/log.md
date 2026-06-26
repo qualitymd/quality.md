@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Unified workflow vocabulary in the [`setup`](setup.md),
+  [`evaluate`](evaluate.md), [`update`](update.md), and [index](index.md) workflow
+  specs for
+  [0110 - Run frame title and workflow vocabulary](../../../../changes/0110-run-frame-and-workflow-vocabulary.md).
+  Each spec now calls the dispatched procedure a "workflow" rather than a "mode",
+  drops the `mode` frontmatter tag, and rewords "dispatched as a mode" framing.
+
 - **Revision**: Updated the [`setup`](setup.md) and [`update`](update.md)
   workflow specs for
   [0106 - Binary confirmation UX](../../../../changes/archive/0106-binary-confirmation-ux.md).

@@ -43,7 +43,10 @@ edit.
 
 # Open change cases
 
-None.
+- [0113 - Evaluation run folder naming](0113-evaluation-run-folder-naming.md)
+  (`Draft`) - shorten the run-folder tag from `quality-eval` to `eval` and make
+  narrowed runs carry the scope's full structural path, while still recognizing
+  legacy run folders.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

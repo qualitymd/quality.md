@@ -15,6 +15,58 @@
   [`archive/`](archive/), updated the [archive index](archive/index.md), and
   removed the entry from the bundle [index](index.md).
 
+- **In-Review**: Implemented
+  [0112 - Evaluation model snapshot filename](0112-evaluation-model-snapshot-filename.md).
+  The Evaluation v2 run-folder model snapshot is now written and read as
+  `model-snapshot.md` through a single `evaluation.ModelSnapshotFile` constant —
+  `create.go` (write), `path.go` (run-folder validation), `load.go` and
+  `report_v2.go` (parse), and `status.go` (staleness) — with no old-name
+  compatibility path and operator messages naming the new file. Renamed this
+  repo's two tracked active dogfood snapshots (`0005`, `0006`) and their
+  run-local prose; left frozen `archive/` runs untouched. Aligned the durable
+  CLI, report-tree, and `/quality` skill specs plus the bundled evaluate
+  workflow, and updated the seed-layout test. `mise run check` passes. Not yet
+  committed or archived. Updated the bundle [index](index.md).
+
+- **Draft**: Created
+  [0113 - Evaluation run folder naming](0113-evaluation-run-folder-naming.md).
+  Shortens the Evaluation v2 run-folder tag from `quality-eval` to `eval` (the
+  `.quality/evaluations/` parent already says "evaluation") and gives every run a
+  uniform `NNNN-<scope>-eval` shape: full runs carry an explicit reserved `full`
+  marker (`NNNN-full-eval`), and a narrowed run's `--narrowing` slug is the
+  scope's full structural path — the Area path from the root plus the Factor path
+  when scoping to a Factor, hyphen-joined, with no kind marker or boundary
+  separator. The run number stays the identity and `model.md` the structural
+  source of truth; existing legacy `-quality-eval` folders stay recognized,
+  numbered against, and unmigrated. Added the parent concept, child folder,
+  functional spec, and bundle [index](index.md) entry.
+
+- **Draft**: Created
+  [0112 - Evaluation model snapshot filename](0112-evaluation-model-snapshot-filename.md).
+  Renames the Evaluation v2 run-folder model snapshot from `model.md` to
+  `model-snapshot.md` so the filename signals a frozen point-in-time copy of the
+  working-tree model rather than the live model. A clean break with no old-name
+  reader; this repo's own two tracked active dogfood runs are renamed so they keep
+  validating, while frozen `archive/` runs are left untouched. Added the parent
+  concept, child folder, functional spec, design doc, and bundle
+  [index](index.md) entry.
+
+- **Done**: Created, implemented, and archived
+  [0111 - Evaluation report rating labels](archive/0111-evaluation-report-rating-labels.md).
+  Evaluation v2 Area and Factor report header tables now read `Overall Rating` /
+  `Local Rating`, and the Area report Factors and Sub-Areas tables and the Factor
+  report child Factors table now render a `Local Rating` column from
+  `localAnalysis` beside a descendant-inclusive `+ Sub-Factors Rating` /
+  `+ Sub-Areas Rating` column from `localAndDescendantAnalysis` (em dash when the
+  node has no descendants), replacing the prior aggregate-in-`Rating` column and
+  `Yes`/`No` boolean — satisfying the unmet distinction clean-break case 0097
+  required. Removed the now-unused `v2BoolLabel` wrapper. Aligned the durable
+  [report-tree spec](../specs/evaluation-v2/reports/report-tree.md) and the
+  [v2 sketch](../evaluation-v2-sketch.md), and updated focused report tests
+  (including a second navigation-fixture rating level to verify the
+  local-vs-roll-up split). Verified with `mise run check`. Updated the
+  [archive index](archive/index.md).
+
 - **Done**: Created, implemented, and archived
   [0111 - Evaluation report rating labels](archive/0111-evaluation-report-rating-labels.md).
   Evaluation v2 Area and Factor report header tables now read `Overall Rating` /

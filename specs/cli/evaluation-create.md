@@ -54,13 +54,13 @@ folder.
 
 The command **MUST** compute the next run number as one past the highest matching
 evaluation run folder, create the run directory, create `data/`, and snapshot
-`model.md`.
+`model-snapshot.md`.
 
 The command **MUST NOT** create previous-runtime record folders or planning
 coverage files such as `assessments/`, `analysis/`, `recommendations/`,
 `design.md`, or `plan.md`.
 
-`model.md` is the resolved model file. New run names MUST NOT include an altitude segment. The
+`model-snapshot.md` is a frozen copy of the resolved model file. New run names MUST NOT include an altitude segment. The
 command **MUST NOT** expose an altitude flag, option, or JSON receipt field.
 
 On success, human output **MUST** report the created path on stderr. Under

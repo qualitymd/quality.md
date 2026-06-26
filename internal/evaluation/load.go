@@ -63,7 +63,7 @@ func load(path string) (*Run, error) {
 	if err != nil {
 		return nil, err
 	}
-	doc, err := document.Parse(filepath.Join(runAbs, "model.md"))
+	doc, err := document.Parse(filepath.Join(runAbs, ModelSnapshotFile))
 	if err != nil {
 		return nil, err
 	}

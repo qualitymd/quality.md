@@ -104,7 +104,7 @@ func buildV2Report(path string) (*BuildReportReceipt, error) {
 }
 
 func loadRunModel(runAbs string) (*model.Spec, error) {
-	doc, err := document.Parse(filepath.Join(runAbs, "model.md"))
+	doc, err := document.Parse(filepath.Join(runAbs, ModelSnapshotFile))
 	if err != nil {
 		return nil, err
 	}

@@ -37,12 +37,12 @@ func TestCreateRunSeedsV2LayoutOnly(t *testing.T) {
 	if result.Path != ".quality/evaluations/0001-quality-eval" {
 		t.Fatalf("path = %q, want default numbered run", result.Path)
 	}
-	for _, name := range []string{"model.md", "data"} {
+	for _, name := range []string{ModelSnapshotFile, "data"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); err != nil {
 			t.Fatalf("missing %s: %v", name, err)
 		}
 	}
-	for _, name := range []string{"design.md", "plan.md", "assessments", "analysis", "recommendations", "debug-log.md"} {
+	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations", "debug-log.md"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); !os.IsNotExist(err) {
 			t.Fatalf("%s should not be seeded for v2 runs: %v", name, err)
 		}

@@ -16,6 +16,11 @@ var (
 	runNameRE = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
 )
 
+// ModelSnapshotFile is the run-folder filename for the frozen copy of the
+// resolved working-tree model captured when a run is created. The name marks it
+// as a point-in-time snapshot, distinct from the live working-tree model.
+const ModelSnapshotFile = "model-snapshot.md"
+
 // FindRepoRoot walks upward from start until it finds a Git repository root.
 func FindRepoRoot(start string) (string, error) {
 	return workspace.FindRepoRoot(start)
@@ -138,8 +143,8 @@ func verifyRun(runPath string) (string, error) {
 	if !info.IsDir() {
 		return "", fmt.Errorf("%s is not an evaluation run folder", runPath)
 	}
-	if _, err := os.Stat(filepath.Join(abs, "model.md")); err != nil {
-		return "", fmt.Errorf("%s is not an evaluation run folder: missing model.md", runPath)
+	if _, err := os.Stat(filepath.Join(abs, ModelSnapshotFile)); err != nil {
+		return "", fmt.Errorf("%s is not an evaluation run folder: missing %s", runPath, ModelSnapshotFile)
 	}
 	for _, name := range []string{"assessments", "analysis", "recommendations", "report-summary.md", "report.json"} {
 		if _, err := os.Stat(filepath.Join(abs, name)); err == nil {

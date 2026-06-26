@@ -8,7 +8,7 @@ Model file: `QUALITY.md`
 
 Run: `.quality/evaluations/0006-quality-eval`
 
-Model snapshot: `.quality/evaluations/0006-quality-eval/model.md`, created by
+Model snapshot: `.quality/evaluations/0006-quality-eval/model-snapshot.md`, created by
 `qualitymd evaluation create --model QUALITY.md`.
 
 Scope: full evaluation of the current model. The evaluation includes the root
@@ -46,7 +46,7 @@ findings are re-checked before reporting.
 The previous run `.quality/evaluations/0005-subject-quality-eval` is stale
 against the current model and not reportable with the current CLI record
 contract. It is used only as history context. Fresh evidence and the run's
-`model.md` snapshot control this evaluation.
+`model-snapshot.md` snapshot control this evaluation.
 
 ## Methodological Constraints
 

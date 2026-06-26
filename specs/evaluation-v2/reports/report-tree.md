@@ -175,7 +175,7 @@ repeating the local rating.
 > signal without presenting a redundant rating. — 0097, 0111
 
 Reports **MUST** render selected Rating Levels with the Rating Level `title`
-resolved from the run's `model.md` snapshot, falling back to the stable Rating
+resolved from the run's `model-snapshot.md` snapshot, falling back to the stable Rating
 Level ID only when a title is unavailable.
 
 > Rationale: Markdown reports are the human review surface, and the model

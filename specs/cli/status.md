@@ -108,7 +108,7 @@ deterministic order by run number, then folder name.
 
 For recognized runs, `status` **MUST** report total run count, latest run,
 reportable run count, incomplete run count, and stale run count. A stale run is
-one whose `model.md` snapshot bytes differ from the selected model file bytes.
+one whose `model-snapshot.md` snapshot bytes differ from the selected model file bytes.
 
 Malformed, unreadable, schema-incompatible, missing, or structurally incomplete
 Evaluation v2 data **MUST** make its run incomplete with status gaps. Unsupported

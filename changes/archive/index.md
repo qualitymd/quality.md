@@ -477,3 +477,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     local rating beside a descendant-inclusive `+ Sub-X Rating` (em dash when no
     descendants) instead of an aggregate rating beside a `Yes`/`No` boolean
     (`Done`).
+- [0112 — Evaluation model snapshot filename](0112-evaluation-model-snapshot-filename.md)
+  - renamed the Evaluation v2 run-folder model snapshot from `model.md` to
+    `model-snapshot.md` (read/written through one `evaluation.ModelSnapshotFile`
+    constant, clean break with no old-name reader) so the filename signals a
+    frozen point-in-time copy of the working-tree model (`Done`).

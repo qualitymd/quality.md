@@ -28,8 +28,8 @@ A repository may choose the workspace config file with root `config` frontmatter
 on `QUALITY.md`; without that pointer the config file defaults to
 `.quality/config.yaml`.
 
-The run folder **MUST** include `model.md`, a snapshot of the `QUALITY.md` as
-evaluated.
+The run folder **MUST** include `model-snapshot.md`, a snapshot of the
+`QUALITY.md` as evaluated.
 
 Evaluation v2 structured data **MUST** live under `data/`. The skill **MUST**
 persist routine outputs through `qualitymd evaluation data set`; it **MUST NOT**

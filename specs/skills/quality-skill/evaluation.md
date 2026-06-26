@@ -130,7 +130,7 @@ flowchart TD
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
 4. **Create the run** with `qualitymd evaluation create [model]`, letting the
-   CLI number the folder, snapshot `model.md`, and prepare `data/`.
+   CLI number the folder, snapshot `model-snapshot.md`, and prepare `data/`.
 5. **Frame the evaluation** before assessment evidence collection. The skill
    **MUST** persist `EvaluationFrame` through
    `qualitymd evaluation data set <run> < payload.json`.

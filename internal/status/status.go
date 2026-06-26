@@ -336,9 +336,9 @@ func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, 
 
 func inspectRun(runDir evaluation.RunDir, modelBytes []byte) EvaluationRunSummary {
 	summary := EvaluationRunSummary{Path: runDir.Rel}
-	runModel, err := os.ReadFile(filepath.Join(runDir.Abs, "model.md"))
+	runModel, err := os.ReadFile(filepath.Join(runDir.Abs, evaluation.ModelSnapshotFile))
 	if err != nil {
-		summary.Problem = fmt.Sprintf("reading model.md: %v", err)
+		summary.Problem = fmt.Sprintf("reading %s: %v", evaluation.ModelSnapshotFile, err)
 		return summary
 	}
 	summary.Stale = string(runModel) != string(modelBytes)
