@@ -70,7 +70,7 @@ raw status. Orientation may skip checklist inspection when the model is missing,
 the model is invalid, or CLI support is missing/stale enough that routing is
 already decided.
 
-Other modes **MAY** use checklist findings as context when they need to explain
+Other workflows **MAY** use checklist findings as context when they need to explain
 why model authoring, evaluation, recommendation follow-up, or
 history/reconciliation is the next workflow.
 

@@ -10,7 +10,7 @@ that make it concrete. The installable skill artifact lives at
 
 - [/quality skill](quality-skill.md) - parent functional spec for shared
   contracts: operating model, invocation, CLI ownership, evaluation semantics,
-  reporting, quality log, and cross-mode invariants.
+  reporting, quality log, and cross-workflow invariants.
 - [/quality evaluation workflow](evaluation.md) - component spec for evaluation
   conformance, workflow, grounding, rigor, and rating judgment.
 - [/quality reporting](reporting.md) - component spec for evaluation run
@@ -19,8 +19,9 @@ that make it concrete. The installable skill artifact lives at
   `.quality/log/` model-change entries.
 - [Workflow feedback log](workflow-feedback-log.md) - shared artifact contract
   for workflow feedback logs under `.quality/logs/`.
-- [/quality recommendation follow-up](recommendation-follow-up.md) - non-mode
-  workflow for applying or handing off evaluation recommendations.
+- [/quality recommendation follow-up](recommendation-follow-up.md) -
+  post-evaluation follow-up workflow for applying or handing off evaluation
+  recommendations.
 - [workflows/](workflows/index.md) - behavioral component specs for the runtime
   workflows: setup, evaluate, and update.
 - [guides/](guides/index.md) - specs for runtime guide resources bundled with

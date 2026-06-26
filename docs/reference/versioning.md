@@ -100,7 +100,7 @@ enforcement is deferred until an installer/package contract supports it.
 
 ## Paired Skill and CLI Upgrades
 
-Use `/quality update` to maintain an existing `/quality` installation. The mode
+Use `/quality update` to maintain an existing `/quality` installation. The workflow
 plans the skill and CLI pair together: it reads the installed skill metadata,
 checks the visible CLI, uses `qualitymd update --check` for CLI owner-channel
 guidance, and delegates skill changes to the Agent Skills installer when that

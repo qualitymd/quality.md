@@ -59,7 +59,7 @@ bundled evaluation model. Evaluation produces recommendations; recommendation
 follow-up helps the user apply a confirmed option or hand it off to an issue
 tracker.
 
-The skill also owns a maintenance orchestration mode, `update`, for keeping the
+The skill also owns a maintenance orchestration workflow, `update`, for keeping the
 separately distributed `/quality` skill and `qualitymd` CLI compatible. It
 diagnoses the installed pair, plans skill and CLI update actions, asks before
 mutation, and delegates mechanical changes to the Agent Skills installer and
@@ -74,7 +74,7 @@ Recommendations are a product of *evaluation*: the format spec's
 [Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation, so
 any `evaluate` that finds gaps emits recommendations alongside its report (see
 [Reporting](#reporting)). Acting on a recommendation is recommendation
-follow-up, not a separate mode. Follow-up offers two explicit productive
+follow-up, not a separate workflow. Follow-up offers two explicit productive
 outcomes: apply a confirmed recommendation option now, or hand the
 recommendation to an issue tracker. The skill **MUST NOT** edit evaluated source
 files or `QUALITY.md` until the user explicitly confirms the recommendation,
@@ -132,8 +132,8 @@ procedure details can live in separate dispatch files, and the current artifact
 keeps them under `skills/quality/workflows/` as `setup.md`, `evaluate.md`, and
 `update.md`. When workflow procedures live outside `SKILL.md`, the root prompt
 **MUST** instruct the agent to read the matching workflow file before executing
-that workflow. Each file is dispatched as a mode, but the files live under
-`workflows/` and user-facing prose describes them as workflows.
+that workflow. Each file is a workflow dispatched from the root prompt; the
+files live under `workflows/` and user-facing prose describes them as workflows.
 
 The installable skill ships settled runtime resources under
 `skills/quality/resources/` and runtime guides under `skills/quality/guides/`.
@@ -161,11 +161,11 @@ The root prompt **MUST** direct agents when to read each one:
   current state, quality, or lifecycle for read-only orientation or model-review
   routing.
 - [`guides/recommendation-follow-up.md`](../../../skills/quality/guides/recommendation-follow-up.md)
-  — the non-mode guide read when applying, acting on, or handing off an
-  evaluation recommendation.
+  — the guide read when applying, acting on, or handing off an
+  evaluation recommendation (recommendation follow-up is not a public workflow).
 
 The description **MUST** optimize for trigger matching rather than documentation:
-it includes supported modes (`setup`, `evaluate`, `update`), broad
+it includes supported workflows (`setup`, `evaluate`, `update`), broad
 quality vocabulary users naturally ask with (`quality management`, quality
 evaluation/improvement, factors, characteristics,
 attributes, criteria), QUALITY.md vocabulary (areas, factors, requirements),
@@ -189,12 +189,12 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 
 ### Arguments
 
-An invocation resolves its workflow/mode or read-only orientation, model file,
+An invocation resolves its workflow or read-only orientation, model file,
 scope, and rigor where applicable:
 
-- **Mode/workflow** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
+- **Workflow** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
   direction, unclear direction, or a request asking what to do next produces
-  read-only orientation rather than a mode run. Orientation may inspect local
+  read-only orientation rather than a workflow run. Orientation may inspect local
   lifecycle state and recommend one of the public workflows: `setup`,
   `evaluate`, `update`, or recommendation follow-up. User intents such as
   `status`, `next`, `review model`, and `review history` are not part of the
@@ -205,7 +205,7 @@ scope, and rigor where applicable:
   evaluates. Requests to improve, apply, act on, or hand off a recommendation
   resolve to
   [recommendation follow-up](recommendation-follow-up.md), not to a separate
-  mode.
+  public workflow.
 - **Model file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
   in the current working directory. The skill **MUST** accept an explicit path to
   override it, and **MUST** error clearly when no default file exists. It **MUST
@@ -277,19 +277,30 @@ display-title scanning aids only.
 
 ### Run frames
 
-At the start of a public mode, the skill **MUST** emit a concise run frame
-naming the resolved mode, model file, scope, rigor level when applicable,
+At the start of a public workflow, the skill **MUST** emit a concise run frame
+naming the resolved workflow, model file, scope, rigor level when applicable,
 mutation policy, expected artifacts, and next user-visible gate.
 
+The run frame header **MUST** identify the resolved workflow. It **MUST NOT**
+render a string that reads as an invokable `/quality` command for a token that is
+not a real invocation — in particular it **MUST NOT** render `/quality run` — and
+the frame **MUST NOT** use a `Mode:` field label. The workflow name belongs in
+the header, not in a `Mode:` field.
+
 The run frame **MUST** distinguish read-only work from mutating work. For a
-mutating mode, it **MUST** name the class of thing that may be changed:
+mutating workflow, it **MUST** name the class of thing that may be changed:
 evaluated source, `QUALITY.md`, evaluation artifacts, the quality log, a
 [workflow feedback log](#workflow-feedback-log), installed tooling, or some
 combination of those.
 
-> Rationale: the skill infers mode and scope from free-form requests. A short
+> Rationale: the skill infers workflow and scope from free-form requests. A short
 > run frame gives the user a chance to catch a wrong inference before the agent
 > spends effort or mutates anything. — 0038
+>
+> The header names the workflow without rendering a command-style string or a
+> `Mode:` field: there is no `/quality run` invocation, and "Mode" is internal
+> vocabulary the public surface does not use. This extends 0062's constraint that
+> the run frame must not emit `Mode: wizard`. — 0110
 
 ### Decision briefs
 
@@ -413,7 +424,7 @@ contracts that every workflow composes.
 ### Read-only orientation
 
 Bare or ambiguous `/quality` requests are handled as read-only orientation, not
-as a public mode. Orientation may inspect local QUALITY.md lifecycle state,
+as a public workflow. Orientation may inspect local QUALITY.md lifecycle state,
 report model-usefulness findings, recommend one next workflow, and offer
 concrete alternatives without modifying files, creating records, building
 reports, updating tooling, or rating evaluated source. Its recommended next
@@ -445,9 +456,10 @@ and emits recommendations whenever evaluation finds gaps.
 
 ### Recommendation follow-up
 
-[`recommendation follow-up`](recommendation-follow-up.md) is the non-mode
-workflow for acting on active evaluation recommendations. It offers apply-now and
-issue-tracker handoff outcomes, requires explicit confirmation before local
+[`recommendation follow-up`](recommendation-follow-up.md) is the post-evaluation
+follow-up workflow for acting on active evaluation recommendations; it is not a
+public workflow. It offers apply-now and issue-tracker handoff outcomes, requires
+explicit confirmation before local
 mutation or external issue creation, and writes the quality log only for
 meaningful confirmed model changes.
 
@@ -515,7 +527,7 @@ than hand-authoring the run.
 
 ## Evaluation Workflow
 
-The cross-mode evaluation workflow lives in
+The shared evaluation workflow lives in
 [/quality evaluation workflow](evaluation.md). That component spec owns
 conformance to the format spec's Evaluation contract, the evaluation workflow,
 grounding judgment, rigor levels, and rating-binding evidence checks.

@@ -2,7 +2,7 @@
 type: Functional Specification
 title: /quality setup
 description: Behavioral component spec for the /quality setup workflow.
-tags: [skill, quality, mode, setup, workflow]
+tags: [skill, quality, setup, workflow]
 timestamp: 2026-06-23T00:00:00Z
 ---
 
@@ -16,8 +16,8 @@ only the setup-specific behavior below.
 
 The runtime procedure lives at
 [`skills/quality/workflows/setup.md`](../../../../skills/quality/workflows/setup.md).
-`setup` is dispatched as a mode, but its files live under `workflows/` and its
-user-facing behavior is described as a workflow.
+`setup` is dispatched from the root prompt, and its files live under
+`workflows/`.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as

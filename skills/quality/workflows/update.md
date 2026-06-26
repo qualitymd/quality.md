@@ -4,7 +4,7 @@ title: Update Workflow
 description: Runtime workflow for updating the /quality skill and qualitymd CLI pair.
 ---
 
-# Update Mode
+# Update Workflow
 
 Use update to keep the installed `/quality` skill and `qualitymd` CLI
 compatible. Update is maintenance orchestration: diagnose the pair, plan the
@@ -39,8 +39,7 @@ Verify
 1. Emit the run frame before tool inspection:
 
    ```text
-   **/quality run**
-   - **Mode:** update
+   **Quality · update**
    - **Model file:** n/a
    - **Scope:** installed `/quality` skill and `qualitymd` CLI compatibility
    - **Mutation:** installed tooling only, after confirmation

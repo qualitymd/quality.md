@@ -71,7 +71,7 @@ Update the `/quality` skill release notes or compatibility declaration when the
 release changes:
 
 - skill instructions;
-- skill modes;
+- skill workflows;
 - bundled skill resources;
 - required CLI command surface;
 - supported CLI SemVer range.

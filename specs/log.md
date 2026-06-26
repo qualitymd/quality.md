@@ -3,6 +3,15 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0110 - Run frame title and workflow vocabulary](../changes/0110-run-frame-and-workflow-vocabulary.md).
+  The `/quality` skill spec's Run frames section now requires the header to name
+  the resolved workflow and forbids rendering a command-style `/quality run`
+  header or a `Mode:` field label (extending 0062's `Mode: wizard` constraint).
+  Across the quality-skill bundle, "mode" is retired as the name for a `/quality`
+  workflow in favor of "workflow", with recommendation follow-up described as a
+  post-evaluation follow-up that is not a public workflow.
+
+- **Revision**: Implemented durable spec changes for
   [0108 - Short evaluation report filenames](../changes/archive/0108-short-evaluation-report-filenames.md).
   Evaluation v2 report layout and `/quality` reporting specs now keep the root
   Area report at `report.md` while using short subject-aware filenames for

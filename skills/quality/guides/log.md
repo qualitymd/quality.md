@@ -3,6 +3,12 @@
 ## 2026-06-26
 
 - **Revision**: Updated
+  [Recommendation Follow-Up](recommendation-follow-up.md) for 0110 - Run frame
+  title and workflow vocabulary.
+  The guide now describes recommendation follow-up as "not a public `/quality`
+  workflow" instead of "not a `/quality` mode".
+
+- **Revision**: Updated
   [Recommendation Follow-Up](recommendation-follow-up.md) for 0106 - Binary
   confirmation UX.
   Runtime guidance now shows `y`/`n` answer paths for true binary local-apply and

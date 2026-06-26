@@ -21,7 +21,8 @@ appear in all capitals.
 
 ## Requirements
 
-The guide **MUST** state that recommendation follow-up is not a `/quality` mode.
+The guide **MUST** state that recommendation follow-up is not a public
+`/quality` workflow.
 
 The guide **MUST** offer only two explicit outcomes: apply a confirmed
 recommendation option now, or hand off the recommendation to an issue tracker.

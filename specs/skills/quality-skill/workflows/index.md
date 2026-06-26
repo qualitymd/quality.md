@@ -3,7 +3,8 @@
 Behavioral component specs for the `/quality` runtime workflows. The parent
 [/quality skill](../quality-skill.md) spec owns shared contracts; these specs own
 workflow-specific routing, mutation surfaces, required artifacts, stop
-conditions, and completion criteria. Each workflow is dispatched as a mode.
+conditions, and completion criteria. Each workflow is dispatched from the root
+prompt.
 
 # Workflows
 

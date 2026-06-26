@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Aligned workflow vocabulary in
+  [Paired skill and CLI upgrades](reference/versioning.md) and
+  [Cut a release](guides/cut-a-release.md) for
+  [0110 - Run frame title and workflow vocabulary](../changes/0110-run-frame-and-workflow-vocabulary.md).
+  Both now describe `/quality update` and the skill's dispatched procedures as
+  "workflows" rather than "modes".
+
 - **Revision**: Strengthened [Writing functional specs](guides/write-functional-specs.md)
   and [Working with change cases](guides/work-with-change-cases.md) for
   [0100 - Strengthen spec requirement standards](../changes/0100-strengthen-spec-requirement-standards.md).

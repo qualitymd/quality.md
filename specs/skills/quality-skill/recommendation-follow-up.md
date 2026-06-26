@@ -1,14 +1,14 @@
 ---
 type: Functional Specification
 title: /quality recommendation follow-up
-description: Non-mode workflow for applying or handing off /quality evaluation recommendations.
+description: Post-evaluation follow-up workflow for applying or handing off /quality evaluation recommendations.
 tags: [skill, quality, recommendation]
 timestamp: 2026-06-22T00:00:00Z
 ---
 
 # /quality recommendation follow-up
 
-This spec owns the `/quality` skill's non-mode recommendation follow-up
+This spec owns the `/quality` skill's post-evaluation recommendation follow-up
 workflow: how the skill helps users act on evaluation recommendations after
 `evaluate` produces them or read-only orientation routes to them. It composes the shared
 contracts in the parent [/quality skill](quality-skill.md) spec and the
@@ -24,7 +24,7 @@ in all capitals.
 
 Recommendation follow-up is selected when the user asks to apply, act on,
 improve from, or hand off an active evaluation recommendation. It is not a
-runtime mode and does not replace `evaluate`: recommendations remain outputs of
+public workflow and does not replace `evaluate`: recommendations remain outputs of
 evaluation.
 
 The workflow's purpose is to turn a selected recommendation into one of two

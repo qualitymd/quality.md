@@ -93,8 +93,7 @@ in the current working directory (do not walk parent directories). This is pure
 invocation logic, not a filesystem probe, so the frame needs no tool call:
 
 ```text
-**/quality run**
-- **Mode:** setup
+**Quality · setup**
 - **Model file:** <resolved path>
 - **Scope:** contextual QUALITY.md setup
 - **Mutation:** QUALITY.md + workflow feedback log under .quality/logs/ if continuing

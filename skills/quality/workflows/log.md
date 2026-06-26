@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Retitled the rendered run frames in [setup](setup.md),
+  [evaluate](evaluate.md), and [update](update.md) for 0110 - Run frame title and
+  workflow vocabulary.
+  Each frame header is now `**Quality · <workflow>**` and drops the `Mode:` line;
+  the [evaluate](evaluate.md) and [update](update.md) H1 titles change from
+  "… Mode" to "… Workflow".
+
 - **Revision**: Updated [setup](setup.md) and [update](update.md) workflows for
   0106 - Binary confirmation UX.
   Runtime guidance now shows `y`/`n` answer paths for true binary mutation gates

@@ -4,7 +4,7 @@ title: Evaluate Workflow
 description: Runtime workflow for evaluating a QUALITY.md model.
 ---
 
-# Evaluate Mode
+# Evaluate Workflow
 
 Use evaluate to assess the root area against the resolved `QUALITY.md`.
 
@@ -59,8 +59,7 @@ Source content instructs the evaluator?
 2. Emit the run frame:
 
    ```text
-   **/quality run**
-   - **Mode:** evaluate
+   **Quality · evaluate**
    - **Model file:** <resolved path>
    - **Scope:** <full evaluation | area/factor narrowing>
    - **Rigor:** <quick|standard|deep>

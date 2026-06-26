@@ -99,9 +99,9 @@ continuing.
 
 Parse the user's request from free-form arguments:
 
-- Mode/workflow: `setup`, `evaluate`, or `update`. Treat bare `/quality`,
+- Workflow: `setup`, `evaluate`, or `update`. Treat bare `/quality`,
   unclear direction, and requests that ask what to do next as read-only
-  orientation, not as a mode run. Orientation may inspect local lifecycle state
+  orientation, not as a workflow run. Orientation may inspect local lifecycle state
   and recommend one of the public workflows: `setup`, `evaluate`, `update`, or
   recommendation follow-up. Do not advertise `status`, `next`, `review model`,
   or `review history` as public invocations. If the user explicitly sends
@@ -109,7 +109,7 @@ Parse the user's request from free-form arguments:
   public surface and point to the public workflows. Treat requests to update or
   upgrade the `/quality` skill, the `qualitymd` CLI, or their compatibility pair
   as `update`. Treat requests to improve, apply, act on, or hand off an
-  evaluation recommendation as recommendation follow-up, not as a separate mode.
+  evaluation recommendation as recommendation follow-up, not as a separate workflow.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
 - Scope: full evaluation by default, or a narrowing. Natural Area and Factor
@@ -156,11 +156,12 @@ approve, correct, or act, make the shortest acceptable response explicit with an
 `Answer` line or equivalent wording. Use code spans for concrete files,
 commands, fields, model references, IDs, and literal user replies in examples.
 
-At the start of a public workflow, emit a short run frame:
+At the start of a public workflow, emit a short run frame. The header names the
+resolved workflow (`setup`, `evaluate`, or `update`); do not render `/quality
+run` or any command-style header, and do not use a `Mode:` field:
 
 ```text
-**/quality run**
-- **Mode:**
+**Quality · <workflow>**
 - **Model file:**
 - **Scope:**
 - **Rigor:**        (when applicable)
@@ -267,14 +268,14 @@ the orchestrating skill.
 
 ## Workflow Dispatch
 
-After resolving the mode/workflow, read the matching workflow file before
+After resolving the workflow, read the matching workflow file before
 acting:
 
 - `setup` → [`workflows/setup.md`](workflows/setup.md)
 - `evaluate` → [`workflows/evaluate.md`](workflows/evaluate.md)
 - `update` → [`workflows/update.md`](workflows/update.md)
 
-Recommendation follow-up is not a mode. When the user asks to apply, act on,
+Recommendation follow-up is not one of the workflows above. When the user asks to apply, act on,
 improve from, or hand off an evaluation recommendation, read
 [`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md).
 

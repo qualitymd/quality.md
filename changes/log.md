@@ -3,6 +3,19 @@
 ## 2026-06-26
 
 - **Done**: Created, implemented, and archived
+  [0110 - Run frame title and workflow vocabulary](archive/0110-run-frame-and-workflow-vocabulary.md).
+  The `/quality` run-frame header is now `**Quality · <workflow>**` instead of
+  the fake-command `**/quality run**`, the `Mode:` field is dropped (the workflow
+  name moves into the header), and the durable Run frames spec now forbids a
+  command-style header or a `Mode:` field label. "Mode" is retired in favor of
+  "workflow" for the public-surface concept across the durable skill specs,
+  bundled runtime skill, and two durable docs, with recommendation follow-up
+  described as a post-evaluation follow-up that is not a public workflow. Verified
+  with `mise run fmt-md-check`. Moved the parent and child folder into
+  [`archive/`](archive/), updated the [archive index](archive/index.md), and
+  removed the entry from the bundle [index](index.md).
+
+- **Done**: Created, implemented, and archived
   [0111 - Evaluation report rating labels](archive/0111-evaluation-report-rating-labels.md).
   Evaluation v2 Area and Factor report header tables now read `Overall Rating` /
   `Local Rating`, and the Area report Factors and Sub-Areas tables and the Factor

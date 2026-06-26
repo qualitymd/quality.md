@@ -2,13 +2,13 @@
 type: Functional Specification
 title: /quality update
 description: Behavioral component spec for orchestrating compatible /quality skill and qualitymd CLI updates.
-tags: [skill, quality, mode, update]
+tags: [skill, quality, update, workflow]
 timestamp: 2026-06-22T00:00:00Z
 ---
 
 # /quality update
 
-`update` is the `/quality` skill mode that diagnoses and orchestrates compatible
+`update` is the `/quality` skill workflow that diagnoses and orchestrates compatible
 updates for the separately distributed `/quality` skill and `qualitymd` CLI. It
 implements the shared contracts in the parent [/quality skill](../quality-skill.md)
 spec and owns only the update-specific behavior below.
@@ -28,8 +28,9 @@ appear in all capitals.
 compatibility of the `/quality` skill, the `qualitymd` CLI, or their supported
 version pair.
 
-The mode's purpose is maintenance orchestration. It is not an Evaluation mode
-and **MUST** stop before setup, evaluation, or recommendation follow-up work.
+The workflow's purpose is maintenance orchestration. It is not an evaluation
+workflow and **MUST** stop before setup, evaluation, or recommendation follow-up
+work.
 
 ## Mutation surface and artifacts
 

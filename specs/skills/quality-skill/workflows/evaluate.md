@@ -2,13 +2,13 @@
 type: Functional Specification
 title: /quality evaluate
 description: Behavioral component spec for running Evaluation v2 through the /quality skill.
-tags: [skill, quality, mode, evaluate, evaluation-v2]
+tags: [skill, quality, evaluate, evaluation-v2, workflow]
 timestamp: 2026-06-25T00:00:00Z
 ---
 
 # /quality evaluate
 
-`evaluate` is the `/quality` skill mode that runs Evaluation v2 for a resolved
+`evaluate` is the `/quality` skill workflow that runs Evaluation v2 for a resolved
 QUALITY.md model scope and records the result as structured routine data plus
 deterministic reports. It implements the shared evaluation workflow, reporting,
 safety, and CLI-ownership contracts in the parent [/quality skill](../quality-skill.md)
@@ -29,7 +29,7 @@ appear in all capitals.
 quality assessment, or names only a resolvable Area or Factor after the model is
 present and valid.
 
-The mode's purpose is to produce a current Evaluation Report for the resolved
+The workflow's purpose is to produce a current Evaluation Report for the resolved
 model file and scope. It does not apply fixes and does not generate
 recommendations in the v0 Evaluation v2 protocol.
 

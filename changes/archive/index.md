@@ -465,6 +465,12 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   - rendered the Evaluation v2 `Data`-column links with their payload filename
     text instead of the generic words `analysis`/`assessment`/`rating`
     (`Done`).
+- [0110 — Run frame title and workflow vocabulary](0110-run-frame-and-workflow-vocabulary.md)
+  - retitled the `/quality` run frame header to `**Quality · <workflow>**`
+    (dropping the fake `/quality run` command and the `Mode:` field), added a
+    durable run-frame requirement forbidding a command-style header or `Mode:`
+    label, and retired "mode" in favor of "workflow" for the public-surface
+    concept across the skill specs, runtime skill, and docs (`Done`).
 - [0111 — Evaluation report rating labels](0111-evaluation-report-rating-labels.md)
   - labeled Evaluation v2 report rating columns explicitly (`Overall Rating` /
     `Local Rating`) and fixed the Factor and Sub-Area breakdown tables to show a
