@@ -65,9 +65,9 @@ NOT** assign a global sequential counter to entries.
 > Rationale: a date prefix orders the log chronologically without a shared
 > counter. Skill-side sequential numbering is exactly what drifted and produced a
 > run-number collision before
-> ([`evaluation-records.md`](../../evaluation-records.md)), which is why numbering
-> is CLI-owned; with no CLI in this surface, date-naming sidesteps the hazard
-> entirely. — 0050
+> ([`qualitymd evaluation create`](../../cli/evaluation-create.md)), which is why
+> evaluation run numbering is CLI-owned; with no CLI in this surface, date-naming
+> sidesteps the hazard entirely. — 0050
 
 `.quality/log/` is a **runtime artifact, not an OKF bundle**. It **MUST NOT** carry
 OKF `index.md`, `schema.md`, or `log.md` semantics, and entry frontmatter is

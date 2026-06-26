@@ -109,22 +109,20 @@ type EvaluationHistory struct {
 
 // EvaluationSummary aggregates evaluation history counts.
 type EvaluationSummary struct {
-	Reportable            int `json:"reportable"`
-	Incomplete            int `json:"incomplete"`
-	Stale                 int `json:"stale"`
-	ActiveRecommendations int `json:"activeRecommendations"`
-	Problems              int `json:"problems"`
+	Reportable int `json:"reportable"`
+	Incomplete int `json:"incomplete"`
+	Stale      int `json:"stale"`
+	Problems   int `json:"problems"`
 }
 
 // EvaluationRunSummary summarizes one evaluation run in status output.
 type EvaluationRunSummary struct {
-	Path                  string                  `json:"path"`
-	Reportable            bool                    `json:"reportable"`
-	Stale                 bool                    `json:"stale"`
-	Counts                evaluation.RecordCounts `json:"counts"`
-	Gaps                  int                     `json:"gaps"`
-	ActiveRecommendations int                     `json:"activeRecommendations"`
-	Problem               string                  `json:"problem,omitempty"`
+	Path          string `json:"path"`
+	Reportable    bool   `json:"reportable"`
+	Stale         bool   `json:"stale"`
+	DataArtifacts int    `json:"dataArtifacts"`
+	Gaps          int    `json:"gaps"`
+	Problem       string `json:"problem,omitempty"`
 }
 
 // Snapshot assembles a deterministic project-state snapshot.
@@ -328,7 +326,6 @@ func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, 
 		if summary.Stale {
 			history.Summary.Stale++
 		}
-		history.Summary.ActiveRecommendations += summary.ActiveRecommendations
 	}
 	if len(history.Items) > 0 {
 		latest := history.Items[len(history.Items)-1]
@@ -353,9 +350,8 @@ func inspectRun(runDir evaluation.RunDir, modelBytes []byte) EvaluationRunSummar
 	}
 	runStatus := run.Status()
 	summary.Reportable = runStatus.Reportable
-	summary.Counts = run.RecordCounts()
+	summary.DataArtifacts = runStatus.Data.Artifacts
 	summary.Gaps = len(runStatus.Gaps)
-	summary.ActiveRecommendations = run.ActiveRecommendationCount()
 	return summary
 }
 
@@ -363,7 +359,7 @@ func readiness(history EvaluationHistory) Readiness {
 	if history.Runs == 0 {
 		return ReadinessReadyToEvaluate
 	}
-	if history.Summary.Incomplete > 0 || history.Summary.Stale > 0 || history.Summary.ActiveRecommendations > 0 || history.Summary.Problems > 0 {
+	if history.Summary.Incomplete > 0 || history.Summary.Stale > 0 || history.Summary.Problems > 0 {
 		return ReadinessNeedsEvaluationReconcile
 	}
 	return ReadinessHasEvaluationHistory
@@ -408,12 +404,6 @@ func reconciliationActions(path string, history EvaluationHistory) []receipt.Act
 			ID:      "evaluation-create",
 			Label:   "Create a fresh evaluation run",
 			Command: "qualitymd evaluation create --model " + path,
-		}}
-	case latest.ActiveRecommendations > 0:
-		return []receipt.Action{{
-			ID:      "report-build",
-			Label:   "Build the latest evaluation report",
-			Command: "qualitymd evaluation report build " + latest.Path,
 		}}
 	default:
 		return nil

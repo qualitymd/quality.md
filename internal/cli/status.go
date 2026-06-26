@@ -61,11 +61,10 @@ func renderStatusHuman(cmd *cobra.Command, snapshot *status.ProjectSnapshot) err
 			return err
 		}
 	}
-	if _, err := fmt.Fprintf(out, "- Evaluation history: %d run(s), %d incomplete, %d stale, %d active recommendation(s)\n",
+	if _, err := fmt.Fprintf(out, "- Evaluation history: %d run(s), %d incomplete, %d stale\n",
 		snapshot.Evaluations.Runs,
 		snapshot.Evaluations.Summary.Incomplete,
 		snapshot.Evaluations.Summary.Stale,
-		snapshot.Evaluations.Summary.ActiveRecommendations,
 	); err != nil {
 		return err
 	}

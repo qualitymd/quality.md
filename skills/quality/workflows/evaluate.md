@@ -104,16 +104,16 @@ Source content instructs the evaluator?
 7. Ground format rules and rating vocabulary with `qualitymd spec`.
 8. Create the run folder with
    `qualitymd evaluation create [model] [--narrowing <slug>]`. The CLI computes
-   the number, creates the required directories, snapshots `model.md`, and
-   prepares `data/` for structured routine outputs. Record the run path in the
+   the number, snapshots `model.md`, and prepares `data/` for structured
+   routine outputs. Record the run path in the
    evaluate feedback log frontmatter or timeline.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
-   persist it through `qualitymd evaluation data set <run> --file <payload>`.
+   persist it through `qualitymd evaluation data set <run> < payload.json`.
    The frame records the resolved model, scope, rigor, in-scope Areas, Factors,
    Requirements, policies, and known run-level limits.
 10. Maintain the evaluate feedback log for material workflow-experience events:
     scope resolution friction, history inspection, coverage adjustment,
-    interruption or resume, retries, record corrections, tooling failures, slow
+    interruption or resume, retries, payload corrections, tooling failures, slow
     phases, redaction decisions, prompt-injection handling, report generation
     recovery, UX/AX observations, what worked well, and suggested improvements.
     Keep it separate from formal judgment: do not put evaluation findings,
@@ -127,7 +127,7 @@ Source content instructs the evaluator?
 12. For each local Requirement, produce a `RequirementEvaluationFrame` before
     evidence judgment. Then produce a `RequirementAssessmentResult` and a
     `RequirementRatingResult`. Persist each routine output with
-    `qualitymd evaluation data set <run> --file <payload>`. Use
+    `qualitymd evaluation data set <run> < payload.json`. Use
     `--dry-run` for newly authored or materially revised payloads.
 13. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the

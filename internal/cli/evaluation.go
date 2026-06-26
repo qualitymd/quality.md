@@ -48,7 +48,6 @@ func newEvaluationDataCmd() *cobra.Command {
 
 func newEvaluationDataSetCmd() *cobra.Command {
 	var runFlags evaluationRunFlags
-	var file string
 	var jsonOutput bool
 	var dryRun bool
 	cmd := &cobra.Command{
@@ -60,7 +59,7 @@ func newEvaluationDataSetCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			raw, err := readPayload(cmd, file)
+			raw, err := readPayload(cmd)
 			if err != nil {
 				return usageError(err)
 			}
@@ -80,7 +79,6 @@ func newEvaluationDataSetCmd() *cobra.Command {
 		},
 	}
 	bindRunFlags(cmd, &runFlags)
-	cmd.Flags().StringVar(&file, "file", "", "read Evaluation v2 JSON from path, or - for stdin")
 	cmd.Flags().BoolVarP(&dryRun, "dry-run", "n", false, "validate and report intended write without persisting")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable write receipt")
 	return cmd
@@ -336,11 +334,7 @@ func newEvaluationReportBuildCmd() *cobra.Command {
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), result)
 			}
-			if result.EvaluationOutputResult != "" {
-				_, err = fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s and %s\n", result.EvaluationOutputResult, result.ReportMD)
-				return err
-			}
-			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s, %s, and %s\n", result.ReportSummaryMD, result.ReportMD, result.ReportJSON)
+			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s and %s\n", result.EvaluationOutputResult, result.ReportMD)
 			return err
 		},
 	}
@@ -362,16 +356,10 @@ func resolveRunArg(args []string, flags evaluationRunFlags) (string, error) {
 	return evaluation.ResolveRun("", flags.evaluationDir, runArg, flags.latest)
 }
 
-func readPayload(cmd *cobra.Command, file string) ([]byte, error) {
-	if file != "" {
-		if file == "-" {
-			return io.ReadAll(cmd.InOrStdin())
-		}
-		return os.ReadFile(file)
-	}
+func readPayload(cmd *cobra.Command) ([]byte, error) {
 	in := cmd.InOrStdin()
 	if f, ok := in.(*os.File); ok && term.IsTerminal(int(f.Fd())) {
-		return nil, fmt.Errorf("pass --file <path> or pipe JSON on standard input")
+		return nil, fmt.Errorf("pipe one Evaluation v2 JSON payload on standard input")
 	}
 	return io.ReadAll(in)
 }
@@ -382,7 +370,7 @@ func renderRunList(w io.Writer, result *evaluation.RunList) error {
 		return err
 	}
 	for _, run := range result.Runs {
-		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\trecords=%d/%d/%d\n", run.Path, run.RootArea, run.Reportable, run.Counts.AssessmentResults, run.Counts.Analyses, run.Counts.Recommendations); err != nil {
+		if _, err := fmt.Fprintf(w, "%s\t%s\treportable=%v\tdata=%d\tgaps=%d\n", run.Path, run.RootArea, run.Reportable, run.DataArtifacts, run.Gaps); err != nil {
 			return err
 		}
 	}
@@ -395,8 +383,8 @@ func renderEvaluationStatus(cmd *cobra.Command, status evaluation.RunStatus) err
 	if status.Reportable {
 		reportable = "true"
 	}
-	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nRecords: %d assessments, %d analyses, %d recommendations\n",
-		status.Path, reportable, status.Counts.AssessmentResults, status.Counts.Analyses, status.Counts.Recommendations); err != nil {
+	if _, err := fmt.Fprintf(out, "Run: %s\nReportable: %s\nData artifacts: %d\n",
+		status.Path, reportable, status.Data.Artifacts); err != nil {
 		return err
 	}
 	for _, gap := range status.Gaps {

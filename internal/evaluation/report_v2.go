@@ -12,15 +12,6 @@ import (
 	"github.com/qualitymd/quality.md/internal/model"
 )
 
-func isV2DataRun(path string) bool {
-	runAbs, err := verifyRun(path)
-	if err != nil {
-		return false
-	}
-	_, err = os.Stat(filepath.Join(runAbs, "data", "frame", "evaluation-frame.json"))
-	return err == nil
-}
-
 func v2RenderableGaps(runAbs string) []RunGap {
 	required := []struct {
 		rel  string
@@ -38,11 +29,11 @@ func v2RenderableGaps(runAbs string) []RunGap {
 			continue
 		}
 		if err != nil {
-			gaps = append(gaps, RunGap{Kind: GapUnreadableEvaluationRecord, Ref: req.rel, Detail: err.Error()})
+			gaps = append(gaps, RunGap{Kind: GapUnreadableEvaluationData, Ref: req.rel, Detail: err.Error()})
 			continue
 		}
-		var payload map[string]any
-		if err := json.Unmarshal(raw, &payload); err != nil {
+		payload, _, err := decodeDataPayload(raw)
+		if err != nil {
 			gaps = append(gaps, RunGap{Kind: GapMalformedEvaluationData, Ref: req.rel, Detail: err.Error()})
 			continue
 		}
@@ -53,6 +44,10 @@ func v2RenderableGaps(runAbs string) []RunGap {
 		}
 		if kind != req.kind {
 			gaps = append(gaps, RunGap{Kind: GapIncompleteEvaluationData, Ref: req.rel, Detail: fmt.Sprintf("kind = %s, want %s", kind, req.kind)})
+			continue
+		}
+		if err := validateDataPayload(kind, payload); err != nil {
+			gaps = append(gaps, RunGap{Kind: GapIncompleteEvaluationData, Ref: req.rel, Detail: err.Error()})
 		}
 	}
 	return gaps
@@ -884,15 +879,31 @@ func lookupFactor(spec *model.Spec, id factorID) (model.Factor, bool) {
 
 func lookupRequirement(spec *model.Spec, id requirementID) (model.Requirement, bool) {
 	if len(id.DeclaringArea) == 0 {
-		req, ok := spec.Requirements[id.Name]
-		return req, ok
+		if req, ok := spec.Requirements[id.Name]; ok {
+			return req, ok
+		}
+		return lookupRequirementInFactors(spec.Factors, id.Name)
 	}
 	area, ok := lookupArea(spec, id.DeclaringArea)
 	if !ok {
 		return model.Requirement{}, false
 	}
-	req, ok := area.Requirements[id.Name]
-	return req, ok
+	if req, ok := area.Requirements[id.Name]; ok {
+		return req, ok
+	}
+	return lookupRequirementInFactors(area.Factors, id.Name)
+}
+
+func lookupRequirementInFactors(factors map[string]model.Factor, name string) (model.Requirement, bool) {
+	for _, factor := range factors {
+		if req, ok := factor.Requirements[name]; ok {
+			return req, true
+		}
+		if req, ok := lookupRequirementInFactors(factor.Factors, name); ok {
+			return req, true
+		}
+	}
+	return model.Requirement{}, false
 }
 
 func factorList(factors []*v2FactorArtifacts, spec *model.Spec, fromReport string) string {

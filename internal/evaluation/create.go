@@ -9,22 +9,6 @@ import (
 	"github.com/qualitymd/quality.md/internal/workspace"
 )
 
-const planSeed = `# Evaluation plan
-
-Optional planned coverage frontmatter shape:
-
-` + "```yaml" + `
----
-coverage:
-  assessmentResults:
-    - areaPath: []
-      requirement: Example requirement
-  analyses:
-    - areaPath: []
----
-` + "```" + `
-`
-
 // CreateRun creates a numbered evaluation run folder and seeds its standard
 // runtime files.
 func CreateRun(opts Options) (*CreateRunReceipt, error) {
@@ -73,7 +57,7 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 		NextActions: []receipt.Action{{
 			ID:      "evaluation-data-set",
 			Label:   "Record Evaluation v2 data",
-			Command: "qualitymd evaluation data set " + runRel + " --file <payload.json>",
+			Command: "qualitymd evaluation data set " + runRel + " < payload.json",
 		}},
 	}, nil
 }
@@ -91,21 +75,11 @@ func nextRunName(evalDirAbs, narrowing string) (int, string, error) {
 }
 
 func createRunSkeleton(runAbs string, modelRaw []byte) error {
-	for _, subdir := range []string{"assessments", "analysis", "recommendations", "data"} {
-		if err := os.Mkdir(filepath.Join(runAbs, subdir), 0o755); err != nil {
-			return fmt.Errorf("creating %s: %w", subdir, err)
-		}
+	if err := os.Mkdir(filepath.Join(runAbs, "data"), 0o755); err != nil {
+		return fmt.Errorf("creating data: %w", err)
 	}
 	if err := os.WriteFile(filepath.Join(runAbs, "model.md"), modelRaw, 0o644); err != nil {
 		return fmt.Errorf("writing model.md: %w", err)
-	}
-	for file, content := range map[string]string{
-		"design.md": "# Evaluation design\n",
-		"plan.md":   planSeed,
-	} {
-		if err := os.WriteFile(filepath.Join(runAbs, file), []byte(content), 0o644); err != nil {
-			return fmt.Errorf("writing %s: %w", file, err)
-		}
 	}
 	return nil
 }

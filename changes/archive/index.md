@@ -405,3 +405,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   before discovery, and create the setup feedback log after that preview when the
   run continues; docs/spec/skill guidance only, no CLI/Go or format-spec change
   (`Done`).
+- [0097 — Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) -
+  removes previous evaluation record/report compatibility, makes Evaluation v2
+  the only active runtime path, switches data persistence to stdin-only input,
+  deletes old active specs/examples, and prepares the v0.13.0 release (`Done`).

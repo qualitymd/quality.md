@@ -1,5 +1,16 @@
 # Specs Update Log
 
+## 2026-06-26
+
+- **Revision**: Implemented durable spec changes for
+  [0097 - Evaluation v2 clean break](../changes/archive/0097-evaluation-v2-clean-break.md).
+  The active specs now treat Evaluation v2 as the only runtime evaluation
+  contract, require stdin-only `evaluation data set`, remove previous
+  evaluation-record and legacy report specs from the active bundle, remove old
+  checked-in skill examples, update status/list/project-status contracts to
+  report v2 data artifacts and gaps, and bump the bundled specification version
+  to `0.4 (Draft)`.
+
 ## 2026-06-25
 
 - **Revision**: Updated durable skill workflow specs for

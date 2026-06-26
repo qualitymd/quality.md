@@ -22,11 +22,6 @@ before it lands.
 - [quality.schema.json](quality-schema-json.md) - companion structural JSON Schema
   for QUALITY.md frontmatter, derived from the linter's schema.
 
-# Legacy Specs
-
-- [Evaluation records](evaluation-records.md) - superseded runtime record
-  contract retained for historical run compatibility.
-
 # Bundle
 
 - [schema.md](schema.md) - the concept types used in this bundle.
@@ -36,8 +31,4 @@ before it lands.
 - [cli/](cli/) - per-command sub-specs.
 - [evaluation-v2/](evaluation-v2/) - replacement evaluation workflow, routine,
   record, orchestration, and report contracts.
-- [evaluation-records/](evaluation-records/) - superseded child specs for the
-  legacy evaluation run folder and record model.
-- [reports/](reports/) - superseded generated report artifact specs retained for
-  legacy report compatibility.
 - [skills/](skills/) - companion skills that carry judgment around QUALITY.md (`/quality`).

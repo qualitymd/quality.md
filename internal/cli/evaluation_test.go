@@ -39,7 +39,7 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
   "confidence": "medium",
   "confidenceReason": "Evidence is narrow."
 }`))
-	cmd.SetArgs([]string{"evaluation", "data", "set", "--file", "-", "--json", runPath})
+	cmd.SetArgs([]string{"evaluation", "data", "set", "--json", runPath})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("data set Execute() error = %v", err)
@@ -156,7 +156,7 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-quality-eval"`) {
 		t.Fatalf("status stdout = %s, want repository-relative run path", out.String())
 	}
-	if !strings.Contains(out.String(), `"kind": "missing-root-analysis"`) {
+	if !strings.Contains(out.String(), `"kind": "missing-evaluation-data"`) {
 		t.Fatalf("status stdout = %s, want documented empty-run gap", out.String())
 	}
 	if strings.Contains(out.String(), repo) {
@@ -164,7 +164,7 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	}
 }
 
-func TestEvaluationListAndLatestStatusSurviveIncompatibleRun(t *testing.T) {
+func TestEvaluationListAndLatestStatusRejectUnsupportedLegacyRun(t *testing.T) {
 	repo := testEvaluationRepo(t)
 	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"}); err != nil {
 		t.Fatalf("CreateRun(first) error = %v", err)
@@ -174,8 +174,8 @@ func TestEvaluationListAndLatestStatusSurviveIncompatibleRun(t *testing.T) {
 		t.Fatalf("CreateRun(latest) error = %v", err)
 	}
 	runPath := filepath.Join(repo, latest.Path)
-	if err := os.WriteFile(filepath.Join(runPath, "assessments", "001-bad.json"), []byte(`{`), 0o644); err != nil {
-		t.Fatalf("write bad assessment: %v", err)
+	if err := os.Mkdir(filepath.Join(runPath, "assessments"), 0o755); err != nil {
+		t.Fatalf("mkdir legacy marker: %v", err)
 	}
 	oldwd, err := os.Getwd()
 	if err != nil {
@@ -195,11 +195,9 @@ func TestEvaluationListAndLatestStatusSurviveIncompatibleRun(t *testing.T) {
 	cmd.SetOut(&out)
 	cmd.SetErr(&bytes.Buffer{})
 	cmd.SetArgs([]string{"evaluation", "list", "--json"})
-	if err := cmd.Execute(); err != nil {
-		t.Fatalf("list Execute() error = %v", err)
-	}
-	if !strings.Contains(out.String(), latest.Path) || !strings.Contains(out.String(), `"gaps":`) {
-		t.Fatalf("list stdout = %s, want incompatible latest run with gaps", out.String())
+	err = cmd.Execute()
+	if err == nil || !strings.Contains(err.Error(), "unsupported legacy evaluation run") {
+		t.Fatalf("list Execute() error = %v, want unsupported legacy diagnostic", err)
 	}
 
 	cmd = newRootCmd()
@@ -207,11 +205,9 @@ func TestEvaluationListAndLatestStatusSurviveIncompatibleRun(t *testing.T) {
 	cmd.SetOut(&out)
 	cmd.SetErr(&bytes.Buffer{})
 	cmd.SetArgs([]string{"evaluation", "status", "--latest", "--json"})
-	if err := cmd.Execute(); err != nil {
-		t.Fatalf("status Execute() error = %v", err)
-	}
-	if !strings.Contains(out.String(), latest.Path) || !strings.Contains(out.String(), `"kind": "malformed-evaluation-record"`) {
-		t.Fatalf("status stdout = %s, want latest incompatible run status", out.String())
+	err = cmd.Execute()
+	if err == nil || !strings.Contains(err.Error(), "unsupported legacy evaluation run") {
+		t.Fatalf("status Execute() error = %v, want unsupported legacy diagnostic", err)
 	}
 }
 

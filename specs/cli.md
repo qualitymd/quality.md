@@ -138,10 +138,10 @@ Conventions that hold wherever they apply, so flags and output behave the same
 across commands.
 
 **Structured input.** Commands that read an author-supplied structured payload
-from `--file` or stdin **MUST** make that payload contract discoverable from
-inside the tool. Command help **MUST** document every payload field, its JSON
-type, whether it is required, and allowed values for enum-like fields, and
-**MUST** include at least one complete valid payload example.
+from stdin or a documented path option **MUST** make that payload contract
+discoverable from inside the tool. Command help **MUST** document every payload
+field, its JSON type, whether it is required, and allowed values for enum-like
+fields, and **MUST** include at least one complete valid payload example.
 
 Side-effecting structured-input commands **MUST** offer `-n/--dry-run`, which
 validates the payload and reports the records or files that would be written

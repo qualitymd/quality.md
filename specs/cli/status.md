@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 `qualitymd status [path]` emits a read-only snapshot of the current `QUALITY.md`
 project state: model validity, model shape, source coverage, evaluation history,
-staleness, active recommendation counts, readiness, and next actions.
+staleness, readiness, and next actions.
 
 It inherits the cross-cutting CLI contract from the [CLI spec](../cli.md). This
 file specifies only what is particular to `status`.
@@ -31,9 +31,8 @@ not judge quality, recompute ratings, or replace evaluation reports.
 ## Scope
 
 Covered: `qualitymd status [path]`, `--json`, model validity and shape, per-
-Area source coverage, recognized evaluation run history, stale and incomplete
-run counts, active recommendation counts, readiness, next actions, deterministic
-ordering, and exit behavior.
+Area source coverage, recognized Evaluation v2 run history, stale and incomplete
+run counts, readiness, next actions, deterministic ordering, and exit behavior.
 
 Deferred / non-goals: no model-quality judgment, no report rendering, no lint
 repair, no new lint rules, no report-body scraping, no schema change to the
@@ -103,27 +102,23 @@ history path when no resolved config file changes it.
 If the evaluation directory is absent, `status` **MUST** report zero recognized
 runs rather than failing.
 
-`status` **MUST** recognize run folders by the
-[Evaluation run folder](../evaluation-records/run-folder.md) contract and
-inspect them in deterministic order by run number, then folder name.
+`status` **MUST** recognize Evaluation v2 run folders by the current
+[Evaluation v2](../evaluation-v2/evaluation-v2.md) contract and inspect them in
+deterministic order by run number, then folder name.
 
 For recognized runs, `status` **MUST** report total run count, latest run,
-reportable run count, incomplete run count, stale run count, and active
-recommendation count. A stale run is one whose `model.md` snapshot bytes differ
-from the selected model file bytes.
+reportable run count, incomplete run count, and stale run count. A stale run is
+one whose `model.md` snapshot bytes differ from the selected model file bytes.
 
-Individual records that are malformed, unreadable, schema-incompatible, or
-structurally incomplete under the current evaluation-record contract **MUST**
-make their run incomplete with status gaps. They **MUST NOT** prevent project
-status from listing the run or inspecting later runs.
+Malformed, unreadable, schema-incompatible, missing, or structurally incomplete
+Evaluation v2 data **MUST** make its run incomplete with status gaps. Unsupported
+previous-runtime run shapes **MUST** be reported as run inspection problems that
+direct users to create a new Evaluation v2 run rather than repair or migrate old
+records.
 
 For each run summary under `--json`, `status` **MUST** include run path,
-reportability, stale state, record counts, gap count, active recommendation
-count, and any inspection problem.
-
-Active recommendation counts **MUST** be derived from recommendation records and
-their `supersedes` metadata. A recommendation is active when no later valid
-recommendation record in the same run supersedes it.
+reportability, stale state, v2 data artifact count, gap count, and any
+inspection problem.
 
 `status` **MUST NOT** read `report.md` bodies to compute the snapshot.
 
@@ -141,7 +136,7 @@ error.
 - `ready-to-evaluate` when the model is valid and no recognized evaluation runs
   exist;
 - `needs-evaluation-reconciliation` when the model is valid and at least one run
-  is stale, incomplete, malformed, or has active recommendations; and
+  is stale, incomplete, malformed, or unsupported; and
 - `has-evaluation-history` when the model is valid, one or more recognized runs
   exist, and none require reconciliation.
 

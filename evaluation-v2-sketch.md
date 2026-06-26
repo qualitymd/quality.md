@@ -1,12 +1,14 @@
 ---
 title: Evaluation v2 sketch
-status: sketch
+status: superseded
 ---
 
 # Evaluation v2 sketch
 
-This sketch explores a possible v2 shape for QUALITY.md evaluation. It is not a
-specification or implementation plan yet.
+This historical sketch explored the v2 shape for QUALITY.md evaluation. It is
+superseded by the durable `specs/evaluation-v2/**` specs and the Evaluation v2
+clean-break change case. Treat mismatches here as historical notes unless a
+current durable spec explicitly incorporates them.
 
 The main shift is to treat evaluation as an agent-orchestrated judgment protocol,
 not as an executable algorithm. The protocol should name the moves an agent makes,
@@ -1290,7 +1292,7 @@ Preferred pattern:
 ```text
 worker produces routine JSON payload
 orchestrator validates or reviews payload
-orchestrator calls qualitymd evaluation data set <run> --file <payload>
+orchestrator calls qualitymd evaluation data set <run> < payload.json
 ```
 
 This keeps path derivation, canonical JSON, overwrite semantics, and validation
@@ -2058,7 +2060,7 @@ Required flow:
 
 ```text
 qualitymd evaluation create [model]
-qualitymd evaluation data set <run> --file <path|->
+qualitymd evaluation data set <run> < payload.json
 qualitymd evaluation report build <run>
 ```
 
@@ -2071,15 +2073,15 @@ qualitymd evaluation create [model]
   --evaluation-dir <path>
 ```
 
-`evaluation data set` reads a structured routine payload from a file or stdin,
-validates it, routes by `kind`, derives the canonical `data/**` path, and writes
-canonical JSON. It overwrites the derived path by default so repeated writes of
-the same routine output are idempotent and produce canonical JSON. Batch
-payloads are deferred. Data paths are derived from structured model IDs and
-routine `kind`, not from display titles or natural labels.
+`evaluation data set` reads one structured routine payload from stdin, validates
+it, routes by `kind`, derives the canonical `data/**` path, and writes canonical
+JSON. It overwrites the derived path by default so repeated writes of the same
+routine output are idempotent and produce canonical JSON. Batch payloads are
+deferred. Data paths are derived from structured model IDs and routine `kind`,
+not from display titles or natural labels.
 
 ```text
-qualitymd evaluation data set <run> --file <path|->
+qualitymd evaluation data set <run> < payload.json
   --dry-run
   --json
 ```

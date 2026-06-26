@@ -108,6 +108,9 @@ func SetData(runPath string, raw []byte, opts DataSetOptions) (*DataSetReceipt, 
 	if !slices.Contains(acceptedDataKinds, kind) {
 		return nil, usagef("unsupported evaluation data kind %q", kind)
 	}
+	if err := validateDataPayload(kind, payload); err != nil {
+		return nil, err
+	}
 	rel, err := dataPathForPayload(kind, payload)
 	if err != nil {
 		return nil, err
@@ -289,6 +292,75 @@ func payloadKind(payload map[string]any) (DataKind, error) {
 		return "", usagef("payload is missing kind")
 	}
 	return DataKind(raw), nil
+}
+
+func validateDataPayload(kind DataKind, payload map[string]any) error {
+	switch kind {
+	case DataKindAreaAnalysis, DataKindFactorAnalysis:
+		for _, field := range []string{"localAnalysis", "localAndDescendantAnalysis"} {
+			scope, ok := payload[field].(map[string]any)
+			if !ok {
+				return usagef("%s must be an object", field)
+			}
+			if err := validateStatus(scope, field+".status", []string{"analyzed", "empty", "not_analyzed", "blocked"}); err != nil {
+				return err
+			}
+			if err := validateObjectArray(scope, field+".ratingDrivers", "ratingDrivers"); err != nil {
+				return err
+			}
+		}
+	case DataKindRequirementAssessment:
+		if err := validateStatus(payload, "status", []string{"assessed", "partially_assessed", "not_assessed", "blocked"}); err != nil {
+			return err
+		}
+		if err := validateObjectArray(payload, "findings", "findings"); err != nil {
+			return err
+		}
+	case DataKindRequirementRating:
+		if err := validateStatus(payload, "status", []string{"rated", "not_rated", "blocked"}); err != nil {
+			return err
+		}
+		if err := validateObjectArray(payload, "ratingDrivers", "ratingDrivers"); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateStatus(payload map[string]any, field string, allowed []string) error {
+	value, ok := payload[strings.TrimPrefix(field, fieldPrefix(field))].(string)
+	if !ok || value == "" {
+		return usagef("%s must be one of %s", field, strings.Join(allowed, ", "))
+	}
+	if !slices.Contains(allowed, value) {
+		return usagef("%s = %q, want one of %s", field, value, strings.Join(allowed, ", "))
+	}
+	return nil
+}
+
+func fieldPrefix(field string) string {
+	if i := strings.LastIndex(field, "."); i >= 0 {
+		return field[:i+1]
+	}
+	return ""
+}
+
+func validateObjectArray(payload map[string]any, field, label string) error {
+	key := strings.TrimPrefix(field, fieldPrefix(field))
+	raw, ok := payload[key]
+	if !ok {
+		return nil
+	}
+	items, ok := raw.([]any)
+	if !ok {
+		return usagef("%s must be an array", field)
+	}
+	for i, item := range items {
+		if _, ok := item.(map[string]any); !ok {
+			return usagef("%s[%d] must be an object", label, i)
+		}
+	}
+	return nil
 }
 
 func dataPathForPayload(kind DataKind, payload map[string]any) (string, error) {

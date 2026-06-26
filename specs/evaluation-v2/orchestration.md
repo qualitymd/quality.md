@@ -68,7 +68,7 @@ Workers **SHOULD** return structured routine JSON to the orchestrator. The
 orchestrator should persist accepted payloads through:
 
 ```text
-qualitymd evaluation data set <run> --file <payload>
+qualitymd evaluation data set <run> < payload.json
 ```
 
 Workers **SHOULD NOT** write arbitrary files in an evaluation run folder.

@@ -1,6 +1,7 @@
 package evaluation
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -12,8 +13,7 @@ import (
 )
 
 var (
-	runNameRE    = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
-	recordNameRE = regexp.MustCompile(`^(\d+)-`)
+	runNameRE = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
 )
 
 // FindRepoRoot walks upward from start until it finds a Git repository root.
@@ -126,21 +126,45 @@ func nextRunNumber(dir string) (int, error) {
 	return maxN + 1, nil
 }
 
-func nextRecordNumber(dir string) (int, error) {
-	entries, err := os.ReadDir(dir)
+func verifyRun(runPath string) (string, error) {
+	abs, err := filepath.Abs(runPath)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	maxN := 0
-	for _, entry := range entries {
-		m := recordNameRE.FindStringSubmatch(entry.Name())
-		if m == nil {
-			continue
-		}
-		n, err := strconv.Atoi(m[1])
-		if err == nil && n > maxN {
-			maxN = n
+	info, err := os.Stat(abs)
+	if err != nil {
+		return "", fmt.Errorf("reading run %s: %w", runPath, err)
+	}
+	if !info.IsDir() {
+		return "", fmt.Errorf("%s is not an evaluation run folder", runPath)
+	}
+	if _, err := os.Stat(filepath.Join(abs, "model.md")); err != nil {
+		return "", fmt.Errorf("%s is not an evaluation run folder: missing model.md", runPath)
+	}
+	for _, name := range []string{"assessments", "analysis", "recommendations", "report-summary.md", "report.json"} {
+		if _, err := os.Stat(filepath.Join(abs, name)); err == nil {
+			return "", usagef("unsupported legacy evaluation run %s: create a new Evaluation v2 run", runPath)
+		} else if !os.IsNotExist(err) {
+			return "", fmt.Errorf("inspecting %s: %w", name, err)
 		}
 	}
-	return maxN + 1, nil
+	dataInfo, err := os.Stat(filepath.Join(abs, "data"))
+	if err != nil {
+		return "", fmt.Errorf("%s is not an Evaluation v2 run folder: missing data", runPath)
+	}
+	if !dataInfo.IsDir() {
+		return "", fmt.Errorf("%s is not an Evaluation v2 run folder: data is not a directory", runPath)
+	}
+	return abs, nil
+}
+
+func displayRunPath(runAbs string) string {
+	runAbs = filepath.Clean(runAbs)
+	repoRoot, err := FindRepoRoot(runAbs)
+	if err == nil {
+		if rel, relErr := filepath.Rel(repoRoot, runAbs); relErr == nil && rel != "." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) && rel != ".." {
+			return filepath.ToSlash(rel)
+		}
+	}
+	return filepath.ToSlash(runAbs)
 }

@@ -2,6 +2,57 @@
 
 ## 2026-06-26
 
+- **Done**: Implemented and archived
+  [0097 - Evaluation v2 clean break](archive/0097-evaluation-v2-clean-break.md).
+  Evaluation v2 is now the only active runtime evaluation path: new runs seed
+  `model.md` and `data/`, previous assessment/analysis/recommendation run shapes
+  are rejected as unsupported, `evaluation data set` is stdin-only, status/list
+  surfaces report v2 data artifacts and gaps, report build writes
+  `EvaluationOutputResult` plus the v2 report tree, and old active
+  record/report specs and examples were removed. Prepared `v0.13.0` release
+  notes, skill compatibility metadata, and the `0.4 (Draft)` specification
+  version.
+
+- **In-Progress**: Advanced
+  [0097 - Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) to
+  `In-Progress`; implementation is beginning across the v2 evaluation CLI,
+  runtime graph/status/report paths, durable specs, bundled skill guidance, and
+  tests. The case remains scoped to the clean break from legacy
+  assessment/analysis/recommendation records and `--file` data-set input.
+
+- **Revision**: Tightened
+  [0097 - Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) with an
+  explicit `evaluation-v2-sketch.md` reconciliation ledger. The ledger maps each
+  sketch heading to preserve, defer, or supersede disposition; the spec now also
+  names v2 data inspection/discovery commands and complete-output-plan report
+  writes as part of the clean-break punchlist.
+
+- **Revision**: Expanded
+  [0097 - Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) after a
+  full pass over `evaluation-v2-sketch.md`. Added explicit coverage for prompt
+  contracts, shared JSON conventions and refs, synthesis defaults,
+  empty-signal policy, evidence-target coverage, criterion results,
+  `EvaluationOutputResult` shape, report navigation and empty-state rules,
+  resume/failure behavior, settled decisions, and deferred QC/schema/bulk-import
+  items so the sketch no longer has untracked active requirements.
+
+- **Design**: Advanced
+  [0097 - Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) to
+  `Design` and added the
+  [design doc](0097-evaluation-v2-clean-break/design.md). The design chooses a
+  removal-first implementation sequence: one v2 run/graph validation path,
+  stdin-only data persistence, v2-only status/list/report build, explicit
+  unsupported old-run diagnostics, and deletion of legacy record/report APIs
+  once commands no longer reference them.
+
+- **Draft**: Created
+  [0097 - Evaluation v2 clean break](0097-evaluation-v2-clean-break.md) with
+  its child [index](0097-evaluation-v2-clean-break/index.md) and
+  [functional spec](0097-evaluation-v2-clean-break/spec.md). The case records
+  the clean-break punchlist for removing legacy evaluation compatibility,
+  changing `qualitymd evaluation data set` to stdin-only input, and closing the
+  v2 status/report gaps exposed by the first real generated run.
+
 - **Done**: Landed and archived
   [0096 - Setup intro preview](archive/0096-setup-intro-preview.md); set
   `status` to `Done` and moved the parent concept and child folder into

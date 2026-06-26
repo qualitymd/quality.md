@@ -15,6 +15,40 @@ QUALITY.md specification.
   `.quality/logs/<timestamp>-evaluate-feedback-log.md` clearly separate from
   report, rating, and recommendation semantics.
 
+## v0.13.0 - 2026-06-26
+
+### CLI
+
+- Evaluation runs are now a clean Evaluation v2 runtime: new runs seed only
+  `model.md` and `data/`, old assessment/analysis/recommendation run shapes are
+  rejected as unsupported, and report builds emit
+  `data/evaluation-output-result.json` plus the v2 report tree without legacy
+  `report-summary.md` or `report.json` artifacts.
+- `qualitymd evaluation data set` now reads one JSON payload from stdin and no
+  longer accepts `--file`. Use
+  `qualitymd evaluation data set <run> < payload.json`.
+- Evaluation status, list, and project status now report v2 data artifacts and
+  gaps instead of previous-runtime record counts or active recommendation counts.
+
+### /quality Skill
+
+- `/quality evaluate` guidance now persists routine outputs through stdin-only
+  `qualitymd evaluation data set`, treats unsupported old run shapes as a reason
+  to create a fresh Evaluation v2 run, and no longer routes from active
+  recommendation counts.
+
+### Specification
+
+- Active specs now point to Evaluation v2 as the only runtime evaluation
+  contract. Previous evaluation-record and legacy report artifact specs and
+  old checked-in skill examples were removed from the active spec tree.
+
+Compatibility:
+
+- CLI: `v0.13.0`
+- QUALITY.md specification: `0.4 (Draft)`
+- /quality skill: `0.13.0`, requires `qualitymd >=0.13.0 <0.14.0`
+
 ## v0.12.0 - 2026-06-25
 
 ### QUALITY.md Format

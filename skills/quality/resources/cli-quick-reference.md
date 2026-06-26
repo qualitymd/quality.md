@@ -11,13 +11,13 @@ work.
 
 ## Output modes
 
-| Goal                                      | Command form                                                 |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| Human-readable command help               | `qualitymd <command> --help`                                 |
-| Machine-readable state or receipts        | `qualitymd <command> --json`                                 |
-| Active format specification text          | `qualitymd spec`                                             |
-| Persist Evaluation v2 JSON                | `qualitymd evaluation data set <run> --file <path-or-stdin>` |
-| Version and compatibility facts for skill | `qualitymd version --json`                                   |
+| Goal                                      | Command form                                         |
+| ----------------------------------------- | ---------------------------------------------------- |
+| Human-readable command help               | `qualitymd <command> --help`                         |
+| Machine-readable state or receipts        | `qualitymd <command> --json`                         |
+| Active format specification text          | `qualitymd spec`                                     |
+| Persist Evaluation v2 JSON                | `qualitymd evaluation data set <run> < payload.json` |
+| Version and compatibility facts for skill | `qualitymd version --json`                           |
 
 Use `--json` when a command offers it and the agent must inspect, route from,
 or carry the result forward. Use human output for display or diagnostics only.
@@ -45,26 +45,26 @@ whether the install is in the skill's supported range.
 
 ## Quick reference
 
-| Task                   | Command                                                           |
-| ---------------------- | ----------------------------------------------------------------- |
-| Check CLI version      | `qualitymd --version`                                             |
-| Read version metadata  | `qualitymd version --json`                                        |
-| Check for CLI updates  | `qualitymd update --check`                                        |
-| Apply CLI update       | `qualitymd update`                                                |
-| Read format rules      | `qualitymd spec`                                                  |
-| Create a starter model | `qualitymd init [path]`                                           |
-| Validate a model       | `qualitymd lint [path]`                                           |
-| Fix simple lint issues | `qualitymd lint --fix [path]`                                     |
-| Inspect project status | `qualitymd status [path] --json`                                  |
-| Create evaluation run  | `qualitymd evaluation create [model] [--narrowing <slug>]`        |
-| List evaluation runs   | `qualitymd evaluation list [--json]`                              |
-| Discover data kinds    | `qualitymd evaluation data kinds [--json]`                        |
-| Print payload example  | `qualitymd evaluation data example <kind>`                        |
-| Persist routine output | `qualitymd evaluation data set [-n] <run> --file <path-or-stdin>` |
-| List routine outputs   | `qualitymd evaluation data list <run> [--json]`                   |
-| Read routine output    | `qualitymd evaluation data get <run> --kind <kind> ...`           |
-| Check reportability    | `qualitymd evaluation status <run>`                               |
-| Build report           | `qualitymd evaluation report build <run>`                         |
+| Task                   | Command                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| Check CLI version      | `qualitymd --version`                                      |
+| Read version metadata  | `qualitymd version --json`                                 |
+| Check for CLI updates  | `qualitymd update --check`                                 |
+| Apply CLI update       | `qualitymd update`                                         |
+| Read format rules      | `qualitymd spec`                                           |
+| Create a starter model | `qualitymd init [path]`                                    |
+| Validate a model       | `qualitymd lint [path]`                                    |
+| Fix simple lint issues | `qualitymd lint --fix [path]`                              |
+| Inspect project status | `qualitymd status [path] --json`                           |
+| Create evaluation run  | `qualitymd evaluation create [model] [--narrowing <slug>]` |
+| List evaluation runs   | `qualitymd evaluation list [--json]`                       |
+| Discover data kinds    | `qualitymd evaluation data kinds [--json]`                 |
+| Print payload example  | `qualitymd evaluation data example <kind>`                 |
+| Persist routine output | `qualitymd evaluation data set [-n] <run> < payload.json`  |
+| List routine outputs   | `qualitymd evaluation data list <run> [--json]`            |
+| Read routine output    | `qualitymd evaluation data get <run> --kind <kind> ...`    |
+| Check reportability    | `qualitymd evaluation status <run>`                        |
+| Build report           | `qualitymd evaluation report build <run>`                  |
 
 Evaluation runs default under `.quality/evaluations/`. A repository can set
 `evaluationDir` in the resolved workspace config file; the selected `QUALITY.md`
@@ -101,8 +101,8 @@ Need to evaluate?
 - Create run -> qualitymd evaluation create [model] [--narrowing <slug>]
 - Discover payload shapes -> qualitymd evaluation data kinds; qualitymd evaluation data example <kind>
 - Maintain workflow feedback -> update .quality/logs/<timestamp>-evaluate-feedback-log.md for material workflow-experience events only
-- Validate routine output -> qualitymd evaluation data set <run> --file <payload.json> --dry-run
-- Persist routine output -> qualitymd evaluation data set <run> --file <payload.json>
+- Validate routine output -> qualitymd evaluation data set <run> --dry-run < payload.json
+- Persist routine output -> qualitymd evaluation data set <run> < payload.json
 - Ready to report? -> qualitymd evaluation status <run>
 - Build report -> qualitymd evaluation report build <run>
 ```
@@ -114,10 +114,9 @@ Run incomplete or stale?
 - Inspect project state -> qualitymd status [path] --json
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
-- Incompatible historical record? -> treat as run status; inspect or create a fresh run, do not hand-migrate records
+- Unsupported old run shape? -> create a fresh Evaluation v2 run; do not hand-migrate records
 - Process ambiguity or recovery? -> record concise notes in .quality/logs/<timestamp>-evaluate-feedback-log.md; do not duplicate assessment evidence
-- Missing or changed planned coverage? -> edit plan.md coverage frontmatter and add a plan amendment when the planned scope changed
-- Missing data? -> inspect data kinds/examples, validate with -n/--dry-run, then persist with qualitymd evaluation data set <run> --file <payload.json>
+- Missing data? -> inspect data kinds/examples, validate with -n/--dry-run, then persist with qualitymd evaluation data set <run> < payload.json
 - Reportable? -> qualitymd evaluation report build <run>
 ```
 
@@ -154,8 +153,8 @@ qualitymd status [path] --json
 qualitymd evaluation create [model] [--narrowing <slug>]
 qualitymd evaluation data kinds --json
 qualitymd evaluation data example RequirementAssessmentResult
-qualitymd evaluation data set <run> --file requirement-assessment-result.json --dry-run
-qualitymd evaluation data set <run> --file requirement-assessment-result.json
+qualitymd evaluation data set <run> --dry-run < requirement-assessment-result.json
+qualitymd evaluation data set <run> < requirement-assessment-result.json
 qualitymd evaluation status <run>
 qualitymd evaluation report build <run>
 ```
@@ -164,7 +163,7 @@ qualitymd evaluation report build <run>
 
 - Use `--json` when a command offers it and the agent must consume the result.
 - Prefer `qualitymd status [path] --json` for readiness, model shape, evaluation
-  history, stale-run signals, and active recommendation counts.
+  history, and stale-run signals.
 - Persist routine JSON through `qualitymd evaluation data set`; use
   `qualitymd evaluation data example <kind>` to inspect payload shape.
 - Use `-n/--dry-run` to validate new or materially revised payloads before

@@ -253,7 +253,7 @@ factors:
 	}
 }
 
-func TestSnapshotIncompatibleRunRecordIsHistoryGap(t *testing.T) {
+func TestSnapshotUnsupportedLegacyRunIsHistoryProblem(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
   starts:
@@ -269,8 +269,8 @@ factors:
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repo, run.Path, "assessments", "001-bad.json"), []byte(`{`), 0o644); err != nil {
-		t.Fatalf("write bad assessment: %v", err)
+	if err := os.Mkdir(filepath.Join(repo, run.Path, "assessments"), 0o755); err != nil {
+		t.Fatalf("mkdir legacy marker: %v", err)
 	}
 
 	snapshot, err := Snapshot(Options{Path: path})
@@ -280,63 +280,11 @@ factors:
 	if snapshot.Readiness != ReadinessNeedsEvaluationReconcile {
 		t.Fatalf("readiness = %q, want reconciliation", snapshot.Readiness)
 	}
-	if snapshot.Evaluations.Summary.Problems != 0 || snapshot.Evaluations.Summary.Incomplete != 1 {
-		t.Fatalf("evaluation summary = %#v, want incompatible record as incomplete history gap", snapshot.Evaluations.Summary)
+	if snapshot.Evaluations.Summary.Problems != 1 || snapshot.Evaluations.Summary.Incomplete != 1 {
+		t.Fatalf("evaluation summary = %#v, want unsupported run as history problem", snapshot.Evaluations.Summary)
 	}
-	if snapshot.Evaluations.Latest == nil || snapshot.Evaluations.Latest.Gaps == 0 {
-		t.Fatalf("latest = %#v, want latest run with gaps", snapshot.Evaluations.Latest)
-	}
-}
-
-func TestSnapshotActiveRecommendationCountHonorsSuperseding(t *testing.T) {
-	repo := newRepo(t)
-	path := writeFile(t, repo, validModel(`requirements:
-  starts:
-    title: Starts
-    factors: [reliability]
-    assessment: Run it.
-factors:
-  reliability:
-    title: Reliability
-    description: Reliability.
-`))
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
-	if err != nil {
-		t.Fatalf("CreateRun() error = %v", err)
-	}
-	addRecommendation(t, filepath.Join(repo, run.Path), `{
-  "title": "First",
-  "gap": "Gap one.",
-  "evidenceLocators": ["QUALITY.md"],
-  "assessmentResultRecords": [],
-  "remediationOptions": ["Do one."],
-  "recommendedOption": "Do one.",
-  "doneCriterion": "Done."
-}`)
-	addRecommendation(t, filepath.Join(repo, run.Path), `{
-  "title": "Second",
-  "gap": "Gap two.",
-  "evidenceLocators": ["QUALITY.md"],
-  "assessmentResultRecords": [],
-  "remediationOptions": ["Do two."],
-  "recommendedOption": "Do two.",
-  "doneCriterion": "Done.",
-  "supersedes": ["001-first"]
-}`)
-
-	snapshot, err := Snapshot(Options{Path: path})
-	if err != nil {
-		t.Fatalf("Snapshot() error = %v", err)
-	}
-	if snapshot.Evaluations.Summary.ActiveRecommendations != 1 {
-		t.Fatalf("active recommendations = %d, want 1", snapshot.Evaluations.Summary.ActiveRecommendations)
-	}
-}
-
-func addRecommendation(t *testing.T, runPath, payload string) {
-	t.Helper()
-	if _, err := evaluation.AddRecord(evaluation.KindRecommendation, runPath, []byte(payload)); err != nil {
-		t.Fatalf("AddRecord(recommendation) error = %v", err)
+	if snapshot.Evaluations.Latest == nil || !strings.Contains(snapshot.Evaluations.Latest.Problem, "unsupported legacy evaluation run") {
+		t.Fatalf("latest = %#v, want unsupported legacy diagnostic", snapshot.Evaluations.Latest)
 	}
 }
 

@@ -11,7 +11,7 @@ timestamp: 2026-06-21T00:00:00Z
 `qualitymd evaluation create` creates a numbered evaluation run folder. It
 inherits the cross-cutting CLI contract from [qualitymd CLI](../cli.md) and
 produces the layout defined by the
-[Evaluation run folder](../evaluation-records/run-folder.md) contract.
+[Evaluation v2](../evaluation-v2/evaluation-v2.md) contract.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -56,9 +56,9 @@ The command **MUST** compute the next run number as one past the highest matchin
 evaluation run folder, create the run directory, create `data/`, and snapshot
 `model.md`.
 
-During the transition from the previous evaluation record layout, the command
-**MAY** also create legacy record folders and seed legacy planning files for
-compatibility.
+The command **MUST NOT** create previous-runtime record folders or planning
+coverage files such as `assessments/`, `analysis/`, `recommendations/`,
+`design.md`, or `plan.md`.
 
 `model.md` is the resolved model file. New run names MUST NOT include an altitude segment. The
 command **MUST NOT** expose an altitude flag, option, or JSON receipt field.
@@ -66,3 +66,6 @@ command **MUST NOT** expose an altitude flag, option, or JSON receipt field.
 On success, human output **MUST** report the created path on stderr. Under
 `--json`, stdout **MUST** contain a receipt with `schemaVersion`, `path`, and
 `nextActions`.
+
+The next action **MUST** show stdin data persistence with
+`qualitymd evaluation data set <run> < payload.json`.

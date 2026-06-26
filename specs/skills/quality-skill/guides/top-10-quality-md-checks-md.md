@@ -238,10 +238,10 @@ The requirement-and-assessment-quality check **MUST** inspect whether
 requirements are concrete enough to produce findings and ratings, and whether
 each `assessment` gives the evaluator a usable means of assessment.
 
-The quality-loop-maintenance-signals check **MUST** inspect evaluation history,
-active recommendations, and visible model context to decide whether the next
-workflow is maintenance rather than new authoring or evaluation. It **MUST NOT**
-require or recommend CI or release gating by default.
+The quality-loop-maintenance-signals check **MUST** inspect evaluation history
+and visible model context to decide whether the next workflow is maintenance
+rather than new authoring or evaluation. It **MUST NOT** require or recommend CI
+or release gating by default.
 
 Every check that would block evaluation **MUST** distinguish model
 usefulness from root area quality. A valid but vague model is a model-authoring

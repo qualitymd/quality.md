@@ -2,32 +2,23 @@ package evaluation
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 )
 
 // RunListEntry summarizes one discovered evaluation run.
 type RunListEntry struct {
-	Path       string       `json:"path"`
-	RootArea   string       `json:"rootArea"`
-	Narrowing  string       `json:"narrowing,omitempty"`
-	Counts     RecordCounts `json:"counts"`
-	Reportable bool         `json:"reportable"`
-	Gaps       int          `json:"gaps"`
+	Path          string `json:"path"`
+	RootArea      string `json:"rootArea"`
+	Narrowing     string `json:"narrowing,omitempty"`
+	DataArtifacts int    `json:"dataArtifacts"`
+	Reportable    bool   `json:"reportable"`
+	Gaps          int    `json:"gaps"`
 }
 
 // RunList is the JSON contract emitted by evaluation run listings.
 type RunList struct {
 	SchemaVersion int            `json:"schemaVersion"`
 	Runs          []RunListEntry `json:"runs"`
-}
-
-// RecordList is the JSON contract emitted by record listings.
-type RecordList struct {
-	SchemaVersion int        `json:"schemaVersion"`
-	Path          string     `json:"path"`
-	Kind          RecordKind `json:"kind"`
-	Records       []string   `json:"records"`
 }
 
 // ResolveRun resolves an explicit run path or the latest discovered run.
@@ -90,12 +81,12 @@ func ListRuns(repoRoot, evaluationDir, state string) (*RunList, error) {
 			continue
 		}
 		result.Runs = append(result.Runs, RunListEntry{
-			Path:       dir.Rel,
-			RootArea:   run.Model.Title,
-			Narrowing:  narrowingFromRunName(dir.Name),
-			Counts:     status.Counts,
-			Reportable: status.Reportable,
-			Gaps:       len(status.Gaps),
+			Path:          dir.Rel,
+			RootArea:      run.Model.Title,
+			Narrowing:     narrowingFromRunName(dir.Name),
+			DataArtifacts: status.Data.Artifacts,
+			Reportable:    status.Reportable,
+			Gaps:          len(status.Gaps),
 		})
 	}
 	return result, nil
@@ -139,38 +130,4 @@ func narrowingFromRunName(name string) string {
 		}
 	}
 	return suffix
-}
-
-// ListRecords lists record files of the requested kind for a run.
-func ListRecords(kind RecordKind, runPath string) (*RecordList, error) {
-	run, err := Inspect(runPath)
-	if err != nil {
-		return nil, err
-	}
-	result := &RecordList{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(run.Path), Kind: kind}
-	records, err := recordFilesForKind(run.AbsPath, kind)
-	if err != nil {
-		return nil, usagef("unknown record kind %q", kind)
-	}
-	result.Records = records
-	return result, nil
-}
-
-func recordFilesForKind(runAbs string, kind RecordKind) ([]string, error) {
-	var dir, pattern string
-	switch kind {
-	case KindAssessmentResult:
-		dir, pattern = "assessments", "*.json"
-	case KindAnalysis:
-		dir, pattern = "analysis", "*.json"
-	case KindRecommendation:
-		dir, pattern = "recommendations", "*.md"
-	default:
-		return nil, usagef("unknown record kind %q", kind)
-	}
-	var records []string
-	for _, path := range globRecordFiles(filepath.Join(runAbs, dir), pattern) {
-		records = append(records, filepath.ToSlash(filepath.Join(dir, filepath.Base(path))))
-	}
-	return records, nil
 }

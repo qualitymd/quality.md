@@ -29,8 +29,8 @@ The `/quality evaluate` workflow **MUST** follow the
 evaluations.
 
 The skill **MUST** create runs with `qualitymd evaluation create [model]` and
-persist routine outputs through `qualitymd evaluation data set <run>
---file <payload>`.
+persist routine outputs through `qualitymd evaluation data set <run> <
+payload.json`.
 
 The skill **MUST** produce frames before judgment, assess Requirements before
 rating them, analyze Factors and Areas bottom-up, run
@@ -128,7 +128,7 @@ flowchart TD
    CLI number the folder, snapshot `model.md`, and prepare `data/`.
 5. **Frame the evaluation** before assessment evidence collection. The skill
    **MUST** persist `EvaluationFrame` through
-   `qualitymd evaluation data set <run> --file <payload>`.
+   `qualitymd evaluation data set <run> < payload.json`.
 6. **Evaluate through routine outputs** — for each in-scope Area, Requirement,
    Factor, and Area analysis step, the skill **MUST** produce the Evaluation v2
    frame or result payload required by the

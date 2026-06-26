@@ -247,17 +247,14 @@ either inline or by referencing a traceable entity that defines it.
 
 ### 10. Quality Loop Maintenance Signals
 
-Use evaluation history, active recommendations, and visible model context to
-decide whether the next workflow is maintenance rather than new authoring or
-evaluation. The checklist does not require or recommend CI or release gating by
-default.
+Use evaluation history and visible model context to decide whether the next
+workflow is maintenance rather than new authoring or evaluation. The checklist
+does not require or recommend CI or release gating by default.
 
-- Finding when active recommendations exist: route to recommendation review,
-  apply, or issue-tracker handoff.
 - Finding when the latest run is stale, incomplete, malformed, or unreportable:
-  route to history/reconciliation. Treat malformed or incompatible records as
-  history status, not evaluated-source quality evidence; do not suggest manual
-  migration.
+  route to history/reconciliation. Treat unsupported old run shapes or malformed
+  v2 data as history status, not evaluated-source quality evidence; do not
+  suggest manual migration.
 
 ## Summary Judgment
 

@@ -25,14 +25,13 @@ folders in deterministic run-number order and **MUST NOT** write or modify any
 run.
 
 Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
-**MUST** identify the run path, root area, record counts, and reportability, and
-**MAY** include narrowing when present. It **MAY** include a gap count so callers
-can distinguish an incomplete run with blocking diagnostics from an empty run.
+**MUST** identify the run path, root area, v2 data artifact count,
+reportability, and gap count, and **MAY** include narrowing when present.
 
-The command **MUST NOT** abort solely because an individual record in a
-recognized run is malformed, schema-incompatible, or structurally incomplete
-under the current record contract. Such a run remains listed as incomplete or
-problematic; detailed diagnostics live in `qualitymd evaluation status <run>`.
+The command **MUST** use the current Evaluation v2 run inspection path. If a
+recognized run has an unsupported previous-runtime shape, the command **MUST**
+fail with the same unsupported-run diagnostic as
+`qualitymd evaluation status <run>`.
 
 The command **MAY** accept `--state all|complete|reportable|incomplete` to
 filter the listed runs. `complete` and `reportable` are equivalent. Unknown

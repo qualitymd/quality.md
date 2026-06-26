@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.12.0 <0.13.0.
+compatibility: Requires qualitymd CLI >=0.13.0 <0.14.0.
 metadata:
-  version: "0.12.0"
-  requires-qualitymd-cli: ">=0.12.0 <0.13.0"
+  version: "0.13.0"
+  requires-qualitymd-cli: ">=0.13.0 <0.14.0"
 ---
 
 ## Purpose
@@ -77,7 +77,7 @@ recommendations.
 1. Use `qualitymd version --json` before CLI-dependent workflows.
 2. Use `--json` when a command offers it and the skill must consume the result.
 3. Use `qualitymd status [path] --json` for routing, readiness, model shape,
-   evaluation history, stale-run signals, and active recommendation counts.
+   evaluation history, and stale-run signals.
 4. Use `qualitymd spec` as the CLI-bundled source of format truth when a
    workflow needs the active specification text.
 5. Use `qualitymd <command> --help` when command shape is uncertain.

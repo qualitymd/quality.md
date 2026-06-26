@@ -20,7 +20,7 @@ all capitals.
 ## Commands
 
 ```text
-qualitymd evaluation data set <run> --file <path|->
+qualitymd evaluation data set <run> < payload.json
 qualitymd evaluation data list <run>
 qualitymd evaluation data get <run>
 qualitymd evaluation data kinds
@@ -29,9 +29,11 @@ qualitymd evaluation data example <kind>
 
 ## Requirements
 
-`data set` **MUST** read one structured JSON payload from `--file <path|->`,
+`data set` **MUST** read exactly one structured JSON payload from stdin,
 validate it, route it by `kind`, derive its canonical `data/**` path from
 structured IDs, and write canonical JSON.
+
+`data set` **MUST NOT** accept a `--file` flag.
 
 `data set` **MUST** overwrite the derived path by default. This makes repeated
 writes of the same routine output idempotent.

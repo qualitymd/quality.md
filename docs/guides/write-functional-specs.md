@@ -191,10 +191,9 @@ are tracked in the change case's parent **Affected artifacts** index, not here.
 - **Name 1:1 artifact specs after the artifact.** When a durable spec is scoped
   to one concrete generated file or artifact, preserve the artifact filename in
   the spec filename by replacing `.` with `-` and then using the normal `.md`
-  concept extension. Examples: the `report-summary.md` artifact is specified by
-  `report-summary-md.md`; `report.json` by `report-json.md`; `report.md` by
-  `report-md.md`. This keeps the artifact identity visible without creating
-  filenames with multiple operational meanings.
+  concept extension. Example: an `evaluation-output-result.json` artifact spec
+  would use `evaluation-output-result-json.md`. This keeps the artifact identity
+  visible without creating filenames with multiple operational meanings.
 - **Name behavioral component specs after the capability.** When a durable spec
   governs behavior rather than one concrete artifact, name it for the command,
   workflow, phase, lifecycle, or component it specifies. For example, a
@@ -243,8 +242,8 @@ are tracked in the change case's parent **Affected artifacts** index, not here.
 - **Show, don't only tell.** A concrete example often pins a contract more
   precisely than prose and doubles as a test: a sample invocation, a fenced record
   or folder layout, a representative JSON receipt, an overview table. The sharpest
-  specs here already do it — the run-folder layout in
-  [Evaluation records](../../specs/evaluation-records.md), the `nextActions`
+  specs here already do it — the Evaluation v2 routine-output examples in
+  [Evaluation v2](../../specs/evaluation-v2/evaluation-v2.md), the `nextActions`
   receipt in the [CLI spec](../../specs/cli.md). Reach for an example where words
   get slippery; don't decorate.
 - **Draft openly.** Mark early specs `Draft`; placeholders are fine — stub the
