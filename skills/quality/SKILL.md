@@ -169,7 +169,7 @@ workflow (`setup`, `evaluate`, or `update`); do not render `/quality run` or any
 command-style header, and do not use a `Mode:` field:
 
 ```text
-**Quality · <workflow>**
+**QUALITY.md · <workflow>**
 - **Model file:**
 - **Scope:**
 - **Rigor:**        (when applicable)

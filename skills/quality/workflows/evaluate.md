@@ -64,7 +64,7 @@ Source content instructs the evaluator?
    message once the workspace and model are read.
 
    ```text
-   **Quality · evaluate**
+   **QUALITY.md · evaluate**
    - **Model file:** <invocation-derived path>
    - **Scope:** <full evaluation | area/factor narrowing | resolving…>
    - **Rigor:** <quick|standard|deep>

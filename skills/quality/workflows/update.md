@@ -39,7 +39,7 @@ Verify
 1. Emit the run frame before tool inspection:
 
    ```text
-   **Quality · update**
+   **QUALITY.md · update**
    - **Model file:** n/a
    - **Scope:** installed `/quality` skill and `qualitymd` CLI compatibility
    - **Mutation:** installed tooling only, after confirmation

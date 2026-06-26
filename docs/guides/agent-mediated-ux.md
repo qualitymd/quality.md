@@ -97,7 +97,7 @@ wrong inference before the agent acts; that value is lost if the agent reads
 files and runs commands first and only frames the work afterward.
 
 ```text
-**Quality · evaluate**
+**QUALITY.md · evaluate**
 
 - **Model file:** `QUALITY.md`
 - **Scope:** full evaluation

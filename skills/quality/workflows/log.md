@@ -2,6 +2,10 @@
 
 ## 2026-06-26
 
+- **Revision**: Retitled the rendered run-frame headers in [setup](setup.md),
+  [evaluate](evaluate.md), and [update](update.md) from `Quality` to `QUALITY.md`.
+  Each frame header is now `**QUALITY.md · <workflow>**`.
+
 - **Revision**: Updated the [evaluate](evaluate.md) procedure for 0115 -
   Type-safe, model-bound Evaluation v2 data.
   Evaluate now discovers payload shape with `qualitymd evaluation data schema

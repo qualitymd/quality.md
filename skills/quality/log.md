@@ -2,6 +2,11 @@
 
 ## 2026-06-26
 
+- **Revision**: Retitled the run-frame header label from `Quality` to
+  `QUALITY.md`.
+  The run-frame template header is now `**QUALITY.md · <workflow>**` across the
+  dispatcher and the setup/evaluate/update workflows.
+
 - **Revision**: Updated the Evaluation data contract guidance for 0115 -
   Type-safe, model-bound Evaluation v2 data.
   The dispatcher now points agents to `qualitymd evaluation data schema [<kind>]`
