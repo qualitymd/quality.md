@@ -3,6 +3,17 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0121 - Scannable interaction hierarchy](../changes/0121-scannable-interaction-hierarchy.md).
+  The [`/quality` skill](skills/quality-skill/quality-skill.md) interaction
+  contract and Decision briefs section now require gates to lead with the
+  question, render choices as a visually separated block, fold the non-mutating
+  alternative into the stop choice, cap supporting fields at about three, and
+  carry hierarchy by position rather than bold alone (surviving bold-stripping).
+  The [recommendation follow-up](skills/quality-skill/recommendation-follow-up.md)
+  result-report requirement now forbids stacking equally-weighted bold labels and
+  requires a primary outcome line.
+
+- **Revision**: Implemented durable spec changes for
   [0120 - String model-identity fields in evaluation data](../changes/archive/0120-string-model-identity-fields.md).
   `SPECIFICATION.md` now reserves `root` as an Area name and carries
   specification version `0.5 (Draft)`. The Evaluation overview and record specs

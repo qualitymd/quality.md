@@ -78,6 +78,14 @@ Use Markdown emphasis as interaction structure.
 Bold should make the output skimmable if the user reads only the labels and the
 primary call to action. If everything is emphasized, nothing is.
 
+Do not rely on bold alone for hierarchy. Some surfaces strip or flatten
+emphasis, and the moment bold disappears, a layout held together only by bold
+collapses into an undifferentiated wall. Carry the hierarchy in **position,
+blank-line separation, and indentation** first, and treat bold as reinforcement
+of a layout that already reads when emphasis is removed. A practical test: strip
+every `**` from a block and check that the question and the response path are
+still obvious.
+
 ## Opening
 
 Open every workflow by confirming intent and previewing the path, before doing
@@ -238,22 +246,58 @@ dimensions feel optional.
 Before a workflow mutates files, creates external artifacts, sends messages, or
 changes tooling, show the decision plainly.
 
+A gate has one job: make the user see *what is being asked* and *how to respond*
+at a glance. Lead with the question, render the choices as a visually separated
+block, and demote the rationale below them. Do not stack the question and its
+supporting labels at the same weight — that is the flat-wall failure, where the
+call to action is just one more bolded line at the bottom and disappears
+entirely if bold is not rendered.
+
 ```text
 **Update existing `QUALITY.md`?**
+Replace the starter model with a project-specific model.
 
-**Changes:** Replace the starter model with a project-specific model.
-**Evidence/reason:** The repository has enough context to draft Areas, Factors,
-and initial Requirements.
-**Recommended option:** Update `QUALITY.md` now.
-**Alternatives:** Stop here, or only scaffold the file.
-**Done criterion:** `qualitymd lint QUALITY.md` passes.
+  [y] Update `QUALITY.md` now  — recommended
+  [n] Stop, or only scaffold the file
 
-**Answer:** Reply `y` to update, or `n` to stop.
+Reason: repo has enough context to draft Areas, Factors, and Requirements.
+Done when: `qualitymd lint QUALITY.md` passes.
+Not changed: no evaluation, no issues, no automations.
 ```
 
-Decision gates should name both what will happen and what will not happen when
-that boundary matters. For example, a setup workflow can write `QUALITY.md`
-without running an evaluation, creating issues, or configuring automation.
+The question is the only bolded line; the indented `[y]`/`[n]` block is the next
+thing the eye lands on; the supporting context sits below in plain `label:`
+lines so the gate still reads when emphasis is stripped.
+
+Rules for a gate:
+
+- **Question first and visually primary.** It outranks every supporting label.
+- **Choices as a separated block**, one per line, with the recommended option
+  marked inline. Fold "Alternatives" into the `[n]` line — for a binary gate the
+  two choices already carry it.
+- **Cap supporting fields at about three.** Beyond that the rationale buries the
+  choice. Keep what the user needs to decide (reason, done criterion) and the
+  boundary line when it matters; drop the rest.
+- **Name what will not happen** when that boundary matters. For example, a setup
+  workflow can write `QUALITY.md` without running an evaluation, creating issues,
+  or configuring automation.
+
+Avoid the flat stack, where the question, five supporting labels, and the call
+to action all carry equal weight and the choice is a prose afterthought:
+
+```text
+**Apply update plan?**
+
+**Changes:** CLI only (0.15.0 → 0.16.0)
+**Evidence/reason:** The loaded skill requires CLI >=0.16.0.
+**Recommended option:** Run the owner command.
+**Alternatives:** Skip and leave the CLI at 0.15.0.
+**Done criterion / verification:** Re-run `qualitymd version --json`.
+**Answer:** Reply `y` to apply, or `n` to skip.
+```
+
+Six labels compete for attention, the `y`/`n` choice is the last line, and with
+bold removed nothing distinguishes the ask from its rationale.
 
 ## Closeout
 
@@ -306,13 +350,18 @@ Before shipping an agent-mediated workflow, check:
 
 - The workflow opens with a run frame as its first output, confirming intent and
   previewing the path before any tool call.
-- The primary question or call to action is bolded in each interaction block.
+- The primary question or call to action is the strongest element in each
+  interaction block, by position and structure — not bold alone.
+- Reading only the first line and the choice block, with emphasis stripped,
+  makes the ask and the shortest response obvious.
 - The recommendation and evidence are adjacent to the choice.
 - Closed-choice questions put the recommended option first and accept `1` as the
   shortest confirmation, except binary confirmations that use `y`/`n`.
 - The shortest acceptable user response is clear.
 - Progress is visible for multi-step workflows.
-- Mutation gates state the change, reason, alternatives, and done criterion.
+- Mutation gates lead with the question, render choices as a separated block,
+  cap supporting fields at about three, and state the change, reason, and done
+  criterion.
 - Closeout reports changed artifacts, validation, remaining gaps, and next
   action.
 - Emoji, if present, carries status or semantics.

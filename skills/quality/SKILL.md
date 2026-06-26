@@ -147,11 +147,13 @@ Agent-mediated UX is part of the skill contract: the agent is the user's
 interface. Follow the repository guide `docs/guides/agent-mediated-ux.md` when
 presenting workflow state, questions, confirmations, summaries, and closeouts.
 Keep output status-first, evidence-led, and action-oriented. In each interaction
-block, make the primary question or call to action the strongest visual element,
-preferably with bold Markdown. Use bold labels such as
-`Recommended`, `Why it matters`, `Confidence`, `Changed`, `Validation`,
-`Important gaps`, and `Next` so the left edge is scannable; use emoji only as
-semantic markers, not decoration. For small non-binary closed-choice prompts,
+block, make the primary question or call to action the strongest element by
+position and structure — lead with it and separate it from supporting context —
+not by bold alone. Hierarchy must survive bold-stripping: if a surface flattens
+emphasis, the question and the response path must still be obvious from position.
+Use bold labels such as `Recommended`, `Why it matters`, `Confidence`, `Changed`,
+`Validation`, `Important gaps`, and `Next` to reinforce an already-clear layout;
+use emoji only as semantic markers, not decoration. For small non-binary closed-choice prompts,
 number the options, put the recommended option first, and make `1` the shortest
 accept response. For true binary confirmations, especially mutation gates, make
 `y` and `n` the visible shortest responses. When the user must answer, choose,
@@ -179,18 +181,27 @@ command-style header, and do not use a `Mode:` field:
 ```
 
 For any mutation that requires confirmation, use a decision brief rather than a
-bare yes/no question:
+bare yes/no question. Lead with the question, render the choices as a visually
+separated block — one per line, recommended choice marked inline — then demote
+the rationale to plain `label:` lines below so the brief still reads when bold is
+stripped:
 
 ```text
 **<action?>**
+<one line naming what will change>
 
-**Changes:**
-**Evidence/reason:**
-**Recommended option:**
-**Alternatives:**
-**Done criterion / verification:**
-**Answer:** Reply `y` to proceed, or `n` to stop.
+  [y] <what proceeding does>  — recommended
+  [n] <what stopping does>
+
+Reason: <evidence the choice rests on>
+Done when: <verification>
+Not changed: <boundary, when it matters>
 ```
+
+Keep supporting fields to about three: fold the alternative into the `[n]` line
+rather than listing it separately, and do not stack the question, its labels, and
+the call to action at one visual weight. The reader should find the question and
+the choices by glance, not by reading the whole block.
 
 Use `y`/`n` for true binary mutation confirmations. Accept obvious aliases such
 as `yes`, `no`, `1`, action words, or skip/stop words when they unambiguously

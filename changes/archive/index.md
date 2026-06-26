@@ -514,3 +514,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   - stores Evaluation data model identities as canonical qualified-reference
     strings, reserves `root` as an Area name, and bumps Evaluation data schema
     version to 2 (`Done`).
+- [0121 — Scannable interaction hierarchy](0121-scannable-interaction-hierarchy.md)
+  - reshapes agent-mediated decision gates, discovery questions, progress, and
+    result blocks so the call to action leads and survives bold-stripping, across
+    the agent-mediated UX guide, the bundled `/quality` skill, and durable skill
+    specs (`Done`).

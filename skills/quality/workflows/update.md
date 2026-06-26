@@ -93,17 +93,17 @@ Verify
 
    ```text
    **Apply update plan?**
+   <skill | CLI | both> — <what version moves where>
 
-   **Changes:** <skill | CLI | both>
-   **Evidence/reason:**
-   **Recommended option:**
-   **Alternatives:**
-   **Done criterion / verification:**
-   **Answer:** Reply `y` to apply, or `n` to skip.
+     [y] Run <owner command(s)> now  — recommended
+     [n] Skip — leave versions as they are
+
+   Reason: <why the update is needed, e.g. required CLI range>
+   Done when: <how compatibility is re-checked afterward>
    ```
 
-   The brief must name which owner command performs each mutation and how
-   compatibility will be checked afterward.
+   The choices must name which owner command performs each mutation; the
+   `Done when` line states how compatibility is checked afterward.
 9. If confirmed, delegate only to owner commands:
    - CLI: `qualitymd update` when available and applicable, or the
      package-manager/install command recommended by `qualitymd update --check`.

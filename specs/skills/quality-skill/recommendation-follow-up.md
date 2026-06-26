@@ -75,8 +75,11 @@ changed artifacts, verification performed, rating movement when known, remaining
 gaps or limits, and next action. It **SHOULD** include `Not done` when the
 mutation or verification boundary matters, such as no evaluation rerun, no issue
 creation, no model change, or no quality-log entry. It **MUST** use the shared
-agent-mediated UX contract: status first, with scannable labels and a clear next
-action when work remains. If verification is incomplete, the result **MUST** be
+agent-mediated UX contract: status first, with a primary outcome line and a clear
+next action when work remains. The block **MUST NOT** stack so many
+equally-weighted bold labels that the outcome is no longer the strongest element;
+it **SHOULD** keep strong emphasis to the few fields the user acts on and let the
+rest read as plain `label:` detail. If verification is incomplete, the result **MUST** be
 labeled limited rather than fully confirmed.
 
 When a confirmed apply changes the QUALITY.md model, the skill **MUST** write one

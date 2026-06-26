@@ -2,6 +2,13 @@
 
 ## 2026-06-26
 
+- **Revision**: Reshaped the [`SKILL.md`](SKILL.md) User Interaction Contract for
+  0121 - Scannable interaction hierarchy.
+  The decision-brief template now leads with the question, renders choices as a
+  separated `[y]`/`[n]` block with the alternative folded in, and demotes a capped
+  set of `label:` rationale lines; the contract prose now requires hierarchy by
+  position rather than bold alone, surviving bold-stripping.
+
 - **Revision**: Retitled the run-frame header label from `Quality` to
   `QUALITY.md`.
   The run-frame template header is now `**QUALITY.md · <workflow>**` across the

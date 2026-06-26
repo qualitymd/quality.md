@@ -247,10 +247,13 @@ The skill **MUST** follow
 live workflow output. User-facing interaction blocks **MUST** be status-first:
 state first, primary user action second, supporting context after that. When the
 user must answer, approve, correct, choose, or act, the primary question or call
-to action **MUST** be visually emphasized, preferably with bold Markdown.
-Supporting labels such as `Recommended`, `Why it matters`, `Confidence`,
-`Changed`, `Validation`, `Important gaps`, and `Next` **SHOULD** be bold when
-rendered in Markdown so the left edge stays scannable.
+to action **MUST** be the strongest element of the block by position and
+structure — led with, and separated from supporting context — not by bold alone.
+The hierarchy **MUST** survive bold-stripping: with emphasis removed, the question
+and the response path **MUST** stay distinguishable from supporting context by
+position. Supporting labels such as `Recommended`, `Why it matters`,
+`Confidence`, `Changed`, `Validation`, `Important gaps`, and `Next` **SHOULD** be
+bold when rendered in Markdown to reinforce that layout, not to create it.
 
 When a user must answer, choose, approve, correct, or act, the interaction block
 **MUST** make the shortest acceptable response explicit with an `Answer` line or
@@ -327,9 +330,16 @@ action, the artifact class being changed, the evidence or reason for the action,
 the recommended option, at least one non-mutating alternative, and the done
 criterion or verification expected after the action.
 
-The decision question or call to action **MUST** be visually emphasized, and the
-brief **MUST** keep the changes, evidence/reason, recommended option,
-alternatives, and done criterion in a consistent, scannable shape.
+A decision brief **MUST** lead with the decision question and render its choices
+as a visually separated block — one choice per line, the recommended choice
+marked inline — distinct from the supporting context, rather than as a prose
+answer sentence appended below the rationale. It **MUST NOT** present the
+question, its supporting labels, and the call to action at one visual weight, and
+its hierarchy **MUST NOT** depend on bold alone: with emphasis removed, the
+question and choice block **MUST** stay distinguishable by position. A decision
+brief **SHOULD** carry at most three supporting fields beyond the question and
+choices; for a binary confirmation the non-mutating alternative **MUST** be
+folded into the stop choice rather than listed as a separate field.
 
 When a decision brief is a true binary confirmation, it **MUST** include an
 explicit answer path using `y`/`n`, such as `Reply y to apply, or n to skip`.

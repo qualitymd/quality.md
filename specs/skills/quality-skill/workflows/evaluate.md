@@ -108,10 +108,13 @@ best next step scannable, offer concrete runnable options when available, and
 include an explicit answer path such as replying with an option number or saying
 `stop`.
 
-`evaluate` **SHOULD** show visible progress at phase boundaries where the user's
-mental model would otherwise drift: after preflight, after history/scope
-resolution, before report generation, and at closeout. Progress output **MUST**
-remain factual and user-facing, not a transcript of internal reasoning.
+`evaluate` **SHOULD** re-emit a short, factual progress beat at phase boundaries
+where the user's mental model would otherwise drift — not only in the opening
+frame. It **MUST** include a beat before run creation (the first mutation) and
+before the per-requirement assessment loop (the longest phase), and **SHOULD**
+also show progress after history/scope resolution, before report generation, and
+at closeout. Progress output **MUST** remain factual and user-facing, not a
+transcript of internal reasoning.
 
 ## Completion criteria
 

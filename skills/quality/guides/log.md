@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Reshaped the gates and result block in
+  [Recommendation Follow-Up](recommendation-follow-up.md) for 0121 - Scannable
+  interaction hierarchy.
+  The apply and issue-creation gates now lead with the question and use a
+  separated `[y]`/`[n]` choice block with the alternative folded into the stop
+  choice; the recommendation result block leads with a primary outcome line and
+  de-stacks its labels.
+
 - **Revision**: Updated
   [Recommendation Follow-Up](recommendation-follow-up.md) for 0110 - Run frame
   title and workflow vocabulary.

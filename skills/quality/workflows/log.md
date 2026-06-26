@@ -2,6 +2,15 @@
 
 ## 2026-06-26
 
+- **Revision**: Reshaped interaction output for 0121 - Scannable interaction
+  hierarchy.
+  [setup](setup.md): write/update gates lead with the question and use a separated
+  choice block; discovery inputs now place rationale and recommendation before the
+  answer line, the rating-scale glosses are capped and offered on demand, and Q1/Q2
+  accept `y`. [update](update.md): the apply-plan gate uses the separated-choice
+  shape. [evaluate](evaluate.md): added re-emitted progress beats before run
+  creation and before the per-requirement loop.
+
 - **Revision**: Retitled the rendered run-frame headers in [setup](setup.md),
   [evaluate](evaluate.md), and [update](update.md) from `Quality` to `QUALITY.md`.
   Each frame header is now `**QUALITY.md · <workflow>**`.

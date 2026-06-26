@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Reshaped the Decision gates and Emphasis guidance in
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0121 - Scannable interaction hierarchy](../changes/0121-scannable-interaction-hierarchy.md).
+  Decision gates now teach a question → visually separated choices → demoted
+  rationale shape with a ~three-field cap; Emphasis adds a "don't rely on bold
+  alone" rule and a strip-the-`**` test; an Avoid counter-example and updated
+  Checklist items were added.
+
 - **Revision**: Updated [Writing functional specs](guides/write-functional-specs.md)
   for
   [0116 - Drop the "Evaluation v2" naming](../changes/archive/0116-drop-evaluation-v2-naming.md).

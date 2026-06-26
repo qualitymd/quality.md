@@ -3,6 +3,21 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0121 - Scannable interaction hierarchy](archive/0121-scannable-interaction-hierarchy.md).
+  Fixed the *flat-wall* failure in agent-mediated output — decision gates,
+  discovery questions, progress, and result blocks that stacked the question and
+  supporting labels at equal weight so the call to action was buried and collapsed
+  when bold was stripped. The driving guide
+  [`docs/guides/agent-mediated-ux.md`](../docs/guides/agent-mediated-ux.md) now
+  teaches a question → separated choices → demoted-rationale gate shape, an
+  Emphasis "don't rely on bold alone" rule, an Avoid counter-example, and updated
+  Checklist items. The shared `/quality` interaction contract, every mutation gate
+  in the bundled skill (`setup` write/update, `update` apply-plan, recommendation
+  apply and issue creation), setup discovery ordering, evaluate progress beats,
+  and the recommendation result block were reshaped to match, with durable skill
+  specs aligned. Verified with `mise run fmt-md-check`.
+
+- **Done**: Implemented and archived
   [0120 - String model-identity fields in evaluation data](archive/0120-string-model-identity-fields.md).
   Evaluation routine and report JSON now persist Area, Factor, Requirement, and
   Rating Level identities as canonical qualified-reference strings, with

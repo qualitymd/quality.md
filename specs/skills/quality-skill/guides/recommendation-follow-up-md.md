@@ -37,14 +37,18 @@ source, editing `QUALITY.md`, writing the quality log, or creating an external
 issue.
 
 The guide **MUST** require apply and issue-creation decisions to follow the
-shared agent-mediated UX contract: visually emphasized primary call to action,
-scannable labels for changed artifacts, evidence/reason, recommended option,
-alternatives, and done criterion, and a clear statement of what will not change
-when the mutation boundary matters.
+shared agent-mediated UX contract: the decision question led with, the choices
+rendered as a visually separated block with the non-mutating alternative folded
+into the stop choice, the supporting fields (changed artifacts, evidence/reason,
+done criterion) capped and demoted below the choices, and a clear statement of
+what will not change when the mutation boundary matters.
 
 The guide **MUST** require recommendation result closeouts to include `Next` and
 **SHOULD** require `Not done` when a non-action boundary matters, such as no
 evaluation rerun, no issue creation, no model change, or no quality-log entry.
+The closeout **MUST** lead with a primary outcome line and **MUST NOT** stack so
+many equally-weighted bold labels that the outcome is no longer the strongest
+element.
 
 The guide **MUST** state that issue-tracker handoff alone does not edit
 evaluated source, `QUALITY.md`, or `.quality/log/`.

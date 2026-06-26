@@ -5,6 +5,16 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality Skill
+
+- Decision gates (setup write/update, update apply-plan, recommendation apply and
+  issue creation) now lead with the question and present choices as a visually
+  separated block instead of a flat stack of labels, so the action to take is
+  clear at a glance and stays readable when formatting is stripped. Setup
+  discovery questions show why a choice matters before the answer line, and the
+  evaluate workflow reports progress before run creation and the per-requirement
+  phase.
+
 ## v0.16.0 - 2026-06-26
 
 ### CLI

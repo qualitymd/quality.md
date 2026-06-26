@@ -44,13 +44,13 @@ Before editing anything, present a decision brief:
 
 ```text
 **Apply <recommendation>?**
+<evaluated source | QUALITY.md | both | quality log when model changes>
 
-**Changes:** <evaluated source | QUALITY.md | both | quality log when model changes>
-**Evidence/reason:**
-**Recommended option:**
-**Alternatives:** hand off to issue tracker
-**Done criterion / verification:**
-**Answer:** Reply `y` to apply, or `n` to stop.
+  [y] Apply the confirmed recommendation now  — recommended
+  [n] Stop, or hand off to an issue tracker instead
+
+Reason: <evidence the recommendation rests on>
+Done when: <verification of the done criterion>
 ```
 
 Do not treat an obvious recommendation as consent. Apply only the confirmed
@@ -61,18 +61,21 @@ the done criterion is rating-bound or depends on the QUALITY.md model, run a
 scoped re-evaluation in a new numbered folder and report the before/after delta:
 
 ```text
-**Recommendation result**
+**Recommendation result:** applied — <recommendation>
 
-**Recommendation:**
-**Outcome:** applied
 **Applied option:**
 **Changed artifacts:**        (name the quality log entry when the model changed)
 **Verification:**
-**Rating movement:**          (when known)
-**Remaining gaps / limits:**
-**Not done:**                 (when a boundary matters)
-**Next:**
+
+Rating movement: <when known>
+Remaining gaps / limits:
+Not done: <when a boundary matters>
+Next:
 ```
+
+Lead with the outcome line; keep the strongly-emphasized labels to the few the
+user acts on (applied option, changed artifacts, verification) and let the rest
+read as plain `label:` detail.
 
 If verification is incomplete, label the result as limited rather than fully
 confirmed.
@@ -108,14 +111,14 @@ issue-tracker tooling. Use a decision brief before creating it:
 
 ```text
 **Create external issue?**
+Create <issue tracker item> from the prepared issue-ready text.
 
-**Changes:** create <issue tracker item>
-**Evidence/reason:** recommendation evidence and issue-ready handoff text are prepared.
-**Recommended option:** create the issue when tooling and user confirmation are available.
-**Alternatives:** stop after issue-ready text; apply locally instead
-**Done criterion / verification:** issue link or ID is returned.
-**Not changed:** evaluated source, `QUALITY.md`, and `.quality/log/`
-**Answer:** Reply `y` to create the issue, or `n` to stop after issue-ready text.
+  [y] Create the issue now  — recommended when tooling and confirmation are available
+  [n] Stop after issue-ready text, or apply locally instead
+
+Reason: recommendation evidence and issue-ready handoff text are prepared.
+Done when: issue link or ID is returned.
+Not changed: evaluated source, `QUALITY.md`, and `.quality/log/`.
 ```
 
 If tooling is unavailable or the user has not confirmed creation, stop after

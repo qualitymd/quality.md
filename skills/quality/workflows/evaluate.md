@@ -114,7 +114,10 @@ Source content instructs the evaluator?
    When stopping on model weakness, distinguish model usefulness from the root area
    quality.
 7. Ground format rules and rating vocabulary with `qualitymd spec`.
-8. Create the run folder with
+8. Emit a short, factual progress beat before creating the run — the phase
+   reached and that creating the run is the first mutation — so the user is not
+   surprised by a long mutating phase after a silent preflight. Keep it
+   user-facing, not a reasoning transcript. Then create the run folder with
    `qualitymd evaluation create [model] [--narrowing <slug>]`. The CLI computes
    the number, snapshots `model-snapshot.md`, and prepares `data/` for structured
    routine outputs. For an Area narrowing, pass `--narrowing` as the Area's full
@@ -138,9 +141,12 @@ Source content instructs the evaluator?
     feedback log. When a project command is exercised as evaluation evidence,
     the log may record only the routing fact and cite the formal assessment
     record.
-11. For each in-scope Area, produce an `AreaEvaluationFrame` before evaluating
-    local Requirements, local Factors, or child Areas. The Area frame owns the
-    source boundary lower routines may inspect or narrow.
+11. Before the per-Area assessment loop, emit a brief progress beat naming the
+    in-scope counts (Areas, Requirements) and that per-requirement assessment is
+    starting, so the user has a positional cue before the longest phase. For each
+    in-scope Area, produce an `AreaEvaluationFrame` before evaluating local
+    Requirements, local Factors, or child Areas. The Area frame owns the source
+    boundary lower routines may inspect or narrow.
 12. For each local Requirement, produce a `RequirementEvaluationFrame` before
     evidence judgment. Then produce a `RequirementAssessmentResult` and a
     `RequirementRatingResult`. Before authoring a payload kind, inspect

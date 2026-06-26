@@ -38,6 +38,22 @@ item, or when the work needs durable spec/design/review history. Other routine
 changes follow the normal change guide: make the scoped edit, update directly
 relevant docs, tests, and specs, and verify.
 
+### Early-alpha compatibility
+
+QUALITY.md is early alpha. Breaking changes are acceptable when they keep the
+current model, skill, CLI, specs, and docs simpler and clearer.
+
+Do not author backward-compatibility shims, legacy aliases, fallback readers,
+dual writers, migration commands, deprecated command paths, or legacy specs
+unless an active spec or release task explicitly requires them. Prefer clean
+breaks: update the current contract, tests, docs, examples, and release notes
+together.
+
+When legacy compatibility code, specs, or docs are found in active surfaces,
+remove them as part of the scoped change when safe. Preserve historical records
+in `changes/archive/`, changelogs, and append-only logs unless the task is
+explicitly cleaning history.
+
 ### Smoke testing
 
 - Do not add smoke-test scripts, utilities, fixtures, or code to the repo.

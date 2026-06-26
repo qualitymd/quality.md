@@ -382,12 +382,16 @@ and **MUST NOT** require a full prose answer. After the fifth question, `setup`
 **MUST** present the human context checkpoint. One-at-a-time iteration is the
 default presentation form.
 
-Each discovery interaction block **MUST** visually emphasize the primary
-question or checkpoint call to action, preferably with bold Markdown. The
-question's purpose, recommended answer, confidence/evidence, and shortest
-acceptable response **MUST** stay adjacent to the question. When the surface
-supports Markdown, labels such as `Why it matters`, `Recommended`, `Confidence`,
-and `Answer` **SHOULD** be bold for scanning.
+Each discovery interaction block **MUST** lead with the primary question or
+checkpoint call to action as its strongest element by position, not by bold
+alone. The question's purpose, recommended answer, and confidence/evidence
+**MUST** stay adjacent to the question and **MUST** precede the answer line, so
+the user reads why the choice matters before being told how to reply; the
+shortest acceptable response **MUST** come last. When the surface supports
+Markdown, labels such as `Why it matters`, `Recommended`, `Confidence`, and
+`Answer` **SHOULD** be bold for scanning. Extended per-option explanation
+**SHOULD** be capped inline and offered in full only when the user weighs the
+choice, without removing the teaching the workflow requires.
 
 For closed-choice discovery questions, the shortest acceptable response
 **MUST** be `1` when accepting the recommendation. Other numbered responses

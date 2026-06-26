@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the
+  [recommendation follow-up contract](recommendation-follow-up-md.md) for
+  [0121 - Scannable interaction hierarchy](../../../../changes/0121-scannable-interaction-hierarchy.md).
+  Apply and issue-creation decisions must now lead with the question, render
+  choices as a visually separated block with the alternative folded into the stop
+  choice, and cap and demote supporting fields; result closeouts must lead with a
+  primary outcome line and avoid stacking equally-weighted bold labels.
+
 - **Revision**: Updated the durable authoring sub-guide specs for
   [0107 - Durable spec alignment](../../../../changes/archive/0107-durable-spec-alignment.md).
   The eight routed authoring guide contracts now declare their BCP 14 keyword

@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`setup`](setup.md) and [`evaluate`](evaluate.md)
+  workflow specs for
+  [0121 - Scannable interaction hierarchy](../../../../changes/0121-scannable-interaction-hierarchy.md).
+  Setup discovery blocks now require the rationale and recommendation to precede
+  the answer line and per-option explanation to be capped. Evaluate now requires
+  re-emitted factual progress beats before run creation and before the
+  per-requirement loop, not only in the opening frame.
+
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0116 - Drop the "Evaluation v2" naming](../../../../changes/archive/0116-drop-evaluation-v2-naming.md).
   The workflow spec now links to the renamed Evaluation bundle and uses plain

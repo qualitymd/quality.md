@@ -242,33 +242,40 @@ later.
 
 The discovery inputs:
 
+Lead each input with the question, follow with the rationale and recommendation,
+and place the answer line last so the user reads why the choice matters before
+being told how to reply.
+
 ```text
 1. Root area: Should this QUALITY.md model the whole current project, or a
    narrower area?
-   Recommended: <default> (<confidence>)
-   Answer: Reply `yes` to accept, or name the narrower area/path.
    Why it matters: Sets the model's boundary — what this QUALITY.md evaluates and
    what falls outside it. Shapes the root Area, the Scope body, and the
    `quality-md` self-check Area's `source`.
+   Recommended: <default> (<confidence>)
+   Answer: Reply `y` to accept, or name the narrower area/path.
 
 2. Domain: What kind of thing is this model evaluating?
-   Recommended: <default> (<confidence>)
-   Answer: Reply `yes` to accept, or name the kind of thing being evaluated.
    Why it matters: Names the kind of thing under evaluation (software, document,
    dataset, research report, service, process, agent, and so on) so Factors and
    evidence use the right vocabulary. Shapes the Overview and the candidate Factor
    set.
+   Recommended: <default> (<confidence>)
+   Answer: Reply `y` to accept, or name the kind of thing being evaluated.
 
 3. Lifecycle: Which stage best fits?
+   Why it matters: The stage calibrates how much rigor and which risks matter
+   now. Shapes Scope, Risks, and which Requirements are realistic to assess yet.
    Available values: exploratory, pre-release, active production, maintenance,
    sunset
    Present as numbered options with <default> first and marked Recommended.
    Confidence: <confidence>
    Answer: Reply `1` to accept the recommendation, or choose another number.
-   Why it matters: The stage calibrates how much rigor and which risks matter
-   now. Shapes Scope, Risks, and which Requirements are realistic to assess yet.
 
 4. Risk tolerance: How costly is poor quality here?
+   Why it matters: How costly poor quality is drives modeling rigor and which
+   Factors earn explicit Requirements rather than stay descriptive. Shapes the
+   Risks section and Requirement strictness.
    Visible choices: high cost, moderate cost, low cost.
    Internal mapping: high cost -> low tolerance; moderate cost -> moderate
    tolerance; low cost -> high tolerance.
@@ -276,57 +283,59 @@ The discovery inputs:
    Recommended.
    Confidence: <confidence>
    Answer: Reply `1` to accept the recommendation, or choose another number.
-   Why it matters: How costly poor quality is drives modeling rigor and which
-   Factors earn explicit Requirements rather than stay descriptive. Shapes the
-   Risks section and Requirement strictness.
 
 5. Rating scale: Should this model use the recommended four-level Rating Scale?
+   Why it matters: Rating Levels are configurable in QUALITY.md, not baked into
+   the format; the recommended four-level scale fits most first models. Cite the
+   per-level glosses below only if the user weighs the choice.
    Present as numbered options:
    1. recommended four-level scale (Recommended)
    2. pass/fail gate
    3. custom scale needed
    Confidence: <confidence>
    Answer: Reply `1` to accept the recommendation, or choose `2` or `3`.
-   Why it matters: Rating Levels are configurable in QUALITY.md; they are not
-   baked into the format. The recommended scale keeps stable IDs as
-   `outstanding`, `target`, `minimum`, `unacceptable`, and uses display titles
-   `🟢 Outstanding`, `🔵 Target`, `🟡 Minimum`, and `🔴 Unacceptable` by default.
-   It works for most first models because `outstanding` names a stretch band
-   where further investment may need ROI justification, `target` names the
-   expected good-enough bar without demanding perfection, `minimum` names the
-   acceptable floor that can be relied on but still warrants improvement, and
-   `unacceptable` names quality below the floor.
+```
+
+The recommended four-level scale keeps stable IDs `outstanding`, `target`,
+`minimum`, and `unacceptable`, with default display titles `🟢 Outstanding`,
+`🔵 Target`, `🟡 Minimum`, and `🔴 Unacceptable`. Offer these per-level glosses
+only if the user is deciding between scales: `outstanding` names a stretch band
+where further investment may need ROI justification, `target` the expected
+good-enough bar without demanding perfection, `minimum` the acceptable floor that
+can be relied on but still warrants improvement, and `unacceptable` quality below
+the floor.
 
 6-9. Human context checkpoint:
 
-   **Reply `ok` to accept this draft, or send short corrections for any line.**
+**Reply `ok` to accept this draft, or send short corrections for any line.**
 
-   **Answer:** Reply `ok`, or send terse corrections such as
-   `Primary users: ...`, `Outcome: ...`, or `Compliance: ...`.
+**Answer:** Reply `ok`, or send terse corrections such as
+`Primary users: ...`, `Outcome: ...`, or `Compliance: ...`.
 
-   Anything left unresolved will be recorded as Unknown, an open question, or a
-   low-confidence inference rather than confirmed fact.
+Anything left unresolved will be recorded as Unknown, an open question, or a
+low-confidence inference rather than confirmed fact.
 
-   | Item | Draft | Confidence | What to do |
-   | --- | --- | --- | --- |
-   | Primary users and outcomes | <default> | <confidence> | Confirm or correct who depends on the evaluated thing and which outcomes matter. |
-   | Maintainers and collaborators | <default> | <confidence> | Name human/agent collaborators, reviewers, or operators, or leave Unknown. |
-   | Other stakeholders | <default> | <confidence> | Confirm, remove, or add repo-invisible stakeholders. |
-   | Missing or not-agent-accessible context | <specific gaps> | <confidence> | Point to evidence, provide context now, or record as gaps. |
+| Item                                    | Draft           | Confidence   | What to do                                                                       |
+| --------------------------------------- | --------------- | ------------ | -------------------------------------------------------------------------------- |
+| Primary users and outcomes              | <default>       | <confidence> | Confirm or correct who depends on the evaluated thing and which outcomes matter. |
+| Maintainers and collaborators           | <default>       | <confidence> | Name human/agent collaborators, reviewers, or operators, or leave Unknown.       |
+| Other stakeholders                      | <default>       | <confidence> | Confirm, remove, or add repo-invisible stakeholders.                             |
+| Missing or not-agent-accessible context | <specific gaps> | <confidence> | Point to evidence, provide context now, or record as gaps.                       |
 
-   Why it matters:
-   - Primary users and outcomes anchor the Needs section and justify which Factors
-     are worth evaluating.
-   - Maintainers and collaborators shape maintainability and operability Needs
-     and who the model must align.
-   - Other stakeholders surface Needs and Risks that source alone will not reveal.
-   - Missing context marks Unknowns and open questions instead of guessing.
+Why it matters:
 
-   Most valuable corrections: who the evaluated thing is for, what outcome matters
-   most, and whether data, compliance, availability, or business-criticality is
-   sensitive or constrained.
-```
+- Primary users and outcomes anchor the Needs section and justify which Factors
+  are worth evaluating.
+- Maintainers and collaborators shape maintainability and operability Needs
+  and who the model must align.
+- Other stakeholders surface Needs and Risks that source alone will not reveal.
+- Missing context marks Unknowns and open questions instead of guessing.
 
+Most valuable corrections: who the evaluated thing is for, what outcome matters
+most, and whether data, compliance, availability, or business-criticality is
+sensitive or constrained.
+
+````
 The `<confidence>` on each recommended default is one of `Low`/`Med`/`High` with
 the same evidence note used in the setup brief. In the human context checkpoint,
 leaving a low-confidence or not-visible item unchanged does not upgrade it to a
@@ -434,14 +443,15 @@ authoring proceeds.
 
   ```text
   **Write `QUALITY.md`?**
+  Create or update `<model path>` with the reviewed setup answers.
 
-  **Changes:** Create or update `<model path>` with the reviewed setup answers.
-  **Evidence/reason:** Repo scan plus confirmed discovery answers are enough to draft a first useful model.
-  **Recommended option:** Reply `looks good` to write `QUALITY.md`.
-  **Alternatives:** Send corrections; stop without writing; keep only the current notes.
-  **Done criterion / verification:** `qualitymd lint <model path>` passes, or lint findings are reported.
-  **Answer:** Reply `looks good` to write `QUALITY.md`, or send corrections.
-  ```
+    [looks good] Write `QUALITY.md` now  — recommended
+    [corrections] Send changes, or stop without writing
+
+  Reason: repo scan plus confirmed discovery answers are enough to draft a first useful model.
+  Done when: `qualitymd lint <model path>` passes, or lint findings are reported.
+````
+
 - Give cross-cutting remarks and broader last-call context — priorities, worries,
   wording, edge cases, repo-invisible facts, or anything else important — a home
   here as secondary context, not the final call to action.
@@ -468,13 +478,13 @@ gate, use a fresh decision brief before editing:
 
 ```text
 **Update existing `QUALITY.md`?**
+<what changes in the existing file>
 
-**Changes:**
-**Evidence/reason:**
-**Recommended option:**
-**Alternatives:**
-**Done criterion / verification:**
-**Answer:** Reply `y` to update, or `n` to stop.
+  [y] Update `QUALITY.md` now  — recommended
+  [n] Stop without writing, or only scaffold the file
+
+Reason: <evidence the update rests on>
+Done when: `qualitymd lint <model path>` passes, or lint findings are reported.
 ```
 
 Synthesize directly into `QUALITY.md`. Author the body first, then the
