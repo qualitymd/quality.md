@@ -11,18 +11,12 @@ QUALITY.md specification.
 
 - `qualitymd evaluation create` now names new run folders
   `NNNN-full-eval` or `NNNN-<scope-path>-eval`, shortening the old
-  `quality-eval` tag while continuing to recognize and number against existing
-  `-quality-eval` runs.
+  `quality-eval` tag.
 
 ### /quality Skill
 
 - `/quality evaluate` now passes `--narrowing` as the scope's full structural
   path for Area and Factor scoped evaluations.
-
-### Compatibility / Migration
-
-- Existing evaluation runs keep their folder names. New run numbering continues
-  after both old `-quality-eval` folders and new `-eval` folders.
 
 Compatibility:
 

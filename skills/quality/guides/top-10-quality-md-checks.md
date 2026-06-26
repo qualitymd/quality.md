@@ -252,9 +252,8 @@ workflow is maintenance rather than new authoring or evaluation. The checklist
 does not require or recommend CI or release gating by default.
 
 - Finding when the latest run is stale, incomplete, malformed, or unreportable:
-  route to history/reconciliation. Treat unsupported old run shapes or malformed
-  v2 data as history status, not evaluated-source quality evidence; do not
-  suggest manual migration.
+  route to history/reconciliation. Treat malformed v2 data as history status,
+  not evaluated-source quality evidence; do not suggest manual data repair.
 
 ## Summary Judgment
 

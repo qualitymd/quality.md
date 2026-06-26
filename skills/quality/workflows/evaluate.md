@@ -112,8 +112,9 @@ Source content instructs the evaluator?
    structural path from the root Area, with path segments joined by single
    hyphens. For a Factor narrowing, append the Factor's structural path to the
    owning Area path, also hyphen-joined, with no Area-vs-Factor marker or
-   boundary separator. Record the run path in the evaluate feedback log
-   frontmatter or timeline.
+   boundary separator. The narrowing slug must not include `quality` as a path
+   segment. Record the run path in the evaluate feedback log frontmatter or
+   timeline.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
    persist it through `qualitymd evaluation data set <run> < payload.json`.
    The frame records the resolved model, scope, rigor, in-scope Areas, Factors,

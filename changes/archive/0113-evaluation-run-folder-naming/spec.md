@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation run folder naming - functional spec
-description: Requirements for naming Evaluation v2 run folders NNNN-full-eval (full) and NNNN-<scope-path>-eval (narrowed), where the narrowing slug is the scope's full structural path, while still recognizing legacy run folders.
+description: Requirements for naming Evaluation v2 run folders NNNN-full-eval (full) and NNNN-<scope-path>-eval (narrowed), where the narrowing slug is the scope's full structural path.
 tags: [cli, evaluation, naming, skill]
 timestamp: 2026-06-26T00:00:00Z
 ---
@@ -28,20 +28,18 @@ of the name, but it follows no convention.
 This change shortens the constant tag to `eval` and makes a narrowed run's slug
 the scope's full structural path. The run number remains the run's identity and
 `model-snapshot.md` remains the structural source of truth; the slug is a human
-mnemonic that now carries maximal scope context. Existing runs are not migrated,
-so both the old and new grammars must be recognized.
+mnemonic that now carries maximal scope context.
 
 ## Scope
 
 Covered: the run-folder name grammar produced by `qualitymd evaluation create`,
-the `--narrowing` slug convention, recognition of new and legacy run folders
-across listing/status/next-number computation, and the durable CLI and
-`/quality` contracts that describe them.
+the `--narrowing` slug convention, recognition of current run folders across
+listing/status/next-number computation, and the durable CLI and `/quality`
+contracts that describe them.
 
 Not covered: migration or rewrite of existing run folders; an Area-vs-Factor
-kind marker or boundary separator inside the slug; the run number as identity or
-`nextRunNumber` monotonicity; and structured `data/` layout, generated report
-filenames, or report content.
+kind marker or boundary separator inside the slug; the run number as identity;
+and structured `data/` layout, generated report filenames, or report content.
 
 ## Assumptions & dependencies
 
@@ -98,6 +96,8 @@ filenames, or report content.
 
 - The narrowing slug **MUST** remain a path-safe slug.
 
+- The narrowing slug **MUST NOT** include `quality` as a slug segment.
+
 - The narrowing slug **MUST NOT** insert an Area-vs-Factor kind marker or any
   boundary separator between the Area-path segments and the Factor-path segments.
 
@@ -106,23 +106,17 @@ filenames, or report content.
   > slugs have no boundary character available, so a kind marker would only add
   > another ambiguous token rather than a reliable boundary. — 0113
 
-### Recognition and legacy runs
+### Recognition
 
 - `qualitymd` **MUST** recognize newly created run folders that use the `-eval`
   suffix wherever it recognizes run folders, including `evaluation create` (next
   number), `evaluation list`, and `evaluation status`.
 
-- `qualitymd` **MUST** continue to recognize existing run folders that use the
-  legacy `-quality-eval` suffix, including legacy `subject`- and `model`-prefixed
-  forms, so existing runs remain listed, inspectable, and counted.
-
-- `qualitymd evaluation create` **MUST** compute the next run number from both
-  new `-eval` and legacy `-quality-eval` run folders, so numbering stays
-  monotonic across the format change.
+- `qualitymd evaluation create` **MUST** compute the next run number from
+  recognized current `-eval` run folders.
 
 - `qualitymd evaluation list` **MUST** report no narrowing for a `full`-marked
-  run and the narrowing slug for a narrowed run, for both new `-eval` and legacy
-  `-quality-eval` run names.
+  run and the narrowing slug for a narrowed run.
 
 - This change **MUST NOT** migrate, rename, or rewrite any existing run folder.
 
@@ -139,12 +133,9 @@ filenames, or report content.
   under Area `security` yields `0007-security-reliability-latency-eval`.
 - No newly created run folder contains the segment `quality`.
 - `qualitymd evaluation list` and `qualitymd evaluation status` list and inspect
-  both a new `0007-full-eval` folder and an existing `0006-quality-eval` folder.
-- `qualitymd evaluation create` run after a legacy `0006-quality-eval` folder
-  produces `0007-full-eval`, not `0001-full-eval`.
+  current `NNNN-<scope>-eval` folders.
 - `qualitymd evaluation list` reports no narrowing for `0007-full-eval`,
-  narrowing `security-network` for `0007-security-network-eval`, and the stripped
-  narrowing for a legacy `0005-subject-quality-eval` folder.
+  and narrowing `security-network` for `0007-security-network-eval`.
 - Existing run folders on disk are byte-for-byte unchanged after the run.
 
 ## Durable spec changes
@@ -157,10 +148,9 @@ None.
 
 - [`specs/cli/evaluation-create.md`](../../../specs/cli/evaluation-create.md) -
   state the run-folder grammar `NNNN-<scope>-eval`, document that
-  `--narrowing` carries the scope's full structural path, and note continued
-  recognition of legacy `-quality-eval` folders. Driven by
+  `--narrowing` carries the scope's full structural path. Driven by
   [Run-folder name grammar](#run-folder-name-grammar) and
-  [Recognition and legacy runs](#recognition-and-legacy-runs).
+  [Recognition](#recognition).
 - [`specs/skills/quality-skill/evaluation.md`](../../../specs/skills/quality-skill/evaluation.md)
   - in the create-run workflow step, record that the skill passes `--narrowing`
     the scope's full structural path. Driven by
@@ -178,7 +168,7 @@ None.
 
 If every requirement above is satisfied, new run folders read `NNNN-full-eval`
 or `NNNN-<scope-path>-eval` with the scope's full structural path as the mnemonic,
-existing legacy runs stay recognized and correctly numbered against, and no run
-is migrated. That achieves the motivation — a cleaner, more informative run name
-that drops the redundant tag — without widening into run migration, a new slug
-boundary syntax, or any change to run identity or data layout.
+and no run is migrated. That achieves the motivation — a cleaner, more
+informative run name that drops the redundant tag — without widening into run
+migration, a new slug boundary syntax, or any change to run identity or data
+layout.

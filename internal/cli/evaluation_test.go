@@ -164,53 +164,6 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 	}
 }
 
-func TestEvaluationListAndLatestStatusRejectUnsupportedLegacyRun(t *testing.T) {
-	repo := testEvaluationRepo(t)
-	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"}); err != nil {
-		t.Fatalf("CreateRun(first) error = %v", err)
-	}
-	latest, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
-	if err != nil {
-		t.Fatalf("CreateRun(latest) error = %v", err)
-	}
-	runPath := filepath.Join(repo, latest.Path)
-	if err := os.Mkdir(filepath.Join(runPath, "assessments"), 0o755); err != nil {
-		t.Fatalf("mkdir legacy marker: %v", err)
-	}
-	oldwd, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Getwd() error = %v", err)
-	}
-	t.Cleanup(func() {
-		if err := os.Chdir(oldwd); err != nil {
-			t.Fatalf("restore cwd: %v", err)
-		}
-	})
-	if err := os.Chdir(repo); err != nil {
-		t.Fatalf("chdir repo: %v", err)
-	}
-
-	cmd := newRootCmd()
-	var out bytes.Buffer
-	cmd.SetOut(&out)
-	cmd.SetErr(&bytes.Buffer{})
-	cmd.SetArgs([]string{"evaluation", "list", "--json"})
-	err = cmd.Execute()
-	if err == nil || !strings.Contains(err.Error(), "unsupported legacy evaluation run") {
-		t.Fatalf("list Execute() error = %v, want unsupported legacy diagnostic", err)
-	}
-
-	cmd = newRootCmd()
-	out.Reset()
-	cmd.SetOut(&out)
-	cmd.SetErr(&bytes.Buffer{})
-	cmd.SetArgs([]string{"evaluation", "status", "--latest", "--json"})
-	err = cmd.Execute()
-	if err == nil || !strings.Contains(err.Error(), "unsupported legacy evaluation run") {
-		t.Fatalf("status Execute() error = %v, want unsupported legacy diagnostic", err)
-	}
-}
-
 func TestEvaluationOldCommandNamesAreRejected(t *testing.T) {
 	cmd := newRootCmd()
 	cmd.SetOut(&bytes.Buffer{})

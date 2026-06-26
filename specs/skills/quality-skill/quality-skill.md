@@ -364,8 +364,8 @@ fresh evidence and the current `QUALITY.md` model control the current judgment.
 If prior runs contain malformed, schema-incompatible, partial, or hand-edited
 records, the skill **MUST** treat that as evaluation-history status rather than
 evaluated-source quality evidence. It should route to `qualitymd evaluation status <run>`
-or a fresh evaluation; it **MUST NOT** manually migrate, rewrite, or hand-author
-records to make an old run reportable.
+or a fresh evaluation; it **MUST NOT** manually rewrite or hand-author records to
+make a run reportable.
 
 A scoped evaluation **MUST NOT** compare itself to a prior whole-model or
 differently scoped rating as if the scopes were identical. When current findings
@@ -536,9 +536,8 @@ grounding judgment, rigor levels, and rating-binding evidence checks.
 
 The reporting and run-artifact contract lives in
 [/quality reporting](reporting.md). That component spec owns evaluation run
-folders, model/design/plan artifacts, assessment and analysis records,
-recommendation files, generated report forms, correction behavior, legacy
-`debug-log.md` compatibility, and reportability expectations.
+folders, `model-snapshot.md`, structured `data/`, generated report forms,
+closeout behavior, and reportability expectations.
 
 ## Quality Log
 

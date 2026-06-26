@@ -14,7 +14,6 @@ import (
 
 var (
 	currentRunNameRE = regexp.MustCompile(`^(\d{4})-([a-z0-9-]+)-eval$`)
-	legacyRunNameRE  = regexp.MustCompile(`^(\d{4})(?:-((?:subject|model)(?:-[a-z0-9-]+)?|[a-z0-9-]+))?-quality-eval$`)
 )
 
 // ModelSnapshotFile is the run-folder filename for the frozen copy of the
@@ -114,38 +113,34 @@ func IsPathSafeSlug(s string) bool {
 	return s != "" && Slug(s) == s
 }
 
-func parseRunName(name string) (runName, bool) {
-	if match := legacyRunNameRE.FindStringSubmatch(name); match != nil {
-		n, err := strconv.Atoi(match[1])
-		if err != nil {
-			return runName{}, false
-		}
-		return runName{number: n, narrowing: legacyNarrowing(match[2])}, true
+func isCurrentRunScope(scope string) bool {
+	if !IsPathSafeSlug(scope) {
+		return false
 	}
+	for _, segment := range strings.Split(scope, "-") {
+		if segment == "quality" {
+			return false
+		}
+	}
+	return true
+}
+
+func parseRunName(name string) (runName, bool) {
 	if match := currentRunNameRE.FindStringSubmatch(name); match != nil {
 		n, err := strconv.Atoi(match[1])
 		if err != nil {
 			return runName{}, false
 		}
 		scope := match[2]
+		if !isCurrentRunScope(scope) {
+			return runName{}, false
+		}
 		if scope == "full" {
 			scope = ""
 		}
 		return runName{number: n, narrowing: scope}, true
 	}
 	return runName{}, false
-}
-
-func legacyNarrowing(scope string) string {
-	if scope == "" || scope == "subject" || scope == "model" {
-		return ""
-	}
-	for _, prefix := range []string{"subject-", "model-"} {
-		if strings.HasPrefix(scope, prefix) {
-			return strings.TrimPrefix(scope, prefix)
-		}
-	}
-	return scope
 }
 
 func nextRunNumber(dir string) (int, error) {
@@ -177,13 +172,6 @@ func verifyRun(runPath string) (string, error) {
 	}
 	if _, err := os.Stat(filepath.Join(abs, ModelSnapshotFile)); err != nil {
 		return "", fmt.Errorf("%s is not an evaluation run folder: missing %s", runPath, ModelSnapshotFile)
-	}
-	for _, name := range []string{"assessments", "analysis", "recommendations", "report-summary.md", "report.json"} {
-		if _, err := os.Stat(filepath.Join(abs, name)); err == nil {
-			return "", usagef("unsupported legacy evaluation run %s: create a new Evaluation v2 run", runPath)
-		} else if !os.IsNotExist(err) {
-			return "", fmt.Errorf("inspecting %s: %w", name, err)
-		}
 	}
 	dataInfo, err := os.Stat(filepath.Join(abs, "data"))
 	if err != nil {

@@ -23,8 +23,7 @@ all capitals.
 
 - `[model]` — selected `QUALITY.md` file to snapshot; defaults to `QUALITY.md`.
 - `--narrowing <slug>` — optional path-safe full structural scope path slug.
-- `--model <path>` — retained compatibility spelling for the selected
-  `QUALITY.md` file; callers should prefer `[model]`.
+- `--model <path>` — selected `QUALITY.md` file to snapshot.
 - `--evaluation-dir <path>` — override the evaluation directory.
 - `--json` — emit a receipt on stdout.
 
@@ -54,23 +53,20 @@ folder.
 
 The command **MUST** compute the next run number as one past the highest
 recognized evaluation run folder, create the run directory, create `data/`, and
-snapshot `model-snapshot.md`. Recognized run folders include the current
-`NNNN-<scope>-eval` grammar and legacy `-quality-eval` folders, including older
-`subject`/`model`-prefixed forms, so numbering remains monotonic across naming
-changes.
+snapshot `model-snapshot.md`. Recognized run folders use the
+`NNNN-<scope>-eval` grammar.
 
 New run folders **MUST** be named `NNNN-<scope>-eval`. When `--narrowing` is
 absent, `<scope>` **MUST** be `full`, producing `NNNN-full-eval`. When
 `--narrowing` is present, `<scope>` **MUST** be the validated narrowing slug,
-producing `NNNN-<narrowing>-eval`. New run names **MUST NOT** include the legacy
-`quality-eval` tag.
+producing `NNNN-<narrowing>-eval`.
 
-`--narrowing` **MUST** remain a path-safe slug. Callers that narrow by Area or
-Factor **SHOULD** use the scope's full structural path, joining the Area path
-from the root and, for Factor scope, the Factor path with single hyphens and no
-kind marker or boundary separator. The run number remains the run identity;
-the scope slug is a human mnemonic, and `model-snapshot.md` remains the
-structural source of truth.
+`--narrowing` **MUST** remain a path-safe slug and **MUST NOT** include `quality`
+as a slug segment. Callers that narrow by Area or Factor **SHOULD** use the
+scope's full structural path, joining the Area path from the root and, for
+Factor scope, the Factor path with single hyphens and no kind marker or boundary
+separator. The run number remains the run identity; the scope slug is a human
+mnemonic, and `model-snapshot.md` remains the structural source of truth.
 
 The command **MUST NOT** create previous-runtime record folders or planning
 coverage files such as `assessments/`, `analysis/`, `recommendations/`,

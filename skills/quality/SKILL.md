@@ -207,7 +207,7 @@ fresh evidence and the current `QUALITY.md` control current judgment.
 Treat malformed, schema-incompatible, partial, or hand-edited historical runs as
 evaluation history status, not evaluated-source quality evidence. Route to
 `qualitymd evaluation status <run>` or a fresh evaluation; do not manually
-migrate, rewrite, or hand-author records to make an old run reportable.
+rewrite or hand-author records to make a run reportable.
 
 After recommendation follow-up applies a confirmed option, verify the done
 criterion with the narrowest useful evidence. When the done criterion is

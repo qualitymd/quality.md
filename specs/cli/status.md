@@ -111,10 +111,8 @@ reportable run count, incomplete run count, and stale run count. A stale run is
 one whose `model-snapshot.md` snapshot bytes differ from the selected model file bytes.
 
 Malformed, unreadable, schema-incompatible, missing, or structurally incomplete
-Evaluation v2 data **MUST** make its run incomplete with status gaps. Unsupported
-previous-runtime run shapes **MUST** be reported as run inspection problems that
-direct users to create a new Evaluation v2 run rather than repair or migrate old
-records.
+Evaluation v2 data **MUST** make its run incomplete with status gaps. Broken
+Evaluation v2 skeletons **MUST** be reported as run inspection problems.
 
 For each run summary under `--json`, `status` **MUST** include run path,
 reportability, stale state, v2 data artifact count, gap count, and any

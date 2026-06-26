@@ -15,6 +15,9 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if opts.Narrowing != "" && !IsPathSafeSlug(opts.Narrowing) {
 		return nil, usagef("--narrowing must be a path-safe slug")
 	}
+	if opts.Narrowing != "" && !isCurrentRunScope(opts.Narrowing) {
+		return nil, usagef("--narrowing must not include reserved segment \"quality\"")
+	}
 	modelPath := opts.Model
 	if modelPath == "" {
 		modelPath = workspace.DefaultModelPath

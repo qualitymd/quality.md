@@ -221,7 +221,7 @@ factors:
 	}
 }
 
-func TestSnapshotMalformedRunDoesNotHideLaterRuns(t *testing.T) {
+func TestSnapshotMalformedCurrentRunDoesNotHideLaterRuns(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
   starts:
@@ -233,7 +233,7 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	if err := os.MkdirAll(filepath.Join(repo, ".quality", "evaluations", "0001-quality-eval"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(repo, ".quality", "evaluations", "0001-full-eval"), 0o755); err != nil {
 		t.Fatalf("MkdirAll() error = %v", err)
 	}
 	later, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
@@ -253,7 +253,7 @@ factors:
 	}
 }
 
-func TestSnapshotUnsupportedLegacyRunIsHistoryProblem(t *testing.T) {
+func TestSnapshotIgnoresUnrecognizedRunFolders(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:
   starts:
@@ -265,26 +265,22 @@ factors:
     title: Reliability
     description: Reliability.
 `))
-	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "QUALITY.md"})
-	if err != nil {
-		t.Fatalf("CreateRun() error = %v", err)
-	}
-	if err := os.Mkdir(filepath.Join(repo, run.Path, "assessments"), 0o755); err != nil {
-		t.Fatalf("mkdir legacy marker: %v", err)
+	if err := os.MkdirAll(filepath.Join(repo, ".quality", "evaluations", "0001-quality-eval"), 0o755); err != nil {
+		t.Fatalf("MkdirAll() error = %v", err)
 	}
 
 	snapshot, err := Snapshot(Options{Path: path})
 	if err != nil {
 		t.Fatalf("Snapshot() error = %v", err)
 	}
-	if snapshot.Readiness != ReadinessNeedsEvaluationReconcile {
-		t.Fatalf("readiness = %q, want reconciliation", snapshot.Readiness)
+	if snapshot.Readiness != ReadinessReadyToEvaluate {
+		t.Fatalf("readiness = %q, want ready to evaluate", snapshot.Readiness)
 	}
-	if snapshot.Evaluations.Summary.Problems != 1 || snapshot.Evaluations.Summary.Incomplete != 1 {
-		t.Fatalf("evaluation summary = %#v, want unsupported run as history problem", snapshot.Evaluations.Summary)
+	if snapshot.Evaluations.Runs != 0 || snapshot.Evaluations.Summary.Problems != 0 {
+		t.Fatalf("evaluation summary = %#v, want unrecognized folder ignored", snapshot.Evaluations)
 	}
-	if snapshot.Evaluations.Latest == nil || !strings.Contains(snapshot.Evaluations.Latest.Problem, "unsupported legacy evaluation run") {
-		t.Fatalf("latest = %#v, want unsupported legacy diagnostic", snapshot.Evaluations.Latest)
+	if snapshot.Evaluations.Latest != nil {
+		t.Fatalf("latest = %#v, want no recognized latest run", snapshot.Evaluations.Latest)
 	}
 }
 

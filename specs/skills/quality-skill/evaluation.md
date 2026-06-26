@@ -136,7 +136,8 @@ flowchart TD
    segments joined by single hyphens. When evaluation is narrowed to a Factor,
    the skill **MUST** pass the owning Area's structural path followed by the
    Factor's structural path, again hyphen-joined, with no Area-vs-Factor marker
-   or boundary separator.
+   or boundary separator. The narrowing slug **MUST NOT** include `quality` as a
+   path segment.
 5. **Frame the evaluation** before assessment evidence collection. The skill
    **MUST** persist `EvaluationFrame` through
    `qualitymd evaluation data set <run> < payload.json`.

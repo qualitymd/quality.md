@@ -2063,8 +2063,7 @@ qualitymd evaluation create [model]
 ```
 
 New run folders use `NNNN-full-eval` for a full evaluation and
-`NNNN-<scope-path>-eval` for a narrowed evaluation. Existing `-quality-eval`
-runs stay recognized for history and next-number computation.
+`NNNN-<scope-path>-eval` for a narrowed evaluation.
 
 `evaluation data set` reads one structured routine payload from stdin, validates
 it, routes by `kind`, derives the canonical `data/**` path, and writes canonical

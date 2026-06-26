@@ -1,7 +1,7 @@
 ---
 type: Change Case
 title: Evaluation run folder naming
-description: Shorten the Evaluation v2 run-folder tag from quality-eval to eval and make narrowed runs carry the scope's full structural path, while still recognizing existing legacy run folders.
+description: Shorten the Evaluation v2 run-folder tag from quality-eval to eval and make narrowed runs carry the scope's full structural path.
 status: Done
 tags: [cli, evaluation, naming, skill]
 timestamp: 2026-06-26T00:00:00Z
@@ -48,10 +48,10 @@ Covered:
 - the Evaluation v2 run-folder name grammar produced by
   `qualitymd evaluation create` (the `eval` tag);
 - the `--narrowing` slug convention: the scope's full structural path;
-- recognition of run folders across `evaluation create`, `evaluation list`,
-  `evaluation status`, and next-run-number computation, including continued
-  recognition of existing legacy `-quality-eval` (and legacy `subject`/`model`
-  prefixed) folders; and
+- the `quality` slug segment reservation needed to keep old `-quality-eval`
+  names unrecognized;
+- recognition of current run folders across `evaluation create`,
+  `evaluation list`, `evaluation status`, and next-run-number computation; and
 - the durable CLI and `/quality` contracts and bundled-skill guidance that
   describe run-folder names and narrowing slugs.
 
@@ -61,8 +61,7 @@ Deferred / non-goals:
 - no Area-vs-Factor kind marker or boundary separator inside the slug (path-safe
   slugs offer no boundary character; a marker would only be another ambiguous
   token);
-- no change to the run number as the run's identity, nor to `nextRunNumber`
-  monotonicity across the format change; and
+- no change to the run number as the run's identity; and
 - no change to structured data layout under `data/`, generated report
   filenames, or report content.
 
@@ -75,13 +74,11 @@ every run a uniform `NNNN-<scope>-eval` shape; `full` is reserved.
 
 - [x] `internal/evaluation/create.go` - `nextRunName`: produce `NNNN-full-eval`
       (no narrowing) and `NNNN-<narrowing>-eval` (drop the `quality-` segment).
-- [x] `internal/evaluation/path.go` - `runNameRE`: match the new
-      `NNNN-<scope>-eval` shape while still matching legacy `-quality-eval` (and
-      legacy `subject`/`model` prefixes); keep `nextRunNumber` counting both old
-      and new folders.
+- [x] `internal/evaluation/path.go` - `runNameRE`: match only the new
+      `NNNN-<scope>-eval` shape; keep `nextRunNumber` counting recognized current
+      folders.
 - [x] `internal/evaluation/list.go` - `narrowingFromRunName`: treat `full` as no
-      narrowing and return the narrowing segment for both new and legacy run
-      names.
+      narrowing and return the narrowing segment for current run names.
 - [x] `internal/cli/evaluation.go` - `--narrowing` flag help: note it takes the
       scope's full structural path.
 - [x] `internal/evaluation/evaluation_test.go` and any `internal/cli` tests that
@@ -97,14 +94,13 @@ every run a uniform `NNNN-<scope>-eval` shape; `full` is reserved.
 
 - [x] `specs/cli/evaluation-create.md` - state the run-folder grammar
       `NNNN-<scope>-eval` (`full` or the narrowing path), document the
-      `--narrowing` full-structural-path convention, and note continued legacy
-      recognition.
+      `--narrowing` full-structural-path convention.
 - [x] `specs/skills/quality-skill/evaluation.md` - in the create-run workflow
       step, record that the skill passes `--narrowing` the scope's full
       structural path.
 
-Swept and unchanged (recognition is abstracted, no literal `quality-eval` in
-spec prose, and narrowing scope semantics are unchanged):
+Swept and unchanged (recognition is abstracted and narrowing scope semantics are
+unchanged):
 `specs/cli/evaluation-list.md`, `specs/cli/status.md`,
 `specs/skills/quality-skill/reporting.md`,
 `specs/skills/quality-skill/quality-skill.md`.
@@ -134,6 +130,5 @@ spec prose, and narrowing scope semantics are unchanged):
 ## Status
 
 `Done`. Implemented the `NNNN-full-eval` / `NNNN-<scope-path>-eval` grammar,
-kept legacy `-quality-eval` recognition for listing, status, and next-number
-computation, aligned durable specs and bundled-skill guidance, verified with
-`mise run check`, and archived the case.
+kept recognition scoped to the current grammar, aligned durable specs and
+bundled-skill guidance, verified with `mise run check`, and archived the case.

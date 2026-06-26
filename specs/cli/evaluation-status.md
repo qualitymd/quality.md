@@ -28,9 +28,7 @@ run can be inspected, even when it is not yet reportable. Missing, malformed,
 unreadable, schema-incompatible, or structurally incomplete v2 payloads under
 `data/` **MUST** produce typed gaps and make the run non-reportable.
 
-A missing run folder, broken v2 run skeleton, or unsupported previous-runtime
-run shape fails as a command error. Unsupported old runs **MUST** direct callers
-to create a new Evaluation v2 run rather than repair or migrate old records.
+A missing run folder or broken v2 run skeleton fails as a command error.
 
 Human output **MUST** include the run path, v2 data artifact count,
 reportability, and any gaps. Under `--json`, stdout **MUST** include
@@ -46,5 +44,5 @@ When a run contains Evaluation v2 data, `status` **MUST** inspect the required
 structured payload graph under `data/` and report missing, malformed, unreadable,
 schema-incompatible, or structurally incomplete payloads as typed gaps.
 
-Status **MUST NOT** expose previous-runtime record counts, active recommendation
-counts, planned coverage gaps, or compatibility transforms.
+Status **MUST NOT** expose active recommendation counts, planned coverage gaps,
+or compatibility transforms.

@@ -114,7 +114,6 @@ Run incomplete or stale?
 - Inspect project state -> qualitymd status [path] --json
 - List runs -> qualitymd evaluation list --json
 - Inspect run readiness -> qualitymd evaluation status <run>
-- Unsupported old run shape? -> create a fresh Evaluation v2 run; do not hand-migrate records
 - Process ambiguity or recovery? -> record concise notes in .quality/logs/<timestamp>-evaluate-feedback-log.md; do not duplicate assessment evidence
 - Missing data? -> inspect data kinds/examples, validate with -n/--dry-run, then persist with qualitymd evaluation data set <run> < payload.json
 - Reportable? -> qualitymd evaluation report build <run>
@@ -161,7 +160,8 @@ qualitymd evaluation report build <run>
 
 Use `--narrowing` for scoped evaluations. The slug should be the scope's full
 structural path: Area path segments from the root, plus Factor path segments
-when scoping to a Factor, joined with single hyphens.
+when scoping to a Factor, joined with single hyphens. It must not include
+`quality` as a path segment.
 
 ## Command rules
 

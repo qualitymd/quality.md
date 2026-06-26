@@ -29,9 +29,8 @@ Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
 reportability, and gap count, and **MAY** include narrowing when present.
 
 The command **MUST** use the current Evaluation v2 run inspection path. If a
-recognized run has an unsupported previous-runtime shape, the command **MUST**
-fail with the same unsupported-run diagnostic as
-`qualitymd evaluation status <run>`.
+recognized run has a broken Evaluation v2 skeleton, the command **MUST** fail
+with the same diagnostic as `qualitymd evaluation status <run>`.
 
 The command **MAY** accept `--state all|complete|reportable|incomplete` to
 filter the listed runs. `complete` and `reportable` are equivalent. Unknown
