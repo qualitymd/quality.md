@@ -349,7 +349,7 @@ func renderV2AreaReport(spec *model.Spec, artifacts *v2Artifacts, area *v2AreaAr
 	b.WriteString("Path: `" + areaDisplayPath(area.ID) + "`\n\n")
 	b.WriteString("| Overall | Local | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
-	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json"), "analysis") + " |\n\n")
+	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(v2Summary(overall))
 	b.WriteString("\n\n## Rating Drivers\n\n")
@@ -405,7 +405,7 @@ func renderV2FactorReport(spec *model.Spec, artifacts *v2Artifacts, factor *v2Fa
 	b.WriteString("Path: `" + factorDisplayPath(factor.ID) + "`\n\n")
 	b.WriteString("| Overall | Local | Status | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
-	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2AnalysisStatusPair(overall, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json"), "analysis") + " |\n\n")
+	b.WriteString("| " + markdownCell(v2RatingLabel(spec, overall)) + " | " + markdownCell(v2RatingLabel(spec, local)) + " | " + markdownCell(v2AnalysisStatusPair(overall, local)) + " | " + markdownCell(v2ConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(v2Summary(overall))
 	b.WriteString("\n\n## Rating Drivers\n\n")
@@ -446,7 +446,7 @@ func renderV2RequirementReport(spec *model.Spec, artifacts *v2Artifacts, req *v2
 	b.WriteString("Name: `" + markdownCell(req.ID.Name) + "`\n\n")
 	b.WriteString("| Rating | Assessment | Factors | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
-	b.WriteString("| " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " | " + markdownCell(confidenceTitle(v2String(req.Rating, "confidence"))+" / "+confidenceTitle(v2String(req.Assessment, "confidence"))) + " | " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json"), "assessment") + ", " + reportLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json"), "rating") + " |\n\n")
+	b.WriteString("| " + markdownCell(v2RequirementRatingLabel(spec, req.Rating)) + " | " + markdownCell(assessmentStatusTitle(v2String(req.Assessment, "status"))) + " | " + markdownCell(requirementFactorLinks(req, reportPath)) + " | " + markdownCell(confidenceTitle(v2String(req.Rating, "confidence"))+" / "+confidenceTitle(v2String(req.Assessment, "confidence"))) + " | " + reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json")) + ", " + reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	if summary := v2String(req.Assessment, "evidenceSummary"); summary != "" {
 		b.WriteString(summary)
@@ -782,6 +782,13 @@ func reportAreaDirParts(areaID []string) []string {
 		return nil
 	}
 	return append([]string{"areas"}, areaID...)
+}
+
+// reportDataLink renders a Data-column link to a machine-readable payload using
+// the payload's base filename as the link text, so readers can tell which
+// *-result.json a link opens.
+func reportDataLink(fromReport, toPath string) string {
+	return reportLink(fromReport, toPath, filepath.Base(toPath))
 }
 
 func reportLink(fromReport, toPath, label string) string {

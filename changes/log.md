@@ -2,6 +2,17 @@
 
 ## 2026-06-26
 
+- **Done**: Created, implemented, and archived
+  [0109 - Filename text for evaluation data links](archive/0109-evaluation-data-link-filenames.md).
+  Evaluation v2 `Data`-column links now render their payload base filename as
+  link text (`area-analysis-result.json`, `factor-analysis-result.json`,
+  `requirement-assessment-result.json`, `requirement-rating-result.json`)
+  instead of the generic words `analysis`/`assessment`/`rating`; link targets
+  and structured `data/` paths are unchanged. Aligned the durable
+  [report-tree spec](../specs/evaluation-v2/reports/report-tree.md) and updated
+  focused report tests. Verified with `mise run check`. Updated the bundle
+  [index](index.md) and [archive index](archive/index.md).
+
 - **Done**: Implemented and archived
   [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md).
   Evaluation v2 now keeps the root Area report at `report.md`, writes descendant

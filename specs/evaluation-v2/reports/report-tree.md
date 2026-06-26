@@ -75,12 +75,15 @@ Factor report.
 Report tables **MUST** render the row subject as the generated human report link
 when that row has exactly one generated human report target. Reports **MUST**
 keep explicit `Data` links for machine-readable payloads instead of moving those
-links onto subject labels.
+links onto subject labels. Each `Data` link **MUST** use the linked payload's
+base filename as its link text (for example `area-analysis-result.json`), not a
+generic word.
 
 > Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
 > links make report navigation land on the named thing readers naturally open.
 > Machine data links remain explicit because they target structured payloads, not
-> generated human report pages. — 0104, 0105
+> generated human report pages. The payload filename is the one detail a generic
+> label omits, and it matches the file a reader opens. — 0104, 0105, 0109
 
 ## Area Reports
 

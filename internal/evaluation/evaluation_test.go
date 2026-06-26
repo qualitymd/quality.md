@@ -124,7 +124,7 @@ func TestSetDataAndBuildV2Report(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	if !strings.Contains(string(report), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [analysis](data/areas/root/area-analysis-result.json) |") {
+	if !strings.Contains(string(report), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [area-analysis-result.json](data/areas/root/area-analysis-result.json) |") {
 		t.Fatalf("report.md = %s, want target rating title", report)
 	}
 	if !strings.Contains(string(report), "Area: [Test model](report.md)") {
@@ -200,6 +200,8 @@ func TestV2ReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "Area: [Navigation model](../../report.md)")
 	assertContains(t, requirementReport, "Name: `has-tests`")
 	assertContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
+	assertContains(t, requirementReport, "[requirement-assessment-result.json](")
+	assertContains(t, requirementReport, "[requirement-rating-result.json](")
 	assertContains(t, requirementReport, "[reliability](../../factors/reliability/reliability-factor.md)")
 	assertNotContains(t, requirementReport, "\nFactor:")
 	assertNotContains(t, requirementReport, "Parent Area:")

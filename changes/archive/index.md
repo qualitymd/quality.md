@@ -461,3 +461,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0108 — Short evaluation report filenames](0108-short-evaluation-report-filenames.md)
   - kept the root Evaluation v2 report at `report.md` while renaming descendant
     reports to short subject-aware filenames (`Done`).
+- [0109 — Filename text for evaluation data links](0109-evaluation-data-link-filenames.md)
+  - rendered the Evaluation v2 `Data`-column links with their payload filename
+    text instead of the generic words `analysis`/`assessment`/`rating`
+    (`Done`).
