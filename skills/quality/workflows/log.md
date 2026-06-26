@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0132 - Remove
+  info finding severity.
+  Evaluate now tells agents to use only `critical`, `high`, `medium`, and `low`
+  for Area Finding severity and to use `type: note` for informational
+  observations.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0131 - Area
   findings in evaluation reports.
   Evaluate now records material Area Findings on `AreaAnalysisResult.findings`

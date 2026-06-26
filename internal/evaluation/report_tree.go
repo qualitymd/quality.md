@@ -884,8 +884,6 @@ func findingSeverityRank(value string) int {
 		return 2
 	case "low":
 		return 3
-	case "info":
-		return 4
 	default:
 		return 99
 	}

@@ -98,7 +98,9 @@ Area Finding `severity` **MUST** be one of:
 - `high`
 - `medium`
 - `low`
-- `info`
+
+Informational observations use Area Finding `type: note`; `info` is not a
+severity value.
 
 Area Finding `confidence` **MUST** be one of:
 

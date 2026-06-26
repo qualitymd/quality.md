@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0132 - Remove info finding
+  severity.
+  Runtime Area Finding guidance now limits severity to `critical`, `high`,
+  `medium`, and `low`, and routes informational observations to `type: note`
+  rather than `severity: info`.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0131 - Area findings in
   evaluation reports.
   Runtime evaluation guidance now tells Area analysis to synthesize

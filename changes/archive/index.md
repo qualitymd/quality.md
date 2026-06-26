@@ -577,3 +577,8 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   Factor relationships, and renders Area Findings in Area reports plus matching
   Findings in Factor reports while leaving recommendations and global rankings
   deferred (`Done`).
+- [0132 — Remove info finding severity](0132-remove-info-finding-severity.md) -
+  removes `info` from the Evaluation finding severity vocabulary so active
+  Requirement and Area Finding severity values are `critical`, `high`, `medium`,
+  and `low`, with informational observations represented by finding `type: note`
+  (`Done`).

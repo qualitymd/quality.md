@@ -5,6 +5,35 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.21.0 - 2026-06-26
+
+### CLI
+
+- Evaluation finding severity no longer accepts `info`. Requirement Finding and
+  Area Finding severity is now limited to `critical`, `high`, `medium`, and
+  `low`, with `type: note` carrying informational observations.
+- `qualitymd evaluation data schema [<kind>]`, `evaluation data set`, and
+  `evaluation data verify` all reflect and enforce the reduced severity set.
+
+### /quality Skill
+
+- `/quality` now requires `qualitymd >=0.21.0 <0.22.0`.
+- `/quality evaluate` now treats informational Area Findings as `type: note`
+  rather than `severity: info`.
+
+### Compatibility / Migration
+
+- Existing Evaluation data that uses `severity: "info"` must be rewritten before
+  it will pass current `evaluation data set` or `evaluation data verify`
+  validation.
+- `/quality` skill version `0.21.0` requires the `qualitymd` CLI `0.21.x` line.
+
+Compatibility:
+
+- CLI: `v0.21.0`
+- QUALITY.md specification: `0.5 (Draft)`
+- /quality skill: `0.21.0`, requires `qualitymd >=0.21.0 <0.22.0`
+
 ## v0.20.0 - 2026-06-26
 
 ### CLI

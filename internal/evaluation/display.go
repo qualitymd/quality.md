@@ -138,7 +138,6 @@ var findingSeverityTitles = map[string]string{
 	"high":     "🔴 High",
 	"medium":   "🟡 Medium",
 	"low":      "🔵 Low",
-	"info":     "ℹ️ Info",
 }
 
 var findingTypeTitles = map[string]string{

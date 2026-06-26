@@ -166,7 +166,7 @@ Area reports **MUST** render a `Findings` section from
 Area report Findings **MUST** be sorted by:
 
 1. `type`, in this order: `risk`, `gap`, `unknown`, `note`, `strength`;
-2. `severity`, in this order: `critical`, `high`, `medium`, `low`, `info`;
+2. `severity`, in this order: `critical`, `high`, `medium`, `low`;
 3. `confidence`, in this order: `high`, `medium`, `low`, `none`; and
 4. original payload order.
 
@@ -178,7 +178,7 @@ empty-state row.
 Factor report Findings **MUST** be sorted by:
 
 1. `type`, in this order: `risk`, `gap`, `unknown`, `note`, `strength`;
-2. `severity`, in this order: `critical`, `high`, `medium`, `low`, `info`;
+2. `severity`, in this order: `critical`, `high`, `medium`, `low`;
 3. `relationship`, in this order: `primary-driver`, `contributing-driver`,
    `evidence-limit`, `offsetting-strength`, `related`;
 4. `confidence`, in this order: `high`, `medium`, `low`, `none`; and

@@ -549,6 +549,10 @@ one or more Factors declared in that Area with a relationship label. Area
 Findings MUST NOT carry recommendations, impact, priority, effort, benefit, ROI,
 or global ranking fields.
 
+Evaluation Finding severity values are `critical`, `high`, `medium`, and `low`.
+Informational observations use Finding `type: note`; `info` is not a severity
+value.
+
 ### Advice
 
 Advice identifies improvement information inferred from the Analysis. Advice does

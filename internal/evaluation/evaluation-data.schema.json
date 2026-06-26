@@ -320,8 +320,7 @@
                   "critical",
                   "high",
                   "medium",
-                  "low",
-                  "info"
+                  "low"
                 ],
                 "type": "string"
               },
@@ -2243,8 +2242,7 @@
                   "critical",
                   "high",
                   "medium",
-                  "low",
-                  "info"
+                  "low"
                 ],
                 "type": "string"
               },

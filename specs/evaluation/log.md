@@ -2,6 +2,11 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the payload-kind and report-tree contracts for
+  [0132 - Remove info finding severity](../../changes/archive/0132-remove-info-finding-severity.md).
+  Evaluation finding severity no longer includes `info`; report severity sorting
+  now orders only `critical`, `high`, `medium`, and `low`.
+
 - **Revision**: Updated the routine, payload-kind, report-tree, and CLI data
   contracts for
   [0131 - Area findings in evaluation reports](../../changes/archive/0131-area-findings.md).

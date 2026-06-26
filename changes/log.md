@@ -3,6 +3,42 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0132 - Remove info finding severity](archive/0132-remove-info-finding-severity.md).
+  Removed `info` from the Evaluation finding severity enum for Requirement and
+  Area Findings, regenerated `evaluation-data.schema.json`, updated report
+  severity display/sort helpers, durable specs, bundled skill guidance, and
+  release notes for `v0.21.0`. `qualitymd evaluation data schema
+  area-analysis-result` now exposes only `critical`, `high`, `medium`, and
+  `low`; `go test ./internal/evaluation` passes.
+
+- **In-Progress**: Advanced
+  [0132 - Remove info finding severity](archive/0132-remove-info-finding-severity.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  the Evaluation data contract, generated schema, report sort/display helpers,
+  durable specs, bundled skill runtime guidance, tests, and release notes.
+
+- **Design**: Advanced
+  [0132 - Remove info finding severity](archive/0132-remove-info-finding-severity.md)
+  to `Design` with its
+  [design doc](archive/0132-remove-info-finding-severity/design.md). The design removes
+  `info` at the typed finding severity enum source, regenerates the emitted data
+  schema, removes `info` from known report display/sort helpers while keeping
+  defensive unknown-value fallbacks, and updates specs/skill guidance to route
+  informational observations to finding `type: note`. Code not started.
+
+- **Draft**: Created
+  [0132 - Remove info finding severity](archive/0132-remove-info-finding-severity.md)
+  with its
+  [functional spec](archive/0132-remove-info-finding-severity/spec.md), at `Draft`. The
+  case removes `info` from the Evaluation finding severity vocabulary so
+  severity stays an adverse-finding scale (`critical`, `high`, `medium`, `low`)
+  and informational observations use finding `type: note`. It covers data
+  validation/schema output, report sort/display helpers, durable specs, bundled
+  skill guidance, and release notes. Conditional severity applicability by
+  finding type is explicitly deferred. Code not started. Added the case to the
+  open [index](index.md).
+
+- **Done**: Implemented and archived
   [0131 - Area findings in evaluation reports](archive/0131-area-findings.md).
   `AreaAnalysisResult.findings` now carries traceable Area Findings with closed
   type/severity/confidence and Factor relationship enums, same-Area Factor

@@ -216,9 +216,11 @@ Source content instructs the evaluator?
     root Area's `localAndDescendantAnalysis` is the overall evaluation result.
     Include `AreaAnalysisResult.findings` when material observations should be
     visible on Area or Factor reports. Area Findings stay local to the containing
-    Area, may relate only to Factors declared in that Area, and must not include
-    recommendations, impact, priority, effort, benefit, ROI, actions, or global
-    top-finding rankings. Roll-up judgment and all authoritative Requirement,
+    Area, may relate only to Factors declared in that Area, use severity only as
+    `critical`, `high`, `medium`, or `low`, and use `type: note` for
+    informational observations. They must not include recommendations, impact,
+    priority, effort, benefit, ROI, actions, or global top-finding rankings.
+    Roll-up judgment and all authoritative Requirement,
     Factor, Area, and headline ratings stay with the orchestrating skill.
 19. Write the routine payload batch as a JSON array. First run
     `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the

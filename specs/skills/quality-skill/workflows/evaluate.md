@@ -124,8 +124,10 @@ or make fresh ratings.
 
 Area Findings **MUST** be authored before persistence as part of
 `AreaAnalysisResult.findings`, not during report generation. They **MUST** remain
-local to their Area and **MUST NOT** include recommendation, impact, priority,
-effort, benefit, ROI, or global ranking fields.
+local to their Area. Area Finding severity **MUST** be one of `critical`, `high`,
+`medium`, or `low`; informational observations use `type: note`, not
+`severity: info`. Area Findings **MUST NOT** include recommendation, impact,
+priority, effort, benefit, ROI, or global ranking fields.
 
 ## Stop conditions
 

@@ -3,6 +3,13 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0132 - Remove info finding severity](../changes/archive/0132-remove-info-finding-severity.md).
+  Evaluation finding severity is now limited to `critical`, `high`, `medium`,
+  and `low`; informational observations use finding `type: note`. The Evaluation
+  data, report-tree, and `/quality` skill specs now reflect the reduced severity
+  vocabulary and schema/validation behavior.
+
+- **Revision**: Implemented durable spec changes for
   [0130 - Self-contained per-kind data schema](../changes/archive/0130-self-contained-data-schema.md).
   The Evaluation data CLI spec now requires `data schema <kind>` to emit a
   self-contained schema whose required fields and enum value sets are legible

@@ -3,6 +3,11 @@
 ## 2026-06-26
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0132 - Remove info finding severity](../../../../changes/archive/0132-remove-info-finding-severity.md).
+  Area Finding severity is now limited to `critical`, `high`, `medium`, and
+  `low`, with informational observations represented as `type: note`.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0131 - Area findings in evaluation reports](../../../../changes/archive/0131-area-findings.md).
   Evaluate now records material Area Findings on `AreaAnalysisResult.findings`
   during Area analysis, before report generation, and keeps recommendations,

@@ -261,7 +261,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
 	assertContains(t, rootReport, "## Findings\n\n| Finding | Type | Severity | Confidence | Related Factors | Summary |")
 	assertContains(t, rootReport, "| `root-risk` | ⚠️ Risk | 🔴 High | 🟢 High | [Reliability Primary Driver](factors/reliability/reliability-factor.md) | Root reliability is the highest concern. |")
-	assertContains(t, rootReport, "| `root-note` | ℹ️ Note | ℹ️ Info | 🔵 Medium | (none) | Root note is contextual. |")
+	assertContains(t, rootReport, "| `root-note` | ℹ️ Note | 🔵 Low | 🔵 Medium | (none) | Root note is contextual. |")
 	assertContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
 	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | 🔴 Below | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
 	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — | — |")
@@ -463,6 +463,11 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 			want: "must be a non-empty string",
 		},
 		{
+			name: "requirement finding info severity",
+			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[{"type":"gap","severity":"info","description":"Informational severity should not validate."}]}`,
+			want: `severity = "info", want one of critical, high, medium, low`,
+		},
+		{
 			name: "invented requirement",
 			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`,
 			want: "does not resolve in the model",
@@ -486,6 +491,11 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 			name: "area finding type enum",
 			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[{"id":"gap-1","type":"problem","severity":"high","confidence":"high","summary":"Gap.","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
 			want: `type = "problem", want one of`,
+		},
+		{
+			name: "area finding info severity",
+			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[{"id":"note-1","type":"note","severity":"info","confidence":"high","summary":"Informational severity should not validate.","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
+			want: `severity = "info", want one of critical, high, medium, low`,
 		},
 		{
 			name: "area finding empty input refs",
@@ -657,7 +667,7 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	}
 	for field, wantValues := range map[string][]string{
 		"type":       {"strength", "gap", "risk", "unknown", "note"},
-		"severity":   {"critical", "high", "medium", "low", "info"},
+		"severity":   {"critical", "high", "medium", "low"},
 		"confidence": {"high", "medium", "low", "none"},
 	} {
 		prop, ok := findingProps[field].(map[string]any)
@@ -894,7 +904,7 @@ func navigationReportPayloads() []string {
 		`{"schemaVersion":2,"kind":"EvaluationFrame"}`,
 		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
 		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}`,
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[{"id":"root-note","type":"note","severity":"info","confidence":"medium","summary":"Root note is contextual.","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]},{"id":"root-risk","type":"risk","severity":"high","confidence":"high","summary":"Root reliability is the highest concern.","rationale":"Reliability holds the root roll-up down.","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}],"factorRelationships":[{"factorId":"factor:root::reliability","relationship":"primary-driver","rationale":"Reliability is the affected factor."}]}],"localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[{"id":"root-note","type":"note","severity":"low","confidence":"medium","summary":"Root note is contextual.","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]},{"id":"root-risk","type":"risk","severity":"high","confidence":"high","summary":"Root reliability is the highest concern.","rationale":"Reliability holds the root roll-up down.","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}],"factorRelationships":[{"factorId":"factor:root::reliability","relationship":"primary-driver","rationale":"Reliability is the affected factor."}]}],"localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
 		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:payments","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
 		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
 		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}`,

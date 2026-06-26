@@ -57,6 +57,9 @@ Validation **MUST** reject unknown or misspelled fields, wrong field types,
 out-of-range enum values, and missing required fields for the payload kind. The
 diagnostic **MUST** name the offending field when one is known.
 
+For Evaluation Findings, validation **MUST** reject `severity` values outside
+`critical`, `high`, `medium`, and `low`; `info` is not a severity value.
+
 Validation **MUST** resolve every Area ID, Factor ID, Requirement ID, and Rating
 Level ID in the payload against the run's `model-snapshot.md`. If the snapshot is
 missing or cannot be parsed, `data set` **MUST** fail closed instead of accepting
@@ -116,8 +119,9 @@ the schema for the full data surface; with `<kind>` it **MUST** emit a
 self-contained schema for that kind so the required fields and allowed enum
 values are legible from the emitted document without dereferencing a top-level
 `$ref` into a separate `$defs` map. The no-argument full-surface schema **MAY**
-use `$defs` and `$ref`. `data schema` **MUST NOT** provide a second JSON
-result-wrapper mode.
+use `$defs` and `$ref`. Finding severity enums in the schema **MUST** use the
+same reduced value set: `critical`, `high`, `medium`, and `low`. `data schema`
+**MUST NOT** provide a second JSON result-wrapper mode.
 
 When `data schema` output must be plain, including when stdout is not a terminal
 or `NO_COLOR` is set, the command **MUST** write the schema as verbatim JSON and

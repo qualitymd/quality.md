@@ -296,7 +296,7 @@ func areaFindingContract() dataObjectContract {
 	return object(
 		field("id", dataString, true),
 		field("type", dataString, true, enum("strength", "gap", "risk", "unknown", "note")),
-		field("severity", dataString, true, enum("critical", "high", "medium", "low", "info")),
+		field("severity", dataString, true, enum("critical", "high", "medium", "low")),
 		field("confidence", dataString, true, enum("high", "medium", "low", "none")),
 		field("summary", dataString, true),
 		field("rationale", dataString, false),
@@ -317,7 +317,7 @@ func findingContract() dataObjectContract {
 	return object(
 		field("id", dataString, false),
 		field("type", dataString, false, enum("strength", "gap", "risk", "unknown", "note")),
-		field("severity", dataString, false, enum("critical", "high", "medium", "low", "info")),
+		field("severity", dataString, false, enum("critical", "high", "medium", "low")),
 		field("description", dataString, false),
 		field("location", dataObject, false, openObject()),
 		field("evidence", dataObject, false, openObject()),

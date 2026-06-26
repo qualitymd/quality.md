@@ -199,8 +199,10 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   skill **MUST** synthesize Area Findings from verified Requirement Findings and
   analysis observations when material observations should be visible at Area or
   Factor report level. Area Findings use `type`, `severity`, and `confidence` to
-  make local significance legible, and **MUST NOT** include recommendations,
-  priority, impact, effort, benefit, ROI, or global ranking fields.
+  make local significance legible, with `severity` limited to `critical`, `high`,
+  `medium`, or `low`. Informational observations use `type: note`, not
+  `severity: info`. Area Findings **MUST NOT** include recommendations, priority,
+  impact, effort, benefit, ROI, or global ranking fields.
 
 ### Coverage and execution strategy
 
