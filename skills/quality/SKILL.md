@@ -145,7 +145,9 @@ block, make the primary question or call to action the strongest visual element,
 preferably with bold Markdown. Use bold labels such as
 `Recommended`, `Why it matters`, `Confidence`, `Changed`, `Validation`,
 `Important gaps`, and `Next` so the left edge is scannable; use emoji only as
-semantic markers, not decoration.
+semantic markers, not decoration. For small closed-choice prompts, number the
+options, put the recommended option first, and make `1` the shortest accept
+response.
 
 At the start of a public workflow, emit a short run frame:
 

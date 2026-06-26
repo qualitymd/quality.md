@@ -3,6 +3,16 @@
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for
+  [0099 - Closed-choice setup UX](../changes/archive/0099-closed-choice-setup-ux.md).
+  Updated the parent
+  [`/quality` skill](skills/quality-skill/quality-skill.md) interaction
+  contract and the
+  [`setup`](skills/quality-skill/workflows/setup.md) workflow spec so small
+  closed-choice prompts use numbered options, put the recommended answer first,
+  and accept `1` as the shortest confirmation. Setup risk discovery now presents
+  cost labels to the user and maps them to the existing risk-tolerance meaning.
+
+- **Revision**: Implemented durable spec changes for
   [0097 - Evaluation v2 clean break](../changes/archive/0097-evaluation-v2-clean-break.md).
   The active specs now treat Evaluation v2 as the only runtime evaluation
   contract, require stdin-only `evaluation data set`, remove previous

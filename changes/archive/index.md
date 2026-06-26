@@ -414,3 +414,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   the first output before any tool call, decoupling the run frame from the CLI
   prerequisite gate so the user is oriented before the read-only scan runs;
   docs/spec/skill guidance only, no CLI/Go or format-spec change (`Done`).
+- [0099 — Closed-choice setup UX](0099-closed-choice-setup-ux.md) - makes
+  `/quality setup` closed-choice prompts use numbered options with the
+  recommended answer first and `1` as the shortest confirmation, while presenting
+  cost labels for risk discovery and mapping them to risk-tolerance values
+  internally; docs/spec/skill guidance only, no CLI/Go or format-spec change
+  (`Done`).

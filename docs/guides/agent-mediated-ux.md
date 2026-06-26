@@ -101,9 +101,10 @@ A good agent-mediated question includes:
 
 - the primary question;
 - why the answer matters;
-- the recommended answer;
+- the recommended answer, with the recommended option first for closed choices;
 - confidence and evidence when available;
-- the shortest acceptable response.
+- the shortest acceptable response, preferably the option number for closed
+  choices.
 
 The question itself should be visually primary. The supporting fields make the
 choice fast and informed.
@@ -124,6 +125,43 @@ active production, maintenance, or sunset.
 When a workflow uses a structured question tool, keep the teaching and rationale
 in the surrounding message. Tool option labels are too small to carry the full
 interaction design.
+
+### Closed-choice questions
+
+For small closed-choice sets, use numbered options and put the recommended
+option first. The user's shortest accept path should be `1`.
+
+Match the option labels to the question's framing. If the workflow stores an
+internal value such as `lowTolerance`, but the user-facing question asks about
+cost, present cost options and map the answer internally. Do not make the user
+translate between axes while answering.
+
+Good:
+
+```text
+**Question 4: How costly is poor quality here?**
+
+**Why it matters:** This sets modeling rigor, risk strictness, and which Factors
+need explicit Requirements.
+
+1. High cost - poor quality can cause serious business, operational, financial,
+   or trust impact. **Recommended**
+2. Moderate cost - poor quality has meaningful cost but can often be contained.
+3. Low cost - poor quality is usually recoverable or low impact.
+
+**Confidence:** Medium, based on visible production workflows and external
+integrations.
+
+**Answer:** Reply `1` to accept the recommendation, or choose `2` or `3`.
+```
+
+Avoid:
+
+```text
+Options: high tolerance, moderate tolerance, low tolerance
+Recommended: low tolerance
+Answer: Reply accept to use low tolerance, or choose another option.
+```
 
 ## Checkpoints
 
@@ -219,6 +257,8 @@ Before shipping an agent-mediated workflow, check:
 
 - The primary question or call to action is bolded in each interaction block.
 - The recommendation and evidence are adjacent to the choice.
+- Closed-choice questions put the recommended option first and accept `1` as the
+  shortest confirmation.
 - The shortest acceptable user response is clear.
 - Progress is visible for multi-step workflows.
 - Mutation gates state the change, reason, alternatives, and done criterion.

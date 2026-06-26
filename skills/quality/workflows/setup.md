@@ -259,21 +259,33 @@ The discovery inputs:
    set.
 
 3. Lifecycle: Which stage best fits?
-   Options: exploratory, pre-release, active production, maintenance, sunset
-   Recommended: <default> (<confidence>)
+   Available values: exploratory, pre-release, active production, maintenance,
+   sunset
+   Present as numbered options with <default> first and marked Recommended.
+   Confidence: <confidence>
+   Answer: Reply `1` to accept the recommendation, or choose another number.
    Why it matters: The stage calibrates how much rigor and which risks matter
    now. Shapes Scope, Risks, and which Requirements are realistic to assess yet.
 
 4. Risk tolerance: How costly is poor quality here?
-   Options: high tolerance, moderate tolerance, low tolerance
-   Recommended: <default> (<confidence>)
+   Visible choices: high cost, moderate cost, low cost.
+   Internal mapping: high cost -> low tolerance; moderate cost -> moderate
+   tolerance; low cost -> high tolerance.
+   Present as numbered options with the recommended cost label first and marked
+   Recommended.
+   Confidence: <confidence>
+   Answer: Reply `1` to accept the recommendation, or choose another number.
    Why it matters: How costly poor quality is drives modeling rigor and which
    Factors earn explicit Requirements rather than stay descriptive. Shapes the
    Risks section and Requirement strictness.
 
 5. Rating scale: Should this model use the recommended four-level Rating Scale?
-   Options: recommended four-level scale, pass/fail gate, custom scale needed
-   Recommended: recommended four-level scale (<confidence>)
+   Present as numbered options:
+   1. recommended four-level scale (Recommended)
+   2. pass/fail gate
+   3. custom scale needed
+   Confidence: <confidence>
+   Answer: Reply `1` to accept the recommendation, or choose `2` or `3`.
    Why it matters: Rating Levels are configurable in QUALITY.md; they are not
    baked into the format. The recommended scale keeps stable IDs as
    `outstanding`, `target`, `minimum`, `unacceptable`, and uses display titles
@@ -327,8 +339,10 @@ assume or name a specific question UI.
   call to action the strongest visual element, preferably with bold Markdown.
   Keep `Why it matters`, `Recommended`, `Confidence`, and `Answer` adjacent to
   the question and bold those labels when the surface supports Markdown.
-  Mention the shortest acceptable response, such as accepting the recommendation
-  or providing a terse correction.
+  For closed-choice questions, use numbered options, put the recommended option
+  first, mark it as Recommended, and make `1` the shortest accept response. For
+  open-ended questions or checkpoint corrections, mention the shortest acceptable
+  response, such as accepting the recommendation or providing a terse correction.
 - Structured question tool: when you have a structured question tool with item
   or option limits, page questions 1-5 through it across as many rounds as the
   limits require, then present the human context checkpoint as free text. Present
@@ -339,7 +353,8 @@ assume or name a specific question UI.
 - No structured affordance: iterate the questions one at a time. Emit the
   question's Why-it-matters copy before or with the question, then take the
   answer. Carry each question's recommended default and confidence so the user
-  can confirm or terse-correct and advance; do not require a full prose answer.
+  can confirm with `1` for closed choices, or terse-correct and advance; do not
+  require a full prose answer.
   After question 5, present the human context checkpoint. Iterating one at a time
   is the default — it keeps each dimension legible and gives the teaching copy a
   real beat.

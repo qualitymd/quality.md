@@ -3,6 +3,44 @@
 ## 2026-06-26
 
 - **Done**: Implemented and archived
+  [0099 - Closed-choice setup UX](archive/0099-closed-choice-setup-ux.md);
+  set `status` to `Done` and moved the parent concept and child folder into
+  [`archive/`](archive/), updating the archive index and removing the entry from
+  the bundle-root index. Updated the agent-mediated UX guide, parent `/quality`
+  interaction contract, setup runtime guidance, and durable setup workflow specs
+  so small closed-choice prompts use numbered options with the recommended
+  answer first and `1` as the shortest confirmation. Setup risk discovery now
+  presents cost labels and maps them to risk-tolerance values internally. No CLI,
+  Go, format-schema, rating, roll-up, evaluation-record, or report behavior
+  changed. Verified with `mise run fmt-md-check`.
+
+- **In-Progress**: Advanced
+  [0099 - Closed-choice setup UX](archive/0099-closed-choice-setup-ux.md) to
+  `In-Progress`; the functional spec and design are settled, and implementation
+  is beginning across `docs/guides/agent-mediated-ux.md`, the durable
+  `/quality` skill specs, and the bundled runtime skill guidance. No CLI, Go,
+  format-schema, rating, roll-up, evaluation-record, or report behavior change
+  is expected.
+
+- **Design**: Advanced
+  [0099 - Closed-choice setup UX](archive/0099-closed-choice-setup-ux.md) to
+  `Design` and added the
+  [design doc](archive/0099-closed-choice-setup-ux/design.md). The design
+  keeps setup's internal risk-tolerance meaning while presenting cost-labeled
+  choices to the user, and updates both durable and runtime skill guidance rather
+  than relying on the general UX guide alone.
+
+- **Draft**: Created
+  [0099 - Closed-choice setup UX](archive/0099-closed-choice-setup-ux.md) with
+  its child [index](archive/0099-closed-choice-setup-ux/index.md) and
+  [functional spec](archive/0099-closed-choice-setup-ux/spec.md). The case makes
+  `/quality setup` closed-choice discovery prompts use numbered options with the
+  recommended answer first and `1` as the shortest confirmation, while mapping
+  user-facing cost labels to the existing risk-tolerance model meaning. No CLI,
+  Go, format-schema, rating, roll-up, evaluation-record, or report behavior
+  change is expected.
+
+- **Done**: Implemented and archived
   [0097 - Evaluation v2 clean break](archive/0097-evaluation-v2-clean-break.md).
   Evaluation v2 is now the only active runtime evaluation path: new runs seed
   `model.md` and `data/`, previous assessment/analysis/recommendation run shapes

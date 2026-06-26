@@ -201,8 +201,10 @@ Setup **MUST** ask or present the following discovery inputs before writing
 2. **Domain.** What kind of thing is this model evaluating?
 3. **Lifecycle.** Which stage best fits: exploratory, pre-release, active
    production, maintenance, or sunset?
-4. **Risk tolerance.** How costly is poor quality here: high tolerance,
-   moderate tolerance, or low tolerance?
+4. **Risk tolerance.** How costly is poor quality here: high cost, moderate
+   cost, or low cost? Setup maps the visible cost answer to the internal
+   risk-tolerance meaning: high cost maps to low tolerance, moderate cost maps to
+   moderate tolerance, and low cost maps to high tolerance.
 5. **Rating Scale.** Should the model use the recommended
    `outstanding`, `target`, `minimum`, `unacceptable` Rating Scale?
 6. **Human context checkpoint.** A draft for correction that covers primary
@@ -212,6 +214,18 @@ Setup **MUST** ask or present the following discovery inputs before writing
 Each discovery question **MUST** include a recommended answer and confidence
 signal. Each human context checkpoint item **MUST** include a recommended answer
 and confidence signal when setup has inferred one from repository evidence.
+
+When a discovery question is rendered as a small closed-choice set, setup
+**MUST** present numbered options, put the recommended option first, mark it as
+recommended, and make `1` the shortest confirmation. Closed-choice option labels
+**MUST** match the question's visible axis; setup **MUST** map any different
+internal value behind the scenes instead of making the user translate while
+answering.
+
+> Rationale: setup questions teach the quality-model dimension while collecting
+> input. A recommended default is the easiest path only when it is option `1`,
+> and a cost question should be answered with cost labels even when the model
+> records risk tolerance. — 0099
 
 The Rating Scale question **MUST** explain that Rating Levels are configurable in
 `QUALITY.md` and are not baked into the format. It **MUST** recommend the
@@ -368,6 +382,10 @@ question's purpose, recommended answer, confidence/evidence, and shortest
 acceptable response **MUST** stay adjacent to the question. When the surface
 supports Markdown, labels such as `Why it matters`, `Recommended`, `Confidence`,
 and `Answer` **SHOULD** be bold for scanning.
+
+For closed-choice discovery questions, the shortest acceptable response
+**MUST** be `1` when accepting the recommendation. Other numbered responses
+**MUST** remain available for the visible alternatives.
 
 The human context checkpoint **MUST** make the correction action explicit. When
 reviewing several inferred values together, it **SHOULD** use a table or

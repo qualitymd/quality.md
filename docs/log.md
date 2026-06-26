@@ -1,5 +1,14 @@
 # Docs Update Log
 
+## 2026-06-26
+
+- **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0099 - Closed-choice setup UX](../changes/archive/0099-closed-choice-setup-ux.md).
+  The guide now says small closed-choice prompts should use numbered options,
+  place the recommended option first, accept `1` as the shortest confirmation,
+  and keep visible option labels aligned with the question's axis.
+
 ## 2026-06-25
 
 - **Revision**: Updated

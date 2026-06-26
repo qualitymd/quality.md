@@ -250,6 +250,14 @@ Supporting labels such as `Recommended`, `Why it matters`, `Confidence`,
 `Changed`, `Validation`, `Important gaps`, and `Next` **SHOULD** be bold when
 rendered in Markdown so the left edge stays scannable.
 
+For small closed-choice prompts, the skill **MUST** number options, put the
+recommended option first, and make `1` the shortest accept response.
+
+> Rationale: in an agent-mediated workflow, the recommendation is the default
+> path. The user should be able to accept that path with the least ambiguous
+> possible input instead of translating between a separate recommendation line
+> and an unordered option list. — 0099
+
 The skill **MUST** use Markdown emphasis as hierarchy, not decoration. It
 **MUST NOT** bold whole paragraphs or add decorative emoji to routine headings.
 Emoji **MAY** be used as semantic status markers, and Rating Level emoji remain

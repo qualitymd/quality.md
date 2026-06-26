@@ -2,6 +2,12 @@
 
 ## 2026-06-26
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0099 - Closed-choice setup UX](../../../../changes/archive/0099-closed-choice-setup-ux.md).
+  Setup discovery closed-choice prompts now use numbered options with the
+  recommended answer first and `1` as the shortest confirmation; risk discovery
+  presents cost labels while mapping them to the existing risk-tolerance meaning.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec and
   [setup feedback log](setup/feedback-log.md) spec for
   [0096 - Setup intro preview](../../../../changes/archive/0096-setup-intro-preview.md).
