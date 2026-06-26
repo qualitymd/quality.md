@@ -66,22 +66,27 @@ report.md
 Non-root Area reports **MUST** be written under:
 
 ```text
-areas/<area>/report.md
+areas/<area>/<area>-area.md
 ```
 
 Requirement reports **MUST** be written under the owning Area report folder:
 
 ```text
-requirements/<requirement>/report.md
+requirements/<requirement>/<requirement>-requirement.md
 ```
 
 Factor reports **MUST** be written under the owning Area report folder:
 
 ```text
-factors/<factor>/report.md
+factors/<factor>/<factor>-factor.md
 ```
 
-Nested Factor reports **MUST** recurse through nested `factors/` folders.
+Nested Factor reports **MUST** recurse through nested `factors/` folders and use
+the nested Factor's local structural ID segment in the filename:
+
+```text
+factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md
+```
 
 ## Path Derivation
 

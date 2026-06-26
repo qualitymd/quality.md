@@ -2,6 +2,14 @@
 
 ## 2026-06-26
 
+- **Revision**: Implemented durable spec changes for
+  [0108 - Short evaluation report filenames](../changes/archive/0108-short-evaluation-report-filenames.md).
+  Evaluation v2 report layout and `/quality` reporting specs now keep the root
+  Area report at `report.md` while using short subject-aware filenames for
+  descendant Area, Factor, and Requirement Markdown reports. The CLI status spec
+  now refers to generated Markdown reports generically instead of `report.md`
+  bodies.
+
 - **Revision**: Implemented durable spec alignment for
   [0107 - Durable spec alignment](../changes/archive/0107-durable-spec-alignment.md).
   Audited `SPECIFICATION.md` and the active `specs/` bundle for OKF mechanics,

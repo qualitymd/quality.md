@@ -11,6 +11,9 @@
     "**/CLAUDE.md",
     "**/GEMINI.md",
     ".quality/evaluations/**/report.md",
+    ".quality/evaluations/**/*-area.md",
+    ".quality/evaluations/**/*-factor.md",
+    ".quality/evaluations/**/*-requirement.md",
     ".quality/evaluations/**/report-summary.md",
     "specs/skills/quality-skill/examples/**/report.md",
     "specs/skills/quality-skill/examples/**/report-summary.md"

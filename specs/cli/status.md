@@ -120,7 +120,8 @@ For each run summary under `--json`, `status` **MUST** include run path,
 reportability, stale state, v2 data artifact count, gap count, and any
 inspection problem.
 
-`status` **MUST NOT** read `report.md` bodies to compute the snapshot.
+`status` **MUST NOT** read generated Markdown report bodies to compute the
+snapshot.
 
 Malformed run folders that prevent basic run inspection **MUST** appear in the
 snapshot with an inspection problem, and `status` **MUST** continue inspecting

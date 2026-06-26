@@ -176,40 +176,41 @@ func TestV2ReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "Path: `/`")
 	assertContains(t, rootReport, "| Overall | Local | Confidence | Data |")
 	assertContains(t, rootReport, "| Factor | Path | Rating | + Sub-Factors | Sub-Factors |")
-	assertContains(t, rootReport, "| [Reliability](factors/reliability/report.md) | `reliability` | 🔵 Target | ✅ Yes | [Latency](factors/reliability/factors/latency/report.md) 🔵 Target |")
-	assertContains(t, rootReport, "| [Payments](areas/payments/report.md) | `/payments` | 🔵 Target | ⬜ No |  |")
-	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/report.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/report.md) |")
+	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | ✅ Yes | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
+	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | ⬜ No |  |")
+	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/reliability-factor.md) |")
 	assertNotContains(t, rootReport, "Breadcrumb:")
 	assertNotContains(t, rootReport, "Parent Area:")
 	assertNotContains(t, rootReport, "| Details |")
 
-	factorReport := readReport(t, runPath, "factors/reliability/report.md")
+	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
 	assertContains(t, factorReport, "Area: [Navigation model](../../report.md)")
-	assertContains(t, factorReport, "Factor: [Reliability](report.md)")
+	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
 	assertContains(t, factorReport, "Path: `reliability`")
 	assertContains(t, factorReport, "| Overall | Local | Status | Confidence | Data |")
-	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/report.md) | 🔵 Target | ✅ Assessed |")
-	assertContains(t, factorReport, "| [Latency](factors/latency/report.md) | `reliability/latency` | 🔵 Target |")
+	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed |")
+	assertContains(t, factorReport, "| [Latency](factors/latency/latency-factor.md) | `reliability/latency` | 🔵 Target |")
 	assertNotContains(t, factorReport, "Parent Factor:")
 	assertNotContains(t, factorReport, "| Details |")
 
-	childFactorReport := readReport(t, runPath, "factors/reliability/factors/latency/report.md")
-	assertContains(t, childFactorReport, "Factor: [Reliability](../../report.md) / [Latency](report.md)")
+	childFactorReport := readReport(t, runPath, "factors/reliability/factors/latency/latency-factor.md")
+	assertContains(t, childFactorReport, "Factor: [Reliability](../../reliability-factor.md) / [Latency](latency-factor.md)")
 
-	requirementReport := readReport(t, runPath, "requirements/has-tests/report.md")
+	requirementReport := readReport(t, runPath, "requirements/has-tests/has-tests-requirement.md")
 	assertContains(t, requirementReport, "Area: [Navigation model](../../report.md)")
 	assertContains(t, requirementReport, "Name: `has-tests`")
 	assertContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
-	assertContains(t, requirementReport, "[reliability](../../factors/reliability/report.md)")
+	assertContains(t, requirementReport, "[reliability](../../factors/reliability/reliability-factor.md)")
 	assertNotContains(t, requirementReport, "\nFactor:")
 	assertNotContains(t, requirementReport, "Parent Area:")
+	assertOnlyRootReportMD(t, runPath)
 
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
 		t.Fatalf("reading EvaluationOutputResult: %v", err)
 	}
-	if !strings.Contains(string(outputRaw), `"path": "factors/reliability/report.md"`) {
-		t.Fatalf("EvaluationOutputResult = %s, want unchanged report refs", outputRaw)
+	if !strings.Contains(string(outputRaw), `"path": "factors/reliability/reliability-factor.md"`) {
+		t.Fatalf("EvaluationOutputResult = %s, want subject-aware report refs", outputRaw)
 	}
 	if build.RatingResult.Level != "target" {
 		t.Fatalf("BuildReport().RatingResult.Level = %q, want stable rating level ID", build.RatingResult.Level)
@@ -375,6 +376,31 @@ func readReport(t *testing.T, runPath, rel string) string {
 		t.Fatalf("reading %s: %v", rel, err)
 	}
 	return string(raw)
+}
+
+func assertOnlyRootReportMD(t *testing.T, runPath string) {
+	t.Helper()
+	var found []string
+	err := filepath.WalkDir(runPath, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || entry.Name() != "report.md" {
+			return nil
+		}
+		rel, err := filepath.Rel(runPath, path)
+		if err != nil {
+			return err
+		}
+		found = append(found, filepath.ToSlash(rel))
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("walking reports: %v", err)
+	}
+	if len(found) != 1 || found[0] != "report.md" {
+		t.Fatalf("report.md files = %v, want only root report.md", found)
+	}
 }
 
 func assertContains(t *testing.T, got, want string) {

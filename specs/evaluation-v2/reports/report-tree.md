@@ -25,6 +25,29 @@ Report generation **MUST NOT** inspect new source evidence.
 Report generation **MUST NOT** introduce new findings, ratings, evidence, limits,
 analysis, or recommendations.
 
+## Report Paths
+
+The root Area report **MUST** be generated as `report.md` at the run root.
+
+Non-root Area, Factor, and Requirement reports **MUST** use short
+subject-aware filenames derived from structural model IDs:
+
+- `areas/<area>/<area>-area.md`
+- `requirements/<requirement>/<requirement>-requirement.md`
+- `factors/<factor>/<factor>-factor.md`
+- `factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md`
+
+Report filenames **MUST NOT** be derived from display titles, natural labels, or
+rendered human labels.
+
+The report builder **MUST NOT** write duplicate compatibility copies using old
+descendant `report.md` filenames.
+
+> Rationale: the root `report.md` remains the single run entrypoint, while
+> descendant filenames need enough local subject context for editor and browser
+> tabs. Structural IDs keep paths stable; the existing directory tree carries
+> full identity. — 0108
+
 ## Navigation
 
 Every report **MUST** start with an `Area:` navigation trail whose elements link

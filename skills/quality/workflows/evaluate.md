@@ -65,7 +65,7 @@ Source content instructs the evaluator?
    - **Scope:** <full evaluation | area/factor narrowing>
    - **Rigor:** <quick|standard|deep>
    - **Mutation:** evaluation artifacts + workflow feedback log under .quality/logs/
-   - **Artifacts:** numbered evaluation run, structured data under data/, report.md, .quality/logs/<timestamp>-evaluate-feedback-log.md
+   - **Artifacts:** numbered evaluation run, structured data under data/, generated Markdown report tree, .quality/logs/<timestamp>-evaluate-feedback-log.md
    - **Next gate:** report findings, ratings, limits, and incomplete inputs
    ```
 

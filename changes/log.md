@@ -2,6 +2,56 @@
 
 ## 2026-06-26
 
+- **Done**: Implemented and archived
+  [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md).
+  Evaluation v2 now keeps the root Area report at `report.md`, writes descendant
+  Area, Factor, and Requirement reports with short subject-aware filenames,
+  carries those paths through generated links and `EvaluationOutputResult`
+  report refs, and keeps generated descendant reports out of repository Markdown
+  formatting. Durable specs, the v2 sketch, and runtime `/quality evaluate`
+  guidance are aligned. Verified with `mise run check`.
+
+- **In-Review**: Advanced
+  [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md)
+  to `In-Review`. Evaluation v2 now keeps only the root Area report at
+  `report.md`; descendant Area, Factor, and Requirement reports use short
+  subject-aware filenames in generated links and report refs. Updated durable
+  report layout specs, `/quality` reporting guidance, the v2 sketch, dprint
+  generated-report excludes, and focused report tests. Verified with
+  `mise run check`.
+
+- **In-Progress**: Advanced
+  [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md)
+  to `In-Progress`; implementation and durable contract updates are now
+  underway.
+
+- **Design**: Advanced
+  [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md)
+  to `Design` and added its
+  [design doc](archive/0108-short-evaluation-report-filenames/design.md). The design
+  keeps report path derivation centralized in the Evaluation v2 report helpers:
+  root Area remains `report.md`; descendant Area, Factor, and Requirement paths
+  use local structural IDs plus kind suffixes; existing relative-link and report
+  ref generation continues to consume those helpers.
+
+- **Refinement**: Updated
+  [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md)
+  so the root Area remains the run entrypoint at `report.md`, while descendant
+  Area, Factor, and Requirement reports use short subject-aware filenames. The
+  functional spec now treats old descendant `report.md` paths as the retired
+  compatibility shape.
+
+- **Draft**: Created
+  [0108 - Short evaluation report filenames](archive/0108-short-evaluation-report-filenames.md)
+  with its child
+  [functional spec](archive/0108-short-evaluation-report-filenames/spec.md). The case
+  keeps the root Area report at `report.md` while replacing repeated descendant
+  Evaluation v2 generated Markdown `report.md` filenames with short
+  subject-aware filenames such as `<area>-area.md`, `<factor>-factor.md`, and
+  `<requirement>-requirement.md`, while preserving structural directories,
+  generated report navigation semantics, structured data paths, and completed
+  run history. Design and implementation have not started.
+
 - **Done**: Archived
   [0107 - Durable spec alignment](archive/0107-durable-spec-alignment.md).
   The durable spec alignment pass is complete and moved to `changes/archive/`;

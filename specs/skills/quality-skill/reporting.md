@@ -71,14 +71,18 @@ credential type only, never secret values or unsafe raw content.
 
 The root Area report **MUST** be `report.md` at the run root.
 
-Non-root Area reports **MUST** be written under `areas/**/report.md`.
+Non-root Area reports **MUST** be written with short subject-aware filenames
+under their Area folder, such as `areas/<area>/<area>-area.md`.
 
-Factor reports **MUST** be written under the owning Area report folder.
+Factor reports **MUST** be written with short subject-aware filenames under the
+owning Area report folder, such as `factors/<factor>/<factor>-factor.md`.
 
-Requirement reports **MUST** be written under the owning Area report folder.
+Requirement reports **MUST** be written with short subject-aware filenames under
+the owning Area report folder, such as
+`requirements/<requirement>/<requirement>-requirement.md`.
 
-Every report **MUST** include linked breadcrumbs. Every non-root report **MUST**
-include a parent link.
+Every report **MUST** include the navigation trails required by the
+[Evaluation v2 report tree](../../evaluation-v2/reports/report-tree.md).
 
 Area reports **MUST** link to local root Factor reports, local Requirement
 reports, and direct child Area reports.

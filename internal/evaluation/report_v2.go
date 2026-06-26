@@ -758,13 +758,13 @@ func areaReportPath(areaID []string) string {
 		return "report.md"
 	}
 	parts := append([]string{"areas"}, areaID...)
-	parts = append(parts, "report.md")
+	parts = append(parts, areaID[len(areaID)-1]+"-area.md")
 	return filepath.ToSlash(filepath.Join(parts...))
 }
 
 func requirementReportPath(req requirementID) string {
 	parts := reportAreaDirParts(req.DeclaringArea)
-	parts = append(parts, "requirements", req.Name, "report.md")
+	parts = append(parts, "requirements", req.Name, req.Name+"-requirement.md")
 	return filepath.ToSlash(filepath.Join(parts...))
 }
 
@@ -773,7 +773,7 @@ func factorReportPath(factor factorID) string {
 	for _, name := range factor.Path {
 		parts = append(parts, "factors", name)
 	}
-	parts = append(parts, "report.md")
+	parts = append(parts, factor.Path[len(factor.Path)-1]+"-factor.md")
 	return filepath.ToSlash(filepath.Join(parts...))
 }
 

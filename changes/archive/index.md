@@ -458,3 +458,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   BCP 14 convention declarations to routed authoring guide specs, and recording
   the alignment in spec logs; docs/spec guidance only, no CLI/Go or runtime
   behavior change (`Done`).
+- [0108 — Short evaluation report filenames](0108-short-evaluation-report-filenames.md)
+  - kept the root Evaluation v2 report at `report.md` while renaming descendant
+    reports to short subject-aware filenames (`Done`).

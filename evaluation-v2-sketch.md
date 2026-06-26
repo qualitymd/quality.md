@@ -797,20 +797,20 @@ Report generation produces a small navigable report tree for each Area:
 
 ```text
 report.md
-requirements/<requirement>/report.md
-factors/<factor>/report.md
-factors/<factor>/factors/<sub-factor>/report.md
-areas/<child-area>/report.md
+requirements/<requirement>/<requirement>-requirement.md
+factors/<factor>/<factor>-factor.md
+factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md
+areas/<child-area>/<child-area>-area.md
 ```
 
 For non-root Areas, the same local tree appears under that Area's report folder:
 
 ```text
-areas/<area>/report.md
-areas/<area>/requirements/<requirement>/report.md
-areas/<area>/factors/<factor>/report.md
-areas/<area>/factors/<factor>/factors/<sub-factor>/report.md
-areas/<area>/areas/<child-area>/report.md
+areas/<area>/<area>-area.md
+areas/<area>/requirements/<requirement>/<requirement>-requirement.md
+areas/<area>/factors/<factor>/<factor>-factor.md
+areas/<area>/factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md
+areas/<area>/areas/<child-area>/<child-area>-area.md
 ```
 
 Navigation rules:
@@ -827,8 +827,8 @@ Navigation rules:
   report.
 
 The root Area report is written to the evaluation run root as `report.md`.
-Non-root Area reports are written to `areas/**/report.md`. Local Factor and
-Requirement detail reports are written under the Area report folder.
+Non-root Area, local Factor, and Requirement detail reports use short
+subject-aware filenames under the Area report folder.
 
 Report generation is intended to be a one-shot deterministic CLI projection. It
 consumes the evaluation output result and completed routine outputs, then writes
@@ -2018,8 +2018,9 @@ confidence, rating-driver preservation, structured data as source of truth, and
 the separation between evaluation state and report projection.
 
 Reports are orthogonal to the core evaluation protocol. The evaluation source of
-truth is `data/**`; `report.md` and `areas/**/report.md` are generated
-human-readable projections that consume completed structured evaluation data.
+truth is `data/**`; the root `report.md` and descendant Markdown report tree are
+generated human-readable projections that consume completed structured
+evaluation data.
 
 The skill runtime should mirror the spec lightly:
 
@@ -2204,28 +2205,28 @@ NNNN-evaluation/
   report.md                  # root Area report
   requirements/
     <requirement>/
-      report.md              # root-local Requirement report
+      <requirement>-requirement.md
   factors/
     <factor>/
-      report.md              # root-local Factor report
+      <factor>-factor.md
       factors/
         <child-factor>/
-          report.md
+          <child-factor>-factor.md
   areas/
     <area>/
-      report.md              # focused Area report
+      <area>-area.md
       requirements/
         <requirement>/
-          report.md          # Area-local Requirement report
+          <requirement>-requirement.md
       factors/
         <factor>/
-          report.md          # Area-local Factor report
+          <factor>-factor.md
           factors/
             <child-factor>/
-              report.md
+              <child-factor>-factor.md
       areas/
         <child-area>/
-          report.md
+          <child-area>-area.md
   data/
     evaluation-output-result.json
     frame/
@@ -2256,8 +2257,8 @@ NNNN-evaluation/
 The exact filenames and record format are still open. The important boundary is:
 
 - `report.md` is the human-readable report for the root Area
-- `areas/**/report.md` is the human-readable report projection for non-root
-  Areas, arranged in an OKF-style Area tree
+- descendant Area, Factor, and Requirement Markdown reports use short
+  subject-aware filenames arranged in an OKF-style Area tree
 - `data/` is for CLI-managed structured records
 - `data/areas/` mirrors the evaluated Area tree; each Area owns its local
   `requirements/`, local `factors/`, and child `areas/`
