@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0151 - Evaluation Report CTA](../changes/archive/0151-evaluation-report-cta.md).
+  The `/quality` skill reporting specs now require evaluation closeouts to point
+  first to the human `report.md` result with a value-oriented CTA, describe
+  `recommendations.md` as the action-planning report, and keep machine report
+  indexes out of the primary report-reading CTA.
+
+- **Revision**: Implemented durable spec changes for
   [0150 - Evaluation Advice](../changes/archive/0150-evaluation-advice.md). Evaluation
   now requires Advice after roll-up and before report build, with
   `FindingRankingResult`, `RecommendationResult`, `RecommendationRankingResult`,

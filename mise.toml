@@ -91,8 +91,15 @@ run = "node scripts/check-npm-package.mjs"
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"
-usage = 'arg "<version>"'
-run = 'node scripts/build-npm.mjs "${usage_version?}" --publish'
+usage = '''
+arg "<version>"
+flag "--skip-existing"
+'''
+run = '''
+args="${usage_version?} --publish"
+if [ "${usage_skip_existing:-false}" = "true" ]; then args="$args --skip-existing"; fi
+node scripts/build-npm.mjs $args
+'''
 
 [tasks.release-notes]
 description = "Print the CHANGELOG.md section for a release tag"
@@ -115,3 +122,37 @@ if [ "${usage_skip_tag_check:-false}" = "true" ]; then args="$args --skip-tag-ch
 if [ "${usage_skip_gates:-false}" = "true" ]; then args="$args --skip-gates"; fi
 node scripts/check-release.mjs $args
 '''
+
+[tasks.release-preflight]
+description = "Verify release target availability and publish credentials before tagging"
+usage = '''
+arg "<tag>"
+flag "--credentials-only"
+'''
+run = '''
+args="${usage_tag?}"
+if [ "${usage_credentials_only:-false}" = "true" ]; then args="$args --credentials-only"; fi
+node scripts/release-preflight.mjs $args
+'''
+
+[tasks.release-homebrew]
+description = "Update the Homebrew tap cask for a release tag"
+usage = 'arg "<tag>"'
+run = 'node scripts/update-homebrew-cask.mjs "${usage_tag?}"'
+
+[tasks.release-verify]
+description = "Verify GitHub, npm, Homebrew, and binary release artifacts"
+usage = '''
+arg "<tag>"
+flag "--allow-draft"
+'''
+run = '''
+args="${usage_tag?}"
+if [ "${usage_allow_draft:-false}" = "true" ]; then args="$args --allow-draft"; fi
+node scripts/release-verify.mjs $args
+'''
+
+[tasks.release-repair]
+description = "Repair safe-to-rerun release channels for a tag, then verify"
+usage = 'arg "<tag>"'
+run = 'node scripts/repair-release.mjs "${usage_tag?}"'

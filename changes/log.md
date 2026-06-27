@@ -2,6 +2,53 @@
 
 ## 2026-06-27
 
+- **In-Review**: Completed implementation for
+  [0152 - Release Reliability](0152-release-reliability.md). The release workflow
+  now runs credential preflight, creates draft GitHub releases, publishes
+  Homebrew and npm through independently visible jobs, verifies all release
+  channels before publication, and provides verifier/repair tasks. `node
+  scripts/release-verify.mjs v0.25.0` passes against the current public release.
+
+- **Done**: Implemented and archived
+  [0151 - Evaluation Report CTA](archive/0151-evaluation-report-cta.md).
+  `/quality evaluate` closeouts now point users first to `<run>/report.md` as
+  the decision-ready evaluation result, describe `<run>/recommendations.md` as
+  the action-planning report, keep machine report indexes out of the primary CTA,
+  and preserve evidence, limitations, not-done, and next-action signals.
+
+- **In-Review**: Completed implementation for
+  [0151 - Evaluation Report CTA](archive/0151-evaluation-report-cta.md). Durable
+  skill specs, runtime evaluate guidance, release notes, and logs now align
+  around a value-oriented human report CTA. `mise run fmt-md-check` passes.
+
+- **Design**: Created [0152 - Release Reliability](0152-release-reliability.md)
+  with its [functional spec](0152-release-reliability/spec.md) and
+  [design doc](0152-release-reliability/design.md). The case hardens release
+  preflight credential checks, draft-first GitHub releases, independent
+  Homebrew/npm publication, idempotent repair, and post-release verification
+  after the `v0.25.0` partial-publish failure.
+
+- **In-Progress**: Advanced
+  [0151 - Evaluation Report CTA](archive/0151-evaluation-report-cta.md).
+  Functional spec and design are settled; implementation is beginning across
+  durable skill specs, runtime guidance, release notes, and Change Case lifecycle
+  artifacts.
+
+- **Design**: Advanced
+  [0151 - Evaluation Report CTA](archive/0151-evaluation-report-cta.md) with its
+  [design doc](archive/0151-evaluation-report-cta/design.md). The design keeps
+  generated reports and CLI receipts unchanged, uses `Open next` for the primary
+  `report.md` CTA, and keeps `recommendations.md` on the Recommendations line as
+  the action-planning report.
+
+- **Draft**: Created
+  [0151 - Evaluation Report CTA](archive/0151-evaluation-report-cta.md) with its
+  [functional spec](archive/0151-evaluation-report-cta/spec.md). The case makes
+  `/quality evaluate` closeouts point users to the human report files with
+  value-oriented CTAs, keeps machine report indexes out of the primary closeout
+  action, and preserves the evaluate workflow's evidence and mutation-boundary
+  signals.
+
 - **Done**: Implemented
   [0150 - Evaluation Advice](archive/0150-evaluation-advice.md). Evaluation data now
   accepts and validates `FindingRankingResult`, `RecommendationResult`, and

@@ -3,7 +3,7 @@ type: How-to Guide
 title: Cut a release
 description: How to prepare, verify, tag, publish, and check a QUALITY.md release.
 tags: [release, changelog, versioning]
-timestamp: 2026-06-19T00:00:00Z
+timestamp: 2026-06-27T00:00:00Z
 ---
 
 # Cut a Release
@@ -22,8 +22,11 @@ Before cutting a release:
 - The main branch contains the intended release state.
 - CI is passing.
 - The working tree is clean.
-- `NPM_TOKEN` is configured for npm publishing.
-- `HOMEBREW_TAP_GITHUB_TOKEN` is configured for the Homebrew tap.
+- `GITHUB_TOKEN` or `GH_TOKEN` is available locally for release preflight.
+- `NPM_TOKEN` is configured locally and as a repository secret for npm
+  publishing.
+- `HOMEBREW_TAP_GITHUB_TOKEN` is configured locally and as a repository secret
+  for the Homebrew tap.
 - You can run the local dry-run tasks.
 
 Check the current state:
@@ -33,6 +36,11 @@ git status --short
 git fetch --tags
 git tag --list --sort=-version:refname | head
 ```
+
+The Homebrew token must be able to write to `qualitymd/homebrew-tap`. The npm
+token must be able to publish the `quality.md` package and every package in the
+`@qualitymd` scope. Rotate either token before tagging if preflight cannot prove
+that access.
 
 ## Choose the Release Version
 
@@ -181,6 +189,17 @@ while `release-check` is validating the candidate tag. That is expected before
 the new tag exists; trust the final `release checks passed for <tag>` line and
 the release-note preview for the candidate version.
 
+Then run release preflight:
+
+```sh
+mise run release-preflight -- v0.3.0
+```
+
+The preflight check verifies that the target tag and GitHub Release do not
+already exist, that npm does not already contain the candidate package versions,
+that npm credentials authenticate, and that the Homebrew tap token can create
+and delete a temporary branch.
+
 After `release-check` passes, push the release-prep commit and wait for the
 hosted `main` CI run for that exact commit to pass before creating the tag:
 
@@ -200,12 +219,17 @@ git push origin v0.3.0
 
 The release workflow runs from `.github/workflows/release.yml`. It publishes:
 
-- the curated GitHub Release body from the matching `CHANGELOG.md` section;
+- a draft GitHub Release with the curated body from the matching
+  `CHANGELOG.md` section;
 - GitHub release archives through Goreleaser;
-- Homebrew cask updates through Goreleaser;
-- npm / npx packages through `scripts/build-npm.mjs`.
+- Homebrew cask updates through `scripts/update-homebrew-cask.mjs`;
+- npm / npx packages through `scripts/build-npm.mjs`;
+- a final verification pass through `scripts/release-verify.mjs`;
+- publication of the GitHub Release only after Homebrew, npm, release notes,
+  checksums, and a downloaded binary verify.
 
-The workflow requires two repository secrets:
+The workflow requires two repository secrets in addition to the built-in
+`GITHUB_TOKEN`:
 
 - `NPM_TOKEN` — npm automation token with publish access to the `quality.md`
   package and the `@qualitymd` scope.
@@ -213,12 +237,10 @@ The workflow requires two repository secrets:
   `qualitymd/homebrew-tap`.
 
 Homebrew distribution uses a **cask**, not a formula: that is the
-GoReleaser-recommended path for a self-published pre-built binary (the formula
-`brews` path was deprecated in GoReleaser v2.10 and is removed in v3), so a
-binary-only formula is not the goal here. The cask currently strips the macOS
-quarantine attribute because the binaries are unsigned — the documented pattern
-for an unsigned cask. Remove that step from `.goreleaser.yaml` once the binaries
-are signed and notarized.
+recommended path for a self-published pre-built binary, so a binary-only formula
+is not the goal here. The cask currently strips the macOS quarantine attribute
+because the binaries are unsigned. Remove that step from the tap cask once the
+binaries are signed and notarized.
 
 Do not move a published tag to repair a release. If a published release is wrong,
 fix forward with a new patch release unless no artifacts were published and the
@@ -247,22 +269,37 @@ Use fresh installs where practical rather than already-built local binaries.
 A release-note comparison that differs only by a final trailing newline is
 equivalent and does not require a release edit.
 
+The mechanical channel verification is:
+
+```sh
+mise run release-verify -- v0.3.0
+```
+
 ## Handle a Failed Release
 
 If the workflow fails before publishing anything, fix the problem and rerun the
 workflow or replace the tag only if it has not been consumed externally.
+
+If the workflow created a draft GitHub Release and failed before publishing the
+release, fix the issue and rerun the workflow for the same tag. The workflow
+deletes a stale draft release before rebuilding it, but refuses to overwrite an
+already-published release.
 
 If the workflow partially publishes artifacts:
 
 - Do not rewrite the tag.
 - Record what published and what failed.
 - Fix the release automation or package issue.
-- Publish a new patch tag.
+- Prefer `mise run release-repair -- <tag>` when the GitHub release, Homebrew
+  cask, and npm package versions are already intended for that same tag.
+- Publish a new patch tag when the wrong artifact content was published or when
+  the version has been consumed in a state that cannot be repaired.
 - Add a release-note entry if users may have consumed the partial release.
 
 If npm published but GitHub or Homebrew failed, treat the version as consumed.
-npm versions are immutable in normal practice, so the repair should be a new
-version.
+npm versions are immutable in normal practice. The repair helper skips npm
+versions that already exist, refreshes the Homebrew cask, restores curated
+release notes, and runs release verification.
 
 ## After Release
 
@@ -280,10 +317,10 @@ The guide is enough to run the curated-release process. Keep release support
 small and add mechanics only when they remove repeated mistakes or manual
 comparison work.
 
-Release preparation stays manual. The release-check and release-notes helpers
-are the automation boundary for now; add another helper only after repeated
-release-prep mistakes show what comparison or validation should become
-mechanical.
+Release preparation stays manual. The release-notes, release-check,
+release-preflight, release-verify, and release-repair helpers are the automation
+boundary for now; add another helper only after repeated release-prep mistakes
+show what comparison or validation should become mechanical.
 
 The `/quality` skill currently records project-owned release metadata in
 `skills/quality/SKILL.md` under `metadata.version` and

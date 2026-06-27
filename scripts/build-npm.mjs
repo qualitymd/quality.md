@@ -9,7 +9,8 @@
 //   node scripts/build-npm.mjs <version> [--publish]
 //
 //   <version>   semver to stamp (e.g. 1.2.3); defaults to 0.0.0-dev
-//   --publish   run `npm publish` for each platform package and the launcher
+//   --publish          run `npm publish` for each platform package and the launcher
+//   --skip-existing    with --publish, skip packages already present on npm
 //
 // Layout produced:
 //   npm/quality.md/                 launcher package (committed)
@@ -35,6 +36,7 @@ const TARGETS = [
 
 const args = process.argv.slice(2);
 const publish = args.includes("--publish");
+const skipExisting = args.includes("--skip-existing");
 const version = args.find((a) => !a.startsWith("--")) ?? "0.0.0-dev";
 
 function run(cmd, cmdArgs, { env, cwd } = {}) {
@@ -84,6 +86,26 @@ See the main package and project docs:
 - npm: https://www.npmjs.com/package/quality.md
 - GitHub: https://github.com/qualitymd/quality.md
 `;
+}
+
+function packageVersionExists(pkgName) {
+  try {
+    const raw = execFileSync("npm", ["view", `${pkgName}@${version}`, "version", "--json"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+    return JSON.parse(raw) === version;
+  } catch {
+    return false;
+  }
+}
+
+function publishPackage(pkgName, cwd) {
+  if (skipExisting && packageVersionExists(pkgName)) {
+    console.log(`  ${pkgName}@${version} already published; skipping`);
+    return;
+  }
+  run("npm", ["publish", "--access", "public"], { cwd });
 }
 
 console.log(`Building QUALITY.md npm packages @ ${version}`);
@@ -146,7 +168,7 @@ for (const t of TARGETS) {
   writeFileSync(join(pkgDir, "README.md"), platformPackageReadme(pkgName, t));
 
   if (publish) {
-    run("npm", ["publish", "--access", "public"], { cwd: pkgDir });
+    publishPackage(pkgName, pkgDir);
   }
 }
 
@@ -162,8 +184,5 @@ console.log(`Stamped launcher and ${TARGETS.length} platform packages @ ${versio
 
 if (publish) {
   console.log("Publishing launcher package...");
-  execFileSync("npm", ["publish", "--access", "public"], {
-    stdio: "inherit",
-    cwd: join(root, "npm", "quality.md"),
-  });
+  publishPackage(launcher.name, join(root, "npm", "quality.md"));
 }

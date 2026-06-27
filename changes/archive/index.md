@@ -644,3 +644,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0150 — Evaluation Advice](0150-evaluation-advice.md) - makes Advice required
   through Finding ranking, Recommendations, Recommendation ranking, coverage
   accounting, and generated recommendation reports (`Done`).
+- [0151 — Evaluation Report CTA](0151-evaluation-report-cta.md) - makes
+  `/quality evaluate` closeouts point first to the human `report.md` result and
+  describe `recommendations.md` as the action-planning report (`Done`).

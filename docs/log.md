@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Updated
+  [Cut a release](guides/cut-a-release.md) for
+  [0152 - Release Reliability](../changes/0152-release-reliability.md). The
+  runbook now requires release preflight, documents draft-first release
+  publishing, separates Homebrew/npm verification from GitHub release
+  publication, and describes the release verifier and repair helper.
+
+- **Revision**: Updated
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
   [0145 - Scannable Skill Output](../changes/archive/0145-scannable-skill-output.md).
   The guide now defines five-second-scan output, recommends labeled blocks,

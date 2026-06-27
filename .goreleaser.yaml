@@ -1,6 +1,7 @@
-# goreleaser configuration. Builds cross-platform binaries and publishes
-# GitHub release archives + a Homebrew tap. The npm/npx channel is handled
-# separately by scripts/build-npm.mjs (see `mise run npm-publish`).
+# goreleaser configuration. Builds cross-platform binaries and publishes GitHub
+# release archives. The Homebrew tap and npm/npx channels are handled separately
+# by scripts/update-homebrew-cask.mjs and scripts/build-npm.mjs so release
+# retries can repair each channel independently.
 version: 2
 
 project_name: qualitymd
@@ -39,29 +40,6 @@ archives:
 
 checksum:
   name_template: checksums.txt
-
-# A Homebrew cask (not a formula) is the idiomatic path for a self-published,
-# pre-built binary: GoReleaser deprecated the formula (`brews`) path in v2.10
-# (removed in v3), and Homebrew steers binary distributions to casks. The
-# quarantine hook below is the documented pattern for an unsigned binary.
-homebrew_casks:
-  - name: qualitymd
-    repository:
-      owner: qualitymd
-      name: homebrew-tap
-      # Use the tap-scoped PAT; the default GITHUB_TOKEN can't write to another repo.
-      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    homepage: "https://github.com/qualitymd/quality.md"
-    description: "Evaluate QUALITY.md specifications"
-    license: "MIT"
-    # Strip the quarantine xattr so the unsigned binary runs without a Gatekeeper
-    # prompt. Drop this once the binaries are signed and notarized.
-    hooks:
-      post:
-        install: |
-          if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
-            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/qualitymd"]
-          end
 
 release:
   github:

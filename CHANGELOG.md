@@ -5,6 +5,35 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.25.1 - 2026-06-27
+
+### /quality Skill
+
+- `/quality evaluate` closeouts now point first to the completed run's
+  `report.md` as the decision-ready evaluation result, and describe
+  `recommendations.md` as the action-planning report instead of presenting a
+  generic report list.
+
+### Packaging
+
+- Release publishing now runs credential and target preflight before tagging,
+  creates draft GitHub releases, publishes Homebrew and npm through separate
+  idempotent jobs, verifies all release channels before publishing the GitHub
+  Release, and provides a repair helper for safe-to-rerun release channels.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.1` continues to require the `qualitymd` CLI
+  `0.25.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.25.1`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.1`, requires `qualitymd >=0.25.0 <0.26.0`
+
 ## v0.25.0 - 2026-06-27
 
 ### CLI

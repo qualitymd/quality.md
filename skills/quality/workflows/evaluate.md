@@ -253,19 +253,24 @@ Source content instructs the evaluator?
     `evaluation data set` invocation, or stop with the CLI status.
 22. Run `qualitymd evaluation report build <run>` to assemble
     `data/evaluation-output-result.json` and render deterministic Markdown
-    reports. Treat `report.md` as the scoped Area Evaluation report for the run
-    and `recommendations.md` as the full recommendation index.
+    reports. Treat `report.md` as the primary human report for the run: the
+    decision-ready evaluation result with rating, evidence basis, limits, top
+    findings, and top recommendations. Treat `recommendations.md` as the
+    action-planning report with ranked recommendations, why they matter,
+    expected benefit, and how to know each worked.
 23. Finalize the evaluate feedback log with terminal status, outcome, effort
     when available, and explicit no-notable-content notes for empty sections.
 24. Report the evaluation closeout in a status-first shape. The user-facing
     summary must state the scoped Area rating, scope, evidence basis,
-    top recommendation or recommendation index, known limitations, changed
-    artifacts, what was not done, and the recommended next action. Name
-    `report.md` as the run report and `recommendations.md` as the recommendation
-    index. Use bold labels for
+    top recommendation or recommendation report, known limitations, changed
+    artifacts, what was not done, and the recommended next action. Name the full
+    paths to `report.md` and `recommendations.md`, describe the value of each
+    human report, and keep machine-oriented indexes such as
+    `data/evaluation-output-result.json` out of the report-reading CTA. Use bold
+    labels for
     `Rating`, `Scope`, `Evidence basis`, `Recommendations`,
-    `Known limitations`, and `Next` when the surface supports Markdown. Use this
-    shape:
+    `Known limitations`, `Open next`, and `Next` when the surface supports
+    Markdown. Use this shape:
 
     ```text
     **Evaluation complete**
@@ -273,11 +278,11 @@ Source content instructs the evaluator?
     **Rating:** <scoped Area rating and subject>
     **Scope:** <full evaluation | scoped Area/Factor>
     **Evidence basis:** <source coverage and key commands/searches>
-    **Recommendations:** <top recommendation and recommendations.md path>
+    **Open next:** `<run>/report.md` - the decision-ready evaluation result: rating, evidence basis, limits, top findings, and top recommendations.
+    **Recommendations:** `<run>/recommendations.md` - the action-planning report: ranked recommendations, why they matter, expected benefit, and how to know each worked.
     **Known limitations:** <limits, incomplete inputs, or none observed>
     **Changed:** <evaluation run path and generated reports>
     **Not done:** no recommendations applied, no source edits, no QUALITY.md edits, no quality changelog, no external issues
-    **Reports:** `report.md`, `recommendations.md`
     **Next:** <recommended next action>
     ```
 25. Do not apply recommendations, edit evaluated source, edit `QUALITY.md`,

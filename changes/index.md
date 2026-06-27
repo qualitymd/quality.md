@@ -43,7 +43,8 @@ edit.
 
 # Open change cases
 
-No open change cases.
+- [0152 - Release Reliability](0152-release-reliability.md) - harden release
+  preflight, publish workflow, verification, and repair behavior.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
@@ -55,4 +56,6 @@ template for a new one.
 
 # Subfolders
 
+- [0152-release-reliability/](0152-release-reliability/) - child concepts for
+  the Release Reliability Change Case.
 - [archive/](archive/) - completed change cases.

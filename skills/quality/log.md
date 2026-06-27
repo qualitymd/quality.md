@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`workflows/evaluate.md`](workflows/evaluate.md) for
+  0151 - Evaluation Report CTA.
+  Runtime evaluation closeouts now point first to `<run>/report.md` as the
+  decision-ready evaluation result and describe `<run>/recommendations.md` as
+  the action-planning report, instead of presenting a generic report list.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0150 - Evaluation
   Advice. Runtime evaluation guidance now requires Advice after roll-up, ranks

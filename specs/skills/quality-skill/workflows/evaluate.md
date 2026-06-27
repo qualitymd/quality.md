@@ -170,9 +170,10 @@ transcript of internal reasoning.
 
 `evaluate` is complete when the run has reportable Evaluation data, the CLI
 has built `data/evaluation-output-result.json` and the Markdown report tree, and
-the user-facing summary states the rating, scope, evidence basis, report paths,
-known limits, changed artifacts, what was not done, and the recommended next
-action.
+the user-facing summary states the rating, scope, evidence basis, human report
+paths, known limits, changed artifacts, what was not done, and the recommended
+next action.
 The closeout **MUST** use labeled fields for rating, scope, evidence basis, known
-limitations, changed artifacts, not-done boundary, reports, and next action so
-the result, artifacts, limits, and next step are visible in a five-second scan.
+limitations, changed artifacts, not-done boundary, report-reading CTA, and next
+action so the result, artifacts, limits, and next step are visible in a
+five-second scan.

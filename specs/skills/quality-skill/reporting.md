@@ -117,15 +117,25 @@ known limits or incomplete inputs, changed artifacts, what was not done, and the
 recommended next action.
 The closeout **MUST** use labeled fields for rating, scope, evidence basis,
 recommendations, known limitations, changed artifacts, not-done boundary,
-reports, and next action.
+report-reading CTA, and next action.
+
+The closeout **MUST** make `report.md` the primary human-report CTA by naming
+the completed run's full report path and describing its value as the
+decision-ready evaluation result with rating, evidence basis, limits, top
+findings, and top recommendations. The closeout **MUST** name the completed
+run's full `recommendations.md` path and describe its value as the
+action-planning report with ranked recommendations, why they matter, expected
+benefit, and how to know each worked. The primary report-reading CTA **MUST NOT**
+include `data/evaluation-output-result.json` or other machine-oriented report
+indexes.
 
 The closeout **MUST** distinguish evaluated-source quality from model weakness,
 missing evidence, unknowns, and evaluation limits.
 
-The closeout **MUST** name the top recommendation or the recommendation index
-when no single recommendation should be singled out. Recommendation follow-up
-remains a separate workflow for applying or handing off recommendation
-artifacts.
+The closeout **MUST** name the top recommendation or direct the user to
+`recommendations.md` when no single recommendation should be singled out.
+Recommendation follow-up remains a separate workflow for applying or handing off
+recommendation artifacts.
 
 Finding-local `candidateActions` are **not** recommendations: reports and the
 closeout **MUST NOT** present them as selected next moves. Selected advice

@@ -3,7 +3,7 @@ name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
 compatibility: Requires qualitymd CLI >=0.25.0 <0.26.0.
 metadata:
-  version: "0.25.0"
+  version: "0.25.1"
   requires-qualitymd-cli: ">=0.25.0 <0.26.0"
 ---
 
