@@ -87,6 +87,12 @@ The run-level Evaluation report **MUST** be written to:
 report.md
 ```
 
+The run-level ranked findings index **MUST** be written to:
+
+```text
+findings.md
+```
+
 The root Area report **MUST** be written to the run root when generated:
 
 ```text

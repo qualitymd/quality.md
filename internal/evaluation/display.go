@@ -56,6 +56,7 @@ const (
 	ReportKindArea        ReportKind = "area"
 	ReportKindFactor      ReportKind = "factor"
 	ReportKindRequirement ReportKind = "requirement"
+	ReportKindFindings    ReportKind = "findings"
 	ReportKindAdviceIndex ReportKind = "recommendations"
 	ReportKindAdvice      ReportKind = "recommendation"
 )
@@ -67,6 +68,7 @@ var reportKinds = []ReportKind{
 	ReportKindArea,
 	ReportKindFactor,
 	ReportKindRequirement,
+	ReportKindFindings,
 	ReportKindAdviceIndex,
 	ReportKindAdvice,
 }
@@ -132,6 +134,7 @@ var reportKindTitles = displayCatalog[ReportKind]{
 	ReportKindArea:        "🗺️ Area",
 	ReportKindFactor:      "🧩 Factor",
 	ReportKindRequirement: "📋 Requirement",
+	ReportKindFindings:    "🔝 Findings",
 }
 
 var limitTypeTitles = map[string]string{

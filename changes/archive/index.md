@@ -657,3 +657,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
     rules, and the single `FactorAnalysisResult` example becomes the worked
     umbrella case (empty `localAnalysis`, child-Factor roll-up in
     `localAndDescendantAnalysis`) earned by a new Factor Traversal rule (`Done`).
+- [0154 — Ranked Findings Reports](0154-ranked-findings-reports.md) - makes
+  ranked findings easier to scan, navigate, and inspect across generated
+  Evaluation reports (`Done`).

@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0154 - Ranked Findings Reports](../changes/archive/0154-ranked-findings-reports.md).
+  Evaluation report specs now require `report.md` Top Findings and the full
+  `findings.md` index to share ranked finding columns, link finding statements
+  to stable Requirement detail anchors, link Area and Factor names, and show
+  Advice rank/tier/rationale context in Requirement finding details.
+
+- **Revision**: Implemented durable spec changes for
   [0151 - Evaluation Report CTA](../changes/archive/0151-evaluation-report-cta.md).
   The `/quality` skill reporting specs now require evaluation closeouts to point
   first to the human `report.md` result with a value-oriented CTA, describe

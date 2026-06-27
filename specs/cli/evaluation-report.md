@@ -51,10 +51,10 @@ choose a headline subject from `EvaluationFrame` or any other agent-authored
 payload ordering.
 
 `build` **MUST** render persisted Advice outputs into `report.md`,
-`recommendations.md`, and recommendation detail reports under
+`findings.md`, `recommendations.md`, and recommendation detail reports under
 `recommendations/`. `report.md` **MUST** include Top Findings and Top
 Recommendations sections capped at 10 rows each and **MUST** link to
-`recommendations.md`.
+`findings.md` and `recommendations.md`.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

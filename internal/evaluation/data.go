@@ -1614,8 +1614,13 @@ func runReportRef(path string) map[string]any {
 	return map[string]any{"kind": string(ReportKindRun), "path": path}
 }
 
+func findingsReportRef(path string) map[string]any {
+	return map[string]any{"kind": string(ReportKindFindings), "path": path}
+}
+
 func evaluationOutputExample() map[string]any {
 	runReport := runReportRef("report.md")
+	findingsReport := findingsReportRef("findings.md")
 	areaReport := areaReportRef(exampleAreaID(), "root-area.md")
 	factorReport := factorReportRef(exampleAreaID(), exampleFactorID(), "factors/verification/verification-factor.md")
 	requirementReport := requirementReportRef(exampleAreaID(), exampleRequirementID(), "requirements/has-tests/has-tests-requirement.md")
@@ -1634,6 +1639,6 @@ func evaluationOutputExample() map[string]any {
 			"requirementRatingRefs":     []any{routineRef(DataKindRequirementRating, map[string]any{"requirementId": exampleRequirementID()}, "")},
 			"reportRefs":                []any{areaReport, factorReport, requirementReport},
 		}},
-		"reportOutputs": []any{runReport, areaReport, factorReport, requirementReport},
+		"reportOutputs": []any{runReport, findingsReport, areaReport, factorReport, requirementReport},
 	}
 }

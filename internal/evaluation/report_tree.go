@@ -182,6 +182,17 @@ type evaluationRenderedReport struct {
 	Content          string
 }
 
+type rankedFinding struct {
+	Rank        int
+	Total       int
+	Key         string
+	Selector    string
+	FindingID   string
+	Requirement *evaluationRequirementArtifacts
+	Finding     map[string]any
+	Ranking     map[string]any
+}
+
 type evaluationReportPlan struct {
 	Frame              map[string]any
 	RequestedScope     RunScope
@@ -413,7 +424,13 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 			Content:       renderEvaluationRequirementReport(spec, artifacts, requirement, path),
 		})
 	}
+	findingsIndex := evaluationRenderedReport{
+		Kind:    string(ReportKindFindings),
+		Path:    "findings.md",
+		Content: renderEvaluationFindingsIndex(spec, artifacts),
+	}
 	recommendationReports := renderEvaluationRecommendationReports(artifacts)
+	reports = append(reports, findingsIndex)
 	reports = append(reports, recommendationReports...)
 	linkEvaluationReportPlan(plan, reports)
 	run := evaluationRenderedReport{
@@ -422,6 +439,15 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 		Content: renderEvaluationRunReport(spec, artifacts, plan, reports, "report.md"),
 	}
 	return append([]evaluationRenderedReport{run}, reports...)
+}
+
+func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts) string {
+	var b strings.Builder
+	b.WriteString("# Findings\n\n")
+	b.WriteString("Data: " + reportDataLink("findings.md", "data/advice/finding-ranking-result.json") + "\n\n")
+	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
+	writeEvaluationLegend(&b)
+	return b.String()
 }
 
 func renderEvaluationRecommendationReports(artifacts *evaluationArtifacts) []evaluationRenderedReport {
@@ -542,7 +568,8 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString("\n\n## Rating Drivers\n\n")
 	writeEvaluationDriversTable(&b, spec, scopedArea)
 	b.WriteString("## Top Findings\n\n")
-	writeTopFindingsTable(&b, artifacts, reportPath, 10)
+	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
+	b.WriteString("Full findings index: " + reportLink(reportPath, "findings.md", "findings.md") + "\n\n")
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, artifacts, reportPath, 10)
 	b.WriteString("Full recommendation index: " + reportLink(reportPath, "recommendations.md", "recommendations.md") + "\n\n")
@@ -695,11 +722,10 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	b.WriteString("\n\n## Findings Summary\n\n")
 	writeEvaluationFindingsTable(&b, req.Assessment)
 	b.WriteString("## Finding Details\n\n")
-	writeEvaluationFindingDetails(&b, req.Assessment)
+	writeEvaluationFindingDetails(&b, artifacts, req)
 	b.WriteString("## Unknowns & Missing Evidence\n\n")
 	writeEvaluationUnknownsTable(&b, req.Assessment, req.Rating)
 	writeEvaluationLegend(&b)
-	_ = artifacts
 	return b.String()
 }
 
@@ -1086,44 +1112,72 @@ func artifactFindingRefKey(v any) string {
 	return path + "#" + selector
 }
 
-func writeTopFindingsTable(b *strings.Builder, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| Rank | Finding | Tier | Severity | Confidence |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
-	items := objectSlice(artifacts.FindingRanking["orderedFindings"])
-	if len(items) == 0 {
-		b.WriteString("| (no ranked findings) |  |  |  |  |\n\n")
+func writeRankedFindingsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
+	b.WriteString("| Rank | Finding | Area | Factors | Type | Severity |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+	rows := artifacts.rankedFindings()
+	if len(rows) == 0 {
+		b.WriteString("| (no ranked findings) |  |  |  |  |  |\n\n")
 		return
 	}
-	sort.Slice(items, func(i, j int) bool {
-		left, _ := rankField(items[i])
-		right, _ := rankField(items[j])
-		return left < right
-	})
 	wrote := 0
-	for _, item := range items {
+	for _, row := range rows {
 		if limit > 0 && wrote >= limit {
 			break
 		}
-		ref := objectMap(item["findingRef"])
-		path, _ := dataPathForRoutineRef(ref)
-		selector := firstString(ref, "selector")
-		finding := artifacts.findingByKey(path + "#" + selector)
-		rank, _ := rankField(item)
-		label := selector
-		if statement := firstString(finding, "statement"); statement != "" {
-			label = statement
-		}
-		req := requirementIDForAssessmentPath(path)
-		fmt.Fprintf(b, "| %d | %s | %s | %s | %s |\n",
-			rank,
-			reportLink(reportPath, requirementReportPath(req), label),
-			markdownCell(firstString(item, "tier")),
-			markdownCell(findingSeverityTitle(firstString(finding, "severity"))),
-			markdownCell(confidenceTitle(firstString(finding, "confidence"))),
+		fmt.Fprintf(b, "| %d | %s | %s | %s | %s | %s |\n",
+			row.Rank,
+			rankedFindingLink(row, reportPath),
+			rankedFindingAreaLink(spec, row, reportPath),
+			rankedFindingFactorLinks(spec, row, reportPath),
+			markdownCell(findingTypeTitle(firstString(row.Finding, "type"))),
+			markdownCell(findingSeverityTitle(firstString(row.Finding, "severity"))),
 		)
 		wrote++
 	}
 	b.WriteString("\n")
+}
+
+func (a *evaluationArtifacts) rankedFindings() []rankedFinding {
+	items := objectSlice(a.FindingRanking["orderedFindings"])
+	rows := make([]rankedFinding, 0, len(items))
+	for _, item := range items {
+		ref := objectMap(item["findingRef"])
+		path, _ := dataPathForRoutineRef(ref)
+		selector := firstString(ref, "selector")
+		key := path + "#" + selector
+		reqID := requirementIDForAssessmentPath(path)
+		req := a.Requirements[requirementKey(reqID)]
+		rank, _ := rankField(item)
+		rows = append(rows, rankedFinding{
+			Rank:        rank,
+			Key:         key,
+			Selector:    selector,
+			FindingID:   findingIDFromSelector(selector),
+			Requirement: req,
+			Finding:     a.findingByKey(key),
+			Ranking:     item,
+		})
+	}
+	sort.Slice(rows, func(i, j int) bool {
+		if rows[i].Rank != rows[j].Rank {
+			return rows[i].Rank < rows[j].Rank
+		}
+		return rows[i].Key < rows[j].Key
+	})
+	for i := range rows {
+		rows[i].Total = len(rows)
+	}
+	return rows
+}
+
+func (a *evaluationArtifacts) rankedFindingByKey(key string) (rankedFinding, bool) {
+	for _, row := range a.rankedFindings() {
+		if row.Key == key {
+			return row, true
+		}
+	}
+	return rankedFinding{}, false
 }
 
 func (a *evaluationArtifacts) findingByKey(key string) map[string]any {
@@ -1143,6 +1197,58 @@ func (a *evaluationArtifacts) findingByKey(key string) map[string]any {
 		}
 	}
 	return nil
+}
+
+func rankedFindingLink(row rankedFinding, reportPath string) string {
+	label := row.Selector
+	if statement := firstString(row.Finding, "statement"); statement != "" {
+		label = statement
+	}
+	if row.Requirement == nil {
+		return markdownCell(label)
+	}
+	target := requirementReportPath(row.Requirement.ID)
+	if row.FindingID != "" {
+		target += "#" + findingAnchorID(row.FindingID)
+	}
+	return reportLink(reportPath, target, label)
+}
+
+func rankedFindingAreaLink(spec *model.Spec, row rankedFinding, reportPath string) string {
+	if row.Requirement == nil {
+		return "—"
+	}
+	return reportLink(reportPath, areaReportPath(row.Requirement.ID.DeclaringArea), areaTitle(spec, row.Requirement.ID.DeclaringArea))
+}
+
+func rankedFindingFactorLinks(spec *model.Spec, row rankedFinding, reportPath string) string {
+	if row.Requirement == nil {
+		return "—"
+	}
+	ids := requirementFactorIDs(row.Requirement)
+	links := make([]string, 0, len(ids))
+	for _, ref := range ids {
+		id, err := parseRequirementFactorID(row.Requirement.ID.DeclaringArea, ref)
+		if err != nil || len(id.Path) == 0 {
+			continue
+		}
+		links = append(links, reportLink(reportPath, factorReportPath(id), factorTitle(spec, id)))
+	}
+	if len(links) == 0 {
+		return "—"
+	}
+	return strings.Join(links, ", ")
+}
+
+func findingIDFromSelector(selector string) string {
+	return strings.TrimSuffix(strings.TrimPrefix(selector, "findings["), "]")
+}
+
+func findingAnchorID(id string) string {
+	if id == "" {
+		return ""
+	}
+	return "finding-" + id
 }
 
 func requirementIDForAssessmentPath(path string) requirementID {
@@ -1234,6 +1340,8 @@ func reportSubjectTitle(spec *model.Spec, report evaluationRenderedReport) strin
 		return factorTitle(spec, *report.FactorID)
 	case string(ReportKindRequirement):
 		return requirementTitle(spec, *report.RequirementID)
+	case string(ReportKindFindings):
+		return "Findings"
 	case string(ReportKindAdviceIndex):
 		return "Recommendations"
 	case string(ReportKindAdvice):
@@ -1261,7 +1369,7 @@ func reportSubjectRating(spec *model.Spec, artifacts *evaluationArtifacts, repor
 				return evaluationRequirementRatingLabel(spec, req.Rating)
 			}
 		}
-	case string(ReportKindAdviceIndex), string(ReportKindAdvice):
+	case string(ReportKindFindings), string(ReportKindAdviceIndex), string(ReportKindAdvice):
 		return "—"
 	default:
 		return "—"
@@ -1471,18 +1579,37 @@ func writeEvaluationLimitsTable(b *strings.Builder, scopes ...map[string]any) {
 	}
 }
 
-func writeFindingCoreDetails(b *strings.Builder, headingLevel int, id string, finding map[string]any) {
+func writeFindingCoreDetails(b *strings.Builder, headingLevel int, id string, finding map[string]any, ranking rankedFinding, ranked bool) {
 	heading := strings.Repeat("#", headingLevel)
 	title := id
 	if statement := firstString(finding, "statement"); statement != "" {
 		title += " " + statement
 	}
+	if anchor := findingAnchorID(id); anchor != "" {
+		b.WriteString(`<a id="` + markdownCell(anchor) + `"></a>` + "\n\n")
+	}
 	b.WriteString(heading + " " + title + "\n\n")
+	writeFindingRankingContext(b, ranking, ranked)
 	writeFindingSection(b, headingLevel+1, "Condition", firstString(finding, "condition"))
 	writeFindingCriteriaSection(b, headingLevel+1, finding)
 	writeFindingBasisSection(b, headingLevel+1, finding)
 	writeFindingEffectSection(b, headingLevel+1, finding)
 	writeFindingEvidenceSection(b, headingLevel+1, "Evidence", objectSlice(finding["evidence"]))
+}
+
+func writeFindingRankingContext(b *strings.Builder, ranking rankedFinding, ranked bool) {
+	b.WriteString("| Advice Rank | Tier | Ranking Rationale |\n")
+	b.WriteString("| --- | --- | --- |\n")
+	if !ranked {
+		b.WriteString("| (not ranked) | — | — |\n\n")
+		return
+	}
+	fmt.Fprintf(b, "| %d / %d | %s | %s |\n\n",
+		ranking.Rank,
+		ranking.Total,
+		markdownCell(firstString(ranking.Ranking, "tier")),
+		markdownCell(firstString(ranking.Ranking, "rationale")),
+	)
 }
 
 func writeFindingSection(b *strings.Builder, headingLevel int, title, body string) {
@@ -1602,8 +1729,8 @@ func writeEvaluationFindingsTable(b *strings.Builder, assessment map[string]any)
 	b.WriteString("\n")
 }
 
-func writeEvaluationFindingDetails(b *strings.Builder, assessment map[string]any) {
-	findings := objectSlice(assessment["findings"])
+func writeEvaluationFindingDetails(b *strings.Builder, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts) {
+	findings := objectSlice(req.Assessment["findings"])
 	if len(findings) == 0 {
 		b.WriteString("(no finding details)\n\n")
 		return
@@ -1613,7 +1740,9 @@ func writeEvaluationFindingDetails(b *strings.Builder, assessment map[string]any
 		if id == "" {
 			id = fmt.Sprintf("finding-%d", i+1)
 		}
-		writeFindingCoreDetails(b, 3, id, finding)
+		key := requirementDataPath(req.ID, "requirement-assessment-result.json") + "#findings[" + id + "]"
+		ranking, ranked := artifacts.rankedFindingByKey(key)
+		writeFindingCoreDetails(b, 3, id, finding, ranking, ranked)
 	}
 }
 

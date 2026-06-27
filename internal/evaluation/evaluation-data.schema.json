@@ -1088,6 +1088,7 @@
                         "area",
                         "factor",
                         "requirement",
+                        "findings",
                         "recommendations",
                         "recommendation"
                       ],
@@ -1256,6 +1257,7 @@
                   "area",
                   "factor",
                   "requirement",
+                  "findings",
                   "recommendations",
                   "recommendation"
                 ],
@@ -1347,6 +1349,7 @@
                 "area",
                 "factor",
                 "requirement",
+                "findings",
                 "recommendations",
                 "recommendation"
               ],

@@ -3,6 +3,34 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0154 - Ranked Findings Reports](archive/0154-ranked-findings-reports.md).
+  Evaluation report build now writes a full ranked `findings.md` index, reshapes
+  `report.md` Top Findings around linked Finding, Area, and Factor names, links
+  finding statements to stable Requirement detail anchors, and renders Advice
+  rank/tier/rationale context in Requirement finding details. `go test ./...`
+  and `mise run fmt-md-check` pass.
+
+- **In-Progress**: Advanced
+  [0154 - Ranked Findings Reports](archive/0154-ranked-findings-reports.md). Functional
+  spec and design are settled; implementation is beginning across generated
+  report rendering, durable specs, tests, and lifecycle artifacts.
+
+- **Design**: Advanced
+  [0154 - Ranked Findings Reports](archive/0154-ranked-findings-reports.md) with its
+  [design doc](archive/0154-ranked-findings-reports/design.md). The design uses one
+  ranked-finding row model for `report.md` and `findings.md`, stable
+  `finding-<id>` anchors on Requirement reports, and a compact Advice ranking
+  block inside each finding detail.
+
+- **Draft**: Created
+  [0154 - Ranked Findings Reports](archive/0154-ranked-findings-reports.md) with its
+  [functional spec](archive/0154-ranked-findings-reports/spec.md) and
+  [design doc](archive/0154-ranked-findings-reports/design.md). The case reshapes
+  `report.md` Top Findings, adds a full ranked `findings.md` index, links ranked
+  finding statements to stable Requirement finding-detail anchors, and adds
+  Advice rank/tier/rationale context to Requirement finding details.
+
+- **Done**: Implemented and archived
   [0153 - Evaluate ranking and umbrella-factor authoring clarity](archive/0153-evaluate-ranking-and-umbrella-clarity.md).
   The `evaluate` finding-ranking guidance, example, and protocol/payload-kinds
   rules now lead with completeness (tiers express priority, no finding dropped),

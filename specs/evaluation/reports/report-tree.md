@@ -31,6 +31,9 @@ the run is otherwise renderable.
 The run-level Evaluation report **MUST** be generated as `report.md` at the run
 root.
 
+The full ranked findings index **MUST** be generated as `findings.md` at the run
+root.
+
 The root Area report **MUST** be generated as `root-area.md` at the run root
 when the root Area has an Area Analysis Result in the run.
 
@@ -73,6 +76,7 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 - link to `data/evaluation-output-result.json`;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
+- link to the full findings index;
 - link to the full recommendation index;
 - summary from the scoped Area result;
 - requested and planned Evaluation scope;
@@ -89,9 +93,29 @@ The run report **MUST** state when the root Area was not evaluated in the run.
 The run report **MUST NOT** introduce report-only findings, ratings, evidence,
 limits, analysis, recommendations, candidate actions, or source claims.
 
+The Top Findings table **MUST** render rows from
+`FindingRankingResult.orderedFindings` ordered by rank and capped at 10 rows. It
+**MUST** render the columns `Rank`, `Finding`, `Area`, `Factors`, `Type`, and
+`Severity`, in that order. The `Finding` cell **MUST** use the finding
+`statement` as link text and link to the exact finding detail section in the
+Requirement report. The `Area` cell **MUST** link the declaring Area title to
+the Area report. The `Factors` cell **MUST** render comma-separated attached
+Factor title links, or `—` when no Factor link can be rendered. `Type` and
+`Severity` **MUST** render existing display labels, including their emoji, for
+known finding type and severity enum values.
+
 The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
-link to `recommendations.md` when the report tree is built.
+link to `findings.md` and `recommendations.md` when the report tree is built.
+
+## Finding Reports
+
+`findings.md` **MUST** render a complete ranked findings index from
+`FindingRankingResult`. It **MUST** include:
+
+- all ranked findings ordered by rank;
+- the same columns and link behavior as the run report Top Findings table; and
+- a source data link to `data/advice/finding-ranking-result.json`.
 
 ## Recommendation Reports
 
@@ -224,6 +248,16 @@ Requirement reports **MUST** include:
 - findings summary;
 - finding detail sections; and
 - unknowns and missing evidence.
+
+Requirement report finding detail sections **MUST** provide stable anchors
+derived from the finding ID. Ranked findings links **MUST NOT** depend on
+statement wording.
+
+Requirement report finding detail sections **MUST** render Advice ranking
+context when the finding appears in `FindingRankingResult`: Advice rank as
+`<rank> / <total ranked findings>`, tier, and ranking rationale. When no
+matching ranking entry exists, the section **MUST** render an explicit
+not-ranked state.
 
 Finding detail sections **MUST NOT** render finding-local `candidateActions`.
 Candidate actions remain finding-local raw material; selected next moves belong

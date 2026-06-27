@@ -5,6 +5,12 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Evaluation report build now generates a full ranked `findings.md` index,
+  links `report.md` Top Findings to exact Requirement finding details, and shows
+  Advice rank context inside Requirement finding detail sections.
+
 ## v0.25.4 - 2026-06-27
 
 ### Packaging

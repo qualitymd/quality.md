@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the Evaluation records data-layout and report-tree
+  contracts for [0154 - Ranked Findings Reports](../../changes/archive/0154-ranked-findings-reports.md).
+  Evaluation report build now writes `findings.md` as the full ranked findings
+  index, keeps `report.md` Top Findings capped, links ranked finding statements
+  to stable Requirement detail anchors, and renders per-finding Advice rank
+  context on Requirement reports.
+
 - **Revision**: Updated the Evaluation data, protocol, orchestration, routine,
   data-layout, and report-tree contracts for
   [0150 - Evaluation Advice](../../changes/archive/0150-evaluation-advice.md).

@@ -391,6 +391,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "Area: [Navigation model](root-area.md)")
 	assertContains(t, runReport, "[evaluation-output-result.json](data/evaluation-output-result.json)")
 	assertContains(t, runReport, "## Top Findings")
+	assertContains(t, runReport, "| Rank | Finding | Area | Factors | Type | Severity |")
+	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
+	assertContains(t, runReport, "Full findings index: [findings.md](findings.md)")
 	assertContains(t, runReport, "## Top Recommendations")
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
 
@@ -447,6 +450,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, requirementReport, "Factors: [reliability](../../factors/reliability/reliability-factor.md)")
 	assertContains(t, requirementReport, "# Requirement: Has tests\n\nArea: [Navigation model](../../root-area.md)\n\nFactors: [reliability](../../factors/reliability/reliability-factor.md)")
+	assertContains(t, requirementReport, `<a id="finding-strength-1"></a>`)
+	assertContains(t, requirementReport, "| Advice Rank | Tier | Ranking Rationale |")
+	assertContains(t, requirementReport, "| 1 / 1 | P1 | This finding most directly informs next advice. |")
 	assertNotContains(t, requirementReport, "Name: `has-tests`")
 	assertContains(t, requirementReport, "| Rating | Assessment | Confidence | Data |")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
@@ -456,6 +462,12 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, requirementReport, "Parent Area:")
 	assertOnlyRootReportMD(t, runPath)
 
+	findingsReport := readReport(t, runPath, "findings.md")
+	assertContains(t, findingsReport, "# Findings")
+	assertContains(t, findingsReport, "Data: [finding-ranking-result.json](data/advice/finding-ranking-result.json)")
+	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
+	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
+
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
 		t.Fatalf("reading EvaluationOutputResult: %v", err)
@@ -463,7 +475,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	if !strings.Contains(string(outputRaw), `"path": "factors/reliability/reliability-factor.md"`) {
 		t.Fatalf("EvaluationOutputResult = %s, want subject-aware report refs", outputRaw)
 	}
-	if !strings.Contains(string(outputRaw), `"runReportRef":`) || !strings.Contains(string(outputRaw), `"kind": "run"`) || !strings.Contains(string(outputRaw), `"path": "root-area.md"`) {
+	if !strings.Contains(string(outputRaw), `"runReportRef":`) || !strings.Contains(string(outputRaw), `"kind": "run"`) || !strings.Contains(string(outputRaw), `"path": "root-area.md"`) || !strings.Contains(string(outputRaw), `"kind": "findings"`) {
 		t.Fatalf("EvaluationOutputResult = %s, want run and root Area report refs", outputRaw)
 	}
 	if build.RatingResult.Level != "target" {
@@ -903,9 +915,11 @@ func TestFindingDetailsOmitCandidateActions(t *testing.T) {
 	var b strings.Builder
 	finding := testFindingCore("gap-1", "gap", "high", "high", "Edge cases untested.")
 	finding["candidateActions"] = []any{map[string]any{"id": "action-001", "description": "Add boundary tests."}}
-	writeEvaluationFindingDetails(&b, map[string]any{
-		"findings": []any{finding},
-	})
+	req := &evaluationRequirementArtifacts{
+		ID:         requirementID{Name: "has-tests"},
+		Assessment: map[string]any{"findings": []any{finding}},
+	}
+	writeEvaluationFindingDetails(&b, &evaluationArtifacts{}, req)
 	rendered := b.String()
 	if strings.Contains(rendered, "| Actions |") {
 		t.Fatalf("finding details = %s, want no Actions row in the v0 report", rendered)
@@ -913,7 +927,7 @@ func TestFindingDetailsOmitCandidateActions(t *testing.T) {
 	if strings.Contains(rendered, "Add boundary tests.") {
 		t.Fatalf("finding details = %s, want candidate actions kept out of the report", rendered)
 	}
-	for _, want := range []string{"### gap-1 Edge cases untested.", "#### Condition", "#### Criteria", "#### Basis", "#### Effect", "#### Evidence"} {
+	for _, want := range []string{`<a id="finding-gap-1"></a>`, "### gap-1 Edge cases untested.", "| (not ranked) | — | — |", "#### Condition", "#### Criteria", "#### Basis", "#### Effect", "#### Evidence"} {
 		if !strings.Contains(rendered, want) {
 			t.Fatalf("finding details = %s, want %q", rendered, want)
 		}
@@ -1257,6 +1271,7 @@ func TestReportDisplayTitles(t *testing.T) {
 		{"run gap kind", runGapKindTitle(GapMissingEvaluationData), "📭 Missing Evaluation Data"},
 		{"rating result kind", ratingResultKindTitle(RatingResultNotAssessed), "⚪ Not Assessed"},
 		{"report kind", reportKindTitle(string(ReportKindFactor)), "🧩 Factor"},
+		{"findings report kind", reportKindTitle(string(ReportKindFindings)), "🔝 Findings"},
 		{"boolean", boolTitle(true), "✅ Yes"},
 		{"known finding severity", findingSeverityTitle("high"), "🔴 High"},
 		{"unknown fallback", findingTypeTitle("new_finding_type"), "New Finding Type"},
