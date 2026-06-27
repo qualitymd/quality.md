@@ -647,3 +647,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0151 — Evaluation Report CTA](0151-evaluation-report-cta.md) - makes
   `/quality evaluate` closeouts point first to the human `report.md` result and
   describe `recommendations.md` as the action-planning report (`Done`).
+- [0152 — Release Reliability](0152-release-reliability.md) - hardens release
+  preflight, draft-first publication, Homebrew/npm split jobs, verification, and
+  repair behavior after the v0.25.0 release failures (`Done`).

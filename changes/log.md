@@ -2,29 +2,36 @@
 
 ## 2026-06-27
 
+- **Done**: Implemented and archived
+  [0152 - Release Reliability](archive/0152-release-reliability.md). Release
+  publishing now has credential preflight, draft-first GitHub Releases,
+  independent Homebrew and npm jobs, channel verification before publication,
+  idempotent repair helpers, updated runbook guidance, and a successful
+  `v0.25.4` proof release.
+
 - **In-Review**: Repaired
-  [0152 - Release Reliability](0152-release-reliability.md) after the
+  [0152 - Release Reliability](archive/0152-release-reliability.md) after the
   `v0.25.3` release workflow verified all release channels but failed the final
   publish job because `gh release edit` had no checked-out repository context.
   The workflow now passes `--repo qualitymd/quality.md`; `v0.25.3` was manually
   published after verification passed.
 
 - **In-Review**: Repaired
-  [0152 - Release Reliability](0152-release-reliability.md) after the
+  [0152 - Release Reliability](archive/0152-release-reliability.md) after the
   `v0.25.2` release workflow proved that the workflow token cannot read the
   Homebrew tap through the cross-repo contents API during verification. The
   verifier now reads the public raw cask URL, and `v0.25.2` was manually
   verified and published after the Homebrew/npm jobs succeeded.
 
 - **In-Review**: Repaired
-  [0152 - Release Reliability](0152-release-reliability.md) after the
+  [0152 - Release Reliability](archive/0152-release-reliability.md) after the
   `v0.25.1` release workflow proved that GitHub's tag-specific release endpoint
   can return 404 for draft releases. Release scripts now fall back to listing
   releases by `tag_name`, the Homebrew updater avoids token-dependent clone, and
   `v0.25.1` was manually verified and published after the tap repair.
 
 - **In-Review**: Completed implementation for
-  [0152 - Release Reliability](0152-release-reliability.md). The release workflow
+  [0152 - Release Reliability](archive/0152-release-reliability.md). The release workflow
   now runs credential preflight, creates draft GitHub releases, publishes
   Homebrew and npm through independently visible jobs, verifies all release
   channels before publication, and provides verifier/repair tasks. `node
@@ -42,9 +49,9 @@
   skill specs, runtime evaluate guidance, release notes, and logs now align
   around a value-oriented human report CTA. `mise run fmt-md-check` passes.
 
-- **Design**: Created [0152 - Release Reliability](0152-release-reliability.md)
-  with its [functional spec](0152-release-reliability/spec.md) and
-  [design doc](0152-release-reliability/design.md). The case hardens release
+- **Design**: Created [0152 - Release Reliability](archive/0152-release-reliability.md)
+  with its [functional spec](archive/0152-release-reliability/spec.md) and
+  [design doc](archive/0152-release-reliability/design.md). The case hardens release
   preflight credential checks, draft-first GitHub releases, independent
   Homebrew/npm publication, idempotent repair, and post-release verification
   after the `v0.25.0` partial-publish failure.

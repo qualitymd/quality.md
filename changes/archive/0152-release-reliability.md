@@ -2,7 +2,7 @@
 type: Change Case
 title: Release Reliability
 description: Harden release preflight, publish workflow, verification, and repair behavior after v0.25.0 exposed partial-publish failure modes.
-status: In-Review
+status: Done
 tags: [release, automation, packaging, reliability]
 timestamp: 2026-06-27T00:00:00Z
 ---
@@ -89,5 +89,5 @@ Deferred:
 
 ## Status
 
-`In-Review`. Implementation and documentation are in place. The remaining gate is
-cutting and verifying the patch release through the hardened workflow.
+`Done`. Implemented, documented, shipped, and verified through the successful
+`v0.25.4` release workflow.
