@@ -1,7 +1,7 @@
 # QUALITY.md
 
 **QUALITY.md** is an [open format](./SPECIFICATION.md), agent skill, and CLI for
-managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), and [compound learning](#the-outer-loop-dailyweekly).
+managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), [compound learning](#the-outer-loop-dailyweekly), and achieve alignment around *what quality means for what matters most*.
 
 QUALITY.md helps teams **move quality judgment up the loop
 stack**, enabling a continuous and comprehensive approach to improving and maintaining project quality instead of ad hoc prompts, passive skills, reactive reviews, and low-level inspections.

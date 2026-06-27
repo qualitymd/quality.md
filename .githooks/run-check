@@ -65,6 +65,9 @@ case "$mode" in
 		if has_unstaged_changes; then
 			stash_changes "qualitymd pre-commit unstaged changes" --keep-index --include-untracked
 		fi
+		printf 'Regenerating report gallery for staged changes...\n'
+		mise run report-gallery
+		git add examples/report-gallery
 		printf 'Running mise run check against staged changes...\n'
 		;;
 	committed)

@@ -59,7 +59,8 @@ mise run hooks
 ```
 
 The repo-managed hooks run the same `mise run check` gate as CI. `pre-commit`
-temporarily stashes unstaged files and checks the staged snapshot. `pre-push`
+temporarily stashes unstaged files, regenerates and stages
+`examples/report-gallery`, and checks the staged snapshot. `pre-push`
 temporarily stashes local changes and checks the committed snapshot.
 
 ### Testing the CLI from another directory
