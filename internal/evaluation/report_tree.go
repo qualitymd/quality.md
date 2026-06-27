@@ -429,7 +429,7 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 		Path:    "findings.md",
 		Content: renderEvaluationFindingsIndex(spec, artifacts),
 	}
-	recommendationReports := renderEvaluationRecommendationReports(artifacts)
+	recommendationReports := renderEvaluationRecommendationReports(spec, artifacts)
 	reports = append(reports, findingsIndex)
 	reports = append(reports, recommendationReports...)
 	linkEvaluationReportPlan(plan, reports)
@@ -450,12 +450,13 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 	return b.String()
 }
 
-func renderEvaluationRecommendationReports(artifacts *evaluationArtifacts) []evaluationRenderedReport {
+func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluationArtifacts) []evaluationRenderedReport {
 	var reports []evaluationRenderedReport
 	recommendations := artifacts.rankedRecommendations()
 	var index strings.Builder
 	index.WriteString("# Recommendations\n\n")
-	writeTopRecommendationsTable(&index, artifacts, "recommendations.md", 0)
+	index.WriteString("Data: " + reportDataLink("recommendations.md", "data/advice/recommendation-ranking-result.json") + "\n\n")
+	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
 	writeAdviceCoverageSummary(&index, artifacts)
 	reports = append(reports, evaluationRenderedReport{
 		Kind:    string(ReportKindAdviceIndex),
@@ -526,11 +527,14 @@ func renderEvaluationRecommendationReport(item rankedRecommendation) string {
 	b.WriteString("# " + firstString(rec, "title") + "\n\n")
 	fmt.Fprintf(&b, "**Rank:** %d\n", item.Rank)
 	b.WriteString("**Impact:** " + impactTitle(firstString(rec, "impact")) + "\n")
-	b.WriteString("**Confidence:** " + confidenceTitle(firstString(rec, "confidence")) + "\n\n")
-	writeRecommendationSection(&b, "Why it matters", firstString(rec, "whyItMatters"))
-	writeRecommendationSection(&b, "Recommended next move", firstString(rec, "recommendedNextMove"))
-	writeRecommendationSection(&b, "Expected benefit", firstString(rec, "expectedBenefit"))
-	writeRecommendationSection(&b, "How to know it worked", firstString(rec, "howToKnowItWorked"))
+	b.WriteString("**Confidence:** " + confidenceTitle(firstString(rec, "confidence")) + "\n")
+	reportPath := recommendationReportPath(item.Rank, firstString(rec, "title"))
+	b.WriteString("**Data:** " + reportDataLink(reportPath, recommendationDataPath(firstString(rec, "id"))) + ", " + reportDataLink(reportPath, "data/advice/recommendation-ranking-result.json") + "\n\n")
+	writeRecommendationSection(&b, "Description", firstString(rec, "description"))
+	writeRecommendationSection(&b, "Background", firstString(rec, "background"))
+	writeRecommendationSection(&b, "Expected value", firstString(rec, "expectedValue"))
+	writeRecommendationSection(&b, "Done criterion", firstString(rec, "doneCriterion"))
+	writeRecommendationSection(&b, "Ranking rationale", firstString(item.Ranking, "rationale"))
 	b.WriteString("## Trace\n\n")
 	if refs := objectSlice(rec["traceRefs"]); len(refs) == 0 {
 		b.WriteString("(none recorded)\n\n")
@@ -571,7 +575,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
 	b.WriteString("Full findings index: " + reportLink(reportPath, "findings.md", "findings.md") + "\n\n")
 	b.WriteString("## Top Recommendations\n\n")
-	writeTopRecommendationsTable(&b, artifacts, reportPath, 10)
+	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
 	b.WriteString("Full recommendation index: " + reportLink(reportPath, "recommendations.md", "recommendations.md") + "\n\n")
 	b.WriteString("\n\n## Scope\n\n")
 	writeEvaluationRunScope(&b, spec, plan)
@@ -1264,8 +1268,8 @@ func requirementIDForAssessmentPath(path string) requirementID {
 	return requirementID{DeclaringArea: areaParts, Name: name}
 }
 
-func writeTopRecommendationsTable(b *strings.Builder, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| Rank | Recommendation | Impact | Confidence |\n")
+func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
+	b.WriteString("| Rank | Recommendation | Area / Factors | Reason |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
@@ -1284,11 +1288,131 @@ func writeTopRecommendationsTable(b *strings.Builder, artifacts *evaluationArtif
 		fmt.Fprintf(b, "| %d | %s | %s | %s |\n",
 			item.Rank,
 			reportLink(reportPath, path, title),
-			markdownCell(impactTitle(firstString(item.Recommendation, "impact"))),
-			markdownCell(confidenceTitle(firstString(item.Recommendation, "confidence"))),
+			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
+			markdownCell(firstString(item.Recommendation, "expectedValue")),
 		)
 	}
 	b.WriteString("\n")
+}
+
+func writeRecommendationIndexTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string) {
+	b.WriteString("| Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
+	items := artifacts.rankedRecommendations()
+	if len(items) == 0 {
+		b.WriteString("| (no recommendations) |  |  |  |  |  |  |\n\n")
+		return
+	}
+	for _, item := range items {
+		title := firstString(item.Recommendation, "title")
+		if title == "" {
+			title = firstString(item.Recommendation, "id")
+		}
+		path := recommendationReportPath(item.Rank, title)
+		fmt.Fprintf(b, "| %d | %s | %s | %s | %s | %s | %s |\n",
+			item.Rank,
+			reportLink(reportPath, path, title),
+			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
+			markdownCell(impactTitle(firstString(item.Recommendation, "impact"))),
+			markdownCell(confidenceTitle(firstString(item.Recommendation, "confidence"))),
+			markdownCell(firstString(item.Recommendation, "expectedValue")),
+			markdownCell(firstString(item.Ranking, "rationale")),
+		)
+	}
+	b.WriteString("\n")
+}
+
+type recommendationTraceContext struct {
+	AreaID    []string
+	FactorIDs []factorID
+}
+
+func recommendationAreaFactorLinks(spec *model.Spec, artifacts *evaluationArtifacts, rec map[string]any, reportPath string) string {
+	groups := map[string][]factorID{}
+	var order []string
+	for _, ref := range objectSlice(rec["traceRefs"]) {
+		for _, ctx := range artifacts.recommendationTraceContexts(objectMap(ref)) {
+			key := areaKey(ctx.AreaID)
+			if _, ok := groups[key]; !ok {
+				order = append(order, key)
+			}
+			groups[key] = appendFactorIDs(groups[key], ctx.FactorIDs...)
+		}
+	}
+	if len(order) == 0 {
+		return "—"
+	}
+	parts := make([]string, 0, len(order))
+	for _, key := range order {
+		areaID := areaIDFromKey(key)
+		area := reportLink(reportPath, areaReportPath(areaID), areaTitle(spec, areaID))
+		factors := recommendationFactorLinks(spec, groups[key], reportPath)
+		parts = append(parts, area+" / "+factors)
+	}
+	return strings.Join(parts, "; ")
+}
+
+func (a *evaluationArtifacts) recommendationTraceContexts(ref map[string]any) []recommendationTraceContext {
+	if ref == nil {
+		return nil
+	}
+	subject := objectMap(ref["subject"])
+	if id, err := requirementIDFrom(subject["requirementId"]); err == nil {
+		req := a.Requirements[requirementKey(id)]
+		return []recommendationTraceContext{{AreaID: id.DeclaringArea, FactorIDs: recommendationRequirementFactorIDs(req, id)}}
+	}
+	if id, err := factorIDFrom(subject["factorId"]); err == nil {
+		return []recommendationTraceContext{{AreaID: id.DeclaringArea, FactorIDs: []factorID{id}}}
+	}
+	if id, err := areaIDFrom(subject["areaId"]); err == nil {
+		return []recommendationTraceContext{{AreaID: id}}
+	}
+	return nil
+}
+
+func recommendationRequirementFactorIDs(req *evaluationRequirementArtifacts, id requirementID) []factorID {
+	if req == nil {
+		return nil
+	}
+	var out []factorID
+	for _, ref := range requirementFactorIDs(req) {
+		parsed, err := parseRequirementFactorID(id.DeclaringArea, ref)
+		if err != nil || len(parsed.Path) == 0 {
+			continue
+		}
+		out = appendFactorIDs(out, parsed)
+	}
+	return out
+}
+
+func appendFactorIDs(ids []factorID, candidates ...factorID) []factorID {
+	seen := map[string]struct{}{}
+	for _, id := range ids {
+		seen[factorKey(id)] = struct{}{}
+	}
+	for _, candidate := range candidates {
+		if len(candidate.Path) == 0 {
+			continue
+		}
+		key := factorKey(candidate)
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		ids = append(ids, candidate)
+		seen[key] = struct{}{}
+	}
+	return ids
+}
+
+func recommendationFactorLinks(spec *model.Spec, factors []factorID, reportPath string) string {
+	if len(factors) == 0 {
+		return "—"
+	}
+	links := make([]string, 0, len(factors))
+	for _, id := range factors {
+		links = append(links, reportLink(reportPath, factorReportPath(id), factorTitle(spec, id)))
+	}
+	return strings.Join(links, ", ")
 }
 
 func writeAdviceCoverageSummary(b *strings.Builder, artifacts *evaluationArtifacts) {

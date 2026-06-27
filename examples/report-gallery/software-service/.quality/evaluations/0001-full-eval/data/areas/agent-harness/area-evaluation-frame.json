@@ -1,0 +1,21 @@
+{
+  "derivedContext": {
+    "scope": "Synthetic gallery area frame."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:agent-harness::evaluation-entrypoint"
+    ],
+    "rootFactorIds": [
+      "factor:agent-harness::agent-accessibility"
+    ],
+    "sourceRefs": [
+      "synthetic-source:agent-harness"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:agent-harness"
+  }
+}

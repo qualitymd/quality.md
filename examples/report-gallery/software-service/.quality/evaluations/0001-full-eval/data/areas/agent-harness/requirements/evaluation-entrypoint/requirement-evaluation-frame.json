@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Agent guidance should meet the target accessibility bar with a stable evaluation entry point.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "synthetic-evidence",
+        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness/guidance"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Synthetic gallery evidence."
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:agent-harness::agent-accessibility"
+    ],
+    "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+  }
+}

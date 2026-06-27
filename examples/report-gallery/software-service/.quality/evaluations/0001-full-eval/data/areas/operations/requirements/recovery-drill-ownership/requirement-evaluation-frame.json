@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Recovery drills should meet the target recoverability bar with current named ownership.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "synthetic-evidence",
+        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:operations/recovery-calendar"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Synthetic gallery evidence."
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:operations::recoverability"
+    ],
+    "requirementId": "requirement:operations::recovery-drill-ownership"
+  }
+}

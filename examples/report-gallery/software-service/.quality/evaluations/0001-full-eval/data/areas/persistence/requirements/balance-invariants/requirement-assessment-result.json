@@ -1,0 +1,53 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
+  "evaluationLimits": [
+    {
+      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
+      "id": "synthetic-source",
+      "impact": "The finding demonstrates report structure, not a verifiable source claim."
+    }
+  ],
+  "evidenceSummary": "The sampled persistence evidence supports balance preservation.",
+  "factors": [
+    "factor:persistence::integrity"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The synthetic test matrix includes both success and failure paths for balance preservation.",
+        "status": "verified"
+      },
+      "condition": "Synthetic mutation tests cover debit, credit, failed write, and reconciliation paths.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Ledger mutation evidence should meet the target integrity bar.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "requirementId": "requirement:persistence::balance-invariants"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The finding supports the target integrity rating for ledger persistence."
+      },
+      "evidence": [
+        {
+          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+          "sourceRef": "synthetic-source:persistence/balance-tests",
+          "statement": "The synthetic tests assert balanced entries after successful writes and no balance movement after failed writes."
+        }
+      ],
+      "id": "strength-002",
+      "severity": "low",
+      "statement": "Ledger mutation checks preserve balance invariants in the sampled paths.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:persistence::balance-invariants",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The sampled persistence evidence supports balance preservation."
+}

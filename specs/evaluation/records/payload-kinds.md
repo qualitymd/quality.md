@@ -109,10 +109,10 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 
 - `id`;
 - `title`;
-- `whyItMatters`;
-- `recommendedNextMove`;
-- `expectedBenefit`;
-- `howToKnowItWorked`;
+- `description`;
+- `background`;
+- `expectedValue`;
+- `doneCriterion`;
 - `impact`;
 - `confidence`; and
 - non-empty `traceRefs`.
@@ -121,6 +121,8 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 `impact` **MUST** be one of `very_high`, `high`, `medium`, or `low`.
 `confidence` **MUST** use the Evaluation confidence vocabulary: `high`,
 `medium`, `low`, or `none`.
+`expectedValue` **MUST** state the quality-management value expected from
+completing the recommendation.
 
 Recommendations **MUST NOT** use required `effort`, `roi`, `quickWin`,
 `backlogPriority`, `priority`, or numeric `score` fields. Ranking may use

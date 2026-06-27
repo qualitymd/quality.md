@@ -1,0 +1,21 @@
+{
+  "derivedContext": {
+    "scope": "Synthetic gallery area frame."
+  },
+  "inputs": {
+    "childAreaIds": [
+      "area:api",
+      "area:persistence",
+      "area:operations",
+      "area:agent-harness"
+    ],
+    "sourceRefs": [
+      "synthetic-source:ledgerlite-service"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:root"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "synthetic-gallery-area-rollup"
+  },
+  "inputs": {
+    "factorAnalysisRefs": [
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:persistence::integrity"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:persistence::recoverability"
+        }
+      }
+    ]
+  },
+  "kind": "AreaAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:persistence"
+  }
+}

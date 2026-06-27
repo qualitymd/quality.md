@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Migration rollback paths should meet the target recoverability bar with current rehearsal evidence.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "synthetic-evidence",
+        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:persistence/migration-runbook"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Synthetic gallery evidence."
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:persistence::recoverability"
+    ],
+    "requirementId": "requirement:persistence::migration-rollback"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "factorId": "factor:persistence::recoverability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Rollback guidance exists, but rehearsal evidence is stale.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::migration-rollback"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Recoverability follows its direct requirement signal.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Rollback guidance exists, but rehearsal evidence is stale.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::migration-rollback"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Recoverability follows its direct requirement signal.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

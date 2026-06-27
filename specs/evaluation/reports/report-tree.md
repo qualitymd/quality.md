@@ -108,6 +108,17 @@ The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
 link to `findings.md` and `recommendations.md` when the report tree is built.
 
+The Top Recommendations table **MUST** render rows from
+`RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
+at 10 rows. It **MUST** render the columns `Rank`, `Recommendation`,
+`Area / Factors`, and `Reason`, in that order. The `Recommendation` cell
+**MUST** use `RecommendationResult.title` as link text and link to the generated
+recommendation detail report. The `Area / Factors` cell **MUST** render linked
+Area and Factor names resolved from `RecommendationResult.traceRefs` through
+persisted evaluation data and the model snapshot, or `—` when no Area or Factor
+can be resolved. The `Reason` cell **MUST** render
+`RecommendationResult.expectedValue`.
+
 ## Finding Reports
 
 `findings.md` **MUST** render a complete ranked findings index from
@@ -124,8 +135,10 @@ persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
 It **MUST** include:
 
 - all ranked recommendations;
+- Area / Factors links resolved from `RecommendationResult.traceRefs`;
 - impact;
 - confidence;
+- Reason from `RecommendationResult.expectedValue`;
 - ranking rationale;
 - links to recommendation detail reports; and
 - a coverage summary from `findingCoverage`.
@@ -136,15 +149,22 @@ Each recommendation detail report **MUST** include:
 - rank when ranked;
 - impact;
 - confidence;
-- why it matters;
-- recommended next move;
-- expected benefit;
-- how to know it worked;
+- description;
+- background;
+- expected value;
+- done criterion;
 - trace refs; and
 - source data links.
 
 Recommendation Markdown reports **MUST** remain human-first and **MUST NOT**
 require YAML frontmatter for machine readability.
+Generated recommendation reports **MUST** render only persisted
+`RecommendationResult`, `RecommendationRankingResult`, model snapshot, and
+referenced evaluation data. They **MUST NOT** read YAML frontmatter or Markdown
+body content from another generated report as recommendation source data.
+Recommendation ranking rationale **MUST** remain sourced from
+`RecommendationRankingResult.orderedRecommendations[].rationale` and **MUST NOT**
+be conflated with `RecommendationResult.background` or `expectedValue`.
 
 ## Navigation
 

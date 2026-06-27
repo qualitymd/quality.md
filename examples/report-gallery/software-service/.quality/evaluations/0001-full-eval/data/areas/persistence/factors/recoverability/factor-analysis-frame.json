@@ -1,0 +1,20 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "synthetic-gallery-factor-rollup"
+  },
+  "inputs": {
+    "directRequirementRatingRefs": [
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:persistence::migration-rollback"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:persistence::recoverability"
+  }
+}

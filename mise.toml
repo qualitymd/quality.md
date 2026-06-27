@@ -36,8 +36,8 @@ fi
 '''
 
 [tasks.check]
-description = "Run the full CI gate locally (format, tidy, vet, lint, test, npm package check)"
-depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "npm-pack-check"]
+description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, npm package check)"
+depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "npm-pack-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"
@@ -88,6 +88,14 @@ run = 'node scripts/build-npm.mjs "${usage_version?}"'
 [tasks.npm-pack-check]
 description = "Verify the npm launcher package includes the generated root README"
 run = "node scripts/check-npm-package.mjs"
+
+[tasks.report-gallery]
+description = "Regenerate the checked-in Evaluation report gallery examples"
+run = "go run ./scripts/report-gallery"
+
+[tasks.report-gallery-check]
+description = "Verify generated report gallery examples are current"
+run = ["mise run report-gallery", "git diff --exit-code examples/report-gallery"]
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"

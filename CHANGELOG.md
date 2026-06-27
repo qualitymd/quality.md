@@ -7,6 +7,11 @@ QUALITY.md specification.
 
 ### CLI
 
+- Evaluation Advice now uses the simplified `RecommendationResult` shape:
+  `description`, `background`, `expectedValue`, and `doneCriterion` replace the
+  older recommendation prose fields. Generated recommendation reports render
+  from persisted Advice data only, with `report.md` Top Recommendations showing
+  `Rank`, `Recommendation`, `Area / Factors`, and `Reason`.
 - Evaluation report build now generates a full ranked `findings.md` index,
   links `report.md` Top Findings to exact Requirement finding details, and shows
   Advice rank context inside Requirement finding detail sections.

@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "Ledger mutation evidence should meet the target integrity bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The requirement remains usable in the synthetic evaluation."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Ledger mutation checks preserve balance invariants in the sampled paths.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-002]",
+          "subject": {
+            "requirementId": "requirement:persistence::balance-invariants"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The invariant tests satisfy the target integrity criterion for the sampled paths.",
+  "requirementId": "requirement:persistence::balance-invariants",
+  "schemaVersion": 3,
+  "status": "rated"
+}

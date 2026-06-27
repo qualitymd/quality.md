@@ -1,0 +1,89 @@
+{
+  "areaId": "area:persistence",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Integrity is driven by ledger mutations preserve balance invariants.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::integrity"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Recoverability is driven by migrations have rehearsed rollback paths.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::recoverability"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Ledger integrity is well covered, while rollback rehearsal evidence is stale.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Integrity is driven by ledger mutations preserve balance invariants.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::integrity"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Recoverability is driven by migrations have rehearsed rollback paths.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::recoverability"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Ledger integrity is well covered, while rollback rehearsal evidence is stale.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

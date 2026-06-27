@@ -1,0 +1,23 @@
+{
+  "derivedContext": {
+    "scope": "Synthetic gallery area frame."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:persistence::balance-invariants",
+      "requirement:persistence::migration-rollback"
+    ],
+    "rootFactorIds": [
+      "factor:persistence::integrity",
+      "factor:persistence::recoverability"
+    ],
+    "sourceRefs": [
+      "synthetic-source:persistence"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:persistence"
+  }
+}

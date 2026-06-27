@@ -1,0 +1,61 @@
+{
+  "factorId": "factor:api::correctness",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::idempotent-mutations"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Correctness follows its direct requirement signal.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::idempotent-mutations"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Correctness follows its direct requirement signal.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

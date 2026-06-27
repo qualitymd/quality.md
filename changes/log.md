@@ -3,6 +3,35 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0156 - Report Gallery](archive/0156-report-gallery.md). Added a generated
+  software-service report gallery under `examples/`, with a sample `QUALITY.md`,
+  synthetic current-contract Evaluation payloads, generated human reports,
+  `mise run report-gallery`, and `mise run report-gallery-check`.
+
+- **Done**: Implemented and archived
+  [0155 - Recommendation Result Shape](archive/0155-recommendation-result-shape.md).
+  `RecommendationResult` now uses `description`, `background`, `expectedValue`,
+  and `doneCriterion`; generated recommendation reports render from persisted
+  Advice data only; Top Recommendations shows `Rank`, `Recommendation`, `Area /
+  Factors`, and `Reason`; and `mise run check` passes.
+
+- **In-Review**: Completed implementation for
+  [0155 - Recommendation Result Shape](archive/0155-recommendation-result-shape.md).
+  `RecommendationResult` now uses `description`, `background`, `expectedValue`,
+  and `doneCriterion`; generated recommendation reports render from persisted
+  Advice data only; Top Recommendations shows `Rank`, `Recommendation`, `Area /
+  Factors`, and `Reason`; and `mise run check` passes.
+
+- **In-Progress**: Created
+  [0155 - Recommendation Result Shape](archive/0155-recommendation-result-shape.md)
+  with its [functional spec](archive/0155-recommendation-result-shape/spec.md)
+  and [design doc](archive/0155-recommendation-result-shape/design.md). The case
+  replaces the old recommendation prose fields with `description`, `background`,
+  `expectedValue`, and `doneCriterion`, keeps recommendation reports data-only,
+  and reshapes Top Recommendations around `Rank`, `Recommendation`, `Area /
+  Factors`, and `Reason`.
+
+- **Done**: Implemented and archived
   [0154 - Ranked Findings Reports](archive/0154-ranked-findings-reports.md).
   Evaluation report build now writes a full ranked `findings.md` index, reshapes
   `report.md` Top Findings around linked Finding, Area, and Factor names, links

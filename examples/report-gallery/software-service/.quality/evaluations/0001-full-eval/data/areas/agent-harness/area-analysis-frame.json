@@ -1,0 +1,21 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "synthetic-gallery-area-rollup"
+  },
+  "inputs": {
+    "factorAnalysisRefs": [
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:agent-harness::agent-accessibility"
+        }
+      }
+    ]
+  },
+  "kind": "AreaAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:agent-harness"
+  }
+}

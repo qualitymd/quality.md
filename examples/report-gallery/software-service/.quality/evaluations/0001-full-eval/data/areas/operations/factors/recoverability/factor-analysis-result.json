@@ -1,0 +1,61 @@
+{
+  "factorId": "factor:operations::recoverability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "low",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "The current owner for ledger recovery drills is ambiguous.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:operations::recovery-drill-ownership"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Recoverability follows its direct requirement signal.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "low",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "The current owner for ledger recovery drills is ambiguous.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:operations::recovery-drill-ownership"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Recoverability follows its direct requirement signal.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

@@ -1,0 +1,53 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
+  "evaluationLimits": [
+    {
+      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
+      "id": "synthetic-source",
+      "impact": "The finding demonstrates report structure, not a verifiable source claim."
+    }
+  ],
+  "evidenceSummary": "The sampled telemetry explains customer impact for core failure modes.",
+  "factors": [
+    "factor:operations::observability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions.",
+        "status": "verified"
+      },
+      "condition": "Synthetic dashboards include failed ledger mutations, retry exhaustion, and queue delay panels.",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Operational signals should meet the target observability bar by explaining customer impact.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "requirementId": "requirement:operations::customer-impact-telemetry"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The finding supports the target observability rating."
+      },
+      "evidence": [
+        {
+          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+          "sourceRef": "synthetic-source:operations/customer-impact-dashboard",
+          "statement": "The synthetic dashboard inventory includes panels for failed customer mutations and retry exhaustion."
+        }
+      ],
+      "id": "strength-003",
+      "severity": "low",
+      "statement": "Health dashboards connect service errors to failed customer actions.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:operations::customer-impact-telemetry",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The sampled telemetry explains customer impact for core failure modes."
+}

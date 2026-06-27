@@ -1,0 +1,63 @@
+{
+  "areaId": "area:agent-harness",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Agent Accessibility is driven by agent guidance routes quality evaluation work.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::agent-accessibility"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Agent guidance exposes the quality evaluation entry point clearly.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Agent Accessibility is driven by agent guidance routes quality evaluation work.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:agent-harness::agent-accessibility"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Agent guidance exposes the quality evaluation entry point clearly.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

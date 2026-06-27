@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "Migration rollback paths should meet the target recoverability bar with current rehearsal evidence."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The requirement remains usable in the synthetic evaluation."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Rollback guidance exists, but rehearsal evidence is stale.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[risk-001]",
+          "subject": {
+            "requirementId": "requirement:persistence::migration-rollback"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "The runbook keeps the requirement above unacceptable, but stale rehearsal evidence misses the target bar.",
+  "requirementId": "requirement:persistence::migration-rollback",
+  "schemaVersion": 3,
+  "status": "rated"
+}

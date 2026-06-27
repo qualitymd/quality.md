@@ -1,0 +1,28 @@
+{
+  "derivedContext": {
+    "evaluationPolicies": [
+      "Synthetic routine outputs are used for report-design demonstration only."
+    ],
+    "expectedEvaluationLimits": [
+      {
+        "description": "The concrete source system is intentionally omitted from the gallery.",
+        "id": "synthetic-source-omitted",
+        "impact": "Evidence references demonstrate report shape rather than checkable source claims."
+      }
+    ],
+    "rigor": "synthetic-gallery"
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ]
+  },
+  "kind": "EvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "modelLocator": "QUALITY.md"
+  }
+}

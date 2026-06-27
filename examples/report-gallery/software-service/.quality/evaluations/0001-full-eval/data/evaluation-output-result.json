@@ -1,0 +1,516 @@
+{
+  "areaOutputs": [
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:root"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:root"
+        }
+      },
+      "areaId": "area:root",
+      "factorAnalysisRefs": [],
+      "reportRefs": [
+        {
+          "areaId": "area:root",
+          "kind": "area",
+          "path": "root-area.md"
+        }
+      ],
+      "requirementAssessmentRefs": [],
+      "requirementRatingRefs": []
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:agent-harness"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:agent-harness"
+        }
+      },
+      "areaId": "area:agent-harness",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:agent-harness::agent-accessibility"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:agent-harness",
+          "kind": "area",
+          "path": "areas/agent-harness/agent-harness-area.md"
+        },
+        {
+          "areaId": "area:agent-harness",
+          "factorId": "factor:agent-harness::agent-accessibility",
+          "kind": "factor",
+          "path": "areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md"
+        },
+        {
+          "areaId": "area:agent-harness",
+          "kind": "requirement",
+          "path": "areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md",
+          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+          }
+        }
+      ]
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:api"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:api"
+        }
+      },
+      "areaId": "area:api",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:api::correctness"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:api::operability"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:api",
+          "kind": "area",
+          "path": "areas/api/api-area.md"
+        },
+        {
+          "areaId": "area:api",
+          "factorId": "factor:api::correctness",
+          "kind": "factor",
+          "path": "areas/api/factors/correctness/correctness-factor.md"
+        },
+        {
+          "areaId": "area:api",
+          "factorId": "factor:api::operability",
+          "kind": "factor",
+          "path": "areas/api/factors/operability/operability-factor.md"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md",
+          "requirementId": "requirement:api::idempotent-mutations"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md",
+          "requirementId": "requirement:api::predictable-error-contracts"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::idempotent-mutations"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::predictable-error-contracts"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::idempotent-mutations"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::predictable-error-contracts"
+          }
+        }
+      ]
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:operations"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:operations"
+        }
+      },
+      "areaId": "area:operations",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:operations::observability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:operations::recoverability"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:operations",
+          "kind": "area",
+          "path": "areas/operations/operations-area.md"
+        },
+        {
+          "areaId": "area:operations",
+          "factorId": "factor:operations::observability",
+          "kind": "factor",
+          "path": "areas/operations/factors/observability/observability-factor.md"
+        },
+        {
+          "areaId": "area:operations",
+          "factorId": "factor:operations::recoverability",
+          "kind": "factor",
+          "path": "areas/operations/factors/recoverability/recoverability-factor.md"
+        },
+        {
+          "areaId": "area:operations",
+          "kind": "requirement",
+          "path": "areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md",
+          "requirementId": "requirement:operations::customer-impact-telemetry"
+        },
+        {
+          "areaId": "area:operations",
+          "kind": "requirement",
+          "path": "areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md",
+          "requirementId": "requirement:operations::recovery-drill-ownership"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:operations::customer-impact-telemetry"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:operations::recovery-drill-ownership"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:operations::customer-impact-telemetry"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:operations::recovery-drill-ownership"
+          }
+        }
+      ]
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:persistence"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:persistence"
+        }
+      },
+      "areaId": "area:persistence",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:persistence::integrity"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:persistence::recoverability"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:persistence",
+          "kind": "area",
+          "path": "areas/persistence/persistence-area.md"
+        },
+        {
+          "areaId": "area:persistence",
+          "factorId": "factor:persistence::integrity",
+          "kind": "factor",
+          "path": "areas/persistence/factors/integrity/integrity-factor.md"
+        },
+        {
+          "areaId": "area:persistence",
+          "factorId": "factor:persistence::recoverability",
+          "kind": "factor",
+          "path": "areas/persistence/factors/recoverability/recoverability-factor.md"
+        },
+        {
+          "areaId": "area:persistence",
+          "kind": "requirement",
+          "path": "areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md",
+          "requirementId": "requirement:persistence::balance-invariants"
+        },
+        {
+          "areaId": "area:persistence",
+          "kind": "requirement",
+          "path": "areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md",
+          "requirementId": "requirement:persistence::migration-rollback"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:persistence::balance-invariants"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:persistence::migration-rollback"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:persistence::balance-invariants"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:persistence::migration-rollback"
+          }
+        }
+      ]
+    }
+  ],
+  "kind": "EvaluationOutputResult",
+  "reportOutputs": [
+    {
+      "kind": "run",
+      "path": "report.md"
+    },
+    {
+      "areaId": "area:root",
+      "kind": "area",
+      "path": "root-area.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "kind": "area",
+      "path": "areas/agent-harness/agent-harness-area.md"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "area",
+      "path": "areas/api/api-area.md"
+    },
+    {
+      "areaId": "area:operations",
+      "kind": "area",
+      "path": "areas/operations/operations-area.md"
+    },
+    {
+      "areaId": "area:persistence",
+      "kind": "area",
+      "path": "areas/persistence/persistence-area.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "factorId": "factor:agent-harness::agent-accessibility",
+      "kind": "factor",
+      "path": "areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md"
+    },
+    {
+      "areaId": "area:api",
+      "factorId": "factor:api::correctness",
+      "kind": "factor",
+      "path": "areas/api/factors/correctness/correctness-factor.md"
+    },
+    {
+      "areaId": "area:api",
+      "factorId": "factor:api::operability",
+      "kind": "factor",
+      "path": "areas/api/factors/operability/operability-factor.md"
+    },
+    {
+      "areaId": "area:operations",
+      "factorId": "factor:operations::observability",
+      "kind": "factor",
+      "path": "areas/operations/factors/observability/observability-factor.md"
+    },
+    {
+      "areaId": "area:operations",
+      "factorId": "factor:operations::recoverability",
+      "kind": "factor",
+      "path": "areas/operations/factors/recoverability/recoverability-factor.md"
+    },
+    {
+      "areaId": "area:persistence",
+      "factorId": "factor:persistence::integrity",
+      "kind": "factor",
+      "path": "areas/persistence/factors/integrity/integrity-factor.md"
+    },
+    {
+      "areaId": "area:persistence",
+      "factorId": "factor:persistence::recoverability",
+      "kind": "factor",
+      "path": "areas/persistence/factors/recoverability/recoverability-factor.md"
+    },
+    {
+      "areaId": "area:agent-harness",
+      "kind": "requirement",
+      "path": "areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md",
+      "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md",
+      "requirementId": "requirement:api::idempotent-mutations"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md",
+      "requirementId": "requirement:api::predictable-error-contracts"
+    },
+    {
+      "areaId": "area:operations",
+      "kind": "requirement",
+      "path": "areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md",
+      "requirementId": "requirement:operations::customer-impact-telemetry"
+    },
+    {
+      "areaId": "area:operations",
+      "kind": "requirement",
+      "path": "areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md",
+      "requirementId": "requirement:operations::recovery-drill-ownership"
+    },
+    {
+      "areaId": "area:persistence",
+      "kind": "requirement",
+      "path": "areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md",
+      "requirementId": "requirement:persistence::balance-invariants"
+    },
+    {
+      "areaId": "area:persistence",
+      "kind": "requirement",
+      "path": "areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md",
+      "requirementId": "requirement:persistence::migration-rollback"
+    },
+    {
+      "kind": "findings",
+      "path": "findings.md"
+    },
+    {
+      "kind": "recommendations",
+      "path": "recommendations.md"
+    },
+    {
+      "kind": "recommendation",
+      "path": "recommendations/001-tighten-the-idempotency-replay-contract.md",
+      "recommendationId": "rec-001"
+    },
+    {
+      "kind": "recommendation",
+      "path": "recommendations/002-rehearse-migration-rollback-after-schema-changes.md",
+      "recommendationId": "rec-002"
+    },
+    {
+      "kind": "recommendation",
+      "path": "recommendations/003-assign-a-current-recovery-drill-owner.md",
+      "recommendationId": "rec-003"
+    }
+  ],
+  "rootAreaAnalysisRef": {
+    "kind": "AreaAnalysisResult",
+    "selector": "localAndDescendantAnalysis",
+    "subject": {
+      "areaId": "area:root"
+    }
+  },
+  "runReportRef": {
+    "kind": "run",
+    "path": "report.md"
+  },
+  "schemaVersion": 3,
+  "scopedAreaAnalysisRef": {
+    "kind": "AreaAnalysisResult",
+    "selector": "localAndDescendantAnalysis",
+    "subject": {
+      "areaId": "area:root"
+    }
+  }
+}

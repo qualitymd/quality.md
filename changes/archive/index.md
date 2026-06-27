@@ -660,3 +660,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0154 — Ranked Findings Reports](0154-ranked-findings-reports.md) - makes
   ranked findings easier to scan, navigate, and inspect across generated
   Evaluation reports (`Done`).
+- [0155 — Recommendation Result Shape](0155-recommendation-result-shape.md) -
+  simplifies `RecommendationResult` fields and makes recommendation reports
+  render from persisted Advice data only (`Done`).
+- [0156 — Report Gallery](0156-report-gallery.md) - adds a generated
+  software-service report gallery with a sample `QUALITY.md`, synthetic
+  Evaluation data, browsable reports, and regeneration checks (`Done`).

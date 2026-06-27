@@ -1,0 +1,69 @@
+# Requirement: migrations have rehearsed rollback paths
+
+Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
+
+Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
+
+| Rating | Assessment | Confidence | Data |
+| --- | --- | --- | --- |
+| 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium | [requirement-assessment-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json) |
+
+Summary:
+
+Rollback instructions are present, but the rehearsal signal is stale.
+
+## Findings Summary
+
+| ID | Statement | Type | Severity | Confidence | Effect | Basis |
+| --- | --- | --- | --- | --- | --- | --- |
+| `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
+
+## Finding Details
+
+<a id="finding-risk-001"></a>
+
+### risk-001 Rollback guidance exists, but rehearsal evidence is stale.
+
+| Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- |
+| 4 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+
+#### Condition
+
+The synthetic migration runbook names rollback steps, but the last recorded rehearsal predates two schema changes.
+
+#### Criteria
+
+- `requirement:persistence::migration-rollback / rating:target`: Migration rollback paths should meet the target recoverability bar with current rehearsal evidence.
+  Rationale: The gallery records one finding per requirement so report tables stay easy to inspect.
+
+#### Basis
+
+Status: Plausible
+
+Stale rehearsal evidence plausibly misses drift in newer migration behavior.
+
+##### Basis Evidence
+
+(none recorded)
+
+#### Effect
+
+The finding constrains recoverability to minimum until rollback rehearsal is refreshed.
+
+Rating effect: constrains target
+
+#### Evidence
+
+- `synthetic-source:persistence/migration-runbook`: The synthetic runbook contains rollback steps and a rehearsal note older than the latest two migrations.
+  Rationale: Synthetic source reference retained to demonstrate evidence rendering.
+
+## Unknowns & Missing Evidence
+
+| Type | Detail |
+| --- | --- |
+| (none recorded) |  |
+
+## Legend
+
+- `—` - not applicable or not recorded.

@@ -1,0 +1,53 @@
+{
+  "confidence": "low",
+  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
+  "evaluationLimits": [
+    {
+      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
+      "id": "synthetic-source",
+      "impact": "The finding demonstrates report structure, not a verifiable source claim."
+    }
+  ],
+  "evidenceSummary": "Recovery ownership is visible but ambiguous across the sampled records.",
+  "factors": [
+    "factor:operations::recoverability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The available synthetic records conflict, so current ownership cannot be verified.",
+        "status": "not_assessed"
+      },
+      "condition": "The synthetic recovery calendar names a team, while the incident playbook names a former individual owner.",
+      "confidence": "low",
+      "criteria": [
+        {
+          "criterion": "Recovery drills should meet the target recoverability bar with current named ownership.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "requirementId": "requirement:operations::recovery-drill-ownership"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The finding limits confidence and constrains the requirement to minimum."
+      },
+      "evidence": [
+        {
+          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+          "sourceRef": "synthetic-source:operations/recovery-calendar",
+          "statement": "The synthetic calendar and playbook disagree about who owns the next recovery drill."
+        }
+      ],
+      "id": "unknown-001",
+      "severity": "medium",
+      "statement": "The current owner for ledger recovery drills is ambiguous.",
+      "type": "unknown"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:operations::recovery-drill-ownership",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Recovery ownership is visible but ambiguous across the sampled records."
+}

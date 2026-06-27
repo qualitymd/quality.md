@@ -395,7 +395,22 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 	assertContains(t, runReport, "Full findings index: [findings.md](findings.md)")
 	assertContains(t, runReport, "## Top Recommendations")
+	assertContains(t, runReport, "| Rank | Recommendation | Area / Factors | Reason |")
+	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | The quality model stays aligned with the evaluated evidence and next bar. |")
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
+
+	recommendationIndex := readReport(t, runPath, "recommendations.md")
+	assertContains(t, recommendationIndex, "| Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
+	assertContains(t, recommendationIndex, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
+
+	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
+	assertContains(t, recommendationReport, "## Description")
+	assertContains(t, recommendationReport, "## Background")
+	assertContains(t, recommendationReport, "## Expected value")
+	assertContains(t, recommendationReport, "## Done criterion")
+	assertContains(t, recommendationReport, "## Ranking rationale")
+	assertNotContains(t, recommendationReport, "## Why it matters")
+	assertNotContains(t, recommendationReport, "## Expected benefit")
 
 	rootReport := readReport(t, runPath, "root-area.md")
 	assertContains(t, rootReport, "# Area: Navigation model\n\nArea: [Navigation model](root-area.md)")
@@ -1379,7 +1394,7 @@ func singleFindingAdvicePayloads(requirementID, findingID string) []string {
 	findingRef := `{"kind":"RequirementAssessmentResult","subject":{"requirementId":"` + requirementID + `"},"selector":"findings[` + findingID + `]"}`
 	return []string{
 		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"This finding most directly informs next advice."}],"rationale":"Findings were ranked by quality-bar relevance and confidence."}`,
-		`{"schemaVersion":3,"kind":"RecommendationResult","id":"rec-001","title":"Review the next quality bar","whyItMatters":"The evaluation found a quality signal that should inform the next target level.","recommendedNextMove":"Review whether the next rating level should be raised or clarified for this requirement.","expectedBenefit":"The quality model stays aligned with the evaluated evidence and next bar.","howToKnowItWorked":"The requirement criterion or target-level rationale reflects the review decision.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`,
+		`{"schemaVersion":3,"kind":"RecommendationResult","id":"rec-001","title":"Review the next quality bar","description":"Review whether the next rating level should be raised or clarified for this requirement.","background":"The evaluation found a quality signal that should inform the next target level.","expectedValue":"The quality model stays aligned with the evaluated evidence and next bar.","doneCriterion":"The requirement criterion or target-level rationale reflects the review decision.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`,
 		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"rec-001","impact":"high","confidence":"high","rationale":"This recommendation addresses the highest-ranked finding."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["rec-001"],"rationale":"The recommendation is traced to this finding."}],"rationale":"Recommendations were ranked by expected quality impact."}`,
 	}
 }
@@ -1397,7 +1412,7 @@ func noFindingFactorAdvicePayloads(factorID string) []string {
 func noFindingAdvicePayloads(traceRef string) []string {
 	return []string{
 		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[],"rationale":"No findings were produced; no finding ranking is applicable."}`,
-		`{"schemaVersion":3,"kind":"RecommendationResult","id":"rec-001","title":"Review the next quality bar","whyItMatters":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","recommendedNextMove":"Review the analyzed area or factor against the next intended quality bar.","expectedBenefit":"The quality model remains current without inventing remediation work.","howToKnowItWorked":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
+		`{"schemaVersion":3,"kind":"RecommendationResult","id":"rec-001","title":"Review the next quality bar","description":"Review the analyzed area or factor against the next intended quality bar.","background":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","expectedValue":"The quality model remains current without inventing remediation work.","doneCriterion":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
 		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"rec-001","impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
 	}
 }

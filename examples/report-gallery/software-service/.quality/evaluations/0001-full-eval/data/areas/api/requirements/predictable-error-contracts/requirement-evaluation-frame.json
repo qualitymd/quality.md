@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Error contracts should meet the target bar with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "synthetic-evidence",
+        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:api/error-contracts"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Synthetic gallery evidence."
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:api::operability"
+    ],
+    "requirementId": "requirement:api::predictable-error-contracts"
+  }
+}

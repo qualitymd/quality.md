@@ -1,0 +1,42 @@
+# Factor: Integrity
+
+Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
+
+Factor: [Integrity](integrity-factor.md)
+
+| Overall Rating | Local Rating | Status | Confidence | Data |
+| --- | --- | --- | --- | --- |
+| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High | [factor-analysis-result.json](../../../../data/areas/persistence/factors/integrity/factor-analysis-result.json) |
+
+Summary:
+
+Integrity follows its direct requirement signal.
+
+## Rating Drivers
+
+| Driver | Effect | Inputs |
+| --- | --- | --- |
+| Ledger mutation checks preserve balance invariants in the sampled paths. | supports target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:persistence::balance-invariants"}}] |
+
+## Requirements
+
+| Requirement | Rating | Status |
+| --- | --- | --- |
+| [ledger mutations preserve balance invariants](../../requirements/balance-invariants/balance-invariants-requirement.md) | 🔵 Target | ✅ Assessed |
+
+## Sub-Factors
+
+| Factor | Path | Local Rating | + Sub-Factors Rating |
+| --- | --- | --- | --- |
+| (no Sub-Factors) |  |  |  |
+
+## Limits & Incomplete Inputs
+
+| Type | Scope | Impact |
+| --- | --- | --- |
+| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+
+## Legend
+
+- `—` - not applicable or not recorded.

@@ -1,0 +1,116 @@
+{
+  "findingCoverage": [
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-001]",
+        "subject": {
+          "requirementId": "requirement:api::idempotent-mutations"
+        }
+      },
+      "rationale": "The idempotency recommendation directly addresses this gap.",
+      "recommendationRefs": [
+        "rec-001"
+      ]
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-001]",
+        "subject": {
+          "requirementId": "requirement:api::predictable-error-contracts"
+        }
+      },
+      "rationale": "The strength supports the rating but does not require follow-up advice."
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-002]",
+        "subject": {
+          "requirementId": "requirement:persistence::balance-invariants"
+        }
+      },
+      "rationale": "The strength supports the rating but does not require follow-up advice."
+    },
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[risk-001]",
+        "subject": {
+          "requirementId": "requirement:persistence::migration-rollback"
+        }
+      },
+      "rationale": "The rollback rehearsal recommendation directly addresses this risk.",
+      "recommendationRefs": [
+        "rec-002"
+      ]
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-003]",
+        "subject": {
+          "requirementId": "requirement:operations::customer-impact-telemetry"
+        }
+      },
+      "rationale": "The strength supports the rating but does not require follow-up advice."
+    },
+    {
+      "disposition": "addressed_by_recommendation",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[unknown-001]",
+        "subject": {
+          "requirementId": "requirement:operations::recovery-drill-ownership"
+        }
+      },
+      "rationale": "The ownership recommendation resolves the unknown.",
+      "recommendationRefs": [
+        "rec-003"
+      ]
+    },
+    {
+      "disposition": "not_advice_driving",
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-004]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+        }
+      },
+      "rationale": "The strength supports the rating but does not require follow-up advice."
+    }
+  ],
+  "kind": "RecommendationRankingResult",
+  "orderedRecommendations": [
+    {
+      "confidence": "medium",
+      "impact": "high",
+      "rank": 1,
+      "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
+      "recommendationRef": "rec-001"
+    },
+    {
+      "confidence": "medium",
+      "impact": "high",
+      "rank": 2,
+      "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
+      "recommendationRef": "rec-002"
+    },
+    {
+      "confidence": "low",
+      "impact": "medium",
+      "rank": 3,
+      "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
+      "recommendationRef": "rec-003"
+    }
+  ],
+  "rationale": "Synthetic recommendations focus on the highest-value gaps, risks, and unknowns.",
+  "schemaVersion": 3
+}

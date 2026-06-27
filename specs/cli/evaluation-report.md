@@ -54,7 +54,9 @@ payload ordering.
 `findings.md`, `recommendations.md`, and recommendation detail reports under
 `recommendations/`. `report.md` **MUST** include Top Findings and Top
 Recommendations sections capped at 10 rows each and **MUST** link to
-`findings.md` and `recommendations.md`.
+`findings.md` and `recommendations.md`. Recommendation report content **MUST** be
+rendered from persisted Advice data and the model snapshot, not from YAML
+frontmatter or Markdown body content in other generated reports.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

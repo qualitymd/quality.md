@@ -1,0 +1,78 @@
+{
+  "areaId": "area:root",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "none",
+    "status": "empty",
+    "statusReason": "The root area has no direct local requirements in this illustrative model."
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "api area contributes to the full service roll-up.",
+        "effect": "contributes to minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:api"
+            }
+          }
+        ]
+      },
+      {
+        "description": "persistence area contributes to the full service roll-up.",
+        "effect": "contributes to minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:persistence"
+            }
+          }
+        ]
+      },
+      {
+        "description": "operations area contributes to the full service roll-up.",
+        "effect": "contributes to minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:operations"
+            }
+          }
+        ]
+      },
+      {
+        "description": "agent-harness area contributes to the full service roll-up.",
+        "effect": "contributes to minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:agent-harness"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

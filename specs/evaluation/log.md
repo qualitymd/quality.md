@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the Evaluation payload and report-tree contracts for
+  [0155 - Recommendation Result Shape](../../changes/archive/0155-recommendation-result-shape.md).
+  `RecommendationResult` now carries `description`, `background`,
+  `expectedValue`, and `doneCriterion`; generated recommendation reports use
+  persisted Advice data rather than generated report frontmatter; and
+  recommendation tables include linked Area / Factors context.
+
 - **Revision**: Updated the Evaluation records data-layout and report-tree
   contracts for [0154 - Ranked Findings Reports](../../changes/archive/0154-ranked-findings-reports.md).
   Evaluation report build now writes `findings.md` as the full ranked findings

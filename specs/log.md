@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0155 - Recommendation Result Shape](../changes/archive/0155-recommendation-result-shape.md).
+  Evaluation Advice now uses `description`, `background`, `expectedValue`, and
+  `doneCriterion` on `RecommendationResult`; recommendation reports render from
+  persisted Advice data only; and Top Recommendations expose `Rank`,
+  `Recommendation`, `Area / Factors`, and `Reason`.
+
+- **Revision**: Implemented durable spec changes for
   [0154 - Ranked Findings Reports](../changes/archive/0154-ranked-findings-reports.md).
   Evaluation report specs now require `report.md` Top Findings and the full
   `findings.md` index to share ranked finding columns, link finding statements

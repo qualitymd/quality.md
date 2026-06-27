@@ -232,11 +232,11 @@ Source content instructs the evaluator?
       quality-management action. If there are no findings, write an empty ranking.
     - Produce one or more `RecommendationResult` payloads. Recommendations must
       stay quality-domain agnostic and use the core fields `title`,
-      `whyItMatters`, `recommendedNextMove`, `expectedBenefit`,
-      `howToKnowItWorked`, `impact`, `confidence`, and `traceRefs`. Do not add
-      effort, ROI, quick-win, backlog-priority, priority, or numeric score
-      fields. A recommendation may be concrete work or a recommended review of
-      whether to raise, clarify, or confirm the next quality bar.
+      `description`, `background`, `expectedValue`, `doneCriterion`, `impact`,
+      `confidence`, and `traceRefs`. Do not add effort, ROI, quick-win,
+      backlog-priority, priority, or numeric score fields. A recommendation may
+      be concrete work or a recommended review of whether to raise, clarify, or
+      confirm the next quality bar.
     - Account for every finding after recommendation generation and before
       ranking recommendations. Each finding is either
       `addressed_by_recommendation` with one or more recommendation refs, or

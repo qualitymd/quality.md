@@ -10,6 +10,7 @@
     "dist",
     "**/CLAUDE.md",
     "**/GEMINI.md",
+    "**/.quality/evaluations/**/*.md",
     ".quality/evaluations/**/report.md",
     ".quality/evaluations/**/*-area.md",
     ".quality/evaluations/**/*-factor.md",

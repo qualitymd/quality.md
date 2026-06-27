@@ -1,0 +1,89 @@
+{
+  "areaId": "area:operations",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "low",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Observability is driven by health signals explain customer impact.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::observability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Recoverability is driven by recovery drills have current owners.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::recoverability"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "low",
+    "confidenceReason": "Synthetic report-gallery judgment.",
+    "evaluationLimits": [
+      {
+        "description": "This analysis is generated from synthetic routine outputs.",
+        "id": "synthetic-evaluation",
+        "impact": "Use for report design and example browsing only."
+      }
+    ],
+    "ratingDrivers": [
+      {
+        "description": "Observability is driven by health signals explain customer impact.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::observability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Recoverability is driven by recovery drills have current owners.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::recoverability"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

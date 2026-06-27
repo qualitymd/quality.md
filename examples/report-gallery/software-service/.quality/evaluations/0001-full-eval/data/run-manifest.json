@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 3,
+  "kind": "RunManifest",
+  "number": 1,
+  "model": "QUALITY.md",
+  "requestedScope": {},
+  "plannedScope": {
+    "areaId": "area:root",
+    "factorFilter": []
+  }
+}

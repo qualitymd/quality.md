@@ -1,0 +1,53 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
+  "evaluationLimits": [
+    {
+      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
+      "id": "synthetic-source",
+      "impact": "The finding demonstrates report structure, not a verifiable source claim."
+    }
+  ],
+  "evidenceSummary": "The agent-facing entry point is clear enough for quality evaluation work.",
+  "factors": [
+    "factor:agent-harness::agent-accessibility"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The synthetic guidance gives an agent a direct path from model to evaluation report.",
+        "status": "verified"
+      },
+      "condition": "The synthetic agent guidance names QUALITY.md, the evaluation command, and the report artifact to inspect.",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "Agent guidance should meet the target accessibility bar with a stable evaluation entry point.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The finding supports the target agent-accessibility rating."
+      },
+      "evidence": [
+        {
+          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+          "sourceRef": "synthetic-source:agent-harness/guidance",
+          "statement": "The synthetic guidance links the model, evaluation workflow, and report output."
+        }
+      ],
+      "id": "strength-004",
+      "severity": "low",
+      "statement": "Agent guidance points to the quality model and generated report path.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:agent-harness::evaluation-entrypoint",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The agent-facing entry point is clear enough for quality evaluation work."
+}

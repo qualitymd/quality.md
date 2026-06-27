@@ -135,8 +135,8 @@ Advice **MUST** produce `FindingRankingResult`, one or more
 `RecommendationResult` payloads, and `RecommendationRankingResult` before report
 build. Finding coverage accounting **MUST** happen after recommendations are
 generated and before recommendation ranking closes. Recommendations **MUST** use
-the core user-facing fields `title`, `whyItMatters`, `recommendedNextMove`,
-`expectedBenefit`, `howToKnowItWorked`, `impact`, `confidence`, and `traceRefs`.
+the core user-facing fields `title`, `description`, `background`,
+`expectedValue`, `doneCriterion`, `impact`, `confidence`, and `traceRefs`.
 They **MUST NOT** require effort, ROI, quick-win status, backlog priority, or a
 numeric score.
 

@@ -1,0 +1,53 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
+  "evaluationLimits": [
+    {
+      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
+      "id": "synthetic-source",
+      "impact": "The finding demonstrates report structure, not a verifiable source claim."
+    }
+  ],
+  "evidenceSummary": "Rollback instructions are present, but the rehearsal signal is stale.",
+  "factors": [
+    "factor:persistence::recoverability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Stale rehearsal evidence plausibly misses drift in newer migration behavior.",
+        "status": "plausible"
+      },
+      "condition": "The synthetic migration runbook names rollback steps, but the last recorded rehearsal predates two schema changes.",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Migration rollback paths should meet the target recoverability bar with current rehearsal evidence.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "requirementId": "requirement:persistence::migration-rollback"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The finding constrains recoverability to minimum until rollback rehearsal is refreshed."
+      },
+      "evidence": [
+        {
+          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+          "sourceRef": "synthetic-source:persistence/migration-runbook",
+          "statement": "The synthetic runbook contains rollback steps and a rehearsal note older than the latest two migrations."
+        }
+      ],
+      "id": "risk-001",
+      "severity": "medium",
+      "statement": "Rollback guidance exists, but rehearsal evidence is stale.",
+      "type": "risk"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:persistence::migration-rollback",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Rollback instructions are present, but the rehearsal signal is stale."
+}

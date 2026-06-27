@@ -1,0 +1,23 @@
+{
+  "derivedContext": {
+    "scope": "Synthetic gallery area frame."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:api::idempotent-mutations",
+      "requirement:api::predictable-error-contracts"
+    ],
+    "rootFactorIds": [
+      "factor:api::correctness",
+      "factor:api::operability"
+    ],
+    "sourceRefs": [
+      "synthetic-source:api"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:api"
+  }
+}

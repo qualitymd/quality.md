@@ -1,0 +1,19 @@
+# Recommendations
+
+Data: [recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
+
+| Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
+| 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
+| 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
+
+## Coverage
+
+- Findings addressed by recommendations: 3
+- Findings not advice-driving: 4
+
+
+## Legend
+
+- `—` - not applicable or not recorded.

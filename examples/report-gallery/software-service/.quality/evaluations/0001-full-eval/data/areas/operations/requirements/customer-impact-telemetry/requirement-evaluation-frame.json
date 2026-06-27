@@ -1,0 +1,41 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "Operational signals should meet the target observability bar by explaining customer impact.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "The requirement remains usable with visible gaps or limited evidence.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "synthetic-evidence",
+        "question": "Does the omitted synthetic source satisfy the modeled requirement?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:operations/customer-impact-dashboard"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Synthetic gallery evidence."
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:operations::observability"
+    ],
+    "requirementId": "requirement:operations::customer-impact-telemetry"
+  }
+}

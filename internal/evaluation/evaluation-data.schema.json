@@ -2419,6 +2419,9 @@
     "RecommendationResult": {
       "additionalProperties": false,
       "properties": {
+        "background": {
+          "type": "string"
+        },
         "confidence": {
           "enum": [
             "high",
@@ -2428,10 +2431,13 @@
           ],
           "type": "string"
         },
-        "expectedBenefit": {
+        "description": {
           "type": "string"
         },
-        "howToKnowItWorked": {
+        "doneCriterion": {
+          "type": "string"
+        },
+        "expectedValue": {
           "type": "string"
         },
         "id": {
@@ -2450,9 +2456,6 @@
           "enum": [
             "RecommendationResult"
           ],
-          "type": "string"
-        },
-        "recommendedNextMove": {
           "type": "string"
         },
         "schemaVersion": {
@@ -2514,9 +2517,6 @@
           },
           "minItems": 1,
           "type": "array"
-        },
-        "whyItMatters": {
-          "type": "string"
         }
       },
       "required": [
@@ -2524,10 +2524,10 @@
         "kind",
         "id",
         "title",
-        "whyItMatters",
-        "recommendedNextMove",
-        "expectedBenefit",
-        "howToKnowItWorked",
+        "description",
+        "background",
+        "expectedValue",
+        "doneCriterion",
         "impact",
         "confidence",
         "traceRefs"

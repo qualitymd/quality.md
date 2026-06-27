@@ -1,0 +1,53 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
+  "evaluationLimits": [
+    {
+      "description": "The source artifact behind this finding is omitted from the checked-in gallery.",
+      "id": "synthetic-source",
+      "impact": "The finding demonstrates report structure, not a verifiable source claim."
+    }
+  ],
+  "evidenceSummary": "The idempotency contract is present but incomplete for retry recovery.",
+  "factors": [
+    "factor:api::correctness"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior.",
+        "status": "verified"
+      },
+      "condition": "The synthetic API contract describes idempotency keys, but replayed requests do not have a documented response contract for partial-write recovery.",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Mutation endpoints should meet the target correctness bar with retry behavior a maintainer can verify.",
+          "ratingLevelId": "rating:target",
+          "rationale": "The gallery records one finding per requirement so report tables stay easy to inspect.",
+          "requirementId": "requirement:api::idempotent-mutations"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics."
+      },
+      "evidence": [
+        {
+          "rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+          "sourceRef": "synthetic-source:api/idempotency-contract",
+          "statement": "The synthetic contract covers idempotency-key presence and duplicate detection, but not partial-write replay outcomes."
+        }
+      ],
+      "id": "gap-001",
+      "severity": "high",
+      "statement": "Mutation retry behavior is not fully specified for duplicate idempotency keys.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::idempotent-mutations",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The idempotency contract is present but incomplete for retry recovery."
+}

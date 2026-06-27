@@ -1525,17 +1525,17 @@ func findingRankingExample() map[string]any {
 
 func recommendationExample() map[string]any {
 	return map[string]any{
-		"schemaVersion":       SchemaVersion,
-		"kind":                string(DataKindRecommendation),
-		"id":                  "rec-001",
-		"title":               "Review the next quality bar",
-		"whyItMatters":        "The current evidence suggests the evaluated entity may already meet the present bar.",
-		"recommendedNextMove": "Review whether the next evaluation should use sharper criteria.",
-		"expectedBenefit":     "The Model stays useful as the evaluated entity improves.",
-		"howToKnowItWorked":   "The review records either an updated bar or a rationale for keeping the current bar.",
-		"impact":              "high",
-		"confidence":          "medium",
-		"traceRefs":           []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[strength-001]")},
+		"schemaVersion": SchemaVersion,
+		"kind":          string(DataKindRecommendation),
+		"id":            "rec-001",
+		"title":         "Review the next quality bar",
+		"description":   "Review whether the next evaluation should use sharper criteria.",
+		"background":    "The current evidence suggests the evaluated entity may already meet the present bar.",
+		"expectedValue": "The Model stays useful as the evaluated entity improves.",
+		"doneCriterion": "The review records either an updated bar or a rationale for keeping the current bar.",
+		"impact":        "high",
+		"confidence":    "medium",
+		"traceRefs":     []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[strength-001]")},
 	}
 }
 

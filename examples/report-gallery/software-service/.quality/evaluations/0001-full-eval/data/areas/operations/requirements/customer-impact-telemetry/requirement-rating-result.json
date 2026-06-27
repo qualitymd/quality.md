@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Confidence reflects the synthetic evidence limits recorded in the assessment.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "Operational signals should meet the target observability bar by explaining customer impact."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The requirement remains usable in the synthetic evaluation."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Health dashboards connect service errors to failed customer actions.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[strength-003]",
+          "subject": {
+            "requirementId": "requirement:operations::customer-impact-telemetry"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The dashboard evidence meets the target observability criterion with medium confidence.",
+  "requirementId": "requirement:operations::customer-impact-telemetry",
+  "schemaVersion": 3,
+  "status": "rated"
+}

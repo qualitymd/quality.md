@@ -1,0 +1,91 @@
+{
+  "kind": "FindingRankingResult",
+  "orderedFindings": [
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[gap-001]",
+        "subject": {
+          "requirementId": "requirement:api::idempotent-mutations"
+        }
+      },
+      "rank": 1,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P1"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-001]",
+        "subject": {
+          "requirementId": "requirement:api::predictable-error-contracts"
+        }
+      },
+      "rank": 2,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P1"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-002]",
+        "subject": {
+          "requirementId": "requirement:persistence::balance-invariants"
+        }
+      },
+      "rank": 3,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P2"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[risk-001]",
+        "subject": {
+          "requirementId": "requirement:persistence::migration-rollback"
+        }
+      },
+      "rank": 4,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P1"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-003]",
+        "subject": {
+          "requirementId": "requirement:operations::customer-impact-telemetry"
+        }
+      },
+      "rank": 5,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P3"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[unknown-001]",
+        "subject": {
+          "requirementId": "requirement:operations::recovery-drill-ownership"
+        }
+      },
+      "rank": 6,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P2"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[strength-004]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::evaluation-entrypoint"
+        }
+      },
+      "rank": 7,
+      "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
+      "tier": "P3"
+    }
+  ],
+  "rationale": "Synthetic findings are ranked to exercise report tables and recommendation traceability.",
+  "schemaVersion": 3
+}

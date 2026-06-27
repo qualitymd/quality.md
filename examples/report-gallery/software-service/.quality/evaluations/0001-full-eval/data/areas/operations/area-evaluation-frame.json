@@ -1,0 +1,23 @@
+{
+  "derivedContext": {
+    "scope": "Synthetic gallery area frame."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:operations::customer-impact-telemetry",
+      "requirement:operations::recovery-drill-ownership"
+    ],
+    "rootFactorIds": [
+      "factor:operations::observability",
+      "factor:operations::recoverability"
+    ],
+    "sourceRefs": [
+      "synthetic-source:operations"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:operations"
+  }
+}
