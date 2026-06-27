@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- `/quality` runtime outputs now adopt labeled, scan-friendly templates for
+  direct model-authoring checkpoints, setup review, evaluation/review/improve/update
+  closeouts, recommendation results, model-review signals, and next-workflow
+  choices.
 - The quality model-change history now lives under `.quality/changelog/` with
   timestamped entry filenames such as
   `2026-06-27T184233Z-adjust-rating-scale.md`. `.quality/logs/` remains the

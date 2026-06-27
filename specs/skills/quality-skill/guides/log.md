@@ -2,6 +2,14 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the durable
+  [recommendation follow-up](recommendation-follow-up-md.md),
+  [top-10 checks](top-10-quality-md-checks-md.md), and
+  [getting-started](getting-started-md.md) guide specs for
+  [0145 - Scannable Skill Output](../../../../changes/archive/0145-scannable-skill-output.md).
+  Guide contracts now require labeled result, model-review signal, and
+  next-workflow templates.
+
 - **Revision**: Updated durable authoring and recommendation-follow-up guide
   specs for
   [0146 - Changelog Directory](../../../../changes/archive/0146-changelog-directory.md).

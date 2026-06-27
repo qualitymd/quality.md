@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the setup, evaluate, review, improve, and update
+  workflow specs for
+  [0145 - Scannable Skill Output](../../../../changes/archive/0145-scannable-skill-output.md).
+  Workflow contracts now require labeled opening, review, and closeout templates
+  for scan-friendly runtime output.
+
 - **Revision**: Updated workflow specs for
   [0146 - Changelog Directory](../../../../changes/archive/0146-changelog-directory.md).
   Workflow mutation boundaries now name the quality changelog, and the shared

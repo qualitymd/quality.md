@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [Recommendation Follow-Up](recommendation-follow-up.md),
+  [Top 10 checks](top-10-quality-md-checks.md), and
+  [Getting started](getting-started.md) for 0145 - Scannable Skill Output.
+  Runtime guide outputs now use labeled result, model-review signal, and
+  next-workflow templates.
+
 - **Revision**: Updated runtime guide links and
   [quality changelog authoring](authoring/quality-changelog.md) for
   0146 - Changelog Directory.

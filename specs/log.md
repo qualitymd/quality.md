@@ -3,6 +3,12 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0145 - Scannable Skill Output](../changes/archive/0145-scannable-skill-output.md).
+  The `/quality` skill, workflow, reporting, recommendation follow-up, and guide
+  specs now require labeled, five-second-scan output templates for multi-fact
+  review gates, summaries, closeouts, and next-workflow prompts.
+
+- **Revision**: Implemented durable spec changes for
   [0146 - Changelog Directory](../changes/archive/0146-changelog-directory.md).
   The `/quality` skill specs now name the model-change history as the quality
   changelog under `.quality/changelog/`, require timestamped changelog entry

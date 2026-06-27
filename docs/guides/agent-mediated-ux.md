@@ -131,6 +131,67 @@ paragraphs when a user is choosing, confirming, or reviewing.
 Avoid burying the primary call to action after rationale. Rationale matters, but
 it supports the choice.
 
+## Scannable Output
+
+Design output for a five-second scan. A user should be able to tell what
+happened, what matters, and what to do next without reading every sentence.
+
+Prefer labeled blocks over paragraphs when output contains status, choices,
+verification, risks, boundaries, or next actions. Good labels include:
+
+- **Planned edit**
+- **Why**
+- **Approach**
+- **Boundary**
+- **Recommendation**
+- **Risk**
+- **Changed**
+- **Verification**
+- **Not changed**
+- **Next**
+- **Answer**
+
+Use paragraphs for one idea. Use bullets, numbered lists, or labels when there
+are multiple independent facts.
+
+Rules:
+
+- Put the result, recommendation, or ask first.
+- Keep paragraphs to one short idea.
+- Use numbered lists for ranked options or ordered steps.
+- Use bullets for unordered facts.
+- Keep list items parallel.
+- Put the shortest response path on its own line or label.
+- Do not bury the required user action after rationale.
+
+Good:
+
+```text
+**Changed**
+
+- Added archived Change Case `0144 - Pointed Review Gates`.
+- Updated `docs/guides/agent-mediated-ux.md`.
+- Updated `/quality` runtime and durable skill guidance.
+
+**Verification**
+
+- `mise run fmt-md-check` passed.
+- `mise run check` passed.
+- Worktree is clean.
+```
+
+Avoid:
+
+```text
+I updated the guide and the skill guidance to reflect the new review-gate
+approach, and I also added the archived Change Case with its spec and design,
+then I ran the formatting and repository checks, both of which passed, and the
+worktree is clean.
+```
+
+Even when the content is correct, long single-flow paragraphs make the user parse
+too much before finding the outcome and next action.
+
 ## Emphasis
 
 Use Markdown emphasis as interaction structure.
@@ -354,25 +415,26 @@ natural `so that` clause when it fits: the user can correct the goal as well as
 the mechanics. The gate should not end with only a generic "anything to adjust?"
 prompt. When the agent can infer a likely goal, risk boundary, or scope
 assumption, name the most consequential one and ask the user to react to that
-specific interpretation. Keep important boundaries, logging decisions, and
-approval paths visible without turning the gate into a formal questionnaire. For
-example:
+specific interpretation. Use labeled blocks when the gate carries more than two
+distinct facts, such as intent, rationale, approach, boundary, logging, and
+answer path. Keep important boundaries, logging decisions, and approval paths
+visible without turning the gate into a formal questionnaire. For example:
 
 ```text
-I’m reading this as: you want Security to become a model-wide lens, so security
-concerns in child Areas cannot disappear just because they are local to auth,
-uploads, webhooks, infra, credentials, or data boundaries.
+**Planned edit:** Add root-level Security coverage.
 
-I’d implement that as a root `security` Factor with a Requirement that checks
-whether descendant Areas with security exposure either model it explicitly or
-explain why it is out of scope. I would not rely on descendant Factors rolling up
-automatically; QUALITY.md does not work that way.
+**Why:** Whole-repo evaluation should catch security-sensitive concerns even
+when the details live in child Areas.
 
-I’d also write one quality-log entry because this changes how the model judges.
+**Approach:** Add a root `security` Factor with one Requirement that checks
+descendant Areas for security-related Factors, Requirements, and evidence.
 
-One scope choice before I edit: I’m treating Security broadly, including app
-security, sensitive data, credentials, integrations, and infrastructure controls.
-If you want narrower appsec only, say so. Otherwise say `go`.
+**Boundary:** This is broad cross-area security coverage, not only a roll-up of
+`api-service/security`.
+
+**Also:** I’ll add one `.quality/changelog/` entry because this changes model judgment.
+
+**Answer:** Say `go`, or say if you want narrower appsec-only scope.
 ```
 
 After this block, stop. If the agent should proceed without waiting, do not ask
@@ -397,6 +459,19 @@ A specific steering axis is better than an exhaustive menu. If the most
 consequential assumption is broad Security versus narrower appsec, ask that. Do
 not dilute it with every possible concern, naming preference, edge case, and
 constraint unless those dimensions are equally likely to change the edit.
+
+Avoid long single-flow prose for review gates:
+
+```text
+I’m reading this as: add a model-wide Security Factor at the root so whole-repo
+evaluation can judge security-sensitive concerns even when the detailed Factor
+lives in a child Area. I’d implement that as a root Security Factor with one
+Requirement that inspects descendant Areas for security-related Factors,
+Requirements, and evidence...
+```
+
+The content may be right, but the user has to parse too much before finding the
+decision.
 
 ## Decision gates
 
@@ -520,6 +595,10 @@ Before shipping an agent-mediated workflow, check:
   message rather than the widget labels.
 - No prose gate is stacked on a mutation the harness already prompts to
   authorize.
+- Output passes the five-second scan: result, importance, and next action are
+  visible without reading every sentence.
+- Multi-fact responses use labels, bullets, or numbered lists instead of dense
+  paragraphs.
 - The primary question or call to action is the strongest element in each
   interaction block, by position and structure — not bold alone.
 - Reading only the first line and the choice block, with emphasis stripped,
@@ -536,6 +615,8 @@ Before shipping an agent-mediated workflow, check:
 - Content and model review gates state the inferred intent, why the change
   appears needed, the planned change, the value prop, and the most consequential
   assumption the user should react to before mutation.
+- Review gates use labels when they need to carry intent, approach, boundary,
+  logging, and answer path.
 - Mutation gates lead with the question, render choices as a separated block,
   cap supporting fields at about three, and state the change, reason, and done
   criterion.

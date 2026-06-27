@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated setup, evaluate, review, improve, and update workflows
+  for 0145 - Scannable Skill Output.
+  Runtime workflow guidance now uses labeled opening, review, and closeout
+  templates so status, artifacts, boundaries, verification, and next actions are
+  visible in a five-second scan.
+
 - **Revision**: Updated setup, evaluate, review, and improve workflow guidance
   for 0146 - Changelog Directory.
   Workflow mutation boundaries now name the quality changelog, while setup and

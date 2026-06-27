@@ -3,6 +3,14 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0145 - Scannable Skill Output](archive/0145-scannable-skill-output.md).
+  The shared agent-mediated UX guide now defines five-second-scan output, while
+  `/quality` runtime guidance, durable skill specs, workflow and guide templates,
+  logs, and release notes are aligned around labeled, scan-friendly review
+  gates, summaries, closeouts, and next-workflow prompts. `mise run
+  fmt-md-check` and `mise run check` pass.
+
+- **Done**: Implemented and archived
   [0146 - Changelog Directory](archive/0146-changelog-directory.md).
   Model-change history now lives under `.quality/changelog/` with timestamped
   entry filenames, `.quality/logs/` remains a flat workflow/process log

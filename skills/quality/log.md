@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0145 - Scannable Skill
+  Output.
+  Runtime interaction guidance now requires labeled blocks, bullets, or numbered
+  lists for multi-fact outputs, and direct model-authoring checkpoints use
+  `Planned edit`, `Why`, `Approach`, `Boundary`, `Log`, and `Answer` labels.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and workflow guidance for
   0146 - Changelog Directory.
   Runtime guidance now writes meaningful model-change history to the quality

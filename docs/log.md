@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0145 - Scannable Skill Output](../changes/archive/0145-scannable-skill-output.md).
+  The guide now defines five-second-scan output, recommends labeled blocks,
+  bullets, and numbered lists for multi-fact responses, and shows labeled
+  review-gate and closeout examples.
+
 - **Revision**: Updated README copies and the dogfood model for
   [0146 - Changelog Directory](../changes/archive/0146-changelog-directory.md).
   User-facing guidance now names model-change history as the quality changelog
