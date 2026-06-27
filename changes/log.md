@@ -3,6 +3,36 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0147 - Report Descendant Terms](archive/0147-report-descendant-terms.md).
+  Generated Evaluation reports now use Child Areas and Sub-Factors for immediate
+  descendants, durable report specs and release notes are aligned, and
+  `go test ./...` plus `mise run fmt-md-check` pass.
+
+- **In-Review**: Completed implementation for
+  [0147 - Report Descendant Terms](archive/0147-report-descendant-terms.md). Generated
+  Evaluation reports now use Child Areas and Sub-Factors for immediate
+  descendants, tests cover the new labels and old-label exclusions, durable
+  report specs and release notes are aligned, and `go test ./...` plus
+  `mise run fmt-md-check` pass.
+
+- **In-Progress**: Advanced
+  [0147 - Report Descendant Terms](archive/0147-report-descendant-terms.md). Functional
+  spec and design are settled; implementation is beginning across generated
+  report labels, tests, durable report specs, and release notes.
+
+- **Design**: Advanced
+  [0147 - Report Descendant Terms](archive/0147-report-descendant-terms.md) with its
+  [design doc](archive/0147-report-descendant-terms/design.md). The design keeps
+  structured data and traversal helpers unchanged while updating generated
+  Markdown report labels and durable report specs.
+
+- **Draft**: Created
+  [0147 - Report Descendant Terms](archive/0147-report-descendant-terms.md) with its
+  [functional spec](archive/0147-report-descendant-terms/spec.md). The case aligns
+  generated report terminology around Child Areas for immediate Area descendants
+  and Sub-Factors for immediate Factor descendants.
+
+- **Done**: Implemented and archived
   [0145 - Scannable Skill Output](archive/0145-scannable-skill-output.md).
   The shared agent-mediated UX guide now defines five-second-scan output, while
   `/quality` runtime guidance, durable skill specs, workflow and guide templates,

@@ -631,3 +631,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0146 — Changelog Directory](0146-changelog-directory.md) - renames the
   model-change history directory to `.quality/changelog/` with timestamped entry
   files and keeps `.quality/logs/` as a flat workflow-log directory (`Done`).
+- [0147 — Report Descendant Terms](0147-report-descendant-terms.md) - aligns
+  generated report labels around Child Areas for immediate Area descendants and
+  Sub-Factors for immediate Factor descendants (`Done`).

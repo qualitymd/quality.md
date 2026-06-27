@@ -135,7 +135,7 @@ Area reports **MUST** include:
 - summary;
 - rating drivers;
 - local root Factors;
-- direct child Areas;
+- direct Child Areas;
 - local Requirements; and
 - limits and incomplete inputs.
 
@@ -155,7 +155,7 @@ Factor reports **MUST** include:
 - summary;
 - rating drivers;
 - direct Requirements;
-- direct child Factors; and
+- direct Sub-Factors; and
 - limits and incomplete inputs.
 
 ## Requirement Reports
@@ -230,15 +230,16 @@ rating column `Local Rating`.
 > Rationale: the adjacent header columns are self-describing nouns, so bare
 > `Overall` / `Local` made a reader supply the missing noun. — 0111
 
-The Area report Factors table, the Area report Sub-Areas table, and the Factor
-report child Factors table each list a subject's children, one row per child.
+The Area report Factors table, the Area report Child Areas table, and the Factor
+report Sub-Factors table each list a subject's immediate descendants, one row
+per child.
 Each **MUST** render a `Local Rating` column from the child's `localAnalysis`
 rating, and a descendant-inclusive sub-rating column — `+ Sub-Factors Rating` for
-a Factor row, `+ Sub-Areas Rating` for an Area row — from the child's
+a Factor row, `+ Child Areas Rating` for an Area row — from the child's
 `localAndDescendantAnalysis` rating. These tables **MUST NOT** render a
 boolean in a rating column. When a row's subject has no descendant Factors (for a
 Factor row) or no descendant Areas (for an Area row), its `+ Sub-Factors Rating`
-/ `+ Sub-Areas Rating` cell **MUST** render an em dash (`—`) rather than
+/ `+ Child Areas Rating` cell **MUST** render an em dash (`—`) rather than
 repeating the local rating.
 
 > Rationale: these breakdown tables previously rendered the aggregate rating in
@@ -246,6 +247,16 @@ repeating the local rating.
 > belonged, leaving the local rating unshown — the unmet distinction clean-break
 > case 0097 required. The em dash preserves the old boolean's "has children"
 > signal without presenting a redundant rating. — 0097, 0111
+
+Area reports **MUST** render the immediate descendant-Area section heading as
+`Child Areas` and its empty-state row as `(no Child Areas)`. Factor reports
+**MUST** render the immediate descendant-Factor section heading as `Sub-Factors`
+and its empty-state row as `(no Sub-Factors)`. Reports **MUST NOT** use
+`Sub-Areas` or `Child Factors` for these generated human-facing labels.
+
+> Rationale: the Model vocabulary names immediate Area descendants as Child Areas
+> and Factor descendants as sub-factors. Generated reports should not make the
+> same relationship look like a different concept. — 0147
 
 Reports **MUST** render selected Rating Levels with the Rating Level `title`
 resolved from the run's `model-snapshot.md` snapshot, falling back to the stable Rating

@@ -3,6 +3,11 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0147 - Report Descendant Terms](../changes/archive/0147-report-descendant-terms.md).
+  Evaluation report specs now require generated reports to use Child Areas for
+  immediate Area descendants and Sub-Factors for immediate Factor descendants.
+
+- **Revision**: Implemented durable spec changes for
   [0145 - Scannable Skill Output](../changes/archive/0145-scannable-skill-output.md).
   The `/quality` skill, workflow, reporting, recommendation follow-up, and guide
   specs now require labeled, five-second-scan output templates for multi-fact

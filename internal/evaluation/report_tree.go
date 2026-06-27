@@ -427,11 +427,11 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		}
 		b.WriteString("\n")
 	}
-	b.WriteString("## Sub-Areas\n\n")
-	b.WriteString("| Area | Path | Local Rating | + Sub-Areas Rating | Factors |\n")
+	b.WriteString("## Child Areas\n\n")
+	b.WriteString("| Area | Path | Local Rating | + Child Areas Rating | Factors |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	if children := artifacts.childAreas(area.ID); len(children) == 0 {
-		b.WriteString("| (no child Areas) |  |  |  |  |\n\n")
+		b.WriteString("| (no Child Areas) |  |  |  |  |\n\n")
 	} else {
 		for _, child := range children {
 			childLocal := scopedMap(child.Analysis, "localAnalysis")
@@ -483,11 +483,11 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		}
 		b.WriteString("\n")
 	}
-	b.WriteString("## Child Factors\n\n")
+	b.WriteString("## Sub-Factors\n\n")
 	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	if children := artifacts.childFactors(factor.ID); len(children) == 0 {
-		b.WriteString("| (no child Factors) |  |  |  |\n\n")
+		b.WriteString("| (no Sub-Factors) |  |  |  |\n\n")
 	} else {
 		for _, child := range children {
 			childLocal := scopedMap(child.Analysis, "localAnalysis")
@@ -1387,7 +1387,7 @@ func evaluationRequirementRatingLabel(spec *model.Spec, rating map[string]any) s
 }
 
 // evaluationSubRatingCell renders the descendant-inclusive ("+ Sub-Factors Rating" /
-// "+ Sub-Areas Rating") cell for a breakdown row. When the node has no
+// "+ Child Areas Rating") cell for a breakdown row. When the node has no
 // descendants there is no roll-up distinct from its local rating, so it renders
 // an em dash rather than repeating the local rating.
 func evaluationSubRatingCell(spec *model.Spec, aggregate map[string]any, hasDescendants bool) string {

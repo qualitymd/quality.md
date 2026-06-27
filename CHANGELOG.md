@@ -5,6 +5,14 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.24.1 - 2026-06-27
+
+### CLI
+
+- Evaluation reports now label immediate descendant Areas as `Child Areas` and
+  immediate descendant Factors as `Sub-Factors`; the old `Sub-Areas` and
+  `Child Factors` report labels are no longer generated.
+
 ### /quality Skill
 
 - `/quality` runtime outputs now adopt labeled, scan-friendly templates for
@@ -22,6 +30,18 @@ QUALITY.md specification.
   `review` is focus-routed and read-only by default; `improve` confirms focus and
   mutation surface before delegating to existing model-authoring or compatible
   recommendation follow-up routes.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.24.1` requires the `qualitymd` CLI `0.24.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.24.1`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.24.1`, requires `qualitymd >=0.24.0 <0.25.0`
 
 ## v0.24.0 - 2026-06-27
 

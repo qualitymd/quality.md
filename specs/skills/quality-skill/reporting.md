@@ -98,10 +98,10 @@ Every report **MUST** include the navigation trails required by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md).
 
 Area reports **MUST** link to local root Factor reports, local Requirement
-reports, and direct child Area reports.
+reports, and direct Child Area reports.
 
 Factor reports **MUST** link to their owning Area report when that Area report
-was generated, parent Factor report when present, child Factor reports, and
+was generated, parent Factor report when present, Sub-Factor reports, and
 direct Requirement reports.
 
 Requirement reports **MUST** link to their owning Area report and every attached

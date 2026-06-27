@@ -357,9 +357,13 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "Reliability analysis is the binding roll-up driver.")
 	assertContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
 	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | 🔴 Below | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
+	assertContains(t, rootReport, "## Child Areas")
+	assertContains(t, rootReport, "| Area | Path | Local Rating | + Child Areas Rating | Factors |")
 	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — | — |")
 	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/reliability-factor.md) |")
 	assertContains(t, rootReport, "## Legend\n\n- `—` - not applicable or not recorded.")
+	assertNotContains(t, rootReport, "## Sub-Areas")
+	assertNotContains(t, rootReport, "+ Sub-Areas Rating")
 	assertNotContains(t, rootReport, "Breadcrumb:")
 	assertNotContains(t, rootReport, "Parent Area:")
 	assertNotContains(t, rootReport, "| Details |")
@@ -374,12 +378,22 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, factorReport, "## Rating Drivers\n\n| Driver | Effect | Inputs |")
 	assertContains(t, factorReport, "Latency roll-up constrains reliability.")
 	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed |")
+	assertContains(t, factorReport, "## Sub-Factors")
 	assertContains(t, factorReport, "| [Latency](factors/latency/latency-factor.md) | `reliability/latency` | 🔵 Target | — |")
+	assertNotContains(t, factorReport, "## Child Factors")
 	assertNotContains(t, factorReport, "Parent Factor:")
 	assertNotContains(t, factorReport, "| Details |")
 
+	paymentsReport := readReport(t, runPath, "areas/payments/payments-area.md")
+	assertContains(t, paymentsReport, "## Child Areas")
+	assertContains(t, paymentsReport, "| (no Child Areas) |  |  |  |  |")
+	assertNotContains(t, paymentsReport, "Sub-Areas")
+
 	childFactorReport := readReport(t, runPath, "factors/reliability/factors/latency/latency-factor.md")
 	assertContains(t, childFactorReport, "Factor: [Reliability](../../reliability-factor.md) / [Latency](latency-factor.md)")
+	assertContains(t, childFactorReport, "## Sub-Factors")
+	assertContains(t, childFactorReport, "| (no Sub-Factors) |  |  |  |")
+	assertNotContains(t, childFactorReport, "Child Factors")
 
 	requirementReport := readReport(t, runPath, "requirements/has-tests/has-tests-requirement.md")
 	assertContains(t, requirementReport, "# Requirement: Has tests\n\nArea: [Navigation model](../../root-area.md)")
@@ -1224,7 +1238,7 @@ func navigationReportPayloads() []string {
 		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:payments","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments local work meets the bar.","ratingDrivers":[{"description":"Payments frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}]}],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments work meets the bar overall.","ratingDrivers":[{"description":"Payments frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}]}],"confidence":"medium"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}`,
-		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability local work meets the bar.","ratingDrivers":[{"description":"Requirement rating supports reliability.","effect":"supports target","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:below","rationale":"Reliability work misses the bar once sub-Factors roll up.","ratingDrivers":[{"description":"Latency roll-up constrains reliability.","effect":"constrains below","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability/latency"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability local work meets the bar.","ratingDrivers":[{"description":"Requirement rating supports reliability.","effect":"supports target","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:below","rationale":"Reliability work misses the bar once Sub-Factors roll up.","ratingDrivers":[{"description":"Latency roll-up constrains reliability.","effect":"constrains below","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability/latency"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability/latency","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency local work meets the bar.","ratingDrivers":[{"description":"Latency frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}]}],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency work meets the bar overall.","ratingDrivers":[{"description":"Latency frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}]}],"confidence":"medium"}}`,
 		`{"schemaVersion":3,"kind":"RequirementEvaluationFrame","subject":{"requirementId":"requirement:root::has-tests","factorIds":["factor:root::reliability"]}}`,
 		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","confidence":"high","summary":"Tests are present.","factors":["factor:root::reliability"],"findings":[` + requirementFinding + `]}`,
