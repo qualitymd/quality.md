@@ -86,21 +86,18 @@ improve over time.
 
 The QUALITY.md loop stack:
 
-- **Outer loop — quality taste and model stewardship.** Teams and agents refine
-  `QUALITY.md` from lower-loop observations, external feedback, stakeholder
-  judgment, and taste. The model gets sharper as the work teaches you what
-  quality really requires.
+- **Outer loop (days):** *quality taste and model stewardship*. Teams and agents
+  refine `QUALITY.md` from lower-loop observations, external feedback,
+  stakeholder judgment, and taste.
 
-- **Middle loop — evaluation, review, and routing.** `/quality evaluate` turns
-  the model into findings and actionable recommendations. Review turns those
-  recommendations into judgment: what to act on now, what to hand off to GitHub,
-  Linear, or another work system, what to defer, and where the quality signal
-  itself needs to improve.
+- **Middle loop (hours):** *evaluation, review, and routing*. `/quality evaluate`
+  turns the model into findings and actionable recommendations. Review decides
+  what to act on now, what to hand off, what to defer, and where the quality
+  signal itself needs to improve.
 
-- **Inner loop — action against the quality signal.** Agents or people act on
-  accepted recommendations: applying fixes, improving docs, tightening tests,
-  updating the model, or using `/quality review` to supervise the work before
-  accepting it.
+- **Inner loop (minutes):** *action against the quality signal*. Agents or people
+  apply accepted recommendations: fixing work, improving docs, tightening tests,
+  updating the model, or using `/quality review` to supervise before accepting.
 
 The value is leverage: QUALITY.md helps teams **move quality judgment up the loop
 stack**, so inner-loop work starts from a grounded quality signal instead of
