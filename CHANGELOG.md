@@ -7,6 +7,9 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- Direct `QUALITY.md` edit checkpoints now state the inferred purpose for the
+  change and ask the user to react to the consequential scope or risk assumption
+  instead of defaulting to a generic adjustment prompt.
 - `/quality review` and `/quality improve` are now public workflow stubs.
   `review` is focus-routed and read-only by default; `improve` confirms focus and
   mutation surface before delegating to existing model-authoring or compatible

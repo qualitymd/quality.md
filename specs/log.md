@@ -3,6 +3,12 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0144 - Pointed Review Gates](../changes/archive/0144-pointed-review-gates.md).
+  The `/quality` skill specs now require direct model-authoring checkpoints to
+  state inferred purpose and ask the user to react to the consequential
+  assumption instead of defaulting to a generic adjustment prompt.
+
+- **Revision**: Implemented durable spec changes for
   [0143 - Public Review and Improve Workflows](../changes/archive/0143-public-review-improve-workflows.md).
   The `/quality` skill specs now make `review` and `improve` public workflows,
   route them by focus, keep review read-only by default, and require improve to

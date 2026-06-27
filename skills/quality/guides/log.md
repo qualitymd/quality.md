@@ -2,6 +2,11 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [Authoring QUALITY.md](authoring.md) for 0144 - Pointed
+  Review Gates.
+  Runtime authoring guidance now preserves inferred purpose and asks users to
+  react to the consequential assumption before mutation.
+
 - **Revision**: Updated [Top 10 checks](top-10-quality-md-checks.md) and
   [Recommendation Follow-Up](recommendation-follow-up.md) for 0143 - Public
   Review and Improve Workflows.

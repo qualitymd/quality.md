@@ -73,7 +73,8 @@ The scope parameterizes the invocation rather than multiplying it (see
 Direct model authoring is the implementation route for user requests to improve
 or edit an existing `QUALITY.md`. It keeps direct edits lightweight: infer intent
 from the request and model, ask only material follow-up questions, state the
-intended edit, and invite adjustments before mutation.
+intended edit and purpose, and ask the user to react to the consequential
+assumption before mutation.
 
 Recommendation follow-up is the implementation route for `improve` when a
 compatible recommendation artifact exists. Follow-up offers two explicit
@@ -581,15 +582,17 @@ Scale criteria, weights, required margin, scope, or apex.
 
 Before mutating `QUALITY.md` through direct model authoring, the skill **MUST**
 present a lightweight intent checkpoint that states the inferred intent, the
-planned change, the value prop, important boundaries, and whether a quality-log
-entry is expected. The planned change **SHOULD** be phrased in simple
-conversational prose, preferably with a `so that` value-prop clause when it fits.
-The skill **SHOULD** use numbered planned-action lists only when a multi-part
-edit would be hard to scan in prose. The checkpoint **MUST** invite corrections
-or additional concerns, goals, needs, worries, edge cases, naming preferences,
-scope boundaries, and constraints in welcoming conversational terms, and
-**MUST** make a short approval path explicit. When the checkpoint clearly names
-the mutation,
+inferred purpose or reason the change appears needed, the planned change, the
+value prop, important boundaries, and whether a quality-log entry is expected.
+The planned change **SHOULD** be phrased in simple conversational prose,
+preferably with a `so that` value-prop clause when it fits. The skill
+**SHOULD** use numbered planned-action lists only when a multi-part edit would be
+hard to scan in prose. The checkpoint **MUST** ask the user to react to the most
+consequential inferred scope, risk, naming, or boundary assumption when such an
+assumption is visible. It **SHOULD NOT** end with only a generic adjustment
+prompt when a narrower steering axis would better expose the assumption most
+likely to change the edit. The checkpoint **MUST** make a short approval path
+explicit. When the checkpoint clearly names the mutation,
 `looks good` or an equivalent clear approval **MUST** count as explicit
 confirmation to proceed. After presenting the checkpoint, the skill **MUST** stop
 and wait for the user's response before mutating. It **MUST NOT** ask what the

@@ -3,6 +3,14 @@
 ## 2026-06-27
 
 - **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) and
+  [Working with change cases](guides/work-with-change-cases.md) for
+  [0144 - Pointed Review Gates](../changes/archive/0144-pointed-review-gates.md).
+  Review gates now state inferred purpose and ask for reaction to the
+  consequential assumption, while Change Case guidance now requires applicable
+  guide consultation before phase work and status advances.
+
+- **Revision**: Updated
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
   [0141 - Area-local Factor References](../changes/archive/0141-area-local-factor-references.md).
   The direct model-authoring example now adds root Security coverage with an

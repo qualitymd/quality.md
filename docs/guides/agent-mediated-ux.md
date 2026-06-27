@@ -348,29 +348,31 @@ Distinguish three interaction shapes:
   mutating.
 
 When a review gate authorizes a content or model edit, it should state the
-inferred intent, then describe the planned change in simple conversational prose
-with a visible value prop. Prefer a natural `so that` clause when it fits:
-the user can correct the goal as well as the mechanics. Keep important
-boundaries, logging decisions, and approval paths visible without turning the
-gate into a formal questionnaire. For example:
+inferred intent and why the change appears needed, then describe the planned
+change in simple conversational prose with a visible value prop. Prefer a
+natural `so that` clause when it fits: the user can correct the goal as well as
+the mechanics. The gate should not end with only a generic "anything to adjust?"
+prompt. When the agent can infer a likely goal, risk boundary, or scope
+assumption, name the most consequential one and ask the user to react to that
+specific interpretation. Keep important boundaries, logging decisions, and
+approval paths visible without turning the gate into a formal questionnaire. For
+example:
 
 ```text
-I’m reading this as: add root-level Security coverage.
+I’m reading this as: you want Security to become a model-wide lens, so security
+concerns in child Areas cannot disappear just because they are local to auth,
+uploads, webhooks, infra, credentials, or data boundaries.
 
-Here’s what I’m planning to do:
+I’d implement that as a root `security` Factor with a Requirement that checks
+whether descendant Areas with security exposure either model it explicitly or
+explain why it is out of scope. I would not rely on descendant Factors rolling up
+automatically; QUALITY.md does not work that way.
 
-I’ll add Security as a model-wide Factor with a root Requirement that checks how
-security-relevant concerns are covered across child Areas, so that root-level
-Security judgment is explicit instead of depending on hidden descendant roll-up
-links.
+I’d also write one quality-log entry because this changes how the model judges.
 
-I’ll keep the existing child Security Factors in place and write one quality-log
-entry because this changes what the model judges.
-
-Before I make the edit, what should I adjust or watch out for?
-
-You can say `looks good`, or share any concerns, goals, edge cases, naming
-preferences, scope boundaries, or anything I may be missing.
+One scope choice before I edit: I’m treating Security broadly, including app
+security, sensitive data, credentials, integrations, and infrastructure controls.
+If you want narrower appsec only, say so. Otherwise say `go`.
 ```
 
 After this block, stop. If the agent should proceed without waiting, do not ask
@@ -390,6 +392,11 @@ mutation.
 Use numbered planned-action lists only when the edit has multiple independent
 parts that would be hard to scan in prose. The default review gate is a short
 plain-language plan, not a task list.
+
+A specific steering axis is better than an exhaustive menu. If the most
+consequential assumption is broad Security versus narrower appsec, ask that. Do
+not dilute it with every possible concern, naming preference, edge case, and
+constraint unless those dimensions are equally likely to change the edit.
 
 ## Decision gates
 
@@ -526,8 +533,9 @@ Before shipping an agent-mediated workflow, check:
   than a silent runway.
 - Any feedback invitation is a real gate: the agent waits after asking for
   adjustments, concerns, or `looks good`.
-- Content and model review gates state the planned change in simple prose, name
-  the value prop, and invite feedback before mutation.
+- Content and model review gates state the inferred intent, why the change
+  appears needed, the planned change, the value prop, and the most consequential
+  assumption the user should react to before mutation.
 - Mutation gates lead with the question, render choices as a separated block,
   cap supporting fields at about three, and state the change, reason, and done
   criterion.

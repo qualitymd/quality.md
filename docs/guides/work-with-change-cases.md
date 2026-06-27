@@ -38,6 +38,28 @@ item, or when the work needs durable spec/design/review history.
 Copy [`0001-example-change`](../../changes/archive/0001-example-change.md) and its
 folder as a starting template.
 
+## Consult applicable guidance
+
+At the start of a Change Case, and before each status advance, identify the
+repository guidance that applies to the work now being planned, specified,
+designed, implemented, or reviewed. Read the applicable guides before making or
+reviewing the corresponding artifact, and let that guidance shape the Change
+Case artifacts, affected-artifact accounting, implementation process, and review
+notes.
+
+Some guides are phase-baseline guidance: functional spec work follows
+[Writing functional specs](write-functional-specs.md), design work follows
+[Writing design docs](write-design-docs.md), and OKF edits follow
+[Working with OKF](work-with-okf.md).
+
+Other guides apply based on the work's substance. Start from the
+[guide index](index.md), then follow links only for guidance that matches the
+work's affected artifacts, user experience, implementation area, or review risk.
+Use the affected-artifact sweep to find relevant guidance too; do not treat any
+example list as complete. If a guide appears relevant but is not applicable, note
+that briefly when the case is broad, risky, or likely to be reviewed on that
+basis.
+
 ## Write the spec, then the design
 
 Write them in order — settle *what* the change case must do before working out

@@ -2,6 +2,11 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0144 - Pointed Review Gates.
+  Direct model authoring checkpoints now state inferred purpose and ask users to
+  react to the consequential assumption instead of defaulting to a generic
+  adjustment prompt.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0143 - Public Review and
   Improve Workflows.
   Runtime dispatch now treats `review` and `improve` as public workflows, uses

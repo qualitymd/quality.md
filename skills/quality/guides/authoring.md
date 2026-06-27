@@ -44,13 +44,15 @@ the confirmed mutation surface.
 
 For direct `QUALITY.md` edits, infer the intended change from the user's request
 and the current model before asking follow-up. Preserve the user's intent, the
-model or body target, the planned change, the value prop, the expected judgment
-effect, unresolved unknowns, and whether the change should write the quality log.
-Ask follow-up only when one of those would materially change the edit; otherwise
-state the intended edit in simple planned-change prose, name the value prop, and
-invite concerns, goals, needs, worries, edge cases, naming preferences, scope
-boundaries, constraints, or `looks good` as a review gate, then wait for that
-response before mutating.
+model or body target, the inferred purpose, the planned change, the value prop,
+the expected judgment effect, unresolved unknowns, and whether the change should
+write the quality log. Ask follow-up only when one of those would materially
+change the edit; otherwise state why the change appears needed, state the
+intended edit in simple planned-change prose, name the value prop, and ask the
+user to react to the most consequential scope, risk, naming, or boundary
+assumption as a review gate, then wait for that response before mutating. Use a
+broad "anything to adjust?" prompt only when no narrower steering axis is
+available.
 
 ## The QUALITY.md file
 

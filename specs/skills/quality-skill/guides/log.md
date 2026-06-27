@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the durable
+  [authoring guide family](authoring.md) for
+  [0144 - Pointed Review Gates](../../../../changes/archive/0144-pointed-review-gates.md).
+  Direct-edit guidance now preserves inferred purpose and asks users to react to
+  the consequential assumption before mutation.
+
 - **Revision**: Updated the durable [top-10 checks](top-10-quality-md-checks-md.md)
   and [recommendation follow-up guide](recommendation-follow-up-md.md) specs for
   [0143 - Public Review and Improve Workflows](../../../../changes/archive/0143-public-review-improve-workflows.md).

@@ -621,3 +621,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   - makes `/quality review` and `/quality improve` public, focus-routed workflow
     stubs and simplifies README framing around evaluate, review, and improve
     (`Done`).
+- [0144 — Pointed Review Gates](0144-pointed-review-gates.md) - makes review
+  gates state inferred purpose and ask for reaction to the consequential
+  assumption instead of defaulting to a generic adjustment prompt (`Done`).

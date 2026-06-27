@@ -254,27 +254,26 @@ criteria, weights, required margin, scope, or apex. Do not use a fixed full
 questionnaire for routine direct edits.
 
 Before mutating `QUALITY.md` through direct model authoring, present a lightweight
-intent checkpoint that names the inferred intent, states the planned change and
-value prop in simple prose, and invites adjustment. Use numbered planned actions
-only when a multi-part edit would be hard to scan as prose:
+intent checkpoint that names the inferred intent, says why the change appears
+needed, states the planned change and value prop in simple prose, and asks the
+user to react to the most consequential scope or risk assumption. Use numbered
+planned actions only when a multi-part edit would be hard to scan as prose:
 
 ```text
-I’m reading this as: <plain-language intent>.
+I’m reading this as: <plain-language intent>, so that <inferred purpose>.
 
-Here’s what I’m planning to do:
-
-<simple common-sense prose of the change>, so that <value prop>.
+I’d implement that as <simple common-sense prose of the change>, so that <value prop>.
 
 <Important boundary and quality-log decision, when relevant.>
 
-Before I make the edit, what should I adjust or watch out for?
-
-You can say `looks good`, or share any concerns, goals, edge cases, naming
-preferences, scope boundaries, or anything I may be missing.
+One <scope/risk/naming> choice before I edit: <consequential assumption>. If
+<alternative meaning>, say so. Otherwise say `go`.
 ```
 
 When the checkpoint clearly names the mutation, `looks good` or an equivalent
-clear approval counts as explicit confirmation. After presenting this checkpoint,
+clear approval counts as explicit confirmation. Do not default to a broad
+"anything to adjust?" prompt when a narrower steering axis would better expose
+the assumption most likely to change the edit. After presenting this checkpoint,
 stop and wait for the user's response before mutating; do not ask what the user
 wants adjusted and then proceed in the same turn. If the edit reshapes future
 judgment — for example by changing rating semantics, removing model coverage,

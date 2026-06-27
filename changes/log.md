@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0144 - Pointed Review Gates](archive/0144-pointed-review-gates.md).
+  Shared UX guidance, `/quality` runtime guidance, durable skill specs, authoring
+  guide specs, Change Case process guidance, logs, and release notes now require
+  purpose-first review gates that ask the user to react to the consequential
+  assumption. `mise run fmt-md-check` and `mise run check` pass.
+
+- **Done**: Implemented and archived
   [0143 - Public Review and Improve Workflows](archive/0143-public-review-improve-workflows.md).
   `/quality review` and `/quality improve` are now public, focus-routed workflow
   stubs; README, runtime skill guidance, durable skill specs, guide routing,
