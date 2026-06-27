@@ -13,44 +13,44 @@ import (
 )
 
 func evaluationRenderableGaps(runAbs string) []RunGap {
-	required := []struct {
-		rel  string
-		kind DataKind
-	}{
-		{"data/frame/evaluation-frame.json", DataKindEvaluationFrame},
-		{"data/areas/root/area-evaluation-frame.json", DataKindAreaEvaluationFrame},
-		{"data/areas/root/area-analysis-result.json", DataKindAreaAnalysis},
+	raw, err := readRequiredEvaluationPayload(runAbs, "data/frame/evaluation-frame.json", DataKindEvaluationFrame)
+	if err != nil {
+		return []RunGap{*err}
 	}
-	var gaps []RunGap
-	for _, req := range required {
-		raw, err := os.ReadFile(filepath.Join(runAbs, req.rel))
-		if os.IsNotExist(err) {
-			gaps = append(gaps, RunGap{Kind: GapMissingEvaluationData, Ref: req.rel, Detail: "required Evaluation evaluation payload is missing"})
-			continue
-		}
-		if err != nil {
-			gaps = append(gaps, RunGap{Kind: GapUnreadableEvaluationData, Ref: req.rel, Detail: err.Error()})
-			continue
-		}
-		payload, err := decodeDataPayload(raw)
-		if err != nil {
-			gaps = append(gaps, RunGap{Kind: GapMalformedEvaluationData, Ref: req.rel, Detail: err.Error()})
-			continue
-		}
-		kind, err := payloadKind(payload)
-		if err != nil {
-			gaps = append(gaps, RunGap{Kind: GapIncompleteEvaluationData, Ref: req.rel, Detail: err.Error()})
-			continue
-		}
-		if kind != req.kind {
-			gaps = append(gaps, RunGap{Kind: GapIncompleteEvaluationData, Ref: req.rel, Detail: fmt.Sprintf("kind = %s, want %s", kind, req.kind)})
-			continue
-		}
-		if err := validateDataPayload(kind, payload); err != nil {
-			gaps = append(gaps, RunGap{Kind: GapIncompleteEvaluationData, Ref: req.rel, Detail: err.Error()})
-		}
+	artifacts, collectErr := collectEvaluationArtifacts(runAbs)
+	if collectErr != nil {
+		return []RunGap{{Kind: GapMalformedEvaluationData, Ref: "data", Detail: collectErr.Error()}}
 	}
-	return gaps
+	artifacts.Frame = raw
+	if _, gap := resolveEvaluationReportPlan(artifacts); gap != nil {
+		return []RunGap{*gap}
+	}
+	return nil
+}
+
+func readRequiredEvaluationPayload(runAbs, rel string, want DataKind) (map[string]any, *RunGap) {
+	raw, err := os.ReadFile(filepath.Join(runAbs, rel))
+	if os.IsNotExist(err) {
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: rel, Detail: "required Evaluation evaluation payload is missing"}
+	}
+	if err != nil {
+		return nil, &RunGap{Kind: GapUnreadableEvaluationData, Ref: rel, Detail: err.Error()}
+	}
+	payload, err := decodeDataPayload(raw)
+	if err != nil {
+		return nil, &RunGap{Kind: GapMalformedEvaluationData, Ref: rel, Detail: err.Error()}
+	}
+	kind, err := payloadKind(payload)
+	if err != nil {
+		return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: rel, Detail: err.Error()}
+	}
+	if kind != want {
+		return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: rel, Detail: fmt.Sprintf("kind = %s, want %s", kind, want)}
+	}
+	if err := validateDataPayload(kind, payload); err != nil {
+		return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: rel, Detail: err.Error()}
+	}
+	return payload, nil
 }
 
 func buildEvaluationReport(path, displayPath string) (*BuildReportReceipt, error) {
@@ -72,11 +72,11 @@ func buildEvaluationReport(path, displayPath string) (*BuildReportReceipt, error
 	if err != nil {
 		return nil, err
 	}
-	rootArea := artifacts.area(areaKey(nil))
-	if rootArea == nil || rootArea.Analysis == nil {
-		return nil, nonReportableRunError(displayPath, RunGap{Kind: GapMissingEvaluationData, Ref: "data/areas/root/area-analysis-result.json", Detail: "required Evaluation evaluation payload is missing"})
+	plan, gap := resolveEvaluationReportPlan(artifacts)
+	if gap != nil {
+		return nil, nonReportableRunError(displayPath, *gap)
 	}
-	reports := renderEvaluationReportTree(spec, artifacts)
+	reports := renderEvaluationReportTree(spec, artifacts, plan)
 	for _, report := range reports {
 		reportAbs := filepath.Join(runAbs, report.Path)
 		if err := os.MkdirAll(filepath.Dir(reportAbs), 0o755); err != nil {
@@ -86,7 +86,7 @@ func buildEvaluationReport(path, displayPath string) (*BuildReportReceipt, error
 			return nil, err
 		}
 	}
-	output := evaluationOutputResult(artifacts, reports)
+	output := evaluationOutputResult(artifacts, plan, reports)
 	outputRaw, err := canonicalJSON(output)
 	if err != nil {
 		return nil, err
@@ -96,13 +96,20 @@ func buildEvaluationReport(path, displayPath string) (*BuildReportReceipt, error
 		return nil, fmt.Errorf("writing %s: %w", filepath.ToSlash(outputRel), err)
 	}
 	reportRel := "report.md"
-	return &BuildReportReceipt{
+	receipt := &BuildReportReceipt{
 		SchemaVersion:          SchemaVersion,
 		Path:                   displayPath,
 		ReportMD:               filepath.ToSlash(filepath.Join(displayPath, reportRel)),
 		EvaluationOutputResult: filepath.ToSlash(filepath.Join(displayPath, outputRel)),
-		RatingResult:           evaluationReceiptRating(rootArea.Analysis),
-	}, nil
+		RatingResult:           evaluationReceiptRating(plan.HeadlineAnalysis),
+	}
+	if plan.HeadlineReport != nil {
+		receipt.HeadlineReportMD = filepath.ToSlash(filepath.Join(displayPath, plan.HeadlineReport.Path))
+	}
+	if rootReport := reportForRootArea(reports); rootReport != nil {
+		receipt.RootAreaReportMD = filepath.ToSlash(filepath.Join(displayPath, rootReport.Path))
+	}
+	return receipt, nil
 }
 
 func loadRunModel(runAbs string) (*model.Spec, error) {
@@ -145,6 +152,7 @@ type evaluationRequirementArtifacts struct {
 }
 
 type evaluationArtifacts struct {
+	Frame        map[string]any
 	Areas        map[string]*evaluationAreaArtifacts
 	Factors      map[string]*evaluationFactorArtifacts
 	Requirements map[string]*evaluationRequirementArtifacts
@@ -157,6 +165,22 @@ type evaluationRenderedReport struct {
 	FactorID      *factorID
 	RequirementID *requirementID
 	Content       string
+}
+
+type evaluationHeadlineKind string
+
+const (
+	evaluationHeadlineArea   evaluationHeadlineKind = "area"
+	evaluationHeadlineFactor evaluationHeadlineKind = "factor"
+)
+
+type evaluationReportPlan struct {
+	Frame            map[string]any
+	HeadlineKind     evaluationHeadlineKind
+	HeadlineAreaID   []string
+	HeadlineFactorID *factorID
+	HeadlineAnalysis map[string]any
+	HeadlineReport   *evaluationRenderedReport
 }
 
 func collectEvaluationArtifacts(runAbs string) (*evaluationArtifacts, error) {
@@ -194,6 +218,7 @@ func collectEvaluationArtifacts(runAbs string) (*evaluationArtifacts, error) {
 type evaluationPayloadCollector func(*evaluationArtifacts, map[string]any) error
 
 var evaluationPayloadCollectors = map[DataKind]evaluationPayloadCollector{
+	DataKindEvaluationFrame:            collectEvaluationFrame,
 	DataKindAreaEvaluationFrame:        collectEvaluationAreaFrame,
 	DataKindAreaAnalysis:               collectEvaluationAreaAnalysis,
 	DataKindRequirementEvaluationFrame: collectEvaluationRequirementFrame,
@@ -201,6 +226,11 @@ var evaluationPayloadCollectors = map[DataKind]evaluationPayloadCollector{
 	DataKindRequirementRating:          collectEvaluationRequirementRating,
 	DataKindFactorAnalysisFrame:        collectEvaluationFactorFrame,
 	DataKindFactorAnalysis:             collectEvaluationFactorAnalysis,
+}
+
+func collectEvaluationFrame(out *evaluationArtifacts, payload map[string]any) error {
+	out.Frame = payload
+	return nil
 }
 
 func collectEvaluationAreaFrame(out *evaluationArtifacts, payload map[string]any) error {
@@ -296,7 +326,7 @@ func (a *evaluationArtifacts) requirement(key string) *evaluationRequirementArti
 	return created
 }
 
-func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts) []evaluationRenderedReport {
+func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan) []evaluationRenderedReport {
 	var reports []evaluationRenderedReport
 	for _, area := range artifacts.sortedAreas() {
 		if area.Analysis == nil {
@@ -338,7 +368,35 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 			Content:       renderEvaluationRequirementReport(spec, artifacts, requirement, path),
 		})
 	}
-	return reports
+	linkEvaluationReportPlan(plan, reports)
+	run := evaluationRenderedReport{
+		Kind:    string(ReportKindRun),
+		Path:    "report.md",
+		Content: renderEvaluationRunReport(spec, artifacts, plan, reports, "report.md"),
+	}
+	return append([]evaluationRenderedReport{run}, reports...)
+}
+
+func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport, reportPath string) string {
+	headlineLabel := evaluationHeadlineLabel(spec, plan)
+	headlineScope := scopedMap(plan.HeadlineAnalysis, "localAndDescendantAnalysis")
+	var b strings.Builder
+	b.WriteString("# Evaluation Report: " + headlineLabel + "\n\n")
+	b.WriteString("| Headline Rating | Headline Subject | Data |\n")
+	b.WriteString("| --- | --- | --- |\n")
+	b.WriteString("| " + markdownCell(evaluationRatingLabel(spec, headlineScope)) + " | " + markdownCell(evaluationHeadlineReportLink(spec, reportPath, plan)) + " | " + reportDataLink(reportPath, "data/evaluation-output-result.json") + " |\n\n")
+	b.WriteString("Summary:\n\n")
+	b.WriteString(evaluationSummary(headlineScope))
+	b.WriteString("\n\n## Scope\n\n")
+	writeEvaluationRunScope(&b, artifacts)
+	b.WriteString("## Subject Reports\n\n")
+	writeEvaluationRunReportsTable(&b, spec, artifacts, reports, reportPath)
+	b.WriteString("## Coverage\n\n")
+	writeEvaluationRunCoverage(&b, artifacts, reports, reportPath)
+	b.WriteString("## Limits & Incomplete Inputs\n\n")
+	writeEvaluationLimitsTable(&b, scopedMap(plan.HeadlineAnalysis, "localAnalysis"), headlineScope)
+	writeEvaluationLegend(&b)
+	return b.String()
 }
 
 func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts, area *evaluationAreaArtifacts, reportPath string) string {
@@ -347,7 +405,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
 	var b strings.Builder
 	b.WriteString("# Area: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, area.ID, reportPath)
+	writeEvaluationAreaTrail(&b, spec, artifacts, area.ID, reportPath)
 	b.WriteString("| Overall Rating | Local Rating | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	b.WriteString("| " + markdownCell(evaluationRatingLabel(spec, overall)) + " | " + markdownCell(evaluationRatingLabel(spec, local)) + " | " + markdownCell(evaluationConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json")) + " |\n\n")
@@ -407,7 +465,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	title := factorTitle(spec, factor.ID)
 	var b strings.Builder
 	b.WriteString("# Factor: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, factor.ID.DeclaringArea, reportPath)
+	writeEvaluationAreaTrail(&b, spec, artifacts, factor.ID.DeclaringArea, reportPath)
 	writeEvaluationFactorTrail(&b, spec, factor.ID, reportPath)
 	b.WriteString("| Overall Rating | Local Rating | Status | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
@@ -452,7 +510,7 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
 	b.WriteString("# Requirement: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, req.ID.DeclaringArea, reportPath)
+	writeEvaluationAreaTrail(&b, spec, artifacts, req.ID.DeclaringArea, reportPath)
 	writeEvaluationRequirementFactorsLine(&b, req, reportPath)
 	b.WriteString("| Rating | Assessment | Confidence | Data |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
@@ -476,15 +534,17 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	return b.String()
 }
 
-func evaluationOutputResult(artifacts *evaluationArtifacts, reports []evaluationRenderedReport) map[string]any {
+func evaluationOutputResult(artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport) map[string]any {
 	reportOutputs := make([]any, 0, len(reports))
 	reportsByArea := map[string][]any{}
 	for _, report := range reports {
 		ref := evaluationReportRef(report)
 		reportOutputs = append(reportOutputs, ref)
-		reportsByArea[areaKey(report.AreaID)] = append(reportsByArea[areaKey(report.AreaID)], ref)
+		if report.Kind != string(ReportKindRun) {
+			reportsByArea[areaKey(report.AreaID)] = append(reportsByArea[areaKey(report.AreaID)], ref)
+		}
 	}
-	var areaOutputs []any
+	areaOutputs := []any{}
 	for _, area := range artifacts.sortedAreas() {
 		if area.Analysis == nil {
 			continue
@@ -500,17 +560,26 @@ func evaluationOutputResult(artifacts *evaluationArtifacts, reports []evaluation
 			"reportRefs":                reportsByArea[areaKey(area.ID)],
 		})
 	}
-	return map[string]any{
-		"schemaVersion":       SchemaVersion,
-		"kind":                string(DataKindEvaluationOutput),
-		"rootAreaAnalysisRef": routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath{}.Reference()}, "localAndDescendantAnalysis"),
-		"areaOutputs":         areaOutputs,
-		"reportOutputs":       reportOutputs,
+	output := map[string]any{
+		"schemaVersion":     SchemaVersion,
+		"kind":              string(DataKindEvaluationOutput),
+		"runReportRef":      evaluationReportRef(evaluationRenderedReport{Kind: string(ReportKindRun), Path: "report.md"}),
+		"headlineResultRef": evaluationHeadlineResultRef(plan),
+		"headlineReportRef": evaluationReportRef(*plan.HeadlineReport),
+		"areaOutputs":       areaOutputs,
+		"reportOutputs":     reportOutputs,
 	}
+	if root := artifacts.Areas[areaKey(nil)]; root != nil && root.Analysis != nil {
+		output["rootAreaAnalysisRef"] = routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath{}.Reference()}, "localAndDescendantAnalysis")
+	}
+	return output
 }
 
 func evaluationReportRef(report evaluationRenderedReport) map[string]any {
-	ref := map[string]any{"kind": report.Kind, "areaId": model.AreaPath(report.AreaID).Reference(), "path": filepath.ToSlash(report.Path)}
+	ref := map[string]any{"kind": report.Kind, "path": filepath.ToSlash(report.Path)}
+	if report.Kind != string(ReportKindRun) {
+		ref["areaId"] = model.AreaPath(report.AreaID).Reference()
+	}
 	if report.FactorID != nil {
 		ref["factorId"] = factorIDJSON(*report.FactorID)
 	}
@@ -518,6 +587,213 @@ func evaluationReportRef(report evaluationRenderedReport) map[string]any {
 		ref["requirementId"] = requirementIDJSON(*report.RequirementID)
 	}
 	return ref
+}
+
+func resolveEvaluationReportPlan(artifacts *evaluationArtifacts) (*evaluationReportPlan, *RunGap) {
+	if artifacts.Frame == nil {
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: "data/frame/evaluation-frame.json", Detail: "required Evaluation evaluation payload is missing"}
+	}
+	inputs := objectMap(artifacts.Frame["inputs"])
+	if plan, gap, scoped := resolveScopedFactorHeadline(artifacts, stringValues(inputs["factorIds"])); scoped {
+		return plan, gap
+	}
+	if plan, gap, scoped := resolveScopedAreaHeadline(artifacts, stringValues(inputs["areaIds"])); scoped {
+		return plan, gap
+	}
+	return resolveRootHeadline(artifacts)
+}
+
+func resolveScopedFactorHeadline(artifacts *evaluationArtifacts, refs []string) (*evaluationReportPlan, *RunGap, bool) {
+	var firstMissingArea string
+	for _, ref := range refs {
+		id, err := factorIDFrom(ref)
+		if err != nil {
+			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: "data/frame/evaluation-frame.json", Detail: err.Error()}, true
+		}
+		path := factorDataPath(id, "factor-analysis-result.json")
+		if firstMissingArea == "" {
+			firstMissingArea = path
+		}
+		if factor := artifacts.Factors[factorKey(id)]; factor != nil && factor.Analysis != nil {
+			return &evaluationReportPlan{
+				Frame:            artifacts.Frame,
+				HeadlineKind:     evaluationHeadlineFactor,
+				HeadlineAreaID:   copyStrings(id.DeclaringArea),
+				HeadlineFactorID: &id,
+				HeadlineAnalysis: factor.Analysis,
+			}, nil, true
+		}
+	}
+	if firstMissingArea == "" {
+		return nil, nil, false
+	}
+	return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: firstMissingArea, Detail: "required scoped Factor analysis payload is missing"}, true
+}
+
+func resolveScopedAreaHeadline(artifacts *evaluationArtifacts, refs []string) (*evaluationReportPlan, *RunGap, bool) {
+	var firstMissingArea string
+	for _, ref := range refs {
+		id, err := areaIDFrom(ref)
+		if err != nil {
+			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: "data/frame/evaluation-frame.json", Detail: err.Error()}, true
+		}
+		path := areaDataPath(id, "area-analysis-result.json")
+		if firstMissingArea == "" {
+			firstMissingArea = path
+		}
+		if area := artifacts.Areas[areaKey(id)]; area != nil && area.Analysis != nil {
+			return &evaluationReportPlan{
+				Frame:            artifacts.Frame,
+				HeadlineKind:     evaluationHeadlineArea,
+				HeadlineAreaID:   copyStrings(id),
+				HeadlineAnalysis: area.Analysis,
+			}, nil, true
+		}
+	}
+	if firstMissingArea == "" {
+		return nil, nil, false
+	}
+	return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: firstMissingArea, Detail: "required scoped Area analysis payload is missing"}, true
+}
+
+func resolveRootHeadline(artifacts *evaluationArtifacts) (*evaluationReportPlan, *RunGap) {
+	root := artifacts.Areas[areaKey(nil)]
+	if root == nil || root.Analysis == nil {
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: "data/areas/root/area-analysis-result.json", Detail: "required Evaluation evaluation payload is missing"}
+	}
+	return &evaluationReportPlan{
+		Frame:            artifacts.Frame,
+		HeadlineKind:     evaluationHeadlineArea,
+		HeadlineAreaID:   nil,
+		HeadlineAnalysis: root.Analysis,
+	}, nil
+}
+
+func linkEvaluationReportPlan(plan *evaluationReportPlan, reports []evaluationRenderedReport) {
+	for i := range reports {
+		report := &reports[i]
+		switch plan.HeadlineKind {
+		case evaluationHeadlineArea:
+			if report.Kind == string(ReportKindArea) && sameStrings(report.AreaID, plan.HeadlineAreaID) {
+				plan.HeadlineReport = report
+				return
+			}
+		case evaluationHeadlineFactor:
+			if report.Kind == string(ReportKindFactor) && plan.HeadlineFactorID != nil && report.FactorID != nil && sameStrings(report.FactorID.DeclaringArea, plan.HeadlineFactorID.DeclaringArea) && sameStrings(report.FactorID.Path, plan.HeadlineFactorID.Path) {
+				plan.HeadlineReport = report
+				return
+			}
+		}
+	}
+}
+
+func evaluationHeadlineResultRef(plan *evaluationReportPlan) map[string]any {
+	switch plan.HeadlineKind {
+	case evaluationHeadlineFactor:
+		return routineRef(DataKindFactorAnalysis, map[string]any{"factorId": factorIDJSON(*plan.HeadlineFactorID)}, "localAndDescendantAnalysis")
+	default:
+		return routineRef(DataKindAreaAnalysis, map[string]any{"areaId": model.AreaPath(plan.HeadlineAreaID).Reference()}, "localAndDescendantAnalysis")
+	}
+}
+
+func reportForRootArea(reports []evaluationRenderedReport) *evaluationRenderedReport {
+	for i := range reports {
+		if reports[i].Kind == string(ReportKindArea) && len(reports[i].AreaID) == 0 {
+			return &reports[i]
+		}
+	}
+	return nil
+}
+
+func evaluationHeadlineLabel(spec *model.Spec, plan *evaluationReportPlan) string {
+	switch plan.HeadlineKind {
+	case evaluationHeadlineFactor:
+		return "Factor: " + factorTitle(spec, *plan.HeadlineFactorID)
+	default:
+		return "Area: " + areaTitle(spec, plan.HeadlineAreaID)
+	}
+}
+
+func evaluationHeadlineReportLink(spec *model.Spec, reportPath string, plan *evaluationReportPlan) string {
+	label := evaluationHeadlineLabel(spec, plan)
+	if plan.HeadlineReport == nil {
+		return label
+	}
+	return reportLink(reportPath, plan.HeadlineReport.Path, label)
+}
+
+func writeEvaluationRunScope(b *strings.Builder, artifacts *evaluationArtifacts) {
+	inputs := objectMap(artifacts.Frame["inputs"])
+	derived := objectMap(artifacts.Frame["derivedContext"])
+	b.WriteString("| Field | Value |\n")
+	b.WriteString("| --- | --- |\n")
+	b.WriteString("| Requested Scope | " + markdownCell(firstString(inputs, "requestedScope")) + " |\n")
+	b.WriteString("| Resolved Scope | " + markdownCell(firstString(derived, "resolvedScope")) + " |\n")
+	b.WriteString("| Areas | " + markdownCell(strings.Join(stringValues(inputs["areaIds"]), "; ")) + " |\n")
+	b.WriteString("| Factors | " + markdownCell(strings.Join(stringValues(inputs["factorIds"]), "; ")) + " |\n\n")
+}
+
+func writeEvaluationRunReportsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reports []evaluationRenderedReport, reportPath string) {
+	b.WriteString("| Subject | Kind | Rating | Report |\n")
+	b.WriteString("| --- | --- | --- | --- |\n")
+	if len(reports) == 0 {
+		b.WriteString("| (no subject reports) |  |  |  |\n\n")
+		return
+	}
+	for _, report := range reports {
+		if report.Kind == string(ReportKindRun) {
+			continue
+		}
+		b.WriteString("| " + reportLink(reportPath, report.Path, reportSubjectTitle(spec, report)) + " | " + markdownCell(reportKindTitle(report.Kind)) + " | " + markdownCell(reportSubjectRating(spec, artifacts, report)) + " | " + reportLink(reportPath, report.Path, filepath.Base(report.Path)) + " |\n")
+	}
+	b.WriteString("\n")
+}
+
+func writeEvaluationRunCoverage(b *strings.Builder, artifacts *evaluationArtifacts, reports []evaluationRenderedReport, reportPath string) {
+	if root := reportForRootArea(reports); root != nil {
+		b.WriteString("- Root Area report: " + reportLink(reportPath, root.Path, filepath.Base(root.Path)) + "\n")
+	} else {
+		b.WriteString("- Root Area was not evaluated in this run.\n")
+	}
+	fmt.Fprintf(b, "- Generated subject reports: %d\n\n", len(reports))
+	_ = artifacts
+}
+
+func reportSubjectTitle(spec *model.Spec, report evaluationRenderedReport) string {
+	switch report.Kind {
+	case string(ReportKindArea):
+		return areaTitle(spec, report.AreaID)
+	case string(ReportKindFactor):
+		return factorTitle(spec, *report.FactorID)
+	case string(ReportKindRequirement):
+		return requirementTitle(spec, *report.RequirementID)
+	default:
+		return "Evaluation Report"
+	}
+}
+
+func reportSubjectRating(spec *model.Spec, artifacts *evaluationArtifacts, report evaluationRenderedReport) string {
+	switch report.Kind {
+	case string(ReportKindArea):
+		if area := artifacts.Areas[areaKey(report.AreaID)]; area != nil {
+			return evaluationRatingLabel(spec, scopedMap(area.Analysis, "localAndDescendantAnalysis"))
+		}
+	case string(ReportKindFactor):
+		if report.FactorID != nil {
+			if factor := artifacts.Factors[factorKey(*report.FactorID)]; factor != nil {
+				return evaluationRatingLabel(spec, scopedMap(factor.Analysis, "localAndDescendantAnalysis"))
+			}
+		}
+	case string(ReportKindRequirement):
+		if report.RequirementID != nil {
+			if req := artifacts.Requirements[requirementKey(*report.RequirementID)]; req != nil {
+				return evaluationRequirementRatingLabel(spec, req.Rating)
+			}
+		}
+	default:
+		return "—"
+	}
+	return "—"
 }
 
 func factorAnalysisRefs(factors []*evaluationFactorArtifacts) []any {
@@ -653,13 +929,21 @@ func (a *evaluationArtifacts) requirementsForFactor(factor factorID) []*evaluati
 	return out
 }
 
-func writeEvaluationAreaTrail(b *strings.Builder, spec *model.Spec, areaID []string, reportPath string) {
-	parts := []string{reportLink(reportPath, areaReportPath(nil), areaTitle(spec, nil))}
+func writeEvaluationAreaTrail(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, areaID []string, reportPath string) {
+	parts := []string{areaTrailPart(spec, artifacts, nil, reportPath)}
 	for i := range areaID {
 		id := areaID[:i+1]
-		parts = append(parts, reportLink(reportPath, areaReportPath(id), areaTitle(spec, id)))
+		parts = append(parts, areaTrailPart(spec, artifacts, id, reportPath))
 	}
 	b.WriteString("Area: " + strings.Join(parts, " / ") + "\n\n")
+}
+
+func areaTrailPart(spec *model.Spec, artifacts *evaluationArtifacts, areaID []string, reportPath string) string {
+	title := areaTitle(spec, areaID)
+	if area := artifacts.Areas[areaKey(areaID)]; area != nil && area.Analysis != nil {
+		return reportLink(reportPath, areaReportPath(areaID), title)
+	}
+	return markdownCell(title)
 }
 
 func writeEvaluationFactorTrail(b *strings.Builder, spec *model.Spec, factor factorID, reportPath string) {
@@ -1089,7 +1373,7 @@ func writeEvaluationUnknownsTable(b *strings.Builder, assessment map[string]any,
 
 func areaReportPath(areaID []string) string {
 	if len(areaID) == 0 {
-		return "report.md"
+		return "root-area.md"
 	}
 	parts := append([]string{"areas"}, areaID...)
 	parts = append(parts, areaID[len(areaID)-1]+"-area.md")

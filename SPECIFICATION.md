@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Specification version:** 0.6 (Draft)
+**Specification version:** 0.7 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -592,8 +592,8 @@ An Evaluation Report is the structured result of an Evaluation.
 A conforming Evaluation Report MUST include:
 
 - The Evaluation scope.
-- The rating or `not assessed` outcome for the in-scope root Area.
-- A rationale for the in-scope root Area outcome.
+- The rating or `not assessed` headline outcome for the evaluated scope.
+- A rationale for the headline outcome.
 - For each Area in scope, recursively:
   - each Requirement's Findings summary, Rating Result, and rationale;
   - each Area's Area Findings, when produced;

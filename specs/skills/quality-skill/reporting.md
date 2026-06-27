@@ -84,7 +84,10 @@ credential type only, never secret values or unsafe raw content.
 
 ## Report Tree
 
-The root Area report **MUST** be `report.md` at the run root.
+The run-level Evaluation report **MUST** be `report.md` at the run root.
+
+The root Area report **MUST** be `root-area.md` at the run root when the root
+Area has an Area Analysis Result in the run.
 
 Non-root Area reports **MUST** be written with short subject-aware filenames
 under their Area folder, such as `areas/<area>/<area>-area.md`.
@@ -102,8 +105,9 @@ Every report **MUST** include the navigation trails required by the
 Area reports **MUST** link to local root Factor reports, local Requirement
 reports, and direct child Area reports.
 
-Factor reports **MUST** link to their owning Area report, parent Factor report
-when present, child Factor reports, and direct Requirement reports.
+Factor reports **MUST** link to their owning Area report when that Area report
+was generated, parent Factor report when present, child Factor reports, and
+direct Requirement reports.
 
 Requirement reports **MUST** link to their owning Area report and every attached
 Factor report.

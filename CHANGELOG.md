@@ -5,6 +5,42 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.23.0 - 2026-06-27
+
+### CLI
+
+- `qualitymd evaluation report build` now writes `report.md` as the run-level
+  Evaluation report. The root Area detail report is `root-area.md` when present,
+  and scoped Area/Factor runs can build reports without root Area analysis when
+  their recorded headline scope is complete.
+
+### /quality Skill
+
+- `/quality` now requires `qualitymd >=0.23.0 <0.24.0`.
+- `/quality evaluate` closeouts now treat `report.md` as the run report and name
+  the headline subject report separately when it differs.
+
+### Specification
+
+- QUALITY.md specification version is now `0.7 (Draft)`.
+- `EvaluationOutputResult` now includes `runReportRef`, `headlineResultRef`,
+  and `headlineReportRef`; `rootAreaAnalysisRef` is present only when the root
+  Area was evaluated.
+
+### Compatibility / Migration
+
+- Consumers that opened the root Area detail at `report.md` should follow
+  `EvaluationOutputResult.headlineReportRef`, `rootAreaReportMd`, or
+  `root-area.md` when the root Area was evaluated. `report.md` is now the run
+  entrypoint.
+- `/quality` skill version `0.23.0` requires the `qualitymd` CLI `0.23.x` line.
+
+Compatibility:
+
+- CLI: `v0.23.0`
+- QUALITY.md specification: `0.7 (Draft)`
+- /quality skill: `0.23.0`, requires `qualitymd >=0.23.0 <0.24.0`
+
 ## v0.22.0 - 2026-06-27
 
 ### CLI

@@ -50,6 +50,23 @@ For each Area, the evaluator **MUST**:
 Root Area `localAndDescendantAnalysis`, when analyzed, is the overall evaluation
 result.
 
+## Headline Result
+
+Evaluation output assembly **MUST** choose one headline result for the run.
+
+When the Evaluation Frame records one or more `inputs.factorIds`, the first
+listed Factor with a Factor Analysis Result **MUST** be the headline subject.
+
+When the Evaluation Frame records no Factor scope and one or more
+`inputs.areaIds`, the first listed Area with an Area Analysis Result **MUST** be
+the headline subject.
+
+When no scoped headline input is recorded, the root Area Analysis Result
+**MUST** be the headline subject.
+
+Report generation **MUST** fail when the recorded headline scope has no matching
+analysis result.
+
 ## Factor Traversal
 
 The evaluator **MUST** walk each Area's Factor tree bottom-up.

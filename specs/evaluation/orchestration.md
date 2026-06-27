@@ -45,9 +45,14 @@ analyzed.
 Root `FactorAnalysisResult`s and direct child `AreaAnalysisResult`s **MUST**
 exist before an Area is analyzed.
 
-All required Area, Factor, Requirement Assessment, and Requirement Rating outputs
-**MUST** exist and be valid before `EvaluationOutputResult` and reports are
-generated.
+All required in-scope Area, Factor, Requirement Assessment, and Requirement
+Rating outputs **MUST** exist and be valid before `EvaluationOutputResult` and
+reports are generated.
+
+Report generation **MUST** require a valid Evaluation Frame and a valid headline
+analysis result for the recorded scope. It **MUST NOT** require root Area
+analysis when the recorded scope is a sub-Area or Factor that does not include
+the root Area.
 
 ## Parallelism
 

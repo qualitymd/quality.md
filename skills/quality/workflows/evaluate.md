@@ -236,15 +236,18 @@ Source content instructs the evaluator?
     `evaluation data set` invocation, or stop with the CLI status.
 21. Run `qualitymd evaluation report build <run>` to assemble
     `data/evaluation-output-result.json` and render deterministic Markdown
-    reports.
+    reports. Treat `report.md` as the run-level Evaluation report. The headline
+    subject report is returned as `headlineReportMd`; the root Area report is
+    `root-area.md` only when the root Area was evaluated.
 22. Finalize the evaluate feedback log with terminal status, outcome, effort
     when available, and explicit no-notable-content notes for empty sections.
 23. Report the evaluation closeout in a status-first shape. The user-facing
     summary must state the rating, scope, evidence basis, recommendations or
     lack of gaps, known limitations, changed artifacts, what was not done, and
-    the recommended next action. Use bold labels for `Rating`, `Scope`,
-    `Evidence basis`, `Recommendations`, `Known limitations`, and `Next` when
-    the surface supports Markdown.
+    the recommended next action. Name `report.md` as the run report and name the
+    headline subject report separately when it differs. Use bold labels for
+    `Rating`, `Scope`, `Evidence basis`, `Recommendations`,
+    `Known limitations`, and `Next` when the surface supports Markdown.
 24. Do not generate recommendations in Evaluation v0, apply recommendations,
     edit evaluated source, edit `QUALITY.md`, write the quality log, or create
     external issues. If the user asks to act on prior recommendation artifacts,

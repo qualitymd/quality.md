@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the Evaluation report entrypoint contracts for
+  [0137 - Run Report Entrypoint](../../changes/archive/0137-run-report-entrypoint.md).
+  `report.md` is now the run-level report, the root Area detail report is
+  `root-area.md` when present, scoped Area/Factor runs use recorded
+  Evaluation Frame scope for headline reportability, and
+  `EvaluationOutputResult` carries explicit run and headline refs.
+
 - **Revision**: Updated the Evaluation candidate action contracts for
   [0136 - Candidate Actions Payload](../../changes/archive/0136-candidate-actions-payload.md).
   Requirement Findings now use `candidateActions` instead of `actions`, each

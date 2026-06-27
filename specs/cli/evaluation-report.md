@@ -44,6 +44,12 @@ the blocking gap and point the caller to `qualitymd evaluation status <run>` for
 the complete gap list. It **MUST** be deterministic and idempotent: unchanged
 structured data produces byte-identical report files.
 
+On success, the build receipt's `reportMd` field **MUST** point to the
+run-level `report.md`. The receipt **MAY** include `headlineReportMd` and
+`rootAreaReportMd` when those subject reports exist. The receipt's
+`ratingResult` **MUST** describe the headline result, not necessarily the root
+Area result.
+
 `build` **MUST NOT** accept a gate flag. Report gating is not part of Evaluation
 v0.
 

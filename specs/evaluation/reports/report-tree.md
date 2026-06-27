@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: Evaluation report tree
-description: Deterministic Area, Factor, and Requirement Markdown reports for Evaluation.
+description: Deterministic run, Area, Factor, and Requirement Markdown reports for Evaluation.
 tags: [evaluation, reports, markdown]
 timestamp: 2026-06-25T00:00:00Z
 ---
@@ -27,7 +27,11 @@ analysis, or recommendations.
 
 ## Report Paths
 
-The root Area report **MUST** be generated as `report.md` at the run root.
+The run-level Evaluation report **MUST** be generated as `report.md` at the run
+root.
+
+The root Area report **MUST** be generated as `root-area.md` at the run root
+when the root Area has an Area Analysis Result in the run.
 
 Non-root Area, Factor, and Requirement reports **MUST** use short
 subject-aware filenames derived from structural model IDs:
@@ -41,12 +45,31 @@ Report filenames **MUST NOT** be derived from display titles, natural labels, or
 rendered human labels.
 
 The report builder **MUST NOT** write duplicate compatibility copies using old
-descendant `report.md` filenames.
+root Area or descendant `report.md` filenames.
 
-> Rationale: the root `report.md` remains the single run entrypoint, while
-> descendant filenames need enough local subject context for editor and browser
-> tabs. Structural IDs keep paths stable; the existing directory tree carries
-> full identity. — 0108
+> Rationale: `report.md` is the run entrypoint. The root Area detail report uses
+> `root-area.md` so its filename names the subject it contains, while descendant
+> filenames keep enough local subject context for editor and browser tabs.
+> Structural IDs keep paths stable; the existing directory tree carries full
+> identity. — 0108, 0137
+
+## Run Report
+
+The run-level `report.md` **MUST** include:
+
+- headline subject;
+- headline rating;
+- link to `data/evaluation-output-result.json`;
+- summary from the headline result;
+- recorded Evaluation scope;
+- generated subject report links;
+- root Area coverage status; and
+- limits and incomplete inputs from the headline result.
+
+The run report **MUST** state when the root Area was not evaluated in the run.
+
+The run report **MUST NOT** introduce report-only findings, ratings, evidence,
+limits, analysis, recommendations, candidate actions, or source claims.
 
 ## Navigation
 
@@ -56,8 +79,11 @@ report. The H1 **MUST** prefix the subject display title with the report kind:
 `Requirement:` for Requirement reports.
 
 The `Area:` navigation trail **MUST** render after the H1. Its elements **MUST**
-link from the root Area report through the current Area report or owning Area
-report. The root trail element **MUST** render the Model `title` when present.
+link to generated Area reports from the root Area through the current Area
+report or owning Area report. When an ancestor Area report was not generated
+because the run was scoped below it, the trail **MUST** render that ancestor as
+plain text. The root trail element **MUST** render the Model `title` when
+present.
 
 Factor reports **MUST** include a `Factor:` navigation trail after the `Area:`
 trail. The `Factor:` trail **MUST** link each Factor ancestor and the current

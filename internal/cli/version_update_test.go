@@ -25,7 +25,7 @@ func TestVersionJSONCommand(t *testing.T) {
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
-	for _, want := range []string{`"version": "v1.2.3"`, `"commit": "abc1234"`, `"developmentBuild": false`, `"specificationVersion": "0.6 (Draft)"`} {
+	for _, want := range []string{`"version": "v1.2.3"`, `"commit": "abc1234"`, `"developmentBuild": false`, `"specificationVersion": "0.7 (Draft)"`} {
 		if !strings.Contains(out.String(), want) {
 			t.Fatalf("stdout = %s, want %s", out.String(), want)
 		}

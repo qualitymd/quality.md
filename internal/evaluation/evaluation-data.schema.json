@@ -1324,6 +1324,7 @@
                     },
                     "kind": {
                       "enum": [
+                        "run",
                         "area",
                         "factor",
                         "requirement"
@@ -1340,7 +1341,6 @@
                   },
                   "required": [
                     "kind",
-                    "areaId",
                     "path"
                   ],
                   "type": "object"
@@ -1459,6 +1459,86 @@
           },
           "type": "array"
         },
+        "headlineReportRef": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
+            },
+            "factorId": {
+              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "run",
+                "area",
+                "factor",
+                "requirement"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "requirementId": {
+              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "path"
+          ],
+          "type": "object"
+        },
+        "headlineResultRef": {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "EvaluationFrame",
+                "AreaEvaluationFrame",
+                "RequirementEvaluationFrame",
+                "RequirementAssessmentResult",
+                "RequirementRatingResult",
+                "FactorAnalysisFrame",
+                "FactorAnalysisResult",
+                "AreaAnalysisFrame",
+                "AreaAnalysisResult",
+                "EvaluationOutputResult"
+              ],
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            },
+            "subject": {
+              "additionalProperties": false,
+              "properties": {
+                "areaId": {
+                  "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                  "type": "string"
+                },
+                "factorId": {
+                  "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                  "type": "string"
+                },
+                "requirementId": {
+                  "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "kind",
+            "subject"
+          ],
+          "type": "object"
+        },
         "kind": {
           "enum": [
             "EvaluationOutputResult"
@@ -1479,6 +1559,7 @@
               },
               "kind": {
                 "enum": [
+                  "run",
                   "area",
                   "factor",
                   "requirement"
@@ -1495,7 +1576,6 @@
             },
             "required": [
               "kind",
-              "areaId",
               "path"
             ],
             "type": "object"
@@ -1548,6 +1628,40 @@
           ],
           "type": "object"
         },
+        "runReportRef": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
+            },
+            "factorId": {
+              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "run",
+                "area",
+                "factor",
+                "requirement"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "requirementId": {
+              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "path"
+          ],
+          "type": "object"
+        },
         "schemaVersion": {
           "type": "integer"
         }
@@ -1555,7 +1669,9 @@
       "required": [
         "schemaVersion",
         "kind",
-        "rootAreaAnalysisRef",
+        "runReportRef",
+        "headlineResultRef",
+        "headlineReportRef",
         "areaOutputs",
         "reportOutputs"
       ],

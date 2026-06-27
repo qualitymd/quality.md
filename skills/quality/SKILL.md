@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.22.0 <0.23.0.
+compatibility: Requires qualitymd CLI >=0.23.0 <0.24.0.
 metadata:
-  version: "0.22.0"
-  requires-qualitymd-cli: ">=0.22.0 <0.23.0"
+  version: "0.23.0"
+  requires-qualitymd-cli: ">=0.23.0 <0.24.0"
 ---
 
 ## Purpose
@@ -136,6 +136,8 @@ Parse the user's request from free-form arguments:
   or unqualified references in structured evaluation data; use stable Area,
   Factor, Requirement, and Rating Level IDs. In generated human reports, the root
   Area display value is `/`; its references remain `area:root` and `root`.
+  Generated `report.md` is the run-level Evaluation report. The root Area detail
+  report is `root-area.md` when the root Area was evaluated.
 
 When a scoped request is ambiguous, inspect the grounded model, summarize the
 concrete runnable scope options, and ask only for the missing Area, Factor, or

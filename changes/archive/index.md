@@ -599,3 +599,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   - renames finding-local `actions` to `candidateActions`, adds local candidate
     action IDs, and keeps candidate actions as non-rendered Requirement Finding
     raw material for later Advice (`Done`).
+- [0137 — Run Report Entrypoint](0137-run-report-entrypoint.md) - makes
+  `report.md` the Evaluation run entrypoint, moves the root Area report to
+  `root-area.md`, and adds scoped headline report refs (`Done`).

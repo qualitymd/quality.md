@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0137 - Run Report
+  Entrypoint.
+  Runtime guidance now treats `report.md` as the run-level Evaluation report,
+  names `headlineReportMd` separately, and uses `root-area.md` only when the
+  root Area was evaluated.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0134 - Model-relative
   workspace paths.
   Runtime workspace guidance now resolves config, `.quality/`, Evaluation

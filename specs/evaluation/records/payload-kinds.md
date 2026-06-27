@@ -49,6 +49,23 @@ it. Those IDs **MUST** use the canonical qualified reference strings defined in
 Agents **MUST NOT** write `EvaluationOutputResult` through
 `qualitymd evaluation data set`.
 
+`EvaluationOutputResult` **MUST** include `runReportRef`,
+`headlineResultRef`, `headlineReportRef`, `areaOutputs`, and `reportOutputs`.
+
+`runReportRef` **MUST** reference the run-level `report.md`.
+
+`headlineResultRef` **MUST** reference the structured result selector used as
+the run's headline outcome. For a scoped Factor run it references the selected
+Factor Analysis Result's `localAndDescendantAnalysis`; for a scoped Area or full
+run it references the selected Area Analysis Result's
+`localAndDescendantAnalysis`.
+
+`headlineReportRef` **MUST** reference the generated subject report for the
+headline result.
+
+`rootAreaAnalysisRef` **MAY** be present when the root Area has an Area Analysis
+Result in the run.
+
 ## Required Payload Shape
 
 Frame payloads **MUST** use:

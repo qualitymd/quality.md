@@ -242,6 +242,11 @@ Scope **MUST** remain the mechanism by which a user bounds an evaluation's
 breadth: full evaluation by default, narrowed by an Area or Factor reference
 resolved to `--narrowing` when supplied.
 
+Scoped evaluate runs **MUST** record the resolved Area or Factor scope in the
+Evaluation Frame so `qualitymd evaluation report build` can choose the headline
+result and reportability boundary from structured data rather than from the run
+folder slug.
+
 Every evaluate run **MUST** assess every in-scope Requirement against a full read
 of the in-scope Area `source`. Each in-scope Requirement **MUST** end the run in
 one of two terminal evidentiary states: rated against the rating scale on cited

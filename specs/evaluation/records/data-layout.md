@@ -57,10 +57,16 @@ Nested Factors **MUST** recurse through nested `factors/` folders.
 
 ## Report Tree
 
-The root Area report **MUST** be written to:
+The run-level Evaluation report **MUST** be written to:
 
 ```text
 report.md
+```
+
+The root Area report **MUST** be written to the run root when generated:
+
+```text
+root-area.md
 ```
 
 Non-root Area reports **MUST** be written under:

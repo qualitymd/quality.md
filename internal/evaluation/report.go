@@ -14,6 +14,8 @@ type BuildReportReceipt struct {
 	SchemaVersion          int              `json:"schemaVersion"`
 	Path                   string           `json:"path"`
 	ReportMD               string           `json:"reportMd"`
+	HeadlineReportMD       string           `json:"headlineReportMd,omitempty"`
+	RootAreaReportMD       string           `json:"rootAreaReportMd,omitempty"`
 	EvaluationOutputResult string           `json:"evaluationOutputResult"`
 	RatingResult           RatingResult     `json:"ratingResult"`
 	NextActions            []receipt.Action `json:"nextActions,omitempty"`

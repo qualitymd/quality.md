@@ -3,6 +3,29 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0137 - Run Report Entrypoint](archive/0137-run-report-entrypoint.md).
+  `qualitymd evaluation report build` now writes `report.md` as the run-level
+  report, writes the root Area detail as `root-area.md` when present, supports
+  scoped Area/Factor reportability without root Area analysis, and emits
+  `runReportRef`, `headlineResultRef`, and `headlineReportRef` in
+  `EvaluationOutputResult`. Durable specs, runtime skill guidance, generated
+  schema, changelog, and tests are aligned. `mise run check` passes.
+
+- **In-Progress**: Advanced
+  [0137 - Run Report Entrypoint](archive/0137-run-report-entrypoint.md). Functional
+  spec and design doc are settled; implementation is beginning across
+  Evaluation report rendering, output contracts, durable specs, runtime skill
+  guidance, generated schema, and tests.
+
+- **Design**: Created
+  [0137 - Run Report Entrypoint](archive/0137-run-report-entrypoint.md) with its
+  [functional spec](archive/0137-run-report-entrypoint/spec.md) and
+  [design doc](archive/0137-run-report-entrypoint/design.md). The case separates the
+  run-level `report.md` from root Area details, moves the root Area report to
+  `root-area.md`, and makes scoped Area/Factor reportability use recorded
+  Evaluation Frame scope instead of requiring root Area analysis.
+
+- **Done**: Implemented and archived
   [0136 - Candidate Actions Payload](archive/0136-candidate-actions-payload.md).
   Requirement Finding payloads now use `candidateActions` instead of legacy
   `actions`; each candidate action carries a local `id`, `description`, and

@@ -62,12 +62,16 @@ the identity-resolution rule above. A routine reference (`*Ref` / `inputRefs[]`)
 `kind` names a supported payload kind (per
 [`payload-kinds.md`](payload-kinds.md), the full set the CLI can persist,
 including the CLI-owned `EvaluationOutputResult`). A report reference `kind`
-names a report kind (`area`, `factor`, `requirement`).
+names a report kind (`run`, `area`, `factor`, `requirement`). The `run` report
+kind identifies the run-level `report.md` and does not include Area, Factor, or
+Requirement identity fields. Area, Factor, and Requirement report refs include
+`areaId`; Factor report refs also include `factorId`; Requirement report refs
+also include `requirementId`.
 
 > Rationale: `kind` was the one required reference field left as a free string
 > while every other closed vocabulary in the contract is enum-validated; pinning
 > it moves a misspelled or invented kind to a write-time rejection instead of a
-> dangling reference discovered later. — 0124
+> dangling reference discovered later. — 0124, 0137
 
 Generated routine outputs, protocol guidance, report artifacts, and payload-local
 artifacts **MUST** use `*Ref` names.

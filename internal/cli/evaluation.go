@@ -444,7 +444,7 @@ func newEvaluationReportBuildCmd() *cobra.Command {
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), result)
 			}
-			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s and %s\n", result.EvaluationOutputResult, result.ReportMD)
+			_, err = fmt.Fprintf(cmd.ErrOrStderr(), "Wrote %s and run report %s\n", result.EvaluationOutputResult, result.ReportMD)
 			return err
 		},
 	}

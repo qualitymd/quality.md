@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0137 - Run Report Entrypoint](../changes/archive/0137-run-report-entrypoint.md).
+  The Evaluation report tree, payload-kind, JSON convention, orchestration,
+  protocol, CLI report, and `/quality` skill specs now make `report.md` the
+  run-level report, move the root Area detail report to `root-area.md`, and
+  index explicit run/headline report refs in `EvaluationOutputResult`.
+
+- **Revision**: Implemented durable spec changes for
   [0134 - Model-relative workspace paths](../changes/archive/0134-model-relative-workspace-paths.md).
   The CLI, status, lint, install-adjacent workflow, and `/quality` skill specs
   now treat workspace config, Evaluation history, quality logs, and workflow

@@ -52,6 +52,7 @@ const (
 type ReportKind string
 
 const (
+	ReportKindRun         ReportKind = "run"
 	ReportKindArea        ReportKind = "area"
 	ReportKindFactor      ReportKind = "factor"
 	ReportKindRequirement ReportKind = "requirement"
@@ -60,6 +61,7 @@ const (
 // reportKinds is the single typed source for the report-reference kind
 // vocabulary: every report kind a report reference object may name.
 var reportKinds = []ReportKind{
+	ReportKindRun,
 	ReportKindArea,
 	ReportKindFactor,
 	ReportKindRequirement,
@@ -118,6 +120,7 @@ var ratingResultKindTitles = displayCatalog[RatingResultKind]{
 }
 
 var reportKindTitles = displayCatalog[ReportKind]{
+	ReportKindRun:         "📄 Run",
 	ReportKindArea:        "🗺️ Area",
 	ReportKindFactor:      "🧩 Factor",
 	ReportKindRequirement: "📋 Requirement",
