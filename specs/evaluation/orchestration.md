@@ -23,6 +23,7 @@ An orchestrator **MUST** treat these as the primary work-unit boundaries:
 - `AreaWork`
 - `RequirementWork`
 - `FactorWork`
+- `AdviceWork`
 - `ReportWork`
 
 The orchestrator **MUST** enforce dependencies between work units even when it
@@ -45,14 +46,22 @@ analyzed.
 Root `FactorAnalysisResult`s and direct child `AreaAnalysisResult`s **MUST**
 exist before an Area is analyzed.
 
-All required in-scope Area, Factor, Requirement Assessment, and Requirement
-Rating outputs **MUST** exist and be valid before `EvaluationOutputResult` and
-reports are generated.
+All required in-scope Area, Factor, Requirement Assessment, Requirement Rating,
+Factor Analysis, Area Analysis, and Advice outputs **MUST** exist and be valid
+before `EvaluationOutputResult` and reports are generated.
 
-Report generation **MUST** require a valid Evaluation Frame and a valid headline
-analysis result for the recorded scope. It **MUST NOT** require root Area
-analysis when the recorded scope is a sub-Area or Factor that does not include
-the root Area.
+`FindingRankingResult` **MUST** exist before recommendation generation closes.
+
+All `RecommendationResult` payloads **MUST** exist before final finding coverage
+accounting and recommendation ranking close.
+
+`RecommendationRankingResult` **MUST** exist before
+`EvaluationOutputResult` and reports are generated.
+
+Report generation **MUST** require a valid `RunManifest`, a valid Evaluation
+Frame, the analysis outputs required by `RunManifest.plannedScope`, and the
+required Advice outputs. It **MUST NOT** select report scope from Evaluation
+Frame ordering.
 
 ## Parallelism
 

@@ -111,12 +111,12 @@ When the CLI is missing, stale, incompatible, or uncertain:
 2. Use the install-aware update check to identify remediation.
 3. Apply an update only after confirmation.
 
-## Narrowing Slug
+## Evaluation Scope
 
-Use `--narrowing` for scoped evaluations. The slug should be the scope's full
-structural path: Area path segments from the root, plus Factor path segments
-when scoping to a Factor, joined with single hyphens. It must not include
-`quality` as a path segment.
+Use `--area <area-id>` and repeatable `--factor <factor-id>` for scoped
+evaluations. Pass canonical `area:` and `factor:` references resolved from the
+model. Let `qualitymd evaluation create` write `RunManifest`, apply the root
+default, and derive the run-folder slug.
 
 ## Command Rules
 

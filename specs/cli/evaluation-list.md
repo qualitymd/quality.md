@@ -22,8 +22,8 @@ all capitals.
 The command **MUST** resolve the evaluation directory using the same precedence
 as [`evaluation create`](evaluation-create.md), anchored by `--model <model>`
 when supplied and otherwise by `QUALITY.md` in the current working directory. It
-**MUST** list recognized run folders in deterministic run-number order and
-**MUST NOT** write or modify any run.
+**MUST** list runs with a valid `RunManifest` in deterministic
+`RunManifest.number` order and **MUST NOT** write or modify any run.
 
 `--model <model>` **MUST** select the `QUALITY.md` file whose model-relative
 workspace supplies the evaluation history. Listed run paths **MUST** be relative
@@ -31,7 +31,7 @@ to that selected model's workspace root.
 
 Under `--json`, stdout **MUST** contain `schemaVersion` and `runs`. Each entry
 **MUST** identify the run path, root area, evaluation data artifact count,
-reportability, and gap count, and **MAY** include narrowing when present.
+reportability, gap count, `requestedScope`, and `plannedScope`.
 
 The command **MUST** use the current Evaluation run inspection path. If a
 recognized run has a broken Evaluation skeleton, the command **MUST** fail

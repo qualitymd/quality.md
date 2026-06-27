@@ -43,6 +43,8 @@ edit.
 
 # Open change cases
 
+No open change cases.
+
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
 template for a new one.

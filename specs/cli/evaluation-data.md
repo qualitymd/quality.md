@@ -94,6 +94,16 @@ analysis, this applies when the scope has `status: analyzed` and a
 `data set` **MUST** reject `ratingDrivers[].inputRefs[]` entries that do not
 resolve to an existing routine output in the effective run data.
 
+`data set` **MUST** reject Advice references that do not resolve in the
+effective run data. Finding ranking entries and finding coverage entries
+**MUST** select existing Requirement Findings. Recommendation ranking entries
+and coverage entries **MUST** reference existing `RecommendationResult` IDs.
+Finding ranking and Finding coverage **MUST** account for every effective
+Requirement Finding exactly once.
+
+`data set` **MUST** reject `RecommendationResult` payloads that use required
+effort, ROI, quick-win, backlog-priority, priority, or numeric score fields.
+
 `data set` **MUST** validate every payload in the batch before writing any
 payload. If any element fails validation, `data set` **MUST** write nothing and
 **MUST** report invalid elements with their array indexes. It **SHOULD** report

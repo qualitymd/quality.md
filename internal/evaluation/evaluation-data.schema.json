@@ -84,6 +84,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -93,6 +94,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -133,6 +137,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -142,6 +147,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -303,6 +311,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -312,6 +321,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -368,6 +380,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
+                            "RunManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -377,6 +390,9 @@
                             "FactorAnalysisResult",
                             "AreaAnalysisFrame",
                             "AreaAnalysisResult",
+                            "FindingRankingResult",
+                            "RecommendationResult",
+                            "RecommendationRankingResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -532,6 +548,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -541,6 +558,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -597,6 +617,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
+                            "RunManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -606,6 +627,9 @@
                             "FactorAnalysisResult",
                             "AreaAnalysisFrame",
                             "AreaAnalysisResult",
+                            "FindingRankingResult",
+                            "RecommendationResult",
+                            "RecommendationRankingResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -838,9 +862,6 @@
               },
               "type": "array"
             },
-            "resolvedScope": {
-              "type": "string"
-            },
             "rigor": {
               "type": "string"
             }
@@ -850,29 +871,12 @@
         "inputs": {
           "additionalProperties": false,
           "properties": {
-            "areaIds": {
-              "items": {
-                "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
-                "type": "string"
-              },
-              "type": "array"
-            },
-            "factorIds": {
-              "items": {
-                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
-                "type": "string"
-              },
-              "type": "array"
-            },
             "ratingLevelIds": {
               "items": {
                 "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
                 "type": "string"
               },
               "type": "array"
-            },
-            "requestedScope": {
-              "type": "string"
             }
           },
           "type": "object"
@@ -914,6 +918,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -923,6 +928,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -960,6 +968,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -969,6 +978,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1011,6 +1023,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
+                        "RunManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -1020,6 +1033,9 @@
                         "FactorAnalysisResult",
                         "AreaAnalysisFrame",
                         "AreaAnalysisResult",
+                        "FindingRankingResult",
+                        "RecommendationResult",
+                        "RecommendationRankingResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -1071,11 +1087,16 @@
                         "run",
                         "area",
                         "factor",
-                        "requirement"
+                        "requirement",
+                        "recommendations",
+                        "recommendation"
                       ],
                       "type": "string"
                     },
                     "path": {
+                      "type": "string"
+                    },
+                    "recommendationId": {
                       "type": "string"
                     },
                     "requirementId": {
@@ -1097,6 +1118,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
+                        "RunManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -1106,6 +1128,9 @@
                         "FactorAnalysisResult",
                         "AreaAnalysisFrame",
                         "AreaAnalysisResult",
+                        "FindingRankingResult",
+                        "RecommendationResult",
+                        "RecommendationRankingResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -1146,6 +1171,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
+                        "RunManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -1155,6 +1181,9 @@
                         "FactorAnalysisResult",
                         "AreaAnalysisFrame",
                         "AreaAnalysisResult",
+                        "FindingRankingResult",
+                        "RecommendationResult",
+                        "RecommendationRankingResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -1203,86 +1232,6 @@
           },
           "type": "array"
         },
-        "headlineReportRef": {
-          "additionalProperties": false,
-          "properties": {
-            "areaId": {
-              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
-              "type": "string"
-            },
-            "factorId": {
-              "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
-              "type": "string"
-            },
-            "kind": {
-              "enum": [
-                "run",
-                "area",
-                "factor",
-                "requirement"
-              ],
-              "type": "string"
-            },
-            "path": {
-              "type": "string"
-            },
-            "requirementId": {
-              "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-              "type": "string"
-            }
-          },
-          "required": [
-            "kind",
-            "path"
-          ],
-          "type": "object"
-        },
-        "headlineResultRef": {
-          "additionalProperties": false,
-          "properties": {
-            "kind": {
-              "enum": [
-                "EvaluationFrame",
-                "AreaEvaluationFrame",
-                "RequirementEvaluationFrame",
-                "RequirementAssessmentResult",
-                "RequirementRatingResult",
-                "FactorAnalysisFrame",
-                "FactorAnalysisResult",
-                "AreaAnalysisFrame",
-                "AreaAnalysisResult",
-                "EvaluationOutputResult"
-              ],
-              "type": "string"
-            },
-            "selector": {
-              "type": "string"
-            },
-            "subject": {
-              "additionalProperties": false,
-              "properties": {
-                "areaId": {
-                  "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
-                  "type": "string"
-                },
-                "factorId": {
-                  "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
-                  "type": "string"
-                },
-                "requirementId": {
-                  "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          },
-          "required": [
-            "kind",
-            "subject"
-          ],
-          "type": "object"
-        },
         "kind": {
           "enum": [
             "EvaluationOutputResult"
@@ -1306,11 +1255,16 @@
                   "run",
                   "area",
                   "factor",
-                  "requirement"
+                  "requirement",
+                  "recommendations",
+                  "recommendation"
                 ],
                 "type": "string"
               },
               "path": {
+                "type": "string"
+              },
+              "recommendationId": {
                 "type": "string"
               },
               "requirementId": {
@@ -1331,6 +1285,7 @@
           "properties": {
             "kind": {
               "enum": [
+                "RunManifest",
                 "EvaluationFrame",
                 "AreaEvaluationFrame",
                 "RequirementEvaluationFrame",
@@ -1340,6 +1295,9 @@
                 "FactorAnalysisResult",
                 "AreaAnalysisFrame",
                 "AreaAnalysisResult",
+                "FindingRankingResult",
+                "RecommendationResult",
+                "RecommendationRankingResult",
                 "EvaluationOutputResult"
               ],
               "type": "string"
@@ -1388,11 +1346,16 @@
                 "run",
                 "area",
                 "factor",
-                "requirement"
+                "requirement",
+                "recommendations",
+                "recommendation"
               ],
               "type": "string"
             },
             "path": {
+              "type": "string"
+            },
+            "recommendationId": {
               "type": "string"
             },
             "requirementId": {
@@ -1408,14 +1371,63 @@
         },
         "schemaVersion": {
           "type": "integer"
+        },
+        "scopedAreaAnalysisRef": {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "RunManifest",
+                "EvaluationFrame",
+                "AreaEvaluationFrame",
+                "RequirementEvaluationFrame",
+                "RequirementAssessmentResult",
+                "RequirementRatingResult",
+                "FactorAnalysisFrame",
+                "FactorAnalysisResult",
+                "AreaAnalysisFrame",
+                "AreaAnalysisResult",
+                "FindingRankingResult",
+                "RecommendationResult",
+                "RecommendationRankingResult",
+                "EvaluationOutputResult"
+              ],
+              "type": "string"
+            },
+            "selector": {
+              "type": "string"
+            },
+            "subject": {
+              "additionalProperties": false,
+              "properties": {
+                "areaId": {
+                  "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                  "type": "string"
+                },
+                "factorId": {
+                  "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                  "type": "string"
+                },
+                "requirementId": {
+                  "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "kind",
+            "subject"
+          ],
+          "type": "object"
         }
       },
       "required": [
         "schemaVersion",
         "kind",
         "runReportRef",
-        "headlineResultRef",
-        "headlineReportRef",
+        "scopedAreaAnalysisRef",
         "areaOutputs",
         "reportOutputs"
       ],
@@ -1505,6 +1517,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1514,6 +1527,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1554,6 +1570,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1563,6 +1580,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1728,6 +1748,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1737,6 +1758,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -1793,6 +1817,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
+                            "RunManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -1802,6 +1827,9 @@
                             "FactorAnalysisResult",
                             "AreaAnalysisFrame",
                             "AreaAnalysisResult",
+                            "FindingRankingResult",
+                            "RecommendationResult",
+                            "RecommendationRankingResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -1957,6 +1985,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
+                      "RunManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1966,6 +1995,9 @@
                       "FactorAnalysisResult",
                       "AreaAnalysisFrame",
                       "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
                       "EvaluationOutputResult"
                     ],
                     "type": "string"
@@ -2022,6 +2054,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
+                            "RunManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -2031,6 +2064,9 @@
                             "FactorAnalysisResult",
                             "AreaAnalysisFrame",
                             "AreaAnalysisResult",
+                            "FindingRankingResult",
+                            "RecommendationResult",
+                            "RecommendationRankingResult",
                             "EvaluationOutputResult"
                           ],
                           "type": "string"
@@ -2118,6 +2154,383 @@
       ],
       "type": "object"
     },
+    "FindingRankingResult": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "FindingRankingResult"
+          ],
+          "type": "string"
+        },
+        "orderedFindings": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "findingRef": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "RunManifest",
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
+                      "EvaluationOutputResult"
+                    ],
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
+                      },
+                      "factorId": {
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
+                      },
+                      "requirementId": {
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "tier": {
+                "enum": [
+                  "P1",
+                  "P2",
+                  "P3",
+                  "P4"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "rank",
+              "findingRef",
+              "tier",
+              "rationale"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "subject": {
+          "additionalProperties": false,
+          "properties": {
+            "scopeRef": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "orderedFindings"
+      ],
+      "type": "object"
+    },
+    "RecommendationRankingResult": {
+      "additionalProperties": false,
+      "properties": {
+        "findingCoverage": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "disposition": {
+                "enum": [
+                  "addressed_by_recommendation",
+                  "not_advice_driving"
+                ],
+                "type": "string"
+              },
+              "findingRef": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "RunManifest",
+                      "EvaluationFrame",
+                      "AreaEvaluationFrame",
+                      "RequirementEvaluationFrame",
+                      "RequirementAssessmentResult",
+                      "RequirementRatingResult",
+                      "FactorAnalysisFrame",
+                      "FactorAnalysisResult",
+                      "AreaAnalysisFrame",
+                      "AreaAnalysisResult",
+                      "FindingRankingResult",
+                      "RecommendationResult",
+                      "RecommendationRankingResult",
+                      "EvaluationOutputResult"
+                    ],
+                    "type": "string"
+                  },
+                  "selector": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "areaId": {
+                        "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                        "type": "string"
+                      },
+                      "factorId": {
+                        "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                        "type": "string"
+                      },
+                      "requirementId": {
+                        "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "subject"
+                ],
+                "type": "object"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "recommendationRefs": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "findingRef",
+              "disposition"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "RecommendationRankingResult"
+          ],
+          "type": "string"
+        },
+        "orderedRecommendations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  "none"
+                ],
+                "type": "string"
+              },
+              "impact": {
+                "enum": [
+                  "very_high",
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "type": "string"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "recommendationRef": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "rank",
+              "recommendationRef",
+              "impact",
+              "confidence",
+              "rationale"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "orderedRecommendations",
+        "findingCoverage"
+      ],
+      "type": "object"
+    },
+    "RecommendationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "type": "string"
+        },
+        "expectedBenefit": {
+          "type": "string"
+        },
+        "howToKnowItWorked": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "impact": {
+          "enum": [
+            "very_high",
+            "high",
+            "medium",
+            "low"
+          ],
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "RecommendationResult"
+          ],
+          "type": "string"
+        },
+        "recommendedNextMove": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "traceRefs": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "enum": [
+                  "RunManifest",
+                  "EvaluationFrame",
+                  "AreaEvaluationFrame",
+                  "RequirementEvaluationFrame",
+                  "RequirementAssessmentResult",
+                  "RequirementRatingResult",
+                  "FactorAnalysisFrame",
+                  "FactorAnalysisResult",
+                  "AreaAnalysisFrame",
+                  "AreaAnalysisResult",
+                  "FindingRankingResult",
+                  "RecommendationResult",
+                  "RecommendationRankingResult",
+                  "EvaluationOutputResult"
+                ],
+                "type": "string"
+              },
+              "selector": {
+                "type": "string"
+              },
+              "subject": {
+                "additionalProperties": false,
+                "properties": {
+                  "areaId": {
+                    "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+                    "type": "string"
+                  },
+                  "factorId": {
+                    "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                    "type": "string"
+                  },
+                  "requirementId": {
+                    "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "required": [
+              "kind",
+              "subject"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "whyItMatters": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "id",
+        "title",
+        "whyItMatters",
+        "recommendedNextMove",
+        "expectedBenefit",
+        "howToKnowItWorked",
+        "impact",
+        "confidence",
+        "traceRefs"
+      ],
+      "type": "object"
+    },
     "RequirementAssessmentResult": {
       "additionalProperties": false,
       "properties": {
@@ -2184,29 +2597,7 @@
           "items": {
             "additionalProperties": false,
             "properties": {
-              "candidateActions": {
-                "items": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "description": {
-                      "type": "string"
-                    },
-                    "id": {
-                      "type": "string"
-                    },
-                    "rationale": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "description"
-                  ],
-                  "type": "object"
-                },
-                "type": "array"
-              },
-              "cause": {
+              "basis": {
                 "additionalProperties": false,
                 "properties": {
                   "evidence": {
@@ -2252,6 +2643,28 @@
                   "statement"
                 ],
                 "type": "object"
+              },
+              "candidateActions": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "rationale": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "description"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
               },
               "condition": {
                 "type": "string"
@@ -2369,7 +2782,7 @@
               "statement",
               "condition",
               "criteria",
-              "cause",
+              "basis",
               "effect",
               "evidence"
             ],
@@ -2739,6 +3152,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
+                        "RunManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -2748,6 +3162,9 @@
                         "FactorAnalysisResult",
                         "AreaAnalysisFrame",
                         "AreaAnalysisResult",
+                        "FindingRankingResult",
+                        "RecommendationResult",
+                        "RecommendationRankingResult",
                         "EvaluationOutputResult"
                       ],
                       "type": "string"
@@ -2830,11 +3247,81 @@
         "status"
       ],
       "type": "object"
+    },
+    "RunManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "RunManifest"
+          ],
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "number": {
+          "type": "integer"
+        },
+        "plannedScope": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
+            },
+            "factorFilter": {
+              "items": {
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "areaId",
+            "factorFilter"
+          ],
+          "type": "object"
+        },
+        "requestedScope": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
+            },
+            "factorFilter": {
+              "items": {
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "number",
+        "model",
+        "requestedScope",
+        "plannedScope"
+      ],
+      "type": "object"
     }
   },
   "$id": "https://getquality.md/evaluation-data.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "oneOf": [
+    {
+      "$ref": "#/$defs/RunManifest"
+    },
     {
       "$ref": "#/$defs/EvaluationFrame"
     },
@@ -2861,6 +3348,15 @@
     },
     {
       "$ref": "#/$defs/AreaAnalysisResult"
+    },
+    {
+      "$ref": "#/$defs/FindingRankingResult"
+    },
+    {
+      "$ref": "#/$defs/RecommendationResult"
+    },
+    {
+      "$ref": "#/$defs/RecommendationRankingResult"
     },
     {
       "$ref": "#/$defs/EvaluationOutputResult"

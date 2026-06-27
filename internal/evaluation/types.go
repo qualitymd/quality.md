@@ -26,8 +26,32 @@ func usagef(format string, args ...any) error {
 type Options struct {
 	RepoRoot   string
 	ResolveDir string
-	Narrowing  string
+	Area       string
+	Factors    []string
 	Model      string
+}
+
+// RunScope records the faithful user-requested Evaluation scope.
+type RunScope struct {
+	AreaID       string   `json:"areaId,omitempty"`
+	FactorFilter []string `json:"factorFilter,omitempty"`
+}
+
+// PlannedRunScope records the normalized Evaluation scope used by deterministic
+// run consumers.
+type PlannedRunScope struct {
+	AreaID       string   `json:"areaId"`
+	FactorFilter []string `json:"factorFilter"`
+}
+
+// RunManifest is the CLI-owned run metadata written when a run is created.
+type RunManifest struct {
+	SchemaVersion  int             `json:"schemaVersion"`
+	Kind           DataKind        `json:"kind"`
+	Number         int             `json:"number"`
+	Model          string          `json:"model"`
+	RequestedScope RunScope        `json:"requestedScope"`
+	PlannedScope   PlannedRunScope `json:"plannedScope"`
 }
 
 // CreateRunReceipt is the JSON contract emitted after creating a run.

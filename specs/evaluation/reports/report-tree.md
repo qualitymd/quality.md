@@ -23,7 +23,8 @@ structured routine outputs.
 Report generation **MUST NOT** inspect new source evidence.
 
 Report generation **MUST NOT** introduce new findings, ratings, evidence, limits,
-analysis, or recommendations.
+analysis, or recommendations. It **MUST** render persisted Advice outputs when
+the run is otherwise renderable.
 
 ## Report Paths
 
@@ -47,6 +48,16 @@ rendered human labels.
 The report builder **MUST NOT** write duplicate compatibility copies using old
 root Area or descendant `report.md` filenames.
 
+The recommendation index **MUST** be generated as `recommendations.md` at the
+run root. Recommendation detail reports **MUST** be generated under
+`recommendations/` with rank-prefixed filenames:
+
+- `recommendations/<NNN>-<slug>.md`
+
+The `<NNN>` prefix **MUST** follow `RecommendationRankingResult` ordering. The
+slug **SHOULD** derive from the recommendation title and fall back to the
+recommendation ID when needed.
+
 > Rationale: `report.md` is the run entrypoint. The root Area detail report uses
 > `root-area.md` so its filename names the subject it contains, while descendant
 > filenames keep enough local subject context for editor and browser tabs.
@@ -55,21 +66,61 @@ root Area or descendant `report.md` filenames.
 
 ## Run Report
 
-The run-level `report.md` **MUST** include:
+The run-level `report.md` **MUST** render as the scoped Area report described by
+`RunManifest.plannedScope`. It **MUST** include:
 
-- headline subject;
-- headline rating;
+- scoped Area title and rating;
 - link to `data/evaluation-output-result.json`;
-- summary from the headline result;
-- recorded Evaluation scope;
+- top 10 ranked findings;
+- top 10 ranked recommendations;
+- link to the full recommendation index;
+- summary from the scoped Area result;
+- requested and planned Evaluation scope;
 - generated subject report links;
 - root Area coverage status; and
-- limits and incomplete inputs from the headline result.
+- limits and incomplete inputs from the scoped Area result.
+
+When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
+filtered Factors and **MUST** avoid presenting the result as a complete Area
+roll-up unless the structured analysis records an appropriate limit.
 
 The run report **MUST** state when the root Area was not evaluated in the run.
 
 The run report **MUST NOT** introduce report-only findings, ratings, evidence,
 limits, analysis, recommendations, candidate actions, or source claims.
+
+The top finding and recommendation sections **MUST** be omitted only when the
+persisted Advice payloads contain no rows to render. `report.md` **MUST** always
+link to `recommendations.md` when the report tree is built.
+
+## Recommendation Reports
+
+`recommendations.md` **MUST** render a complete recommendation index from
+persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
+It **MUST** include:
+
+- all ranked recommendations;
+- impact;
+- confidence;
+- ranking rationale;
+- links to recommendation detail reports; and
+- a coverage summary from `findingCoverage`.
+
+Each recommendation detail report **MUST** include:
+
+- recommendation title;
+- rank when ranked;
+- impact;
+- confidence;
+- why it matters;
+- recommended next move;
+- expected benefit;
+- how to know it worked;
+- trace refs; and
+- source data links.
+
+Recommendation Markdown reports **MUST** remain human-first and **MUST NOT**
+require YAML frontmatter for machine readability.
 
 ## Navigation
 
@@ -174,10 +225,9 @@ Requirement reports **MUST** include:
 - finding detail sections; and
 - unknowns and missing evidence.
 
-Finding detail sections **MUST NOT** render finding-local `candidateActions` in
-Evaluation v0. Candidate actions persist in `data/` as raw material for a later
-Advise phase; presenting them would surface generated recommendations, which v0
-forbids.
+Finding detail sections **MUST NOT** render finding-local `candidateActions`.
+Candidate actions remain finding-local raw material; selected next moves belong
+in `RecommendationResult` and generated recommendation reports.
 
 ## Rendering Rules
 
@@ -185,11 +235,11 @@ Reports **MUST** render empty tables with explicit empty-state rows.
 
 Requirement report Finding sections **MUST** render the same
 list columns: `ID`, `Statement`, `Type`, `Severity`, `Confidence`, `Effect`, and
-`Cause`.
+`Basis`.
 
 Finding detail sections **MUST** render the Finding Core in this order:
-condition, criteria, cause, effect, and evidence. Requirement Finding details
-**MUST NOT** render `candidateActions` in Evaluation v0.
+condition, criteria, basis, effect, and evidence. Requirement Finding details
+**MUST NOT** render `candidateActions`.
 
 Area and Factor reports **MUST NOT** render `Findings` sections. Their roll-up
 explanation belongs in `Rating Drivers`, rationale, confidence, limits, and

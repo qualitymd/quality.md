@@ -67,8 +67,7 @@ type RunDir struct {
 }
 
 type runName struct {
-	number    int
-	narrowing string
+	number int
 }
 
 // ListRunDirs returns recognized evaluation run folders in deterministic order.
@@ -82,14 +81,25 @@ func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
 		if !entry.IsDir() {
 			continue
 		}
-		parsed, ok := parseRunName(entry.Name())
-		if !ok {
+		runAbs := filepath.Join(evalDirAbs, entry.Name())
+		manifest, err := loadRunManifest(runAbs)
+		if err != nil {
+			parsed, ok := parseRunName(entry.Name())
+			if !ok {
+				continue
+			}
+			runs = append(runs, RunDir{
+				Number: parsed.number,
+				Name:   entry.Name(),
+				Abs:    runAbs,
+				Rel:    filepath.ToSlash(filepath.Join(evalDirRel, entry.Name())),
+			})
 			continue
 		}
 		runs = append(runs, RunDir{
-			Number: parsed.number,
+			Number: manifest.Number,
 			Name:   entry.Name(),
-			Abs:    filepath.Join(evalDirAbs, entry.Name()),
+			Abs:    runAbs,
 			Rel:    filepath.ToSlash(filepath.Join(evalDirRel, entry.Name())),
 		})
 	}
@@ -148,10 +158,7 @@ func parseRunName(name string) (runName, bool) {
 		if !isCurrentRunScope(scope) {
 			return runName{}, false
 		}
-		if scope == "full" {
-			scope = ""
-		}
-		return runName{number: n, narrowing: scope}, true
+		return runName{number: n}, true
 	}
 	return runName{}, false
 }
@@ -163,6 +170,14 @@ func nextRunNumber(dir string) (int, error) {
 	}
 	maxN := 0
 	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		manifest, err := loadRunManifest(filepath.Join(dir, entry.Name()))
+		if err == nil && manifest.Number > maxN {
+			maxN = manifest.Number
+			continue
+		}
 		parsed, ok := parseRunName(entry.Name())
 		if ok && parsed.number > maxN {
 			maxN = parsed.number

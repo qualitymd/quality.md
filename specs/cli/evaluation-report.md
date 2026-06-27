@@ -44,14 +44,23 @@ the blocking gap and point the caller to `qualitymd evaluation status <run>` for
 the complete gap list. It **MUST** be deterministic and idempotent: unchanged
 structured data produces byte-identical report files.
 
-On success, the build receipt's `reportMd` field **MUST** point to the
-run-level `report.md`. The receipt **MAY** include `headlineReportMd` and
-`rootAreaReportMd` when those subject reports exist. The receipt's
-`ratingResult` **MUST** describe the headline result, not necessarily the root
-Area result.
+`build` **MUST** read the run scope from `RunManifest.plannedScope`.
+`report.md` **MUST** render as the scoped Area report for
+`plannedScope.areaId`, narrowed by `factorFilter` when present. It **MUST NOT**
+choose a headline subject from `EvaluationFrame` or any other agent-authored
+payload ordering.
 
-`build` **MUST NOT** accept a gate flag. Report gating is not part of Evaluation
-v0.
+`build` **MUST** render persisted Advice outputs into `report.md`,
+`recommendations.md`, and recommendation detail reports under
+`recommendations/`. `report.md` **MUST** include Top Findings and Top
+Recommendations sections capped at 10 rows each and **MUST** link to
+`recommendations.md`.
+
+On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
+The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by
+`report.md`.
+
+`build` **MUST NOT** accept a gate flag.
 
 The Evaluation report content contract is defined by
 [Evaluation report tree](../evaluation/reports/report-tree.md).

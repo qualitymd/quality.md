@@ -5,6 +5,51 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.25.0 - 2026-06-27
+
+### CLI
+
+- Evaluation runs now persist CLI-owned `RunManifest` scope data. New runs use
+  `qualitymd evaluation create [model] [--area <area-id>] [--factor <factor-id>...]`;
+  the previous `--narrowing` surface is removed.
+- Evaluation reports now render `report.md` as the scoped Area report for the
+  run and no longer select a headline subject from agent-authored payload
+  ordering.
+- Evaluation data Finding Core objects now use `basis` instead of `cause` for
+  the finding-local explanation or support posture. Generated reports now render
+  `Basis` and `Basis Evidence` labels instead of `Cause` and `Cause Evidence`.
+- Evaluation now requires Advice payloads before a run is reportable:
+  `FindingRankingResult`, one or more `RecommendationResult` payloads, and
+  `RecommendationRankingResult` with finding coverage accounting.
+- Evaluation report build now renders Top Findings and Top Recommendations in
+  `report.md`, plus `recommendations.md` and per-recommendation detail pages.
+
+### /quality Skill
+
+- `/quality evaluate` now resolves scoped runs to canonical `area:` and
+  `factor:` IDs before creating the run and relies on CLI-owned planned scope.
+- `/quality evaluate` now writes Requirement Findings with `basis`,
+  `basis.status`, and `basis.rationale` instead of `cause` fields.
+- `/quality evaluate` now produces required, domain-agnostic recommendations as
+  part of evaluation Advice. Recommendations may be concrete work or a
+  recommended review of whether to raise, clarify, or confirm the next quality
+  bar.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.0` requires the `qualitymd` CLI `0.25.x` line.
+- Existing Evaluation run data that uses Finding Core `cause` is incompatible
+  with current evaluation data validation and report generation. There is no
+  migration or compatibility mode.
+- Existing Evaluation runs without Advice payloads are no longer reportable
+  under the current evaluation report builder.
+
+Compatibility:
+
+- CLI: `v0.25.0`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.0`, requires `qualitymd >=0.25.0 <0.26.0`
+
 ## v0.24.1 - 2026-06-27
 
 ### CLI

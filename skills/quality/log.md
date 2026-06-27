@@ -2,6 +2,21 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0150 - Evaluation
+  Advice. Runtime evaluation guidance now requires Advice after roll-up, ranks
+  Findings, generates domain-agnostic Recommendations, accounts for every
+  Finding, ranks Recommendations, and reports `recommendations.md` alongside
+  `report.md`.
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md),
+  [`workflows/evaluate.md`](workflows/evaluate.md), and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0149 - Scope-driven evaluation runs. Runtime evaluation guidance now
+  resolves natural scope to canonical `area:`/`factor:` IDs before create, uses
+  `--area`/`--factor`, relies on CLI-owned `RunManifest` scope, and treats
+  `report.md` as the scoped Area report.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0145 - Scannable Skill
   Output.
   Runtime interaction guidance now requires labeled blocks, bullets, or numbered

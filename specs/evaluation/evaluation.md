@@ -43,10 +43,7 @@ orchestration rules, CLI responsibilities, and generated Markdown reports.
 
 Deferred:
 
-- recommendation generation;
-- QC routines around judgment outputs;
 - automatic migrations or mixed-version runs;
-- batch payload writes;
 - custom synthesis policy sources; and
 - custom JSON Schema validation beyond the CLI's discovery schema.
 
@@ -83,4 +80,7 @@ Evaluation data schema version is `3`. Evaluation does not define migrations,
 compatibility transforms, or mixed-version run support; older Evaluation runs
 remain schema-incompatible historical data.
 
-Recommendation generation **MUST NOT** be part of the v0 evaluation protocol.
+Advice **MUST** be produced after analysis and before report generation. Advice
+**MUST** include finding ranking, recommendation generation, finding coverage
+accounting, and recommendation ranking. Recommendations may describe concrete
+improvement work or a recommended review of the next quality bar.

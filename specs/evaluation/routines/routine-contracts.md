@@ -45,6 +45,10 @@ Evaluation **MUST** define prompt contracts for:
 - `analyzeFactor`
 - `frameAreaAnalysis`
 - `analyzeArea`
+- `rankFindings`
+- `recommend`
+- `accountForFindingCoverage`
+- `rankRecommendations`
 - `assembleEvaluationOutputResult`
 - `generateEvaluationReports`
 
@@ -70,22 +74,26 @@ Judgment routines **MUST** use only their frames and declared inputs.
 
 Requirement assessment **MUST** produce `RequirementAssessmentResult` and **MUST
 NOT** assign a Rating Level. Each Requirement Finding **MUST** use the shared
-Finding Core: statement, condition, criteria, cause, effect, and evidence.
+Finding Core: statement, condition, criteria, basis, effect, and evidence.
 
 Requirement assessment **MUST** classify findings by type using these semantics:
 `gap` falls short of declared criteria, `risk` could plausibly cause future
 quality loss, `strength` supports or exceeds criteria, `unknown` records missing
 or ambiguous evidence, and `note` preserves relevant non-driving context.
 
-Requirement assessment **MUST NOT** record `cause.status: verified` unless
-finding evidence directly supports the cause statement. When a `gap` or `risk`
-has enough evidence for condition and effect but not cause, the finding **MUST**
-use `cause.status: not_assessed` rather than inventing cause.
+Requirement assessment **MUST NOT** record `basis.status: verified` unless
+finding evidence directly supports the basis statement. When a `gap` or `risk`
+has enough evidence for condition and effect but not basis, the finding **MUST**
+use `basis.status: not_assessed` rather than inventing basis.
+
+For a `strength`, `basis.status: verified` means the positive condition's basis
+is directly supported by cited evidence; `basis.status: not_applicable` means no
+separate basis beyond the cited evidence is claimed.
 
 Requirement assessment **MAY** record finding-local `candidateActions` —
 non-binding remediation leads carried on a finding — and **MUST NOT** synthesize,
 aggregate, deduplicate, or prioritize them across findings. Cross-finding
-synthesis is recommendation generation, which Evaluation v0 forbids.
+synthesis belongs in the Advice routines.
 
 Requirement rating **MUST** produce `RequirementRatingResult` and **MUST NOT**
 inspect new source evidence.
@@ -108,6 +116,35 @@ analysis scopes **MUST** include non-empty `ratingDrivers` that cite lower-level
 Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
 through `inputRefs`. Analysis drivers **MUST NOT** introduce new evidence or
 claims absent from the referenced lower-level outputs.
+
+## Advice Routines
+
+Advice routines **MUST** run after Area analysis and before report generation.
+
+`rankFindings` **MUST** produce `FindingRankingResult` from persisted
+Requirement Findings. Ranking **MUST** use judgment about quality-bar relevance,
+finding severity, binding effect on ratings, confidence, affected scope, and
+whether the finding changes next quality-management action.
+
+`recommend` **MUST** produce one or more `RecommendationResult` payloads. A
+recommendation **MUST** be quality-domain agnostic: it should name the quality
+improvement or review move without assuming software, product, operations, or
+any other modeled domain unless that domain is present in the evaluated Model.
+
+`accountForFindingCoverage` **MUST** ensure every persisted Finding is accounted
+for before recommendation ranking closes. A finding may be covered by one or
+more recommendations or marked `not_advice_driving` with rationale.
+
+`rankRecommendations` **MUST** produce `RecommendationRankingResult` after
+coverage accounting. Ranking **MUST** use judgment about expected quality impact,
+quality-bar relevance, trace strength, confidence, and relationship to binding
+constraints. It **MUST NOT** require effort, ROI, quick-win status, backlog
+priority, or numeric score fields.
+
+Recommendations **MAY** be concrete work or recommended review. When the
+evaluation meets the current bar and has no gap/risk requiring work, the Advice
+phase **MUST** still recommend whether to review, raise, clarify, or confirm the
+next quality bar.
 
 ## Report Routine
 

@@ -22,7 +22,8 @@ all capitals.
 ## Arguments and flags
 
 - `[model]` — selected `QUALITY.md` file to snapshot; defaults to `QUALITY.md`.
-- `--narrowing <slug>` — optional path-safe full structural scope path slug.
+- `--area <area-id>` — optional canonical Area reference for the run scope.
+- `--factor <factor-id>` — optional canonical Factor reference; repeatable.
 - `--model <path>` — selected `QUALITY.md` file to snapshot.
 - `--evaluation-dir <path>` — override the model-relative evaluation directory.
 - `--json` — emit a receipt on stdout.
@@ -55,21 +56,24 @@ directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 
 The command **MUST** compute the next run number as one past the highest
-recognized evaluation run folder, create the run directory, create `data/`, and
-snapshot `model-snapshot.md`. Recognized run folders use the
-`NNNN-<scope>-eval` grammar.
+`RunManifest.number` in the evaluation directory, create the run directory,
+create `data/`, snapshot `model-snapshot.md`, and write
+`data/run-manifest.json`.
 
-New run folders **MUST** be named `NNNN-<scope>-eval`. When `--narrowing` is
-absent, `<scope>` **MUST** be `full`, producing `NNNN-full-eval`. When
-`--narrowing` is present, `<scope>` **MUST** be the validated narrowing slug,
-producing `NNNN-<narrowing>-eval`.
+`data/run-manifest.json` **MUST** be a CLI-owned `RunManifest` payload containing
+`schemaVersion`, `kind`, `number`, `model`, `requestedScope`, and
+`plannedScope`. `requestedScope` **MUST** faithfully record supplied scope
+arguments. `plannedScope` **MUST** normalize the scope by defaulting `areaId` to
+`area:root` and `factorFilter` to an array.
 
-`--narrowing` **MUST** remain a path-safe slug and **MUST NOT** include `quality`
-as a slug segment. Callers that narrow by Area or Factor **SHOULD** use the
-scope's full structural path, joining the Area path from the root and, for
-Factor scope, the Factor path with single hyphens and no kind marker or boundary
-separator. The run number remains the run identity; the scope slug is a human
-mnemonic, and `model-snapshot.md` remains the structural source of truth.
+The command **MUST** validate `--area` and every `--factor` against the model
+snapshot before creating a numbered run folder. If a Factor does not belong to
+the planned Area, the command **MUST** fail without creating the run folder.
+
+New run folders **MUST** be named `NNNN-<scope>-eval`. `<scope>` **MUST** be
+derived from `plannedScope`: a root Area with an empty `factorFilter` produces
+`NNNN-full-eval`; otherwise the slug is built from the planned Area path and any
+filtered Factor structural paths. Callers **MUST NOT** supply the slug.
 
 The command **MUST NOT** create previous-runtime record folders or planning
 coverage files such as `assessments/`, `analysis/`, `recommendations/`,

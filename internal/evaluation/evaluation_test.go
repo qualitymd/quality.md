@@ -43,6 +43,13 @@ func TestCreateRunSeedsEvaluationLayoutOnly(t *testing.T) {
 			t.Fatalf("missing %s: %v", name, err)
 		}
 	}
+	manifest, err := loadRunManifest(filepath.Join(repo, result.Path))
+	if err != nil {
+		t.Fatalf("loadRunManifest() error = %v", err)
+	}
+	if manifest.Number != 1 || manifest.RequestedScope.AreaID != "" || manifest.PlannedScope.AreaID != "area:root" || len(manifest.PlannedScope.FactorFilter) != 0 {
+		t.Fatalf("manifest = %#v, want full root scope", manifest)
+	}
 	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations", "debug-log.md"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); !os.IsNotExist(err) {
 			t.Fatalf("%s should not be seeded for evaluation runs: %v", name, err)
@@ -77,40 +84,67 @@ func TestCreateRunUsesModelRelativeWorkspace(t *testing.T) {
 	}
 }
 
-func TestCreateRunUsesScopePathNaming(t *testing.T) {
-	repo := testRepo(t)
-	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "security-reliability-latency"})
+func TestCreateRunUsesScopeFlagsAndManifest(t *testing.T) {
+	repo := testRepoWithModel(t, `---
+title: Scoped model
+ratingScale:
+  - level: target
+    title: Target
+    description: Target.
+    criterion: Meets it.
+factors:
+  security:
+    title: Security
+    factors:
+      reliability:
+        title: Reliability
+        factors:
+          latency:
+            title: Latency
+---
+`)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Factors: []string{"factor:root::security/reliability/latency"}})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	if result.Path != ".quality/evaluations/0001-security-reliability-latency-eval" {
+	if result.Path != ".quality/evaluations/0001-root-security-reliability-latency-eval" {
 		t.Fatalf("path = %q, want numbered scope-path run", result.Path)
 	}
-	if strings.Contains(filepath.Base(result.Path), "quality") {
-		t.Fatalf("path = %q, want no quality segment in new run name", result.Path)
+	manifest, err := loadRunManifest(filepath.Join(repo, result.Path))
+	if err != nil {
+		t.Fatalf("loadRunManifest() error = %v", err)
+	}
+	if manifest.RequestedScope.AreaID != "area:root" || manifest.PlannedScope.AreaID != "area:root" ||
+		len(manifest.PlannedScope.FactorFilter) != 1 || manifest.PlannedScope.FactorFilter[0] != "factor:root::security/reliability/latency" {
+		t.Fatalf("manifest = %#v, want factor-filtered root scope", manifest)
 	}
 }
 
-func TestCreateRunRejectsReservedQualityScopeSegment(t *testing.T) {
+func TestCreateRunRejectsUnknownScopeWithoutCreatingRun(t *testing.T) {
 	repo := testRepo(t)
-	_, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "format-quality"})
-	if err == nil || !strings.Contains(err.Error(), "reserved segment") {
-		t.Fatalf("CreateRun() error = %v, want reserved segment diagnostic", err)
+	_, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Factors: []string{"factor:root::missing"}})
+	if err == nil || !strings.Contains(err.Error(), "does not resolve in the model") {
+		t.Fatalf("CreateRun() error = %v, want unresolved factor diagnostic", err)
+	}
+	evalDir := filepath.Join(repo, ".quality", "evaluations")
+	entries, readErr := os.ReadDir(evalDir)
+	if readErr != nil && !os.IsNotExist(readErr) {
+		t.Fatalf("ReadDir() error = %v", readErr)
+	}
+	if len(entries) != 0 {
+		t.Fatalf("evaluation dir entries = %d, want no numbered run folder", len(entries))
 	}
 }
 
-func TestRunNameRecognitionNormalizesCurrentNarrowing(t *testing.T) {
+func TestRunNameRecognitionReadsCurrentNumber(t *testing.T) {
 	tests := []struct {
-		name          string
-		wantNumber    int
-		wantNarrowing string
-		wantOK        bool
+		name       string
+		wantNumber int
+		wantOK     bool
 	}{
-		{name: "0007-full-eval", wantNumber: 7, wantNarrowing: "", wantOK: true},
-		{name: "0007-security-eval", wantNumber: 7, wantNarrowing: "security", wantOK: true},
-		{name: "0007-security-network-eval", wantNumber: 7, wantNarrowing: "security-network", wantOK: true},
-		{name: "0007-security-reliability-eval", wantNumber: 7, wantNarrowing: "security-reliability", wantOK: true},
-		{name: "0007-security-reliability-latency-eval", wantNumber: 7, wantNarrowing: "security-reliability-latency", wantOK: true},
+		{name: "0007-full-eval", wantNumber: 7, wantOK: true},
+		{name: "0007-security-eval", wantNumber: 7, wantOK: true},
+		{name: "0007-security-network-eval", wantNumber: 7, wantOK: true},
 		{name: "0007-quality-format-eval", wantOK: false},
 		{name: "0006-quality-eval", wantOK: false},
 		{name: "0005-subject-quality-eval", wantOK: false},
@@ -129,32 +163,22 @@ func TestRunNameRecognitionNormalizesCurrentNarrowing(t *testing.T) {
 			if !ok {
 				return
 			}
-			if got.number != tc.wantNumber || got.narrowing != tc.wantNarrowing {
-				t.Fatalf("parseRunName() = %#v, want number %d narrowing %q", got, tc.wantNumber, tc.wantNarrowing)
-			}
-			if narrowingFromRunName(tc.name) != tc.wantNarrowing {
-				t.Fatalf("narrowingFromRunName() = %q, want %q", narrowingFromRunName(tc.name), tc.wantNarrowing)
+			if got.number != tc.wantNumber {
+				t.Fatalf("parseRunName() = %#v, want number %d", got, tc.wantNumber)
 			}
 		})
 	}
 }
 
-func TestListRunsIgnoresUnrecognizedRunFolders(t *testing.T) {
+func TestListRunsReadsScopeFromManifestAfterFolderRename(t *testing.T) {
 	repo := testRepo(t)
-	evalDir := filepath.Join(repo, ".quality", "evaluations")
-	unrecognized := filepath.Join(evalDir, "0006-quality-eval")
-	if err := os.MkdirAll(filepath.Join(unrecognized, "data"), 0o755); err != nil {
-		t.Fatalf("mkdir unrecognized data: %v", err)
-	}
-	modelRaw, err := os.ReadFile(filepath.Join(repo, "QUALITY.md"))
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Area: "area:root"})
 	if err != nil {
-		t.Fatalf("read model: %v", err)
-	}
-	if err := os.WriteFile(filepath.Join(unrecognized, ModelSnapshotFile), modelRaw, 0o644); err != nil {
-		t.Fatalf("write unrecognized model snapshot: %v", err)
-	}
-	if _, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "security-network"}); err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
+	}
+	renamed := filepath.Join(repo, ".quality", "evaluations", "renamed-run")
+	if err := os.Rename(filepath.Join(repo, result.Path), renamed); err != nil {
+		t.Fatalf("rename run: %v", err)
 	}
 	runs, err := ListRuns(repo, "", "")
 	if err != nil {
@@ -163,8 +187,8 @@ func TestListRunsIgnoresUnrecognizedRunFolders(t *testing.T) {
 	if len(runs.Runs) != 1 {
 		t.Fatalf("ListRuns() = %#v, want one recognized run", runs.Runs)
 	}
-	if runs.Runs[0].Path != ".quality/evaluations/0001-security-network-eval" || runs.Runs[0].Narrowing != "security-network" {
-		t.Fatalf("current run = %#v, want scope-path narrowing", runs.Runs[0])
+	if runs.Runs[0].Path != ".quality/evaluations/renamed-run" || runs.Runs[0].PlannedScope.AreaID != "area:root" {
+		t.Fatalf("current run = %#v, want renamed path and manifest scope", runs.Runs[0])
 	}
 }
 
@@ -190,6 +214,29 @@ func TestStatusReportsMissingEvaluationDataAndNextAction(t *testing.T) {
 	}
 }
 
+func TestStatusRequiresPlannedExpansionArtifacts(t *testing.T) {
+	repo := testRepo(t)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, result.Path)
+	if _, err := SetData(runPath, batchPayloads(completeRootEvaluationPayloads()[:3]...), DataSetOptions{}); err != nil {
+		t.Fatalf("SetData(partial root batch) error = %v", err)
+	}
+	run, err := Inspect(runPath)
+	if err != nil {
+		t.Fatalf("Inspect() error = %v", err)
+	}
+	status := run.Status()
+	if status.Reportable || len(status.Gaps) == 0 {
+		t.Fatalf("status = %#v, want planned expansion gap", status)
+	}
+	if status.Gaps[0].Ref != "data/areas/root/requirements/has-tests/requirement-assessment-result.json" {
+		t.Fatalf("status.Gaps = %#v, want missing planned Requirement assessment", status.Gaps)
+	}
+}
+
 func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	repo := testRepo(t)
 	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
@@ -204,8 +251,8 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Inspect() error = %v", err)
 	}
-	if status := run.Status(); !status.Reportable || status.Data.Artifacts != 3 {
-		t.Fatalf("status = %#v, want reportable with three data artifacts", status)
+	if status := run.Status(); !status.Reportable || status.Data.Artifacts != 9 {
+		t.Fatalf("status = %#v, want reportable with nine data artifacts", status)
 	}
 	build, err := BuildReport(runPath)
 	if err != nil {
@@ -216,9 +263,6 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	}
 	if build.ReportMD != filepath.ToSlash(filepath.Join(result.Path, "report.md")) {
 		t.Fatalf("BuildReport().ReportMD = %q, want run report path", build.ReportMD)
-	}
-	if build.HeadlineReportMD != filepath.ToSlash(filepath.Join(result.Path, "root-area.md")) || build.RootAreaReportMD != build.HeadlineReportMD {
-		t.Fatalf("BuildReport() = %#v, want root Area as headline report", build)
 	}
 	for _, name := range []string{"report-summary.md", "report.json"} {
 		if _, err := os.Stat(filepath.Join(runPath, name)); !os.IsNotExist(err) {
@@ -232,8 +276,8 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if !strings.HasPrefix(string(runReport), "# Evaluation Report: Area: Test model") {
 		t.Fatalf("report.md = %s, want run report title", runReport)
 	}
-	if !strings.Contains(string(runReport), "| 🔵 Target | [Area: Test model](root-area.md) | [evaluation-output-result.json](data/evaluation-output-result.json) |") {
-		t.Fatalf("report.md = %s, want headline root Area link", runReport)
+	if !strings.Contains(string(runReport), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [evaluation-output-result.json](data/evaluation-output-result.json) |") {
+		t.Fatalf("report.md = %s, want scoped Area rating row", runReport)
 	}
 	report, err := os.ReadFile(filepath.Join(runPath, "root-area.md"))
 	if err != nil {
@@ -274,8 +318,8 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if output["kind"] == dataKindTitle(DataKindEvaluationOutput) {
 		t.Fatalf("EvaluationOutputResult kind = %v, want stable data kind", output["kind"])
 	}
-	if output["runReportRef"] == nil || output["headlineResultRef"] == nil || output["headlineReportRef"] == nil {
-		t.Fatalf("EvaluationOutputResult = %#v, want run and headline refs", output)
+	if output["runReportRef"] == nil || output["scopedAreaAnalysisRef"] == nil || output["headlineResultRef"] != nil || output["headlineReportRef"] != nil {
+		t.Fatalf("EvaluationOutputResult = %#v, want run and scoped Area refs without headline refs", output)
 	}
 }
 
@@ -297,9 +341,9 @@ func testFindingCore(id, typ, severity, confidence, statement string) map[string
 			"criterion":     "Meets it.",
 			"rationale":     "The target criterion is the relevant bar.",
 		}},
-		"cause": map[string]any{
+		"basis": map[string]any{
 			"status":    "not_assessed",
-			"statement": "Cause was not assessed.",
+			"statement": "Basis was not assessed.",
 		},
 		"effect": map[string]any{
 			"statement":    statement + " effect.",
@@ -344,8 +388,11 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	}
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "# Evaluation Report: Area: Navigation model")
-	assertContains(t, runReport, "[Area: Navigation model](root-area.md)")
+	assertContains(t, runReport, "Area: [Navigation model](root-area.md)")
 	assertContains(t, runReport, "[evaluation-output-result.json](data/evaluation-output-result.json)")
+	assertContains(t, runReport, "## Top Findings")
+	assertContains(t, runReport, "## Top Recommendations")
+	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
 
 	rootReport := readReport(t, runPath, "root-area.md")
 	assertContains(t, rootReport, "# Area: Navigation model\n\nArea: [Navigation model](root-area.md)")
@@ -440,16 +487,17 @@ areas:
         title: Refunds
 ---
 `)
-	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "payments-refunds"})
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Area: "area:payments/refunds"})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
 	payloads := []string{
-		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{"requestedScope":"area:payments/refunds","areaIds":["area:payments/refunds"]},"derivedContext":{"resolvedScope":"area:payments/refunds"}}`,
+		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{},"derivedContext":{}}`,
 		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}`,
 		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:payments/refunds","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Refunds meet the scoped bar.","ratingDrivers":[{"description":"Refunds frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Refunds meet the scoped bar overall.","ratingDrivers":[{"description":"Refunds frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}]}],"confidence":"high"}}`,
 	}
+	payloads = append(payloads, noFindingAreaAdvicePayloads("area:payments/refunds")...)
 	if _, err := SetData(runPath, batchPayloads(payloads...), DataSetOptions{}); err != nil {
 		t.Fatalf("SetData(scoped area batch) error = %v", err)
 	}
@@ -464,16 +512,15 @@ areas:
 	if err != nil {
 		t.Fatalf("BuildReport() error = %v", err)
 	}
-	wantHeadline := filepath.ToSlash(filepath.Join(result.Path, "areas/payments/refunds/refunds-area.md"))
-	if build.HeadlineReportMD != wantHeadline || build.RootAreaReportMD != "" || build.RatingResult.Level != "target" {
-		t.Fatalf("BuildReport() = %#v, want scoped Area headline without root Area report", build)
+	if build.RatingResult.Level != "target" {
+		t.Fatalf("BuildReport() = %#v, want scoped Area rating", build)
 	}
 	if _, err := os.Stat(filepath.Join(runPath, "root-area.md")); !os.IsNotExist(err) {
 		t.Fatalf("root-area.md should not be generated for root-out-of-scope run: %v", err)
 	}
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "# Evaluation Report: Area: Refunds")
-	assertContains(t, runReport, "[Area: Refunds](areas/payments/refunds/refunds-area.md)")
+	assertContains(t, runReport, "| Planned Area | `area:payments/refunds` |")
 	assertContains(t, runReport, "Root Area was not evaluated in this run.")
 	areaReport := readReport(t, runPath, "areas/payments/refunds/refunds-area.md")
 	assertContains(t, areaReport, "# Area: Refunds\n\nArea: Scoped model / Payments / [Refunds](refunds-area.md)")
@@ -481,8 +528,9 @@ areas:
 	if err != nil {
 		t.Fatalf("reading EvaluationOutputResult: %v", err)
 	}
-	assertContains(t, string(outputRaw), `"headlineResultRef":`)
+	assertContains(t, string(outputRaw), `"scopedAreaAnalysisRef":`)
 	assertContains(t, string(outputRaw), `"areaId": "area:payments/refunds"`)
+	assertNotContains(t, string(outputRaw), `"headlineResultRef":`)
 	assertNotContains(t, string(outputRaw), "rootAreaAnalysisRef")
 }
 
@@ -499,16 +547,19 @@ factors:
     title: Reliability
 ---
 `)
-	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Narrowing: "reliability"})
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Factors: []string{"factor:root::reliability"}})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
 	payloads := []string{
-		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{"requestedScope":"factor:root::reliability","factorIds":["factor:root::reliability"]},"derivedContext":{"resolvedScope":"factor:root::reliability"}}`,
+		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{},"derivedContext":{}}`,
+		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped Area bar.","ratingDrivers":[{"description":"Reliability supports the scoped Area.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped Area bar overall.","ratingDrivers":[{"description":"Reliability supports the scoped Area overall.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar.","ratingDrivers":[{"description":"Reliability frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar overall.","ratingDrivers":[{"description":"Reliability frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}]}],"confidence":"high"}}`,
 	}
+	payloads = append(payloads, noFindingFactorAdvicePayloads("factor:root::reliability")...)
 	if _, err := SetData(runPath, batchPayloads(payloads...), DataSetOptions{}); err != nil {
 		t.Fatalf("SetData(scoped factor batch) error = %v", err)
 	}
@@ -523,24 +574,22 @@ factors:
 	if err != nil {
 		t.Fatalf("BuildReport() error = %v", err)
 	}
-	wantHeadline := filepath.ToSlash(filepath.Join(result.Path, "factors/reliability/reliability-factor.md"))
-	if build.HeadlineReportMD != wantHeadline || build.RootAreaReportMD != "" || build.RatingResult.Level != "target" {
-		t.Fatalf("BuildReport() = %#v, want scoped Factor headline without root Area report", build)
+	if build.RatingResult.Level != "target" {
+		t.Fatalf("BuildReport() = %#v, want factor-filtered Area rating", build)
 	}
 	runReport := readReport(t, runPath, "report.md")
-	assertContains(t, runReport, "# Evaluation Report: Factor: Reliability")
-	assertContains(t, runReport, "[Factor: Reliability](factors/reliability/reliability-factor.md)")
-	assertContains(t, runReport, "Root Area was not evaluated in this run.")
+	assertContains(t, runReport, "# Evaluation Report: Area: Factor scoped model - Reliability")
+	assertContains(t, runReport, "| Factor Filter | `factor:root::reliability` Reliability |")
+	assertContains(t, runReport, "The scoped Area rating is a partial roll-up, not a complete Area assessment.")
 	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
-	assertContains(t, factorReport, "# Factor: Reliability\n\nArea: Factor scoped model")
-	assertNotContains(t, factorReport, "root-area.md")
+	assertContains(t, factorReport, "# Factor: Reliability\n\nArea: [Factor scoped model](../../root-area.md)")
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
 		t.Fatalf("reading EvaluationOutputResult: %v", err)
 	}
-	assertContains(t, string(outputRaw), `"headlineResultRef":`)
+	assertContains(t, string(outputRaw), `"scopedAreaAnalysisRef":`)
 	assertContains(t, string(outputRaw), `"factorId": "factor:root::reliability"`)
-	assertNotContains(t, string(outputRaw), "rootAreaAnalysisRef")
+	assertNotContains(t, string(outputRaw), `"headlineResultRef":`)
 }
 
 func TestSetDataRejectsCLIOwnedOutput(t *testing.T) {
@@ -550,8 +599,12 @@ func TestSetDataRejectsCLIOwnedOutput(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	_, err = SetData(filepath.Join(repo, result.Path), batchPayloads(`{"schemaVersion":3,"kind":"EvaluationOutputResult"}`), DataSetOptions{})
-	if err == nil || !strings.Contains(err.Error(), "generated by evaluation report build") {
+	if err == nil || !strings.Contains(err.Error(), "CLI-owned") {
 		t.Fatalf("SetData(EvaluationOutputResult) error = %v, want CLI-owned diagnostic", err)
+	}
+	_, err = SetData(filepath.Join(repo, result.Path), batchPayloads(`{"schemaVersion":3,"kind":"RunManifest"}`), DataSetOptions{})
+	if err == nil || !strings.Contains(err.Error(), "CLI-owned") {
+		t.Fatalf("SetData(RunManifest) error = %v, want CLI-owned diagnostic", err)
 	}
 }
 
@@ -860,7 +913,7 @@ func TestFindingDetailsOmitCandidateActions(t *testing.T) {
 	if strings.Contains(rendered, "Add boundary tests.") {
 		t.Fatalf("finding details = %s, want candidate actions kept out of the report", rendered)
 	}
-	for _, want := range []string{"### gap-1 Edge cases untested.", "#### Condition", "#### Criteria", "#### Cause", "#### Effect", "#### Evidence"} {
+	for _, want := range []string{"### gap-1 Edge cases untested.", "#### Condition", "#### Criteria", "#### Basis", "#### Effect", "#### Evidence"} {
 		if !strings.Contains(rendered, want) {
 			t.Fatalf("finding details = %s, want %q", rendered, want)
 		}
@@ -949,25 +1002,25 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 			}
 		}
 	}
-	cause, ok := findingProps["cause"].(map[string]any)
+	basis, ok := findingProps["basis"].(map[string]any)
 	if !ok {
-		t.Fatalf("requirement schema cause = %#v, want object", findingProps["cause"])
+		t.Fatalf("requirement schema basis = %#v, want object", findingProps["basis"])
 	}
-	causeProps, ok := cause["properties"].(map[string]any)
+	basisProps, ok := basis["properties"].(map[string]any)
 	if !ok {
-		t.Fatalf("requirement schema cause properties = %#v, want object", cause["properties"])
+		t.Fatalf("requirement schema basis properties = %#v, want object", basis["properties"])
 	}
-	causeStatus, ok := causeProps["status"].(map[string]any)
+	basisStatus, ok := basisProps["status"].(map[string]any)
 	if !ok {
-		t.Fatalf("requirement schema cause status = %#v, want object", causeProps["status"])
+		t.Fatalf("requirement schema basis status = %#v, want object", basisProps["status"])
 	}
-	causeStatusEnum, ok := causeStatus["enum"].([]any)
+	basisStatusEnum, ok := basisStatus["enum"].([]any)
 	if !ok {
-		t.Fatalf("requirement schema cause status enum = %#v, want array", causeStatus["enum"])
+		t.Fatalf("requirement schema basis status enum = %#v, want array", basisStatus["enum"])
 	}
 	for _, want := range []string{"verified", "plausible", "not_assessed", "not_applicable"} {
-		if !jsonArrayContains(causeStatusEnum, want) {
-			t.Fatalf("requirement schema cause status enum = %#v, want %q", causeStatusEnum, want)
+		if !jsonArrayContains(basisStatusEnum, want) {
+			t.Fatalf("requirement schema basis status enum = %#v, want %q", basisStatusEnum, want)
 		}
 	}
 	areaSchema, err := EvaluationDataSchema(DataKindAreaAnalysis)
@@ -997,7 +1050,7 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if err != nil {
 		t.Fatalf("DataExample() error = %v", err)
 	}
-	for _, want := range []string{`"findings": [`, `"statement": "Focused test coverage is present."`, `"condition": "A focused test covers the requirement's primary path."`, `"cause": {`, `"effect": {`, `"candidateActions": [`, `"id": "action-001"`, `"description": "Add focused tests for the boundary and error paths."`} {
+	for _, want := range []string{`"findings": [`, `"statement": "Focused test coverage is present."`, `"condition": "A focused test covers the requirement's primary path."`, `"basis": {`, `"effect": {`, `"candidateActions": [`, `"id": "action-001"`, `"description": "Add focused tests for the boundary and error paths."`} {
 		if !strings.Contains(string(example), want) {
 			t.Fatalf("example = %s, want %q", example, want)
 		}
@@ -1183,11 +1236,14 @@ func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 }
 
 func completeRootEvaluationPayloads() []string {
-	return []string{
+	payloads := []string{
 		`{"schemaVersion":3,"kind":"EvaluationFrame"}`,
 		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
 		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Local work meets the bar.","ratingDrivers":[{"description":"Area frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"The model meets the bar overall.","ratingDrivers":[{"description":"Area frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","evidenceSummary":"Tests were inspected.","findings":[{"id":"strength-1","type":"strength","severity":"low","confidence":"high","statement":"Tests exist.","condition":"A focused test exists.","criteria":[{"requirementId":"requirement:root::has-tests","ratingLevelId":"rating:target","criterion":"Meets it."}],"basis":{"status":"not_applicable","statement":"No separate basis beyond cited evidence is claimed."},"effect":{"statement":"The finding supports the target rating."},"evidence":[{"sourceRef":"tests/example_test.go","statement":"A focused test exists."}]}]}`,
+		`{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","rationale":"Evidence satisfies the target criterion.","ratingDrivers":[{"description":"Assessment finding supports the target rating.","effect":"supports target","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"}`,
 	}
+	return append(payloads, singleFindingAdvicePayloads("requirement:root::has-tests", "strength-1")...)
 }
 
 const navigationReportModel = `---
@@ -1230,7 +1286,7 @@ func navigationReportPayloads() []string {
 			"ratingEffect": "supports target",
 		},
 	})
-	return []string{
+	payloads := []string{
 		`{"schemaVersion":3,"kind":"EvaluationFrame"}`,
 		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
 		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}`,
@@ -1243,6 +1299,34 @@ func navigationReportPayloads() []string {
 		`{"schemaVersion":3,"kind":"RequirementEvaluationFrame","subject":{"requirementId":"requirement:root::has-tests","factorIds":["factor:root::reliability"]}}`,
 		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","confidence":"high","summary":"Tests are present.","factors":["factor:root::reliability"],"findings":[` + requirementFinding + `]}`,
 		`{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","confidence":"high","rationale":"Tests meet the bar.","ratingDrivers":[{"description":"Focused test finding supports target.","effect":"supports target","ratingLevelId":"rating:target","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[strength-1]"}]}]}`,
+	}
+	return append(payloads, singleFindingAdvicePayloads("requirement:root::has-tests", "strength-1")...)
+}
+
+func singleFindingAdvicePayloads(requirementID, findingID string) []string {
+	findingRef := `{"kind":"RequirementAssessmentResult","subject":{"requirementId":"` + requirementID + `"},"selector":"findings[` + findingID + `]"}`
+	return []string{
+		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"This finding most directly informs next advice."}],"rationale":"Findings were ranked by quality-bar relevance and confidence."}`,
+		`{"schemaVersion":3,"kind":"RecommendationResult","id":"rec-001","title":"Review the next quality bar","whyItMatters":"The evaluation found a quality signal that should inform the next target level.","recommendedNextMove":"Review whether the next rating level should be raised or clarified for this requirement.","expectedBenefit":"The quality model stays aligned with the evaluated evidence and next bar.","howToKnowItWorked":"The requirement criterion or target-level rationale reflects the review decision.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`,
+		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"rec-001","impact":"high","confidence":"high","rationale":"This recommendation addresses the highest-ranked finding."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["rec-001"],"rationale":"The recommendation is traced to this finding."}],"rationale":"Recommendations were ranked by expected quality impact."}`,
+	}
+}
+
+func noFindingAreaAdvicePayloads(areaID string) []string {
+	traceRef := `{"kind":"AreaAnalysisResult","subject":{"areaId":"` + areaID + `"},"selector":"localAndDescendantAnalysis"}`
+	return noFindingAdvicePayloads(traceRef)
+}
+
+func noFindingFactorAdvicePayloads(factorID string) []string {
+	traceRef := `{"kind":"FactorAnalysisResult","subject":{"factorId":"` + factorID + `"},"selector":"localAndDescendantAnalysis"}`
+	return noFindingAdvicePayloads(traceRef)
+}
+
+func noFindingAdvicePayloads(traceRef string) []string {
+	return []string{
+		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[],"rationale":"No findings were produced; no finding ranking is applicable."}`,
+		`{"schemaVersion":3,"kind":"RecommendationResult","id":"rec-001","title":"Review the next quality bar","whyItMatters":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","recommendedNextMove":"Review the analyzed area or factor against the next intended quality bar.","expectedBenefit":"The quality model remains current without inventing remediation work.","howToKnowItWorked":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
+		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"rec-001","impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
 	}
 }
 

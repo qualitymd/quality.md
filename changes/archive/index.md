@@ -634,3 +634,13 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0147 — Report Descendant Terms](0147-report-descendant-terms.md) - aligns
   generated report labels around Child Areas for immediate Area descendants and
   Sub-Factors for immediate Factor descendants (`Done`).
+- [0148 — Finding Basis](0148-finding-basis.md) - renames Finding Core `cause`
+  to `basis` across evaluation records, generated reports, runtime skill
+  guidance, durable specs, examples, and tests (`Done`).
+- [0149 — Scope-driven evaluation runs](0149-scope-driven-evaluation-runs.md) -
+  captures requested/planned scope in CLI-owned `RunManifest` data, replaces
+  `--narrowing` with `--area`/`--factor`, and renders `report.md` as the scoped
+  Area report without positional headline selection (`Done`).
+- [0150 — Evaluation Advice](0150-evaluation-advice.md) - makes Advice required
+  through Finding ranking, Recommendations, Recommendation ranking, coverage
+  accounting, and generated recommendation reports (`Done`).

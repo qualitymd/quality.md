@@ -7,12 +7,13 @@ import (
 
 // RunListEntry summarizes one discovered evaluation run.
 type RunListEntry struct {
-	Path          string `json:"path"`
-	RootArea      string `json:"rootArea"`
-	Narrowing     string `json:"narrowing,omitempty"`
-	DataArtifacts int    `json:"dataArtifacts"`
-	Reportable    bool   `json:"reportable"`
-	Gaps          int    `json:"gaps"`
+	Path           string          `json:"path"`
+	RootArea       string          `json:"rootArea"`
+	RequestedScope RunScope        `json:"requestedScope"`
+	PlannedScope   PlannedRunScope `json:"plannedScope"`
+	DataArtifacts  int             `json:"dataArtifacts"`
+	Reportable     bool            `json:"reportable"`
+	Gaps           int             `json:"gaps"`
 }
 
 // RunList is the JSON contract emitted by evaluation run listings.
@@ -112,13 +113,18 @@ func ListRunsForModel(model, evaluationDir, state string) (*RunList, error) {
 		if !includeRunState(status.Reportable, state) {
 			continue
 		}
+		manifest, err := loadRunManifest(dir.Abs)
+		if err != nil {
+			return nil, fmt.Errorf("loading %s: %w", filepath.ToSlash(filepath.Join(dir.Rel, runManifestPath)), err)
+		}
 		result.Runs = append(result.Runs, RunListEntry{
-			Path:          dir.Rel,
-			RootArea:      run.Model.Title,
-			Narrowing:     narrowingFromRunName(dir.Name),
-			DataArtifacts: status.Data.Artifacts,
-			Reportable:    status.Reportable,
-			Gaps:          len(status.Gaps),
+			Path:           dir.Rel,
+			RootArea:       run.Model.Title,
+			RequestedScope: manifest.RequestedScope,
+			PlannedScope:   manifest.PlannedScope,
+			DataArtifacts:  status.Data.Artifacts,
+			Reportable:     status.Reportable,
+			Gaps:           len(status.Gaps),
 		})
 	}
 	return result, nil
@@ -152,12 +158,4 @@ func ValidateRunState(state string) error {
 	default:
 		return usagef("--state must be one of: all, complete, reportable, incomplete")
 	}
-}
-
-func narrowingFromRunName(name string) string {
-	parsed, ok := parseRunName(name)
-	if !ok {
-		return ""
-	}
-	return parsed.narrowing
 }

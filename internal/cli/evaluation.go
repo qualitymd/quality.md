@@ -349,7 +349,8 @@ func newEvaluationCreateCmd() *cobra.Command {
 			return renderNextActions(cmd.ErrOrStderr(), result.NextActions)
 		},
 	}
-	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional full structural scope path slug; must not include quality")
+	cmd.Flags().StringVar(&opts.Area, "area", "", "canonical Area reference for the evaluation scope")
+	cmd.Flags().StringArrayVar(&opts.Factors, "factor", nil, "canonical Factor reference for a scoped evaluation; repeatable")
 	cmd.Flags().StringVar(&opts.Model, "model", "", "QUALITY.md file to snapshot")
 	cmd.Flags().StringVar(&opts.ResolveDir, "evaluation-dir", "", "override the model-relative evaluation directory")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run creation receipt")

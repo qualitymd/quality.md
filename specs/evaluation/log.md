@@ -2,6 +2,27 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the Evaluation data, protocol, orchestration, routine,
+  data-layout, and report-tree contracts for
+  [0150 - Evaluation Advice](../../changes/archive/0150-evaluation-advice.md).
+  Evaluation now requires finding ranking, recommendations, finding coverage
+  accounting, and recommendation ranking before report build. Reports render Top
+  Findings, Top Recommendations, `recommendations.md`, and recommendation detail
+  pages from persisted Advice data.
+
+- **Revision**: Updated the Evaluation create, data, protocol, orchestration,
+  and report-tree contracts for
+  [0149 - Scope-driven evaluation runs](../../changes/archive/0149-scope-driven-evaluation-runs.md).
+  Runs now carry CLI-owned `RunManifest` scope data, `EvaluationFrame` no longer
+  carries run scope, and `report.md` renders as the scoped Area report without
+  headline selection from agent-authored payload ordering.
+
+- **Revision**: Updated the Evaluation data, routine, and report-tree contracts
+  for [0148 - Finding Basis](../../changes/archive/0148-finding-basis.md).
+  Requirement Findings now use `basis` instead of `cause` for the finding-local
+  explanation or support posture, reports render `Basis` labels, and the
+  existing support status values are preserved.
+
 - **Revision**: Updated the Evaluation data, routine, protocol, and report-tree
   contracts for
   [0142 - Requirement Findings Only](../../changes/archive/0142-requirement-findings-only.md).

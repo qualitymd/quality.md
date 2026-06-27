@@ -52,5 +52,9 @@ When a run contains Evaluation data, `status` **MUST** inspect the required
 structured payload graph under `data/` and report missing, malformed, unreadable,
 schema-incompatible, or structurally incomplete payloads as typed gaps.
 
-Status **MUST NOT** expose active recommendation counts, planned coverage gaps,
-or compatibility transforms.
+For Evaluation runs, missing or incomplete Advice payloads **MUST** make the run
+non-reportable. Required Advice payloads include `FindingRankingResult`, at
+least one `RecommendationResult`, and `RecommendationRankingResult` with Finding
+coverage accounting.
+
+Status **MUST NOT** expose planned coverage gaps or compatibility transforms.

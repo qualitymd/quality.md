@@ -19,6 +19,12 @@ capitals.
 
 An Evaluation run **MUST** store structured data under `data/`.
 
+The run **MUST** store the CLI-generated run manifest at:
+
+```text
+data/run-manifest.json
+```
+
 The run **MUST** store the evaluation frame at:
 
 ```text
@@ -29,6 +35,24 @@ The run **MUST** store the CLI-generated evaluation output result at:
 
 ```text
 data/evaluation-output-result.json
+```
+
+Advice data **MUST** live under:
+
+```text
+data/advice/
+```
+
+The advice folder **MUST** contain:
+
+- `finding-ranking-result.json`
+- `recommendation-ranking-result.json`
+- `recommendations/`
+
+Each recommendation payload **MUST** be stored under:
+
+```text
+data/advice/recommendations/<recommendation-id>/recommendation-result.json
 ```
 
 Area data **MUST** live under `data/areas/` and mirror the evaluated Area tree.
@@ -94,11 +118,27 @@ the nested Factor's local structural ID segment in the filename:
 factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md
 ```
 
+The run-level recommendation index **MUST** be written to:
+
+```text
+recommendations.md
+```
+
+Recommendation detail reports **MUST** be written to:
+
+```text
+recommendations/<NNN>-<slug>.md
+```
+
 ## Path Derivation
 
 The CLI **MUST** derive data paths from payload `kind` and structural model IDs.
+For `RecommendationResult`, the CLI **MUST** derive the data path from the
+recommendation `id`.
 
 The CLI **MUST** derive report paths from report kind and structural model IDs.
+For recommendation reports, the CLI **MUST** derive the report path from
+recommendation ranking order and recommendation `id`/title.
 
 The CLI **MUST NOT** derive persisted paths from display titles, natural labels,
 or rendered human labels.

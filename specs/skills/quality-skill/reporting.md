@@ -112,20 +112,21 @@ Factor report.
 The agent's user-facing evaluation closeout is governed by the shared
 [user interaction contract](quality-skill.md#user-interaction-contract).
 
-The closeout **MUST** state the rating, scope, evidence basis, known limits or
-incomplete inputs, changed artifacts, what was not done, and the recommended
-next action.
+The closeout **MUST** state the rating, scope, evidence basis, recommendations,
+known limits or incomplete inputs, changed artifacts, what was not done, and the
+recommended next action.
 The closeout **MUST** use labeled fields for rating, scope, evidence basis,
-known limitations, changed artifacts, not-done boundary, reports, and next
-action.
+recommendations, known limitations, changed artifacts, not-done boundary,
+reports, and next action.
 
 The closeout **MUST** distinguish evaluated-source quality from model weakness,
 missing evidence, unknowns, and evaluation limits.
 
-Evaluation v0 **MUST NOT** present generated recommendations as part of the
-reporting closeout. Recommendation follow-up remains a separate workflow for
-historical recommendation artifacts.
+The closeout **MUST** name the top recommendation or the recommendation index
+when no single recommendation should be singled out. Recommendation follow-up
+remains a separate workflow for applying or handing off recommendation
+artifacts.
 
-Finding-local `candidateActions` are **not** recommendations: the v0 report and
-the closeout **MUST NOT** present them. They persist in `data/` as raw material
-for a later Advise phase.
+Finding-local `candidateActions` are **not** recommendations: reports and the
+closeout **MUST NOT** present them as selected next moves. Selected advice
+belongs in `RecommendationResult` and generated recommendation reports.

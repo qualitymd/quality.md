@@ -128,7 +128,8 @@ implementation:
   command run, rendered artifact, source inspection, or documented review.
 - **Earned constraint.** The requirement follows from the change's motivation,
   an existing contract, a real user or agent need, a safety boundary, or an
-  observed failure mode — not from speculative completeness.
+  observed failure mode — not from speculative completeness. A future maintainer
+  should be able to tell which of those reasons earns the imperative.
 - **Public contract, not private method.** Implementation details appear only
   when they are themselves the compatibility surface.
 
@@ -143,6 +144,13 @@ Strong: `qualitymd evaluation status <run>` **MUST** report a run as incomplete
 when any planned in-scope Requirement lacks a Requirement Rating Result, and the
 JSON output **MUST** include the missing Requirement IDs.
 ```
+
+When the reason would not be obvious from the nearby Background / Motivation,
+scenario, or surrounding requirements, add a short
+[per-requirement rationale](#per-requirement-rationale). This is especially
+important for prohibitions, surprising defaults, consent gates, compatibility
+boundaries, naming choices, agent workflow constraints, and rules that choose
+one plausible behavior over another.
 
 ### The requirement set
 
@@ -196,8 +204,9 @@ form is **Divergence handled** — the syntactic home for the cases
 ### Per-requirement rationale
 
 A requirement **may** carry a subordinate rationale annotation directly beneath
-it — the fine-grained counterpart to **Background / Motivation**. Lead with the
-testable sentence; put the *why* in a blockquote under it:
+it — the fine-grained counterpart to **Background / Motivation**. Use one when
+the requirement's reason is load-bearing but not obvious from the nearby prose.
+Lead with the testable sentence; put the *why* in a blockquote under it:
 
 > A command **MUST** exit non-zero when it finds errors.
 >
@@ -213,13 +222,15 @@ its spec impact (see [Durable spec changes](#durable-spec-changes)); the two are
 distinct (one carries *why*, the other maps to the durable contract) and each sits
 on its own blockquote.
 
-Annotate by this litmus: **when a future editor would otherwise repeat a mistake
-or be misled.** A rule whose reason is obvious needs no note. Dead-end
-alternatives and the full decision record stay in the (archived)
-[design doc](write-design-docs.md); only the durable intent and the lesson get
-promoted onto the requirement. Background carries the spec-scale *why*; an
-annotation carries one requirement's — they must not restate each other, and
-stale rationale is superseded, not left to accrete.
+Annotate by this litmus: **when a future editor would otherwise repeat a mistake,
+miss the user or agent need, break a safety or consent boundary, weaken
+compatibility, or be misled.** A rule whose reason is obvious needs no note, but
+an imperative with no visible reason should be treated as suspect: add rationale,
+weaken it, or remove it. Dead-end alternatives and the full decision record stay
+in the (archived) [design doc](write-design-docs.md); only the durable intent and
+the lesson get promoted onto the requirement. Background carries the spec-scale
+*why*; an annotation carries one requirement's — they must not restate each other,
+and stale rationale is superseded, not left to accrete.
 
 ## Durable spec changes
 

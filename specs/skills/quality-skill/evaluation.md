@@ -33,7 +33,7 @@ persist routine outputs as JSON-array batches through
 `qualitymd evaluation data set <run> < payloads.json`.
 
 The skill **MUST** produce frames before judgment, assess Requirements before
-rating them, analyze Factors and Areas bottom-up, run
+rating them, analyze Factors and Areas bottom-up, produce Advice, run
 `qualitymd evaluation status <run>`, and build reports with
 `qualitymd evaluation report build <run>`.
 
@@ -41,13 +41,11 @@ When the selected model is not the default `QUALITY.md` in the current working
 directory and the run path is model-relative, the skill **MUST** include
 `--model <model>` on Evaluation data, status, and report commands.
 
-The skill **MUST NOT** generate recommendations as part of Evaluation v0.
-
 The skill **MAY** record non-binding, finding-local `candidateActions` —
 remediation leads captured where the evidence is richest — on `gap` and `risk`
-findings, as raw material for a later Advise phase. These are not recommendations:
-the skill **MUST NOT** synthesize, aggregate, prioritize, or present them, and
-**MUST NOT** attach `candidateActions` to `strength` findings.
+findings. These are not recommendations: the skill **MUST NOT** present them as
+selected next moves, and **MUST NOT** attach `candidateActions` to `strength`
+findings. Cross-finding synthesis belongs in the Advice phase.
 
 ### Conformance to the format spec
 
@@ -141,15 +139,14 @@ flowchart TD
    [Driving the CLI](quality-skill.md#driving-the-cli)).
 3. **Ground** the format and schema rules and rating vocabulary from
    `qualitymd spec`.
-4. **Create the run** with `qualitymd evaluation create [model]`, letting the
-   CLI number the folder, snapshot `model-snapshot.md`, and prepare `data/`.
-   When evaluation is narrowed to an Area, the skill **MUST** pass
-   `--narrowing` the Area's full structural path from the root Area, with path
-   segments joined by single hyphens. When evaluation is narrowed to a Factor,
-   the skill **MUST** pass the owning Area's structural path followed by the
-   Factor's structural path, again hyphen-joined, with no Area-vs-Factor marker
-   or boundary separator. The narrowing slug **MUST NOT** include `quality` as a
-   path segment.
+4. **Resolve scope and create the run** with
+   `qualitymd evaluation create [model] [--area <area-id>] [--factor <factor-id>...]`,
+   letting the CLI number the folder, snapshot `model-snapshot.md`, write
+   `data/run-manifest.json`, and prepare `data/`. When evaluation is narrowed to
+   an Area or Factor, the skill **MUST** resolve the natural label or qualified
+   reference to canonical `area:`/`factor:` IDs before invoking `create` and pass
+   those IDs through `--area` and repeatable `--factor`. The skill **MUST NOT**
+   compute the root default, planned expansion, or run-folder slug.
 5. **Frame the evaluation** before assessment evidence collection. The skill
    **MUST** add `EvaluationFrame` to the routine payload batch.
 6. **Evaluate through routine outputs** — for each in-scope Area, Requirement,
@@ -207,24 +204,36 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   record rating drivers and a brief rationale naming the binding constraints
   (per [Analyze](../../../SPECIFICATION.md#analyze)).
 - **Findings use the shared core.** The skill **MUST** write Requirement Findings
-  with `statement`, `condition`, `criteria`, `cause`, `effect`, and `evidence`.
-  Rationale belongs on the nested field it explains, such as a criterion, cause,
+  with `statement`, `condition`, `criteria`, `basis`, `effect`, and `evidence`.
+  Rationale belongs on the nested field it explains, such as a criterion, basis,
   effect, or evidence entry, not on the finding as a whole.
 - **Finding types carry distinct analysis.** The skill **MUST** classify `gap`
   as an observed shortfall against criteria, `risk` as a plausible future
   quality loss path, `strength` as support for or margin above criteria,
   `unknown` as missing or ambiguous evidence, and `note` as relevant context
   that does not drive a rating by itself.
-- **Cause posture does not overclaim.** The skill **MUST NOT** write
-  `cause.status: verified` unless the finding evidence directly supports the
-  cause statement. When a `gap` or `risk` has evidence for condition and effect
-  but not cause, the skill **MUST** use `cause.status: not_assessed` rather than
-  inventing cause.
+- **Basis posture does not overclaim.** The skill **MUST NOT** write
+  `basis.status: verified` unless the finding evidence directly supports the
+  basis statement. When a `gap` or `risk` has evidence for condition and effect
+  but not basis, the skill **MUST** use `basis.status: not_assessed` rather than
+  inventing basis.
+- **Strength basis stays positive.** For a `strength`, the skill **MUST** use
+  `basis.status: verified` when the positive condition's basis is directly
+  supported by cited evidence, and **MAY** use
+  `basis.status: not_applicable` when no separate basis beyond the cited evidence
+  is claimed.
 - **Drivers synthesize; findings evidence.** Requirement ratings, Factor
   analysis, and Area analysis **MUST** carry non-empty `ratingDrivers` when they
   select a Rating Level. Roll-up drivers **MUST** cite lower-level routine
   outputs and **MUST NOT** introduce new evidence or claims absent from the
   referenced outputs.
+- **Advice is required and domain-agnostic.** The skill **MUST** rank findings,
+  produce recommendations, account for finding coverage, and rank
+  recommendations after roll-up. Recommendations **MUST** be expressed in terms
+  of the modeled entity's quality bar and evidence, not a default software or
+  product domain. A recommendation may be concrete improvement work or a
+  recommended review of whether to raise, clarify, or confirm the next quality
+  bar.
 
 ### Coverage and execution strategy
 
@@ -240,12 +249,11 @@ current evaluation contract.
 
 Scope **MUST** remain the mechanism by which a user bounds an evaluation's
 breadth: full evaluation by default, narrowed by an Area or Factor reference
-resolved to `--narrowing` when supplied.
+resolved to `--area` and/or `--factor` when supplied.
 
-Scoped evaluate runs **MUST** record the resolved Area or Factor scope in the
-Evaluation Frame so `qualitymd evaluation report build` can choose the headline
-result and reportability boundary from structured data rather than from the run
-folder slug.
+Scoped evaluate runs **MUST** rely on the CLI-owned `RunManifest` for requested
+and planned scope. The skill **MUST NOT** write requested scope, Area lists, or
+Factor lists into the Evaluation Frame.
 
 Every evaluate run **MUST** assess every in-scope Requirement against a full read
 of the in-scope Area `source`. Each in-scope Requirement **MUST** end the run in

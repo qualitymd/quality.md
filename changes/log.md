@@ -2,6 +2,74 @@
 
 ## 2026-06-27
 
+- **Done**: Implemented
+  [0150 - Evaluation Advice](archive/0150-evaluation-advice.md). Evaluation data now
+  accepts and validates `FindingRankingResult`, `RecommendationResult`, and
+  `RecommendationRankingResult`; reportability requires complete Advice and
+  finding coverage; reports render Top Findings, Top Recommendations,
+  `recommendations.md`, and recommendation detail files; durable specs, runtime
+  skill guidance, release notes, and tests are aligned. `go test ./...` and
+  `mise run fmt-md-check` pass.
+
+- **Design**: Advanced [0150 - Evaluation Advice](archive/0150-evaluation-advice.md)
+  with its [design doc](archive/0150-evaluation-advice/design.md). The design adds three
+  Advice payload kinds, keeps coverage accounting on
+  `RecommendationRankingResult` as the final Advice closure payload, renders
+  human-first recommendation artifacts, and uses progressive QC to catch issues
+  at each Advice artifact boundary.
+
+- **Draft**: Created [0150 - Evaluation Advice](archive/0150-evaluation-advice.md) with
+  its [functional spec](archive/0150-evaluation-advice/spec.md). The case makes Advice a
+  required late evaluation phase with `FindingRankingResult`,
+  `RecommendationResult`, and `RecommendationRankingResult` payloads, full
+  finding coverage accounting, Top Findings and Top Recommendations in
+  `report.md`, and generated recommendation handoff pages.
+
+- **Done**: Implemented and archived
+  [0149 - Scope-driven evaluation runs](archive/0149-scope-driven-evaluation-runs.md).
+  `qualitymd evaluation create` now writes `RunManifest` scope data, accepts
+  `--area`/`--factor` instead of `--narrowing`, report generation renders
+  `report.md` as the scoped Area report without positional headline selection,
+  Evaluation Frame scope fields were removed, durable specs and skill guidance
+  are aligned, and `mise run check` passes.
+
+- **Draft**: Created [0149 - Scope-driven evaluation runs](archive/0149-scope-driven-evaluation-runs.md)
+  with [functional spec](archive/0149-scope-driven-evaluation-runs/spec.md) and
+  [design doc](archive/0149-scope-driven-evaluation-runs/design.md). Captures
+  requested/planned scope as a CLI-owned `RunManifest` at `create` (replacing the
+  `--narrowing` slug with `--area`/`--factor`), renders the run report as the
+  scoped area report, and removes the positional headline concept — fixing full
+  runs that headlined an arbitrary first-listed factor (e.g. Security) instead of
+  the overall result.
+
+- **Done**: Implemented and archived
+  [0148 - Finding Basis](archive/0148-finding-basis.md). Evaluation data
+  contracts, generated schema/examples, reports, durable specs, runtime skill
+  guidance, scaffold comments, tests, and release notes now use Finding Core
+  `basis` instead of `cause`. `go test ./...` and `mise run fmt-md-check` pass.
+
+- **In-Review**: Completed implementation for
+  [0148 - Finding Basis](archive/0148-finding-basis.md). Evaluation data
+  contracts, generated schema/examples, reports, durable specs, runtime skill
+  guidance, scaffold comments, tests, and release notes now use Finding Core
+  `basis` instead of `cause`. `go test ./...` and `mise run fmt-md-check` pass.
+
+- **In-Progress**: Advanced
+  [0148 - Finding Basis](archive/0148-finding-basis.md). Functional spec and
+  design are settled; implementation is beginning across evaluation records,
+  reports, durable specs, skill guidance, examples, tests, scaffold comments,
+  and release notes.
+
+- **Design**: Advanced [0148 - Finding Basis](archive/0148-finding-basis.md)
+  with its [design doc](archive/0148-finding-basis/design.md). The design
+  implements a clean `cause` to `basis` schema rename with no compatibility
+  alias, keeping the existing nested status model and report structure.
+
+- **Draft**: Created [0148 - Finding Basis](archive/0148-finding-basis.md) with
+  its [functional spec](archive/0148-finding-basis/spec.md). The case renames
+  Finding Core `cause` to `basis` across evaluation data, generated reports,
+  runtime skill guidance, durable specs, examples, and tests.
+
 - **Done**: Implemented and archived
   [0147 - Report Descendant Terms](archive/0147-report-descendant-terms.md).
   Generated Evaluation reports now use Child Areas and Sub-Factors for immediate

@@ -26,8 +26,12 @@ An Evaluation run **MUST** perform these protocol moves:
 5. `rateRequirement` for each Requirement Assessment
 6. `frameFactorAnalysis` and `analyzeFactor` for each Factor node bottom-up
 7. `frameAreaAnalysis` and `analyzeArea` for each Area bottom-up
-8. `assembleEvaluationOutputResult`
-9. `generateEvaluationReports`
+8. `rankFindings`
+9. `recommend`
+10. `accountForFindingCoverage`
+11. `rankRecommendations`
+12. `assembleEvaluationOutputResult`
+13. `generateEvaluationReports`
 
 The protocol **MUST NOT** require a specific execution engine. Sequential
 execution and parallel worker execution are both valid when they satisfy the same
@@ -50,22 +54,20 @@ For each Area, the evaluator **MUST**:
 Root Area `localAndDescendantAnalysis`, when analyzed, is the overall evaluation
 result.
 
-## Headline Result
+## Planned Scope
 
-Evaluation output assembly **MUST** choose one headline result for the run.
+Evaluation output assembly **MUST** use `RunManifest.plannedScope` as the run's
+authoritative scope. It **MUST NOT** select a headline subject from
+agent-authored frame input ordering.
 
-When the Evaluation Frame records one or more `inputs.factorIds`, the first
-listed Factor with a Factor Analysis Result **MUST** be the headline subject.
+The planned expansion is derived from `plannedScope` and the model snapshot: the
+planned Area, its descendant Areas, the filtered Factors when `factorFilter` is
+non-empty or all in-scope Factors when it is empty, and the Requirements reached
+from those in-scope Areas and Factors.
 
-When the Evaluation Frame records no Factor scope and one or more
-`inputs.areaIds`, the first listed Area with an Area Analysis Result **MUST** be
-the headline subject.
-
-When no scoped headline input is recorded, the root Area Analysis Result
-**MUST** be the headline subject.
-
-Report generation **MUST** fail when the recorded headline scope has no matching
-analysis result.
+Report generation **MUST** fail when required analysis data for the planned
+scope is missing. Coverage checks **MUST** compare the planned expansion against
+the structured analysis artifacts actually produced.
 
 ## Factor Traversal
 
@@ -115,3 +117,28 @@ override.
 Both defaults **MUST** preserve binding drivers and surface incomplete inputs.
 They **MUST NOT** synthesize new findings; roll-up explanation belongs in
 `ratingDrivers`, rationale, confidence, limits, and incomplete inputs.
+
+## Advice Flow
+
+Advice **MUST** run after Area analysis has completed and before output assembly
+or report generation.
+
+`rankFindings` **MUST** consider every Requirement Finding produced in the
+effective run data and write one `FindingRankingResult`. If the evaluation
+produced no findings, the ranking result **MUST** record an empty ranking.
+
+`recommend` **MUST** produce at least one `RecommendationResult`. When the
+evaluation found no concrete improvement work, the recommendation **MUST** be
+quality-management advice, such as reviewing whether the current quality bar
+should be raised or clarified.
+
+`accountForFindingCoverage` **MUST** verify every finding is represented in
+`RecommendationRankingResult.findingCoverage` as either addressed by one or more
+recommendations or explicitly not advice-driving. Coverage accounting happens
+after recommendation generation and before recommendation ranking is closed.
+
+`rankRecommendations` **MUST** rank persisted recommendations by expected
+quality impact, quality-bar relevance, trace strength, confidence, and whether
+the advice addresses binding constraints. It **MUST NOT** use effort, ROI,
+quick-win status, backlog priority, or numeric score fields as required
+Evaluation data.

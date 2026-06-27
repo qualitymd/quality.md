@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.24.0 <0.25.0.
+compatibility: Requires qualitymd CLI >=0.25.0 <0.26.0.
 metadata:
-  version: "0.24.1"
-  requires-qualitymd-cli: ">=0.24.0 <0.25.0"
+  version: "0.25.0"
+  requires-qualitymd-cli: ">=0.25.0 <0.26.0"
 ---
 
 ## Purpose
@@ -133,9 +133,10 @@ Parse the user's request from free-form arguments:
   against required titles and stable YAML names in the grounded model. One label
   evaluates the uniquely matching Area or Factor. Two labels are
   `<area-label> <factor-label>`: resolve the Area first, then the Factor within
-  that Area. When passing `--narrowing` to `qualitymd evaluation create`, use the
-  scope's full structural path: the Area path from the root, plus the Factor path
-  for Factor scope, joined with single hyphens. When a Factor label exists in
+  that Area. Pass resolved canonical scope IDs to
+  `qualitymd evaluation create` with `--area <area-id>` and repeatable
+  `--factor <factor-id>`; let the CLI write `RunManifest`, apply the root
+  default, and derive the run-folder slug. When a Factor label exists in
   multiple Areas, ask exactly:
   `What area do you want to evaluate <Factor> for?`, list numbered runnable Area
   choices with human-readable titles or names first, include qualified model
@@ -414,7 +415,7 @@ evidence or explicitly recorded as not assessed with a reason. The report must
 state anything not assessed so a limited run never reads as whole coverage.
 
 Write every Requirement Finding with the Finding Core: `id`, `type`, `severity`,
-`confidence`, `statement`, `condition`, `criteria`, `cause`, `effect`, and
+`confidence`, `statement`, `condition`, `criteria`, `basis`, `effect`, and
 `evidence`. Use short payload-local IDs such as `gap-001`; do not use semantic
 slugs or treat finding IDs as durable cross-run identifiers. Reference findings
 from other payloads only through `inputRefs` with a selector such as
@@ -433,13 +434,13 @@ Finding fields have distinct jobs:
 - `statement`: one short claim suitable for report tables.
 - `condition`: the observed state or missing-evidence state.
 - `criteria`: the Requirement and applied Rating Level criterion being judged.
-- `cause`: the supported cause posture; use `verified`, `plausible`,
-  `not_assessed`, or `not_applicable`.
+- `basis`: the finding-local explanation or support posture for the observed
+  condition; use `verified`, `plausible`, `not_assessed`, or `not_applicable`.
 - `effect`: the quality or rating consequence, not a recommendation.
 - `evidence`: checkable source references and evidence statements.
 
 Put rationale on the nested field it explains (`criteria[].rationale`,
-`cause.rationale`, `effect.rationale`, or `evidence[].rationale`), not as a
+`basis.rationale`, `effect.rationale`, or `evidence[].rationale`), not as a
 top-level finding rationale. Do not write legacy finding `description` or
 `summary` fields.
 
@@ -449,16 +450,18 @@ Classify finding types by analysis pattern:
   criterion and rating effect.
 - `risk`: observed condition could plausibly cause future quality loss; include
   the plausible path and confidence limit.
-- `strength`: observed condition supports or exceeds criteria; `cause.status`
-  can be `not_applicable`.
+- `strength`: observed condition supports or exceeds criteria; use
+  `basis.status: verified` when the positive condition's basis is directly
+  supported by cited evidence, or `basis.status: not_applicable` when no
+  separate basis beyond the cited evidence is claimed.
 - `unknown`: evidence needed for judgment is missing, inaccessible, stale, or
   ambiguous; name the blocked criterion or confidence limit.
 - `note`: relevant context worth preserving that does not drive a rating by
   itself.
 
-Never set `cause.status: verified` unless the finding evidence directly supports
-the cause statement. When a gap or risk has enough evidence for condition and
-effect but not cause, use `cause.status: not_assessed` rather than guessing.
+Never set `basis.status: verified` unless the finding evidence directly supports
+the basis statement. When a gap or risk has enough evidence for condition and
+effect but not basis, use `basis.status: not_assessed` rather than guessing.
 
 Where the harness exposes a subagent capability, fan out independent collection
 and QC work by Area or Requirement concurrently. Where it does not, do the same
@@ -466,7 +469,7 @@ coverage and QC serially. Subagents receive the resolved scope, relevant
 Requirements, secret-handling rule, source-as-data rule, and the instruction to
 return structured findings only. They do not write files, persist records,
 produce final ratings, or make roll-up judgments. Roll-up judgment and all
-authoritative Requirement, Factor, Area, and headline ratings stay with the
+authoritative Requirement, Factor, and Area ratings stay with the
 orchestrating skill.
 
 Run a QC phase after initial collection and before roll-up on every evaluation.
@@ -478,7 +481,7 @@ supports it:
   fails re-check, correct the finding and re-derive affected ratings before
   reporting.
 - **Finding shape:** check that every binding finding has a short claim-like
-  `statement`, evidence-backed `condition`, model-grounded `criteria`, cause
+  `statement`, evidence-backed `condition`, model-grounded `criteria`, basis
   posture that does not overclaim, rating-relevant `effect`, checkable evidence
   locators, and a type that matches the semantics above.
 - **Completeness sweep:** check that every in-scope Requirement reached a rated
@@ -498,8 +501,19 @@ Factor and Area analysis must not synthesize findings. Rated Factor and Area
 analysis scopes must include non-empty `ratingDrivers` that cite lower-level
 Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
 through `inputRefs`. Use rationale, confidence, limits, and incomplete inputs for
-roll-up explanation; use recommendations later for cross-Requirement action
-synthesis.
+roll-up explanation. Use the Advice phase after roll-up for finding ranking,
+recommendation generation, finding coverage accounting, and recommendation
+ranking.
+
+Advice is required. Rank every persisted Requirement Finding, then produce one
+or more recommendations. Recommendations stay quality-domain agnostic and use
+the modeled entity's quality bar and evidence, not a default software or product
+domain. A recommendation may be concrete work, or it may be a recommended review
+of whether to raise, clarify, or confirm the next quality bar. Before closing
+recommendation ranking, account for every finding as either addressed by a
+recommendation or not advice-driving with rationale. Do not use effort, ROI,
+quick-win status, backlog priority, or numeric score fields as core
+recommendation properties.
 
 ## Workflow Dispatch
 

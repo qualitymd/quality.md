@@ -56,6 +56,8 @@ const (
 	ReportKindArea        ReportKind = "area"
 	ReportKindFactor      ReportKind = "factor"
 	ReportKindRequirement ReportKind = "requirement"
+	ReportKindAdviceIndex ReportKind = "recommendations"
+	ReportKindAdvice      ReportKind = "recommendation"
 )
 
 // reportKinds is the single typed source for the report-reference kind
@@ -65,9 +67,12 @@ var reportKinds = []ReportKind{
 	ReportKindArea,
 	ReportKindFactor,
 	ReportKindRequirement,
+	ReportKindAdviceIndex,
+	ReportKindAdvice,
 }
 
 var dataKindTitles = displayCatalog[DataKind]{
+	DataKindRunManifest:                "📋 Run Manifest",
 	DataKindEvaluationFrame:            "🧭 Evaluation Frame",
 	DataKindAreaEvaluationFrame:        "🗺️ Area Evaluation Frame",
 	DataKindRequirementEvaluationFrame: "📋 Requirement Evaluation Frame",
@@ -77,6 +82,9 @@ var dataKindTitles = displayCatalog[DataKind]{
 	DataKindFactorAnalysis:             "📊 Factor Analysis",
 	DataKindAreaAnalysisFrame:          "🏗️ Area Analysis Frame",
 	DataKindAreaAnalysis:               "📈 Area Analysis",
+	DataKindFindingRanking:             "🔝 Finding Ranking",
+	DataKindRecommendation:             "💡 Recommendation",
+	DataKindRecommendationRanking:      "🏁 Recommendation Ranking",
 	DataKindEvaluationOutput:           "📦 Evaluation Output",
 }
 
@@ -153,7 +161,7 @@ var findingTypeTitles = map[string]string{
 	"recommendation": "➡️ Recommendation",
 }
 
-var causeStatusTitles = map[string]string{
+var basisStatusTitles = map[string]string{
 	"verified":       "Verified",
 	"plausible":      "Plausible",
 	"not_assessed":   "Not Assessed",
@@ -215,8 +223,8 @@ func findingTypeTitle(value string) string {
 	return stringTitle(value, findingTypeTitles)
 }
 
-func causeStatusTitle(value string) string {
-	return stringTitle(value, causeStatusTitles)
+func basisStatusTitle(value string) string {
+	return stringTitle(value, basisStatusTitles)
 }
 
 func stringTitle(value string, titles map[string]string) string {

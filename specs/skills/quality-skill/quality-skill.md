@@ -66,7 +66,8 @@ mutation, and delegates mechanical changes to the Agent Skills installer and
 `qualitymd update`.
 
 Scope is a modifier, not a separate use case. Every evaluation takes an optional
-scope — a full evaluation, or a narrowing to particular area(s) or factor(s).
+scope — a full evaluation, or a narrowing to a particular Area and optional
+Factor filter.
 The scope parameterizes the invocation rather than multiplying it (see
 [Invocation](#invocation)).
 
@@ -149,8 +150,8 @@ The root prompt **MUST** direct agents when to read each one:
   `qualitymd spec` where the CLI is available (see [Driving the CLI](#driving-the-cli)).
 - [`resources/cli-workflow-conventions.md`](../../../skills/quality/resources/cli-workflow-conventions.md)
   — the workflow conventions resource read before CLI workflows; it carries
-  artifact layout, sequencing, narrowing-slug, and command-rule conventions that
-  the CLI cannot introspect.
+  artifact layout, sequencing, evaluation-scope, and command-rule conventions
+  that the CLI cannot introspect.
 - [`resources/output-policy.md`](../../../skills/quality/resources/output-policy.md)
   — the command-output policy read before consuming CLI output.
 - [`guides/authoring.md`](../../../skills/quality/guides/authoring.md) — the
@@ -230,8 +231,7 @@ scope:
   single-select closed-choice question with the recommended focus first and an
   explicit shortest answer path.
 - **Scope** — full evaluation (default), or a narrowing by **Area** (an Area
-  and its subtree) and/or by **Factor** (the Requirements tied to a Factor,
-  including same-Area Requirements connected to it as a secondary Factor), per
+  and its subtree) and/or by **Factor** through a planned Factor filter, per
   [Define](../../../SPECIFICATION.md#define). Natural Area and Factor labels are
   the primary user-facing scoped-evaluation input for the skill. The skill
   **SHOULD** match one label against Area titles, Area names, Factor titles, and
@@ -636,8 +636,9 @@ configure integrations, or configure automation.
 [`evaluate`](workflows/evaluate.md) creates evaluation artifacts for a resolved
 model file and scope. It may write only evaluation-run artifacts and workflow
 feedback logs, follows the shared Define -> Assess and Rate -> Analyze -> Advise
--> Report workflow, uses exhaustive coverage with an always-on QC phase, and
-does not generate recommendations in Evaluation v0.
+-> Report workflow, uses exhaustive coverage with an always-on QC phase,
+generates required recommendations, and does not apply recommendations or edit
+evaluated source.
 
 ### Review
 

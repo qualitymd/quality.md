@@ -122,8 +122,8 @@ Assessment produces Findings.
 
 **Finding**: A single observation produced by a Requirement Assessment. A
 Finding records a short `statement`, observed `condition`, applied `criteria`,
-cause posture, quality or rating `effect`, and evidence. A Finding is not itself
-rated.
+finding-local `basis`, quality or rating `effect`, and evidence. A Finding is
+not itself rated.
 
 **Rating Scale**: The ordered set of Rating Levels used by a Model.
 
@@ -489,16 +489,18 @@ records:
 - `statement`: the short claim a report can list;
 - `condition`: the observed state or missing-evidence state;
 - `criteria`: one or more Model criteria the observation is judged against;
-- `cause`: the supported cause posture, one of verified, plausible, not
-  assessed, or not applicable;
+- `basis`: the finding-local explanation or support posture for the observed
+  condition, one of verified, plausible, not assessed, or not applicable;
 - `effect`: the quality or rating consequence; and
 - `evidence`: the evidence entries supporting the observation.
 
 Individual Requirement Findings are not Rating Results.
 
-A Finding MUST NOT claim a verified cause unless the finding evidence directly
-supports that cause. A Finding can be rating-relevant with cause not assessed
+A Finding MUST NOT claim a verified basis unless the finding evidence directly
+supports that basis. A Finding can be rating-relevant with basis not assessed
 when its condition, criteria, effect, and evidence are sufficient for judgment.
+The `basis` field is distinct from checkable `evidence` entries and from any
+report-level evidence basis summary.
 
 A Requirement Finding MAY carry `candidateActions`: one or more non-binding
 candidate action objects with run-local IDs and descriptions. Candidate actions
@@ -579,13 +581,21 @@ value.
 Advice identifies improvement information inferred from the Analysis. Advice does
 not change any rating.
 
-Advice and recommendations are optional extensions for Evaluation v0. When
-produced, advice SHOULD identify:
+Advice is a required Evaluation phase after Analysis and before Report. Advice
+MUST include recommendations. A recommendation can advise concrete improvement
+work, or it can advise a review when the evaluation indicates the entity may be
+ready for a higher or clearer quality bar.
+
+Advice SHOULD identify:
 
 - Key gaps: shortcomings most responsible for held-down ratings, including
   material `not assessed` areas.
-- Options: available remediation options for key gaps.
-- Recommendations: selected options and rationales.
+- Top findings: ranked findings that most shape next quality-management action.
+- Finding coverage: an accounting that every finding is either addressed by a
+  recommendation or explicitly not advice-driving.
+- Recommendations: selected next moves and rationales.
+- Top recommendations: ranked recommendations by expected quality impact,
+  confidence, and quality-bar relevance.
 
 ## Report Semantics
 
@@ -594,8 +604,8 @@ An Evaluation Report is the structured result of an Evaluation.
 A conforming Evaluation Report MUST include:
 
 - The Evaluation scope.
-- The rating or `not assessed` headline outcome for the evaluated scope.
-- A rationale for the headline outcome.
+- The rating or `not assessed` scoped outcome for the evaluated scope.
+- A rationale for the scoped outcome.
 - For each Area in scope, recursively:
   - each Requirement's Findings summary, Rating Result, and rationale;
   - each Factor's rating or `not assessed` outcome and rationale, including
@@ -603,7 +613,7 @@ A conforming Evaluation Report MUST include:
   - the Area's local rating or `not assessed` outcome, when a local rating
     exists; and
   - the Area's aggregate rating or `not assessed` outcome.
-- Advice, when produced.
+- Advice.
 
 `not assessed` outcomes MUST be shown wherever they occur and MUST be distinct
 from Rating Levels.

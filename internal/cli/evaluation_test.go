@@ -42,9 +42,9 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
       "ratingLevelId": "rating:target",
       "criterion": "Tests exist."
     }],
-    "cause": {
+    "basis": {
       "status": "not_applicable",
-      "statement": "No adverse cause is involved."
+      "statement": "No separate basis beyond the cited evidence is claimed."
     },
     "effect": {
       "statement": "The finding supports the target rating."
@@ -117,7 +117,7 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("data verify Execute() error = %v", err)
 	}
-	if !strings.Contains(out.String(), `"valid": true`) || !strings.Contains(out.String(), `"checked": 1`) {
+	if !strings.Contains(out.String(), `"valid": true`) || !strings.Contains(out.String(), `"checked": 2`) {
 		t.Fatalf("data verify stdout = %s, want valid receipt", out.String())
 	}
 }
@@ -150,6 +150,7 @@ func TestEvaluationDataKindsDocumentsPayloadKinds(t *testing.T) {
 	for _, want := range []string{
 		`"kind": "RequirementAssessmentResult"`,
 		`"kind": "RequirementRatingResult"`,
+		`"kind": "RunManifest"`,
 		`"kind": "EvaluationOutputResult"`,
 		`"agentWritable": false`,
 	} {

@@ -30,8 +30,8 @@ quality assessment, or names only a resolvable Area or Factor after the model is
 present and valid.
 
 The workflow's purpose is to produce a current Evaluation Report for the resolved
-model file and scope. It does not apply fixes and does not generate
-recommendations in the v0 Evaluation protocol.
+model file and scope, including required recommendations. It does not apply
+fixes.
 
 ## Mutation surface and artifacts
 
@@ -62,12 +62,12 @@ the scope) and **MUST** author every payload reference — `EvaluationFrame`,
 Requirement IDs from `QUALITY.md` text.
 
 The query **MUST** target the run's `model-snapshot.md` by path, not the live
-`QUALITY.md`, so authored IDs match the frozen model being evaluated. It **MUST**
-be scoped with `--area` (and `--type` when narrowing to one kind) to the run's
-resolved scope. The post-hoc identity-resolution check is a backstop against ID
-typos, not the primary guard. `evaluate` **SHOULD** use `model` (`list` labels,
-`get`) to resolve a natural-label scope to its canonical `area:`/`factor:`
-reference.
+`QUALITY.md`, so authored IDs match the frozen model being evaluated. It
+**SHOULD** be scoped from `RunManifest.plannedScope` when the model command
+supports an equivalent query. The post-hoc identity-resolution check is a
+backstop against ID typos, not the primary guard. `evaluate` **SHOULD** use
+`model` (`list` labels, `get`) to resolve a natural-label scope to its canonical
+`area:`/`factor:` reference before creating the run.
 
 ## Batched routine data writes
 
@@ -109,9 +109,11 @@ After run creation, `evaluate` **MUST** follow the Evaluation protocol:
 6. frame and analyze each Area from completed local Factor and child Area
    outputs, preserving roll-up explanation through `ratingDrivers`, rationale,
    confidence, limits, and incomplete inputs;
-7. dry-run and persist the assembled routine payload batch through
+7. rank findings, generate recommendations, account for finding coverage, and
+   rank recommendations;
+8. dry-run and persist the assembled routine payload batch through
    `qualitymd evaluation data set`; and
-8. run `qualitymd evaluation report build` to assemble
+9. run `qualitymd evaluation report build` to assemble
    `data/evaluation-output-result.json` and render the report tree.
 
 Every in-scope Requirement covered by the resolved scope **MUST** receive a
@@ -124,10 +126,19 @@ scope, and Area analysis scope **MUST** have non-empty `ratingDrivers`.
 
 Reports **MUST** be deterministic projections over persisted structured data.
 The reporting phase **MUST NOT** inspect new evidence, introduce new findings,
-or make fresh ratings.
+make fresh ratings, or generate recommendations.
 
 Requirement Findings are the only Evaluation findings. Factor and Area analysis
 **MUST NOT** synthesize additional findings or report-level findings.
+
+Advice **MUST** produce `FindingRankingResult`, one or more
+`RecommendationResult` payloads, and `RecommendationRankingResult` before report
+build. Finding coverage accounting **MUST** happen after recommendations are
+generated and before recommendation ranking closes. Recommendations **MUST** use
+the core user-facing fields `title`, `whyItMatters`, `recommendedNextMove`,
+`expectedBenefit`, `howToKnowItWorked`, `impact`, `confidence`, and `traceRefs`.
+They **MUST NOT** require effort, ROI, quick-win status, backlog priority, or a
+numeric score.
 
 ## Stop conditions
 

@@ -115,31 +115,28 @@ Source content instructs the evaluator?
    When stopping on model weakness, distinguish model usefulness from the root area
    quality.
 7. Ground format rules and rating vocabulary with `qualitymd spec`.
-8. Emit a short, factual progress beat before creating the run — the phase
-   reached and that creating the run is the first mutation — so the user is not
-   surprised by a long mutating phase after a silent preflight. Keep it
-   user-facing, not a reasoning transcript. Then create the run folder with
-   `qualitymd evaluation create [model] [--narrowing <slug>]`. The CLI computes
-   the number, snapshots `model-snapshot.md`, and prepares `data/` for structured
-   routine outputs. For an Area narrowing, pass `--narrowing` as the Area's full
-   structural path from the root Area, with path segments joined by single
-   hyphens. For a Factor narrowing, append the Factor's structural path to the
-   owning Area path, also hyphen-joined, with no Area-vs-Factor marker or
-   boundary separator. The narrowing slug must not include `quality` as a path
-   segment. Record the run path in the evaluate feedback log frontmatter or
+8. Resolve any natural-language Area or Factor scope to canonical `area:` and
+   `factor:` IDs before creating the run. Emit a short, factual progress beat
+   before creating the run — the phase reached and that creating the run is the
+   first mutation — so the user is not surprised by a long mutating phase after a
+   silent preflight. Keep it user-facing, not a reasoning transcript. Then create
+   the run folder with
+   `qualitymd evaluation create [model] [--area <area-id>] [--factor <factor-id>...]`.
+   The CLI computes the number, snapshots `model-snapshot.md`, writes
+   `data/run-manifest.json`, and prepares `data/` for structured routine outputs.
+   Do not compute a root default, planned expansion, or run-folder slug in the
+   skill. Record the run path in the evaluate feedback log frontmatter or
    timeline. Then query the frozen model's canonical reference IDs from the run's
-   snapshot: run `qualitymd model list --json <run>/model-snapshot.md`, scoped
-   with `--area <resolved-scope-area>` (and `--type` when narrowing to one kind)
-   to the run's resolved scope. Query the snapshot by path, never the live
-   `QUALITY.md`, so the IDs match the model being evaluated. This `id`/`kind`/
-   `parentId` set is the source of truth for every payload reference authored in
-   the steps below; do not derive Area, Factor, or Requirement IDs from
-   `QUALITY.md` text. Use `qualitymd model get <id>`/`list` labels to resolve a
-   natural-label scope to its canonical `area:`/`factor:` reference.
+   snapshot: run `qualitymd model list --json <run>/model-snapshot.md`, scoped to
+   the run's `RunManifest.plannedScope` when needed. Query the snapshot by path,
+   never the live `QUALITY.md`, so the IDs match the model being evaluated. This
+   `id`/`kind`/`parentId` set is the source of truth for every payload reference
+   authored in the steps below; do not derive Area, Factor, or Requirement IDs
+   from `QUALITY.md` text.
 9. Produce an `EvaluationFrame` before assessment evidence collection begins and
    add it to the routine payload batch. The frame records the resolved model,
-   scope, in-scope Areas, Factors, Requirements, policies, and known run-level
-   limits. Author every reference in this and later payloads
+   policies, and known run-level limits; it does not record run scope. Author
+   every reference in this and later payloads
    (`EvaluationFrame`, `AreaEvaluationFrame`,
    `RequirementEvaluationFrame`, `FactorAnalysisFrame`, `AreaAnalysisFrame`) from
    the `model list` ID set queried in step 8, not from hand-derived IDs. The
@@ -185,8 +182,8 @@ Source content instructs the evaluator?
     record non-binding `candidateActions` when a local remediation lead is
     evident (`id`, `description`, and optional `rationale`); ground the exact
     shape from the example payload. Omit `candidateActions` on `strength`
-    findings. Candidate actions are raw material for a later Advise phase, not
-    recommendations — do not synthesize, prioritize, or present them.
+    findings. Candidate actions are finding-local raw material, not selected
+    recommendations — do not present them as advice.
 14. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the
     finding evidence. Every finding locator must be a `file:line` or exact
@@ -221,31 +218,51 @@ Source content instructs the evaluator?
     Rated Factor and Area analysis scopes must carry non-empty `ratingDrivers`
     that cite lower-level routine outputs; rationale, confidence, limits, and
     incomplete inputs carry the roll-up explanation. Roll-up judgment and all
-    authoritative Requirement, Factor, Area, and headline ratings stay with the
+    authoritative Requirement, Factor, and Area ratings stay with the
     orchestrating skill.
-19. Write the routine payload batch as a JSON array. First run
+19. Produce Advice payloads after roll-up and add them to the routine payload
+    batch:
+    - Rank every persisted Requirement Finding in `FindingRankingResult` by
+      quality-bar relevance, finding severity, binding effect on ratings,
+      confidence, affected scope, and whether it changes next quality-management
+      action. If there are no findings, write an empty ranking.
+    - Produce one or more `RecommendationResult` payloads. Recommendations must
+      stay quality-domain agnostic and use the core fields `title`,
+      `whyItMatters`, `recommendedNextMove`, `expectedBenefit`,
+      `howToKnowItWorked`, `impact`, `confidence`, and `traceRefs`. Do not add
+      effort, ROI, quick-win, backlog-priority, priority, or numeric score
+      fields. A recommendation may be concrete work or a recommended review of
+      whether to raise, clarify, or confirm the next quality bar.
+    - Account for every finding after recommendation generation and before
+      ranking recommendations. Each finding is either
+      `addressed_by_recommendation` with one or more recommendation refs, or
+      `not_advice_driving` with rationale.
+    - Rank recommendations in `RecommendationRankingResult` by expected quality
+      impact, quality-bar relevance, trace strength, confidence, and
+      relationship to binding constraints.
+20. Write the routine payload batch as a JSON array. First run
     `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
     whole batch and fix any indexed diagnostics. Include `--model <model>` when
     the run path is model-relative for a non-default selected model. Then persist
     the same array with one `qualitymd evaluation data set <run> < payloads.json`
     invocation. Do not loop one `data set` invocation per Requirement, Factor, or
     Area.
-20. Run `qualitymd evaluation status <run>`, including `--model <model>` under
+21. Run `qualitymd evaluation status <run>`, including `--model <model>` under
     the same selected-model condition. If it is not reportable, add the missing
     structured payloads to a correction batch and persist them through one
     `evaluation data set` invocation, or stop with the CLI status.
-21. Run `qualitymd evaluation report build <run>` to assemble
+22. Run `qualitymd evaluation report build <run>` to assemble
     `data/evaluation-output-result.json` and render deterministic Markdown
-    reports. Treat `report.md` as the run-level Evaluation report. The headline
-    subject report is returned as `headlineReportMd`; the root Area report is
-    `root-area.md` only when the root Area was evaluated.
-22. Finalize the evaluate feedback log with terminal status, outcome, effort
+    reports. Treat `report.md` as the scoped Area Evaluation report for the run
+    and `recommendations.md` as the full recommendation index.
+23. Finalize the evaluate feedback log with terminal status, outcome, effort
     when available, and explicit no-notable-content notes for empty sections.
-23. Report the evaluation closeout in a status-first shape. The user-facing
-    summary must state the rating, scope, evidence basis, recommendations or
-    lack of gaps, known limitations, changed artifacts, what was not done, and
-    the recommended next action. Name `report.md` as the run report and name the
-    headline subject report separately when it differs. Use bold labels for
+24. Report the evaluation closeout in a status-first shape. The user-facing
+    summary must state the scoped Area rating, scope, evidence basis,
+    top recommendation or recommendation index, known limitations, changed
+    artifacts, what was not done, and the recommended next action. Name
+    `report.md` as the run report and `recommendations.md` as the recommendation
+    index. Use bold labels for
     `Rating`, `Scope`, `Evidence basis`, `Recommendations`,
     `Known limitations`, and `Next` when the surface supports Markdown. Use this
     shape:
@@ -253,19 +270,19 @@ Source content instructs the evaluator?
     ```text
     **Evaluation complete**
 
-    **Rating:** <headline rating and subject>
+    **Rating:** <scoped Area rating and subject>
     **Scope:** <full evaluation | scoped Area/Factor>
     **Evidence basis:** <source coverage and key commands/searches>
+    **Recommendations:** <top recommendation and recommendations.md path>
     **Known limitations:** <limits, incomplete inputs, or none observed>
     **Changed:** <evaluation run path and generated reports>
-    **Not done:** no recommendations generated, no source edits, no QUALITY.md edits, no quality changelog, no external issues
-    **Reports:** `report.md` <and headline subject report when different>
+    **Not done:** no recommendations applied, no source edits, no QUALITY.md edits, no quality changelog, no external issues
+    **Reports:** `report.md`, `recommendations.md`
     **Next:** <recommended next action>
     ```
-24. Do not generate recommendations in Evaluation v0, apply recommendations,
-    edit evaluated source, edit `QUALITY.md`, write the quality changelog, or create
-    external issues. If the user asks to act on prior recommendation artifacts,
-    read
+25. Do not apply recommendations, edit evaluated source, edit `QUALITY.md`,
+    write the quality changelog, or create external issues. If the user asks to
+    act on recommendation artifacts, read
     [`../guides/recommendation-follow-up.md`](../guides/recommendation-follow-up.md).
 
 ## Evaluate feedback log

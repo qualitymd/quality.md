@@ -3,6 +3,26 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0150 - Evaluation Advice](../changes/archive/0150-evaluation-advice.md). Evaluation
+  now requires Advice after roll-up and before report build, with
+  `FindingRankingResult`, `RecommendationResult`, `RecommendationRankingResult`,
+  finding coverage accounting, generated recommendation reports, and
+  domain-agnostic `/quality evaluate` guidance.
+
+- **Revision**: Implemented durable spec changes for
+  [0149 - Scope-driven evaluation runs](../changes/archive/0149-scope-driven-evaluation-runs.md).
+  Evaluation run specs now capture requested/planned scope in CLI-owned
+  `RunManifest` data, replace `--narrowing` with `--area`/`--factor`, remove
+  scope from `EvaluationFrame`, and render `report.md` as the scoped Area report
+  without positional headline selection.
+
+- **Revision**: Implemented durable spec changes for
+  [0148 - Finding Basis](../changes/archive/0148-finding-basis.md). The format,
+  Evaluation, and `/quality` skill specs now use `basis` instead of `cause` for
+  finding-local explanation/support posture, preserve the existing support
+  status values, and require reports to render Basis labels.
+
+- **Revision**: Implemented durable spec changes for
   [0147 - Report Descendant Terms](../changes/archive/0147-report-descendant-terms.md).
   Evaluation report specs now require generated reports to use Child Areas for
   immediate Area descendants and Sub-Factors for immediate Factor descendants.

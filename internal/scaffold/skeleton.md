@@ -61,7 +61,7 @@ factors:
         # e.g. "Check the cited data source dates against the reporting window."
         # Or state it inline:
         # e.g. "Trigger the documented error cases and check each message names
-        #       the condition, cause, and user-facing consequence."
+        #       the condition, basis, and user-facing consequence."
         # e.g. "Hand the onboarding guide to someone unfamiliar with the process
         #       and see whether they can complete the first task unaided."
         assessment: "<how an evaluator should inspect or measure it>"
