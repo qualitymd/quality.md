@@ -4,15 +4,16 @@
 > `qualitymd` CLI are still evolving and **breaking changes are expected.** Run
 > `/quality update` to stay current with the latest skill and CLI versions.
 
-**QUALITY.md** is an [open format](./SPECIFICATION.md) for engineering quality
-loops: shared quality models that help people and AI agents **evaluate**,
-**review**, and **improve** work over time.
+**QUALITY.md** is an [open format](./SPECIFICATION.md), agent skill, and CLI for
+engineering quality loops: turn taste into a shared quality signal, evaluate
+work thoroughly, act on recommendations, and continuously improve what matters
+most.
 
 A `QUALITY.md` captures what good means, why, and how, for software,
 documentation, data, services, operations, or whatever else your team tends. Used
 with the `/quality` agent skill, it becomes a durable quality signal for stacked
-AI workflows: evaluate the work, turn evidence into recommendations, act on
-them, and refine the model as the work teaches you more.
+AI workflows, helping people and agents refine the model as the work teaches you
+more.
 
 The file is Markdown with structured quality model frontmatter and supporting
 context. The `/quality` skill is the primary experience: it helps create the
