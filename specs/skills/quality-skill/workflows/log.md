@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Addition**: Added the [`review`](review.md) and [`improve`](improve.md)
+  workflow specs for
+  [0143 - Public Review and Improve Workflows](../../../../changes/archive/0143-public-review-improve-workflows.md).
+  The new specs define focus-routed public workflow stubs, review's read-only
+  boundary, and improve's focus plus mutation-surface confirmation.
+
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0142 - Requirement Findings Only](../../../../changes/archive/0142-requirement-findings-only.md).
   Evaluate now records findings only on Requirement assessments, requires rated

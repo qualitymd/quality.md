@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the durable [top-10 checks](top-10-quality-md-checks-md.md)
+  and [recommendation follow-up guide](recommendation-follow-up-md.md) specs for
+  [0143 - Public Review and Improve Workflows](../../../../changes/archive/0143-public-review-improve-workflows.md).
+  Guide contracts now route checklist findings through public `review`/`improve`
+  workflows where appropriate and keep recommendation follow-up as the
+  implementation route used by `/quality improve`.
+
 - **Revision**: Updated the durable
   [factor](authoring/factors.md) and
   [requirement](authoring/requirements.md) authoring guide specs for

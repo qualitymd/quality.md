@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0143 - Public Review and
+  Improve Workflows.
+  Runtime dispatch now treats `review` and `improve` as public workflows, uses
+  focus for review/improve routing, and delegates model improvement and
+  compatible recommendation artifacts to existing safe routes.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0142 - Requirement
   Findings Only.

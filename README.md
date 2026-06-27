@@ -7,13 +7,15 @@
 **QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
 what matters most, why, and how, for software, documentation, data, services,
 operations, or whatever else your team tends. Use it with the `/quality` agent
-skill to align people and AI agents on what good means in that context.
+skill to help people and AI agents **evaluate**, **review**, and **improve**
+quality from a shared model of what good means.
 
 A QUALITY.md file is a Markdown file with a quality model and supporting
-context. The `/quality` skill helps set up the file, evaluate quality, and
-evolve the model as you learn. That agentic workflow is the primary experience;
-the `qualitymd` CLI provides support tooling for validating QUALITY.md files,
-managing quality evaluations, and maintaining a QUALITY.md workspace.
+context. The `/quality` skill is the primary experience: it helps create the
+model, evaluate the work against it, review the evidence and model fit, and
+improve the work or model as you learn. The `qualitymd` CLI provides support
+tooling for validating QUALITY.md files, managing quality evaluations, and
+maintaining a QUALITY.md workspace.
 
 ## Install
 
@@ -34,18 +36,22 @@ npm install -g quality.md
 Invoke the `/quality` skill to manage quality for your project:
 
 ```text
-/quality setup                                  Get started working with QUALITY.md
-/quality                                        Get read-only guidance on the next workflow
-/quality evaluate                               Evaluate the quality of your project
-/quality evaluate Security                      Evaluate a specific quality factor or characteristic
-/quality evaluate Payments                      Evaluate a specific area or project component
-/quality evaluate Payments Reliability
-                                                Evaluate an area's specific quality
+/quality setup                                  Create or update QUALITY.md
+/quality evaluate [scope]                       Assess quality against the model
+/quality review [focus]                         Review an evaluation, the model, or a concern
+/quality improve [focus]                        Improve the work or model based on judgment
+/quality update                                 Update the skill and CLI
 ```
 
-For exact or ambiguous scoped evaluations, use qualified model references such
-as `/quality evaluate area:payments` or
+`evaluate` scopes can name the whole project, an area, or a factor, such as
+`/quality evaluate`, `/quality evaluate Security`, `/quality evaluate Payments`,
+or `/quality evaluate Payments Reliability`. For exact or ambiguous scoped
+evaluations, use qualified model references such as
+`/quality evaluate area:payments` or
 `/quality evaluate factor:payments::reliability`.
+
+`review` and `improve` use **focus** to route the workflow. Common focuses are
+the latest evaluation, the `QUALITY.md` model, or a specific quality concern.
 
 Most users should work with `QUALITY.md` through their coding agent, the
 `/quality` skill, or direct edits. The CLI is primarily support tooling for
@@ -127,13 +133,10 @@ coding agents with what matters in *this* context. You capture it once, then run
 
 **The quality loop:**
 
-1. **Align** — agree on what *good* means for this context, and capture it as the
-   signal.
-2. **Evaluate** — grade the work against the signal; every gap is a gap in the
-   *work* or a gap in the *bar*.
-3. **Learn** — feed what you learned back into the signal as the product and its
-   risks evolve.
-4. **Improve** — close the gaps in the work.
+1. **Model** what *good* means for this context in `QUALITY.md`.
+2. **Evaluate** the work against that model.
+3. **Review** the evidence, ratings, and model fit.
+4. **Improve** the work or the model.
 
 ### Getting started
 
@@ -149,26 +152,25 @@ coding agents with what matters in *this* context. You capture it once, then run
 
 2. **Run `/quality evaluate` to see where you stand.** The skill analyzes each
    area of your project against the quality requirements defined in your model,
-   then provides ratings, findings, evidence limits, and opportunities to improve
-   both the work and `QUALITY.md` itself.
+   then provides ratings, findings, evidence limits, and next-step signals.
    → *A concrete read on where the work meets the bar, where it falls short, and
    where the model needs to become clearer, more complete, or better grounded.*
 
-3. **Refine the model as you learn.** Revise `QUALITY.md` when the evaluation
-   reveals missing context, unclear requirements, changed risks, or a quality bar
-   that no longer matches the project.
-   → *A quality bar that gets clearer and more useful every time you use it.*
+3. **Run `/quality review` to decide what the evidence means.** Review the
+   latest evaluation, the `QUALITY.md` model itself, or a specific quality
+   concern.
+   → *A clear read on what to fix now, what to track for later, and what evidence
+   or model context is still missing.*
+
+4. **Run `/quality improve` to act on that judgment.** Improve the work, improve
+   `QUALITY.md`, or turn a concern into follow-up work.
+   → *A quality bar and evaluated entity that get clearer and more useful every
+   time you use them.*
 
    **Tip:** Discuss and apply changes to `QUALITY.md` with your agent. The
    `/quality` skill applies authoring best practices so model changes stay
    well-formed, grounded, and current, with meaningful changes recorded in the
    quality log.
-
-4. **Review the evaluation.** Weigh the quality ratings for each area and
-   factor, use the findings to understand the evidence behind the gaps, and turn
-   the most important gaps into follow-up work.
-   → *A clear read on what to fix now, what to track for later, and what evidence
-   or model context is still missing.*
 
 ### Keeping the skill and CLI current
 
@@ -185,7 +187,8 @@ Once you have a model, the loop keeps going at whatever cadence fits your team:
   something just feels off. Scope it down when you don't need the whole model:
   `/quality evaluate Payments` or `/quality evaluate Payments Reliability`.
   Qualified references such as `/quality evaluate area:payments` remain
-  available for exact addressing.
+  available for exact addressing. Use `/quality review` to interpret what the
+  read means, and `/quality improve` when you are ready to act.
 
 - **On a cadence.** Make the model and its latest evaluation a recurring team
   review — per sprint, monthly, or whatever rhythm maintainers already use.

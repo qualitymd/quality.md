@@ -10,6 +10,8 @@ prompt.
 
 - [setup](setup.md) - bootstrap or populate a `QUALITY.md` model.
 - [evaluate](evaluate.md) - create evaluation records and reports.
+- [review](review.md) - review an Evaluation result, the model, or a quality concern.
+- [improve](improve.md) - improve the work or model after confirming focus and mutation surface.
 - [update](update.md) - orchestrate compatible `/quality` skill and CLI updates.
 
 # Subfolders

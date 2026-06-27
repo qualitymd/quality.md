@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: /quality skill
-description: Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file.
+description: Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file.
 tags: [skill, quality, evaluation]
 timestamp: 2026-06-22T00:00:00Z
 ---
@@ -70,17 +70,14 @@ scope — a full evaluation, or a narrowing to particular area(s) or factor(s).
 The scope parameterizes the invocation rather than multiplying it (see
 [Invocation](#invocation)).
 
-Direct model authoring is the path for user requests to edit an existing
-`QUALITY.md` outside setup or recommendation follow-up. It keeps direct edits
-lightweight: infer intent from the request and model, ask only material follow-up
-questions, state the intended edit, and invite adjustments before mutation.
+Direct model authoring is the implementation route for user requests to improve
+or edit an existing `QUALITY.md`. It keeps direct edits lightweight: infer intent
+from the request and model, ask only material follow-up questions, state the
+intended edit, and invite adjustments before mutation.
 
-Recommendations are a product of *evaluation*: the format spec's
-[Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation, so
-any `evaluate` that finds gaps emits recommendations alongside its report (see
-[Reporting](#reporting)). Acting on a recommendation is recommendation
-follow-up, not a separate workflow. Follow-up offers two explicit productive
-outcomes: apply a confirmed recommendation option now, or hand the
+Recommendation follow-up is the implementation route for `improve` when a
+compatible recommendation artifact exists. Follow-up offers two explicit
+productive outcomes: apply a confirmed recommendation option now, or hand the
 recommendation to an issue tracker. The skill **MUST NOT** edit evaluated source
 files or `QUALITY.md` until the user explicitly confirms the recommendation,
 option, and mutation surface. External issue creation **MUST** require explicit
@@ -134,11 +131,12 @@ contract: argument parsing, shared CLI prerequisites, safety rules, config, and
 artifact-contract guidance live there. Supporting docs live under
 `skills/quality/resources/` and `skills/quality/guides/`. Workflow-specific
 procedure details can live in separate dispatch files, and the current artifact
-keeps them under `skills/quality/workflows/` as `setup.md`, `evaluate.md`, and
-`update.md`. When workflow procedures live outside `SKILL.md`, the root prompt
-**MUST** instruct the agent to read the matching workflow file before executing
-that workflow. Each file is a workflow dispatched from the root prompt; the
-files live under `workflows/` and user-facing prose describes them as workflows.
+keeps them under `skills/quality/workflows/` as `setup.md`, `evaluate.md`,
+`review.md`, `improve.md`, and `update.md`. When workflow procedures live outside
+`SKILL.md`, the root prompt **MUST** instruct the agent to read the matching
+workflow file before executing that workflow. Each file is a workflow dispatched
+from the root prompt; the files live under `workflows/` and user-facing prose
+describes them as workflows.
 
 The installable skill ships settled runtime resources under
 `skills/quality/resources/` and runtime guides under `skills/quality/guides/`.
@@ -168,15 +166,15 @@ The root prompt **MUST** direct agents when to read each one:
   current state, quality, or lifecycle for read-only orientation or model-review
   routing.
 - [`guides/recommendation-follow-up.md`](../../../skills/quality/guides/recommendation-follow-up.md)
-  — the guide read when applying, acting on, or handing off an
-  evaluation recommendation (recommendation follow-up is not a public workflow).
+  — the guide read by `improve` when applying, acting on, or handing off a
+  compatible evaluation recommendation artifact.
 
 The description **MUST** optimize for trigger matching rather than documentation:
-it includes supported workflows (`setup`, `evaluate`, `update`), broad
-quality vocabulary users naturally ask with (`quality management`, quality
-evaluation/improvement, factors, characteristics,
+it includes supported workflows (`setup`, `evaluate`, `review`, `improve`,
+`update`), broad quality vocabulary users naturally ask with (`quality
+management`, quality evaluation/review/improvement, factors, characteristics,
 attributes, criteria), QUALITY.md vocabulary (areas, factors, requirements),
-project/entity and component/area quality framing, quality evaluation,
+project/entity and component/area quality framing, quality evaluation/review,
 recommendation follow-up, issue-tracker handoff, updating the `/quality` stack,
 and QUALITY.md authoring/improvement. It
 **MUST NOT** include CLI implementation details, and it should not trigger for
@@ -199,29 +197,37 @@ conforms to the spec's Evaluation contract rather than being fetched from it.
 An invocation resolves its workflow or read-only orientation, model file, and
 scope:
 
-- **Workflow** — `evaluate`, `setup`, or `update`. A bare `/quality` with no
-  direction, unclear direction, or a request asking what to do next produces
-  read-only orientation rather than a workflow run. Orientation may inspect local
-  lifecycle state and recommend one of the public workflows: `setup`,
-  `evaluate`, `update`, or recommendation follow-up. User intents such as
-  `status`, `next`, `review model`, and `review history` are not part of the
-  public invocation contract. `update` is selected for requests to update,
+- **Workflow** — `evaluate`, `review`, `improve`, `setup`, or `update`. A bare
+  `/quality` with no direction, unclear direction, or a request asking what to do
+  next produces read-only orientation rather than a workflow run. Orientation may
+  inspect local lifecycle state and recommend one of the public workflows: `setup`,
+  `evaluate`, `review`, `improve`, or `update`. User intents such as `status`,
+  `next`, and `wizard` are not part of the public invocation contract. `update`
+  is selected for requests to update,
   upgrade, or repair the installed `/quality` skill and `qualitymd` CLI pair.
   `setup` is selected when no model file is present or the user asks to create one;
-  otherwise the default action is `evaluate`, so naming only a scope still
-  evaluates. Requests to improve, apply, act on, or hand off a recommendation
-  resolve to
-  [recommendation follow-up](recommendation-follow-up.md), not to a separate
-  public workflow. Requests to directly edit, revise, improve, add to, remove
-  from, or otherwise change an existing `QUALITY.md` resolve to direct model
-  authoring unless the request clearly resolves to `setup`, `evaluate`, tooling
-  `update`, or recommendation follow-up. Direct model authoring **MUST NOT**
-  introduce a new public workflow invocation name.
+  otherwise the default action is `evaluate`, so naming only an evaluation scope
+  still evaluates. Requests to review an Evaluation result, review the model, or
+  review a specific quality concern resolve to `review`. Requests to improve from
+  an Evaluation result, improve the model, improve a quality concern, apply, act
+  on, or hand off a recommendation resolve to `improve`. Direct model authoring
+  and recommendation follow-up are implementation routes under `improve`, not
+  separate public workflow names.
 - **Model file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
   in the current working directory. The skill **MUST** accept an explicit path to
   override it, and **MUST** error clearly when no default file exists. It **MUST
   NOT** walk parent directories or discover multiple models unless a future CLI
   convention defines that behavior.
+- **Focus** — for `review` and `improve`, the attention target. `review` supports
+  latest or selected Evaluation result, the `QUALITY.md` model, and a specific
+  quality concern. `improve` supports Evaluation result or finding/candidate
+  action, the `QUALITY.md` model, a specific quality concern, and an existing
+  recommendation artifact when one is present. The skill **MUST** use an explicit
+  focus unless impossible or unsafe. When focus is absent or ambiguous, the skill
+  **MUST** infer likely focus from user text and local lifecycle state before
+  asking. When inference is not strong enough, the skill **MUST** ask a
+  single-select closed-choice question with the recommended focus first and an
+  explicit shortest answer path.
 - **Scope** — full evaluation (default), or a narrowing by **Area** (an Area
   and its subtree) and/or by **Factor** (the Requirements tied to a Factor,
   including same-Area Requirements connected to it as a secondary Factor), per
@@ -426,9 +432,9 @@ rather than inventing a false coverage ranking. The skill **MUST NOT** treat an
 obvious or recommended fix as consent to mutate; explicit approval remains
 required wherever this spec requires confirmation.
 
-> Rationale: `setup`, `update`, and recommendation follow-up can all make useful
-> changes, but the user needs to know what surface is changing and how the skill
-> will prove the change worked. — 0038
+> Rationale: `setup`, `improve`, `update`, and recommendation follow-up can all
+> make useful changes, but the user needs to know what surface is changing and
+> how the skill will prove the change worked. — 0038, 0143
 
 ### Stop rules and rerouting
 
@@ -455,11 +461,12 @@ evaluated-source defect.
 
 ### History-aware operation
 
-Before `evaluate` and recommendation follow-up, the skill **SHOULD** inspect
-available evaluation history when present, including the latest run, incomplete
-or stale-looking runs, open recommendations, and prior ratings for the same
-resolved scope. Prior evaluations **MUST** be treated as context, not authority:
-fresh evidence and the current `QUALITY.md` model control the current judgment.
+Before `evaluate`, `review` or `improve` with Evaluation focus, and
+recommendation follow-up, the skill **SHOULD** inspect available evaluation
+history when present, including the latest run, incomplete or stale-looking runs,
+open recommendations, and prior ratings for the same resolved scope. Prior
+evaluations **MUST** be treated as context, not authority: fresh evidence and
+the current `QUALITY.md` model control the current judgment.
 
 If prior runs contain malformed, schema-incompatible, partial, or hand-edited
 records, the skill **MUST** treat that as evaluation-history status rather than
@@ -528,8 +535,8 @@ as a public workflow. Orientation may inspect local QUALITY.md lifecycle state,
 report model-usefulness findings, recommend one next workflow, and offer
 concrete alternatives without modifying files, creating records, building
 reports, updating tooling, or rating evaluated source. Its recommended next
-actions are limited to public workflows: `setup`, `evaluate`, `update`, and
-recommendation follow-up.
+actions are limited to public workflows: `setup`, `evaluate`, `review`,
+`improve`, and `update`.
 
 Orientation output **MUST** be status-first and **MUST** include the model file or
 target inspected, observed lifecycle or model state, evidence limits when
@@ -538,17 +545,19 @@ relevant, one recommended next action, and concrete alternatives when useful. It
 records, generated reports, tooling updates, quality-log entries, or external
 issues.
 
-The skill **MUST NOT** advertise `status`, `next`, `review model`,
-`review history`, or `wizard` as public invocations. If a user explicitly sends
-`/quality wizard`, the skill may respond read-only that `wizard` has been
-removed from the public surface and point to public workflows.
+The skill **MUST NOT** advertise `status`, `next`, or `wizard` as public
+invocations. If a user explicitly sends `/quality wizard`, the skill may respond
+read-only that `wizard` has been removed from the public surface and point to
+public workflows.
 
 ### Direct model authoring
 
 Direct model authoring changes an existing `QUALITY.md` in response to a user's
-direct edit request. It is not a public workflow and does not use a workflow run
-frame, but it may mutate `QUALITY.md` and, for meaningful model changes, the
-quality log.
+direct edit request or model-focused `improve` request. It is an implementation
+route, not a separate public workflow name. For `/quality improve` model focus,
+the skill emits the improve run frame before delegating to direct model
+authoring. Direct model authoring may mutate `QUALITY.md` and, for meaningful
+model changes, the quality log.
 
 When a request likely resolves to direct model authoring and the model or guide
 read will take meaningful work, the skill **MUST** acknowledge the request before
@@ -621,14 +630,28 @@ feedback logs, follows the shared Define -> Assess and Rate -> Analyze -> Advise
 -> Report workflow, uses exhaustive coverage with an always-on QC phase, and
 does not generate recommendations in Evaluation v0.
 
+### Review
+
+[`review`](workflows/review.md) inspects an Evaluation result, the `QUALITY.md`
+model, or a specific quality concern. It is read-only by default, emits a run
+frame with focus, confirms or asks for focus before deeper review, and recommends
+one next action without editing files, writing Evaluation records, writing the
+quality log, creating issues, or updating tooling.
+
+### Improve
+
+[`improve`](workflows/improve.md) acts on quality judgment after focus and
+mutation surface are confirmed. It starts read-only, then delegates model-focused
+changes to direct model authoring and compatible recommendation artifacts to
+recommendation follow-up. It does not create numbered Evaluation records itself.
+
 ### Recommendation follow-up
 
 [`recommendation follow-up`](recommendation-follow-up.md) is the post-evaluation
-follow-up workflow for acting on active evaluation recommendations; it is not a
-public workflow. It offers apply-now and issue-tracker handoff outcomes, requires
-explicit confirmation before local
-mutation or external issue creation, and writes the quality log only for
-meaningful confirmed model changes.
+implementation route used by `improve` when compatible recommendation artifacts
+exist. It offers apply-now and issue-tracker handoff outcomes, requires explicit
+confirmation before local mutation or external issue creation, and writes the
+quality log only for meaningful confirmed model changes.
 
 ### Update
 
@@ -636,7 +659,7 @@ meaningful confirmed model changes.
 `qualitymd` CLI maintenance. It inspects the loaded skill metadata and visible
 CLI version, plans any skill or CLI update action, asks before mutation,
 delegates mechanics to owner tooling, verifies the visible result, and stops
-before setup, evaluation, or recommendation follow-up work.
+before setup, evaluation, review, improve, or recommendation follow-up work.
 
 ### Examples
 
@@ -646,18 +669,21 @@ arguments, defaulting the ones left out:
 
 ```
 /quality evaluate              # run a full evaluation
+/quality review                # review likely focus from lifecycle state
+/quality review model          # review the QUALITY.md model
+/quality improve               # infer focus and mutation surface before acting
+/quality improve model         # improve QUALITY.md through direct authoring
 /quality evaluate Triage     # scope to the Triage Area
 /quality evaluate Accuracy     # scope to the unique Accuracy Factor
 /quality evaluate Triage Accuracy   # Triage Area's Accuracy Factor
 /quality evaluate area:triage   # exact qualified Area reference
 /quality evaluate factor:triage::accuracy   # exact qualified Factor reference
 /quality evaluate factor flow  # fixed-type unqualified reference when a label is both an Area and a Factor
-/quality apply recommendation 002   # follow up: apply only on confirmation
-/quality handoff recommendation 002 # follow up: prepare/create an issue
+/quality improve recommendation 002 # follow up: apply or hand off on confirmation
 /quality update              # plan and orchestrate paired skill/CLI updates
 /quality setup                 # author a new model file (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
-/quality add a handoff risk requirement to QUALITY.md # direct model authoring
+/quality improve handoff risk  # improve a specific quality concern
 ```
 
 ## Driving the CLI

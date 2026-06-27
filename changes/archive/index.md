@@ -617,3 +617,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0142 — Requirement Findings Only](0142-requirement-findings-only.md) - makes
   Requirement Findings the only Evaluation finding layer, removes Area Findings,
   and requires rated results to be finding-backed and driver-backed (`Done`).
+- [0143 — Public Review and Improve Workflows](0143-public-review-improve-workflows.md)
+  - makes `/quality review` and `/quality improve` public, focus-routed workflow
+    stubs and simplifies README framing around evaluate, review, and improve
+    (`Done`).

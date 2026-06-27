@@ -23,7 +23,7 @@ that make it concrete. The installable skill artifact lives at
   post-evaluation follow-up workflow for applying or handing off evaluation
   recommendations.
 - [workflows/](workflows/index.md) - behavioral component specs for the runtime
-  workflows: setup, evaluate, and update.
+  workflows: setup, evaluate, review, improve, and update.
 - [guides/](guides/index.md) - specs for runtime guide resources bundled with
   the skill, including the routed authoring guide family, getting-started,
   recommendation follow-up, and checklist guides.

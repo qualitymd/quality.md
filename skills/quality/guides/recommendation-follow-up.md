@@ -6,10 +6,9 @@ description: Guide for applying or handing off evaluation recommendations.
 
 # Recommendation Follow-Up
 
-Use recommendation follow-up when the user asks to apply, act on, improve from,
-or hand off an active evaluation recommendation. This is not a public `/quality`
-workflow: it is a post-evaluation follow-up over recommendation records that
-already exist or have just been produced by `evaluate`.
+Use recommendation follow-up after `/quality improve` resolves to a compatible
+recommendation artifact. It is not a separate public `/quality` workflow: it is
+a post-evaluation follow-up over recommendation records that already exist.
 
 ## Opening
 

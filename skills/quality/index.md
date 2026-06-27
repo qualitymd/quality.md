@@ -15,7 +15,8 @@ progressive disclosure across guides, workflows, and resources.
 # Subfolders
 
 - [guides/](guides/index.md) - runtime guide resources used by the skill.
-- [workflows/](workflows/index.md) - setup, evaluate, and update workflow instructions.
+- [workflows/](workflows/index.md) - setup, evaluate, review, improve, and
+  update workflow instructions.
 - [resources/](resources/index.md) - bundled reference resources and command-output policy.
 
 # Bundle

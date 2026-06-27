@@ -27,17 +27,17 @@ Read-only orientation needs more than raw status counts to recommend the right
 lifecycle step, but it should not become a full model audit or quality
 evaluation. A short, shared checklist gives orientation and model-review
 workflows a consistent way to inspect the current `QUALITY.md`, surface
-actionable findings, and route to setup, getting-started, authoring,
-evaluation, recommendation follow-up, or history work. The checklist also keeps
-durable setup assumptions visible over time: project posture, stakeholder
-needs, agent/collaboration fit, missing context, and quality-loop expectations.
+actionable findings, and route to setup, getting-started, review, improve,
+evaluation, or history work. The checklist also keeps durable
+setup assumptions visible over time: project posture, stakeholder needs,
+agent/collaboration fit, missing context, and quality-loop expectations.
 
 ## Purpose
 
 The guide exists to quickly assess the current state, quality, and lifecycle of
 a QUALITY.md file. Its output is a small set of routing findings that explain
-why the next workflow should be setup, getting-started, authoring/model review,
-evaluation, recommendation follow-up, history/reconciliation, or update.
+why the next workflow should be setup, getting-started, review, improve,
+evaluation, history/reconciliation, or update.
 
 The guide does not re-run setup. It checks whether the current `QUALITY.md`
 still preserves the setup assumptions and model qualities needed for useful
@@ -70,8 +70,8 @@ raw status. Orientation may skip checklist inspection when the model is missing,
 the model is invalid, or CLI support is missing/stale enough that routing is
 already decided.
 
-Other workflows **MAY** use checklist findings as context when they need to explain
-why model authoring, evaluation, recommendation follow-up, or
+Other workflows **MAY** use checklist findings as context when they need to
+explain why model-focused improve, review, evaluation, or
 history/reconciliation is the next workflow.
 
 ### Inspection Boundary
@@ -104,12 +104,12 @@ section names, property paths, counts, or short locators rather than long
 quotations.
 
 Routes should use skill workflow language such as setup, getting-started,
-authoring, evaluate, recommendation follow-up, history, or update.
+review, improve, evaluate, history, or update.
 
 The checklist **MUST** treat the authoring guide as the quality reference for
 what good authoring looks like. It should route skeleton or placeholder models to
 getting-started for first-run process, and route populated models with
-best-practice gaps to authoring/model review.
+best-practice gaps to model-focused `review` or `improve`.
 
 ### Required Checks
 
@@ -261,7 +261,7 @@ findings and **MUST NOT** present them as one blended classification:
 
 The checklist **MUST NOT** treat the CLI's lifecycle `ready-to-evaluate` signal
 as a model-usefulness verdict; a valid model with no runs can still have gaps
-that should route to authoring before evaluation.
+that should route to model-focused improve before evaluation.
 
 ### Summary Judgment
 

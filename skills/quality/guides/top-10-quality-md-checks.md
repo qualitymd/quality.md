@@ -50,7 +50,7 @@ QUALITY.md inspection findings
 - <check id>: <finding>
   Evidence: <status field, section, or property>
   Impact: <why this affects lifecycle/model usefulness>
-  Route: <setup | getting-started | authoring | evaluate | recommendation follow-up | history | update>
+  Route: <setup | getting-started | review | improve | evaluate | history | update>
 ```
 
 Keep evidence short. Cite section names, property paths, counts, or status JSON
@@ -74,13 +74,13 @@ Inspect whether the model captures the project context that calibrates the
 quality bar: lifecycle, risk tolerance, and intended modeling rigor.
 
 - Finding when lifecycle is absent, stale, or contradicted by the body: route to
-  authoring.
+  improve with model focus.
 - Finding when risk tolerance is unclear enough that requirements cannot tell
-  acceptable gaps from unacceptable gaps: route to authoring.
+  acceptable gaps from unacceptable gaps: route to improve with model focus.
 - Finding when the model is too thin or too heavy for its stated modeling rigor:
-  route to authoring.
+  route to improve with model focus.
 - Finding when production, maintenance, or sunset posture is stated but not
-  reflected in factors or requirements: route to authoring.
+  reflected in factors or requirements: route to improve with model focus.
 
 ### 3. Stakeholder and Needs Coverage
 
@@ -89,13 +89,14 @@ justify the factors and requirements. Consider primary users,
 collaborators/maintainers, and other affected stakeholders.
 
 - Finding when primary users or user outcomes are unclear: route to
-  getting-started for starter models or authoring for populated models.
+  getting-started for starter models or improve with model focus for populated
+  models.
 - Finding when collaborator or maintainer needs are absent despite being central
-  to the project's quality: route to authoring.
+  to the project's quality: route to improve with model focus.
 - Finding when other stakeholders are implied but their needs are not stated:
-  route to authoring.
+  route to improve with model focus.
 - Finding when needs are generic enough that the same text could fit almost any
-  project: route to authoring.
+  project: route to improve with model focus.
 
 ### 4. Agent and Collaboration Fit
 
@@ -103,12 +104,14 @@ Inspect whether the model supports the assumed agent-heavy workflow plus the
 named human collaboration context.
 
 - Finding when future agents would need private memory, unavailable tools, or
-  uncited context to understand or apply the model: route to authoring.
+  uncited context to understand or apply the model: route to improve with model
+  focus.
 - Finding when the collaboration context is unclear enough to leave review,
-  onboarding, governance, or handoff expectations implicit: route to authoring.
+  onboarding, governance, or handoff expectations implicit: route to improve with
+  model focus.
 - Finding when open source, cross-functional, customer-facing, or external
   contributor collaboration is implied but not reflected in factors,
-  requirements, or body context: route to authoring.
+  requirements, or body context: route to improve with model focus.
 
 ### 5. Body Context and Missing Context
 
@@ -123,13 +126,14 @@ invisible.
   reference for what the body should accomplish.
 - Finding when a section omits its unknowns or open questions while the rest of
   the body leaves unresolved questions: route to getting-started for first-run
-  process or authoring for best-practice guidance.
+  process or improve with model focus for best-practice guidance.
 - Finding when material support is referenced or implied but is not
   agent-accessible, and the gap prevents a reader or agent from judging whether
-  the body is complete, current, grounded, or sufficient: route to authoring.
+  the body is complete, current, grounded, or sufficient: route to improve with
+  model focus.
 - Finding when important missing context is not named, even though the model
   depends on it for scope, needs, risks, or assessment evidence: route to
-  authoring.
+  improve with model focus.
 
 ### 6. Root area and scope alignment
 
@@ -139,13 +143,13 @@ the default root area convention unless the model clearly narrows or relocates
 scope.
 
 - Finding when the title names the repository but the body/sources are narrower:
-  route to getting-started or authoring.
+  route to getting-started or improve with model focus.
 - Finding when source coverage includes unrelated/generated/supporting artifacts:
-  route to authoring.
+  route to improve with model focus.
 - Finding when the model overrides the current-directory convention without
-  explaining the evaluated boundary: route to authoring.
+  explaining the evaluated boundary: route to improve with model focus.
 - Finding when exclusions or boundary decisions are important but implicit:
-  route to authoring.
+  route to improve with model focus.
 
 ### 7. Rating scale fit
 
@@ -153,11 +157,11 @@ Check whether the rating scale is understandable and fits the body's decision
 context, including lifecycle, risk tolerance, and modeling rigor.
 
 - Finding when level descriptions or criteria are generic enough that findings
-  cannot distinguish `target` from `minimum`: route to authoring.
+  cannot distinguish `target` from `minimum`: route to improve with model focus.
 - Finding when a custom scale exists but the body does not explain why: route to
-  authoring.
+  improve with model focus.
 - Finding when the scale implies a stricter or looser bar than the stated project
-  posture: route to authoring.
+  posture: route to improve with model focus.
 
 ### 8. Area and factor shape
 
@@ -166,62 +170,63 @@ represent distinct evaluated entities, and shaped by the body's needs and risks.
 Factors should be meaningful quality lenses, not vague labels alone.
 
 - Finding when all concerns are flattened into the root despite clear sub-entities
-  in the body: route to authoring.
+  in the body: route to improve with model focus.
 - Finding when the body describes distinct constituent artifacts of different
   kinds (e.g. the running artifact, its requirements, its docs) but all factors
   are held at the root as one family — a composite entity flattened into a single
-  primary-subject root: route to authoring.
+  primary-subject root: route to improve with model focus.
 - Finding when an agent-collaborated project's body shows an owned, high-leverage
   agent harness or QUALITY.md self-check that is not modeled as a constituent:
-  route to authoring. These are modeled by default given the context of use; do
-  not flag a harness-less or throwaway project, which hits the not-germane
-  disqualifier.
+  route to improve with model focus. These are modeled by default given the
+  context of use; do not flag a harness-less or throwaway project, which hits the
+  not-germane disqualifier.
 - Finding when an agent-collaborated composite root does not carry
   Agent Harnessability or its sub-factors among its model-wide factors: route to
-  authoring. Do not flag a non-agent-collaborated, harness-less, throwaway, or
-  narrowly scoped entity where the factor is not germane. Treat an existing
-  `harnessability` factor as stale legacy naming, not current coverage; route
-  model-authoring work to rename it to `agent-harnessability` /
-  Agent Harnessability and add any missing current sub-factors such as
-  `continuity`. A thin or absent harness is rating evidence, not a reason to omit
-  the factor.
+  improve with model focus. Do not flag a non-agent-collaborated, harness-less,
+  throwaway, or narrowly scoped entity where the factor is not germane. Treat an
+  existing `harnessability` factor as stale legacy naming, not current coverage;
+  route model-authoring work to rename it to `agent-harnessability` / Agent
+  Harnessability and add any missing current sub-factors such as `continuity`. A
+  thin or absent harness is rating evidence, not a reason to omit the factor.
 - Finding when an agent-collaborated composite root has a germane agent-harness
-  area carried with only one or two thin factors: route to authoring. Treat this
-  as a coverage gap in the steering-materials area, not as evidence the harness is
-  unimportant.
+  area carried with only one or two thin factors: route to improve with model
+  focus. Treat this as a coverage gap in the steering-materials area, not as
+  evidence the harness is unimportant.
 - Finding when an agent-harness area is defined or scoped as instructions only,
   omitting the feedback half of the harness or project-owned runtime controls:
-  route to authoring. Define the harness as the whole engineered system around
-  the model, then scope the area to checked-in steering and owned-control
-  artifacts.
+  route to improve with model focus. Define the harness as the whole engineered
+  system around the model, then scope the area to checked-in steering and
+  owned-control artifacts.
 - Finding when project-owned runtime harness machinery is present in the repo
   (hooks, tool/MCP definitions, sandbox or permission policy, orchestration
   config, subagent config) but is neither modeled in the agent-harness area, given
-  its own area, nor explicitly out of scope: route to authoring.
+  its own area, nor explicitly out of scope: route to improve with model focus.
 - Finding when agent-harness area requirements assume a software toolchain
   (lint/type-check/test/CI/deploy) but the project's served domain is not
-  software: route to authoring. Rephrase toward how this project's steering
-  materials point to verification, enforce standards, or bound action.
+  software: route to improve with model focus. Rephrase toward how this project's
+  steering materials point to verification, enforce standards, or bound action.
 - Finding when a model carries two same-rooted projections of one concern (e.g. an
   Agent Harnessability factor and an agent-harness area) with no boundary note —
   neither a YAML comment nor a disambiguating description clause distinguishing
-  them: route to authoring. A reader cannot tell the projections apart, and the
-  double-count risk is invisible.
+  them: route to improve with model focus. A reader cannot tell the projections
+  apart, and the double-count risk is invisible.
 - Finding when the domain implies a germane constituent kind the body evidences or
   implies — for software product quality: tests, documentation modes
   (tutorial/how-to/reference/explanation), specs/requirements, operations, or a
   security/safety artifact; for a data product: schema, provenance, freshness, or
   lineage metadata — that the model neither models as an area nor surfaces
   as a ratable gap (a missing-anchor area, or a requirement on an existing area):
-  route to authoring. For a germane kind, a bare deferral or Scope note does not
-  satisfy coverage. Do not flag a kind that legitimately hits a disqualifier —
-  folded into a sibling for lack of distinct concerns, or genuinely not germane
-  (and so marked out of Scope) for a throwaway or narrowly scoped entity.
+  route to improve with model focus. For a germane kind, a bare deferral or Scope
+  note does not satisfy coverage. Do not flag a kind that legitimately hits a
+  disqualifier — folded into a sibling for lack of distinct concerns, or
+  genuinely not germane (and so marked out of Scope) for a throwaway or narrowly
+  scoped entity.
 - Finding when child areas merely mirror the parent without distinct factors or
-  requirements: route to authoring.
-- Finding when major body needs/risks have no factor: route to authoring.
+  requirements: route to improve with model focus.
+- Finding when major body needs/risks have no factor: route to improve with model
+  focus.
 - Finding when factors are generic, overlapping, or unexplained: route to
-  authoring.
+  improve with model focus.
 
 Model every germane constituent as its own area by default; a constituent is left
 unmodeled only when it hits a disqualifier (no distinct concerns → fold; not
@@ -235,15 +240,15 @@ and whether each `assessment` gives the evaluator a usable means of assessment,
 either inline or by referencing a traceable entity that defines it.
 
 - Finding when requirements are aspirations rather than assessable expectations:
-  route to authoring.
+  route to improve with model focus.
 - Finding when a requirement lacks observable evidence or criteria: route to
-  authoring before evaluation.
+  improve with model focus before evaluation.
 - Finding when assessments are placeholders, circular, or vague: route to
-  authoring.
+  improve with model focus.
 - Finding when referenced assessment sources are not traceable from the model:
-  route to authoring.
+  route to improve with model focus.
 - Finding when evidence or criteria cannot distinguish adjacent rating levels:
-  route to authoring before evaluation.
+  route to improve with model focus before evaluation.
 
 ### 10. Quality Loop Maintenance Signals
 

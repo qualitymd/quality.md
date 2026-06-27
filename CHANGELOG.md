@@ -5,6 +5,13 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality Skill
+
+- `/quality review` and `/quality improve` are now public workflow stubs.
+  `review` is focus-routed and read-only by default; `improve` confirms focus and
+  mutation surface before delegating to existing model-authoring or compatible
+  recommendation follow-up routes.
+
 ## v0.24.0 - 2026-06-27
 
 ### CLI

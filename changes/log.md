@@ -3,6 +3,25 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0143 - Public Review and Improve Workflows](archive/0143-public-review-improve-workflows.md).
+  `/quality review` and `/quality improve` are now public, focus-routed workflow
+  stubs; README, runtime skill guidance, durable skill specs, guide routing,
+  release notes, and logs are aligned. `mise run fmt-md-check` passes.
+
+- **In-Progress**: Advanced
+  [0143 - Public Review and Improve Workflows](archive/0143-public-review-improve-workflows.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  runtime skill guidance, durable skill specs, README framing, and logs.
+
+- **Design**: Advanced
+  [0143 - Public Review and Improve Workflows](archive/0143-public-review-improve-workflows.md)
+  with its
+  [design doc](archive/0143-public-review-improve-workflows/design.md). The design keeps
+  review and improve as focus-routed public stubs, delegates safe mutations to
+  existing direct-authoring and recommendation-follow-up paths, and leaves deeper
+  workflow behavior deferred. Implementation has not started.
+
+- **Done**: Implemented and archived
   [0142 - Requirement Findings Only](archive/0142-requirement-findings-only.md).
   Evaluation data schema version 3 removes Area-analysis findings, `data set`
   and `data verify` enforce finding-backed rated Requirements and non-empty
@@ -17,6 +36,13 @@
   generated schema, tests, and release notes now make Requirement Findings the
   only Evaluation finding layer and keep Factor/Area roll-up explanation in
   rating drivers and rationale.
+
+- **Draft**: Created
+  [0143 - Public Review and Improve Workflows](archive/0143-public-review-improve-workflows.md)
+  with its
+  [functional spec](archive/0143-public-review-improve-workflows/spec.md). The case makes
+  `/quality review` and `/quality improve` public workflows, routes them by
+  focus, and aligns README framing around evaluate, review, and improve.
 
 - **In-Progress**: Created
   [0142 - Requirement Findings Only](archive/0142-requirement-findings-only.md)

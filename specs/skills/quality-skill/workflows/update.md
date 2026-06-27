@@ -29,8 +29,8 @@ compatibility of the `/quality` skill, the `qualitymd` CLI, or their supported
 version pair.
 
 The workflow's purpose is maintenance orchestration. It is not an evaluation
-workflow and **MUST** stop before setup, evaluation, or recommendation follow-up
-work.
+workflow and **MUST** stop before setup, evaluation, review, improve, or
+recommendation follow-up work.
 
 ## Mutation surface and artifacts
 

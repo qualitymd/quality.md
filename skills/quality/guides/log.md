@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [Top 10 checks](top-10-quality-md-checks.md) and
+  [Recommendation Follow-Up](recommendation-follow-up.md) for 0143 - Public
+  Review and Improve Workflows.
+  Checklist routes now point to public `review`/`improve` workflows where
+  appropriate, and recommendation follow-up is described as the implementation
+  route used after `/quality improve` resolves to a compatible recommendation.
+
 - **Revision**: Updated
   [Factors](authoring/factors.md) and
   [Requirements](authoring/requirements.md) for 0141 - Area-local Factor

@@ -173,8 +173,9 @@ flowchart TD
    `--model <model>` when the run path is model-relative for a non-default
    selected model.
 
-Recommendation follow-up is governed by
-[/quality recommendation follow-up](recommendation-follow-up.md), not by a
+Recommendation-focused improvement is governed by
+[/quality recommendation follow-up](recommendation-follow-up.md) after
+`/quality improve` resolves to a compatible recommendation artifact, not by a
 separate evaluation workflow.
 
 ### Grounding judgment

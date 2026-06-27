@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Addition**: Added [review](review.md) and [improve](improve.md) runtime
+  workflow stubs for 0143 - Public Review and Improve Workflows.
+  Review is read-only and focus-routed; improve starts read-only, confirms focus
+  and mutation surface, then delegates to existing safe routes or stops at the
+  stub boundary.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0142 -
   Requirement Findings Only.
   Evaluate now authors findings only during Requirement assessment, requires

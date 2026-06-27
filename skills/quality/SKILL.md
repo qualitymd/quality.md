@@ -1,6 +1,6 @@
 ---
 name: quality
-description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
+description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, review, improvement, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, reviewing a QUALITY.md model or evaluation result, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
 compatibility: Requires qualitymd CLI >=0.24.0 <0.25.0.
 metadata:
   version: "0.24.0"
@@ -100,23 +100,32 @@ continuing.
 
 Parse the user's request from free-form arguments:
 
-- Workflow: `setup`, `evaluate`, or `update`. Treat bare `/quality`,
+- Workflow: `setup`, `evaluate`, `review`, `improve`, or `update`. Treat bare `/quality`,
   unclear direction, and requests that ask what to do next as read-only
   orientation, not as a workflow run. Orientation may inspect local lifecycle state
-  and recommend one of the public workflows: `setup`, `evaluate`, `update`, or
-  recommendation follow-up. Do not advertise `status`, `next`, `review model`,
-  or `review history` as public invocations. If the user explicitly sends
+  and recommend one of the public workflows: `setup`, `evaluate`, `review`,
+  `improve`, or `update`. Do not advertise `status`, `next`, or `wizard` as
+  public invocations. If the user explicitly sends
   `/quality wizard`, respond read-only that `wizard` has been removed from the
   public surface and point to the public workflows. Treat requests to update or
   upgrade the `/quality` skill, the `qualitymd` CLI, or their compatibility pair
-  as `update`. Treat requests to improve, apply, act on, or hand off an
-  evaluation recommendation as recommendation follow-up, not as a separate workflow.
-  Treat requests to directly edit, revise, improve, add to, remove from, or
-  otherwise change an existing `QUALITY.md` as direct model authoring unless the
-  request clearly resolves to `setup`, `evaluate`, tooling `update`, or
-  recommendation follow-up. Direct model authoring is not a public workflow name.
+  as `update`. Treat requests to review an evaluation result, review the model,
+  or review a specific quality concern as `review`. Treat requests to improve
+  from an evaluation result, improve the model, improve a quality concern, apply,
+  act on, or hand off an evaluation recommendation as `improve`. Direct model
+  authoring and recommendation follow-up are implementation routes under
+  `improve`, not separate public workflow names.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
+- Focus: for `review` and `improve`, the user-facing attention target. Supported
+  review focuses are latest or selected evaluation result, the `QUALITY.md`
+  model, and a specific quality concern. Supported improve focuses are evaluation
+  result or finding/candidate action, the `QUALITY.md` model, a specific quality
+  concern, and an existing recommendation artifact when one is present. Use an
+  explicit focus unless impossible or unsafe. When focus is absent or ambiguous,
+  infer the likely focus from user text and local lifecycle state before asking.
+  When inference is not strong enough, ask a single-select closed choice with the
+  recommended focus first and an explicit shortest answer path.
 - Scope: full evaluation by default, or a narrowing. Natural Area and Factor
   labels are the primary scoped input for `/quality evaluate`; match them
   against required titles and stable YAML names in the grounded model. One label
@@ -187,23 +196,26 @@ reads, lint, or any feedback-log write; do not gate it on a tool result. When a
 field cannot be resolved without a tool call (such as a scope that spans many
 Areas), still emit the frame first with a best-known or `resolving…` value and
 confirm the resolved value in a later message. The header names the resolved
-workflow (`setup`, `evaluate`, or `update`); do not render `/quality run` or any
-command-style header, and do not use a `Mode:` field:
+workflow (`setup`, `evaluate`, `review`, `improve`, or `update`); do not render
+`/quality run` or any command-style header, and do not use a `Mode:` field. Use
+`Scope` for evaluation breadth and `Focus` for review/improve attention target:
 
 ```text
 **QUALITY.md · <workflow>**
 - **Model file:**
-- **Scope:**
+- **Scope:**         (for evaluate/setup/update, or n/a)
+- **Focus:**         (for review/improve, or n/a)
 - **Mutation:**      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, feedback log, tooling)
 - **Artifacts:**
 - **Next gate:**
 ```
 
-Recommendation follow-up is not a public `/quality` workflow, but it is still a
-user-visible follow-up that can mutate evaluated source, `QUALITY.md`, the
-quality log, or an external issue tracker. At its start, emit a concise follow-up
-frame before recommendation inspection, history inspection, outcome selection, or
-any mutation:
+Recommendation follow-up is an implementation route used by `improve` when a
+compatible recommendation artifact exists; it is not a separate public
+`/quality` workflow. It is still a user-visible follow-up that can mutate
+evaluated source, `QUALITY.md`, the quality log, or an external issue tracker.
+At its start, emit a concise follow-up frame before recommendation inspection,
+history inspection, outcome selection, or any mutation:
 
 ```text
 **QUALITY.md · recommendation follow-up**
@@ -220,14 +232,15 @@ model file or target inspected, summarize observed lifecycle/model state, name
 evidence limits when relevant, recommend one next action, and offer concrete
 alternatives. Include a boundary line such as `Not changed: no files, evaluation
 records, reports, tooling, quality log, or external issues.` Do not advertise
-`status`, `next`, `review model`, `review history`, or `wizard` as public
-invocations.
+`status`, `next`, or `wizard` as public invocations.
 
-Direct model authoring is a lightweight path for requests to change an existing
-`QUALITY.md`; it is not `setup`, `evaluate`, or tooling `update`, and it does not
-have a public workflow run frame. When a request likely resolves to direct model
-authoring and the model/guidance read will take meaningful work, acknowledge the
-request before that long read: say you will treat it as a `QUALITY.md` model
+Direct model authoring is the implementation route for model-focused `improve`
+or other direct requests to change an existing `QUALITY.md`; it is not a separate
+public workflow name. For `/quality improve` model focus, emit the improve run
+frame first, then delegate to direct model authoring after focus and mutation
+surface are confirmed. When another direct model-change request likely resolves
+to this route and the model/guidance read will take meaningful work, acknowledge
+the request before that long read: say you will treat it as a `QUALITY.md` model
 change, inspect the current model and relevant authoring guidance, and show the
 intended edit for feedback before changing files. Then read `guides/authoring.md`
 first, then read only the routed authoring sub-guides relevant to the likely
@@ -315,10 +328,11 @@ evidence cannot distinguish adjacent rating levels. A stop response names the
 reason, distinguishes model usefulness from evaluated-source quality, and offers
 concrete next workflows.
 
-Before `evaluate` and recommendation follow-up, inspect evaluation history when
-present: latest run, incomplete or stale-looking runs, open recommendations, and
-prior ratings for the same resolved scope. Treat prior runs as context only;
-fresh evidence and the current `QUALITY.md` control current judgment.
+Before `evaluate`, `review` or `improve` with evaluation focus, and
+recommendation follow-up, inspect evaluation history when present: latest run,
+incomplete or stale-looking runs, open recommendations, and prior ratings for the
+same resolved scope. Treat prior runs as context only; fresh evidence and the
+current `QUALITY.md` control current judgment.
 
 Treat malformed, schema-incompatible, partial, or hand-edited historical runs as
 evaluation history status, not evaluated-source quality evidence. Route to
@@ -362,6 +376,10 @@ unqualified references.
 /quality
 /quality setup
 /quality evaluate
+/quality review
+/quality review <focus>
+/quality improve
+/quality improve <focus>
 /quality evaluate <label>
 /quality evaluate <area-label> <factor-label>
 /quality evaluate Accuracy
@@ -371,7 +389,9 @@ unqualified references.
 /quality evaluate area:triage
 /quality evaluate factor:triage::accuracy
 /quality update
-/quality add support handoff risk to QUALITY.md
+/quality improve model
+/quality improve latest evaluation
+/quality improve support handoff risk in QUALITY.md
 ```
 
 ## Evaluation Coverage and QC
@@ -481,11 +501,13 @@ acting:
 
 - `setup` → [`workflows/setup.md`](workflows/setup.md)
 - `evaluate` → [`workflows/evaluate.md`](workflows/evaluate.md)
+- `review` → [`workflows/review.md`](workflows/review.md)
+- `improve` → [`workflows/improve.md`](workflows/improve.md)
 - `update` → [`workflows/update.md`](workflows/update.md)
 
-Recommendation follow-up is not one of the workflows above. When the user asks to apply, act on,
-improve from, or hand off an evaluation recommendation, read
-[`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md).
+When `improve` resolves to an existing recommendation artifact, read
+[`guides/recommendation-follow-up.md`](guides/recommendation-follow-up.md) as
+the implementation route after reading [`workflows/improve.md`](workflows/improve.md).
 
 ## Workspace and Config
 

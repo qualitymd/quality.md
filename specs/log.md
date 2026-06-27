@@ -3,6 +3,12 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0143 - Public Review and Improve Workflows](../changes/archive/0143-public-review-improve-workflows.md).
+  The `/quality` skill specs now make `review` and `improve` public workflows,
+  route them by focus, keep review read-only by default, and require improve to
+  confirm focus plus mutation surface before delegating to existing safe routes.
+
+- **Revision**: Implemented durable spec changes for
   [0142 - Requirement Findings Only](../changes/archive/0142-requirement-findings-only.md).
   The Evaluation specs now make Requirement Findings the only finding layer,
   remove Area and Factor Finding report sections, define schema version 3 data
