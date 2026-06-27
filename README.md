@@ -4,16 +4,20 @@
 > `qualitymd` CLI are still evolving and **breaking changes are expected.** Run
 > `/quality update` to stay current with the latest skill and CLI versions.
 
-**QUALITY.md** is an [open format](./SPECIFICATION.md) for modeling quality:
-what matters most, why, and how, for software, documentation, data, services,
-operations, or whatever else your team tends. Use it with the `/quality` agent
-skill to help people and AI agents **evaluate**, **review**, and **improve**
-quality from a shared model of what good means.
+**QUALITY.md** is an [open format](./SPECIFICATION.md) for engineering quality
+loops: shared quality models that help people and AI agents **evaluate**,
+**review**, and **improve** work over time.
 
-A QUALITY.md file is a Markdown file with a quality model and supporting
+A `QUALITY.md` captures what good means, why, and how, for software,
+documentation, data, services, operations, or whatever else your team tends. Used
+with the `/quality` agent skill, it becomes a durable quality signal for stacked
+AI workflows: evaluate the work, turn evidence into recommendations, act on
+them, and refine the model as the work teaches you more.
+
+The file is Markdown with structured quality model frontmatter and supporting
 context. The `/quality` skill is the primary experience: it helps create the
 model, evaluate the work against it, review the evidence and model fit, and
-improve the work or model as you learn. The `qualitymd` CLI provides support
+improve the work or model as the loop runs. The `qualitymd` CLI provides support
 tooling for validating QUALITY.md files, managing quality evaluations, and
 maintaining a QUALITY.md workspace.
 
@@ -164,19 +168,19 @@ and AI assistants to follow.
 [Install QUALITY.md](#install), then run `/quality setup` with your coding agent
 to create a `QUALITY.md` for your project.
 
-## Working with QUALITY.md
+## The QUALITY.md Loop
 
-A `QUALITY.md` file is your project's **reward signal for quality** — the
-explicit, shared definition of *good* that aligns your team, AI assistants, and
-coding agents with what matters in *this* context. You capture it once, then run a
-**quality loop** that keeps both the work and the signal sharp.
+A `QUALITY.md` file is your project's quality signal — the explicit, shared
+definition of *good* that aligns your team, AI assistants, and coding agents with
+what matters in *this* context. You capture it once, then run a loop that keeps
+both the work and the signal sharp.
 
 **The quality loop:**
 
 1. **Model** what *good* means for this context in `QUALITY.md`.
 2. **Evaluate** the work against that model.
 3. **Review** the evidence, ratings, and model fit.
-4. **Improve** the work or the model.
+4. **Improve** the work, the model, or the loop.
 
 ### Getting started
 
