@@ -1,28 +1,16 @@
 # QUALITY.md
 
+**QUALITY.md** is an [open format](./SPECIFICATION.md), agent skill, and CLI for
+managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), [compound learnings](#the-outer-loop-dailyweekly) and achieve [alignment between stakeholders and agents on what quality means for what matters most](#the-qualitymd-loop).
+
+QUALITY.md helps teams **move quality judgment up the loop
+stack**, enabling a continuous and comprehensive approach to improving and maintaining project quality instead of ad hoc prompts, passive skills, reactive reviews, and low-level inspections.
+
 > 🚧 **Early alpha — under active construction.** The format, `/quality` skill, and
-> `qualitymd` CLI are still evolving and **breaking changes are expected.** Run
+> `qualitymd` CLI are still evolving. Breaking changes should be manageable with assistance from the latest skill updates. Run
 > `/quality update` to stay current with the latest skill and CLI versions.
 
-**QUALITY.md** is an [open format](./SPECIFICATION.md), agent skill, and CLI for
-engineering quality loops: turn taste into a shared quality signal, evaluate
-work thoroughly, act on recommendations, and continuously improve what matters
-most.
-
-A `QUALITY.md` captures what good means, why, and how, for software,
-documentation, data, services, operations, or whatever else your team tends. Used
-with the `/quality` agent skill, it becomes a durable quality signal for stacked
-AI workflows, helping people and agents refine the model as the work teaches you
-more.
-
-The file is Markdown with structured quality model frontmatter and supporting
-context. The `/quality` skill is the primary experience: it helps create the
-model, evaluate the work against it, review the evidence and model fit, and
-improve the work or model as the loop runs. The `qualitymd` CLI provides support
-tooling for validating QUALITY.md files, managing quality evaluations, and
-maintaining a QUALITY.md workspace.
-
-## Install
+### Get started:
 
 1. Install the agent skill:
 
@@ -36,77 +24,33 @@ npx skills add qualitymd/quality.md
 npm install -g quality.md
 ```
 
-## Usage
+3. Invoke `/quality setup` for guided creation of your initial `QUALITY.md`
 
-Invoke the `/quality` skill to manage quality for your project:
+### Loop Engineering: The Quality Loop Stack
 
-```text
-/quality setup                                  Create or update QUALITY.md
-/quality evaluate [scope]                       Assess quality against the model
-/quality review [focus]                         Review an evaluation, the model, or a concern
-/quality improve [focus]                        Improve the work or model based on judgment
-/quality update                                 Update the skill and CLI
-```
+#### The Middle/Meta Loop (daily/hourly)
 
-`evaluate` scopes can name the whole project, an area, or a factor, such as
-`/quality evaluate`, `/quality evaluate Security`, `/quality evaluate Payments`,
-or `/quality evaluate Payments Reliability`. For exact or ambiguous scoped
-evaluations, use qualified model references such as
-`/quality evaluate area:payments` or
-`/quality evaluate factor:payments::reliability`.
+1. **Evaluate** with `/quality evaluate` to
+   create a quality evaluation report
+2. **Review** evaluation report quality ratings, assessment
+   findings, and improvement recommendations by project area or quality factor.
 
-`review` and `improve` use **focus** to route the workflow. Common focuses are
-the latest evaluation, the `QUALITY.md` model, or a specific quality concern.
+#### The Inner Loop (continuously)
 
-Most users should work with `QUALITY.md` through their coding agent, the
-`/quality` skill, or direct edits. The CLI is primarily support tooling for
-validation, status, and evaluation records.
+2. **Act** act by implementing or handing off recommendations to
+   people, agents, or other agent loops.
 
-To keep the model visible to agents, add a short note to `AGENTS.md` or
-`CLAUDE.md`:
+#### The Outer Loop (daily/weekly)
 
-```text
-See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality.
-```
-
-## Why QUALITY.md
-
-### Engineer Quality Loops
-
-AI work is shifting from prompting individual agents to designing stacked loops
-that prompt, evaluate, and improve them. QUALITY.md gives those loops a durable
-quality signal: an explicit model of what good means, evidence of where the work
-stands, and recommendations that can become the next unit of action.
-
-That matters because quality judgment is often the scarce part of AI-assisted
-work. Better token throughput helps only when the surrounding loop knows what to
-aim at, how to judge progress, and when to raise the bar. QUALITY.md moves that
-judgment into a shared artifact that teams and agents can inspect, apply, and
-improve over time.
-
-The QUALITY.md loop stack:
-
-- **Outer loop (days):** *quality taste and model stewardship*. Teams and agents
-  refine `QUALITY.md` from lower-loop observations, external feedback,
-  stakeholder judgment, and taste.
-
-- **Middle loop (hours):** *evaluation, review, and routing*. `/quality evaluate`
-  turns the model into findings and actionable recommendations. Review decides
-  what to act on now, what to hand off, what to defer, and where the quality
-  signal itself needs to improve.
-
-- **Inner loop (minutes):** *action against the quality signal*. Agents or people
-  apply accepted recommendations: fixing work, improving docs, tightening tests,
-  updating the model, or using `/quality review` to supervise before accepting.
-
-The value is leverage: QUALITY.md helps teams **move quality judgment up the loop
-stack**, so inner-loop work starts from a grounded quality signal instead of
-ad hoc prompts, reviews, and handoffs.
+3. **Outer loop (daily/weekly):** improve with `/quality improve` to refine
+   `QUALITY.md` and compound learning.
 
 > The three-loop framing and the term *middle loop* draw on Annie Vella,
 > *[The Middle Loop](https://annievella.com/posts/the-middle-loop/)*. The
 > loop-engineering framing also draws on Latent Space,
 > *[Loopcraft: The Art of Stacking Loops](https://www.latent.space/p/ainews-loopcraft-the-art-of-stacking)*.
+
+## Why QUALITY.md
 
 ### Manage Quality Debt
 
@@ -163,7 +107,7 @@ Those cases do not share one checklist. They share the need to make "good"
 visible enough for people to evaluate, learn, and improve, and for coding agents
 and AI assistants to follow.
 
-[Install QUALITY.md](#install), then run `/quality setup` with your coding agent
+[Install QUALITY.md](install.md), then run `/quality setup` with your coding agent
 to create a `QUALITY.md` for your project.
 
 ## The QUALITY.md Loop
