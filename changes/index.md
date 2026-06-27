@@ -47,6 +47,10 @@ Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting
 template for a new one.
 
+- [0157 — Report Markdown Authoring](0157-report-markdown-authoring.md) -
+  centralize generated Evaluation report Markdown authoring without replacing
+  deterministic Go rendering (`Draft`).
+
 # Bundle
 
 - [schema.md](schema.md) - the concept types used in this bundle.

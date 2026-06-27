@@ -2,6 +2,14 @@
 
 ## 2026-06-27
 
+- **Draft**: Created
+  [0157 - Report Markdown Authoring](0157-report-markdown-authoring.md) with its
+  [functional spec](0157-report-markdown-authoring/spec.md). The case captures
+  the Markdown-authoring research conclusion: keep deterministic Go report
+  rendering, add a focused internal writer for report primitives, centralize
+  table/link/empty-cell escaping, and avoid broad parser or builder dependencies
+  unless design proves a concrete benefit.
+
 - **Done**: Implemented and archived
   [0156 - Report Gallery](archive/0156-report-gallery.md). Added a generated
   software-service report gallery under `examples/`, with a sample `QUALITY.md`,
