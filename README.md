@@ -84,7 +84,7 @@ aim at, how to judge progress, and when to raise the bar. QUALITY.md moves that
 judgment into a shared artifact that teams and agents can inspect, apply, and
 improve over time.
 
-QUALITY.md supports quality loops at three levels:
+The QUALITY.md loop stack:
 
 - **Outer loop — quality taste and model stewardship.** Teams and agents refine
   `QUALITY.md` from lower-loop observations, external feedback, stakeholder
@@ -102,9 +102,9 @@ QUALITY.md supports quality loops at three levels:
   updating the model, or using `/quality review` to supervise the work before
   accepting it.
 
-The value is leverage: when the inner loop gets faster, QUALITY.md helps teams
-move quality judgment up a loop instead of rediscovering it in every prompt,
-review, and handoff.
+The value is leverage: QUALITY.md helps teams **move quality judgment up the loop
+stack**, so inner-loop work starts from a grounded quality signal instead of
+ad hoc prompts, reviews, and handoffs.
 
 > The three-loop framing and the term *middle loop* draw on Annie Vella,
 > *[The Middle Loop](https://annievella.com/posts/the-middle-loop/)*. The
