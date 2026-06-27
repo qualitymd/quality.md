@@ -11,8 +11,8 @@ import {
   downloadGitHubAssetFile,
   downloadGitHubAssetText,
   expectedReleaseAssets,
-  githubJSON,
   githubMaybeJSON,
+  githubReleaseByTag,
   launcherPackage,
   output,
   packageVersionExists,
@@ -47,7 +47,7 @@ try {
 
 async function verifyGitHubRelease(tag, allowDraft) {
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
-  const release = await githubJSON(`/repos/qualitymd/quality.md/releases/tags/${tag}`, { token });
+  const release = await githubReleaseByTag(tag, { token });
   if (release.draft && !allowDraft) {
     throw new Error(`${tag} GitHub release is still draft`);
   }

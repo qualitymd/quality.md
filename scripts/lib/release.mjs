@@ -154,6 +154,37 @@ export async function githubMaybeJSON(path, opts = {}) {
   return { ok: response.ok, status: response.status, json };
 }
 
+export async function githubReleaseByTag(tag, { token = githubToken() } = {}) {
+  const release = await githubMaybeJSON(`/repos/${mainRepo}/releases/tags/${tag}`, { token });
+  if (release.ok) {
+    return release.json;
+  }
+  if (release.status !== 404) {
+    throw new Error(`could not read GitHub release for ${tag}: ${release.status}`);
+  }
+
+  // Draft releases created by GitHub can be visible in release listings before
+  // the tag-specific endpoint resolves them.
+  const releases = await githubJSON(`/repos/${mainRepo}/releases?per_page=100`, { token });
+  const draft = releases.find((candidate) => candidate.tag_name === tag);
+  if (draft) {
+    return draft;
+  }
+  throw new Error(`GitHub release ${tag} does not exist`);
+}
+
+export async function githubReleaseExists(tag, { token = githubToken() } = {}) {
+  try {
+    await githubReleaseByTag(tag, { token });
+    return true;
+  } catch (error) {
+    if (error.message === `GitHub release ${tag} does not exist`) {
+      return false;
+    }
+    throw error;
+  }
+}
+
 export async function downloadText(url, { token = githubToken() } = {}) {
   const response = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},

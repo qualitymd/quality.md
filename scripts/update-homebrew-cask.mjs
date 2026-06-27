@@ -3,10 +3,11 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { execFileSync } from "node:child_process";
 import {
   assertExpectedChecksums,
   downloadGitHubAssetText,
-  githubJSON,
+  githubReleaseByTag,
   parseChecksums,
   run,
   tapRepo,
@@ -24,9 +25,7 @@ try {
   const version = versionFromTag(tag);
   const tapToken = tokenEnv("HOMEBREW_TAP_GITHUB_TOKEN");
   const githubToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
-  const release = await githubJSON(`/repos/qualitymd/quality.md/releases/tags/${tag}`, {
-    token: githubToken,
-  });
+  const release = await githubReleaseByTag(tag, { token: githubToken });
   const checksumsAsset = release.assets.find((asset) => asset.name === "checksums.txt");
   if (!checksumsAsset) {
     throw new Error(`${tag} release is missing checksums.txt`);
@@ -43,10 +42,7 @@ function updateTap(version, token, checksums) {
   const dir = tempDir("qualitymd-tap-");
   try {
     const checkout = join(dir.path, "homebrew-tap");
-    const authHeader = `AUTHORIZATION: bearer ${token}`;
-    run("git", ["-c", `http.https://github.com/.extraheader=${authHeader}`, "clone", `https://github.com/${tapRepo}.git`, checkout], {
-      stdio: "ignore",
-    });
+    run("git", ["clone", `https://github.com/${tapRepo}.git`, checkout], { stdio: "ignore" });
     run("git", ["config", "user.name", "qualitymd-release"], { cwd: checkout, stdio: "ignore" });
     run("git", ["config", "user.email", "release@qualitymd.local"], { cwd: checkout, stdio: "ignore" });
 
@@ -73,12 +69,22 @@ function updateTap(version, token, checksums) {
 
     run("git", ["add", "Casks/qualitymd.rb"], { cwd: checkout });
     run("git", ["commit", "-m", `Update qualitymd cask to v${version}`], { cwd: checkout });
-    run("git", ["-c", `http.https://github.com/.extraheader=${authHeader}`, "push", "origin", "HEAD:main"], {
-      cwd: checkout,
-    });
+    gitWithAuth(token, ["push", "origin", "HEAD:main"], { cwd: checkout });
     console.log(`Homebrew cask updated for v${version}`);
   } finally {
     dir.remove();
+  }
+}
+
+function gitWithAuth(token, args, { cwd }) {
+  const auth = Buffer.from(`x-access-token:${token}`).toString("base64");
+  try {
+    execFileSync("git", ["-c", `http.https://github.com/.extraheader=AUTHORIZATION: basic ${auth}`, ...args], {
+      cwd,
+      stdio: "inherit",
+    });
+  } catch {
+    throw new Error(`authenticated git ${args[0]} failed`);
   }
 }
 

@@ -3,7 +3,7 @@
 
 import {
   githubJSON,
-  githubMaybeJSON,
+  githubReleaseExists,
   launcherPackage,
   mainRepo,
   npmUserConfig,
@@ -55,12 +55,8 @@ async function assertGitHubReleaseAbsent(tag) {
     throw new Error("GITHUB_TOKEN or GH_TOKEN is required for release preflight");
   }
   await githubJSON(`/repos/${mainRepo}`, { token });
-  const release = await githubMaybeJSON(`/repos/${mainRepo}/releases/tags/${tag}`, { token });
-  if (release.ok) {
+  if (await githubReleaseExists(tag, { token })) {
     throw new Error(`GitHub release ${tag} already exists`);
-  }
-  if (release.status !== 404) {
-    throw new Error(`could not verify GitHub release absence for ${tag}: ${release.status}`);
   }
 }
 

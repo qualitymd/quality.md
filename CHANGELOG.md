@@ -5,6 +5,30 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.25.2 - 2026-06-27
+
+### Packaging
+
+- Release Homebrew and verification scripts now discover draft GitHub releases
+  by listing releases when GitHub's tag-specific release endpoint returns 404,
+  fixing the `v0.25.1` draft-stage Homebrew failure.
+- The Homebrew updater now clones the public tap without using the write token
+  and keeps the authenticated push command from exposing token-bearing command
+  lines on local failures.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.2` continues to require the `qualitymd` CLI
+  `0.25.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.25.2`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.2`, requires `qualitymd >=0.25.0 <0.26.0`
+
 ## v0.25.1 - 2026-06-27
 
 ### /quality Skill

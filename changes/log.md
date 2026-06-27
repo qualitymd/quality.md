@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **In-Review**: Repaired
+  [0152 - Release Reliability](0152-release-reliability.md) after the
+  `v0.25.1` release workflow proved that GitHub's tag-specific release endpoint
+  can return 404 for draft releases. Release scripts now fall back to listing
+  releases by `tag_name`, the Homebrew updater avoids token-dependent clone, and
+  `v0.25.1` was manually verified and published after the tap repair.
+
 - **In-Review**: Completed implementation for
   [0152 - Release Reliability](0152-release-reliability.md). The release workflow
   now runs credential preflight, creates draft GitHub releases, publishes
