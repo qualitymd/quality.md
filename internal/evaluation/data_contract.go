@@ -219,7 +219,7 @@ func init() {
 			Description: "Analysis result for one Factor node.",
 			Object:      analysisResultContract(DataKindFactorAnalysis, "factorId", dataFactorID),
 			Example: func() map[string]any {
-				return scopedAnalysisExample(DataKindFactorAnalysis, "factorId", exampleFactorID())
+				return factorAnalysisExample(DataKindFactorAnalysis)
 			},
 		},
 		{

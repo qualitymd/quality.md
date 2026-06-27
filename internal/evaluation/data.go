@@ -1463,6 +1463,37 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 	return example
 }
 
+// factorAnalysisExample models an umbrella Factor — one with no direct
+// Requirements. Its localAnalysis records the empty status (there is no local
+// signal to analyze), while localAndDescendantAnalysis carries the child-Factor
+// roll-up. This is the case that makes the local vs local+descendant distinction
+// concrete; a leaf Factor's both-blocks-analyzed shape is mirrored by the Area
+// analysis example.
+func factorAnalysisExample(kind DataKind) map[string]any {
+	childRollupRef := routineRef(DataKindFactorAnalysis, map[string]any{"factorId": exampleChildFactorID()}, "localAndDescendantAnalysis")
+	return map[string]any{
+		"schemaVersion": SchemaVersion,
+		"kind":          string(kind),
+		"factorId":      exampleFactorID(),
+		"localAnalysis": map[string]any{
+			"status":       "empty",
+			"statusReason": "This Factor has no direct Requirements, so there is no local signal to analyze.",
+		},
+		"localAndDescendantAnalysis": map[string]any{
+			"status":           "analyzed",
+			"statusReason":     "Child Factor analyses were rolled up.",
+			"ratingLevelId":    RatingReference("target"),
+			"rationale":        "The child Factor roll-up satisfies the target criterion.",
+			"inputRefs":        []any{childRollupRef},
+			"ratingDrivers":    []any{map[string]any{"description": "The child Factor's roll-up is the binding input.", "effect": "supports target", "ratingLevelId": RatingReference("target"), "inputRefs": []any{childRollupRef}}},
+			"incompleteInputs": []any{map[string]any{"id": "missing-child", "description": "One child Factor analysis was unavailable.", "impact": "Roll-up is provisional."}},
+			"evaluationLimits": []any{exampleLimit("rollup-limit", "Only available child Factor analyses were synthesized.", "Confidence is limited.")},
+			"confidence":       "medium",
+			"confidenceReason": "Roll-up uses available child inputs only.",
+		},
+	}
+}
+
 func findingRankingExample() map[string]any {
 	return map[string]any{
 		"schemaVersion": SchemaVersion,
@@ -1481,8 +1512,14 @@ func findingRankingExample() map[string]any {
 				"tier":       "P3",
 				"rationale":  "The strength is useful context but less urgent than the gap.",
 			},
+			map[string]any{
+				"rank":       3,
+				"findingRef": routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[strength-002]"),
+				"tier":       "P4",
+				"rationale":  "Minor and not advice-driving; ranked at the lowest tier only because the ranking accounts for every finding.",
+			},
 		},
-		"rationale": "Findings are ordered by advice relevance, severity, rating influence, confidence, and model order.",
+		"rationale": "The ranking accounts for every Requirement Finding; tier and order express relative priority, and the lowest-tier entries are not dropped.",
 	}
 }
 

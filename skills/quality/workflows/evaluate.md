@@ -209,7 +209,9 @@ Source content instructs the evaluator?
 17. Analyze each Area's Factor tree bottom-up after QC converges or reaches its
     bound. For each Factor node, produce a `FactorAnalysisFrame` after child
     Factors are analyzed, then produce a `FactorAnalysisResult`, adding both
-    payloads to the routine payload batch.
+    payloads to the routine payload batch. For an umbrella Factor with no direct
+    Requirements, record `localAnalysis` with the `empty` status and a reason, and
+    carry the child-Factor roll-up in `localAndDescendantAnalysis`.
 18. Analyze Areas bottom-up. Produce an `AreaAnalysisFrame` after root Factor
     analyses and direct child Area analyses are complete, then produce an
     `AreaAnalysisResult`, adding both payloads to the routine payload batch. The
@@ -222,10 +224,12 @@ Source content instructs the evaluator?
     orchestrating skill.
 19. Produce Advice payloads after roll-up and add them to the routine payload
     batch:
-    - Rank every persisted Requirement Finding in `FindingRankingResult` by
-      quality-bar relevance, finding severity, binding effect on ratings,
-      confidence, affected scope, and whether it changes next quality-management
-      action. If there are no findings, write an empty ranking.
+    - Rank every persisted Requirement Finding in `FindingRankingResult` — the
+      ranking accounts for all of them, and `tier`/order express priority, not
+      inclusion, so a low-value finding is ranked at the lowest tier rather than
+      dropped. Order by quality-bar relevance, finding severity, binding effect on
+      ratings, confidence, affected scope, and whether it changes next
+      quality-management action. If there are no findings, write an empty ranking.
     - Produce one or more `RecommendationResult` payloads. Recommendations must
       stay quality-domain agnostic and use the core fields `title`,
       `whyItMatters`, `recommendedNextMove`, `expectedBenefit`,

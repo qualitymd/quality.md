@@ -81,6 +81,11 @@ that exact Factor node and direct child Factor Analysis Results. It **MUST NOT**
 include transitive descendant Factor refs because each child result already
 accounts for its descendants.
 
+When a Factor has no direct Requirements (an umbrella Factor), its Factor
+Analysis Result **MUST** record `localAnalysis` with the `empty` status and a
+reason, because there is no local signal to analyze; the Factor's
+`localAndDescendantAnalysis` carries the roll-up of its child Factor analyses.
+
 ## Requirement Flow
 
 A Requirement **MUST** be framed before evidence assessment.
@@ -124,8 +129,11 @@ Advice **MUST** run after Area analysis has completed and before output assembly
 or report generation.
 
 `rankFindings` **MUST** consider every Requirement Finding produced in the
-effective run data and write one `FindingRankingResult`. If the evaluation
-produced no findings, the ranking result **MUST** record an empty ranking.
+effective run data and write one `FindingRankingResult`. The ranking's tiers and
+order express relative priority; no Requirement Finding is omitted from the
+ranking, so a low-priority finding is ranked at a low tier rather than dropped.
+If the evaluation produced no findings, the ranking result **MUST** record an
+empty ranking.
 
 `recommend` **MUST** produce at least one `RecommendationResult`. When the
 evaluation found no concrete improvement work, the recommendation **MUST** be

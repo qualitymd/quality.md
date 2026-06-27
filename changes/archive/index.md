@@ -650,3 +650,10 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0152 — Release Reliability](0152-release-reliability.md) - hardens release
   preflight, draft-first publication, Homebrew/npm split jobs, verification, and
   repair behavior after the v0.25.0 release failures (`Done`).
+- [0153 — Evaluate ranking and umbrella-factor authoring clarity](0153-evaluate-ranking-and-umbrella-clarity.md)
+  - removes two `evaluate` authoring ambiguities a feedback log surfaced: the
+    finding ranking now leads with completeness (tiers express priority, no
+    finding dropped) in skill guidance, the example, and the protocol/payload-kinds
+    rules, and the single `FactorAnalysisResult` example becomes the worked
+    umbrella case (empty `localAnalysis`, child-Factor roll-up in
+    `localAndDescendantAnalysis`) earned by a new Factor Traversal rule (`Done`).

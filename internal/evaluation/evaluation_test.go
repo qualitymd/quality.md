@@ -1095,6 +1095,63 @@ func TestDataExamplesCoverAllKindsAndReferenceShapes(t *testing.T) {
 	}
 }
 
+func TestFindingRankingExampleRanksEveryFindingIncludingTail(t *testing.T) {
+	raw, err := DataExample(DataKindFindingRanking)
+	if err != nil {
+		t.Fatalf("DataExample(%s) error = %v", DataKindFindingRanking, err)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(raw, &payload); err != nil {
+		t.Fatalf("DataExample(%s) JSON error = %v\n%s", DataKindFindingRanking, err, raw)
+	}
+	ordered, ok := payload["orderedFindings"].([]any)
+	if !ok || len(ordered) < 2 {
+		t.Fatalf("finding-ranking example must rank more than one finding, got %v", payload["orderedFindings"])
+	}
+	hasTail := false
+	for _, entry := range ordered {
+		obj, _ := entry.(map[string]any)
+		if obj["tier"] == "P4" {
+			hasTail = true
+		}
+	}
+	if !hasTail {
+		t.Fatalf("finding-ranking example must include a lowest-tier (P4) tail entry to show completeness, got %s", raw)
+	}
+}
+
+func TestFactorAnalysisExampleModelsUmbrellaFactor(t *testing.T) {
+	raw, err := DataExample(DataKindFactorAnalysis)
+	if err != nil {
+		t.Fatalf("DataExample(%s) error = %v", DataKindFactorAnalysis, err)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal(raw, &payload); err != nil {
+		t.Fatalf("DataExample(%s) JSON error = %v\n%s", DataKindFactorAnalysis, err, raw)
+	}
+
+	local, _ := payload["localAnalysis"].(map[string]any)
+	if local["status"] != "empty" {
+		t.Fatalf("umbrella factor-analysis example localAnalysis.status = %v, want empty", local["status"])
+	}
+	if _, hasInputs := local["inputRefs"]; hasInputs {
+		t.Fatalf("umbrella factor-analysis example localAnalysis must have no Requirement inputs, got %s", raw)
+	}
+
+	overall, _ := payload["localAndDescendantAnalysis"].(map[string]any)
+	if overall["status"] != "analyzed" {
+		t.Fatalf("umbrella factor-analysis example localAndDescendantAnalysis.status = %v, want analyzed", overall["status"])
+	}
+	inputRefs, ok := overall["inputRefs"].([]any)
+	if !ok || len(inputRefs) == 0 {
+		t.Fatalf("umbrella factor-analysis roll-up must carry inputRefs, got %s", raw)
+	}
+	ref, _ := inputRefs[0].(map[string]any)
+	if ref["kind"] != string(DataKindFactorAnalysis) {
+		t.Fatalf("umbrella factor-analysis roll-up input must reference a child FactorAnalysisResult, got %v", ref["kind"])
+	}
+}
+
 func jsonArrayContains(values []any, want string) bool {
 	for _, value := range values {
 		if value == want {

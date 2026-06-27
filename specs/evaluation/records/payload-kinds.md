@@ -101,8 +101,9 @@ include:
 - `rationale`.
 
 `FindingRankingResult.orderedFindings` **MUST** account for every Requirement
-Finding in the effective run data exactly once. If no findings were produced,
-the array **MUST** be empty.
+Finding in the effective run data exactly once. The `tier` and order express
+relative priority, not inclusion: a low-priority finding is ranked at a low tier,
+never omitted. If no findings were produced, the array **MUST** be empty.
 
 `RecommendationResult` **MUST** include:
 
@@ -247,7 +248,9 @@ least one Requirement Finding.
 
 A `FactorAnalysisResult` or `AreaAnalysisResult` analysis scope with
 `status: analyzed` and `ratingLevelId` **MUST** include non-empty
-`ratingDrivers`.
+`ratingDrivers`. A `FactorAnalysisResult` for a Factor with no direct
+Requirements **MUST** record `localAnalysis` with `status: empty`; its
+`localAndDescendantAnalysis` carries the child-Factor roll-up.
 
 Each Rating Driver's `inputRefs` **MUST** resolve to persisted routine outputs
 in the run. Requirement Rating Drivers **SHOULD** select the specific

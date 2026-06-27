@@ -3,6 +3,31 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0153 - Evaluate ranking and umbrella-factor authoring clarity](archive/0153-evaluate-ranking-and-umbrella-clarity.md).
+  The `evaluate` finding-ranking guidance, example, and protocol/payload-kinds
+  rules now lead with completeness (tiers express priority, no finding dropped),
+  and the single `FactorAnalysisResult` example models the umbrella case (empty
+  `localAnalysis`, child-Factor roll-up in `localAndDescendantAnalysis`) earned by
+  a new Factor Traversal rule. `go test ./...` passes; examples verified via the
+  CLI. Moved the case into [`archive/`](archive/index.md) and removed it from the
+  bundle [index](index.md).
+
+- **Design**: Wrote the
+  [design doc](archive/0153-evaluate-ranking-and-umbrella-clarity/design.md) for
+  [0153 - Evaluate ranking and umbrella-factor authoring clarity](archive/0153-evaluate-ranking-and-umbrella-clarity.md)
+  and advanced it to `Design`. The single `FactorAnalysisResult` example becomes
+  the worked umbrella case; the finding-ranking fix combines a reordered skill
+  instruction with a low-value tail entry in the example.
+
+- **Draft**: Created
+  [0153 - Evaluate ranking and umbrella-factor authoring clarity](archive/0153-evaluate-ranking-and-umbrella-clarity.md)
+  with its [functional spec](archive/0153-evaluate-ranking-and-umbrella-clarity/spec.md)
+  to remove two `evaluate` authoring ambiguities a feedback log surfaced:
+  finding-ranking completeness (tiers express priority, no finding omitted) and
+  umbrella-factor analysis scopes (empty `localAnalysis`, child-Factor roll-up in
+  `localAndDescendantAnalysis`).
+
+- **Done**: Implemented and archived
   [0152 - Release Reliability](archive/0152-release-reliability.md). Release
   publishing now has credential preflight, draft-first GitHub Releases,
   independent Homebrew and npm jobs, channel verification before publication,
