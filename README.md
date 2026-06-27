@@ -43,11 +43,11 @@ Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailore
 
 #### The Inner Loop (continuously)
 
-3. **Act** by implementing or handing off recommendations to people, agents, or other agent loops.
+3. **Act:** implement or delegate handoff-ready recommendations to people, agents, or other agent loops.
 
 #### The Outer Loop (daily/weekly)
 
-4. **Outer loop (daily/weekly):** improve with `/quality improve` to refine
+4. **Improve:** by invoking `/quality improve` to refine
    `QUALITY.md` and compound learning.
 
 > The three-loop framing and the term *middle loop* draw on Annie Vella,
