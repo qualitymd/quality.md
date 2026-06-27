@@ -67,24 +67,29 @@ its canonical data path without caller-supplied path flags.
 Status-bearing outputs **MUST** distinguish completed, incomplete, empty, and
 blocked states using the status vocabulary defined by the routine contract.
 
-## Area Findings
+## Finding Core
 
-`AreaAnalysisResult` **MAY** include `findings`, a list of Area Finding objects
-scoped to that payload's `areaId`.
+`RequirementAssessmentResult.findings[]` and `AreaAnalysisResult.findings[]`
+**MUST** use a shared Finding Core.
 
-Each Area Finding object **MUST** include:
+Each Finding Core object **MUST** include:
 
 - `id`;
 - `type`;
 - `severity`;
 - `confidence`;
-- `summary`; and
-- non-empty `inputRefs`.
+- `statement`;
+- `condition`;
+- non-empty `criteria`;
+- `cause`;
+- `effect`; and
+- non-empty `evidence`.
 
-Each Area Finding object **MAY** include `rationale` and
-`factorRelationships`.
+Finding `id` values are payload-local. A finding reference outside the owning
+payload **MUST** use a routine reference plus `selector`, for example
+`findings[gap-001]`.
 
-Area Finding `type` **MUST** be one of:
+Finding `type` **MUST** be one of:
 
 - `strength`
 - `gap`
@@ -92,22 +97,73 @@ Area Finding `type` **MUST** be one of:
 - `unknown`
 - `note`
 
-Area Finding `severity` **MUST** be one of:
+Finding `severity` **MUST** be one of:
 
 - `critical`
 - `high`
 - `medium`
 - `low`
 
-Informational observations use Area Finding `type: note`; `info` is not a
-severity value.
+Informational observations use Finding `type: note`; `info` is not a severity
+value.
 
-Area Finding `confidence` **MUST** be one of:
+Finding `confidence` **MUST** be one of:
 
 - `high`
 - `medium`
 - `low`
 - `none`
+
+Each `criteria` entry **MUST** include:
+
+- `requirementId`;
+- `ratingLevelId`; and
+- `criterion`.
+
+Each `criteria` entry **MAY** include `rationale`.
+
+The `cause` object **MUST** include `status` and `statement`. Cause `status`
+**MUST** be one of:
+
+- `verified`
+- `plausible`
+- `not_assessed`
+- `not_applicable`
+
+The `cause` object **MAY** include `rationale` and `evidence`.
+
+The `effect` object **MUST** include `statement`. The `effect` object **MAY**
+include `rationale` and `ratingEffect`.
+
+Each `evidence` entry **MUST** include `sourceRef` and `statement`. Each
+`evidence` entry **MAY** include `rationale`.
+
+Requirement Findings **MAY** include `candidateActions`, a list of
+finding-local candidate action objects. Area Findings **MUST NOT** include
+`candidateActions`.
+
+Each candidate action object **MUST** include:
+
+- `id`; and
+- `description`.
+
+Each candidate action object **MAY** include `rationale`.
+
+Candidate action `id` values **MUST** be unique within the containing Finding.
+
+Finding objects **MUST NOT** include legacy top-level `description`, `summary`,
+`rationale`, or `actions` fields. Rationale belongs on the specific nested field
+it explains. `actions` is the legacy candidate action field and is not accepted.
+
+## Area Findings
+
+`AreaAnalysisResult` **MAY** include `findings`, a list of Area Finding objects
+scoped to that payload's `areaId`.
+
+Each Area Finding object **MUST** include the Finding Core fields plus non-empty
+`inputRefs`.
+
+Each Area Finding object **MAY** include `factorRelationships`.
 
 Each `factorRelationships` entry **MUST** include `factorId` and
 `relationship`. The `factorId` **MUST** resolve to a Factor declared in the
@@ -127,3 +183,5 @@ within the same Area analysis result.
 Area Findings **MUST NOT** carry recommendation, impact, importance, priority,
 effort, benefit, ROI, action, or global-rank fields. Those concepts belong to a
 later advice or cross-evaluation ranking contract, not this payload kind.
+Finding `effect` is allowed because it explains rating or quality consequence;
+it is not a recommendation, priority, or ranking field.

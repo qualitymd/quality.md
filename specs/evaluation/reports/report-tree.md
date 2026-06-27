@@ -150,7 +150,7 @@ Requirement reports **MUST** include:
 - finding detail sections; and
 - unknowns and missing evidence.
 
-Finding detail sections **MUST NOT** render finding-local candidate actions in
+Finding detail sections **MUST NOT** render finding-local `candidateActions` in
 Evaluation v0. Candidate actions persist in `data/` as raw material for a later
 Advise phase; presenting them would surface generated recommendations, which v0
 forbids.
@@ -162,6 +162,10 @@ Reports **MUST** render empty tables with explicit empty-state rows.
 Area reports **MUST** render a `Findings` section from
 `AreaAnalysisResult.findings`. When an Area has no Area Findings, the section
 **MUST** render an explicit empty-state row.
+
+Requirement, Area, and Factor report Finding sections **MUST** render the same
+list columns: `ID`, `Statement`, `Type`, `Severity`, `Confidence`, `Effect`, and
+`Cause`.
 
 Area report Findings **MUST** be sorted by:
 
@@ -184,9 +188,16 @@ Factor report Findings **MUST** be sorted by:
 4. `confidence`, in this order: `high`, `medium`, `low`, `none`; and
 5. original payload order.
 
+Finding detail sections **MUST** render the Finding Core in this order:
+condition, criteria, cause, effect, and evidence. Area and Factor Finding
+details **MUST** also render relationships or inputs after the core details when
+present. Requirement Finding details **MUST NOT** render `candidateActions` in
+Evaluation v0.
+
 Area and Factor report Finding sections **MUST NOT** render recommendations,
-impact, priority, effort, benefit, ROI, action fields, or global top-finding
-rankings.
+priority, effort, benefit, ROI, `candidateActions`, or global top-finding
+rankings. Finding `effect` **MAY** render because it explains rating or quality
+consequence, not an action or ranking.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Area headers should summarize

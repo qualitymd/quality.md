@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.21.0 <0.22.0.
+compatibility: Requires qualitymd CLI >=0.22.0 <0.23.0.
 metadata:
-  version: "0.21.0"
-  requires-qualitymd-cli: ">=0.21.0 <0.22.0"
+  version: "0.22.0"
+  requires-qualitymd-cli: ">=0.22.0 <0.23.0"
 ---
 
 ## Purpose
@@ -329,6 +329,45 @@ Assess every in-scope Requirement against a full read of the in-scope Area
 evidence or explicitly recorded as not assessed with a reason. The report must
 state anything not assessed so a limited run never reads as whole coverage.
 
+Write every Requirement Finding and Area Finding with the shared Finding Core:
+`id`, `type`, `severity`, `confidence`, `statement`, `condition`, `criteria`,
+`cause`, `effect`, and `evidence`. Use short payload-local IDs such as
+`gap-001`; do not use semantic slugs or treat finding IDs as durable cross-run
+identifiers. Reference findings from other payloads only through `inputRefs`
+with a selector such as `findings[gap-001]`.
+
+Finding fields have distinct jobs:
+
+- `statement`: one short claim suitable for report tables.
+- `condition`: the observed state or missing-evidence state.
+- `criteria`: the Requirement and applied Rating Level criterion being judged.
+- `cause`: the supported cause posture; use `verified`, `plausible`,
+  `not_assessed`, or `not_applicable`.
+- `effect`: the quality or rating consequence, not a recommendation.
+- `evidence`: checkable source references and evidence statements.
+
+Put rationale on the nested field it explains (`criteria[].rationale`,
+`cause.rationale`, `effect.rationale`, or `evidence[].rationale`), not as a
+top-level finding rationale. Do not write legacy finding `description` or
+`summary` fields.
+
+Classify finding types by analysis pattern:
+
+- `gap`: observed condition falls short of declared criteria; include the unmet
+  criterion and rating effect.
+- `risk`: observed condition could plausibly cause future quality loss; include
+  the plausible path and confidence limit.
+- `strength`: observed condition supports or exceeds criteria; `cause.status`
+  can be `not_applicable`.
+- `unknown`: evidence needed for judgment is missing, inaccessible, stale, or
+  ambiguous; name the blocked criterion or confidence limit.
+- `note`: relevant context worth preserving that does not drive a rating by
+  itself.
+
+Never set `cause.status: verified` unless the finding evidence directly supports
+the cause statement. When a gap or risk has enough evidence for condition and
+effect but not cause, use `cause.status: not_assessed` rather than guessing.
+
 Where the harness exposes a subagent capability, fan out independent collection
 and QC work by Area or Requirement concurrently. Where it does not, do the same
 coverage and QC serially. Subagents receive the resolved scope, relevant
@@ -346,6 +385,10 @@ supports it:
   binds any roll-up rating and every low-confidence finding. If a binding finding
   fails re-check, correct the finding and re-derive affected ratings before
   reporting.
+- **Finding shape:** check that every binding finding has a short claim-like
+  `statement`, evidence-backed `condition`, model-grounded `criteria`, cause
+  posture that does not overclaim, rating-relevant `effect`, checkable evidence
+  locators, and a type that matches the semantics above.
 - **Completeness sweep:** check that every in-scope Requirement reached a rated
   or reasoned not-assessed state, re-examine every Area or Requirement whose
   first pass produced only `strength` findings or no findings with an
@@ -365,8 +408,9 @@ scoped to the containing Area analysis, may relate only to Factors declared in
 that Area, and use the shared finding `type`, `severity`, and `confidence`
 vocabulary. Use `severity` only as `critical`, `high`, `medium`, or `low`; use
 `type: note` for informational observations rather than `severity: info`. Do not
-include recommendations, impact, priority, effort, benefit, ROI, actions, or
-global top-finding rankings on Area Findings.
+include recommendations, priority, effort, benefit, ROI, `candidateActions`, or
+global top-finding rankings on Area Findings. Finding `effect` is allowed
+because it explains rating or quality consequence.
 
 ## Workflow Dispatch
 
@@ -384,15 +428,19 @@ improve from, or hand off an evaluation recommendation, read
 ## Workspace and Config
 
 Resolve a QUALITY.md workspace from the selected model file. The workspace
-includes the selected model path, repository root, config file, quality data
-directory, evaluation directory, and quality log directory.
+includes the selected model path, workspace root directory containing the model,
+repository root, config file, quality data directory, evaluation directory,
+quality log directory, and workflow feedback-log directory.
 
-The quality data directory defaults to `.quality/`.
+The quality data directory defaults to `.quality/` under the workspace root.
+Relative tooling paths are model-relative: resolve them from the directory
+containing the selected `QUALITY.md`. The repository root is only the containment
+boundary.
 
 The selected `QUALITY.md` may declare root `config` frontmatter pointing to the
 workspace config file. When present, it must be a non-empty scalar
-repository-relative path. Reject absolute paths and paths that escape the
-repository. When absent, use `.quality/config.yaml`.
+model-relative path. Reject absolute paths and paths that escape the repository.
+When absent, use `.quality/config.yaml` under the workspace root.
 
 Supported config now:
 
@@ -404,7 +452,7 @@ Rules:
 
 - Default to `.quality/evaluations/` when the file or key is absent.
 - Treat `evaluationDir` as the parent directory for numbered run folders.
-- Require a repository-relative normalized path.
+- Require a model-relative normalized path.
 - Reject absolute paths and paths that escape the repository.
 - Warn and ignore unknown keys.
 

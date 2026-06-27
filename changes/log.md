@@ -1,5 +1,78 @@
 # Changes Update Log
 
+## 2026-06-27
+
+- **Done**: Implemented and archived
+  [0136 - Candidate Actions Payload](archive/0136-candidate-actions-payload.md).
+  Requirement Finding payloads now use `candidateActions` instead of legacy
+  `actions`; each candidate action carries a local `id`, `description`, and
+  optional `rationale`; validation rejects legacy `actions`, duplicate
+  candidate action IDs within a Finding, missing fields, and candidate actions
+  on Area Findings. Generated examples, schema, durable specs, and `/quality`
+  runtime guidance are aligned.
+
+- **Design**: Created
+  [0136 - Candidate Actions Payload](archive/0136-candidate-actions-payload.md)
+  with its
+  [functional spec](archive/0136-candidate-actions-payload/spec.md) and
+  [design doc](archive/0136-candidate-actions-payload/design.md). The case
+  renames finding-local `actions` to `candidateActions`, adds a local candidate
+  action ID, preserves the non-rendered raw-material boundary, and defers
+  recommendation/advice modeling.
+
+- **Done**: Implemented and archived
+  [0135 - Structured Finding Core](archive/0135-structured-finding-core.md).
+  Requirement and Area Findings now share a structured Finding Core with
+  statement, condition, criteria, cause, effect, and evidence. Evaluation data
+  validation rejects legacy finding `description`, `summary`, and top-level
+  `rationale` fields; examples and generated schema are updated; Requirement,
+  Area, and Factor reports render one findings table/detail structure; durable
+  specs and `/quality` runtime guidance now require type-specific structured
+  finding analysis. `go test ./...` passes.
+
+- **In-Review**: Completed implementation for
+  [0135 - Structured Finding Core](archive/0135-structured-finding-core.md).
+  Updated the Evaluation data contract, examples, generated schema, report
+  renderer, tests, format spec, durable Evaluation specs, `/quality` skill spec,
+  runtime skill guidance, and scaffold comment. `go test ./...` passes.
+
+- **Done**: Implemented and archived
+  [0134 - Model-relative workspace paths](archive/0134-model-relative-workspace-paths.md).
+  Workspace config and artifacts now resolve relative to the selected
+  `QUALITY.md`, while the Git root remains the containment boundary. Evaluation
+  list/latest/data/status/report paths now accept `--model` for nested
+  workspaces, status and lint use the model-relative contract, and durable CLI,
+  skill, and install docs are aligned. Focused verification passes for
+  `go test ./internal/status ./internal/cli ./internal/lint` and
+  `go test ./internal/evaluation -run 'TestCreateRun|TestListRunsIgnoresUnrecognizedRunFolders|TestRunNameRecognition'`.
+
+- **In-Progress**: Advanced
+  [0135 - Structured Finding Core](archive/0135-structured-finding-core.md). Functional
+  spec and design doc are settled; implementation is beginning across the
+  Evaluation data contract, examples, generated schema, reports, durable specs,
+  tests, and bundled skill runtime guidance.
+
+- **Design**: Created
+  [0135 - Structured Finding Core](archive/0135-structured-finding-core.md) with its
+  [functional spec](archive/0135-structured-finding-core/spec.md) and
+  [design doc](archive/0135-structured-finding-core/design.md). The case aligns
+  Requirement and Area Findings around a shared Finding Core: statement,
+  condition, criteria, cause, effect, and evidence; preserves payload-local
+  finding IDs; unifies Requirement, Area, and Factor report rendering; and
+  updates `/quality` skill guidance for type-specific finding analysis. Code and
+  durable spec/doc updates have not started.
+
+- **Design**: Created
+  [0134 - Model-relative workspace paths](archive/0134-model-relative-workspace-paths.md)
+  with its
+  [functional spec](archive/0134-model-relative-workspace-paths/spec.md) and
+  [design doc](archive/0134-model-relative-workspace-paths/design.md). The case
+  makes the selected `QUALITY.md` the anchor for workspace config and artifact
+  paths, retains the Git repository root as a containment boundary, and adds
+  `--model` to evaluation history/latest commands so nested workspaces do not
+  depend on cwd or repo-root defaults. Code and durable spec/doc updates had not
+  started.
+
 ## 2026-06-26
 
 - **Done**: Implemented and archived

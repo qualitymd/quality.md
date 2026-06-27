@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Specification version:** 0.5 (Draft)
+**Specification version:** 0.6 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -120,8 +120,10 @@ references, and optional per-level criterion overrides.
 stated inline or as a reference to an entity that defines those means. An
 Assessment produces Findings.
 
-**Finding**: A single observation produced by an Assessment. A Finding records
-what was observed and is not itself rated.
+**Finding**: A single observation produced by an Assessment or Area analysis. A
+Finding records a short `statement`, observed `condition`, applied `criteria`,
+cause posture, quality or rating `effect`, and evidence. A Finding is not itself
+rated.
 
 **Area Finding**: A synthesized Finding produced by Area analysis. An Area
 Finding summarizes one or more Requirement Findings or analysis observations for
@@ -479,14 +481,29 @@ For each Requirement, the evaluator applies the Requirement's Assessment to the
 Area Source, producing zero or more Requirement Findings, Unknowns, and
 Evaluation Limits.
 
-Requirement Findings are evidence-backed assessment observations. Individual
-Requirement Findings are not Rating Results.
+Requirement Findings are evidence-backed assessment observations. Each Finding
+records:
 
-A Requirement Finding MAY carry one or more non-binding **candidate actions** —
-finding-local remediation leads captured where the evidence is richest.
-Candidate actions are raw material, not recommendations: they are not
-synthesized, prioritized, or selected, and they are distinct from the
-recommendations the Advice phase produces.
+- `statement`: the short claim a report can list;
+- `condition`: the observed state or missing-evidence state;
+- `criteria`: one or more Model criteria the observation is judged against;
+- `cause`: the supported cause posture, one of verified, plausible, not
+  assessed, or not applicable;
+- `effect`: the quality or rating consequence; and
+- `evidence`: the evidence entries supporting the observation.
+
+Individual Requirement Findings are not Rating Results.
+
+A Finding MUST NOT claim a verified cause unless the finding evidence directly
+supports that cause. A Finding can be rating-relevant with cause not assessed
+when its condition, criteria, effect, and evidence are sufficient for judgment.
+
+A Requirement Finding MAY carry `candidateActions`: one or more non-binding
+candidate action objects with run-local IDs and descriptions. Candidate actions
+are finding-local remediation leads captured where the evidence is richest. They
+are raw material, not recommendations: they are not synthesized, prioritized, or
+selected, and they are distinct from the recommendations the Advice phase
+produces.
 
 ### Rate Requirement Assessments
 
@@ -542,12 +559,14 @@ infer a roll-up rating, the roll-up outcome MUST be `not assessed`.
 Each roll-up SHOULD include a rationale naming the observations, constraints,
 or gaps most responsible for the outcome.
 
-Area Findings summarize material analysis observations for an Area. They are
-scoped by their containing Area analysis result, share the Finding type,
-severity, and confidence vocabularies used by Requirement Findings, and MAY cite
-one or more Factors declared in that Area with a relationship label. Area
-Findings MUST NOT carry recommendations, impact, priority, effort, benefit, ROI,
-or global ranking fields.
+Area Findings summarize material analysis observations for an Area. They use the
+same Finding structure as Requirement Findings, are scoped by their containing
+Area analysis result, share the Finding type, severity, and confidence
+vocabularies used by Requirement Findings, and MAY cite one or more Factors
+declared in that Area with a relationship label. Area Findings MUST NOT carry
+`candidateActions`, recommendations, priority, effort, benefit, ROI, or global
+ranking fields. A Finding's `effect` explains why the observation matters to
+quality or rating; it is not a recommendation or ranking field.
 
 Evaluation Finding severity values are `critical`, `high`, `medium`, and `low`.
 Informational observations use Finding `type: note`; `info` is not a severity

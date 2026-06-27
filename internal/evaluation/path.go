@@ -33,10 +33,23 @@ func ResolveRepoPath(repoRoot, value string) (string, string, error) {
 }
 
 // ResolveDir resolves the configured evaluation directory from a repository
-// root, returning both absolute and repository-relative paths.
+// root, returning both absolute and model-relative paths for the root model.
 func ResolveDir(repoRoot, override string) (string, string, error) {
 	ws, err := workspace.Resolve(workspace.Options{
 		RepoRoot:              repoRoot,
+		EvaluationDirOverride: override,
+	})
+	if err != nil {
+		return "", "", err
+	}
+	return ws.Evaluations.Abs, ws.Evaluations.Rel, nil
+}
+
+// ResolveDirForModel resolves the configured evaluation directory for a
+// selected model, returning absolute and model-relative paths.
+func ResolveDirForModel(model, override string) (string, string, error) {
+	ws, err := workspace.Resolve(workspace.Options{
+		Model:                 model,
 		EvaluationDirOverride: override,
 	})
 	if err != nil {
@@ -192,4 +205,19 @@ func displayRunPath(runAbs string) string {
 		}
 	}
 	return filepath.ToSlash(runAbs)
+}
+
+func resolveModelRelativeRun(model, runPath string) (string, string, error) {
+	ws, err := workspace.Resolve(workspace.Options{Model: model})
+	if err != nil {
+		return "", "", err
+	}
+	if filepath.IsAbs(runPath) {
+		return runPath, displayRunPath(runPath), nil
+	}
+	abs, rel, _, err := workspace.ResolveWorkspacePath(ws.RepoRoot.Abs, ws.WorkspaceRoot.Abs, runPath)
+	if err != nil {
+		return "", "", err
+	}
+	return abs, rel, nil
 }

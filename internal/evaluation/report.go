@@ -21,7 +21,13 @@ type BuildReportReceipt struct {
 
 // BuildReport renders the Evaluation report tree and output result for a run.
 func BuildReport(path string) (*BuildReportReceipt, error) {
-	return buildEvaluationReport(path)
+	return buildEvaluationReport(path, "")
+}
+
+// BuildReportWithDisplay renders the Evaluation report tree and uses displayPath
+// in command receipts.
+func BuildReportWithDisplay(path, displayPath string) (*BuildReportReceipt, error) {
+	return buildEvaluationReport(path, displayPath)
 }
 
 func nonReportableRunError(runPath string, gap RunGap) error {

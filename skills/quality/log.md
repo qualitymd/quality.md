@@ -1,5 +1,18 @@
 # /quality Runtime Skill Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0134 - Model-relative
+  workspace paths.
+  Runtime workspace guidance now resolves config, `.quality/`, Evaluation
+  history, quality logs, and workflow feedback logs relative to the selected
+  `QUALITY.md`, with the Git root retained as the containment boundary.
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0136 - Candidate Actions
+  Payload.
+  Runtime Area Finding guidance now excludes `candidateActions` by name, keeping
+  candidate actions Requirement Finding-local raw material for later Advice.
+
 ## 2026-06-26
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0132 - Remove info finding

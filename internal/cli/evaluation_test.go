@@ -178,13 +178,69 @@ func TestEvaluationListAndLatestStatusCommands(t *testing.T) {
 		t.Fatalf("status stdout = %s, want latest status", out.String())
 	}
 	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-full-eval"`) {
-		t.Fatalf("status stdout = %s, want repository-relative run path", out.String())
+		t.Fatalf("status stdout = %s, want model-relative run path", out.String())
 	}
 	if !strings.Contains(out.String(), `"kind": "missing-evaluation-data"`) {
 		t.Fatalf("status stdout = %s, want documented empty-run gap", out.String())
 	}
 	if strings.Contains(out.String(), repo) {
 		t.Fatalf("status stdout = %s, want no absolute repository path", out.String())
+	}
+}
+
+func TestEvaluationModelFlagAnchorsNestedRunDiscovery(t *testing.T) {
+	repo := testEvaluationRepoAt(t, "packages/api/QUALITY.md")
+	if _, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "packages/api/QUALITY.md"}); err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	oldwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Getwd() error = %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(oldwd); err != nil {
+			t.Fatalf("restore cwd: %v", err)
+		}
+	})
+	if err := os.Chdir(repo); err != nil {
+		t.Fatalf("chdir repo: %v", err)
+	}
+
+	cmd := newRootCmd()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "list", "--model", "packages/api/QUALITY.md", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("list Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-full-eval"`) {
+		t.Fatalf("list stdout = %s, want model-relative run path", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "status", "--latest", "--model", "packages/api/QUALITY.md", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("status Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-full-eval"`) ||
+		!strings.Contains(out.String(), `qualitymd evaluation data set --model packages/api/QUALITY.md .quality/evaluations/0001-full-eval`) {
+		t.Fatalf("status stdout = %s, want model-relative status and next action", out.String())
+	}
+
+	cmd = newRootCmd()
+	out.Reset()
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{"evaluation", "data", "list", "--latest", "--model", "packages/api/QUALITY.md", "--json"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("data list Execute() error = %v", err)
+	}
+	if !strings.Contains(out.String(), `"path": ".quality/evaluations/0001-full-eval"`) {
+		t.Fatalf("data list stdout = %s, want model-relative run path", out.String())
 	}
 }
 
@@ -220,11 +276,20 @@ func TestEvaluationOldRecordCommandsAreRejected(t *testing.T) {
 
 func testEvaluationRepo(t *testing.T) string {
 	t.Helper()
+	return testEvaluationRepoAt(t, "QUALITY.md")
+}
+
+func testEvaluationRepoAt(t *testing.T, modelPath string) string {
+	t.Helper()
 	repo := t.TempDir()
 	if err := os.Mkdir(filepath.Join(repo, ".git"), 0o755); err != nil {
 		t.Fatalf("mkdir .git: %v", err)
 	}
-	if err := os.WriteFile(filepath.Join(repo, "QUALITY.md"), []byte(`---
+	path := filepath.Join(repo, filepath.FromSlash(modelPath))
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatalf("mkdir model dir: %v", err)
+	}
+	if err := os.WriteFile(path, []byte(`---
 title: Test model
 ratingScale:
   - level: target
@@ -240,7 +305,7 @@ requirements:
     assessment: Inspect tests.
 ---
 `), 0o644); err != nil {
-		t.Fatalf("write QUALITY.md: %v", err)
+		t.Fatalf("write %s: %v", modelPath, err)
 	}
 	return repo
 }

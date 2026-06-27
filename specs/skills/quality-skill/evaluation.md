@@ -37,13 +37,17 @@ rating them, analyze Factors and Areas bottom-up, run
 `qualitymd evaluation status <run>`, and build reports with
 `qualitymd evaluation report build <run>`.
 
+When the selected model is not the default `QUALITY.md` in the current working
+directory and the run path is model-relative, the skill **MUST** include
+`--model <model>` on Evaluation data, status, and report commands.
+
 The skill **MUST NOT** generate recommendations as part of Evaluation v0.
 
-The skill **MAY** record non-binding, finding-local **candidate actions** —
+The skill **MAY** record non-binding, finding-local `candidateActions` —
 remediation leads captured where the evidence is richest — on `gap` and `risk`
 findings, as raw material for a later Advise phase. These are not recommendations:
 the skill **MUST NOT** synthesize, aggregate, prioritize, or present them, and
-**MUST NOT** attach candidate actions to `strength` findings.
+**MUST NOT** attach `candidateActions` to `strength` findings.
 
 ### Conformance to the format spec
 
@@ -165,7 +169,9 @@ flowchart TD
    duplicate evaluation findings, rating rationale, or raw output from project
    commands exercised as assessment evidence.
 8. **Check and report** with `qualitymd evaluation status <run>` followed by
-   `qualitymd evaluation report build <run>` when reportable.
+   `qualitymd evaluation report build <run>` when reportable, including
+   `--model <model>` when the run path is model-relative for a non-default
+   selected model.
 
 Recommendation follow-up is governed by
 [/quality recommendation follow-up](recommendation-follow-up.md), not by a
@@ -182,8 +188,9 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
 - **Every rating cites verified evidence.** A rating **MUST** rest on findings
   drawn from the area's `source` — observations a reader could check. Claims
   about code, CLI, or tool behavior **MUST** be verified by an executed command
-  or search cited in the finding evidence. Every finding locator **MUST** be a
-  `file:line` or exact searchable string.
+  or search cited in the finding evidence. Every finding evidence entry **MUST**
+  include a checkable `sourceRef`, such as a `file:line` or exact searchable
+  string.
 - **Insufficient evidence is *not assessed*, not a guess.** When there are no
   findings or the evidence cannot be rated against the scale, the requirement (or
   roll-up) **MUST** be recorded as *not assessed* and noted, never assigned a
@@ -195,6 +202,20 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   requirement **MUST NOT** be masked by many satisfactory ones — and should
   record a brief rationale naming the binding constraints (per
   [Analyze](../../../SPECIFICATION.md#analyze)).
+- **Findings use the shared core.** The skill **MUST** write Requirement and
+  Area Findings with `statement`, `condition`, `criteria`, `cause`, `effect`,
+  and `evidence`. Rationale belongs on the nested field it explains, such as a
+  criterion, cause, effect, or evidence entry, not on the finding as a whole.
+- **Finding types carry distinct analysis.** The skill **MUST** classify `gap`
+  as an observed shortfall against criteria, `risk` as a plausible future
+  quality loss path, `strength` as support for or margin above criteria,
+  `unknown` as missing or ambiguous evidence, and `note` as relevant context
+  that does not drive a rating by itself.
+- **Cause posture does not overclaim.** The skill **MUST NOT** write
+  `cause.status: verified` unless the finding evidence directly supports the
+  cause statement. When a `gap` or `risk` has evidence for condition and effect
+  but not cause, the skill **MUST** use `cause.status: not_assessed` rather than
+  inventing cause.
 - **Area Findings summarize, they do not advise.** During Area analysis, the
   skill **MUST** synthesize Area Findings from verified Requirement Findings and
   analysis observations when material observations should be visible at Area or
@@ -202,7 +223,8 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   make local significance legible, with `severity` limited to `critical`, `high`,
   `medium`, or `low`. Informational observations use `type: note`, not
   `severity: info`. Area Findings **MUST NOT** include recommendations, priority,
-  impact, effort, benefit, ROI, or global ranking fields.
+  effort, benefit, ROI, `candidateActions`, or global ranking fields. Finding `effect` is
+  allowed because it explains rating or quality consequence.
 
 ### Coverage and execution strategy
 

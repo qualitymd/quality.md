@@ -221,6 +221,52 @@ factors:
 	}
 }
 
+func TestSnapshotUsesModelRelativeWorkspaceForNestedModel(t *testing.T) {
+	repo := newRepo(t)
+	modelDir := filepath.Join(repo, "packages", "api")
+	path := writeFile(t, modelDir, strings.Replace(validModel(`requirements:
+  starts:
+    title: Starts
+    factors: [reliability]
+    assessment: Run it.
+factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+`), "---\n", "---\nconfig: .quality/custom-config.yaml\n", 1))
+	configPath := filepath.Join(modelDir, ".quality", "custom-config.yaml")
+	if err := os.MkdirAll(filepath.Dir(configPath), 0o755); err != nil {
+		t.Fatalf("MkdirAll(config dir) error = %v", err)
+	}
+	if err := os.WriteFile(configPath, []byte("evaluationDir: tmp/evals\n"), 0o600); err != nil {
+		t.Fatalf("WriteFile(config) error = %v", err)
+	}
+	if err := os.MkdirAll(filepath.Join(repo, ".quality", "evaluations", "0001-full-eval"), 0o755); err != nil {
+		t.Fatalf("MkdirAll(repo-root eval) error = %v", err)
+	}
+	run, err := evaluation.CreateRun(evaluation.Options{RepoRoot: repo, Model: "packages/api/QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	if run.Path != "tmp/evals/0001-full-eval" {
+		t.Fatalf("run path = %q, want model-relative configured evaluation dir", run.Path)
+	}
+	if _, err := os.Stat(filepath.Join(modelDir, run.Path, evaluation.ModelSnapshotFile)); err != nil {
+		t.Fatalf("missing model-relative run snapshot: %v", err)
+	}
+
+	snapshot, err := Snapshot(Options{Path: path})
+	if err != nil {
+		t.Fatalf("Snapshot() error = %v", err)
+	}
+	if snapshot.Evaluations.Path != "tmp/evals" || snapshot.Evaluations.Runs != 1 {
+		t.Fatalf("evaluation history = %#v, want nested configured path with one run", snapshot.Evaluations)
+	}
+	if snapshot.Evaluations.Latest == nil || snapshot.Evaluations.Latest.Path != run.Path {
+		t.Fatalf("latest = %#v, want %s", snapshot.Evaluations.Latest, run.Path)
+	}
+}
+
 func TestSnapshotMalformedCurrentRunDoesNotHideLaterRuns(t *testing.T) {
 	repo := newRepo(t)
 	path := writeFile(t, repo, validModel(`requirements:

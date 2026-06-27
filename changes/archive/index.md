@@ -586,3 +586,16 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   makes `qualitymd evaluation data example` payloads fuller representative
   artifacts with typed Area, Factor, Requirement, and Rating Level references
   (`Done`).
+- [0134 — Model-relative workspace paths](0134-model-relative-workspace-paths.md)
+  - makes workspace config and artifact paths resolve relative to the selected
+    `QUALITY.md`, with the Git root retained as containment and `--model`
+    available for nested evaluation history/latest commands (`Done`).
+- [0135 — Structured Finding Core](0135-structured-finding-core.md)
+  - aligns Requirement and Area Findings around statement, condition, criteria,
+    cause, effect, and evidence; rejects legacy finding summary/description
+    fields; and renders Requirement, Area, and Factor Findings through one
+    report structure (`Done`).
+- [0136 — Candidate Actions Payload](0136-candidate-actions-payload.md)
+  - renames finding-local `actions` to `candidateActions`, adds local candidate
+    action IDs, and keeps candidate actions as non-rendered Requirement Finding
+    raw material for later Advice (`Done`).

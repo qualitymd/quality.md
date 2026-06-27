@@ -53,12 +53,14 @@ func evaluationRenderableGaps(runAbs string) []RunGap {
 	return gaps
 }
 
-func buildEvaluationReport(path string) (*BuildReportReceipt, error) {
+func buildEvaluationReport(path, displayPath string) (*BuildReportReceipt, error) {
 	runAbs, err := verifyRun(path)
 	if err != nil {
 		return nil, err
 	}
-	displayPath := displayRunPath(runAbs)
+	if displayPath == "" {
+		displayPath = displayRunPath(runAbs)
+	}
 	if gaps := evaluationRenderableGaps(runAbs); len(gaps) > 0 {
 		return nil, nonReportableRunError(displayPath, gaps[0])
 	}
@@ -413,7 +415,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
 	b.WriteString("\n\n## Findings\n\n")
-	writeEvaluationFactorFindingsTable(&b, artifacts, factor.ID)
+	writeEvaluationFactorFindingsTable(&b, spec, artifacts, factor.ID, reportPath)
 	b.WriteString("## Rating Drivers\n\n")
 	writeEvaluationDriversTable(&b, spec, overall)
 	b.WriteString("## Requirements\n\n")
@@ -719,40 +721,39 @@ type indexedAreaFinding struct {
 }
 
 func writeEvaluationAreaFindingsTable(b *strings.Builder, spec *model.Spec, analysis map[string]any, areaID []string, reportPath string) {
-	b.WriteString("| Finding | Type | Severity | Confidence | Related Factors | Summary |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| ID | Statement | Type | Severity | Confidence | Effect | Cause |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
 	findings := sortedAreaFindings(analysis)
 	if len(findings) == 0 {
-		b.WriteString("| (no findings) |  |  |  |  |  |\n\n")
+		b.WriteString("| (no findings) |  |  |  |  |  |  |\n\n")
 		return
 	}
 	for _, item := range findings {
 		finding := item.Finding
-		b.WriteString("| `" + markdownCell(areaFindingID(finding, item.Index)) + "` | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(areaFindingFactorLinks(spec, finding, areaID, reportPath)) + " | " + markdownCell(firstString(finding, "summary", "description")) + " |\n")
+		b.WriteString("| `" + markdownCell(areaFindingID(finding, item.Index)) + "` | " + markdownCell(firstString(finding, "statement")) + " | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(findingEffectSummary(finding)) + " | " + markdownCell(findingCauseSummary(finding)) + " |\n")
 	}
 	b.WriteString("\n")
-	writeAreaFindingDetails(b, findings)
+	writeAreaFindingDetails(b, spec, findings, areaID, reportPath)
 }
 
-func writeEvaluationFactorFindingsTable(b *strings.Builder, artifacts *evaluationArtifacts, factor factorID) {
-	b.WriteString("| Finding | Type | Severity | Relationship | Confidence | Summary |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+func writeEvaluationFactorFindingsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, factor factorID, reportPath string) {
+	b.WriteString("| ID | Statement | Type | Severity | Confidence | Effect | Cause |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
 	area := artifacts.area(areaKey(factor.DeclaringArea))
 	findings := sortedFactorFindings(area.Analysis, factor)
 	if len(findings) == 0 {
-		b.WriteString("| (no findings) |  |  |  |  |  |\n\n")
+		b.WriteString("| (no findings) |  |  |  |  |  |  |\n\n")
 		return
 	}
 	for _, item := range findings {
 		finding := item.Finding
-		relationship := firstString(item.Relationship, "relationship")
-		b.WriteString("| `" + markdownCell(areaFindingID(finding, item.Index)) + "` | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(factorRelationshipTitle(relationship)) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(firstString(finding, "summary", "description")) + " |\n")
+		b.WriteString("| `" + markdownCell(areaFindingID(finding, item.Index)) + "` | " + markdownCell(firstString(finding, "statement")) + " | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(findingEffectSummary(finding)) + " | " + markdownCell(findingCauseSummary(finding)) + " |\n")
 	}
 	b.WriteString("\n")
-	writeAreaFindingDetails(b, findings)
+	writeAreaFindingDetails(b, spec, findings, factor.DeclaringArea, reportPath)
 }
 
-func writeAreaFindingDetails(b *strings.Builder, findings []indexedAreaFinding) {
+func writeAreaFindingDetails(b *strings.Builder, spec *model.Spec, findings []indexedAreaFinding, areaID []string, reportPath string) {
 	b.WriteString("### Finding Details\n\n")
 	if len(findings) == 0 {
 		b.WriteString("(no finding details)\n\n")
@@ -760,16 +761,129 @@ func writeAreaFindingDetails(b *strings.Builder, findings []indexedAreaFinding) 
 	}
 	for _, item := range findings {
 		finding := item.Finding
-		b.WriteString("#### " + areaFindingID(finding, item.Index) + "\n\n")
-		if summary := firstString(finding, "summary", "description"); summary != "" {
-			b.WriteString(summary + "\n\n")
+		writeFindingCoreDetails(b, 4, areaFindingID(finding, item.Index), finding)
+		b.WriteString("##### Relationships\n\n")
+		if relationships := areaFindingFactorLinks(spec, finding, areaID, reportPath); relationships != "(none)" {
+			b.WriteString(relationships + "\n\n")
+		} else {
+			b.WriteString("(none)\n\n")
 		}
-		b.WriteString("| Field | Value |\n")
-		b.WriteString("| --- | --- |\n")
-		b.WriteString("| Rationale | " + markdownCell(firstString(finding, "rationale")) + " |\n")
-		b.WriteString("| Inputs | " + markdownCell(compactJSON(finding["inputRefs"])) + " |\n")
-		b.WriteString("| Factor Relationships | " + markdownCell(compactJSON(finding["factorRelationships"])) + " |\n\n")
+		b.WriteString("##### Inputs\n\n")
+		b.WriteString(compactJSON(finding["inputRefs"]) + "\n\n")
 	}
+}
+
+func writeFindingCoreDetails(b *strings.Builder, headingLevel int, id string, finding map[string]any) {
+	heading := strings.Repeat("#", headingLevel)
+	title := id
+	if statement := firstString(finding, "statement"); statement != "" {
+		title += " " + statement
+	}
+	b.WriteString(heading + " " + title + "\n\n")
+	writeFindingSection(b, headingLevel+1, "Condition", firstString(finding, "condition"))
+	writeFindingCriteriaSection(b, headingLevel+1, finding)
+	writeFindingCauseSection(b, headingLevel+1, finding)
+	writeFindingEffectSection(b, headingLevel+1, finding)
+	writeFindingEvidenceSection(b, headingLevel+1, "Evidence", objectSlice(finding["evidence"]))
+}
+
+func writeFindingSection(b *strings.Builder, headingLevel int, title, body string) {
+	b.WriteString(strings.Repeat("#", headingLevel) + " " + title + "\n\n")
+	if body == "" {
+		b.WriteString("(not recorded)\n\n")
+		return
+	}
+	b.WriteString(body + "\n\n")
+}
+
+func writeFindingCriteriaSection(b *strings.Builder, headingLevel int, finding map[string]any) {
+	b.WriteString(strings.Repeat("#", headingLevel) + " Criteria\n\n")
+	criteria := objectSlice(finding["criteria"])
+	if len(criteria) == 0 {
+		b.WriteString("(none recorded)\n\n")
+		return
+	}
+	for _, criterion := range criteria {
+		label := firstString(criterion, "requirementId")
+		if rating := firstString(criterion, "ratingLevelId"); rating != "" {
+			label += " / " + rating
+		}
+		b.WriteString("- `" + markdownCell(label) + "`: " + markdownCell(firstString(criterion, "criterion")) + "\n")
+		if rationale := firstString(criterion, "rationale"); rationale != "" {
+			b.WriteString("  Rationale: " + markdownCell(rationale) + "\n")
+		}
+	}
+	b.WriteString("\n")
+}
+
+func writeFindingCauseSection(b *strings.Builder, headingLevel int, finding map[string]any) {
+	b.WriteString(strings.Repeat("#", headingLevel) + " Cause\n\n")
+	cause := objectMap(finding["cause"])
+	if len(cause) == 0 {
+		b.WriteString("(not recorded)\n\n")
+		return
+	}
+	if status := firstString(cause, "status"); status != "" {
+		b.WriteString("Status: " + causeStatusTitle(status) + "\n\n")
+	}
+	if statement := firstString(cause, "statement"); statement != "" {
+		b.WriteString(statement + "\n\n")
+	}
+	if rationale := firstString(cause, "rationale"); rationale != "" {
+		b.WriteString("Rationale: " + rationale + "\n\n")
+	}
+	writeFindingEvidenceSection(b, headingLevel+1, "Cause Evidence", objectSlice(cause["evidence"]))
+}
+
+func writeFindingEffectSection(b *strings.Builder, headingLevel int, finding map[string]any) {
+	b.WriteString(strings.Repeat("#", headingLevel) + " Effect\n\n")
+	effect := objectMap(finding["effect"])
+	if len(effect) == 0 {
+		b.WriteString("(not recorded)\n\n")
+		return
+	}
+	if statement := firstString(effect, "statement"); statement != "" {
+		b.WriteString(statement + "\n\n")
+	}
+	if ratingEffect := firstString(effect, "ratingEffect"); ratingEffect != "" {
+		b.WriteString("Rating effect: " + ratingEffect + "\n\n")
+	}
+	if rationale := firstString(effect, "rationale"); rationale != "" {
+		b.WriteString("Rationale: " + rationale + "\n\n")
+	}
+}
+
+func writeFindingEvidenceSection(b *strings.Builder, headingLevel int, title string, evidence []map[string]any) {
+	b.WriteString(strings.Repeat("#", headingLevel) + " " + title + "\n\n")
+	if len(evidence) == 0 {
+		b.WriteString("(none recorded)\n\n")
+		return
+	}
+	for _, item := range evidence {
+		b.WriteString("- `" + markdownCell(firstString(item, "sourceRef")) + "`: " + markdownCell(firstString(item, "statement")) + "\n")
+		if rationale := firstString(item, "rationale"); rationale != "" {
+			b.WriteString("  Rationale: " + markdownCell(rationale) + "\n")
+		}
+	}
+	b.WriteString("\n")
+}
+
+func findingEffectSummary(finding map[string]any) string {
+	effect := objectMap(finding["effect"])
+	return firstString(effect, "statement", "ratingEffect")
+}
+
+func findingCauseSummary(finding map[string]any) string {
+	cause := objectMap(finding["cause"])
+	status := causeStatusTitle(firstString(cause, "status"))
+	statement := firstString(cause, "statement")
+	if status == "" {
+		return statement
+	}
+	if statement == "" {
+		return status
+	}
+	return status + ": " + statement
 }
 
 func sortedAreaFindings(analysis map[string]any) []indexedAreaFinding {
@@ -922,11 +1036,11 @@ func factorRelationshipRank(value string) int {
 }
 
 func writeEvaluationFindingsTable(b *strings.Builder, assessment map[string]any) {
-	b.WriteString("| ID | Type | Severity | Description |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
+	b.WriteString("| ID | Statement | Type | Severity | Confidence | Effect | Cause |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
 	findings := objectSlice(assessment["findings"])
 	if len(findings) == 0 {
-		b.WriteString("| (no findings) |  |  |  |\n\n")
+		b.WriteString("| (no findings) |  |  |  |  |  |  |\n\n")
 		return
 	}
 	for i, finding := range findings {
@@ -934,7 +1048,7 @@ func writeEvaluationFindingsTable(b *strings.Builder, assessment map[string]any)
 		if id == "" {
 			id = fmt.Sprintf("finding-%d", i+1)
 		}
-		b.WriteString("| `" + markdownCell(id) + "` | " + markdownCell(findingTypeTitle(firstString(finding, "type", "Type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity", "Severity"))) + " | " + markdownCell(firstString(finding, "description", "Description")) + " |\n")
+		b.WriteString("| `" + markdownCell(id) + "` | " + markdownCell(firstString(finding, "statement")) + " | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(findingEffectSummary(finding)) + " | " + markdownCell(findingCauseSummary(finding)) + " |\n")
 	}
 	b.WriteString("\n")
 }
@@ -950,17 +1064,7 @@ func writeEvaluationFindingDetails(b *strings.Builder, assessment map[string]any
 		if id == "" {
 			id = fmt.Sprintf("finding-%d", i+1)
 		}
-		b.WriteString("### " + id + "\n\n")
-		if description := firstString(finding, "description", "Description"); description != "" {
-			b.WriteString(description + "\n\n")
-		}
-		b.WriteString("| Field | Value |\n")
-		b.WriteString("| --- | --- |\n")
-		b.WriteString("| Type | " + markdownCell(findingTypeTitle(firstString(finding, "type", "Type"))) + " |\n")
-		b.WriteString("| Severity | " + markdownCell(findingSeverityTitle(firstString(finding, "severity", "Severity"))) + " |\n")
-		b.WriteString("| Location | " + markdownCell(compactJSON(firstPresent(finding, "location", "Location"))) + " |\n")
-		b.WriteString("| Evidence | " + markdownCell(compactJSON(firstPresent(finding, "evidence", "Evidence"))) + " |\n")
-		b.WriteString("| Rationale | " + markdownCell(firstString(finding, "rationale", "Rationale")) + " |\n\n")
+		writeFindingCoreDetails(b, 3, id, finding)
 	}
 }
 
@@ -1311,6 +1415,13 @@ func objectSlice(v any) []map[string]any {
 	return out
 }
 
+func objectMap(v any) map[string]any {
+	if mapped, ok := v.(map[string]any); ok {
+		return mapped
+	}
+	return nil
+}
+
 func stringValues(v any) []string {
 	raw, ok := v.([]any)
 	if !ok {
@@ -1337,15 +1448,6 @@ func firstString(m map[string]any, keys ...string) string {
 		}
 	}
 	return ""
-}
-
-func firstPresent(m map[string]any, keys ...string) any {
-	for _, key := range keys {
-		if value, ok := m[key]; ok {
-			return value
-		}
-	}
-	return nil
 }
 
 func compactJSON(v any) string {

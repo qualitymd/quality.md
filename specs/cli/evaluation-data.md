@@ -29,6 +29,14 @@ qualitymd evaluation data schema [<kind>]
 qualitymd evaluation data verify <run>
 ```
 
+Commands that accept `<run>` **MUST** also accept `--latest` and `--model`
+through the shared Evaluation run selector. `--model <model>` selects the
+`QUALITY.md` file whose model-relative workspace supplies `--latest` history.
+When `--model` is supplied with a relative positional `<run>` path, the command
+**MUST** resolve that path relative to the selected model's workspace root. When
+`--model` is absent and a positional `<run>` path is supplied, the command
+**MAY** preserve ordinary filesystem-path behavior.
+
 ## Background / Motivation
 
 `data set` is driven primarily by the `/quality` evaluate workflow, which

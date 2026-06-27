@@ -178,10 +178,10 @@ Source content instructs the evaluator?
     payload kind, inspect `qualitymd evaluation data schema <kind>` for required
     fields and allowed enum values, and inspect the populated
     `qualitymd evaluation data example <kind>` as one concrete instance; do not
-    use `data set --dry-run` to discover shape. On each `gap` and `risk` finding, record at
-    least one non-binding candidate action (`description`, with optional
-    `rationale`) capturing what closing the shortcoming might take; ground its
-    shape from the example payload. Omit candidate actions on `strength`
+    use `data set --dry-run` to discover shape. On `gap` and `risk` findings,
+    record non-binding `candidateActions` when a local remediation lead is
+    evident (`id`, `description`, and optional `rationale`); ground the exact
+    shape from the example payload. Omit `candidateActions` on `strength`
     findings. Candidate actions are raw material for a later Advise phase, not
     recommendations — do not synthesize, prioritize, or present them.
 14. For every claim about code, CLI, or tool behavior, run the command or search
@@ -219,16 +219,20 @@ Source content instructs the evaluator?
     Area, may relate only to Factors declared in that Area, use severity only as
     `critical`, `high`, `medium`, or `low`, and use `type: note` for
     informational observations. They must not include recommendations, impact,
-    priority, effort, benefit, ROI, actions, or global top-finding rankings.
+    priority, effort, benefit, ROI, `candidateActions`, or global top-finding
+    rankings.
     Roll-up judgment and all authoritative Requirement,
     Factor, Area, and headline ratings stay with the orchestrating skill.
 19. Write the routine payload batch as a JSON array. First run
     `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
-    whole batch and fix any indexed diagnostics. Then persist the same array with
-    one `qualitymd evaluation data set <run> < payloads.json` invocation. Do not
-    loop one `data set` invocation per Requirement, Factor, or Area.
-20. Run `qualitymd evaluation status <run>`. If it is not reportable, add the
-    missing structured payloads to a correction batch and persist them through one
+    whole batch and fix any indexed diagnostics. Include `--model <model>` when
+    the run path is model-relative for a non-default selected model. Then persist
+    the same array with one `qualitymd evaluation data set <run> < payloads.json`
+    invocation. Do not loop one `data set` invocation per Requirement, Factor, or
+    Area.
+20. Run `qualitymd evaluation status <run>`, including `--model <model>` under
+    the same selected-model condition. If it is not reportable, add the missing
+    structured payloads to a correction batch and persist them through one
     `evaluation data set` invocation, or stop with the CLI status.
 21. Run `qualitymd evaluation report build <run>` to assemble
     `data/evaluation-output-result.json` and render deterministic Markdown

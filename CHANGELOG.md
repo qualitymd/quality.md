@@ -5,6 +5,61 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.22.0 - 2026-06-27
+
+### CLI
+
+- `qualitymd evaluation data example <kind>` now emits fuller representative
+  payloads across supported Evaluation data kinds, including populated limits,
+  stop conditions, canonical Model references, and report references.
+- Workspace config and artifacts now resolve relative to the selected
+  `QUALITY.md`, with the Git root retained as the containment boundary.
+  Evaluation list/latest/data/status/report commands can use `--model` to anchor
+  nested workspaces and model-relative run paths.
+- Evaluation Requirement and Area Findings now use a shared structured Finding
+  Core: `statement`, `condition`, `criteria`, `cause`, `effect`, and `evidence`.
+  Legacy finding `description`, `summary`, and top-level `rationale` fields are
+  rejected.
+- Requirement Finding remediation leads are now written as `candidateActions`
+  with local candidate action IDs. The legacy finding-local `actions` field is
+  rejected, and candidate actions remain out of Evaluation v0 reports.
+
+### /quality Skill
+
+- `/quality` now requires `qualitymd >=0.22.0 <0.23.0`.
+- `/quality evaluate` now writes structured Finding Core payloads, uses
+  `candidateActions` for Requirement Finding-local remediation leads, and keeps
+  Area Findings free of candidate actions.
+- `/quality` workspace guidance now treats config, Evaluation history, quality
+  logs, and workflow feedback logs as model-relative to the selected
+  `QUALITY.md`.
+
+### Specification
+
+- QUALITY.md specification version is now `0.6 (Draft)`.
+- The Evaluation contract now defines structured Finding Core semantics and
+  names `candidateActions` as finding-local raw material for future advice.
+- The CLI specifications now define model-relative workspace artifact
+  resolution and model-anchored Evaluation run discovery.
+
+### Compatibility / Migration
+
+- Existing Evaluation data that uses legacy finding `description`, `summary`,
+  top-level `rationale`, or finding-local `actions` must be rewritten before it
+  will pass current `evaluation data set` or `evaluation data verify`
+  validation.
+- Existing repo-root `.quality/` workspace artifacts for nested `QUALITY.md`
+  files are no longer discovered as the default workspace location; move them
+  under the selected model's directory or pass the appropriate model-relative
+  override.
+- `/quality` skill version `0.22.0` requires the `qualitymd` CLI `0.22.x` line.
+
+Compatibility:
+
+- CLI: `v0.22.0`
+- QUALITY.md specification: `0.6 (Draft)`
+- /quality skill: `0.22.0`, requires `qualitymd >=0.22.0 <0.23.0`
+
 ## v0.21.0 - 2026-06-26
 
 ### CLI

@@ -73,7 +73,13 @@ Generated routine outputs, protocol guidance, report artifacts, and payload-loca
 artifacts **MUST** use `*Ref` names.
 
 Payload-local IDs are local to the containing payload unless the payload kind
-defines a wider owner.
+defines a wider owner. Finding `id` values are payload-local IDs, not Model IDs
+or durable cross-run identifiers. Cross-payload references to findings **MUST**
+use a routine reference qualified by the owning payload subject plus a selector,
+such as `findings[gap-001]`. Candidate action `id` values are local to their
+containing Finding, not the payload or run. References to candidate actions
+**MUST** qualify the containing Finding selector, for example
+`findings[gap-001].candidateActions[action-001]`.
 
 ## Optional And Repeated Fields
 

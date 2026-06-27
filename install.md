@@ -141,13 +141,14 @@ defaults, writes only `QUALITY.md`, and validates it through the CLI. Bare
 
 ## 5. Optional config
 
-Create `.quality/config.yaml` to move evaluation run folders away from the
-default `.quality/evaluations/` parent. If your config file lives elsewhere,
-add root `config: <path>` frontmatter to the selected `QUALITY.md` to point
-qualitymd to it.
+Create `.quality/config.yaml` beside the selected `QUALITY.md` to move
+evaluation run folders away from the default `.quality/evaluations/` parent. If
+your config file lives elsewhere, add root `config: <path>` frontmatter to the
+selected `QUALITY.md` to point qualitymd to it.
 
 ```yaml
 evaluationDir: tmp/evals
 ```
 
-The path must be repository-relative and must not escape the repository.
+The path is relative to the selected `QUALITY.md` and must not escape the
+repository.

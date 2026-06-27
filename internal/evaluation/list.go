@@ -1,6 +1,9 @@
 package evaluation
 
-import "fmt"
+import (
+	"fmt"
+	"path/filepath"
+)
 
 // RunListEntry summarizes one discovered evaluation run.
 type RunListEntry struct {
@@ -18,48 +21,80 @@ type RunList struct {
 	Runs          []RunListEntry `json:"runs"`
 }
 
+// RunSelection describes how a command chooses an Evaluation run.
+type RunSelection struct {
+	Model         string
+	EvaluationDir string
+	RunArg        string
+	Latest        bool
+}
+
+// ResolvedRun is an Evaluation run path resolved for command execution.
+type ResolvedRun struct {
+	Path        string
+	DisplayPath string
+	Model       string
+}
+
 // ResolveRun resolves an explicit run path or the latest discovered run.
 func ResolveRun(repoRoot, evaluationDir, runArg string, latest bool) (string, error) {
-	if runArg != "" && latest {
-		return "", usagef("pass a run path or --latest, not both")
-	}
-	if runArg == "" && !latest {
-		return "", usagef("pass a run path or --latest")
-	}
-	if runArg != "" {
-		return runArg, nil
-	}
-	if repoRoot == "" {
-		var err error
-		repoRoot, err = FindRepoRoot("")
-		if err != nil {
-			return "", err
-		}
-	}
-	evalDirAbs, evalDirRel, err := ResolveDir(repoRoot, evaluationDir)
+	result, err := ResolveRunSelection(RunSelection{
+		Model:         modelFromRepoRoot(repoRoot),
+		EvaluationDir: evaluationDir,
+		RunArg:        runArg,
+		Latest:        latest,
+	})
 	if err != nil {
 		return "", err
 	}
+	return result.Path, nil
+}
+
+// ResolveRunSelection resolves an explicit run path or the latest discovered
+// run for a selected model.
+func ResolveRunSelection(selection RunSelection) (*ResolvedRun, error) {
+	runArg := selection.RunArg
+	latest := selection.Latest
+	if runArg != "" && latest {
+		return nil, usagef("pass a run path or --latest, not both")
+	}
+	if runArg == "" && !latest {
+		return nil, usagef("pass a run path or --latest")
+	}
+	if runArg != "" {
+		if selection.Model == "" {
+			return &ResolvedRun{Path: runArg}, nil
+		}
+		path, displayPath, err := resolveModelRelativeRun(selection.Model, runArg)
+		if err != nil {
+			return nil, err
+		}
+		return &ResolvedRun{Path: path, DisplayPath: displayPath, Model: selection.Model}, nil
+	}
+	evalDirAbs, evalDirRel, err := ResolveDirForModel(selection.Model, selection.EvaluationDir)
+	if err != nil {
+		return nil, err
+	}
 	runs, err := ListRunDirs(evalDirAbs, evalDirRel)
 	if err != nil {
-		return "", fmt.Errorf("listing evaluation runs: %w", err)
+		return nil, fmt.Errorf("listing evaluation runs: %w", err)
 	}
 	if len(runs) == 0 {
-		return "", usagef("no evaluation runs found")
+		return nil, usagef("no evaluation runs found")
 	}
-	return runs[len(runs)-1].Rel, nil
+	run := runs[len(runs)-1]
+	return &ResolvedRun{Path: run.Abs, DisplayPath: run.Rel, Model: selection.Model}, nil
 }
 
 // ListRuns lists discovered evaluation runs, optionally filtered by state.
 func ListRuns(repoRoot, evaluationDir, state string) (*RunList, error) {
-	if repoRoot == "" {
-		var err error
-		repoRoot, err = FindRepoRoot("")
-		if err != nil {
-			return nil, err
-		}
-	}
-	evalDirAbs, evalDirRel, err := ResolveDir(repoRoot, evaluationDir)
+	return ListRunsForModel(modelFromRepoRoot(repoRoot), evaluationDir, state)
+}
+
+// ListRunsForModel lists discovered evaluation runs for a selected model,
+// optionally filtered by state.
+func ListRunsForModel(model, evaluationDir, state string) (*RunList, error) {
+	evalDirAbs, evalDirRel, err := ResolveDirForModel(model, evaluationDir)
 	if err != nil {
 		return nil, err
 	}
@@ -87,6 +122,13 @@ func ListRuns(repoRoot, evaluationDir, state string) (*RunList, error) {
 		})
 	}
 	return result, nil
+}
+
+func modelFromRepoRoot(repoRoot string) string {
+	if repoRoot == "" {
+		return ""
+	}
+	return filepath.Join(repoRoot, "QUALITY.md")
 }
 
 func includeRunState(reportable bool, state string) bool {

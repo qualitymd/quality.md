@@ -23,10 +23,10 @@ in all capitals.
 ## Runtime Artifacts
 
 The CLI creates a numbered evaluation folder per run. The default parent
-directory is `.quality/evaluations/` under the workspace quality data directory.
-A repository may choose the workspace config file with root `config` frontmatter
-on `QUALITY.md`; without that pointer the config file defaults to
-`.quality/config.yaml`.
+directory is `.quality/evaluations/` under the workspace quality data directory
+beside the selected `QUALITY.md`. A repository may choose the workspace config
+file with root `config` frontmatter on `QUALITY.md`; without that pointer the
+config file defaults to `.quality/config.yaml` beside the selected model.
 
 The run folder **MUST** include `model-snapshot.md`, a snapshot of the
 `QUALITY.md` as evaluated.
@@ -56,6 +56,12 @@ qualitymd evaluation report build <run>
 
 The skill **MUST** run `qualitymd evaluation status <run>` before report build
 when it needs to diagnose missing or invalid structured data.
+
+When the selected model is not the default `QUALITY.md` in the current working
+directory and the run path is model-relative, the skill **MUST** pass
+`--model <model>` to `qualitymd evaluation status`, `qualitymd evaluation data`,
+and `qualitymd evaluation report build` so run resolution uses the selected
+model's workspace root.
 
 Report build **MUST** assemble `data/evaluation-output-result.json` before
 rendering Markdown reports.
@@ -118,6 +124,6 @@ Evaluation v0 **MUST NOT** present generated recommendations as part of the
 reporting closeout. Recommendation follow-up remains a separate workflow for
 historical recommendation artifacts.
 
-Finding-local candidate actions are **not** recommendations: the v0 report and
+Finding-local `candidateActions` are **not** recommendations: the v0 report and
 the closeout **MUST NOT** present them. They persist in `data/` as raw material
 for a later Advise phase.

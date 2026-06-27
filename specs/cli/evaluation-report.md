@@ -25,6 +25,13 @@ qualitymd evaluation report build <run>
 `build` **MUST** accept either a positional run path or `--latest`, and **MUST**
 error when both or neither are supplied.
 
+`--model <model>` **MUST** select the `QUALITY.md` file whose model-relative
+workspace supplies `--latest` history. When `--model` is supplied with a
+relative positional `<run>` path, `build` **MUST** resolve that path relative to
+the selected model's workspace root. When `--model` is absent and a positional
+`<run>` path is supplied, `build` **MAY** preserve ordinary filesystem-path
+behavior.
+
 For Evaluation runs, `build` validates the structured payload graph under
 `data/`, assembles `data/evaluation-output-result.json`, and renders the
 deterministic Markdown report tree from completed structured outputs. It renders

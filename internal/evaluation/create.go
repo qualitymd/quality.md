@@ -54,15 +54,23 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 		return nil, err
 	}
 	runRel := filepath.ToSlash(filepath.Join(evalDirRel, name))
+	modelArgs := modelFlagArgs(opts.Model)
 	return &CreateRunReceipt{
 		Path:   runRel,
 		Number: number,
 		NextActions: []receipt.Action{{
 			ID:      "evaluation-data-set",
 			Label:   "Record Evaluation data",
-			Command: "qualitymd evaluation data set " + runRel + " < payloads.json",
+			Command: "qualitymd evaluation data set" + modelArgs + " " + runRel + " < payloads.json",
 		}},
 	}, nil
+}
+
+func modelFlagArgs(model string) string {
+	if model == "" || model == workspace.DefaultModelPath {
+		return ""
+	}
+	return " --model " + model
 }
 
 func nextRunName(evalDirAbs, narrowing string) (int, string, error) {

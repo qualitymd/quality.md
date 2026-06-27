@@ -220,6 +220,56 @@
           "items": {
             "additionalProperties": false,
             "properties": {
+              "cause": {
+                "additionalProperties": false,
+                "properties": {
+                  "evidence": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "rationale": {
+                          "type": "string"
+                        },
+                        "sourceRef": {
+                          "type": "string"
+                        },
+                        "statement": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "sourceRef",
+                        "statement"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "statement": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "enum": [
+                      "verified",
+                      "plausible",
+                      "not_assessed",
+                      "not_applicable"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "statement"
+                ],
+                "type": "object"
+              },
+              "condition": {
+                "type": "string"
+              },
               "confidence": {
                 "enum": [
                   "high",
@@ -228,6 +278,76 @@
                   "none"
                 ],
                 "type": "string"
+              },
+              "criteria": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "criterion": {
+                      "type": "string"
+                    },
+                    "ratingLevelId": {
+                      "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "rationale": {
+                      "type": "string"
+                    },
+                    "requirementId": {
+                      "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "requirementId",
+                    "ratingLevelId",
+                    "criterion"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "effect": {
+                "additionalProperties": false,
+                "properties": {
+                  "ratingEffect": {
+                    "type": "string"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "statement": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "statement"
+                ],
+                "type": "object"
+              },
+              "evidence": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "rationale": {
+                      "type": "string"
+                    },
+                    "sourceRef": {
+                      "type": "string"
+                    },
+                    "statement": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "sourceRef",
+                    "statement"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
               },
               "factorRelationships": {
                 "items": {
@@ -312,9 +432,6 @@
                 "minItems": 1,
                 "type": "array"
               },
-              "rationale": {
-                "type": "string"
-              },
               "severity": {
                 "enum": [
                   "critical",
@@ -324,7 +441,7 @@
                 ],
                 "type": "string"
               },
-              "summary": {
+              "statement": {
                 "type": "string"
               },
               "type": {
@@ -343,7 +460,12 @@
               "type",
               "severity",
               "confidence",
-              "summary",
+              "statement",
+              "condition",
+              "criteria",
+              "cause",
+              "effect",
+              "evidence",
               "inputRefs"
             ],
             "type": "object"
@@ -2202,11 +2324,14 @@
           "items": {
             "additionalProperties": false,
             "properties": {
-              "actions": {
+              "candidateActions": {
                 "items": {
                   "additionalProperties": false,
                   "properties": {
                     "description": {
+                      "type": "string"
+                    },
+                    "id": {
                       "type": "string"
                     },
                     "rationale": {
@@ -2214,27 +2339,143 @@
                     }
                   },
                   "required": [
+                    "id",
                     "description"
                   ],
                   "type": "object"
                 },
                 "type": "array"
               },
-              "description": {
+              "cause": {
+                "additionalProperties": false,
+                "properties": {
+                  "evidence": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "rationale": {
+                          "type": "string"
+                        },
+                        "sourceRef": {
+                          "type": "string"
+                        },
+                        "statement": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "sourceRef",
+                        "statement"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "statement": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "enum": [
+                      "verified",
+                      "plausible",
+                      "not_assessed",
+                      "not_applicable"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "statement"
+                ],
+                "type": "object"
+              },
+              "condition": {
                 "type": "string"
+              },
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low",
+                  "none"
+                ],
+                "type": "string"
+              },
+              "criteria": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "criterion": {
+                      "type": "string"
+                    },
+                    "ratingLevelId": {
+                      "pattern": "^rating:[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    },
+                    "rationale": {
+                      "type": "string"
+                    },
+                    "requirementId": {
+                      "pattern": "^requirement:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "requirementId",
+                    "ratingLevelId",
+                    "criterion"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "effect": {
+                "additionalProperties": false,
+                "properties": {
+                  "ratingEffect": {
+                    "type": "string"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "statement": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "statement"
+                ],
+                "type": "object"
               },
               "evidence": {
-                "properties": {},
-                "type": "object"
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "rationale": {
+                      "type": "string"
+                    },
+                    "sourceRef": {
+                      "type": "string"
+                    },
+                    "statement": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "sourceRef",
+                    "statement"
+                  ],
+                  "type": "object"
+                },
+                "minItems": 1,
+                "type": "array"
               },
               "id": {
-                "type": "string"
-              },
-              "location": {
-                "properties": {},
-                "type": "object"
-              },
-              "rationale": {
                 "type": "string"
               },
               "severity": {
@@ -2244,6 +2485,9 @@
                   "medium",
                   "low"
                 ],
+                "type": "string"
+              },
+              "statement": {
                 "type": "string"
               },
               "type": {
@@ -2257,6 +2501,18 @@
                 "type": "string"
               }
             },
+            "required": [
+              "id",
+              "type",
+              "severity",
+              "confidence",
+              "statement",
+              "condition",
+              "criteria",
+              "cause",
+              "effect",
+              "evidence"
+            ],
             "type": "object"
           },
           "type": "array"

@@ -1,5 +1,30 @@
 # Specs Update Log
 
+## 2026-06-27
+
+- **Revision**: Implemented durable spec changes for
+  [0134 - Model-relative workspace paths](../changes/archive/0134-model-relative-workspace-paths.md).
+  The CLI, status, lint, install-adjacent workflow, and `/quality` skill specs
+  now treat workspace config, Evaluation history, quality logs, and workflow
+  feedback logs as model-relative to the selected `QUALITY.md`, while keeping
+  the Git repository root as the containment boundary.
+
+- **Revision**: Implemented durable spec changes for
+  [0136 - Candidate Actions Payload](../changes/archive/0136-candidate-actions-payload.md).
+  The Evaluation payload, JSON convention, routine, report-tree, and `/quality`
+  skill specs now use `candidateActions` for finding-local remediation leads,
+  require candidate action IDs to be local to the containing Finding, reject the
+  legacy `actions` field, and keep candidate actions out of v0 reports and
+  closeouts.
+
+- **Revision**: Implemented durable spec changes for
+  [0135 - Structured Finding Core](../changes/archive/0135-structured-finding-core.md).
+  The Evaluation payload, routine, JSON convention, report-tree, and `/quality`
+  skill specs now require a shared Finding Core with statement, condition,
+  criteria, cause, effect, and evidence; finding IDs are payload-local; and
+  reports use one findings table/detail structure across Requirement, Area, and
+  Factor reports.
+
 ## 2026-06-26
 
 - **Revision**: Implemented durable spec changes for

@@ -58,7 +58,16 @@ func Inspect(path string) (*Run, error) {
 	return load(path)
 }
 
+// InspectWithDisplay reads an Evaluation run and uses displayPath in receipts.
+func InspectWithDisplay(path, displayPath string) (*Run, error) {
+	return loadWithDisplay(path, displayPath)
+}
+
 func load(path string) (*Run, error) {
+	return loadWithDisplay(path, "")
+}
+
+func loadWithDisplay(path, displayPath string) (*Run, error) {
 	runAbs, err := verifyRun(path)
 	if err != nil {
 		return nil, err
@@ -71,8 +80,11 @@ func load(path string) (*Run, error) {
 	if err != nil {
 		return nil, err
 	}
+	if displayPath == "" {
+		displayPath = displayRunPath(runAbs)
+	}
 	return &Run{
-		Path:    displayRunPath(runAbs),
+		Path:    displayPath,
 		AbsPath: filepath.ToSlash(runAbs),
 		Model:   spec,
 		Scale:   spec.RatingScale,

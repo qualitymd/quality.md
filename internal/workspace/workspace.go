@@ -18,19 +18,24 @@ const (
 	DefaultDataDir         = ".quality"
 	DefaultEvaluationDir   = ".quality/evaluations"
 	DefaultQualityLogDir   = ".quality/log"
+	DefaultFeedbackLogDir  = ".quality/logs"
 	FrontmatterConfigField = "config"
 )
 
-// PathRef carries both absolute and repository-relative path forms.
+// PathRef carries absolute, workspace-relative, and repository-relative path
+// forms. Rel is the command-facing path relative to the selected model's
+// workspace root.
 type PathRef struct {
-	Abs string
-	Rel string
+	Abs     string
+	Rel     string
+	RepoRel string
 }
 
 // Workspace is the resolved operating context for one QUALITY.md file.
 type Workspace struct {
-	RepoRoot PathRef
-	Model    PathRef
+	RepoRoot      PathRef
+	WorkspaceRoot PathRef
+	Model         PathRef
 
 	Config        PathRef
 	ConfigPresent bool
@@ -38,6 +43,7 @@ type Workspace struct {
 	DataDir     PathRef
 	Evaluations PathRef
 	Log         PathRef
+	FeedbackLog PathRef
 }
 
 // Options controls workspace resolution.
@@ -74,7 +80,13 @@ func Resolve(opts Options) (*Workspace, error) {
 	if configValue == "" {
 		configValue = DefaultConfigPath
 	}
-	configAbs, configRel, err := ResolveRepoPath(repoRoot, configValue)
+	workspaceRoot := filepath.Dir(modelAbs)
+	workspaceRootRepoRel, err := relToRepo(repoRoot, workspaceRoot)
+	if err != nil {
+		return nil, fmt.Errorf("resolving workspace root: %w", err)
+	}
+
+	configAbs, configRel, configRepoRel, err := ResolveWorkspacePath(repoRoot, workspaceRoot, configValue)
 	if err != nil {
 		return nil, fmt.Errorf("config: %w", err)
 	}
@@ -91,30 +103,37 @@ func Resolve(opts Options) (*Workspace, error) {
 		evaluationDir = opts.EvaluationDirOverride
 	}
 
-	dataAbs, dataRel, err := ResolveRepoPath(repoRoot, DefaultDataDir)
+	dataAbs, dataRel, dataRepoRel, err := ResolveWorkspacePath(repoRoot, workspaceRoot, DefaultDataDir)
 	if err != nil {
 		return nil, err
 	}
-	evalAbs, evalRel, err := ResolveRepoPath(repoRoot, evaluationDir)
+	evalAbs, evalRel, evalRepoRel, err := ResolveWorkspacePath(repoRoot, workspaceRoot, evaluationDir)
 	if err != nil {
 		return nil, fmt.Errorf("evaluationDir: %w", err)
 	}
-	logAbs, logRel, err := ResolveRepoPath(repoRoot, DefaultQualityLogDir)
+	logAbs, logRel, logRepoRel, err := ResolveWorkspacePath(repoRoot, workspaceRoot, DefaultQualityLogDir)
+	if err != nil {
+		return nil, err
+	}
+	feedbackAbs, feedbackRel, feedbackRepoRel, err := ResolveWorkspacePath(repoRoot, workspaceRoot, DefaultFeedbackLogDir)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Workspace{
-		RepoRoot: PathRef{Abs: repoRoot, Rel: "."},
-		Model:    PathRef{Abs: modelAbs, Rel: modelRel},
+		RepoRoot:      PathRef{Abs: repoRoot, Rel: ".", RepoRel: "."},
+		WorkspaceRoot: PathRef{Abs: workspaceRoot, Rel: ".", RepoRel: workspaceRootRepoRel},
+		Model:         PathRef{Abs: modelAbs, Rel: DefaultModelPath, RepoRel: modelRel},
 		Config: PathRef{
-			Abs: configAbs,
-			Rel: configRel,
+			Abs:     configAbs,
+			Rel:     configRel,
+			RepoRel: configRepoRel,
 		},
 		ConfigPresent: configPresent,
-		DataDir:       PathRef{Abs: dataAbs, Rel: dataRel},
-		Evaluations:   PathRef{Abs: evalAbs, Rel: evalRel},
-		Log:           PathRef{Abs: logAbs, Rel: logRel},
+		DataDir:       PathRef{Abs: dataAbs, Rel: dataRel, RepoRel: dataRepoRel},
+		Evaluations:   PathRef{Abs: evalAbs, Rel: evalRel, RepoRel: evalRepoRel},
+		Log:           PathRef{Abs: logAbs, Rel: logRel, RepoRel: logRepoRel},
+		FeedbackLog:   PathRef{Abs: feedbackAbs, Rel: feedbackRel, RepoRel: feedbackRepoRel},
 	}, nil
 }
 
@@ -160,9 +179,9 @@ func configPathFromModel(modelAbs string) (string, error) {
 		return "", nil
 	}
 	if value.Kind != yaml.ScalarNode || strings.TrimSpace(value.Value) == "" {
-		return "", fmt.Errorf("root config must be a non-empty repository-relative scalar path")
+		return "", fmt.Errorf("root config must be a non-empty model-relative scalar path")
 	}
-	_, err = CleanRepoRelative(value.Value)
+	_, err = CleanModelRelative(value.Value)
 	if err != nil {
 		return "", err
 	}
@@ -232,6 +251,26 @@ func ResolveRepoPath(repoRoot, value string) (string, string, error) {
 	return abs, checkedRel, nil
 }
 
+// ResolveWorkspacePath validates a model-relative path, ensures its resolved
+// location remains inside the repository, and returns absolute,
+// workspace-relative, and repository-relative forms.
+func ResolveWorkspacePath(repoRoot, workspaceRoot, value string) (string, string, string, error) {
+	rel, err := CleanModelRelative(value)
+	if err != nil {
+		return "", "", "", err
+	}
+	abs := filepath.Join(workspaceRoot, filepath.FromSlash(rel))
+	repoRel, err := relToRepo(repoRoot, abs)
+	if err != nil {
+		return "", "", "", err
+	}
+	workspaceRel, err := filepath.Rel(workspaceRoot, abs)
+	if err != nil {
+		return "", "", "", err
+	}
+	return abs, filepath.ToSlash(workspaceRel), repoRel, nil
+}
+
 // CleanRepoRelative validates and normalizes a repository-relative path without
 // requiring the repository root.
 func CleanRepoRelative(value string) (string, error) {
@@ -246,6 +285,18 @@ func CleanRepoRelative(value string) (string, error) {
 		return "", fmt.Errorf("path %q escapes the repository", value)
 	}
 	return filepath.ToSlash(clean), nil
+}
+
+// CleanModelRelative validates and normalizes a model-relative path without
+// requiring the workspace root.
+func CleanModelRelative(value string) (string, error) {
+	if strings.TrimSpace(value) == "" {
+		return "", fmt.Errorf("path must be non-empty")
+	}
+	if filepath.IsAbs(value) {
+		return "", fmt.Errorf("path %q must be model-relative", value)
+	}
+	return filepath.ToSlash(filepath.Clean(filepath.FromSlash(value))), nil
 }
 
 func relToRepo(repoRoot, abs string) (string, error) {

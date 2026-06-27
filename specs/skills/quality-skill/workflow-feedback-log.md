@@ -51,7 +51,8 @@ quality-log history.
 ## Location and naming
 
 A workflow run that writes a feedback log **MUST** write it under a
-workflow-agnostic `.quality/logs/` directory, creating that directory on demand.
+workflow-agnostic `.quality/logs/` directory relative to the selected
+`QUALITY.md`, creating that directory on demand.
 
 `.quality/logs/` is distinct from the quality log directory `.quality/log/`.
 

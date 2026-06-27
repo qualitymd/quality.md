@@ -812,21 +812,65 @@ func requirementAssessmentExample(kind DataKind) map[string]any {
 		"evidenceTargetCoverage": []any{map[string]any{"id": "tests", "description": "Test evidence was inspected."}},
 		"findings": []any{
 			map[string]any{
-				"id":          "tests-present",
-				"type":        "strength",
-				"severity":    "medium",
-				"description": "A focused test covers the requirement.",
-				"evidence":    map[string]any{"sourceRef": "tests/example_test.go"},
-				"rationale":   "The evidence directly addresses the target.",
+				"id":         "strength-001",
+				"type":       "strength",
+				"severity":   "medium",
+				"confidence": "medium",
+				"statement":  "Focused test coverage is present.",
+				"condition":  "A focused test covers the requirement's primary path.",
+				"criteria": []any{map[string]any{
+					"requirementId": exampleRequirementID(),
+					"ratingLevelId": RatingReference("target"),
+					"criterion":     "Tests cover the requirement.",
+					"rationale":     "The target criterion is the relevant bar for the observed test coverage.",
+				}},
+				"cause": map[string]any{
+					"status":    "not_applicable",
+					"statement": "No adverse cause is applicable to this strength.",
+				},
+				"effect": map[string]any{
+					"statement":    "The evidence supports the target rating for the primary path.",
+					"ratingEffect": "supports target",
+				},
+				"evidence": []any{map[string]any{
+					"sourceRef": "tests/example_test.go",
+					"statement": "A focused test file exists for the requirement.",
+					"rationale": "The evidence directly addresses the target.",
+				}},
 			},
 			map[string]any{
-				"id":          "edge-cases-untested",
-				"type":        "gap",
-				"severity":    "medium",
-				"description": "Edge-case paths around the requirement lack tests.",
-				"evidence":    map[string]any{"sourceRef": "tests/example_test.go"},
-				"rationale":   "Only the happy path is exercised.",
-				"actions": []any{map[string]any{
+				"id":         "gap-001",
+				"type":       "gap",
+				"severity":   "medium",
+				"confidence": "medium",
+				"statement":  "Edge-case behavior is not covered by tests.",
+				"condition":  "Edge-case paths around the requirement lack visible tests.",
+				"criteria": []any{map[string]any{
+					"requirementId": exampleRequirementID(),
+					"ratingLevelId": RatingReference("target"),
+					"criterion":     "Tests cover the requirement, including meaningful boundary behavior.",
+					"rationale":     "Boundary behavior is needed to satisfy the target criterion.",
+				}},
+				"cause": map[string]any{
+					"status":    "plausible",
+					"statement": "The visible tests focus on the primary path.",
+					"rationale": "No broader test inventory was inspected in this example.",
+					"evidence": []any{map[string]any{
+						"sourceRef": "tests/example_test.go",
+						"statement": "The example test evidence is narrow.",
+					}},
+				},
+				"effect": map[string]any{
+					"statement":    "The requirement cannot be rated above acceptable without boundary evidence.",
+					"ratingEffect": "holds below target",
+					"rationale":    "The observed gap prevents distinguishing target from acceptable.",
+				},
+				"evidence": []any{map[string]any{
+					"sourceRef": "tests/example_test.go",
+					"statement": "Only narrow test evidence was reviewed.",
+				}},
+				"candidateActions": []any{map[string]any{
+					"id":          "action-001",
 					"description": "Add focused tests for the boundary and error paths.",
 					"rationale":   "Closing the untested edge cases would lift coverage of the requirement.",
 				}},
@@ -925,13 +969,32 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 	}
 	if kind == DataKindAreaAnalysis {
 		example["findings"] = []any{map[string]any{
-			"id":         "area-finding-1",
+			"id":         "gap-001",
 			"type":       "gap",
 			"severity":   "medium",
 			"confidence": "medium",
-			"summary":    "Area-level synthesis found a representative gap.",
-			"rationale":  "The gap is synthesized from Requirement and Factor results.",
-			"inputRefs":  []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[gap-1]")},
+			"statement":  "Area-level synthesis found a representative gap.",
+			"condition":  "The Area synthesis includes a Requirement gap that affects the related Factor.",
+			"criteria": []any{map[string]any{
+				"requirementId": exampleRequirementID(),
+				"ratingLevelId": RatingReference("target"),
+				"criterion":     "Tests cover the requirement, including meaningful boundary behavior.",
+				"rationale":     "The Area Finding inherits the Requirement criterion that drives the synthesis.",
+			}},
+			"cause": map[string]any{
+				"status":    "not_assessed",
+				"statement": "The Area analysis did not assess the cause of the underlying gap.",
+			},
+			"effect": map[string]any{
+				"statement":    "The gap is a primary driver for the related Factor analysis.",
+				"ratingEffect": "constrains Area and Factor roll-up",
+				"rationale":    "The gap is synthesized from Requirement and Factor results.",
+			},
+			"evidence": []any{map[string]any{
+				"sourceRef": "tests/example_test.go",
+				"statement": "The underlying Requirement assessment records the test evidence gap.",
+			}},
+			"inputRefs": []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[gap-001]")},
 			"factorRelationships": []any{map[string]any{
 				"factorId":     exampleFactorID(),
 				"relationship": "primary-driver",

@@ -1,6 +1,10 @@
 package lint
 
-import "testing"
+import (
+	"os"
+	"path/filepath"
+	"testing"
+)
 
 // ruleCases is the exhaustive per-rule fixture table. Every rule in the catalog
 // must appear at least twice (asserted below), and each case may assert that
@@ -225,8 +229,8 @@ requirements:
 	},
 	{
 		ruleID: RuleInvalidConfig,
-		name:   "root config escapes repository",
-		model: validFrontmatter(`config: ../outside.yaml
+		name:   "root config is absolute",
+		model: validFrontmatter(`config: /tmp/outside.yaml
 requirements:
   has-assessment:
     title: Has an assessment
@@ -1196,5 +1200,49 @@ requirements:
 				t.Fatalf("findings = %#v, want %s", result.Findings, RuleInvalidConfig)
 			}
 		})
+	}
+}
+
+func TestRootConfigToolingKeyIsModelRelativeInsideRepository(t *testing.T) {
+	repo := t.TempDir()
+	if err := os.Mkdir(filepath.Join(repo, ".git"), 0o755); err != nil {
+		t.Fatalf("Mkdir(.git) error = %v", err)
+	}
+	modelDir := filepath.Join(repo, "packages", "api")
+	if err := os.MkdirAll(modelDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll(model dir) error = %v", err)
+	}
+	inside := filepath.Join(modelDir, "QUALITY.md")
+	if err := os.WriteFile(inside, []byte(validFrontmatter(`config: ../shared/quality-config.yaml
+requirements:
+  has-assessment:
+    title: Has an assessment
+    assessment: Inspect it.
+`)), 0o600); err != nil {
+		t.Fatalf("WriteFile(inside) error = %v", err)
+	}
+	result, err := Check(inside)
+	if err != nil {
+		t.Fatalf("Check(inside) error = %v", err)
+	}
+	if hasRule(result, RuleInvalidConfig) {
+		t.Fatalf("findings = %#v, want in-repository model-relative config accepted", result.Findings)
+	}
+
+	outside := filepath.Join(modelDir, "QUALITY-outside.md")
+	if err := os.WriteFile(outside, []byte(validFrontmatter(`config: ../../../outside.yaml
+requirements:
+  has-assessment:
+    title: Has an assessment
+    assessment: Inspect it.
+`)), 0o600); err != nil {
+		t.Fatalf("WriteFile(outside) error = %v", err)
+	}
+	result, err = Check(outside)
+	if err != nil {
+		t.Fatalf("Check(outside) error = %v", err)
+	}
+	if !hasRule(result, RuleInvalidConfig) {
+		t.Fatalf("findings = %#v, want repository-escaping config rejected", result.Findings)
 	}
 }

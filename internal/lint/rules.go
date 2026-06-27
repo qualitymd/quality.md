@@ -1,6 +1,7 @@
 package lint
 
 import (
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -71,10 +72,22 @@ func (s *runState) checkRootConfig() {
 	}
 	path := []PathSegment{workspace.FrontmatterConfigField}
 	if value.Kind != yaml.ScalarNode || strings.TrimSpace(value.Value) == "" {
-		s.add(RuleInvalidConfig, "The root `config` value must be a non-empty repository-relative scalar path.", s.locForNodeOrMissing(value, path, workspace.FrontmatterConfigField), nil)
+		s.add(RuleInvalidConfig, "The root `config` value must be a non-empty model-relative scalar path.", s.locForNodeOrMissing(value, path, workspace.FrontmatterConfigField), nil)
 		return
 	}
-	if _, err := workspace.CleanRepoRelative(value.Value); err != nil {
+	if _, err := workspace.CleanModelRelative(value.Value); err != nil {
+		s.add(RuleInvalidConfig, "The root `config` value is invalid: "+err.Error()+".", s.loc(value, path, workspace.FrontmatterConfigField), nil)
+		return
+	}
+	repoRoot, err := workspace.FindRepoRoot(s.doc.Path)
+	if err != nil {
+		return
+	}
+	modelAbs, err := filepath.Abs(s.doc.Path)
+	if err != nil {
+		return
+	}
+	if _, _, _, err := workspace.ResolveWorkspacePath(repoRoot, filepath.Dir(modelAbs), value.Value); err != nil {
 		s.add(RuleInvalidConfig, "The root `config` value is invalid: "+err.Error()+".", s.loc(value, path, workspace.FrontmatterConfigField), nil)
 	}
 }

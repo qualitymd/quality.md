@@ -50,8 +50,8 @@ convention-first contract the skill writes against in the meantime.
 ### The log artifact
 
 The skill **MUST** record meaningful changes to a QUALITY.md model as entries
-under the resolved workspace's `.quality/log/` directory. Each meaningful change
-is **one entry file**.
+under the resolved workspace's `.quality/log/` directory relative to the
+selected `QUALITY.md`. Each meaningful change is **one entry file**.
 
 > Rationale: a folder of independent files mirrors `.quality/evaluations/` for one
 > mental model of the runtime root, and avoids the append conflicts a single

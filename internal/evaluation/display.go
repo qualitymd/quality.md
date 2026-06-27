@@ -158,6 +158,13 @@ var factorRelationshipTitles = map[string]string{
 	"related":             "Related",
 }
 
+var causeStatusTitles = map[string]string{
+	"verified":       "Verified",
+	"plausible":      "Plausible",
+	"not_assessed":   "Not Assessed",
+	"not_applicable": "Not Applicable",
+}
+
 func dataKindTitle(kind DataKind) string {
 	return dataKindTitles.title(kind)
 }
@@ -215,6 +222,10 @@ func findingTypeTitle(value string) string {
 
 func factorRelationshipTitle(value string) string {
 	return stringTitle(value, factorRelationshipTitles)
+}
+
+func causeStatusTitle(value string) string {
+	return stringTitle(value, causeStatusTitles)
 }
 
 func stringTitle(value string, titles map[string]string) string {

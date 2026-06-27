@@ -34,10 +34,12 @@ artifacts.
 
 ## Workspace Artifacts
 
-Evaluation runs default under `.quality/evaluations/`. A repository can set
-`evaluationDir` in the resolved workspace config file; the selected `QUALITY.md`
-can point to that file with root `config` frontmatter, otherwise
-`.quality/config.yaml` is used.
+Evaluation runs default under `.quality/evaluations/` relative to the selected
+`QUALITY.md`. A repository can set `evaluationDir` in the resolved workspace
+config file; the selected `QUALITY.md` can point to that file with root `config`
+frontmatter, otherwise `.quality/config.yaml` beside the selected model is used.
+Relative tooling paths are model-relative and must remain inside the Git
+repository root found from that model.
 
 Other `.quality/` workspace artifacts:
 

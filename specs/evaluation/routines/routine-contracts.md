@@ -69,9 +69,20 @@ Levels, synthesize Factor or Area ratings, or write report prose.
 Judgment routines **MUST** use only their frames and declared inputs.
 
 Requirement assessment **MUST** produce `RequirementAssessmentResult` and **MUST
-NOT** assign a Rating Level.
+NOT** assign a Rating Level. Each Requirement Finding **MUST** use the shared
+Finding Core: statement, condition, criteria, cause, effect, and evidence.
 
-Requirement assessment **MAY** record finding-local **candidate actions** —
+Requirement assessment **MUST** classify findings by type using these semantics:
+`gap` falls short of declared criteria, `risk` could plausibly cause future
+quality loss, `strength` supports or exceeds criteria, `unknown` records missing
+or ambiguous evidence, and `note` preserves relevant non-driving context.
+
+Requirement assessment **MUST NOT** record `cause.status: verified` unless
+finding evidence directly supports the cause statement. When a `gap` or `risk`
+has enough evidence for condition and effect but not cause, the finding **MUST**
+use `cause.status: not_assessed` rather than inventing cause.
+
+Requirement assessment **MAY** record finding-local `candidateActions` —
 non-binding remediation leads carried on a finding — and **MUST NOT** synthesize,
 aggregate, deduplicate, or prioritize them across findings. Cross-finding
 synthesis is recommendation generation, which Evaluation v0 forbids.
@@ -84,11 +95,12 @@ higher rating.
 
 Area analysis **MUST** produce Area Findings in `AreaAnalysisResult.findings`
 when it identifies material observations that should be visible at Area or
-Factor report level. Area Findings **MUST** summarize observations for the
-containing Area, cite their source routine payloads through non-empty
-`inputRefs`, and relate only to Factors declared in that Area. Area analysis
-**MUST NOT** record recommendation, impact, priority, effort, benefit, ROI, or
-global ranking fields on Area Findings.
+Factor report level. Area Findings **MUST** use the shared Finding Core, cite
+their source routine payloads through non-empty `inputRefs`, and relate only to
+Factors declared in that Area. Area analysis **MUST NOT** record recommendation,
+priority, effort, benefit, ROI, `candidateActions`, or global ranking fields on Area
+Findings. Finding `effect` is allowed because it explains rating or quality
+consequence.
 
 ## Report Routine
 

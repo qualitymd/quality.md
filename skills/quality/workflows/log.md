@@ -1,5 +1,13 @@
 # /quality Runtime Workflows Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0136 -
+  Candidate Actions Payload.
+  Evaluate now writes finding-local `candidateActions` with `id`, `description`,
+  and optional `rationale` when a local remediation lead is evident, and keeps
+  them out of Area Findings and recommendation-like presentation.
+
 ## 2026-06-26
 
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0132 - Remove

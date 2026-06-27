@@ -90,11 +90,13 @@ When the model is invalid, `status` **MUST NOT** derive partial model-shape or
 source-coverage counts from it.
 
 `status` **MUST** resolve a QUALITY.md workspace from the selected model file,
-using the same root `config` pointer, config file default, and evaluation
-directory precedence as `qualitymd evaluation create`: command override where
-available, then `evaluationDir` in the resolved config file, then
+using the same model-relative root `config` pointer, config file default, and
+evaluation directory precedence as `qualitymd evaluation create`: command
+override where available, then `evaluationDir` in the resolved config file, then
 `.quality/evaluations/`. Status has no evaluation-directory override flag, so it
-uses the config/default portions of that precedence.
+uses the config/default portions of that precedence. Relative tooling paths are
+resolved from the selected model's workspace root and must remain inside the
+repository root found from that model.
 
 Status output **MUST** report `.quality/evaluations` as the default evaluation
 history path when no resolved config file changes it.

@@ -37,7 +37,7 @@ start timestamp and following the shared feedback-log contract.
 The evaluate feedback log frontmatter **MAY** include these evaluate-specific
 fields when known:
 
-- `evaluation-run` — repository-relative path to the numbered evaluation run.
+- `evaluation-run` — model-relative path to the numbered evaluation run.
 - `scope` — concise human-readable scope label.
 - `outcome` — workflow-process outcome when known, blank until close. Allowed
   terminal values are `completed-reportable`, `stopped-lint`, `stopped-model`,

@@ -382,7 +382,7 @@ func nextActions(path string, history EvaluationHistory, state Readiness) []rece
 			return []receipt.Action{{
 				ID:      "report-build",
 				Label:   "Build the latest evaluation report",
-				Command: "qualitymd evaluation report build " + history.Latest.Path,
+				Command: "qualitymd evaluation report build --model " + path + " " + history.Latest.Path,
 			}}
 		}
 	}
@@ -399,7 +399,7 @@ func reconciliationActions(path string, history EvaluationHistory) []receipt.Act
 		return []receipt.Action{{
 			ID:      "evaluation-status-latest",
 			Label:   "Inspect the latest evaluation run",
-			Command: "qualitymd evaluation status " + latest.Path,
+			Command: "qualitymd evaluation status --model " + path + " " + latest.Path,
 		}}
 	case latest.Stale:
 		return []receipt.Action{{

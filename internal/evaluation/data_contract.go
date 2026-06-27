@@ -293,16 +293,11 @@ func analysisScopeContract() dataObjectContract {
 }
 
 func areaFindingContract() dataObjectContract {
-	return object(
-		field("id", dataString, true),
-		field("type", dataString, true, enum("strength", "gap", "risk", "unknown", "note")),
-		field("severity", dataString, true, enum("critical", "high", "medium", "low")),
-		field("confidence", dataString, true, enum("high", "medium", "low", "none")),
-		field("summary", dataString, true),
-		field("rationale", dataString, false),
+	fields := append(findingCoreFields(),
 		field("inputRefs", dataArray, true, arrayOfObject(routineRefContract()), minItems(1)),
 		field("factorRelationships", dataArray, false, arrayOfObject(areaFindingFactorRelationshipContract())),
 	)
+	return object(fields...)
 }
 
 func areaFindingFactorRelationshipContract() dataObjectContract {
@@ -314,20 +309,64 @@ func areaFindingFactorRelationshipContract() dataObjectContract {
 }
 
 func findingContract() dataObjectContract {
+	fields := append(findingCoreFields(),
+		field("candidateActions", dataArray, false, arrayOfObject(candidateActionContract())),
+	)
+	return object(fields...)
+}
+
+func findingCoreFields() []dataField {
+	return []dataField{
+		field("id", dataString, true),
+		field("type", dataString, true, enum("strength", "gap", "risk", "unknown", "note")),
+		field("severity", dataString, true, enum("critical", "high", "medium", "low")),
+		field("confidence", dataString, true, enum("high", "medium", "low", "none")),
+		field("statement", dataString, true),
+		field("condition", dataString, true),
+		field("criteria", dataArray, true, arrayOfObject(findingCriterionContract()), minItems(1)),
+		field("cause", dataObject, true, findingCauseContract()),
+		field("effect", dataObject, true, findingEffectContract()),
+		field("evidence", dataArray, true, arrayOfObject(findingEvidenceContract()), minItems(1)),
+	}
+}
+
+func findingCriterionContract() dataObjectContract {
 	return object(
-		field("id", dataString, false),
-		field("type", dataString, false, enum("strength", "gap", "risk", "unknown", "note")),
-		field("severity", dataString, false, enum("critical", "high", "medium", "low")),
-		field("description", dataString, false),
-		field("location", dataObject, false, openObject()),
-		field("evidence", dataObject, false, openObject()),
+		field("requirementId", dataRequirementID, true),
+		field("ratingLevelId", dataRatingLevelID, true),
+		field("criterion", dataString, true),
 		field("rationale", dataString, false),
-		field("actions", dataArray, false, arrayOfObject(candidateActionContract())),
+	)
+}
+
+func findingCauseContract() dataObjectContract {
+	return object(
+		field("status", dataString, true, enum("verified", "plausible", "not_assessed", "not_applicable")),
+		field("statement", dataString, true),
+		field("rationale", dataString, false),
+		field("evidence", dataArray, false, arrayOfObject(findingEvidenceContract())),
+	)
+}
+
+func findingEffectContract() dataObjectContract {
+	return object(
+		field("statement", dataString, true),
+		field("rationale", dataString, false),
+		field("ratingEffect", dataString, false),
+	)
+}
+
+func findingEvidenceContract() dataObjectContract {
+	return object(
+		field("sourceRef", dataString, true),
+		field("statement", dataString, true),
+		field("rationale", dataString, false),
 	)
 }
 
 func candidateActionContract() dataObjectContract {
 	return object(
+		field("id", dataString, true),
 		field("description", dataString, true),
 		field("rationale", dataString, false),
 	)
@@ -650,11 +689,29 @@ func validateDataMinItems(field dataField, itemCount int, path string) error {
 
 func validatePayloadSemantics(kind DataKind, payload map[string]any) error {
 	switch kind {
+	case DataKindRequirementAssessment:
+		return validateRequirementAssessmentResultSemantics(payload)
 	case DataKindAreaAnalysis:
 		return validateAreaAnalysisResultSemantics(payload)
 	default:
 		return nil
 	}
+}
+
+func validateRequirementAssessmentResultSemantics(payload map[string]any) error {
+	for i, finding := range objectSlice(payload["findings"]) {
+		path := fmt.Sprintf("RequirementAssessmentResult.findings[%d]", i)
+		seen := map[string]struct{}{}
+		for j, action := range objectSlice(finding["candidateActions"]) {
+			actionPath := fmt.Sprintf("%s.candidateActions[%d]", path, j)
+			id := firstString(action, "id")
+			if _, ok := seen[id]; ok {
+				return usagef("%s.id %q is duplicated within %s.candidateActions", actionPath, id, path)
+			}
+			seen[id] = struct{}{}
+		}
+	}
+	return nil
 }
 
 func validateAreaAnalysisResultSemantics(payload map[string]any) error {

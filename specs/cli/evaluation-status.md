@@ -21,7 +21,15 @@ all capitals.
 
 The command **MUST** accept either a positional run path or `--latest`, and
 **MUST** error when both or neither are supplied. `--latest` resolves to the most
-recent recognized run in the resolved evaluation directory.
+recent recognized run in the resolved evaluation directory for the selected
+model.
+
+`--model <model>` **MUST** select the `QUALITY.md` file whose model-relative
+workspace supplies `--latest` history. When `--model` is supplied with a
+relative positional `<run>` path, the command **MUST** resolve that path relative
+to the selected model's workspace root. When `--model` is absent and a
+positional `<run>` path is supplied, the command **MAY** preserve ordinary
+filesystem-path behavior.
 
 The command **MUST NOT** write files. It exits `0` when a current Evaluation
 run can be inspected, even when it is not yet reportable. Missing, malformed,

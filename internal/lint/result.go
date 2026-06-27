@@ -69,7 +69,7 @@ var Rules = []Rule{
 	{RuleMissingLevelName, SeverityError, false, "A rating level declares no level name."},
 	{RuleInvalidRatingLevelID, SeverityError, false, "A rating level ID does not match the model name grammar."},
 	{RuleDuplicateLevel, SeverityError, false, "A rating level name is duplicated within the rating scale."},
-	{RuleInvalidConfig, SeverityError, false, "The root config tooling pointer is not a safe repository-relative scalar path."},
+	{RuleInvalidConfig, SeverityError, false, "The root config tooling pointer is not a safe model-relative scalar path."},
 	{RuleMissingCriterion, SeverityError, false, "A rating level declares no criterion."},
 	{RuleMissingLevelDescription, SeverityWarning, false, "A rating level declares no description."},
 	{RuleEmptyModel, SeverityError, false, "The model root supplies no factors, requirements, or areas."},

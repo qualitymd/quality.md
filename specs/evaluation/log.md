@@ -1,5 +1,20 @@
 # Evaluation v2 Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated the Evaluation candidate action contracts for
+  [0136 - Candidate Actions Payload](../../changes/archive/0136-candidate-actions-payload.md).
+  Requirement Findings now use `candidateActions` instead of `actions`, each
+  candidate action has an ID local to its containing Finding, and reports still
+  omit candidate actions in Evaluation v0.
+
+- **Revision**: Updated the Evaluation finding contracts for
+  [0135 - Structured Finding Core](../../changes/archive/0135-structured-finding-core.md).
+  Requirement and Area Findings now use one shared Finding Core with statement,
+  condition, criteria, cause, effect, and evidence; reports render Requirement,
+  Area, and Factor Findings through one table/detail shape; and finding IDs are
+  documented as payload-local selectors rather than durable cross-run IDs.
+
 ## 2026-06-26
 
 - **Revision**: Updated the payload-kind and report-tree contracts for

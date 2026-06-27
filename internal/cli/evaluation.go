@@ -16,6 +16,7 @@ import (
 type evaluationRunFlags struct {
 	latest        bool
 	evaluationDir string
+	model         string
 }
 
 func newEvaluationCmd() *cobra.Command {
@@ -57,7 +58,7 @@ func newEvaluationDataSetCmd() *cobra.Command {
 		Short: "Validate and persist a batch of Evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			runPath, err := resolveRunArg(args, runFlags)
+			run, err := resolveRunArg(args, runFlags)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
@@ -65,10 +66,11 @@ func newEvaluationDataSetCmd() *cobra.Command {
 			if err != nil {
 				return usageError(err)
 			}
-			result, err := evaluation.SetData(runPath, raw, evaluation.DataSetOptions{DryRun: dryRun})
+			result, err := evaluation.SetData(run.Path, raw, evaluation.DataSetOptions{DryRun: dryRun})
 			if err != nil {
 				return mapEvaluationError(err)
 			}
+			result = dataSetReceiptWithModel(result, run)
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), result)
 			}
@@ -102,7 +104,7 @@ func newEvaluationDataListCmd() *cobra.Command {
 		Short: "List stored Evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			runPath, err := resolveRunArg(args, runFlags)
+			run, err := resolveRunArg(args, runFlags)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
@@ -113,9 +115,12 @@ func newEvaluationDataListCmd() *cobra.Command {
 					return mapEvaluationError(err)
 				}
 			}
-			result, err := evaluation.ListData(runPath, resolvedKind)
+			result, err := evaluation.ListData(run.Path, resolvedKind)
 			if err != nil {
 				return mapEvaluationError(err)
+			}
+			if run.DisplayPath != "" {
+				result.Path = run.DisplayPath
 			}
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), result)
@@ -150,7 +155,7 @@ func newEvaluationDataGetCmd() *cobra.Command {
 			if jsonFlag {
 				return usageError(fmt.Errorf("evaluation data get already emits JSON on stdout; rerun without --json"))
 			}
-			runPath, err := resolveRunArg(args, runFlags)
+			run, err := resolveRunArg(args, runFlags)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
@@ -158,7 +163,7 @@ func newEvaluationDataGetCmd() *cobra.Command {
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			raw, _, err := evaluation.GetData(runPath, evaluation.DataQuery{
+			raw, _, err := evaluation.GetData(run.Path, evaluation.DataQuery{
 				Kind:           resolvedKind,
 				AreaRef:        areaRef,
 				FactorRef:      factorRef,
@@ -273,13 +278,16 @@ func newEvaluationDataVerifyCmd() *cobra.Command {
 		Short: "Validate persisted Evaluation JSON payloads",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			runPath, err := resolveRunArg(args, runFlags)
+			run, err := resolveRunArg(args, runFlags)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			result, err := evaluation.VerifyData(runPath)
+			result, err := evaluation.VerifyData(run.Path)
 			if err != nil {
 				return mapEvaluationError(err)
+			}
+			if run.DisplayPath != "" {
+				result.Path = run.DisplayPath
 			}
 			if err := writeEvaluationDataVerifyResult(cmd, result, jsonOutput); err != nil {
 				return err
@@ -343,13 +351,14 @@ func newEvaluationCreateCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&opts.Narrowing, "narrowing", "", "optional full structural scope path slug; must not include quality")
 	cmd.Flags().StringVar(&opts.Model, "model", "", "QUALITY.md file to snapshot")
-	cmd.Flags().StringVar(&opts.ResolveDir, "evaluation-dir", "", "override the evaluation directory")
+	cmd.Flags().StringVar(&opts.ResolveDir, "evaluation-dir", "", "override the model-relative evaluation directory")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run creation receipt")
 	return cmd
 }
 
 func newEvaluationListCmd() *cobra.Command {
 	var evaluationDir string
+	var modelPath string
 	var state string
 	var jsonOutput bool
 	cmd := &cobra.Command{
@@ -360,7 +369,7 @@ func newEvaluationListCmd() *cobra.Command {
 			if err := evaluation.ValidateRunState(state); err != nil {
 				return mapEvaluationError(err)
 			}
-			result, err := evaluation.ListRuns("", evaluationDir, state)
+			result, err := evaluation.ListRunsForModel(modelPath, evaluationDir, state)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
@@ -370,7 +379,8 @@ func newEvaluationListCmd() *cobra.Command {
 			return renderRunList(cmd.OutOrStdout(), result)
 		},
 	}
-	cmd.Flags().StringVar(&evaluationDir, "evaluation-dir", "", "override the evaluation directory")
+	cmd.Flags().StringVar(&modelPath, "model", "", "QUALITY.md file that anchors evaluation history")
+	cmd.Flags().StringVar(&evaluationDir, "evaluation-dir", "", "override the model-relative evaluation directory")
 	cmd.Flags().StringVar(&state, "state", "all", "filter runs: all, reportable, incomplete")
 	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable run list")
 	return cmd
@@ -384,15 +394,16 @@ func newEvaluationStatusCmd() *cobra.Command {
 		Short: "Show whether an evaluation run is reportable",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			runPath, err := resolveRunArg(args, runFlags)
+			resolved, err := resolveRunArg(args, runFlags)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			run, err := evaluation.Inspect(runPath)
+			run, err := evaluation.InspectWithDisplay(resolved.Path, resolved.DisplayPath)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
 			status := run.Status()
+			status = statusWithModel(status, resolved.Model)
 			if jsonOutput {
 				return writeJSON(cmd.OutOrStdout(), status)
 			}
@@ -422,11 +433,11 @@ func newEvaluationReportBuildCmd() *cobra.Command {
 		Short: "Build deterministic evaluation reports",
 		Args:  usage(cobra.RangeArgs(0, 1)),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			runPath, err := resolveRunArg(args, runFlags)
+			resolved, err := resolveRunArg(args, runFlags)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
-			result, err := evaluation.BuildReport(runPath)
+			result, err := evaluation.BuildReportWithDisplay(resolved.Path, resolved.DisplayPath)
 			if err != nil {
 				return mapEvaluationError(err)
 			}
@@ -444,15 +455,59 @@ func newEvaluationReportBuildCmd() *cobra.Command {
 
 func bindRunFlags(cmd *cobra.Command, flags *evaluationRunFlags) {
 	cmd.Flags().BoolVar(&flags.latest, "latest", false, "use the most recent evaluation run")
-	cmd.Flags().StringVar(&flags.evaluationDir, "evaluation-dir", "", "override the evaluation directory when using --latest")
+	cmd.Flags().StringVar(&flags.evaluationDir, "evaluation-dir", "", "override the model-relative evaluation directory when using --latest")
+	cmd.Flags().StringVar(&flags.model, "model", "", "QUALITY.md file that anchors model-relative run paths")
 }
 
-func resolveRunArg(args []string, flags evaluationRunFlags) (string, error) {
+func resolveRunArg(args []string, flags evaluationRunFlags) (*evaluation.ResolvedRun, error) {
 	runArg := ""
 	if len(args) == 1 {
 		runArg = args[0]
 	}
-	return evaluation.ResolveRun("", flags.evaluationDir, runArg, flags.latest)
+	return evaluation.ResolveRunSelection(evaluation.RunSelection{
+		Model:         flags.model,
+		EvaluationDir: flags.evaluationDir,
+		RunArg:        runArg,
+		Latest:        flags.latest,
+	})
+}
+
+func statusWithModel(status evaluation.RunStatus, model string) evaluation.RunStatus {
+	if model == "" || len(status.NextActions) == 0 {
+		return status
+	}
+	for i, action := range status.NextActions {
+		switch action.ID {
+		case "evaluation-report-build":
+			status.NextActions[i].Command = "qualitymd evaluation report build" + modelFlagArgs(model) + " " + status.Path
+		case "evaluation-data-set":
+			status.NextActions[i].Command = "qualitymd evaluation data set" + modelFlagArgs(model) + " " + status.Path + " < payloads.json"
+		}
+	}
+	return status
+}
+
+func dataSetReceiptWithModel(result *evaluation.DataSetReceipt, run *evaluation.ResolvedRun) *evaluation.DataSetReceipt {
+	if run == nil || run.Model == "" || len(result.NextActions) == 0 {
+		return result
+	}
+	path := run.DisplayPath
+	if path == "" {
+		path = run.Path
+	}
+	for i, action := range result.NextActions {
+		if action.ID == "evaluation-status" {
+			result.NextActions[i].Command = "qualitymd evaluation status" + modelFlagArgs(run.Model) + " " + path
+		}
+	}
+	return result
+}
+
+func modelFlagArgs(model string) string {
+	if model == "" {
+		return ""
+	}
+	return " --model " + model
 }
 
 func readPayload(cmd *cobra.Command) ([]byte, error) {

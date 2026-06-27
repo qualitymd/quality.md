@@ -24,27 +24,30 @@ all capitals.
 - `[model]` — selected `QUALITY.md` file to snapshot; defaults to `QUALITY.md`.
 - `--narrowing <slug>` — optional path-safe full structural scope path slug.
 - `--model <path>` — selected `QUALITY.md` file to snapshot.
-- `--evaluation-dir <path>` — override the evaluation directory.
+- `--evaluation-dir <path>` — override the model-relative evaluation directory.
 - `--json` — emit a receipt on stdout.
 
 ## Requirements
 
 The command **MUST** resolve a QUALITY.md workspace from the selected model file.
-The workspace includes the selected model path, the repository root found from
-that model path, the config file, the `.quality/` quality data directory, the
-evaluation directory, and the quality log directory.
+The workspace includes the selected model path, the workspace root directory
+containing that model, the repository root found from that model path, the
+config file, the `.quality/` quality data directory, the evaluation directory,
+the quality log directory, and the workflow feedback-log directory. The
+workspace root is the default base for relative tooling paths; the repository
+root is the containment boundary.
 
 The selected model's root frontmatter key `config` **MAY** point to the
-workspace config file. When present, `config` **MUST** be a non-empty scalar
-repository-relative path, **MUST NOT** be absolute, and **MUST NOT** escape the
-repository after path normalization. When absent, the config file defaults to
-`.quality/config.yaml`. If the resolved config file is absent, the command
-**MUST** use built-in defaults.
+workspace config file. When present, `config` **MUST** be a non-empty
+model-relative scalar path, **MUST NOT** be absolute, and **MUST NOT** escape the
+repository after path normalization from the workspace root. When absent, the
+config file defaults to `.quality/config.yaml` under the workspace root. If the
+resolved config file is absent, the command **MUST** use built-in defaults.
 
 The command **MUST** resolve the evaluation directory using this precedence:
 `--evaluation-dir`, then `evaluationDir` in the resolved config file, then
-`.quality/evaluations/`. The path **MUST** be repository-relative and **MUST NOT**
-escape the repository.
+`.quality/evaluations/`. The path **MUST** be model-relative and **MUST NOT**
+escape the repository after normalization from the workspace root.
 
 The command **MUST** validate the model path before creating the evaluation
 directory or run folder. The model path **MUST** resolve to a file, not a
@@ -81,4 +84,7 @@ On success, human output **MUST** report the created path on stderr. Under
 `nextActions`.
 
 The next action **MUST** show stdin data persistence with
-`qualitymd evaluation data set <run> < payloads.json`.
+`qualitymd evaluation data set <run> < payloads.json`. When the selected model
+is not the default `QUALITY.md` in the current working directory, the next
+action **MUST** include `--model <model>` so the model-relative run path is
+directly reusable.
