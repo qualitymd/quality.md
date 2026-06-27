@@ -10,7 +10,9 @@ QUALITY.md specification.
 - Direct `QUALITY.md` edit requests now use a lightweight authoring checkpoint:
   the skill infers intent, asks follow-up only when it materially affects the
   edit, states the intended change, and accepts `looks good` as confirmation when
-  the mutation is clear.
+  the mutation is clear. The checkpoint now explicitly waits for that feedback
+  before editing, and the skill acknowledges long direct-authoring reads before
+  inspecting model context.
 
 ## v0.23.0 - 2026-06-27
 

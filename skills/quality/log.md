@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0139 - Real Review Gates.
+  Direct model authoring now acknowledges long model/guidance reads before they
+  begin, phrases the intended-edit checkpoint as a review gate, waits for
+  `looks good` or corrections before mutation, and avoids asking for feedback
+  while proceeding in the same turn.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and authoring guides for 0138 -
   Lightweight Authoring Checkpoint.
   Runtime guidance now routes direct existing `QUALITY.md` edit requests to

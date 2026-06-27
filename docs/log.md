@@ -1,5 +1,16 @@
 # Docs Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) with review-gate
+  guidance for
+  [0139 - Real Review Gates](../changes/archive/0139-real-review-gates.md).
+  The guide now treats feedback invitations as real gates, requires agents to
+  wait after asking for adjustments or `looks good`, adds a quick
+  acknowledgement pattern before long non-workflow reads, and calls out the false
+  affordance of asking for feedback while proceeding anyway.
+
 ## 2026-06-26
 
 - **Revision**: Strengthened

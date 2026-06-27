@@ -39,6 +39,12 @@ covers how to answer it immediately.
 If the user has to infer the main question from surrounding explanation, the
 interaction is doing too much work in prose.
 
+A feedback invitation is a gate, not decoration. If an agent asks what the user
+wants adjusted, asks for concerns, or names a confirmation phrase such as
+`looks good`, the agent must wait for the response before mutating. Do not offer
+agency in one sentence and remove it in the next by saying the agent is
+proceeding anyway.
+
 ## Channels and progressive enhancement
 
 Design the interaction, not the rendering.
@@ -186,6 +192,19 @@ Avoid the **silent runway**: a long sequence of reads and commands before the
 user sees any frame. From the user's side it is indistinguishable from a stall,
 and it removes the early checkpoint the opening exists to provide.
 
+For non-workflow tasks that still need meaningful reading or inference before a
+mutation — for example, direct `QUALITY.md` authoring that requires the agent to
+read the model and authoring guidance — send a short acknowledgement before that
+work begins. The acknowledgement should name the understood task, say what the
+agent will inspect, and state whether a feedback gate will happen before files
+change.
+
+```text
+I’ll treat this as a `QUALITY.md` model change. I’m going to inspect the current
+model and relevant authoring guidance, then I’ll show the intended edit for
+feedback before changing files.
+```
+
 ## Progress
 
 Show progress in workflows with multiple phases.
@@ -310,6 +329,52 @@ Please correct this draft with short fragments.
 The checkpoint's primary call to action should still be explicit. Do not end a
 structured checkpoint with a broad catch-all question that makes the specific
 dimensions feel optional.
+
+## Review Gates
+
+Use review gates when the agent has inferred an edit or plan and needs the user
+to correct, approve, or add context before mutation. A review gate can be lighter
+than a binary decision gate: it may invite feedback in conversational terms and
+accept a phrase such as `looks good` as approval. It is still a real gate.
+
+Distinguish three interaction shapes:
+
+- **Informational preview** - tells the user what the agent is about to inspect
+  or do next, without asking for a response.
+- **Review gate** - asks for corrections, concerns, goals, needs, constraints,
+  or `looks good`; the agent waits for the response before mutating.
+- **Decision gate** - asks the user to choose between proceeding and a
+  non-mutating alternative; the agent waits for explicit approval before
+  mutating.
+
+When a review gate authorizes a content or model edit, it should state the
+inferred intent, the intended edit, important boundaries, and how the user can
+approve or adjust it. For example:
+
+```text
+I’m reading this as: add a model-wide Security factor at the root, then connect
+descendant security Requirements to that root Factor.
+
+I’ll keep the existing child Security Factors in place and write one quality-log
+entry because this changes what the model judges.
+
+Anything you want adjusted before I make that edit? You can say `looks good`, or
+name any concern, goal, need, or constraint.
+```
+
+After this block, stop. If the agent should proceed without waiting, do not ask
+for feedback; render an informational preview instead. A request for feedback
+followed by "I’m proceeding" is a false affordance:
+
+```text
+Anything you want adjusted first? I’m proceeding with that interpretation.
+```
+
+For edits that reshape future judgment — such as `QUALITY.md` model changes,
+rating criteria changes, scope shifts, or removal of coverage — prefer a review
+gate even when the intent seems clear. Clear intent reduces follow-up questions;
+it does not remove the user's chance to catch a wrong inference before the
+mutation.
 
 ## Decision gates
 
@@ -442,6 +507,10 @@ Before shipping an agent-mediated workflow, check:
   shortest confirmation, except binary confirmations that use `y`/`n`.
 - The shortest acceptable user response is clear.
 - Progress is visible for multi-step workflows.
+- Long non-workflow reads or inference begin with a quick acknowledgement rather
+  than a silent runway.
+- Any feedback invitation is a real gate: the agent waits after asking for
+  adjustments, concerns, or `looks good`.
 - Mutation gates lead with the question, render choices as a separated block,
   cap supporting fields at about three, and state the change, reason, and done
   criterion.

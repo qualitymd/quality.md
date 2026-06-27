@@ -48,7 +48,7 @@ model or body target, the rationale, the expected judgment effect, unresolved
 unknowns, and whether the change should write the quality log. Ask follow-up only
 when one of those would materially change the edit; otherwise state the intended
 edit and invite concerns, goals, needs, worries, constraints, or `looks good`
-before mutating.
+as a review gate, then wait for that response before mutating.
 
 ## The QUALITY.md file
 

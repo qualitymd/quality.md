@@ -3,6 +3,36 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0139 - Real Review Gates](archive/0139-real-review-gates.md).
+  The shared agent-mediated UX guide now distinguishes informational previews,
+  review gates, and decision gates; requires quick acknowledgement before long
+  non-workflow reads; and names feedback-while-proceeding as a false affordance.
+  Direct `QUALITY.md` authoring now acknowledges long model/guidance reads before
+  they begin, waits for `looks good` or corrections after its checkpoint, and
+  keeps judgment-shaping model edits reviewable even when intent is clear.
+  `mise run fmt-md-check` passes.
+
+- **In-Review**: Completed implementation for
+  [0139 - Real Review Gates](archive/0139-real-review-gates.md).
+  The shared UX guide now treats feedback invitations as real review gates and
+  adds quick acknowledgement before long non-workflow reads. Direct `QUALITY.md`
+  authoring now acknowledges long model/guidance reads, waits after its
+  intended-edit checkpoint, and avoids feedback-while-proceeding wording.
+  `mise run fmt-md-check` passes.
+
+- **In-Progress**: Advanced [0139 - Real Review Gates](archive/0139-real-review-gates.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  shared UX guidance, `/quality` runtime skill guidance, durable skill specs,
+  authoring guides, logs, and release notes.
+
+- **Design**: Created [0139 - Real Review Gates](archive/0139-real-review-gates.md)
+  with its [functional spec](archive/0139-real-review-gates/spec.md) and
+  [design doc](archive/0139-real-review-gates/design.md). The case makes feedback
+  invitations real review gates, adds quick acknowledgement before long
+  non-workflow reads, and aligns direct `QUALITY.md` authoring so it waits for
+  review before mutation. Runtime/spec implementation is beginning next.
+
+- **Done**: Implemented and archived
   [0138 - Lightweight Authoring Checkpoint](archive/0138-lightweight-authoring-checkpoint.md).
   Direct `QUALITY.md` authoring now routes separately from tooling `update`,
   infers intent before follow-up, asks only material follow-up questions, states

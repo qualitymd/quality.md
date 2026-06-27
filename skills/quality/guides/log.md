@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [Authoring QUALITY.md](authoring.md) for 0139 - Real
+  Review Gates.
+  Runtime authoring guidance now treats direct-edit invitations for concerns,
+  goals, needs, worries, constraints, or `looks good` as review gates that wait
+  for user response before mutation.
+
 - **Revision**: Updated [Authoring QUALITY.md](authoring.md) and
   [Authoring Quality-Log Changes](authoring/quality-log.md) for 0138 -
   Lightweight Authoring Checkpoint.

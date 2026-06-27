@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Updated the durable
+  [authoring guide family](authoring.md) for
+  [0139 - Real Review Gates](../../../../changes/archive/0139-real-review-gates.md).
+  Direct-edit guidance now treats invitations for concerns, goals, needs,
+  worries, constraints, or `looks good` as review gates that wait for user
+  response before mutation.
+
+- **Revision**: Updated the durable
   [authoring guide family](authoring.md) and
   [quality-log authoring guide](authoring/quality-log.md) specs for
   [0138 - Lightweight Authoring Checkpoint](../../../../changes/archive/0138-lightweight-authoring-checkpoint.md).

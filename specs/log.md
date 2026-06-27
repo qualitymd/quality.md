@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0139 - Real Review Gates](../changes/archive/0139-real-review-gates.md).
+  The `/quality` skill specs now require direct model authoring to acknowledge
+  long model/guidance reads before they begin, treat intent checkpoints as review
+  gates that wait for a response, and keep judgment-shaping `QUALITY.md` model
+  edits reviewable even when intent is clear.
+
+- **Revision**: Implemented durable spec changes for
   [0138 - Lightweight Authoring Checkpoint](../changes/archive/0138-lightweight-authoring-checkpoint.md).
   The `/quality` skill specs now define direct model authoring for existing
   `QUALITY.md` edits, require infer-first material follow-up, add the

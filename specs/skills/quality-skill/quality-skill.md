@@ -550,6 +550,12 @@ direct edit request. It is not a public workflow and does not use a workflow run
 frame, but it may mutate `QUALITY.md` and, for meaningful model changes, the
 quality log.
 
+When a request likely resolves to direct model authoring and the model or guide
+read will take meaningful work, the skill **MUST** acknowledge the request before
+that long read. The acknowledgement **MUST** say the skill will treat the request
+as a `QUALITY.md` model change, inspect the current model and relevant authoring
+guidance, and show the intended edit for feedback before changing files.
+
 Before asking follow-up questions, the skill **MUST** infer the likely authoring
 intent from the user's request, the current `QUALITY.md`, and the routed
 authoring guides relevant to the likely mutation surface. The skill **MUST** read
@@ -571,12 +577,19 @@ expected. The checkpoint **MUST** invite corrections or additional concerns,
 goals, needs, worries, and constraints in conversational terms, and **MUST** make
 a short approval path explicit. When the checkpoint clearly names the mutation,
 `looks good` or an equivalent clear approval **MUST** count as explicit
-confirmation to proceed.
+confirmation to proceed. After presenting the checkpoint, the skill **MUST** stop
+and wait for the user's response before mutating. It **MUST NOT** ask what the
+user wants adjusted and then proceed in the same turn.
 
 Direct model authoring **MUST** use the existing decision-brief confirmation
 shape, rather than the lightweight checkpoint alone, when the edit changes rating
 semantics, removes model coverage, shifts scope or apex, or otherwise carries
 substantial judgment risk.
+
+Direct model authoring **SHOULD** use a review gate for `QUALITY.md` model changes
+that reshape future judgment even when the user's intent seems clear. Clear
+intent may remove follow-up questions, but it does not remove the user's chance
+to review the intended edit before mutation.
 
 When a confirmed direct model-authoring edit meaningfully alters what the model
 is or how it judges, the skill **MUST** write one quality-log entry for the

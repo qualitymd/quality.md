@@ -605,3 +605,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0138 — Lightweight Authoring Checkpoint](0138-lightweight-authoring-checkpoint.md) -
   adds a conversational direct-authoring checkpoint for `QUALITY.md` edits
   (`Done`).
+- [0139 — Real Review Gates](0139-real-review-gates.md) - makes feedback
+  invitations real gates in the shared UX guide and `/quality` direct authoring
+  (`Done`).

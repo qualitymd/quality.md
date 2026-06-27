@@ -225,16 +225,20 @@ invocations.
 
 Direct model authoring is a lightweight path for requests to change an existing
 `QUALITY.md`; it is not `setup`, `evaluate`, or tooling `update`, and it does not
-have a public workflow run frame. Read `guides/authoring.md` first, then read
-only the routed authoring sub-guides relevant to the likely mutation surface.
-Infer the user's intent from the request, the current `QUALITY.md`, and those
-guides before asking follow-up. Ask follow-up only when missing information would
-materially change the model/body target, mutation surface, judgment effect,
-quality-log decision, or safety boundary. Common material follow-ups include
-body context versus structured model change, unclear Area/Factor/Requirement or
-Rating Level targets, and edits to Rating Scale criteria, weights, required
-margin, scope, or apex. Do not use a fixed full questionnaire for routine direct
-edits.
+have a public workflow run frame. When a request likely resolves to direct model
+authoring and the model/guidance read will take meaningful work, acknowledge the
+request before that long read: say you will treat it as a `QUALITY.md` model
+change, inspect the current model and relevant authoring guidance, and show the
+intended edit for feedback before changing files. Then read `guides/authoring.md`
+first, then read only the routed authoring sub-guides relevant to the likely
+mutation surface. Infer the user's intent from the request, the current
+`QUALITY.md`, and those guides before asking follow-up. Ask follow-up only when
+missing information would materially change the model/body target, mutation
+surface, judgment effect, quality-log decision, or safety boundary. Common
+material follow-ups include body context versus structured model change, unclear
+Area/Factor/Requirement or Rating Level targets, and edits to Rating Scale
+criteria, weights, required margin, scope, or apex. Do not use a fixed full
+questionnaire for routine direct edits.
 
 Before mutating `QUALITY.md` through direct model authoring, present a lightweight
 intent checkpoint that names the intended edit and invites adjustment:
@@ -245,18 +249,22 @@ I’m reading this as: <plain-language intent>.
 I’ll update <QUALITY.md target>, keep <important boundary> unchanged, and
 <write/not write> a quality-log entry because <reason>.
 
-Anything you want adjusted first? You can say `looks good`, or tell me any
-concerns, goals, needs, worries, or constraints I should account for.
+Anything you want adjusted before I make that edit? You can say `looks good`, or
+tell me any concerns, goals, needs, worries, or constraints I should account for.
 ```
 
 When the checkpoint clearly names the mutation, `looks good` or an equivalent
-clear approval counts as explicit confirmation. If the edit changes rating
-semantics, removes model coverage, shifts scope or apex, or otherwise carries
-substantial judgment risk, use the decision-brief shape instead of the lightweight
-checkpoint alone. For confirmed direct model-authoring edits, write one
-quality-log entry only when the edit meaningfully alters what the model is or how
-it judges; do not log wording-only, typo, formatting, or body-only clarification
-edits that leave model judgment unchanged.
+clear approval counts as explicit confirmation. After presenting this checkpoint,
+stop and wait for the user's response before mutating; do not ask what the user
+wants adjusted and then proceed in the same turn. If the edit reshapes future
+judgment — for example by changing rating semantics, removing model coverage,
+shifting scope or apex, or adding/changing model-wide Factors or Requirements —
+prefer this review gate even when the intent seems clear. For high-risk edits,
+use the decision-brief shape instead of the lightweight checkpoint alone. For
+confirmed direct model-authoring edits, write one quality-log entry only when the
+edit meaningfully alters what the model is or how it judges; do not log
+wording-only, typo, formatting, or body-only clarification edits that leave model
+judgment unchanged.
 
 For any mutation that requires confirmation, use a decision brief rather than a
 bare yes/no question. Lead with the question, render the choices as a visually
