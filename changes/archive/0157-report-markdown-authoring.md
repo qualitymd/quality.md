@@ -2,7 +2,7 @@
 type: Change Case
 title: Report Markdown Authoring
 description: Centralize generated Evaluation report Markdown authoring without replacing deterministic Go rendering.
-status: Draft
+status: Done
 tags: [evaluation, reports, markdown, refactor]
 timestamp: 2026-06-27T00:00:00Z
 ---
@@ -14,6 +14,8 @@ children:
 
 - [Functional spec](0157-report-markdown-authoring/spec.md) - what the case must
   do.
+- [Design doc](0157-report-markdown-authoring/design.md) - how it is built, and
+  why.
 
 ## Motivation
 
@@ -62,35 +64,39 @@ contracts.
 **Code**
 
 - [ ] `internal/evaluation/report_tree.go` - migrate string-built report blocks
+- [x] `internal/evaluation/report_tree.go` - migrate string-built report blocks
       to the internal writer and keep data-to-report behavior deterministic.
-- [ ] New internal report Markdown writer package or file - centralize report
+- [x] `internal/markdown/` - centralize report
       primitives, escaping, relative links, and empty-cell behavior.
-- [ ] `internal/evaluation/evaluation_test.go` - cover preserved report output
+- [x] `internal/evaluation/evaluation_test.go` - cover preserved report output
       and edge cases for table/link escaping.
-- [ ] Optional focused tests for the new writer - verify headings, paragraphs,
+- [x] Optional focused tests for the new writer - verify headings, paragraphs,
       lists, tables, links, code spans, empty cells, and multiline cells.
 
 **Format spec and durable specs** (substance in the [functional spec](0157-report-markdown-authoring/spec.md))
 
-- [ ] `specs/evaluation/reports/report-tree.md` - clarify generated Markdown
+- [x] `specs/evaluation/reports/report-tree.md` - clarify generated Markdown
       hygiene rules when durable behavior is affected by escaping or empty-cell
       handling.
-- [ ] `specs/cli/evaluation-report.md` - no content change expected unless
+- [x] `specs/cli/evaluation-report.md` - no content change expected unless
       report determinism or renderability wording needs tightening.
-- [ ] `specs/log.md` and `specs/evaluation/log.md` - durable spec log entries if
+- [x] `specs/log.md` and `specs/evaluation/log.md` - durable spec log entries if
       durable report specs change.
-- [ ] `SPECIFICATION.md` - no change expected; report authoring internals do not
+- [x] `SPECIFICATION.md` - no change expected; report authoring internals do not
       alter the format contract.
 
 **Durable docs / bundled skill runtime**
 
-- [ ] `CHANGELOG.md` - release-note entry if the refactor lands user-visible
+- [x] `CHANGELOG.md` - release-note entry if the refactor lands user-visible
       Markdown hygiene fixes.
-- [ ] `changes/index.md` and `changes/log.md` - Change Case lifecycle.
-- [ ] `/quality` runtime skill files - no change expected; report content and
+- [x] `changes/index.md`, `changes/archive/index.md`, and `changes/log.md` -
+      Change Case lifecycle.
+- [x] `/quality` runtime skill files - no change expected; report content and
       closeout guidance stay the same.
 
 ## Status
 
-`Draft`. Functional spec is being established; design and implementation have
-not started.
+`Done`. Implemented, verified, and archived. Generated Evaluation reports now
+use shared Markdown helpers for table rows, links, data links, code spans, and
+empty cells; durable report specs document table-cell hygiene; focused helper
+tests and the full report gallery check pass. `mise run check` passes.

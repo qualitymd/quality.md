@@ -666,3 +666,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0156 — Report Gallery](0156-report-gallery.md) - adds a generated
   software-service report gallery with a sample `QUALITY.md`, synthetic
   Evaluation data, browsable reports, and regeneration checks (`Done`).
+- [0157 — Report Markdown Authoring](0157-report-markdown-authoring.md) -
+  centralizes generated Evaluation report Markdown authoring with shared table,
+  link, code-span, and empty-cell helpers while preserving deterministic Go
+  rendering (`Done`).

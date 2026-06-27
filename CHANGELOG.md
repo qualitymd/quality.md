@@ -5,6 +5,8 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.25.5 - 2026-06-27
+
 ### CLI
 
 - Evaluation Advice now uses the simplified `RecommendationResult` shape:
@@ -15,6 +17,22 @@ QUALITY.md specification.
 - Evaluation report build now generates a full ranked `findings.md` index,
   links `report.md` Top Findings to exact Requirement finding details, and shows
   Advice rank context inside Requirement finding detail sections.
+- Generated Evaluation report Markdown authoring is now centralized around
+  shared table, link, code-span, and empty-cell helpers, including table-cell
+  escaping for separators and multiline text.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.5` continues to require the `qualitymd` CLI
+  `0.25.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.25.5`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.5`, requires `qualitymd >=0.25.0 <0.26.0`
 
 ## v0.25.4 - 2026-06-27
 

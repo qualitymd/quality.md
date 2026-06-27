@@ -318,14 +318,19 @@ one component of a paired Confidence or Status cell, the cell **MUST** render an
 em dash (`—`) instead of a blank segment. Empty whole-section placeholder rows
 such as `(no findings)`, `(no rating drivers)`, and `(none recorded)` **MUST**
 remain worded empty-state rows rather than being replaced by the cell marker.
+Generated report table cells **MUST** escape Markdown table separators and
+normalize multiline scalar content so persisted Evaluation text cannot alter the
+table column shape.
 
 Each generated report **MUST** include exactly one static legend at the foot of
 the report defining `—` as "not applicable or not recorded". The legend **MUST**
 render regardless of whether the report contains an em-dash cell.
 
 > Rationale: blank cells are ambiguous in committed Markdown reports. A neutral
-> em dash makes absence visible without overclaiming `N/A`, and a static legend
-> avoids data-dependent footnote churn across re-runs. — 0118
+> em dash makes absence visible without overclaiming `N/A`; escaping table
+> separators and normalizing multiline text prevents persisted structured data
+> from corrupting the generated Markdown table; and a static legend avoids
+> data-dependent footnote churn across re-runs. — 0118, 0157
 
 Every rating column **MUST** name what it rates. A header summary table **MUST**
 label its descendant-inclusive rating column `Overall Rating` and its local

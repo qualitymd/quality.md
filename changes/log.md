@@ -2,9 +2,35 @@
 
 ## 2026-06-27
 
+- **Done**: Implemented and archived
+  [0157 - Report Markdown Authoring](archive/0157-report-markdown-authoring.md).
+  Generated Evaluation reports now use shared Markdown helpers for table rows,
+  report links, data links, code spans, and empty cells; table cells escape
+  Markdown separators and normalize multiline scalar content; durable report
+  specs and release notes are aligned; and `mise run check` passes.
+
+- **In-Review**: Completed implementation for
+  [0157 - Report Markdown Authoring](archive/0157-report-markdown-authoring.md).
+  Added `internal/markdown`, migrated Evaluation report dynamic rows and links
+  through shared helpers, documented table-cell hygiene in durable report specs,
+  and verified with `go test ./internal/markdown ./internal/evaluation`,
+  `mise run report-gallery-check`, and `mise run check`.
+
+- **In-Progress**: Advanced
+  [0157 - Report Markdown Authoring](archive/0157-report-markdown-authoring.md).
+  Functional spec and design are settled; implementation is beginning across the
+  internal Markdown writer, Evaluation report rendering, focused tests, and
+  durable report hygiene docs.
+
+- **Design**: Advanced
+  [0157 - Report Markdown Authoring](archive/0157-report-markdown-authoring.md) with its
+  [design doc](archive/0157-report-markdown-authoring/design.md). The design adds a
+  small standard-library `internal/markdown` writer for generated report
+  primitives while keeping Evaluation semantics in the report renderer.
+
 - **Draft**: Created
-  [0157 - Report Markdown Authoring](0157-report-markdown-authoring.md) with its
-  [functional spec](0157-report-markdown-authoring/spec.md). The case captures
+  [0157 - Report Markdown Authoring](archive/0157-report-markdown-authoring.md) with its
+  [functional spec](archive/0157-report-markdown-authoring/spec.md). The case captures
   the Markdown-authoring research conclusion: keep deterministic Go report
   rendering, add a focused internal writer for report primitives, centralize
   table/link/empty-cell escaping, and avoid broad parser or builder dependencies

@@ -1312,6 +1312,15 @@ func TestReportPairCellsRenderEmptyComponents(t *testing.T) {
 	}
 }
 
+func TestReportMarkdownHelpersEscapeTableContent(t *testing.T) {
+	if got := markdownCell("first | second\nthird"); got != `first \| second<br>third` {
+		t.Fatalf("markdownCell() = %q, want escaped pipe and normalized newline", got)
+	}
+	if got := reportLink("areas/api/api-area.md", "root-area.md", "Root [Area] | link"); got != `[Root \[Area\] \| link](../../root-area.md)` {
+		t.Fatalf("reportLink() = %q, want escaped label and relative target", got)
+	}
+}
+
 func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 	kinds := append([]DataKind{}, acceptedDataKinds...)
 	kinds = append(kinds, DataKindEvaluationOutput)

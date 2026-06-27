@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0157 - Report Markdown Authoring](../../changes/archive/0157-report-markdown-authoring.md).
+  Generated report table cells now have an explicit Markdown hygiene contract:
+  escape table separators and normalize multiline scalar content before writing
+  rows.
+
 - **Revision**: Updated the Evaluation payload and report-tree contracts for
   [0155 - Recommendation Result Shape](../../changes/archive/0155-recommendation-result-shape.md).
   `RecommendationResult` now carries `description`, `background`,

@@ -3,6 +3,12 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0157 - Report Markdown Authoring](../changes/archive/0157-report-markdown-authoring.md).
+  Evaluation report specs now require generated table cells to escape Markdown
+  table separators and normalize multiline scalar content so persisted
+  Evaluation text cannot change table shape.
+
+- **Revision**: Implemented durable spec changes for
   [0155 - Recommendation Result Shape](../changes/archive/0155-recommendation-result-shape.md).
   Evaluation Advice now uses `description`, `background`, `expectedValue`, and
   `doneCriterion` on `RecommendationResult`; recommendation reports render from

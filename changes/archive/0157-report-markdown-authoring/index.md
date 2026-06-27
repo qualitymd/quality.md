@@ -6,3 +6,4 @@ Change Case.
 # Concepts
 
 - [Functional spec](spec.md) - what the change must do.
+- [Design doc](design.md) - how it is built, and why.
