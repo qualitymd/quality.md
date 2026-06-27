@@ -312,7 +312,7 @@ requirements:                   # Optional*
   <requirement-name>:
     title: <string>             # Required human-facing statement
     assessment: <string>        # Required, exactly one
-    factors: [<factor-name>]    # Required for direct area requirements
+    factors: [<factor-name>]    # Required for direct area requirements; same-area factors only
     ratings:                    # Optional per-level criteria
       <rating-level-id>: <criterion>
 areas:                          # Optional*

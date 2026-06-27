@@ -86,8 +86,7 @@ blocked states using the status vocabulary defined by the routine contract.
 
 ## Finding Core
 
-`RequirementAssessmentResult.findings[]` and `AreaAnalysisResult.findings[]`
-**MUST** use a shared Finding Core.
+`RequirementAssessmentResult.findings[]` **MUST** use the Finding Core.
 
 Each Finding Core object **MUST** include:
 
@@ -156,8 +155,7 @@ Each `evidence` entry **MUST** include `sourceRef` and `statement`. Each
 `evidence` entry **MAY** include `rationale`.
 
 Requirement Findings **MAY** include `candidateActions`, a list of
-finding-local candidate action objects. Area Findings **MUST NOT** include
-`candidateActions`.
+finding-local candidate action objects.
 
 Each candidate action object **MUST** include:
 
@@ -172,33 +170,20 @@ Finding objects **MUST NOT** include legacy top-level `description`, `summary`,
 `rationale`, or `actions` fields. Rationale belongs on the specific nested field
 it explains. `actions` is the legacy candidate action field and is not accepted.
 
-## Area Findings
+`AreaAnalysisResult` **MUST NOT** include `findings`, `factorRelationships`, or
+any analysis-level finding object shape.
 
-`AreaAnalysisResult` **MAY** include `findings`, a list of Area Finding objects
-scoped to that payload's `areaId`.
+## Rating Drivers
 
-Each Area Finding object **MUST** include the Finding Core fields plus non-empty
-`inputRefs`.
+A `RequirementRatingResult` with `status: rated` **MUST** include non-empty
+`ratingDrivers` and **MUST** have a paired `RequirementAssessmentResult` for the
+same Requirement with `status: assessed` or `status: partially_assessed` and at
+least one Requirement Finding.
 
-Each Area Finding object **MAY** include `factorRelationships`.
+A `FactorAnalysisResult` or `AreaAnalysisResult` analysis scope with
+`status: analyzed` and `ratingLevelId` **MUST** include non-empty
+`ratingDrivers`.
 
-Each `factorRelationships` entry **MUST** include `factorId` and
-`relationship`. The `factorId` **MUST** resolve to a Factor declared in the
-same Area as the containing `AreaAnalysisResult.areaId`.
-
-Area Finding Factor relationship `relationship` **MUST** be one of:
-
-- `primary-driver`
-- `contributing-driver`
-- `evidence-limit`
-- `offsetting-strength`
-- `related`
-
-`AreaAnalysisResult.findings` **MUST NOT** contain duplicate Area Finding IDs
-within the same Area analysis result.
-
-Area Findings **MUST NOT** carry recommendation, impact, importance, priority,
-effort, benefit, ROI, action, or global-rank fields. Those concepts belong to a
-later advice or cross-evaluation ranking contract, not this payload kind.
-Finding `effect` is allowed because it explains rating or quality consequence;
-it is not a recommendation, priority, or ranking field.
+Each Rating Driver's `inputRefs` **MUST** resolve to persisted routine outputs
+in the run. Requirement Rating Drivers **SHOULD** select the specific
+Requirement Findings that drove the rating.

@@ -359,9 +359,10 @@ I’m reading this as: add root-level Security coverage.
 
 Here’s what I’m planning to do:
 
-I’ll add Security as a model-wide Factor and connect descendant security-related
-Requirements to it where the model supports that, so that security findings from
-child Areas can contribute to root-level judgment.
+I’ll add Security as a model-wide Factor with a root Requirement that checks how
+security-relevant concerns are covered across child Areas, so that root-level
+Security judgment is explicit instead of depending on hidden descendant roll-up
+links.
 
 I’ll keep the existing child Security Factors in place and write one quality-log
 entry because this changes what the model judges.

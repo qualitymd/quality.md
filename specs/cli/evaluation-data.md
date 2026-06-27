@@ -73,11 +73,26 @@ Level ID in the payload against the run's `model-snapshot.md`. If the snapshot i
 missing or cannot be parsed, `data set` **MUST** fail closed instead of accepting
 unbound model references.
 
-For `AreaAnalysisResult`, validation **MUST** reject duplicate
-`findings[].id` values within the payload, empty `findings[].inputRefs`, unknown
-Area Finding fields, unknown Area Finding Factor relationship fields, and any
-`findings[].factorRelationships[].factorId` that does not resolve to a Factor
-declared in the same Area as `areaId`.
+Validation **MUST** reject `AreaAnalysisResult.findings`,
+`factorRelationships`, and any analysis-level finding object shape as unknown
+fields.
+
+For cross-payload validation, `data set` **MUST** validate against the effective
+run data: existing persisted payloads overlaid with every candidate payload in
+the batch. Candidate batch order **MUST NOT** affect validation.
+
+`data set` **MUST** reject a `RequirementRatingResult` with `status: rated`
+unless the effective run data includes a paired `RequirementAssessmentResult`
+for the same Requirement with `status: assessed` or `status: partially_assessed`
+and at least one Requirement Finding.
+
+`data set` **MUST** reject a rated Requirement, Factor analysis scope, or Area
+analysis scope with empty or absent `ratingDrivers`. For Factor and Area
+analysis, this applies when the scope has `status: analyzed` and a
+`ratingLevelId`.
+
+`data set` **MUST** reject `ratingDrivers[].inputRefs[]` entries that do not
+resolve to an existing routine output in the effective run data.
 
 `data set` **MUST** validate every payload in the batch before writing any
 payload. If any element fails validation, `data set` **MUST** write nothing and
@@ -118,7 +133,7 @@ rating drivers, unknowns, missing evidence, analysis input refs, stop
 conditions, and limits **MUST** include at least one representative element
 where those fields appear in the requested kind. Examples **MUST** demonstrate
 canonical Area, Factor, Requirement, and Rating Level reference strings in
-relevant subject, input, rating, finding relationship, and report-reference
+relevant subject, input, rating, finding, rating-driver, and report-reference
 fields. They **MUST NOT** be treated as an exhaustive corpus of every valid enum
 value, status value, or error case; `data schema <kind>` remains the
 machine-readable constraint source for those details. `data example <kind>`
@@ -143,10 +158,14 @@ nothing else. On a terminal, it **MAY** syntax-highlight and page the JSON for
 readability.
 
 `data verify <run>` **MUST** re-validate every persisted Evaluation JSON payload
-under the run's `data/` directory against the same structural and model-bound
-contract used by `data set`. It **MUST NOT** modify payloads, **MUST** identify
-each invalid payload and reason, and **MUST** exit non-zero when any payload
-fails.
+under the run's `data/` directory against the same structural, model-bound, and
+cross-payload contract used by `data set`. It **MUST NOT** modify payloads,
+**MUST** identify each invalid payload and reason, and **MUST** exit non-zero
+when any payload fails.
+
+Evaluation data schema version is `3`. Current `data set`, `data verify`, and
+report-building surfaces **MUST NOT** migrate, transform, accept, or render
+schema version 2 Evaluation payloads as current data.
 
 Commands whose stdout is already a JSON artifact **MAY** recognize `--json` only
 to fail with a targeted usage error that says stdout is already JSON and the

@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0142 -
+  Requirement Findings Only.
+  Evaluate now authors findings only during Requirement assessment, requires
+  rated Requirements to have findings and rating drivers, and keeps Factor/Area
+  roll-up analysis driver-backed without creating new findings.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0136 -
   Candidate Actions Payload.
   Evaluate now writes finding-local `candidateActions` with `id`, `description`,

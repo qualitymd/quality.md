@@ -3,6 +3,14 @@
 ## 2026-06-27
 
 - **Revision**: Updated the durable
+  [factor](authoring/factors.md) and
+  [requirement](authoring/requirements.md) authoring guide specs for
+  [0141 - Area-local Factor References](../../../../changes/archive/0141-area-local-factor-references.md).
+  Requirement `factors` guidance now resolves only to same-Area Factors, while
+  Factor guidance preserves same-named Factors across different Areas and warns
+  against duplicate names within one Area's Factor tree.
+
+- **Revision**: Updated the durable
   [authoring guide family](authoring.md) for
   [0140 - Casual Review Gate Wording](../../../../changes/archive/0140-casual-review-gate-wording.md).
   Direct-edit guidance now preserves and states the planned change and value

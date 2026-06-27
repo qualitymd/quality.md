@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) for
+  [0141 - Area-local Factor References](../changes/archive/0141-area-local-factor-references.md).
+  The direct model-authoring example now adds root Security coverage with an
+  explicit root Requirement instead of connecting descendant Requirements to a
+  model-wide Factor.
+
+- **Revision**: Updated
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) with casual
   review-gate wording for
   [0140 - Casual Review Gate Wording](../changes/archive/0140-casual-review-gate-wording.md).

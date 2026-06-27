@@ -359,12 +359,41 @@ func (s *runState) checkAreas(area *areaRef) bool {
 }
 
 func (s *runState) checkFactors(area *areaRef) {
+	s.checkDuplicateFactorNames(area)
 	for _, factor := range area.factors {
 		s.checkFactor(factor)
 	}
 	for _, child := range area.areas {
 		s.checkFactors(child)
 	}
+}
+
+func (s *runState) checkDuplicateFactorNames(area *areaRef) {
+	byName := map[string][]*factorRef{}
+	var walk func([]*factorRef)
+	walk = func(factors []*factorRef) {
+		for _, factor := range factors {
+			byName[factor.name] = append(byName[factor.name], factor)
+			walk(factor.factors)
+		}
+	}
+	walk(area.factors)
+
+	for name, factors := range byName {
+		if len(factors) < 2 {
+			continue
+		}
+		for _, factor := range factors {
+			s.add(RuleDuplicateFactorName, "The factor name `"+name+"` appears more than once in area `"+areaLabel(area)+"`; factor references use names, so repeated names in one area can be ambiguous.", s.loc(factor.node, factor.path, label(factor.path)), nil)
+		}
+	}
+}
+
+func areaLabel(area *areaRef) string {
+	if area.parent == nil {
+		return "root"
+	}
+	return area.name
 }
 
 func (s *runState) checkFactor(factor *factorRef) bool {
@@ -429,7 +458,7 @@ func (s *runState) checkRequirementRefs(req *requirementRef) {
 			}
 			if s.resolveFactor(req.area, item.Value) == nil {
 				path := appendPath(req.path, "factors", i)
-				s.add(RuleUnknownFactor, "The requirement `"+req.name+"` references unknown factor `"+item.Value+"`; factor references must resolve on the declaring area or an ancestor.", s.loc(item, path, label(path)), nil)
+				s.add(RuleUnknownFactor, "The requirement `"+req.name+"` references unknown factor `"+item.Value+"`; factor references must resolve within the declaring area.", s.loc(item, path, label(path)), nil)
 			}
 		}
 	}

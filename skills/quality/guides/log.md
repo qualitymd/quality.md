@@ -2,6 +2,15 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated
+  [Factors](authoring/factors.md) and
+  [Requirements](authoring/requirements.md) for 0141 - Area-local Factor
+  References.
+  Runtime authoring guidance now tells agents that Requirement `factors` entries
+  name same-Area Factors only, treats same-named child Area Factors as local
+  refinements, and warns against duplicate Factor names within one Area's Factor
+  tree.
+
 - **Revision**: Updated [Authoring QUALITY.md](authoring.md) for 0140 - Casual
   Review Gate Wording.
   Runtime authoring guidance now preserves and states the planned change and

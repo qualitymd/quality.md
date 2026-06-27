@@ -90,17 +90,24 @@ synthesis is recommendation generation, which Evaluation v0 forbids.
 Requirement rating **MUST** produce `RequirementRatingResult` and **MUST NOT**
 inspect new source evidence.
 
+Requirement rating **MUST NOT** produce `status: rated` unless the paired
+Requirement Assessment has one or more Requirement Findings sufficient to justify
+the selected configured Rating Level. Requirement rating **MUST** remain
+scale-agnostic and **MUST NOT** assume fixed Rating Level meanings such as
+target, sub-target, pass, or fail.
+
+Rated Requirement results **MUST** include non-empty `ratingDrivers` that cite
+the paired Requirement Assessment through `inputRefs`; drivers **SHOULD** select
+the specific Requirement Findings that drove the rating.
+
 Factor and Area analysis **MUST** preserve lower-level drivers that prevent a
 higher rating.
 
-Area analysis **MUST** produce Area Findings in `AreaAnalysisResult.findings`
-when it identifies material observations that should be visible at Area or
-Factor report level. Area Findings **MUST** use the shared Finding Core, cite
-their source routine payloads through non-empty `inputRefs`, and relate only to
-Factors declared in that Area. Area analysis **MUST NOT** record recommendation,
-priority, effort, benefit, ROI, `candidateActions`, or global ranking fields on Area
-Findings. Finding `effect` is allowed because it explains rating or quality
-consequence.
+Factor and Area analysis **MUST NOT** produce findings. Rated Factor and Area
+analysis scopes **MUST** include non-empty `ratingDrivers` that cite lower-level
+Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
+through `inputRefs`. Analysis drivers **MUST NOT** introduce new evidence or
+claims absent from the referenced lower-level outputs.
 
 ## Report Routine
 

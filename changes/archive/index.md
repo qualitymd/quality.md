@@ -611,3 +611,9 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0140 — Casual Review Gate Wording](0140-casual-review-gate-wording.md) -
   makes direct `QUALITY.md` review gates state the planned change and value prop
   in simple conversational prose (`Done`).
+- [0141 — Area-local Factor References](0141-area-local-factor-references.md) -
+  makes Requirement Factor references resolve only within their declaring Area
+  and warns on same-Area duplicate Factor names (`Done`).
+- [0142 — Requirement Findings Only](0142-requirement-findings-only.md) - makes
+  Requirement Findings the only Evaluation finding layer, removes Area Findings,
+  and requires rated results to be finding-backed and driver-backed (`Done`).

@@ -32,22 +32,22 @@ Every requirement must be connected to at least one factor:
 - **By placement** — declared under a factor or sub-factor. That factor is its
   **primary** factor and the requirement joins that factor's roll-up.
 - **By reference** — naming factors under `factors`. On a nested requirement
-  these are **secondary** factors (it appears in additional roll-ups). On a
-  requirement placed directly under an area, `factors` is **required** and names
-  the factors directly.
+  these are same-Area **secondary** factors (it appears in additional local
+  roll-ups). On a requirement placed directly under an area, `factors` is
+  **required** and names factors declared on that area.
 
 However it is connected, a requirement is assessed once, against the source of
 the area it sits on, and counts once in that area's local rating.
 
 ### Properties
 
-| Property      | Presence                     | What it is                                                       |
-| ------------- | ---------------------------- | ---------------------------------------------------------------- |
-| `title`       | Required                     | The human-facing requirement statement.                          |
-| `description` | Optional                     | Extra explanation when the title alone is not enough.            |
-| `assessment`  | Required                     | The means of assessing the source; produces the findings.        |
-| `factors`     | Required for area-level reqs | factor references; secondary factors when nested under a factor. |
-| `ratings`     | Optional                     | Per-requirement criterion overrides, keyed by Rating Level ID.   |
+| Property      | Presence                     | What it is                                                                 |
+| ------------- | ---------------------------- | -------------------------------------------------------------------------- |
+| `title`       | Required                     | The human-facing requirement statement.                                    |
+| `description` | Optional                     | Extra explanation when the title alone is not enough.                      |
+| `assessment`  | Required                     | The means of assessing the source; produces the findings.                  |
+| `factors`     | Required for area-level reqs | same-Area factor references; secondary factors when nested under a factor. |
+| `ratings`     | Optional                     | Per-requirement criterion overrides, keyed by Rating Level ID.             |
 
 ### Working with requirements
 
@@ -191,10 +191,10 @@ requirements:
   factor roll-ups.
 - **Do** declare `factors` explicitly for a requirement placed directly under an
   area — it's required there, and `null`/`[]`/empty entries don't satisfy it.
-- **Do** name in `factors` only factors that are **in scope** — declared on this
-  area or on an ancestor. *A named factor that lives on a sibling or a
-  descendant doesn't resolve; you can reach up to an ancestor's factor, but not
-  across or down.*
+- **Do** name in `factors` only factors declared on the same area as the
+  requirement. *A named factor that lives on an ancestor, sibling, descendant, or
+  unrelated area does not resolve. If a child area needs the same quality lens,
+  declare a local same-named factor there.*
 
 #### Split by assessable claim, not by factor
 

@@ -445,6 +445,22 @@ requirements:
 `),
 	},
 	{
+		ruleID: RuleUnknownFactor,
+		name:   "child area names ancestor factor",
+		model: validFrontmatter(`factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+areas:
+  api:
+    requirements:
+      api-reliable:
+        title: API is reliable
+        assessment: Inspect it.
+        factors: [reliability]
+`),
+	},
+	{
 		ruleID: RuleInvalidRequirementName,
 		name:   "requirement name contains spaces",
 		model: validFrontmatter(`requirements:
@@ -684,6 +700,51 @@ requirements:
 `),
 	},
 	{
+		ruleID: RuleDuplicateFactorName,
+		name:   "root factor and subfactor share name",
+		model: validFrontmatter(`factors:
+  reliability:
+    title: Reliability
+    description: Reliability.
+    factors:
+      reliability:
+        title: Reliability detail
+        description: Reliability detail.
+        requirements:
+          has-assessment:
+            title: Has an assessment
+            assessment: Inspect it.
+`),
+	},
+	{
+		ruleID: RuleDuplicateFactorName,
+		name:   "sibling branches share nested factor name",
+		model: validFrontmatter(`factors:
+  operations:
+    title: Operations
+    description: Operations.
+    factors:
+      security:
+        title: Security
+        description: Security.
+        requirements:
+          operations-secure:
+            title: Operations are secure
+            assessment: Inspect it.
+  delivery:
+    title: Delivery
+    description: Delivery.
+    factors:
+      security:
+        title: Security
+        description: Security.
+        requirements:
+          delivery-secure:
+            title: Delivery is secure
+            assessment: Inspect it.
+`),
+	},
+	{
 		ruleID: RuleEmptyFactor,
 		name:   "root factor has no requirements",
 		model: validFrontmatter(`factors:
@@ -833,9 +894,41 @@ func TestRules(t *testing.T) {
 	}
 }
 
-func TestRuleValidReferenceResolution(t *testing.T) {
+func TestRuleAreaLocalReferenceResolution(t *testing.T) {
 	result, err := Check(writeModel(t, validFrontmatter(`factors:
   reliability:
+    title: Reliability
+    description: Reliability.
+areas:
+  api:
+    factors:
+      reliability:
+        title: Reliability
+        description: API reliability.
+    requirements:
+      has-assessment:
+        title: Has an assessment
+        assessment: Inspect it.
+        factors: [reliability]
+`)))
+	if err != nil {
+		t.Fatalf("Check() error = %v", err)
+	}
+	if hasRule(result, RuleUnknownFactor) {
+		t.Fatalf("findings = %#v, local factor should resolve", result.Findings)
+	}
+	if hasRule(result, RuleMissingFactorReference) {
+		t.Fatalf("findings = %#v, direct requirement references a local factor", result.Findings)
+	}
+	if hasRule(result, RuleDuplicateFactorName) {
+		t.Fatalf("findings = %#v, same factor name on different areas should not warn", result.Findings)
+	}
+}
+
+func TestRuleAncestorFactorReferenceDoesNotResolve(t *testing.T) {
+	result, err := Check(writeModel(t, validFrontmatter(`factors:
+  reliability:
+    title: Reliability
     description: Reliability.
 areas:
   api:
@@ -848,11 +941,11 @@ areas:
 	if err != nil {
 		t.Fatalf("Check() error = %v", err)
 	}
-	if hasRule(result, RuleUnknownFactor) {
-		t.Fatalf("findings = %#v, ancestor factor should resolve", result.Findings)
+	if !hasRule(result, RuleUnknownFactor) {
+		t.Fatalf("findings = %#v, ancestor factor should not resolve", result.Findings)
 	}
 	if hasRule(result, RuleMissingFactorReference) {
-		t.Fatalf("findings = %#v, direct requirement references an ancestor factor", result.Findings)
+		t.Fatalf("findings = %#v, non-empty factor reference should satisfy reference presence", result.Findings)
 	}
 }
 
@@ -940,20 +1033,6 @@ requirements:
     title: Has an assessment
     assessment: Inspect it.
     factors: [reliability]
-`,
-		},
-		{
-			name: "direct requirement references ancestor factor",
-			body: `factors:
-  reliability:
-    description: Reliability.
-areas:
-  api:
-    requirements:
-      has-assessment:
-        title: Has an assessment
-        assessment: Inspect it.
-        factors: [reliability]
 `,
 		},
 		{

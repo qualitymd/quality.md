@@ -78,8 +78,9 @@ Areas, Factors, Requirements, and Rating Levels. Display values and unqualified
 references are for fixed-type human/input edges, not persisted identity inside
 routine JSON.
 
-`schemaVersion` **MUST** be treated as a payload-shape marker only. Evaluation
-does not define migrations, compatibility transforms, or mixed-version run
-support.
+`schemaVersion` **MUST** be treated as a payload-shape marker only. The current
+Evaluation data schema version is `3`. Evaluation does not define migrations,
+compatibility transforms, or mixed-version run support; older Evaluation runs
+remain schema-incompatible historical data.
 
 Recommendation generation **MUST NOT** be part of the v0 evaluation protocol.

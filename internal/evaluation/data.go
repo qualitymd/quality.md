@@ -152,6 +152,9 @@ func SetData(runPath string, raw []byte, opts DataSetOptions) (*DataSetReceipt, 
 	if err := rejectDuplicateCandidatePaths(candidates); err != nil {
 		return nil, err
 	}
+	if err := validateEffectiveDataSet(runPath, candidates); err != nil {
+		return nil, err
+	}
 	if !opts.DryRun {
 		if err := writeDataCandidates(runPath, candidates); err != nil {
 			return nil, err
@@ -371,6 +374,184 @@ func rejectDuplicateCandidatePaths(candidates []dataWriteCandidate) error {
 		return batchUsageError(failures)
 	}
 	return nil
+}
+
+func validateEffectiveDataSet(runPath string, candidates []dataWriteCandidate) error {
+	payloads, err := effectiveDataPayloads(runPath, candidates)
+	if err != nil {
+		return err
+	}
+	failures := validateEffectivePayloads(payloads)
+	if len(failures) == 0 {
+		return nil
+	}
+	out := make([]string, len(failures))
+	for i, failure := range failures {
+		out[i] = failure.Path + ": " + failure.Reason
+	}
+	return batchUsageError(out)
+}
+
+type effectiveDataFailure struct {
+	Path   string
+	Kind   DataKind
+	Reason string
+}
+
+func effectiveDataPayloads(runPath string, candidates []dataWriteCandidate) (map[string]map[string]any, error) {
+	payloads := map[string]map[string]any{}
+	root := filepath.Join(runPath, "data")
+	if _, err := os.Stat(root); err != nil {
+		if !os.IsNotExist(err) {
+			return nil, err
+		}
+	} else if err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || filepath.Ext(path) != ".json" {
+			return nil
+		}
+		rel, err := filepath.Rel(runPath, path)
+		if err != nil {
+			return err
+		}
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			return usagef("%s: %w", filepath.ToSlash(rel), err)
+		}
+		payload, err := decodeDataPayload(raw)
+		if err != nil {
+			return usagef("%s: %w", filepath.ToSlash(rel), err)
+		}
+		payloads[filepath.ToSlash(rel)] = payload
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	for _, candidate := range candidates {
+		payload, err := decodeDataPayload(candidate.Canonical)
+		if err != nil {
+			return nil, usagef("%s: %w", candidate.Path, err)
+		}
+		payloads[candidate.Path] = payload
+	}
+	return payloads, nil
+}
+
+func validateEffectivePayloads(payloads map[string]map[string]any) []effectiveDataFailure {
+	var failures []effectiveDataFailure
+	for path, payload := range payloads {
+		kind, err := payloadKind(payload)
+		if err != nil {
+			failures = append(failures, effectiveDataFailure{Path: path, Reason: err.Error()})
+			continue
+		}
+		switch kind {
+		case DataKindRequirementRating:
+			failures = append(failures, validateEffectiveRequirementRating(path, payload, payloads)...)
+		case DataKindFactorAnalysis, DataKindAreaAnalysis:
+			failures = append(failures, validateEffectiveAnalysisResult(path, kind, payload, payloads)...)
+		}
+	}
+	return failures
+}
+
+func validateEffectiveRequirementRating(path string, payload map[string]any, payloads map[string]map[string]any) []effectiveDataFailure {
+	if firstString(payload, "status") != "rated" {
+		return nil
+	}
+	var failures []effectiveDataFailure
+	req, err := topRequirementID(payload)
+	if err != nil {
+		return []effectiveDataFailure{{Path: path, Kind: DataKindRequirementRating, Reason: err.Error()}}
+	}
+	assessmentPath := requirementDataPath(req, "requirement-assessment-result.json")
+	assessment, ok := payloads[assessmentPath]
+	if !ok {
+		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult with at least one finding"})
+	} else {
+		status := firstString(assessment, "status")
+		if status != "assessed" && status != "partially_assessed" {
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult status assessed or partially_assessed"})
+		}
+		if len(objectSlice(assessment["findings"])) == 0 {
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult with at least one finding"})
+		}
+	}
+	if len(objectSlice(payload["ratingDrivers"])) == 0 {
+		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires at least one ratingDrivers entry"})
+	}
+	failures = append(failures, validateRatingDriverInputRefs(path, DataKindRequirementRating, payload, payloads)...)
+	return failures
+}
+
+func validateEffectiveAnalysisResult(path string, kind DataKind, payload map[string]any, payloads map[string]map[string]any) []effectiveDataFailure {
+	var failures []effectiveDataFailure
+	for _, scopeName := range []string{"localAnalysis", "localAndDescendantAnalysis"} {
+		scope := objectMap(payload[scopeName])
+		if firstString(scope, "status") != "analyzed" || firstString(scope, "ratingLevelId") == "" {
+			continue
+		}
+		if len(objectSlice(scope["ratingDrivers"])) == 0 {
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: scopeName + " with a ratingLevelId requires at least one ratingDrivers entry"})
+			continue
+		}
+		failures = append(failures, validateRatingDriverInputRefs(path+"#"+scopeName, kind, scope, payloads)...)
+	}
+	return failures
+}
+
+func validateRatingDriverInputRefs(path string, kind DataKind, owner map[string]any, payloads map[string]map[string]any) []effectiveDataFailure {
+	var failures []effectiveDataFailure
+	for i, driver := range objectSlice(owner["ratingDrivers"]) {
+		inputRefs := objectSlice(driver["inputRefs"])
+		if len(inputRefs) == 0 {
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: fmt.Sprintf("ratingDrivers[%d] requires at least one inputRefs entry", i)})
+			continue
+		}
+		for j, ref := range inputRefs {
+			refPath, err := dataPathForRoutineRef(ref)
+			if err != nil {
+				failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: fmt.Sprintf("ratingDrivers[%d].inputRefs[%d]: %s", i, j, err)})
+				continue
+			}
+			if _, ok := payloads[refPath]; !ok {
+				failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: fmt.Sprintf("ratingDrivers[%d].inputRefs[%d] does not resolve to %s", i, j, refPath)})
+			}
+		}
+	}
+	return failures
+}
+
+func dataPathForRoutineRef(ref map[string]any) (string, error) {
+	kindValue := firstString(ref, "kind")
+	if kindValue == "" {
+		return "", usagef("missing kind")
+	}
+	kind := DataKind(kindValue)
+	subject := objectMap(ref["subject"])
+	payload := map[string]any{}
+	switch kind {
+	case DataKindEvaluationFrame:
+	case DataKindAreaEvaluationFrame, DataKindAreaAnalysisFrame:
+		payload["subject"] = subject
+	case DataKindAreaAnalysis:
+		payload["areaId"] = subject["areaId"]
+	case DataKindRequirementEvaluationFrame:
+		payload["subject"] = subject
+	case DataKindRequirementAssessment, DataKindRequirementRating:
+		payload["requirementId"] = subject["requirementId"]
+	case DataKindFactorAnalysisFrame:
+		payload["subject"] = subject
+	case DataKindFactorAnalysis:
+		payload["factorId"] = subject["factorId"]
+	case DataKindEvaluationOutput:
+		return "data/evaluation-output-result.json", nil
+	default:
+		return "", usagef("unsupported evaluation data kind %q", kind)
+	}
+	return dataPathForPayload(kind, payload)
 }
 
 func dataSetWrites(candidates []dataWriteCandidate) []DataSetWrite {
@@ -966,41 +1147,6 @@ func scopedAnalysisExample(kind DataKind, idField string, id any) map[string]any
 			"confidence":       "medium",
 			"confidenceReason": "Roll-up uses available inputs only.",
 		},
-	}
-	if kind == DataKindAreaAnalysis {
-		example["findings"] = []any{map[string]any{
-			"id":         "gap-001",
-			"type":       "gap",
-			"severity":   "medium",
-			"confidence": "medium",
-			"statement":  "Area-level synthesis found a representative gap.",
-			"condition":  "The Area synthesis includes a Requirement gap that affects the related Factor.",
-			"criteria": []any{map[string]any{
-				"requirementId": exampleRequirementID(),
-				"ratingLevelId": RatingReference("target"),
-				"criterion":     "Tests cover the requirement, including meaningful boundary behavior.",
-				"rationale":     "The Area Finding inherits the Requirement criterion that drives the synthesis.",
-			}},
-			"cause": map[string]any{
-				"status":    "not_assessed",
-				"statement": "The Area analysis did not assess the cause of the underlying gap.",
-			},
-			"effect": map[string]any{
-				"statement":    "The gap is a primary driver for the related Factor analysis.",
-				"ratingEffect": "constrains Area and Factor roll-up",
-				"rationale":    "The gap is synthesized from Requirement and Factor results.",
-			},
-			"evidence": []any{map[string]any{
-				"sourceRef": "tests/example_test.go",
-				"statement": "The underlying Requirement assessment records the test evidence gap.",
-			}},
-			"inputRefs": []any{routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[gap-001]")},
-			"factorRelationships": []any{map[string]any{
-				"factorId":     exampleFactorID(),
-				"relationship": "primary-driver",
-				"rationale":    "The finding directly affects the Factor analysis.",
-			}},
-		}}
 	}
 	return example
 }

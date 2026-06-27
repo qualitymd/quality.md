@@ -40,6 +40,7 @@ const (
 	RuleReservedAreaName         RuleID = "reserved-area-name"
 	RuleEmptyArea                RuleID = "empty-area"
 	RuleInvalidFactorName        RuleID = "invalid-factor-name"
+	RuleDuplicateFactorName      RuleID = "duplicate-factor-name"
 	RuleInvalidRequirementName   RuleID = "invalid-requirement-name"
 	RuleDuplicateRequirement     RuleID = "duplicate-requirement"
 	RuleEmptyFactor              RuleID = "empty-factor"
@@ -78,6 +79,7 @@ var Rules = []Rule{
 	{RuleReservedAreaName, SeverityError, false, "An area name uses a reserved model-reference token."},
 	{RuleEmptyArea, SeverityWarning, false, "An area reaches no requirements in its subtree."},
 	{RuleInvalidFactorName, SeverityError, false, "A factor name does not match the model name grammar."},
+	{RuleDuplicateFactorName, SeverityWarning, false, "A factor name is repeated within one area's factor tree."},
 	{RuleInvalidRequirementName, SeverityError, false, "A requirement name does not match the model name grammar."},
 	{RuleDuplicateRequirement, SeverityError, false, "A requirement name is duplicated within its declaring area."},
 	{RuleEmptyFactor, SeverityWarning, false, "A factor leads to no requirements."},

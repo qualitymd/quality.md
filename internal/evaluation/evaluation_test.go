@@ -328,20 +328,6 @@ func testRequirementFindingJSON(overrides map[string]any) string {
 	return testFindingJSON(finding)
 }
 
-func testAreaFindingJSON(overrides map[string]any) string {
-	finding := testFindingCore("gap-1", "gap", "high", "high", "Gap")
-	finding["inputRefs"] = []any{map[string]any{
-		"kind": "RequirementAssessmentResult",
-		"subject": map[string]any{
-			"requirementId": "requirement:root::has-tests",
-		},
-	}}
-	for k, v := range overrides {
-		finding[k] = v
-	}
-	return testFindingJSON(finding)
-}
-
 func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	repo := testRepoWithModel(t, navigationReportModel)
 	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
@@ -366,15 +352,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "Area: [Navigation model](root-area.md)")
 	assertNotContains(t, rootReport, "Path: `/`")
 	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
-	assertContains(t, rootReport, "## Findings\n\n| ID | Statement | Type | Severity | Confidence | Effect | Cause |")
-	assertContains(t, rootReport, "| `root-risk` | Root reliability is the highest concern. | ⚠️ Risk | 🔴 High | 🟢 High | Reliability constrains the root aggregate rating. | Verified: Reliability analysis is the binding roll-up driver. |")
-	assertContains(t, rootReport, "| `root-note` | Root note is contextual. | ℹ️ Note | 🔵 Low | 🔵 Medium | The note preserves context without driving the rating. | Not Assessed: Cause was not assessed. |")
-	assertContains(t, rootReport, "#### root-risk Root reliability is the highest concern.\n\n##### Condition")
-	assertContains(t, rootReport, "##### Criteria")
-	assertContains(t, rootReport, "##### Cause")
-	assertContains(t, rootReport, "##### Effect")
-	assertContains(t, rootReport, "##### Evidence")
-	assertContains(t, rootReport, "##### Relationships\n\n[Reliability Primary Driver](factors/reliability/reliability-factor.md)")
+	assertNotContains(t, rootReport, "## Findings")
+	assertContains(t, rootReport, "## Rating Drivers\n\n| Driver | Effect | Inputs |")
+	assertContains(t, rootReport, "Reliability analysis is the binding roll-up driver.")
 	assertContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
 	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | 🔴 Below | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
 	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — | — |")
@@ -390,10 +370,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
 	assertNotContains(t, factorReport, "Path: `reliability`")
 	assertContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence | Data |")
-	assertContains(t, factorReport, "## Findings\n\n| ID | Statement | Type | Severity | Confidence | Effect | Cause |")
-	assertContains(t, factorReport, "| `root-risk` | Root reliability is the highest concern. | ⚠️ Risk | 🔴 High | 🟢 High | Reliability constrains the root aggregate rating. | Verified: Reliability analysis is the binding roll-up driver. |")
-	assertContains(t, factorReport, "#### root-risk Root reliability is the highest concern.\n\n##### Condition")
-	assertNotContains(t, factorReport, "root-note")
+	assertNotContains(t, factorReport, "## Findings")
+	assertContains(t, factorReport, "## Rating Drivers\n\n| Driver | Effect | Inputs |")
+	assertContains(t, factorReport, "Latency roll-up constrains reliability.")
 	assertContains(t, factorReport, "| [Has tests](../../requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed |")
 	assertContains(t, factorReport, "| [Latency](factors/latency/latency-factor.md) | `reliability/latency` | 🔵 Target | — |")
 	assertNotContains(t, factorReport, "Parent Factor:")
@@ -453,9 +432,9 @@ areas:
 	}
 	runPath := filepath.Join(repo, result.Path)
 	payloads := []string{
-		`{"schemaVersion":2,"kind":"EvaluationFrame","inputs":{"requestedScope":"area:payments/refunds","areaIds":["area:payments/refunds"]},"derivedContext":{"resolvedScope":"area:payments/refunds"}}`,
-		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}`,
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:payments/refunds","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Refunds meet the scoped bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Refunds meet the scoped bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{"requestedScope":"area:payments/refunds","areaIds":["area:payments/refunds"]},"derivedContext":{"resolvedScope":"area:payments/refunds"}}`,
+		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:payments/refunds","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Refunds meet the scoped bar.","ratingDrivers":[{"description":"Refunds frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Refunds meet the scoped bar overall.","ratingDrivers":[{"description":"Refunds frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments/refunds"}}]}],"confidence":"high"}}`,
 	}
 	if _, err := SetData(runPath, batchPayloads(payloads...), DataSetOptions{}); err != nil {
 		t.Fatalf("SetData(scoped area batch) error = %v", err)
@@ -512,9 +491,9 @@ factors:
 	}
 	runPath := filepath.Join(repo, result.Path)
 	payloads := []string{
-		`{"schemaVersion":2,"kind":"EvaluationFrame","inputs":{"requestedScope":"factor:root::reliability","factorIds":["factor:root::reliability"]},"derivedContext":{"resolvedScope":"factor:root::reliability"}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{"requestedScope":"factor:root::reliability","factorIds":["factor:root::reliability"]},"derivedContext":{"resolvedScope":"factor:root::reliability"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar.","ratingDrivers":[{"description":"Reliability frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar overall.","ratingDrivers":[{"description":"Reliability frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}]}],"confidence":"high"}}`,
 	}
 	if _, err := SetData(runPath, batchPayloads(payloads...), DataSetOptions{}); err != nil {
 		t.Fatalf("SetData(scoped factor batch) error = %v", err)
@@ -556,7 +535,7 @@ func TestSetDataRejectsCLIOwnedOutput(t *testing.T) {
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
-	_, err = SetData(filepath.Join(repo, result.Path), batchPayloads(`{"schemaVersion":2,"kind":"EvaluationOutputResult"}`), DataSetOptions{})
+	_, err = SetData(filepath.Join(repo, result.Path), batchPayloads(`{"schemaVersion":3,"kind":"EvaluationOutputResult"}`), DataSetOptions{})
 	if err == nil || !strings.Contains(err.Error(), "generated by evaluation report build") {
 		t.Fatalf("SetData(EvaluationOutputResult) error = %v, want CLI-owned diagnostic", err)
 	}
@@ -570,10 +549,10 @@ func TestSetDataRejectsInvalidEvaluationShapes(t *testing.T) {
 	}
 	runPath := filepath.Join(repo, result.Path)
 	cases := []string{
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"rated","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingDrivers":["finding-1"]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
-		`{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":["finding-1"]}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":[],"localAnalysis":{"status":"analyzed","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"rated","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingDrivers":["finding-1"]},"localAndDescendantAnalysis":{"status":"analyzed","ratingDrivers":[]}}`,
+		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":["finding-1"]}`,
 	}
 	for _, raw := range cases {
 		if _, err := SetData(runPath, batchPayloads(raw), DataSetOptions{}); err == nil {
@@ -589,7 +568,7 @@ func TestSetDataRequiresArrayEnvelope(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
-	raw := `{"schemaVersion":2,"kind":"EvaluationFrame"}`
+	raw := `{"schemaVersion":3,"kind":"EvaluationFrame"}`
 	if _, err := SetData(runPath, []byte(raw), DataSetOptions{}); err == nil || !strings.Contains(err.Error(), "invalid JSON payload array") {
 		t.Fatalf("SetData(object) error = %v, want array diagnostic", err)
 	}
@@ -605,9 +584,9 @@ func TestSetDataAggregatesInvalidBatchAndWritesNothing(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
-	valid := `{"schemaVersion":2,"kind":"EvaluationFrame"}`
-	invalidRequirement := `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`
-	invalidRating := `{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:invented","ratingDrivers":[]}`
+	valid := `{"schemaVersion":3,"kind":"EvaluationFrame"}`
+	invalidRequirement := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`
+	invalidRating := `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:invented","ratingDrivers":[]}`
 	_, err = SetData(runPath, batchPayloads(valid, invalidRequirement, invalidRating), DataSetOptions{})
 	if err == nil {
 		t.Fatal("SetData(invalid batch) error = nil, want aggregate validation error")
@@ -629,7 +608,7 @@ func TestSetDataRejectsDuplicateBatchPaths(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
-	payload := `{"schemaVersion":2,"kind":"EvaluationFrame"}`
+	payload := `{"schemaVersion":3,"kind":"EvaluationFrame"}`
 	_, err = SetData(runPath, batchPayloads(payload, payload), DataSetOptions{})
 	if err == nil || !strings.Contains(err.Error(), "derive the same path") {
 		t.Fatalf("SetData(duplicate batch) error = %v, want duplicate path diagnostic", err)
@@ -680,103 +659,68 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 	}{
 		{
 			name: "unknown finding field",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"title": "Wrong field"}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"title": "Wrong field"}) + `]}`,
 			want: "unknown field title",
 		},
 		{
 			name: "legacy requirement finding description field",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"description": "Legacy field"}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"description": "Legacy field"}) + `]}`,
 			want: "unknown field description",
 		},
 		{
 			name: "legacy candidate actions field",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"actions": []any{map[string]any{"description": "do it"}}}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"actions": []any{map[string]any{"description": "do it"}}}) + `]}`,
 			want: "unknown field actions",
 		},
 		{
 			name: "candidate action missing id",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"description": "do it"}}}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"description": "do it"}}}) + `]}`,
 			want: "is missing required field id",
 		},
 		{
 			name: "candidate action missing description",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "rationale": "why"}}}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "rationale": "why"}}}) + `]}`,
 			want: "is missing required field description",
 		},
 		{
 			name: "candidate action unknown field",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "do it", "effort": "high"}}}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "do it", "effort": "high"}}}) + `]}`,
 			want: "unknown field effort",
 		},
 		{
 			name: "candidate action non-string id",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": 5, "description": "do it"}}}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": 5, "description": "do it"}}}) + `]}`,
 			want: "must be a non-empty string",
 		},
 		{
 			name: "candidate action non-string description",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": 5}}}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": 5}}}) + `]}`,
 			want: "must be a non-empty string",
 		},
 		{
 			name: "requirement finding info severity",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"severity": "info"}) + `]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"severity": "info"}) + `]}`,
 			want: `severity = "info", want one of critical, high, medium, low`,
 		},
 		{
 			name: "invented requirement",
-			raw:  `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`,
 			want: "does not resolve in the model",
 		},
 		{
 			name: "invented rating",
-			raw:  `{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:invented","ratingDrivers":[]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:invented","ratingDrivers":[]}`,
 			want: "does not resolve in the model",
 		},
 		{
 			name: "out-of-vocabulary reference kind",
-			raw:  `{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","ratingDrivers":[{"description":"d","effect":"supports target","ratingLevelId":"rating:target","inputRefs":[{"kind":"RequirementAssessment","subject":{"requirementId":"requirement:root::has-tests"}}]}]}`,
+			raw:  `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","ratingDrivers":[{"description":"d","effect":"supports target","ratingLevelId":"rating:target","inputRefs":[{"kind":"RequirementAssessment","subject":{"requirementId":"requirement:root::has-tests"}}]}]}`,
 			want: `kind = "RequirementAssessment", want one of`,
 		},
 		{
-			name: "area finding unknown field",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"impact": "high"}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: "unknown field impact",
-		},
-		{
-			name: "area finding candidate actions",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "do it"}}}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: "unknown field candidateActions",
-		},
-		{
-			name: "legacy area finding summary field",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"summary": "Legacy field"}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: "unknown field summary",
-		},
-		{
-			name: "legacy area finding top-level rationale field",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"rationale": "Legacy field"}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: "unknown field rationale",
-		},
-		{
-			name: "area finding type enum",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"type": "problem"}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: `type = "problem", want one of`,
-		},
-		{
-			name: "area finding info severity",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"id": "note-1", "type": "note", "severity": "info"}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: `severity = "info", want one of critical, high, medium, low`,
-		},
-		{
-			name: "area finding empty input refs",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"inputRefs": []any{}}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: "inputRefs must contain at least 1 item",
-		},
-		{
-			name: "area finding duplicate id",
-			raw:  `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(nil) + `,` + testAreaFindingJSON(map[string]any{"type": "risk", "severity": "medium", "confidence": "medium", "statement": "Risk"}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
-			want: "is duplicated",
+			name: "area analysis findings field removed",
+			raw:  `{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
+			want: "unknown field findings",
 		},
 	}
 	for _, tc := range cases {
@@ -788,7 +732,24 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 	}
 }
 
-func TestSetDataRejectsAreaFindingFactorFromDifferentArea(t *testing.T) {
+func TestSetDataRejectsRatedRequirementWithoutFindingBackedAssessment(t *testing.T) {
+	repo := testRepo(t)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, result.Path)
+	rating := `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","ratingDrivers":[{"description":"Driver.","effect":"supports target","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"}}]}]}`
+	if _, err := SetData(runPath, batchPayloads(rating), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "requires paired RequirementAssessmentResult") {
+		t.Fatalf("SetData() error = %v, want paired assessment diagnostic", err)
+	}
+	emptyAssessment := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[]}`
+	if _, err := SetData(runPath, batchPayloads(emptyAssessment, rating), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "at least one finding") {
+		t.Fatalf("SetData() error = %v, want finding-backed assessment diagnostic", err)
+	}
+}
+
+func TestSetDataRejectsRatedOutputsWithoutDriversOrResolvableRefs(t *testing.T) {
 	repo := testRepoWithModel(t, `---
 title: Test model
 ratingScale:
@@ -798,12 +759,6 @@ ratingScale:
 factors:
   reliability:
     title: Reliability
-areas:
-  payments:
-    title: Payments
-    factors:
-      reliability:
-        title: Payments Reliability
 requirements:
   has-tests:
     title: Has tests
@@ -815,9 +770,39 @@ requirements:
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
-	raw := `{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + testAreaFindingJSON(map[string]any{"factorRelationships": []any{map[string]any{"factorId": "factor:payments::reliability", "relationship": "primary-driver"}}}) + `],"localAnalysis":{"status":"analyzed"},"localAndDescendantAnalysis":{"status":"analyzed"}}`
-	if _, err := SetData(runPath, batchPayloads(raw), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "declares a different Area") {
-		t.Fatalf("SetData() error = %v, want different-Area Factor diagnostic", err)
+	assessment := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(nil) + `]}`
+	cases := []struct {
+		name     string
+		payloads []string
+		want     string
+	}{
+		{
+			name:     "requirement rating without drivers",
+			payloads: []string{assessment, `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","ratingDrivers":[]}`},
+			want:     "requires at least one ratingDrivers entry",
+		},
+		{
+			name:     "requirement rating unresolved driver ref",
+			payloads: []string{assessment, `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","ratingDrivers":[{"description":"Driver.","effect":"supports target","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::invented"}}]}]}`},
+			want:     "does not resolve",
+		},
+		{
+			name:     "factor analysis without drivers",
+			payloads: []string{`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed"}}`},
+			want:     "requires at least one ratingDrivers entry",
+		},
+		{
+			name:     "area analysis without drivers",
+			payloads: []string{`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","ratingDrivers":[]},"localAndDescendantAnalysis":{"status":"analyzed"}}`},
+			want:     "requires at least one ratingDrivers entry",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if _, err := SetData(runPath, batchPayloads(tc.payloads...), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("SetData() error = %v, want %q", err, tc.want)
+			}
+		})
 	}
 }
 
@@ -828,7 +813,7 @@ func TestSetDataAcceptsFindingCandidateActions(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
-	raw := `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "Add boundary tests."}, map[string]any{"id": "action-002", "description": "Cover error paths.", "rationale": "Lifts coverage."}}}) + `]}`
+	raw := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "Add boundary tests."}, map[string]any{"id": "action-002", "description": "Cover error paths.", "rationale": "Lifts coverage."}}}) + `]}`
 	if _, err := SetData(runPath, batchPayloads(raw), DataSetOptions{DryRun: true}); err != nil {
 		t.Fatalf("SetData() error = %v, want valid candidate actions accepted", err)
 	}
@@ -841,7 +826,7 @@ func TestSetDataRejectsDuplicateCandidateActionIDsWithinFinding(t *testing.T) {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
 	runPath := filepath.Join(repo, result.Path)
-	raw := `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "Add boundary tests."}, map[string]any{"id": "action-001", "description": "Cover error paths."}}}) + `]}`
+	raw := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"candidateActions": []any{map[string]any{"id": "action-001", "description": "Add boundary tests."}, map[string]any{"id": "action-001", "description": "Cover error paths."}}}) + `]}`
 	if _, err := SetData(runPath, batchPayloads(raw), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), `candidateActions[1].id "action-001" is duplicated`) {
 		t.Fatalf("SetData() error = %v, want duplicate candidate action ID diagnostic", err)
 	}
@@ -919,6 +904,58 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 			t.Fatalf("kind schema status enum = %#v, want %q", statusEnum, want)
 		}
 	}
+	findings, ok := props["findings"].(map[string]any)
+	if !ok {
+		t.Fatalf("requirement schema findings property = %#v, want object", props["findings"])
+	}
+	items, ok := findings["items"].(map[string]any)
+	if !ok {
+		t.Fatalf("requirement schema findings items = %#v, want object", findings["items"])
+	}
+	findingProps, ok := items["properties"].(map[string]any)
+	if !ok {
+		t.Fatalf("requirement schema finding properties = %#v, want object", items["properties"])
+	}
+	for field, wantValues := range map[string][]string{
+		"type":       {"strength", "gap", "risk", "unknown", "note"},
+		"severity":   {"critical", "high", "medium", "low"},
+		"confidence": {"high", "medium", "low", "none"},
+	} {
+		prop, ok := findingProps[field].(map[string]any)
+		if !ok {
+			t.Fatalf("requirement schema finding %s property = %#v, want object", field, findingProps[field])
+		}
+		enumValues, ok := prop["enum"].([]any)
+		if !ok {
+			t.Fatalf("requirement schema finding %s enum = %#v, want array", field, prop["enum"])
+		}
+		for _, want := range wantValues {
+			if !jsonArrayContains(enumValues, want) {
+				t.Fatalf("requirement schema finding %s enum = %#v, want %q", field, enumValues, want)
+			}
+		}
+	}
+	cause, ok := findingProps["cause"].(map[string]any)
+	if !ok {
+		t.Fatalf("requirement schema cause = %#v, want object", findingProps["cause"])
+	}
+	causeProps, ok := cause["properties"].(map[string]any)
+	if !ok {
+		t.Fatalf("requirement schema cause properties = %#v, want object", cause["properties"])
+	}
+	causeStatus, ok := causeProps["status"].(map[string]any)
+	if !ok {
+		t.Fatalf("requirement schema cause status = %#v, want object", causeProps["status"])
+	}
+	causeStatusEnum, ok := causeStatus["enum"].([]any)
+	if !ok {
+		t.Fatalf("requirement schema cause status enum = %#v, want array", causeStatus["enum"])
+	}
+	for _, want := range []string{"verified", "plausible", "not_assessed", "not_applicable"} {
+		if !jsonArrayContains(causeStatusEnum, want) {
+			t.Fatalf("requirement schema cause status enum = %#v, want %q", causeStatusEnum, want)
+		}
+	}
 	areaSchema, err := EvaluationDataSchema(DataKindAreaAnalysis)
 	if err != nil {
 		t.Fatalf("EvaluationDataSchema(area kind) error = %v", err)
@@ -938,86 +975,8 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if pattern, ok := areaID["pattern"].(string); !ok || !strings.Contains(pattern, "area:") {
 		t.Fatalf("area schema areaId pattern = %#v, want area:<id> reference pattern", areaID["pattern"])
 	}
-	findings, ok := areaProps["findings"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema findings property = %#v, want object", areaProps["findings"])
-	}
-	items, ok := findings["items"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema findings items = %#v, want object", findings["items"])
-	}
-	findingProps, ok := items["properties"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema finding properties = %#v, want object", items["properties"])
-	}
-	for field, wantValues := range map[string][]string{
-		"type":       {"strength", "gap", "risk", "unknown", "note"},
-		"severity":   {"critical", "high", "medium", "low"},
-		"confidence": {"high", "medium", "low", "none"},
-	} {
-		prop, ok := findingProps[field].(map[string]any)
-		if !ok {
-			t.Fatalf("area schema finding %s property = %#v, want object", field, findingProps[field])
-		}
-		enumValues, ok := prop["enum"].([]any)
-		if !ok {
-			t.Fatalf("area schema finding %s enum = %#v, want array", field, prop["enum"])
-		}
-		for _, want := range wantValues {
-			if !jsonArrayContains(enumValues, want) {
-				t.Fatalf("area schema finding %s enum = %#v, want %q", field, enumValues, want)
-			}
-		}
-	}
-	inputRefs, ok := findingProps["inputRefs"].(map[string]any)
-	if !ok || inputRefs["minItems"] != float64(1) {
-		t.Fatalf("area schema inputRefs = %#v, want minItems 1", findingProps["inputRefs"])
-	}
-	relationships, ok := findingProps["factorRelationships"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema factorRelationships = %#v, want object", findingProps["factorRelationships"])
-	}
-	relationshipItems, ok := relationships["items"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema factorRelationships items = %#v, want object", relationships["items"])
-	}
-	relationshipProps, ok := relationshipItems["properties"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema relationship properties = %#v, want object", relationshipItems["properties"])
-	}
-	relationship, ok := relationshipProps["relationship"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema relationship property = %#v, want object", relationshipProps["relationship"])
-	}
-	relationshipEnum, ok := relationship["enum"].([]any)
-	if !ok {
-		t.Fatalf("area schema relationship enum = %#v, want array", relationship["enum"])
-	}
-	for _, want := range []string{"primary-driver", "contributing-driver", "evidence-limit", "offsetting-strength", "related"} {
-		if !jsonArrayContains(relationshipEnum, want) {
-			t.Fatalf("area schema relationship enum = %#v, want %q", relationshipEnum, want)
-		}
-	}
-	cause, ok := findingProps["cause"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema cause = %#v, want object", findingProps["cause"])
-	}
-	causeProps, ok := cause["properties"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema cause properties = %#v, want object", cause["properties"])
-	}
-	causeStatus, ok := causeProps["status"].(map[string]any)
-	if !ok {
-		t.Fatalf("area schema cause status = %#v, want object", causeProps["status"])
-	}
-	causeStatusEnum, ok := causeStatus["enum"].([]any)
-	if !ok {
-		t.Fatalf("area schema cause status enum = %#v, want array", causeStatus["enum"])
-	}
-	for _, want := range []string{"verified", "plausible", "not_assessed", "not_applicable"} {
-		if !jsonArrayContains(causeStatusEnum, want) {
-			t.Fatalf("area schema cause status enum = %#v, want %q", causeStatusEnum, want)
-		}
+	if _, ok := areaProps["findings"]; ok {
+		t.Fatalf("area schema findings property = %#v, want removed", areaProps["findings"])
 	}
 
 	example, err := DataExample(DataKindRequirementAssessment)
@@ -1110,7 +1069,7 @@ func TestVerifyDataReportsPersistedPayloadFailures(t *testing.T) {
 	if err := os.MkdirAll(filepath.Dir(badPath), 0o755); err != nil {
 		t.Fatalf("MkdirAll() error = %v", err)
 	}
-	badPayload := `{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"title": "Wrong"}) + `]}`
+	badPayload := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"title": "Wrong"}) + `]}`
 	if err := os.WriteFile(badPath, []byte(badPayload), 0o644); err != nil {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
@@ -1211,9 +1170,9 @@ func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 
 func completeRootEvaluationPayloads() []string {
 	return []string{
-		`{"schemaVersion":2,"kind":"EvaluationFrame"}`,
-		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"The model meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"EvaluationFrame"}`,
+		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Local work meets the bar.","ratingDrivers":[{"description":"Area frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"The model meets the bar overall.","ratingDrivers":[{"description":"Area frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}]}],"confidence":"high"}}`,
 	}
 }
 
@@ -1245,53 +1204,31 @@ requirements:
 `
 
 func navigationReportPayloads() []string {
-	rootNote := testAreaFindingJSON(map[string]any{
-		"id":         "root-note",
-		"type":       "note",
+	requirementFinding := testRequirementFindingJSON(map[string]any{
+		"id":         "strength-1",
+		"type":       "strength",
 		"severity":   "low",
-		"confidence": "medium",
-		"statement":  "Root note is contextual.",
-		"effect": map[string]any{
-			"statement":    "The note preserves context without driving the rating.",
-			"ratingEffect": "context only",
-		},
-		"inputRefs": []any{map[string]any{"kind": "RequirementRatingResult", "subject": map[string]any{"requirementId": "requirement:root::has-tests"}}},
-	})
-	rootRisk := testAreaFindingJSON(map[string]any{
-		"id":         "root-risk",
-		"type":       "risk",
-		"severity":   "high",
 		"confidence": "high",
-		"statement":  "Root reliability is the highest concern.",
-		"condition":  "Reliability holds the root roll-up down.",
-		"cause": map[string]any{
-			"status":    "verified",
-			"statement": "Reliability analysis is the binding roll-up driver.",
-		},
+		"statement":  "Tests are present.",
+		"condition":  "The inspected source includes focused tests.",
 		"effect": map[string]any{
-			"statement":    "Reliability constrains the root aggregate rating.",
-			"ratingEffect": "primary roll-up driver",
+			"statement":    "The finding supports the target rating.",
+			"ratingEffect": "supports target",
 		},
-		"inputRefs": []any{map[string]any{"kind": "FactorAnalysisResult", "subject": map[string]any{"factorId": "factor:root::reliability"}, "selector": "localAndDescendantAnalysis"}},
-		"factorRelationships": []any{map[string]any{
-			"factorId":     "factor:root::reliability",
-			"relationship": "primary-driver",
-			"rationale":    "Reliability is the affected factor.",
-		}},
 	})
 	return []string{
-		`{"schemaVersion":2,"kind":"EvaluationFrame"}`,
-		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
-		`{"schemaVersion":2,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}`,
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:root","findings":[` + rootNote + `,` + rootRisk + `],"localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root work meets the bar overall.","ratingDrivers":[],"confidence":"high"}}`,
-		`{"schemaVersion":2,"kind":"AreaAnalysisResult","areaId":"area:payments","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability local work meets the bar.","ratingDrivers":[],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:below","rationale":"Reliability work misses the bar once sub-Factors roll up.","ratingDrivers":[],"confidence":"high"}}`,
-		`{"schemaVersion":2,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability/latency","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency local work meets the bar.","ratingDrivers":[],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency work meets the bar overall.","ratingDrivers":[],"confidence":"medium"}}`,
-		`{"schemaVersion":2,"kind":"RequirementEvaluationFrame","subject":{"requirementId":"requirement:root::has-tests","factorIds":["factor:root::reliability"]}}`,
-		`{"schemaVersion":2,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","confidence":"high","summary":"Tests are present.","factors":["factor:root::reliability"],"findings":[]}`,
-		`{"schemaVersion":2,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","confidence":"high","rationale":"Tests meet the bar.","ratingDrivers":[]}`,
+		`{"schemaVersion":3,"kind":"EvaluationFrame"}`,
+		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
+		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root local work meets the bar.","ratingDrivers":[{"description":"Requirement rating supports root local analysis.","effect":"supports target","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root work meets the bar overall.","ratingDrivers":[{"description":"Reliability analysis is the binding roll-up driver.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:payments","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments local work meets the bar.","ratingDrivers":[{"description":"Payments frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}]}],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Payments work meets the bar overall.","ratingDrivers":[{"description":"Payments frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:payments"}}]}],"confidence":"medium"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability local work meets the bar.","ratingDrivers":[{"description":"Requirement rating supports reliability.","effect":"supports target","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:below","rationale":"Reliability work misses the bar once sub-Factors roll up.","ratingDrivers":[{"description":"Latency roll-up constrains reliability.","effect":"constrains below","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability/latency"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability/latency","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency local work meets the bar.","ratingDrivers":[{"description":"Latency frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}]}],"confidence":"medium"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Latency work meets the bar overall.","ratingDrivers":[{"description":"Latency frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability/latency"}}]}],"confidence":"medium"}}`,
+		`{"schemaVersion":3,"kind":"RequirementEvaluationFrame","subject":{"requirementId":"requirement:root::has-tests","factorIds":["factor:root::reliability"]}}`,
+		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","confidence":"high","summary":"Tests are present.","factors":["factor:root::reliability"],"findings":[` + requirementFinding + `]}`,
+		`{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","confidence":"high","rationale":"Tests meet the bar.","ratingDrivers":[{"description":"Focused test finding supports target.","effect":"supports target","ratingLevelId":"rating:target","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[strength-1]"}]}]}`,
 	}
 }
 

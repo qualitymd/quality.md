@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0142 - Requirement Findings Only](../../../../changes/archive/0142-requirement-findings-only.md).
+  Evaluate now records findings only on Requirement assessments, requires rated
+  Requirements to have findings and rating drivers, and requires Factor/Area
+  roll-up ratings to cite lower-level outputs through rating drivers instead of
+  authoring new findings.
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0136 - Candidate Actions Payload](../../../../changes/archive/0136-candidate-actions-payload.md).
   Evaluate now writes Requirement Finding `candidateActions` with local IDs and
   keeps candidate actions out of Area Findings and recommendation-like

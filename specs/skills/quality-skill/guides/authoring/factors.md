@@ -22,7 +22,8 @@ The guide **MUST** cover Factors as quality characteristics/lenses, local factor
 identity, factor properties, deriving Factors from Needs and Risks, conventional
 factor names as prompts rather than rosters, stable-stakes coverage, stakeholder
 anchoring, naming qualities rather than practices, operational descriptions,
-non-overlap, sub-factor decomposition, and child Area refinements.
+non-overlap, sub-factor decomposition, child Area refinements, and avoiding
+duplicate Factor names within one Area's recursive Factor tree.
 
 The guide **MUST** route Agent Harnessability to `agent-harnessability.md` instead
 of carrying that factor's full doctrine itself.

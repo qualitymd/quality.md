@@ -145,12 +145,7 @@ func requirementReferencesFactor(req *requirementRef) bool {
 }
 
 func (s *runState) resolveFactor(area *areaRef, name string) *factorRef {
-	for current := area; current != nil; current = current.parent {
-		if found := findFactor(current.factors, name); found != nil {
-			return found
-		}
-	}
-	return nil
+	return findFactor(area.factors, name)
 }
 
 func findFactor(factors []*factorRef, name string) *factorRef {

@@ -3,6 +3,68 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0142 - Requirement Findings Only](archive/0142-requirement-findings-only.md).
+  Evaluation data schema version 3 removes Area-analysis findings, `data set`
+  and `data verify` enforce finding-backed rated Requirements and non-empty
+  rating drivers, Area/Factor reports no longer render Finding sections,
+  `/quality evaluate` is aligned with Requirement-only findings, and release
+  notes/spec logs are updated. `go test ./...`, `mise run fmt-md-check`, and
+  `mise run check` pass.
+
+- **In-Review**: Completed implementation for
+  [0142 - Requirement Findings Only](archive/0142-requirement-findings-only.md).
+  Evaluation schema, validation, reports, durable specs, runtime skill guidance,
+  generated schema, tests, and release notes now make Requirement Findings the
+  only Evaluation finding layer and keep Factor/Area roll-up explanation in
+  rating drivers and rationale.
+
+- **In-Progress**: Created
+  [0142 - Requirement Findings Only](archive/0142-requirement-findings-only.md)
+  with its
+  [functional spec](archive/0142-requirement-findings-only/spec.md) and
+  [design doc](archive/0142-requirement-findings-only/design.md). The case makes
+  Requirement Findings the only Evaluation finding layer, removes
+  `AreaAnalysisResult.findings`, requires rated results to be backed by findings
+  and rating drivers, and moves Evaluation data to schema version 3.
+
+- **Done**: Implemented and archived
+  [0141 - Area-local Factor References](archive/0141-area-local-factor-references.md).
+  Requirement Factor references now resolve only within the declaring Area,
+  `unknown-factor` rejects ancestor-only references, lint warns on duplicate
+  Factor names within one Area's Factor tree, and format/spec/skill/docs
+  guidance is aligned. `mise run check` passes.
+
+- **In-Review**: Completed implementation for
+  [0141 - Area-local Factor References](archive/0141-area-local-factor-references.md).
+  Requirement Factor references now resolve only within the declaring Area,
+  `unknown-factor` rejects ancestor-only references, lint warns on duplicate
+  Factor names within one Area's Factor tree, and format/spec/skill/docs
+  guidance is aligned. `go test ./...`, `go run ./cmd/qualitymd lint QUALITY.md
+  --json`, `mise run fmt-md-check`, and `mise run check` pass.
+
+- **In-Progress**: Advanced
+  [0141 - Area-local Factor References](archive/0141-area-local-factor-references.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  lint resolution, warning rules, durable format and CLI specs, runtime skill
+  guidance, scaffold comments, shared UX examples, logs, and release notes.
+
+- **Design**: Advanced
+  [0141 - Area-local Factor References](archive/0141-area-local-factor-references.md)
+  with its
+  [design doc](archive/0141-area-local-factor-references/design.md). The design
+  makes the lint Factor resolver Area-local, adds a same-Area duplicate
+  Factor-name warning, and aligns format/spec/skill guidance around local Factor
+  ownership. Code changes have not started.
+
+- **Draft**: Created
+  [0141 - Area-local Factor References](archive/0141-area-local-factor-references.md)
+  with its
+  [functional spec](archive/0141-area-local-factor-references/spec.md). The case
+  makes Requirement Factor references Area-local, preserves same-named Factors
+  across different Areas, and adds a lint warning for duplicate Factor names
+  within one Area's Factor tree. Design and implementation have not started.
+
+- **Done**: Implemented and archived
   [0140 - Casual Review Gate Wording](archive/0140-casual-review-gate-wording.md).
   Direct `QUALITY.md` review gates now use a casual "Here's what I'm planning to
   do" checkpoint with a visible value prop, welcoming feedback wording, and the

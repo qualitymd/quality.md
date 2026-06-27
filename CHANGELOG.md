@@ -5,8 +5,27 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.24.0 - 2026-06-27
+
+### CLI
+
+- `qualitymd lint` now treats Requirement `factors` references as Area-local:
+  references to ancestor-only Factors are `unknown-factor` errors. It also warns
+  when the same Factor name appears more than once inside one Area's Factor tree.
+- Evaluation data schema version is now `3`. `qualitymd evaluation data set` and
+  `data verify` reject Area-analysis findings, require every rated Requirement
+  result to have a paired Requirement Assessment with at least one Finding, and
+  require rated Requirement, Factor, and Area results to carry non-empty
+  `ratingDrivers` whose `inputRefs` resolve in the effective run data set.
+
 ### /quality Skill
 
+- `/quality` now requires `qualitymd >=0.24.0 <0.25.0`.
+- `/quality evaluate` now treats Requirement Findings as the only Evaluation
+  finding layer. Rated Requirements must be backed by Requirement Findings and
+  rating drivers, while Factor and Area roll-ups explain judgment through
+  `ratingDrivers`, rationale, confidence, limits, and incomplete-input fields
+  without synthesizing new findings.
 - Direct `QUALITY.md` edit requests now use a lightweight authoring checkpoint:
   the skill infers intent, asks follow-up only when it materially affects the
   edit, states "Here's what I'm planning to do" in simple prose with a visible
@@ -14,6 +33,33 @@ QUALITY.md specification.
   clear. The checkpoint explicitly waits for that feedback before editing, and
   the skill acknowledges long direct-authoring reads before inspecting model
   context.
+- Authoring guidance now keeps Requirement `factors` references local to the
+  Requirement's declaring Area and models root cross-cutting judgment with root
+  Requirements instead of descendant opt-in Factor references.
+
+### Specification
+
+- QUALITY.md specification version is now `0.8 (Draft)`.
+- Evaluation Findings are now Requirement-level only. Factor and Area reports no
+  longer render `Findings` sections, and roll-up analysis must cite lower-level
+  evidence through rating drivers rather than inventing another finding layer.
+- Requirement Factor references are now Area-local. Same-named Factors on
+  different Areas remain distinct, while duplicate Factor names within one
+  Area's recursive Factor tree are discouraged because scalar references become
+  ambiguous to readers.
+
+### Compatibility / Migration
+
+- Existing Evaluation schema version 2 run data is incompatible historical data
+  for current `evaluation data set`, `data verify`, and report generation. There
+  is no migration or compatibility mode.
+- `/quality` skill version `0.24.0` requires the `qualitymd` CLI `0.24.x` line.
+
+Compatibility:
+
+- CLI: `v0.24.0`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.24.0`, requires `qualitymd >=0.24.0 <0.25.0`
 
 ## v0.23.0 - 2026-06-27
 

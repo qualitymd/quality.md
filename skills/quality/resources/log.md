@@ -1,5 +1,14 @@
 # /quality Runtime Resources Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated the bundled
+  [QUALITY.md specification](SPECIFICATION.md) for 0142 - Requirement Findings
+  Only.
+  The runtime resource now treats Requirement Findings as the only Evaluation
+  findings, removes Area-analysis findings from the current contract, and
+  requires rated results to carry rating drivers.
+
 ## 2026-06-26
 
 - **Revision**: Updated the bundled

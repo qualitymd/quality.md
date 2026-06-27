@@ -1,10 +1,10 @@
 ---
 name: quality
 description: "Use when a user wants an AI assistant or coding agent to provide setup guidance, evaluation, recommendation follow-up, or paired skill/CLI update help for quality management of a project/entity or one of its components/areas. Trigger for requests about quality factors, characteristics, attributes, criteria, areas, factors, requirements, improving a quality factor such as security/reliability/usability, evaluating a root area against quality criteria, applying or handing off recommendations, updating the /quality stack, or authoring/improving a QUALITY.md file."
-compatibility: Requires qualitymd CLI >=0.23.0 <0.24.0.
+compatibility: Requires qualitymd CLI >=0.24.0 <0.25.0.
 metadata:
-  version: "0.23.0"
-  requires-qualitymd-cli: ">=0.23.0 <0.24.0"
+  version: "0.24.0"
+  requires-qualitymd-cli: ">=0.24.0 <0.25.0"
 ---
 
 ## Purpose
@@ -386,12 +386,20 @@ Assess every in-scope Requirement against a full read of the in-scope Area
 evidence or explicitly recorded as not assessed with a reason. The report must
 state anything not assessed so a limited run never reads as whole coverage.
 
-Write every Requirement Finding and Area Finding with the shared Finding Core:
-`id`, `type`, `severity`, `confidence`, `statement`, `condition`, `criteria`,
-`cause`, `effect`, and `evidence`. Use short payload-local IDs such as
-`gap-001`; do not use semantic slugs or treat finding IDs as durable cross-run
-identifiers. Reference findings from other payloads only through `inputRefs`
-with a selector such as `findings[gap-001]`.
+Write every Requirement Finding with the Finding Core: `id`, `type`, `severity`,
+`confidence`, `statement`, `condition`, `criteria`, `cause`, `effect`, and
+`evidence`. Use short payload-local IDs such as `gap-001`; do not use semantic
+slugs or treat finding IDs as durable cross-run identifiers. Reference findings
+from other payloads only through `inputRefs` with a selector such as
+`findings[gap-001]`.
+
+A Requirement Rating Result with `status: rated` must be backed by one or more
+Requirement Findings from the paired Requirement Assessment and must include
+non-empty `ratingDrivers`. Requirement rating is scale-agnostic: justify the
+selected configured Rating Level against the applied criteria and do not assume
+fixed meanings such as target, sub-target, pass, or fail. If findings are absent,
+too weak, or insufficient to distinguish the configured levels, record the
+Requirement as not rated/not assessed instead of assigning a level.
 
 Finding fields have distinct jobs:
 
@@ -447,10 +455,10 @@ supports it:
   posture that does not overclaim, rating-relevant `effect`, checkable evidence
   locators, and a type that matches the semantics above.
 - **Completeness sweep:** check that every in-scope Requirement reached a rated
-  or reasoned not-assessed state, re-examine every Area or Requirement whose
-  first pass produced only `strength` findings or no findings with an
-  adversarial gap/risk lens, and escalate any Requirement rated on a single weak
-  observation for an independent second look.
+  or reasoned not-assessed state, re-examine every Requirement whose first pass
+  produced only `strength` findings or no findings with an adversarial gap/risk
+  lens, and escalate any Requirement rated on a single weak observation for an
+  independent second look.
 
 Findings surfaced by the completeness sweep re-enter collection and then the
 verify prong before they can bind a rating. Stop the collection -> QC loop when
@@ -459,15 +467,12 @@ terminal evidentiary state, or after two re-collection rounds. If the bound is
 hit first, proceed to roll-up only with every unresolved zone reported as an
 explicit limitation.
 
-During Area analysis, synthesize `AreaAnalysisResult.findings` when material
-observations should be visible at Area or Factor report level. Area Findings are
-scoped to the containing Area analysis, may relate only to Factors declared in
-that Area, and use the shared finding `type`, `severity`, and `confidence`
-vocabulary. Use `severity` only as `critical`, `high`, `medium`, or `low`; use
-`type: note` for informational observations rather than `severity: info`. Do not
-include recommendations, priority, effort, benefit, ROI, `candidateActions`, or
-global top-finding rankings on Area Findings. Finding `effect` is allowed
-because it explains rating or quality consequence.
+Factor and Area analysis must not synthesize findings. Rated Factor and Area
+analysis scopes must include non-empty `ratingDrivers` that cite lower-level
+Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
+through `inputRefs`. Use rationale, confidence, limits, and incomplete inputs for
+roll-up explanation; use recommendations later for cross-Requirement action
+synthesis.
 
 ## Workflow Dispatch
 

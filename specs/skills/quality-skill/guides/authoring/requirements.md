@@ -20,10 +20,11 @@ appear in all capitals.
 
 The guide **MUST** cover Requirements as assessable quality expectations, stable
 Requirement names, natural-language Requirement titles, primary and secondary
-factor connections, Area-level `factors`, concrete observable properties, scale
+factor connections, Area-local `factors`, concrete observable properties, scale
 and meter preflight, ratable statements, behavioral trigger conditions,
 verifiable Assessments, risk-weighted detail, exactly one Assessment per
 Requirement, external assessment references, one referenced assessment feeding
-several factors, splitting by assessable claim rather than by factor, conformance
-vs fitness separation, rating overrides, and closing validation of the
-Requirement set.
+several same-Area factors, splitting by assessable claim rather than by factor,
+conformance vs fitness separation, rating overrides, and closing validation of
+the Requirement set. The guide **MUST NOT** tell agents that `factors` entries
+can resolve to ancestor Area Factors.

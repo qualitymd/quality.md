@@ -23,14 +23,37 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
 	cmd.SetOut(&out)
 	cmd.SetErr(&bytes.Buffer{})
 	cmd.SetIn(strings.NewReader(`[{
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "kind": "RequirementAssessmentResult",
   "requirementId": "requirement:root::has-tests",
   "status": "assessed",
   "statusReason": "Evidence was inspected.",
   "evidenceSummary": "A test exists.",
   "evidenceTargetCoverage": [],
-  "findings": [],
+  "findings": [{
+    "id": "strength-001",
+    "type": "strength",
+    "severity": "low",
+    "confidence": "medium",
+    "statement": "A focused test exists.",
+    "condition": "A test covers the primary path.",
+    "criteria": [{
+      "requirementId": "requirement:root::has-tests",
+      "ratingLevelId": "rating:target",
+      "criterion": "Tests exist."
+    }],
+    "cause": {
+      "status": "not_applicable",
+      "statement": "No adverse cause is involved."
+    },
+    "effect": {
+      "statement": "The finding supports the target rating."
+    },
+    "evidence": [{
+      "sourceRef": "tests/example_test.go",
+      "statement": "A test exists."
+    }]
+  }],
   "unknowns": [],
   "evaluationLimits": [],
   "confidence": "medium",

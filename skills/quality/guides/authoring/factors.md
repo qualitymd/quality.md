@@ -33,6 +33,11 @@ Factor identity is local to its area: factors of the same name on two
 different areas are distinct. A Factor's stable ID is the declaring Area ID plus
 its path of Factor names from that Area's `factors` map.
 
+Within one area, avoid reusing the same factor name anywhere in that area's
+factor tree. The full Factor IDs stay distinct, but Requirement `factors`
+entries use scalar names, so repeated names in one area are hard for authors,
+agents, and reports to read unambiguously.
+
 ### Properties
 
 | Property       | Presence    | What it is                                                        |
@@ -158,8 +163,11 @@ on them, or lacks evidence about them.
   you can only assert. *Decompose for measurability, not only for readability.*
 
 - **Do** treat a child area's factor that shares a name with an ancestor's as a
-  *refinement* tailored to the child. *They're technically distinct factors;
-  write the child's description to say how it specializes the ancestor's
-  concern.*
+  local refinement tailored to the child. *They're distinct factors with
+  distinct IDs; a Requirement in the child area references the child factor, not
+  the ancestor.*
+- **Avoid** reusing the same factor name in multiple places inside one area's
+  own factor tree. *Scalar `factors` references name local factors by name, so
+  duplicate names inside one area make the intended connection ambiguous.*
 
 ---

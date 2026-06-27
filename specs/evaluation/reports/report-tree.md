@@ -133,7 +133,6 @@ Area reports **MUST** include:
 - overall and local confidence;
 - data links;
 - summary;
-- findings;
 - rating drivers;
 - local root Factors;
 - direct child Areas;
@@ -154,7 +153,6 @@ Factor reports **MUST** include:
 - confidence;
 - data links;
 - summary;
-- findings;
 - rating drivers;
 - direct Requirements;
 - direct child Factors; and
@@ -185,45 +183,17 @@ forbids.
 
 Reports **MUST** render empty tables with explicit empty-state rows.
 
-Area reports **MUST** render a `Findings` section from
-`AreaAnalysisResult.findings`. When an Area has no Area Findings, the section
-**MUST** render an explicit empty-state row.
-
-Requirement, Area, and Factor report Finding sections **MUST** render the same
+Requirement report Finding sections **MUST** render the same
 list columns: `ID`, `Statement`, `Type`, `Severity`, `Confidence`, `Effect`, and
 `Cause`.
 
-Area report Findings **MUST** be sorted by:
-
-1. `type`, in this order: `risk`, `gap`, `unknown`, `note`, `strength`;
-2. `severity`, in this order: `critical`, `high`, `medium`, `low`;
-3. `confidence`, in this order: `high`, `medium`, `low`, `none`; and
-4. original payload order.
-
-Factor reports **MUST** render a `Findings` section from Area Findings on the
-owning Area whose `factorRelationships` include the current Factor. When no Area
-Findings reference the Factor, the section **MUST** render an explicit
-empty-state row.
-
-Factor report Findings **MUST** be sorted by:
-
-1. `type`, in this order: `risk`, `gap`, `unknown`, `note`, `strength`;
-2. `severity`, in this order: `critical`, `high`, `medium`, `low`;
-3. `relationship`, in this order: `primary-driver`, `contributing-driver`,
-   `evidence-limit`, `offsetting-strength`, `related`;
-4. `confidence`, in this order: `high`, `medium`, `low`, `none`; and
-5. original payload order.
-
 Finding detail sections **MUST** render the Finding Core in this order:
-condition, criteria, cause, effect, and evidence. Area and Factor Finding
-details **MUST** also render relationships or inputs after the core details when
-present. Requirement Finding details **MUST NOT** render `candidateActions` in
-Evaluation v0.
+condition, criteria, cause, effect, and evidence. Requirement Finding details
+**MUST NOT** render `candidateActions` in Evaluation v0.
 
-Area and Factor report Finding sections **MUST NOT** render recommendations,
-priority, effort, benefit, ROI, `candidateActions`, or global top-finding
-rankings. Finding `effect` **MAY** render because it explains rating or quality
-consequence, not an action or ranking.
+Area and Factor reports **MUST NOT** render `Findings` sections. Their roll-up
+explanation belongs in `Rating Drivers`, rationale, confidence, limits, and
+incomplete inputs.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Area headers should summarize

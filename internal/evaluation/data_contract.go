@@ -274,7 +274,6 @@ func analysisResultContract(kind DataKind, idName string, idType dataFieldType) 
 func areaAnalysisResultContract() dataObjectContract {
 	return topContract(DataKindAreaAnalysis,
 		field("areaId", dataAreaID, true),
-		field("findings", dataArray, false, arrayOfObject(areaFindingContract())),
 		field("localAnalysis", dataObject, true, analysisScopeContract()),
 		field("localAndDescendantAnalysis", dataObject, true, analysisScopeContract()),
 	)
@@ -292,22 +291,6 @@ func analysisScopeContract() dataObjectContract {
 		field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
 		field("confidence", dataString, false, enum("high", "medium", "low", "none")),
 		field("confidenceReason", dataString, false),
-	)
-}
-
-func areaFindingContract() dataObjectContract {
-	fields := append(findingCoreFields(),
-		field("inputRefs", dataArray, true, arrayOfObject(routineRefContract()), minItems(1)),
-		field("factorRelationships", dataArray, false, arrayOfObject(areaFindingFactorRelationshipContract())),
-	)
-	return object(fields...)
-}
-
-func areaFindingFactorRelationshipContract() dataObjectContract {
-	return object(
-		field("factorId", dataFactorID, true),
-		field("relationship", dataString, true, enum("primary-driver", "contributing-driver", "evidence-limit", "offsetting-strength", "related")),
-		field("rationale", dataString, false),
 	)
 }
 
@@ -694,8 +677,6 @@ func validatePayloadSemantics(kind DataKind, payload map[string]any) error {
 	switch kind {
 	case DataKindRequirementAssessment:
 		return validateRequirementAssessmentResultSemantics(payload)
-	case DataKindAreaAnalysis:
-		return validateAreaAnalysisResultSemantics(payload)
 	default:
 		return nil
 	}
@@ -712,32 +693,6 @@ func validateRequirementAssessmentResultSemantics(payload map[string]any) error 
 				return usagef("%s.id %q is duplicated within %s.candidateActions", actionPath, id, path)
 			}
 			seen[id] = struct{}{}
-		}
-	}
-	return nil
-}
-
-func validateAreaAnalysisResultSemantics(payload map[string]any) error {
-	areaID, err := areaIDFrom(payload["areaId"])
-	if err != nil {
-		return usagef("AreaAnalysisResult.areaId: %w", err)
-	}
-	seen := map[string]struct{}{}
-	for i, finding := range objectSlice(payload["findings"]) {
-		path := fmt.Sprintf("AreaAnalysisResult.findings[%d]", i)
-		id := firstString(finding, "id")
-		if _, ok := seen[id]; ok {
-			return usagef("%s.id %q is duplicated within AreaAnalysisResult.findings", path, id)
-		}
-		seen[id] = struct{}{}
-		for j, relationship := range objectSlice(finding["factorRelationships"]) {
-			factor, err := factorIDFrom(relationship["factorId"])
-			if err != nil {
-				return usagef("%s.factorRelationships[%d].factorId: %w", path, j, err)
-			}
-			if !sameStrings(factor.DeclaringArea, areaID) {
-				return usagef("%s.factorRelationships[%d].factorId declares a different Area than AreaAnalysisResult.areaId", path, j)
-			}
 		}
 	}
 	return nil
@@ -1000,6 +955,7 @@ func VerifyData(runPath string) (*DataVerifyReceipt, error) {
 	}
 	result := &DataVerifyReceipt{SchemaVersion: SchemaVersion, Path: filepath.ToSlash(runPath), Valid: true}
 	root := filepath.Join(runPath, "data")
+	payloads := map[string]map[string]any{}
 	err = filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -1034,10 +990,14 @@ func VerifyData(runPath string) (*DataVerifyReceipt, error) {
 		if err := validateDataPayloadForModel(kind, payload, spec); err != nil {
 			result.addFailure(rel, kind, err.Error())
 		}
+		payloads[filepath.ToSlash(rel)] = payload
 		return nil
 	})
 	if err != nil {
 		return nil, fmt.Errorf("verifying evaluation data: %w", err)
+	}
+	for _, failure := range validateEffectivePayloads(payloads) {
+		result.addFailure(failure.Path, failure.Kind, failure.Reason)
 	}
 	result.Valid = len(result.Failures) == 0
 	return result, nil

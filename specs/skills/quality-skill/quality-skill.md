@@ -224,7 +224,7 @@ scope:
   convention defines that behavior.
 - **Scope** — full evaluation (default), or a narrowing by **Area** (an Area
   and its subtree) and/or by **Factor** (the Requirements tied to a Factor,
-  including those tagging it as a secondary Factor), per
+  including same-Area Requirements connected to it as a secondary Factor), per
   [Define](../../../SPECIFICATION.md#define). Natural Area and Factor labels are
   the primary user-facing scoped-evaluation input for the skill. The skill
   **SHOULD** match one label against Area titles, Area names, Factor titles, and

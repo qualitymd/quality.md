@@ -107,8 +107,8 @@ After run creation, `evaluate` **MUST** follow the Evaluation protocol:
 4. frame and analyze local Factor trees bottom-up;
 5. analyze child Areas before their parents;
 6. frame and analyze each Area from completed local Factor and child Area
-   outputs, including Area Findings when material observations should be
-   summarized for that Area;
+   outputs, preserving roll-up explanation through `ratingDrivers`, rationale,
+   confidence, limits, and incomplete inputs;
 7. dry-run and persist the assembled routine payload batch through
    `qualitymd evaluation data set`; and
 8. run `qualitymd evaluation report build` to assemble
@@ -118,16 +118,16 @@ Every in-scope Requirement covered by the resolved scope **MUST** receive a
 `RequirementAssessmentResult` and `RequirementRatingResult`, unless it receives
 an explicit non-completed status allowed by the routine contract.
 
+Every rated Requirement **MUST** have one or more Requirement Findings in the
+paired Requirement Assessment, and every rated Requirement, Factor analysis
+scope, and Area analysis scope **MUST** have non-empty `ratingDrivers`.
+
 Reports **MUST** be deterministic projections over persisted structured data.
 The reporting phase **MUST NOT** inspect new evidence, introduce new findings,
 or make fresh ratings.
 
-Area Findings **MUST** be authored before persistence as part of
-`AreaAnalysisResult.findings`, not during report generation. They **MUST** remain
-local to their Area. Area Finding severity **MUST** be one of `critical`, `high`,
-`medium`, or `low`; informational observations use `type: note`, not
-`severity: info`. Area Findings **MUST NOT** include recommendation, impact,
-priority, effort, benefit, ROI, or global ranking fields.
+Requirement Findings are the only Evaluation findings. Factor and Area analysis
+**MUST NOT** synthesize additional findings or report-level findings.
 
 ## Stop conditions
 

@@ -411,9 +411,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	b.WriteString("| " + markdownCell(evaluationRatingLabel(spec, overall)) + " | " + markdownCell(evaluationRatingLabel(spec, local)) + " | " + markdownCell(evaluationConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
-	b.WriteString("\n\n## Findings\n\n")
-	writeEvaluationAreaFindingsTable(&b, spec, area.Analysis, area.ID, reportPath)
-	b.WriteString("## Rating Drivers\n\n")
+	b.WriteString("\n\n## Rating Drivers\n\n")
 	writeEvaluationDriversTable(&b, spec, overall)
 	b.WriteString("## Factors\n\n")
 	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |\n")
@@ -472,9 +470,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	b.WriteString("| " + markdownCell(evaluationRatingLabel(spec, overall)) + " | " + markdownCell(evaluationRatingLabel(spec, local)) + " | " + markdownCell(evaluationAnalysisStatusPair(overall, local)) + " | " + markdownCell(evaluationConfidencePair(overall, local)) + " | " + reportDataLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json")) + " |\n\n")
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
-	b.WriteString("\n\n## Findings\n\n")
-	writeEvaluationFactorFindingsTable(&b, spec, artifacts, factor.ID, reportPath)
-	b.WriteString("## Rating Drivers\n\n")
+	b.WriteString("\n\n## Rating Drivers\n\n")
 	writeEvaluationDriversTable(&b, spec, overall)
 	b.WriteString("## Requirements\n\n")
 	b.WriteString("| Requirement | Rating | Status |\n")
@@ -998,65 +994,6 @@ func writeEvaluationLimitsTable(b *strings.Builder, scopes ...map[string]any) {
 	}
 }
 
-type indexedAreaFinding struct {
-	Finding      map[string]any
-	Index        int
-	Relationship map[string]any
-}
-
-func writeEvaluationAreaFindingsTable(b *strings.Builder, spec *model.Spec, analysis map[string]any, areaID []string, reportPath string) {
-	b.WriteString("| ID | Statement | Type | Severity | Confidence | Effect | Cause |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
-	findings := sortedAreaFindings(analysis)
-	if len(findings) == 0 {
-		b.WriteString("| (no findings) |  |  |  |  |  |  |\n\n")
-		return
-	}
-	for _, item := range findings {
-		finding := item.Finding
-		b.WriteString("| `" + markdownCell(areaFindingID(finding, item.Index)) + "` | " + markdownCell(firstString(finding, "statement")) + " | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(findingEffectSummary(finding)) + " | " + markdownCell(findingCauseSummary(finding)) + " |\n")
-	}
-	b.WriteString("\n")
-	writeAreaFindingDetails(b, spec, findings, areaID, reportPath)
-}
-
-func writeEvaluationFactorFindingsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, factor factorID, reportPath string) {
-	b.WriteString("| ID | Statement | Type | Severity | Confidence | Effect | Cause |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
-	area := artifacts.area(areaKey(factor.DeclaringArea))
-	findings := sortedFactorFindings(area.Analysis, factor)
-	if len(findings) == 0 {
-		b.WriteString("| (no findings) |  |  |  |  |  |  |\n\n")
-		return
-	}
-	for _, item := range findings {
-		finding := item.Finding
-		b.WriteString("| `" + markdownCell(areaFindingID(finding, item.Index)) + "` | " + markdownCell(firstString(finding, "statement")) + " | " + markdownCell(findingTypeTitle(firstString(finding, "type"))) + " | " + markdownCell(findingSeverityTitle(firstString(finding, "severity"))) + " | " + markdownCell(confidenceTitle(firstString(finding, "confidence"))) + " | " + markdownCell(findingEffectSummary(finding)) + " | " + markdownCell(findingCauseSummary(finding)) + " |\n")
-	}
-	b.WriteString("\n")
-	writeAreaFindingDetails(b, spec, findings, factor.DeclaringArea, reportPath)
-}
-
-func writeAreaFindingDetails(b *strings.Builder, spec *model.Spec, findings []indexedAreaFinding, areaID []string, reportPath string) {
-	b.WriteString("### Finding Details\n\n")
-	if len(findings) == 0 {
-		b.WriteString("(no finding details)\n\n")
-		return
-	}
-	for _, item := range findings {
-		finding := item.Finding
-		writeFindingCoreDetails(b, 4, areaFindingID(finding, item.Index), finding)
-		b.WriteString("##### Relationships\n\n")
-		if relationships := areaFindingFactorLinks(spec, finding, areaID, reportPath); relationships != "(none)" {
-			b.WriteString(relationships + "\n\n")
-		} else {
-			b.WriteString("(none)\n\n")
-		}
-		b.WriteString("##### Inputs\n\n")
-		b.WriteString(compactJSON(finding["inputRefs"]) + "\n\n")
-	}
-}
-
 func writeFindingCoreDetails(b *strings.Builder, headingLevel int, id string, finding map[string]any) {
 	heading := strings.Repeat("#", headingLevel)
 	title := id
@@ -1168,155 +1105,6 @@ func findingCauseSummary(finding map[string]any) string {
 		return status
 	}
 	return status + ": " + statement
-}
-
-func sortedAreaFindings(analysis map[string]any) []indexedAreaFinding {
-	findings := objectSlice(analysis["findings"])
-	out := make([]indexedAreaFinding, 0, len(findings))
-	for i, finding := range findings {
-		out = append(out, indexedAreaFinding{Finding: finding, Index: i})
-	}
-	sort.SliceStable(out, func(i, j int) bool {
-		return compareAreaFindings(out[i], out[j]) < 0
-	})
-	return out
-}
-
-func sortedFactorFindings(analysis map[string]any, factor factorID) []indexedAreaFinding {
-	var out []indexedAreaFinding
-	for i, finding := range objectSlice(analysis["findings"]) {
-		for _, relationship := range objectSlice(finding["factorRelationships"]) {
-			parsed, err := factorIDFrom(relationship["factorId"])
-			if err == nil && sameStrings(parsed.DeclaringArea, factor.DeclaringArea) && sameStrings(parsed.Path, factor.Path) {
-				out = append(out, indexedAreaFinding{Finding: finding, Index: i, Relationship: relationship})
-				break
-			}
-		}
-	}
-	sort.SliceStable(out, func(i, j int) bool {
-		return compareFactorFindings(out[i], out[j]) < 0
-	})
-	return out
-}
-
-func compareAreaFindings(a, b indexedAreaFinding) int {
-	if cmp := findingTypeRank(firstString(a.Finding, "type")) - findingTypeRank(firstString(b.Finding, "type")); cmp != 0 {
-		return cmp
-	}
-	if cmp := findingSeverityRank(firstString(a.Finding, "severity")) - findingSeverityRank(firstString(b.Finding, "severity")); cmp != 0 {
-		return cmp
-	}
-	if cmp := findingConfidenceRank(firstString(a.Finding, "confidence")) - findingConfidenceRank(firstString(b.Finding, "confidence")); cmp != 0 {
-		return cmp
-	}
-	return a.Index - b.Index
-}
-
-func compareFactorFindings(a, b indexedAreaFinding) int {
-	if cmp := findingTypeRank(firstString(a.Finding, "type")) - findingTypeRank(firstString(b.Finding, "type")); cmp != 0 {
-		return cmp
-	}
-	if cmp := findingSeverityRank(firstString(a.Finding, "severity")) - findingSeverityRank(firstString(b.Finding, "severity")); cmp != 0 {
-		return cmp
-	}
-	if cmp := factorRelationshipRank(firstString(a.Relationship, "relationship")) - factorRelationshipRank(firstString(b.Relationship, "relationship")); cmp != 0 {
-		return cmp
-	}
-	if cmp := findingConfidenceRank(firstString(a.Finding, "confidence")) - findingConfidenceRank(firstString(b.Finding, "confidence")); cmp != 0 {
-		return cmp
-	}
-	return a.Index - b.Index
-}
-
-func areaFindingID(finding map[string]any, index int) string {
-	if id := firstString(finding, "id", "ID"); id != "" {
-		return id
-	}
-	return fmt.Sprintf("finding-%d", index+1)
-}
-
-func areaFindingFactorLinks(spec *model.Spec, finding map[string]any, areaID []string, reportPath string) string {
-	var links []string
-	for _, relationship := range objectSlice(finding["factorRelationships"]) {
-		factor, err := factorIDFrom(relationship["factorId"])
-		if err != nil || !sameStrings(factor.DeclaringArea, areaID) {
-			continue
-		}
-		label := factorTitle(spec, factor)
-		rel := firstString(relationship, "relationship")
-		if rel != "" {
-			label += " " + factorRelationshipTitle(rel)
-		}
-		links = append(links, reportLink(reportPath, factorReportPath(factor), label))
-	}
-	if len(links) == 0 {
-		return "(none)"
-	}
-	return strings.Join(links, "; ")
-}
-
-func findingTypeRank(value string) int {
-	switch value {
-	case "risk":
-		return 0
-	case "gap":
-		return 1
-	case "unknown":
-		return 2
-	case "note":
-		return 3
-	case "strength":
-		return 4
-	default:
-		return 99
-	}
-}
-
-func findingSeverityRank(value string) int {
-	switch value {
-	case "critical":
-		return 0
-	case "high":
-		return 1
-	case "medium":
-		return 2
-	case "low":
-		return 3
-	default:
-		return 99
-	}
-}
-
-func findingConfidenceRank(value string) int {
-	switch value {
-	case "high":
-		return 0
-	case "medium":
-		return 1
-	case "low":
-		return 2
-	case "none":
-		return 3
-	default:
-		return 99
-	}
-}
-
-func factorRelationshipRank(value string) int {
-	switch value {
-	case "primary-driver":
-		return 0
-	case "contributing-driver":
-		return 1
-	case "evidence-limit":
-		return 2
-	case "offsetting-strength":
-		return 3
-	case "related":
-		return 4
-	default:
-		return 99
-	}
 }
 
 func writeEvaluationFindingsTable(b *strings.Builder, assessment map[string]any) {

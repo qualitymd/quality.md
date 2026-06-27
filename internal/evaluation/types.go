@@ -8,7 +8,7 @@ import (
 )
 
 // SchemaVersion is the current evaluation data and receipt schema version.
-const SchemaVersion = 2
+const SchemaVersion = 3
 
 // UsageError marks an evaluation error as invalid user input.
 type UsageError struct {

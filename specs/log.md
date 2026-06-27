@@ -3,6 +3,21 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0142 - Requirement Findings Only](../changes/archive/0142-requirement-findings-only.md).
+  The Evaluation specs now make Requirement Findings the only finding layer,
+  remove Area and Factor Finding report sections, define schema version 3 data
+  validation for finding-backed Requirement ratings and non-empty rating drivers,
+  and align `/quality evaluate` with driver-only Factor/Area roll-up analysis.
+
+- **Revision**: Implemented durable spec changes for
+  [0141 - Area-local Factor References](../changes/archive/0141-area-local-factor-references.md).
+  The format and CLI lint specs now make Requirement Factor references
+  Area-local, preserve same-named Factors across different Areas, warn when a
+  Factor name repeats inside one Area's Factor tree, and remove descendant-Area
+  roll-up semantics for ancestor Factors. The `/quality` skill guide specs now
+  teach the same Area-local authoring boundary.
+
+- **Revision**: Implemented durable spec changes for
   [0140 - Casual Review Gate Wording](../changes/archive/0140-casual-review-gate-wording.md).
   The `/quality` skill specs now require direct model-authoring checkpoints to
   state the planned change and value prop in simple prose, keep important

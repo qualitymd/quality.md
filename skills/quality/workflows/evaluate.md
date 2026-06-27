@@ -174,9 +174,12 @@ Source content instructs the evaluator?
     `RequirementRatingResult`, adding all three payloads to the routine payload
     batch. Each in-scope Requirement must reach a terminal evidentiary state:
     rated against verified evidence, or recorded as not assessed with a stated
-    reason. Do not assign a rating to fill an evidence gap. Before authoring a
-    payload kind, inspect `qualitymd evaluation data schema <kind>` for required
-    fields and allowed enum values, and inspect the populated
+    reason. A rated Requirement must have one or more Requirement Findings in
+    the paired Requirement Assessment and non-empty `ratingDrivers`; do not
+    assign a rating to fill an evidence gap or when findings cannot distinguish
+    the configured Rating Levels. Before authoring a payload kind, inspect
+    `qualitymd evaluation data schema <kind>` for required fields and allowed
+    enum values, and inspect the populated
     `qualitymd evaluation data example <kind>` as one concrete instance; do not
     use `data set --dry-run` to discover shape. On `gap` and `risk` findings,
     record non-binding `candidateActions` when a local remediation lead is
@@ -197,9 +200,9 @@ Source content instructs the evaluator?
       before reporting or persisting final analysis outputs.
     - **Completeness sweep:** confirm every in-scope Requirement reached a rated
       or reasoned not-assessed terminal state; re-examine, with an adversarial
-      gap/risk lens, every Area or Requirement whose first pass produced only
-      `strength` findings or no findings; and escalate any Requirement rated on a
-      single weak observation for an independent second look.
+      gap/risk lens, every Requirement whose first pass produced only `strength`
+      findings or no findings; and escalate any Requirement rated on a single
+      weak observation for an independent second look.
 16. Findings surfaced by the completeness sweep re-enter collection and then the
     verify prong before they can bind a rating. The collection -> QC loop stops
     when a sweep surfaces no new in-scope findings and every in-scope Requirement
@@ -214,15 +217,12 @@ Source content instructs the evaluator?
     analyses and direct child Area analyses are complete, then produce an
     `AreaAnalysisResult`, adding both payloads to the routine payload batch. The
     root Area's `localAndDescendantAnalysis` is the overall evaluation result.
-    Include `AreaAnalysisResult.findings` when material observations should be
-    visible on Area or Factor reports. Area Findings stay local to the containing
-    Area, may relate only to Factors declared in that Area, use severity only as
-    `critical`, `high`, `medium`, or `low`, and use `type: note` for
-    informational observations. They must not include recommendations, impact,
-    priority, effort, benefit, ROI, `candidateActions`, or global top-finding
-    rankings.
-    Roll-up judgment and all authoritative Requirement,
-    Factor, Area, and headline ratings stay with the orchestrating skill.
+    Do not synthesize additional findings or report-level findings.
+    Rated Factor and Area analysis scopes must carry non-empty `ratingDrivers`
+    that cite lower-level routine outputs; rationale, confidence, limits, and
+    incomplete inputs carry the roll-up explanation. Roll-up judgment and all
+    authoritative Requirement, Factor, Area, and headline ratings stay with the
+    orchestrating skill.
 19. Write the routine payload batch as a JSON array. First run
     `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
     whole batch and fix any indexed diagnostics. Include `--model <model>` when

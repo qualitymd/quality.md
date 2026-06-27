@@ -2,6 +2,14 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated the Evaluation data, routine, protocol, and report-tree
+  contracts for
+  [0142 - Requirement Findings Only](../../changes/archive/0142-requirement-findings-only.md).
+  Requirement Findings are now the only Evaluation findings, rated Requirements
+  must be backed by paired Requirement Assessment findings and rating drivers,
+  Factor/Area roll-ups use drivers and rationale instead of new findings, and
+  the active Evaluation data schema is version 3.
+
 - **Revision**: Updated the Evaluation report entrypoint contracts for
   [0137 - Run Report Entrypoint](../../changes/archive/0137-run-report-entrypoint.md).
   `report.md` is now the run-level report, the root Area detail report is

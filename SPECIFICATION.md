@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Specification version:** 0.7 (Draft)
+**Specification version:** 0.8 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
@@ -120,14 +120,10 @@ references, and optional per-level criterion overrides.
 stated inline or as a reference to an entity that defines those means. An
 Assessment produces Findings.
 
-**Finding**: A single observation produced by an Assessment or Area analysis. A
+**Finding**: A single observation produced by a Requirement Assessment. A
 Finding records a short `statement`, observed `condition`, applied `criteria`,
 cause posture, quality or rating `effect`, and evidence. A Finding is not itself
 rated.
-
-**Area Finding**: A synthesized Finding produced by Area analysis. An Area
-Finding summarizes one or more Requirement Findings or analysis observations for
-one Area, and can record how it relates to Factors declared in that Area.
 
 **Rating Scale**: The ordered set of Rating Levels used by a Model.
 
@@ -347,6 +343,11 @@ Factor of the same shape, nested to any depth.
 Factor identity is local to the Area on which the Factor is declared. Factors
 with the same name on different Areas are distinct Factors.
 
+Within one Area, authors SHOULD avoid reusing the same Factor name anywhere in
+that Area's recursive Factor tree. Canonical Factor IDs remain path-based, but
+explicit Requirement Factor references use scalar names, so repeated names in
+one Area can make authored references ambiguous to readers and tools.
+
 `title` is the Factor's display name. The Factor's map key remains its stable
 Factor name local to the Area where the Factor is declared. Its Factor ID is the
 declaring Area ID plus the ordered path of Factor names from that Area's
@@ -392,14 +393,15 @@ Every Requirement MUST be connected to at least one Factor.
 
 A Requirement declared under a Factor or sub-factor is connected by placement.
 The containing Factor is its primary Factor. Such a Requirement can also declare
-`factors`; those entries are secondary Factor references.
+`factors`; those entries are same-Area secondary Factor references.
 
 A Requirement declared directly under an Area is not connected by placement.
 It MUST declare `factors` with at least one non-empty scalar entry.
 
-Each explicit Factor reference MUST resolve to a Factor in scope. A Factor is in
-scope when it is declared on the Area where the Requirement sits or on an
-ancestor Area.
+Each explicit Factor reference MUST resolve to a Factor declared on the Area
+where the Requirement sits. A Factor declared on an ancestor Area, sibling Area,
+descendant Area, or unrelated Area is not in scope for that Requirement's
+`factors` entries.
 
 Missing `factors`, `factors: null`, `factors: []`, and sequences containing only
 null or empty entries do not satisfy the Factor-reference requirement for a
@@ -424,7 +426,7 @@ and advice.
 
 Evaluation interprets a Model against selected Sources, produces Findings for
 Requirements, rates Requirement Assessments, analyzes Factors and Areas,
-produces Area Findings, and produces an Evaluation Report.
+and produces an Evaluation Report.
 
 This specification defines the required observable semantics of Evaluation. An
 implementation can use different internal algorithms when the resulting
@@ -517,6 +519,11 @@ When there are no Findings, or when the available Findings are insufficient to
 rate the Requirement against the Rating Scale, the Requirement's Rating Result
 MUST be `not assessed`.
 
+A rated Requirement MUST be backed by one or more Requirement Findings from the
+paired Requirement Assessment. The Findings must justify the selected configured
+Rating Level against the applied criteria. Evaluation MUST NOT assume fixed
+Rating Level meanings such as target, sub-target, pass, or fail.
+
 ### Analyze Factors and Areas
 
 Analysis infers ratings for Factors and Areas from Requirement Rating Results,
@@ -534,12 +541,12 @@ For each Area in scope, processed bottom-up:
 - Each Area with its own Requirements receives a local rating or
   `not assessed`.
 - Each Area receives an aggregate rating or `not assessed`.
-- Each Area can receive zero or more Area Findings.
 
 A Factor rating characterizes the Factor considering, together:
 
 - Rating Results of Requirements declared under that Factor or its sub-factors.
-- Rating Results of Requirements that explicitly reference that Factor.
+- Rating Results of Requirements declared on the same Area that explicitly
+  reference that Factor.
 - Ratings of the Factor's sub-factors.
 
 A local rating characterizes the Area considering all Requirements declared
@@ -557,16 +564,11 @@ distinct from Rating Levels. When too little has been assessed to responsibly
 infer a roll-up rating, the roll-up outcome MUST be `not assessed`.
 
 Each roll-up SHOULD include a rationale naming the observations, constraints,
-or gaps most responsible for the outcome.
-
-Area Findings summarize material analysis observations for an Area. They use the
-same Finding structure as Requirement Findings, are scoped by their containing
-Area analysis result, share the Finding type, severity, and confidence
-vocabularies used by Requirement Findings, and MAY cite one or more Factors
-declared in that Area with a relationship label. Area Findings MUST NOT carry
-`candidateActions`, recommendations, priority, effort, benefit, ROI, or global
-ranking fields. A Finding's `effect` explains why the observation matters to
-quality or rating; it is not a recommendation or ranking field.
+or gaps most responsible for the outcome. Rated Factor and Area analysis results
+SHOULD preserve those observations as rating drivers that cite lower-level
+Requirement Rating Results, Factor Analysis Results, or Area Analysis Results.
+Roll-up analysis MUST NOT produce new Findings or introduce evidence absent from
+the lower-level outputs it cites.
 
 Evaluation Finding severity values are `critical`, `high`, `medium`, and `low`.
 Informational observations use Finding `type: note`; `info` is not a severity
@@ -596,7 +598,6 @@ A conforming Evaluation Report MUST include:
 - A rationale for the headline outcome.
 - For each Area in scope, recursively:
   - each Requirement's Findings summary, Rating Result, and rationale;
-  - each Area's Area Findings, when produced;
   - each Factor's rating or `not assessed` outcome and rationale, including
     sub-factors;
   - the Area's local rating or `not assessed` outcome, when a local rating
@@ -606,10 +607,6 @@ A conforming Evaluation Report MUST include:
 
 `not assessed` outcomes MUST be shown wherever they occur and MUST be distinct
 from Rating Levels.
-
-When a Factor rating includes Requirements declared on descendant Areas
-because those Requirements reference the Factor, the report SHOULD make those
-contributing Requirements identifiable.
 
 A report renderer can render the Evaluation Report as Markdown, JSON, terminal
 output, a gate result, or another format, provided the required information and

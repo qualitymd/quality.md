@@ -66,6 +66,10 @@ requirements:
 areas:
   api:
     title: API
+    factors:
+      reliability:
+        title: Reliability
+        description: API reliability.
     requirements:
       responds:
         title: Responds
@@ -90,8 +94,8 @@ areas:
 	if shape == nil {
 		t.Fatal("shape is nil")
 	}
-	if shape.Areas != 3 || shape.Factors != 3 || shape.Requirements != 3 || shape.RatingLevels != 2 {
-		t.Fatalf("shape = %#v, want 3 areas, 3 factors, 3 requirements, 2 levels", *shape)
+	if shape.Areas != 3 || shape.Factors != 4 || shape.Requirements != 3 || shape.RatingLevels != 2 {
+		t.Fatalf("shape = %#v, want 3 areas, 4 factors, 3 requirements, 2 levels", *shape)
 	}
 	if len(snapshot.Model.SourceCoverage) != 3 {
 		t.Fatalf("sourceCoverage = %#v, want root plus 2 child areas", snapshot.Model.SourceCoverage)
@@ -113,6 +117,10 @@ func TestSnapshotLeanRootUsesDefaultSourceState(t *testing.T) {
 areas:
   api:
     title: API
+    factors:
+      reliability:
+        title: Reliability
+        description: API reliability.
     requirements:
       responds:
         title: Responds

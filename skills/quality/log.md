@@ -2,6 +2,20 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0142 - Requirement
+  Findings Only.
+  Runtime evaluation guidance now makes Requirement Findings the only finding
+  layer, requires rated Requirements to be finding-backed and driver-backed, and
+  uses rating drivers/rationale for Factor and Area roll-ups instead of Area
+  Findings.
+
+- **Revision**: Updated authoring guides for 0141 - Area-local Factor
+  References.
+  Runtime guidance now keeps Requirement Factor references local to the
+  Requirement's declaring Area and directs cross-Area root judgment toward root
+  Requirements rather than descendant opt-in Factor references.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0140 - Casual Review Gate
   Wording.
   Direct model authoring checkpoints now use a plain "Here's what I'm planning

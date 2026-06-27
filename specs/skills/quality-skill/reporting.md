@@ -70,14 +70,9 @@ Reports **MUST** be deterministic projections over completed structured data.
 The skill **MUST NOT** add report-only findings, ratings, evidence, limits,
 analysis, or recommendations.
 
-Area reports **MUST** render the Area Findings stored on the corresponding
-`AreaAnalysisResult.findings` payload as `Findings`.
-
-Factor reports **MUST** render `Findings` by projecting the owning Area's Area
-Findings whose Factor relationships include that Factor.
-
-The reporting closeout **MUST NOT** present Area Findings as recommendations or
-as a global top-findings ranking.
+Area and Factor reports **MUST NOT** render `Findings` sections. Their roll-up
+explanation belongs in `Rating Drivers`, rationale, confidence, limits, and
+incomplete inputs.
 
 Reports **MUST** preserve secret-handling boundaries: cite locator and
 credential type only, never secret values or unsafe raw content.

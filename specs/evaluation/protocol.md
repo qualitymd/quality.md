@@ -113,3 +113,5 @@ by the lowest rating-relevant input unless explicit rationale justifies an
 override.
 
 Both defaults **MUST** preserve binding drivers and surface incomplete inputs.
+They **MUST NOT** synthesize new findings; roll-up explanation belongs in
+`ratingDrivers`, rationale, confidence, limits, and incomplete inputs.

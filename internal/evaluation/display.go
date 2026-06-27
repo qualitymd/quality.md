@@ -153,14 +153,6 @@ var findingTypeTitles = map[string]string{
 	"recommendation": "➡️ Recommendation",
 }
 
-var factorRelationshipTitles = map[string]string{
-	"primary-driver":      "Primary Driver",
-	"contributing-driver": "Contributing Driver",
-	"evidence-limit":      "Evidence Limit",
-	"offsetting-strength": "Offsetting Strength",
-	"related":             "Related",
-}
-
 var causeStatusTitles = map[string]string{
 	"verified":       "Verified",
 	"plausible":      "Plausible",
@@ -221,10 +213,6 @@ func findingSeverityTitle(value string) string {
 
 func findingTypeTitle(value string) string {
 	return stringTitle(value, findingTypeTitles)
-}
-
-func factorRelationshipTitle(value string) string {
-	return stringTitle(value, factorRelationshipTitles)
 }
 
 func causeStatusTitle(value string) string {

@@ -157,10 +157,10 @@ flowchart TD
    frame or result payload required by the
    [Evaluation protocol](../../evaluation/protocol.md), validate the assembled
    batch with one `qualitymd evaluation data set --dry-run`, and persist it
-   through one `qualitymd evaluation data set` invocation. Area analysis
-   **MUST** include `AreaAnalysisResult.findings` when material findings should
-   be visible for that Area or its Factors, relating them only to Factors
-   declared in that Area.
+   through one `qualitymd evaluation data set` invocation. Requirement Findings
+   are the only Evaluation findings; Factor and Area analysis explain roll-up
+   judgment through `ratingDrivers`, rationale, confidence, limits, and
+   incomplete inputs.
 7. **Maintain the evaluate feedback log** — hand-author concise entries in the
    current run's `.quality/logs/<timestamp>-evaluate-feedback-log.md` for
    material workflow-experience events. Keep the log separate from formal
@@ -185,12 +185,15 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   rating scale's `criterion` for each level, honoring any requirement-level
   `ratings` overrides — never against an external or invented standard (per
   [Assess and Rate](../../../SPECIFICATION.md#assess-and-rate)).
-- **Every rating cites verified evidence.** A rating **MUST** rest on findings
-  drawn from the area's `source` — observations a reader could check. Claims
-  about code, CLI, or tool behavior **MUST** be verified by an executed command
-  or search cited in the finding evidence. Every finding evidence entry **MUST**
-  include a checkable `sourceRef`, such as a `file:line` or exact searchable
-  string.
+- **Every Requirement rating cites verified evidence.** A rated Requirement
+  **MUST** rest on Requirement Findings drawn from the area's `source` —
+  observations a reader could check. Claims about code, CLI, or tool behavior
+  **MUST** be verified by an executed command or search cited in the finding
+  evidence. Every finding evidence entry **MUST** include a checkable
+  `sourceRef`, such as a `file:line` or exact searchable string.
+- **Ratings stay scale-agnostic.** A Requirement rating **MUST** justify the
+  selected configured Rating Level against the applied criteria and **MUST NOT**
+  assume fixed meanings such as target, sub-target, pass, or fail.
 - **Insufficient evidence is *not assessed*, not a guess.** When there are no
   findings or the evidence cannot be rated against the scale, the requirement (or
   roll-up) **MUST** be recorded as *not assessed* and noted, never assigned a
@@ -200,12 +203,12 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
 - **Roll-up is inferred, weighted by what matters.** The skill infers factor,
   local, and aggregate ratings by judgment — a serious shortfall in an important
   requirement **MUST NOT** be masked by many satisfactory ones — and should
-  record a brief rationale naming the binding constraints (per
-  [Analyze](../../../SPECIFICATION.md#analyze)).
-- **Findings use the shared core.** The skill **MUST** write Requirement and
-  Area Findings with `statement`, `condition`, `criteria`, `cause`, `effect`,
-  and `evidence`. Rationale belongs on the nested field it explains, such as a
-  criterion, cause, effect, or evidence entry, not on the finding as a whole.
+  record rating drivers and a brief rationale naming the binding constraints
+  (per [Analyze](../../../SPECIFICATION.md#analyze)).
+- **Findings use the shared core.** The skill **MUST** write Requirement Findings
+  with `statement`, `condition`, `criteria`, `cause`, `effect`, and `evidence`.
+  Rationale belongs on the nested field it explains, such as a criterion, cause,
+  effect, or evidence entry, not on the finding as a whole.
 - **Finding types carry distinct analysis.** The skill **MUST** classify `gap`
   as an observed shortfall against criteria, `risk` as a plausible future
   quality loss path, `strength` as support for or margin above criteria,
@@ -216,15 +219,11 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   cause statement. When a `gap` or `risk` has evidence for condition and effect
   but not cause, the skill **MUST** use `cause.status: not_assessed` rather than
   inventing cause.
-- **Area Findings summarize, they do not advise.** During Area analysis, the
-  skill **MUST** synthesize Area Findings from verified Requirement Findings and
-  analysis observations when material observations should be visible at Area or
-  Factor report level. Area Findings use `type`, `severity`, and `confidence` to
-  make local significance legible, with `severity` limited to `critical`, `high`,
-  `medium`, or `low`. Informational observations use `type: note`, not
-  `severity: info`. Area Findings **MUST NOT** include recommendations, priority,
-  effort, benefit, ROI, `candidateActions`, or global ranking fields. Finding `effect` is
-  allowed because it explains rating or quality consequence.
+- **Drivers synthesize; findings evidence.** Requirement ratings, Factor
+  analysis, and Area analysis **MUST** carry non-empty `ratingDrivers` when they
+  select a Rating Level. Roll-up drivers **MUST** cite lower-level routine
+  outputs and **MUST NOT** introduce new evidence or claims absent from the
+  referenced outputs.
 
 ### Coverage and execution strategy
 
@@ -300,8 +299,8 @@ The completeness sweep **MUST**:
 - confirm every in-scope Requirement reached a terminal evidentiary state,
   failing the sweep if any was silently skipped or marked not assessed without a
   stated reason;
-- re-examine, with an adversarial gap/risk lens, every Area or Requirement whose
-  first pass produced only `strength` findings or no findings; and
+- re-examine, with an adversarial gap/risk lens, every Requirement whose first
+  pass produced only `strength` findings or no findings; and
 - escalate any Requirement rated on a single weak observation for an independent
   second look.
 

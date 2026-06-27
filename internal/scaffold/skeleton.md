@@ -70,10 +70,10 @@ factors:
 # artifact — for example a service, module, document, data table, operating
 # procedure, or curriculum unit — deserves its own factors or requirements that
 # wouldn't fit cleanly at the top level. The whole-artifact factors above still
-# apply; an area just adds focus where a part needs it. An area takes the same
-# shape as the root: its own `factors` (and their `requirements`), direct
-# `requirements` with factor references under `factors`, or further nested
-# `areas`.
+# apply through root requirements; an area adds focus where a part needs it. An
+# area takes the same shape as the root: its own `factors` (and their
+# `requirements`), direct `requirements` with references to that area's local
+# factors under `factors`, or further nested `areas`.
 # areas:
 #   "<name a thing to evaluate>":
 #     title: "<short display label for this area>"
