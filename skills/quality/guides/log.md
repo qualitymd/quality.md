@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated runtime guide links and
+  [quality changelog authoring](authoring/quality-changelog.md) for
+  0146 - Changelog Directory.
+  Guide routing now uses the quality changelog name and `.quality/changelog/`
+  model-change history path.
+
 - **Revision**: Updated [Authoring QUALITY.md](authoring.md) for 0144 - Pointed
   Review Gates.
   Runtime authoring guidance now preserves inferred purpose and asks users to
@@ -35,11 +41,11 @@
   for user response before mutation.
 
 - **Revision**: Updated [Authoring QUALITY.md](authoring.md) and
-  [Authoring Quality-Log Changes](authoring/quality-log.md) for 0138 -
+  [Authoring Quality-Log Changes](authoring/quality-changelog.md) for 0138 -
   Lightweight Authoring Checkpoint.
   Direct `QUALITY.md` edits now preserve intent, target, rationale, judgment
-  effect, unresolved unknowns, and quality-log routing; confirmed direct
-  model-authoring changes write the quality log only when they meaningfully alter
+  effect, unresolved unknowns, and quality changelog routing; confirmed direct
+  model-authoring changes write the quality changelog only when they meaningfully alter
   model judgment.
 
 ## 2026-06-26
@@ -48,7 +54,7 @@
   [Recommendation Follow-Up](recommendation-follow-up.md) for 0128 -
   Agent-mediated skill alignment.
   Recommendation follow-up now opens with a frame before recommendation
-  inspection, outcome selection, local apply, issue creation, or quality-log
+  inspection, outcome selection, local apply, issue creation, or quality-changelog
   writes.
 
 - **Revision**: Updated [Agent Harnessability](authoring/agent-harnessability.md)

@@ -34,11 +34,11 @@ specification governs on any conflict.
   [`authoring/agent-harnessability.md`](authoring/agent-harnessability.md).
 - The agent harness as a modeled area/constituent →
   [`authoring/agent-harness.md`](authoring/agent-harness.md).
-- Meaningful model-change judgment and quality-log routing →
-  [`authoring/quality-log.md`](authoring/quality-log.md).
+- Meaningful model-change judgment and quality changelog routing →
+  [`authoring/quality-changelog.md`](authoring/quality-changelog.md).
 
 For first-model setup, read the body, model-structure, factors, requirements,
-rating-scale, Agent Harnessability, agent-harness, and quality-log guides before
+rating-scale, Agent Harnessability, agent-harness, and quality-changelog guides before
 authoring. For narrow recommendation follow-up, read only the sub-guides matching
 the confirmed mutation surface.
 
@@ -46,7 +46,7 @@ For direct `QUALITY.md` edits, infer the intended change from the user's request
 and the current model before asking follow-up. Preserve the user's intent, the
 model or body target, the inferred purpose, the planned change, the value prop,
 the expected judgment effect, unresolved unknowns, and whether the change should
-write the quality log. Ask follow-up only when one of those would materially
+write the quality changelog. Ask follow-up only when one of those would materially
 change the edit; otherwise state why the change appears needed, state the
 intended edit in simple planned-change prose, name the value prop, and ask the
 user to react to the most consequential scope, risk, naming, or boundary
@@ -123,5 +123,5 @@ stable text handle, it uses canonical model references such as `area:root`,
 ## Maintenance
 
 When authoring changes meaningfully alter what the model *is* or *how it judges*,
-read [`authoring/quality-log.md`](authoring/quality-log.md) before changing the
-model or writing a quality-log entry.
+read [`authoring/quality-changelog.md`](authoring/quality-changelog.md) before changing the
+model or writing a quality changelog entry.

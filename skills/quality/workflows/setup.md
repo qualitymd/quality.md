@@ -8,7 +8,7 @@ description: Runtime workflow for creating or updating a useful first QUALITY.md
 
 Run this workflow to create or update a useful first `QUALITY.md`. Setup writes
 the selected `QUALITY.md` and writes a current-run workflow feedback log under
-`.quality/logs/`; evaluation, quality-log entries under `.quality/log/`, external
+`.quality/logs/`; evaluation, quality changelog entries under `.quality/changelog/`, external
 issues, integrations, and automations stay outside setup.
 
 ## Workflow
@@ -78,22 +78,20 @@ proposition, a short phase roadmap, and the read-only/review boundary.
 - **Artifacts:** QUALITY.md, .quality/logs/<timestamp>-setup-feedback-log.md if continuing
 - **Next gate:** read-only setup preview, discovery, review, lint, important-gap inspection
 
-# QUALITY.md setup
+**Why:** QUALITY.md gives AI assistants, coding agents, and teams a holistic
+quality definition tailored to this project, so they stay aligned, catch critical
+risks, and keep improving it.
 
-Welcome! QUALITY.md gives AI assistants, coding agents, and teams a holistic
-definition of quality tailored to this project — so they stay aligned, catch
-critical risks, and keep improving it.
+**Plan**
+1. Scan - read repo context, read-only; this can take a moment on a large repo.
+2. Calibrate - ask a few short questions with recommended defaults.
+3. Review - you confirm before I write `QUALITY.md`.
+4. Write - author `QUALITY.md`.
+5. Verify - run lint plus a quick model-gap check.
 
-Here's how setup will go:
-1. **Scan** — I read your repo context (read-only; can take a moment on a large repo)
-2. **Calibrate** — a few short questions, with recommended defaults
-3. **Review** — you confirm before I write anything
-4. **Write** — I author QUALITY.md
-5. **Verify** — lint plus a quick gap check
-
-Starting with the read-only scan now. I will not change `QUALITY.md` until you
-review and confirm; if setup continues after the preview, I may create a local
-workflow feedback log under `.quality/logs/`.
+**Boundary:** Starting with the read-only scan now. I will not change
+`QUALITY.md` until you review and confirm. If setup continues after the preview,
+I may create a local workflow feedback log under `.quality/logs/`.
 ```
 
 The **Model file** in the frame is the resolved model path: the explicit path
@@ -124,7 +122,7 @@ read-only scan.
    [`rating-scale`](../guides/authoring/rating-scale.md),
    [`agent-harnessability`](../guides/authoring/agent-harnessability.md),
    [`agent-harness`](../guides/authoring/agent-harness.md), and
-   [`quality-log`](../guides/authoring/quality-log.md). Read
+   [`quality-changelog`](../guides/authoring/quality-changelog.md). Read
    [`../guides/getting-started.md`](../guides/getting-started.md) when setup
    needs first-run iteration guidance.
 
@@ -437,6 +435,16 @@ authoring proceeds.
   meaning:
 
   ```text
+  **Setup review**
+
+  **Root:** <final root area answer>
+  **Domain:** <final domain answer>
+  **Lifecycle:** <final lifecycle answer>
+  **Risk:** <final risk answer>
+  **Rating scale:** <final rating-scale answer>
+  **Human context:** <primary users/outcomes, maintainers, stakeholders>
+  **Open gaps:** <missing or not-agent-accessible context>
+
   **Write `QUALITY.md`?**
   Create or update `<model path>` with the reviewed setup answers.
 
@@ -445,6 +453,7 @@ authoring proceeds.
 
   Reason: repo scan plus confirmed discovery answers are enough to draft a first useful model.
   Done when: `qualitymd lint <model path>` passes, or lint findings are reported.
+  Not changed: no evaluation, no quality changelog, no issues, no automations.
 ````
 
 - Give cross-cutting remarks and broader last-call context — priorities, worries,
@@ -591,7 +600,7 @@ Report setup completion status-first:
 **Changed:** QUALITY.md
 **Validation:** lint passed | lint failed
 **Important gaps:** <none | concise model gaps>
-**Not done:** no evaluation, no quality log, no issues, no automations
+**Not done:** no evaluation, no quality changelog, no issues, no automations
 **Next:** continue iterating on QUALITY.md | run /quality evaluate | stop here
 ```
 
@@ -621,8 +630,8 @@ Write the log to `.quality/logs/<timestamp>-setup-feedback-log.md`, creating
 Use a sortable UTC, filesystem-safe `<timestamp>` such as `2026-06-23T154233Z`;
 if a name ever collides, append a short disambiguator. Never overwrite a feedback
 log from another run. Updating the current run's file in place is allowed.
-`.quality/logs/` (plural) is the feedback-log home and is distinct from the
-quality log's `.quality/log/` (singular), which setup still does not write.
+`.quality/logs/` is the flat workflow-log home and is distinct from the quality
+changelog's `.quality/changelog/`, which setup still does not write.
 
 The log records the *experience* of running setup, not model content. Do not
 restate `QUALITY.md` body material (Overview, Scope, Needs, Risks, Unknowns) or
@@ -700,6 +709,6 @@ an explicit user action.
 
 Setup creates or updates a useful first model; it does not invent a complete
 quality model without user/project context, run an evaluation, write the quality
-log under `.quality/log/`, create external issues, or configure automation. It
+log under `.quality/changelog/`, create external issues, or configure automation. It
 also writes and updates a workflow feedback log under `.quality/logs/` as
 described above.

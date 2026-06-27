@@ -31,7 +31,7 @@ The workflow's purpose is to turn a selected recommendation into one of two
 productive outcomes: a confirmed local apply or an issue-tracker handoff.
 
 Before recommendation inspection, history inspection, outcome selection, local
-apply, issue creation, quality-log writes, or any other tool-dependent follow-up
+apply, issue creation, quality changelog writes, or any other tool-dependent follow-up
 work, the workflow **MUST** emit a concise follow-up frame. The frame **MUST**
 name the recommendation or `resolving…`, the outcome if already requested or
 `resolving…`, mutation surfaces, expected artifacts, and next gate. It
@@ -56,7 +56,7 @@ solely to satisfy the prompt shape.
 
 The workflow **MUST NOT** present `defer`, `skip`, or `keep open` as formal
 follow-up options. If the user does not choose apply or handoff, the workflow
-**MUST** stop without mutating evaluated source, `QUALITY.md`, the quality log,
+**MUST** stop without mutating evaluated source, `QUALITY.md`, the quality changelog,
 or external systems.
 
 ## Apply now
@@ -72,7 +72,7 @@ recommendation option and mutation surface are selected, the brief **MUST** show
 `y`/`n` as the visible shortest answer path.
 
 The skill **MUST NOT** edit evaluated source files, edit `QUALITY.md`, or write
-the quality log until the user explicitly confirms the recommendation option and
+the quality changelog until the user explicitly confirms the recommendation option and
 mutation surface. It **MUST NOT** treat an obvious or recommended fix as consent.
 
 After applying a confirmed option, the skill **SHOULD** verify the done criterion
@@ -85,22 +85,21 @@ The result report **MUST** state the recommendation, outcome, applied option,
 changed artifacts, verification performed, rating movement when known, remaining
 gaps or limits, and next action. It **SHOULD** include `Not done` when the
 mutation or verification boundary matters, such as no evaluation rerun, no issue
-creation, no model change, or no quality-log entry. It **MUST** use the shared
+creation, no model change, or no quality changelog entry. It **MUST** use the shared
 agent-mediated UX contract: status first, with a primary outcome line and a clear
-next action when work remains. The block **MUST NOT** stack so many
-equally-weighted bold labels that the outcome is no longer the strongest element;
-it **SHOULD** keep strong emphasis to the few fields the user acts on and let the
-rest read as plain `label:` detail. If verification is incomplete, the result **MUST** be
-labeled limited rather than fully confirmed.
+next action when work remains. The block **MUST** use labeled fields for
+recommendation, applied option, changed artifacts, verification, rating movement,
+remaining gaps, not-done boundary, and next action. If verification is
+incomplete, the result **MUST** be labeled limited rather than fully confirmed.
 
 When a confirmed apply changes the QUALITY.md model, the skill **MUST** write one
-quality-log entry for the coherent model change, cross-linking the source
+quality changelog entry for the coherent model change, cross-linking the source
 evaluation run and recommendation when applicable. Evaluated-source fixes that do
-not change the model **MUST NOT** write the quality log.
+not change the model **MUST NOT** write the quality changelog.
 
 Before applying a model-changing recommendation, the skill **MUST** read the
 authoring entry guide, the routed authoring sub-guide for the model element being
-changed, and the quality-log authoring sub-guide.
+changed, and the quality changelog authoring sub-guide.
 
 ## Issue-tracker handoff
 
@@ -125,4 +124,4 @@ confirmed external creation, the skill **MUST** stop after producing issue-ready
 text.
 
 Issue-tracker handoff **MUST NOT** mutate evaluated source, `QUALITY.md`, or the
-quality log.
+quality changelog.

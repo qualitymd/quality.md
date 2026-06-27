@@ -13,4 +13,4 @@ model elements you will touch.
 - [Rating Scale](rating-scale.md) - Rating Levels, criteria, roll-up, vetoes, and `not assessed`.
 - [Agent Harnessability](agent-harnessability.md) - model-wide Agent Harnessability factor guidance.
 - [Agent harness area](agent-harness.md) - agent-harness constituent guidance.
-- [Quality log](quality-log.md) - meaningful model-change and quality-log judgment.
+- [Quality changelog](quality-changelog.md) - meaningful model-change and quality changelog judgment.

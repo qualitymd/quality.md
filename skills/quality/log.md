@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and workflow guidance for
+  0146 - Changelog Directory.
+  Runtime guidance now writes meaningful model-change history to the quality
+  changelog under `.quality/changelog/`, uses timestamped changelog entry names,
+  and keeps `.quality/logs/` as the flat workflow-log directory for feedback
+  logs and future process logs.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0144 - Pointed Review Gates.
   Direct model authoring checkpoints now state inferred purpose and ask users to
   react to the consequential assumption instead of defaulting to a generic
@@ -45,7 +52,7 @@
   Runtime guidance now routes direct existing `QUALITY.md` edit requests to
   direct model authoring, infers intent before asking follow-up, uses a
   conversational checkpoint that accepts `looks good` when the mutation is named,
-  and writes the quality log only for meaningful model changes.
+  and writes the quality changelog only for meaningful model changes.
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0137 - Run Report
@@ -57,7 +64,7 @@
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0134 - Model-relative
   workspace paths.
   Runtime workspace guidance now resolves config, `.quality/`, Evaluation
-  history, quality logs, and workflow feedback logs relative to the selected
+  history, quality changelogs, and workflow feedback logs relative to the selected
   `QUALITY.md`, with the Git root retained as the containment boundary.
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0136 - Candidate Actions

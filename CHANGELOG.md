@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### /quality Skill
 
+- The quality model-change history now lives under `.quality/changelog/` with
+  timestamped entry filenames such as
+  `2026-06-27T184233Z-adjust-rating-scale.md`. `.quality/logs/` remains the
+  flat home for workflow/process logs such as setup and evaluate feedback logs.
 - Direct `QUALITY.md` edit checkpoints now state the inferred purpose for the
   change and ask the user to react to the consequential scope or risk assumption
   instead of defaulting to a generic adjustment prompt.

@@ -50,7 +50,7 @@ recommended focus first and an explicit shortest answer path.
 ## Mutation surface and artifacts
 
 `review` is read-only by default. It **MUST NOT** edit evaluated source, edit
-`QUALITY.md`, write Evaluation records, write the quality log, create external
+`QUALITY.md`, write Evaluation records, write the quality changelog, create external
 issues, update tooling, or create workflow feedback logs.
 
 ## Required flow
@@ -80,4 +80,7 @@ model and available project context, then recommend one next action: scoped
 
 `review` is complete when it reports what was reviewed, the evidence limits, the
 recommended next action, concrete alternatives when useful, and the read-only
+boundary.
+The closeout **MUST** use labeled fields for reviewed subject, signal, evidence
+limits, recommended next action, alternatives when useful, and not-changed
 boundary.

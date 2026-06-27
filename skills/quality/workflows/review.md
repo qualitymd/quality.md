@@ -86,9 +86,16 @@ Close read-only
    action, and the read-only boundary:
 
    ```text
-   Not changed: no files, evaluation records, reports, tooling, quality log, or external issues.
+   **Review complete**
+
+   **Reviewed:** <evaluation result | QUALITY.md model | concern>
+   **Signal:** <main judgment or routing signal>
+   **Evidence limits:** <limits or none observed>
+   **Recommended next:** <one workflow/action>
+   **Alternatives:** <other concrete workflows/actions, when useful>
+   **Not changed:** no files, evaluation records, reports, tooling, quality changelog, or external issues.
    ```
 
 Review does not edit evaluated source, edit `QUALITY.md`, write evaluation
-records, write the quality log, create external issues, update tooling, or create
+records, write the quality changelog, create external issues, update tooling, or create
 workflow feedback logs.

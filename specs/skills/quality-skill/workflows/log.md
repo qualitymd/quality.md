@@ -2,6 +2,11 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated workflow specs for
+  [0146 - Changelog Directory](../../../../changes/archive/0146-changelog-directory.md).
+  Workflow mutation boundaries now name the quality changelog, and the shared
+  feedback-log contract keeps workflow logs flat under `.quality/logs/`.
+
 - **Addition**: Added the [`review`](review.md) and [`improve`](improve.md)
   workflow specs for
   [0143 - Public Review and Improve Workflows](../../../../changes/archive/0143-public-review-improve-workflows.md).
@@ -277,7 +282,7 @@
   Setup now analyzes repository context, asks compact discovery questions with
   confidence-labeled defaults, writes only `QUALITY.md`, validates with lint,
   inspects readiness with the Top 10 checklist, and offers next-step choices
-  without writing the quality log or configuring integrations.
+  without writing the quality changelog or configuring integrations.
 
 - **Mode removal**: Removed the `wizard` mode spec from this folder for
   [0062 - Remove wizard mode](../../../../changes/0062-remove-wizard-mode.md).

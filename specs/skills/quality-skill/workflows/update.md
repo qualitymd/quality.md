@@ -36,7 +36,7 @@ recommendation follow-up work.
 
 `update` may mutate installed tooling only after explicit confirmation. It
 **MUST NOT** edit evaluated source, edit `QUALITY.md`, write evaluation records,
-or write the quality log.
+or write the quality changelog.
 
 The skill **MUST NOT** edit installed skill files directly. Skill updates belong
 to the Agent Skills installer or package manager. The skill **MUST NOT** replace
@@ -69,7 +69,7 @@ The plan and confirmation brief **MUST** follow the shared agent-mediated UX
 contract: status first, visually emphasized primary call to action, scannable
 labels for versions/actions/evidence, and adjacent verification criteria. The
 brief **MUST** name what will not change when that boundary matters, such as
-`QUALITY.md`, evaluated source, evaluation records, and the quality log.
+`QUALITY.md`, evaluated source, evaluation records, and the quality changelog.
 Because applying an update plan is a true binary tooling mutation gate, the
 text-fallback brief **MUST** show `y`/`n` as the visible shortest answer path.
 Where the harness will itself prompt to authorize the owner command, `update`
@@ -98,3 +98,6 @@ path rather than guessing or directly replacing binaries.
 `update` is complete when it reports the inspected versions, planned or applied
 actions, confirmation status, verification result, any remaining restart, reload,
 or manual remediation step, and the recommended next action.
+The closeout **MUST** use labeled fields for inspected versions, applied actions,
+verification, restart or reload expectation, not-changed boundary, and next
+action.

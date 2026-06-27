@@ -111,6 +111,8 @@ valid and useful enough: continue iterating on `QUALITY.md`, run
 `/quality evaluate`, or stop. It should direct users to continue authoring when
 model usefulness is not yet sufficient and to `/quality update` when tooling is
 stale.
+The next-workflow guidance **MUST** use a labeled recommendation, numbered
+options, and an explicit `Answer` line.
 
 ### Relationship to Authoring Guide
 

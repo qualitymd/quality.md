@@ -38,13 +38,13 @@ options.
 
 The guide **MUST** require a first-output recommendation follow-up frame before
 recommendation inspection, history inspection, outcome selection, local apply,
-issue creation, quality-log writes, or any other tool-dependent follow-up work.
+issue creation, quality changelog writes, or any other tool-dependent follow-up work.
 The frame **MUST** name the recommendation or `resolving…`, outcome or
 `resolving…`, mutation surfaces, expected artifacts, and next gate without
 implying a new public `/quality` invocation.
 
 The guide **MUST** require explicit confirmation before editing evaluated
-source, editing `QUALITY.md`, writing the quality log, or creating an external
+source, editing `QUALITY.md`, writing the quality changelog, or creating an external
 issue.
 
 The guide **MUST** require apply and issue-creation decisions to follow the
@@ -56,13 +56,13 @@ what will not change when the mutation boundary matters.
 
 The guide **MUST** require recommendation result closeouts to include `Next` and
 **SHOULD** require `Not done` when a non-action boundary matters, such as no
-evaluation rerun, no issue creation, no model change, or no quality-log entry.
-The closeout **MUST** lead with a primary outcome line and **MUST NOT** stack so
-many equally-weighted bold labels that the outcome is no longer the strongest
-element.
+evaluation rerun, no issue creation, no model change, or no quality changelog entry.
+The closeout **MUST** lead with a primary outcome line and use labeled fields for
+recommendation, applied option, changed artifacts, verification, rating movement,
+remaining gaps, not-done boundary, and next action.
 
 The guide **MUST** state that issue-tracker handoff alone does not edit
-evaluated source, `QUALITY.md`, or `.quality/log/`.
+evaluated source, `QUALITY.md`, or `.quality/changelog/`.
 
 The guide **MUST** name the issue-ready content fields needed for handoff:
 recommendation identity, source run, affected model target, current rating when

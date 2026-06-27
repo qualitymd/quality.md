@@ -54,7 +54,7 @@ The entry guide **MUST** route authoring concerns to these child runtime guides:
 - `authoring/agent-harnessability.md` - Agent Harnessability as a model-wide
   factor.
 - `authoring/agent-harness.md` - the agent harness as a modeled Area/constituent.
-- `authoring/quality-log.md` - meaningful model-change judgment and quality-log
+- `authoring/quality-changelog.md` - meaningful model-change judgment and quality-changelog
   routing.
 
 The entry guide **MUST NOT** retain the full long-form doctrine for each concern
@@ -64,7 +64,7 @@ For direct `QUALITY.md` edit requests, the entry guide **MUST** tell agents to
 infer the intended change from the request and current model before asking
 follow-up, and to preserve the user's intent, model or body target, rationale,
 inferred purpose, planned change, value prop, expected judgment effect,
-unresolved unknowns, and quality-log routing. It **SHOULD** tell agents to ask
+unresolved unknowns, and quality changelog routing. It **SHOULD** tell agents to ask
 follow-up only when those considerations would materially change the edit. It
 **MUST** tell agents to state why the change appears needed, state the intended
 edit in simple planned-change prose, name the value prop, and ask the user to
@@ -84,7 +84,7 @@ The guide family **MUST** preserve existing authoring doctrine unless a Change C
 explicitly changes it. Moving doctrine from the former monolithic guide to a child
 guide **MUST NOT** weaken domain agnosticism, model-by-default constituents,
 Agent Harnessability, agent-harness area modeling, projection boundaries,
-assessable requirements, or quality-log judgment.
+assessable requirements, or quality changelog judgment.
 
 ## Reading contract
 

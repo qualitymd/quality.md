@@ -1,17 +1,17 @@
 ---
 type: Runtime Guide
-title: Authoring Quality-Log Changes
-description: Guidance for deciding when QUALITY.md model changes require quality-log entries.
+title: Authoring Quality Changelog Changes
+description: Guidance for deciding when QUALITY.md model changes require quality changelog entries.
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Quality-Log Changes
+# Authoring Quality Changelog Changes
 
 Read this when:
 
 - changing what a QUALITY.md model is or how it judges;
 - applying a recommendation that changes QUALITY.md;
-- deciding whether a quality-log entry is meaningful.
+- deciding whether a quality changelog entry is meaningful.
 
 Depends on:
 
@@ -26,7 +26,7 @@ the model no longer represents what quality means for the root area. The
 `quality-md` area is evaluated and rolled up like any other in-scope area; the
 distinct follow-up behavior is mutation history, not evaluation semantics. When a
 confirmed change meaningfully alters the model, record why it changed in the
-quality log.
+quality changelog.
 
 - **Do** revise when a discovery changes the context or content of the
   evaluation — a new factor that matters, a requirement whose assessment changed,
@@ -59,7 +59,7 @@ quality log.
 ### Logging a model change
 
 When a confirmed recommendation follow-up or direct model-authoring edit actually
-changes the model, record it in the **quality log**. Its format contract lives in
+changes the model, record it in the **quality changelog**. Its format contract lives in
 [`SKILL.md`](../../SKILL.md); this guide covers what counts as meaningful:
 
 - **Do** log a change that alters what the model *is* or *how it judges*: adding,

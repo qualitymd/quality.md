@@ -106,6 +106,10 @@ quotations.
 Routes should use skill workflow language such as setup, getting-started,
 review, improve, evaluate, history, or update.
 
+The summary judgment **MUST** use labeled fields for lifecycle state,
+model-usefulness findings, recommended next workflow, alternatives when useful,
+and not-assessed boundary.
+
 The checklist **MUST** treat the authoring guide as the quality reference for
 what good authoring looks like. It should route skeleton or placeholder models to
 getting-started for first-run process, and route populated models with

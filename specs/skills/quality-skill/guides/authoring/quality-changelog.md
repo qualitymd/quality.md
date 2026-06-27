@@ -1,15 +1,15 @@
 ---
 type: Functional Specification
-title: QUALITY.md quality-log authoring guide
-description: Contract for meaningful model-change and quality-log authoring guidance.
+title: QUALITY.md quality changelog authoring guide
+description: Contract for meaningful model-change and quality changelog authoring guidance.
 tags: [skill, quality, guide, authoring]
 timestamp: 2026-06-24T00:00:00Z
 ---
 
-# QUALITY.md quality-log authoring guide
+# QUALITY.md quality changelog authoring guide
 
 This spec governs the runtime
-[`skills/quality/guides/authoring/quality-log.md`](../../../../../skills/quality/guides/authoring/quality-log.md)
+[`skills/quality/guides/authoring/quality-changelog.md`](../../../../../skills/quality/guides/authoring/quality-changelog.md)
 guide.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -23,9 +23,9 @@ quality, body/frontmatter synchronization, defect-backlog boundaries,
 recalibration vs drift correction, criteria gaming, missing Requirements surfaced
 by findings, and whether the Requirement set still delivers the body's Needs.
 
-The guide **MUST** define what counts as a meaningful quality-log entry while
-leaving the quality-log format contract in `SKILL.md`. It **MUST** cover
+The guide **MUST** define what counts as a meaningful quality changelog entry while
+leaving the quality-changelog format contract in `SKILL.md`. It **MUST** cover
 confirmed direct model-authoring edits as a write source when they meaningfully
 alter what the model is or how it judges, and **MUST** preserve the boundary that
 wording-only, typo, formatting, or non-judgment-changing body edits do not write
-the quality log.
+the quality changelog.

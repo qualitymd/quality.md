@@ -23,8 +23,8 @@ Resolve focus
 - unclear? infer from lifecycle state, then ask a single-select focus question
 
 Resolve mutation surface
-- model focus? QUALITY.md + quality log when meaningful
-- recommendation focus? evaluated source | QUALITY.md | quality log | external issue
+- model focus? QUALITY.md + quality changelog when meaningful
+- recommendation focus? evaluated source | QUALITY.md | quality changelog | external issue
 - evaluation focus without recommendation? likely read-only until a finding/action is selected
 - concern focus? evaluated source | QUALITY.md | external issue | none yet
 
@@ -78,8 +78,8 @@ Confirm before mutation
    ```
 
 5. Identify the likely mutation surface before acting:
-   - `model`: `QUALITY.md`, and the quality log for meaningful model changes;
-   - `recommendation`: evaluated source, `QUALITY.md`, quality log, or external
+   - `model`: `QUALITY.md`, and the quality changelog for meaningful model changes;
+   - `recommendation`: evaluated source, `QUALITY.md`, quality changelog, or external
      issue, resolved by the recommendation-follow-up guide;
    - `evaluation`: read-only until a finding, candidate action, model gap, or
      work target is selected;
@@ -104,7 +104,18 @@ Confirm before mutation
 11. Close status-first with changed artifacts, verification performed, remaining
     limits, and what was not changed. If the workflow stops at the stub boundary,
     say which deeper improve behavior is deferred and offer the nearest runnable
-    next workflow.
+    next workflow. Use this shape:
+
+    ```text
+    **Improve status**
+
+    **Focus:** <model | recommendation | evaluation | concern>
+    **Changed:** <artifacts changed, or none>
+    **Verification:** <checks run, or not run>
+    **Remaining limits:** <limits or deferred behavior>
+    **Not changed:** <boundaries that matter>
+    **Next:** <nearest runnable workflow/action>
+    ```
 
 Improve never creates numbered evaluation records itself. If verification needs
 a fresh rating, route to `evaluate` for the affected scope.

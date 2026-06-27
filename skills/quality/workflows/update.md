@@ -120,7 +120,18 @@ Verify
     new session before the updated skill is active.
 12. Report the update closeout status-first: inspected versions, planned or
     applied actions, confirmation status, verification result, remaining restart
-    or manual remediation step, and the recommended next action.
+    or manual remediation step, and the recommended next action. Use this shape:
+
+    ```text
+    **Update complete**
+
+    **Inspected:** <skill version/range and CLI version>
+    **Applied:** <skill action | CLI action | none>
+    **Verification:** <compatibility check result>
+    **Restart/reload:** <needed | not needed | unknown>
+    **Not changed:** no QUALITY.md edits, no evaluation records, no reports, no quality changelog
+    **Next:** <recommended next action>
+    ```
 
 `update` does not create or edit `QUALITY.md`, create evaluation records, build
 reports, rate the evaluated source, or apply quality recommendations.

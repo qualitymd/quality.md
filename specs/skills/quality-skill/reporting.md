@@ -115,6 +115,9 @@ The agent's user-facing evaluation closeout is governed by the shared
 The closeout **MUST** state the rating, scope, evidence basis, known limits or
 incomplete inputs, changed artifacts, what was not done, and the recommended
 next action.
+The closeout **MUST** use labeled fields for rating, scope, evidence basis,
+known limitations, changed artifacts, not-done boundary, reports, and next
+action.
 
 The closeout **MUST** distinguish evaluated-source quality from model weakness,
 missing evidence, unknowns, and evaluation limits.

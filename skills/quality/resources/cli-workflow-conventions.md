@@ -43,10 +43,11 @@ repository root found from that model.
 
 Other `.quality/` workspace artifacts:
 
-- `.quality/log/` - the quality log, singular. Written only for confirmed,
+- `.quality/changelog/` - the quality changelog. Written only for confirmed,
   meaningful model changes.
-- `.quality/logs/` - workflow feedback logs, plural. Setup and evaluate create
-  current-run feedback logs here.
+- `.quality/logs/` - flat workflow and process logs. Setup and evaluate create
+  current-run feedback logs here; future log kinds should use clear filenames,
+  not subfolders.
 
 Feedback logs are skill-written conventions created on demand. Setup creates and
 updates its current-run feedback log after the setup preview when the run

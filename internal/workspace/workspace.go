@@ -17,7 +17,7 @@ const (
 	DefaultConfigPath      = ".quality/config.yaml"
 	DefaultDataDir         = ".quality"
 	DefaultEvaluationDir   = ".quality/evaluations"
-	DefaultQualityLogDir   = ".quality/log"
+	DefaultQualityLogDir   = ".quality/changelog"
 	DefaultFeedbackLogDir  = ".quality/logs"
 	FrontmatterConfigField = "config"
 )

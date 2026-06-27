@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated durable authoring and recommendation-follow-up guide
+  specs for
+  [0146 - Changelog Directory](../../../../changes/archive/0146-changelog-directory.md).
+  Guide specs now use quality changelog terminology and the renamed
+  `quality-changelog.md` authoring guide path.
+
 - **Revision**: Updated the durable
   [authoring guide family](authoring.md) for
   [0144 - Pointed Review Gates](../../../../changes/archive/0144-pointed-review-gates.md).
@@ -38,11 +44,11 @@
 
 - **Revision**: Updated the durable
   [authoring guide family](authoring.md) and
-  [quality-log authoring guide](authoring/quality-log.md) specs for
+  [quality changelog authoring guide](authoring/quality-changelog.md) specs for
   [0138 - Lightweight Authoring Checkpoint](../../../../changes/archive/0138-lightweight-authoring-checkpoint.md).
   Direct `QUALITY.md` edits now preserve user intent, target, rationale,
-  judgment effect, unresolved unknowns, and quality-log routing, while meaningful
-  confirmed direct model-authoring changes are an explicit quality-log source.
+  judgment effect, unresolved unknowns, and quality changelog routing, while meaningful
+  confirmed direct model-authoring changes are an explicit quality changelog source.
 
 ## 2026-06-26
 
@@ -51,7 +57,7 @@
   [0128 - Agent-mediated skill alignment](../../../../changes/archive/0128-agent-mediated-skill-alignment.md).
   Recommendation follow-up now requires a first-output follow-up frame before
   recommendation inspection, outcome selection, local apply, issue creation, or
-  quality-log writes.
+  quality changelog writes.
 
 - **Revision**: Updated the
   [recommendation follow-up guide contract](recommendation-follow-up-md.md) for
@@ -125,7 +131,7 @@
   The durable spec tree now mirrors the runtime authoring sub-guide tree, with
   separate review surfaces for body authoring, model structure, factors,
   requirements, rating scale, Agent Harnessability, agent-harness Area modeling,
-  and quality-log judgment.
+  and quality changelog judgment.
 
 - **Revision**: Updated the [authoring guide contract](authoring-md.md) and the
   [Top 10 checks contract](top-10-quality-md-checks-md.md) for

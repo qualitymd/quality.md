@@ -53,7 +53,7 @@ recommended focus first and an explicit shortest answer path.
 ## Mutation surface and artifacts
 
 `improve` starts read-only. It **MUST** confirm both focus and mutation surface
-before editing evaluated source, editing `QUALITY.md`, writing the quality log,
+before editing evaluated source, editing `QUALITY.md`, writing the quality changelog,
 creating an external issue, or updating tooling.
 
 `improve` **MUST NOT** create numbered Evaluation records or reports itself. If
@@ -73,7 +73,7 @@ before acting:
 - model focus maps to `QUALITY.md` and, for meaningful model changes, the quality
   log;
 - recommendation focus maps through recommendation follow-up to evaluated source,
-  `QUALITY.md`, quality log, or external issue;
+  `QUALITY.md`, quality changelog, or external issue;
 - Evaluation-result focus remains read-only until a finding, candidate action,
   model gap, or work target is selected; and
 - concern focus maps to evaluated source, `QUALITY.md`, external issue, or no
@@ -102,3 +102,5 @@ Evaluation.
 changed artifacts when any, verification performed, remaining limits, and what
 was not changed. If it stops at the stub boundary, it must name which deeper
 improve behavior is deferred and offer the nearest runnable next workflow.
+The closeout **MUST** use labeled fields for focus, changed artifacts,
+verification, remaining limits, not-changed boundary, and next action.

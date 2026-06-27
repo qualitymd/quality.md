@@ -624,3 +624,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0144 — Pointed Review Gates](0144-pointed-review-gates.md) - makes review
   gates state inferred purpose and ask for reaction to the consequential
   assumption instead of defaulting to a generic adjustment prompt (`Done`).
+- [0146 — Changelog Directory](0146-changelog-directory.md) - renames the
+  model-change history directory to `.quality/changelog/` with timestamped entry
+  files and keeps `.quality/logs/` as a flat workflow-log directory (`Done`).

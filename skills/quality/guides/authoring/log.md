@@ -2,9 +2,14 @@
 
 ## 2026-06-27
 
-- **Revision**: Updated [Authoring Quality-Log Changes](quality-log.md) for
+- **Revision**: Renamed [Authoring Quality Changelog Changes](quality-changelog.md)
+  for 0146 - Changelog Directory.
+  The authoring guide now uses quality changelog terminology and links from the
+  renamed `quality-changelog.md` path.
+
+- **Revision**: Updated [Authoring Quality-Log Changes](quality-changelog.md) for
   0138 - Lightweight Authoring Checkpoint.
-  The guide now names confirmed direct model-authoring edits as quality-log
+  The guide now names confirmed direct model-authoring edits as quality-changelog
   sources when they meaningfully alter what the model is or how it judges.
 
 ## 2026-06-26

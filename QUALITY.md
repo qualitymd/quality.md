@@ -81,9 +81,9 @@ factors:
           quality-workflows-preserve-useful-state-in-durable-local-artifacts:
             title: quality workflows preserve useful state in durable local artifacts
             assessment: >
-              Inspect .quality/evaluations/, .quality/log/, .quality/logs/,
+              Inspect .quality/evaluations/, .quality/changelog/, .quality/logs/,
               specs/skills/quality-skill/, and skills/quality/workflows/ to
-              confirm evaluation records, quality-log entries, and workflow
+              confirm evaluation records, quality changelog entries, and workflow
               feedback logs capture decisions, progress, verification, and
               remaining gaps without depending on chat history.
       self-verifiability:
@@ -526,7 +526,7 @@ areas:
   evaluation-history:
     title: Evaluation History
     description: >
-      Local evaluation runs, reports, recommendations, and quality-log entries
+      Local evaluation runs, reports, recommendations, and quality changelog entries
       that preserve what the project has learned from prior quality work.
     source: ./.quality
     factors:
@@ -538,7 +538,7 @@ areas:
       traceability:
         title: Traceability
         description: >
-          Records, reports, recommendations, quality-log entries, and feedback
+          Records, reports, recommendations, quality changelog entries, and feedback
           logs preserve the links between findings, model changes, workflow
           experience, and follow-up decisions.
     requirements:
@@ -548,8 +548,8 @@ areas:
           - reportability
           - traceability
         assessment: >
-          Inspect .quality/evaluations/, .quality/log/, .quality/logs/, and
-          specs/skills/quality-skill/ to confirm evaluation records, quality-log
+          Inspect .quality/evaluations/, .quality/changelog/, .quality/logs/, and
+          specs/skills/quality-skill/ to confirm evaluation records, quality-changelog
           entries, and workflow feedback logs are stored separately, preserve
           their intended purpose, avoid secret values, and can be interpreted
           without treating stale or malformed history as evaluated-source quality.

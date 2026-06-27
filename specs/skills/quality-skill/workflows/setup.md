@@ -44,7 +44,7 @@ directory on demand (see the shared
 [Setup feedback log](setup/feedback-log.md)).
 
 `setup` **MUST NOT** run evaluation, create evaluation artifacts, write the
-quality log under `.quality/log/`, create external issues, configure issue
+quality changelog under `.quality/changelog/`, create external issues, configure issue
 trackers, create CI or release workflows, create scheduled automations, configure
 Codex automations, or configure Claude Code routines.
 
@@ -52,8 +52,9 @@ Codex automations, or configure Claude Code routines.
 > It is kept narrow — the current run's `.quality/logs/` feedback file only —
 > and every other prohibition above stays in force, so the feedback artifact
 > cannot become a back door for the writes setup still forbids. The
-> `.quality/logs/` directory (plural) is distinct from the quality log's
-> `.quality/log/` (singular), which setup still must not write. — 0066, 0068
+> `.quality/logs/` directory is the flat workflow-log home and is distinct from
+> the quality changelog's `.quality/changelog/`, which setup still must not
+> write. — 0066, 0068, 0145
 
 ## Workflow structure
 
@@ -106,6 +107,9 @@ short phase roadmap of what setup will do — read-only scan, calibration
 questions, review, write, verify — so the read-only scan that follows reads as an
 expected step rather than a hang. The opening **SHOULD** include a brief cue that
 the read-only scan may take a moment on a large repository.
+The opening **MUST** keep the run frame visually separate from labeled `Why`,
+`Plan`, and `Boundary` blocks so the value proposition, phase roadmap, and
+review-before-model-change boundary are scannable.
 
 Setup **MUST** emit the run frame as part of this first-output block, alongside
 the opening and before any tool call. Run-frame emission **MUST NOT** be gated on
@@ -483,6 +487,10 @@ primary action has this meaning:
 ```text
 Reply `looks good` to write `QUALITY.md`, or send corrections.
 ```
+
+The final review recap **MUST** use labeled fields for root, domain, lifecycle,
+risk, rating scale, human context, and open gaps before the write decision brief,
+so the user can scan the reviewed setup answers before approving the write.
 
 When setup presents a separate fallback decision brief for updating an existing
 `QUALITY.md` after the review gate and that brief is a true binary update-or-stop

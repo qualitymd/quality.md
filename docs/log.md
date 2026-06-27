@@ -2,6 +2,12 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated README copies and the dogfood model for
+  [0146 - Changelog Directory](../changes/archive/0146-changelog-directory.md).
+  User-facing guidance now names model-change history as the quality changelog
+  under `.quality/changelog/`, while `.quality/logs/` remains the flat workflow
+  log directory.
+
 - **Revision**: Updated
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) and
   [Working with change cases](guides/work-with-change-cases.md) for

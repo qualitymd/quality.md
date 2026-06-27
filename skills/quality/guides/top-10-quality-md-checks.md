@@ -277,3 +277,15 @@ For model usefulness, list only findings that affect routing or the quality of a
 future evaluation. Do not collapse those findings into a maturity or
 evaluation-readiness label. Use the finding routes to recommend one next workflow
 and list a few concrete alternatives.
+
+Use this shape:
+
+```text
+**Model review signal**
+
+**Lifecycle:** <missing | invalid | ready to evaluate | has evaluation history | needs reconciliation>
+**Model-usefulness findings:** <routing-relevant findings, or none observed>
+**Recommended next:** <one workflow/action>
+**Alternatives:** <other concrete workflows/actions, when useful>
+**Not assessed:** root area source quality; full evaluation evidence; report bodies
+```

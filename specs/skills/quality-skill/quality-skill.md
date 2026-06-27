@@ -270,6 +270,10 @@ and the response path **MUST** stay distinguishable from supporting context by
 position. Supporting labels such as `Recommended`, `Why it matters`,
 `Confidence`, `Changed`, `Validation`, `Important gaps`, and `Next` **SHOULD** be
 bold when rendered in Markdown to reinforce that layout, not to create it.
+When output contains multiple independent facts, the skill **MUST** use labeled
+blocks, bullets, or numbered lists rather than dense paragraphs. The result,
+importance, boundary, and next action **SHOULD** be visible in a five-second
+scan.
 
 When a user must answer, choose, approve, correct, or act, the interaction block
 **MUST** make the shortest acceptable response explicit with an `Answer` line or
@@ -354,7 +358,7 @@ the header, not in a `Mode:` field.
 
 The run frame **MUST** distinguish read-only work from mutating work. For a
 mutating workflow, it **MUST** name the class of thing that may be changed:
-evaluated source, `QUALITY.md`, evaluation artifacts, the quality log, a
+evaluated source, `QUALITY.md`, evaluation artifacts, the quality changelog, a
 [workflow feedback log](#workflow-feedback-log), installed tooling, or some
 combination of those.
 
@@ -376,8 +380,8 @@ combination of those.
 
 Recommendation follow-up is not a public `/quality` workflow, but it is a
 user-visible follow-up path that can mutate evaluated source, `QUALITY.md`, the
-quality log, or an external issue tracker. Before recommendation inspection,
-history inspection, outcome selection, local apply, issue creation, quality-log
+quality changelog, or an external issue tracker. Before recommendation inspection,
+history inspection, outcome selection, local apply, issue creation, quality-changelog
 writes, or any other tool-dependent follow-up work, the skill **MUST** emit a
 concise follow-up frame naming the recommendation or `resolving…`, outcome or
 `resolving…`, mutation surfaces, expected artifacts, and next gate. The frame
@@ -526,7 +530,7 @@ values, or unqualified references in evaluation record payloads.
 Workflow-specific routing, mutation surfaces, required artifacts, stop
 conditions, and completion criteria live in behavioral component specs under
 [`workflows/`](workflows/index.md). The parent spec keeps the shared invocation,
-interaction, safety, CLI ownership, evaluation, reporting, and quality-log
+interaction, safety, CLI ownership, evaluation, reporting, and quality-changelog
 contracts that every workflow composes.
 
 ### Read-only orientation
@@ -543,7 +547,7 @@ Orientation output **MUST** be status-first and **MUST** include the model file 
 target inspected, observed lifecycle or model state, evidence limits when
 relevant, one recommended next action, and concrete alternatives when useful. It
 **MUST** explicitly preserve the read-only boundary: no file edits, evaluation
-records, generated reports, tooling updates, quality-log entries, or external
+records, generated reports, tooling updates, quality changelog entries, or external
 issues.
 
 The skill **MUST NOT** advertise `status`, `next`, or `wizard` as public
@@ -558,7 +562,7 @@ direct edit request or model-focused `improve` request. It is an implementation
 route, not a separate public workflow name. For `/quality improve` model focus,
 the skill emits the improve run frame before delegating to direct model
 authoring. Direct model authoring may mutate `QUALITY.md` and, for meaningful
-model changes, the quality log.
+model changes, the quality changelog.
 
 When a request likely resolves to direct model authoring and the model or guide
 read will take meaningful work, the skill **MUST** acknowledge the request before
@@ -574,7 +578,7 @@ elements it will create, review, mutate, or remove.
 
 The skill **SHOULD** ask follow-up only when missing or ambiguous information
 would materially change the model/body target, mutation surface, judgment effect,
-quality-log decision, or safety boundary. It **MUST NOT** use a fixed full
+quality changelog decision, or safety boundary. It **MUST NOT** use a fixed full
 questionnaire for routine direct edits. Common material follow-up triggers
 include choosing between body-only context and a structured model change,
 unclear Area/Factor/Requirement or Rating Level targets, and edits to Rating
@@ -583,16 +587,18 @@ Scale criteria, weights, required margin, scope, or apex.
 Before mutating `QUALITY.md` through direct model authoring, the skill **MUST**
 present a lightweight intent checkpoint that states the inferred intent, the
 inferred purpose or reason the change appears needed, the planned change, the
-value prop, important boundaries, and whether a quality-log entry is expected.
-The planned change **SHOULD** be phrased in simple conversational prose,
-preferably with a `so that` value-prop clause when it fits. The skill
-**SHOULD** use numbered planned-action lists only when a multi-part edit would be
-hard to scan in prose. The checkpoint **MUST** ask the user to react to the most
-consequential inferred scope, risk, naming, or boundary assumption when such an
-assumption is visible. It **SHOULD NOT** end with only a generic adjustment
-prompt when a narrower steering axis would better expose the assumption most
-likely to change the edit. The checkpoint **MUST** make a short approval path
-explicit. When the checkpoint clearly names the mutation,
+value prop, important boundaries, and whether a quality changelog entry is expected.
+The checkpoint **MUST** use labeled fields for planned edit, why, approach,
+boundary, log or quality changelog decision when relevant, and answer path. The
+planned change **SHOULD** be phrased in simple conversational prose, preferably
+with a `so that` value-prop clause when it fits. The skill **SHOULD** use
+numbered planned-action lists only when a multi-part edit would be hard to scan
+in prose. The checkpoint **MUST** ask the user to react to the most consequential
+inferred scope, risk, naming, or boundary assumption when such an assumption is
+visible. It **SHOULD NOT** end with only a generic adjustment prompt when a
+narrower steering axis would better expose the assumption most likely to change
+the edit. The checkpoint **MUST** make a short approval path explicit. When the
+checkpoint clearly names the mutation,
 `looks good` or an equivalent clear approval **MUST** count as explicit
 confirmation to proceed. After presenting the checkpoint, the skill **MUST** stop
 and wait for the user's response before mutating. It **MUST NOT** ask what the
@@ -609,8 +615,8 @@ intent may remove follow-up questions, but it does not remove the user's chance
 to review the intended edit before mutation.
 
 When a confirmed direct model-authoring edit meaningfully alters what the model
-is or how it judges, the skill **MUST** write one quality-log entry for the
-coherent change. It **MUST NOT** write a quality-log entry for wording-only,
+is or how it judges, the skill **MUST** write one quality changelog entry for the
+coherent change. It **MUST NOT** write a quality changelog entry for wording-only,
 typo, formatting, or body-only clarification edits that do not alter model
 judgment.
 
@@ -622,7 +628,7 @@ and confidence-labeled defaults. It verifies CLI compatibility, inspects
 available repository context for setup signals, delegates deterministic
 scaffolding and validation to `qualitymd`, writes only the selected
 `QUALITY.md`, reports important model gaps, and recommends one immediate next
-step. It does not evaluate source, write the quality log, create external issues,
+step. It does not evaluate source, write the quality changelog, create external issues,
 configure integrations, or configure automation.
 
 ### Evaluate
@@ -639,7 +645,7 @@ does not generate recommendations in Evaluation v0.
 model, or a specific quality concern. It is read-only by default, emits a run
 frame with focus, confirms or asks for focus before deeper review, and recommends
 one next action without editing files, writing Evaluation records, writing the
-quality log, creating issues, or updating tooling.
+quality changelog, creating issues, or updating tooling.
 
 ### Improve
 
@@ -654,7 +660,7 @@ recommendation follow-up. It does not create numbered Evaluation records itself.
 implementation route used by `improve` when compatible recommendation artifacts
 exist. It offers apply-now and issue-tracker handoff outcomes, requires explicit
 confirmation before local mutation or external issue creation, and writes the
-quality log only for meaningful confirmed model changes.
+quality changelog only for meaningful confirmed model changes.
 
 ### Update
 
@@ -741,11 +747,11 @@ The reporting and run-artifact contract lives in
 folders, `model-snapshot.md`, structured `data/`, generated report forms,
 closeout behavior, and reportability expectations.
 
-## Quality Log
+## Quality Changelog
 
-The convention-first quality log contract lives in
-[/quality quality log](quality-log.md). That component spec owns dated
-`.quality/log/` entries, meaningful-change criteria, write/reconcile
+The convention-first quality changelog contract lives in
+[/quality quality changelog](quality-changelog.md). That component spec owns dated
+`.quality/changelog/` entries, meaningful-change criteria, write/reconcile
 responsibilities, and the deferred CLI surface.
 
 ## Workflow feedback log
@@ -757,8 +763,9 @@ can be improved from real runs. The shared artifact contract lives in
 [workflow feedback log](workflow-feedback-log.md): logs are written under
 `.quality/logs/` as `<timestamp>-<workflow>-feedback-log.md`, are updated in
 place only for the current run, stay non-authoritative for model/evaluation
-judgment, are recorded locally, are never automatically transmitted, and must not
-contain secrets or raw prompt-injection text.
+judgment, are recorded locally, are never automatically transmitted, must not
+contain secrets or raw prompt-injection text, and remain flat rather than nested
+under log-kind subdirectories.
 
 `setup` and `evaluate` are current adopters. Setup creates, updates, and
 finalizes `.quality/logs/<timestamp>-setup-feedback-log.md` after setup preview
@@ -789,9 +796,11 @@ recommendation state. Historical evaluation runs may still contain
   the done criterion and re-evaluate the affected scope when rating-bound. How
   that change is staged, isolated, or reviewed before it lands is left for
   later.
-- **Quality log CLI surface.** The [quality log](quality-log.md#quality-log) is
-  convention-first: the skill writes date-named entries directly. A
-  `qualitymd log` command (so numbering and an index can be CLI-owned), a
-  `.quality/config.yaml` `logDir` key parallel to `evaluationDir`, a standalone
-  artifact-spec, and a machine-queryable index file inside `.quality/log/` all
-  wait for the convention to prove out before the surface graduates to the CLI.
+- **Quality changelog CLI surface.** The
+  [quality changelog](quality-changelog.md#quality-changelog) is
+  convention-first: the skill writes timestamp-named entries directly. A
+  `qualitymd changelog` command (so indexing can be CLI-owned), a
+  `.quality/config.yaml` `changelogDir` key parallel to `evaluationDir`, a
+  standalone artifact-spec, and a machine-queryable index file inside
+  `.quality/changelog/` all wait for the convention to prove out before the
+  surface graduates to the CLI.

@@ -3,6 +3,12 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0146 - Changelog Directory](../changes/archive/0146-changelog-directory.md).
+  The `/quality` skill specs now name the model-change history as the quality
+  changelog under `.quality/changelog/`, require timestamped changelog entry
+  filenames, and keep `.quality/logs/` as a flat workflow-log directory.
+
+- **Revision**: Implemented durable spec changes for
   [0144 - Pointed Review Gates](../changes/archive/0144-pointed-review-gates.md).
   The `/quality` skill specs now require direct model-authoring checkpoints to
   state inferred purpose and ask the user to react to the consequential

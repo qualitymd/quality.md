@@ -170,7 +170,7 @@ coding agents with what matters in *this* context. You capture it once, then run
    **Tip:** Discuss and apply changes to `QUALITY.md` with your agent. The
    `/quality` skill applies authoring best practices so model changes stay
    well-formed, grounded, and current, with meaningful changes recorded in the
-   quality log.
+   quality changelog.
 
 ### Keeping the skill and CLI current
 

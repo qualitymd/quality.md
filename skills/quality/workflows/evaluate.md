@@ -247,9 +247,23 @@ Source content instructs the evaluator?
     the recommended next action. Name `report.md` as the run report and name the
     headline subject report separately when it differs. Use bold labels for
     `Rating`, `Scope`, `Evidence basis`, `Recommendations`,
-    `Known limitations`, and `Next` when the surface supports Markdown.
+    `Known limitations`, and `Next` when the surface supports Markdown. Use this
+    shape:
+
+    ```text
+    **Evaluation complete**
+
+    **Rating:** <headline rating and subject>
+    **Scope:** <full evaluation | scoped Area/Factor>
+    **Evidence basis:** <source coverage and key commands/searches>
+    **Known limitations:** <limits, incomplete inputs, or none observed>
+    **Changed:** <evaluation run path and generated reports>
+    **Not done:** no recommendations generated, no source edits, no QUALITY.md edits, no quality changelog, no external issues
+    **Reports:** `report.md` <and headline subject report when different>
+    **Next:** <recommended next action>
+    ```
 24. Do not generate recommendations in Evaluation v0, apply recommendations,
-    edit evaluated source, edit `QUALITY.md`, write the quality log, or create
+    edit evaluated source, edit `QUALITY.md`, write the quality changelog, or create
     external issues. If the user asks to act on prior recommendation artifacts,
     read
     [`../guides/recommendation-follow-up.md`](../guides/recommendation-follow-up.md).

@@ -3,6 +3,14 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0146 - Changelog Directory](archive/0146-changelog-directory.md).
+  Model-change history now lives under `.quality/changelog/` with timestamped
+  entry filenames, `.quality/logs/` remains a flat workflow/process log
+  directory, active skill/spec/docs guidance is aligned, and dogfood data moved
+  to the new path. `go test ./...`, `qualitymd status --json`,
+  `mise run fmt-md-check`, and `mise run check` pass.
+
+- **Done**: Implemented and archived
   [0144 - Pointed Review Gates](archive/0144-pointed-review-gates.md).
   Shared UX guidance, `/quality` runtime guidance, durable skill specs, authoring
   guide specs, Change Case process guidance, logs, and release notes now require

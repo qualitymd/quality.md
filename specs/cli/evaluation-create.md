@@ -33,7 +33,7 @@ The command **MUST** resolve a QUALITY.md workspace from the selected model file
 The workspace includes the selected model path, the workspace root directory
 containing that model, the repository root found from that model path, the
 config file, the `.quality/` quality data directory, the evaluation directory,
-the quality log directory, and the workflow feedback-log directory. The
+the quality changelog directory, and the workflow feedback-log directory. The
 workspace root is the default base for relative tooling paths; the repository
 root is the containment boundary.
 

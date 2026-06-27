@@ -2,6 +2,11 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated setup, evaluate, review, and improve workflow guidance
+  for 0146 - Changelog Directory.
+  Workflow mutation boundaries now name the quality changelog, while setup and
+  evaluate feedback logs remain flat files under `.quality/logs/`.
+
 - **Addition**: Added [review](review.md) and [improve](improve.md) runtime
   workflow stubs for 0143 - Public Review and Improve Workflows.
   Review is read-only and focus-routed; improve starts read-only, confirms focus

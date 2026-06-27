@@ -75,7 +75,7 @@ feedback.
 `setup`'s mutation surface includes the target `QUALITY.md` and the current
 run's feedback log under `.quality/logs/`. Every other setup mutation
 prohibition remains in force: setup does not create evaluation artifacts, write
-the quality log under `.quality/log/`, create external issues, configure
+the quality changelog under `.quality/changelog/`, create external issues, configure
 integrations, or configure automations.
 
 Writing, updating, or finalizing a feedback log **MUST NOT** change setup's

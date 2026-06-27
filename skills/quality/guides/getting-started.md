@@ -144,9 +144,14 @@ When the file is valid and the first model is useful enough, choose the next
 workflow:
 
 ```text
-continue iterating on QUALITY.md
-run /quality evaluate
-stop here
+**Recommended next:** continue iterating on `QUALITY.md`
+
+**Options**
+1. Continue iterating on `QUALITY.md`.
+2. Run `/quality evaluate`.
+3. Stop here.
+
+**Answer:** Reply `1`, `2`, or `3`.
 ```
 
 If the validation or status output shows model gaps, continue model authoring

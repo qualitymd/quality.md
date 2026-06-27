@@ -9,10 +9,11 @@ timestamp: 2026-06-23T00:00:00Z
 # Workflow feedback log
 
 This spec defines the shared *workflow feedback log* artifact used by `/quality`
-workflows that adopt feedback logging. A feedback log is a hand-authored
-Markdown artifact that records the *experience* of running a workflow —
-friction, errors, UX/AX rough edges, efficiency observations, and preservation
-signals — so the skill, CLI, and prompts can be improved from real runs.
+workflows that adopt feedback logging. A feedback log is one kind of workflow
+log: a hand-authored Markdown artifact that records the *experience* of running
+a workflow — friction, errors, UX/AX rough edges, efficiency observations, and
+preservation signals — so the skill, CLI, and prompts can be improved from real
+runs.
 
 Workflow-specific adopter specs define when a workflow creates, updates, and
 finalizes its current-run feedback log.
@@ -30,7 +31,8 @@ experience locally without turning user-facing output into an internal feedback
 report. Evaluation has the same need: scope ambiguity, retries, slow phases,
 redaction decisions, and report recovery are signals for improving the workflow,
 not evidence about the evaluated subject. A shared contract keeps setup,
-evaluate, and future adopters in one feedback-log family.
+evaluate, and future adopters in one feedback-log family while leaving
+`.quality/logs/` available as the flat directory for future workflow-log kinds.
 
 ## Artifact identity
 
@@ -42,7 +44,7 @@ NOT** be interpreted as OKF concept history.
 
 A feedback log **MUST NOT** be authoritative for any QUALITY.md model content,
 evaluation rating, finding, recommendation, next action, generated report, or
-quality-log history.
+quality changelog history.
 
 > Rationale: workflow feedback should improve the `/quality` workflow itself.
 > Keeping it non-authoritative prevents feedback notes from becoming a shadow
@@ -50,18 +52,25 @@ quality-log history.
 
 ## Location and naming
 
-A workflow run that writes a feedback log **MUST** write it under a
-workflow-agnostic `.quality/logs/` directory relative to the selected
-`QUALITY.md`, creating that directory on demand.
+A workflow run that writes a feedback log **MUST** write it under a flat
+workflow-log `.quality/logs/` directory relative to the selected `QUALITY.md`,
+creating that directory on demand.
 
-`.quality/logs/` is distinct from the quality log directory `.quality/log/`.
+`.quality/logs/` is distinct from the quality changelog directory `.quality/changelog/`.
 
-> Rationale: the plural directory sits near the quality log but remains separate
-> through the `*-feedback-log.md` filename and the non-authority rule. — 0066
+> Rationale: `.quality/changelog/` is model-change history, while
+> `.quality/logs/` is process history. Keeping workflow logs flat preserves
+> chronological scanning across current feedback logs and future log kinds. —
+> 0066, 0145
+
+Workflow feedback logs **MUST NOT** be nested under a feedback-specific
+subdirectory such as `.quality/logs/feedback/`. The log kind belongs in the
+filename.
 
 A feedback log file name **MUST** take the form
 `<timestamp>-<workflow>-feedback-log.md`, where `<timestamp>` is the workflow run
-start timestamp and `<workflow>` is the workflow that produced it.
+start timestamp, `<workflow>` is the workflow that produced it, and
+`feedback-log` is the log kind.
 
 The `<timestamp>` **SHOULD** be sortable, UTC, and filesystem-safe, for example
 `2026-06-23T154233Z`. If a name collides, the skill **MAY** append a short
@@ -126,7 +135,7 @@ and finalization.
 
 Feedback-log content **MUST** be about workflow experience. It **MUST NOT**
 duplicate model body content, authoring rationale, evaluation evidence, rating
-rationale, recommendation prose, generated reports, or quality-log entries.
+rationale, recommendation prose, generated reports, or quality changelog entries.
 
 When a section has no notable content at close, the final log **SHOULD** say so
 explicitly, for example `None observed.`

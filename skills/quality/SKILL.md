@@ -51,20 +51,22 @@ recommendations.
 - Recommendation follow-up edits evaluated source files or `QUALITY.md` only
   after explicit confirmation of the recommendation, option, and mutation
   surface.
-- The quality log under `.quality/log/` is written only by confirmed
+- The quality changelog under `.quality/changelog/` is written only by confirmed
   model-authoring or recommendation-apply workflows (one entry per meaningful
   model change). `setup`, `evaluate`, read-only orientation, and issue-tracker
-  handoff never write it. See [Quality Log](#quality-log).
+  handoff never write it. See [Quality Changelog](#quality-changelog).
 - `setup` and `evaluate` write workflow feedback logs under `.quality/logs/`
-  (plural, distinct from the quality log's `.quality/log/`) recording the
-  *experience* of running the workflow. `setup` writes
+  (the flat workflow-log directory, distinct from `.quality/changelog/`)
+  recording the *experience* of running the workflow. `setup` writes
   `<timestamp>-setup-feedback-log.md` after the setup preview when the run
   continues into discovery or authoring; early setup stops before that point may
   leave no feedback log. `evaluate` writes
   `<timestamp>-evaluate-feedback-log.md`. The logs are recorded locally and
   never transmitted; sharing is an explicit user action. They must never contain
   secret values or raw prompt-injection text, and sensitive project context
-  should be sanitized. See [`workflows/setup.md`](workflows/setup.md) and
+  should be sanitized. Feedback logs are one workflow-log kind; do not create
+  type-specific subfolders under `.quality/logs/`. See
+  [`workflows/setup.md`](workflows/setup.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md).
 - `update` mutates only after explicit confirmation and delegates mechanics to
   `qualitymd update` or the Agent Skills installer.
@@ -172,6 +174,9 @@ use emoji only as semantic markers, not decoration. When the user must answer,
 choose, approve, correct, or act, make the shortest acceptable response explicit
 with an `Answer` line or equivalent wording. Use code spans for concrete files,
 commands, fields, model references, IDs, and literal user replies in examples.
+When output carries multiple independent facts, use labeled blocks, bullets, or
+numbered lists rather than dense paragraphs. The user should be able to scan the
+result, importance, boundary, and next action in a few seconds.
 
 Treat each interaction as an intent — a single-select closed choice, a
 multi-select, a binary confirmation, an open-ended correction — and render it
@@ -205,7 +210,7 @@ workflow (`setup`, `evaluate`, `review`, `improve`, or `update`); do not render
 - **Model file:**
 - **Scope:**         (for evaluate/setup/update, or n/a)
 - **Focus:**         (for review/improve, or n/a)
-- **Mutation:**      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality log, feedback log, tooling)
+- **Mutation:**      (read-only, evaluation artifacts, evaluated source, QUALITY.md, quality changelog, feedback log, tooling)
 - **Artifacts:**
 - **Next gate:**
 ```
@@ -213,7 +218,7 @@ workflow (`setup`, `evaluate`, `review`, `improve`, or `update`); do not render
 Recommendation follow-up is an implementation route used by `improve` when a
 compatible recommendation artifact exists; it is not a separate public
 `/quality` workflow. It is still a user-visible follow-up that can mutate
-evaluated source, `QUALITY.md`, the quality log, or an external issue tracker.
+evaluated source, `QUALITY.md`, the quality changelog, or an external issue tracker.
 At its start, emit a concise follow-up frame before recommendation inspection,
 history inspection, outcome selection, or any mutation:
 
@@ -221,7 +226,7 @@ history inspection, outcome selection, or any mutation:
 **QUALITY.md · recommendation follow-up**
 - **Recommendation:** <id/title | resolving…>
 - **Outcome:** <apply locally | hand off to issue tracker | resolving…>
-- **Mutation:** <evaluated source | QUALITY.md | quality log | external issue | read-only until confirmed>
+- **Mutation:** <evaluated source | QUALITY.md | quality changelog | external issue | read-only until confirmed>
 - **Artifacts:** <changed files/log entry/issue-ready text/issue link | none yet>
 - **Next gate:** recommendation selection, outcome choice, decision brief, or verification
 ```
@@ -231,7 +236,7 @@ orientation as a status-first block rather than a public run frame: name the
 model file or target inspected, summarize observed lifecycle/model state, name
 evidence limits when relevant, recommend one next action, and offer concrete
 alternatives. Include a boundary line such as `Not changed: no files, evaluation
-records, reports, tooling, quality log, or external issues.` Do not advertise
+records, reports, tooling, quality changelog, or external issues.` Do not advertise
 `status`, `next`, or `wizard` as public invocations.
 
 Direct model authoring is the implementation route for model-focused `improve`
@@ -247,7 +252,7 @@ first, then read only the routed authoring sub-guides relevant to the likely
 mutation surface. Infer the user's intent from the request, the current
 `QUALITY.md`, and those guides before asking follow-up. Ask follow-up only when
 missing information would materially change the model/body target, mutation
-surface, judgment effect, quality-log decision, or safety boundary. Common
+surface, judgment effect, quality changelog decision, or safety boundary. Common
 material follow-ups include body context versus structured model change, unclear
 Area/Factor/Requirement or Rating Level targets, and edits to Rating Scale
 criteria, weights, required margin, scope, or apex. Do not use a fixed full
@@ -260,14 +265,17 @@ user to react to the most consequential scope or risk assumption. Use numbered
 planned actions only when a multi-part edit would be hard to scan as prose:
 
 ```text
-I’m reading this as: <plain-language intent>, so that <inferred purpose>.
+**Planned edit:** <plain-language intended edit>
 
-I’d implement that as <simple common-sense prose of the change>, so that <value prop>.
+**Why:** <inferred purpose or reason this change appears needed>
 
-<Important boundary and quality-log decision, when relevant.>
+**Approach:** <simple common-sense prose of the change and value prop>
 
-One <scope/risk/naming> choice before I edit: <consequential assumption>. If
-<alternative meaning>, say so. Otherwise say `go`.
+**Boundary:** <most consequential scope/risk/naming assumption, when relevant>
+
+**Log:** <quality changelog decision, when relevant>
+
+**Answer:** Say `go`, or say if <alternative meaning/boundary> is intended.
 ```
 
 When the checkpoint clearly names the mutation, `looks good` or an equivalent
@@ -280,7 +288,7 @@ judgment — for example by changing rating semantics, removing model coverage,
 shifting scope or apex, or adding/changing model-wide Factors or Requirements —
 prefer this review gate even when the intent seems clear. For high-risk edits,
 use the decision-brief shape instead of the lightweight checkpoint alone. For
-confirmed direct model-authoring edits, write one quality-log entry only when the
+confirmed direct model-authoring edits, write one quality changelog entry only when the
 edit meaningfully alters what the model is or how it judges; do not log
 wording-only, typo, formatting, or body-only clarification edits that leave model
 judgment unchanged.
@@ -513,7 +521,7 @@ the implementation route after reading [`workflows/improve.md`](workflows/improv
 Resolve a QUALITY.md workspace from the selected model file. The workspace
 includes the selected model path, workspace root directory containing the model,
 repository root, config file, quality data directory, evaluation directory,
-quality log directory, and workflow feedback-log directory.
+quality changelog directory, and workflow feedback-log directory.
 
 The quality data directory defaults to `.quality/` under the workspace root.
 Relative tooling paths are model-relative: resolve them from the directory
@@ -551,11 +559,11 @@ authored payload. Treat those command surfaces, plus
 `qualitymd evaluation status <run> --json`, as the field-use source of truth. Do
 not restate the full schema or folder layout in this prompt.
 
-## Quality Log
+## Quality Changelog
 
-The quality log is a curated, evidence-linked timeline of meaningful changes to
+The quality changelog is a curated, evidence-linked timeline of meaningful changes to
 the QUALITY.md model, written as dated entries under the workspace's
-`.quality/log/`. It preserves the *why* a model changed — which evaluation
+`.quality/changelog/`. It preserves the *why* a model changed — which evaluation
 surfaced a gap, whether a criterion moved by recalibration or drift — that
 `git log` does not capture. It is the model's own history; it is **not** an
 evaluation record (those own `.quality/evaluations/`) and **not** a defect
@@ -563,12 +571,12 @@ backlog.
 
 Format contract:
 
-- **Location.** `.quality/log/` in the quality data directory. The log directory
-  is not configurable yet.
+- **Location.** `.quality/changelog/` in the quality data directory. The
+  changelog directory is not configurable yet.
 - **One entry per meaningful change**, one file. Name it
-  `YYYY-MM-DD-<slug>.md`, where the date is the day the change was made and
-  `<slug>` is a short kebab-case summary. Do **not** assign a global sequential
-  counter — the date prefix orders entries.
+  `YYYY-MM-DDTHHMMSSZ-<slug>.md`, where the timestamp is the sortable UTC time
+  the change was made and `<slug>` is a short kebab-case summary. Do **not**
+  assign a global sequential counter — the timestamp prefix orders entries.
 - **Runtime artifact, not an OKF bundle.** No `index.md`, `schema.md`, or
   `log.md`; entry frontmatter is machine metadata, not OKF concept frontmatter.
 - **Each entry** carries small frontmatter plus a prose rationale body. The
@@ -591,15 +599,16 @@ Format contract:
   recalibration or a drift correction.
   ```
 
-The log is **curated, not complete**: hand edits to `QUALITY.md` and setup's
-initial model creation bypass the log, so git remains the full diff history
-while the log carries later model-change judgment. Log a change that alters what
-the model *is* or *how it judges*; do **not** log Markdown-body wording, typo,
-or formatting changes, nor evaluated-source fixes that leave the model
-unchanged. Write one entry per coherent change (a confirmed recommendation apply
-or direct model-authoring change), not one per field touched. The meaningful-change
-taxonomy is in
-[`guides/authoring/quality-log.md`](guides/authoring/quality-log.md).
+The changelog is **curated, not complete**: hand edits to `QUALITY.md` and
+setup's initial model creation bypass the changelog, so git remains the full
+diff history while the changelog carries later model-change judgment. Record a
+change that alters what the model *is* or *how it judges*; do **not** record
+Markdown-body wording, typo, or formatting changes, nor evaluated-source fixes
+that leave the model unchanged. Write one entry per coherent change (a confirmed
+recommendation apply or direct model-authoring change), not one per field
+touched. The meaningful-change taxonomy is in
+[`guides/authoring/quality-changelog.md`](guides/authoring/quality-changelog.md).
 
-A `qualitymd log` command, a `.quality/config.yaml` `logDir` key, and a queryable
-index are deferred; this convention is what the skill writes against today.
+A `qualitymd changelog` command, a `.quality/config.yaml` `changelogDir` key,
+and a queryable index are deferred; this convention is what the skill writes
+against today.
