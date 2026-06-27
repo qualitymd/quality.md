@@ -1,7 +1,7 @@
 # QUALITY.md
 
 **QUALITY.md** is an [open format](./SPECIFICATION.md), agent skill, and CLI for
-managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), [compound learnings](#the-outer-loop-dailyweekly) and achieve [alignment between stakeholders and agents on what quality means for what matters most](#the-qualitymd-loop).
+managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), and [compound learning](#the-outer-loop-dailyweekly).
 
 QUALITY.md helps teams **move quality judgment up the loop
 stack**, enabling a continuous and comprehensive approach to improving and maintaining project quality instead of ad hoc prompts, passive skills, reactive reviews, and low-level inspections.
@@ -10,7 +10,7 @@ stack**, enabling a continuous and comprehensive approach to improving and maint
 > `qualitymd` CLI are still evolving. Breaking changes should be manageable with assistance from the latest skill updates. Run
 > `/quality update` to stay current with the latest skill and CLI versions.
 
-### Get started:
+## Install
 
 1. Install the agent skill:
 
@@ -24,7 +24,13 @@ npx skills add qualitymd/quality.md
 npm install -g quality.md
 ```
 
-3. Invoke `/quality setup` for guided creation of your initial `QUALITY.md`
+**Stay up-to-date**: Invoke the `/quality update` to update both the skill and CLI to the latest compatible versions to take advantage of the latest improvements.
+
+## Getting Started
+
+### Setup
+
+Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailored for your project.
 
 ### Loop Engineering: The Quality Loop Stack
 
@@ -37,12 +43,11 @@ npm install -g quality.md
 
 #### The Inner Loop (continuously)
 
-2. **Act** act by implementing or handing off recommendations to
-   people, agents, or other agent loops.
+3. **Act** by implementing or handing off recommendations to people, agents, or other agent loops.
 
 #### The Outer Loop (daily/weekly)
 
-3. **Outer loop (daily/weekly):** improve with `/quality improve` to refine
+4. **Outer loop (daily/weekly):** improve with `/quality improve` to refine
    `QUALITY.md` and compound learning.
 
 > The three-loop framing and the term *middle loop* draw on Annie Vella,
@@ -109,83 +114,6 @@ and AI assistants to follow.
 
 [Install QUALITY.md](install.md), then run `/quality setup` with your coding agent
 to create a `QUALITY.md` for your project.
-
-## The QUALITY.md Loop
-
-A `QUALITY.md` file is your project's quality signal — the explicit, shared
-definition of *good* that aligns your team, AI assistants, and coding agents with
-what matters in *this* context. You capture it once, then run a loop that keeps
-both the work and the signal sharp.
-
-**The quality loop:**
-
-1. **Model** what *good* means for this context in `QUALITY.md`.
-2. **Evaluate** the work against that model.
-3. **Review** the evidence, ratings, and model fit.
-4. **Improve** the work, the model, or the loop.
-
-### Getting started
-
-1. **Run `/quality setup` to make your quality bar visible.** The skill runs a
-   guided setup workflow that inspects available context, asks concrete setup
-   questions with recommended defaults, and writes a `QUALITY.md` with likely
-   quality factors, assessable requirements, needs, risks, unknowns, open
-   questions, and agent-accessibility gaps.
-   → *A shared starting point for what good means here: the expectations already
-   visible in the project, the judgments that still need human input, and the
-   context gaps agents and contributors need to close before they can know what
-   matters most.*
-
-2. **Run `/quality evaluate` to see where you stand.** The skill analyzes each
-   area of your project against the quality requirements defined in your model,
-   then provides ratings, findings, evidence limits, and next-step signals.
-   → *A concrete read on where the work meets the bar, where it falls short, and
-   where the model needs to become clearer, more complete, or better grounded.*
-
-3. **Run `/quality review` to decide what the evidence means.** Review the
-   latest evaluation, the `QUALITY.md` model itself, or a specific quality
-   concern.
-   → *A clear read on what to fix now, what to track for later, and what evidence
-   or model context is still missing.*
-
-4. **Run `/quality improve` to act on that judgment.** Improve the work, improve
-   `QUALITY.md`, or turn a concern into follow-up work.
-   → *A quality bar and evaluated entity that get clearer and more useful every
-   time you use them.*
-
-   **Tip:** Discuss and apply changes to `QUALITY.md` with your agent. The
-   `/quality` skill applies authoring best practices so model changes stay
-   well-formed, grounded, and current, with meaningful changes recorded in the
-   quality changelog.
-
-### Keeping the skill and CLI current
-
-**Run `/quality update` to update the `/quality` agent skill and `qualitymd`
-CLI.** Keep them up to date to take advantage of the latest improvements to the
-efficiency and efficacy of working with QUALITY.md files.
-
-### Keeping the loop running
-
-Once you have a model, the loop keeps going at whatever cadence fits your team:
-
-- **On demand.** Run `/quality evaluate` whenever you need a read — before a
-  release, during review, when you inherit an unfamiliar project, or when
-  something just feels off. Scope it down when you don't need the whole model:
-  `/quality evaluate Payments` or `/quality evaluate Payments Reliability`.
-  Qualified references such as `/quality evaluate area:payments` remain
-  available for exact addressing. Use `/quality review` to interpret what the
-  read means, and `/quality improve` when you are ready to act.
-
-- **On a cadence.** Make the model and its latest evaluation a recurring team
-  review — per sprint, monthly, or whatever rhythm maintainers already use.
-  Close gaps in the work,
-  and sharpen the model where the bar proved wrong, unclear, or out of date — so
-  the shared definition stays current as the product evolves.
-
-- **Recurring.** Use Codex automations, Claude Code routines, or another
-  maintainer-owned workflow when you want that cadence to run without someone
-  remembering. Keep the loop tied to review habits, not CI or release gates by
-  default.
 
 ## Example QUALITY.md
 
