@@ -3,6 +3,39 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0138 - Lightweight Authoring Checkpoint](archive/0138-lightweight-authoring-checkpoint.md).
+  Direct `QUALITY.md` authoring now routes separately from tooling `update`,
+  infers intent before follow-up, asks only material follow-up questions, states
+  the intended edit in a conversational checkpoint, accepts `looks good` as clear
+  confirmation when the mutation is named, escalates high-impact model changes to
+  decision briefs, and aligns quality-log guidance for meaningful direct
+  model-authoring changes. `mise run fmt-md-check` passes.
+
+- **In-Review**: Completed implementation for
+  [0138 - Lightweight Authoring Checkpoint](archive/0138-lightweight-authoring-checkpoint.md).
+  Direct `QUALITY.md` authoring now has infer-first routing, material follow-up
+  thresholds, a conversational intent checkpoint with `looks good` confirmation,
+  high-impact decision-brief escalation, and aligned quality-log guidance.
+  `mise run fmt-md-check` passes.
+
+- **In-Progress**: Advanced
+  [0138 - Lightweight Authoring Checkpoint](archive/0138-lightweight-authoring-checkpoint.md).
+  Functional spec and design doc are settled; implementation is beginning across
+  durable skill specs, runtime skill guidance, authoring guides, and release
+  notes.
+
+- **Design**: Created
+  [0138 - Lightweight Authoring Checkpoint](archive/0138-lightweight-authoring-checkpoint.md)
+  with its
+  [functional spec](archive/0138-lightweight-authoring-checkpoint/spec.md) and
+  [design doc](archive/0138-lightweight-authoring-checkpoint/design.md). The case adds a
+  lightweight direct-authoring path for `QUALITY.md` edits: infer intent, ask
+  follow-up only when material, state the intended edit, accept `looks good` as
+  clear confirmation when the mutation is named, and escalate to decision briefs
+  for high-impact model changes. Code and durable spec/doc updates have not
+  started.
+
+- **Done**: Implemented and archived
   [0137 - Run Report Entrypoint](archive/0137-run-report-entrypoint.md).
   `qualitymd evaluation report build` now writes `report.md` as the run-level
   report, writes the root Area detail as `root-area.md` when present, supports

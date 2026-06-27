@@ -58,9 +58,9 @@ quality log.
 
 ### Logging a model change
 
-When a confirmed follow-up actually changes the model, record it in the
-**quality log**. Its format contract lives in [`SKILL.md`](../../SKILL.md); this
-guide covers what counts as meaningful:
+When a confirmed recommendation follow-up or direct model-authoring edit actually
+changes the model, record it in the **quality log**. Its format contract lives in
+[`SKILL.md`](../../SKILL.md); this guide covers what counts as meaningful:
 
 - **Do** log a change that alters what the model *is* or *how it judges*: adding,
   removing, or renaming an Area, Factor, or Requirement; changing the rating
@@ -70,8 +70,8 @@ guide covers what counts as meaningful:
   correction*, and cross-link the evaluation run and recommendation behind it when
   the change came from one.
 - **Do** write **one entry per coherent change** — a confirmed recommendation
-  apply, a model-authoring change, or the initial population — not one per field
-  touched. *The unit of record is the decision, not the edit.*
+  apply, a direct model-authoring change, or the initial population — not one per
+  field touched. *The unit of record is the decision, not the edit.*
 - **Avoid** logging Markdown-body wording, typo, or formatting changes, or
   evaluated-source fixes that leave the model unchanged. *Those are not model
   changes; git already records them, and logging them turns a curated timeline

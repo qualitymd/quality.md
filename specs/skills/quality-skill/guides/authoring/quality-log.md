@@ -24,4 +24,8 @@ recalibration vs drift correction, criteria gaming, missing Requirements surface
 by findings, and whether the Requirement set still delivers the body's Needs.
 
 The guide **MUST** define what counts as a meaningful quality-log entry while
-leaving the quality-log format contract in `SKILL.md`.
+leaving the quality-log format contract in `SKILL.md`. It **MUST** cover
+confirmed direct model-authoring edits as a write source when they meaningfully
+alter what the model is or how it judges, and **MUST** preserve the boundary that
+wording-only, typo, formatting, or non-judgment-changing body edits do not write
+the quality log.

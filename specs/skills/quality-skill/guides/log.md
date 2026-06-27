@@ -1,5 +1,15 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated the durable
+  [authoring guide family](authoring.md) and
+  [quality-log authoring guide](authoring/quality-log.md) specs for
+  [0138 - Lightweight Authoring Checkpoint](../../../../changes/archive/0138-lightweight-authoring-checkpoint.md).
+  Direct `QUALITY.md` edits now preserve user intent, target, rationale,
+  judgment effect, unresolved unknowns, and quality-log routing, while meaningful
+  confirmed direct model-authoring changes are an explicit quality-log source.
+
 ## 2026-06-26
 
 - **Revision**: Updated the

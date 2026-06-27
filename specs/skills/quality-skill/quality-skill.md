@@ -70,6 +70,11 @@ scope — a full evaluation, or a narrowing to particular area(s) or factor(s).
 The scope parameterizes the invocation rather than multiplying it (see
 [Invocation](#invocation)).
 
+Direct model authoring is the path for user requests to edit an existing
+`QUALITY.md` outside setup or recommendation follow-up. It keeps direct edits
+lightweight: infer intent from the request and model, ask only material follow-up
+questions, state the intended edit, and invite adjustments before mutation.
+
 Recommendations are a product of *evaluation*: the format spec's
 [Advise](../../../SPECIFICATION.md#advise) phase is part of every evaluation, so
 any `evaluate` that finds gaps emits recommendations alongside its report (see
@@ -207,7 +212,11 @@ scope:
   evaluates. Requests to improve, apply, act on, or hand off a recommendation
   resolve to
   [recommendation follow-up](recommendation-follow-up.md), not to a separate
-  public workflow.
+  public workflow. Requests to directly edit, revise, improve, add to, remove
+  from, or otherwise change an existing `QUALITY.md` resolve to direct model
+  authoring unless the request clearly resolves to `setup`, `evaluate`, tooling
+  `update`, or recommendation follow-up. Direct model authoring **MUST NOT**
+  introduce a new public workflow invocation name.
 - **Model file** — which `QUALITY.md` to work from. The default is `QUALITY.md`
   in the current working directory. The skill **MUST** accept an explicit path to
   override it, and **MUST** error clearly when no default file exists. It **MUST
@@ -534,6 +543,47 @@ The skill **MUST NOT** advertise `status`, `next`, `review model`,
 `/quality wizard`, the skill may respond read-only that `wizard` has been
 removed from the public surface and point to public workflows.
 
+### Direct model authoring
+
+Direct model authoring changes an existing `QUALITY.md` in response to a user's
+direct edit request. It is not a public workflow and does not use a workflow run
+frame, but it may mutate `QUALITY.md` and, for meaningful model changes, the
+quality log.
+
+Before asking follow-up questions, the skill **MUST** infer the likely authoring
+intent from the user's request, the current `QUALITY.md`, and the routed
+authoring guides relevant to the likely mutation surface. The skill **MUST** read
+`guides/authoring.md` first and then the routed sub-guides relevant to the model
+elements it will create, review, mutate, or remove.
+
+The skill **SHOULD** ask follow-up only when missing or ambiguous information
+would materially change the model/body target, mutation surface, judgment effect,
+quality-log decision, or safety boundary. It **MUST NOT** use a fixed full
+questionnaire for routine direct edits. Common material follow-up triggers
+include choosing between body-only context and a structured model change,
+unclear Area/Factor/Requirement or Rating Level targets, and edits to Rating
+Scale criteria, weights, required margin, scope, or apex.
+
+Before mutating `QUALITY.md` through direct model authoring, the skill **MUST**
+present a lightweight intent checkpoint that states the inferred intent, the
+intended edit target, important boundaries, and whether a quality-log entry is
+expected. The checkpoint **MUST** invite corrections or additional concerns,
+goals, needs, worries, and constraints in conversational terms, and **MUST** make
+a short approval path explicit. When the checkpoint clearly names the mutation,
+`looks good` or an equivalent clear approval **MUST** count as explicit
+confirmation to proceed.
+
+Direct model authoring **MUST** use the existing decision-brief confirmation
+shape, rather than the lightweight checkpoint alone, when the edit changes rating
+semantics, removes model coverage, shifts scope or apex, or otherwise carries
+substantial judgment risk.
+
+When a confirmed direct model-authoring edit meaningfully alters what the model
+is or how it judges, the skill **MUST** write one quality-log entry for the
+coherent change. It **MUST NOT** write a quality-log entry for wording-only,
+typo, formatting, or body-only clarification edits that do not alter model
+judgment.
+
 ### Setup
 
 [`setup`](workflows/setup.md) runs a setup workflow that bootstraps or updates a
@@ -589,6 +639,7 @@ arguments, defaulting the ones left out:
 /quality update              # plan and orchestrate paired skill/CLI updates
 /quality setup                 # author a new model file (drives qualitymd init)
 /quality ./services/QUALITY.md # work from a specific model file
+/quality add a handoff risk requirement to QUALITY.md # direct model authoring
 ```
 
 ## Driving the CLI

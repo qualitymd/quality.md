@@ -5,6 +5,13 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### /quality Skill
+
+- Direct `QUALITY.md` edit requests now use a lightweight authoring checkpoint:
+  the skill infers intent, asks follow-up only when it materially affects the
+  edit, states the intended change, and accepts `looks good` as confirmation when
+  the mutation is clear.
+
 ## v0.23.0 - 2026-06-27
 
 ### CLI

@@ -12,8 +12,8 @@ This spec owns the `/quality` skill's convention-first quality log: dated
 entries under `.quality/log/` in the workspace quality data directory that
 record meaningful, evidence-linked changes to a QUALITY.md model. It composes
 the shared contracts in the parent
-[/quality skill](quality-skill.md) spec and is written by confirmed
-model-authoring or recommendation-apply workflows after setup.
+[/quality skill](quality-skill.md) spec and is written by confirmed direct
+model-authoring changes or recommendation-apply workflows after setup.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", and "SHOULD" are to be interpreted as
@@ -111,11 +111,12 @@ touched.
 
 `setup` **MUST NOT** write the quality log. Setup's initial model rationale
 belongs in the `QUALITY.md` body itself. A confirmed recommendation-apply or
-model-authoring workflow **MUST** append an entry for each meaningful model
+direct model-authoring change **MUST** append an entry for each meaningful model
 change after setup, cross-linking the evaluation run and recommendation when the
 change came from one; writing the entry **MUST NOT** require confirmation beyond
 the user's existing confirmation of the model change itself, since the entry's
-rationale is the rationale already shown in the decision brief.
+rationale is the rationale already shown in the intent checkpoint or decision
+brief.
 
 `evaluate` **MUST NOT** write to the quality log. Issue-tracker handoff **MUST
 NOT** write to the quality log.

@@ -42,6 +42,14 @@ rating-scale, Agent Harnessability, agent-harness, and quality-log guides before
 authoring. For narrow recommendation follow-up, read only the sub-guides matching
 the confirmed mutation surface.
 
+For direct `QUALITY.md` edits, infer the intended change from the user's request
+and the current model before asking follow-up. Preserve the user's intent, the
+model or body target, the rationale, the expected judgment effect, unresolved
+unknowns, and whether the change should write the quality log. Ask follow-up only
+when one of those would materially change the edit; otherwise state the intended
+edit and invite concerns, goals, needs, worries, constraints, or `looks good`
+before mutating.
+
 ## The QUALITY.md file
 
 A QUALITY.md file is a Markdown file with two parts:

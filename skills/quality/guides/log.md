@@ -1,5 +1,15 @@
 # /quality Runtime Guides Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated [Authoring QUALITY.md](authoring.md) and
+  [Authoring Quality-Log Changes](authoring/quality-log.md) for 0138 -
+  Lightweight Authoring Checkpoint.
+  Direct `QUALITY.md` edits now preserve intent, target, rationale, judgment
+  effect, unresolved unknowns, and quality-log routing; confirmed direct
+  model-authoring changes write the quality log only when they meaningfully alter
+  model judgment.
+
 ## 2026-06-26
 
 - **Revision**: Updated

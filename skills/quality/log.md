@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and authoring guides for 0138 -
+  Lightweight Authoring Checkpoint.
+  Runtime guidance now routes direct existing `QUALITY.md` edit requests to
+  direct model authoring, infers intent before asking follow-up, uses a
+  conversational checkpoint that accepts `looks good` when the mutation is named,
+  and writes the quality log only for meaningful model changes.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0137 - Run Report
   Entrypoint.

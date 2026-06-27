@@ -60,6 +60,13 @@ The entry guide **MUST** route authoring concerns to these child runtime guides:
 The entry guide **MUST NOT** retain the full long-form doctrine for each concern
 once that doctrine lives in a routed sub-guide.
 
+For direct `QUALITY.md` edit requests, the entry guide **MUST** tell agents to
+infer the intended change from the request and current model before asking
+follow-up, and to preserve the user's intent, model or body target, rationale,
+expected judgment effect, unresolved unknowns, and quality-log routing. It
+**SHOULD** tell agents to ask follow-up only when those considerations would
+materially change the edit.
+
 ## Child guide contract
 
 Each child guide **MUST** state when agents read it and which authoring guides it

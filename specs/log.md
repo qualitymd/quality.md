@@ -3,6 +3,14 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0138 - Lightweight Authoring Checkpoint](../changes/archive/0138-lightweight-authoring-checkpoint.md).
+  The `/quality` skill specs now define direct model authoring for existing
+  `QUALITY.md` edits, require infer-first material follow-up, add the
+  conversational intent checkpoint with `looks good` as clear confirmation when
+  the mutation is named, and keep meaningful direct model-authoring changes in
+  the quality-log contract.
+
+- **Revision**: Implemented durable spec changes for
   [0137 - Run Report Entrypoint](../changes/archive/0137-run-report-entrypoint.md).
   The Evaluation report tree, payload-kind, JSON convention, orchestration,
   protocol, CLI report, and `/quality` skill specs now make `report.md` the

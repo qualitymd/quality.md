@@ -1,5 +1,12 @@
 # Authoring Guides Update Log
 
+## 2026-06-27
+
+- **Revision**: Updated [Authoring Quality-Log Changes](quality-log.md) for
+  0138 - Lightweight Authoring Checkpoint.
+  The guide now names confirmed direct model-authoring edits as quality-log
+  sources when they meaningfully alter what the model is or how it judges.
+
 ## 2026-06-26
 
 - **Revision**: Updated [Agent Harnessability](agent-harnessability.md) for

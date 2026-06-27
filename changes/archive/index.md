@@ -602,3 +602,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0137 — Run Report Entrypoint](0137-run-report-entrypoint.md) - makes
   `report.md` the Evaluation run entrypoint, moves the root Area report to
   `root-area.md`, and adds scoped headline report refs (`Done`).
+- [0138 — Lightweight Authoring Checkpoint](0138-lightweight-authoring-checkpoint.md) -
+  adds a conversational direct-authoring checkpoint for `QUALITY.md` edits
+  (`Done`).

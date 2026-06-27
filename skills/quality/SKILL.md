@@ -111,6 +111,10 @@ Parse the user's request from free-form arguments:
   upgrade the `/quality` skill, the `qualitymd` CLI, or their compatibility pair
   as `update`. Treat requests to improve, apply, act on, or hand off an
   evaluation recommendation as recommendation follow-up, not as a separate workflow.
+  Treat requests to directly edit, revise, improve, add to, remove from, or
+  otherwise change an existing `QUALITY.md` as direct model authoring unless the
+  request clearly resolves to `setup`, `evaluate`, tooling `update`, or
+  recommendation follow-up. Direct model authoring is not a public workflow name.
 - Model file: explicit path if supplied; otherwise `QUALITY.md` in the current
   working directory. Do not walk parent directories.
 - Scope: full evaluation by default, or a narrowing. Natural Area and Factor
@@ -219,6 +223,41 @@ records, reports, tooling, quality log, or external issues.` Do not advertise
 `status`, `next`, `review model`, `review history`, or `wizard` as public
 invocations.
 
+Direct model authoring is a lightweight path for requests to change an existing
+`QUALITY.md`; it is not `setup`, `evaluate`, or tooling `update`, and it does not
+have a public workflow run frame. Read `guides/authoring.md` first, then read
+only the routed authoring sub-guides relevant to the likely mutation surface.
+Infer the user's intent from the request, the current `QUALITY.md`, and those
+guides before asking follow-up. Ask follow-up only when missing information would
+materially change the model/body target, mutation surface, judgment effect,
+quality-log decision, or safety boundary. Common material follow-ups include
+body context versus structured model change, unclear Area/Factor/Requirement or
+Rating Level targets, and edits to Rating Scale criteria, weights, required
+margin, scope, or apex. Do not use a fixed full questionnaire for routine direct
+edits.
+
+Before mutating `QUALITY.md` through direct model authoring, present a lightweight
+intent checkpoint that names the intended edit and invites adjustment:
+
+```text
+I’m reading this as: <plain-language intent>.
+
+I’ll update <QUALITY.md target>, keep <important boundary> unchanged, and
+<write/not write> a quality-log entry because <reason>.
+
+Anything you want adjusted first? You can say `looks good`, or tell me any
+concerns, goals, needs, worries, or constraints I should account for.
+```
+
+When the checkpoint clearly names the mutation, `looks good` or an equivalent
+clear approval counts as explicit confirmation. If the edit changes rating
+semantics, removes model coverage, shifts scope or apex, or otherwise carries
+substantial judgment risk, use the decision-brief shape instead of the lightweight
+checkpoint alone. For confirmed direct model-authoring edits, write one
+quality-log entry only when the edit meaningfully alters what the model is or how
+it judges; do not log wording-only, typo, formatting, or body-only clarification
+edits that leave model judgment unchanged.
+
 For any mutation that requires confirmation, use a decision brief rather than a
 bare yes/no question. Lead with the question, render the choices as a visually
 separated block — one per line, recommended choice marked inline — then demote
@@ -317,6 +356,7 @@ unqualified references.
 /quality evaluate area:triage
 /quality evaluate factor:triage::accuracy
 /quality update
+/quality add support handoff risk to QUALITY.md
 ```
 
 ## Evaluation Coverage and QC
@@ -516,7 +556,7 @@ while the log carries later model-change judgment. Log a change that alters what
 the model *is* or *how it judges*; do **not** log Markdown-body wording, typo,
 or formatting changes, nor evaluated-source fixes that leave the model
 unchanged. Write one entry per coherent change (a confirmed recommendation apply
-or model-authoring change), not one per field touched. The meaningful-change
+or direct model-authoring change), not one per field touched. The meaningful-change
 taxonomy is in
 [`guides/authoring/quality-log.md`](guides/authoring/quality-log.md).
 
