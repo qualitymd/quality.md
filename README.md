@@ -66,6 +66,46 @@ See [QUALITY.md](./QUALITY.md) for how this project models and evaluates quality
 
 ## Why QUALITY.md
 
+### Engineer Quality Loops
+
+AI work is shifting from prompting individual agents to designing stacked loops
+that prompt, evaluate, and improve them. QUALITY.md gives those loops a durable
+quality signal: an explicit model of what good means, evidence of where the work
+stands, and recommendations that can become the next unit of action.
+
+That matters because quality judgment is often the scarce part of AI-assisted
+work. Better token throughput helps only when the surrounding loop knows what to
+aim at, how to judge progress, and when to raise the bar. QUALITY.md moves that
+judgment into a shared artifact that teams and agents can inspect, apply, and
+improve over time.
+
+QUALITY.md supports quality loops at three levels:
+
+- **Outer loop — quality taste and model stewardship.** Teams and agents refine
+  `QUALITY.md` from lower-loop observations, external feedback, stakeholder
+  judgment, and taste. The model gets sharper as the work teaches you what
+  quality really requires.
+
+- **Middle loop — evaluation, review, and routing.** `/quality evaluate` turns
+  the model into findings and actionable recommendations. Review turns those
+  recommendations into judgment: what to act on now, what to hand off to GitHub,
+  Linear, or another work system, what to defer, and where the quality signal
+  itself needs to improve.
+
+- **Inner loop — action against the quality signal.** Agents or people act on
+  accepted recommendations: applying fixes, improving docs, tightening tests,
+  updating the model, or using `/quality review` to supervise the work before
+  accepting it.
+
+The value is leverage: when the inner loop gets faster, QUALITY.md helps teams
+move quality judgment up a loop instead of rediscovering it in every prompt,
+review, and handoff.
+
+> The three-loop framing and the term *middle loop* draw on Annie Vella,
+> *[The Middle Loop](https://annievella.com/posts/the-middle-loop/)*. The
+> loop-engineering framing also draws on Latent Space,
+> *[Loopcraft: The Art of Stacking Loops](https://www.latent.space/p/ainews-loopcraft-the-art-of-stacking)*.
+
 ### Manage Quality Debt
 
 As work changes faster, quality erodes quietly unless expectations stay visible
