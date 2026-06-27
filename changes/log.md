@@ -4,6 +4,13 @@
 
 - **In-Review**: Repaired
   [0152 - Release Reliability](0152-release-reliability.md) after the
+  `v0.25.2` release workflow proved that the workflow token cannot read the
+  Homebrew tap through the cross-repo contents API during verification. The
+  verifier now reads the public raw cask URL, and `v0.25.2` was manually
+  verified and published after the Homebrew/npm jobs succeeded.
+
+- **In-Review**: Repaired
+  [0152 - Release Reliability](0152-release-reliability.md) after the
   `v0.25.1` release workflow proved that GitHub's tag-specific release endpoint
   can return 404 for draft releases. Release scripts now fall back to listing
   releases by `tag_name`, the Homebrew updater avoids token-dependent clone, and

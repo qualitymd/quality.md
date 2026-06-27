@@ -5,6 +5,27 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.25.3 - 2026-06-27
+
+### Packaging
+
+- Release verification now reads the Homebrew cask from the public raw tap URL
+  instead of the cross-repo GitHub contents API, fixing the `v0.25.2`
+  draft-stage verifier failure under the workflow token.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.3` continues to require the `qualitymd` CLI
+  `0.25.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.25.3`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.3`, requires `qualitymd >=0.25.0 <0.26.0`
+
 ## v0.25.2 - 2026-06-27
 
 ### Packaging

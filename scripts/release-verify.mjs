@@ -10,8 +10,8 @@ import {
   currentPlatformTarget,
   downloadGitHubAssetFile,
   downloadGitHubAssetText,
+  downloadText,
   expectedReleaseAssets,
-  githubMaybeJSON,
   githubReleaseByTag,
   launcherPackage,
   output,
@@ -100,11 +100,10 @@ async function waitForPackageVersion(pkg, version) {
 }
 
 async function verifyHomebrew(version, checksums) {
-  const response = await githubMaybeJSON("/repos/qualitymd/homebrew-tap/contents/Casks/qualitymd.rb");
-  if (!response.ok) {
-    throw new Error(`could not read Homebrew cask: ${response.status}`);
-  }
-  const content = Buffer.from(response.json.content, "base64").toString("utf8");
+  const content = await downloadText(
+    "https://raw.githubusercontent.com/qualitymd/homebrew-tap/main/Casks/qualitymd.rb",
+    { token: "" },
+  );
   if (!content.includes(`version "${version}"`)) {
     throw new Error(`Homebrew cask does not declare version ${version}`);
   }
