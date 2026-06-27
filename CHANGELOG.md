@@ -5,6 +5,27 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.25.4 - 2026-06-27
+
+### Packaging
+
+- The release workflow's final publish job now passes an explicit GitHub
+  repository to `gh release edit`, fixing the `v0.25.3` publish step when the job
+  has no checked-out git repository.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.4` continues to require the `qualitymd` CLI
+  `0.25.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.25.4`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.4`, requires `qualitymd >=0.25.0 <0.26.0`
+
 ## v0.25.3 - 2026-06-27
 
 ### Packaging

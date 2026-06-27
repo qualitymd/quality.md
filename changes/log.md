@@ -4,6 +4,13 @@
 
 - **In-Review**: Repaired
   [0152 - Release Reliability](0152-release-reliability.md) after the
+  `v0.25.3` release workflow verified all release channels but failed the final
+  publish job because `gh release edit` had no checked-out repository context.
+  The workflow now passes `--repo qualitymd/quality.md`; `v0.25.3` was manually
+  published after verification passed.
+
+- **In-Review**: Repaired
+  [0152 - Release Reliability](0152-release-reliability.md) after the
   `v0.25.2` release workflow proved that the workflow token cannot read the
   Homebrew tap through the cross-repo contents API during verification. The
   verifier now reads the public raw cask URL, and `v0.25.2` was manually
