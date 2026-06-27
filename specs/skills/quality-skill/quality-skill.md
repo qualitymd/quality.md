@@ -572,10 +572,15 @@ Scale criteria, weights, required margin, scope, or apex.
 
 Before mutating `QUALITY.md` through direct model authoring, the skill **MUST**
 present a lightweight intent checkpoint that states the inferred intent, the
-intended edit target, important boundaries, and whether a quality-log entry is
-expected. The checkpoint **MUST** invite corrections or additional concerns,
-goals, needs, worries, and constraints in conversational terms, and **MUST** make
-a short approval path explicit. When the checkpoint clearly names the mutation,
+planned change, the value prop, important boundaries, and whether a quality-log
+entry is expected. The planned change **SHOULD** be phrased in simple
+conversational prose, preferably with a `so that` value-prop clause when it fits.
+The skill **SHOULD** use numbered planned-action lists only when a multi-part
+edit would be hard to scan in prose. The checkpoint **MUST** invite corrections
+or additional concerns, goals, needs, worries, edge cases, naming preferences,
+scope boundaries, and constraints in welcoming conversational terms, and
+**MUST** make a short approval path explicit. When the checkpoint clearly names
+the mutation,
 `looks good` or an equivalent clear approval **MUST** count as explicit
 confirmation to proceed. After presenting the checkpoint, the skill **MUST** stop
 and wait for the user's response before mutating. It **MUST NOT** ask what the

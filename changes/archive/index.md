@@ -608,3 +608,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0139 — Real Review Gates](0139-real-review-gates.md) - makes feedback
   invitations real gates in the shared UX guide and `/quality` direct authoring
   (`Done`).
+- [0140 — Casual Review Gate Wording](0140-casual-review-gate-wording.md) -
+  makes direct `QUALITY.md` review gates state the planned change and value prop
+  in simple conversational prose (`Done`).

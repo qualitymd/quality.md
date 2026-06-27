@@ -2,6 +2,13 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0140 - Casual Review Gate
+  Wording.
+  Direct model authoring checkpoints now use a plain "Here's what I'm planning
+  to do" plan, name the value prop, invite feedback with "what should I adjust or
+  watch out for", and keep `looks good` as the short approval path before
+  mutation.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0139 - Real Review Gates.
   Direct model authoring now acknowledges long model/guidance reads before they
   begin, phrases the intended-edit checkpoint as a review gate, waits for

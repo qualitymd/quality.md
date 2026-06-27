@@ -4,6 +4,12 @@
 
 - **Revision**: Updated the durable
   [authoring guide family](authoring.md) for
+  [0140 - Casual Review Gate Wording](../../../../changes/archive/0140-casual-review-gate-wording.md).
+  Direct-edit guidance now preserves and states the planned change and value
+  prop before inviting feedback as a review gate.
+
+- **Revision**: Updated the durable
+  [authoring guide family](authoring.md) for
   [0139 - Real Review Gates](../../../../changes/archive/0139-real-review-gates.md).
   Direct-edit guidance now treats invitations for concerns, goals, needs,
   worries, constraints, or `looks good` as review gates that wait for user

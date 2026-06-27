@@ -3,6 +3,14 @@
 ## 2026-06-27
 
 - **Revision**: Updated
+  [Designing agent-mediated UX](guides/agent-mediated-ux.md) with casual
+  review-gate wording for
+  [0140 - Casual Review Gate Wording](../changes/archive/0140-casual-review-gate-wording.md).
+  Review gates now prefer a plain "Here's what I'm planning to do" plan with a
+  visible value prop, a welcoming feedback invitation, and the same
+  wait-before-mutation rule.
+
+- **Revision**: Updated
   [Designing agent-mediated UX](guides/agent-mediated-ux.md) with review-gate
   guidance for
   [0139 - Real Review Gates](../changes/archive/0139-real-review-gates.md).

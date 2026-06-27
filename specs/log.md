@@ -3,6 +3,13 @@
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for
+  [0140 - Casual Review Gate Wording](../changes/archive/0140-casual-review-gate-wording.md).
+  The `/quality` skill specs now require direct model-authoring checkpoints to
+  state the planned change and value prop in simple prose, keep important
+  boundaries and quality-log routing visible, and invite welcoming feedback
+  before waiting to mutate.
+
+- **Revision**: Implemented durable spec changes for
   [0139 - Real Review Gates](../changes/archive/0139-real-review-gates.md).
   The `/quality` skill specs now require direct model authoring to acknowledge
   long model/guidance reads before they begin, treat intent checkpoints as review

@@ -63,11 +63,13 @@ once that doctrine lives in a routed sub-guide.
 For direct `QUALITY.md` edit requests, the entry guide **MUST** tell agents to
 infer the intended change from the request and current model before asking
 follow-up, and to preserve the user's intent, model or body target, rationale,
-expected judgment effect, unresolved unknowns, and quality-log routing. It
-**SHOULD** tell agents to ask follow-up only when those considerations would
-materially change the edit. It **MUST** treat invitations for concerns, goals,
-needs, worries, constraints, or `looks good` as review gates that wait for a user
-response before mutation.
+planned change, value prop, expected judgment effect, unresolved unknowns, and
+quality-log routing. It **SHOULD** tell agents to ask follow-up only when those
+considerations would materially change the edit. It **MUST** tell agents to state
+the intended edit in simple planned-change prose and name the value prop before
+inviting feedback. It **MUST** treat invitations for concerns, goals, needs,
+worries, edge cases, naming preferences, scope boundaries, constraints, or
+`looks good` as review gates that wait for a user response before mutation.
 
 ## Child guide contract
 

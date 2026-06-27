@@ -2,6 +2,11 @@
 
 ## 2026-06-27
 
+- **Revision**: Updated [Authoring QUALITY.md](authoring.md) for 0140 - Casual
+  Review Gate Wording.
+  Runtime authoring guidance now preserves and states the planned change and
+  value prop before inviting direct-edit feedback as a review gate.
+
 - **Revision**: Updated [Authoring QUALITY.md](authoring.md) for 0139 - Real
   Review Gates.
   Runtime authoring guidance now treats direct-edit invitations for concerns,

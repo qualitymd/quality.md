@@ -241,16 +241,23 @@ criteria, weights, required margin, scope, or apex. Do not use a fixed full
 questionnaire for routine direct edits.
 
 Before mutating `QUALITY.md` through direct model authoring, present a lightweight
-intent checkpoint that names the intended edit and invites adjustment:
+intent checkpoint that names the inferred intent, states the planned change and
+value prop in simple prose, and invites adjustment. Use numbered planned actions
+only when a multi-part edit would be hard to scan as prose:
 
 ```text
 I’m reading this as: <plain-language intent>.
 
-I’ll update <QUALITY.md target>, keep <important boundary> unchanged, and
-<write/not write> a quality-log entry because <reason>.
+Here’s what I’m planning to do:
 
-Anything you want adjusted before I make that edit? You can say `looks good`, or
-tell me any concerns, goals, needs, worries, or constraints I should account for.
+<simple common-sense prose of the change>, so that <value prop>.
+
+<Important boundary and quality-log decision, when relevant.>
+
+Before I make the edit, what should I adjust or watch out for?
+
+You can say `looks good`, or share any concerns, goals, edge cases, naming
+preferences, scope boundaries, or anything I may be missing.
 ```
 
 When the checkpoint clearly names the mutation, `looks good` or an equivalent

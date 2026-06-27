@@ -348,18 +348,28 @@ Distinguish three interaction shapes:
   mutating.
 
 When a review gate authorizes a content or model edit, it should state the
-inferred intent, the intended edit, important boundaries, and how the user can
-approve or adjust it. For example:
+inferred intent, then describe the planned change in simple conversational prose
+with a visible value prop. Prefer a natural `so that` clause when it fits:
+the user can correct the goal as well as the mechanics. Keep important
+boundaries, logging decisions, and approval paths visible without turning the
+gate into a formal questionnaire. For example:
 
 ```text
-I’m reading this as: add a model-wide Security factor at the root, then connect
-descendant security Requirements to that root Factor.
+I’m reading this as: add root-level Security coverage.
+
+Here’s what I’m planning to do:
+
+I’ll add Security as a model-wide Factor and connect descendant security-related
+Requirements to it where the model supports that, so that security findings from
+child Areas can contribute to root-level judgment.
 
 I’ll keep the existing child Security Factors in place and write one quality-log
 entry because this changes what the model judges.
 
-Anything you want adjusted before I make that edit? You can say `looks good`, or
-name any concern, goal, need, or constraint.
+Before I make the edit, what should I adjust or watch out for?
+
+You can say `looks good`, or share any concerns, goals, edge cases, naming
+preferences, scope boundaries, or anything I may be missing.
 ```
 
 After this block, stop. If the agent should proceed without waiting, do not ask
@@ -375,6 +385,10 @@ rating criteria changes, scope shifts, or removal of coverage — prefer a revie
 gate even when the intent seems clear. Clear intent reduces follow-up questions;
 it does not remove the user's chance to catch a wrong inference before the
 mutation.
+
+Use numbered planned-action lists only when the edit has multiple independent
+parts that would be hard to scan in prose. The default review gate is a short
+plain-language plan, not a task list.
 
 ## Decision gates
 
@@ -511,6 +525,8 @@ Before shipping an agent-mediated workflow, check:
   than a silent runway.
 - Any feedback invitation is a real gate: the agent waits after asking for
   adjustments, concerns, or `looks good`.
+- Content and model review gates state the planned change in simple prose, name
+  the value prop, and invite feedback before mutation.
 - Mutation gates lead with the question, render choices as a separated block,
   cap supporting fields at about three, and state the change, reason, and done
   criterion.

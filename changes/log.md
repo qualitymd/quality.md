@@ -3,6 +3,30 @@
 ## 2026-06-27
 
 - **Done**: Implemented and archived
+  [0140 - Casual Review Gate Wording](archive/0140-casual-review-gate-wording.md).
+  Direct `QUALITY.md` review gates now use a casual "Here's what I'm planning to
+  do" checkpoint with a visible value prop, welcoming feedback wording, and the
+  same real wait-before-mutation rule. `mise run fmt-md-check` and
+  `mise run check` pass.
+
+- **In-Review**: Completed implementation for
+  [0140 - Casual Review Gate Wording](archive/0140-casual-review-gate-wording.md).
+  Shared UX guidance and `/quality` direct authoring now use a casual "Here's
+  what I'm planning to do" checkpoint with a visible value prop, a welcoming
+  feedback invitation, and the real wait-before-mutation rule. Durable skill
+  specs, authoring guides, logs, and release notes are aligned.
+  `mise run fmt-md-check` passes.
+
+- **In-Progress**: Created and advanced
+  [0140 - Casual Review Gate Wording](archive/0140-casual-review-gate-wording.md) with
+  its
+  [functional spec](archive/0140-casual-review-gate-wording/spec.md) and
+  [design doc](archive/0140-casual-review-gate-wording/design.md). The case updates
+  shared UX guidance and `/quality` direct authoring so review gates state
+  "Here's what I'm planning to do", name the value prop, and invite feedback in a
+  more conversational way while still waiting before mutation.
+
+- **Done**: Implemented and archived
   [0139 - Real Review Gates](archive/0139-real-review-gates.md).
   The shared agent-mediated UX guide now distinguishes informational previews,
   review gates, and decision gates; requires quick acknowledgement before long
