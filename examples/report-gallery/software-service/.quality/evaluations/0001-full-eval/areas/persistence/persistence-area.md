@@ -6,10 +6,13 @@ data:
   - data/areas/persistence/area-analysis-result.json
   - data/areas/persistence/factors/integrity/factor-analysis-result.json
   - data/areas/persistence/factors/recoverability/factor-analysis-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
+  - data/advice/recommendation-ranking-result.json
   - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
   - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
+  - data/advice/recommendations/rec-002/recommendation-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
 ---
 
 # Area: Ledger Persistence
@@ -28,18 +31,13 @@ Summary:
 
 Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 
-## Factors
+## Area / Factor Breakdown
 
-| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |
+| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| [Integrity](factors/integrity/integrity-factor.md) | `persistence::integrity` | 🔵 Target | — | — |
-| [Recoverability](factors/recoverability/recoverability-factor.md) | `persistence::recoverability` | 🟡 Minimum | — | — |
-
-## Child Areas
-
-| Area | Path | Local Rating | + Child Areas Rating | Factors |
-| --- | --- | --- | --- | --- |
-| (no Child Areas) |  |  |  |  |
+| **[Ledger Persistence](persistence-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ 🧩 [Integrity](factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ 🧩 [Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
 ## Requirements
 

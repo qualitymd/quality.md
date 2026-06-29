@@ -6,10 +6,13 @@ data:
   - data/areas/api/area-analysis-result.json
   - data/areas/api/factors/correctness/factor-analysis-result.json
   - data/areas/api/factors/operability/factor-analysis-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
+  - data/advice/recommendation-ranking-result.json
   - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
   - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
+  - data/advice/recommendations/rec-001/recommendation-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
 ---
 
 # Area: Public API
@@ -28,18 +31,13 @@ Summary:
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
-## Factors
+## Area / Factor Breakdown
 
-| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |
+| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| [Correctness](factors/correctness/correctness-factor.md) | `api::correctness` | 🟡 Minimum | — | — |
-| [Operability](factors/operability/operability-factor.md) | `api::operability` | 🔵 Target | — | — |
-
-## Child Areas
-
-| Area | Path | Local Rating | + Child Areas Rating | Factors |
-| --- | --- | --- | --- | --- |
-| (no Child Areas) |  |  |  |  |
+| **[Public API](api-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ 🧩 [Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ 🧩 [Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
 ## Requirements
 

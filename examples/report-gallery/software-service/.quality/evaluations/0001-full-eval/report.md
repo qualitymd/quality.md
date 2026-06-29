@@ -27,13 +27,6 @@ data:
   - data/areas/operations/factors/recoverability/factor-analysis-result.json
   - data/areas/persistence/factors/integrity/factor-analysis-result.json
   - data/areas/persistence/factors/recoverability/factor-analysis-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
 ---
 
 # Evaluation Report: Area: LedgerLite Service
@@ -48,7 +41,7 @@ Area: [LedgerLite Service](root-area.md)
 | --- | --- | --- |
 | 🟡 Minimum | full evaluation | 🔵 Medium / ⚪ None |
 
-Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Scope](#scope) - [Subject Reports](#subject-reports) - [Limits](#limits--incomplete-inputs)
+Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Area / Factor Breakdown](#area--factor-breakdown) - [Scope](#scope) - [Limits](#limits--incomplete-inputs)
 
 Summary:
 
@@ -78,7 +71,22 @@ Full findings index: [findings.md](findings.md)
 
 Full recommendation index: [recommendations.md](recommendations.md)
 
+## Area / Factor Breakdown
 
+| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| --- | --- | --- | --- | --- |
+| **[LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
+| ↳ [Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ 🧩 [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ 🧩 [Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ 🧩 [Operability](areas/api/factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [Operations](areas/operations/operations-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ 🧩 [Observability](areas/operations/factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ 🧩 [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [Ledger Persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ 🧩 [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ 🧩 [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
 ## Scope
 
@@ -88,39 +96,10 @@ Full recommendation index: [recommendations.md](recommendations.md)
 | Planned Area | `area:root` |
 | Factor Filter | (none) |
 
-## Subject Reports
-
-| Subject | Kind | Rating | Report |
-| --- | --- | --- | --- |
-| [LedgerLite Service](root-area.md) | 🗺️ Area | 🟡 Minimum | [root-area.md](root-area.md) |
-| [Agent Harness](areas/agent-harness/agent-harness-area.md) | 🗺️ Area | 🔵 Target | [agent-harness-area.md](areas/agent-harness/agent-harness-area.md) |
-| [Public API](areas/api/api-area.md) | 🗺️ Area | 🟡 Minimum | [api-area.md](areas/api/api-area.md) |
-| [Operations](areas/operations/operations-area.md) | 🗺️ Area | 🟡 Minimum | [operations-area.md](areas/operations/operations-area.md) |
-| [Ledger Persistence](areas/persistence/persistence-area.md) | 🗺️ Area | 🟡 Minimum | [persistence-area.md](areas/persistence/persistence-area.md) |
-| [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 🧩 Factor | 🔵 Target | [agent-accessibility-factor.md](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) |
-| [Correctness](areas/api/factors/correctness/correctness-factor.md) | 🧩 Factor | 🟡 Minimum | [correctness-factor.md](areas/api/factors/correctness/correctness-factor.md) |
-| [Operability](areas/api/factors/operability/operability-factor.md) | 🧩 Factor | 🔵 Target | [operability-factor.md](areas/api/factors/operability/operability-factor.md) |
-| [Observability](areas/operations/factors/observability/observability-factor.md) | 🧩 Factor | 🔵 Target | [observability-factor.md](areas/operations/factors/observability/observability-factor.md) |
-| [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🧩 Factor | 🟡 Minimum | [recoverability-factor.md](areas/operations/factors/recoverability/recoverability-factor.md) |
-| [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🧩 Factor | 🔵 Target | [integrity-factor.md](areas/persistence/factors/integrity/integrity-factor.md) |
-| [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🧩 Factor | 🟡 Minimum | [recoverability-factor.md](areas/persistence/factors/recoverability/recoverability-factor.md) |
-| [agent guidance routes quality evaluation work](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) | 📋 Requirement | 🔵 Target | [evaluation-entrypoint-requirement.md](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) |
-| [mutation endpoints are idempotent under retry](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 📋 Requirement | 🟡 Minimum | [idempotent-mutations-requirement.md](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md) |
-| [error responses are predictable for callers](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 📋 Requirement | 🔵 Target | [predictable-error-contracts-requirement.md](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) |
-| [health signals explain customer impact](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 📋 Requirement | 🔵 Target | [customer-impact-telemetry-requirement.md](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) |
-| [recovery drills have current owners](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 📋 Requirement | 🟡 Minimum | [recovery-drill-ownership-requirement.md](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) |
-| [ledger mutations preserve balance invariants](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md) | 📋 Requirement | 🔵 Target | [balance-invariants-requirement.md](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md) |
-| [migrations have rehearsed rollback paths](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md) | 📋 Requirement | 🟡 Minimum | [migration-rollback-requirement.md](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md) |
-| [Findings](findings.md) | 🔝 Findings | — | [findings.md](findings.md) |
-| [Recommendations](recommendations.md) | Recommendations | — | [recommendations.md](recommendations.md) |
-| [Recommendation rec-001](recommendations/001-tighten-the-idempotency-replay-contract.md) | Recommendation | — | [001-tighten-the-idempotency-replay-contract.md](recommendations/001-tighten-the-idempotency-replay-contract.md) |
-| [Recommendation rec-002](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | Recommendation | — | [002-rehearse-migration-rollback-after-schema-changes.md](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) |
-| [Recommendation rec-003](recommendations/003-assign-a-current-recovery-drill-owner.md) | Recommendation | — | [003-assign-a-current-recovery-drill-owner.md](recommendations/003-assign-a-current-recovery-drill-owner.md) |
-
 ## Coverage
 
 - Root Area report: [root-area.md](root-area.md)
-- Generated subject reports: 24
+- Generated reports: 24
 
 ## Limits & Incomplete Inputs
 

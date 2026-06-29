@@ -681,3 +681,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0160 — Report Body Rating Drivers](0160-report-body-rating-drivers.md) - keeps
   rating drivers in structured Evaluation data while removing standalone
   Markdown driver sections from generated Evaluation reports (`Done`).
+- [0161 — Area / Factor Breakdown Reports](0161-area-factor-breakdown.md) -
+  replaces flat generated subject-report tables and split Area structure tables
+  with compact Area / Factor breakdowns in generated Evaluation reports
+  (`Done`).

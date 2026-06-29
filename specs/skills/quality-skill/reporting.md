@@ -80,9 +80,15 @@ from other generated reports as source data.
 
 Area and Factor reports **MUST NOT** render `Findings` sections or standalone
 `Rating Drivers` sections. Their human-facing roll-up explanation belongs in
-summary, ratings, confidence, limits, incomplete inputs, and subject breakdown
-tables, while structured `ratingDrivers` remain available through the payloads
-listed in report frontmatter.
+summary, ratings, confidence, limits, incomplete inputs, and breakdown tables,
+while structured `ratingDrivers` remain available through the payloads listed in
+report frontmatter.
+
+Run and Area reports **MUST** render the Area / Factor Breakdown required by the
+[Evaluation report tree](../../evaluation/reports/report-tree.md). The breakdown
+is the human-facing Area / Factor structure and status surface; the
+machine-readable generated-report manifest remains
+`data/evaluation-output-result.json`.
 
 Reports **MUST** preserve secret-handling boundaries: cite locator and
 credential type only, never secret values or unsafe raw content.
@@ -113,8 +119,9 @@ report-level navigation, and report-specific header summary required by the
 **MUST NOT** duplicate report-level source-data links in header `Data` columns;
 the report frontmatter `data` field owns those source-data pointers.
 
-Area reports **MUST** link to local root Factor reports, local Requirement
-reports, and direct Child Area reports.
+Area reports **MUST** link to local and descendant Area and Factor reports
+through the Area / Factor Breakdown, and to local Requirement reports through
+their Requirement table.
 
 Factor reports **MUST** link to their owning Area report when that Area report
 was generated, parent Factor report when present, Sub-Factor reports, and

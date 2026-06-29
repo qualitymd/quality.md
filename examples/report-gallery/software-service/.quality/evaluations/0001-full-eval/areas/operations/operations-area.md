@@ -6,10 +6,13 @@ data:
   - data/areas/operations/area-analysis-result.json
   - data/areas/operations/factors/observability/factor-analysis-result.json
   - data/areas/operations/factors/recoverability/factor-analysis-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
+  - data/advice/recommendation-ranking-result.json
   - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
   - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
+  - data/advice/recommendations/rec-003/recommendation-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
 ---
 
 # Area: Operations
@@ -28,18 +31,13 @@ Summary:
 
 Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 
-## Factors
+## Area / Factor Breakdown
 
-| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |
+| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| [Observability](factors/observability/observability-factor.md) | `operations::observability` | 🔵 Target | — | — |
-| [Recoverability](factors/recoverability/recoverability-factor.md) | `operations::recoverability` | 🟡 Minimum | — | — |
-
-## Child Areas
-
-| Area | Path | Local Rating | + Child Areas Rating | Factors |
-| --- | --- | --- | --- | --- |
-| (no Child Areas) |  |  |  |  |
+| **[Operations](operations-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ 🧩 [Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ 🧩 [Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
 ## Requirements
 

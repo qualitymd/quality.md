@@ -94,7 +94,8 @@ Keep rating drivers in structured Evaluation payloads instead of rendering
 standalone `Rating Drivers` body sections. If a reader or agent needs the full
 rating trace, the report's `data` frontmatter should point them to the relevant
 analysis payload; the visible body should foreground summaries, ratings,
-findings, recommendations, subject breakdowns, limits, and incomplete inputs.
+findings, recommendations, Area / Factor breakdowns, limits, and incomplete
+inputs.
 
 ### Report-specific headers
 
@@ -140,8 +141,8 @@ Long pages should add a `Jump to:` line after the header area. Useful targets:
 
 - `Top Findings`;
 - `Top Recommendations`;
+- `Area / Factor Breakdown`;
 - `Scope`;
-- `Subject Reports`;
 - `Coverage`;
 - `Limits & Incomplete Inputs`;
 - `Findings Summary`;
@@ -263,7 +264,15 @@ Summary:
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Scope](#scope) - [Subject Reports](#subject-reports) - [Limits](#limits--incomplete-inputs)
+Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Area / Factor Breakdown](#area--factor-breakdown) - [Scope](#scope) - [Limits](#limits--incomplete-inputs)
+
+## Area / Factor Breakdown
+
+| Area / Factor                                                           | Overall Rating | Local Rating | Findings | Recommendations |
+| ----------------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
+| **[LedgerLite Service](root-area.md)**                                  | Minimum        | —            | 7        | 3               |
+| ↳ [Public API](areas/api/api-area.md)                                   | Minimum        | Minimum      | 2        | 1               |
+| ↳ 🧩 [Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 ```
 
 ### Index reports
@@ -299,6 +308,14 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | Overall Rating | Local Rating | Confidence      |
 | -------------- | ------------ | --------------- |
 | Minimum        | Minimum      | Medium / Medium |
+
+## Area / Factor Breakdown
+
+| Area / Factor                                                 | Overall Rating | Local Rating | Findings | Recommendations |
+| ------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
+| **[Public API](api-area.md)**                                 | Minimum        | Minimum      | 2        | 1               |
+| ↳ 🧩 [Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
+| ↳ 🧩 [Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
 ```
 
 ### Factor reports

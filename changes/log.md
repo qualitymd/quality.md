@@ -3,6 +3,39 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0161 - Area / Factor Breakdown Reports](archive/0161-area-factor-breakdown.md).
+  Generated run and Area reports now render Area / Factor Breakdown tables with
+  Area/Factor links, overall and local ratings, ranked finding counts, and
+  ranked recommendation counts; the old `Subject Reports`, Area `Factors`, and
+  Area `Child Areas` body sections are removed.
+
+- **In-Review**: Completed implementation for
+  [0161 - Area / Factor Breakdown Reports](archive/0161-area-factor-breakdown.md).
+  The renderer, durable report specs, report design guide, focused tests, and
+  generated report-gallery examples are aligned with the shared Area / Factor
+  Breakdown report section.
+
+- **In-Progress**: Advanced
+  [0161 - Area / Factor Breakdown Reports](archive/0161-area-factor-breakdown.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable report specs, tests, and report-gallery
+  output.
+
+- **Design**: Added the
+  [design doc](archive/0161-area-factor-breakdown/design.md) for
+  [0161 - Area / Factor Breakdown Reports](archive/0161-area-factor-breakdown.md). The
+  design renders a shared breakdown from Evaluation artifacts rather than the
+  generated report-output manifest, with ranked finding and recommendation
+  counts resolved per Area or Factor row.
+
+- **Draft**: Created
+  [0161 - Area / Factor Breakdown Reports](archive/0161-area-factor-breakdown.md)
+  with its
+  [functional spec](archive/0161-area-factor-breakdown/spec.md). The case
+  replaces flat generated subject-report tables and split Area structure tables
+  with a compact Area / Factor breakdown in generated Evaluation reports.
+
+- **Done**: Implemented and archived
   [0160 - Report Body Rating Drivers](archive/0160-report-body-rating-drivers.md).
   Generated run, Area, and Factor reports no longer render standalone
   rating-driver body sections; structured rating drivers remain in source

@@ -5,8 +5,10 @@ data:
   - data/run-manifest.json
   - data/areas/agent-harness/area-analysis-result.json
   - data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
+  - data/advice/recommendation-ranking-result.json
   - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
 ---
 
 # Area: Agent Harness
@@ -25,17 +27,12 @@ Summary:
 
 Agent guidance exposes the quality evaluation entry point clearly.
 
-## Factors
+## Area / Factor Breakdown
 
-| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |
+| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| [Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | `agent-harness::agent-accessibility` | 🔵 Target | — | — |
-
-## Child Areas
-
-| Area | Path | Local Rating | + Child Areas Rating | Factors |
-| --- | --- | --- | --- | --- |
-| (no Child Areas) |  |  |  |  |
+| **[Agent Harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ 🧩 [Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
 ## Requirements
 

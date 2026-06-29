@@ -320,6 +320,13 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if strings.Contains(string(report), "Overall Rating | target") {
 		t.Fatalf("root-area.md = %s, want rating title instead of level ID", report)
 	}
+	if !strings.Contains(string(report), "## Area / Factor Breakdown") ||
+		!strings.Contains(string(report), "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |") ||
+		!strings.Contains(string(report), "| **[Test model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |") ||
+		strings.Contains(string(report), "## Factors") ||
+		strings.Contains(string(report), "## Child Areas") {
+		t.Fatalf("root-area.md = %s, want Area / Factor breakdown without legacy Area tables", report)
+	}
 	if build.RatingResult.Level != "target" {
 		t.Fatalf("BuildReport().RatingResult.Level = %q, want stable rating level ID", build.RatingResult.Level)
 	}
@@ -427,6 +434,14 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "| Rank | Recommendation | Area / Factors | Reason |")
 	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | The quality model stays aligned with the evaluated evidence and next bar. |")
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
+	assertContains(t, runReport, "## Area / Factor Breakdown")
+	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
+	assertContains(t, runReport, "| **[Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
+	assertContains(t, runReport, "| ↳ 🧩 [Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
+	assertContains(t, runReport, "| ↳ ↳ 🧩 [Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, runReport, "| ↳ [Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertNotContains(t, runReport, "## Subject Reports")
+	assertNotContains(t, runReport, "| Subject | Kind | Rating | Report |")
 
 	recommendationIndex := readReport(t, runPath, "recommendations.md")
 	assertContains(t, recommendationIndex, "type: Recommendation Index Report\n")
@@ -469,11 +484,16 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, rootReport, "## Rating Drivers")
 	assertNotContains(t, rootReport, "| Driver | Effect | Inputs |")
 	assertNotContains(t, rootReport, "Reliability analysis is the binding roll-up driver.")
-	assertContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
-	assertContains(t, rootReport, "| [Reliability](factors/reliability/reliability-factor.md) | `reliability` | 🔵 Target | 🔴 Below | [Latency](factors/reliability/factors/latency/latency-factor.md) 🔵 Target |")
-	assertContains(t, rootReport, "## Child Areas")
-	assertContains(t, rootReport, "| Area | Path | Local Rating | + Child Areas Rating | Factors |")
-	assertContains(t, rootReport, "| [Payments](areas/payments/payments-area.md) | `/payments` | 🔵 Target | — | — |")
+	assertContains(t, rootReport, "## Area / Factor Breakdown")
+	assertContains(t, rootReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
+	assertContains(t, rootReport, "| **[Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
+	assertContains(t, rootReport, "| ↳ 🧩 [Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
+	assertContains(t, rootReport, "| ↳ ↳ 🧩 [Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, rootReport, "| ↳ [Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertNotContains(t, rootReport, "## Factors")
+	assertNotContains(t, rootReport, "## Child Areas")
+	assertNotContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
+	assertNotContains(t, rootReport, "| Area | Path | Local Rating | + Child Areas Rating | Factors |")
 	assertContains(t, rootReport, "| [Has tests](requirements/has-tests/has-tests-requirement.md) | 🔵 Target | ✅ Assessed | [reliability](factors/reliability/reliability-factor.md) |")
 	assertContains(t, rootReport, "## Legend\n\n- `—` - not applicable or not recorded.")
 	assertNotContains(t, rootReport, "## Sub-Areas")
@@ -505,8 +525,11 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, factorReport, "| Details |")
 
 	paymentsReport := readReport(t, runPath, "areas/payments/payments-area.md")
-	assertContains(t, paymentsReport, "## Child Areas")
-	assertContains(t, paymentsReport, "| (no Child Areas) |  |  |  |  |")
+	assertContains(t, paymentsReport, "## Area / Factor Breakdown")
+	assertContains(t, paymentsReport, "| **[Payments](payments-area.md)** | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertNotContains(t, paymentsReport, "## Child Areas")
+	assertNotContains(t, paymentsReport, "| (no Child Areas) |  |  |  |  |")
+	assertNotContains(t, paymentsReport, "## Factors")
 	assertNotContains(t, paymentsReport, "Sub-Areas")
 
 	childFactorReport := readReport(t, runPath, "factors/reliability/factors/latency/latency-factor.md")

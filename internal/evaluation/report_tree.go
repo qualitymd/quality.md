@@ -624,14 +624,15 @@ func reportSourceData(paths ...string) []string {
 	return out
 }
 
-func runReportSourceData(artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport) []string {
+func runReportSourceData(artifacts *evaluationArtifacts, plan *evaluationReportPlan) []string {
 	paths := []string{
 		runManifestPath,
 		areaDataPath(plan.ScopedAreaID, "area-analysis-result.json"),
 	}
 	paths = append(paths, rankedFindingSourceData(artifacts, 10)...)
 	paths = append(paths, rankedRecommendationSourceData(artifacts, 10)...)
-	paths = append(paths, subjectReportSourceData(artifacts, reports)...)
+	paths = append(paths, areaFactorBreakdownSourceData(artifacts, plan.ScopedAreaID)...)
+	paths = append(paths, areaFactorBreakdownAdviceSourceData(artifacts, plan.ScopedAreaID)...)
 	return reportSourceData(paths...)
 }
 
@@ -674,53 +675,10 @@ func recommendationTraceSourceData(artifacts *evaluationArtifacts, rec map[strin
 	return reportSourceData(paths...)
 }
 
-func subjectReportSourceData(artifacts *evaluationArtifacts, reports []evaluationRenderedReport) []string {
-	var paths []string
-	for _, report := range reports {
-		if path := subjectReportRatingSourceData(artifacts, report); path != "" {
-			paths = append(paths, path)
-		}
-	}
-	return reportSourceData(paths...)
-}
-
-func subjectReportRatingSourceData(artifacts *evaluationArtifacts, report evaluationRenderedReport) string {
-	switch report.Kind {
-	case string(ReportKindArea):
-		if area := artifacts.Areas[areaKey(report.AreaID)]; area != nil && area.Analysis != nil {
-			return areaDataPath(report.AreaID, "area-analysis-result.json")
-		}
-	case string(ReportKindFactor):
-		if report.FactorID != nil {
-			if factor := artifacts.Factors[factorKey(*report.FactorID)]; factor != nil && factor.Analysis != nil {
-				return factorDataPath(*report.FactorID, "factor-analysis-result.json")
-			}
-		}
-	case string(ReportKindRequirement):
-		if report.RequirementID != nil {
-			if req := artifacts.Requirements[requirementKey(*report.RequirementID)]; req != nil && req.Rating != nil {
-				return requirementDataPath(*report.RequirementID, "requirement-rating-result.json")
-			}
-		}
-	}
-	return ""
-}
-
 func areaReportSourceData(artifacts *evaluationArtifacts, area *evaluationAreaArtifacts) []string {
 	paths := []string{runManifestPath}
-	if area.Analysis != nil {
-		paths = append(paths, areaDataPath(area.ID, "area-analysis-result.json"))
-	}
-	for _, factor := range artifacts.rootFactorsForArea(area.ID) {
-		if factor.Analysis != nil {
-			paths = append(paths, factorDataPath(factor.ID, "factor-analysis-result.json"))
-		}
-	}
-	for _, child := range artifacts.childAreas(area.ID) {
-		if child.Analysis != nil {
-			paths = append(paths, areaDataPath(child.ID, "area-analysis-result.json"))
-		}
-	}
+	paths = append(paths, areaFactorBreakdownSourceData(artifacts, area.ID)...)
+	paths = append(paths, areaFactorBreakdownAdviceSourceData(artifacts, area.ID)...)
 	for _, req := range artifacts.requirementsForArea(area.ID) {
 		if req.Rating != nil {
 			paths = append(paths, requirementDataPath(req.ID, "requirement-rating-result.json"))
@@ -728,6 +686,47 @@ func areaReportSourceData(artifacts *evaluationArtifacts, area *evaluationAreaAr
 		if req.Assessment != nil {
 			paths = append(paths, requirementDataPath(req.ID, "requirement-assessment-result.json"))
 		}
+	}
+	return reportSourceData(paths...)
+}
+
+func areaFactorBreakdownAdviceSourceData(artifacts *evaluationArtifacts, rootAreaID []string) []string {
+	paths := []string{
+		"data/advice/finding-ranking-result.json",
+		"data/advice/recommendation-ranking-result.json",
+	}
+	for _, row := range artifacts.rankedFindings() {
+		if row.Requirement == nil || !areaContains(rootAreaID, row.Requirement.ID.DeclaringArea) {
+			continue
+		}
+		path, _, ok := strings.Cut(row.Key, "#")
+		if ok {
+			paths = append(paths, path)
+		}
+	}
+	for _, item := range artifacts.rankedRecommendations() {
+		if !artifacts.recommendationMatchesArea(item.Recommendation, rootAreaID) {
+			continue
+		}
+		paths = append(paths, recommendationDataPath(firstString(item.Recommendation, "id")))
+		paths = append(paths, recommendationTraceSourceData(artifacts, item.Recommendation)...)
+	}
+	return reportSourceData(paths...)
+}
+
+func areaFactorBreakdownSourceData(artifacts *evaluationArtifacts, rootAreaID []string) []string {
+	var paths []string
+	for _, area := range artifacts.sortedAreas() {
+		if !areaContains(rootAreaID, area.ID) || area.Analysis == nil {
+			continue
+		}
+		paths = append(paths, areaDataPath(area.ID, "area-analysis-result.json"))
+	}
+	for _, factor := range artifacts.sortedFactors() {
+		if !areaContains(rootAreaID, factor.ID.DeclaringArea) || factor.Analysis == nil {
+			continue
+		}
+		paths = append(paths, factorDataPath(factor.ID, "factor-analysis-result.json"))
 	}
 	return reportSourceData(paths...)
 }
@@ -949,7 +948,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 		Heading:    "Evaluation Report: Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       runReportSourceData(artifacts, plan, reports),
+		Data:       runReportSourceData(artifacts, plan),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, plan.ScopedAreaID, reportPath),
 		},
@@ -966,8 +965,8 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 		JumpLinks: []reportJumpLink{
 			{Label: "Top Findings", Anchor: "#top-findings"},
 			{Label: "Top Recommendations", Anchor: "#top-recommendations"},
+			{Label: "Area / Factor Breakdown", Anchor: "#area--factor-breakdown"},
 			{Label: "Scope", Anchor: "#scope"},
-			{Label: "Subject Reports", Anchor: "#subject-reports"},
 			{Label: "Limits", Anchor: "#limits--incomplete-inputs"},
 		},
 	})
@@ -979,10 +978,9 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
 	b.WriteString("Full recommendation index: " + reportLink(reportPath, "recommendations.md", "recommendations.md") + "\n\n")
-	b.WriteString("\n\n## Scope\n\n")
+	writeAreaFactorBreakdownSection(&b, spec, artifacts, plan.ScopedAreaID, reportPath)
+	b.WriteString("## Scope\n\n")
 	writeEvaluationRunScope(&b, spec, plan)
-	b.WriteString("## Subject Reports\n\n")
-	writeEvaluationRunReportsTable(&b, spec, artifacts, reports, reportPath)
 	b.WriteString("## Coverage\n\n")
 	writeEvaluationRunCoverage(&b, artifacts, reports, reportPath)
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
@@ -1033,33 +1031,8 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
-	b.WriteString("\n\n## Factors\n\n")
-	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
-	if factors := artifacts.rootFactorsForArea(area.ID); len(factors) == 0 {
-		b.WriteString("| (no local Factors) |  |  |  |  |\n\n")
-	} else {
-		for _, factor := range factors {
-			factorLocal := scopedMap(factor.Analysis, "localAnalysis")
-			factorOverall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
-			children := artifacts.childFactors(factor.ID)
-			b.WriteString(md.TableRow(reportLink(reportPath, factorReportPath(factor.ID), factorTitle(spec, factor.ID)), md.Code(factorDisplayPath(factor.ID)), evaluationRatingLabel(spec, factorLocal), evaluationSubRatingCell(spec, factorOverall, len(children) > 0), factorList(children, spec, reportPath)))
-		}
-		b.WriteString("\n")
-	}
-	b.WriteString("## Child Areas\n\n")
-	b.WriteString("| Area | Path | Local Rating | + Child Areas Rating | Factors |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
-	if children := artifacts.childAreas(area.ID); len(children) == 0 {
-		b.WriteString("| (no Child Areas) |  |  |  |  |\n\n")
-	} else {
-		for _, child := range children {
-			childLocal := scopedMap(child.Analysis, "localAnalysis")
-			childOverall := scopedMap(child.Analysis, "localAndDescendantAnalysis")
-			b.WriteString(md.TableRow(reportLink(reportPath, areaReportPath(child.ID), areaTitle(spec, child.ID)), md.Code(areaDisplayPath(child.ID)), evaluationRatingLabel(spec, childLocal), evaluationSubRatingCell(spec, childOverall, len(artifacts.childAreas(child.ID)) > 0), factorList(artifacts.rootFactorsForArea(child.ID), spec, reportPath)))
-		}
-		b.WriteString("\n")
-	}
+	b.WriteString("\n\n")
+	writeAreaFactorBreakdownSection(&b, spec, artifacts, area.ID, reportPath)
 	b.WriteString("## Requirements\n\n")
 	b.WriteString("| Requirement | Rating | Status | Factors |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
@@ -1441,20 +1414,178 @@ func factorInScope(id factorID, plan *evaluationReportPlan) bool {
 	return false
 }
 
-func writeEvaluationRunReportsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reports []evaluationRenderedReport, reportPath string) {
-	b.WriteString("| Subject | Kind | Rating | Report |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
-	if len(reports) == 0 {
-		b.WriteString("| (no subject reports) |  |  |  |\n\n")
+func writeAreaFactorBreakdownSection(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, rootAreaID []string, reportPath string) {
+	b.WriteString("## Area / Factor Breakdown\n\n")
+	b.WriteString("| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
+	root := artifacts.Areas[areaKey(rootAreaID)]
+	if root == nil || root.Analysis == nil {
+		b.WriteString("| (no Area / Factor breakdown) |  |  |  |  |\n\n")
 		return
 	}
-	for _, report := range reports {
-		if report.Kind == string(ReportKindRun) {
+	writeAreaFactorBreakdownAreaRows(b, spec, artifacts, root, reportPath, 0, true)
+	b.WriteString("\n")
+}
+
+func writeAreaFactorBreakdownAreaRows(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, area *evaluationAreaArtifacts, reportPath string, depth int, root bool) {
+	local := scopedMap(area.Analysis, "localAnalysis")
+	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
+	title := areaFactorBreakdownTitle(reportPath, areaReportPath(area.ID), areaTitle(spec, area.ID), depth, root)
+	b.WriteString(md.TableRow(
+		title,
+		evaluationRatingLabel(spec, overall),
+		evaluationRatingLabel(spec, local),
+		fmt.Sprintf("%d", artifacts.areaFindingCount(area.ID)),
+		fmt.Sprintf("%d", artifacts.areaRecommendationCount(area.ID)),
+	))
+	for _, factor := range artifacts.rootFactorsForArea(area.ID) {
+		writeAreaFactorBreakdownFactorRows(b, spec, artifacts, factor, reportPath, depth+1)
+	}
+	for _, child := range artifacts.childAreas(area.ID) {
+		writeAreaFactorBreakdownAreaRows(b, spec, artifacts, child, reportPath, depth+1, false)
+	}
+}
+
+func writeAreaFactorBreakdownFactorRows(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, factor *evaluationFactorArtifacts, reportPath string, depth int) {
+	local := scopedMap(factor.Analysis, "localAnalysis")
+	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
+	title := areaFactorBreakdownFactorTitle(spec, reportPath, factor.ID, depth)
+	b.WriteString(md.TableRow(
+		title,
+		evaluationRatingLabel(spec, overall),
+		evaluationRatingLabel(spec, local),
+		fmt.Sprintf("%d", artifacts.factorFindingCount(factor.ID)),
+		fmt.Sprintf("%d", artifacts.factorRecommendationCount(factor.ID)),
+	))
+	for _, child := range artifacts.childFactors(factor.ID) {
+		writeAreaFactorBreakdownFactorRows(b, spec, artifacts, child, reportPath, depth+1)
+	}
+}
+
+func areaFactorBreakdownTitle(reportPath, targetPath, title string, depth int, root bool) string {
+	link := reportLink(reportPath, targetPath, title)
+	if root {
+		return "**" + link + "**"
+	}
+	return areaFactorIndent(depth) + link
+}
+
+func areaFactorBreakdownFactorTitle(spec *model.Spec, reportPath string, id factorID, depth int) string {
+	return areaFactorIndent(depth) + factorReportMarker() + " " + reportLink(reportPath, factorReportPath(id), factorTitle(spec, id))
+}
+
+func areaFactorIndent(depth int) string {
+	if depth <= 0 {
+		return ""
+	}
+	return strings.Repeat("↳ ", depth)
+}
+
+func factorReportMarker() string {
+	title := reportKindTitle(string(ReportKindFactor))
+	marker, _, ok := strings.Cut(title, " ")
+	if !ok {
+		return title
+	}
+	return marker
+}
+
+func (a *evaluationArtifacts) areaFindingCount(areaID []string) int {
+	count := 0
+	for _, row := range a.rankedFindings() {
+		if row.Requirement == nil {
 			continue
 		}
-		b.WriteString(md.TableRow(reportLink(reportPath, report.Path, reportSubjectTitle(spec, report)), reportKindTitle(report.Kind), reportSubjectRating(spec, artifacts, report), reportLink(reportPath, report.Path, filepath.Base(report.Path))))
+		if areaContains(areaID, row.Requirement.ID.DeclaringArea) {
+			count++
+		}
 	}
-	b.WriteString("\n")
+	return count
+}
+
+func (a *evaluationArtifacts) factorFindingCount(factor factorID) int {
+	count := 0
+	for _, row := range a.rankedFindings() {
+		if row.Requirement == nil {
+			continue
+		}
+		if requirementMatchesFactor(row.Requirement, factor) {
+			count++
+		}
+	}
+	return count
+}
+
+func (a *evaluationArtifacts) areaRecommendationCount(areaID []string) int {
+	count := 0
+	for _, item := range a.rankedRecommendations() {
+		if a.recommendationMatchesArea(item.Recommendation, areaID) {
+			count++
+		}
+	}
+	return count
+}
+
+func (a *evaluationArtifacts) factorRecommendationCount(factor factorID) int {
+	count := 0
+	for _, item := range a.rankedRecommendations() {
+		if a.recommendationMatchesFactor(item.Recommendation, factor) {
+			count++
+		}
+	}
+	return count
+}
+
+func (a *evaluationArtifacts) recommendationMatchesArea(rec map[string]any, areaID []string) bool {
+	for _, ref := range objectSlice(rec["traceRefs"]) {
+		for _, ctx := range a.recommendationTraceContexts(objectMap(ref)) {
+			if areaContains(areaID, ctx.AreaID) {
+				return true
+			}
+			for _, factor := range ctx.FactorIDs {
+				if areaContains(areaID, factor.DeclaringArea) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func (a *evaluationArtifacts) recommendationMatchesFactor(rec map[string]any, factor factorID) bool {
+	for _, ref := range objectSlice(rec["traceRefs"]) {
+		for _, ctx := range a.recommendationTraceContexts(objectMap(ref)) {
+			for _, traced := range ctx.FactorIDs {
+				if factorContains(factor, traced) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func requirementMatchesFactor(req *evaluationRequirementArtifacts, factor factorID) bool {
+	if !sameStrings(req.ID.DeclaringArea, factor.DeclaringArea) {
+		return false
+	}
+	for _, linked := range requirementFactorIDs(req) {
+		parsed, err := parseRequirementFactorID(req.ID.DeclaringArea, linked)
+		if err == nil && factorContains(factor, parsed) {
+			return true
+		}
+	}
+	return false
+}
+
+func areaContains(parent, child []string) bool {
+	return len(child) >= len(parent) && sameStrings(child[:len(parent)], parent)
+}
+
+func factorContains(parent, child factorID) bool {
+	return sameStrings(parent.DeclaringArea, child.DeclaringArea) &&
+		len(child.Path) >= len(parent.Path) &&
+		sameStrings(child.Path[:len(parent.Path)], parent.Path)
 }
 
 func writeEvaluationRunCoverage(b *strings.Builder, artifacts *evaluationArtifacts, reports []evaluationRenderedReport, reportPath string) {
@@ -1463,7 +1594,7 @@ func writeEvaluationRunCoverage(b *strings.Builder, artifacts *evaluationArtifac
 	} else {
 		b.WriteString("- Root Area was not evaluated in this run.\n")
 	}
-	fmt.Fprintf(b, "- Generated subject reports: %d\n\n", len(reports))
+	fmt.Fprintf(b, "- Generated reports: %d\n\n", len(reports))
 	_ = artifacts
 }
 
@@ -1908,51 +2039,6 @@ func impactTitle(value string) string {
 	default:
 		return humanizeEnum(value)
 	}
-}
-
-func reportSubjectTitle(spec *model.Spec, report evaluationRenderedReport) string {
-	switch report.Kind {
-	case string(ReportKindArea):
-		return areaTitle(spec, report.AreaID)
-	case string(ReportKindFactor):
-		return factorTitle(spec, *report.FactorID)
-	case string(ReportKindRequirement):
-		return requirementTitle(spec, *report.RequirementID)
-	case string(ReportKindFindings):
-		return "Findings"
-	case string(ReportKindAdviceIndex):
-		return "Recommendations"
-	case string(ReportKindAdvice):
-		return "Recommendation " + report.RecommendationID
-	default:
-		return "Evaluation Report"
-	}
-}
-
-func reportSubjectRating(spec *model.Spec, artifacts *evaluationArtifacts, report evaluationRenderedReport) string {
-	switch report.Kind {
-	case string(ReportKindArea):
-		if area := artifacts.Areas[areaKey(report.AreaID)]; area != nil {
-			return evaluationRatingLabel(spec, scopedMap(area.Analysis, "localAndDescendantAnalysis"))
-		}
-	case string(ReportKindFactor):
-		if report.FactorID != nil {
-			if factor := artifacts.Factors[factorKey(*report.FactorID)]; factor != nil {
-				return evaluationRatingLabel(spec, scopedMap(factor.Analysis, "localAndDescendantAnalysis"))
-			}
-		}
-	case string(ReportKindRequirement):
-		if report.RequirementID != nil {
-			if req := artifacts.Requirements[requirementKey(*report.RequirementID)]; req != nil {
-				return evaluationRequirementRatingLabel(spec, req.Rating)
-			}
-		}
-	case string(ReportKindFindings), string(ReportKindAdviceIndex), string(ReportKindAdvice):
-		return "—"
-	default:
-		return "—"
-	}
-	return "—"
 }
 
 func factorAnalysisRefs(factors []*evaluationFactorArtifacts) []any {
@@ -2463,17 +2549,6 @@ func lookupRequirementInFactors(factors map[string]model.Factor, name string) (m
 	return model.Requirement{}, false
 }
 
-func factorList(factors []*evaluationFactorArtifacts, spec *model.Spec, fromReport string) string {
-	if len(factors) == 0 {
-		return ""
-	}
-	parts := make([]string, 0, len(factors))
-	for _, factor := range factors {
-		parts = append(parts, reportLink(fromReport, factorReportPath(factor.ID), factorTitle(spec, factor.ID))+" "+evaluationRatingLabel(spec, scopedMap(factor.Analysis, "localAndDescendantAnalysis")))
-	}
-	return strings.Join(parts, "; ")
-}
-
 func requirementFactorLinks(req *evaluationRequirementArtifacts, fromReport string) string {
 	ids := requirementFactorIDs(req)
 	if len(ids) == 0 {
@@ -2530,10 +2605,10 @@ func evaluationRequirementRatingLabel(spec *model.Spec, rating map[string]any) s
 	return ratingStatusTitle(string(RatingStatusRated))
 }
 
-// evaluationSubRatingCell renders the descendant-inclusive ("+ Sub-Factors Rating" /
-// "+ Child Areas Rating") cell for a breakdown row. When the node has no
-// descendants there is no roll-up distinct from its local rating, so it renders
-// an em dash rather than repeating the local rating.
+// evaluationSubRatingCell renders the descendant-inclusive Sub-Factors rating
+// cell. When the Factor has no descendants there is no roll-up distinct from
+// its local rating, so it renders an em dash rather than repeating the local
+// rating.
 func evaluationSubRatingCell(spec *model.Spec, aggregate map[string]any, hasDescendants bool) string {
 	if !hasDescendants {
 		return "—"

@@ -135,8 +135,8 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 - link to the full findings index;
 - link to the full recommendation index;
 - summary from the scoped Area result;
+- Area / Factor Breakdown for the scoped Area;
 - requested and planned Evaluation scope;
-- generated subject report links;
 - root Area coverage status; and
 - limits and incomplete inputs from the scoped Area result.
 
@@ -292,8 +292,7 @@ Area reports **MUST** include:
 - overall and local ratings;
 - overall and local confidence;
 - summary;
-- local root Factors;
-- direct Child Areas;
+- Area / Factor Breakdown for the reported Area;
 - local Requirements; and
 - limits and incomplete inputs.
 
@@ -365,9 +364,37 @@ condition, criteria, basis, effect, and evidence. Requirement Finding details
 
 Area and Factor reports **MUST NOT** render `Findings` sections. Their
 human-facing roll-up explanation belongs in summary, ratings, confidence,
-limits, incomplete inputs, and subject breakdown tables. Structured
-`ratingDrivers` remain available through report frontmatter `data` links and
-routine JSON payloads, not standalone Markdown body sections.
+limits, incomplete inputs, and breakdown tables. Structured `ratingDrivers`
+remain available through report frontmatter `data` links and routine JSON
+payloads, not standalone Markdown body sections.
+
+Run and Area reports **MUST** render an `Area / Factor Breakdown` section before
+scope or Requirement detail sections. The breakdown table **MUST** use the
+columns `Area / Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
+`Recommendations`, in that order. The `Area / Factor` cell **MUST** render the
+row subject as the generated human report link when that report exists, and the
+table **MUST NOT** render a separate `Report` column.
+
+The run report's Area / Factor Breakdown **MUST** list the scoped Area as the
+first row, followed by in-scope descendant Areas and Factors in deterministic
+model order. An Area report's Area / Factor Breakdown **MUST** list the reported
+Area as the first row, followed by its evaluated descendant Areas and Factors in
+deterministic model order. The first row **MUST** emphasize only the table's
+root Area in the `Area / Factor` cell. Factor rows **MUST** carry the Factor
+report-kind marker inline in the `Area / Factor` cell instead of using a
+separate Kind column.
+
+The `Findings` column **MUST** count ranked findings that resolve to each row's
+Area or Factor. The `Recommendations` column **MUST** count ranked
+recommendations that resolve to each row's Area or Factor. A ranked
+recommendation with multiple trace refs **MUST** count at most once for a given
+breakdown row.
+
+> Rationale: `Subject Reports` was a generated-file manifest rather than a
+> quality overview, and separate Area `Factors` / `Child Areas` tables forced
+> readers to assemble the local model shape by kind. A single narrow breakdown
+> keeps navigation and quality signals together while leaving the machine report
+> manifest in `EvaluationOutputResult.reportOutputs`. — 0161
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Run reports should summarize
@@ -414,17 +441,13 @@ rating column `Local Rating`.
 > Rationale: the adjacent header columns are self-describing nouns, so bare
 > `Overall` / `Local` made a reader supply the missing noun. — 0111
 
-The Area report Factors table, the Area report Child Areas table, and the Factor
-report Sub-Factors table each list a subject's immediate descendants, one row
-per child.
-Each **MUST** render a `Local Rating` column from the child's `localAnalysis`
-rating, and a descendant-inclusive sub-rating column — `+ Sub-Factors Rating` for
-a Factor row, `+ Child Areas Rating` for an Area row — from the child's
-`localAndDescendantAnalysis` rating. These tables **MUST NOT** render a
-boolean in a rating column. When a row's subject has no descendant Factors (for a
-Factor row) or no descendant Areas (for an Area row), its `+ Sub-Factors Rating`
-/ `+ Child Areas Rating` cell **MUST** render an em dash (`—`) rather than
-repeating the local rating.
+The Factor report Sub-Factors table lists a Factor's immediate descendant
+Factors, one row per child. It **MUST** render a `Local Rating` column from the
+child's `localAnalysis` rating and a descendant-inclusive `+ Sub-Factors Rating`
+column from the child's `localAndDescendantAnalysis` rating. It **MUST NOT**
+render a boolean in a rating column. When a row's subject has no descendant
+Factors, its `+ Sub-Factors Rating` cell **MUST** render an em dash (`—`) rather
+than repeating the local rating.
 
 > Rationale: these breakdown tables previously rendered the aggregate rating in
 > the local `Rating` column and a `Yes`/`No` boolean where the roll-up rating
@@ -432,15 +455,14 @@ repeating the local rating.
 > case 0097 required. The em dash preserves the old boolean's "has children"
 > signal without presenting a redundant rating. — 0097, 0111
 
-Area reports **MUST** render the immediate descendant-Area section heading as
-`Child Areas` and its empty-state row as `(no Child Areas)`. Factor reports
-**MUST** render the immediate descendant-Factor section heading as `Sub-Factors`
-and its empty-state row as `(no Sub-Factors)`. Reports **MUST NOT** use
-`Sub-Areas` or `Child Factors` for these generated human-facing labels.
+Factor reports **MUST** render the immediate descendant-Factor section heading
+as `Sub-Factors` and its empty-state row as `(no Sub-Factors)`. Reports
+**MUST NOT** use `Sub-Areas` or `Child Factors` for generated human-facing
+labels.
 
-> Rationale: the Model vocabulary names immediate Area descendants as Child Areas
-> and Factor descendants as sub-factors. Generated reports should not make the
-> same relationship look like a different concept. — 0147
+> Rationale: the Model vocabulary names Factor descendants as sub-factors.
+> Generated reports should not make the same relationship look like a different
+> concept. — 0147
 
 Reports **MUST** render selected Rating Levels with the Rating Level `title`
 resolved from the run's `model-snapshot.md` snapshot, falling back to the stable Rating
