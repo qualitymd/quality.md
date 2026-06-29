@@ -1,5 +1,12 @@
 # /quality Runtime Workflows Update Log
 
+## 2026-06-29
+
+- **Revision**: Updated the [setup](setup.md) workflow for 0164 - Agent
+  Instruction Init Pointer. Setup now scaffolds missing model files with
+  `qualitymd init --no-agent-instructions` and classifies existing model files
+  as scaffold-only, partially authored, or mature before planning edits.
+
 ## 2026-06-27
 
 - **Revision**: Updated setup, evaluate, review, improve, and update workflows

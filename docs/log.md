@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated README and install guidance for
+  [0164 - Agent Instruction Init Pointer](../changes/archive/0164-agent-instruction-init-pointer.md).
+  Direct `qualitymd init` documentation now notes the default concise agent
+  instruction pointer, the `--no-agent-instructions` opt-out, and the `/quality
+  setup` follow-up.
+
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
   [0162 - Report Source Data Section](../changes/archive/0162-report-source-data-section.md).

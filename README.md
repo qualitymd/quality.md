@@ -268,6 +268,10 @@ Areas can nest recursively. `ratingScale` exists only on the root model.
 | Check for updates       | `qualitymd update --check`       |
 | Show command help       | `qualitymd <command> --help`     |
 
+`qualitymd init` also adds a concise `QUALITY.md` pointer to local agent
+instruction files by default. Use `qualitymd init --no-agent-instructions` to
+skip that side effect.
+
 ## Status
 
 The QUALITY.md format, `qualitymd` CLI, and `/quality` skill are early and

@@ -22,7 +22,7 @@ all capitals.
 
 Covered: the output area and stdout piping, overwrite protection, the scaffold
 variant selection, and the contents of the scaffold `init` produces, including
-its `--json` result receipt.
+its default agent-instruction pointer and `--json` result receipt.
 
 ## Requirements
 
@@ -34,7 +34,7 @@ its `--json` result receipt.
   instead, so an author can scaffold to a chosen location.
 - A path argument of `-` **MUST** write the scaffold to standard output rather
   than a file. When emitting to standard output, overwrite protection does not
-  apply; nothing on disk is read or replaced.
+  apply; nothing on disk is read or replaced, including agent instruction files.
 - `init --json -` **MUST** fail with a usage error because `-` selects the raw
   scaffold on stdout while `--json` selects a receipt on stdout.
 
@@ -98,12 +98,45 @@ per [Scaffold variant](#scaffold-variant).
   questions.
 - The body should open with a top-level heading naming the root area, matching the
   scaffolded model `title`.
+- Both scaffold variants **MUST** include a brief body note telling users to
+  invoke `/quality setup` when the file was created with `qualitymd init` outside
+  that workflow.
+
+### Agent instruction pointer
+
+- By default, after successfully writing a scaffold file, `init` **MUST** add a
+  concise pointer to eligible agent instruction files in the current working
+  directory.
+- `init` **MUST** ensure `AGENTS.md` contains the pointer, creating `AGENTS.md`
+  when it does not exist.
+- `init` **MUST** update detected existing `CLAUDE.md` and `GEMINI.md` files
+  with the pointer, but **MUST NOT** create those agent-specific files when they
+  are absent.
+- A `--no-agent-instructions` flag **MUST** disable all agent instruction file
+  creation and update.
+- The pointer block **MUST** be concise and identify its origin:
+
+  ```text
+  <!-- Added by qualitymd init. -->
+  See [QUALITY.md](QUALITY.md) for this project's quality model.
+  ```
+
+- When the initialized model path is not `QUALITY.md` beside the instruction
+  file, the pointer link **MUST** be relative from the instruction file to the
+  initialized model path while keeping the visible link label `QUALITY.md`.
+- Pointer insertion **MUST** be idempotent: repeated runs, including runs with
+  `--force`, **MUST NOT** add duplicate pointers to the same instruction file.
+- When multiple targeted instruction paths resolve to the same physical file,
+  `init` **MUST** write that file at most once.
 
 ### Reporting
 
 - On successfully writing a file, `init` **MUST** report the created path. This
   confirmation is written to standard error, so standard output carries only the
   scaffold itself when piping with `-`.
+- When agent instruction files are created or updated, human output **SHOULD**
+  report those paths. When no agent instruction file changed, human output
+  **SHOULD** omit the agent-instruction line.
 - `init` should close with
   [next actions](../cli.md#conventions) pointing the author to validate and then
   edit the new file, for example `qualitymd lint QUALITY.md`.
@@ -112,7 +145,9 @@ per [Scaffold variant](#scaffold-variant).
   - `schemaVersion` — `1` until the receipt shape changes incompatibly;
   - `path` — the file path written;
   - `created` — `true` when a new file was created and `false` when `--force`
-    overwrote an existing file; and
+    overwrote an existing file;
+  - `agentInstructionFiles` — an array describing each agent instruction file
+    created or updated, with `path`, `created`, and `updated`; and
   - `nextActions` — the same next-action data that would render as the human
     footer.
 - When `init --json` refuses to overwrite an existing file, it **MUST NOT** emit

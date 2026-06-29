@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0164 - Agent Instruction Init Pointer](../../../../changes/archive/0164-agent-instruction-init-pointer.md).
+  Setup now scaffolds missing model files with
+  `qualitymd init --no-agent-instructions` and classifies existing model files
+  as scaffold-only, partially authored, or mature before planning edits.
+
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0163 - Report Artifact IDs](../../../../changes/archive/0163-report-artifact-ids.md).
   Evaluate now lets `qualitymd evaluation data set` assign public

@@ -122,10 +122,21 @@ func TestRenderLintStyledValidShowsSuccessGlyph(t *testing.T) {
 
 func TestRenderInitHumanPlainIsStable(t *testing.T) {
 	var out bytes.Buffer
-	if err := renderInitHuman(&out, "QUALITY.md", "qualitymd lint QUALITY.md"); err != nil {
+	if err := renderInitHuman(&out, "QUALITY.md", nil, "qualitymd lint QUALITY.md"); err != nil {
 		t.Fatalf("renderInitHuman() error = %v", err)
 	}
 	want := "Created QUALITY.md\n\nNext: qualitymd lint QUALITY.md\n"
+	if out.String() != want {
+		t.Fatalf("renderInitHuman() = %q, want %q", out.String(), want)
+	}
+}
+
+func TestRenderInitHumanPlainIncludesAgentInstructions(t *testing.T) {
+	var out bytes.Buffer
+	if err := renderInitHuman(&out, "QUALITY.md", []string{"AGENTS.md"}, "qualitymd lint QUALITY.md"); err != nil {
+		t.Fatalf("renderInitHuman() error = %v", err)
+	}
+	want := "Created QUALITY.md\nAgent instructions: AGENTS.md\n\nNext: qualitymd lint QUALITY.md\n"
 	if out.String() != want {
 		t.Fatalf("renderInitHuman() = %q, want %q", out.String(), want)
 	}

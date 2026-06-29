@@ -139,6 +139,11 @@ defaults, writes only `QUALITY.md`, and validates it through the CLI. Bare
 `/quality` gives read-only guidance on the next public workflow, such as
 `/quality evaluate` or scoped evaluations.
 
+If you use `qualitymd init` directly, it creates a starter `QUALITY.md` and adds
+a concise pointer to local agent instruction files by default. Pass
+`--no-agent-instructions` to skip that pointer, then invoke `/quality setup` to
+tailor the scaffold to the project.
+
 ## 5. Optional config
 
 Create `.quality/config.yaml` beside the selected `QUALITY.md` to move

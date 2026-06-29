@@ -76,7 +76,8 @@ The setup workflow **MUST** include these stages, in order:
 6. Ask concrete discovery questions and present the human context checkpoint.
 7. Present a final review recap of the question/answer set and wait for an
    explicit review-gate response before authoring.
-8. Run `qualitymd init [path]` when the target model is missing.
+8. Run `qualitymd init --no-agent-instructions [path]` when the target model is
+   missing.
 9. Synthesize or update `QUALITY.md`.
 10. Run lint and identify important model gaps.
 11. Report completion and one immediate next step, and finalize the setup feedback
@@ -512,13 +513,27 @@ during discovery.
 
 ## Model authoring
 
-`setup` **MUST** drive `qualitymd init` for deterministic scaffolding when the
-model file is absent. It **MUST NOT** reimplement scaffolding, validation, CLI
-installation tooling, or source-driven authoring judgment.
+`setup` **MUST** drive `qualitymd init --no-agent-instructions` for
+deterministic scaffolding when the model file is absent. It **MUST NOT**
+reimplement scaffolding, validation, CLI installation tooling, or source-driven
+authoring judgment. It **MUST NOT** let init create or update agent instruction
+files during setup; setup's mutation surface remains the selected `QUALITY.md`
+and the current-run workflow feedback log.
 
 When `setup` scaffolds with `qualitymd init`, it **MUST** read the scaffolded
 file before authoring it, so a single authoring pass does not fail a
 read-before-write guard.
+
+When the model file already exists, setup **MUST** classify it as scaffold-only,
+partially authored, or mature before planning edits. Scaffold-only files are
+recognizably the `qualitymd init` placeholder scaffold or minimal scaffold and
+may have their placeholders replaced after the normal review gate. Partially
+authored files contain useful project-specific model or body content but still
+have important setup gaps; setup **MUST** preserve useful existing content unless
+the review gate names replacement or removal. Mature files contain coherent
+project-specific scope, needs, risks, factors, and assessable Requirements;
+setup **SHOULD** route them toward `/quality review` or `/quality improve`
+unless the user explicitly asks for setup-style reshaping.
 
 After discovery and scaffolding when needed, `setup` **MUST** write a model that
 follows the authoring guide and active specification. The model **MUST** address

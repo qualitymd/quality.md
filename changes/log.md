@@ -3,6 +3,34 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0164 - Agent Instruction Init Pointer](archive/0164-agent-instruction-init-pointer.md).
+  `qualitymd init` now writes a concise, idempotent pointer to local agent
+  instruction files by default, supports `--no-agent-instructions`, keeps
+  stdout scaffold mode pure, reports pointer effects in human and JSON output,
+  points direct init users to `/quality setup`, and setup uses the opt-out while
+  handling existing model maturity explicitly.
+
+- **In-Progress**: Advanced
+  [0164 - Agent Instruction Init Pointer](archive/0164-agent-instruction-init-pointer.md).
+  Functional spec and design are settled; implementation is beginning across
+  the CLI init path, scaffold templates, durable specs, runtime setup guidance,
+  docs, and tests.
+
+- **Design**: Added the
+  [design doc](archive/0164-agent-instruction-init-pointer/design.md) for
+  [0164 - Agent Instruction Init Pointer](archive/0164-agent-instruction-init-pointer.md).
+  The design keeps pointer update logic in a focused internal package, runs it
+  only after successful file scaffolding, preserves stdout purity, and has setup
+  opt out with `--no-agent-instructions`.
+
+- **Draft**: Created
+  [0164 - Agent Instruction Init Pointer](archive/0164-agent-instruction-init-pointer.md)
+  with its
+  [functional spec](archive/0164-agent-instruction-init-pointer/spec.md). The
+  case adds a concise, idempotent init-time QUALITY.md pointer to agent
+  instruction files and routes direct init users toward `/quality setup`.
+
+- **Done**: Implemented and archived
   [0163 - Report Artifact IDs](archive/0163-report-artifact-ids.md).
   `qualitymd evaluation data set` now assigns `QREC` and `QFIND` artifact IDs,
   generated reports render `QEVAL`, `QREC`, and `QFIND` identifiers for handoff

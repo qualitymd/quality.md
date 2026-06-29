@@ -28,3 +28,6 @@ factors:
 ---
 
 # <the system, component, or artifact this model is about>
+
+If this file was created with `qualitymd init` outside `/quality setup`, invoke
+`/quality setup` with your agent to tailor it to this project.

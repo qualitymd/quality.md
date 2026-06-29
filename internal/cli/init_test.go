@@ -12,18 +12,7 @@ import (
 )
 
 func TestInitWritesDefaultQualityFile(t *testing.T) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("os.Getwd() error = %v", err)
-	}
-	t.Cleanup(func() {
-		if err := os.Chdir(cwd); err != nil {
-			t.Fatalf("os.Chdir(%q) error = %v", cwd, err)
-		}
-	})
-	if err := os.Chdir(t.TempDir()); err != nil {
-		t.Fatalf("os.Chdir() error = %v", err)
-	}
+	withTempCwd(t)
 
 	var out, stderr bytes.Buffer
 	cmd := newRootCmd()
@@ -50,10 +39,40 @@ func TestInitWritesDefaultQualityFile(t *testing.T) {
 	if !strings.Contains(stderr.String(), "qualitymd lint QUALITY.md") {
 		t.Fatalf("stderr = %q, want next action", stderr.String())
 	}
+	agents, err := os.ReadFile("AGENTS.md")
+	if err != nil {
+		t.Fatalf("os.ReadFile(AGENTS.md) error = %v", err)
+	}
+	if !strings.Contains(string(agents), "See [QUALITY.md](QUALITY.md) for this project's quality model.") {
+		t.Fatalf("AGENTS.md = %q, want quality pointer", agents)
+	}
+	if !strings.Contains(stderr.String(), "Agent instructions: AGENTS.md") {
+		t.Fatalf("stderr = %q, want agent instruction update", stderr.String())
+	}
+}
+
+func TestInitNoAgentInstructionsOptOut(t *testing.T) {
+	withTempCwd(t)
+
+	var out, stderr bytes.Buffer
+	cmd := newRootCmd()
+	cmd.SetOut(&out)
+	cmd.SetErr(&stderr)
+	cmd.SetArgs([]string{"init", "--no-agent-instructions"})
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+	if _, err := os.Stat("AGENTS.md"); !os.IsNotExist(err) {
+		t.Fatalf("os.Stat(AGENTS.md) error = %v, want not exist", err)
+	}
+	if strings.Contains(stderr.String(), "Agent instructions:") {
+		t.Fatalf("stderr = %q, want no agent instruction line", stderr.String())
+	}
 }
 
 func TestInitMinimalWritesMinimalSkeleton(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "QUALITY.md")
+	withTempCwd(t)
+	path := "QUALITY.md"
 	var out, stderr bytes.Buffer
 	cmd := newRootCmd()
 	cmd.SetOut(&out)
@@ -96,7 +115,11 @@ func TestInitMinimalStdoutPassthrough(t *testing.T) {
 }
 
 func TestInitWritesCustomPath(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "custom.md")
+	withTempCwd(t)
+	if err := os.Mkdir("docs", 0o755); err != nil {
+		t.Fatalf("os.Mkdir() error = %v", err)
+	}
+	path := filepath.Join("docs", "custom.md")
 	var out, stderr bytes.Buffer
 	cmd := newRootCmd()
 	cmd.SetOut(&out)
@@ -119,10 +142,18 @@ func TestInitWritesCustomPath(t *testing.T) {
 	if !strings.Contains(stderr.String(), "Created "+path) {
 		t.Fatalf("stderr = %q, want custom created path", stderr.String())
 	}
+	agents, err := os.ReadFile("AGENTS.md")
+	if err != nil {
+		t.Fatalf("os.ReadFile(AGENTS.md) error = %v", err)
+	}
+	if !strings.Contains(string(agents), "See [QUALITY.md](docs/custom.md) for this project's quality model.") {
+		t.Fatalf("AGENTS.md = %q, want custom relative pointer", agents)
+	}
 }
 
 func TestInitJSONReceipt(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "custom.md")
+	withTempCwd(t)
+	path := "custom.md"
 	var out, stderr bytes.Buffer
 	cmd := newRootCmd()
 	cmd.SetOut(&out)
@@ -151,10 +182,17 @@ func TestInitJSONReceipt(t *testing.T) {
 	if len(receipt.NextActions) != 1 || receipt.NextActions[0].Command != "qualitymd lint "+path {
 		t.Fatalf("nextActions = %#v, want lint action", receipt.NextActions)
 	}
+	if len(receipt.AgentInstructionFiles) != 1 {
+		t.Fatalf("agentInstructionFiles = %#v, want one update", receipt.AgentInstructionFiles)
+	}
+	if got := receipt.AgentInstructionFiles[0]; got.Path != "AGENTS.md" || !got.Created || got.Updated {
+		t.Fatalf("agentInstructionFiles[0] = %#v, want created AGENTS.md", got)
+	}
 }
 
 func TestInitJSONForceReportsNotCreated(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "QUALITY.md")
+	withTempCwd(t)
+	path := "QUALITY.md"
 	if err := os.WriteFile(path, []byte("keep me"), 0o600); err != nil {
 		t.Fatalf("os.WriteFile() error = %v", err)
 	}
@@ -192,21 +230,9 @@ func TestInitJSONRejectsStdoutPassthrough(t *testing.T) {
 }
 
 func TestInitStdoutDoesNotTouchExistingFile(t *testing.T) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("os.Getwd() error = %v", err)
-	}
-	t.Cleanup(func() {
-		if err := os.Chdir(cwd); err != nil {
-			t.Fatalf("os.Chdir(%q) error = %v", cwd, err)
-		}
-	})
-	dir := t.TempDir()
+	dir := withTempCwd(t)
 	if err := os.WriteFile(filepath.Join(dir, "QUALITY.md"), []byte("keep me"), 0o600); err != nil {
 		t.Fatalf("os.WriteFile() error = %v", err)
-	}
-	if err := os.Chdir(dir); err != nil {
-		t.Fatalf("os.Chdir() error = %v", err)
 	}
 
 	var out, stderr bytes.Buffer
@@ -231,10 +257,14 @@ func TestInitStdoutDoesNotTouchExistingFile(t *testing.T) {
 	if string(got) != "keep me" {
 		t.Fatalf("existing file changed to %q", got)
 	}
+	if _, err := os.Stat("AGENTS.md"); !os.IsNotExist(err) {
+		t.Fatalf("os.Stat(AGENTS.md) error = %v, want not exist", err)
+	}
 }
 
 func TestInitRefusesExistingFileUnlessForced(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "QUALITY.md")
+	withTempCwd(t)
+	path := "QUALITY.md"
 	if err := os.WriteFile(path, []byte("keep me"), 0o600); err != nil {
 		t.Fatalf("os.WriteFile() error = %v", err)
 	}
@@ -277,6 +307,26 @@ func TestInitRefusesExistingFileUnlessForced(t *testing.T) {
 	}
 }
 
+func TestInitForceDoesNotDuplicateAgentInstructionPointer(t *testing.T) {
+	withTempCwd(t)
+	for i := 0; i < 2; i++ {
+		cmd := newRootCmd()
+		cmd.SetOut(&bytes.Buffer{})
+		cmd.SetErr(&bytes.Buffer{})
+		cmd.SetArgs([]string{"init", "--force"})
+		if err := cmd.Execute(); err != nil {
+			t.Fatalf("Execute() run %d error = %v", i+1, err)
+		}
+	}
+	got, err := os.ReadFile("AGENTS.md")
+	if err != nil {
+		t.Fatalf("os.ReadFile(AGENTS.md) error = %v", err)
+	}
+	if count := strings.Count(string(got), "<!-- Added by qualitymd init. -->"); count != 1 {
+		t.Fatalf("marker count = %d, want 1 in %q", count, got)
+	}
+}
+
 func TestInitJSONOverwriteRefusalWritesErrorObject(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "QUALITY.md")
 	if err := os.WriteFile(path, []byte("keep me"), 0o600); err != nil {
@@ -309,4 +359,22 @@ func TestInitJSONOverwriteRefusalWritesErrorObject(t *testing.T) {
 	if body.SchemaVersion != 1 || body.Path != path || !strings.Contains(body.Reason, "already exists") {
 		t.Fatalf("error body = %#v, want path and reason", body)
 	}
+}
+
+func withTempCwd(t *testing.T) string {
+	t.Helper()
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("os.Getwd() error = %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(cwd); err != nil {
+			t.Fatalf("os.Chdir(%q) error = %v", cwd, err)
+		}
+	})
+	dir := t.TempDir()
+	if err := os.Chdir(dir); err != nil {
+		t.Fatalf("os.Chdir(%q) error = %v", dir, err)
+	}
+	return dir
 }

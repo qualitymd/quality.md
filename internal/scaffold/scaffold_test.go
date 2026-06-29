@@ -63,6 +63,9 @@ func TestSkeletonConformsToCurrentSpec(t *testing.T) {
 			t.Fatalf("skeleton is missing the %q convention marker", marker)
 		}
 	}
+	if !strings.Contains(raw, "`/quality setup`") {
+		t.Fatal("skeleton is missing the /quality setup handoff note")
+	}
 }
 
 func TestCreateRefusesExistingFile(t *testing.T) {
@@ -144,6 +147,9 @@ func TestMinimalSkeletonOmitsGuidedBodySections(t *testing.T) {
 	raw := string(MinimalBytes())
 	if !strings.Contains(raw, "# <the system, component, or artifact this model is about>") {
 		t.Fatal("minimal skeleton is missing the root heading")
+	}
+	if !strings.Contains(raw, "`/quality setup`") {
+		t.Fatal("minimal skeleton is missing the /quality setup handoff note")
 	}
 	for _, section := range []string{"## Overview", "## Scope", "## Needs", "## Risks"} {
 		if strings.Contains(raw, section) {

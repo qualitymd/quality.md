@@ -89,6 +89,9 @@ factors:
 
 # <the system, component, or artifact this model is about>
 
+If this file was created with `qualitymd init` outside `/quality setup`, invoke
+`/quality setup` with your agent to tailor it to this project.
+
 The frontmatter above fixes *what* is assessed and *how* it is rated. This body
 records the judgment context a reader needs to trust the model, evaluate the
 model's quality, and weigh future findings. Fill in each section and delete

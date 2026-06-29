@@ -691,3 +691,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0163 — Report Artifact IDs](0163-report-artifact-ids.md) - defines
   handoff-ready Evaluation report artifact IDs for runs, recommendations, and
   ranked findings (`Done`).
+- [0164 — Agent Instruction Init Pointer](0164-agent-instruction-init-pointer.md) -
+  makes `qualitymd init` surface the new `QUALITY.md` to agent instruction files
+  while preserving setup's narrow mutation boundary (`Done`).

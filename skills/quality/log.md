@@ -1,5 +1,12 @@
 # /quality Runtime Skill Update Log
 
+## 2026-06-29
+
+- **Revision**: Updated [`workflows/setup.md`](workflows/setup.md) for 0164 -
+  Agent Instruction Init Pointer. Runtime setup guidance now opts out of
+  init-time agent instruction edits and handles existing `QUALITY.md` maturity
+  explicitly.
+
 ## 2026-06-27
 
 - **Revision**: Updated [`workflows/evaluate.md`](workflows/evaluate.md) for

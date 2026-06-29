@@ -470,10 +470,25 @@ would lose the teaching beats.
 
 ## Write QUALITY.md
 
-If no model file exists, run `qualitymd init [path]` after discovery and before
-authoring content. `init` scaffolds the file through the CLI, so read the
-scaffolded file before authoring it. This satisfies the read-before-write guard
-in one pass instead of failing the first write and retrying.
+If no model file exists, run `qualitymd init --no-agent-instructions [path]`
+after discovery and before authoring content. `init` scaffolds the file through
+the CLI, while `--no-agent-instructions` preserves setup's mutation boundary:
+setup writes `QUALITY.md` and its workflow feedback log, not agent instruction
+files. Read the scaffolded file before authoring it. This satisfies the
+read-before-write guard in one pass instead of failing the first write and
+retrying.
+
+If the model file exists, classify it before planning the edit:
+
+- **Scaffold-only** — still recognizably the `qualitymd init` placeholder
+  scaffold or minimal scaffold. After the normal review gate, replace placeholders
+  confidently with a project-specific first model.
+- **Partially authored** — contains some project-specific model or body content
+  but still has important setup gaps. Preserve useful content and name any
+  replacement or removal in the review gate before editing.
+- **Mature** — already contains coherent project-specific scope, needs, risks,
+  factors, and assessable Requirements. Prefer routing to `/quality review` or
+  `/quality improve` unless the user explicitly asked for setup-style reshaping.
 
 If the model file exists and setup would change it, the final review decision
 brief satisfies this gate when it names updating the existing file and gives the

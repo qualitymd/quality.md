@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0164 - Agent Instruction Init Pointer](../changes/archive/0164-agent-instruction-init-pointer.md).
+  `qualitymd init` now defines its default concise agent instruction pointer,
+  `--no-agent-instructions` opt-out, idempotence, relative-link behavior, JSON
+  receipt field, scaffold setup note, and `/quality setup` opt-out contract.
+
+- **Revision**: Implemented durable spec changes for
   [0162 - Report Source Data Section](../changes/archive/0162-report-source-data-section.md).
   Generated Evaluation Markdown reports now keep frontmatter to `type` and
   `title`, and render report-local structured source payload links in a bottom

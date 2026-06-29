@@ -7,10 +7,20 @@ QUALITY.md specification.
 
 ### CLI
 
+- `qualitymd init` now adds a concise `QUALITY.md` pointer to local agent
+  instruction files by default, with `--no-agent-instructions` to opt out.
+- `qualitymd init` scaffolds now point direct CLI users to `/quality setup` when
+  the file was initialized outside the setup workflow.
 - Evaluation Advice now uses CLI-assigned, user-citable artifact IDs:
   recommendations persist as `QREC-<run>-<seq>`, ranked findings persist as
   `QFIND-<run>-<seq>`, and generated reports render those IDs in finding and
   recommendation tables/detail pages.
+
+### /quality skill
+
+- `/quality setup` now scaffolds missing model files with
+  `qualitymd init --no-agent-instructions` and explicitly distinguishes
+  scaffold-only, partially authored, and mature existing `QUALITY.md` files.
 
 ## v0.25.5 - 2026-06-27
 
