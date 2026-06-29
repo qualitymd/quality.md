@@ -36,12 +36,14 @@ Read context
 Ask discovery questions
 - teach and ask questions 1-5, then present a human context checkpoint covering
   questions 6-9
+- present a factor proposal checkpoint that teaches the factor desiderata,
+  explains the candidate factor set, and asks for targeted corrections
 - iterate one at a time when there is no structured question affordance
 - page through a structured question tool when one is available
 - update feedback log for material workflow-experience events
 
 Review and confirm
-- recap every question with its final answer
+- recap every question with its final answer and the reviewed factor proposal
 - wait for an explicit review-gate response before authoring
 - update feedback log for material workflow-experience events
 
@@ -159,6 +161,8 @@ Maintainers/collaborators: <default> (<confidence>, <evidence>)
 Other stakeholders: <default> (<confidence>, <evidence>)
 Missing context: <specific gaps>
 Candidate model shape: <factors and child areas>
+Candidate factor set quality: <comprehensive/proportionate/sustainable notes>
+Candidate factor rationales: <factor -> consequence, boundary, operational path, trace, neutrality, depth>
 ```
 
 Use only these confidence labels:
@@ -172,8 +176,9 @@ Use only these confidence labels:
 Always keep the short evidence note next to the label; the label plus note is
 what makes the three-level scale carry full meaning.
 
-The setup brief is not a new artifact. It guides the discovery prompt and then
-gets distilled into `QUALITY.md` where the assumptions shape the model.
+The setup brief is not a new artifact. It guides the discovery prompt, factor
+proposal checkpoint, and then gets distilled into `QUALITY.md` where the
+assumptions shape the model.
 
 Before asking discovery questions, present a concise user-facing setup preview
 distilled from the setup brief:
@@ -419,13 +424,87 @@ Do not ask users to design factors, child Areas, Requirements, or custom Rating
 Level names cold. Derive model shape from the setup brief, discovery answers,
 authoring guide, and repository context.
 
+## Factor Proposal Checkpoint
+
+After discovery questions and the human context checkpoint, present a draft
+factor proposal before the final review gate. This checkpoint teaches the factor
+desiderata in the context of the user's candidate model and asks the user to
+review the shape, not author YAML or invent factors cold.
+
+Build the proposal from the setup brief, discovery answers, human context
+checkpoint, repository context, and factor authoring guide. For each candidate
+Area's factor set, apply the set-level desiderata:
+
+- **Comprehensive** — the proposed set covers what matters.
+- **Proportionate** — the proposed set gives most attention to what matters most.
+- **Sustainable** — the proposed set can stay usable over time.
+
+For each candidate Factor, apply the individual-factor desiderata:
+
+- **Consequential** — the factor names a quality concern that matters for this
+  entity.
+- **Bounded** — the factor has a clear boundary and grain.
+- **Operational** — the factor can become assessable Requirements, evidence,
+  findings, and ratings.
+- **Traceable** — the factor traces backward to Needs, Risks, stakeholders, or
+  stable stakes, and forward to candidate Requirements.
+- **Neutral** — the factor names the quality to be judged, not an implementation,
+  workflow, tactic, or metric.
+
+Use those desiderata to improve the proposal before showing it. A consequential
+concern that is weak on boundary, operational path, trace, or neutrality should
+usually be refined, not dropped. Adjust its name, Area placement, sub-factor
+shape, candidate Requirement direction, evidence strategy, or depth.
+
+Present the user-facing checkpoint as a correction-oriented review:
+
+```text
+**Draft factor set**
+
+I propose these initial Factors because they cover visible Needs, Risks,
+stakeholders, and stable stakes without making the first model too heavy.
+
+For the set, I am aiming for:
+- comprehensive: covers what matters
+- proportionate: gives most attention to what matters most
+- sustainable: stays usable over time
+
+For each Factor, I am checking that it is consequential, bounded, operational,
+traceable, and neutral.
+
+| Area | Factor | Why it matters | Depth |
+| ---- | ------ | -------------- | ----- |
+| <Area> | <Factor> | <need/risk/stakeholder/stable stake> | <light/normal/deep> |
+
+**Please check the shape, not the YAML.**
+What seems missing, overemphasized, misplaced, or badly named?
+
+**Answer:** Reply `ok`, or send corrections such as `missing: privacy`,
+`too much: performance`, `rename clarity to understandability`, or
+`make security deeper`.
+```
+
+Use `light`, `normal`, and `deep` as the visible depth labels. Depth is the
+initial requirement and assessment rigor, not the factor's importance alone:
+high-consequence, volatile, hard-to-recover, or decision-critical concerns tend
+toward `deep`; consequential but stable or lower-risk concerns may start
+`light` while still remaining represented.
+
+The proposal table may group or abbreviate factors when the model is large, but
+it must preserve the correction affordance: the user should be able to identify
+what is missing, overemphasized, misplaced, or badly named without reading YAML.
+Incorporate any correction before the final review recap. If the correction
+materially changes root Area, domain, risk tolerance, or human context, update
+the affected discovery answer in the final recap rather than treating the factor
+proposal as isolated.
+
 ## Review and Confirm
 
-After all discovery questions and the human context checkpoint are answered and
-before writing `QUALITY.md`, stop for a review gate. Present a final review
-recap: list every asked discovery question and checkpoint item with its final
-answer in one consolidated view, and wait for the user to respond before
-authoring proceeds.
+After all discovery questions, the human context checkpoint, and the factor
+proposal checkpoint are answered, stop for a review gate before writing
+`QUALITY.md`. Present a final review recap: list every asked discovery question
+and checkpoint item with its final answer, summarize the reviewed factor
+proposal, and wait for the user to respond before authoring proceeds.
 
 - Recap the answers, not the confidence labels — confidence is a discovery-time
   aid; by the recap the user has already seen and confirmed each default.
@@ -444,6 +523,7 @@ authoring proceeds.
   **Rating scale:** <final rating-scale answer>
   **Human context:** <primary users/outcomes, maintainers, stakeholders>
   **Open gaps:** <missing or not-agent-accessible context>
+  **Factor proposal:** <Areas, key Factors, and light/normal/deep depth notes>
 
   **Write `QUALITY.md`?**
   Create or update `<model path>` with the reviewed setup answers.
@@ -451,7 +531,7 @@ authoring proceeds.
     [looks good] Write `QUALITY.md` now  — recommended
     [corrections] Send changes, or stop without writing
 
-  Reason: repo scan plus confirmed discovery answers are enough to draft a first useful model.
+  Reason: repo scan, confirmed discovery answers, and the reviewed factor proposal are enough to draft a first useful model.
   Done when: `qualitymd lint <model path>` passes, or lint findings are reported.
   Not changed: no evaluation, no quality changelog, no issues, no automations.
 ````
@@ -464,9 +544,10 @@ authoring proceeds.
 - Do not require the user to add a comment to proceed; an explicit "looks good"
   (or equivalent) advances to authoring.
 
-The recap supplements discovery; it does not replace asking each question or
-presenting the checkpoint. Do not collapse discovery into the recap alone — that
-would lose the teaching beats.
+The recap supplements discovery and the factor proposal; it does not replace
+asking each question, presenting the human context checkpoint, or presenting the
+factor proposal checkpoint. Do not collapse discovery into the recap alone —
+that would lose the teaching beats.
 
 ## Write QUALITY.md
 
@@ -523,6 +604,11 @@ frontmatter model:
   than invented Rating Levels.
 - Factors and child Areas derive from project needs, risks, stakeholder
   concerns, component boundaries, and available evidence.
+- Factor sets should be comprehensive, proportionate, and sustainable: cover what
+  matters, give most attention to what matters most, and stay usable over time.
+  Individual Factors should be consequential, then refined until they are
+  bounded, operational, traceable, and neutral. Use the reviewed depth labels to
+  decide where starter Requirements should be light, normal, or deep.
 - When the root is composite, enumerate the constituent *kinds* the domain
   implies — not only the components that already have folders in the repository.
   Walk the stewardship concerns (discover, define, realize, verify, enable,
@@ -592,8 +678,10 @@ first-model usefulness. This is a bounded model-usefulness inspection, not a
 project evaluation and not a readiness or maturity classification. Important
 gaps include thin or generic Overview/Scope/Needs/Risks, missing material
 unknowns or open questions, factors that do not trace to the body's needs and
-risks, vague or unassessable Requirements, missing germane constituent kinds, and
-missing Agent Harnessability coverage for an agent-collaborated composite root.
+risks, factor sets that miss consequential concerns or allocate depth
+unreasonably, vague or unassessable Requirements, missing germane constituent
+kinds, and missing Agent Harnessability coverage for an agent-collaborated
+composite root.
 
 For a composite model, treat a germane constituent left unmodeled or recorded
 only as a deferral as an important gap unless it clearly hits one of the

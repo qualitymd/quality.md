@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Implemented durable spec changes for
+  [0166 - Setup Factor Proposal Checkpoint](../changes/archive/0166-setup-factor-proposal-checkpoint.md).
+  Setup now includes a factor proposal checkpoint before final review, and the
+  durable factor-guide contract names factor-set qualities and individual-factor
+  qualities for setup and authoring guidance.
+
 - **Release prep**: Bumped the root `SPECIFICATION.md` version to `0.9 (Draft)`
   for the `v0.26.0` release, matching the updated Evaluation run identity,
   recommendation numbering, and finding reference semantics.

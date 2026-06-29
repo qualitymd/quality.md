@@ -113,6 +113,20 @@ Those cases do not share one checklist. They share the need to make "good"
 visible enough for people to evaluate, learn, and improve, and for coding agents
 and AI assistants to follow.
 
+### Choose quality factors deliberately
+
+QUALITY.md models do not import a default checklist of factors. A good factor set
+is **comprehensive**, **proportionate**, and **sustainable**: it covers what
+matters, gives most attention to what matters most, and remains usable over time.
+
+Each individual factor should be **consequential**, then refined until it is
+bounded, operational, traceable, and neutral: a clear quality lens, grounded in
+the entity's needs and risks, assessable through requirements, and not confused
+with an implementation, workflow, tactic, or metric. The `/quality` skill applies
+this guidance when setting up or improving a model; see
+[Authoring Factors](skills/quality/guides/authoring/factors.md) for the detailed
+guidance.
+
 [Install QUALITY.md](install.md), then run `/quality setup` with your coding agent
 to create a `QUALITY.md` for your project.
 

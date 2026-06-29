@@ -698,3 +698,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   replaces local `QEVAL`/`QREC`/`QFIND` artifact IDs with a globally-unique run
   ID, per-run recommendation numbers, and finding references by selector
   (`Done`).
+- [0166 — Setup Factor Proposal Checkpoint](0166-setup-factor-proposal-checkpoint.md) -
+  teaches and applies factor desiderata during setup through a draft factor
+  proposal checkpoint before final review (`Done`).

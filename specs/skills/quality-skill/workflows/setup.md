@@ -74,13 +74,16 @@ The setup workflow **MUST** include these stages, in order:
 5. Present a concise setup preview distilled from the setup brief, then create
    the current run's setup feedback log if the run continues into discovery.
 6. Ask concrete discovery questions and present the human context checkpoint.
-7. Present a final review recap of the question/answer set and wait for an
+7. Present a factor proposal checkpoint that teaches the factor desiderata,
+   explains the candidate factor set, and asks for targeted corrections.
+8. Present a final review recap of the question/answer set and reviewed factor
+   proposal, and wait for an
    explicit review-gate response before authoring.
-8. Run `qualitymd init --no-agent-instructions [path]` when the target model is
+9. Run `qualitymd init --no-agent-instructions [path]` when the target model is
    missing.
-9. Synthesize or update `QUALITY.md`.
-10. Run lint and identify important model gaps.
-11. Report completion and one immediate next step, and finalize the setup feedback
+10. Synthesize or update `QUALITY.md`.
+11. Run lint and identify important model gaps.
+12. Report completion and one immediate next step, and finalize the setup feedback
     log.
 
 The workflow **MUST NOT** ask the user to design Factors, child Areas,
@@ -164,7 +167,8 @@ Before asking discovery questions, setup **MUST** build a concise setup brief
 containing root Area, domain, lifecycle, risk tolerance, modeling rigor,
 rating-scale recommendation, collaboration context, inferred primary users and
 outcomes, inferred maintainer or collaborator needs, inferred other stakeholder
-needs, missing or non-agent-accessible context, and candidate model shape.
+needs, missing or non-agent-accessible context, candidate model shape, candidate
+Factor-set quality, and candidate Factor rationales.
 
 Every inferred setup brief item **MUST** include a recommended default,
 confidence signal, and short evidence note when evidence exists.
@@ -455,12 +459,52 @@ user request to see all discovery inputs at once instead of iterating, and
 `setup` **MUST NOT** re-ask context the user has already supplied earlier in the
 interaction.
 
+## Factor proposal checkpoint
+
+After the discovery questions and human context checkpoint, `setup` **MUST**
+present a draft factor proposal before the final review gate. The checkpoint
+**MUST** teach the Factor-selection desiderata in the context of the proposed
+model and **MUST** ask the user to review the proposed shape, not to author YAML
+or design Factors cold.
+
+The proposal **MUST** be derived from the setup brief, discovery answers, human
+context checkpoint, repository context, and Factor authoring guide. Before
+presenting it, setup **MUST** check the proposed Factor set for comprehensive,
+proportionate, sustainable coverage: it covers what matters, gives most
+attention to what matters most, and remains usable over time. Setup **MUST**
+check each individual proposed Factor for consequentiality first, then refine it
+for bounded, operational, traceable, and neutral shape.
+
+Setup **MUST** preserve consequential concerns by refinement rather than dropping
+them solely because their boundary, operational path, trace, or neutrality is
+initially weak. Refinement can include renaming the Factor, moving it to a
+different Area, decomposing or combining it, changing starter Requirement depth,
+or recording missing evidence or open questions.
+
+The checkpoint **MUST** present the candidate Factors by Area with a short "why
+it matters" rationale and visible initial depth. The visible depth labels are
+`light`, `normal`, and `deep`; they describe initial Requirement and assessment
+rigor, not importance alone. Setup **SHOULD** use deeper initial treatment for
+high-consequence, volatile, hard-to-recover, or decision-critical concerns, and
+may use lighter treatment for consequential but stable or lower-risk concerns.
+
+The checkpoint **MUST** make targeted correction easy. It **MUST** ask what is
+missing, overemphasized, misplaced, or badly named, and **MUST** provide concise
+example corrections such as `missing: privacy`, `too much: performance`, `rename
+clarity to understandability`, or `make security deeper`.
+
+When the user corrects the factor proposal, setup **MUST** incorporate the
+correction before the final review recap. If a correction materially changes a
+previous discovery answer, setup **MUST** reflect that updated answer in the
+final recap rather than treating the factor proposal as isolated.
+
 ## Final review recap
 
-After all discovery questions and the human context checkpoint are answered and
-before writing `QUALITY.md`, `setup` **MUST** stop for a review gate and present
-a final review recap that lists every asked discovery question and checkpoint
-item with its final answer.
+After all discovery questions, the human context checkpoint, and the factor
+proposal checkpoint are answered, and before writing `QUALITY.md`, `setup`
+**MUST** stop for a review gate and present a final review recap that lists every
+asked discovery question and checkpoint item with its final answer and summarizes
+the reviewed factor proposal.
 
 `setup` **MUST** wait for a user response to the final recap before writing or
 editing `QUALITY.md`. Completing the final discovery question or a structured
@@ -490,8 +534,9 @@ Reply `looks good` to write `QUALITY.md`, or send corrections.
 ```
 
 The final review recap **MUST** use labeled fields for root, domain, lifecycle,
-risk, rating scale, human context, and open gaps before the write decision brief,
-so the user can scan the reviewed setup answers before approving the write.
+risk, rating scale, human context, open gaps, and factor proposal before the
+write decision brief, so the user can scan the reviewed setup answers before
+approving the write.
 
 When setup presents a separate fallback decision brief for updating an existing
 `QUALITY.md` after the review gate and that brief is a true binary update-or-stop
@@ -499,9 +544,9 @@ confirmation, it **MUST** show `y`/`n` as the visible shortest answer path. This
 does not replace the final review gate's `looks good` fast path when that gate is
 framed as a review-and-correction interaction.
 
-The recap **MUST NOT** be the only place a question or checkpoint item is
-surfaced; it supplements, and does not replace, asking or presenting each input
-during discovery.
+The recap **MUST NOT** be the only place a question, checkpoint item, or factor
+proposal is surfaced; it supplements, and does not replace, asking or presenting
+each input during discovery.
 
 > Annotation: the recap is a consolidated confirmation-and-teaching moment, not a
 > replacement for per-question iteration — making it the only confirmation would
@@ -556,6 +601,14 @@ quality labels or setup-question labels alone. Child Areas **SHOULD** be added
 only when they represent distinct evaluated entities. Starter Requirements
 **MUST** be concrete and assessable from agent-accessible evidence or explicitly
 name missing evidence or assessment constraints.
+
+Setup-authored Factor sets **MUST** aim for comprehensive, proportionate,
+sustainable coverage as defined by the Factor authoring guide. Setup-authored
+individual Factors **MUST** be consequential first, then refined to be bounded,
+operational, traceable, and neutral enough for a first useful model. Setup
+**MUST** use the reviewed `light` / `normal` / `deep` depth labels to decide
+where starter Requirements and assessments should stay coarse or become more
+rigorous.
 
 For an agent-collaborated composite root, setup **MUST** propose
 `agent-harnessability` / Agent Harnessability as a model-wide umbrella factor by
@@ -627,8 +680,10 @@ materially affect first-model usefulness. This inspection **MUST** remain a
 model-usefulness inspection and **MUST NOT** evaluate root Area source quality.
 Important gaps include thin or generic Markdown body context, missing material
 unknowns or open questions, factors that do not trace to the body's needs and
-risks, vague or unassessable Requirements, missing germane constituent kinds, and
-missing Agent Harnessability coverage for an agent-collaborated composite root.
+risks, Factor sets that omit consequential concerns or allocate depth
+unreasonably, vague or unassessable Requirements, missing germane constituent
+kinds, and missing Agent Harnessability coverage for an agent-collaborated
+composite root.
 Setup **MUST NOT** collapse those gaps into a `starter`, `immature`,
 `evaluation-ready`, `Maturity`, or `Evaluation readiness` label.
 

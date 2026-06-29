@@ -1,5 +1,14 @@
 # /quality Skill Guides Update Log
 
+## 2026-06-29
+
+- **Revision**: Updated the durable
+  [factor authoring guide](authoring/factors.md) spec for
+  [0166 - Setup Factor Proposal Checkpoint](../../../../changes/archive/0166-setup-factor-proposal-checkpoint.md).
+  Factor guidance now names comprehensive, proportionate, sustainable coverage
+  for Factor sets and consequential, bounded, operational, traceable, neutral
+  shape for individual Factors.
+
 ## 2026-06-27
 
 - **Revision**: Updated the durable

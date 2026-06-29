@@ -1,7 +1,7 @@
 ---
 type: Functional Specification
 title: QUALITY.md factor authoring guide
-description: Contract for factor naming, coverage, descriptions, and sub-factor guidance.
+description: Contract for factor desiderata, naming, coverage, descriptions, and sub-factor guidance.
 tags: [skill, quality, guide, authoring]
 timestamp: 2026-06-24T00:00:00Z
 ---
@@ -24,6 +24,15 @@ factor names as prompts rather than rosters, stable-stakes coverage, stakeholder
 anchoring, naming qualities rather than practices, operational descriptions,
 non-overlap, sub-factor decomposition, child Area refinements, and avoiding
 duplicate Factor names within one Area's recursive Factor tree.
+
+The guide **MUST** teach factor quality at two layers. For Factor sets, it
+**MUST** name comprehensive, proportionate, and sustainable coverage as the
+desired qualities: covering what matters, giving most attention to what matters
+most, and remaining usable over time. For individual Factors, it **MUST** name
+consequentiality as the admission rule and bounded, operational, traceable, and
+neutral shape as the refinement qualities. The guide **MUST** state that a
+consequential Factor that is weak on those refinement qualities should usually be
+improved rather than dropped.
 
 The guide **MUST** route Agent Harnessability to `agent-harnessability.md` instead
 of carrying that factor's full doctrine itself.

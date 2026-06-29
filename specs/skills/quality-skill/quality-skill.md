@@ -624,12 +624,12 @@ judgment.
 
 [`setup`](workflows/setup.md) runs a setup workflow that bootstraps or updates a
 model through context inspection, a setup brief, concrete discovery questions,
-and confidence-labeled defaults. It verifies CLI compatibility, inspects
-available repository context for setup signals, delegates deterministic
-scaffolding and validation to `qualitymd`, writes only the selected
-`QUALITY.md`, reports important model gaps, and recommends one immediate next
-step. It does not evaluate source, write the quality changelog, create external issues,
-configure integrations, or configure automation.
+confidence-labeled defaults, and a factor proposal checkpoint. It verifies CLI
+compatibility, inspects available repository context for setup signals,
+delegates deterministic scaffolding and validation to `qualitymd`, writes only
+the selected `QUALITY.md`, reports important model gaps, and recommends one
+immediate next step. It does not evaluate source, write the quality changelog,
+create external issues, configure integrations, or configure automation.
 
 ### Evaluate
 

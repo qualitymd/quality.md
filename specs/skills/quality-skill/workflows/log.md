@@ -2,6 +2,13 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [`setup`](setup.md) workflow spec for
+  [0166 - Setup Factor Proposal Checkpoint](../../../../changes/archive/0166-setup-factor-proposal-checkpoint.md).
+  Setup now presents a factor proposal checkpoint after discovery, teaches the
+  factor desiderata, asks for targeted corrections, carries the reviewed proposal
+  into final review and authoring, and checks factor coverage/depth as a
+  first-model usefulness gap.
+
 - **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
   [0165 - Run IDs and Artifact Numbering](../../../../changes/archive/0165-run-id-artifact-numbering.md).
   Advice authoring now lets `qualitymd evaluation data set` assign

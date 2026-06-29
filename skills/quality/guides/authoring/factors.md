@@ -49,6 +49,47 @@ agents, and reports to read unambiguously.
 
 ### Working with factors
 
+#### Judge factor quality at two layers
+
+Factor authoring has two related quality questions: whether each individual
+factor is a good lens, and whether the set of factors is a good coverage model
+for the area.
+
+For a **factor set**, aim for comprehensive, proportionate, sustainable
+coverage:
+
+- **Comprehensive** — the set covers what matters. Consequential needs, risks,
+  stakeholder concerns, stable stakes, and known unknowns are represented
+  somewhere in the model or explicitly marked out of scope.
+- **Proportionate** — the set gives most attention to what matters most. Depth,
+  rigor, and granularity increase with consequence, risk, volatility, evidence
+  cost, and decision value.
+- **Sustainable** — the set remains usable over time. It is navigable, not
+  needlessly redundant, affordable to maintain, and supportive of workflow
+  rather than a parallel bureaucracy.
+
+For an **individual factor**, first ask whether it is consequential, then improve
+its shape:
+
+- **Consequential** — the factor names a quality concern that matters for this
+  entity. This is the admission rule: a concern that does not matter here does
+  not earn a factor.
+- **Bounded** — the factor has a clear boundary and grain. It is singular enough
+  to reason about, distinct from neighboring factors, and placed at the right
+  area or sub-factor level.
+- **Operational** — the factor can be turned into assessable requirements,
+  evidence, findings, and ratings. It is not merely an aspiration or theme.
+- **Traceable** — the factor can be traced backward to needs, risks,
+  stakeholders, or stable stakes, and forward to requirements that actually test
+  it.
+- **Neutral** — the factor names the quality to be judged, not a preferred
+  implementation, workflow, tactic, or metric.
+
+A consequential factor that is weak on the other qualities should usually be
+refined, not dropped. Improve its name, boundary, placement, requirements,
+evidence strategy, or assessment cadence until the model can judge it well
+enough for the decisions it supports.
+
 #### Choose factors that name the concerns that matter here
 
 - **Do** pick the focused set of quality characteristics that genuinely drive this

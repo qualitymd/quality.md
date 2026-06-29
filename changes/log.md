@@ -3,6 +3,38 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0166 - Setup Factor Proposal Checkpoint](archive/0166-setup-factor-proposal-checkpoint.md).
+  Setup now teaches and applies Factor-set and individual-Factor desiderata,
+  presents a draft factor proposal checkpoint before final review, carries the
+  reviewed proposal into authoring, and reports factor coverage/depth issues as
+  first-model usefulness gaps.
+
+- **In-Review**: Completed implementation for
+  [0166 - Setup Factor Proposal Checkpoint](archive/0166-setup-factor-proposal-checkpoint.md).
+  Runtime guidance, durable skill specs, README framing, and OKF logs are aligned
+  for review.
+
+- **In-Progress**: Advanced
+  [0166 - Setup Factor Proposal Checkpoint](archive/0166-setup-factor-proposal-checkpoint.md).
+  Functional spec and design are settled; implementation is beginning across
+  setup workflow guidance, factor authoring guidance, durable skill specs, README
+  framing, and logs.
+
+- **Design**: Added the
+  [design doc](archive/0166-setup-factor-proposal-checkpoint/design.md) for
+  [0166 - Setup Factor Proposal Checkpoint](archive/0166-setup-factor-proposal-checkpoint.md).
+  The design inserts a factor proposal checkpoint between human-context discovery
+  and final review, keeps the checkpoint correction-oriented, and binds the
+  reviewed proposal into authoring and closeout checks.
+
+- **Draft**: Created
+  [0166 - Setup Factor Proposal Checkpoint](archive/0166-setup-factor-proposal-checkpoint.md)
+  with its [functional spec](archive/0166-setup-factor-proposal-checkpoint/spec.md).
+  The case captures factor-set desiderata, individual-Factor desiderata, setup
+  teaching copy, targeted factor proposal corrections, durable specs, runtime
+  guidance, and README framing.
+
+- **Done**: Implemented and archived
   [0165 - Run IDs and Artifact Numbering](archive/0165-run-id-artifact-numbering.md).
   Evaluation runs now persist a globally-unique `RunManifest.id`,
   recommendations use per-run `number` values and numeric ranking/coverage refs,
