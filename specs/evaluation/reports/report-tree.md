@@ -193,8 +193,8 @@ Known fixed enum report displays are:
 | Finding basis status         | `plausible`                   | `🟡 Plausible`                   |
 | Finding basis status         | `not_assessed`                | `⚪ Not Assessed`                |
 | Finding basis status         | `not_applicable`              | `⬜ Not Applicable`              |
-| Recommendation impact        | `very_high`                   | `◆ Very high`                    |
-| Recommendation impact        | `high`                        | `▲ High`                         |
+| Recommendation impact        | `very_high`                   | `⬥⬥ Very high`                   |
+| Recommendation impact        | `high`                        | `⬥ High`                         |
 | Recommendation impact        | `medium`                      | `● Medium`                       |
 | Recommendation impact        | `low`                         | `○ Low`                          |
 | Finding ranking tier         | `P1`                          | `🔴 P1 Highest`                  |

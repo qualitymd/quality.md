@@ -339,7 +339,7 @@ Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 ```
 
 ```markdown
-Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 ```
 
 For Rating Levels, render the configured Rating Scale from the run's model
@@ -433,7 +433,7 @@ Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 
 ## Top Recommendations
 
-Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 
 ...
 
@@ -594,9 +594,9 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 
 | # | Rank | Impact | Confidence | Reference                                                 |
 | - | ---- | ------ | ---------- | --------------------------------------------------------- |
-| 1 | 1    | ▲ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/1 |
+| 1 | 1    | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/1 |
 
-Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
 ## Contents

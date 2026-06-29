@@ -15,7 +15,7 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 | --- | --- | --- | --- | --- |
 | 3 | 3 | ● Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/3` |
 
-Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 

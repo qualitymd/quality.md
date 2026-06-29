@@ -35,7 +35,7 @@ QUALITY.md specification.
   move the Area/Factor table up as `Model Evaluation`; and use
   `Primary Source Data` sections with report-local primary payloads.
 - Generated Evaluation reports now render recommendation impact with subtle
-  shape markers (`⬥ Very high`, `▲ High`, `● Medium`, `○ Low`), restore impact
+  shape markers (`⬥⬥ Very high`, `⬥ High`, `● Medium`, `○ Low`), restore impact
   to `report.md` Top Recommendations, and use quieter Area / Factor Breakdown
   row markers.
 - Generated Evaluation run reports now open with `Summary`, `Key Details`, and

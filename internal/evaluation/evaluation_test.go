@@ -504,8 +504,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "Full Findings report: [findings.md](findings.md)")
 	assertContains(t, runReport, "## Top Recommendations")
 	assertContains(t, runReport, "| Rank | # | Recommendation | Area / Factors | Impact | Reason |")
-	assertContains(t, runReport, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ▲ High | The quality model stays aligned with the evaluated evidence and next bar. |")
-	assertContains(t, runReport, "Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.")
+	assertContains(t, runReport, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | The quality model stays aligned with the evaluated evidence and next bar. |")
+	assertContains(t, runReport, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
 	assertNotContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
@@ -529,8 +529,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationIndex, "## Ranked Recommendations\n\n| Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
 	assertNotContains(t, recommendationIndex, "Jump to:")
 	assertContains(t, recommendationIndex, "| Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
-	assertContains(t, recommendationIndex, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ▲ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
-	assertContains(t, recommendationIndex, "Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.")
+	assertContains(t, recommendationIndex, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
+	assertContains(t, recommendationIndex, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, recommendationIndex, "Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.")
 	assertContains(t, recommendationIndex, "Coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.")
 
@@ -542,9 +542,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationReport, "- [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)")
 	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
 	assertContains(t, recommendationReport, "| # | Rank | Impact | Confidence | Reference |")
-	assertContains(t, recommendationReport, "| 1 | 1 | ▲ High | 🟢 High | `evaluation:")
+	assertContains(t, recommendationReport, "| 1 | 1 | ⬥ High | 🟢 High | `evaluation:")
 	assertContains(t, recommendationReport, "/recommendation/1` |")
-	assertContains(t, recommendationReport, "Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.")
+	assertContains(t, recommendationReport, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, recommendationReport, "Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.")
 	assertContains(t, recommendationReport, "## Contents\n\n- [Description](#description)\n- [Background](#background)\n- [Expected value](#expected-value)\n- [Done criterion](#done-criterion)\n- [Ranking rationale](#ranking-rationale)\n- [Trace](#trace)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, recommendationReport, "Jump to:")
@@ -1659,7 +1659,7 @@ func TestReportDisplayTitles(t *testing.T) {
 		{"known basis status", basisStatusTitle("verified"), "✅ Verified"},
 		{"known ranking tier", findingRankingTierTitle("P1"), "🔴 P1 Highest"},
 		{"known coverage disposition", findingCoverageDispositionTitle("addressed_by_recommendation"), "✅ Addressed by Recommendation"},
-		{"known impact", impactTitle("very_high"), "◆ Very high"},
+		{"known impact", impactTitle("very_high"), "⬥⬥ Very high"},
 		{"unknown impact", impactTitle("future_impact"), "Future Impact"},
 		{"unknown fallback", findingTypeTitle("new_finding_type"), "New Finding Type"},
 		{"camel fallback", limitTypeTitle("futureLimitType"), "Future Limit Type"},

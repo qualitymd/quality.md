@@ -253,8 +253,8 @@ var findingBasisStatusValues = []enumValue[FindingBasisStatus]{
 }
 
 var recommendationImpactValues = []enumValue[RecommendationImpact]{
-	{Value: RecommendationImpactVeryHigh, Label: "Very high", Marker: "◆", Rank: 0},
-	{Value: RecommendationImpactHigh, Label: "High", Marker: "▲", Rank: 1},
+	{Value: RecommendationImpactVeryHigh, Label: "Very high", Marker: "⬥⬥", Rank: 0},
+	{Value: RecommendationImpactHigh, Label: "High", Marker: "⬥", Rank: 1},
 	{Value: RecommendationImpactMedium, Label: "Medium", Marker: "●", Rank: 2},
 	{Value: RecommendationImpactLow, Label: "Low", Marker: "○", Rank: 3},
 }
