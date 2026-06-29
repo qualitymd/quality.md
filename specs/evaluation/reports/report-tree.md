@@ -79,8 +79,7 @@ recommendation ID when needed.
 
 ## Report Frontmatter
 
-Every generated Markdown report **MUST** begin with YAML frontmatter containing
-only `type` and `title`.
+Every generated Markdown report **MUST** begin with YAML frontmatter.
 
 The `type` field **MUST** use this report-subject taxonomy:
 
@@ -102,18 +101,24 @@ line, with the leading Markdown `#` marker removed. For example, a Requirement
 report frontmatter title uses `Requirement: <title>`, matching the visible H1
 `# Requirement: <title>`.
 
-Report frontmatter **MUST NOT** duplicate generated time, run identity, model
-snapshot, subject identity, scope, ratings, confidence, summaries, rating
-drivers, findings, recommendations, limits, evidence, or rendered display
-labels when those values are available from structured Evaluation payloads or
-the visible Markdown body.
+The run-level `report.md` frontmatter **MUST** include only these fields:
+`type`, `title`, `run`, `runId`, `created`, `scope`, and `subject`.
+`run` **MUST** identify the run folder label when available. `runId` and
+`created` **MUST** render from `RunManifest.id` and `RunManifest.createdAt`.
+`scope` **MUST** render the requested-scope display string. `subject` **MUST**
+render the scoped Area model reference.
+
+Non-run report frontmatter **MUST** contain only `type` and `title`.
+
+Report frontmatter **MUST NOT** duplicate ratings, confidence, summaries, rating
+drivers, findings, recommendations, limits text, evidence, source-data
+manifests, or rendered display labels.
 
 > Rationale: `type` records the report artifact kind, while `title` records the
-> generated Markdown document title a reader sees first. Keeping frontmatter
-> title equal to the H1 avoids a second subject-only title system without
-> turning the first screen of every report into a source-data manifest.
-> Report-local source-data pointers live in the visible bottom section instead.
-> — 0158, 0162, 0167
+> generated Markdown document title a reader sees first. Run report frontmatter
+> carries non-judgmental routing metadata so the visible opening can focus on
+> judgment and navigation. Report-local source-data pointers live in the visible
+> bottom section instead. — 0158, 0162, 0167, 0169
 
 ## Source Data Section
 
@@ -148,6 +153,8 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 `RunManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
+- `## Summary`, `## Key Details`, and `## Contents` sections before Top
+  Findings;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
 - link to the full findings index;
@@ -156,7 +163,28 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 - Area / Factor Breakdown for the scoped Area;
 - requested and planned Evaluation scope;
 - root Area coverage status; and
-- limits and incomplete inputs from the scoped Area result.
+- `## Report Details` before `## Legend` and `## Source Data`.
+
+The run-level `report.md` **MUST NOT** render the visible top `Run:` context
+line used by detail reports.
+
+The run report `## Summary` section **MUST** render the scoped Area summary.
+When a ranked recommendation exists, the section **SHOULD** include a
+deterministic recommended-next-action sentence derived from the top-ranked
+recommendation.
+
+The run report `## Key Details` section **MUST** render a table with `Overall
+Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
+order. The section **MUST NOT** include limits or incomplete-input counts.
+
+The run report `## Contents` section **MUST** link to visible sections rendered
+in that run report.
+
+The run report `## Report Details` section **MUST** render Run, Run ID,
+Created, and Subject rows.
+
+The run-level `report.md` **MUST NOT** render a `## Limits & Incomplete Inputs`
+section.
 
 The run-level `report.md` **MUST NOT** render a standalone `Rating Drivers`
 section or `Driver | Effect | Inputs` table. Rating drivers remain structured
@@ -164,8 +192,7 @@ source data available through the payloads listed in the report's `Source Data`
 section.
 
 When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
-filtered Factors and **MUST** avoid presenting the result as a complete Area
-roll-up unless the structured analysis records an appropriate limit.
+filtered Factors in visible scope details.
 
 The run report **MUST** state when the root Area was not evaluated in the run.
 
@@ -254,13 +281,14 @@ after frontmatter. The H1 **MUST** prefix the subject display title with the
 report kind: `Area:` for root and non-root Area reports, `Factor:` for Factor
 reports, `Requirement:` for Requirement reports, and `Recommendation:` for
 recommendation detail reports. The run-level H1 **MUST** identify the report as
-an Evaluation Report. The H1 title line and frontmatter `title` **MUST** use the
+a Quality Evaluation. The H1 title line and frontmatter `title` **MUST** use the
 same plain-text title.
 
-Every report **MUST** render a run context line and a report navigation line near
-the H1. The report navigation line **MUST** link to the run overview
-`report.md`, full findings index `findings.md`, and full recommendation index
-`recommendations.md` when the current report is not that target.
+Every non-run report **MUST** render a run context line near the H1. Every
+report **MUST** render a report navigation line near the H1. The report
+navigation line **MUST** link to the run overview `report.md`, full findings
+index `findings.md`, and full recommendation index `recommendations.md` when the
+current report is not that target.
 
 The `Area:` navigation trail **MUST** render after the H1. Its elements **MUST**
 link to generated Area reports from the root Area through the current Area

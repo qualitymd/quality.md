@@ -164,6 +164,7 @@ type evaluationRequirementArtifacts struct {
 
 type evaluationArtifacts struct {
 	Manifest              *RunManifest
+	RunLabel              string
 	Frame                 map[string]any
 	FindingRanking        map[string]any
 	Recommendations       map[int]map[string]any
@@ -205,6 +206,7 @@ type evaluationReportPlan struct {
 
 func collectEvaluationArtifacts(runAbs string) (*evaluationArtifacts, error) {
 	out := &evaluationArtifacts{
+		RunLabel:        filepath.Base(runAbs),
 		Recommendations: map[int]map[string]any{},
 		Areas:           map[string]*evaluationAreaArtifacts{},
 		Factors:         map[string]*evaluationFactorArtifacts{},
@@ -973,35 +975,17 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	localArea := scopedMap(plan.ScopedAreaAnalysis, "localAnalysis")
 	var b strings.Builder
 	data := runReportSourceData(artifacts, plan)
-	renderReportHeader(&b, reportHeader{
-		Type:       reportTypeEvaluationOverview,
-		Heading:    title,
-		ReportPath: reportPath,
-		Run:        artifacts.Manifest,
-		Context: []string{
-			evaluationAreaTrailLine(spec, artifacts, plan.ScopedAreaID, reportPath),
-		},
-		SummaryHead: []string{
-			"Overall Rating",
-			"Scope",
-			"Confidence",
-		},
-		SummaryRow: []string{
-			evaluationRatingLabel(spec, scopedArea),
-			requestedScopeLabel(plan.RequestedScope),
-			evaluationConfidencePair(scopedArea, localArea),
-		},
-		JumpLinks: []reportJumpLink{
-			{Label: "Top Findings", Anchor: "#top-findings"},
-			{Label: "Top Recommendations", Anchor: "#top-recommendations"},
-			{Label: "Area / Factor Breakdown", Anchor: "#area--factor-breakdown"},
-			{Label: "Scope", Anchor: "#scope"},
-			{Label: "Limits", Anchor: "#limits--incomplete-inputs"},
-		},
-	})
-	b.WriteString("Summary:\n\n")
+	renderRunReportHeader(&b, spec, artifacts, plan, reportPath, title)
+	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(scopedArea))
-	b.WriteString("\n\n## Top Findings\n\n")
+	if next := runReportRecommendedNextAction(artifacts, reportPath); next != "" {
+		b.WriteString("\n\nRecommended next action: " + next)
+	}
+	b.WriteString("\n\n## Key Details\n\n")
+	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
+	b.WriteString("## Contents\n\n")
+	writeRunReportContents(&b)
+	b.WriteString("## Top Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
 	b.WriteString("Full findings index: " + reportLink(reportPath, "findings.md", "findings.md") + "\n\n")
 	b.WriteString("## Top Recommendations\n\n")
@@ -1012,25 +996,103 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeEvaluationRunScope(&b, spec, plan)
 	b.WriteString("## Coverage\n\n")
 	writeEvaluationRunCoverage(&b, artifacts, reports, reportPath)
-	b.WriteString("## Limits & Incomplete Inputs\n\n")
-	scopes := []map[string]any{localArea, scopedArea}
-	if len(plan.FactorFilter) > 0 {
-		scopes = append(scopes, factorFilterLimit())
-	}
-	writeEvaluationLimitsTable(&b, scopes...)
+	b.WriteString("## Report Details\n\n")
+	writeRunReportDetails(&b, artifacts, plan)
 	writeEvaluationLegend(&b)
 	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
-func factorFilterLimit() map[string]any {
-	return map[string]any{
-		"evaluationLimits": []any{map[string]any{
-			"id":          "factor-filter",
-			"description": "The run report is narrowed by RunManifest.plannedScope.factorFilter.",
-			"impact":      "The scoped Area rating is a partial roll-up, not a complete Area assessment.",
-		}},
+func renderRunReportHeader(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, reportPath, title string) {
+	b.WriteString(md.Frontmatter(
+		md.FrontmatterField{Name: "type", Value: reportTypeEvaluationOverview},
+		md.FrontmatterField{Name: "title", Value: title},
+		md.FrontmatterField{Name: "run", Value: runReportRunLabel(artifacts)},
+		md.FrontmatterField{Name: "runId", Value: runReportID(artifacts)},
+		md.FrontmatterField{Name: "created", Value: runReportCreated(artifacts)},
+		md.FrontmatterField{Name: "scope", Value: requestedScopeLabel(plan.RequestedScope)},
+		md.FrontmatterField{Name: "subject", Value: model.AreaPath(plan.ScopedAreaID).Reference()},
+	))
+	b.WriteString("# " + title + "\n\n")
+	b.WriteString(reportNavigationLine(reportPath) + "\n\n")
+	if line := evaluationAreaTrailLine(spec, artifacts, plan.ScopedAreaID, reportPath); line != "" {
+		b.WriteString(line + "\n\n")
 	}
+}
+
+func runReportRunLabel(artifacts *evaluationArtifacts) string {
+	if artifacts != nil && artifacts.RunLabel != "" && artifacts.RunLabel != "." && artifacts.RunLabel != string(filepath.Separator) {
+		return artifacts.RunLabel
+	}
+	if artifacts != nil && artifacts.Manifest != nil && artifacts.Manifest.Number > 0 {
+		return fmt.Sprintf("Run %04d", artifacts.Manifest.Number)
+	}
+	return ""
+}
+
+func runReportID(artifacts *evaluationArtifacts) string {
+	if artifacts != nil && artifacts.Manifest != nil {
+		return artifacts.Manifest.ID
+	}
+	return ""
+}
+
+func runReportCreated(artifacts *evaluationArtifacts) string {
+	if artifacts != nil && artifacts.Manifest != nil {
+		return artifacts.Manifest.CreatedAt
+	}
+	return ""
+}
+
+func writeRunReportKeyDetails(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, scopedArea, localArea map[string]any) {
+	b.WriteString(md.TableRow("Overall Rating", "Confidence", "Scope", "Findings", "Recommendations"))
+	b.WriteString(md.TableRow("---", "---", "---", "---", "---"))
+	b.WriteString(md.TableRow(
+		evaluationRatingLabel(spec, scopedArea),
+		evaluationConfidencePair(scopedArea, localArea),
+		requestedScopeLabel(plan.RequestedScope),
+		fmt.Sprintf("%d ranked", len(artifacts.rankedFindings())),
+		fmt.Sprintf("%d ranked", len(artifacts.rankedRecommendations())),
+	))
+	b.WriteString("\n")
+}
+
+func writeRunReportContents(b *strings.Builder) {
+	links := []reportJumpLink{
+		{Label: "Top Findings", Anchor: "#top-findings"},
+		{Label: "Top Recommendations", Anchor: "#top-recommendations"},
+		{Label: "Area / Factor Breakdown", Anchor: "#area--factor-breakdown"},
+		{Label: "Scope", Anchor: "#scope"},
+		{Label: "Coverage", Anchor: "#coverage"},
+		{Label: "Report Details", Anchor: "#report-details"},
+		{Label: "Source Data", Anchor: "#source-data"},
+	}
+	for _, link := range links {
+		b.WriteString("- " + md.Link(link.Label, link.Anchor) + "\n")
+	}
+	b.WriteString("\n")
+}
+
+func runReportRecommendedNextAction(artifacts *evaluationArtifacts, reportPath string) string {
+	items := artifacts.rankedRecommendations()
+	if len(items) == 0 {
+		return ""
+	}
+	item := items[0]
+	title := firstString(item.Recommendation, "title")
+	if title == "" {
+		title = fmt.Sprintf("Recommendation %d", recommendationNumber(item.Recommendation))
+	}
+	return reportLink(reportPath, recommendationReportPath(item.Rank, title), title) + "."
+}
+
+func writeRunReportDetails(b *strings.Builder, artifacts *evaluationArtifacts, plan *evaluationReportPlan) {
+	b.WriteString(md.TableRow("Field", "Value"))
+	b.WriteString(md.TableRow("---", "---"))
+	b.WriteString(md.TableRow("Run", md.Code(runReportRunLabel(artifacts))))
+	b.WriteString(md.TableRow("Run ID", md.Code(runReportID(artifacts))))
+	b.WriteString(md.TableRow("Created", md.Code(runReportCreated(artifacts))))
+	b.WriteString(md.TableRow("Subject", md.Code(model.AreaPath(plan.ScopedAreaID).Reference())))
 }
 
 func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts, area *evaluationAreaArtifacts, reportPath string) string {

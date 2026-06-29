@@ -7,6 +7,9 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation run reports now open with `Summary`, `Key Details`, and
+  `Contents` sections, move run metadata into frontmatter and lower report
+  details, and omit the visible `Limits & Incomplete Inputs` section for now.
 - Generated Evaluation run reports now title `report.md` as
   `Quality Evaluation - <Area>` and include factor filters in parentheses, for
   example `Quality Evaluation - Public API (Reliability, Correctness)`.

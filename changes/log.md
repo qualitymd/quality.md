@@ -3,6 +3,35 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0169 - Run Report Opening](archive/0169-run-report-opening.md). Generated
+  run-level `report.md` now carries non-judgmental run metadata in
+  frontmatter, opens with `Summary`, `Key Details`, and `Contents`, moves
+  traceability to `Report Details`, and omits the visible limits section for now.
+
+- **In-Review**: Completed implementation for
+  [0169 - Run Report Opening](archive/0169-run-report-opening.md). Renderer
+  code, durable report specs, report design guidance, release notes, tests, and
+  report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0169 - Run Report Opening](archive/0169-run-report-opening.md). Functional
+  spec and design are settled; implementation is beginning across generated run
+  report rendering, durable specs, report design guidance, tests, and generated
+  examples.
+
+- **Design**: Added the
+  [design doc](archive/0169-run-report-opening/design.md) for
+  [0169 - Run Report Opening](archive/0169-run-report-opening.md). The design
+  keeps the run-report opening human-first while moving routing metadata into
+  frontmatter and lower report details.
+
+- **Draft**: Created
+  [0169 - Run Report Opening](archive/0169-run-report-opening.md) with its
+  [functional spec](archive/0169-run-report-opening/spec.md). The case
+  reshapes generated `report.md` around `Summary`, `Key Details`, `Contents`,
+  and non-judgmental frontmatter metadata while removing visible limits for now.
+
+- **Done**: Implemented and archived
   [0168 - Quality Evaluation Title](archive/0168-quality-evaluation-title.md).
   Generated run report titles now use `Quality Evaluation - <Area>` with
   factor filters appended in parentheses, durable specs, report design guidance,

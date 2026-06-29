@@ -1,25 +1,40 @@
 ---
 type: Evaluation Overview Report
 title: Quality Evaluation - LedgerLite Service
+run: 0001-full-eval
+runId: 20260629T120000Z-0123456789ab
+created: "2026-06-29T12:00:00Z"
+scope: full evaluation
+subject: "area:root"
 ---
 
 # Quality Evaluation - LedgerLite Service
-
-Run: Run 0001 - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)
 
 Area: [LedgerLite Service](root-area.md)
 
-| Overall Rating | Scope | Confidence |
-| --- | --- | --- |
-| 🟡 Minimum | full evaluation | 🔵 Medium / ⚪ None |
-
-Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Area / Factor Breakdown](#area--factor-breakdown) - [Scope](#scope) - [Limits](#limits--incomplete-inputs)
-
-Summary:
+## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
+
+Recommended next action: [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md).
+
+## Key Details
+
+| Overall Rating | Confidence | Scope | Findings | Recommendations |
+| --- | --- | --- | --- | --- |
+| 🟡 Minimum | 🔵 Medium / ⚪ None | full evaluation | 7 ranked | 3 ranked |
+
+## Contents
+
+- [Top Findings](#top-findings)
+- [Top Recommendations](#top-recommendations)
+- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Scope](#scope)
+- [Coverage](#coverage)
+- [Report Details](#report-details)
+- [Source Data](#source-data)
 
 ## Top Findings
 
@@ -75,11 +90,14 @@ Full recommendation index: [recommendations.md](recommendations.md)
 - Root Area report: [root-area.md](root-area.md)
 - Generated reports: 24
 
-## Limits & Incomplete Inputs
+## Report Details
 
-| Type | Scope | Impact |
-| --- | --- | --- |
-| ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
+| Field | Value |
+| --- | --- |
+| Run | `0001-full-eval` |
+| Run ID | `20260629T120000Z-0123456789ab` |
+| Created | `2026-06-29T12:00:00Z` |
+| Subject | `area:root` |
 
 ## Legend
 

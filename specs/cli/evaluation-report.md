@@ -53,7 +53,11 @@ structured data produces byte-identical report files.
 choose a headline subject from `EvaluationFrame` or any other agent-authored
 payload ordering. `report.md` **MUST** title the run entrypoint as
 `Quality Evaluation - <Area title>` and append a parenthesized comma-separated
-Factor title list when `plannedScope.factorFilter` is present.
+Factor title list when `plannedScope.factorFilter` is present. `report.md`
+**MUST** render non-judgmental run metadata in YAML frontmatter, omit the
+visible top run-context line, and open with `Summary`, `Key Details`, and
+`Contents` sections before Top Findings. `report.md` **MUST NOT** render a
+visible `Limits & Incomplete Inputs` section.
 
 `build` **MUST** render persisted Advice outputs into `report.md`,
 `findings.md`, `recommendations.md`, and recommendation detail reports under
@@ -63,12 +67,13 @@ Recommendations sections capped at 10 rows each and **MUST** link to
 rendered from persisted Advice data and the model snapshot, not from YAML
 frontmatter or Markdown body content in other generated reports.
 
-Generated Markdown report frontmatter **MUST** contain only report identity
-fields, and its `title` **MUST** match the report's visible H1 title text. Every
-generated Markdown report **MUST** end with a `Source Data` section listing the
-structured Evaluation payload files used as source data for the specific report
-artifact. The generated `data/evaluation-output-result.json` index **MUST NOT**
-be listed as report source data unless a report is directly rendered from it.
+Generated Markdown report frontmatter **MUST** contain only non-judgmental
+report metadata allowed by the report-tree contract, and its `title` **MUST**
+match the report's visible H1 title text. Every generated Markdown report
+**MUST** end with a `Source Data` section listing the structured Evaluation
+payload files used as source data for the specific report artifact. The
+generated `data/evaluation-output-result.json` index **MUST NOT** be listed as
+report source data unless a report is directly rendered from it.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

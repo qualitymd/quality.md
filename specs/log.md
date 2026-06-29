@@ -3,6 +3,13 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0169 - Run Report Opening](../changes/archive/0169-run-report-opening.md).
+  Generated run-level `report.md` now carries non-judgmental run metadata in
+  frontmatter, opens with `Summary`, `Key Details`, and `Contents`, moves
+  traceability to `Report Details`, and omits the visible limits section for
+  now.
+
+- **Revision**: Implemented durable spec changes for
   [0168 - Quality Evaluation Title](../changes/archive/0168-quality-evaluation-title.md).
   Generated Evaluation run report titles now use
   `Quality Evaluation - <Area>` with factor filters appended in parentheses,

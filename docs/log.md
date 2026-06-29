@@ -4,6 +4,13 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0169 - Run Report Opening](../changes/archive/0169-run-report-opening.md).
+  The guide now defines the primary report opening stack, separates Summary from
+  Key Details and Contents, and treats run frontmatter as non-judgmental routing
+  metadata.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0168 - Quality Evaluation Title](../changes/archive/0168-quality-evaluation-title.md).
   Run report examples and title guidance now use
   `Quality Evaluation - <Area>` with factor filters appended in parentheses.

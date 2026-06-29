@@ -707,3 +707,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0168 — Quality Evaluation Title](0168-quality-evaluation-title.md) - renames
   generated run report titles to `Quality Evaluation - <Area>` and appends
   factor filters in parentheses (`Done`).
+- [0169 — Run Report Opening](0169-run-report-opening.md) - reshapes generated
+  `report.md` around Summary, Key Details, Contents, and non-judgmental
+  frontmatter metadata while removing visible limits for now (`Done`).

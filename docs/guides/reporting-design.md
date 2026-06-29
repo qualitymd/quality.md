@@ -19,23 +19,22 @@ Factor reports, Requirement reports, and recommendation detail reports.
 
 ## Research basis
 
+- Lead with the answer. Report-writing guidance commonly treats the summary as
+  the part a busy reader may rely on most: it should state the purpose or
+  context, principal findings, conclusion, and recommended next move without
+  requiring a full read.
 - People scan before they read. Nielsen Norman Group's web-writing research
   found higher measured usability from concise, scannable, objective content,
   and the strongest result when all three were combined:
   [Concise, SCANNABLE, and Objective](https://www.nngroup.com/articles/concise-scannable-and-objective-how-to-write-for-the-web/).
-- Headings, lists, summaries, links, and tables make pages easier to scan.
-  Apply that to reports with one clear H1, short context lines, summary tables,
-  ranked tables, and jump links on long pages.
-- Page structure is an accessibility feature. W3C WAI guidance emphasizes
-  meaningful page structure, headings, and regions:
+- Structure is navigation. W3C WAI guidance emphasizes meaningful page
+  structure, headings, and regions:
   [Page Structure Tutorial](https://www.w3.org/WAI/tutorials/page-structure/).
-- Page headers should orient before they explain. Atlassian's page header
-  component centers the page title with supporting breadcrumbs, metadata, and
-  actions:
-  [Page header](https://atlassian.design/components/page-header).
-- Metadata should be useful, not exhaustive. The Scottish Government design
-  system recommends page metadata for facts such as date, type, owner, category,
-  and reference number, while including only what helps the reader:
+  Long documents benefit from contents links when the headings below are stable
+  and useful.
+- Metadata should be useful, not exhaustive. Page metadata patterns commonly
+  reserve metadata for facts such as date, type, owner, category, and reference
+  number while including only what helps the reader:
   [Page metadata](https://designsystem.gov.scot/components/page-metadata).
 - Breadcrumbs are useful when readers enter a nested structure directly. GOV.UK
   frames breadcrumbs as a way to show where users are and how to move up:
@@ -64,9 +63,9 @@ Use visible Markdown for:
 - findings and recommendations;
 - limits and incomplete inputs.
 
-Use frontmatter only to make report identity cheap for agents or secondary
-tooling. Put source-data links in the visible `Source Data` section at the end
-of the report.
+Use frontmatter only for non-judgmental document metadata that makes report
+identity, routing, and indexing cheap for agents or secondary tooling. Put
+source-data links in the visible `Source Data` section at the end of the report.
 
 ### One-second orientation
 
@@ -80,6 +79,29 @@ The top of every report should answer:
   sibling reports?
 
 Prefer short lines and compact tables over paragraphs in the header.
+
+### Opening stack
+
+The top of a primary report should have one stable job per line or section:
+
+1. H1: report kind and subject.
+2. Report navigation: overview, findings, recommendations, and important subject
+   reports.
+3. Subject context: Area, Factor, or Factors trail.
+4. `Summary`: bottom line, main reason, consequence, and best next move.
+5. `Key Details`: compact table of scan-critical facts.
+6. `Contents`: local links for the major sections in this report.
+
+Keep these roles distinct. Do not repeat the same fact in navigation, summary
+prose, key-details table, and contents. The opening area should read as one
+answer, not a pile of metadata.
+
+For primary reports, frontmatter owns routing metadata. Do not repeat
+frontmatter-only facts such as run ID, creation time, and stable subject
+reference in the visible opening area unless they materially help human
+judgment. Keep scope visible when it changes how the rating should be read.
+When visible traceability is useful but not opening-critical, add a lower
+`Report Details` section before `Source Data`.
 
 ### Deterministic projection
 
@@ -113,6 +135,12 @@ Good header table examples:
 - findings index: `Findings`, `Highest Severity`;
 - recommendations index: `Recommendations`, `Highest Impact`, `Coverage`.
 
+For `report.md`, render this table under `## Key Details` instead of leaving it
+as an unlabeled header table. The key-details table is for facts: rating,
+confidence, scope, ranked-finding count, and ranked-recommendation count. Do not
+use the key-details table for summary prose, recommendation text, evidence, or
+limits.
+
 ### Navigation at the top
 
 Every report should expose report-level navigation near the H1:
@@ -132,13 +160,19 @@ Keep the existing model context lines:
 Use breadcrumb trails for hierarchy and a separate report-nav line for sibling
 indexes. Do not overload breadcrumbs with every report in the run.
 
-### Summaries before detail
+### Summary, key details, and contents
 
-Put the bottom line before long tables. For the run report, place the evaluation
-summary before Top Findings and Top Recommendations. For detail reports, keep the
-short subject summary close to the header table.
+Put the bottom line before long tables. For the run report, use an explicit
+`## Summary` section before Top Findings and Top Recommendations. The summary is
+prose: it should state the overall judgment, the main reason, the quality
+consequence, and the best next move when a recommendation is available.
 
-Long pages should add a `Jump to:` line after the header area. Useful targets:
+Use `## Key Details` for scan-critical facts. This prevents the summary from
+turning into a metadata dump and prevents the key-details table from trying to
+explain judgment.
+
+Use `## Contents` as the first-class local navigation section for primary long
+reports. Useful targets, when the corresponding sections are rendered:
 
 - `Top Findings`;
 - `Top Recommendations`;
@@ -150,16 +184,37 @@ Long pages should add a `Jump to:` line after the header area. Useful targets:
 - `Finding Details`;
 - `Unknowns & Missing Evidence`.
 
-Skip jump links on short pages where they add more noise than navigation value.
+Render `## Contents` in `report.md` even when the table is short: the run report
+is the primary artifact, and contents links make its structure stable for people
+and agents. For detail reports and indexes, use a shorter `Jump to:` line only
+when local section navigation materially improves scanning. Skip local navigation
+on short pages where it adds more noise than value.
 
-### Identity frontmatter
+### Frontmatter
 
-Generated report YAML frontmatter stays tiny. It is an identity layer, not a
-metadata summary or source-data manifest. Keep it OKF-compatible by including
-only a `type` and `title`. Do not repeat Evaluation result facts that already
-live in the associated JSON files or visible body, including generated time, run
-identity, subject identity, scope, ratings, confidence, findings,
-recommendations, limits, or display labels.
+Generated report YAML frontmatter should stay readable and non-judgmental. It is
+an identity and indexing layer, not a second Evaluation result format,
+metadata-summary table, or source-data manifest.
+
+It is reasonable for frontmatter to carry document metadata such as stable report
+kind, title, run number or slug, run ID, creation time, requested scope, and
+subject reference when those fields help agents, static-site tooling, or editors
+find and route the report without making the file harder for people to open.
+These fields are metadata about the report document and run, not judgment about
+the evaluated subject.
+
+Do not repeat Evaluation judgment or evidence in frontmatter, including:
+
+- summaries;
+- ratings;
+- confidence;
+- rating drivers;
+- findings;
+- recommendations;
+- limits text;
+- evidence text;
+- source-data manifests;
+- rendered display labels.
 
 Generated reports are runtime artifacts, so they do not yet require a report
 bundle `index.md`, `schema.md`, or `log.md`. A later Change Case should decide
@@ -169,19 +224,30 @@ Do not rename report files such as `findings.md` or `recommendations.md` to
 `findings.md` is still a report concept whose subject is the ranked Findings
 index.
 
-Use only a stable report `type` and a human-friendly `title`:
+Use a stable report `type` and a human-friendly `title` in every generated
+report. Additional non-judgmental metadata fields are acceptable only when the
+durable report spec for that artifact allows them:
 
 ```yaml
 ---
-type: Requirement Evaluation Report
-title: "Requirement: mutation endpoints are idempotent under retry"
+type: Evaluation Overview Report
+title: "Quality Evaluation - LedgerLite Service"
+run: 0001-full-eval
+runId: 20260629T120000Z-0123456789ab
+created: 2026-06-29T12:00:00Z
+scope: full evaluation
 ---
 ```
 
 Good frontmatter fields:
 
 - `type`;
-- `title`.
+- `title`;
+- `run`;
+- `runId`;
+- `created`;
+- `scope`;
+- `subject`.
 
 The frontmatter `title` should match the visible H1 title text without the
 leading Markdown `#` marker. Detail reports keep prefixes such as
@@ -212,28 +278,11 @@ concepts, not report artifacts. `report.md` should use
 the run entrypoint and includes findings, recommendations, scope, coverage, and
 subject report links.
 
-Avoid frontmatter fields for anything available from the linked JSON payloads or
-visible Markdown body, especially:
-
-- generated time;
-- run identity;
-- model snapshot;
-- subject identity;
-- scope;
-- summaries;
-- ratings;
-- confidence;
-- rating drivers;
-- findings;
-- recommendations;
-- limits text;
-- evidence text;
-- rendered display labels.
-
 This keeps the first lines of a report readable in editors that expose
 frontmatter, makes frontmatter `title` the same document title as the H1, and
-keeps the structured Evaluation data as the single source of truth. If a future
-consumer needs richer machine access, use `data/evaluation-output-result.json`
+keeps the structured Evaluation data as the single source of truth for
+judgment. If a future consumer needs richer machine access to ratings, findings,
+recommendations, evidence, or limits, use `data/evaluation-output-result.json`
 and the payloads it indexes instead of expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
@@ -278,19 +327,38 @@ result and next navigation obvious.
 ```markdown
 # Quality Evaluation - LedgerLite Service
 
-Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Model: [model-snapshot.md](model-snapshot.md)
-
 Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md) - [Root Area](root-area.md)
 
-| Overall Rating | Scope           | Confidence    |
-| -------------- | --------------- | ------------- |
-| Minimum        | full evaluation | Medium / None |
+Area: [LedgerLite Service](root-area.md)
 
-Summary:
+## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Area / Factor Breakdown](#area--factor-breakdown) - [Scope](#scope) - [Limits](#limits--incomplete-inputs)
+Recommended next action: tighten the idempotency replay contract first because it is the highest-ranked finding and directly affects caller recovery semantics.
+
+## Key Details
+
+| Overall Rating | Confidence    | Scope           | Top Findings | Top Recommendations |
+| -------------- | ------------- | --------------- | ------------ | ------------------- |
+| Minimum        | Medium / None | full evaluation | 7 ranked     | 3 ranked            |
+
+## Contents
+
+- [Top Findings](#top-findings)
+- [Top Recommendations](#top-recommendations)
+- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Scope](#scope)
+- [Coverage](#coverage)
+- [Report Details](#report-details)
+
+## Top Findings
+
+...
+
+## Top Recommendations
+
+...
 
 ## Area / Factor Breakdown
 
@@ -299,6 +367,17 @@ Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendati
 | **[LedgerLite Service](root-area.md)**                                  | Minimum        | —            | 7        | 3               |
 | ↳ [Public API](areas/api/api-area.md)                                   | Minimum        | Minimum      | 2        | 1               |
 | ↳ 🧩 [Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
+
+...
+
+## Report Details
+
+| Field   | Value                           |
+| ------- | ------------------------------- |
+| Run     | `0001-full-eval`                |
+| Run ID  | `20260629T184200Z-0123456789ab` |
+| Created | `2026-06-29T18:42:00Z`          |
+| Subject | `area:root`                     |
 ```
 
 ### Index reports
@@ -413,14 +492,22 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 Before changing report output, check:
 
 - The first visible Markdown content is one clear H1.
-- A reader can identify the run, generated time, scope, and subject in the
-  header area.
+- A reader can identify the subject and decision-relevant scope in the opening
+  area.
 - Report-level navigation links to the overview, findings, and recommendations
   where those reports exist.
 - Hierarchical context is visible through Area, Factor, or Factors lines.
-- The header uses a report-specific summary table.
-- Long pages have useful jump links; short pages do not add noisy jump links.
-- Frontmatter contains identity only.
+- `report.md` uses `## Summary`, `## Key Details`, and `## Contents` as distinct
+  sections.
+- Frontmatter-only routing metadata is not repeated in the opening area unless
+  it materially helps human judgment.
+- Summary prose states judgment, reason, consequence, and next move without
+  becoming a metadata list.
+- Key details tables contain scan-critical facts, not prose, evidence, or
+  recommendations.
+- Primary long reports have first-class contents links; short reports do not add
+  noisy local navigation.
+- Frontmatter contains readable, non-judgmental document metadata only.
 - No generated report introduces claims that are absent from structured data.
 - The bottom `Source Data` section lists the structured payloads used to render
   the report.
