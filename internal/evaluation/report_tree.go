@@ -1555,7 +1555,7 @@ func writeAreaFactorBreakdownFactorRows(b *strings.Builder, spec *model.Spec, ar
 }
 
 func areaFactorBreakdownTitle(reportPath, targetPath, title string, depth int, root bool) string {
-	link := reportLink(reportPath, targetPath, title)
+	link := reportLink(reportPath, targetPath, areaBreakdownMarker()+" "+title)
 	if root {
 		return "**" + link + "**"
 	}
@@ -1563,7 +1563,7 @@ func areaFactorBreakdownTitle(reportPath, targetPath, title string, depth int, r
 }
 
 func areaFactorBreakdownFactorTitle(spec *model.Spec, reportPath string, id factorID, depth int) string {
-	return areaFactorIndent(depth) + factorReportMarker() + " " + reportLink(reportPath, factorReportPath(id), factorTitle(spec, id))
+	return areaFactorIndent(depth) + reportLink(reportPath, factorReportPath(id), factorBreakdownMarker()+" "+factorTitle(spec, id))
 }
 
 func areaFactorIndent(depth int) string {
@@ -1573,13 +1573,12 @@ func areaFactorIndent(depth int) string {
 	return strings.Repeat("↳ ", depth)
 }
 
-func factorReportMarker() string {
-	title := reportKindTitle(string(ReportKindFactor))
-	marker, _, ok := strings.Cut(title, " ")
-	if !ok {
-		return title
-	}
-	return marker
+func areaBreakdownMarker() string {
+	return "▦"
+}
+
+func factorBreakdownMarker() string {
+	return "□"
 }
 
 func (a *evaluationArtifacts) areaFindingCount(areaID []string) int {
@@ -1946,11 +1945,11 @@ func requirementIDForAssessmentPath(path string) requirementID {
 }
 
 func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| Rank | # | Recommendation | Area / Factors | Reason |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
+	b.WriteString("| Rank | # | Recommendation | Area / Factors | Impact | Reason |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
-		b.WriteString("| (no recommendations) |  |  |  |  |\n\n")
+		b.WriteString("| (no recommendations) |  |  |  |  |  |\n\n")
 		return
 	}
 	for i, item := range items {
@@ -1967,6 +1966,7 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 			fmt.Sprintf("%d", recommendationNumber(item.Recommendation)),
 			reportLink(reportPath, path, title),
 			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
+			impactTitle(firstString(item.Recommendation, "impact")),
 			firstString(item.Recommendation, "expectedValue"),
 		))
 	}
@@ -2123,21 +2123,6 @@ func recommendationReportPath(rank int, title string) string {
 func recommendationNumber(rec map[string]any) int {
 	number, _ := numericSchemaVersion(rec["number"])
 	return number
-}
-
-func impactTitle(value string) string {
-	switch value {
-	case "very_high":
-		return "Very high"
-	case "high":
-		return "High"
-	case "medium":
-		return "Medium"
-	case "low":
-		return "Low"
-	default:
-		return humanizeEnum(value)
-	}
 }
 
 func factorAnalysisRefs(factors []*evaluationFactorArtifacts) []any {

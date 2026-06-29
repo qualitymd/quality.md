@@ -218,13 +218,14 @@ link to `findings.md` and `recommendations.md` when the report tree is built.
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
 at 10 rows. It **MUST** render the columns `Rank`, `#`, `Recommendation`,
-`Area / Factors`, and `Reason`, in that order. The `#` cell **MUST** render the
-assigned `RecommendationResult.number`. The `Recommendation` cell **MUST** use
-`RecommendationResult.title` as link text and link to the generated
+`Area / Factors`, `Impact`, and `Reason`, in that order. The `#` cell **MUST**
+render the assigned `RecommendationResult.number`. The `Recommendation` cell
+**MUST** use `RecommendationResult.title` as link text and link to the generated
 recommendation detail report. The `Area / Factors` cell **MUST** render linked
 Area and Factor names resolved from `RecommendationResult.traceRefs` through
 persisted evaluation data and the model snapshot, or `—` when no Area or Factor
-can be resolved. The `Reason` cell **MUST** render
+can be resolved. The `Impact` cell **MUST** render the shared recommendation
+impact display label. The `Reason` cell **MUST** render
 `RecommendationResult.expectedValue`.
 
 ## Finding Reports
@@ -273,6 +274,11 @@ body content from another generated report as recommendation source data.
 Recommendation ranking rationale **MUST** remain sourced from
 `RecommendationRankingResult.orderedRecommendations[].rationale` and **MUST NOT**
 be conflated with `RecommendationResult.background` or `expectedValue`.
+
+Known recommendation impact values **MUST** render consistently across
+recommendation Markdown report locations: `very_high` as `◆ Very high`, `high`
+as `▲ High`, `medium` as `● Medium`, and `low` as `○ Low`. Unknown impact values
+**MUST** render as humanized plain labels without a marker.
 
 ## Navigation
 
@@ -435,9 +441,10 @@ first row, followed by in-scope descendant Areas and Factors in deterministic
 model order. An Area report's Area / Factor Breakdown **MUST** list the reported
 Area as the first row, followed by its evaluated descendant Areas and Factors in
 deterministic model order. The first row **MUST** emphasize only the table's
-root Area in the `Area / Factor` cell. Factor rows **MUST** carry the Factor
-report-kind marker inline in the `Area / Factor` cell instead of using a
-separate Kind column.
+root Area in the `Area / Factor` cell. Area rows **MUST** carry the `▦` marker,
+and Factor rows **MUST** carry the `□` marker, inline in the `Area / Factor`
+cell instead of using a separate Kind column. The marker **MUST** be part of the
+row subject's visible link text when a report link exists.
 
 The `Findings` column **MUST** count ranked findings that resolve to each row's
 Area or Factor. The `Recommendations` column **MUST** count ranked

@@ -11,7 +11,7 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 
 | # | Rank | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
-| 3 | 3 | Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/3` |
+| 3 | 3 | ● Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/3` |
 
 Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
 

@@ -3,6 +3,36 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0170 - Report Visual Markers](archive/0170-report-visual-markers.md).
+  Generated Evaluation reports now use subtle shape markers for recommendation
+  impact, restore impact to run-report Top Recommendations, and use box-like
+  Area / Factor Breakdown row markers.
+
+- **In-Review**: Completed implementation for
+  [0170 - Report Visual Markers](archive/0170-report-visual-markers.md).
+  Renderer code, durable report specs, report design guidance, release notes,
+  tests, and report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0170 - Report Visual Markers](archive/0170-report-visual-markers.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable report specs, report design guidance,
+  tests, release notes, and generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0170-report-visual-markers/design.md) for
+  [0170 - Report Visual Markers](archive/0170-report-visual-markers.md). The
+  design centralizes recommendation impact display labels and localizes quiet
+  Area / Factor row markers to the breakdown table.
+
+- **Draft**: Created
+  [0170 - Report Visual Markers](archive/0170-report-visual-markers.md) with
+  its [functional spec](archive/0170-report-visual-markers/spec.md). The case
+  adds subtle recommendation impact shape markers, restores impact to run-report
+  Top Recommendations, and replaces the puzzle-piece breakdown marker with
+  box-like Area and Factor markers.
+
+- **Done**: Implemented and archived
   [0169 - Run Report Opening](archive/0169-run-report-opening.md). Generated
   run-level `report.md` now carries non-judgmental run metadata in
   frontmatter, opens with `Summary`, `Key Details`, and `Contents`, moves

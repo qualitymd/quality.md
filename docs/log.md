@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0170 - Report Visual Markers](../changes/archive/0170-report-visual-markers.md).
+  Report examples now use subtle recommendation impact shape markers and
+  box-like Area / Factor Breakdown row markers.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0169 - Run Report Opening](../changes/archive/0169-run-report-opening.md).
   The guide now defines the primary report opening stack, separates Summary from
   Key Details and Contents, and treats run frontmatter as non-judgmental routing

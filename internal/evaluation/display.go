@@ -164,6 +164,13 @@ var findingTypeTitles = map[string]string{
 	"recommendation": "➡️ Recommendation",
 }
 
+var impactTitles = map[string]string{
+	"very_high": "◆ Very high",
+	"high":      "▲ High",
+	"medium":    "● Medium",
+	"low":       "○ Low",
+}
+
 var basisStatusTitles = map[string]string{
 	"verified":       "Verified",
 	"plausible":      "Plausible",
@@ -224,6 +231,10 @@ func findingSeverityTitle(value string) string {
 
 func findingTypeTitle(value string) string {
 	return stringTitle(value, findingTypeTitles)
+}
+
+func impactTitle(value string) string {
+	return stringTitle(value, impactTitles)
 }
 
 func basisStatusTitle(value string) string {

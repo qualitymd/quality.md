@@ -23,9 +23,9 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 
 | Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[Operations](operations-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ 🧩 [Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ 🧩 [Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ Operations](operations-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
 ## Requirements
 

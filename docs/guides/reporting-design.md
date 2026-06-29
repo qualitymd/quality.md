@@ -362,11 +362,11 @@ Recommended next action: tighten the idempotency replay contract first because i
 
 ## Area / Factor Breakdown
 
-| Area / Factor                                                           | Overall Rating | Local Rating | Findings | Recommendations |
-| ----------------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
-| **[LedgerLite Service](root-area.md)**                                  | Minimum        | —            | 7        | 3               |
-| ↳ [Public API](areas/api/api-area.md)                                   | Minimum        | Minimum      | 2        | 1               |
-| ↳ 🧩 [Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
+| Area / Factor                                                          | Overall Rating | Local Rating | Findings | Recommendations |
+| ---------------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
+| **[▦ LedgerLite Service](root-area.md)**                               | Minimum        | —            | 7        | 3               |
+| ↳ [▦ Public API](areas/api/api-area.md)                                | Minimum        | Minimum      | 2        | 1               |
+| ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 
 ...
 
@@ -416,11 +416,11 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
 ## Area / Factor Breakdown
 
-| Area / Factor                                                 | Overall Rating | Local Rating | Findings | Recommendations |
-| ------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
-| **[Public API](api-area.md)**                                 | Minimum        | Minimum      | 2        | 1               |
-| ↳ 🧩 [Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
-| ↳ 🧩 [Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
+| Area / Factor                                                | Overall Rating | Local Rating | Findings | Recommendations |
+| ------------------------------------------------------------ | -------------- | ------------ | -------- | --------------- |
+| **[▦ Public API](api-area.md)**                              | Minimum        | Minimum      | 2        | 1               |
+| ↳ [□ Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
+| ↳ [□ Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
 ```
 
 ### Factor reports
@@ -484,7 +484,7 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 
 | # | Rank | Impact | Confidence | Reference                                                 |
 | - | ---- | ------ | ---------- | --------------------------------------------------------- |
-| 1 | 1    | High   | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/1 |
+| 1 | 1    | ▲ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/1 |
 ```
 
 ## Checklist

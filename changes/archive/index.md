@@ -710,3 +710,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0169 — Run Report Opening](0169-run-report-opening.md) - reshapes generated
   `report.md` around Summary, Key Details, Contents, and non-judgmental
   frontmatter metadata while removing visible limits for now (`Done`).
+- [0170 — Report Visual Markers](0170-report-visual-markers.md) - refines
+  generated report visual markers for recommendation impact and Area / Factor
+  breakdown rows (`Done`).

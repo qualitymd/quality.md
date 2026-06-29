@@ -52,11 +52,11 @@ Full findings index: [findings.md](findings.md)
 
 ## Top Recommendations
 
-| Rank | # | Recommendation | Area / Factors | Reason |
-| --- | --- | --- | --- | --- |
-| 1 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
-| 2 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | Release risk drops because rollback instructions are proven against current migrations. |
-| 3 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | Incident preparation has a clear owner agents and maintainers can route to. |
+| Rank | # | Recommendation | Area / Factors | Impact | Reason |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ▲ High | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
+| 2 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ▲ High | Release risk drops because rollback instructions are proven against current migrations. |
+| 3 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | Incident preparation has a clear owner agents and maintainers can route to. |
 
 Full recommendation index: [recommendations.md](recommendations.md)
 
@@ -64,18 +64,18 @@ Full recommendation index: [recommendations.md](recommendations.md)
 
 | Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
-| ↳ [Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ 🧩 [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ 🧩 [Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ 🧩 [Operability](areas/api/factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [Operations](areas/operations/operations-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ 🧩 [Observability](areas/operations/factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ 🧩 [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [Ledger Persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ 🧩 [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ 🧩 [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
+| ↳ [▦ Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Operability](areas/api/factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Operations](areas/operations/operations-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Observability](areas/operations/factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [▦ Ledger Persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
 ## Scope
 

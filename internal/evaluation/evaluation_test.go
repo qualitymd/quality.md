@@ -355,7 +355,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	}
 	if !strings.Contains(string(report), "## Area / Factor Breakdown") ||
 		!strings.Contains(string(report), "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |") ||
-		!strings.Contains(string(report), "| **[Test model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |") ||
+		!strings.Contains(string(report), "| **[▦ Test model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |") ||
 		strings.Contains(string(report), "## Factors") ||
 		strings.Contains(string(report), "## Child Areas") {
 		t.Fatalf("root-area.md = %s, want Area / Factor breakdown without legacy Area tables", report)
@@ -481,15 +481,15 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 	assertContains(t, runReport, "Full findings index: [findings.md](findings.md)")
 	assertContains(t, runReport, "## Top Recommendations")
-	assertContains(t, runReport, "| Rank | # | Recommendation | Area / Factors | Reason |")
-	assertContains(t, runReport, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | The quality model stays aligned with the evaluated evidence and next bar. |")
+	assertContains(t, runReport, "| Rank | # | Recommendation | Area / Factors | Impact | Reason |")
+	assertContains(t, runReport, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ▲ High | The quality model stays aligned with the evaluated evidence and next bar. |")
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
 	assertContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
-	assertContains(t, runReport, "| **[Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
-	assertContains(t, runReport, "| ↳ 🧩 [Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
-	assertContains(t, runReport, "| ↳ ↳ 🧩 [Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
-	assertContains(t, runReport, "| ↳ [Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, runReport, "| **[▦ Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
+	assertContains(t, runReport, "| ↳ [□ Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
+	assertContains(t, runReport, "| ↳ ↳ [□ Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, runReport, "| ↳ [▦ Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
 	assertNotContains(t, runReport, "## Subject Reports")
 	assertNotContains(t, runReport, "| Subject | Kind | Rating | Report |")
 
@@ -503,7 +503,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage |")
 	assertNotContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage | Data |")
 	assertContains(t, recommendationIndex, "| Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
-	assertContains(t, recommendationIndex, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
+	assertContains(t, recommendationIndex, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ▲ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
 
 	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
 	assertContains(t, recommendationReport, "type: Recommendation Report\n")
@@ -513,7 +513,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationReport, "- [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)")
 	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
 	assertContains(t, recommendationReport, "| # | Rank | Impact | Confidence | Reference |")
-	assertContains(t, recommendationReport, "| 1 | 1 | High | 🟢 High | `evaluation:")
+	assertContains(t, recommendationReport, "| 1 | 1 | ▲ High | 🟢 High | `evaluation:")
 	assertContains(t, recommendationReport, "/recommendation/1` |")
 	assertNotContains(t, recommendationReport, "| # | Rank | Impact | Confidence | Reference | Data |")
 	assertContains(t, recommendationReport, "## Description")
@@ -541,10 +541,10 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, rootReport, "Reliability analysis is the binding roll-up driver.")
 	assertContains(t, rootReport, "## Area / Factor Breakdown")
 	assertContains(t, rootReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
-	assertContains(t, rootReport, "| **[Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
-	assertContains(t, rootReport, "| ↳ 🧩 [Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
-	assertContains(t, rootReport, "| ↳ ↳ 🧩 [Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
-	assertContains(t, rootReport, "| ↳ [Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, rootReport, "| **[▦ Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
+	assertContains(t, rootReport, "| ↳ [□ Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
+	assertContains(t, rootReport, "| ↳ ↳ [□ Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, rootReport, "| ↳ [▦ Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
 	assertNotContains(t, rootReport, "## Factors")
 	assertNotContains(t, rootReport, "## Child Areas")
 	assertNotContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
@@ -582,7 +582,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 
 	paymentsReport := readReport(t, runPath, "areas/payments/payments-area.md")
 	assertContains(t, paymentsReport, "## Area / Factor Breakdown")
-	assertContains(t, paymentsReport, "| **[Payments](payments-area.md)** | 🔵 Target | 🔵 Target | 0 | 0 |")
+	assertContains(t, paymentsReport, "| **[▦ Payments](payments-area.md)** | 🔵 Target | 🔵 Target | 0 | 0 |")
 	assertNotContains(t, paymentsReport, "## Child Areas")
 	assertNotContains(t, paymentsReport, "| (no Child Areas) |  |  |  |  |")
 	assertNotContains(t, paymentsReport, "## Factors")
@@ -1550,6 +1550,8 @@ func TestReportDisplayTitles(t *testing.T) {
 		{"findings report kind", reportKindTitle(string(ReportKindFindings)), "🔝 Findings"},
 		{"boolean", boolTitle(true), "✅ Yes"},
 		{"known finding severity", findingSeverityTitle("high"), "🔴 High"},
+		{"known impact", impactTitle("very_high"), "◆ Very high"},
+		{"unknown impact", impactTitle("future_impact"), "Future Impact"},
 		{"unknown fallback", findingTypeTitle("new_finding_type"), "New Finding Type"},
 		{"camel fallback", limitTypeTitle("futureLimitType"), "Future Limit Type"},
 	}

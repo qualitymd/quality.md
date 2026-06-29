@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation reports now render recommendation impact with subtle
+  shape markers (`◆ Very high`, `▲ High`, `● Medium`, `○ Low`), restore impact
+  to `report.md` Top Recommendations, and use quieter Area / Factor Breakdown
+  row markers.
 - Generated Evaluation run reports now open with `Summary`, `Key Details`, and
   `Contents` sections, move run metadata into frontmatter and lower report
   details, and omit the visible `Limits & Incomplete Inputs` section for now.

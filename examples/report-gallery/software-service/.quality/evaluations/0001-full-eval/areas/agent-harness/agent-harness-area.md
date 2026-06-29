@@ -23,8 +23,8 @@ Agent guidance exposes the quality evaluation entry point clearly.
 
 | Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[Agent Harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ 🧩 [Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| **[▦ Agent Harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [□ Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
 ## Requirements
 

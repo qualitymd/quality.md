@@ -23,9 +23,9 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 
 | Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[Ledger Persistence](persistence-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ 🧩 [Integrity](factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ 🧩 [Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ Ledger Persistence](persistence-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [□ Integrity](factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
 ## Requirements
 

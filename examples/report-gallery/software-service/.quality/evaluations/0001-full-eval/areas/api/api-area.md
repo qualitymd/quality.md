@@ -23,9 +23,9 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 
 | Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[Public API](api-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ 🧩 [Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ 🧩 [Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| **[▦ Public API](api-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [□ Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
 ## Requirements
 
