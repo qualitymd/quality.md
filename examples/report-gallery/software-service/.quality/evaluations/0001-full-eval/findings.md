@@ -9,9 +9,14 @@ Run: [Run 0001](report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 
 
 Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
+## Key Details
+
 | Findings | Highest Severity |
 | --- | --- |
 | 7 ranked findings | 🔴 High |
+
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Empty: `—`.
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |
@@ -23,10 +28,7 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-unknown-001) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ❓ Unknown | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
 
-
-## Legend
-
-- `—` - not applicable or not recorded.
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
 
 ## Primary Source Data
 

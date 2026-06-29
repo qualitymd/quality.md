@@ -11,11 +11,17 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 
@@ -27,6 +33,8 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 | ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
+Rows: `▦` Area, `□` Factor.
+
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
@@ -34,16 +42,15 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 | [health signals explain customer impact](requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed | [observability](factors/observability/observability-factor.md) |
 | [recovery drills have current owners](requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
 
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
+
 ## Limits & Incomplete Inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

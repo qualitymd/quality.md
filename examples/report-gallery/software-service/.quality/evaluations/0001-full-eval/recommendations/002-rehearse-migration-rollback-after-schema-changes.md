@@ -9,9 +9,15 @@ Run: [Run 0001](../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Create
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 
+## Key Details
+
 | # | Rank | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
 | 2 | 2 | ▲ High | 🔵 Medium | `evaluation:20260629T120000Z-0123456789ab/recommendation/2` |
+
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
 
 Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
 
@@ -38,11 +44,6 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 ## Trace
 
 - `{"kind":"RequirementAssessmentResult","selector":"findings[risk-001]","subject":{"requirementId":"requirement:persistence::migration-rollback"}}`
-
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

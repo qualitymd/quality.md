@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0174 - Report Local Keys and Navigation](../changes/archive/0174-report-local-keys.md).
+  The guide now defines compact generated report navigation, notation-only local
+  keys, and marker/text-label accessibility expectations.
+
 - **Revision**: Updated terminology and install docs for
   [0172 - Workspace Status Contract](../changes/archive/0172-workspace-status-contract.md).
   README, npm package README, install guidance, AGENTS.md, and `domain.md` now

@@ -13,11 +13,18 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factor: [Correctness](correctness-factor.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Status | Confidence |
 | --- | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 Correctness follows its direct requirement signal.
 
@@ -27,11 +34,16 @@ Correctness follows its direct requirement signal.
 | --- | --- | --- |
 | [mutation endpoints are idempotent under retry](../../requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
+
 ## Sub-Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating |
 | --- | --- | --- | --- |
-| (no Sub-Factors) |  |  |  |
+| (no Sub-Factors) | — | — | — |
+
+Empty: `—`.
 
 ## Limits & Incomplete Inputs
 
@@ -39,10 +51,6 @@ Correctness follows its direct requirement signal.
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

@@ -11,11 +11,17 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-area.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🔵 Target | 🔵 Target | 🟢 High / 🟢 High |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 Agent guidance exposes the quality evaluation entry point clearly.
 
@@ -26,11 +32,16 @@ Agent guidance exposes the quality evaluation entry point clearly.
 | **[▦ Agent Harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
+Rows: `▦` Area, `□` Factor.
+
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | [agent guidance routes quality evaluation work](requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) | 🔵 Target | ✅ Assessed | [agent-accessibility](factors/agent-accessibility/agent-accessibility-factor.md) |
+
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
 
 ## Limits & Incomplete Inputs
 
@@ -38,10 +49,6 @@ Agent guidance exposes the quality evaluation entry point clearly.
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

@@ -20,13 +20,11 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | --- | --- | --- | --- | --- |
 | 🟡 Minimum | 🔵 Medium / ⚪ None | full evaluation | 7 ranked | 3 ranked |
 
-## Contents
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
 
-- [Model Evaluation](#model-evaluation)
-- [Top Findings](#top-findings)
-- [Top Recommendations](#top-recommendations)
-- [Legend](#legend)
-- [Primary Source Data](#primary-source-data)
+Jump to: [Model Evaluation](#model-evaluation) - [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Primary Source Data](#primary-source-data)
 
 ## Model Evaluation
 
@@ -45,6 +43,8 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
+Rows: `▦` Area, `□` Factor.
+
 ## Top Findings
 
 | Rank | Finding | Area | Factors | Type | Severity |
@@ -57,7 +57,10 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-unknown-001) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ❓ Unknown | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
 
-Full findings index: [findings.md](findings.md)
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+
+Full Findings report: [findings.md](findings.md)
 
 ## Top Recommendations
 
@@ -67,12 +70,9 @@ Full findings index: [findings.md](findings.md)
 | 2 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ▲ High | Release risk drops because rollback instructions are proven against current migrations. |
 | 3 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | Incident preparation has a clear owner agents and maintainers can route to. |
 
-Full recommendation index: [recommendations.md](recommendations.md)
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
 
-
-## Legend
-
-- `—` - not applicable or not recorded.
+Full Recommendations report: [recommendations.md](recommendations.md)
 
 ## Primary Source Data
 

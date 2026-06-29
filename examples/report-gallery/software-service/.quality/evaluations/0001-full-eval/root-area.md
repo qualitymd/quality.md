@@ -11,11 +11,17 @@ Report: [Overview](report.md) - [Findings](findings.md) - [Recommendations](reco
 
 Area: [LedgerLite Service](root-area.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
@@ -36,21 +42,22 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
+Rows: `▦` Area, `□` Factor.
+
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
-| (no local Requirements) |  |  |  |
+| (no local Requirements) | — | — | — |
+
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
 
 ## Limits & Incomplete Inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

@@ -13,13 +13,20 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
+## Key Details
+
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🟡 Low / 🟡 Low |
 
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
-Summary:
+## Summary
 
 Recovery ownership is visible but ambiguous across the sampled records.
 
@@ -28,6 +35,12 @@ Recovery ownership is visible but ambiguous across the sampled records.
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `unknown-001` | The current owner for ledger recovery drills is ambiguous. | ❓ Unknown | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
+
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
+Empty: `—`.
 
 ## Finding Details
 
@@ -38,6 +51,9 @@ Recovery ownership is visible but ambiguous across the sampled records.
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 6 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+
+Tier: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
+Empty: `—`.
 
 #### Condition
 
@@ -73,11 +89,7 @@ Rating effect: constrains target
 
 | Type | Detail |
 | --- | --- |
-| (none recorded) |  |
-
-## Legend
-
-- `—` - not applicable or not recorded.
+| (none recorded) | — |
 
 ## Primary Source Data
 

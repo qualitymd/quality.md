@@ -13,13 +13,20 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factors: [operability](../../factors/operability/operability-factor.md)
 
+## Key Details
+
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
-Summary:
+## Summary
 
 The error contract is consistent across the sampled API cases.
 
@@ -28,6 +35,12 @@ The error contract is consistent across the sampled API cases.
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-001` | Common caller error cases share a documented response shape. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target operability rating for caller-facing errors. | ✅ Verified: The synthetic handler matrix and API reference agree on the error envelope fields. |
+
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
+Empty: `—`.
 
 ## Finding Details
 
@@ -38,6 +51,9 @@ The error contract is consistent across the sampled API cases.
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 2 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+
+Tier: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
+Empty: `—`.
 
 #### Condition
 
@@ -73,11 +89,7 @@ Rating effect: supports target
 
 | Type | Detail |
 | --- | --- |
-| (none recorded) |  |
-
-## Legend
-
-- `—` - not applicable or not recorded.
+| (none recorded) | — |
 
 ## Primary Source Data
 

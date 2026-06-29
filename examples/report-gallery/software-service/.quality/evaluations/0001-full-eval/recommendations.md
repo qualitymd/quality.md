@@ -9,9 +9,15 @@ Run: [Run 0001](report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 
 
 Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
+## Key Details
+
 | Recommendations | Highest Impact | Coverage |
 | --- | --- | --- |
 | 3 ranked recommendations | ▲ High | ✅ Addressed by Recommendation: 3 / ⬜ Not Advice Driving: 4 |
+
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.
+Empty: `—`.
 
 | Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -19,15 +25,12 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 | 2 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ▲ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
 | 3 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
 
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+
 ## Coverage
 
 - ✅ Addressed by Recommendation: 3
 - ⬜ Not Advice Driving: 4
-
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

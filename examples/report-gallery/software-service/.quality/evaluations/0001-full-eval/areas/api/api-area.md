@@ -11,11 +11,17 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
@@ -27,6 +33,8 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
+Rows: `▦` Area, `□` Factor.
+
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
@@ -34,16 +42,15 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | [mutation endpoints are idempotent under retry](requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed | [correctness](factors/correctness/correctness-factor.md) |
 | [error responses are predictable for callers](requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed | [operability](factors/operability/operability-factor.md) |
 
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
+
 ## Limits & Incomplete Inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

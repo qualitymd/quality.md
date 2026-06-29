@@ -7,6 +7,9 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation reports now use compact `Jump to:` navigation and local
+  notation keys instead of generated `Contents` and bottom `Legend` sections,
+  while keeping marker/icon values paired with text labels in report tables.
 - Evaluation data validation, schemas, and generated Markdown reports now share
   typed enum catalogs for fixed values such as statuses, confidence, finding
   type/severity/basis status, recommendation impact, ranking tier, coverage

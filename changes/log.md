@@ -3,6 +3,37 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0174 - Report Local Keys and Navigation](archive/0174-report-local-keys.md).
+  Generated Evaluation reports now use compact local navigation and
+  notation-only local keys instead of generated Contents and bottom Legend
+  sections, while table cells keep marker-plus-text display labels.
+
+- **In-Review**: Completed implementation for
+  [0174 - Report Local Keys and Navigation](archive/0174-report-local-keys.md).
+  Renderer code, durable report specs, skill reporting guidance, report design
+  guidance, release notes, tests, and report-gallery output are aligned for
+  review.
+
+- **In-Progress**: Advanced
+  [0174 - Report Local Keys and Navigation](archive/0174-report-local-keys.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable specs, report design guidance, tests, and
+  generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0174-report-local-keys/design.md) for
+  [0174 - Report Local Keys and Navigation](archive/0174-report-local-keys.md).
+  The design replaces generated contents and legend sections with compact jump
+  links and notation-only local keys sourced from the model snapshot and display
+  catalogs.
+
+- **Draft**: Created
+  [0174 - Report Local Keys and Navigation](archive/0174-report-local-keys.md)
+  with its [functional spec](archive/0174-report-local-keys/spec.md). The case
+  defines compact report navigation, local indicator keys, detail-report opening
+  alignment, and marker/text-label accessibility rules.
+
+- **Done**: Implemented and archived
   [0173 - Evaluation Enum Catalogs](archive/0173-evaluation-enum-catalogs.md).
   Fixed Evaluation enum values now use typed catalogs for validation, generated
   schemas, display labels, markers, and report ordering; durable specs, skill

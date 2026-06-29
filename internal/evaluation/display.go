@@ -40,6 +40,14 @@ func enumDisplay[T ~string](values []enumValue[T], raw string) (string, bool) {
 	return "", false
 }
 
+func enumKeyLabels[T ~string](values []enumValue[T]) []string {
+	out := make([]string, 0, len(values))
+	for _, item := range values {
+		out = append(out, markerLabel(item.Marker, item.Label))
+	}
+	return out
+}
+
 func enumRank[T ~string](values []enumValue[T], raw string) (int, bool) {
 	for _, item := range values {
 		if string(item.Value) == raw {

@@ -36,7 +36,7 @@ truth.
 The run-level Evaluation report **MUST** be generated as `report.md` at the run
 root.
 
-The full ranked findings index **MUST** be generated as `findings.md` at the run
+The full ranked Findings report **MUST** be generated as `findings.md` at the run
 root.
 
 The root Area report **MUST** be generated as `root-area.md` at the run root
@@ -61,7 +61,7 @@ The report builder **MUST NOT** rename report content files such as
 Generated `index.md`, `schema.md`, and `log.md` files for Evaluation run folders
 are deferred.
 
-The recommendation index **MUST** be generated as `recommendations.md` at the
+The Recommendations report **MUST** be generated as `recommendations.md` at the
 run root. Recommendation detail reports **MUST** be generated under
 `recommendations/` with rank-prefixed filenames:
 
@@ -220,22 +220,54 @@ Finding severity ordering **MUST** use `critical`, `high`, `medium`, then
 > reports are a human scanning surface. Keeping labels, markers, and ordering in
 > one contract prevents validation and report presentation from drifting. — 0173
 
+## Local Keys
+
+Generated Markdown reports **MUST** render local keys for indicator families
+near their first use in each report artifact.
+
+Local keys **MUST** be notation-only lines. Each line **MUST** render one
+indicator family name, a colon, and the marker-plus-label values for that
+family. Local keys **MUST NOT** include prose definitions, rationale, or
+semantic explanations beyond the marker-plus-label set.
+
+When one table first introduces multiple indicator families, each family key
+**MUST** render on a distinct line.
+
+Rating keys **MUST** render the Rating Level `title` values from the run's
+`model-snapshot.md` snapshot in Rating Scale order. Fixed Evaluation enum keys
+**MUST** render the known marker-plus-label display set from
+[Fixed Enum Display](#fixed-enum-display). Structural row keys **MUST** render
+`Rows:` followed by the Area and Factor row markers. Empty-cell keys **MUST**
+render `Empty:` followed by the em dash marker.
+
+Generated reports **MUST NOT** rely on local keys to make marker-only content
+acceptable. Semantic table cells **MUST** render text labels for ratings,
+statuses, confidence, finding type, severity, recommendation impact, finding
+ranking tiers, and other priority-like values, optionally preceded by markers.
+
+Generated reports **MUST NOT** render a bottom `## Legend` section.
+
+> Rationale: local keys orient readers where notation first appears, while text
+> labels in the table cells remain the accessible and agent-readable meaning.
+> Keeping keys notation-only prevents generated reports from becoming glossaries.
+> — 0174
+
 ## Run Report
 
 The run-level `report.md` **MUST** render as the scoped Area report described by
 `RunManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
-- `## Summary`, `## Key Details`, `## Contents`, and `## Model Evaluation`
-  sections before Top Findings;
+- `## Summary`, `## Key Details`, optional compact `Jump to:` local navigation,
+  and `## Model Evaluation` before Top Findings;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
-- link to the full findings index;
-- link to the full recommendation index;
+- link to the Findings report;
+- link to the Recommendations report;
 - summary from the scoped Area result;
 - Model Evaluation table for the scoped Area;
 - requested Evaluation scope in Key Details; and
-- `## Legend` before `## Primary Source Data`.
+- local keys for indicators first used by the run report.
 
 The run-level `report.md` **MUST NOT** render the visible top `Run:` context
 line used by detail reports. It **MUST NOT** render the top `Report:` or
@@ -248,8 +280,9 @@ The run report `## Key Details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
 order. The section **MUST NOT** include limits or incomplete-input counts.
 
-The run report `## Contents` section **MUST** link to visible sections rendered
-in that run report.
+Generated reports **MUST NOT** render a `## Contents` section. The run report
+**MAY** render a compact `Jump to:` line whose links target visible sections
+rendered in that run report.
 
 The run-level `report.md` **MUST NOT** render `## Scope`, `## Coverage`, or
 `## Report Details` sections.
@@ -302,7 +335,7 @@ impact display label. The `Reason` cell **MUST** render
 
 ## Finding Reports
 
-`findings.md` **MUST** render a complete ranked findings index from
+`findings.md` **MUST** render a complete ranked Findings report from
 `FindingRankingResult`. It **MUST** include:
 
 - all ranked findings ordered by rank;
@@ -310,7 +343,7 @@ impact display label. The `Reason` cell **MUST** render
 
 ## Recommendation Reports
 
-`recommendations.md` **MUST** render a complete recommendation index from
+`recommendations.md` **MUST** render a complete Recommendations report from
 persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
 It **MUST** include:
 
@@ -365,7 +398,7 @@ same plain-text title.
 Every non-run report **MUST** render a run context line near the H1. Every
 non-run report **MUST** render a report navigation line near the H1. The report
 navigation line **MUST** link to the run overview `report.md`, full findings
-index `findings.md`, and full recommendation index `recommendations.md` when the
+report `findings.md`, and Recommendations report `recommendations.md` when the
 current report is not that target. The run-level `report.md` **MUST NOT** render
 that report navigation line.
 
@@ -538,9 +571,12 @@ generic `Field | Value` key-value table. Run reports should summarize
 `Overall Rating`, `Local Rating`, and `Confidence`; Factor headers should
 summarize `Overall Rating`, `Local Rating`, `Status`, and `Confidence`;
 Requirement headers should summarize `Rating`, `Assessment`, and `Confidence`;
-findings and recommendations indexes should summarize index-specific counts and
+Findings and Recommendations reports should summarize list-specific counts and
 priority signals; attached Factors belong in the plural `Factors:` context line,
 not in the summary table.
+
+Opening summary tables **MUST** render under `## Key Details` when they are part
+of the report opening.
 
 > Rationale: the title identifies the report subject, so the header table should
 > prioritize state and navigation rather than repeat the subject kind as
@@ -576,15 +612,15 @@ rows rather than being replaced by the cell marker. Generated report table cells
 **MUST** escape Markdown table separators and normalize multiline scalar content
 so persisted Evaluation text cannot alter the table column shape.
 
-Each generated report **MUST** include exactly one static legend at the foot of
-the report defining `—` as "not applicable or not recorded". The legend **MUST**
-render regardless of whether the report contains an em-dash cell.
+Generated reports **MUST NOT** render blank table cells for empty scalar values.
+When an em dash appears as an empty-cell marker, the report **MUST** define it
+through a local `Empty:` key near first use instead of a bottom legend.
 
 > Rationale: blank cells are ambiguous in committed Markdown reports. A neutral
 > em dash makes absence visible without overclaiming `N/A`; escaping table
 > separators and normalizing multiline text prevents persisted structured data
-> from corrupting the generated Markdown table; and a static legend avoids
-> data-dependent footnote churn across re-runs. — 0118, 0157
+> from corrupting the generated Markdown table. Local keys keep the absence
+> marker close to the tables that use it. — 0118, 0157, 0174
 
 Every rating column **MUST** name what it rates. A header summary table **MUST**
 label its descendant-inclusive rating column `Overall Rating` and its local

@@ -9,9 +9,15 @@ Run: [Run 0001](../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Create
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 
+## Key Details
+
 | # | Rank | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
 | 3 | 3 | ● Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/3` |
+
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
 
 Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
 
@@ -38,11 +44,6 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 ## Trace
 
 - `{"kind":"RequirementAssessmentResult","selector":"findings[unknown-001]","subject":{"requirementId":"requirement:operations::recovery-drill-ownership"}}`
-
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

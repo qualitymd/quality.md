@@ -30,8 +30,8 @@ Factor reports, Requirement reports, and recommendation detail reports.
 - Structure is navigation. W3C WAI guidance emphasizes meaningful page
   structure, headings, and regions:
   [Page Structure Tutorial](https://www.w3.org/WAI/tutorials/page-structure/).
-  Long documents benefit from contents links when the headings below are stable
-  and useful.
+  Long documents benefit from compact local jump links when the headings below
+  are stable and useful.
 - Metadata should be useful, not exhaustive. Page metadata patterns commonly
   reserve metadata for facts such as date, type, owner, category, and reference
   number while including only what helps the reader:
@@ -88,12 +88,12 @@ The top of a primary run report should have one stable job per section:
 1. H1: report kind and subject.
 2. `Summary`: bottom line, main reason, and consequence.
 3. `Key Details`: compact table of scan-critical facts.
-4. `Contents`: local links for the major sections in this report.
+4. Local navigation: compact jump links for the major sections in this report.
 5. `Model Evaluation`: the evaluated Model structure and ratings.
 6. Ranked findings and recommendations.
 
 Keep these roles distinct. Do not repeat the same fact in navigation, summary
-prose, key-details table, and contents. The opening area should read as one
+prose, key-details table, and local jump links. The opening area should read as one
 answer, not a pile of metadata.
 
 For run reports, frontmatter owns routing metadata. Do not repeat
@@ -131,8 +131,8 @@ Good header table examples:
 - Area report: `Overall Rating`, `Local Rating`, `Confidence`;
 - Factor report: `Overall Rating`, `Local Rating`, `Status`, `Confidence`;
 - Requirement report: `Rating`, `Assessment`, `Confidence`;
-- findings index: `Findings`, `Highest Severity`;
-- recommendations index: `Recommendations`, `Highest Impact`, `Coverage`.
+- Findings report: `Findings`, `Highest Severity`;
+- Recommendations report: `Recommendations`, `Highest Impact`, `Coverage`.
 
 For `report.md`, render this table under `## Key Details` instead of leaving it
 as an unlabeled header table. The key-details table is for facts: rating,
@@ -145,8 +145,8 @@ limits.
 Detail reports should expose report-level navigation near the H1:
 
 - `report.md` as the overview;
-- `findings.md` as the full findings index;
-- `recommendations.md` as the full recommendation index;
+- `findings.md` as the Findings report;
+- `recommendations.md` as the Recommendations report;
 - parent Area or Factor reports when relevant;
 - attached Factor reports for Requirement reports.
 
@@ -157,9 +157,9 @@ Keep the existing model context lines:
 - plural `Factors:` line for Requirement reports.
 
 Use breadcrumb trails for hierarchy and a separate report-nav line for sibling
-indexes. Do not overload breadcrumbs with every report in the run.
+report-list artifacts. Do not overload breadcrumbs with every report in the run.
 
-### Summary, key details, and contents
+### Summary, key details, and local navigation
 
 Put the bottom line before long tables. For the run report, use an explicit
 `## Summary` section before Top Findings and Top Recommendations. The summary is
@@ -170,14 +170,15 @@ Use `## Key Details` for scan-critical facts. This prevents the summary from
 turning into a metadata dump and prevents the key-details table from trying to
 explain judgment.
 
-Use `## Contents` as the first-class local navigation section for primary long
-reports. Useful run-report targets, when the corresponding sections are
-rendered:
+Use a compact `Jump to:` line for local navigation when local section navigation
+materially improves scanning. Do not render a `## Contents` section in generated
+reports.
+
+Useful run-report targets, when the corresponding sections are rendered:
 
 - `Model Evaluation`;
 - `Top Findings`;
 - `Top Recommendations`;
-- `Legend`;
 - `Primary Source Data`;
 
 Useful detail-report targets, when the corresponding sections are rendered:
@@ -188,11 +189,10 @@ Useful detail-report targets, when the corresponding sections are rendered:
 - `Finding Details`;
 - `Unknowns & Missing Evidence`.
 
-Render `## Contents` in `report.md` even when the table is short: the run report
-is the primary artifact, and contents links make its structure stable for people
-and agents. For detail reports and indexes, use a shorter `Jump to:` line only
-when local section navigation materially improves scanning. Skip local navigation
-on short pages where it adds more noise than value.
+For `report.md`, render `Jump to:` when the report contains multiple major
+sections beyond the opening stack. For detail and list reports, render
+`Jump to:` only when local section navigation materially improves scanning. Skip
+local navigation on short pages where it adds more noise than value.
 
 ### Frontmatter
 
@@ -291,11 +291,53 @@ and the payloads it indexes instead of expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
 
+### Local keys and indicator labels
+
+Generated reports may use markers or icons to make values scannable, but the
+text label is authoritative. Report content must render every rating, status,
+confidence, severity, finding type, recommendation impact, and priority-like
+value as a text label, optionally preceded by a marker or icon. Markers are
+supplemental scanning aids; do not rely on color or icon shape alone.
+
+Use short local keys immediately after the first table or section that uses an
+indicator family in that artifact. Keys are notation-only: one family per line,
+with the family label followed by the marker-plus-label set. Do not add term
+definitions, rationale, or explanatory prose to generated keys. Do not collect
+keys in a bottom `Legend` section.
+
+Examples:
+
+```markdown
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+```
+
+```markdown
+Rows: `▦` Area, `□` Factor.
+Empty: `—`.
+```
+
+```markdown
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+```
+
+```markdown
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+```
+
+For Rating Levels, render the configured Rating Scale from the run's model
+snapshot. For CLI-owned display catalogs such as confidence, finding type,
+severity, recommendation impact, finding ranking tier, and coverage disposition,
+render the known catalog set. Unknown free-form values remain readable through
+their rendered text labels and do not need invented key entries.
+
 ### Primary Source Data at the bottom
 
 Every generated report should end with a stable `## Primary Source Data`
 section. The section lists the report-local primary structured Evaluation
-payloads used to render that report artifact:
+payloads used to render that report artifact. This is the only standard footer
+utility section; local keys belong near first use.
 
 ```markdown
 ## Primary Source Data
@@ -345,13 +387,11 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | -------------- | ------------- | --------------- | -------- | --------------- |
 | Minimum        | Medium / None | full evaluation | 7 ranked | 3 ranked        |
 
-## Contents
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
 
-- [Model Evaluation](#model-evaluation)
-- [Top Findings](#top-findings)
-- [Top Recommendations](#top-recommendations)
-- [Legend](#legend)
-- [Primary Source Data](#primary-source-data)
+Jump to: [Model Evaluation](#model-evaluation) - [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Primary Source Data](#primary-source-data)
 
 ## Model Evaluation
 
@@ -361,11 +401,18 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ [▦ Public API](areas/api/api-area.md)                                | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 
+Rows: `▦` Area, `□` Factor.
+
 ...
 
 ## Top Findings
 
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+
 ## Top Recommendations
+
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
 
 ...
 
@@ -377,10 +424,10 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
 ```
 
-### Index reports
+### Findings and recommendations
 
-Finding and recommendation indexes should identify themselves as complete
-indexes, not merely tables.
+Finding and recommendation reports should keep their visible H1s simple while
+using frontmatter `type` to carry the report artifact taxonomy.
 
 ```markdown
 # Findings
@@ -392,6 +439,8 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 | Findings          | Highest Severity |
 | ----------------- | ---------------- |
 | 7 ranked findings | High             |
+
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 ```
 
 ### Area reports
@@ -411,6 +460,13 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | -------------- | ------------ | --------------- |
 | Minimum        | Minimum      | Medium / Medium |
 
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+
+## Summary
+
+The API has predictable errors, but idempotency retry semantics need a tighter contract.
+
 ## Area / Factor Breakdown
 
 | Area / Factor                                                | Overall Rating | Local Rating | Findings | Recommendations |
@@ -418,6 +474,8 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | **[▦ Public API](api-area.md)**                              | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
+
+Rows: `▦` Area, `□` Factor.
 ```
 
 ### Factor reports
@@ -438,6 +496,14 @@ Factor: [Correctness](correctness-factor.md)
 | Overall Rating | Local Rating | Status              | Confidence      |
 | -------------- | ------------ | ------------------- | --------------- |
 | Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium |
+
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+
+## Summary
+
+Correctness follows its direct requirement signal.
 ```
 
 ### Requirement reports
@@ -461,6 +527,10 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | ------- | ---------- | --------------- |
 | Minimum | Assessed   | Medium / Medium |
 
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 ```
 
@@ -482,6 +552,9 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 | # | Rank | Impact | Confidence | Reference                                                 |
 | - | ---- | ------ | ---------- | --------------------------------------------------------- |
 | 1 | 1    | ▲ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/1 |
+
+Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 ```
 
 ## Checklist
@@ -495,16 +568,21 @@ Before changing report output, check:
   where those reports exist.
 - Detail report hierarchical context is visible through Area, Factor, or Factors
   lines.
-- `report.md` uses `## Summary`, `## Key Details`, and `## Contents` as distinct
-  sections and puts `## Model Evaluation` before ranked lists.
+- `report.md` uses `## Summary`, `## Key Details`, compact local jump links, and
+  `## Model Evaluation` before ranked lists.
 - Frontmatter-only routing metadata is not repeated in the visible body unless
   it materially helps human judgment.
 - Summary prose states judgment, reason, and consequence without becoming a
   metadata list or a recommendation table.
 - Key details tables contain scan-critical facts, not prose, evidence, or
   recommendations.
-- Primary long reports have first-class contents links; short reports do not add
+- Primary long reports have compact local jump links; short reports do not add
   noisy local navigation.
+- Local keys appear after first use, render one family per line, and stay
+  notation-only.
+- Report cells keep text labels; markers and icons are supplemental and never
+  the only meaning for semantic values.
+- Generated reports do not render bottom `Legend` sections.
 - Frontmatter contains readable, non-judgmental document metadata only.
 - No generated report introduces claims that are absent from structured data.
 - The bottom `Primary Source Data` section lists report-local primary payloads,

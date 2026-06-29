@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0174 - Report Local Keys and Navigation](../changes/archive/0174-report-local-keys.md).
+  Generated Evaluation Markdown reports now use compact local navigation and
+  notation-only local keys instead of generated Contents and bottom Legend
+  sections, while semantic values keep marker-plus-text display labels.
+
+- **Revision**: Implemented durable spec changes for
   [0173 - Evaluation Enum Catalogs](../changes/archive/0173-evaluation-enum-catalogs.md).
   Evaluation data validation, schemas, report rendering, and skill guidance now
   share canonical fixed enum value sets and explicit report labels/markers.

@@ -723,3 +723,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0173 — Evaluation Enum Catalogs](0173-evaluation-enum-catalogs.md) -
   centralizes fixed Evaluation enum values, labels, markers, schema validation,
   and generated report ordering (`Done`).
+- [0174 — Report Local Keys and Navigation](0174-report-local-keys.md) -
+  replaces generated report contents and legend sections with compact navigation
+  and local indicator keys (`Done`).

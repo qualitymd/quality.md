@@ -11,11 +11,17 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Ledger Persistence](persistence-area.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 
@@ -27,6 +33,8 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 | ↳ [□ Integrity](factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
+Rows: `▦` Area, `□` Factor.
+
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
@@ -34,16 +42,15 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 | [ledger mutations preserve balance invariants](requirements/balance-invariants/balance-invariants-requirement.md) | 🔵 Target | ✅ Assessed | [integrity](factors/integrity/integrity-factor.md) |
 | [migrations have rehearsed rollback paths](requirements/migration-rollback/migration-rollback-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
 
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
+
 ## Limits & Incomplete Inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

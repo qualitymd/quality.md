@@ -109,8 +109,8 @@ easy to inspect without cutting a release or running a fresh /quality evaluate.
 Open the generated run report:
 
 - [Evaluation report](.quality/evaluations/0001-full-eval/report.md)
-- [Findings index](.quality/evaluations/0001-full-eval/findings.md)
-- [Recommendations index](.quality/evaluations/0001-full-eval/recommendations.md)
+- [Findings](.quality/evaluations/0001-full-eval/findings.md)
+- [Recommendations](.quality/evaluations/0001-full-eval/recommendations.md)
 
 The generated Evaluation uses synthetic routine outputs. Findings, ratings,
 roll-ups, recommendations, and synthetic-source:* evidence references are

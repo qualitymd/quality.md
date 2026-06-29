@@ -13,13 +13,20 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../.
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
+## Key Details
+
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
-Summary:
+## Summary
 
 Rollback instructions are present, but the rehearsal signal is stale.
 
@@ -28,6 +35,12 @@ Rollback instructions are present, but the rehearsal signal is stale.
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | 🟡 Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
+
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
+Empty: `—`.
 
 ## Finding Details
 
@@ -38,6 +51,9 @@ Rollback instructions are present, but the rehearsal signal is stale.
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 4 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+
+Tier: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
+Empty: `—`.
 
 #### Condition
 
@@ -73,11 +89,7 @@ Rating effect: constrains target
 
 | Type | Detail |
 | --- | --- |
-| (none recorded) |  |
-
-## Legend
-
-- `—` - not applicable or not recorded.
+| (none recorded) | — |
 
 ## Primary Source Data
 

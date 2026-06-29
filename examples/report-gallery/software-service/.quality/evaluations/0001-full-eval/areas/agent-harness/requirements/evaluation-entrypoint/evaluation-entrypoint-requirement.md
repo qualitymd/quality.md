@@ -13,13 +13,20 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../age
 
 Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibility-factor.md)
 
+## Key Details
+
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
-Summary:
+## Summary
 
 The agent-facing entry point is clear enough for quality evaluation work.
 
@@ -28,6 +35,12 @@ The agent-facing entry point is clear enough for quality evaluation work.
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-004` | Agent guidance points to the quality model and generated report path. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target agent-accessibility rating. | ✅ Verified: The synthetic guidance gives an agent a direct path from model to evaluation report. |
+
+Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
+Empty: `—`.
 
 ## Finding Details
 
@@ -38,6 +51,9 @@ The agent-facing entry point is clear enough for quality evaluation work.
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 7 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+
+Tier: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
+Empty: `—`.
 
 #### Condition
 
@@ -73,11 +89,7 @@ Rating effect: supports target
 
 | Type | Detail |
 | --- | --- |
-| (none recorded) |  |
-
-## Legend
-
-- `—` - not applicable or not recorded.
+| (none recorded) | — |
 
 ## Primary Source Data
 

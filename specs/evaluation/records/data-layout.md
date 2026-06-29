@@ -89,7 +89,7 @@ The run-level Evaluation report **MUST** be written to:
 report.md
 ```
 
-The run-level ranked findings index **MUST** be written to:
+The run-level Findings report **MUST** be written to:
 
 ```text
 findings.md
@@ -126,7 +126,7 @@ the nested Factor's local structural ID segment in the filename:
 factors/<factor>/factors/<sub-factor>/<sub-factor>-factor.md
 ```
 
-The run-level recommendation index **MUST** be written to:
+The run-level Recommendations report **MUST** be written to:
 
 ```text
 recommendations.md

@@ -13,11 +13,18 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factor: [Recoverability](recoverability-factor.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Status | Confidence |
 | --- | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟡 Low / 🟡 Low |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 Recoverability follows its direct requirement signal.
 
@@ -27,11 +34,16 @@ Recoverability follows its direct requirement signal.
 | --- | --- | --- |
 | [recovery drills have current owners](../../requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
+
 ## Sub-Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating |
 | --- | --- | --- | --- |
-| (no Sub-Factors) |  |  |  |
+| (no Sub-Factors) | — | — | — |
+
+Empty: `—`.
 
 ## Limits & Incomplete Inputs
 
@@ -39,10 +51,6 @@ Recoverability follows its direct requirement signal.
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 

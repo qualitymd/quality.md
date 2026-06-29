@@ -13,11 +13,18 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../.
 
 Factor: [Integrity](integrity-factor.md)
 
+## Key Details
+
 | Overall Rating | Local Rating | Status | Confidence |
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
-Summary:
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
+Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Empty: `—`.
+
+## Summary
 
 Integrity follows its direct requirement signal.
 
@@ -27,11 +34,16 @@ Integrity follows its direct requirement signal.
 | --- | --- | --- |
 | [ledger mutations preserve balance invariants](../../requirements/balance-invariants/balance-invariants-requirement.md) | 🔵 Target | ✅ Assessed |
 
+Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Empty: `—`.
+
 ## Sub-Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating |
 | --- | --- | --- | --- |
-| (no Sub-Factors) |  |  |  |
+| (no Sub-Factors) | — | — | — |
+
+Empty: `—`.
 
 ## Limits & Incomplete Inputs
 
@@ -39,10 +51,6 @@ Integrity follows its direct requirement signal.
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
-
-## Legend
-
-- `—` - not applicable or not recorded.
 
 ## Primary Source Data
 
