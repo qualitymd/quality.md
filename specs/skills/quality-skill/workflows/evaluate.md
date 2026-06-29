@@ -138,10 +138,10 @@ generated and before recommendation ranking closes. Recommendations **MUST** use
 the core user-facing fields `title`, `description`, `background`,
 `expectedValue`, `doneCriterion`, `impact`, `confidence`, and `traceRefs`.
 The skill **MUST** let `qualitymd evaluation data set` assign
-`RecommendationResult.number` values. When recommendation numbers are omitted,
-the skill writes `RecommendationResult` payloads first, reads the assigned
-numbers from the persisted payloads or write paths, then authors
-`RecommendationRankingResult` references against those assigned numbers. The
+`RecommendationResult.id` values. When recommendation IDs are omitted, the skill
+writes `RecommendationResult` payloads first, reads the assigned IDs from the
+persisted payloads or write paths, then authors `RecommendationRankingResult`
+references and finding coverage against those assigned IDs. The
 skill **MUST NOT** write or expect artifact IDs on
 `FindingRankingResult.orderedFindings`; findings are referenced by
 `findingRef` plus selector.

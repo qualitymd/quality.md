@@ -114,7 +114,7 @@ Issue handoff does not edit evaluated source, `QUALITY.md`, or `.quality/changel
 
 Prepare issue-ready text with:
 
-- recommendation ID and title;
+- recommendation number, recommendation ID, and title;
 - source evaluation run;
 - affected area, factor, or requirement;
 - current rating when known;
@@ -124,6 +124,10 @@ Prepare issue-ready text with:
 - verification path;
 - risk or priority notes when useful;
 - links or paths to the generated report and recommendation artifact.
+
+Resolve numeric input such as `recommendation 1`, `rec #1`, or `1` as the
+recommendation number from the ranked recommendations report. Resolve `qrec_...`
+input as the exact recommendation ID.
 
 Creating an external issue requires explicit user confirmation and available
 issue-tracker tooling. Use a decision brief before creating it. Where the

@@ -686,7 +686,7 @@ func advicePayloads() []map[string]any {
 	for i, rec := range recs {
 		rankedRecs = append(rankedRecs, map[string]any{
 			"rank":              i + 1,
-			"recommendationRef": rec["number"],
+			"recommendationRef": rec["id"],
 			"impact":            rec["impact"],
 			"confidence":        rec["confidence"],
 			"rationale":         "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
@@ -698,15 +698,15 @@ func advicePayloads() []map[string]any {
 		switch req.FindingID {
 		case "gap-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{1}
+			entry["recommendationRefs"] = []any{"qrec_gallery1"}
 			entry["rationale"] = "The idempotency recommendation directly addresses this gap."
 		case "risk-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{2}
+			entry["recommendationRefs"] = []any{"qrec_gallery2"}
 			entry["rationale"] = "The rollback rehearsal recommendation directly addresses this risk."
 		case "unknown-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{3}
+			entry["recommendationRefs"] = []any{"qrec_gallery3"}
 			entry["rationale"] = "The ownership recommendation resolves the unknown."
 		default:
 			entry["disposition"] = "not_advice_driving"
@@ -735,7 +735,7 @@ func recommendation(number int, title, description, background, expectedValue, d
 	return map[string]any{
 		"schemaVersion": evaluation.SchemaVersion,
 		"kind":          string(evaluation.DataKindRecommendation),
-		"number":        number,
+		"id":            fmt.Sprintf("qrec_gallery%d", number),
 		"title":         title,
 		"description":   description,
 		"background":    background,

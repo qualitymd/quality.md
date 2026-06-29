@@ -53,7 +53,8 @@ before `EvaluationOutputResult` and reports are generated.
 `FindingRankingResult` **MUST** exist before recommendation generation closes.
 
 All `RecommendationResult` payloads **MUST** exist before final finding coverage
-accounting and recommendation ranking close.
+accounting and recommendation ranking close. Finding coverage and recommendation
+ranking **MUST** reference recommendations by `RecommendationResult.id`.
 
 `RecommendationRankingResult` **MUST** exist before
 `EvaluationOutputResult` and reports are generated.

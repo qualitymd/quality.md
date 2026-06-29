@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated Evaluation records, protocol, and report-tree contracts
+  for
+  [0176 - Recommendation IDs and Numbers](../../changes/archive/0176-recommendation-ids-and-numbers.md).
+  Recommendations now use opaque `qrec_...` IDs for JSON paths and structured
+  references; report recommendation numbers come from ranking order.
+
 - **Revision**: Updated the Evaluation report-tree contract for
   [0175 - Report Contents Sections](../../changes/archive/0175-report-contents-sections.md).
   Generated Markdown reports now render standard Contents sections for

@@ -52,10 +52,11 @@ The advice folder **MUST** contain:
 Each recommendation payload **MUST** be stored under:
 
 ```text
-data/advice/recommendations/<NNN>/recommendation-result.json
+data/advice/recommendations/<recommendation-id>/recommendation-result.json
 ```
 
-`<NNN>` is the zero-padded `RecommendationResult.number`.
+`<recommendation-id>` is the `RecommendationResult.id`, such as
+`qrec_7h4km2p9`.
 
 Area data **MUST** live under `data/areas/` and mirror the evaluated Area tree.
 
@@ -146,8 +147,9 @@ CLI-assigned recommendation `id`.
 
 The CLI **MUST** derive report paths from report kind and structural model IDs.
 For recommendation reports, the CLI **MUST** derive the report path from
-recommendation ranking order and the recommendation title slug, falling back to
-the CLI-assigned recommendation `id` only when needed.
+the recommendation number and the recommendation title slug. The recommendation
+number is the ranking entry's `rank`, zero-padded in filenames. The slug falls
+back to the CLI-assigned recommendation `id` only when needed.
 
 The CLI **MUST NOT** derive persisted paths from display titles, natural labels,
 or rendered human labels.

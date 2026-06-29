@@ -729,3 +729,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0175 — Report Contents Sections](0175-report-contents-sections.md) -
   restores generated report Contents sections for multi-section report artifacts
   and removes compact `Jump to:` lines (`Done`).
+- [0176 — Recommendation IDs and Numbers](0176-recommendation-ids-and-numbers.md) -
+  splits opaque recommendation identity from user-facing recommendation numbers
+  so Recommendation #1 means the first ranked recommendation (`Done`).

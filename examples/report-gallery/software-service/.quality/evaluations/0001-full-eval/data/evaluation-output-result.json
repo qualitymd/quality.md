@@ -481,17 +481,17 @@
     {
       "kind": "recommendation",
       "path": "recommendations/001-tighten-the-idempotency-replay-contract.md",
-      "recommendationId": "1"
+      "recommendationId": "qrec_gallery1"
     },
     {
       "kind": "recommendation",
       "path": "recommendations/002-rehearse-migration-rollback-after-schema-changes.md",
-      "recommendationId": "2"
+      "recommendationId": "qrec_gallery2"
     },
     {
       "kind": "recommendation",
       "path": "recommendations/003-assign-a-current-recovery-drill-owner.md",
-      "recommendationId": "3"
+      "recommendationId": "qrec_gallery3"
     }
   ],
   "rootAreaAnalysisRef": {

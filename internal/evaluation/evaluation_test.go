@@ -539,11 +539,11 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationReport, "title: \"Recommendation: Review the next quality bar\"\n")
 	assertNotContains(t, recommendationReport, "\ndata:\n")
 	assertContains(t, recommendationReport, "## Primary Source Data\n\n- [data/run-manifest.json](../data/run-manifest.json)")
-	assertContains(t, recommendationReport, "- [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)")
+	assertContains(t, recommendationReport, "- [data/advice/recommendations/qrec_nextbar1/recommendation-result.json](../data/advice/recommendations/qrec_nextbar1/recommendation-result.json)")
 	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
-	assertContains(t, recommendationReport, "| # | Rank | Impact | Confidence | Reference |")
-	assertContains(t, recommendationReport, "| 1 | 1 | ⬥ High | 🟢 High | `evaluation:")
-	assertContains(t, recommendationReport, "/recommendation/1` |")
+	assertContains(t, recommendationReport, "| # | ID | Impact | Confidence | Reference |")
+	assertContains(t, recommendationReport, "| 1 | `qrec_nextbar1` | ⬥ High | 🟢 High | `evaluation:")
+	assertContains(t, recommendationReport, "/recommendation/qrec_nextbar1` |")
 	assertContains(t, recommendationReport, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, recommendationReport, "Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.")
 	assertContains(t, recommendationReport, "## Contents\n\n- [Description](#description)\n- [Background](#background)\n- [Expected value](#expected-value)\n- [Done criterion](#done-criterion)\n- [Ranking rationale](#ranking-rationale)\n- [Trace](#trace)\n- [Primary Source Data](#primary-source-data)")
@@ -975,7 +975,7 @@ func TestSetDataDryRunReturnsBatchReceiptWithoutWriting(t *testing.T) {
 	}
 }
 
-func TestSetDataAssignsRecommendationNumbers(t *testing.T) {
+func TestSetDataAssignsRecommendationIDs(t *testing.T) {
 	repo := testRepo(t)
 	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
@@ -986,21 +986,32 @@ func TestSetDataAssignsRecommendationNumbers(t *testing.T) {
 	assessment := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"id": "gap-1"}) + `]}`
 	findingRanking := `{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"Most important finding."}]}`
 	recommendation := `{"schemaVersion":3,"kind":"RecommendationResult","title":"Review the next quality bar","description":"Review the next bar.","background":"The finding changes follow-up.","expectedValue":"The model stays current.","doneCriterion":"The review is recorded.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`
-	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":[1]}]}`
 
-	receipt, err := SetData(runPath, batchPayloads(assessment, findingRanking, recommendation, recommendationRanking), DataSetOptions{})
+	receipt, err := SetData(runPath, batchPayloads(assessment, findingRanking, recommendation), DataSetOptions{})
 	if err != nil {
 		t.Fatalf("SetData() error = %v", err)
 	}
-	if !dataSetReceiptHasPath(receipt, "data/advice/recommendations/001/recommendation-result.json") {
-		t.Fatalf("receipt = %#v, want assigned recommendation number path", receipt)
+	var recPath string
+	for _, write := range receipt.Writes {
+		if write.Kind == DataKindRecommendation {
+			recPath = write.Path
+			break
+		}
 	}
-	rec := readJSONMapForTest(t, filepath.Join(runPath, "data/advice/recommendations/001/recommendation-result.json"))
-	if got, ok := numericSchemaVersion(rec["number"]); !ok || got != 1 {
-		t.Fatalf("RecommendationResult.number = %v, want 1", rec["number"])
+	if !strings.HasPrefix(recPath, "data/advice/recommendations/qrec_") || !strings.HasSuffix(recPath, "/recommendation-result.json") {
+		t.Fatalf("receipt = %#v, want assigned recommendation id path", receipt)
 	}
-	if _, ok := rec["id"]; ok {
-		t.Fatalf("legacy recommendation id = %v, want absent", rec["id"])
+	rec := readJSONMapForTest(t, filepath.Join(runPath, filepath.FromSlash(recPath)))
+	id := firstString(rec, "id")
+	if !validRecommendationID(id) {
+		t.Fatalf("RecommendationResult.id = %v, want qrec id", rec["id"])
+	}
+	if _, ok := rec["number"]; ok {
+		t.Fatalf("legacy recommendation number = %v, want absent", rec["number"])
+	}
+	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"` + id + `","impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["` + id + `"]}]}`
+	if _, err := SetData(runPath, batchPayloads(recommendationRanking), DataSetOptions{}); err != nil {
+		t.Fatalf("SetData(recommendation ranking) error = %v", err)
 	}
 	ranking := readJSONMapForTest(t, filepath.Join(runPath, "data/advice/finding-ranking-result.json"))
 	ordered := objectSlice(ranking["orderedFindings"])
@@ -1025,7 +1036,7 @@ func TestSetDataAssignsRecommendationNumbers(t *testing.T) {
 	}
 }
 
-func TestSetDataRejectsUnknownRecommendationNumbers(t *testing.T) {
+func TestSetDataRejectsUnknownRecommendationIDs(t *testing.T) {
 	repo := testRepo(t)
 	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
@@ -1034,19 +1045,10 @@ func TestSetDataRejectsUnknownRecommendationNumbers(t *testing.T) {
 	runPath := filepath.Join(repo, result.Path)
 	findingRef := `{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"}`
 	assessment := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"id": "gap-1"}) + `]}`
-	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":2,"impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":[2]}]}`
+	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"qrec_missing1","impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["qrec_missing1"]}]}`
 	if _, err := SetData(runPath, batchPayloads(assessment, recommendationRanking), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "recommendationRef does not resolve to a RecommendationResult") {
-		t.Fatalf("SetData(bad recommendation ranking) error = %v, want unknown number diagnostic", err)
+		t.Fatalf("SetData(bad recommendation ranking) error = %v, want unknown ID diagnostic", err)
 	}
-}
-
-func dataSetReceiptHasPath(receipt *DataSetReceipt, path string) bool {
-	for _, write := range receipt.Writes {
-		if write.Path == path {
-			return true
-		}
-	}
-	return false
 }
 
 func readJSONMapForTest(t *testing.T, path string) map[string]any {
@@ -1157,7 +1159,7 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 		},
 		{
 			name: "finding coverage invalid disposition",
-			raw:  `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"high","confidence":"high","rationale":"Ranked."}],"findingCoverage":[{"findingRef":{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"},"disposition":"ignored"}]}`,
+			raw:  `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"qrec_ranked1","impact":"high","confidence":"high","rationale":"Ranked."}],"findingCoverage":[{"findingRef":{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"},"disposition":"ignored"}]}`,
 			want: `disposition = "ignored", want one of addressed_by_recommendation, not_advice_driving`,
 		},
 		{
@@ -1824,8 +1826,8 @@ func singleFindingAdvicePayloads(requirementID, findingID string) []string {
 	findingRef := `{"kind":"RequirementAssessmentResult","subject":{"requirementId":"` + requirementID + `"},"selector":"findings[` + findingID + `]"}`
 	return []string{
 		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"This finding most directly informs next advice."}],"rationale":"Findings were ranked by quality-bar relevance and confidence."}`,
-		`{"schemaVersion":3,"kind":"RecommendationResult","title":"Review the next quality bar","description":"Review whether the next rating level should be raised or clarified for this requirement.","background":"The evaluation found a quality signal that should inform the next target level.","expectedValue":"The quality model stays aligned with the evaluated evidence and next bar.","doneCriterion":"The requirement criterion or target-level rationale reflects the review decision.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`,
-		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"high","confidence":"high","rationale":"This recommendation addresses the highest-ranked finding."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":[1],"rationale":"The recommendation is traced to this finding."}],"rationale":"Recommendations were ranked by expected quality impact."}`,
+		`{"schemaVersion":3,"kind":"RecommendationResult","id":"qrec_nextbar1","title":"Review the next quality bar","description":"Review whether the next rating level should be raised or clarified for this requirement.","background":"The evaluation found a quality signal that should inform the next target level.","expectedValue":"The quality model stays aligned with the evaluated evidence and next bar.","doneCriterion":"The requirement criterion or target-level rationale reflects the review decision.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`,
+		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"qrec_nextbar1","impact":"high","confidence":"high","rationale":"This recommendation addresses the highest-ranked finding."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["qrec_nextbar1"],"rationale":"The recommendation is traced to this finding."}],"rationale":"Recommendations were ranked by expected quality impact."}`,
 	}
 }
 
@@ -1842,8 +1844,8 @@ func noFindingFactorAdvicePayloads(factorID string) []string {
 func noFindingAdvicePayloads(traceRef string) []string {
 	return []string{
 		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[],"rationale":"No findings were produced; no finding ranking is applicable."}`,
-		`{"schemaVersion":3,"kind":"RecommendationResult","title":"Review the next quality bar","description":"Review the analyzed area or factor against the next intended quality bar.","background":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","expectedValue":"The quality model remains current without inventing remediation work.","doneCriterion":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
-		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
+		`{"schemaVersion":3,"kind":"RecommendationResult","id":"qrec_nextbar1","title":"Review the next quality bar","description":"Review the analyzed area or factor against the next intended quality bar.","background":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","expectedValue":"The quality model remains current without inventing remediation work.","doneCriterion":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
+		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"qrec_nextbar1","impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
 	}
 }
 

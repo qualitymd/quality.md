@@ -264,7 +264,7 @@ func init() {
 			Kind:        DataKindRecommendation,
 			Description: "Advice-phase quality-management recommendation.",
 			Object: topContract(DataKindRecommendation,
-				field("number", dataNumber, false),
+				field("id", dataString, false),
 				field("title", dataString, true),
 				field("description", dataString, true),
 				field("background", dataString, true),
@@ -339,7 +339,7 @@ func findingRankingEntryContract() dataObjectContract {
 func recommendationRankingEntryContract() dataObjectContract {
 	return object(
 		field("rank", dataNumber, true),
-		field("recommendationRef", dataNumber, true),
+		field("recommendationRef", dataString, true),
 		field("impact", dataString, true, enumStrings(recommendationImpactValues)),
 		field("confidence", dataString, true, enumStrings(confidenceValues)),
 		field("rationale", dataString, true),
@@ -350,7 +350,7 @@ func findingCoverageEntryContract() dataObjectContract {
 	return object(
 		field("findingRef", dataObject, true, routineRefContract()),
 		field("disposition", dataString, true, enumStrings(findingCoverageDispositionValues)),
-		field("recommendationRefs", dataArray, false, arrayOf(dataNumber)),
+		field("recommendationRefs", dataArray, false, arrayOf(dataString)),
 		field("rationale", dataString, false),
 	)
 }
@@ -797,9 +797,8 @@ func validateRecommendationResultSemantics(payload map[string]any) error {
 			return usagef("RecommendationResult contains forbidden planning field %s", field)
 		}
 	}
-	number, ok := numericSchemaVersion(payload["number"])
-	if !ok || number < 1 {
-		return usagef("RecommendationResult.number is required after number assignment")
+	if !validRecommendationID(firstString(payload, "id")) {
+		return usagef("RecommendationResult.id is required after id assignment and must match qrec_<token>")
 	}
 	return nil
 }

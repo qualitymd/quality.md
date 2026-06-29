@@ -133,13 +133,15 @@ any other modeled domain unless that domain is present in the evaluated Model.
 
 `accountForFindingCoverage` **MUST** ensure every persisted Finding is accounted
 for before recommendation ranking closes. A finding may be covered by one or
-more recommendations or marked `not_advice_driving` with rationale.
+more recommendations, referenced by `RecommendationResult.id`, or marked
+`not_advice_driving` with rationale.
 
 `rankRecommendations` **MUST** produce `RecommendationRankingResult` after
 coverage accounting. Ranking **MUST** use judgment about expected quality impact,
 quality-bar relevance, trace strength, confidence, and relationship to binding
-constraints. It **MUST NOT** require effort, ROI, quick-win status, backlog
-priority, or numeric score fields.
+constraints. Ranking entries **MUST** reference recommendations by
+`RecommendationResult.id`. It **MUST NOT** require effort, ROI, quick-win status,
+backlog priority, or numeric score fields.
 
 Recommendations **MAY** be concrete work or recommended review. When the
 evaluation meets the current bar and has no gap/risk requiring work, the Advice

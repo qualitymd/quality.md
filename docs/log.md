@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0176 - Recommendation IDs and Numbers](../changes/archive/0176-recommendation-ids-and-numbers.md).
+  The guide now names recommendation detail paths as recommendation-number
+  report paths while structured recommendation data uses opaque IDs.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0175 - Report Contents Sections](../changes/archive/0175-report-contents-sections.md).
   The guide now treats Contents as the standard local navigation idiom for
   multi-section generated report artifacts and keeps OKF `index.md` files as the

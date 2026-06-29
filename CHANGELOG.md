@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Recommendation results now use opaque `qrec_...` IDs for JSON data paths and
+  structured ranking/coverage refs. Generated reports reserve recommendation
+  numbers for ranked order, so "recommendation #1" means the first ranked
+  recommendation.
 - Generated Evaluation reports now use standard `Contents` sections and local
   notation keys instead of compact `Jump to:` navigation or bottom `Legend`
   sections, while keeping marker/icon values paired with text labels in report
@@ -23,6 +27,9 @@ QUALITY.md specification.
 
 ### /quality skill
 
+- `/quality evaluate` guidance now writes recommendation payloads before ranking,
+  reads assigned `qrec_...` IDs, and uses ranked order as the user-facing
+  recommendation number.
 - `/quality` runtime guidance now treats `qualitymd status` as workspace status
   while preserving project language for modeled value and setup intent.
 

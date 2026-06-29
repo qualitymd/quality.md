@@ -144,9 +144,11 @@ should be raised or clarified.
 `RecommendationRankingResult.findingCoverage` as either addressed by one or more
 recommendations or explicitly not advice-driving. Coverage accounting happens
 after recommendation generation and before recommendation ranking is closed.
+Coverage recommendation refs **MUST** use `RecommendationResult.id`.
 
 `rankRecommendations` **MUST** rank persisted recommendations by expected
 quality impact, quality-bar relevance, trace strength, confidence, and whether
-the advice addresses binding constraints. It **MUST NOT** use effort, ROI,
+the advice addresses binding constraints. Ranking recommendation refs **MUST**
+use `RecommendationResult.id`. It **MUST NOT** use effort, ROI,
 quick-win status, backlog priority, or numeric score fields as required
 Evaluation data.

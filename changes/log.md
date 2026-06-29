@@ -3,6 +3,37 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0176 - Recommendation IDs and Numbers](archive/0176-recommendation-ids-and-numbers.md).
+  Evaluation recommendations now persist opaque `qrec_...` IDs for JSON data
+  paths and structured ranking/coverage refs; generated reports derive
+  user-facing recommendation numbers from ranked order.
+
+- **In-Review**: Completed implementation for
+  [0176 - Recommendation IDs and Numbers](archive/0176-recommendation-ids-and-numbers.md).
+  Evaluation data contracts, report rendering, durable specs, runtime skill
+  guidance, tests, changelog, and report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0176 - Recommendation IDs and Numbers](archive/0176-recommendation-ids-and-numbers.md).
+  Functional spec and design are settled; implementation is beginning across
+  Evaluation data contracts, reports, durable specs, runtime skill guidance,
+  tests, and generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0176-recommendation-ids-and-numbers/design.md) for
+  [0176 - Recommendation IDs and Numbers](archive/0176-recommendation-ids-and-numbers.md).
+  The design keeps recommendation payloads writable before ranking by assigning
+  opaque `qrec_...` IDs, while recommendation numbers are derived from ranked
+  order in generated reports and follow-up.
+
+- **Draft**: Created
+  [0176 - Recommendation IDs and Numbers](archive/0176-recommendation-ids-and-numbers.md)
+  with its
+  [functional spec](archive/0176-recommendation-ids-and-numbers/spec.md). The
+  case separates non-user-facing recommendation IDs from user-facing
+  recommendation numbers.
+
+- **Done**: Implemented and archived
   [0175 - Report Contents Sections](archive/0175-report-contents-sections.md).
   Generated Evaluation reports now use standard Contents sections for
   multi-section report artifacts and no longer render compact `Jump to:` local

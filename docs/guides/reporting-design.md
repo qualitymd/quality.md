@@ -281,7 +281,7 @@ the type so report artifacts do not collide with Model concepts:
 | `requirements/<requirement>/...`      | `Requirement Evaluation Report` | Requirement                    |
 | `findings.md`                         | `Finding Index Report`          | Ranked Findings                |
 | `recommendations.md`                  | `Recommendation Index Report`   | Ranked Recommendations         |
-| `recommendations/<NNN>-<slug>.md`     | `Recommendation Report`         | Recommendation                 |
+| `recommendations/<number>-<slug>.md`  | `Recommendation Report`         | Recommendation                 |
 
 Avoid `type: Area`, `type: Factor`, or `type: Requirement`; those name Model
 concepts, not report artifacts. `report.md` should use

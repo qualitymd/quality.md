@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0176 - Recommendation IDs and Numbers](../changes/archive/0176-recommendation-ids-and-numbers.md).
+  Evaluation recommendations now carry opaque `qrec_...` IDs for structured
+  data and refs, while generated reports derive user-facing recommendation
+  numbers from ranked order.
+
+- **Revision**: Implemented durable spec changes for
   [0175 - Report Contents Sections](../changes/archive/0175-report-contents-sections.md).
   Generated Evaluation Markdown reports now use standard Contents sections for
   multi-section report artifacts and no longer render compact `Jump to:` local

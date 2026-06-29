@@ -99,22 +99,28 @@ Evaluation run identity has two parts:
   and report headers. It is not globally unique and **MUST NOT** be presented as
   a durable handoff identifier.
 
-The structured Evaluation identity rule is: `id` names only the run;
-run-scoped artifacts use `number`; Requirement Findings use their
+The structured Evaluation identity rule is: `id` names opaque artifact identity;
+user-facing `number` values name ranked report positions. `RunManifest.id`
+names the run. `RecommendationResult.id` names a recommendation artifact within
+the run and **MUST** use the `qrec_<token>` form, where `<token>` contains only
+lowercase ASCII letters and digits. Requirement Findings use their
 requirement-scoped selector. `qualitymd evaluation data set` **MUST** assign a
-missing positive integer `RecommendationResult.number` before writing a
-recommendation and **MUST NOT** assign an artifact ID to
-`FindingRankingResult.orderedFindings[]`.
+missing `RecommendationResult.id` before writing a recommendation and **MUST
+NOT** assign an artifact ID to `FindingRankingResult.orderedFindings[]`.
 
 Recommendation ranking and finding coverage **MUST** reference recommendations by
-their assigned `number`. Cross-payload references to findings **MUST** use the
+their assigned `id`. Cross-payload references to findings **MUST** use the
 Requirement Assessment routine reference plus selector, for example
 `findings[gap-001]`.
 
-Typed artifact references used in reports and external handoff text **SHOULD**
-combine the run ID and recommendation number, for example
-`evaluation:20260629T120000Z-0123456789ab/recommendation/1`. These artifact
-references do not replace routine `*Ref` objects or canonical Model references.
+The user-facing recommendation number is derived from
+`RecommendationRankingResult.orderedRecommendations[].rank`; in reports it is
+rendered as `#` or `Number`. Typed artifact references used in reports and
+external handoff text **SHOULD** combine the run ID and recommendation ID, for
+example
+`evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_7h4km2p9`. These
+artifact references do not replace routine `*Ref` objects or canonical Model
+references.
 
 ## Optional And Repeated Fields
 

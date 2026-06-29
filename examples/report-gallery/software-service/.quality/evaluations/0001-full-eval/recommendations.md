@@ -44,7 +44,7 @@ Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
 - [data/run-manifest.json](data/run-manifest.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
-- [data/advice/recommendations/001/recommendation-result.json](data/advice/recommendations/001/recommendation-result.json)
-- [data/advice/recommendations/002/recommendation-result.json](data/advice/recommendations/002/recommendation-result.json)
-- [data/advice/recommendations/003/recommendation-result.json](data/advice/recommendations/003/recommendation-result.json)
+- [data/advice/recommendations/qrec_gallery1/recommendation-result.json](data/advice/recommendations/qrec_gallery1/recommendation-result.json)
+- [data/advice/recommendations/qrec_gallery2/recommendation-result.json](data/advice/recommendations/qrec_gallery2/recommendation-result.json)
+- [data/advice/recommendations/qrec_gallery3/recommendation-result.json](data/advice/recommendations/qrec_gallery3/recommendation-result.json)
 

@@ -2,6 +2,11 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0176 - Recommendation IDs and Numbers](../../../../changes/archive/0176-recommendation-ids-and-numbers.md).
+  Advice authoring now lets `qualitymd evaluation data set` assign `qrec_...`
+  recommendation IDs and uses those IDs for recommendation ranking and coverage.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for
   [0166 - Setup Factor Proposal Checkpoint](../../../../changes/archive/0166-setup-factor-proposal-checkpoint.md).
   Setup now presents a factor proposal checkpoint after discovery, teaches the

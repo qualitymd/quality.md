@@ -117,7 +117,7 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 
 `RecommendationResult` **MUST** include:
 
-- `number`;
+- `id`;
 - `title`;
 - `description`;
 - `background`;
@@ -128,8 +128,8 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 - non-empty `traceRefs`.
 
 `qualitymd evaluation data set` **MUST** assign a missing
-`RecommendationResult.number` before persisting the payload. Persisted
-`RecommendationResult.number` values **MUST** be positive integers and **MUST**
+`RecommendationResult.id` before persisting the payload. Persisted
+`RecommendationResult.id` values **MUST** match `^qrec_[a-z0-9]+$` and **MUST**
 be unique in the run.
 `impact` **MUST** be one of `very_high`, `high`, `medium`, or `low`.
 `confidence` **MUST** use the Evaluation confidence vocabulary: `high`,
@@ -165,8 +165,9 @@ one or more `recommendationRefs`. When `disposition` is
 
 `RecommendationRankingResult.findingCoverage` **MUST** account for every
 Requirement Finding in the effective run data exactly once. It **MUST NOT**
-claim coverage by a recommendation number that has no corresponding
-`RecommendationResult`.
+claim coverage by a recommendation ID that has no corresponding
+`RecommendationResult`. Recommendation ranking and coverage references **MUST**
+use `RecommendationResult.id`.
 
 ## Finding Core
 

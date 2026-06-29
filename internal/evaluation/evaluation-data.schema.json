@@ -2338,7 +2338,7 @@
               },
               "recommendationRefs": {
                 "items": {
-                  "type": "integer"
+                  "type": "string"
                 },
                 "type": "array"
               }
@@ -2386,7 +2386,7 @@
                 "type": "string"
               },
               "recommendationRef": {
-                "type": "integer"
+                "type": "string"
               }
             },
             "required": [
@@ -2440,6 +2440,9 @@
         "expectedValue": {
           "type": "string"
         },
+        "id": {
+          "type": "string"
+        },
         "impact": {
           "enum": [
             "very_high",
@@ -2454,9 +2457,6 @@
             "RecommendationResult"
           ],
           "type": "string"
-        },
-        "number": {
-          "type": "integer"
         },
         "schemaVersion": {
           "type": "integer"

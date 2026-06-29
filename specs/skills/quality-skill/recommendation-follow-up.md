@@ -104,10 +104,16 @@ changed, and the quality changelog authoring sub-guide.
 ## Issue-tracker handoff
 
 Issue-tracker handoff **MUST** produce issue-ready content that includes the
-recommendation ID and title, source evaluation run, affected area/factor or
-requirement, current rating when known, target or done criterion, evidence
-summary with locators, suggested implementation option, verification path, and
-links or paths to the generated report and recommendation artifact.
+recommendation number, recommendation ID, and title; source evaluation run;
+affected area/factor or requirement; current rating when known; target or done
+criterion; evidence summary with locators; suggested implementation option;
+verification path; and links or paths to the generated report and recommendation
+artifact.
+
+Recommendation follow-up **MUST** treat numeric user input such as
+`recommendation 1`, `rec #1`, and `1` as a recommendation-number selection from
+the ranked recommendations report. It **MUST** treat `qrec_...` input as exact
+recommendation ID selection.
 
 Creating an external issue **MUST** require explicit user confirmation,
 available issue-tracker tooling, and a decision brief that names the external

@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0176 - Recommendation IDs
+  and Numbers. Runtime evaluation guidance now uses `qrec_...` recommendation
+  IDs in structured ranking and coverage while reserving recommendation numbers
+  for ranked report order.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0173 - Evaluation Enum
   Catalogs. Runtime evaluation guidance now tells the skill to write canonical
   fixed enum values rather than generated-report labels or markers.

@@ -4,9 +4,9 @@
   "description": "Specify and test partial-write replay behavior for mutation endpoints.",
   "doneCriterion": "The API contract and retry tests describe duplicate, replayed, and partial-write idempotency outcomes.",
   "expectedValue": "Callers and agents can verify retry behavior without inferring undocumented recovery semantics.",
+  "id": "qrec_gallery1",
   "impact": "high",
   "kind": "RecommendationResult",
-  "number": 1,
   "schemaVersion": 3,
   "title": "Tighten the idempotency replay contract",
   "traceRefs": [

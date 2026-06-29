@@ -11,9 +11,9 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 
 ## Key Details
 
-| # | Rank | Impact | Confidence | Reference |
+| # | ID | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
-| 1 | 1 | ⬥ High | 🔵 Medium | `evaluation:20260629T120000Z-0123456789ab/recommendation/1` |
+| 1 | `qrec_gallery1` | ⬥ High | 🔵 Medium | `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_gallery1` |
 
 Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
@@ -56,6 +56,6 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 ## Primary Source Data
 
 - [data/run-manifest.json](../data/run-manifest.json)
-- [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)
+- [data/advice/recommendations/qrec_gallery1/recommendation-result.json](../data/advice/recommendations/qrec_gallery1/recommendation-result.json)
 - [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
 
