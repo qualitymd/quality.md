@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0168 - Quality Evaluation Title](../changes/archive/0168-quality-evaluation-title.md).
+  Generated Evaluation run report titles now use
+  `Quality Evaluation - <Area>` with factor filters appended in parentheses,
+  while stable scope references remain in the Scope section.
+
+- **Revision**: Implemented durable spec changes for
   [0167 - Report Frontmatter H1 Titles](../changes/archive/0167-report-frontmatter-h1-titles.md).
   Generated Evaluation Markdown report frontmatter `title` values now match the
   visible H1 document title, while `type` remains the report artifact taxonomy.

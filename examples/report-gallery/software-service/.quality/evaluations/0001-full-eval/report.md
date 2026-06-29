@@ -1,9 +1,9 @@
 ---
 type: Evaluation Overview Report
-title: "Evaluation Report: Area: LedgerLite Service"
+title: Quality Evaluation - LedgerLite Service
 ---
 
-# Evaluation Report: Area: LedgerLite Service
+# Quality Evaluation - LedgerLite Service
 
 Run: Run 0001 - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 

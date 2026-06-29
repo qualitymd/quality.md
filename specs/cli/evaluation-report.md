@@ -51,7 +51,9 @@ structured data produces byte-identical report files.
 `report.md` **MUST** render as the scoped Area report for
 `plannedScope.areaId`, narrowed by `factorFilter` when present. It **MUST NOT**
 choose a headline subject from `EvaluationFrame` or any other agent-authored
-payload ordering.
+payload ordering. `report.md` **MUST** title the run entrypoint as
+`Quality Evaluation - <Area title>` and append a parenthesized comma-separated
+Factor title list when `plannedScope.factorFilter` is present.
 
 `build` **MUST** render persisted Advice outputs into `report.md`,
 `findings.md`, `recommendations.md`, and recommendation detail reports under

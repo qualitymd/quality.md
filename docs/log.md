@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0168 - Quality Evaluation Title](../changes/archive/0168-quality-evaluation-title.md).
+  Run report examples and title guidance now use
+  `Quality Evaluation - <Area>` with factor filters appended in parentheses.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0167 - Report Frontmatter H1 Titles](../changes/archive/0167-report-frontmatter-h1-titles.md).
   Generated report design guidance now treats frontmatter `title` as the same
   document title as the visible H1, with `type` carrying the report artifact

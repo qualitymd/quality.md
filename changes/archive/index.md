@@ -704,3 +704,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0167 — Report Frontmatter H1 Titles](0167-report-frontmatter-h1-titles.md) -
   aligns generated report frontmatter `title` values with visible H1 document
   titles while keeping `type` as the report artifact taxonomy (`Done`).
+- [0168 — Quality Evaluation Title](0168-quality-evaluation-title.md) - renames
+  generated run report titles to `Quality Evaluation - <Area>` and appends
+  factor filters in parentheses (`Done`).

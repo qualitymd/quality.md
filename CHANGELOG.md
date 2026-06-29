@@ -5,7 +5,11 @@ QUALITY.md specification.
 
 ## Unreleased
 
-No changes yet.
+### CLI
+
+- Generated Evaluation run reports now title `report.md` as
+  `Quality Evaluation - <Area>` and include factor filters in parentheses, for
+  example `Quality Evaluation - Public API (Reliability, Correctness)`.
 
 ## v0.26.0 - 2026-06-29
 

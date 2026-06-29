@@ -184,9 +184,13 @@ Good frontmatter fields:
 - `title`.
 
 The frontmatter `title` should match the visible H1 title text without the
-leading Markdown `#` marker. Keep prefixes such as `Requirement:` or `Area:` in
-both the H1 and frontmatter title when they are part of the report document
-title; the `type` field already carries the report artifact taxonomy.
+leading Markdown `#` marker. Detail reports keep prefixes such as
+`Requirement:` or `Area:` in both the H1 and frontmatter title when they are
+part of the report document title; the `type` field already carries the report
+artifact taxonomy. The run report should title the user's quality-evaluation
+scope directly as `Quality Evaluation - <Area>` and append factor filters in
+parentheses, for example `Quality Evaluation - Public API (Reliability,
+Correctness)`.
 
 Use report types that name the reported subject and keep the word `Report` in
 the type so report artifacts do not collide with Model concepts:
@@ -272,7 +276,7 @@ The run report is the primary decision-ready report. Its header should make the
 result and next navigation obvious.
 
 ```markdown
-# Evaluation Report: LedgerLite Service
+# Quality Evaluation - LedgerLite Service
 
 Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Model: [model-snapshot.md](model-snapshot.md)
 

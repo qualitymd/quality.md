@@ -439,6 +439,21 @@ not in the summary table.
 > navigation trail, so separate `Path:` / `Name:` header lines would be
 > redundant. — 0104, 0119
 
+Run report frontmatter `title` and H1 text **MUST** render as
+`Quality Evaluation - <Area title>` for Area-only planned scopes. When the
+planned scope has a factor filter, the run report frontmatter `title` and H1
+text **MUST** render as
+`Quality Evaluation - <Area title> (<Factor title list>)`, where
+`<Factor title list>` contains every planned factor filter as comma-separated
+Factor titles in `RunManifest.plannedScope.factorFilter` order. The run report
+title **MUST NOT** include `Evaluation Report`, `Area:`, raw Area references, or
+raw Factor references; stable scope references belong in the Scope section.
+
+> Rationale: `report.md` and the report `type` already identify the artifact as
+> a report. The H1 should name the quality-evaluation scope, while
+> factor-scoped evaluations preserve both the Area context and the user's
+> requested Factors. — 0168
+
 Long reports **SHOULD** include a compact `Jump to:` line after the header when
 local section navigation materially improves scanning. Short reports may omit
 the line when it would add noise.

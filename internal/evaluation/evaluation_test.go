@@ -294,8 +294,8 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		t.Fatalf("reading report.md: %v", err)
 	}
 	if !strings.Contains(string(runReport), "type: Evaluation Overview Report\n") ||
-		!strings.Contains(string(runReport), "title: \"Evaluation Report: Area: Test model\"\n") ||
-		!strings.Contains(string(runReport), "# Evaluation Report: Area: Test model") {
+		!strings.Contains(string(runReport), "title: Quality Evaluation - Test model\n") ||
+		!strings.Contains(string(runReport), "# Quality Evaluation - Test model") {
 		t.Fatalf("report.md = %s, want run report title", runReport)
 	}
 	if !strings.Contains(string(runReport), "Run: Run 0001 - Run ID: `") ||
@@ -437,12 +437,12 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	}
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "type: Evaluation Overview Report\n")
-	assertContains(t, runReport, "title: \"Evaluation Report: Area: Navigation model\"\n")
+	assertContains(t, runReport, "title: Quality Evaluation - Navigation model\n")
 	assertNotContains(t, runReport, "\ndata:\n")
 	assertContains(t, runReport, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
 	assertContains(t, runReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
 	assertNotContains(t, runReport, "[data/evaluation-output-result.json](")
-	assertContains(t, runReport, "# Evaluation Report: Area: Navigation model")
+	assertContains(t, runReport, "# Quality Evaluation - Navigation model")
 	assertContains(t, runReport, "Run: Run 0001 - Run ID: `")
 	assertContains(t, runReport, "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)")
 	assertContains(t, runReport, "Area: [Navigation model](root-area.md)")
@@ -666,7 +666,7 @@ areas:
 		t.Fatalf("root-area.md should not be generated for root-out-of-scope run: %v", err)
 	}
 	runReport := readReport(t, runPath, "report.md")
-	assertContains(t, runReport, "# Evaluation Report: Area: Refunds")
+	assertContains(t, runReport, "# Quality Evaluation - Refunds")
 	assertContains(t, runReport, "| Planned Area | `area:payments/refunds` |")
 	assertContains(t, runReport, "Root Area was not evaluated in this run.")
 	areaReport := readReport(t, runPath, "areas/payments/refunds/refunds-area.md")
@@ -693,9 +693,11 @@ ratingScale:
 factors:
   reliability:
     title: Reliability
+  correctness:
+    title: Correctness
 ---
 `)
-	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Factors: []string{"factor:root::reliability"}})
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md", Factors: []string{"factor:root::reliability", "factor:root::correctness"}})
 	if err != nil {
 		t.Fatalf("CreateRun() error = %v", err)
 	}
@@ -703,9 +705,11 @@ factors:
 	payloads := []string{
 		`{"schemaVersion":3,"kind":"EvaluationFrame","inputs":{},"derivedContext":{}}`,
 		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
-		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped Area bar.","ratingDrivers":[{"description":"Reliability supports the scoped Area.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped Area bar overall.","ratingDrivers":[{"description":"Reliability supports the scoped Area overall.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability and correctness meet the scoped Area bar.","ratingDrivers":[{"description":"Reliability supports the scoped Area.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]},{"description":"Correctness supports the scoped Area.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::correctness"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability and correctness meet the scoped Area bar overall.","ratingDrivers":[{"description":"Reliability supports the scoped Area overall.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::reliability"},"selector":"localAndDescendantAnalysis"}]},{"description":"Correctness supports the scoped Area overall.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisResult","subject":{"factorId":"factor:root::correctness"},"selector":"localAndDescendantAnalysis"}]}],"confidence":"high"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}`,
 		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::reliability","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar.","ratingDrivers":[{"description":"Reliability frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Reliability meets the scoped bar overall.","ratingDrivers":[{"description":"Reliability frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::reliability"}}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::correctness"}}`,
+		`{"schemaVersion":3,"kind":"FactorAnalysisResult","factorId":"factor:root::correctness","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Correctness meets the scoped bar.","ratingDrivers":[{"description":"Correctness frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::correctness"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Correctness meets the scoped bar overall.","ratingDrivers":[{"description":"Correctness frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"FactorAnalysisFrame","subject":{"factorId":"factor:root::correctness"}}]}],"confidence":"high"}}`,
 	}
 	payloads = append(payloads, noFindingFactorAdvicePayloads("factor:root::reliability")...)
 	if _, err := SetData(runPath, batchPayloads(payloads...), DataSetOptions{}); err != nil {
@@ -726,8 +730,10 @@ factors:
 		t.Fatalf("BuildReport() = %#v, want factor-filtered Area rating", build)
 	}
 	runReport := readReport(t, runPath, "report.md")
-	assertContains(t, runReport, "# Evaluation Report: Area: Factor scoped model - Reliability")
-	assertContains(t, runReport, "| Factor Filter | `factor:root::reliability` Reliability |")
+	assertContains(t, runReport, "title: \"Quality Evaluation - Factor scoped model (Reliability, Correctness)\"\n")
+	assertContains(t, runReport, "# Quality Evaluation - Factor scoped model (Reliability, Correctness)")
+	assertContains(t, runReport, "| Factor Filter | `factor:root::reliability` Reliability; `factor:root::correctness` Correctness |")
+	assertContains(t, runReport, "`factor:root::correctness` Correctness")
 	assertContains(t, runReport, "The scoped Area rating is a partial roll-up, not a complete Area assessment.")
 	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
 	assertContains(t, factorReport, "# Factor: Reliability")
@@ -739,6 +745,29 @@ factors:
 	assertContains(t, string(outputRaw), `"scopedAreaAnalysisRef":`)
 	assertContains(t, string(outputRaw), `"factorId": "factor:root::reliability"`)
 	assertNotContains(t, string(outputRaw), `"headlineResultRef":`)
+}
+
+func TestEvaluationRunReportTitle(t *testing.T) {
+	spec := &model.Spec{
+		Title: "Factor scoped model",
+		Factors: map[string]model.Factor{
+			"correctness": {Title: "Correctness"},
+			"reliability": {Title: "Reliability"},
+		},
+	}
+	if got := evaluationRunReportTitle(spec, &evaluationReportPlan{}); got != "Quality Evaluation - Factor scoped model" {
+		t.Fatalf("evaluationRunReportTitle(area) = %q", got)
+	}
+	if got := evaluationRunReportTitle(spec, &evaluationReportPlan{
+		FactorFilter: []factorID{{Path: []string{"reliability"}}},
+	}); got != "Quality Evaluation - Factor scoped model (Reliability)" {
+		t.Fatalf("evaluationRunReportTitle(single factor) = %q", got)
+	}
+	if got := evaluationRunReportTitle(spec, &evaluationReportPlan{
+		FactorFilter: []factorID{{Path: []string{"reliability"}}, {Path: []string{"correctness"}}},
+	}); got != "Quality Evaluation - Factor scoped model (Reliability, Correctness)" {
+		t.Fatalf("evaluationRunReportTitle(multiple factors) = %q", got)
+	}
 }
 
 func TestSetDataRejectsCLIOwnedOutput(t *testing.T) {

@@ -968,14 +968,14 @@ func writeRecommendationSection(b *strings.Builder, title, body string) {
 }
 
 func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport, reportPath string) string {
-	title := evaluationScopedAreaLabel(spec, plan)
+	title := evaluationRunReportTitle(spec, plan)
 	scopedArea := scopedMap(plan.ScopedAreaAnalysis, "localAndDescendantAnalysis")
 	localArea := scopedMap(plan.ScopedAreaAnalysis, "localAnalysis")
 	var b strings.Builder
 	data := runReportSourceData(artifacts, plan)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeEvaluationOverview,
-		Heading:    "Evaluation Report: Area: " + title,
+		Heading:    title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
 		Context: []string{
@@ -1303,16 +1303,16 @@ func reportForRootArea(reports []evaluationRenderedReport) *evaluationRenderedRe
 	return nil
 }
 
-func evaluationScopedAreaLabel(spec *model.Spec, plan *evaluationReportPlan) string {
+func evaluationRunReportTitle(spec *model.Spec, plan *evaluationReportPlan) string {
 	label := areaTitle(spec, plan.ScopedAreaID)
 	if len(plan.FactorFilter) == 0 {
-		return label
+		return "Quality Evaluation - " + label
 	}
 	factors := make([]string, 0, len(plan.FactorFilter))
 	for _, factor := range plan.FactorFilter {
 		factors = append(factors, factorTitle(spec, factor))
 	}
-	return label + " - " + strings.Join(factors, ", ")
+	return "Quality Evaluation - " + label + " (" + strings.Join(factors, ", ") + ")"
 }
 
 func writeEvaluationRunScope(b *strings.Builder, spec *model.Spec, plan *evaluationReportPlan) {

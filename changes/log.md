@@ -3,6 +3,37 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0168 - Quality Evaluation Title](archive/0168-quality-evaluation-title.md).
+  Generated run report titles now use `Quality Evaluation - <Area>` with
+  factor filters appended in parentheses, durable specs, report design guidance,
+  and report-gallery output are aligned, and focused tests cover area-only,
+  single-factor, and multiple-factor title content.
+
+- **In-Review**: Completed implementation for
+  [0168 - Quality Evaluation Title](archive/0168-quality-evaluation-title.md).
+  Renderer code, durable report specs, report design guidance, release notes,
+  and focused tests are aligned for review.
+
+- **In-Progress**: Advanced
+  [0168 - Quality Evaluation Title](archive/0168-quality-evaluation-title.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated run report rendering, durable specs, report design guidance, release
+  notes, and tests.
+
+- **Design**: Added the
+  [design doc](archive/0168-quality-evaluation-title/design.md) for
+  [0168 - Quality Evaluation Title](archive/0168-quality-evaluation-title.md).
+  The design derives the run report heading from resolved Area and Factor
+  labels while preserving stable references in the Scope section.
+
+- **Draft**: Created
+  [0168 - Quality Evaluation Title](archive/0168-quality-evaluation-title.md)
+  with its
+  [functional spec](archive/0168-quality-evaluation-title/spec.md). The case
+  renames generated run report titles to `Quality Evaluation - <Area>` and
+  appends factor filters in parentheses.
+
+- **Done**: Implemented and archived
   [0167 - Report Frontmatter H1 Titles](archive/0167-report-frontmatter-h1-titles.md).
   Generated Evaluation Markdown report frontmatter `title` values now match the
   visible H1 document title, durable specs and report design guidance are
