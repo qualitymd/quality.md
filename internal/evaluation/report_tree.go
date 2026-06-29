@@ -766,14 +766,7 @@ func writeLocalKeys(b *strings.Builder, lines ...string) {
 	if len(clean) == 0 {
 		return
 	}
-	for i, line := range clean {
-		b.WriteString(line)
-		if i < len(clean)-1 {
-			b.WriteString("<br>\n")
-		} else {
-			b.WriteString("\n")
-		}
-	}
+	b.WriteString(strings.Join(clean, " | ") + "\n")
 	b.WriteString("\n")
 }
 
@@ -782,7 +775,7 @@ func fixedEnumKeyLine[T ~string](catalog enumCatalog[T]) string {
 	if len(labels) == 0 {
 		return ""
 	}
-	return catalog.Label + ": " + strings.Join(labels, ", ")
+	return keyLabel(catalog.Label) + " " + strings.Join(labels, ", ")
 }
 
 func ratingKeyLine(spec *model.Spec) string {
@@ -802,15 +795,19 @@ func ratingKeyLine(spec *model.Spec) string {
 	if len(labels) == 0 {
 		return ""
 	}
-	return "Ratings: " + strings.Join(labels, ", ")
+	return keyLabel("Quality rating") + " " + strings.Join(labels, ", ")
 }
 
 func rowKeyLine() string {
-	return "Rows: ▦ Area, □ Factor"
+	return keyLabel("Rows") + " ▦ Area, □ Factor"
 }
 
 func emptyKeyLine() string {
-	return "Empty: `—`"
+	return keyLabel("Empty") + " `—`"
+}
+
+func keyLabel(label string) string {
+	return "*" + label + ":*"
 }
 
 func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {

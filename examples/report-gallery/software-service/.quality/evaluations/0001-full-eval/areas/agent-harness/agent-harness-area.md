@@ -17,9 +17,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-a
 | --- | --- | --- |
 | 🔵 Target | 🔵 Target | 🟢 High / 🟢 High |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Empty: `—`
+*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
 
 ## Contents
 
@@ -40,7 +38,7 @@ Agent guidance exposes the quality evaluation entry point clearly.
 | **[▦ Agent Harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Agent Accessibility](factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
-Rows: ▦ Area, □ Factor
+*Rows:* ▦ Area, □ Factor
 
 ## Requirements
 
@@ -48,8 +46,7 @@ Rows: ▦ Area, □ Factor
 | --- | --- | --- | --- |
 | [agent guidance routes quality evaluation work](requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) | 🔵 Target | ✅ Assessed | [agent-accessibility](factors/agent-accessibility/agent-accessibility-factor.md) |
 
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
-Empty: `—`
+*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

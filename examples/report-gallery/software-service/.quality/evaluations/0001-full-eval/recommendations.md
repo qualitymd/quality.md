@@ -15,9 +15,7 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 | --- | --- | --- |
 | 3 ranked recommendations | ⬥ High | ✅ Addressed by Recommendation: 3 / ⬜ Not Advice Driving: 4 |
 
-Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low<br>
-Finding coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving<br>
-Empty: `—`
+*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low | *Finding coverage:* ✅ Addressed by Recommendation, ⬜ Not Advice Driving | *Empty:* `—`
 
 ## Contents
 
@@ -33,7 +31,7 @@ Empty: `—`
 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
 
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+*Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Coverage
 

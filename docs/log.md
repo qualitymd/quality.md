@@ -4,8 +4,8 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md). Generated report
-  local-key guidance now uses explicit `<br>` line breaks, no terminal periods,
-  and unformatted Area/Factor row glyphs.
+  local-key guidance now uses italicized labels, pipe separators, no terminal
+  periods, and unformatted Area/Factor row glyphs.
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for

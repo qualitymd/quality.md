@@ -3,8 +3,8 @@
 ## 2026-06-29
 
 - **Revision**: Updated the Evaluation report-tree contract so adjacent local
-  keys use explicit `<br>` line breaks, omit terminal punctuation, and render
-  row-marker glyphs without code formatting.
+  keys use italicized labels and pipe separators, omit terminal punctuation, and
+  render row-marker glyphs without code formatting.
 
 - **Revision**: Updated the Evaluation report-tree contract for
   [0179 - Enum Catalog Metadata](../../changes/archive/0179-enum-catalog-metadata.md).

@@ -19,10 +19,7 @@ Factors: [observability](../../factors/observability/observability-factor.md)
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Empty: `—`
+*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
 
 ## Contents
 
@@ -42,11 +39,7 @@ The sampled telemetry explains customer impact for core failure modes.
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-003` | Health dashboards connect service errors to failed customer actions. | ✅ Strength | 🔵 Low | 🔵 Medium | The finding supports the target observability rating. | ✅ Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
 
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note<br>
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Finding basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable<br>
-Empty: `—`
+*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable | *Empty:* `—`
 
 ## Finding Details
 
@@ -58,8 +51,7 @@ Empty: `—`
 | --- | --- | --- |
 | 5 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-Finding rank: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low<br>
-Empty: `—`
+*Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low | *Empty:* `—`
 
 #### Condition
 

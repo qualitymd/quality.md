@@ -233,25 +233,24 @@ value descriptions.
 Generated Markdown reports **MUST** render local keys for indicator families
 near their first use in each report artifact.
 
-Local keys **MUST** be notation-only lines. Each line **MUST** render one
-indicator family name, a colon, and the marker-plus-label values for that
-family. Fixed Evaluation enum keys **MUST** use the catalog key label as the
-indicator family name. Local keys **MUST NOT** include prose definitions,
+Local keys **MUST** be notation-only segments. Each segment **MUST** render one
+italicized indicator family name, a colon, and the marker-plus-label values for
+that family. Fixed Evaluation enum keys **MUST** use the catalog key label as
+the indicator family name. Local keys **MUST NOT** include prose definitions,
 rationale, or semantic explanations beyond the marker-plus-label set.
-Local key lines **MUST NOT** end with terminal punctuation. When multiple local
-key lines appear together, each line before the final line **MUST** end with an
-explicit `<br>` HTML line break so rendered Markdown keeps the keys visually
-separate.
+Local keys **MUST NOT** end with terminal punctuation. When multiple local-key
+segments appear together, adjacent segments **MUST** be separated by `|`.
 
 When one table first introduces multiple indicator families, each family key
-**MUST** render on a distinct line.
+**MUST** render as a distinct segment.
 
-Rating keys **MUST** render the Rating Level `title` values from the run's
+Quality rating keys **MUST** use `*Quality rating:*` as the local-key family
+label and render the Rating Level `title` values from the run's
 `model-snapshot.md` snapshot in Rating Scale order. Fixed Evaluation enum keys
 **MUST** render the known marker-plus-label display set from
 [Fixed Enum Display](#fixed-enum-display). Structural row keys **MUST** render
-`Rows:` followed by the Area and Factor row markers. Empty-cell keys **MUST**
-render `Empty:` followed by the em dash marker.
+`*Rows:*` followed by the Area and Factor row markers. Empty-cell keys **MUST**
+render `*Empty:*` followed by the em dash marker.
 
 Dense table headers **MAY** use compact labels such as `Type`, `Severity`,
 `Basis`, and `Impact` when the table context already scopes the enum family.
@@ -658,7 +657,7 @@ so persisted Evaluation text cannot alter the table column shape.
 
 Generated reports **MUST NOT** render blank table cells for empty scalar values.
 When an em dash appears as an empty-cell marker, the report **MUST** define it
-through a local `Empty:` key near first use instead of a bottom legend.
+through a local `*Empty:*` key near first use instead of a bottom legend.
 
 > Rationale: blank cells are ambiguous in committed Markdown reports. A neutral
 > em dash makes absence visible without overclaiming `N/A`; escaping table

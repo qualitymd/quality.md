@@ -19,10 +19,7 @@ Factor: [Operability](operability-factor.md)
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
-Analysis status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Empty: `—`
+*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
 
 ## Contents
 
@@ -42,8 +39,7 @@ Operability follows its direct requirement signal.
 | --- | --- | --- |
 | [error responses are predictable for callers](../../requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed |
 
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
-Empty: `—`
+*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
 
 ## Sub-Factors
 
@@ -51,7 +47,7 @@ Empty: `—`
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-Empty: `—`
+*Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

@@ -7,12 +7,12 @@ QUALITY.md specification.
 
 ### CLI
 
-- Generated Evaluation report local keys now use enum catalog labels such as
-  `Finding type`, `Finding severity`, and `Recommendation impact`, and the
-  internal fixed enum catalogs now carry type-level and value-level descriptions
-  for future glossary/help surfaces. Adjacent local keys now use explicit
-  `<br>` line breaks, omit terminal periods, and render Area/Factor row glyphs
-  without code formatting.
+- Generated Evaluation report local keys now use canonical labels such as
+  `Quality rating`, `Finding type`, `Finding severity`, and
+  `Recommendation impact`, and the internal fixed enum catalogs now carry
+  type-level and value-level descriptions for future glossary/help surfaces.
+  Adjacent local keys now use italicized labels and pipe separators, omit
+  terminal periods, and render Area/Factor row glyphs without code formatting.
 - Generated recommendation list tables now show a single recommendation number
   column (`#`) instead of duplicate `Rank` and `#` columns.
 - Generated Evaluation run reports now emphasize the full Findings and

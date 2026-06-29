@@ -19,10 +19,7 @@ Factor: [Agent Accessibility](agent-accessibility-factor.md)
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
-Analysis status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Empty: `—`
+*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
 
 ## Contents
 
@@ -42,8 +39,7 @@ Agent Accessibility follows its direct requirement signal.
 | --- | --- | --- |
 | [agent guidance routes quality evaluation work](../../requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) | 🔵 Target | ✅ Assessed |
 
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
-Empty: `—`
+*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
 
 ## Sub-Factors
 
@@ -51,7 +47,7 @@ Empty: `—`
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-Empty: `—`
+*Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

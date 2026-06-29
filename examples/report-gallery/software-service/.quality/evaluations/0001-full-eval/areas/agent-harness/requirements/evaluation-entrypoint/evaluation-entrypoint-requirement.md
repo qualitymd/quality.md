@@ -19,10 +19,7 @@ Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibi
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Empty: `—`
+*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
 
 ## Contents
 
@@ -42,11 +39,7 @@ The agent-facing entry point is clear enough for quality evaluation work.
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-004` | Agent guidance points to the quality model and generated report path. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target agent-accessibility rating. | ✅ Verified: The synthetic guidance gives an agent a direct path from model to evaluation report. |
 
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note<br>
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Finding basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable<br>
-Empty: `—`
+*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable | *Empty:* `—`
 
 ## Finding Details
 
@@ -58,8 +51,7 @@ Empty: `—`
 | --- | --- | --- |
 | 7 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-Finding rank: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low<br>
-Empty: `—`
+*Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low | *Empty:* `—`
 
 #### Condition
 

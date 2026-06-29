@@ -17,9 +17,7 @@ Area: [LedgerLite Service](root-area.md)
 | --- | --- | --- |
 | 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
-Empty: `—`
+*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
 
 ## Contents
 
@@ -50,7 +48,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-Rows: ▦ Area, □ Factor
+*Rows:* ▦ Area, □ Factor
 
 ## Requirements
 
@@ -58,8 +56,7 @@ Rows: ▦ Area, □ Factor
 | --- | --- | --- | --- |
 | (no local Requirements) | — | — | — |
 
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
-Empty: `—`
+*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 
