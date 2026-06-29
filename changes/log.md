@@ -3,6 +3,38 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0163 - Report Artifact IDs](archive/0163-report-artifact-ids.md).
+  `qualitymd evaluation data set` now assigns `QREC` and `QFIND` artifact IDs,
+  generated reports render `QEVAL`, `QREC`, and `QFIND` identifiers for handoff
+  use, durable specs and runtime guidance are aligned, and the report-gallery
+  output has been regenerated.
+
+- **In-Review**: Completed implementation for
+  [0163 - Report Artifact IDs](archive/0163-report-artifact-ids.md). Evaluation
+  data assignment, schema output, generated reports, durable specs, runtime
+  skill guidance, tests, and report-gallery examples are aligned with
+  handoff-ready run, recommendation, and ranked finding IDs.
+
+- **In-Progress**: Advanced
+  [0163 - Report Artifact IDs](archive/0163-report-artifact-ids.md). Functional spec and
+  design are settled; implementation is beginning across Evaluation data
+  assignment, generated reports, durable specs, runtime skill guidance, tests,
+  and schema output.
+
+- **Design**: Added the
+  [design doc](archive/0163-report-artifact-ids/design.md) for
+  [0163 - Report Artifact IDs](archive/0163-report-artifact-ids.md). The design makes
+  `qualitymd evaluation data set` the narrow assignment surface for `QREC` and
+  `QFIND` IDs while preserving Model references and payload-local finding
+  selectors.
+
+- **Draft**: Created
+  [0163 - Report Artifact IDs](archive/0163-report-artifact-ids.md) with its
+  [functional spec](archive/0163-report-artifact-ids/spec.md). The case separates
+  citable Evaluation report artifact IDs from Model references, title slugs, and
+  generated paths.
+
+- **Done**: Implemented and archived
   [0162 - Report Source Data Section](archive/0162-report-source-data-section.md).
   Generated Evaluation Markdown reports now use identity-only frontmatter and
   end with report-local `Source Data` sections; durable specs, report design

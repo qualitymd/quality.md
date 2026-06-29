@@ -5,7 +5,7 @@ title: Findings
 
 # Findings
 
-Run: [#1](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
@@ -13,15 +13,15 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 | --- | --- |
 | 7 ranked findings | 🔴 High |
 
-| Rank | Finding | Area | Factors | Type | Severity |
-| --- | --- | --- | --- | --- | --- |
-| 1 | [Mutation retry behavior is not fully specified for duplicate idempotency keys.](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md#finding-gap-001) | [Public API](areas/api/api-area.md) | [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⚠️ Gap | 🔴 High |
-| 2 | [Common caller error cases share a documented response shape.](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md#finding-strength-001) | [Public API](areas/api/api-area.md) | [Operability](areas/api/factors/operability/operability-factor.md) | ✅ Strength | 🔵 Low |
-| 3 | [Ledger mutation checks preserve balance invariants in the sampled paths.](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md#finding-strength-002) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | ✅ Strength | 🔵 Low |
-| 4 | [Rollback guidance exists, but rehearsal evidence is stale.](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md#finding-risk-001) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⚠️ Risk | 🟡 Medium |
-| 5 | [Health dashboards connect service errors to failed customer actions.](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md#finding-strength-003) | [Operations](areas/operations/operations-area.md) | [Observability](areas/operations/factors/observability/observability-factor.md) | ✅ Strength | 🔵 Low |
-| 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-unknown-001) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ❓ Unknown | 🟡 Medium |
-| 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
+| Rank | ID | Finding | Area | Factors | Type | Severity |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | `QFIND-0001-001` | [Mutation retry behavior is not fully specified for duplicate idempotency keys.](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md#finding-gap-001) | [Public API](areas/api/api-area.md) | [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⚠️ Gap | 🔴 High |
+| 2 | `QFIND-0001-002` | [Common caller error cases share a documented response shape.](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md#finding-strength-001) | [Public API](areas/api/api-area.md) | [Operability](areas/api/factors/operability/operability-factor.md) | ✅ Strength | 🔵 Low |
+| 3 | `QFIND-0001-003` | [Ledger mutation checks preserve balance invariants in the sampled paths.](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md#finding-strength-002) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | ✅ Strength | 🔵 Low |
+| 4 | `QFIND-0001-004` | [Rollback guidance exists, but rehearsal evidence is stale.](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md#finding-risk-001) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⚠️ Risk | 🟡 Medium |
+| 5 | `QFIND-0001-005` | [Health dashboards connect service errors to failed customer actions.](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md#finding-strength-003) | [Operations](areas/operations/operations-area.md) | [Observability](areas/operations/factors/observability/observability-factor.md) | ✅ Strength | 🔵 Low |
+| 6 | `QFIND-0001-006` | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-unknown-001) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ❓ Unknown | 🟡 Medium |
+| 7 | `QFIND-0001-007` | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
 
 
 ## Legend

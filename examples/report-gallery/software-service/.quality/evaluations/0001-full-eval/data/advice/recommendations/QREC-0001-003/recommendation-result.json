@@ -4,7 +4,7 @@
   "description": "Resolve the conflicting recovery-owner records and name the owner in the calendar and playbook.",
   "doneCriterion": "The recovery calendar and playbook agree on the current owner and next drill date.",
   "expectedValue": "Incident preparation has a clear owner agents and maintainers can route to.",
-  "id": "rec-003",
+  "id": "QREC-0001-003",
   "impact": "medium",
   "kind": "RecommendationResult",
   "schemaVersion": 3,

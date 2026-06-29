@@ -5,7 +5,7 @@ title: Ledger Persistence
 
 # Area: Ledger Persistence
 
-Run: [#1](../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
 
@@ -55,7 +55,7 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
-- [data/advice/recommendations/rec-002/recommendation-result.json](../../data/advice/recommendations/rec-002/recommendation-result.json)
+- [data/advice/recommendations/QREC-0001-002/recommendation-result.json](../../data/advice/recommendations/QREC-0001-002/recommendation-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json](../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json](../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json)
 

@@ -96,10 +96,16 @@ blocked states using the status vocabulary defined by the routine contract.
 `FindingRankingResult` **MUST** include `orderedFindings`. Each entry **MUST**
 include:
 
+- `id`;
 - `rank`;
 - `findingRef`;
 - `tier`; and
 - `rationale`.
+
+`qualitymd evaluation data set` **MUST** assign missing ordered finding `id`
+values before persisting a `FindingRankingResult`. Persisted ordered finding
+`id` values **MUST** match `QFIND-<NNNN>-<NNN>`, **MUST** be unique in the run,
+and **MUST** use a run segment matching `RunManifest.number`.
 
 `FindingRankingResult.orderedFindings` **MUST** account for every Requirement
 Finding in the effective run data exactly once. The `tier` and order express
@@ -118,7 +124,11 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 - `confidence`; and
 - non-empty `traceRefs`.
 
-`RecommendationResult.id` values **MUST** be path-safe and unique in a run.
+`qualitymd evaluation data set` **MUST** assign a missing
+`RecommendationResult.id` before persisting the payload. Persisted
+`RecommendationResult.id` values **MUST** match `QREC-<NNNN>-<NNN>`, **MUST**
+be unique in the run, and **MUST** use a run segment matching
+`RunManifest.number`.
 `impact` **MUST** be one of `very_high`, `high`, `medium`, or `low`.
 `confidence` **MUST** use the Evaluation confidence vocabulary: `high`,
 `medium`, `low`, or `none`.

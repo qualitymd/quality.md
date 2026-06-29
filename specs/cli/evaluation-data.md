@@ -77,9 +77,17 @@ Validation **MUST** reject `AreaAnalysisResult.findings`,
 `factorRelationships`, and any analysis-level finding object shape as unknown
 fields.
 
+Before validation and path derivation, `data set` **MUST** assign missing
+CLI-owned Evaluation artifact IDs: `RecommendationResult.id` values use
+`QREC-<NNNN>-<NNN>`, and `FindingRankingResult.orderedFindings[].id` values use
+`QFIND-<NNNN>-<NNN>`, with `<NNNN>` matching `RunManifest.number`.
+When multiple new artifact IDs are assigned in one batch, assignment **MUST** be
+deterministic by input order.
+
 For cross-payload validation, `data set` **MUST** validate against the effective
-run data: existing persisted payloads overlaid with every candidate payload in
-the batch. Candidate batch order **MUST NOT** affect validation.
+run data: existing persisted payloads overlaid with every normalized candidate
+payload in the batch. After artifact ID assignment, candidate batch order
+**MUST NOT** affect validation.
 
 `data set` **MUST** reject a `RequirementRatingResult` with `status: rated`
 unless the effective run data includes a paired `RequirementAssessmentResult`

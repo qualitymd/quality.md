@@ -172,8 +172,9 @@ limits, analysis, recommendations, candidate actions, or source claims.
 
 The Top Findings table **MUST** render rows from
 `FindingRankingResult.orderedFindings` ordered by rank and capped at 10 rows. It
-**MUST** render the columns `Rank`, `Finding`, `Area`, `Factors`, `Type`, and
-`Severity`, in that order. The `Finding` cell **MUST** use the finding
+**MUST** render the columns `Rank`, `ID`, `Finding`, `Area`, `Factors`, `Type`,
+and `Severity`, in that order. The `ID` cell **MUST** render the assigned
+`QFIND` artifact ID. The `Finding` cell **MUST** use the finding
 `statement` as link text and link to the exact finding detail section in the
 Requirement report. The `Area` cell **MUST** link the declaring Area title to
 the Area report. The `Factors` cell **MUST** render comma-separated attached
@@ -187,9 +188,10 @@ link to `findings.md` and `recommendations.md` when the report tree is built.
 
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
-at 10 rows. It **MUST** render the columns `Rank`, `Recommendation`,
-`Area / Factors`, and `Reason`, in that order. The `Recommendation` cell
-**MUST** use `RecommendationResult.title` as link text and link to the generated
+at 10 rows. It **MUST** render the columns `Rank`, `ID`, `Recommendation`,
+`Area / Factors`, and `Reason`, in that order. The `ID` cell **MUST** render the
+assigned `QREC` artifact ID. The `Recommendation` cell **MUST** use
+`RecommendationResult.title` as link text and link to the generated
 recommendation detail report. The `Area / Factors` cell **MUST** render linked
 Area and Factor names resolved from `RecommendationResult.traceRefs` through
 persisted evaluation data and the model snapshot, or `—` when no Area or Factor
@@ -222,6 +224,8 @@ It **MUST** include:
 Each recommendation detail report **MUST** include:
 
 - recommendation title;
+- assigned recommendation ID;
+- typed recommendation artifact reference;
 - rank when ranked;
 - impact;
 - confidence;
@@ -362,9 +366,9 @@ statement wording.
 
 Requirement report finding detail sections **MUST** render Advice ranking
 context when the finding appears in `FindingRankingResult`: Advice rank as
-`<rank> / <total ranked findings>`, tier, and ranking rationale. When no
-matching ranking entry exists, the section **MUST** render an explicit
-not-ranked state.
+`<rank> / <total ranked findings>`, assigned finding ID, tier, and ranking
+rationale. When no matching ranking entry exists, the section **MUST** render an
+explicit not-ranked state.
 
 Finding detail sections **MUST NOT** render finding-local `candidateActions`.
 Candidate actions remain finding-local raw material; selected next moves belong

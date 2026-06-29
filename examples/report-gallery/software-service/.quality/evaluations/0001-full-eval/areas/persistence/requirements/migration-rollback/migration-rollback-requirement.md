@@ -5,7 +5,7 @@ title: migrations have rehearsed rollback paths
 
 # Requirement: migrations have rehearsed rollback paths
 
-Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ Rollback instructions are present, but the rehearsal signal is stale.
 
 ### risk-001 Rollback guidance exists, but rehearsal evidence is stale.
 
-| Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- |
-| 4 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| ID | Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- | --- |
+| `QFIND-0001-004` | 4 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

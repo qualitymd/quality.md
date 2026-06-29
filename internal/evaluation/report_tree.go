@@ -186,6 +186,7 @@ type evaluationRenderedReport struct {
 type rankedFinding struct {
 	Rank        int
 	Total       int
+	ArtifactID  string
 	Key         string
 	Selector    string
 	FindingID   string
@@ -570,7 +571,7 @@ func reportRunLine(reportPath string, manifest *RunManifest) string {
 	if manifest == nil {
 		return ""
 	}
-	label := fmt.Sprintf("#%d", manifest.Number)
+	label := evaluationArtifactID(manifest.Number)
 	if reportPath != "report.md" {
 		label = reportLink(reportPath, "report.md", label)
 	}
@@ -908,14 +909,18 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
+			"ID",
 			"Rank",
 			"Impact",
 			"Confidence",
+			"Reference",
 		},
 		SummaryRow: []string{
+			md.Code(firstString(rec, "id")),
 			fmt.Sprintf("%d", item.Rank),
 			impactTitle(firstString(rec, "impact")),
 			confidenceTitle(firstString(rec, "confidence")),
+			md.Code(recommendationArtifactRef(artifacts.Manifest, firstString(rec, "id"))),
 		},
 		JumpLinks: []reportJumpLink{
 			{Label: "Description", Anchor: "#description"},
@@ -942,6 +947,13 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 	writeEvaluationLegend(&b)
 	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
+}
+
+func recommendationArtifactRef(manifest *RunManifest, recommendationID string) string {
+	if manifest == nil || recommendationID == "" {
+		return ""
+	}
+	return "evaluation:" + evaluationArtifactID(manifest.Number) + "/recommendation:" + recommendationID
 }
 
 func writeRecommendationSection(b *strings.Builder, title, body string) {
@@ -1722,11 +1734,11 @@ func artifactFindingRefKey(v any) string {
 }
 
 func writeRankedFindingsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| Rank | Finding | Area | Factors | Type | Severity |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| Rank | ID | Finding | Area | Factors | Type | Severity |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
 	rows := artifacts.rankedFindings()
 	if len(rows) == 0 {
-		b.WriteString("| (no ranked findings) |  |  |  |  |  |\n\n")
+		b.WriteString("| (no ranked findings) |  |  |  |  |  |  |\n\n")
 		return
 	}
 	wrote := 0
@@ -1736,6 +1748,7 @@ func writeRankedFindingsTable(b *strings.Builder, spec *model.Spec, artifacts *e
 		}
 		b.WriteString(md.TableRow(
 			fmt.Sprintf("%d", row.Rank),
+			md.Code(row.ArtifactID),
 			rankedFindingLink(row, reportPath),
 			rankedFindingAreaLink(spec, row, reportPath),
 			rankedFindingFactorLinks(spec, row, reportPath),
@@ -1760,6 +1773,7 @@ func (a *evaluationArtifacts) rankedFindings() []rankedFinding {
 		rank, _ := rankField(item)
 		rows = append(rows, rankedFinding{
 			Rank:        rank,
+			ArtifactID:  firstString(item, "id"),
 			Key:         key,
 			Selector:    selector,
 			FindingID:   findingIDFromSelector(selector),
@@ -1874,11 +1888,11 @@ func requirementIDForAssessmentPath(path string) requirementID {
 }
 
 func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| Rank | Recommendation | Area / Factors | Reason |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
+	b.WriteString("| Rank | ID | Recommendation | Area / Factors | Reason |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
-		b.WriteString("| (no recommendations) |  |  |  |\n\n")
+		b.WriteString("| (no recommendations) |  |  |  |  |\n\n")
 		return
 	}
 	for i, item := range items {
@@ -1892,6 +1906,7 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 		path := recommendationReportPath(item.Rank, title)
 		b.WriteString(md.TableRow(
 			fmt.Sprintf("%d", item.Rank),
+			md.Code(firstString(item.Recommendation, "id")),
 			reportLink(reportPath, path, title),
 			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
 			firstString(item.Recommendation, "expectedValue"),
@@ -1901,11 +1916,11 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 }
 
 func writeRecommendationIndexTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string) {
-	b.WriteString("| Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| Rank | ID | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
-		b.WriteString("| (no recommendations) |  |  |  |  |  |  |\n\n")
+		b.WriteString("| (no recommendations) |  |  |  |  |  |  |  |\n\n")
 		return
 	}
 	for _, item := range items {
@@ -1916,6 +1931,7 @@ func writeRecommendationIndexTable(b *strings.Builder, spec *model.Spec, artifac
 		path := recommendationReportPath(item.Rank, title)
 		b.WriteString(md.TableRow(
 			fmt.Sprintf("%d", item.Rank),
+			md.Code(firstString(item.Recommendation, "id")),
 			reportLink(reportPath, path, title),
 			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
 			impactTitle(firstString(item.Recommendation, "impact")),
@@ -2264,13 +2280,13 @@ func writeFindingCoreDetails(b *strings.Builder, headingLevel int, id string, fi
 }
 
 func writeFindingRankingContext(b *strings.Builder, ranking rankedFinding, ranked bool) {
-	b.WriteString("| Advice Rank | Tier | Ranking Rationale |\n")
-	b.WriteString("| --- | --- | --- |\n")
+	b.WriteString("| ID | Advice Rank | Tier | Ranking Rationale |\n")
+	b.WriteString("| --- | --- | --- | --- |\n")
 	if !ranked {
-		b.WriteString("| (not ranked) | — | — |\n\n")
+		b.WriteString("| — | (not ranked) | — | — |\n\n")
 		return
 	}
-	b.WriteString(md.TableRow(fmt.Sprintf("%d / %d", ranking.Rank, ranking.Total), firstString(ranking.Ranking, "tier"), firstString(ranking.Ranking, "rationale")))
+	b.WriteString(md.TableRow(md.Code(ranking.ArtifactID), fmt.Sprintf("%d / %d", ranking.Rank, ranking.Total), firstString(ranking.Ranking, "tier"), firstString(ranking.Ranking, "rationale")))
 	b.WriteString("\n")
 }
 

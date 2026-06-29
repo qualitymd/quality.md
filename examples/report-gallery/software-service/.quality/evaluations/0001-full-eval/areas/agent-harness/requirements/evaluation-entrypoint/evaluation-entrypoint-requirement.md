@@ -5,7 +5,7 @@ title: agent guidance routes quality evaluation work
 
 # Requirement: agent guidance routes quality evaluation work
 
-Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ The agent-facing entry point is clear enough for quality evaluation work.
 
 ### strength-004 Agent guidance points to the quality model and generated report path.
 
-| Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- |
-| 7 / 7 | P3 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| ID | Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- | --- |
+| `QFIND-0001-007` | 7 / 7 | P3 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/qualitymd/quality.md/internal/model"
@@ -149,11 +150,15 @@ func SetData(runPath string, raw []byte, opts DataSetOptions) (*DataSetReceipt, 
 	if err != nil {
 		return nil, err
 	}
+	manifest, err := loadRunManifest(runPath)
+	if err != nil {
+		return nil, fmt.Errorf("loading %s: %w", runManifestPath, err)
+	}
 	spec, err := loadRunModel(runPath)
 	if err != nil {
 		return nil, fmt.Errorf("loading %s: %w", ModelSnapshotFile, err)
 	}
-	candidates, err := dataWriteCandidates(payloads, spec)
+	candidates, err := dataWriteCandidates(runPath, payloads, spec, manifest)
 	if err != nil {
 		return nil, err
 	}
@@ -326,10 +331,14 @@ func decodeDataPayloadBatch(raw []byte) ([]map[string]any, error) {
 	return payloads, nil
 }
 
-func dataWriteCandidates(payloads []map[string]any, spec *model.Spec) ([]dataWriteCandidate, error) {
+func dataWriteCandidates(runPath string, payloads []map[string]any, spec *model.Spec, manifest *RunManifest) ([]dataWriteCandidate, error) {
+	normalized, err := normalizeArtifactIDs(runPath, payloads, manifest)
+	if err != nil {
+		return nil, err
+	}
 	candidates := make([]dataWriteCandidate, 0, len(payloads))
 	var failures []string
-	for i, payload := range payloads {
+	for i, payload := range normalized {
 		candidate, err := dataWriteCandidateForPayload(i, payload, spec)
 		if err != nil {
 			failures = append(failures, fmt.Sprintf("payload[%d]: %s", i, err))
@@ -341,6 +350,217 @@ func dataWriteCandidates(payloads []map[string]any, spec *model.Spec) ([]dataWri
 		return nil, batchUsageError(failures)
 	}
 	return candidates, nil
+}
+
+func normalizeArtifactIDs(runPath string, payloads []map[string]any, manifest *RunManifest) ([]map[string]any, error) {
+	out := make([]map[string]any, 0, len(payloads))
+	for _, payload := range payloads {
+		cloned, err := cloneDataPayload(payload)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, cloned)
+	}
+	if manifest == nil {
+		return out, nil
+	}
+	if err := assignRecommendationArtifactIDs(runPath, out, manifest.Number); err != nil {
+		return nil, err
+	}
+	if err := assignFindingArtifactIDs(runPath, out, manifest.Number); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func cloneDataPayload(payload map[string]any) (map[string]any, error) {
+	raw, err := canonicalJSON(payload)
+	if err != nil {
+		return nil, err
+	}
+	return decodeDataPayload(raw)
+}
+
+func assignRecommendationArtifactIDs(runPath string, payloads []map[string]any, runNumber int) error {
+	used, maxSeq, err := existingRecommendationArtifactIDs(runPath, runNumber)
+	if err != nil {
+		return err
+	}
+	next := maxSeq + 1
+	for i, payload := range payloads {
+		if !payloadIsDataKind(payload, DataKindRecommendation) {
+			continue
+		}
+		id := firstString(payload, "id")
+		if id != "" {
+			if _, err := parseRunArtifactID(id, "QREC", runNumber); err != nil {
+				return usagef("payload[%d]: %v", i, err)
+			}
+			used[id] = struct{}{}
+			continue
+		}
+		id = nextRunArtifactID("QREC", runNumber, used, &next)
+		payload["id"] = id
+		used[id] = struct{}{}
+	}
+	return nil
+}
+
+func existingRecommendationArtifactIDs(runPath string, runNumber int) (map[string]struct{}, int, error) {
+	used := map[string]struct{}{}
+	maxSeq := 0
+	root := filepath.Join(runPath, "data", "advice", "recommendations")
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return used, maxSeq, nil
+	} else if err != nil {
+		return nil, 0, err
+	}
+	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || filepath.Base(path) != "recommendation-result.json" {
+			return nil
+		}
+		payload, err := readJSONMap(path)
+		if err != nil {
+			return nil
+		}
+		if id := firstString(payload, "id"); id != "" {
+			seq, err := parseRunArtifactID(id, "QREC", runNumber)
+			if err != nil {
+				return err
+			}
+			used[id] = struct{}{}
+			if seq > maxSeq {
+				maxSeq = seq
+			}
+		}
+		return nil
+	})
+	return used, maxSeq, err
+}
+
+func assignFindingArtifactIDs(runPath string, payloads []map[string]any, runNumber int) error {
+	existing, used, maxSeq, err := existingFindingArtifactIDs(runPath, runNumber)
+	if err != nil {
+		return err
+	}
+	next := maxSeq + 1
+	for i, payload := range payloads {
+		if !payloadIsDataKind(payload, DataKindFindingRanking) {
+			continue
+		}
+		if err := assignFindingRankingArtifactIDs(i, payload, existing, used, &next, runNumber); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func payloadIsDataKind(payload map[string]any, want DataKind) bool {
+	kind, err := payloadKind(payload)
+	return err == nil && kind == want
+}
+
+func assignFindingRankingArtifactIDs(index int, payload map[string]any, existing map[string]string, used map[string]struct{}, next *int, runNumber int) error {
+	for _, entry := range objectSlice(payload["orderedFindings"]) {
+		if supplied := firstString(entry, "id"); supplied != "" {
+			if _, err := parseRunArtifactID(supplied, "QFIND", runNumber); err != nil {
+				return usagef("payload[%d]: %v", index, err)
+			}
+		}
+		key := artifactFindingRefKey(entry["findingRef"])
+		if id := existing[key]; id != "" {
+			entry["id"] = id
+			used[id] = struct{}{}
+			continue
+		}
+		id := nextRunArtifactID("QFIND", runNumber, used, next)
+		entry["id"] = id
+		used[id] = struct{}{}
+	}
+	return nil
+}
+
+func existingFindingArtifactIDs(runPath string, runNumber int) (map[string]string, map[string]struct{}, int, error) {
+	byFindingRef := map[string]string{}
+	used := map[string]struct{}{}
+	maxSeq := 0
+	path := filepath.Join(runPath, "data", "advice", "finding-ranking-result.json")
+	payload, err := readJSONMap(path)
+	if os.IsNotExist(err) {
+		return byFindingRef, used, maxSeq, nil
+	}
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	for _, entry := range objectSlice(payload["orderedFindings"]) {
+		id := firstString(entry, "id")
+		if id == "" {
+			continue
+		}
+		seq, err := parseRunArtifactID(id, "QFIND", runNumber)
+		if err != nil {
+			return nil, nil, 0, err
+		}
+		if key := artifactFindingRefKey(entry["findingRef"]); key != "" {
+			byFindingRef[key] = id
+		}
+		used[id] = struct{}{}
+		if seq > maxSeq {
+			maxSeq = seq
+		}
+	}
+	return byFindingRef, used, maxSeq, nil
+}
+
+func nextRunArtifactID(prefix string, runNumber int, used map[string]struct{}, next *int) string {
+	for {
+		id := runArtifactID(prefix, runNumber, *next)
+		*next += 1
+		if _, exists := used[id]; !exists {
+			return id
+		}
+	}
+}
+
+func runArtifactID(prefix string, runNumber, sequence int) string {
+	return fmt.Sprintf("%s-%04d-%03d", prefix, runNumber, sequence)
+}
+
+func evaluationArtifactID(runNumber int) string {
+	return fmt.Sprintf("QEVAL-%04d", runNumber)
+}
+
+func parseRunArtifactID(id, prefix string, wantRun int) (int, error) {
+	run, seq, ok := parseArtifactID(id, prefix)
+	if !ok {
+		return 0, usagef("%s must match %s-<NNNN>-<NNN>", id, prefix)
+	}
+	if wantRun > 0 && run != wantRun {
+		return 0, usagef("%s run segment must match %s", id, evaluationArtifactID(wantRun))
+	}
+	return seq, nil
+}
+
+func parseArtifactID(id, prefix string) (int, int, bool) {
+	parts := strings.Split(id, "-")
+	if len(parts) != 3 || parts[0] != prefix || len(parts[1]) != 4 || len(parts[2]) != 3 {
+		return 0, 0, false
+	}
+	run, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return 0, 0, false
+	}
+	seq, err := strconv.Atoi(parts[2])
+	if err != nil || seq <= 0 {
+		return 0, 0, false
+	}
+	if runArtifactID(prefix, run, seq) != id {
+		return 0, 0, false
+	}
+	return run, seq, true
 }
 
 func dataWriteCandidateForPayload(index int, payload map[string]any, spec *model.Spec) (dataWriteCandidate, error) {
@@ -453,7 +673,7 @@ func effectiveDataPayloads(runPath string, candidates []dataWriteCandidate) (map
 }
 
 func validateEffectivePayloads(payloads map[string]map[string]any) []effectiveDataFailure {
-	var failures []effectiveDataFailure
+	failures := validateEffectiveArtifactIDs(payloads)
 	for path, payload := range payloads {
 		kind, err := payloadKind(payload)
 		if err != nil {
@@ -472,6 +692,62 @@ func validateEffectivePayloads(payloads map[string]map[string]any) []effectiveDa
 		case DataKindRecommendationRanking:
 			failures = append(failures, validateEffectiveRecommendationRanking(path, payload, payloads)...)
 		}
+	}
+	return failures
+}
+
+func validateEffectiveArtifactIDs(payloads map[string]map[string]any) []effectiveDataFailure {
+	manifest := objectMap(payloads[runManifestPath])
+	runNumber, ok := numericSchemaVersion(manifest["number"])
+	if !ok {
+		return nil
+	}
+	var failures []effectiveDataFailure
+	seenRecs := map[string]string{}
+	for path, payload := range payloads {
+		kind, err := payloadKind(payload)
+		if err != nil {
+			continue
+		}
+		switch kind {
+		case DataKindRecommendation:
+			failures = append(failures, validateEffectiveRecommendationArtifactID(path, kind, payload, runNumber, seenRecs)...)
+		case DataKindFindingRanking:
+			failures = append(failures, validateEffectiveFindingRankingArtifactIDs(path, kind, payload, runNumber)...)
+		}
+	}
+	return failures
+}
+
+func validateEffectiveRecommendationArtifactID(path string, kind DataKind, payload map[string]any, runNumber int, seen map[string]string) []effectiveDataFailure {
+	id := firstString(payload, "id")
+	if _, err := parseRunArtifactID(id, "QREC", runNumber); err != nil {
+		return []effectiveDataFailure{{Path: path, Kind: kind, Reason: err.Error()}}
+	}
+	var failures []effectiveDataFailure
+	if previous := seen[id]; previous != "" {
+		failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: "RecommendationResult.id duplicates " + previous})
+	}
+	seen[id] = path
+	if want := recommendationDataPath(id); filepath.ToSlash(path) != want {
+		failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: "RecommendationResult path must be " + want})
+	}
+	return failures
+}
+
+func validateEffectiveFindingRankingArtifactIDs(path string, kind DataKind, payload map[string]any, runNumber int) []effectiveDataFailure {
+	var failures []effectiveDataFailure
+	seen := map[string]struct{}{}
+	for i, entry := range objectSlice(payload["orderedFindings"]) {
+		id := firstString(entry, "id")
+		if _, err := parseRunArtifactID(id, "QFIND", runNumber); err != nil {
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: fmt.Sprintf("orderedFindings[%d].id: %s", i, err)})
+			continue
+		}
+		if _, ok := seen[id]; ok {
+			failures = append(failures, effectiveDataFailure{Path: path, Kind: kind, Reason: fmt.Sprintf("orderedFindings[%d].id duplicates %s", i, id)})
+		}
+		seen[id] = struct{}{}
 	}
 	return failures
 }
@@ -959,8 +1235,8 @@ func dataPathForPayload(kind DataKind, payload map[string]any) (string, error) {
 		return "data/advice/finding-ranking-result.json", nil
 	case DataKindRecommendation:
 		id := firstString(payload, "id")
-		if !safeModelName(id) {
-			return "", usagef("RecommendationResult.id must be a path-safe non-empty string")
+		if _, _, ok := parseArtifactID(id, "QREC"); !ok {
+			return "", usagef("RecommendationResult.id must match QREC-<NNNN>-<NNN>")
 		}
 		return recommendationDataPath(id), nil
 	case DataKindRecommendationRanking:
@@ -1502,18 +1778,21 @@ func findingRankingExample() map[string]any {
 		"subject":       map[string]any{"scopeRef": "run"},
 		"orderedFindings": []any{
 			map[string]any{
+				"id":         "QFIND-0001-001",
 				"rank":       1,
 				"findingRef": routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[gap-001]"),
 				"tier":       "P1",
 				"rationale":  "The gap most directly shapes the next quality-management move.",
 			},
 			map[string]any{
+				"id":         "QFIND-0001-002",
 				"rank":       2,
 				"findingRef": routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[strength-001]"),
 				"tier":       "P3",
 				"rationale":  "The strength is useful context but less urgent than the gap.",
 			},
 			map[string]any{
+				"id":         "QFIND-0001-003",
 				"rank":       3,
 				"findingRef": routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[strength-002]"),
 				"tier":       "P4",
@@ -1528,7 +1807,7 @@ func recommendationExample() map[string]any {
 	return map[string]any{
 		"schemaVersion": SchemaVersion,
 		"kind":          string(DataKindRecommendation),
-		"id":            "rec-001",
+		"id":            "QREC-0001-001",
 		"title":         "Review the next quality bar",
 		"description":   "Review whether the next evaluation should use sharper criteria.",
 		"background":    "The current evidence suggests the evaluated entity may already meet the present bar.",
@@ -1546,7 +1825,7 @@ func recommendationRankingExample() map[string]any {
 		"kind":          string(DataKindRecommendationRanking),
 		"orderedRecommendations": []any{map[string]any{
 			"rank":              1,
-			"recommendationRef": "rec-001",
+			"recommendationRef": "QREC-0001-001",
 			"impact":            "high",
 			"confidence":        "medium",
 			"rationale":         "This recommendation has the strongest expected quality-management impact.",
@@ -1555,7 +1834,7 @@ func recommendationRankingExample() map[string]any {
 			map[string]any{
 				"findingRef":         routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[gap-001]"),
 				"disposition":        "addressed_by_recommendation",
-				"recommendationRefs": []any{"rec-001"},
+				"recommendationRefs": []any{"QREC-0001-001"},
 			},
 			map[string]any{
 				"findingRef":  routineRef(DataKindRequirementAssessment, map[string]any{"requirementId": exampleRequirementID()}, "findings[strength-001]"),

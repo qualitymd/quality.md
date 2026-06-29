@@ -5,7 +5,7 @@ title: ledger mutations preserve balance invariants
 
 # Requirement: ledger mutations preserve balance invariants
 
-Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ The sampled persistence evidence supports balance preservation.
 
 ### strength-002 Ledger mutation checks preserve balance invariants in the sampled paths.
 
-| Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- |
-| 3 / 7 | P2 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| ID | Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- | --- |
+| `QFIND-0001-003` | 3 / 7 | P2 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

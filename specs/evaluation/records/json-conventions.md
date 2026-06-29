@@ -85,6 +85,26 @@ containing Finding, not the payload or run. References to candidate actions
 **MUST** qualify the containing Finding selector, for example
 `findings[gap-001].candidateActions[action-001]`.
 
+Evaluation artifact IDs are user-citable identifiers for handoff-ready
+Evaluation artifacts. They are distinct from Model references and from
+payload-local IDs:
+
+- Evaluation run IDs render as `QEVAL-<NNNN>`, where `<NNNN>` is the zero-padded
+  `RunManifest.number`.
+- Recommendation IDs render as `QREC-<NNNN>-<NNN>`.
+- Ranked Finding IDs render as `QFIND-<NNNN>-<NNN>`.
+
+`qualitymd evaluation data set` **MUST** assign missing
+`RecommendationResult.id` values and missing
+`FindingRankingResult.orderedFindings[].id` values before writing payloads. The
+run segment of every `QREC` and `QFIND` ID **MUST** match the owning
+`RunManifest.number`. Persisted payloads **MUST** include the assigned IDs.
+
+Typed artifact references used in reports and external handoff text **SHOULD**
+combine the run ID and artifact ID, for example
+`evaluation:QEVAL-0006/recommendation:QREC-0006-001`. These artifact references
+do not replace routine `*Ref` objects or canonical Model references.
+
 ## Optional And Repeated Fields
 
 Optional fields **SHOULD** be omitted when absent.

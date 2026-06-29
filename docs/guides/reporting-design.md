@@ -368,7 +368,7 @@ and confidence immediately visible.
 ```markdown
 # Requirement: mutation endpoints are idempotent under retry
 
-Run: [0001-full-eval](../../../../report.md) - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
+Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -392,15 +392,15 @@ recommendation prose.
 ```markdown
 # Recommendation: Tighten the idempotency replay contract
 
-Run: [0001-full-eval](../report.md) - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
+Run: [QEVAL-0001](../report.md) - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 
 Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/factors/correctness/correctness-factor.md)
 
-| Rank  | Impact | Confidence |
-| ----- | ------ | ---------- |
-| 1 / 3 | High   | High       |
+| ID            | Rank | Impact | Confidence | Reference                                          |
+| ------------- | ---- | ------ | ---------- | -------------------------------------------------- |
+| QREC-0001-001 | 1    | High   | High       | evaluation:QEVAL-0001/recommendation:QREC-0001-001 |
 ```
 
 ## Checklist

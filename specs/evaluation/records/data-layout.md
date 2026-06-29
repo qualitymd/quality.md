@@ -140,11 +140,12 @@ recommendations/<NNN>-<slug>.md
 
 The CLI **MUST** derive data paths from payload `kind` and structural model IDs.
 For `RecommendationResult`, the CLI **MUST** derive the data path from the
-recommendation `id`.
+CLI-assigned recommendation `id`.
 
 The CLI **MUST** derive report paths from report kind and structural model IDs.
 For recommendation reports, the CLI **MUST** derive the report path from
-recommendation ranking order and recommendation `id`/title.
+recommendation ranking order and the recommendation title slug, falling back to
+the CLI-assigned recommendation `id` only when needed.
 
 The CLI **MUST NOT** derive persisted paths from display titles, natural labels,
 or rendered human labels.

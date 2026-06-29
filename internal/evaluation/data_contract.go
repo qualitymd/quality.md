@@ -263,7 +263,7 @@ func init() {
 			Kind:        DataKindRecommendation,
 			Description: "Advice-phase quality-management recommendation.",
 			Object: topContract(DataKindRecommendation,
-				field("id", dataString, true),
+				field("id", dataString, false),
 				field("title", dataString, true),
 				field("description", dataString, true),
 				field("background", dataString, true),
@@ -328,6 +328,7 @@ func areaAnalysisResultContract() dataObjectContract {
 
 func findingRankingEntryContract() dataObjectContract {
 	return object(
+		field("id", dataString, false),
 		field("rank", dataNumber, true),
 		field("findingRef", dataObject, true, routineRefContract()),
 		field("tier", dataString, true, enum("P1", "P2", "P3", "P4")),
@@ -765,6 +766,8 @@ func validateDataMinItems(field dataField, itemCount int, path string) error {
 
 func validatePayloadSemantics(kind DataKind, payload map[string]any) error {
 	switch kind {
+	case DataKindFindingRanking:
+		return validateFindingRankingResultSemantics(payload)
 	case DataKindRequirementAssessment:
 		return validateRequirementAssessmentResultSemantics(payload)
 	case DataKindRecommendation:
@@ -790,6 +793,24 @@ func validateRequirementAssessmentResultSemantics(payload map[string]any) error 
 	return nil
 }
 
+func validateFindingRankingResultSemantics(payload map[string]any) error {
+	seen := map[string]struct{}{}
+	for i, entry := range objectSlice(payload["orderedFindings"]) {
+		id := firstString(entry, "id")
+		if id == "" {
+			return usagef("FindingRankingResult.orderedFindings[%d].id is required after artifact ID assignment", i)
+		}
+		if _, _, ok := parseArtifactID(id, "QFIND"); !ok {
+			return usagef("FindingRankingResult.orderedFindings[%d].id must match QFIND-<NNNN>-<NNN>", i)
+		}
+		if _, ok := seen[id]; ok {
+			return usagef("FindingRankingResult.orderedFindings[%d].id duplicates %s", i, id)
+		}
+		seen[id] = struct{}{}
+	}
+	return nil
+}
+
 func validateRecommendationResultSemantics(payload map[string]any) error {
 	for _, field := range []string{"effort", "roi", "ROI", "quickWin", "quick-win", "backlogPriority", "priority", "score"} {
 		if _, ok := payload[field]; ok {
@@ -797,8 +818,11 @@ func validateRecommendationResultSemantics(payload map[string]any) error {
 		}
 	}
 	id := firstString(payload, "id")
-	if !safeModelName(id) {
-		return usagef("RecommendationResult.id must be a path-safe non-empty string")
+	if id == "" {
+		return usagef("RecommendationResult.id is required after artifact ID assignment")
+	}
+	if _, _, ok := parseArtifactID(id, "QREC"); !ok {
+		return usagef("RecommendationResult.id must match QREC-<NNNN>-<NNN>")
 	}
 	return nil
 }

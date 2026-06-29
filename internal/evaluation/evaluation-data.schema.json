@@ -2220,6 +2220,9 @@
                 ],
                 "type": "object"
               },
+              "id": {
+                "type": "string"
+              },
               "rank": {
                 "type": "integer"
               },
@@ -2522,7 +2525,6 @@
       "required": [
         "schemaVersion",
         "kind",
-        "id",
         "title",
         "description",
         "background",

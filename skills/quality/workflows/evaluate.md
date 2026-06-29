@@ -237,6 +237,13 @@ Source content instructs the evaluator?
       backlog-priority, priority, or numeric score fields. A recommendation may
       be concrete work or a recommended review of whether to raise, clarify, or
       confirm the next quality bar.
+    - Let `qualitymd evaluation data set` assign public artifact IDs. Omit
+      `RecommendationResult.id` on new recommendations; after writing
+      recommendation payloads, read the assigned `QREC-<NNNN>-<NNN>` IDs from the
+      persisted payloads or write paths and use those IDs in
+      `RecommendationRankingResult`. Omit ranked finding IDs; the CLI assigns
+      `QFIND-<NNNN>-<NNN>` IDs in `FindingRankingResult` while `findingRef`
+      remains the exact Requirement Finding selector.
     - Account for every finding after recommendation generation and before
       ranking recommendations. Each finding is either
       `addressed_by_recommendation` with one or more recommendation refs, or
@@ -244,13 +251,15 @@ Source content instructs the evaluator?
     - Rank recommendations in `RecommendationRankingResult` by expected quality
       impact, quality-bar relevance, trace strength, confidence, and
       relationship to binding constraints.
-20. Write the routine payload batch as a JSON array. First run
-    `qualitymd evaluation data set <run> --dry-run < payloads.json` once for the
-    whole batch and fix any indexed diagnostics. Include `--model <model>` when
-    the run path is model-relative for a non-default selected model. Then persist
-    the same array with one `qualitymd evaluation data set <run> < payloads.json`
-    invocation. Do not loop one `data set` invocation per Requirement, Factor, or
-    Area.
+20. Write routine payload batches as JSON arrays. First run
+    `qualitymd evaluation data set <run> --dry-run < payloads.json` for each
+    batch and fix any indexed diagnostics. Include `--model <model>` when the
+    run path is model-relative for a non-default selected model. Then persist the
+    same array with `qualitymd evaluation data set <run> < payloads.json`. When
+    recommendation IDs are being assigned, write `RecommendationResult` payloads
+    before `RecommendationRankingResult` so ranking and coverage can reference
+    persisted `QREC` IDs. Do not loop one `data set` invocation per Requirement,
+    Factor, or Area.
 21. Run `qualitymd evaluation status <run>`, including `--model <model>` under
     the same selected-model condition. If it is not reportable, add the missing
     structured payloads to a correction batch and persist them through one

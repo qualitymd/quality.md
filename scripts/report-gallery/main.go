@@ -669,6 +669,7 @@ func advicePayloads() []map[string]any {
 			tier = map[string]string{"gap": "P1", "risk": "P1", "unknown": "P2"}[req.FindingType]
 		}
 		ordered = append(ordered, map[string]any{
+			"id":         fmt.Sprintf("QFIND-0001-%03d", i+1),
 			"rank":       i + 1,
 			"findingRef": findingRef(req),
 			"tier":       tier,
@@ -676,9 +677,9 @@ func advicePayloads() []map[string]any {
 		})
 	}
 	recs := []map[string]any{
-		recommendation("rec-001", "Tighten the idempotency replay contract", "Specify and test partial-write replay behavior for mutation endpoints.", "The highest-ranked synthetic gap leaves retry semantics below the target API correctness bar.", "Callers and agents can verify retry behavior without inferring undocumented recovery semantics.", "The API contract and retry tests describe duplicate, replayed, and partial-write idempotency outcomes.", "high", "medium", requirements[0]),
-		recommendation("rec-002", "Rehearse migration rollback after schema changes", "Run and record a rollback rehearsal for the latest ledger migrations.", "The synthetic runbook has rollback steps, but stale rehearsal evidence leaves recoverability below target.", "Release risk drops because rollback instructions are proven against current migrations.", "A current rollback rehearsal record exists for the latest migration set.", "high", "medium", requirements[3]),
-		recommendation("rec-003", "Assign a current recovery drill owner", "Resolve the conflicting recovery-owner records and name the owner in the calendar and playbook.", "Ambiguous ownership limits confidence in recovery practice.", "Incident preparation has a clear owner agents and maintainers can route to.", "The recovery calendar and playbook agree on the current owner and next drill date.", "medium", "low", requirements[5]),
+		recommendation("QREC-0001-001", "Tighten the idempotency replay contract", "Specify and test partial-write replay behavior for mutation endpoints.", "The highest-ranked synthetic gap leaves retry semantics below the target API correctness bar.", "Callers and agents can verify retry behavior without inferring undocumented recovery semantics.", "The API contract and retry tests describe duplicate, replayed, and partial-write idempotency outcomes.", "high", "medium", requirements[0]),
+		recommendation("QREC-0001-002", "Rehearse migration rollback after schema changes", "Run and record a rollback rehearsal for the latest ledger migrations.", "The synthetic runbook has rollback steps, but stale rehearsal evidence leaves recoverability below target.", "Release risk drops because rollback instructions are proven against current migrations.", "A current rollback rehearsal record exists for the latest migration set.", "high", "medium", requirements[3]),
+		recommendation("QREC-0001-003", "Assign a current recovery drill owner", "Resolve the conflicting recovery-owner records and name the owner in the calendar and playbook.", "Ambiguous ownership limits confidence in recovery practice.", "Incident preparation has a clear owner agents and maintainers can route to.", "The recovery calendar and playbook agree on the current owner and next drill date.", "medium", "low", requirements[5]),
 	}
 	var rankedRecs []any
 	for i, rec := range recs {
@@ -696,15 +697,15 @@ func advicePayloads() []map[string]any {
 		switch req.FindingID {
 		case "gap-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{"rec-001"}
+			entry["recommendationRefs"] = []any{"QREC-0001-001"}
 			entry["rationale"] = "The idempotency recommendation directly addresses this gap."
 		case "risk-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{"rec-002"}
+			entry["recommendationRefs"] = []any{"QREC-0001-002"}
 			entry["rationale"] = "The rollback rehearsal recommendation directly addresses this risk."
 		case "unknown-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{"rec-003"}
+			entry["recommendationRefs"] = []any{"QREC-0001-003"}
 			entry["rationale"] = "The ownership recommendation resolves the unknown."
 		default:
 			entry["disposition"] = "not_advice_driving"

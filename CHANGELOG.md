@@ -5,6 +5,13 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- Evaluation Advice now uses CLI-assigned, user-citable artifact IDs:
+  recommendations persist as `QREC-<run>-<seq>`, ranked findings persist as
+  `QFIND-<run>-<seq>`, and generated reports render those IDs in finding and
+  recommendation tables/detail pages.
+
 ## v0.25.5 - 2026-06-27
 
 ### CLI

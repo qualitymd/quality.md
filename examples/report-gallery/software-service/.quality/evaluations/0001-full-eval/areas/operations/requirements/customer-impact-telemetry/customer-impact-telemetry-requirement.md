@@ -5,7 +5,7 @@ title: health signals explain customer impact
 
 # Requirement: health signals explain customer impact
 
-Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ The sampled telemetry explains customer impact for core failure modes.
 
 ### strength-003 Health dashboards connect service errors to failed customer actions.
 
-| Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- |
-| 5 / 7 | P3 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| ID | Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- | --- |
+| `QFIND-0001-005` | 5 / 7 | P3 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

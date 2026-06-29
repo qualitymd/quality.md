@@ -1,5 +1,12 @@
 # /quality Skill Workflows Update Log
 
+## 2026-06-29
+
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0163 - Report Artifact IDs](../../../../changes/archive/0163-report-artifact-ids.md).
+  Evaluate now lets `qualitymd evaluation data set` assign public
+  recommendation and ranked finding artifact IDs before report generation.
+
 ## 2026-06-27
 
 - **Revision**: Updated the setup, evaluate, review, improve, and update

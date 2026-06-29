@@ -688,3 +688,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0162 — Report Source Data Section](0162-report-source-data-section.md) - moved
   generated report source-data pointers from YAML frontmatter into visible
   bottom `Source Data` sections (`Done`).
+- [0163 — Report Artifact IDs](0163-report-artifact-ids.md) - defines
+  handoff-ready Evaluation report artifact IDs for runs, recommendations, and
+  ranked findings (`Done`).

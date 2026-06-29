@@ -137,6 +137,12 @@ build. Finding coverage accounting **MUST** happen after recommendations are
 generated and before recommendation ranking closes. Recommendations **MUST** use
 the core user-facing fields `title`, `description`, `background`,
 `expectedValue`, `doneCriterion`, `impact`, `confidence`, and `traceRefs`.
+The skill **MUST** let `qualitymd evaluation data set` assign public
+recommendation IDs (`QREC-<NNNN>-<NNN>`) and ranked finding IDs
+(`QFIND-<NNNN>-<NNN>`). When recommendation IDs are omitted, the skill writes
+`RecommendationResult` payloads first, reads the assigned IDs from the persisted
+data paths or payloads, then authors `RecommendationRankingResult` references
+against those assigned IDs.
 They **MUST NOT** require effort, ROI, quick-win status, backlog priority, or a
 numeric score.
 

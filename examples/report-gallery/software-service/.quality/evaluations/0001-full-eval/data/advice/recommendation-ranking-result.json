@@ -11,7 +11,7 @@
       },
       "rationale": "The idempotency recommendation directly addresses this gap.",
       "recommendationRefs": [
-        "rec-001"
+        "QREC-0001-001"
       ]
     },
     {
@@ -47,7 +47,7 @@
       },
       "rationale": "The rollback rehearsal recommendation directly addresses this risk.",
       "recommendationRefs": [
-        "rec-002"
+        "QREC-0001-002"
       ]
     },
     {
@@ -72,7 +72,7 @@
       },
       "rationale": "The ownership recommendation resolves the unknown.",
       "recommendationRefs": [
-        "rec-003"
+        "QREC-0001-003"
       ]
     },
     {
@@ -94,21 +94,21 @@
       "impact": "high",
       "rank": 1,
       "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
-      "recommendationRef": "rec-001"
+      "recommendationRef": "QREC-0001-001"
     },
     {
       "confidence": "medium",
       "impact": "high",
       "rank": 2,
       "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
-      "recommendationRef": "rec-002"
+      "recommendationRef": "QREC-0001-002"
     },
     {
       "confidence": "low",
       "impact": "medium",
       "rank": 3,
       "rationale": "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
-      "recommendationRef": "rec-003"
+      "recommendationRef": "QREC-0001-003"
     }
   ],
   "rationale": "Synthetic recommendations focus on the highest-value gaps, risks, and unknowns.",

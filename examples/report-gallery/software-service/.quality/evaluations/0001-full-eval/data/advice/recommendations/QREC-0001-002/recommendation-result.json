@@ -4,7 +4,7 @@
   "description": "Run and record a rollback rehearsal for the latest ledger migrations.",
   "doneCriterion": "A current rollback rehearsal record exists for the latest migration set.",
   "expectedValue": "Release risk drops because rollback instructions are proven against current migrations.",
-  "id": "rec-002",
+  "id": "QREC-0001-002",
   "impact": "high",
   "kind": "RecommendationResult",
   "schemaVersion": 3,

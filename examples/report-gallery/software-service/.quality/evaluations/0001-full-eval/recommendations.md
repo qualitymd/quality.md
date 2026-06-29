@@ -5,7 +5,7 @@ title: Recommendations
 
 # Recommendations
 
-Run: [#1](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [QEVAL-0001](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
@@ -13,11 +13,11 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 | --- | --- | --- |
 | 3 ranked recommendations | High | 3 addressed / 4 not advice-driving |
 
-| Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
-| 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
-| 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
+| Rank | ID | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | `QREC-0001-001` | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
+| 2 | `QREC-0001-002` | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
+| 3 | `QREC-0001-003` | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |
 
 ## Coverage
 
@@ -33,10 +33,10 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
 - [data/run-manifest.json](data/run-manifest.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
-- [data/advice/recommendations/rec-001/recommendation-result.json](data/advice/recommendations/rec-001/recommendation-result.json)
+- [data/advice/recommendations/QREC-0001-001/recommendation-result.json](data/advice/recommendations/QREC-0001-001/recommendation-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
-- [data/advice/recommendations/rec-002/recommendation-result.json](data/advice/recommendations/rec-002/recommendation-result.json)
+- [data/advice/recommendations/QREC-0001-002/recommendation-result.json](data/advice/recommendations/QREC-0001-002/recommendation-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
-- [data/advice/recommendations/rec-003/recommendation-result.json](data/advice/recommendations/rec-003/recommendation-result.json)
+- [data/advice/recommendations/QREC-0001-003/recommendation-result.json](data/advice/recommendations/QREC-0001-003/recommendation-result.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
 
