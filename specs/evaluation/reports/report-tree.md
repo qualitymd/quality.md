@@ -120,13 +120,19 @@ manifests, or rendered display labels.
 > judgment and navigation. Report-local source-data pointers live in the visible
 > bottom section instead. — 0158, 0162, 0167, 0169
 
-## Source Data Section
+## Primary Source Data Section
 
-Every generated Markdown report **MUST** end with a `## Source Data` section.
+Every generated Markdown report **MUST** end with a `## Primary Source Data`
+section.
 
-The `Source Data` section **MUST** list the run-root-relative structured
-Evaluation payload paths used as source data for that specific Markdown report
-artifact.
+The `Primary Source Data` section **MUST** list the run-root-relative
+structured Evaluation payload paths used as primary source data for that
+specific Markdown report artifact. Primary source data is report-local: it
+includes payloads that establish the report's identity, scope, subject result,
+ranking, or recommendation content. It **MUST NOT** list descendant Area,
+Factor, Requirement, assessment, rating, finding, or recommendation payloads
+solely because the report links to, summarizes, or counts data from more
+granular reports.
 
 Each source-data list item **MUST** render as a Markdown link whose label is the
 run-root-relative payload path and whose target is relative to the report file
@@ -135,7 +141,7 @@ that contains the section.
 Reports that render run number, run ID, creation time, or requested scope from
 the run manifest **MUST** include `data/run-manifest.json`.
 
-The `Source Data` section **MUST NOT** include
+The `Primary Source Data` section **MUST NOT** include
 `data/evaluation-output-result.json` solely because that generated output index
 exists. A report **MAY** list `data/evaluation-output-result.json` only if that
 report is directly rendered from it.
@@ -145,7 +151,9 @@ report is directly rendered from it.
 > source files discoverable in plain text, while report-relative targets keep
 > nested reports navigable. `EvaluationOutputResult` indexes generated outputs
 > after report build; it is not source data for those reports unless a renderer
-> explicitly consumes it. — 0159, 0162
+> explicitly consumes it. Primary source data keeps high-level reports from
+> duplicating granular report provenance while preserving a stable bridge to the
+> structured inputs for the current report. — 0159, 0162, 0171
 
 ## Run Report
 
@@ -153,25 +161,23 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 `RunManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
-- `## Summary`, `## Key Details`, and `## Contents` sections before Top
-  Findings;
+- `## Summary`, `## Key Details`, `## Contents`, and `## Model Evaluation`
+  sections before Top Findings;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
 - link to the full findings index;
 - link to the full recommendation index;
 - summary from the scoped Area result;
-- Area / Factor Breakdown for the scoped Area;
-- requested and planned Evaluation scope;
-- root Area coverage status; and
-- `## Report Details` before `## Legend` and `## Source Data`.
+- Model Evaluation table for the scoped Area;
+- requested Evaluation scope in Key Details; and
+- `## Legend` before `## Primary Source Data`.
 
 The run-level `report.md` **MUST NOT** render the visible top `Run:` context
-line used by detail reports.
+line used by detail reports. It **MUST NOT** render the top `Report:` or
+`Area:` navigation lines used by detail reports.
 
 The run report `## Summary` section **MUST** render the scoped Area summary.
-When a ranked recommendation exists, the section **SHOULD** include a
-deterministic recommended-next-action sentence derived from the top-ranked
-recommendation.
+It **MUST NOT** render a `Recommended next action:` sentence.
 
 The run report `## Key Details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
@@ -180,21 +186,22 @@ order. The section **MUST NOT** include limits or incomplete-input counts.
 The run report `## Contents` section **MUST** link to visible sections rendered
 in that run report.
 
-The run report `## Report Details` section **MUST** render Run, Run ID,
-Created, and Subject rows.
+The run-level `report.md` **MUST NOT** render `## Scope`, `## Coverage`, or
+`## Report Details` sections.
 
 The run-level `report.md` **MUST NOT** render a `## Limits & Incomplete Inputs`
 section.
 
 The run-level `report.md` **MUST NOT** render a standalone `Rating Drivers`
 section or `Driver | Effect | Inputs` table. Rating drivers remain structured
-source data available through the payloads listed in the report's `Source Data`
-section.
+source data available through routine JSON payloads and granular report
+`Primary Source Data` sections.
 
 When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
-filtered Factors in visible scope details.
+filtered Factors in visible report content such as the H1 title.
 
-The run report **MUST** state when the root Area was not evaluated in the run.
+The run report **MUST** state when the root Area was not evaluated in the run,
+but it **MUST NOT** use a `## Coverage` section for that signal.
 
 The run report **MUST NOT** introduce report-only findings, ratings, evidence,
 limits, analysis, recommendations, candidate actions, or source claims.
@@ -291,10 +298,11 @@ a Quality Evaluation. The H1 title line and frontmatter `title` **MUST** use the
 same plain-text title.
 
 Every non-run report **MUST** render a run context line near the H1. Every
-report **MUST** render a report navigation line near the H1. The report
+non-run report **MUST** render a report navigation line near the H1. The report
 navigation line **MUST** link to the run overview `report.md`, full findings
 index `findings.md`, and full recommendation index `recommendations.md` when the
-current report is not that target.
+current report is not that target. The run-level `report.md` **MUST NOT** render
+that report navigation line.
 
 The `Area:` navigation trail **MUST** render after the H1. Its elements **MUST**
 link to generated Area reports from the root Area through the current Area
@@ -331,8 +339,8 @@ Factor report.
 Report tables **MUST** render the row subject as the generated human report link
 when that row has exactly one generated human report target. Generated Markdown
 report bodies **MUST NOT** duplicate report-level source-data links in `Data`
-columns or equivalent header source-data lines; the `Source Data` section owns
-the visible source-data manifest.
+columns or equivalent header source-data lines; the `Primary Source Data`
+section owns those pointers.
 
 > Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
 > links make report navigation land on the named thing readers naturally open.
@@ -357,8 +365,8 @@ Area reports **MUST** include:
 
 Area reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
-structured Area Analysis Result payloads listed in the report's `Source Data`
-section.
+structured Area Analysis Result payloads listed in the report's
+`Primary Source Data` section.
 
 ## Factor Reports
 
@@ -379,8 +387,8 @@ Factor reports **MUST** include:
 
 Factor reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
-structured Factor Analysis Result payloads listed in the report's `Source Data`
-section.
+structured Factor Analysis Result payloads listed in the report's
+`Primary Source Data` section.
 
 ## Requirement Reports
 
@@ -426,17 +434,18 @@ condition, criteria, basis, effect, and evidence. Requirement Finding details
 Area and Factor reports **MUST NOT** render `Findings` sections. Their
 human-facing roll-up explanation belongs in summary, ratings, confidence,
 limits, incomplete inputs, and breakdown tables. Structured `ratingDrivers`
-remain available through report `Source Data` links and routine JSON payloads,
-not standalone Markdown body sections.
+remain available through report `Primary Source Data` links and routine JSON
+payloads, not standalone Markdown body sections.
 
-Run and Area reports **MUST** render an `Area / Factor Breakdown` section before
-scope or Requirement detail sections. The breakdown table **MUST** use the
-columns `Area / Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
+Run reports **MUST** render a `Model Evaluation` section before Top Findings.
+Area reports **MUST** render an `Area / Factor Breakdown` section before
+Requirement detail sections. Both sections use the same breakdown table columns:
+`Area / Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
 `Recommendations`, in that order. The `Area / Factor` cell **MUST** render the
 row subject as the generated human report link when that report exists, and the
 table **MUST NOT** render a separate `Report` column.
 
-The run report's Area / Factor Breakdown **MUST** list the scoped Area as the
+The run report's Model Evaluation table **MUST** list the scoped Area as the
 first row, followed by in-scope descendant Areas and Factors in deterministic
 model order. An Area report's Area / Factor Breakdown **MUST** list the reported
 Area as the first row, followed by its evaluated descendant Areas and Factors in
@@ -482,7 +491,8 @@ text **MUST** render as
 `<Factor title list>` contains every planned factor filter as comma-separated
 Factor titles in `RunManifest.plannedScope.factorFilter` order. The run report
 title **MUST NOT** include `Evaluation Report`, `Area:`, raw Area references, or
-raw Factor references; stable scope references belong in the Scope section.
+raw Factor references; stable scope references belong in frontmatter and Key
+Details.
 
 > Rationale: `report.md` and the report `type` already identify the artifact as
 > a report. The H1 should name the quality-evaluation scope, while

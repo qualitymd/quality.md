@@ -29,14 +29,11 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](data/run-manifest.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
 - [data/advice/recommendations/001/recommendation-result.json](data/advice/recommendations/001/recommendation-result.json)
-- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
 - [data/advice/recommendations/002/recommendation-result.json](data/advice/recommendations/002/recommendation-result.json)
-- [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
 - [data/advice/recommendations/003/recommendation-result.json](data/advice/recommendations/003/recommendation-result.json)
-- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
 

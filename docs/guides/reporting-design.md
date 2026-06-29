@@ -57,7 +57,7 @@ Use visible Markdown for:
 
 - report title and kind;
 - run context;
-- scope and coverage;
+- decision-relevant scope;
 - navigation to sibling and parent reports;
 - rating, confidence, status, and summary;
 - findings and recommendations;
@@ -65,7 +65,8 @@ Use visible Markdown for:
 
 Use frontmatter only for non-judgmental document metadata that makes report
 identity, routing, and indexing cheap for agents or secondary tooling. Put
-source-data links in the visible `Source Data` section at the end of the report.
+source-data links in the visible `Primary Source Data` section at the end of the
+report.
 
 ### One-second orientation
 
@@ -82,26 +83,24 @@ Prefer short lines and compact tables over paragraphs in the header.
 
 ### Opening stack
 
-The top of a primary report should have one stable job per line or section:
+The top of a primary run report should have one stable job per section:
 
 1. H1: report kind and subject.
-2. Report navigation: overview, findings, recommendations, and important subject
-   reports.
-3. Subject context: Area, Factor, or Factors trail.
-4. `Summary`: bottom line, main reason, consequence, and best next move.
-5. `Key Details`: compact table of scan-critical facts.
-6. `Contents`: local links for the major sections in this report.
+2. `Summary`: bottom line, main reason, and consequence.
+3. `Key Details`: compact table of scan-critical facts.
+4. `Contents`: local links for the major sections in this report.
+5. `Model Evaluation`: the evaluated Model structure and ratings.
+6. Ranked findings and recommendations.
 
 Keep these roles distinct. Do not repeat the same fact in navigation, summary
 prose, key-details table, and contents. The opening area should read as one
 answer, not a pile of metadata.
 
-For primary reports, frontmatter owns routing metadata. Do not repeat
+For run reports, frontmatter owns routing metadata. Do not repeat
 frontmatter-only facts such as run ID, creation time, and stable subject
-reference in the visible opening area unless they materially help human
-judgment. Keep scope visible when it changes how the rating should be read.
-When visible traceability is useful but not opening-critical, add a lower
-`Report Details` section before `Source Data`.
+reference in the visible body unless they materially help human judgment. Keep
+scope visible when it changes how the rating should be read, usually in
+`Key Details` and the H1 title for factor-scoped runs.
 
 ### Deterministic projection
 
@@ -110,14 +109,14 @@ Evaluation data. Do not introduce report-only findings, ratings, evidence,
 limits, recommendations, or analysis in the Markdown body or in frontmatter.
 
 Structured data under `data/` remains the machine-readable source of truth.
-The report body may point to that data in its bottom `Source Data` section, but
-the report must not become a second result format.
+The report body may point to that data in its bottom `Primary Source Data`
+section, but the report must not become a second result format.
 
 Keep rating drivers in structured Evaluation payloads instead of rendering
 standalone `Rating Drivers` body sections. If a reader or agent needs the full
-rating trace, the report's `Source Data` section should point them to the
-relevant analysis payload; the visible body should foreground summaries,
-ratings, findings, recommendations, Area / Factor breakdowns, limits, and
+rating trace, the report's `Primary Source Data` section should point them to
+the relevant primary analysis payload; the visible body should foreground
+summaries, ratings, findings, recommendations, model evaluation, limits, and
 incomplete inputs.
 
 ### Report-specific headers
@@ -143,7 +142,7 @@ limits.
 
 ### Navigation at the top
 
-Every report should expose report-level navigation near the H1:
+Detail reports should expose report-level navigation near the H1:
 
 - `report.md` as the overview;
 - `findings.md` as the full findings index;
@@ -172,13 +171,18 @@ turning into a metadata dump and prevents the key-details table from trying to
 explain judgment.
 
 Use `## Contents` as the first-class local navigation section for primary long
-reports. Useful targets, when the corresponding sections are rendered:
+reports. Useful run-report targets, when the corresponding sections are
+rendered:
 
+- `Model Evaluation`;
 - `Top Findings`;
 - `Top Recommendations`;
+- `Legend`;
+- `Primary Source Data`;
+
+Useful detail-report targets, when the corresponding sections are rendered:
+
 - `Area / Factor Breakdown`;
-- `Scope`;
-- `Coverage`;
 - `Limits & Incomplete Inputs`;
 - `Findings Summary`;
 - `Finding Details`;
@@ -287,14 +291,14 @@ and the payloads it indexes instead of expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
 
-### Source Data at the bottom
+### Primary Source Data at the bottom
 
-Every generated report should end with a stable `## Source Data` section. The
-section lists the structured Evaluation payloads used to render that report
-artifact:
+Every generated report should end with a stable `## Primary Source Data`
+section. The section lists the report-local primary structured Evaluation
+payloads used to render that report artifact:
 
 ```markdown
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](data/run-manifest.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
@@ -313,54 +317,43 @@ example:
 ```
 
 Keep the list report-local. Do not list every payload in the run, and do not
-list `data/evaluation-output-result.json` merely because it exists: that file is
-a generated output index, not report source data unless a future renderer
-directly consumes it.
+list every payload used by more granular linked reports. Do not list
+`data/evaluation-output-result.json` merely because it exists: that file is a
+generated output index, not report source data unless a future renderer directly
+consumes it. For `report.md`, prefer primary run/report inputs such as the run
+manifest, scoped Area analysis, and advice ranking payloads; let linked detail
+reports own their own deeper source lists.
 
 ## Header patterns
 
 ### Run report
 
-The run report is the primary decision-ready report. Its header should make the
-result and next navigation obvious.
+The run report is the primary decision-ready report. Its opening should make the
+result, key facts, evaluated Model shape, and ranked evidence obvious without
+duplicating detail-report navigation or provenance sections.
 
 ```markdown
 # Quality Evaluation - LedgerLite Service
-
-Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md) - [Root Area](root-area.md)
-
-Area: [LedgerLite Service](root-area.md)
 
 ## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-Recommended next action: tighten the idempotency replay contract first because it is the highest-ranked finding and directly affects caller recovery semantics.
-
 ## Key Details
 
-| Overall Rating | Confidence    | Scope           | Top Findings | Top Recommendations |
-| -------------- | ------------- | --------------- | ------------ | ------------------- |
-| Minimum        | Medium / None | full evaluation | 7 ranked     | 3 ranked            |
+| Overall Rating | Confidence    | Scope           | Findings | Recommendations |
+| -------------- | ------------- | --------------- | -------- | --------------- |
+| Minimum        | Medium / None | full evaluation | 7 ranked | 3 ranked        |
 
 ## Contents
 
+- [Model Evaluation](#model-evaluation)
 - [Top Findings](#top-findings)
 - [Top Recommendations](#top-recommendations)
-- [Area / Factor Breakdown](#area--factor-breakdown)
-- [Scope](#scope)
-- [Coverage](#coverage)
-- [Report Details](#report-details)
+- [Legend](#legend)
+- [Primary Source Data](#primary-source-data)
 
-## Top Findings
-
-...
-
-## Top Recommendations
-
-...
-
-## Area / Factor Breakdown
+## Model Evaluation
 
 | Area / Factor                                                          | Overall Rating | Local Rating | Findings | Recommendations |
 | ---------------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
@@ -370,14 +363,18 @@ Recommended next action: tighten the idempotency replay contract first because i
 
 ...
 
-## Report Details
+## Top Findings
 
-| Field   | Value                           |
-| ------- | ------------------------------- |
-| Run     | `0001-full-eval`                |
-| Run ID  | `20260629T184200Z-0123456789ab` |
-| Created | `2026-06-29T18:42:00Z`          |
-| Subject | `area:root`                     |
+## Top Recommendations
+
+...
+
+## Primary Source Data
+
+- [data/run-manifest.json](data/run-manifest.json)
+- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
+- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
+- [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
 ```
 
 ### Index reports
@@ -494,21 +491,22 @@ Before changing report output, check:
 - The first visible Markdown content is one clear H1.
 - A reader can identify the subject and decision-relevant scope in the opening
   area.
-- Report-level navigation links to the overview, findings, and recommendations
+- Detail report navigation links to the overview, findings, and recommendations
   where those reports exist.
-- Hierarchical context is visible through Area, Factor, or Factors lines.
+- Detail report hierarchical context is visible through Area, Factor, or Factors
+  lines.
 - `report.md` uses `## Summary`, `## Key Details`, and `## Contents` as distinct
-  sections.
-- Frontmatter-only routing metadata is not repeated in the opening area unless
+  sections and puts `## Model Evaluation` before ranked lists.
+- Frontmatter-only routing metadata is not repeated in the visible body unless
   it materially helps human judgment.
-- Summary prose states judgment, reason, consequence, and next move without
-  becoming a metadata list.
+- Summary prose states judgment, reason, and consequence without becoming a
+  metadata list or a recommendation table.
 - Key details tables contain scan-critical facts, not prose, evidence, or
   recommendations.
 - Primary long reports have first-class contents links; short reports do not add
   noisy local navigation.
 - Frontmatter contains readable, non-judgmental document metadata only.
 - No generated report introduces claims that are absent from structured data.
-- The bottom `Source Data` section lists the structured payloads used to render
-  the report.
+- The bottom `Primary Source Data` section lists report-local primary payloads,
+  not every transitive payload used by linked detail reports.
 - Empty values render visibly and consistently.

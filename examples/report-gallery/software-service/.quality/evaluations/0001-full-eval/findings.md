@@ -28,7 +28,7 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](data/run-manifest.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)

@@ -79,7 +79,7 @@ Rating effect: supports target
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](../../../../data/run-manifest.json)
 - [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)

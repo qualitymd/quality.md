@@ -713,3 +713,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0170 — Report Visual Markers](0170-report-visual-markers.md) - refines
   generated report visual markers for recommendation impact and Area / Factor
   breakdown rows (`Done`).
+- [0171 — Run Report Simplification](0171-run-report-simplification.md) -
+  simplifies generated run-level Evaluation reports around Summary, Key
+  Details, Model Evaluation, ranked findings, ranked recommendations, and
+  Primary Source Data (`Done`).

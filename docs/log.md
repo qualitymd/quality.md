@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0171 - Run Report Simplification](../changes/archive/0171-run-report-simplification.md).
+  The guide now defines the simplified run-report opening, `Model Evaluation`
+  section, and report-local `Primary Source Data` principle.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0170 - Report Visual Markers](../changes/archive/0170-report-visual-markers.md).
   Report examples now use subtle recommendation impact shape markers and
   box-like Area / Factor Breakdown row markers.

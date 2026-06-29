@@ -44,10 +44,9 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](../data/run-manifest.json)
 - [data/advice/recommendations/003/recommendation-result.json](../data/advice/recommendations/003/recommendation-result.json)
 - [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
-- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
 

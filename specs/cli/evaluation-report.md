@@ -35,11 +35,12 @@ behavior.
 For Evaluation runs, `build` validates the structured payload graph under
 `data/`, assembles `data/evaluation-output-result.json`, and renders the
 deterministic Markdown report tree from completed structured outputs, including
-the generated report frontmatter, header, and source-data section contract defined by
-[Evaluation report tree](../evaluation/reports/report-tree.md). It renders
-recorded judgment; it **MUST NOT** reread evaluated source, infer or recompute
-ratings, invent findings, choose new recommendations by evaluator judgment, or
-read generated report frontmatter or Markdown body content as source data. It
+the generated report frontmatter, header, and primary source-data section
+contract defined by [Evaluation report tree](../evaluation/reports/report-tree.md).
+It renders recorded judgment; it **MUST NOT** reread evaluated source, infer or
+recompute ratings, invent findings, choose new recommendations by evaluator
+judgment, or read generated report frontmatter or Markdown body content as
+source data. It
 **MUST** fail before writing generated report files when the run is not
 renderable, including when required Evaluation data is missing, malformed,
 schema-incompatible, or structurally incomplete. The failure **MUST** identify
@@ -55,9 +56,10 @@ payload ordering. `report.md` **MUST** title the run entrypoint as
 `Quality Evaluation - <Area title>` and append a parenthesized comma-separated
 Factor title list when `plannedScope.factorFilter` is present. `report.md`
 **MUST** render non-judgmental run metadata in YAML frontmatter, omit the
-visible top run-context line, and open with `Summary`, `Key Details`, and
-`Contents` sections before Top Findings. `report.md` **MUST NOT** render a
-visible `Limits & Incomplete Inputs` section.
+visible top run-context and report navigation lines, and open with `Summary`,
+`Key Details`, `Contents`, and `Model Evaluation` sections before Top Findings.
+`report.md` **MUST NOT** render visible `Limits & Incomplete Inputs`, `Scope`,
+`Coverage`, or `Report Details` sections.
 
 `build` **MUST** render persisted Advice outputs into `report.md`,
 `findings.md`, `recommendations.md`, and recommendation detail reports under
@@ -70,10 +72,11 @@ frontmatter or Markdown body content in other generated reports.
 Generated Markdown report frontmatter **MUST** contain only non-judgmental
 report metadata allowed by the report-tree contract, and its `title` **MUST**
 match the report's visible H1 title text. Every generated Markdown report
-**MUST** end with a `Source Data` section listing the structured Evaluation
-payload files used as source data for the specific report artifact. The
-generated `data/evaluation-output-result.json` index **MUST NOT** be listed as
-report source data unless a report is directly rendered from it.
+**MUST** end with a `Primary Source Data` section listing the report-local
+primary structured Evaluation payload files used as source data for the specific
+report artifact. The generated `data/evaluation-output-result.json` index
+**MUST NOT** be listed as report source data unless a report is directly
+rendered from it.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

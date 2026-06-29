@@ -44,10 +44,9 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](../data/run-manifest.json)
 - [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)
 - [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
-- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
 

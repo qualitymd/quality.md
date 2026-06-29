@@ -43,13 +43,12 @@ Agent guidance exposes the quality evaluation entry point clearly.
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](../../data/run-manifest.json)
 - [data/areas/agent-harness/area-analysis-result.json](../../data/areas/agent-harness/area-analysis-result.json)
-- [data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json](../../data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
-- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
 - [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json](../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
 

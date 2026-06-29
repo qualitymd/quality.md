@@ -3,6 +3,38 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0171 - Run Report Simplification](archive/0171-run-report-simplification.md).
+  Generated run-level `report.md` now opens around Summary, Key Details, Model
+  Evaluation, ranked findings, ranked recommendations, Legend, and Primary
+  Source Data.
+
+- **In-Review**: Completed implementation for
+  [0171 - Run Report Simplification](archive/0171-run-report-simplification.md).
+  Renderer code, durable report specs, report design guidance, release notes,
+  tests, and report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0171 - Run Report Simplification](archive/0171-run-report-simplification.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated run report rendering, durable specs, report design guidance, tests,
+  release notes, and generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0171-run-report-simplification/design.md) for
+  [0171 - Run Report Simplification](archive/0171-run-report-simplification.md).
+  The design keeps detail report navigation intact while simplifying
+  `report.md`, moving the model table under `Model Evaluation`, and narrowing
+  source-data lists to report-local primary inputs.
+
+- **Draft**: Created
+  [0171 - Run Report Simplification](archive/0171-run-report-simplification.md)
+  with its
+  [functional spec](archive/0171-run-report-simplification/spec.md). The case
+  removes duplicated run-report opening chrome and provenance sections, renames
+  the run report model table to `Model Evaluation`, and introduces
+  `Primary Source Data`.
+
+- **Done**: Implemented and archived
   [0170 - Report Visual Markers](archive/0170-report-visual-markers.md).
   Generated Evaluation reports now use subtle shape markers for recommendation
   impact, restore impact to run-report Top Recommendations, and use box-like

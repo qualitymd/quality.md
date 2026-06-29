@@ -44,7 +44,7 @@ Operability follows its direct requirement signal.
 
 - `—` - not applicable or not recorded.
 
-## Source Data
+## Primary Source Data
 
 - [data/run-manifest.json](../../../../data/run-manifest.json)
 - [data/areas/api/factors/operability/factor-analysis-result.json](../../../../data/areas/api/factors/operability/factor-analysis-result.json)

@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0171 - Run Report Simplification](../changes/archive/0171-run-report-simplification.md).
+  Generated run-level `report.md` now removes redundant opening chrome and
+  provenance sections, moves the Area/Factor table up as `Model Evaluation`,
+  and uses report-local `Primary Source Data`.
+
+- **Revision**: Implemented durable spec changes for
   [0170 - Report Visual Markers](../changes/archive/0170-report-visual-markers.md).
   Generated Evaluation Markdown reports now use subtle shape markers for
   recommendation impact, restore impact to run-report Top Recommendations, and

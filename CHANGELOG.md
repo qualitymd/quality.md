@@ -5,8 +5,14 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.26.1 - 2026-06-29
+
 ### CLI
 
+- Generated Evaluation run reports now remove redundant post-title navigation,
+  recommended-next-action prose, Scope, Coverage, and Report Details sections;
+  move the Area/Factor table up as `Model Evaluation`; and use
+  `Primary Source Data` sections with report-local primary payloads.
 - Generated Evaluation reports now render recommendation impact with subtle
   shape markers (`◆ Very high`, `▲ High`, `● Medium`, `○ Low`), restore impact
   to `report.md` Top Recommendations, and use quieter Area / Factor Breakdown
@@ -17,6 +23,23 @@ QUALITY.md specification.
 - Generated Evaluation run reports now title `report.md` as
   `Quality Evaluation - <Area>` and include factor filters in parentheses, for
   example `Quality Evaluation - Public API (Reliability, Correctness)`.
+
+### /quality skill
+
+- `/quality` skill metadata now declares version `0.26.1` for the patched
+  `qualitymd` `0.26.x` line.
+
+### Compatibility / Migration
+
+- No QUALITY.md specification version change; the specification remains
+  `0.9 (Draft)`.
+- `/quality` skill version `0.26.1` requires the `qualitymd` CLI `0.26.x` line.
+
+Compatibility:
+
+- CLI: `v0.26.1`
+- QUALITY.md specification: `0.9 (Draft)`
+- /quality skill: `0.26.1`, requires `qualitymd >=0.26.0 <0.27.0`
 
 ## v0.26.0 - 2026-06-29
 

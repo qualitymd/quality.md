@@ -44,14 +44,14 @@ folder.
 
 Runtime evaluation artifacts are raw outputs in the evaluated repository.
 Generated Markdown reports carry identity frontmatter and visible bottom
-`Source Data` sections as defined by the
+`Primary Source Data` sections as defined by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Report
 frontmatter `title` matches the visible H1 document title; `type` carries the
-report artifact taxonomy. The `Source Data` section lists structured Evaluation
-payloads used to render the specific report artifact. The Evaluation run folder
-is not yet a full OKF bundle: it does not require generated `index.md`,
-`schema.md`, or `log.md` files, and generated reports do not require
-registration in `specs/schema.md`.
+report artifact taxonomy. The `Primary Source Data` section lists report-local
+primary structured Evaluation payloads used to render the specific report
+artifact. The Evaluation run folder is not yet a full OKF bundle: it does not
+require generated `index.md`, `schema.md`, or `log.md` files, and generated
+reports do not require registration in `specs/schema.md`.
 
 ## Report Generation
 
@@ -84,11 +84,12 @@ Area and Factor reports **MUST NOT** render `Findings` sections or standalone
 `Rating Drivers` sections. Their human-facing roll-up explanation belongs in
 summary, ratings, confidence, limits, incomplete inputs, and breakdown tables,
 while structured `ratingDrivers` remain available through the payloads listed in
-the report's `Source Data` section.
+the report's `Primary Source Data` section.
 
-Run and Area reports **MUST** render the Area / Factor Breakdown required by the
-[Evaluation report tree](../../evaluation/reports/report-tree.md). The breakdown
-is the human-facing Area / Factor structure and status surface; the
+Run reports **MUST** render the Model Evaluation section required by the
+[Evaluation report tree](../../evaluation/reports/report-tree.md). Area reports
+**MUST** render the Area / Factor Breakdown required by that report tree. These
+sections are the human-facing Area / Factor structure and status surface; the
 machine-readable generated-report manifest remains
 `data/evaluation-output-result.json`.
 
@@ -116,11 +117,13 @@ Every report **MUST** include the navigation trails required by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md).
 
 Every generated Markdown report **MUST** include the frontmatter, run context,
-report-level navigation, and report-specific header summary required by the
+report-level navigation, and report-specific header summary required for that
+report kind by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Every
-generated Markdown report **MUST** include the `Source Data` section required by
-that report tree. Report bodies **MUST NOT** duplicate report-level source-data
-links in header `Data` columns; the `Source Data` section owns those pointers.
+generated Markdown report **MUST** include the `Primary Source Data` section
+required by that report tree. Report bodies **MUST NOT** duplicate report-level
+source-data links in header `Data` columns; the `Primary Source Data` section
+owns those pointers.
 
 Area reports **MUST** link to local and descendant Area and Factor reports
 through the Area / Factor Breakdown, and to local Requirement reports through
