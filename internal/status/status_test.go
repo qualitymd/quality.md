@@ -90,6 +90,22 @@ areas:
 	if snapshot.Readiness != ReadinessReadyToEvaluate {
 		t.Fatalf("readiness = %q, want ready", snapshot.Readiness)
 	}
+	if snapshot.SchemaVersion != 2 {
+		t.Fatalf("schemaVersion = %d, want 2", snapshot.SchemaVersion)
+	}
+	if snapshot.Workspace == nil {
+		t.Fatal("workspace is nil")
+	}
+	if snapshot.Workspace.Root != "." ||
+		snapshot.Workspace.Model != "QUALITY.md" ||
+		snapshot.Workspace.Config != ".quality/config.yaml" ||
+		snapshot.Workspace.ConfigPresent ||
+		snapshot.Workspace.DataDir != ".quality" ||
+		snapshot.Workspace.EvaluationDir != ".quality/evaluations" ||
+		snapshot.Workspace.ChangelogDir != ".quality/changelog" ||
+		snapshot.Workspace.LogDir != ".quality/logs" {
+		t.Fatalf("workspace = %#v, want default relative workspace paths", snapshot.Workspace)
+	}
 	shape := snapshot.Model.Shape
 	if shape == nil {
 		t.Fatal("shape is nil")
@@ -227,6 +243,12 @@ factors:
 	if snapshot.Evaluations.Path != "tmp/evals" || snapshot.Evaluations.Runs != 1 {
 		t.Fatalf("evaluation history = %#v, want configured path with one run", snapshot.Evaluations)
 	}
+	if snapshot.Workspace == nil ||
+		snapshot.Workspace.Config != ".quality/custom-config.yaml" ||
+		!snapshot.Workspace.ConfigPresent ||
+		snapshot.Workspace.EvaluationDir != "tmp/evals" {
+		t.Fatalf("workspace = %#v, want configured workspace paths", snapshot.Workspace)
+	}
 }
 
 func TestSnapshotUsesModelRelativeWorkspaceForNestedModel(t *testing.T) {
@@ -269,6 +291,14 @@ factors:
 	}
 	if snapshot.Evaluations.Path != "tmp/evals" || snapshot.Evaluations.Runs != 1 {
 		t.Fatalf("evaluation history = %#v, want nested configured path with one run", snapshot.Evaluations)
+	}
+	if snapshot.Workspace == nil ||
+		snapshot.Workspace.Root != "packages/api" ||
+		snapshot.Workspace.Model != "QUALITY.md" ||
+		snapshot.Workspace.Config != ".quality/custom-config.yaml" ||
+		!snapshot.Workspace.ConfigPresent ||
+		snapshot.Workspace.EvaluationDir != "tmp/evals" {
+		t.Fatalf("workspace = %#v, want nested configured workspace paths", snapshot.Workspace)
 	}
 	if snapshot.Evaluations.Latest == nil || snapshot.Evaluations.Latest.Path != run.Path {
 		t.Fatalf("latest = %#v, want %s", snapshot.Evaluations.Latest, run.Path)

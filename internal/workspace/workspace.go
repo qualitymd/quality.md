@@ -1,4 +1,4 @@
-// Package workspace resolves the project-local paths used by qualitymd
+// Package workspace resolves the workspace-local paths used by qualitymd
 // tooling for one selected QUALITY.md file.
 package workspace
 

@@ -25,15 +25,35 @@ func TestStatusJSONEmitsSnapshot(t *testing.T) {
 	var result struct {
 		SchemaVersion int    `json:"schemaVersion"`
 		Readiness     string `json:"readiness"`
-		Model         struct {
+		Workspace     struct {
+			Root          string `json:"root"`
+			Model         string `json:"model"`
+			Config        string `json:"config"`
+			ConfigPresent bool   `json:"configPresent"`
+			DataDir       string `json:"dataDir"`
+			EvaluationDir string `json:"evaluationDir"`
+			ChangelogDir  string `json:"changelogDir"`
+			LogDir        string `json:"logDir"`
+		} `json:"workspace"`
+		Model struct {
 			Valid bool `json:"valid"`
 		} `json:"model"`
 	}
 	if err := json.Unmarshal(out.Bytes(), &result); err != nil {
 		t.Fatalf("json.Unmarshal() error = %v; stdout = %s", err, out.String())
 	}
-	if result.SchemaVersion != 1 || result.Readiness != "ready-to-evaluate" || !result.Model.Valid {
+	if result.SchemaVersion != 2 || result.Readiness != "ready-to-evaluate" || !result.Model.Valid {
 		t.Fatalf("result = %#v, want ready valid snapshot", result)
+	}
+	if result.Workspace.Root != "." ||
+		result.Workspace.Model != "QUALITY.md" ||
+		result.Workspace.Config != ".quality/config.yaml" ||
+		result.Workspace.ConfigPresent ||
+		result.Workspace.DataDir != ".quality" ||
+		result.Workspace.EvaluationDir != ".quality/evaluations" ||
+		result.Workspace.ChangelogDir != ".quality/changelog" ||
+		result.Workspace.LogDir != ".quality/logs" {
+		t.Fatalf("workspace = %#v, want default relative workspace paths", result.Workspace)
 	}
 }
 
@@ -49,7 +69,7 @@ func TestStatusHumanIsCompact(t *testing.T) {
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
-	for _, want := range []string{"Status", "QUALITY.md: present, valid", "Readiness: ready-to-evaluate"} {
+	for _, want := range []string{"Workspace Status", "Workspace: .", "Model file: QUALITY.md: present, valid", "Readiness: ready-to-evaluate"} {
 		if !strings.Contains(out.String(), want) {
 			t.Fatalf("stdout = %q, want %q", out.String(), want)
 		}

@@ -536,10 +536,11 @@ the implementation route after reading [`workflows/improve.md`](workflows/improv
 
 ## Workspace and Config
 
-Resolve a QUALITY.md workspace from the selected model file. The workspace
-includes the selected model path, workspace root directory containing the model,
-repository root, config file, quality data directory, evaluation directory,
-quality changelog directory, and workflow feedback-log directory.
+Resolve a QUALITY.md workspace from the selected model file. The workspace is
+the filesystem/tooling context for that selected model and includes the selected
+model path, workspace root directory containing the model, repository root,
+config file, quality data directory, evaluation directory, quality changelog
+directory, and workflow feedback-log directory.
 
 The quality data directory defaults to `.quality/` under the workspace root.
 Relative tooling paths are model-relative: resolve them from the directory

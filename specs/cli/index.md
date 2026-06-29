@@ -10,7 +10,7 @@ The format-tooling commands specified for this phase. See the parent
 - [qualitymd model](model.md) - query a model's structure and canonical reference IDs.
 - [qualitymd spec](spec.md) - emit the QUALITY.md format specification.
 - [qualitymd schema](schema.md) - emit the companion JSON Schema for QUALITY.md frontmatter.
-- [qualitymd status](status.md) - emit a deterministic project-state snapshot.
+- [qualitymd status](status.md) - emit a deterministic workspace status snapshot.
 - [qualitymd evaluation create](evaluation-create.md) - create a numbered
   evaluation run folder.
 - [qualitymd evaluation data](evaluation-data.md) - persist and inspect

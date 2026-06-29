@@ -45,7 +45,8 @@ evaluation, authoring, and maintenance.
 
 ## Scope
 
-In scope: read-only inspection of `qualitymd status --json`, the area
+In scope: read-only inspection of workspace status from
+`qualitymd status --json`, the area
 `QUALITY.md` file, and evaluation-history signals summarized by status JSON.
 The checklist covers model lifecycle state, project posture, stakeholder and
 needs coverage, agent and collaboration fit, Markdown body context and missing
@@ -130,7 +131,8 @@ The checklist **MUST** contain ten checks:
 9. requirement and assessment quality; and
 10. quality-loop maintenance signals.
 
-The model-lifecycle-state check **MUST** use `qualitymd status --json` to
+The model-lifecycle-state check **MUST** use workspace status from
+`qualitymd status --json` to
 identify whether the model is missing, invalid, valid with no history, valid
 with history, or needs evaluation reconciliation.
 

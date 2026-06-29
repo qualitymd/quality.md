@@ -71,7 +71,7 @@ Sequence the work this way:
 Sequence an evaluation this way:
 
 1. Validate the model before judgment.
-2. Inspect current project state from structured status output.
+2. Inspect current workspace status from structured status output.
 3. Create the evaluate feedback log after the run frame.
 4. Create the run through the CLI and record the run path in the feedback log.
 5. Query in-scope canonical IDs from the run's `model-snapshot.md`, never from
@@ -94,7 +94,7 @@ guard.
 
 Sequence recovery work this way:
 
-1. Inspect project state from structured status output.
+1. Inspect workspace status from structured status output.
 2. List evaluation runs through structured run-list output.
 3. Inspect run readiness through the CLI evaluation-status path.
 4. Record process ambiguity or recovery notes in the current evaluate feedback

@@ -2,6 +2,11 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated terminology and install docs for
+  [0172 - Workspace Status Contract](../changes/archive/0172-workspace-status-contract.md).
+  README, npm package README, install guidance, AGENTS.md, and `domain.md` now
+  distinguish project value, QUALITY.md workspaces, and repository containment.
+
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
   [0171 - Run Report Simplification](../changes/archive/0171-run-report-simplification.md).

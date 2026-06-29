@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Updated the durable
+  [top-10 checks](top-10-quality-md-checks-md.md) guide spec for
+  [0172 - Workspace Status Contract](../../../../changes/archive/0172-workspace-status-contract.md).
+  The model-lifecycle check now consumes `qualitymd status --json` as workspace
+  status rather than project state.
+
+- **Revision**: Updated the durable
   [factor authoring guide](authoring/factors.md) spec for
   [0166 - Setup Factor Proposal Checkpoint](../../../../changes/archive/0166-setup-factor-proposal-checkpoint.md).
   Factor guidance now names comprehensive, proportionate, sustainable coverage

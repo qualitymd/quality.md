@@ -536,12 +536,12 @@ contracts that every workflow composes.
 ### Read-only orientation
 
 Bare or ambiguous `/quality` requests are handled as read-only orientation, not
-as a public workflow. Orientation may inspect local QUALITY.md lifecycle state,
-report model-usefulness findings, recommend one next workflow, and offer
-concrete alternatives without modifying files, creating records, building
-reports, updating tooling, or rating evaluated source. Its recommended next
-actions are limited to public workflows: `setup`, `evaluate`, `review`,
-`improve`, and `update`.
+as a public workflow. Orientation may inspect local QUALITY.md workspace status
+and lifecycle state, report model-usefulness findings, recommend one next
+workflow, and offer concrete alternatives without modifying files, creating
+records, building reports, updating tooling, or rating evaluated source. Its
+recommended next actions are limited to public workflows: `setup`, `evaluate`,
+`review`, `improve`, and `update`.
 
 Orientation output **MUST** be status-first and **MUST** include the model file or
 target inspected, observed lifecycle or model state, evidence limits when

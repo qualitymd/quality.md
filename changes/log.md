@@ -3,6 +3,35 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0172 - Workspace Status Contract](archive/0172-workspace-status-contract.md).
+  `qualitymd status` now reports workspace status, emits JSON
+  `schemaVersion: 2` with relative workspace metadata, and aligns CLI specs,
+  docs, and skill guidance around project/workspace terminology.
+
+- **In-Review**: Completed implementation for
+  [0172 - Workspace Status Contract](archive/0172-workspace-status-contract.md).
+  Status JSON/help/code, durable CLI and skill specs, README/install guidance,
+  runtime skill guidance, tests, and release notes are aligned for review.
+
+- **In-Progress**: Advanced
+  [0172 - Workspace Status Contract](archive/0172-workspace-status-contract.md).
+  Functional spec and design are settled; implementation is beginning across
+  `qualitymd status` JSON/help/code, durable CLI and skill specs, README/install
+  guidance, runtime skill guidance, tests, and release notes.
+
+- **Design**: Added the
+  [design doc](archive/0172-workspace-status-contract/design.md) for
+  [0172 - Workspace Status Contract](archive/0172-workspace-status-contract.md). The
+  design exposes relative workspace metadata in status JSON v2 while preserving
+  existing status fields and project value-proposition language.
+
+- **Draft**: Created
+  [0172 - Workspace Status Contract](archive/0172-workspace-status-contract.md)
+  with its [functional spec](archive/0172-workspace-status-contract/spec.md). The case aligns
+  status workspace terminology across CLI help, JSON, specs, docs, and skill
+  guidance.
+
+- **Done**: Implemented and archived
   [0171 - Run Report Simplification](archive/0171-run-report-simplification.md).
   Generated run-level `report.md` now opens around Summary, Key Details, Model
   Evaluation, ranked findings, ranked recommendations, Legend, and Primary

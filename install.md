@@ -146,7 +146,7 @@ tailor the scaffold to the project.
 
 ## 5. Optional config
 
-Create `.quality/config.yaml` beside the selected `QUALITY.md` to move
+Create `.quality/config.yaml` in the selected `QUALITY.md` workspace to move
 evaluation run folders away from the default `.quality/evaluations/` parent. If
 your config file lives elsewhere, add root `config: <path>` frontmatter to the
 selected `QUALITY.md` to point qualitymd to it.
@@ -155,5 +155,5 @@ selected `QUALITY.md` to point qualitymd to it.
 evaluationDir: tmp/evals
 ```
 
-The path is relative to the selected `QUALITY.md` and must not escape the
-repository.
+The path is relative to the selected `QUALITY.md` workspace and must not escape
+the repository.

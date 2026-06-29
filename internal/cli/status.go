@@ -12,7 +12,7 @@ func newStatusCmd() *cobra.Command {
 	var jsonOutput bool
 	cmd := &cobra.Command{
 		Use:   "status [path]",
-		Short: "Show a QUALITY.md project-state snapshot",
+		Short: "Show a QUALITY.md workspace status snapshot",
 		Example: "  qualitymd status\n" +
 			"  qualitymd status docs/QUALITY.md\n" +
 			"  qualitymd status --json",
@@ -38,11 +38,11 @@ func newStatusCmd() *cobra.Command {
 			return renderNextActions(cmd.ErrOrStderr(), snapshot.NextActions)
 		},
 	}
-	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable status snapshot")
+	cmd.Flags().BoolVar(&jsonOutput, "json", false, "emit a machine-readable workspace status snapshot")
 	return cmd
 }
 
-func renderStatusHuman(cmd *cobra.Command, snapshot *status.ProjectSnapshot) error {
+func renderStatusHuman(cmd *cobra.Command, snapshot *status.WorkspaceSnapshot) error {
 	out := cmd.OutOrStdout()
 	model := "absent"
 	if snapshot.Model.Present {
@@ -52,7 +52,19 @@ func renderStatusHuman(cmd *cobra.Command, snapshot *status.ProjectSnapshot) err
 			model = fmt.Sprintf("present, invalid (%d error(s), %d warning(s))", snapshot.Model.Lint.Summary.Errors, snapshot.Model.Lint.Summary.Warnings)
 		}
 	}
-	if _, err := fmt.Fprintf(out, "Status\n- QUALITY.md: %s\n", model); err != nil {
+	modelPath := snapshot.Path
+	if snapshot.Workspace != nil {
+		modelPath = snapshot.Workspace.Model
+	}
+	if _, err := fmt.Fprintln(out, "Workspace Status"); err != nil {
+		return err
+	}
+	if snapshot.Workspace != nil {
+		if _, err := fmt.Fprintf(out, "- Workspace: %s\n", snapshot.Workspace.Root); err != nil {
+			return err
+		}
+	}
+	if _, err := fmt.Fprintf(out, "- Model file: %s: %s\n", modelPath, model); err != nil {
 		return err
 	}
 	if snapshot.Model.Shape != nil {

@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0172 - Workspace Status Contract. Runtime guidance now treats
+  `qualitymd status` as workspace status while preserving project wording for
+  modeled value and setup intent.
+
 - **Release prep**: Bumped the runtime skill metadata to `0.26.1` with
   `qualitymd >=0.26.0 <0.27.0` compatibility for the `v0.26.1` release.
 

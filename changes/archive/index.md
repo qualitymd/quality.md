@@ -717,3 +717,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   simplifies generated run-level Evaluation reports around Summary, Key
   Details, Model Evaluation, ranked findings, ranked recommendations, and
   Primary Source Data (`Done`).
+- [0172 — Workspace Status Contract](0172-workspace-status-contract.md) - aligns
+  `qualitymd status` around workspace status, adds status JSON v2 workspace
+  metadata, and preserves project wording for modeled value (`Done`).

@@ -5,8 +5,9 @@
 QUALITY.md is an open format for modeling a project's quality for the purpose
 of evaluation, team/agent alignment, and continuous improvement.
 
-Read [`README.md`](README.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md)
-before you continue for important project context and development guidance.
+Read [`README.md`](README.md), [`CONTRIBUTING.md`](CONTRIBUTING.md), and
+[`domain.md`](domain.md) before you continue for important project context,
+development guidance, and terminology.
 
 The QUALITY.md experience is largely agent and skill-first. Users do not
 typically use the CLI for most use cases. Instead, the CLI and edits to

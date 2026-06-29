@@ -5,6 +5,17 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### CLI
+
+- `qualitymd status` now reports workspace status instead of project state,
+  including a `schemaVersion: 2` JSON `workspace` block with relative workspace
+  paths for config, `.quality/`, evaluations, changelog, and workflow logs.
+
+### /quality skill
+
+- `/quality` runtime guidance now treats `qualitymd status` as workspace status
+  while preserving project language for modeled value and setup intent.
+
 ## v0.26.1 - 2026-06-29
 
 ### CLI

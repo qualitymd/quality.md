@@ -1,4 +1,4 @@
-// Package status assembles the read-only project-state snapshot emitted by
+// Package status assembles the read-only workspace status snapshot emitted by
 // `qualitymd status`.
 package status
 
@@ -17,7 +17,7 @@ import (
 )
 
 // SchemaVersion is the current status snapshot schema version.
-const SchemaVersion = 1
+const SchemaVersion = 2
 
 // Readiness identifies the current model/evaluation lifecycle state.
 type Readiness string
@@ -35,14 +35,29 @@ type Options struct {
 	Path string
 }
 
-// ProjectSnapshot is the JSON contract emitted by qualitymd status.
-type ProjectSnapshot struct {
+// WorkspaceSnapshot is the JSON contract emitted by qualitymd status.
+type WorkspaceSnapshot struct {
 	SchemaVersion int               `json:"schemaVersion"`
 	Path          string            `json:"path"`
+	Workspace     *WorkspaceStatus  `json:"workspace,omitempty"`
 	Readiness     Readiness         `json:"readiness"`
 	Model         ModelStatus       `json:"model"`
 	Evaluations   EvaluationHistory `json:"evaluations"`
 	NextActions   []receipt.Action  `json:"nextActions"`
+}
+
+// WorkspaceStatus summarizes the resolved workspace paths for the selected
+// model. All paths are repository-relative or workspace-relative, never
+// absolute host paths.
+type WorkspaceStatus struct {
+	Root          string `json:"root"`
+	Model         string `json:"model"`
+	Config        string `json:"config"`
+	ConfigPresent bool   `json:"configPresent"`
+	DataDir       string `json:"dataDir"`
+	EvaluationDir string `json:"evaluationDir"`
+	ChangelogDir  string `json:"changelogDir"`
+	LogDir        string `json:"logDir"`
 }
 
 // ModelStatus summarizes whether the model is present, valid, and evaluable.
@@ -125,13 +140,13 @@ type EvaluationRunSummary struct {
 	Problem       string `json:"problem,omitempty"`
 }
 
-// Snapshot assembles a deterministic project-state snapshot.
-func Snapshot(opts Options) (*ProjectSnapshot, error) {
+// Snapshot assembles a deterministic workspace status snapshot.
+func Snapshot(opts Options) (*WorkspaceSnapshot, error) {
 	path := opts.Path
 	if path == "" {
 		path = "QUALITY.md"
 	}
-	result := &ProjectSnapshot{
+	result := &WorkspaceSnapshot{
 		SchemaVersion: SchemaVersion,
 		Path:          path,
 		Evaluations: EvaluationHistory{
@@ -180,7 +195,15 @@ func Snapshot(opts Options) (*ProjectSnapshot, error) {
 	result.Model.Shape = &shape
 	result.Model.SourceCoverage = coverage
 
-	history, err := evaluationHistory(path, modelBytes)
+	ws, err := workspace.Resolve(workspace.Options{
+		Model: path,
+	})
+	if err != nil {
+		return nil, err
+	}
+	result.Workspace = workspaceStatus(ws)
+
+	history, err := evaluationHistory(ws, modelBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -188,6 +211,19 @@ func Snapshot(opts Options) (*ProjectSnapshot, error) {
 	result.Readiness = readiness(history)
 	result.NextActions = nextActions(path, history, result.Readiness)
 	return result, nil
+}
+
+func workspaceStatus(ws *workspace.Workspace) *WorkspaceStatus {
+	return &WorkspaceStatus{
+		Root:          ws.WorkspaceRoot.RepoRel,
+		Model:         ws.Model.Rel,
+		Config:        ws.Config.Rel,
+		ConfigPresent: ws.ConfigPresent,
+		DataDir:       ws.DataDir.Rel,
+		EvaluationDir: ws.Evaluations.Rel,
+		ChangelogDir:  ws.Log.Rel,
+		LogDir:        ws.FeedbackLog.Rel,
+	}
 }
 
 func invalidModelActions(path string, summary lint.Summary) []receipt.Action {
@@ -295,14 +331,8 @@ func appendString(path []string, value string) []string {
 	return out
 }
 
-func evaluationHistory(modelPath string, modelBytes []byte) (EvaluationHistory, error) {
+func evaluationHistory(ws *workspace.Workspace, modelBytes []byte) (EvaluationHistory, error) {
 	history := EvaluationHistory{Items: []EvaluationRunSummary{}}
-	ws, err := workspace.Resolve(workspace.Options{
-		Model: modelPath,
-	})
-	if err != nil {
-		return history, err
-	}
 	evalDirAbs := ws.Evaluations.Abs
 	evalDirRel := ws.Evaluations.Rel
 	history.Path = evalDirRel

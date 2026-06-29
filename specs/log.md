@@ -3,6 +3,11 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0172 - Workspace Status Contract](../changes/archive/0172-workspace-status-contract.md).
+  `qualitymd status` is now specified as a workspace status surface with
+  `schemaVersion: 2` JSON workspace metadata and aligned CLI/skill terminology.
+
+- **Revision**: Implemented durable spec changes for
   [0171 - Run Report Simplification](../changes/archive/0171-run-report-simplification.md).
   Generated run-level `report.md` now removes redundant opening chrome and
   provenance sections, moves the Area/Factor table up as `Model Evaluation`,

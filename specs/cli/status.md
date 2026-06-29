@@ -1,16 +1,16 @@
 ---
 type: Functional Specification
 title: qualitymd status
-description: Emit a deterministic project-state snapshot for a QUALITY.md file.
+description: Emit a deterministic workspace status snapshot for a QUALITY.md file.
 tags: [cli, command, status]
 timestamp: 2026-06-19T00:00:00Z
 ---
 
 # qualitymd status
 
-`qualitymd status [path]` emits a read-only snapshot of the current `QUALITY.md`
-project state: model validity, model shape, source coverage, evaluation history,
-staleness, readiness, and next actions.
+`qualitymd status [path]` emits a read-only snapshot of the selected
+`QUALITY.md` workspace status: workspace paths, model validity, model shape,
+source coverage, evaluation history, staleness, readiness, and next actions.
 
 It inherits the cross-cutting CLI contract from the [CLI spec](../cli.md). This
 file specifies only what is particular to `status`.
@@ -24,15 +24,17 @@ all capitals.
 ## Background / Motivation
 
 Agents and CI need one cheap, deterministic way to answer "what state is this
-project in?" without scraping `QUALITY.md`, evaluation reports, or run folders by
-hand. `status` is that routing surface. It reports mechanical state only; it does
-not judge quality, recompute ratings, or replace evaluation reports.
+selected QUALITY.md workspace in?" without scraping `QUALITY.md`, evaluation
+reports, or run folders by hand. `status` is that routing surface. It reports
+mechanical workspace state only; it does not judge project quality, recompute
+ratings, or replace evaluation reports.
 
 ## Scope
 
-Covered: `qualitymd status [path]`, `--json`, model validity and shape, per-
-Area source coverage, recognized Evaluation run history, stale and incomplete
-run counts, readiness, next actions, deterministic ordering, and exit behavior.
+Covered: `qualitymd status [path]`, `--json`, workspace metadata, model validity
+and shape, per-Area source coverage, recognized Evaluation run history, stale
+and incomplete run counts, readiness, next actions, deterministic ordering, and
+exit behavior.
 
 Deferred / non-goals: no model-quality judgment, no report rendering, no lint
 repair, no new lint rules, no report-body scraping, no schema change to the
@@ -98,6 +100,22 @@ uses the config/default portions of that precedence. Relative tooling paths are
 resolved from the selected model's workspace root and must remain inside the
 repository root found from that model.
 
+When the selected model is valid and workspace resolution succeeds, `status`
+**MUST** report workspace metadata under `--json` in a top-level `workspace`
+object. The object **MUST** include only stable, non-absolute path facts:
+
+- `root` — repository-relative workspace root path, or `.` when the workspace is
+  the repository root;
+- `model` — selected model path relative to the workspace root;
+- `config` — resolved config path relative to the workspace root;
+- `configPresent` — whether that config file exists;
+- `dataDir` — quality data directory relative to the workspace root;
+- `evaluationDir` — evaluation history directory relative to the workspace root;
+- `changelogDir` — quality changelog directory relative to the workspace root;
+- `logDir` — workflow feedback-log directory relative to the workspace root.
+
+The `workspace` object **MUST NOT** include host-specific absolute paths.
+
 Status output **MUST** report `.quality/evaluations` as the default evaluation
 history path when no resolved config file changes it.
 
@@ -151,14 +169,19 @@ for stale state.
 
 ## Output
 
-Human output **MUST** be compact and route-oriented. It **MUST** summarize model
+Human output **MUST** be compact and route-oriented. It **MUST** identify the
+result as workspace status and summarize workspace root when available, model
 presence and validity, model shape when available, evaluation history,
 readiness, and the recommended next action. It **MUST NOT** print every lint
-finding, source-coverage row, or run detail by default.
+finding, source-coverage row, workspace path, or run detail by default.
 
 Under `--json`, `status` **MUST** emit one JSON document on stdout with
-`schemaVersion: 1`, selected model path, readiness, model status, evaluation
-history, and `nextActions`.
+`schemaVersion: 2`, selected model path, workspace metadata when available,
+readiness, model status, evaluation history, and `nextActions`.
+
+The JSON document **MUST** keep the existing top-level `path`, `model`,
+`evaluations`, `readiness`, and `nextActions` fields. The `workspace` object is
+additional routing context, not a replacement for those fields.
 
 The JSON document **MUST NOT** include terminal styling, terminal control
 sequences, or implementation-only fields.
