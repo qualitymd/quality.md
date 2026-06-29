@@ -15,8 +15,8 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 | --- | --- | --- |
 | 3 ranked recommendations | ⬥ High | ✅ Addressed by Recommendation: 3 / ⬜ Not Advice Driving: 4 |
 
-Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
-Coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Finding coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.
 Empty: `—`.
 
 ## Contents

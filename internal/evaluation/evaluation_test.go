@@ -500,13 +500,13 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "## Top Findings")
 	assertContains(t, runReport, "| Rank | Finding | Area | Factors | Type | Severity |")
 	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
-	assertContains(t, runReport, "Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
-	assertContains(t, runReport, "Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.")
+	assertContains(t, runReport, "Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
+	assertContains(t, runReport, "Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.")
 	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total)")
 	assertContains(t, runReport, "## Top Recommendations")
 	assertContains(t, runReport, "| # | Recommendation | Area / Factors | Impact | Reason |")
 	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | The quality model stays aligned with the evaluated evidence and next bar. |")
-	assertContains(t, runReport, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
+	assertContains(t, runReport, "Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (1 total)")
 	assertNotContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
@@ -531,9 +531,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, recommendationIndex, "Jump to:")
 	assertContains(t, recommendationIndex, "| # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
 	assertContains(t, recommendationIndex, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
-	assertContains(t, recommendationIndex, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
+	assertContains(t, recommendationIndex, "Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, recommendationIndex, "Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.")
-	assertContains(t, recommendationIndex, "Coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.")
+	assertContains(t, recommendationIndex, "Finding coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.")
 
 	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
 	assertContains(t, recommendationReport, "type: Recommendation Report\n")
@@ -545,7 +545,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationReport, "| # | ID | Impact | Confidence | Reference |")
 	assertContains(t, recommendationReport, "| 1 | `qrec_nextbar1` | ⬥ High | 🟢 High | `evaluation:")
 	assertContains(t, recommendationReport, "/recommendation/qrec_nextbar1` |")
-	assertContains(t, recommendationReport, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
+	assertContains(t, recommendationReport, "Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
 	assertContains(t, recommendationReport, "Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.")
 	assertContains(t, recommendationReport, "## Contents\n\n- [Description](#description)\n- [Background](#background)\n- [Expected value](#expected-value)\n- [Done criterion](#done-criterion)\n- [Ranking rationale](#ranking-rationale)\n- [Trace](#trace)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, recommendationReport, "Jump to:")
@@ -612,7 +612,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, factorReport, "## Contents\n\n- [Summary](#summary)\n- [Requirements](#requirements)\n- [Sub-Factors](#sub-factors)\n- [Limits & Incomplete Inputs](#limits--incomplete-inputs)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, factorReport, "Jump to:")
 	assertContains(t, factorReport, "## Summary\n\nReliability work misses the bar once Sub-Factors roll up.")
-	assertContains(t, factorReport, "Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.")
+	assertContains(t, factorReport, "Analysis status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.")
 	assertNotContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence | Data |")
 	assertNotContains(t, factorReport, "## Findings")
 	assertNotContains(t, factorReport, "## Rating Drivers")
@@ -658,8 +658,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "## Contents\n\n- [Summary](#summary)\n- [Findings Summary](#findings-summary)\n- [Finding Details](#finding-details)\n- [Unknowns & Missing Evidence](#unknowns--missing-evidence)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, requirementReport, "Jump to:")
 	assertContains(t, requirementReport, "## Summary\n\nTests meet the bar.")
-	assertContains(t, requirementReport, "Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.")
-	assertContains(t, requirementReport, "Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
+	assertContains(t, requirementReport, "Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.")
+	assertContains(t, requirementReport, "Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Confidence | Data |")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
 	assertNotContains(t, requirementReport, "[requirement-assessment-result.json](")
@@ -681,8 +681,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, findingsReport, "Jump to:")
 	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
 	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
-	assertContains(t, findingsReport, "Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
-	assertContains(t, findingsReport, "Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.")
+	assertContains(t, findingsReport, "Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
+	assertContains(t, findingsReport, "Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.")
 	assertNotContains(t, findingsReport, "## Legend")
 
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
@@ -1734,7 +1734,7 @@ func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 func TestEvaluationEnumCatalogsHaveDisplayMetadata(t *testing.T) {
 	tests := []struct {
 		name   string
-		values []enumValue[string]
+		values enumCatalog[string]
 	}{
 		{"data kind", stringEnumValues(dataKindValues)},
 		{"run gap kind", stringEnumValues(runGapKindValues)},
@@ -1753,10 +1753,13 @@ func TestEvaluationEnumCatalogsHaveDisplayMetadata(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
+			if tc.values.Label == "" || tc.values.Description == "" {
+				t.Fatalf("%s catalog = %#v, want label and description", tc.name, tc.values)
+			}
 			seen := map[string]struct{}{}
-			for _, value := range tc.values {
-				if value.Value == "" || value.Label == "" || value.Marker == "" {
-					t.Fatalf("%s catalog value = %#v, want value, label, and marker", tc.name, value)
+			for _, value := range tc.values.Values {
+				if value.Value == "" || value.Label == "" || value.Marker == "" || value.Description == "" {
+					t.Fatalf("%s catalog value = %#v, want value, label, marker, and description", tc.name, value)
 				}
 				if _, ok := seen[value.Value]; ok {
 					t.Fatalf("%s catalog duplicates value %q", tc.name, value.Value)
@@ -1767,14 +1770,19 @@ func TestEvaluationEnumCatalogsHaveDisplayMetadata(t *testing.T) {
 	}
 }
 
-func stringEnumValues[T ~string](values []enumValue[T]) []enumValue[string] {
-	out := make([]enumValue[string], len(values))
-	for i, value := range values {
-		out[i] = enumValue[string]{
-			Value:  string(value.Value),
-			Label:  value.Label,
-			Marker: value.Marker,
-			Rank:   value.Rank,
+func stringEnumValues[T ~string](catalog enumCatalog[T]) enumCatalog[string] {
+	out := enumCatalog[string]{
+		Label:       catalog.Label,
+		Description: catalog.Description,
+		Values:      make([]enumValue[string], len(catalog.Values)),
+	}
+	for i, value := range catalog.Values {
+		out.Values[i] = enumValue[string]{
+			Value:       string(value.Value),
+			Label:       value.Label,
+			Marker:      value.Marker,
+			Description: value.Description,
+			Rank:        value.Rank,
 		}
 	}
 	return out

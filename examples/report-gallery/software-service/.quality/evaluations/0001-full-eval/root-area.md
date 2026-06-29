@@ -58,7 +58,7 @@ Rows: `▦` Area, `□` Factor.
 | --- | --- | --- | --- |
 | (no local Requirements) | — | — | — |
 
-Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
 Empty: `—`.
 
 ## Limits & Incomplete Inputs

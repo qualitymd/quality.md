@@ -163,62 +163,70 @@ schemas, and receipts **MUST** preserve the raw canonical enum value.
 
 Known fixed enum report displays are:
 
-| Vocabulary                   | Value                         | Display                          |
-| ---------------------------- | ----------------------------- | -------------------------------- |
-| Analysis status              | `analyzed`                    | `✅ Analyzed`                    |
-| Analysis status              | `empty`                       | `⬜ Empty`                       |
-| Analysis status              | `not_analyzed`                | `⚪ Not Analyzed`                |
-| Analysis status              | `blocked`                     | `⛔ Blocked`                     |
-| Assessment status            | `assessed`                    | `✅ Assessed`                    |
-| Assessment status            | `partially_assessed`          | `🟡 Partially Assessed`          |
-| Assessment status            | `not_assessed`                | `⚪ Not Assessed`                |
-| Assessment status            | `blocked`                     | `⛔ Blocked`                     |
-| Rating status                | `rated`                       | `✅ Rated`                       |
-| Rating status                | `not_rated`                   | `⚪ Not Rated`                   |
-| Rating status                | `blocked`                     | `⛔ Blocked`                     |
-| Confidence                   | `high`                        | `🟢 High`                        |
-| Confidence                   | `medium`                      | `🔵 Medium`                      |
-| Confidence                   | `low`                         | `🟡 Low`                         |
-| Confidence                   | `none`                        | `⚪ None`                        |
-| Finding type                 | `strength`                    | `✅ Strength`                    |
-| Finding type                 | `gap`                         | `⚠️ Gap`                          |
-| Finding type                 | `risk`                        | `⚠️ Risk`                         |
-| Finding type                 | `unknown`                     | `❓ Unknown`                     |
-| Finding type                 | `note`                        | `ℹ️ Note`                         |
-| Finding severity             | `critical`                    | `🔴 Critical`                    |
-| Finding severity             | `high`                        | `🔴 High`                        |
-| Finding severity             | `medium`                      | `🟡 Medium`                      |
-| Finding severity             | `low`                         | `🔵 Low`                         |
-| Finding basis status         | `verified`                    | `✅ Verified`                    |
-| Finding basis status         | `plausible`                   | `🟡 Plausible`                   |
-| Finding basis status         | `not_assessed`                | `⚪ Not Assessed`                |
-| Finding basis status         | `not_applicable`              | `⬜ Not Applicable`              |
-| Recommendation impact        | `very_high`                   | `⬥⬥ Very high`                   |
-| Recommendation impact        | `high`                        | `⬥ High`                         |
-| Recommendation impact        | `medium`                      | `● Medium`                       |
-| Recommendation impact        | `low`                         | `○ Low`                          |
-| Finding ranking tier         | `P1`                          | `🔴 P1 Highest`                  |
-| Finding ranking tier         | `P2`                          | `🟠 P2 High`                     |
-| Finding ranking tier         | `P3`                          | `🟡 P3 Medium`                   |
-| Finding ranking tier         | `P4`                          | `⚪ P4 Low`                      |
-| Finding coverage disposition | `addressed_by_recommendation` | `✅ Addressed by Recommendation` |
-| Finding coverage disposition | `not_advice_driving`          | `⬜ Not Advice Driving`          |
-| Report kind                  | `run`                         | `📄 Run`                         |
-| Report kind                  | `area`                        | `🗺️ Area`                         |
-| Report kind                  | `factor`                      | `🧩 Factor`                      |
-| Report kind                  | `requirement`                 | `📋 Requirement`                 |
-| Report kind                  | `findings`                    | `🔝 Findings`                    |
-| Report kind                  | `recommendations`             | `📚 Recommendations`             |
-| Report kind                  | `recommendation`              | `💡 Recommendation`              |
+| Vocabulary            | Value                         | Display                          |
+| --------------------- | ----------------------------- | -------------------------------- |
+| Analysis status       | `analyzed`                    | `✅ Analyzed`                    |
+| Analysis status       | `empty`                       | `⬜ Empty`                       |
+| Analysis status       | `not_analyzed`                | `⚪ Not Analyzed`                |
+| Analysis status       | `blocked`                     | `⛔ Blocked`                     |
+| Assessment status     | `assessed`                    | `✅ Assessed`                    |
+| Assessment status     | `partially_assessed`          | `🟡 Partially Assessed`          |
+| Assessment status     | `not_assessed`                | `⚪ Not Assessed`                |
+| Assessment status     | `blocked`                     | `⛔ Blocked`                     |
+| Rating status         | `rated`                       | `✅ Rated`                       |
+| Rating status         | `not_rated`                   | `⚪ Not Rated`                   |
+| Rating status         | `blocked`                     | `⛔ Blocked`                     |
+| Confidence            | `high`                        | `🟢 High`                        |
+| Confidence            | `medium`                      | `🔵 Medium`                      |
+| Confidence            | `low`                         | `🟡 Low`                         |
+| Confidence            | `none`                        | `⚪ None`                        |
+| Finding type          | `strength`                    | `✅ Strength`                    |
+| Finding type          | `gap`                         | `⚠️ Gap`                          |
+| Finding type          | `risk`                        | `⚠️ Risk`                         |
+| Finding type          | `unknown`                     | `❓ Unknown`                     |
+| Finding type          | `note`                        | `ℹ️ Note`                         |
+| Finding severity      | `critical`                    | `🔴 Critical`                    |
+| Finding severity      | `high`                        | `🔴 High`                        |
+| Finding severity      | `medium`                      | `🟡 Medium`                      |
+| Finding severity      | `low`                         | `🔵 Low`                         |
+| Finding basis         | `verified`                    | `✅ Verified`                    |
+| Finding basis         | `plausible`                   | `🟡 Plausible`                   |
+| Finding basis         | `not_assessed`                | `⚪ Not Assessed`                |
+| Finding basis         | `not_applicable`              | `⬜ Not Applicable`              |
+| Recommendation impact | `very_high`                   | `⬥⬥ Very high`                   |
+| Recommendation impact | `high`                        | `⬥ High`                         |
+| Recommendation impact | `medium`                      | `● Medium`                       |
+| Recommendation impact | `low`                         | `○ Low`                          |
+| Finding rank          | `P1`                          | `🔴 P1 Highest`                  |
+| Finding rank          | `P2`                          | `🟠 P2 High`                     |
+| Finding rank          | `P3`                          | `🟡 P3 Medium`                   |
+| Finding rank          | `P4`                          | `⚪ P4 Low`                      |
+| Finding coverage      | `addressed_by_recommendation` | `✅ Addressed by Recommendation` |
+| Finding coverage      | `not_advice_driving`          | `⬜ Not Advice Driving`          |
+| Report kind           | `run`                         | `📄 Run`                         |
+| Report kind           | `area`                        | `🗺️ Area`                         |
+| Report kind           | `factor`                      | `🧩 Factor`                      |
+| Report kind           | `requirement`                 | `📋 Requirement`                 |
+| Report kind           | `findings`                    | `🔝 Findings`                    |
+| Report kind           | `recommendations`             | `📚 Recommendations`             |
+| Report kind           | `recommendation`              | `💡 Recommendation`              |
 
 Finding severity ordering **MUST** use `critical`, `high`, `medium`, then
 `low`. Recommendation impact ordering **MUST** use `very_high`, `high`,
 `medium`, then `low`. Finding ranking tier ordering **MUST** use `P1`, `P2`,
 `P3`, then `P4`.
 
+Each fixed Evaluation enum catalog **MUST** carry a human key label and concise
+catalog description. Each fixed Evaluation enum value **MUST** carry a concise
+value description. Generated report local keys **MUST** render the catalog key
+label and marker-plus-label values only; they **MUST NOT** render catalog or
+value descriptions.
+
 > Rationale: fixed Evaluation values are strict machine data, but Markdown
-> reports are a human scanning surface. Keeping labels, markers, and ordering in
-> one contract prevents validation and report presentation from drifting. — 0173
+> reports are a human scanning surface. Keeping labels, markers, ordering, and
+> key labels in one contract prevents validation and report presentation from
+> drifting. Descriptions belong in catalog metadata for future glossary or help
+> surfaces, not in compact report keys. — 0173, 0179
 
 ## Local Keys
 
@@ -227,8 +235,9 @@ near their first use in each report artifact.
 
 Local keys **MUST** be notation-only lines. Each line **MUST** render one
 indicator family name, a colon, and the marker-plus-label values for that
-family. Local keys **MUST NOT** include prose definitions, rationale, or
-semantic explanations beyond the marker-plus-label set.
+family. Fixed Evaluation enum keys **MUST** use the catalog key label as the
+indicator family name. Local keys **MUST NOT** include prose definitions,
+rationale, or semantic explanations beyond the marker-plus-label set.
 
 When one table first introduces multiple indicator families, each family key
 **MUST** render on a distinct line.
@@ -239,6 +248,9 @@ Rating keys **MUST** render the Rating Level `title` values from the run's
 [Fixed Enum Display](#fixed-enum-display). Structural row keys **MUST** render
 `Rows:` followed by the Area and Factor row markers. Empty-cell keys **MUST**
 render `Empty:` followed by the em dash marker.
+
+Dense table headers **MAY** use compact labels such as `Type`, `Severity`,
+`Basis`, and `Impact` when the table context already scopes the enum family.
 
 Generated reports **MUST NOT** rely on local keys to make marker-only content
 acceptable. Semantic table cells **MUST** render text labels for ratings,

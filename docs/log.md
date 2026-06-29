@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0179 - Enum Catalog Metadata](../changes/archive/0179-enum-catalog-metadata.md).
+  The guide now says generated report local keys use fixed enum catalog family
+  labels such as `Finding type`, while dense table headers may stay compact.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0178 - Recommendation Number Columns](../changes/archive/0178-recommendation-number-columns.md).
   Recommendation report examples now avoid duplicate `Rank` and `#` ordinal
   columns.

@@ -3,6 +3,11 @@
 ## 2026-06-29
 
 - **Revision**: Updated the Evaluation report-tree contract for
+  [0179 - Enum Catalog Metadata](../../changes/archive/0179-enum-catalog-metadata.md).
+  Fixed Evaluation enum catalogs now own report local-key labels and description
+  metadata, while generated report keys remain notation-only.
+
+- **Revision**: Updated the Evaluation report-tree contract for
   [0178 - Recommendation Number Columns](../../changes/archive/0178-recommendation-number-columns.md).
   Recommendation list tables now render one visible recommendation number column
   (`#`) instead of duplicate `Rank` and `#` columns.

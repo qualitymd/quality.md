@@ -738,3 +738,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0178 — Recommendation Number Columns](0178-recommendation-number-columns.md) -
   removes duplicate `Rank`/`#` columns from recommendation list tables so `#` is
   the single visible recommendation number (`Done`).
+- [0179 — Enum Catalog Metadata](0179-enum-catalog-metadata.md) - added
+  type-level labels and descriptions plus value descriptions to Evaluation enum
+  catalogs, and generated report local keys now render catalog labels (`Done`).

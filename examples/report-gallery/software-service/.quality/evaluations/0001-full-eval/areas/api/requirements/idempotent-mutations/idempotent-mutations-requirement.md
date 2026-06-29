@@ -20,7 +20,7 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
 Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
@@ -42,10 +42,10 @@ The idempotency contract is present but incomplete for retry recovery.
 | --- | --- | --- | --- | --- | --- | --- |
 | `gap-001` | Mutation retry behavior is not fully specified for duplicate idempotency keys. | ⚠️ Gap | 🔴 High | 🔵 Medium | The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics. | ✅ Verified: The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior. |
 
-Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
-Basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
+Finding basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
 Empty: `—`.
 
 ## Finding Details
@@ -58,7 +58,7 @@ Empty: `—`.
 | --- | --- | --- |
 | 1 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-Tier: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
+Finding rank: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
 Empty: `—`.
 
 #### Condition

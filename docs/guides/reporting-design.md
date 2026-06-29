@@ -308,9 +308,11 @@ supplemental scanning aids; do not rely on color or icon shape alone.
 
 Use short local keys immediately after the first table or section that uses an
 indicator family in that artifact. Keys are notation-only: one family per line,
-with the family label followed by the marker-plus-label set. Do not add term
-definitions, rationale, or explanatory prose to generated keys. Do not collect
-keys in a bottom `Legend` section.
+with the family label followed by the marker-plus-label set. Fixed Evaluation
+enum keys use the catalog's family label, such as `Finding type`, while dense
+table headers may stay compact when the table context scopes the value. Do not
+add term definitions, rationale, or explanatory prose to generated keys. Do not
+collect keys in a bottom `Legend` section.
 
 Examples:
 
@@ -325,8 +327,8 @@ Empty: `—`.
 ```
 
 ```markdown
-Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 
 ## Contents
 
@@ -339,7 +341,7 @@ Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 ```
 
 ```markdown
-Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 ```
 
 For Rating Levels, render the configured Rating Scale from the run's model
@@ -428,14 +430,14 @@ Rows: `▦` Area, `□` Factor.
 
 ## Top Findings
 
-Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 
 **Full findings report:** [findings.md](findings.md) (7 total)
 
 ## Top Recommendations
 
-Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 
@@ -465,7 +467,7 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 | ----------------- | ---------------- |
 | 7 ranked findings | High             |
 
-Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 ```
 
 ### Area reports
@@ -531,7 +533,7 @@ Factor: [Correctness](correctness-factor.md)
 | Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium |
 
 Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
+Analysis status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
 ## Contents
@@ -569,7 +571,7 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | Minimum | Assessed   | Medium / Medium |
 
 Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
 ## Contents
@@ -600,7 +602,7 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 | - | ------------ | ------ | ---------- | -------------------------------------------------------------------- |
 | 1 | qrec_example | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
 
-Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
 ## Contents

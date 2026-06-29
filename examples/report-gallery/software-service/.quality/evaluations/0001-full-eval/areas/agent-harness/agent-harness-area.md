@@ -48,7 +48,7 @@ Rows: `▦` Area, `□` Factor.
 | --- | --- | --- | --- |
 | [agent guidance routes quality evaluation work](requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) | 🔵 Target | ✅ Assessed | [agent-accessibility](factors/agent-accessibility/agent-accessibility-factor.md) |
 
-Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
 Empty: `—`.
 
 ## Limits & Incomplete Inputs

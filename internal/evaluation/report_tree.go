@@ -461,7 +461,7 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 			highestFindingSeverityTitle(artifacts),
 		},
 		KeyLines: []string{
-			fixedEnumKeyLine("Severity", findingSeverityValues),
+			fixedEnumKeyLine(findingSeverityValues),
 			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
@@ -471,7 +471,7 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 	})
 	b.WriteString("## Ranked Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
-	writeLocalKeys(&b, fixedEnumKeyLine("Type", findingTypeValues))
+	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues))
 	writePrimarySourceDataSection(&b, "findings.md", data)
 	return b.String()
 }
@@ -497,8 +497,8 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			recommendationCoverageSummary(artifacts),
 		},
 		KeyLines: []string{
-			fixedEnumKeyLine("Impact", recommendationImpactValues),
-			fixedEnumKeyLine("Coverage", findingCoverageDispositionValues),
+			fixedEnumKeyLine(recommendationImpactValues),
+			fixedEnumKeyLine(findingCoverageDispositionValues),
 			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
@@ -509,7 +509,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 	})
 	index.WriteString("## Ranked Recommendations\n\n")
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
-	writeLocalKeys(&index, fixedEnumKeyLine("Confidence", confidenceValues))
+	writeLocalKeys(&index, fixedEnumKeyLine(confidenceValues))
 	writeAdviceCoverageSummary(&index, artifacts)
 	writePrimarySourceDataSection(&index, "recommendations.md", indexData)
 	reports = append(reports, evaluationRenderedReport{
@@ -769,12 +769,12 @@ func writeLocalKeys(b *strings.Builder, lines ...string) {
 	}
 }
 
-func fixedEnumKeyLine[T ~string](family string, values []enumValue[T]) string {
-	labels := enumKeyLabels(values)
+func fixedEnumKeyLine[T ~string](catalog enumCatalog[T]) string {
+	labels := enumKeyLabels(catalog)
 	if len(labels) == 0 {
 		return ""
 	}
-	return family + ": " + strings.Join(labels, ", ") + "."
+	return catalog.Label + ": " + strings.Join(labels, ", ") + "."
 }
 
 func ratingKeyLine(spec *model.Spec) string {
@@ -806,7 +806,7 @@ func emptyKeyLine() string {
 }
 
 func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
-	bestRank := len(findingSeverityValues)
+	bestRank := len(findingSeverityValues.Values)
 	best := ""
 	for _, row := range artifacts.rankedFindings() {
 		severity := firstString(row.Finding, "severity")
@@ -826,7 +826,7 @@ func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
 }
 
 func highestRecommendationImpactTitle(items []rankedRecommendation) string {
-	bestRank := len(recommendationImpactValues)
+	bestRank := len(recommendationImpactValues.Values)
 	best := ""
 	for _, item := range items {
 		impact := firstString(item.Recommendation, "impact")
@@ -934,8 +934,8 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 			md.Code(recommendationArtifactRef(artifacts.Manifest, id)),
 		},
 		KeyLines: []string{
-			fixedEnumKeyLine("Impact", recommendationImpactValues),
-			fixedEnumKeyLine("Confidence", confidenceValues),
+			fixedEnumKeyLine(recommendationImpactValues),
+			fixedEnumKeyLine(confidenceValues),
 			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
@@ -993,7 +993,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString(evaluationSummary(scopedArea))
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
-	writeLocalKeys(&b, ratingKeyLine(spec), fixedEnumKeyLine("Confidence", confidenceValues), emptyKeyLine())
+	writeLocalKeys(&b, ratingKeyLine(spec), fixedEnumKeyLine(confidenceValues), emptyKeyLine())
 	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
 		{Label: "Top Findings", Anchor: "#top-findings"},
@@ -1005,11 +1005,11 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeRunReportCoverageNote(&b, reports, reportPath)
 	b.WriteString("## Top Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
-	writeLocalKeys(&b, fixedEnumKeyLine("Type", findingTypeValues), fixedEnumKeyLine("Severity", findingSeverityValues))
+	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues))
 	writeFullListReportLink(&b, reportPath, "Full findings report", "findings.md", len(artifacts.rankedFindings()))
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
-	writeLocalKeys(&b, fixedEnumKeyLine("Impact", recommendationImpactValues))
+	writeLocalKeys(&b, fixedEnumKeyLine(recommendationImpactValues))
 	writeFullListReportLink(&b, reportPath, "Full recommendations report", "recommendations.md", len(artifacts.rankedRecommendations()))
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
@@ -1106,7 +1106,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		},
 		KeyLines: []string{
 			ratingKeyLine(spec),
-			fixedEnumKeyLine("Confidence", confidenceValues),
+			fixedEnumKeyLine(confidenceValues),
 			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
@@ -1133,7 +1133,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		}
 		b.WriteString("\n")
 	}
-	writeLocalKeys(&b, fixedEnumKeyLine("Assessment", assessmentStatusValues), emptyKeyLine())
+	writeLocalKeys(&b, fixedEnumKeyLine(assessmentStatusValues), emptyKeyLine())
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writePrimarySourceDataSection(&b, reportPath, data)
@@ -1169,8 +1169,8 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		},
 		KeyLines: []string{
 			ratingKeyLine(spec),
-			fixedEnumKeyLine("Status", analysisStatusValues),
-			fixedEnumKeyLine("Confidence", confidenceValues),
+			fixedEnumKeyLine(analysisStatusValues),
+			fixedEnumKeyLine(confidenceValues),
 			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
@@ -1194,7 +1194,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		}
 		b.WriteString("\n")
 	}
-	writeLocalKeys(&b, fixedEnumKeyLine("Assessment", assessmentStatusValues), emptyKeyLine())
+	writeLocalKeys(&b, fixedEnumKeyLine(assessmentStatusValues), emptyKeyLine())
 	b.WriteString("## Sub-Factors\n\n")
 	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
@@ -1240,8 +1240,8 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 		},
 		KeyLines: []string{
 			ratingKeyLine(spec),
-			fixedEnumKeyLine("Assessment", assessmentStatusValues),
-			fixedEnumKeyLine("Confidence", confidenceValues),
+			fixedEnumKeyLine(assessmentStatusValues),
+			fixedEnumKeyLine(confidenceValues),
 			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
@@ -1262,7 +1262,7 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	}
 	b.WriteString("\n\n## Findings Summary\n\n")
 	writeEvaluationFindingsTable(&b, req.Assessment)
-	writeLocalKeys(&b, fixedEnumKeyLine("Type", findingTypeValues), fixedEnumKeyLine("Severity", findingSeverityValues), fixedEnumKeyLine("Confidence", confidenceValues), fixedEnumKeyLine("Basis", findingBasisStatusValues), emptyKeyLine())
+	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues), fixedEnumKeyLine(confidenceValues), fixedEnumKeyLine(findingBasisStatusValues), emptyKeyLine())
 	b.WriteString("## Finding Details\n\n")
 	writeEvaluationFindingDetails(&b, artifacts, req)
 	b.WriteString("## Unknowns & Missing Evidence\n\n")
@@ -2321,12 +2321,12 @@ func writeFindingRankingContext(b *strings.Builder, ranking rankedFinding, ranke
 	b.WriteString("| --- | --- | --- |\n")
 	if !ranked {
 		b.WriteString("| (not ranked) | — | — |\n\n")
-		writeLocalKeys(b, fixedEnumKeyLine("Tier", findingRankingTierValues), emptyKeyLine())
+		writeLocalKeys(b, fixedEnumKeyLine(findingRankingTierValues), emptyKeyLine())
 		return
 	}
 	b.WriteString(md.TableRow(fmt.Sprintf("%d / %d", ranking.Rank, ranking.Total), findingRankingTierTitle(firstString(ranking.Ranking, "tier")), firstString(ranking.Ranking, "rationale")))
 	b.WriteString("\n")
-	writeLocalKeys(b, fixedEnumKeyLine("Tier", findingRankingTierValues), emptyKeyLine())
+	writeLocalKeys(b, fixedEnumKeyLine(findingRankingTierValues), emptyKeyLine())
 }
 
 func writeFindingSection(b *strings.Builder, headingLevel int, title, body string) {

@@ -3,6 +3,24 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0179 - Enum Catalog Metadata](archive/0179-enum-catalog-metadata.md).
+  Fixed Evaluation enum catalogs now carry type-level labels and descriptions
+  plus value descriptions, and generated report local keys render catalog labels.
+
+- **In-Review**: Completed implementation for
+  [0179 - Enum Catalog Metadata](archive/0179-enum-catalog-metadata.md).
+  Enum catalog metadata, generated report keys, durable report specs, docs,
+  tests, changelog, and report-gallery output are aligned for review.
+
+- **In-Progress**: Created
+  [0179 - Enum Catalog Metadata](archive/0179-enum-catalog-metadata.md) with its
+  [functional spec](archive/0179-enum-catalog-metadata/spec.md) and
+  [design doc](archive/0179-enum-catalog-metadata/design.md). Functional
+  requirements and design are settled; implementation is beginning across enum
+  catalog metadata, generated report keys, durable specs, docs, tests, and
+  generated examples.
+
+- **Done**: Implemented and archived
   [0178 - Recommendation Number Columns](archive/0178-recommendation-number-columns.md).
   Generated recommendation list tables now use `#` as the single visible
   recommendation number column and no longer duplicate it with `Rank`.
