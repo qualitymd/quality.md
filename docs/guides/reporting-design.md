@@ -312,23 +312,25 @@ with the family label followed by the marker-plus-label set. Fixed Evaluation
 enum keys use the catalog's family label, such as `Finding type`, while dense
 table headers may stay compact when the table context scopes the value. Do not
 add term definitions, rationale, or explanatory prose to generated keys. Do not
-collect keys in a bottom `Legend` section.
+collect keys in a bottom `Legend` section. Do not end local keys with terminal
+periods. Use an explicit `<br>` between adjacent local-key lines so Markdown
+renderers keep them visually separate.
 
 Examples:
 
 ```markdown
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 ```
 
 ```markdown
-Rows: `▦` Area, `□` Factor.
-Empty: `—`.
+Rows: ▦ Area, □ Factor<br>
+Empty: `—`
 ```
 
 ```markdown
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note<br>
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 
 ## Contents
 
@@ -341,7 +343,7 @@ Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 ```
 
 ```markdown
-Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
 ```
 
 For Rating Levels, render the configured Rating Scale from the run's model
@@ -405,9 +407,9 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | -------------- | ------------- | --------------- | -------- | --------------- |
 | Minimum        | Medium / None | full evaluation | 7 ranked | 3 ranked        |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
-Empty: `—`.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
+Empty: `—`
 
 ## Contents
 
@@ -424,20 +426,20 @@ Empty: `—`.
 | ↳ [▦ Public API](areas/api/api-area.md)                                | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 
-Rows: `▦` Area, `□` Factor.
+Rows: ▦ Area, □ Factor
 
 ...
 
 ## Top Findings
 
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note<br>
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 
 **Full findings report:** [findings.md](findings.md) (7 total)
 
 ## Top Recommendations
 
-Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 
@@ -467,7 +469,7 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 | ----------------- | ---------------- |
 | 7 ranked findings | High             |
 
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 ```
 
 ### Area reports
@@ -487,8 +489,8 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | -------------- | ------------ | --------------- |
 | Minimum        | Minimum      | Medium / Medium |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -510,7 +512,7 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
 
-Rows: `▦` Area, `□` Factor.
+Rows: ▦ Area, □ Factor
 ```
 
 ### Factor reports
@@ -532,9 +534,9 @@ Factor: [Correctness](correctness-factor.md)
 | -------------- | ------------ | ------------------- | --------------- |
 | Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Analysis status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Analysis status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -570,9 +572,9 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | ------- | ---------- | --------------- |
 | Minimum | Assessed   | Medium / Medium |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -602,8 +604,8 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 | - | ------------ | ------ | ---------- | -------------------------------------------------------------------- |
 | 1 | qrec_example | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
 
-Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -638,7 +640,8 @@ Before changing report output, check:
 - Generated report artifacts with multiple substantive top-level sections have
   `## Contents`; OKF `index.md` and other listing/index artifacts do not.
 - Local keys appear after first use, render one family per line, and stay
-  notation-only.
+  notation-only, use explicit `<br>` line breaks when adjacent, and do not end
+  with terminal periods.
 - Report cells keep text labels; markers and icons are supplemental and never
   the only meaning for semantic values.
 - Generated reports do not render bottom `Legend` sections.

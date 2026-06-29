@@ -19,10 +19,10 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🟡 Low / 🟡 Low |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
-Empty: `—`.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
+Empty: `—`
 
 ## Contents
 
@@ -42,11 +42,11 @@ Recovery ownership is visible but ambiguous across the sampled records.
 | --- | --- | --- | --- | --- | --- | --- |
 | `unknown-001` | The current owner for ledger recovery drills is ambiguous. | ❓ Unknown | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
 
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
-Finding basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable.
-Empty: `—`.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note<br>
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
+Finding basis: ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable<br>
+Empty: `—`
 
 ## Finding Details
 
@@ -58,8 +58,8 @@ Empty: `—`.
 | --- | --- | --- |
 | 6 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-Finding rank: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low.
-Empty: `—`.
+Finding rank: 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low<br>
+Empty: `—`
 
 #### Condition
 

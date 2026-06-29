@@ -3,6 +3,11 @@
 ## 2026-06-29
 
 - **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md). Generated report
+  local-key guidance now uses explicit `<br>` line breaks, no terminal periods,
+  and unformatted Area/Factor row glyphs.
+
+- **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
   [0179 - Enum Catalog Metadata](../changes/archive/0179-enum-catalog-metadata.md).
   The guide now says generated report local keys use fixed enum catalog family

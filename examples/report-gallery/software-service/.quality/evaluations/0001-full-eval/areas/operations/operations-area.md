@@ -17,9 +17,9 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
-Empty: `—`.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
+Empty: `—`
 
 ## Contents
 
@@ -41,7 +41,7 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 | ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-Rows: `▦` Area, `□` Factor.
+Rows: ▦ Area, □ Factor
 
 ## Requirements
 
@@ -50,8 +50,8 @@ Rows: `▦` Area, `□` Factor.
 | [health signals explain customer impact](requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed | [observability](factors/observability/observability-factor.md) |
 | [recovery drills have current owners](requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
 
-Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
-Empty: `—`.
+Assessment status: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked<br>
+Empty: `—`
 
 ## Limits & Incomplete Inputs
 

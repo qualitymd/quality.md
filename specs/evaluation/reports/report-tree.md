@@ -238,6 +238,10 @@ indicator family name, a colon, and the marker-plus-label values for that
 family. Fixed Evaluation enum keys **MUST** use the catalog key label as the
 indicator family name. Local keys **MUST NOT** include prose definitions,
 rationale, or semantic explanations beyond the marker-plus-label set.
+Local key lines **MUST NOT** end with terminal punctuation. When multiple local
+key lines appear together, each line before the final line **MUST** end with an
+explicit `<br>` HTML line break so rendered Markdown keeps the keys visually
+separate.
 
 When one table first introduces multiple indicator families, each family key
 **MUST** render on a distinct line.

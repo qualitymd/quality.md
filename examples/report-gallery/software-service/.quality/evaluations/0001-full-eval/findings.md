@@ -15,8 +15,8 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 | --- | --- |
 | 7 ranked findings | 🔴 High |
 
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
-Empty: `—`.
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low<br>
+Empty: `—`
 
 ## Contents
 
@@ -35,7 +35,7 @@ Empty: `—`.
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-unknown-001) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ❓ Unknown | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
 
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note
 
 ## Primary Source Data
 

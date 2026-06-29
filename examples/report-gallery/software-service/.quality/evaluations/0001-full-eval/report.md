@@ -20,9 +20,9 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | --- | --- | --- | --- | --- |
 | 🟡 Minimum | 🔵 Medium / ⚪ None | full evaluation | 7 ranked | 3 ranked |
 
-Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
-Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
-Empty: `—`.
+Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable<br>
+Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None<br>
+Empty: `—`
 
 ## Contents
 
@@ -48,7 +48,7 @@ Empty: `—`.
 | ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-Rows: `▦` Area, `□` Factor.
+Rows: ▦ Area, □ Factor
 
 ## Top Findings
 
@@ -62,8 +62,8 @@ Rows: `▦` Area, `□` Factor.
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-unknown-001) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ❓ Unknown | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
 
-Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
-Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+Finding type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note<br>
+Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 
 **Full findings report:** [findings.md](findings.md) (7 total)
 
@@ -75,7 +75,7 @@ Finding severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | Release risk drops because rollback instructions are proven against current migrations. |
 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | Incident preparation has a clear owner agents and maintainers can route to. |
 
-Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
+Recommendation impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 

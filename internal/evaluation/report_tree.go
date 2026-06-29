@@ -756,17 +756,25 @@ func writeContentsSection(b *strings.Builder, links []reportContentLink) {
 }
 
 func writeLocalKeys(b *strings.Builder, lines ...string) {
-	wrote := false
+	clean := make([]string, 0, len(lines))
 	for _, line := range lines {
 		if line == "" {
 			continue
 		}
-		b.WriteString(line + "\n")
-		wrote = true
+		clean = append(clean, line)
 	}
-	if wrote {
-		b.WriteString("\n")
+	if len(clean) == 0 {
+		return
 	}
+	for i, line := range clean {
+		b.WriteString(line)
+		if i < len(clean)-1 {
+			b.WriteString("<br>\n")
+		} else {
+			b.WriteString("\n")
+		}
+	}
+	b.WriteString("\n")
 }
 
 func fixedEnumKeyLine[T ~string](catalog enumCatalog[T]) string {
@@ -774,7 +782,7 @@ func fixedEnumKeyLine[T ~string](catalog enumCatalog[T]) string {
 	if len(labels) == 0 {
 		return ""
 	}
-	return catalog.Label + ": " + strings.Join(labels, ", ") + "."
+	return catalog.Label + ": " + strings.Join(labels, ", ")
 }
 
 func ratingKeyLine(spec *model.Spec) string {
@@ -794,15 +802,15 @@ func ratingKeyLine(spec *model.Spec) string {
 	if len(labels) == 0 {
 		return ""
 	}
-	return "Ratings: " + strings.Join(labels, ", ") + "."
+	return "Ratings: " + strings.Join(labels, ", ")
 }
 
 func rowKeyLine() string {
-	return "Rows: `▦` Area, `□` Factor."
+	return "Rows: ▦ Area, □ Factor"
 }
 
 func emptyKeyLine() string {
-	return "Empty: `—`."
+	return "Empty: `—`"
 }
 
 func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
