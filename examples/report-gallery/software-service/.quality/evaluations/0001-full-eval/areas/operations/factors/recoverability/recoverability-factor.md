@@ -26,12 +26,6 @@ Summary:
 
 Recoverability follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| The current owner for ledger recovery drills is ambiguous. | constrains target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:operations::recovery-drill-ownership"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

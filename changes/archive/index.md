@@ -678,3 +678,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   makes generated report frontmatter `data` the report-local source-data
   manifest and removes duplicate body `Data` columns from generated Evaluation
   reports (`Done`).
+- [0160 — Report Body Rating Drivers](0160-report-body-rating-drivers.md) - keeps
+  rating drivers in structured Evaluation data while removing standalone
+  Markdown driver sections from generated Evaluation reports (`Done`).

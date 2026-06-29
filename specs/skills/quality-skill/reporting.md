@@ -78,9 +78,11 @@ analysis, or recommendations.
 Reports **MUST NOT** read generated report frontmatter or Markdown body content
 from other generated reports as source data.
 
-Area and Factor reports **MUST NOT** render `Findings` sections. Their roll-up
-explanation belongs in `Rating Drivers`, rationale, confidence, limits, and
-incomplete inputs.
+Area and Factor reports **MUST NOT** render `Findings` sections or standalone
+`Rating Drivers` sections. Their human-facing roll-up explanation belongs in
+summary, ratings, confidence, limits, incomplete inputs, and subject breakdown
+tables, while structured `ratingDrivers` remain available through the payloads
+listed in report frontmatter.
 
 Reports **MUST** preserve secret-handling boundaries: cite locator and
 credential type only, never secret values or unsafe raw content.

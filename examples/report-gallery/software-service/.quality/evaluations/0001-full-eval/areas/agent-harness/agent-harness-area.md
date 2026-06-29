@@ -25,12 +25,6 @@ Summary:
 
 Agent guidance exposes the quality evaluation entry point clearly.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Agent Accessibility is driven by agent guidance routes quality evaluation work. | supports target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:agent-harness::agent-accessibility"}}] |
-
 ## Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |

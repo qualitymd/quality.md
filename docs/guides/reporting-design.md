@@ -90,6 +90,12 @@ Structured data under `data/` remains the machine-readable source of truth.
 Report frontmatter may point to that data, but must not become a second result
 format.
 
+Keep rating drivers in structured Evaluation payloads instead of rendering
+standalone `Rating Drivers` body sections. If a reader or agent needs the full
+rating trace, the report's `data` frontmatter should point them to the relevant
+analysis payload; the visible body should foreground summaries, ratings,
+findings, recommendations, subject breakdowns, limits, and incomplete inputs.
+
 ### Report-specific headers
 
 Use report-specific summary tables instead of a generic `Field | Value` table.

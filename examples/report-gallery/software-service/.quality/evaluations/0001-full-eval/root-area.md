@@ -26,15 +26,6 @@ Summary:
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| api area contributes to the full service roll-up. | contributes to minimum | [{"kind":"AreaAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"areaId":"area:api"}}] |
-| persistence area contributes to the full service roll-up. | contributes to minimum | [{"kind":"AreaAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"areaId":"area:persistence"}}] |
-| operations area contributes to the full service roll-up. | contributes to minimum | [{"kind":"AreaAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"areaId":"area:operations"}}] |
-| agent-harness area contributes to the full service roll-up. | contributes to minimum | [{"kind":"AreaAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"areaId":"area:agent-harness"}}] |
-
 ## Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |

@@ -26,12 +26,6 @@ Summary:
 
 Integrity follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Ledger mutation checks preserve balance invariants in the sampled paths. | supports target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:persistence::balance-invariants"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

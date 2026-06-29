@@ -28,13 +28,6 @@ Summary:
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Correctness is driven by mutation endpoints are idempotent under retry. | constrains target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:api::correctness"}}] |
-| Operability is driven by error responses are predictable for callers. | supports target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:api::operability"}}] |
-
 ## Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |

@@ -26,12 +26,6 @@ Summary:
 
 Operability follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Common caller error cases share a documented response shape. | supports target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:api::predictable-error-contracts"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

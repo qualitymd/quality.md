@@ -26,12 +26,6 @@ Summary:
 
 Correctness follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Mutation retry behavior is not fully specified for duplicate idempotency keys. | constrains target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:api::idempotent-mutations"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

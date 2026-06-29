@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0160 - Report Body Rating Drivers](../changes/archive/0160-report-body-rating-drivers.md).
+  Generated Evaluation Markdown reports no longer render standalone
+  rating-driver body sections, while structured `ratingDrivers` remain available
+  through source payloads and frontmatter `data` links.
+
+- **Revision**: Implemented durable spec changes for
   [0159 - Report source-data frontmatter](../changes/archive/0159-report-source-data-frontmatter.md).
   Generated Evaluation report frontmatter `data` now lists the structured
   source payloads used to render each report artifact, while visible report

@@ -3,6 +3,37 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0160 - Report Body Rating Drivers](archive/0160-report-body-rating-drivers.md).
+  Generated run, Area, and Factor reports no longer render standalone
+  rating-driver body sections; structured rating drivers remain in source
+  payloads; focused Go tests, full Go tests, and Markdown formatting pass.
+
+- **In-Review**: Completed implementation for
+  [0160 - Report Body Rating Drivers](archive/0160-report-body-rating-drivers.md).
+  Generated run, Area, and Factor reports no longer render standalone
+  rating-driver body sections; durable report specs, tests, and report-gallery
+  output are aligned.
+
+- **In-Progress**: Advanced
+  [0160 - Report Body Rating Drivers](archive/0160-report-body-rating-drivers.md).
+  Functional spec and design are settled; implementation is beginning across
+  durable report specs, generated report rendering, focused tests, and
+  report-gallery output.
+
+- **Design**: Added the
+  [design doc](archive/0160-report-body-rating-drivers/design.md) for
+  [0160 - Report Body Rating Drivers](archive/0160-report-body-rating-drivers.md).
+  The design removes only the Markdown projection of rating drivers while
+  preserving structured payload validation and source-data traceability.
+
+- **Draft**: Created
+  [0160 - Report Body Rating Drivers](archive/0160-report-body-rating-drivers.md)
+  with its
+  [functional spec](archive/0160-report-body-rating-drivers/spec.md). The case
+  keeps `ratingDrivers` in structured Evaluation data while removing standalone
+  Markdown rating-driver sections from generated report bodies.
+
+- **Done**: Implemented and archived
   [0159 - Report source-data frontmatter](archive/0159-report-source-data-frontmatter.md).
   Generated report frontmatter `data` now lists the structured source payloads
   used to render each report artifact, visible report bodies no longer duplicate

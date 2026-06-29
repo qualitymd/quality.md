@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Updated the Evaluation report-tree contract for
+  [0160 - Report Body Rating Drivers](../../changes/archive/0160-report-body-rating-drivers.md).
+  Run, Area, and Factor Markdown reports no longer render standalone
+  `Rating Drivers` sections or raw driver-input tables; the structured driver
+  trace remains in the analysis payloads listed by report frontmatter.
+
+- **Revision**: Updated the Evaluation report-tree contract for
   [0159 - Report source-data frontmatter](../../changes/archive/0159-report-source-data-frontmatter.md).
   Generated report frontmatter `data` now lists report-local structured source
   payloads, `data/evaluation-output-result.json` is no longer a blanket

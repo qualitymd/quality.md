@@ -26,12 +26,6 @@ Summary:
 
 Observability follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Health dashboards connect service errors to failed customer actions. | supports target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:operations::customer-impact-telemetry"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

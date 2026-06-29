@@ -28,13 +28,6 @@ Summary:
 
 Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Integrity is driven by ledger mutations preserve balance invariants. | supports target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:persistence::integrity"}}] |
-| Recoverability is driven by migrations have rehearsed rollback paths. | constrains target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:persistence::recoverability"}}] |
-
 ## Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |

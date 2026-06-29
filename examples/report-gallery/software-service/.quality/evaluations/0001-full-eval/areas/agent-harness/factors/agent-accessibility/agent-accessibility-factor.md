@@ -26,12 +26,6 @@ Summary:
 
 Agent Accessibility follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Agent guidance points to the quality model and generated report path. | supports target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:agent-harness::evaluation-entrypoint"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

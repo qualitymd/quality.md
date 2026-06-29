@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0160 - Report Body Rating Drivers](../changes/archive/0160-report-body-rating-drivers.md).
+  Generated report design guidance now keeps rating drivers in structured
+  Evaluation payloads instead of standalone visible body sections.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0159 - Report source-data frontmatter](../changes/archive/0159-report-source-data-frontmatter.md).
   Generated report design guidance now treats frontmatter `data` as the
   report-local source-data manifest and removes duplicate visible `Data` columns

@@ -26,12 +26,6 @@ Summary:
 
 Recoverability follows its direct requirement signal.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Rollback guidance exists, but rehearsal evidence is stale. | constrains target | [{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:persistence::migration-rollback"}}] |
-
 ## Requirements
 
 | Requirement | Rating | Status |

@@ -973,9 +973,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(scopedArea))
-	b.WriteString("\n\n## Rating Drivers\n\n")
-	writeEvaluationDriversTable(&b, spec, scopedArea)
-	b.WriteString("## Top Findings\n\n")
+	b.WriteString("\n\n## Top Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
 	b.WriteString("Full findings index: " + reportLink(reportPath, "findings.md", "findings.md") + "\n\n")
 	b.WriteString("## Top Recommendations\n\n")
@@ -1035,9 +1033,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
-	b.WriteString("\n\n## Rating Drivers\n\n")
-	writeEvaluationDriversTable(&b, spec, overall)
-	b.WriteString("## Factors\n\n")
+	b.WriteString("\n\n## Factors\n\n")
 	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	if factors := artifacts.rootFactorsForArea(area.ID); len(factors) == 0 {
@@ -1112,9 +1108,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
-	b.WriteString("\n\n## Rating Drivers\n\n")
-	writeEvaluationDriversTable(&b, spec, overall)
-	b.WriteString("## Requirements\n\n")
+	b.WriteString("\n\n## Requirements\n\n")
 	b.WriteString("| Requirement | Rating | Status |\n")
 	b.WriteString("| --- | --- | --- |\n")
 	if requirements := artifacts.requirementsForFactor(factor.ID); len(requirements) == 0 {
@@ -2126,24 +2120,6 @@ func evaluationRequirementFactorsLine(req *evaluationRequirementArtifacts, repor
 		links = "(none)"
 	}
 	return "Factors: " + links
-}
-
-func writeEvaluationDriversTable(b *strings.Builder, spec *model.Spec, scope map[string]any) {
-	b.WriteString("| Driver | Effect | Inputs |\n")
-	b.WriteString("| --- | --- | --- |\n")
-	drivers := objectSlice(scope["ratingDrivers"])
-	if len(drivers) == 0 {
-		b.WriteString("| (no rating drivers) |  |  |\n\n")
-		return
-	}
-	for _, driver := range drivers {
-		effect := firstString(driver, "effect", "impact")
-		if effect == "" {
-			effect = ratingTitle(spec, firstString(driver, "ratingLevelId"))
-		}
-		b.WriteString(md.TableRow(firstString(driver, "description", "summary", "requirementRatingDriver"), effect, compactJSON(driver["inputRefs"])))
-	}
-	b.WriteString("\n")
 }
 
 func writeEvaluationLimitsTable(b *strings.Builder, scopes ...map[string]any) {

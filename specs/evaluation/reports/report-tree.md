@@ -140,6 +140,10 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 - root Area coverage status; and
 - limits and incomplete inputs from the scoped Area result.
 
+The run-level `report.md` **MUST NOT** render a standalone `Rating Drivers`
+section or `Driver | Effect | Inputs` table. Rating drivers remain structured
+source data available through the payloads listed in report frontmatter.
+
 When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
 filtered Factors and **MUST** avoid presenting the result as a complete Area
 roll-up unless the structured analysis records an appropriate limit.
@@ -288,11 +292,14 @@ Area reports **MUST** include:
 - overall and local ratings;
 - overall and local confidence;
 - summary;
-- rating drivers;
 - local root Factors;
 - direct Child Areas;
 - local Requirements; and
 - limits and incomplete inputs.
+
+Area reports **MUST NOT** render standalone `Rating Drivers` sections or
+`Driver | Effect | Inputs` tables. Rating drivers remain available in the
+structured Area Analysis Result payloads listed in report frontmatter.
 
 ## Factor Reports
 
@@ -307,10 +314,13 @@ Factor reports **MUST** include:
 - local and local-and-descendant statuses;
 - confidence;
 - summary;
-- rating drivers;
 - direct Requirements;
 - direct Sub-Factors; and
 - limits and incomplete inputs.
+
+Factor reports **MUST NOT** render standalone `Rating Drivers` sections or
+`Driver | Effect | Inputs` tables. Rating drivers remain available in the
+structured Factor Analysis Result payloads listed in report frontmatter.
 
 ## Requirement Reports
 
@@ -353,9 +363,11 @@ Finding detail sections **MUST** render the Finding Core in this order:
 condition, criteria, basis, effect, and evidence. Requirement Finding details
 **MUST NOT** render `candidateActions`.
 
-Area and Factor reports **MUST NOT** render `Findings` sections. Their roll-up
-explanation belongs in `Rating Drivers`, rationale, confidence, limits, and
-incomplete inputs.
+Area and Factor reports **MUST NOT** render `Findings` sections. Their
+human-facing roll-up explanation belongs in summary, ratings, confidence,
+limits, incomplete inputs, and subject breakdown tables. Structured
+`ratingDrivers` remain available through report frontmatter `data` links and
+routine JSON payloads, not standalone Markdown body sections.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Run reports should summarize
@@ -380,11 +392,10 @@ the line when it would add noise.
 When a report table cell would otherwise render an empty scalar value, including
 one component of a paired Confidence or Status cell, the cell **MUST** render an
 em dash (`—`) instead of a blank segment. Empty whole-section placeholder rows
-such as `(no findings)`, `(no rating drivers)`, and `(none recorded)` **MUST**
-remain worded empty-state rows rather than being replaced by the cell marker.
-Generated report table cells **MUST** escape Markdown table separators and
-normalize multiline scalar content so persisted Evaluation text cannot alter the
-table column shape.
+such as `(no findings)` and `(none recorded)` **MUST** remain worded empty-state
+rows rather than being replaced by the cell marker. Generated report table cells
+**MUST** escape Markdown table separators and normalize multiline scalar content
+so persisted Evaluation text cannot alter the table column shape.
 
 Each generated report **MUST** include exactly one static legend at the foot of
 the report defining `—` as "not applicable or not recorded". The legend **MUST**
@@ -465,6 +476,5 @@ Ordering **MUST** be deterministic:
 - Areas by canonical Area identity, with the root Area first;
 - Factors by canonical Factor identity;
 - Requirements by canonical Requirement identity;
-- rating drivers in source result order;
 - findings in Requirement Assessment Result order; and
 - evidence in recorded order.

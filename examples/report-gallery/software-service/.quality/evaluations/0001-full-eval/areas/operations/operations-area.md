@@ -28,13 +28,6 @@ Summary:
 
 Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 
-## Rating Drivers
-
-| Driver | Effect | Inputs |
-| --- | --- | --- |
-| Observability is driven by health signals explain customer impact. | supports target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:operations::observability"}}] |
-| Recoverability is driven by recovery drills have current owners. | constrains target | [{"kind":"FactorAnalysisResult","selector":"localAndDescendantAnalysis","subject":{"factorId":"factor:operations::recoverability"}}] |
-
 ## Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |
