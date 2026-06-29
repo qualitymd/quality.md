@@ -5,7 +5,7 @@ title: mutation endpoints are idempotent under retry
 
 # Requirement: mutation endpoints are idempotent under retry
 
-Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [Run 0001](../../../../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ The idempotency contract is present but incomplete for retry recovery.
 
 ### gap-001 Mutation retry behavior is not fully specified for duplicate idempotency keys.
 
-| ID | Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- | --- |
-| `QFIND-0001-001` | 1 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- |
+| 1 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

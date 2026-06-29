@@ -2,7 +2,10 @@
 package evaluation
 
 import (
+	"crypto/rand"
 	"fmt"
+	"io"
+	"strings"
 	"time"
 
 	"github.com/qualitymd/quality.md/internal/receipt"
@@ -49,6 +52,7 @@ type PlannedRunScope struct {
 type RunManifest struct {
 	SchemaVersion  int             `json:"schemaVersion"`
 	Kind           DataKind        `json:"kind"`
+	ID             string          `json:"id"`
 	Number         int             `json:"number"`
 	CreatedAt      string          `json:"createdAt"`
 	Model          string          `json:"model"`
@@ -56,8 +60,32 @@ type RunManifest struct {
 	PlannedScope   PlannedRunScope `json:"plannedScope"`
 }
 
-func newRunCreatedAt() string {
-	return time.Now().UTC().Format(time.RFC3339)
+const (
+	runIDTailLength = 12
+	runIDAlphabet   = "0123456789abcdefghjkmnpqrstvwxyz"
+)
+
+func newRunIdentity() (string, string, error) {
+	createdAt := time.Now().UTC()
+	tail, err := randomRunIDTail(runIDTailLength)
+	if err != nil {
+		return "", "", err
+	}
+	id := createdAt.Format("20060102T150405Z") + "-" + tail
+	return id, createdAt.Format(time.RFC3339), nil
+}
+
+func randomRunIDTail(length int) (string, error) {
+	raw := make([]byte, length)
+	if _, err := io.ReadFull(rand.Reader, raw); err != nil {
+		return "", fmt.Errorf("generating run ID: %w", err)
+	}
+	var b strings.Builder
+	b.Grow(length)
+	for _, value := range raw {
+		b.WriteByte(runIDAlphabet[int(value)&31])
+	}
+	return b.String(), nil
 }
 
 // CreateRunReceipt is the JSON contract emitted after creating a run.

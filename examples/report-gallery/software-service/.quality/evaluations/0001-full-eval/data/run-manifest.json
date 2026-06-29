@@ -1,6 +1,7 @@
 {
   "schemaVersion": 3,
   "kind": "RunManifest",
+  "id": "20260629T120000Z-0123456789ab",
   "number": 1,
   "createdAt": "2026-06-29T12:00:00Z",
   "model": "QUALITY.md",

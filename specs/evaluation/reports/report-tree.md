@@ -125,8 +125,8 @@ Each source-data list item **MUST** render as a Markdown link whose label is the
 run-root-relative payload path and whose target is relative to the report file
 that contains the section.
 
-Reports that render run number, creation time, or requested scope from the run
-manifest **MUST** include `data/run-manifest.json`.
+Reports that render run number, run ID, creation time, or requested scope from
+the run manifest **MUST** include `data/run-manifest.json`.
 
 The `Source Data` section **MUST NOT** include
 `data/evaluation-output-result.json` solely because that generated output index
@@ -172,15 +172,15 @@ limits, analysis, recommendations, candidate actions, or source claims.
 
 The Top Findings table **MUST** render rows from
 `FindingRankingResult.orderedFindings` ordered by rank and capped at 10 rows. It
-**MUST** render the columns `Rank`, `ID`, `Finding`, `Area`, `Factors`, `Type`,
-and `Severity`, in that order. The `ID` cell **MUST** render the assigned
-`QFIND` artifact ID. The `Finding` cell **MUST** use the finding
+**MUST** render the columns `Rank`, `Finding`, `Area`, `Factors`, `Type`, and
+`Severity`, in that order. The `Finding` cell **MUST** use the finding
 `statement` as link text and link to the exact finding detail section in the
-Requirement report. The `Area` cell **MUST** link the declaring Area title to
-the Area report. The `Factors` cell **MUST** render comma-separated attached
-Factor title links, or `—` when no Factor link can be rendered. `Type` and
-`Severity` **MUST** render existing display labels, including their emoji, for
-known finding type and severity enum values.
+Requirement report. The table **MUST NOT** render a finding artifact-ID column.
+The `Area` cell **MUST** link the declaring Area title to the Area report. The
+`Factors` cell **MUST** render comma-separated attached Factor title links, or
+`—` when no Factor link can be rendered. `Type` and `Severity` **MUST** render
+existing display labels, including their emoji, for known finding type and
+severity enum values.
 
 The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
@@ -188,9 +188,9 @@ link to `findings.md` and `recommendations.md` when the report tree is built.
 
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
-at 10 rows. It **MUST** render the columns `Rank`, `ID`, `Recommendation`,
-`Area / Factors`, and `Reason`, in that order. The `ID` cell **MUST** render the
-assigned `QREC` artifact ID. The `Recommendation` cell **MUST** use
+at 10 rows. It **MUST** render the columns `Rank`, `#`, `Recommendation`,
+`Area / Factors`, and `Reason`, in that order. The `#` cell **MUST** render the
+assigned `RecommendationResult.number`. The `Recommendation` cell **MUST** use
 `RecommendationResult.title` as link text and link to the generated
 recommendation detail report. The `Area / Factors` cell **MUST** render linked
 Area and Factor names resolved from `RecommendationResult.traceRefs` through

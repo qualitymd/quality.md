@@ -5,7 +5,7 @@ title: LedgerLite Service
 
 # Area: LedgerLite Service
 
-Run: [QEVAL-0001](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [Run 0001](report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](report.md) - [Findings](findings.md) - [Recommendations](recommendations.md)
 
@@ -76,7 +76,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 - [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
 - [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
-- [data/advice/recommendations/QREC-0001-001/recommendation-result.json](data/advice/recommendations/QREC-0001-001/recommendation-result.json)
-- [data/advice/recommendations/QREC-0001-002/recommendation-result.json](data/advice/recommendations/QREC-0001-002/recommendation-result.json)
-- [data/advice/recommendations/QREC-0001-003/recommendation-result.json](data/advice/recommendations/QREC-0001-003/recommendation-result.json)
+- [data/advice/recommendations/001/recommendation-result.json](data/advice/recommendations/001/recommendation-result.json)
+- [data/advice/recommendations/002/recommendation-result.json](data/advice/recommendations/002/recommendation-result.json)
+- [data/advice/recommendations/003/recommendation-result.json](data/advice/recommendations/003/recommendation-result.json)
 

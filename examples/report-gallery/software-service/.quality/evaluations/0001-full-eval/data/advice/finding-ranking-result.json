@@ -9,7 +9,6 @@
           "requirementId": "requirement:api::idempotent-mutations"
         }
       },
-      "id": "QFIND-0001-001",
       "rank": 1,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P1"
@@ -22,7 +21,6 @@
           "requirementId": "requirement:api::predictable-error-contracts"
         }
       },
-      "id": "QFIND-0001-002",
       "rank": 2,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P1"
@@ -35,7 +33,6 @@
           "requirementId": "requirement:persistence::balance-invariants"
         }
       },
-      "id": "QFIND-0001-003",
       "rank": 3,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P2"
@@ -48,7 +45,6 @@
           "requirementId": "requirement:persistence::migration-rollback"
         }
       },
-      "id": "QFIND-0001-004",
       "rank": 4,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P1"
@@ -61,7 +57,6 @@
           "requirementId": "requirement:operations::customer-impact-telemetry"
         }
       },
-      "id": "QFIND-0001-005",
       "rank": 5,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P3"
@@ -74,7 +69,6 @@
           "requirementId": "requirement:operations::recovery-drill-ownership"
         }
       },
-      "id": "QFIND-0001-006",
       "rank": 6,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P2"
@@ -87,7 +81,6 @@
           "requirementId": "requirement:agent-harness::evaluation-entrypoint"
         }
       },
-      "id": "QFIND-0001-007",
       "rank": 7,
       "rationale": "Ranked by expected impact on the service quality bar and report-gallery usefulness.",
       "tier": "P3"

@@ -61,10 +61,13 @@ create `data/`, snapshot `model-snapshot.md`, and write
 `data/run-manifest.json`.
 
 `data/run-manifest.json` **MUST** be a CLI-owned `RunManifest` payload containing
-`schemaVersion`, `kind`, `number`, `createdAt`, `model`, `requestedScope`, and
-`plannedScope`. `createdAt` **MUST** be a UTC RFC 3339 timestamp for run
-creation. `requestedScope` **MUST** faithfully record supplied scope arguments.
-`plannedScope` **MUST** normalize the scope by defaulting `areaId` to `area:root`
+`schemaVersion`, `kind`, `id`, `number`, `createdAt`, `model`,
+`requestedScope`, and `plannedScope`. `id` **MUST** be a globally-unique run ID
+generated from the creation instant plus a random tail and **MUST NOT** be
+derived from `number`. `createdAt` **MUST** be a UTC RFC 3339 timestamp for run
+creation and **MUST** be computed from the same instant as `id`. `requestedScope`
+**MUST** faithfully record supplied scope arguments. `plannedScope` **MUST**
+normalize the scope by defaulting `areaId` to `area:root`
 and `factorFilter` to an array.
 
 The command **MUST** validate `--area` and every `--factor` against the model

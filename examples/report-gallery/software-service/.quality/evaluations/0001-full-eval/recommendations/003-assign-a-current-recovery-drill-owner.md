@@ -5,13 +5,13 @@ title: Assign a current recovery drill owner
 
 # Recommendation: Assign a current recovery drill owner
 
-Run: [QEVAL-0001](../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [Run 0001](../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 
-| ID | Rank | Impact | Confidence | Reference |
+| # | Rank | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
-| `QREC-0001-003` | 3 | Medium | 🟡 Low | `evaluation:QEVAL-0001/recommendation:QREC-0001-003` |
+| 3 | 3 | Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/3` |
 
 Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
 
@@ -47,7 +47,7 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 ## Source Data
 
 - [data/run-manifest.json](../data/run-manifest.json)
-- [data/advice/recommendations/QREC-0001-003/recommendation-result.json](../data/advice/recommendations/QREC-0001-003/recommendation-result.json)
+- [data/advice/recommendations/003/recommendation-result.json](../data/advice/recommendations/003/recommendation-result.json)
 - [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
 

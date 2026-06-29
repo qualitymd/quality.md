@@ -694,3 +694,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0164 — Agent Instruction Init Pointer](0164-agent-instruction-init-pointer.md) -
   makes `qualitymd init` surface the new `QUALITY.md` to agent instruction files
   while preserving setup's narrow mutation boundary (`Done`).
+- [0165 — Run IDs and Artifact Numbering](0165-run-id-artifact-numbering.md) -
+  replaces local `QEVAL`/`QREC`/`QFIND` artifact IDs with a globally-unique run
+  ID, per-run recommendation numbers, and finding references by selector
+  (`Done`).

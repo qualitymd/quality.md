@@ -5,7 +5,7 @@ title: error responses are predictable for callers
 
 # Requirement: error responses are predictable for callers
 
-Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [Run 0001](../../../../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ The error contract is consistent across the sampled API cases.
 
 ### strength-001 Common caller error cases share a documented response shape.
 
-| ID | Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- | --- |
-| `QFIND-0001-002` | 2 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- |
+| 2 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

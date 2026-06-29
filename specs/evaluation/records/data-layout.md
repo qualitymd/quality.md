@@ -52,8 +52,10 @@ The advice folder **MUST** contain:
 Each recommendation payload **MUST** be stored under:
 
 ```text
-data/advice/recommendations/<recommendation-id>/recommendation-result.json
+data/advice/recommendations/<NNN>/recommendation-result.json
 ```
+
+`<NNN>` is the zero-padded `RecommendationResult.number`.
 
 Area data **MUST** live under `data/areas/` and mirror the evaluated Area tree.
 

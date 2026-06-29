@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/qualitymd/quality.md/internal/model"
 )
@@ -50,6 +52,7 @@ func TestCreateRunSeedsEvaluationLayoutOnly(t *testing.T) {
 	if manifest.Number != 1 || manifest.RequestedScope.AreaID != "" || manifest.PlannedScope.AreaID != "area:root" || len(manifest.PlannedScope.FactorFilter) != 0 {
 		t.Fatalf("manifest = %#v, want full root scope", manifest)
 	}
+	assertRunIdentity(t, manifest)
 	for _, name := range []string{"model.md", "design.md", "plan.md", "assessments", "analysis", "recommendations", "debug-log.md"} {
 		if _, err := os.Stat(filepath.Join(repo, result.Path, name)); !os.IsNotExist(err) {
 			t.Fatalf("%s should not be seeded for evaluation runs: %v", name, err)
@@ -57,6 +60,23 @@ func TestCreateRunSeedsEvaluationLayoutOnly(t *testing.T) {
 	}
 	if got := result.NextActions[0].Command; strings.Contains(got, "--file") || !strings.Contains(got, "< payloads.json") {
 		t.Fatalf("next action = %q, want stdin data set command", got)
+	}
+}
+
+func assertRunIdentity(t *testing.T, manifest *RunManifest) {
+	t.Helper()
+	if manifest == nil {
+		t.Fatal("manifest is nil")
+	}
+	if !regexp.MustCompile(`^[0-9]{8}T[0-9]{6}Z-[0-9a-z]{12}$`).MatchString(manifest.ID) {
+		t.Fatalf("RunManifest.id = %q, want timestamp plus 12-character tail", manifest.ID)
+	}
+	createdAt, err := time.Parse(time.RFC3339, manifest.CreatedAt)
+	if err != nil {
+		t.Fatalf("RunManifest.createdAt = %q: %v", manifest.CreatedAt, err)
+	}
+	if got, want := manifest.ID[:16], createdAt.UTC().Format("20060102T150405Z"); got != want {
+		t.Fatalf("RunManifest.id timestamp = %q, want createdAt timestamp %q", got, want)
 	}
 }
 
@@ -278,7 +298,8 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		!strings.Contains(string(runReport), "# Evaluation Report: Area: Test model") {
 		t.Fatalf("report.md = %s, want run report title", runReport)
 	}
-	if !strings.Contains(string(runReport), "Run: QEVAL-0001 - Created: ") ||
+	if !strings.Contains(string(runReport), "Run: Run 0001 - Run ID: `") ||
+		!strings.Contains(string(runReport), "` - Created: ") ||
 		!strings.Contains(string(runReport), "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)") {
 		t.Fatalf("report.md = %s, want run header navigation", runReport)
 	}
@@ -422,7 +443,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
 	assertNotContains(t, runReport, "[data/evaluation-output-result.json](")
 	assertContains(t, runReport, "# Evaluation Report: Area: Navigation model")
-	assertContains(t, runReport, "Run: QEVAL-0001 - Created: ")
+	assertContains(t, runReport, "Run: Run 0001 - Run ID: `")
 	assertContains(t, runReport, "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)")
 	assertContains(t, runReport, "Area: [Navigation model](root-area.md)")
 	assertContains(t, runReport, "| Overall Rating | Scope | Confidence |")
@@ -431,12 +452,12 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, runReport, "## Rating Drivers")
 	assertNotContains(t, runReport, "| Driver | Effect | Inputs |")
 	assertContains(t, runReport, "## Top Findings")
-	assertContains(t, runReport, "| Rank | ID | Finding | Area | Factors | Type | Severity |")
-	assertContains(t, runReport, "| 1 | `QFIND-0001-001` | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
+	assertContains(t, runReport, "| Rank | Finding | Area | Factors | Type | Severity |")
+	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 	assertContains(t, runReport, "Full findings index: [findings.md](findings.md)")
 	assertContains(t, runReport, "## Top Recommendations")
-	assertContains(t, runReport, "| Rank | ID | Recommendation | Area / Factors | Reason |")
-	assertContains(t, runReport, "| 1 | `QREC-0001-001` | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | The quality model stays aligned with the evaluated evidence and next bar. |")
+	assertContains(t, runReport, "| Rank | # | Recommendation | Area / Factors | Reason |")
+	assertContains(t, runReport, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | The quality model stays aligned with the evaluated evidence and next bar. |")
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
 	assertContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
@@ -456,19 +477,20 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationIndex, "Report: [Overview](report.md) - [Findings](findings.md) - Recommendations")
 	assertContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage |")
 	assertNotContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage | Data |")
-	assertContains(t, recommendationIndex, "| Rank | ID | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
-	assertContains(t, recommendationIndex, "| 1 | `QREC-0001-001` | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
+	assertContains(t, recommendationIndex, "| Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
+	assertContains(t, recommendationIndex, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
 
 	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
 	assertContains(t, recommendationReport, "type: Recommendation Report\n")
 	assertContains(t, recommendationReport, "title: Review the next quality bar\n")
 	assertNotContains(t, recommendationReport, "\ndata:\n")
 	assertContains(t, recommendationReport, "## Source Data\n\n- [data/run-manifest.json](../data/run-manifest.json)")
-	assertContains(t, recommendationReport, "- [data/advice/recommendations/QREC-0001-001/recommendation-result.json](../data/advice/recommendations/QREC-0001-001/recommendation-result.json)")
+	assertContains(t, recommendationReport, "- [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)")
 	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
-	assertContains(t, recommendationReport, "| ID | Rank | Impact | Confidence | Reference |")
-	assertContains(t, recommendationReport, "| `QREC-0001-001` | 1 | High | 🟢 High | `evaluation:QEVAL-0001/recommendation:QREC-0001-001` |")
-	assertNotContains(t, recommendationReport, "| ID | Rank | Impact | Confidence | Reference | Data |")
+	assertContains(t, recommendationReport, "| # | Rank | Impact | Confidence | Reference |")
+	assertContains(t, recommendationReport, "| 1 | 1 | High | 🟢 High | `evaluation:")
+	assertContains(t, recommendationReport, "/recommendation/1` |")
+	assertNotContains(t, recommendationReport, "| # | Rank | Impact | Confidence | Reference | Data |")
 	assertContains(t, recommendationReport, "## Description")
 	assertContains(t, recommendationReport, "## Background")
 	assertContains(t, recommendationReport, "## Expected value")
@@ -554,8 +576,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, requirementReport, "Factors: [reliability](../../factors/reliability/reliability-factor.md)")
 	assertContains(t, requirementReport, `<a id="finding-strength-1"></a>`)
-	assertContains(t, requirementReport, "| ID | Advice Rank | Tier | Ranking Rationale |")
-	assertContains(t, requirementReport, "| `QFIND-0001-001` | 1 / 1 | P1 | This finding most directly informs next advice. |")
+	assertContains(t, requirementReport, "| Advice Rank | Tier | Ranking Rationale |")
+	assertContains(t, requirementReport, "| 1 / 1 | P1 | This finding most directly informs next advice. |")
 	assertNotContains(t, requirementReport, "Name: `has-tests`")
 	assertNotContains(t, requirementReport, "\ndata:\n")
 	assertContains(t, requirementReport, "## Source Data\n\n- [data/run-manifest.json](../../data/run-manifest.json)")
@@ -578,8 +600,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, findingsReport, "\ndata:\n")
 	assertContains(t, findingsReport, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
 	assertContains(t, findingsReport, "- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)")
-	assertContains(t, findingsReport, "| Rank | ID | Finding | Area | Factors | Type | Severity |")
-	assertContains(t, findingsReport, "| 1 | `QFIND-0001-001` | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
+	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
+	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
@@ -839,7 +861,7 @@ func TestSetDataDryRunReturnsBatchReceiptWithoutWriting(t *testing.T) {
 	}
 }
 
-func TestSetDataAssignsEvaluationArtifactIDs(t *testing.T) {
+func TestSetDataAssignsRecommendationNumbers(t *testing.T) {
 	repo := testRepo(t)
 	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
@@ -850,23 +872,29 @@ func TestSetDataAssignsEvaluationArtifactIDs(t *testing.T) {
 	assessment := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"id": "gap-1"}) + `]}`
 	findingRanking := `{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"Most important finding."}]}`
 	recommendation := `{"schemaVersion":3,"kind":"RecommendationResult","title":"Review the next quality bar","description":"Review the next bar.","background":"The finding changes follow-up.","expectedValue":"The model stays current.","doneCriterion":"The review is recorded.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`
-	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"QREC-0001-001","impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["QREC-0001-001"]}]}`
+	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":[1]}]}`
 
 	receipt, err := SetData(runPath, batchPayloads(assessment, findingRanking, recommendation, recommendationRanking), DataSetOptions{})
 	if err != nil {
 		t.Fatalf("SetData() error = %v", err)
 	}
-	if !dataSetReceiptHasPath(receipt, "data/advice/recommendations/QREC-0001-001/recommendation-result.json") {
-		t.Fatalf("receipt = %#v, want assigned QREC path", receipt)
+	if !dataSetReceiptHasPath(receipt, "data/advice/recommendations/001/recommendation-result.json") {
+		t.Fatalf("receipt = %#v, want assigned recommendation number path", receipt)
 	}
-	rec := readJSONMapForTest(t, filepath.Join(runPath, "data/advice/recommendations/QREC-0001-001/recommendation-result.json"))
-	if got := rec["id"]; got != "QREC-0001-001" {
-		t.Fatalf("RecommendationResult.id = %v, want assigned QREC", got)
+	rec := readJSONMapForTest(t, filepath.Join(runPath, "data/advice/recommendations/001/recommendation-result.json"))
+	if got, ok := numericSchemaVersion(rec["number"]); !ok || got != 1 {
+		t.Fatalf("RecommendationResult.number = %v, want 1", rec["number"])
+	}
+	if _, ok := rec["id"]; ok {
+		t.Fatalf("legacy recommendation id = %v, want absent", rec["id"])
 	}
 	ranking := readJSONMapForTest(t, filepath.Join(runPath, "data/advice/finding-ranking-result.json"))
 	ordered := objectSlice(ranking["orderedFindings"])
-	if len(ordered) != 1 || firstString(ordered[0], "id") != "QFIND-0001-001" {
-		t.Fatalf("orderedFindings = %#v, want assigned QFIND", ordered)
+	if len(ordered) != 1 {
+		t.Fatalf("orderedFindings = %#v, want one finding", ordered)
+	}
+	if _, ok := ordered[0]["id"]; ok {
+		t.Fatalf("orderedFindings = %#v, want no finding artifact ID", ordered)
 	}
 
 	rewrittenRanking := `{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P2","rationale":"Re-ranked but same finding."}]}`
@@ -875,12 +903,15 @@ func TestSetDataAssignsEvaluationArtifactIDs(t *testing.T) {
 	}
 	ranking = readJSONMapForTest(t, filepath.Join(runPath, "data/advice/finding-ranking-result.json"))
 	ordered = objectSlice(ranking["orderedFindings"])
-	if len(ordered) != 1 || firstString(ordered[0], "id") != "QFIND-0001-001" {
-		t.Fatalf("rewritten orderedFindings = %#v, want stable QFIND", ordered)
+	if len(ordered) != 1 || firstString(ordered[0], "tier") != "P2" {
+		t.Fatalf("rewritten orderedFindings = %#v, want rewritten finding ranking", ordered)
+	}
+	if _, ok := ordered[0]["id"]; ok {
+		t.Fatalf("rewritten orderedFindings = %#v, want no finding artifact ID", ordered)
 	}
 }
 
-func TestSetDataRejectsWrongRunArtifactIDs(t *testing.T) {
+func TestSetDataRejectsUnknownRecommendationNumbers(t *testing.T) {
 	repo := testRepo(t)
 	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
 	if err != nil {
@@ -889,13 +920,9 @@ func TestSetDataRejectsWrongRunArtifactIDs(t *testing.T) {
 	runPath := filepath.Join(repo, result.Path)
 	findingRef := `{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"}`
 	assessment := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"id": "gap-1"}) + `]}`
-	badRec := `{"schemaVersion":3,"kind":"RecommendationResult","id":"QREC-9999-001","title":"Review the next quality bar","description":"Review the next bar.","background":"The finding changes follow-up.","expectedValue":"The model stays current.","doneCriterion":"The review is recorded.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`
-	if _, err := SetData(runPath, batchPayloads(assessment, badRec), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "run segment must match QEVAL-0001") {
-		t.Fatalf("SetData(bad rec) error = %v, want run segment diagnostic", err)
-	}
-	badFindingRanking := `{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"id":"QFIND-9999-001","rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"Most important finding."}]}`
-	if _, err := SetData(runPath, batchPayloads(assessment, badFindingRanking), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "run segment must match QEVAL-0001") {
-		t.Fatalf("SetData(bad finding ranking) error = %v, want run segment diagnostic", err)
+	recommendationRanking := `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":2,"impact":"high","confidence":"high","rationale":"Highest value recommendation."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":[2]}]}`
+	if _, err := SetData(runPath, batchPayloads(assessment, recommendationRanking), DataSetOptions{DryRun: true}); err == nil || !strings.Contains(err.Error(), "recommendationRef does not resolve to a RecommendationResult") {
+		t.Fatalf("SetData(bad recommendation ranking) error = %v, want unknown number diagnostic", err)
 	}
 }
 
@@ -1120,7 +1147,7 @@ func TestFindingDetailsOmitCandidateActions(t *testing.T) {
 	if strings.Contains(rendered, "Add boundary tests.") {
 		t.Fatalf("finding details = %s, want candidate actions kept out of the report", rendered)
 	}
-	for _, want := range []string{`<a id="finding-gap-1"></a>`, "### gap-1 Edge cases untested.", "| — | (not ranked) | — | — |", "#### Condition", "#### Criteria", "#### Basis", "#### Effect", "#### Evidence"} {
+	for _, want := range []string{`<a id="finding-gap-1"></a>`, "### gap-1 Edge cases untested.", "| (not ranked) | — | — |", "#### Condition", "#### Criteria", "#### Basis", "#### Effect", "#### Evidence"} {
 		if !strings.Contains(rendered, want) {
 			t.Fatalf("finding details = %s, want %q", rendered, want)
 		}
@@ -1582,7 +1609,7 @@ func singleFindingAdvicePayloads(requirementID, findingID string) []string {
 	return []string{
 		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":` + findingRef + `,"tier":"P1","rationale":"This finding most directly informs next advice."}],"rationale":"Findings were ranked by quality-bar relevance and confidence."}`,
 		`{"schemaVersion":3,"kind":"RecommendationResult","title":"Review the next quality bar","description":"Review whether the next rating level should be raised or clarified for this requirement.","background":"The evaluation found a quality signal that should inform the next target level.","expectedValue":"The quality model stays aligned with the evaluated evidence and next bar.","doneCriterion":"The requirement criterion or target-level rationale reflects the review decision.","impact":"high","confidence":"high","traceRefs":[` + findingRef + `]}`,
-		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"QREC-0001-001","impact":"high","confidence":"high","rationale":"This recommendation addresses the highest-ranked finding."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":["QREC-0001-001"],"rationale":"The recommendation is traced to this finding."}],"rationale":"Recommendations were ranked by expected quality impact."}`,
+		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"high","confidence":"high","rationale":"This recommendation addresses the highest-ranked finding."}],"findingCoverage":[{"findingRef":` + findingRef + `,"disposition":"addressed_by_recommendation","recommendationRefs":[1],"rationale":"The recommendation is traced to this finding."}],"rationale":"Recommendations were ranked by expected quality impact."}`,
 	}
 }
 
@@ -1600,7 +1627,7 @@ func noFindingAdvicePayloads(traceRef string) []string {
 	return []string{
 		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[],"rationale":"No findings were produced; no finding ranking is applicable."}`,
 		`{"schemaVersion":3,"kind":"RecommendationResult","title":"Review the next quality bar","description":"Review the analyzed area or factor against the next intended quality bar.","background":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","expectedValue":"The quality model remains current without inventing remediation work.","doneCriterion":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
-		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"QREC-0001-001","impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
+		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
 	}
 }
 

@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [`evaluate`](evaluate.md) workflow spec for
+  [0165 - Run IDs and Artifact Numbering](../../../../changes/archive/0165-run-id-artifact-numbering.md).
+  Advice authoring now lets `qualitymd evaluation data set` assign
+  recommendation numbers, references recommendations by number in ranking and
+  coverage, and does not write artifact IDs on finding ranking entries.
+
 - **Revision**: Updated the [`setup`](setup.md) workflow spec for
   [0164 - Agent Instruction Init Pointer](../../../../changes/archive/0164-agent-instruction-init-pointer.md).
   Setup now scaffolds missing model files with

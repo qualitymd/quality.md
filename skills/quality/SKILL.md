@@ -513,11 +513,11 @@ of whether to raise, clarify, or confirm the next quality bar. Before closing
 recommendation ranking, account for every finding as either addressed by a
 recommendation or not advice-driving with rationale. Do not use effort, ROI,
 quick-win status, backlog priority, or numeric score fields as core
-recommendation properties. Let `qualitymd evaluation data set` assign public
-artifact IDs: omit `RecommendationResult.id` on new recommendations, read the
-assigned `QREC-<NNNN>-<NNN>` IDs before authoring recommendation ranking and
-finding coverage, and omit ranked finding IDs so the CLI assigns
-`QFIND-<NNNN>-<NNN>` in `FindingRankingResult`.
+recommendation properties. Let `qualitymd evaluation data set` assign
+recommendation numbers: omit `RecommendationResult.number` on new
+recommendations, read the assigned numbers before authoring recommendation
+ranking and finding coverage, and do not write artifact IDs in
+`FindingRankingResult`.
 
 ## Workflow Dispatch
 

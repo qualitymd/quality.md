@@ -38,6 +38,10 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if err != nil {
 		return nil, err
 	}
+	scope, err = completeRunIdentity(scope)
+	if err != nil {
+		return nil, err
+	}
 	modelRaw, err := modelSnapshot(ws.Model.Abs, ws.Model.Rel)
 	if err != nil {
 		return nil, err
@@ -116,10 +120,19 @@ func resolveCreateScope(spec *model.Spec, opts Options) (RunManifest, error) {
 	return RunManifest{
 		SchemaVersion:  SchemaVersion,
 		Kind:           DataKindRunManifest,
-		CreatedAt:      newRunCreatedAt(),
 		RequestedScope: requested,
 		PlannedScope:   planned,
 	}, nil
+}
+
+func completeRunIdentity(manifest RunManifest) (RunManifest, error) {
+	id, createdAt, err := newRunIdentity()
+	if err != nil {
+		return RunManifest{}, err
+	}
+	manifest.ID = id
+	manifest.CreatedAt = createdAt
+	return manifest, nil
 }
 
 func modelFlagArgs(model string) string {

@@ -2,6 +2,13 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0165 - Run IDs and Artifact Numbering](../changes/archive/0165-run-id-artifact-numbering.md).
+  Report examples now show `Run <NNNN>` with a copyable run ID, recommendation
+  number columns, and typed recommendation references using the run ID plus
+  recommendation number.
+
 - **Revision**: Updated README and install guidance for
   [0164 - Agent Instruction Init Pointer](../changes/archive/0164-agent-instruction-init-pointer.md).
   Direct `qualitymd init` documentation now notes the default concise agent

@@ -5,7 +5,7 @@ title: recovery drills have current owners
 
 # Requirement: recovery drills have current owners
 
-Run: [QEVAL-0001](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [Run 0001](../../../../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -35,9 +35,9 @@ Recovery ownership is visible but ambiguous across the sampled records.
 
 ### unknown-001 The current owner for ledger recovery drills is ambiguous.
 
-| ID | Advice Rank | Tier | Ranking Rationale |
-| --- | --- | --- | --- |
-| `QFIND-0001-006` | 6 / 7 | P2 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| Advice Rank | Tier | Ranking Rationale |
+| --- | --- | --- |
+| 6 / 7 | P2 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 

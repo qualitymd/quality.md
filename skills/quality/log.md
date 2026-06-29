@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0165 - Run IDs and
+  Artifact Numbering. Runtime evaluation guidance now lets the CLI assign
+  recommendation numbers, references recommendations by number in ranking and
+  coverage, and keeps finding ranking entries free of synthetic artifact IDs.
+
 - **Revision**: Updated [`workflows/setup.md`](workflows/setup.md) for 0164 -
   Agent Instruction Init Pointer. Runtime setup guidance now opts out of
   init-time agent instruction edits and handles existing `QUALITY.md` maturity

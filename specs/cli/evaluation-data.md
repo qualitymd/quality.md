@@ -78,16 +78,15 @@ Validation **MUST** reject `AreaAnalysisResult.findings`,
 fields.
 
 Before validation and path derivation, `data set` **MUST** assign missing
-CLI-owned Evaluation artifact IDs: `RecommendationResult.id` values use
-`QREC-<NNNN>-<NNN>`, and `FindingRankingResult.orderedFindings[].id` values use
-`QFIND-<NNNN>-<NNN>`, with `<NNNN>` matching `RunManifest.number`.
-When multiple new artifact IDs are assigned in one batch, assignment **MUST** be
-deterministic by input order.
+CLI-owned `RecommendationResult.number` values as positive integers unique
+within the run. Assignment **MUST** be deterministic by input order and by the
+owning run's existing recommendation numbers. `data set` **MUST NOT** assign
+artifact IDs to `FindingRankingResult.orderedFindings[]`.
 
 For cross-payload validation, `data set` **MUST** validate against the effective
 run data: existing persisted payloads overlaid with every normalized candidate
-payload in the batch. After artifact ID assignment, candidate batch order
-**MUST NOT** affect validation.
+payload in the batch. After recommendation-number assignment, candidate batch
+order **MUST NOT** affect validation.
 
 `data set` **MUST** reject a `RequirementRatingResult` with `status: rated`
 unless the effective run data includes a paired `RequirementAssessmentResult`
@@ -105,7 +104,7 @@ resolve to an existing routine output in the effective run data.
 `data set` **MUST** reject Advice references that do not resolve in the
 effective run data. Finding ranking entries and finding coverage entries
 **MUST** select existing Requirement Findings. Recommendation ranking entries
-and coverage entries **MUST** reference existing `RecommendationResult` IDs.
+and coverage entries **MUST** reference existing `RecommendationResult` numbers.
 Finding ranking and Finding coverage **MUST** account for every effective
 Requirement Finding exactly once.
 

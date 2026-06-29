@@ -3,6 +3,43 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0165 - Run IDs and Artifact Numbering](archive/0165-run-id-artifact-numbering.md).
+  Evaluation runs now persist a globally-unique `RunManifest.id`,
+  recommendations use per-run `number` values and numeric ranking/coverage refs,
+  finding ranking entries no longer carry synthetic artifact IDs, reports render
+  run IDs and typed recommendation references, and durable specs, runtime
+  guidance, schema, tests, and the report gallery are aligned.
+
+- **In-Review**: Completed implementation for
+  [0165 - Run IDs and Artifact Numbering](archive/0165-run-id-artifact-numbering.md).
+  The implementation passed focused Evaluation/CLI tests and the full
+  `mise run check` gate before archival.
+
+- **In-Progress**: Advanced
+  [0165 - Run IDs and Artifact Numbering](archive/0165-run-id-artifact-numbering.md).
+  Functional spec and design are settled; implementation is beginning across
+  Evaluation data identity, generated reports, durable specs, runtime guidance,
+  tests, and regenerated gallery fixtures.
+
+- **Design**: Added the
+  [design doc](archive/0165-run-id-artifact-numbering/design.md) for
+  [0165 - Run IDs and Artifact Numbering](archive/0165-run-id-artifact-numbering.md).
+  The design generates the run ID at creation from the `createdAt` instant plus
+  a `crypto/rand` base32 tail (no scan, opaque on read), renames the
+  recommendation `id`→`number` with a zero-padded data path, deletes the
+  `QFIND` finding ID and its stability-by-`findingRef` machinery, and pins the
+  run ID in the report gallery.
+
+- **Draft**: Created
+  [0165 - Run IDs and Artifact Numbering](archive/0165-run-id-artifact-numbering.md)
+  with its [functional spec](archive/0165-run-id-artifact-numbering/spec.md). The case
+  revises [0163](archive/0163-report-artifact-ids.md): a globally-unique
+  `RunManifest.id` replaces the locally-scoped `QEVAL` run identity, recommendations
+  carry a per-run `number` instead of `QREC`, and the `QFIND` finding artifact ID
+  is removed in favor of the finding's requirement-scoped `findingRef`. Records
+  the affected code, durable specs, runtime guidance, and regenerated gallery.
+
+- **Done**: Implemented and archived
   [0164 - Agent Instruction Init Pointer](archive/0164-agent-instruction-init-pointer.md).
   `qualitymd init` now writes a concise, idempotent pointer to local agent
   instruction files by default, supports `--no-agent-instructions`, keeps

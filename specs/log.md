@@ -3,6 +3,13 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0165 - Run IDs and Artifact Numbering](../changes/archive/0165-run-id-artifact-numbering.md).
+  Evaluation runs now carry a globally-unique `RunManifest.id`, recommendations
+  use per-run `number` values, finding ranking entries no longer carry artifact
+  IDs, generated reports render run IDs and recommendation typed references, and
+  Advice guidance references recommendations by number.
+
+- **Revision**: Implemented durable spec changes for
   [0164 - Agent Instruction Init Pointer](../changes/archive/0164-agent-instruction-init-pointer.md).
   `qualitymd init` now defines its default concise agent instruction pointer,
   `--no-agent-instructions` opt-out, idempotence, relative-link behavior, JSON

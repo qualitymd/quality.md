@@ -2,6 +2,11 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0165 - Run IDs
+  and Artifact Numbering. Evaluation Advice now writes recommendation payloads
+  before ranking when numbers are assigned, references recommendations by
+  number, and leaves finding ranking entries without artifact IDs.
+
 - **Revision**: Updated the [setup](setup.md) workflow for 0164 - Agent
   Instruction Init Pointer. Setup now scaffolds missing model files with
   `qualitymd init --no-agent-instructions` and classifies existing model files

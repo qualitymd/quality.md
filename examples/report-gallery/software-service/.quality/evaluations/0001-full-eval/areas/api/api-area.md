@@ -5,7 +5,7 @@ title: Public API
 
 # Area: Public API
 
-Run: [QEVAL-0001](../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [Run 0001](../../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
 
@@ -55,7 +55,7 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
-- [data/advice/recommendations/QREC-0001-001/recommendation-result.json](../../data/advice/recommendations/QREC-0001-001/recommendation-result.json)
+- [data/advice/recommendations/001/recommendation-result.json](../../data/advice/recommendations/001/recommendation-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
 

@@ -5,7 +5,13 @@ QUALITY.md specification.
 
 ## Unreleased
 
-No changes yet.
+### CLI
+
+- Evaluation runs now persist a globally-unique `RunManifest.id` alongside the
+  local run number. Recommendations use per-run `number` values and reports
+  render typed references such as
+  `evaluation:<run-id>/recommendation/<number>`; ranked findings no longer carry
+  synthetic artifact IDs.
 
 ## v0.25.6 - 2026-06-29
 

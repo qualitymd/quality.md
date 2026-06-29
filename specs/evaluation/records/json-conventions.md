@@ -85,25 +85,33 @@ containing Finding, not the payload or run. References to candidate actions
 **MUST** qualify the containing Finding selector, for example
 `findings[gap-001].candidateActions[action-001]`.
 
-Evaluation artifact IDs are user-citable identifiers for handoff-ready
-Evaluation artifacts. They are distinct from Model references and from
-payload-local IDs:
+Evaluation run identity has two parts:
 
-- Evaluation run IDs render as `QEVAL-<NNNN>`, where `<NNNN>` is the zero-padded
-  `RunManifest.number`.
-- Recommendation IDs render as `QREC-<NNNN>-<NNN>`.
-- Ranked Finding IDs render as `QFIND-<NNNN>-<NNN>`.
+- `RunManifest.id` is the globally-unique, opaque run identifier. New run IDs
+  are generated as `<timestamp>-<nanoid>`, where `<timestamp>` is the UTC
+  ISO-8601 basic creation timestamp (`YYYYMMDDThhmmssZ`) and `<nanoid>` is at
+  least 12 lowercase base32 characters from cryptographic-strength randomness.
+  Readers **MUST** treat it as opaque and require only that it is non-empty.
+- `RunManifest.number` is the local, friendly run number used in folder names
+  and report headers. It is not globally unique and **MUST NOT** be presented as
+  a durable handoff identifier.
 
-`qualitymd evaluation data set` **MUST** assign missing
-`RecommendationResult.id` values and missing
-`FindingRankingResult.orderedFindings[].id` values before writing payloads. The
-run segment of every `QREC` and `QFIND` ID **MUST** match the owning
-`RunManifest.number`. Persisted payloads **MUST** include the assigned IDs.
+The structured Evaluation identity rule is: `id` names only the run;
+run-scoped artifacts use `number`; Requirement Findings use their
+requirement-scoped selector. `qualitymd evaluation data set` **MUST** assign a
+missing positive integer `RecommendationResult.number` before writing a
+recommendation and **MUST NOT** assign an artifact ID to
+`FindingRankingResult.orderedFindings[]`.
+
+Recommendation ranking and finding coverage **MUST** reference recommendations by
+their assigned `number`. Cross-payload references to findings **MUST** use the
+Requirement Assessment routine reference plus selector, for example
+`findings[gap-001]`.
 
 Typed artifact references used in reports and external handoff text **SHOULD**
-combine the run ID and artifact ID, for example
-`evaluation:QEVAL-0006/recommendation:QREC-0006-001`. These artifact references
-do not replace routine `*Ref` objects or canonical Model references.
+combine the run ID and recommendation number, for example
+`evaluation:20260629T120000Z-0123456789ab/recommendation/1`. These artifact
+references do not replace routine `*Ref` objects or canonical Model references.
 
 ## Optional And Repeated Fields
 

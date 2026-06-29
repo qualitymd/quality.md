@@ -13,6 +13,7 @@ import (
 
 const galleryRel = "examples/report-gallery/software-service"
 const galleryCreatedAt = "2026-06-29T12:00:00Z"
+const galleryRunID = "20260629T120000Z-0123456789ab"
 
 func main() {
 	if err := run(); err != nil {
@@ -46,7 +47,7 @@ func run() error {
 		return fmt.Errorf("creating gallery run: %w", err)
 	}
 	runPath := filepath.Join(exampleDir, filepath.FromSlash(created.Path))
-	if err := pinRunCreatedAt(runPath, galleryCreatedAt); err != nil {
+	if err := pinRunIdentity(runPath, galleryCreatedAt, galleryRunID); err != nil {
 		return err
 	}
 	payloads, err := json.MarshalIndent(galleryPayloads(), "", "  ")
@@ -66,7 +67,7 @@ func run() error {
 	return nil
 }
 
-func pinRunCreatedAt(runPath, createdAt string) error {
+func pinRunIdentity(runPath, createdAt, runID string) error {
 	path := filepath.Join(runPath, "data", "run-manifest.json")
 	raw, err := os.ReadFile(path)
 	if err != nil {
@@ -76,6 +77,7 @@ func pinRunCreatedAt(runPath, createdAt string) error {
 	if err := json.Unmarshal(raw, &manifest); err != nil {
 		return fmt.Errorf("decoding run manifest: %w", err)
 	}
+	manifest.ID = runID
 	manifest.CreatedAt = createdAt
 	pinned, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {
@@ -669,7 +671,6 @@ func advicePayloads() []map[string]any {
 			tier = map[string]string{"gap": "P1", "risk": "P1", "unknown": "P2"}[req.FindingType]
 		}
 		ordered = append(ordered, map[string]any{
-			"id":         fmt.Sprintf("QFIND-0001-%03d", i+1),
 			"rank":       i + 1,
 			"findingRef": findingRef(req),
 			"tier":       tier,
@@ -677,15 +678,15 @@ func advicePayloads() []map[string]any {
 		})
 	}
 	recs := []map[string]any{
-		recommendation("QREC-0001-001", "Tighten the idempotency replay contract", "Specify and test partial-write replay behavior for mutation endpoints.", "The highest-ranked synthetic gap leaves retry semantics below the target API correctness bar.", "Callers and agents can verify retry behavior without inferring undocumented recovery semantics.", "The API contract and retry tests describe duplicate, replayed, and partial-write idempotency outcomes.", "high", "medium", requirements[0]),
-		recommendation("QREC-0001-002", "Rehearse migration rollback after schema changes", "Run and record a rollback rehearsal for the latest ledger migrations.", "The synthetic runbook has rollback steps, but stale rehearsal evidence leaves recoverability below target.", "Release risk drops because rollback instructions are proven against current migrations.", "A current rollback rehearsal record exists for the latest migration set.", "high", "medium", requirements[3]),
-		recommendation("QREC-0001-003", "Assign a current recovery drill owner", "Resolve the conflicting recovery-owner records and name the owner in the calendar and playbook.", "Ambiguous ownership limits confidence in recovery practice.", "Incident preparation has a clear owner agents and maintainers can route to.", "The recovery calendar and playbook agree on the current owner and next drill date.", "medium", "low", requirements[5]),
+		recommendation(1, "Tighten the idempotency replay contract", "Specify and test partial-write replay behavior for mutation endpoints.", "The highest-ranked synthetic gap leaves retry semantics below the target API correctness bar.", "Callers and agents can verify retry behavior without inferring undocumented recovery semantics.", "The API contract and retry tests describe duplicate, replayed, and partial-write idempotency outcomes.", "high", "medium", requirements[0]),
+		recommendation(2, "Rehearse migration rollback after schema changes", "Run and record a rollback rehearsal for the latest ledger migrations.", "The synthetic runbook has rollback steps, but stale rehearsal evidence leaves recoverability below target.", "Release risk drops because rollback instructions are proven against current migrations.", "A current rollback rehearsal record exists for the latest migration set.", "high", "medium", requirements[3]),
+		recommendation(3, "Assign a current recovery drill owner", "Resolve the conflicting recovery-owner records and name the owner in the calendar and playbook.", "Ambiguous ownership limits confidence in recovery practice.", "Incident preparation has a clear owner agents and maintainers can route to.", "The recovery calendar and playbook agree on the current owner and next drill date.", "medium", "low", requirements[5]),
 	}
 	var rankedRecs []any
 	for i, rec := range recs {
 		rankedRecs = append(rankedRecs, map[string]any{
 			"rank":              i + 1,
-			"recommendationRef": rec["id"],
+			"recommendationRef": rec["number"],
 			"impact":            rec["impact"],
 			"confidence":        rec["confidence"],
 			"rationale":         "Recommendation rank follows the synthetic finding priority and expected quality-management value.",
@@ -697,15 +698,15 @@ func advicePayloads() []map[string]any {
 		switch req.FindingID {
 		case "gap-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{"QREC-0001-001"}
+			entry["recommendationRefs"] = []any{1}
 			entry["rationale"] = "The idempotency recommendation directly addresses this gap."
 		case "risk-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{"QREC-0001-002"}
+			entry["recommendationRefs"] = []any{2}
 			entry["rationale"] = "The rollback rehearsal recommendation directly addresses this risk."
 		case "unknown-001":
 			entry["disposition"] = "addressed_by_recommendation"
-			entry["recommendationRefs"] = []any{"QREC-0001-003"}
+			entry["recommendationRefs"] = []any{3}
 			entry["rationale"] = "The ownership recommendation resolves the unknown."
 		default:
 			entry["disposition"] = "not_advice_driving"
@@ -730,11 +731,11 @@ func advicePayloads() []map[string]any {
 	return payloads
 }
 
-func recommendation(id, title, description, background, expectedValue, doneCriterion, impact, confidence string, req requirementCase) map[string]any {
+func recommendation(number int, title, description, background, expectedValue, doneCriterion, impact, confidence string, req requirementCase) map[string]any {
 	return map[string]any{
 		"schemaVersion": evaluation.SchemaVersion,
 		"kind":          string(evaluation.DataKindRecommendation),
-		"id":            id,
+		"number":        number,
 		"title":         title,
 		"description":   description,
 		"background":    background,

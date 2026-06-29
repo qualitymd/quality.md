@@ -53,7 +53,7 @@ it. Those IDs **MUST** use the canonical qualified reference strings defined in
 Agents **MUST NOT** write `RunManifest` or `EvaluationOutputResult` through
 `qualitymd evaluation data set`.
 
-`RunManifest` **MUST** include `number`, `createdAt`, `model`,
+`RunManifest` **MUST** include `id`, `number`, `createdAt`, `model`,
 `requestedScope`, and `plannedScope`. `createdAt` **MUST** be a UTC RFC 3339
 timestamp for run creation. `requestedScope` **MUST** record requested `areaId`
 and `factorFilter` fields only when scope was supplied. `plannedScope` **MUST**
@@ -96,16 +96,14 @@ blocked states using the status vocabulary defined by the routine contract.
 `FindingRankingResult` **MUST** include `orderedFindings`. Each entry **MUST**
 include:
 
-- `id`;
 - `rank`;
 - `findingRef`;
 - `tier`; and
 - `rationale`.
 
-`qualitymd evaluation data set` **MUST** assign missing ordered finding `id`
-values before persisting a `FindingRankingResult`. Persisted ordered finding
-`id` values **MUST** match `QFIND-<NNNN>-<NNN>`, **MUST** be unique in the run,
-and **MUST** use a run segment matching `RunManifest.number`.
+`qualitymd evaluation data set` **MUST NOT** assign an artifact ID to ordered
+finding entries. Finding identity is the `findingRef` routine reference plus its
+payload-local selector.
 
 `FindingRankingResult.orderedFindings` **MUST** account for every Requirement
 Finding in the effective run data exactly once. The `tier` and order express
@@ -114,7 +112,7 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 
 `RecommendationResult` **MUST** include:
 
-- `id`;
+- `number`;
 - `title`;
 - `description`;
 - `background`;
@@ -125,10 +123,9 @@ never omitted. If no findings were produced, the array **MUST** be empty.
 - non-empty `traceRefs`.
 
 `qualitymd evaluation data set` **MUST** assign a missing
-`RecommendationResult.id` before persisting the payload. Persisted
-`RecommendationResult.id` values **MUST** match `QREC-<NNNN>-<NNN>`, **MUST**
-be unique in the run, and **MUST** use a run segment matching
-`RunManifest.number`.
+`RecommendationResult.number` before persisting the payload. Persisted
+`RecommendationResult.number` values **MUST** be positive integers and **MUST**
+be unique in the run.
 `impact` **MUST** be one of `very_high`, `high`, `medium`, or `low`.
 `confidence` **MUST** use the Evaluation confidence vocabulary: `high`,
 `medium`, `low`, or `none`.
@@ -160,7 +157,7 @@ one or more `recommendationRefs`. When `disposition` is
 
 `RecommendationRankingResult.findingCoverage` **MUST** account for every
 Requirement Finding in the effective run data exactly once. It **MUST NOT**
-claim coverage by a recommendation ID that has no corresponding
+claim coverage by a recommendation number that has no corresponding
 `RecommendationResult`.
 
 ## Finding Core

@@ -2,6 +2,13 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated Evaluation records and report-tree contracts for
+  [0165 - Run IDs and Artifact Numbering](../../changes/archive/0165-run-id-artifact-numbering.md).
+  Runs now expose a globally-unique `RunManifest.id`; recommendations carry
+  per-run `number` values and numeric ranking/coverage refs; finding ranking
+  entries no longer carry artifact IDs; and reports render run IDs,
+  recommendation numbers, and typed recommendation references.
+
 - **Revision**: Updated the Evaluation report-tree contract for
   [0162 - Report Source Data Section](../../changes/archive/0162-report-source-data-section.md).
   Generated Markdown reports now keep frontmatter to report identity fields and
