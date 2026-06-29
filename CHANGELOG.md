@@ -5,6 +5,10 @@ QUALITY.md specification.
 
 ## Unreleased
 
+No changes yet.
+
+## v0.25.6 - 2026-06-29
+
 ### CLI
 
 - `qualitymd init` now adds a concise `QUALITY.md` pointer to local agent
@@ -21,6 +25,19 @@ QUALITY.md specification.
 - `/quality setup` now scaffolds missing model files with
   `qualitymd init --no-agent-instructions` and explicitly distinguishes
   scaffold-only, partially authored, and mature existing `QUALITY.md` files.
+
+### Compatibility / Migration
+
+- `/quality` skill version `0.25.6` continues to require the `qualitymd` CLI
+  `0.25.x` line.
+- No QUALITY.md specification version change; the specification remains
+  `0.8 (Draft)`.
+
+Compatibility:
+
+- CLI: `v0.25.6`
+- QUALITY.md specification: `0.8 (Draft)`
+- /quality skill: `0.25.6`, requires `qualitymd >=0.25.0 <0.26.0`
 
 ## v0.25.5 - 2026-06-27
 
