@@ -735,3 +735,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0177 — Report Full List Links](0177-report-full-list-links.md) - makes
   run-report links to full findings and recommendations lists more scannable and
   shows total ranked counts (`Done`).
+- [0178 — Recommendation Number Columns](0178-recommendation-number-columns.md) -
+  removes duplicate `Rank`/`#` columns from recommendation list tables so `#` is
+  the single visible recommendation number (`Done`).

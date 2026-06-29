@@ -69,11 +69,11 @@ Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 
 ## Top Recommendations
 
-| Rank | # | Recommendation | Area / Factors | Impact | Reason |
-| --- | --- | --- | --- | --- | --- |
-| 1 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⬥ High | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
-| 2 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | Release risk drops because rollback instructions are proven against current migrations. |
-| 3 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | Incident preparation has a clear owner agents and maintainers can route to. |
+| # | Recommendation | Area / Factors | Impact | Reason |
+| --- | --- | --- | --- | --- |
+| 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⬥ High | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
+| 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | Release risk drops because rollback instructions are proven against current migrations. |
+| 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | Incident preparation has a clear owner agents and maintainers can route to. |
 
 Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 

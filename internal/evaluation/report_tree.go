@@ -1938,11 +1938,11 @@ func requirementIDForAssessmentPath(path string) requirementID {
 }
 
 func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| Rank | # | Recommendation | Area / Factors | Impact | Reason |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| # | Recommendation | Area / Factors | Impact | Reason |\n")
+	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
-		b.WriteString("| (no recommendations) | — | — | — | — | — |\n\n")
+		b.WriteString("| (no recommendations) | — | — | — | — |\n\n")
 		return
 	}
 	for i, item := range items {
@@ -1956,7 +1956,6 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 		path := recommendationReportPath(item.Rank, title)
 		b.WriteString(md.TableRow(
 			fmt.Sprintf("%d", item.Rank),
-			fmt.Sprintf("%d", item.Rank),
 			reportLink(reportPath, path, title),
 			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
 			impactTitle(firstString(item.Recommendation, "impact")),
@@ -1967,11 +1966,11 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 }
 
 func writeRecommendationIndexTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string) {
-	b.WriteString("| Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |\n")
-	b.WriteString("| --- | --- | --- | --- | --- | --- | --- | --- |\n")
+	b.WriteString("| # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
-		b.WriteString("| (no recommendations) | — | — | — | — | — | — | — |\n\n")
+		b.WriteString("| (no recommendations) | — | — | — | — | — | — |\n\n")
 		return
 	}
 	for _, item := range items {
@@ -1981,7 +1980,6 @@ func writeRecommendationIndexTable(b *strings.Builder, spec *model.Spec, artifac
 		}
 		path := recommendationReportPath(item.Rank, title)
 		b.WriteString(md.TableRow(
-			fmt.Sprintf("%d", item.Rank),
 			fmt.Sprintf("%d", item.Rank),
 			reportLink(reportPath, path, title),
 			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),

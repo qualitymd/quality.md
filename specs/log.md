@@ -3,6 +3,11 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0178 - Recommendation Number Columns](../changes/archive/0178-recommendation-number-columns.md).
+  Generated recommendation list tables now use `#` as the single visible
+  recommendation number column and no longer duplicate it with `Rank`.
+
+- **Revision**: Implemented durable spec changes for
   [0176 - Recommendation IDs and Numbers](../changes/archive/0176-recommendation-ids-and-numbers.md).
   Evaluation recommendations now carry opaque `qrec_...` IDs for structured
   data and refs, while generated reports derive user-facing recommendation

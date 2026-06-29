@@ -584,8 +584,8 @@ Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 ### Recommendation detail reports
 
 Recommendation reports are action-planning surfaces. Their headers should make
-rank, impact, confidence, trace context, and navigation visible before the
-recommendation prose.
+the recommendation number, opaque ID, impact, confidence, trace context, and
+navigation visible before the recommendation prose.
 
 ```markdown
 # Recommendation: Tighten the idempotency replay contract
@@ -596,9 +596,9 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 
 Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/factors/correctness/correctness-factor.md)
 
-| # | Rank | Impact | Confidence | Reference                                                 |
-| - | ---- | ------ | ---------- | --------------------------------------------------------- |
-| 1 | 1    | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/1 |
+| # | ID           | Impact | Confidence | Reference                                                            |
+| - | ------------ | ------ | ---------- | -------------------------------------------------------------------- |
+| 1 | qrec_example | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
 
 Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.

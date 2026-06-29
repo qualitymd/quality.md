@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0178 - Recommendation Number Columns](../changes/archive/0178-recommendation-number-columns.md).
+  Recommendation report examples now avoid duplicate `Rank` and `#` ordinal
+  columns.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0176 - Recommendation IDs and Numbers](../changes/archive/0176-recommendation-ids-and-numbers.md).
   The guide now names recommendation detail paths as recommendation-number
   report paths while structured recommendation data uses opaque IDs.

@@ -2,6 +2,11 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0178 - Recommendation Number Columns](../../changes/archive/0178-recommendation-number-columns.md).
+  Recommendation list tables now render one visible recommendation number column
+  (`#`) instead of duplicate `Rank` and `#` columns.
+
 - **Revision**: Updated Evaluation records, protocol, and report-tree contracts
   for
   [0176 - Recommendation IDs and Numbers](../../changes/archive/0176-recommendation-ids-and-numbers.md).

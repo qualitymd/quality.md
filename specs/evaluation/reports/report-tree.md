@@ -348,12 +348,13 @@ the number of rows rendered in the capped `report.md` table.
 
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
-at 10 rows. It **MUST** render the columns `Rank`, `#`, `Recommendation`,
-`Area / Factors`, `Impact`, and `Reason`, in that order. The `#` cell **MUST**
-render the user-facing recommendation number derived from the ranking entry's
-`rank`. The `Recommendation` cell **MUST** use `RecommendationResult.title` as
-link text and link to the generated recommendation detail report. The `Area /
-Factors` cell **MUST** render linked Area and Factor names resolved from
+at 10 rows. It **MUST** render the columns `#`, `Recommendation`, `Area /
+Factors`, `Impact`, and `Reason`, in that order. The `#` cell **MUST** render
+the user-facing recommendation number derived from the ranking entry's `rank`.
+The table **MUST NOT** render a separate `Rank` column. The `Recommendation`
+cell **MUST** use `RecommendationResult.title` as link text and link to the
+generated recommendation detail report. The `Area / Factors` cell **MUST**
+render linked Area and Factor names resolved from
 `RecommendationResult.traceRefs` through persisted evaluation data and the model
 snapshot, or `—` when no Area or Factor can be resolved. The `Impact` cell
 **MUST** render the shared recommendation impact display label. The `Reason`
@@ -375,7 +376,9 @@ persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
 It **MUST** include:
 
 - a `## Ranked Recommendations` section;
-- all ranked recommendations;
+- all ranked recommendations with a `#` column derived from
+  `RecommendationRankingResult.orderedRecommendations[].rank` and no separate
+  `Rank` column;
 - Area / Factors links resolved from `RecommendationResult.traceRefs`;
 - impact;
 - confidence;

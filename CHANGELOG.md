@@ -7,6 +7,8 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated recommendation list tables now show a single recommendation number
+  column (`#`) instead of duplicate `Rank` and `#` columns.
 - Generated Evaluation run reports now emphasize the full Findings and
   Recommendations report links under the capped Top Findings and Top
   Recommendations tables, and show the complete ranked count for each linked

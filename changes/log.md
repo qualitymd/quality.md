@@ -3,6 +3,34 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0178 - Recommendation Number Columns](archive/0178-recommendation-number-columns.md).
+  Generated recommendation list tables now use `#` as the single visible
+  recommendation number column and no longer duplicate it with `Rank`.
+
+- **In-Review**: Completed implementation for
+  [0178 - Recommendation Number Columns](archive/0178-recommendation-number-columns.md).
+  Report rendering, durable report specs, tests, docs, changelog, and
+  report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0178 - Recommendation Number Columns](archive/0178-recommendation-number-columns.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated recommendation table rendering, durable report specs, tests, docs,
+  and generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0178-recommendation-number-columns/design.md) for
+  [0178 - Recommendation Number Columns](archive/0178-recommendation-number-columns.md).
+  The design removes duplicate recommendation ordinal columns in Markdown table
+  rendering without changing structured ranking data.
+
+- **Draft**: Created
+  [0178 - Recommendation Number Columns](archive/0178-recommendation-number-columns.md)
+  with its
+  [functional spec](archive/0178-recommendation-number-columns/spec.md). The
+  case keeps `#` as the single visible recommendation number in list tables.
+
+- **Done**: Implemented and archived
   [0177 - Report Full List Links](archive/0177-report-full-list-links.md).
   Generated run reports now emphasize the full Findings and Recommendations
   report links below capped top-list tables and show complete ranked counts for
