@@ -62,11 +62,11 @@ rendered from persisted Advice data and the model snapshot, not from YAML
 frontmatter or Markdown body content in other generated reports.
 
 Generated Markdown report frontmatter **MUST** contain only report identity
-fields. Every generated Markdown report **MUST** end with a `Source Data`
-section listing the structured Evaluation payload files used as source data for
-the specific report artifact. The generated
-`data/evaluation-output-result.json` index **MUST NOT** be listed as report
-source data unless a report is directly rendered from it.
+fields, and its `title` **MUST** match the report's visible H1 title text. Every
+generated Markdown report **MUST** end with a `Source Data` section listing the
+structured Evaluation payload files used as source data for the specific report
+artifact. The generated `data/evaluation-output-result.json` index **MUST NOT**
+be listed as report source data unless a report is directly rendered from it.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

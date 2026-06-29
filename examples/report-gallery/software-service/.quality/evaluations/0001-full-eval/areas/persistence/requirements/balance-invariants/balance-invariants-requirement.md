@@ -1,6 +1,6 @@
 ---
 type: Requirement Evaluation Report
-title: ledger mutations preserve balance invariants
+title: "Requirement: ledger mutations preserve balance invariants"
 ---
 
 # Requirement: ledger mutations preserve balance invariants

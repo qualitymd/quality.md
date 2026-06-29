@@ -1,6 +1,6 @@
 ---
 type: Area Evaluation Report
-title: Agent Harness
+title: "Area: Agent Harness"
 ---
 
 # Area: Agent Harness

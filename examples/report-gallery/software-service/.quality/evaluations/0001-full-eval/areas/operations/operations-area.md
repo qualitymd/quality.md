@@ -1,6 +1,6 @@
 ---
 type: Area Evaluation Report
-title: Operations
+title: "Area: Operations"
 ---
 
 # Area: Operations

@@ -1,6 +1,6 @@
 ---
 type: Factor Evaluation Report
-title: Integrity
+title: "Factor: Integrity"
 ---
 
 # Factor: Integrity

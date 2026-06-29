@@ -1,6 +1,6 @@
 ---
 type: Recommendation Report
-title: Rehearse migration rollback after schema changes
+title: "Recommendation: Rehearse migration rollback after schema changes"
 ---
 
 # Recommendation: Rehearse migration rollback after schema changes

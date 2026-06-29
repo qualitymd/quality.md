@@ -3,6 +3,11 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0167 - Report Frontmatter H1 Titles](../changes/archive/0167-report-frontmatter-h1-titles.md).
+  Generated Evaluation Markdown report frontmatter `title` values now match the
+  visible H1 document title, while `type` remains the report artifact taxonomy.
+
+- **Revision**: Implemented durable spec changes for
   [0166 - Setup Factor Proposal Checkpoint](../changes/archive/0166-setup-factor-proposal-checkpoint.md).
   Setup now includes a factor proposal checkpoint before final review, and the
   durable factor-guide contract names factor-set qualities and individual-factor

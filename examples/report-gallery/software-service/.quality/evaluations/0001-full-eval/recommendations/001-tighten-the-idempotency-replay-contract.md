@@ -1,6 +1,6 @@
 ---
 type: Recommendation Report
-title: Tighten the idempotency replay contract
+title: "Recommendation: Tighten the idempotency replay contract"
 ---
 
 # Recommendation: Tighten the idempotency replay contract

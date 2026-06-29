@@ -174,7 +174,7 @@ Use only a stable report `type` and a human-friendly `title`:
 ```yaml
 ---
 type: Requirement Evaluation Report
-title: mutation endpoints are idempotent under retry
+title: "Requirement: mutation endpoints are idempotent under retry"
 ---
 ```
 
@@ -183,9 +183,10 @@ Good frontmatter fields:
 - `type`;
 - `title`.
 
-The frontmatter `title` should name the report subject without repeating the
-type prefix. Keep prefixes such as `Requirement:` or `Area:` in the visible H1,
-where they help human scanning.
+The frontmatter `title` should match the visible H1 title text without the
+leading Markdown `#` marker. Keep prefixes such as `Requirement:` or `Area:` in
+both the H1 and frontmatter title when they are part of the report document
+title; the `type` field already carries the report artifact taxonomy.
 
 Use report types that name the reported subject and keep the word `Report` in
 the type so report artifacts do not collide with Model concepts:
@@ -208,7 +209,7 @@ the run entrypoint and includes findings, recommendations, scope, coverage, and
 subject report links.
 
 Avoid frontmatter fields for anything available from the linked JSON payloads or
-visible Markdown header, especially:
+visible Markdown body, especially:
 
 - generated time;
 - run identity;
@@ -226,10 +227,10 @@ visible Markdown header, especially:
 - rendered display labels.
 
 This keeps the first lines of a report readable in editors that expose
-frontmatter and keeps the structured Evaluation data as the single source of
-truth. If a future consumer needs richer machine access, use
-`data/evaluation-output-result.json` and the payloads it indexes instead of
-expanding generated report frontmatter.
+frontmatter, makes frontmatter `title` the same document title as the H1, and
+keeps the structured Evaluation data as the single source of truth. If a future
+consumer needs richer machine access, use `data/evaluation-output-result.json`
+and the payloads it indexes instead of expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
 

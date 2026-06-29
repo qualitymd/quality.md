@@ -1,6 +1,6 @@
 ---
 type: Area Evaluation Report
-title: Ledger Persistence
+title: "Area: Ledger Persistence"
 ---
 
 # Area: Ledger Persistence

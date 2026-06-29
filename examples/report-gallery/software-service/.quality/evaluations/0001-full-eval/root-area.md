@@ -1,6 +1,6 @@
 ---
 type: Area Evaluation Report
-title: LedgerLite Service
+title: "Area: LedgerLite Service"
 ---
 
 # Area: LedgerLite Service

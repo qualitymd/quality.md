@@ -3,6 +3,39 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0167 - Report Frontmatter H1 Titles](archive/0167-report-frontmatter-h1-titles.md).
+  Generated Evaluation Markdown report frontmatter `title` values now match the
+  visible H1 document title, durable specs and report design guidance are
+  aligned, tests cover the title contract, and report-gallery output has been
+  regenerated.
+
+- **In-Review**: Completed implementation for
+  [0167 - Report Frontmatter H1 Titles](archive/0167-report-frontmatter-h1-titles.md).
+  Generated report frontmatter titles now match visible H1 document titles;
+  durable report specs, report design guidance, tests, and report-gallery output
+  are aligned for review.
+
+- **In-Progress**: Advanced
+  [0167 - Report Frontmatter H1 Titles](archive/0167-report-frontmatter-h1-titles.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable report specs, report design guidance,
+  tests, and report-gallery output.
+
+- **Design**: Added the
+  [design doc](archive/0167-report-frontmatter-h1-titles/design.md) for
+  [0167 - Report Frontmatter H1 Titles](archive/0167-report-frontmatter-h1-titles.md).
+  The design derives frontmatter `title` from the shared report `Heading` value
+  so metadata and the visible H1 use one document-title source.
+
+- **Draft**: Created
+  [0167 - Report Frontmatter H1 Titles](archive/0167-report-frontmatter-h1-titles.md)
+  with its
+  [functional spec](archive/0167-report-frontmatter-h1-titles/spec.md). The
+  case aligns generated report frontmatter `title` values with visible H1
+  document titles while preserving `type` as the report artifact taxonomy and
+  keeping report frontmatter tiny.
+
+- **Done**: Implemented and archived
   [0166 - Setup Factor Proposal Checkpoint](archive/0166-setup-factor-proposal-checkpoint.md).
   Setup now teaches and applies Factor-set and individual-Factor desiderata,
   presents a draft factor proposal checkpoint before final review, carries the

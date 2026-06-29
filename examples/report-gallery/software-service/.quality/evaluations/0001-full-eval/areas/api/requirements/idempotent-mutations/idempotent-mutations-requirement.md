@@ -1,6 +1,6 @@
 ---
 type: Requirement Evaluation Report
-title: mutation endpoints are idempotent under retry
+title: "Requirement: mutation endpoints are idempotent under retry"
 ---
 
 # Requirement: mutation endpoints are idempotent under retry

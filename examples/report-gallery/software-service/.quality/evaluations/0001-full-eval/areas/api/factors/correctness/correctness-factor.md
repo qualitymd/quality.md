@@ -1,6 +1,6 @@
 ---
 type: Factor Evaluation Report
-title: Correctness
+title: "Factor: Correctness"
 ---
 
 # Factor: Correctness

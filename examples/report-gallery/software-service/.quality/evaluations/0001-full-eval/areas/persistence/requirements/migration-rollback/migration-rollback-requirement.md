@@ -1,6 +1,6 @@
 ---
 type: Requirement Evaluation Report
-title: migrations have rehearsed rollback paths
+title: "Requirement: migrations have rehearsed rollback paths"
 ---
 
 # Requirement: migrations have rehearsed rollback paths

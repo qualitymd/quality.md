@@ -1,6 +1,6 @@
 ---
 type: Factor Evaluation Report
-title: Observability
+title: "Factor: Observability"
 ---
 
 # Factor: Observability

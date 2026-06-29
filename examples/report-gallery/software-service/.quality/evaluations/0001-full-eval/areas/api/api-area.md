@@ -1,6 +1,6 @@
 ---
 type: Area Evaluation Report
-title: Public API
+title: "Area: Public API"
 ---
 
 # Area: Public API

@@ -45,11 +45,13 @@ folder.
 Runtime evaluation artifacts are raw outputs in the evaluated repository.
 Generated Markdown reports carry identity frontmatter and visible bottom
 `Source Data` sections as defined by the
-[Evaluation report tree](../../evaluation/reports/report-tree.md). The
-`Source Data` section lists structured Evaluation payloads used to render the
-specific report artifact. The Evaluation run folder is not yet a full OKF
-bundle: it does not require generated `index.md`, `schema.md`, or `log.md`
-files, and generated reports do not require registration in `specs/schema.md`.
+[Evaluation report tree](../../evaluation/reports/report-tree.md). Report
+frontmatter `title` matches the visible H1 document title; `type` carries the
+report artifact taxonomy. The `Source Data` section lists structured Evaluation
+payloads used to render the specific report artifact. The Evaluation run folder
+is not yet a full OKF bundle: it does not require generated `index.md`,
+`schema.md`, or `log.md` files, and generated reports do not require
+registration in `specs/schema.md`.
 
 ## Report Generation
 

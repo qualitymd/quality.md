@@ -4,6 +4,13 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0167 - Report Frontmatter H1 Titles](../changes/archive/0167-report-frontmatter-h1-titles.md).
+  Generated report design guidance now treats frontmatter `title` as the same
+  document title as the visible H1, with `type` carrying the report artifact
+  taxonomy.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0165 - Run IDs and Artifact Numbering](../changes/archive/0165-run-id-artifact-numbering.md).
   Report examples now show `Run <NNNN>` with a copyable run ID, recommendation
   number columns, and typed recommendation references using the run ID plus

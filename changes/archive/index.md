@@ -701,3 +701,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0166 — Setup Factor Proposal Checkpoint](0166-setup-factor-proposal-checkpoint.md) -
   teaches and applies factor desiderata during setup through a draft factor
   proposal checkpoint before final review (`Done`).
+- [0167 — Report Frontmatter H1 Titles](0167-report-frontmatter-h1-titles.md) -
+  aligns generated report frontmatter `title` values with visible H1 document
+  titles while keeping `type` as the report artifact taxonomy (`Done`).

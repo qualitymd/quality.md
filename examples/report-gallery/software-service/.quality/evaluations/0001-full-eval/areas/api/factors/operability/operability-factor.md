@@ -1,6 +1,6 @@
 ---
 type: Factor Evaluation Report
-title: Operability
+title: "Factor: Operability"
 ---
 
 # Factor: Operability

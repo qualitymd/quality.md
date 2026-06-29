@@ -447,7 +447,6 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 	data := reportSourceData(append([]string{runManifestPath}, rankedFindingSourceData(artifacts, 0)...)...)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFindingIndex,
-		Title:      "Findings",
 		Heading:    "Findings",
 		ReportPath: "findings.md",
 		Run:        artifacts.Manifest,
@@ -473,7 +472,6 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 	indexData := reportSourceData(append([]string{runManifestPath}, rankedRecommendationSourceData(artifacts, 0)...)...)
 	renderReportHeader(&index, reportHeader{
 		Type:       reportTypeRecommendationIndex,
-		Title:      "Recommendations",
 		Heading:    "Recommendations",
 		ReportPath: "recommendations.md",
 		Run:        artifacts.Manifest,
@@ -527,7 +525,6 @@ const (
 
 type reportHeader struct {
 	Type        string
-	Title       string
 	Heading     string
 	ReportPath  string
 	Run         *RunManifest
@@ -545,7 +542,7 @@ type reportJumpLink struct {
 func renderReportHeader(b *strings.Builder, header reportHeader) {
 	b.WriteString(md.Frontmatter(
 		md.FrontmatterField{Name: "type", Value: header.Type},
-		md.FrontmatterField{Name: "title", Value: header.Title},
+		md.FrontmatterField{Name: "title", Value: header.Heading},
 	))
 	b.WriteString("# " + header.Heading + "\n\n")
 	if line := reportRunLine(header.ReportPath, header.Run); line != "" {
@@ -910,7 +907,6 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 	data := reportSourceData(append([]string{runManifestPath, recDataPath, rankingPath}, recommendationTraceSourceData(artifacts, rec)...)...)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeRecommendation,
-		Title:      firstString(rec, "title"),
 		Heading:    "Recommendation: " + firstString(rec, "title"),
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
@@ -979,7 +975,6 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	data := runReportSourceData(artifacts, plan)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeEvaluationOverview,
-		Title:      title,
 		Heading:    "Evaluation Report: Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
@@ -1046,7 +1041,6 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	data := areaReportSourceData(artifacts, area)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeAreaEvaluation,
-		Title:      title,
 		Heading:    "Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
@@ -1094,7 +1088,6 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	data := factorReportSourceData(artifacts, factor)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFactorEvaluation,
-		Title:      title,
 		Heading:    "Factor: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
@@ -1154,7 +1147,6 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	data := requirementReportSourceData(req)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeRequirementEvaluation,
-		Title:      title,
 		Heading:    "Requirement: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,

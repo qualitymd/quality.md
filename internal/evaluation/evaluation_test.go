@@ -294,7 +294,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		t.Fatalf("reading report.md: %v", err)
 	}
 	if !strings.Contains(string(runReport), "type: Evaluation Overview Report\n") ||
-		!strings.Contains(string(runReport), "title: Test model\n") ||
+		!strings.Contains(string(runReport), "title: \"Evaluation Report: Area: Test model\"\n") ||
 		!strings.Contains(string(runReport), "# Evaluation Report: Area: Test model") {
 		t.Fatalf("report.md = %s, want run report title", runReport)
 	}
@@ -317,7 +317,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		t.Fatalf("reading root-area.md: %v", err)
 	}
 	if !strings.Contains(string(report), "type: Area Evaluation Report\n") ||
-		!strings.Contains(string(report), "title: Test model\n") ||
+		!strings.Contains(string(report), "title: \"Area: Test model\"\n") ||
 		!strings.Contains(string(report), "# Area: Test model") ||
 		!strings.Contains(string(report), "Area: [Test model](root-area.md)") {
 		t.Fatalf("root-area.md = %s, want kind-prefixed title before Area trail", report)
@@ -437,7 +437,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	}
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "type: Evaluation Overview Report\n")
-	assertContains(t, runReport, "title: Navigation model\n")
+	assertContains(t, runReport, "title: \"Evaluation Report: Area: Navigation model\"\n")
 	assertNotContains(t, runReport, "\ndata:\n")
 	assertContains(t, runReport, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
 	assertContains(t, runReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
@@ -482,7 +482,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 
 	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
 	assertContains(t, recommendationReport, "type: Recommendation Report\n")
-	assertContains(t, recommendationReport, "title: Review the next quality bar\n")
+	assertContains(t, recommendationReport, "title: \"Recommendation: Review the next quality bar\"\n")
 	assertNotContains(t, recommendationReport, "\ndata:\n")
 	assertContains(t, recommendationReport, "## Source Data\n\n- [data/run-manifest.json](../data/run-manifest.json)")
 	assertContains(t, recommendationReport, "- [data/advice/recommendations/001/recommendation-result.json](../data/advice/recommendations/001/recommendation-result.json)")
@@ -501,7 +501,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 
 	rootReport := readReport(t, runPath, "root-area.md")
 	assertContains(t, rootReport, "type: Area Evaluation Report\n")
-	assertContains(t, rootReport, "title: Navigation model\n")
+	assertContains(t, rootReport, "title: \"Area: Navigation model\"\n")
 	assertContains(t, rootReport, "# Area: Navigation model")
 	assertContains(t, rootReport, "Area: [Navigation model](root-area.md)")
 	assertNotContains(t, rootReport, "Path: `/`")
@@ -534,7 +534,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 
 	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
 	assertContains(t, factorReport, "type: Factor Evaluation Report\n")
-	assertContains(t, factorReport, "title: Reliability\n")
+	assertContains(t, factorReport, "title: \"Factor: Reliability\"\n")
 	assertContains(t, factorReport, "# Factor: Reliability")
 	assertContains(t, factorReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
@@ -571,7 +571,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 
 	requirementReport := readReport(t, runPath, "requirements/has-tests/has-tests-requirement.md")
 	assertContains(t, requirementReport, "type: Requirement Evaluation Report\n")
-	assertContains(t, requirementReport, "title: Has tests\n")
+	assertContains(t, requirementReport, "title: \"Requirement: Has tests\"\n")
 	assertContains(t, requirementReport, "# Requirement: Has tests")
 	assertContains(t, requirementReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, requirementReport, "Factors: [reliability](../../factors/reliability/reliability-factor.md)")

@@ -1,6 +1,6 @@
 ---
 type: Factor Evaluation Report
-title: Recoverability
+title: "Factor: Recoverability"
 ---
 
 # Factor: Recoverability

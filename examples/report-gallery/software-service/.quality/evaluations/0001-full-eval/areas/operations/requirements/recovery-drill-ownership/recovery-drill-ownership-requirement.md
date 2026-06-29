@@ -1,6 +1,6 @@
 ---
 type: Requirement Evaluation Report
-title: recovery drills have current owners
+title: "Requirement: recovery drills have current owners"
 ---
 
 # Requirement: recovery drills have current owners

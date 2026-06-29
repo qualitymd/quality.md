@@ -1,6 +1,6 @@
 ---
 type: Factor Evaluation Report
-title: Agent Accessibility
+title: "Factor: Agent Accessibility"
 ---
 
 # Factor: Agent Accessibility

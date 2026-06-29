@@ -97,9 +97,9 @@ The `type` field **MUST** use this report-subject taxonomy:
 Report frontmatter **MUST NOT** use Model concept names such as `Area`,
 `Factor`, or `Requirement` as the report `type`.
 
-The `title` field **MUST** name the report subject without the visible H1's
-report-kind prefix. For example, a Requirement report frontmatter title uses the
-Requirement title alone, while its visible H1 renders as
+The `title` field **MUST** equal the plain-text content of the report's H1 title
+line, with the leading Markdown `#` marker removed. For example, a Requirement
+report frontmatter title uses `Requirement: <title>`, matching the visible H1
 `# Requirement: <title>`.
 
 Report frontmatter **MUST NOT** duplicate generated time, run identity, model
@@ -108,10 +108,12 @@ drivers, findings, recommendations, limits, evidence, or rendered display
 labels when those values are available from structured Evaluation payloads or
 the visible Markdown body.
 
-> Rationale: `type` and subject-only `title` make generated reports
-> OKF-compatible enough for lightweight discovery without turning the first
-> screen of every report into a source-data manifest. Report-local source-data
-> pointers live in the visible bottom section instead. — 0158, 0162
+> Rationale: `type` records the report artifact kind, while `title` records the
+> generated Markdown document title a reader sees first. Keeping frontmatter
+> title equal to the H1 avoids a second subject-only title system without
+> turning the first screen of every report into a source-data manifest.
+> Report-local source-data pointers live in the visible bottom section instead.
+> — 0158, 0162, 0167
 
 ## Source Data Section
 
@@ -252,7 +254,8 @@ after frontmatter. The H1 **MUST** prefix the subject display title with the
 report kind: `Area:` for root and non-root Area reports, `Factor:` for Factor
 reports, `Requirement:` for Requirement reports, and `Recommendation:` for
 recommendation detail reports. The run-level H1 **MUST** identify the report as
-an Evaluation Report.
+an Evaluation Report. The H1 title line and frontmatter `title` **MUST** use the
+same plain-text title.
 
 Every report **MUST** render a run context line and a report navigation line near
 the H1. The report navigation line **MUST** link to the run overview

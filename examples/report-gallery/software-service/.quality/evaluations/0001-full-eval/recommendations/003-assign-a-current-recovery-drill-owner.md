@@ -1,6 +1,6 @@
 ---
 type: Recommendation Report
-title: Assign a current recovery drill owner
+title: "Recommendation: Assign a current recovery drill owner"
 ---
 
 # Recommendation: Assign a current recovery drill owner
