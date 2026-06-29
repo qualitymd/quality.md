@@ -3,6 +3,35 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0177 - Report Full List Links](archive/0177-report-full-list-links.md).
+  Generated run reports now emphasize the full Findings and Recommendations
+  report links below capped top-list tables and show complete ranked counts for
+  each linked report.
+
+- **In-Review**: Completed implementation for
+  [0177 - Report Full List Links](archive/0177-report-full-list-links.md).
+  Renderer code, durable report specs, report design guidance, tests, changelog,
+  and report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0177 - Report Full List Links](archive/0177-report-full-list-links.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable report specs, tests, and generated
+  examples.
+
+- **Design**: Added the
+  [design doc](archive/0177-report-full-list-links/design.md) for
+  [0177 - Report Full List Links](archive/0177-report-full-list-links.md). The
+  design keeps the change local to run-report rendering, deriving total counts
+  from complete ranked Finding and Recommendation artifacts.
+
+- **Draft**: Created
+  [0177 - Report Full List Links](archive/0177-report-full-list-links.md) with
+  its [functional spec](archive/0177-report-full-list-links/spec.md). The case
+  makes `report.md` full-list links for Findings and Recommendations more
+  scannable and adds total ranked counts beside those links.
+
+- **Done**: Implemented and archived
   [0176 - Recommendation IDs and Numbers](archive/0176-recommendation-ids-and-numbers.md).
   Evaluation recommendations now persist opaque `qrec_...` IDs for JSON data
   paths and structured ranking/coverage refs; generated reports derive

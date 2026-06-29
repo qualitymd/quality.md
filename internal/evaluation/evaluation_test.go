@@ -3,6 +3,7 @@ package evaluation
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -501,12 +502,12 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 	assertContains(t, runReport, "Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.")
 	assertContains(t, runReport, "Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.")
-	assertContains(t, runReport, "Full Findings report: [findings.md](findings.md)")
+	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total)")
 	assertContains(t, runReport, "## Top Recommendations")
 	assertContains(t, runReport, "| Rank | # | Recommendation | Area / Factors | Impact | Reason |")
 	assertContains(t, runReport, "| 1 | 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | The quality model stays aligned with the evaluated evidence and next bar. |")
 	assertContains(t, runReport, "Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.")
-	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
+	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (1 total)")
 	assertNotContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
 	assertContains(t, runReport, "| **[▦ Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
@@ -697,6 +698,31 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	if build.RatingResult.Level != "target" {
 		t.Fatalf("BuildReport().RatingResult.Level = %q, want stable rating level ID", build.RatingResult.Level)
 	}
+}
+
+func TestEvaluationRunReportFullListLinksUseTotalRankedCounts(t *testing.T) {
+	repo := testRepoWithModel(t, testModel)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, result.Path)
+	if _, err := SetData(runPath, batchPayloads(totalCountReportPayloads(11)...), DataSetOptions{}); err != nil {
+		t.Fatalf("SetData(total-count batch) error = %v", err)
+	}
+	if _, err := BuildReport(runPath); err != nil {
+		t.Fatalf("BuildReport() error = %v", err)
+	}
+
+	runReport := readReport(t, runPath, "report.md")
+	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (11 total)")
+	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (11 total)")
+	assertContains(t, runReport, "| 10 | [Finding 10.](requirements/has-tests/has-tests-requirement.md#finding-gap-10)")
+	assertNotContains(t, runReport, "| 11 | [Finding 11.](requirements/has-tests/has-tests-requirement.md#finding-gap-11)")
+	assertContains(t, readReport(t, runPath, "findings.md"), "| 11 | [Finding 11.](requirements/has-tests/has-tests-requirement.md#finding-gap-11)")
+	assertContains(t, runReport, "| 10 | 10 | [Recommendation 10](recommendations/010-recommendation-10.md)")
+	assertNotContains(t, runReport, "| 11 | 11 | [Recommendation 11](recommendations/011-recommendation-11.md)")
+	assertContains(t, readReport(t, runPath, "recommendations.md"), "| 11 | 11 | [Recommendation 11](recommendations/011-recommendation-11.md)")
 }
 
 func TestScopedAreaEvaluationBuildsRunReportWithoutRootArea(t *testing.T) {
@@ -1847,6 +1873,39 @@ func noFindingAdvicePayloads(traceRef string) []string {
 		`{"schemaVersion":3,"kind":"RecommendationResult","id":"qrec_nextbar1","title":"Review the next quality bar","description":"Review the analyzed area or factor against the next intended quality bar.","background":"The evaluation met the current bar, so the next useful step is deciding whether the quality bar should rise or be clarified.","expectedValue":"The quality model remains current without inventing remediation work.","doneCriterion":"The review either confirms the current bar or records a clearer next bar.","impact":"medium","confidence":"medium","traceRefs":[` + traceRef + `]}`,
 		`{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":"qrec_nextbar1","impact":"medium","confidence":"medium","rationale":"This is the only recommendation and keeps the evaluation actionable."}],"findingCoverage":[],"rationale":"No finding coverage entries are needed because the evaluation produced no findings."}`,
 	}
+}
+
+func totalCountReportPayloads(count int) []string {
+	var findings []string
+	var orderedFindings []string
+	var recommendationPayloads []string
+	var orderedRecommendations []string
+	var coverage []string
+	for i := 1; i <= count; i++ {
+		findingID := fmt.Sprintf("gap-%d", i)
+		findingRef := fmt.Sprintf(`{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[%s]"}`, findingID)
+		finding := testFindingCore(findingID, "gap", "high", "high", fmt.Sprintf("Finding %d.", i))
+		findings = append(findings, testFindingJSON(finding))
+		orderedFindings = append(orderedFindings, fmt.Sprintf(`{"rank":%d,"findingRef":%s,"tier":"P1","rationale":"Finding %d is ranked."}`, i, findingRef, i))
+
+		recommendationID := fmt.Sprintf("qrec_count%d", i)
+		recommendationPayloads = append(recommendationPayloads, fmt.Sprintf(`{"schemaVersion":3,"kind":"RecommendationResult","id":"%s","title":"Recommendation %d","description":"Address finding %d.","background":"Finding %d informs this recommendation.","expectedValue":"Recommendation %d improves the evaluated quality bar.","doneCriterion":"Recommendation %d is complete.","impact":"high","confidence":"high","traceRefs":[%s]}`, recommendationID, i, i, i, i, i, findingRef))
+		orderedRecommendations = append(orderedRecommendations, fmt.Sprintf(`{"rank":%d,"recommendationRef":"%s","impact":"high","confidence":"high","rationale":"Recommendation %d is ranked."}`, i, recommendationID, i))
+		coverage = append(coverage, fmt.Sprintf(`{"findingRef":%s,"disposition":"addressed_by_recommendation","recommendationRefs":["%s"],"rationale":"Recommendation %d addresses finding %d."}`, findingRef, recommendationID, i, i))
+	}
+	firstFindingRef := `{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"}`
+	payloads := []string{
+		`{"schemaVersion":3,"kind":"EvaluationFrame"}`,
+		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
+		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root local work meets the bar.","ratingDrivers":[{"description":"Requirement rating supports root local analysis.","effect":"supports target","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Root work meets the bar overall.","ratingDrivers":[{"description":"Requirement rating supports root analysis.","effect":"supports target","inputRefs":[{"kind":"RequirementRatingResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"}}`,
+		`{"schemaVersion":3,"kind":"RequirementEvaluationFrame","subject":{"requirementId":"requirement:root::has-tests"}}`,
+		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","confidence":"high","summary":"Findings are present.","findings":[` + strings.Join(findings, ",") + `]}`,
+		`{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","confidence":"high","rationale":"Findings meet the bar.","ratingDrivers":[{"description":"Focused findings support target.","effect":"supports target","ratingLevelId":"rating:target","inputRefs":[` + firstFindingRef + `]}]}`,
+		`{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[` + strings.Join(orderedFindings, ",") + `],"rationale":"Findings were ranked for total-count coverage."}`,
+	}
+	payloads = append(payloads, recommendationPayloads...)
+	payloads = append(payloads, `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[`+strings.Join(orderedRecommendations, ",")+`],"findingCoverage":[`+strings.Join(coverage, ",")+`],"rationale":"Recommendations were ranked for total-count coverage."}`)
+	return payloads
 }
 
 func readReport(t *testing.T, runPath, rel string) string {

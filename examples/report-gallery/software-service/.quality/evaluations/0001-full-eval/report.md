@@ -65,7 +65,7 @@ Rows: `▦` Area, `□` Factor.
 Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
 Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 
-Full Findings report: [findings.md](findings.md)
+**Full findings report:** [findings.md](findings.md) (7 total)
 
 ## Top Recommendations
 
@@ -77,7 +77,7 @@ Full Findings report: [findings.md](findings.md)
 
 Impact: ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low.
 
-Full Recommendations report: [recommendations.md](recommendations.md)
+**Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 
 ## Primary Source Data
 

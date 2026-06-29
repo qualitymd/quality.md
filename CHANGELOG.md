@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation run reports now emphasize the full Findings and
+  Recommendations report links under the capped Top Findings and Top
+  Recommendations tables, and show the complete ranked count for each linked
+  report.
 - Recommendation results now use opaque `qrec_...` IDs for JSON data paths and
   structured ranking/coverage refs. Generated reports reserve recommendation
   numbers for ranked order, so "recommendation #1" means the first ranked

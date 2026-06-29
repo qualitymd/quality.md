@@ -732,3 +732,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0176 — Recommendation IDs and Numbers](0176-recommendation-ids-and-numbers.md) -
   splits opaque recommendation identity from user-facing recommendation numbers
   so Recommendation #1 means the first ranked recommendation (`Done`).
+- [0177 — Report Full List Links](0177-report-full-list-links.md) - makes
+  run-report links to full findings and recommendations lists more scannable and
+  shows total ranked counts (`Done`).

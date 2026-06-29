@@ -334,6 +334,17 @@ severity enum values.
 The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
 link to `findings.md` and `recommendations.md` when the report tree is built.
+Because the run-report tables are capped overview tables, those full-list links
+**MUST** render as emphasized sentence-case labels followed by filename-as-label
+links and the complete ranked count outside the link text:
+
+```markdown
+**Full findings report:** [findings.md](findings.md) (7 total)
+**Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
+```
+
+The count **MUST** reflect the complete ranked list for the linked report, not
+the number of rows rendered in the capped `report.md` table.
 
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped

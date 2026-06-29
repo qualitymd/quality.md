@@ -1006,11 +1006,11 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString("## Top Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
 	writeLocalKeys(&b, fixedEnumKeyLine("Type", findingTypeValues), fixedEnumKeyLine("Severity", findingSeverityValues))
-	b.WriteString("Full Findings report: " + reportLink(reportPath, "findings.md", "findings.md") + "\n\n")
+	writeFullListReportLink(&b, reportPath, "Full findings report", "findings.md", len(artifacts.rankedFindings()))
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
 	writeLocalKeys(&b, fixedEnumKeyLine("Impact", recommendationImpactValues))
-	b.WriteString("Full Recommendations report: " + reportLink(reportPath, "recommendations.md", "recommendations.md") + "\n\n")
+	writeFullListReportLink(&b, reportPath, "Full recommendations report", "recommendations.md", len(artifacts.rankedRecommendations()))
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
 }
@@ -1063,6 +1063,10 @@ func writeRunReportKeyDetails(b *strings.Builder, spec *model.Spec, artifacts *e
 		fmt.Sprintf("%d ranked", len(artifacts.rankedRecommendations())),
 	))
 	b.WriteString("\n")
+}
+
+func writeFullListReportLink(b *strings.Builder, fromReport, label, target string, total int) {
+	fmt.Fprintf(b, "**%s:** %s (%d total)\n\n", label, reportLink(fromReport, target, target), total)
 }
 
 func writeRunReportCoverageNote(b *strings.Builder, reports []evaluationRenderedReport, reportPath string) {
