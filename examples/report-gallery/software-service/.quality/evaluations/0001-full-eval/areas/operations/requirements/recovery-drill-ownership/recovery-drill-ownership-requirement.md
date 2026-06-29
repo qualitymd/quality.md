@@ -27,7 +27,7 @@ Recovery ownership is visible but ambiguous across the sampled records.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `unknown-001` | The current owner for ledger recovery drills is ambiguous. | ❓ Unknown | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
+| `unknown-001` | The current owner for ledger recovery drills is ambiguous. | ❓ Unknown | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
 
 ## Finding Details
 
@@ -37,7 +37,7 @@ Recovery ownership is visible but ambiguous across the sampled records.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 6 / 7 | P2 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 6 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 
@@ -50,7 +50,7 @@ The synthetic recovery calendar names a team, while the incident playbook names 
 
 #### Basis
 
-Status: Not Assessed
+Status: ⚪ Not Assessed
 
 The available synthetic records conflict, so current ownership cannot be verified.
 

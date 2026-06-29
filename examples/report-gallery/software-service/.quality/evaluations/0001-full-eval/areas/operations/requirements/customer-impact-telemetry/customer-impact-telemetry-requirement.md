@@ -27,7 +27,7 @@ The sampled telemetry explains customer impact for core failure modes.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-003` | Health dashboards connect service errors to failed customer actions. | ✅ Strength | 🔵 Low | 🔵 Medium | The finding supports the target observability rating. | Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
+| `strength-003` | Health dashboards connect service errors to failed customer actions. | ✅ Strength | 🔵 Low | 🔵 Medium | The finding supports the target observability rating. | ✅ Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
 
 ## Finding Details
 
@@ -37,7 +37,7 @@ The sampled telemetry explains customer impact for core failure modes.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 5 / 7 | P3 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 5 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 
@@ -50,7 +50,7 @@ Synthetic dashboards include failed ledger mutations, retry exhaustion, and queu
 
 #### Basis
 
-Status: Verified
+Status: ✅ Verified
 
 The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions.
 

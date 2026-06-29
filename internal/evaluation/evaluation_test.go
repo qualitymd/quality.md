@@ -615,7 +615,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "Factors: [reliability](../../factors/reliability/reliability-factor.md)")
 	assertContains(t, requirementReport, `<a id="finding-strength-1"></a>`)
 	assertContains(t, requirementReport, "| Advice Rank | Tier | Ranking Rationale |")
-	assertContains(t, requirementReport, "| 1 / 1 | P1 | This finding most directly informs next advice. |")
+	assertContains(t, requirementReport, "| 1 / 1 | 🔴 P1 Highest | This finding most directly informs next advice. |")
 	assertNotContains(t, requirementReport, "Name: `has-tests`")
 	assertNotContains(t, requirementReport, "\ndata:\n")
 	assertContains(t, requirementReport, "## Primary Source Data\n\n- [data/run-manifest.json](../../data/run-manifest.json)")
@@ -1073,6 +1073,51 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 			want: `severity = "info", want one of critical, high, medium, low`,
 		},
 		{
+			name: "requirement assessment invalid status",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"done","findings":[` + testRequirementFindingJSON(nil) + `]}`,
+			want: `status = "done", want one of assessed, partially_assessed, not_assessed, blocked`,
+		},
+		{
+			name: "requirement rating invalid status",
+			raw:  `{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"done","ratingLevelId":"rating:target","ratingDrivers":[]}`,
+			want: `status = "done", want one of rated, not_rated, blocked`,
+		},
+		{
+			name: "analysis invalid status",
+			raw:  `{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"rated"},"localAndDescendantAnalysis":{"status":"analyzed"}}`,
+			want: `status = "rated", want one of analyzed, empty, not_analyzed, blocked`,
+		},
+		{
+			name: "requirement finding invalid type",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"type": "evidence"}) + `]}`,
+			want: `type = "evidence", want one of strength, gap, risk, unknown, note`,
+		},
+		{
+			name: "requirement finding invalid confidence",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"confidence": "certain"}) + `]}`,
+			want: `confidence = "certain", want one of high, medium, low, none`,
+		},
+		{
+			name: "requirement finding invalid basis status",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"basis": map[string]any{"status": "confirmed", "statement": "Basis."}}) + `]}`,
+			want: `status = "confirmed", want one of verified, plausible, not_assessed, not_applicable`,
+		},
+		{
+			name: "recommendation invalid impact",
+			raw:  `{"schemaVersion":3,"kind":"RecommendationResult","title":"Review","description":"Review it.","background":"Context.","expectedValue":"Value.","doneCriterion":"Done.","impact":"urgent","confidence":"high","traceRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"}]}`,
+			want: `impact = "urgent", want one of very_high, high, medium, low`,
+		},
+		{
+			name: "finding ranking invalid tier",
+			raw:  `{"schemaVersion":3,"kind":"FindingRankingResult","orderedFindings":[{"rank":1,"findingRef":{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"},"tier":"P0","rationale":"Ranked."}]}`,
+			want: `tier = "P0", want one of P1, P2, P3, P4`,
+		},
+		{
+			name: "finding coverage invalid disposition",
+			raw:  `{"schemaVersion":3,"kind":"RecommendationRankingResult","orderedRecommendations":[{"rank":1,"recommendationRef":1,"impact":"high","confidence":"high","rationale":"Ranked."}],"findingCoverage":[{"findingRef":{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"},"selector":"findings[gap-1]"},"disposition":"ignored"}]}`,
+			want: `disposition = "ignored", want one of addressed_by_recommendation, not_advice_driving`,
+		},
+		{
 			name: "invented requirement",
 			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::invented","status":"assessed","findings":[]}`,
 			want: "does not resolve in the model",
@@ -1271,7 +1316,7 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if !ok {
 		t.Fatalf("kind schema status enum = %#v, want array", status["enum"])
 	}
-	for _, want := range []string{"assessed", "partially_assessed", "not_assessed", "blocked"} {
+	for _, want := range enumStrings(assessmentStatusValues) {
 		if !jsonArrayContains(statusEnum, want) {
 			t.Fatalf("kind schema status enum = %#v, want %q", statusEnum, want)
 		}
@@ -1289,9 +1334,9 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 		t.Fatalf("requirement schema finding properties = %#v, want object", items["properties"])
 	}
 	for field, wantValues := range map[string][]string{
-		"type":       {"strength", "gap", "risk", "unknown", "note"},
-		"severity":   {"critical", "high", "medium", "low"},
-		"confidence": {"high", "medium", "low", "none"},
+		"type":       enumStrings(findingTypeValues),
+		"severity":   enumStrings(findingSeverityValues),
+		"confidence": enumStrings(confidenceValues),
 	} {
 		prop, ok := findingProps[field].(map[string]any)
 		if !ok {
@@ -1323,7 +1368,7 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if !ok {
 		t.Fatalf("requirement schema basis status enum = %#v, want array", basisStatus["enum"])
 	}
-	for _, want := range []string{"verified", "plausible", "not_assessed", "not_applicable"} {
+	for _, want := range enumStrings(findingBasisStatusValues) {
 		if !jsonArrayContains(basisStatusEnum, want) {
 			t.Fatalf("requirement schema basis status enum = %#v, want %q", basisStatusEnum, want)
 		}
@@ -1563,8 +1608,14 @@ func TestReportDisplayTitles(t *testing.T) {
 		{"rating result kind", ratingResultKindTitle(RatingResultNotAssessed), "⚪ Not Assessed"},
 		{"report kind", reportKindTitle(string(ReportKindFactor)), "🧩 Factor"},
 		{"findings report kind", reportKindTitle(string(ReportKindFindings)), "🔝 Findings"},
+		{"recommendations report kind", reportKindTitle(string(ReportKindAdviceIndex)), "📚 Recommendations"},
+		{"recommendation report kind", reportKindTitle(string(ReportKindAdvice)), "💡 Recommendation"},
 		{"boolean", boolTitle(true), "✅ Yes"},
 		{"known finding severity", findingSeverityTitle("high"), "🔴 High"},
+		{"known finding type", findingTypeTitle("strength"), "✅ Strength"},
+		{"known basis status", basisStatusTitle("verified"), "✅ Verified"},
+		{"known ranking tier", findingRankingTierTitle("P1"), "🔴 P1 Highest"},
+		{"known coverage disposition", findingCoverageDispositionTitle("addressed_by_recommendation"), "✅ Addressed by Recommendation"},
 		{"known impact", impactTitle("very_high"), "◆ Very high"},
 		{"unknown impact", impactTitle("future_impact"), "Future Impact"},
 		{"unknown fallback", findingTypeTitle("new_finding_type"), "New Finding Type"},
@@ -1607,6 +1658,55 @@ func TestDataKindDisplayTitlesCoverEvaluationDataKinds(t *testing.T) {
 			t.Fatalf("dataKindTitle(%s) = %q, want explicit title", kind, got)
 		}
 	}
+}
+
+func TestEvaluationEnumCatalogsHaveDisplayMetadata(t *testing.T) {
+	tests := []struct {
+		name   string
+		values []enumValue[string]
+	}{
+		{"data kind", stringEnumValues(dataKindValues)},
+		{"run gap kind", stringEnumValues(runGapKindValues)},
+		{"analysis status", stringEnumValues(analysisStatusValues)},
+		{"assessment status", stringEnumValues(assessmentStatusValues)},
+		{"rating status", stringEnumValues(ratingStatusValues)},
+		{"confidence", stringEnumValues(confidenceValues)},
+		{"rating result kind", stringEnumValues(ratingResultKindValues)},
+		{"report kind", stringEnumValues(reportKindValues)},
+		{"finding type", stringEnumValues(findingTypeValues)},
+		{"finding severity", stringEnumValues(findingSeverityValues)},
+		{"finding basis status", stringEnumValues(findingBasisStatusValues)},
+		{"recommendation impact", stringEnumValues(recommendationImpactValues)},
+		{"finding ranking tier", stringEnumValues(findingRankingTierValues)},
+		{"finding coverage disposition", stringEnumValues(findingCoverageDispositionValues)},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			seen := map[string]struct{}{}
+			for _, value := range tc.values {
+				if value.Value == "" || value.Label == "" || value.Marker == "" {
+					t.Fatalf("%s catalog value = %#v, want value, label, and marker", tc.name, value)
+				}
+				if _, ok := seen[value.Value]; ok {
+					t.Fatalf("%s catalog duplicates value %q", tc.name, value.Value)
+				}
+				seen[value.Value] = struct{}{}
+			}
+		})
+	}
+}
+
+func stringEnumValues[T ~string](values []enumValue[T]) []enumValue[string] {
+	out := make([]enumValue[string], len(values))
+	for i, value := range values {
+		out[i] = enumValue[string]{
+			Value:  string(value.Value),
+			Label:  value.Label,
+			Marker: value.Marker,
+			Rank:   value.Rank,
+		}
+	}
+	return out
 }
 
 func completeRootEvaluationPayloads() []string {

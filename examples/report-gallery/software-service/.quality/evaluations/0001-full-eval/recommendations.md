@@ -11,7 +11,7 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
 | Recommendations | Highest Impact | Coverage |
 | --- | --- | --- |
-| 3 ranked recommendations | ▲ High | 3 addressed / 4 not advice-driving |
+| 3 ranked recommendations | ▲ High | ✅ Addressed by Recommendation: 3 / ⬜ Not Advice Driving: 4 |
 
 | Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -21,8 +21,8 @@ Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
 ## Coverage
 
-- Findings addressed by recommendations: 3
-- Findings not advice-driving: 4
+- ✅ Addressed by Recommendation: 3
+- ⬜ Not Advice Driving: 4
 
 
 ## Legend

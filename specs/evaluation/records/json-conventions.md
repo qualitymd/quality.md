@@ -62,11 +62,14 @@ the identity-resolution rule above. A routine reference (`*Ref` / `inputRefs[]`)
 `kind` names a supported payload kind (per
 [`payload-kinds.md`](payload-kinds.md), the full set the CLI can persist,
 including the CLI-owned `EvaluationOutputResult`). A report reference `kind`
-names a report kind (`run`, `area`, `factor`, `requirement`). The `run` report
-kind identifies the run-level `report.md` and does not include Area, Factor, or
+names one of the report kinds `run`, `area`, `factor`, `requirement`,
+`findings`, `recommendations`, or `recommendation`. The `run` report kind
+identifies the run-level `report.md` and does not include Area, Factor, or
 Requirement identity fields. Area, Factor, and Requirement report refs include
 `areaId`; Factor report refs also include `factorId`; Requirement report refs
-also include `requirementId`.
+also include `requirementId`. `findings` identifies `findings.md`,
+`recommendations` identifies `recommendations.md`, and `recommendation`
+identifies a recommendation detail report.
 
 > Rationale: `kind` was the one required reference field left as a free string
 > while every other closed vocabulary in the contract is enum-validated; pinning
@@ -145,3 +148,6 @@ incomplete.
 
 `none` means no confidence judgment was possible because there was no
 assessment-quality evidence.
+
+Fixed Evaluation enum values **MUST** be written as their canonical persisted
+values, not as report display labels, markers, aliases, or case variants.

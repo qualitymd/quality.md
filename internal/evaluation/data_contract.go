@@ -163,7 +163,7 @@ func init() {
 			Description: "Evidence assessment result for one Requirement.",
 			Object: topContract(DataKindRequirementAssessment,
 				field("requirementId", dataRequirementID, true),
-				field("status", dataString, true, enum("assessed", "partially_assessed", "not_assessed", "blocked")),
+				field("status", dataString, true, enumStrings(assessmentStatusValues)),
 				field("statusReason", dataString, false),
 				field("evidenceSummary", dataString, false),
 				field("summary", dataString, false),
@@ -172,7 +172,7 @@ func init() {
 				field("findings", dataArray, true, arrayOfObject(findingContract())),
 				field("unknowns", dataArray, false, arrayOfObject(unknownContract())),
 				field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
-				field("confidence", dataString, false, enum("high", "medium", "low", "none")),
+				field("confidence", dataString, false, enumStrings(confidenceValues)),
 				field("confidenceReason", dataString, false),
 			),
 			Example: func() map[string]any { return requirementAssessmentExample(DataKindRequirementAssessment) },
@@ -182,7 +182,7 @@ func init() {
 			Description: "Rating result for one Requirement Assessment.",
 			Object: topContract(DataKindRequirementRating,
 				field("requirementId", dataRequirementID, true),
-				field("status", dataString, true, enum("rated", "not_rated", "blocked")),
+				field("status", dataString, true, enumStrings(ratingStatusValues)),
 				field("statusReason", dataString, false),
 				field("ratingLevelId", dataRatingLevelID, false),
 				field("rationale", dataString, false),
@@ -190,7 +190,7 @@ func init() {
 				field("criteriaResults", dataArray, false, arrayOfObject(criteriaResultContract())),
 				field("missingEvidence", dataArray, false, arrayOfObject(unknownContract())),
 				field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
-				field("confidence", dataString, false, enum("high", "medium", "low", "none")),
+				field("confidence", dataString, false, enumStrings(confidenceValues)),
 				field("confidenceReason", dataString, false),
 			),
 			Example: func() map[string]any { return requirementRatingExample(DataKindRequirementRating) },
@@ -270,8 +270,8 @@ func init() {
 				field("background", dataString, true),
 				field("expectedValue", dataString, true),
 				field("doneCriterion", dataString, true),
-				field("impact", dataString, true, enum("very_high", "high", "medium", "low")),
-				field("confidence", dataString, true, enum("high", "medium", "low", "none")),
+				field("impact", dataString, true, enumStrings(recommendationImpactValues)),
+				field("confidence", dataString, true, enumStrings(confidenceValues)),
 				field("traceRefs", dataArray, true, arrayOfObject(routineRefContract()), minItems(1)),
 			),
 			Example: recommendationExample,
@@ -331,7 +331,7 @@ func findingRankingEntryContract() dataObjectContract {
 	return object(
 		field("rank", dataNumber, true),
 		field("findingRef", dataObject, true, routineRefContract()),
-		field("tier", dataString, true, enum("P1", "P2", "P3", "P4")),
+		field("tier", dataString, true, enumStrings(findingRankingTierValues)),
 		field("rationale", dataString, true),
 	)
 }
@@ -340,8 +340,8 @@ func recommendationRankingEntryContract() dataObjectContract {
 	return object(
 		field("rank", dataNumber, true),
 		field("recommendationRef", dataNumber, true),
-		field("impact", dataString, true, enum("very_high", "high", "medium", "low")),
-		field("confidence", dataString, true, enum("high", "medium", "low", "none")),
+		field("impact", dataString, true, enumStrings(recommendationImpactValues)),
+		field("confidence", dataString, true, enumStrings(confidenceValues)),
 		field("rationale", dataString, true),
 	)
 }
@@ -349,7 +349,7 @@ func recommendationRankingEntryContract() dataObjectContract {
 func findingCoverageEntryContract() dataObjectContract {
 	return object(
 		field("findingRef", dataObject, true, routineRefContract()),
-		field("disposition", dataString, true, enum("addressed_by_recommendation", "not_advice_driving")),
+		field("disposition", dataString, true, enumStrings(findingCoverageDispositionValues)),
 		field("recommendationRefs", dataArray, false, arrayOf(dataNumber)),
 		field("rationale", dataString, false),
 	)
@@ -371,7 +371,7 @@ func runPlannedScopeContract() dataObjectContract {
 
 func analysisScopeContract() dataObjectContract {
 	return object(
-		field("status", dataString, true, enum("analyzed", "empty", "not_analyzed", "blocked")),
+		field("status", dataString, true, enumStrings(analysisStatusValues)),
 		field("statusReason", dataString, false),
 		field("ratingLevelId", dataRatingLevelID, false),
 		field("rationale", dataString, false),
@@ -379,7 +379,7 @@ func analysisScopeContract() dataObjectContract {
 		field("ratingDrivers", dataArray, false, arrayOfObject(ratingDriverContract())),
 		field("incompleteInputs", dataArray, false, arrayOfObject(limitContract())),
 		field("evaluationLimits", dataArray, false, arrayOfObject(limitContract())),
-		field("confidence", dataString, false, enum("high", "medium", "low", "none")),
+		field("confidence", dataString, false, enumStrings(confidenceValues)),
 		field("confidenceReason", dataString, false),
 	)
 }
@@ -394,9 +394,9 @@ func findingContract() dataObjectContract {
 func findingCoreFields() []dataField {
 	return []dataField{
 		field("id", dataString, true),
-		field("type", dataString, true, enum("strength", "gap", "risk", "unknown", "note")),
-		field("severity", dataString, true, enum("critical", "high", "medium", "low")),
-		field("confidence", dataString, true, enum("high", "medium", "low", "none")),
+		field("type", dataString, true, enumStrings(findingTypeValues)),
+		field("severity", dataString, true, enumStrings(findingSeverityValues)),
+		field("confidence", dataString, true, enumStrings(confidenceValues)),
 		field("statement", dataString, true),
 		field("condition", dataString, true),
 		field("criteria", dataArray, true, arrayOfObject(findingCriterionContract()), minItems(1)),
@@ -417,7 +417,7 @@ func findingCriterionContract() dataObjectContract {
 
 func findingBasisContract() dataObjectContract {
 	return object(
-		field("status", dataString, true, enum("verified", "plausible", "not_assessed", "not_applicable")),
+		field("status", dataString, true, enumStrings(findingBasisStatusValues)),
 		field("statement", dataString, true),
 		field("rationale", dataString, false),
 		field("evidence", dataArray, false, arrayOfObject(findingEvidenceContract())),
@@ -524,7 +524,7 @@ func routineRefContract() dataObjectContract {
 
 func reportRefContract() dataObjectContract {
 	return object(
-		field("kind", dataString, true, enum(kindStrings(reportKinds)...)),
+		field("kind", dataString, true, enumStrings(reportKindValues)),
 		field("areaId", dataAreaID, false),
 		field("factorId", dataFactorID, false),
 		field("requirementId", dataRequirementID, false),

@@ -39,6 +39,10 @@ fields, required fields, field types, enum values, schema output, and examples.
 The CLI **MUST** reject unknown or misspelled fields, wrong field types,
 out-of-range enum values, and missing required fields before writing a payload.
 
+Fixed enum fields **MUST** use their canonical persisted values. The CLI **MUST
+NOT** accept display labels, emoji or shape markers, aliases, case variants, or
+legacy values as substitutes.
+
 The CLI **MUST** resolve every Area ID, Factor ID, Requirement ID, and Rating
 Level ID in an accepted payload against the run's model snapshot before writing
 it. Those IDs **MUST** use the canonical qualified reference strings defined in
@@ -109,6 +113,7 @@ payload-local selector.
 Finding in the effective run data exactly once. The `tier` and order express
 relative priority, not inclusion: a low-priority finding is ranked at a low tier,
 never omitted. If no findings were produced, the array **MUST** be empty.
+`tier` **MUST** be one of `P1`, `P2`, `P3`, or `P4`.
 
 `RecommendationResult` **MUST** include:
 
@@ -150,6 +155,9 @@ Each finding coverage entry **MUST** include:
 
 - `findingRef`; and
 - `disposition`.
+
+`disposition` **MUST** be one of `addressed_by_recommendation` or
+`not_advice_driving`.
 
 When `disposition` is `addressed_by_recommendation`, the entry **MUST** include
 one or more `recommendationRefs`. When `disposition` is

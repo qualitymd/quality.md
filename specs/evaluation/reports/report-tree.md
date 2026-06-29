@@ -155,6 +155,71 @@ report is directly rendered from it.
 > duplicating granular report provenance while preserving a stable bridge to the
 > structured inputs for the current report. — 0159, 0162, 0171
 
+## Fixed Enum Display
+
+Generated Markdown reports **MUST** render known fixed Evaluation enum values
+with the shared marker-plus-label display for that vocabulary. Structured JSON,
+schemas, and receipts **MUST** preserve the raw canonical enum value.
+
+Known fixed enum report displays are:
+
+| Vocabulary                   | Value                         | Display                          |
+| ---------------------------- | ----------------------------- | -------------------------------- |
+| Analysis status              | `analyzed`                    | `✅ Analyzed`                    |
+| Analysis status              | `empty`                       | `⬜ Empty`                       |
+| Analysis status              | `not_analyzed`                | `⚪ Not Analyzed`                |
+| Analysis status              | `blocked`                     | `⛔ Blocked`                     |
+| Assessment status            | `assessed`                    | `✅ Assessed`                    |
+| Assessment status            | `partially_assessed`          | `🟡 Partially Assessed`          |
+| Assessment status            | `not_assessed`                | `⚪ Not Assessed`                |
+| Assessment status            | `blocked`                     | `⛔ Blocked`                     |
+| Rating status                | `rated`                       | `✅ Rated`                       |
+| Rating status                | `not_rated`                   | `⚪ Not Rated`                   |
+| Rating status                | `blocked`                     | `⛔ Blocked`                     |
+| Confidence                   | `high`                        | `🟢 High`                        |
+| Confidence                   | `medium`                      | `🔵 Medium`                      |
+| Confidence                   | `low`                         | `🟡 Low`                         |
+| Confidence                   | `none`                        | `⚪ None`                        |
+| Finding type                 | `strength`                    | `✅ Strength`                    |
+| Finding type                 | `gap`                         | `⚠️ Gap`                          |
+| Finding type                 | `risk`                        | `⚠️ Risk`                         |
+| Finding type                 | `unknown`                     | `❓ Unknown`                     |
+| Finding type                 | `note`                        | `ℹ️ Note`                         |
+| Finding severity             | `critical`                    | `🔴 Critical`                    |
+| Finding severity             | `high`                        | `🔴 High`                        |
+| Finding severity             | `medium`                      | `🟡 Medium`                      |
+| Finding severity             | `low`                         | `🔵 Low`                         |
+| Finding basis status         | `verified`                    | `✅ Verified`                    |
+| Finding basis status         | `plausible`                   | `🟡 Plausible`                   |
+| Finding basis status         | `not_assessed`                | `⚪ Not Assessed`                |
+| Finding basis status         | `not_applicable`              | `⬜ Not Applicable`              |
+| Recommendation impact        | `very_high`                   | `◆ Very high`                    |
+| Recommendation impact        | `high`                        | `▲ High`                         |
+| Recommendation impact        | `medium`                      | `● Medium`                       |
+| Recommendation impact        | `low`                         | `○ Low`                          |
+| Finding ranking tier         | `P1`                          | `🔴 P1 Highest`                  |
+| Finding ranking tier         | `P2`                          | `🟠 P2 High`                     |
+| Finding ranking tier         | `P3`                          | `🟡 P3 Medium`                   |
+| Finding ranking tier         | `P4`                          | `⚪ P4 Low`                      |
+| Finding coverage disposition | `addressed_by_recommendation` | `✅ Addressed by Recommendation` |
+| Finding coverage disposition | `not_advice_driving`          | `⬜ Not Advice Driving`          |
+| Report kind                  | `run`                         | `📄 Run`                         |
+| Report kind                  | `area`                        | `🗺️ Area`                         |
+| Report kind                  | `factor`                      | `🧩 Factor`                      |
+| Report kind                  | `requirement`                 | `📋 Requirement`                 |
+| Report kind                  | `findings`                    | `🔝 Findings`                    |
+| Report kind                  | `recommendations`             | `📚 Recommendations`             |
+| Report kind                  | `recommendation`              | `💡 Recommendation`              |
+
+Finding severity ordering **MUST** use `critical`, `high`, `medium`, then
+`low`. Recommendation impact ordering **MUST** use `very_high`, `high`,
+`medium`, then `low`. Finding ranking tier ordering **MUST** use `P1`, `P2`,
+`P3`, then `P4`.
+
+> Rationale: fixed Evaluation values are strict machine data, but Markdown
+> reports are a human scanning surface. Keeping labels, markers, and ordering in
+> one contract prevents validation and report presentation from drifting. — 0173
+
 ## Run Report
 
 The run-level `report.md` **MUST** render as the scoped Area report described by
@@ -283,9 +348,9 @@ Recommendation ranking rationale **MUST** remain sourced from
 be conflated with `RecommendationResult.background` or `expectedValue`.
 
 Known recommendation impact values **MUST** render consistently across
-recommendation Markdown report locations: `very_high` as `◆ Very high`, `high`
-as `▲ High`, `medium` as `● Medium`, and `low` as `○ Low`. Unknown impact values
-**MUST** render as humanized plain labels without a marker.
+recommendation Markdown report locations using the shared fixed enum display.
+Unknown impact values **MUST** render as humanized plain labels without a
+marker.
 
 ## Navigation
 
@@ -564,9 +629,11 @@ and `blocked` distinctly from Rating Level labels.
 
 Reports **MUST** render CLI-owned enum-like report values, including statuses,
 confidence levels, boolean values, report kinds, limits/incomplete-input types,
-unknown/missing-evidence types, and known finding classifications, with
-human-readable display titles in Markdown while preserving the raw values in
-routine JSON, `EvaluationOutputResult`, and report-build receipts.
+unknown/missing-evidence types, known finding classifications, finding basis
+statuses, recommendation impacts, finding ranking tiers, and finding coverage
+dispositions, with human-readable display titles in Markdown while preserving
+the raw values in routine JSON, `EvaluationOutputResult`, schemas, and
+report-build receipts.
 
 > Rationale: Markdown reports are optimized for human review and scanning, but
 > agents and tools need stable values in the structured data. Unknown or

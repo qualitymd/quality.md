@@ -3,6 +3,36 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0173 - Evaluation Enum Catalogs](archive/0173-evaluation-enum-catalogs.md).
+  Fixed Evaluation enum values now use typed catalogs for validation, generated
+  schemas, display labels, markers, and report ordering; durable specs, skill
+  guidance, release notes, tests, and report-gallery output are aligned.
+
+- **In-Review**: Completed implementation for
+  [0173 - Evaluation Enum Catalogs](archive/0173-evaluation-enum-catalogs.md).
+  Evaluation enum catalogs, validation, schema output, report rendering, durable
+  specs, skill guidance, release notes, tests, and report-gallery output are
+  aligned for review.
+
+- **In-Progress**: Advanced
+  [0173 - Evaluation Enum Catalogs](archive/0173-evaluation-enum-catalogs.md).
+  Functional spec and design are settled; implementation is beginning across
+  Evaluation enum catalogs, validation, schemas, report rendering, durable
+  specs, and tests.
+
+- **Design**: Added the
+  [design doc](archive/0173-evaluation-enum-catalogs/design.md) for
+  [0173 - Evaluation Enum Catalogs](archive/0173-evaluation-enum-catalogs.md).
+  The design keeps persisted values stable while deriving validation, schema
+  enums, labels, markers, and report ordering from typed Evaluation catalogs.
+
+- **Draft**: Created
+  [0173 - Evaluation Enum Catalogs](archive/0173-evaluation-enum-catalogs.md)
+  with its [functional spec](archive/0173-evaluation-enum-catalogs/spec.md). The
+  case centralizes fixed Evaluation enum values, labels, markers, schema
+  validation, and report rendering metadata.
+
+- **Done**: Implemented and archived
   [0172 - Workspace Status Contract](archive/0172-workspace-status-contract.md).
   `qualitymd status` now reports workspace status, emits JSON
   `schemaVersion: 2` with relative workspace metadata, and aligns CLI specs,

@@ -27,7 +27,7 @@ The agent-facing entry point is clear enough for quality evaluation work.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-004` | Agent guidance points to the quality model and generated report path. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target agent-accessibility rating. | Verified: The synthetic guidance gives an agent a direct path from model to evaluation report. |
+| `strength-004` | Agent guidance points to the quality model and generated report path. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target agent-accessibility rating. | ✅ Verified: The synthetic guidance gives an agent a direct path from model to evaluation report. |
 
 ## Finding Details
 
@@ -37,7 +37,7 @@ The agent-facing entry point is clear enough for quality evaluation work.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 7 / 7 | P3 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 7 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 
@@ -50,7 +50,7 @@ The synthetic agent guidance names QUALITY.md, the evaluation command, and the r
 
 #### Basis
 
-Status: Verified
+Status: ✅ Verified
 
 The synthetic guidance gives an agent a direct path from model to evaluation report.
 

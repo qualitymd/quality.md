@@ -2,6 +2,10 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0173 - Evaluation Enum
+  Catalogs. Runtime evaluation guidance now tells the skill to write canonical
+  fixed enum values rather than generated-report labels or markers.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
   for 0172 - Workspace Status Contract. Runtime guidance now treats

@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated Evaluation payload, JSON convention, and report-tree
+  contracts for
+  [0173 - Evaluation Enum Catalogs](../../changes/archive/0173-evaluation-enum-catalogs.md).
+  Fixed Evaluation enum values now have canonical data values and explicit
+  generated-report labels, markers, and ordering guidance.
+
 - **Revision**: Updated Evaluation records and report-tree contracts for
   [0165 - Run IDs and Artifact Numbering](../../changes/archive/0165-run-id-artifact-numbering.md).
   Runs now expose a globally-unique `RunManifest.id`; recommendations carry

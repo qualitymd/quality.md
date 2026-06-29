@@ -731,11 +731,11 @@ func reportJumpLinks(links []reportJumpLink) string {
 }
 
 func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
-	bestRank := len(findingSeverityOrder)
+	bestRank := len(findingSeverityValues)
 	best := ""
 	for _, row := range artifacts.rankedFindings() {
 		severity := firstString(row.Finding, "severity")
-		rank, ok := findingSeverityOrder[severity]
+		rank, ok := enumRank(findingSeverityValues, severity)
 		if !ok {
 			continue
 		}
@@ -750,19 +750,12 @@ func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
 	return findingSeverityTitle(best)
 }
 
-var findingSeverityOrder = map[string]int{
-	"critical": 0,
-	"high":     1,
-	"medium":   2,
-	"low":      3,
-}
-
 func highestRecommendationImpactTitle(items []rankedRecommendation) string {
-	bestRank := len(recommendationImpactOrder)
+	bestRank := len(recommendationImpactValues)
 	best := ""
 	for _, item := range items {
 		impact := firstString(item.Recommendation, "impact")
-		rank, ok := recommendationImpactOrder[impact]
+		rank, ok := enumRank(recommendationImpactValues, impact)
 		if !ok {
 			continue
 		}
@@ -777,26 +770,24 @@ func highestRecommendationImpactTitle(items []rankedRecommendation) string {
 	return impactTitle(best)
 }
 
-var recommendationImpactOrder = map[string]int{
-	"very_high": 0,
-	"high":      1,
-	"medium":    2,
-	"low":       3,
-}
-
 func recommendationCoverageSummary(artifacts *evaluationArtifacts) string {
 	coverage := objectSlice(artifacts.RecommendationRanking["findingCoverage"])
 	addressed := 0
 	notDriving := 0
 	for _, item := range coverage {
 		switch firstString(item, "disposition") {
-		case "addressed_by_recommendation":
+		case string(FindingCoverageAddressedByRecommendation):
 			addressed++
-		case "not_advice_driving":
+		case string(FindingCoverageNotAdviceDriving):
 			notDriving++
 		}
 	}
-	return fmt.Sprintf("%d addressed / %d not advice-driving", addressed, notDriving)
+	return fmt.Sprintf("%s: %d / %s: %d",
+		findingCoverageDispositionTitle(string(FindingCoverageAddressedByRecommendation)),
+		addressed,
+		findingCoverageDispositionTitle(string(FindingCoverageNotAdviceDriving)),
+		notDriving,
+	)
 }
 
 func (a *evaluationArtifacts) rankedRecommendations() []rankedRecommendation {
@@ -1989,15 +1980,15 @@ func writeAdviceCoverageSummary(b *strings.Builder, artifacts *evaluationArtifac
 	notDriving := 0
 	for _, item := range coverage {
 		switch firstString(item, "disposition") {
-		case "addressed_by_recommendation":
+		case string(FindingCoverageAddressedByRecommendation):
 			addressed++
-		case "not_advice_driving":
+		case string(FindingCoverageNotAdviceDriving):
 			notDriving++
 		}
 	}
 	b.WriteString("## Coverage\n\n")
-	fmt.Fprintf(b, "- Findings addressed by recommendations: %d\n", addressed)
-	fmt.Fprintf(b, "- Findings not advice-driving: %d\n\n", notDriving)
+	fmt.Fprintf(b, "- %s: %d\n", findingCoverageDispositionTitle(string(FindingCoverageAddressedByRecommendation)), addressed)
+	fmt.Fprintf(b, "- %s: %d\n\n", findingCoverageDispositionTitle(string(FindingCoverageNotAdviceDriving)), notDriving)
 	writeEvaluationLegend(b)
 }
 
@@ -2223,7 +2214,7 @@ func writeFindingRankingContext(b *strings.Builder, ranking rankedFinding, ranke
 		b.WriteString("| (not ranked) | — | — |\n\n")
 		return
 	}
-	b.WriteString(md.TableRow(fmt.Sprintf("%d / %d", ranking.Rank, ranking.Total), firstString(ranking.Ranking, "tier"), firstString(ranking.Ranking, "rationale")))
+	b.WriteString(md.TableRow(fmt.Sprintf("%d / %d", ranking.Rank, ranking.Total), findingRankingTierTitle(firstString(ranking.Ranking, "tier")), firstString(ranking.Ranking, "rationale")))
 	b.WriteString("\n")
 }
 
@@ -2566,7 +2557,7 @@ func evaluationRequirementRatingLabel(spec *model.Spec, rating map[string]any) s
 	if rating == nil {
 		return ratingStatusTitle(string(RatingStatusNotRated))
 	}
-	if status := evaluationString(rating, "status"); status != "rated" {
+	if status := evaluationString(rating, "status"); status != string(RatingStatusRated) {
 		if status == "" {
 			return ratingStatusTitle(string(RatingStatusNotRated))
 		}
@@ -2741,7 +2732,7 @@ func scopedMap(payload map[string]any, field string) map[string]any {
 func evaluationRatingLabel(spec *model.Spec, scope map[string]any) string {
 	status := evaluationString(scope, "status")
 	level := ratingLevelID(evaluationString(scope, "ratingLevelId"))
-	if status != "analyzed" || level == "" {
+	if status != string(AnalysisStatusAnalyzed) || level == "" {
 		if status == "" {
 			return analysisStatusTitle(string(AnalysisStatusNotAnalyzed))
 		}
@@ -2788,10 +2779,10 @@ func evaluationString(payload map[string]any, field string) string {
 
 func evaluationReceiptRating(analysis map[string]any) RatingResult {
 	overall := scopedMap(analysis, "localAndDescendantAnalysis")
-	if evaluationString(overall, "status") != "analyzed" {
-		return RatingResult{Kind: "not-assessed", Rationale: evaluationString(overall, "statusReason")}
+	if evaluationString(overall, "status") != string(AnalysisStatusAnalyzed) {
+		return RatingResult{Kind: RatingResultNotAssessed, Rationale: evaluationString(overall, "statusReason")}
 	}
-	return RatingResult{Kind: "rated", Level: ratingLevelID(evaluationString(overall, "ratingLevelId")), Rationale: evaluationString(overall, "rationale")}
+	return RatingResult{Kind: RatingResultRated, Level: ratingLevelID(evaluationString(overall, "ratingLevelId")), Rationale: evaluationString(overall, "rationale")}
 }
 
 func markdownCell(s string) string {

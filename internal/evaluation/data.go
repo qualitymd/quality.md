@@ -614,7 +614,7 @@ func validateEffectiveRecommendationNumber(path string, kind DataKind, payload m
 }
 
 func validateEffectiveRequirementRating(path string, payload map[string]any, payloads map[string]map[string]any) []effectiveDataFailure {
-	if firstString(payload, "status") != "rated" {
+	if firstString(payload, "status") != string(RatingStatusRated) {
 		return nil
 	}
 	var failures []effectiveDataFailure
@@ -628,7 +628,7 @@ func validateEffectiveRequirementRating(path string, payload map[string]any, pay
 		failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult with at least one finding"})
 	} else {
 		status := firstString(assessment, "status")
-		if status != "assessed" && status != "partially_assessed" {
+		if status != string(AssessmentStatusAssessed) && status != string(AssessmentStatusPartiallyAssessed) {
 			failures = append(failures, effectiveDataFailure{Path: path, Kind: DataKindRequirementRating, Reason: "rated Requirement requires paired RequirementAssessmentResult status assessed or partially_assessed"})
 		}
 		if len(objectSlice(assessment["findings"])) == 0 {
@@ -646,7 +646,7 @@ func validateEffectiveAnalysisResult(path string, kind DataKind, payload map[str
 	var failures []effectiveDataFailure
 	for _, scopeName := range []string{"localAnalysis", "localAndDescendantAnalysis"} {
 		scope := objectMap(payload[scopeName])
-		if firstString(scope, "status") != "analyzed" || firstString(scope, "ratingLevelId") == "" {
+		if firstString(scope, "status") != string(AnalysisStatusAnalyzed) || firstString(scope, "ratingLevelId") == "" {
 			continue
 		}
 		if len(objectSlice(scope["ratingDrivers"])) == 0 {
@@ -787,9 +787,9 @@ func validateFindingCoverage(path string, payload map[string]any, payloads map[s
 
 func validateCoverageDisposition(path string, index int, entry map[string]any, recommendations map[int]string) []effectiveDataFailure {
 	switch firstString(entry, "disposition") {
-	case "addressed_by_recommendation":
+	case string(FindingCoverageAddressedByRecommendation):
 		return validateAddressedCoverageRefs(path, index, entry, recommendations)
-	case "not_advice_driving":
+	case string(FindingCoverageNotAdviceDriving):
 		if firstString(entry, "rationale") == "" {
 			return []effectiveDataFailure{{Path: path, Kind: DataKindRecommendationRanking, Reason: fmt.Sprintf("findingCoverage[%d].rationale is required for not_advice_driving", index)}}
 		}

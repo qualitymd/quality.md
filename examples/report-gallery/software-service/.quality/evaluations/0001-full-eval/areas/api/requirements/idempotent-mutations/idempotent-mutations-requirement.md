@@ -27,7 +27,7 @@ The idempotency contract is present but incomplete for retry recovery.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `gap-001` | Mutation retry behavior is not fully specified for duplicate idempotency keys. | ⚠️ Gap | 🔴 High | 🔵 Medium | The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics. | Verified: The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior. |
+| `gap-001` | Mutation retry behavior is not fully specified for duplicate idempotency keys. | ⚠️ Gap | 🔴 High | 🔵 Medium | The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics. | ✅ Verified: The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior. |
 
 ## Finding Details
 
@@ -37,7 +37,7 @@ The idempotency contract is present but incomplete for retry recovery.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 1 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 1 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 
@@ -50,7 +50,7 @@ The synthetic API contract describes idempotency keys, but replayed requests do 
 
 #### Basis
 
-Status: Verified
+Status: ✅ Verified
 
 The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior.
 

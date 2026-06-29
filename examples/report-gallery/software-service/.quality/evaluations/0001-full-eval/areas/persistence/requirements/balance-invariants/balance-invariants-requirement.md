@@ -27,7 +27,7 @@ The sampled persistence evidence supports balance preservation.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-002` | Ledger mutation checks preserve balance invariants in the sampled paths. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target integrity rating for ledger persistence. | Verified: The synthetic test matrix includes both success and failure paths for balance preservation. |
+| `strength-002` | Ledger mutation checks preserve balance invariants in the sampled paths. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target integrity rating for ledger persistence. | ✅ Verified: The synthetic test matrix includes both success and failure paths for balance preservation. |
 
 ## Finding Details
 
@@ -37,7 +37,7 @@ The sampled persistence evidence supports balance preservation.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 3 / 7 | P2 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 3 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 
@@ -50,7 +50,7 @@ Synthetic mutation tests cover debit, credit, failed write, and reconciliation p
 
 #### Basis
 
-Status: Verified
+Status: ✅ Verified
 
 The synthetic test matrix includes both success and failure paths for balance preservation.
 

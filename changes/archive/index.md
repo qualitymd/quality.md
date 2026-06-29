@@ -720,3 +720,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0172 — Workspace Status Contract](0172-workspace-status-contract.md) - aligns
   `qualitymd status` around workspace status, adds status JSON v2 workspace
   metadata, and preserves project wording for modeled value (`Done`).
+- [0173 — Evaluation Enum Catalogs](0173-evaluation-enum-catalogs.md) -
+  centralizes fixed Evaluation enum values, labels, markers, schema validation,
+  and generated report ordering (`Done`).

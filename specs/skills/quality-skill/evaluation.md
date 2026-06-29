@@ -212,6 +212,10 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   quality loss path, `strength` as support for or margin above criteria,
   `unknown` as missing or ambiguous evidence, and `note` as relevant context
   that does not drive a rating by itself.
+- **Canonical enum values stay raw.** When writing Evaluation data, the skill
+  **MUST** use canonical fixed enum values such as `gap`, `high`, `verified`,
+  `P1`, `addressed_by_recommendation`, and `very_high`, not report display
+  labels, emoji markers, shape markers, or case variants.
 - **Basis posture does not overclaim.** The skill **MUST NOT** write
   `basis.status: verified` unless the finding evidence directly supports the
   basis statement. When a `gap` or `risk` has evidence for condition and effect

@@ -7,6 +7,12 @@ QUALITY.md specification.
 
 ### CLI
 
+- Evaluation data validation, schemas, and generated Markdown reports now share
+  typed enum catalogs for fixed values such as statuses, confidence, finding
+  type/severity/basis status, recommendation impact, ranking tier, coverage
+  disposition, and report kind. Invalid enum inputs remain rejected at
+  `evaluation data set` / `verify`, while reports render known values with
+  consistent labels and markers.
 - `qualitymd status` now reports workspace status instead of project state,
   including a `schemaVersion: 2` JSON `workspace` block with relative workspace
   paths for config, `.quality/`, evaluations, changelog, and workflow logs.

@@ -65,6 +65,11 @@ Validation **MUST** reject unknown or misspelled fields, wrong field types,
 out-of-range enum values, and missing required fields for the payload kind. The
 diagnostic **MUST** name the offending field when one is known.
 
+Fixed enum validation **MUST** use the same canonical value sets as
+`data schema`. `data set` and `data verify` **MUST NOT** accept display labels,
+emoji or shape markers, aliases, case variants, or legacy values in place of
+canonical enum values.
+
 For Evaluation Findings, validation **MUST** reject `severity` values outside
 `critical`, `high`, `medium`, and `low`; `info` is not a severity value.
 
@@ -160,14 +165,15 @@ Commands that take a `<kind>` argument **MUST** accept the canonical kind name
 and **SHOULD** accept the kebab-case form.
 
 `data schema` **MUST** emit the JSON Schema generated from the same accepted-kind
-contract used by `data set` and `data example`. With no argument it **MUST** emit
-the schema for the full data surface; with `<kind>` it **MUST** emit a
-self-contained schema for that kind so the required fields and allowed enum
-values are legible from the emitted document without dereferencing a top-level
-`$ref` into a separate `$defs` map. The no-argument full-surface schema **MAY**
-use `$defs` and `$ref`. Finding severity enums in the schema **MUST** use the
-same reduced value set: `critical`, `high`, `medium`, and `low`. `data schema`
-**MUST NOT** provide a second JSON result-wrapper mode.
+contract used by `data set` and `data example`, including the same fixed enum
+value sets. With no argument it **MUST** emit the schema for the full data
+surface; with `<kind>` it **MUST** emit a self-contained schema for that kind so
+the required fields and allowed enum values are legible from the emitted
+document without dereferencing a top-level `$ref` into a separate `$defs` map.
+The no-argument full-surface schema **MAY** use `$defs` and `$ref`. Finding
+severity enums in the schema **MUST** use the same reduced value set:
+`critical`, `high`, `medium`, and `low`. `data schema` **MUST NOT** provide a
+second JSON result-wrapper mode.
 
 When `data schema` output must be plain, including when stdout is not a terminal
 or `NO_COLOR` is set, the command **MUST** write the schema as verbatim JSON and

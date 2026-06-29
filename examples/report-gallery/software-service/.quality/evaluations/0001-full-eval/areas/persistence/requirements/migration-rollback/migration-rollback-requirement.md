@@ -27,7 +27,7 @@ Rollback instructions are present, but the rehearsal signal is stale.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
+| `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | 🟡 Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
 
 ## Finding Details
 
@@ -37,7 +37,7 @@ Rollback instructions are present, but the rehearsal signal is stale.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 4 / 7 | P1 | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 4 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
 #### Condition
 
@@ -50,7 +50,7 @@ The synthetic migration runbook names rollback steps, but the last recorded rehe
 
 #### Basis
 
-Status: Plausible
+Status: 🟡 Plausible
 
 Stale rehearsal evidence plausibly misses drift in newer migration behavior.
 

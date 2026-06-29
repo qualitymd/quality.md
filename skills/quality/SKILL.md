@@ -459,6 +459,10 @@ Classify finding types by analysis pattern:
 - `note`: relevant context worth preserving that does not drive a rating by
   itself.
 
+Write canonical fixed enum values in Evaluation data, not report display labels,
+emoji markers, shape markers, or case variants. For example, use `gap`, `high`,
+`verified`, `P1`, `addressed_by_recommendation`, and `very_high`.
+
 Never set `basis.status: verified` unless the finding evidence directly supports
 the basis statement. When a gap or risk has enough evidence for condition and
 effect but not basis, use `basis.status: not_assessed` rather than guessing.

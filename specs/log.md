@@ -3,6 +3,11 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0173 - Evaluation Enum Catalogs](../changes/archive/0173-evaluation-enum-catalogs.md).
+  Evaluation data validation, schemas, report rendering, and skill guidance now
+  share canonical fixed enum value sets and explicit report labels/markers.
+
+- **Revision**: Implemented durable spec changes for
   [0172 - Workspace Status Contract](../changes/archive/0172-workspace-status-contract.md).
   `qualitymd status` is now specified as a workspace status surface with
   `schemaVersion: 2` JSON workspace metadata and aligned CLI/skill terminology.
