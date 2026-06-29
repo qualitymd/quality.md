@@ -282,10 +282,11 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		!strings.Contains(string(runReport), "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)") {
 		t.Fatalf("report.md = %s, want run header navigation", runReport)
 	}
-	if !strings.Contains(string(runReport), "  - data/run-manifest.json\n") ||
-		!strings.Contains(string(runReport), "  - data/areas/root/area-analysis-result.json\n") ||
-		strings.Contains(string(runReport), "  - data/evaluation-output-result.json\n") {
-		t.Fatalf("report.md = %s, want source-data frontmatter without EvaluationOutputResult", runReport)
+	if strings.Contains(string(runReport), "\ndata:\n") ||
+		!strings.Contains(string(runReport), "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)\n") ||
+		!strings.Contains(string(runReport), "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)\n") ||
+		strings.Contains(string(runReport), "[data/evaluation-output-result.json](") {
+		t.Fatalf("report.md = %s, want source-data section without EvaluationOutputResult", runReport)
 	}
 	if !strings.Contains(string(runReport), "| 🔵 Target | full evaluation | 🟢 High / 🟢 High |") {
 		t.Fatalf("report.md = %s, want scoped Area rating row", runReport)
@@ -300,9 +301,10 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		!strings.Contains(string(report), "Area: [Test model](root-area.md)") {
 		t.Fatalf("root-area.md = %s, want kind-prefixed title before Area trail", report)
 	}
-	if !strings.Contains(string(report), "  - data/run-manifest.json\n") ||
-		!strings.Contains(string(report), "  - data/areas/root/area-analysis-result.json\n") {
-		t.Fatalf("root-area.md = %s, want source-data frontmatter", report)
+	if strings.Contains(string(report), "\ndata:\n") ||
+		!strings.Contains(string(report), "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)\n") ||
+		!strings.Contains(string(report), "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)\n") {
+		t.Fatalf("root-area.md = %s, want source-data section", report)
 	}
 	if !strings.Contains(string(report), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High |") {
 		t.Fatalf("root-area.md = %s, want target rating title", report)
@@ -415,8 +417,10 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "type: Evaluation Overview Report\n")
 	assertContains(t, runReport, "title: Navigation model\n")
-	assertContains(t, runReport, "data:\n  - data/run-manifest.json")
-	assertNotContains(t, runReport, "  - data/evaluation-output-result.json\n")
+	assertNotContains(t, runReport, "\ndata:\n")
+	assertContains(t, runReport, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, runReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
+	assertNotContains(t, runReport, "[data/evaluation-output-result.json](")
 	assertContains(t, runReport, "# Evaluation Report: Area: Navigation model")
 	assertContains(t, runReport, "Run: #1 - Created: ")
 	assertContains(t, runReport, "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)")
@@ -446,8 +450,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	recommendationIndex := readReport(t, runPath, "recommendations.md")
 	assertContains(t, recommendationIndex, "type: Recommendation Index Report\n")
 	assertContains(t, recommendationIndex, "title: Recommendations\n")
-	assertContains(t, recommendationIndex, "data:\n  - data/run-manifest.json")
-	assertContains(t, recommendationIndex, "  - data/advice/recommendation-ranking-result.json")
+	assertNotContains(t, recommendationIndex, "\ndata:\n")
+	assertContains(t, recommendationIndex, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, recommendationIndex, "- [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)")
 	assertContains(t, recommendationIndex, "Report: [Overview](report.md) - [Findings](findings.md) - Recommendations")
 	assertContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage |")
 	assertNotContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage | Data |")
@@ -457,8 +462,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
 	assertContains(t, recommendationReport, "type: Recommendation Report\n")
 	assertContains(t, recommendationReport, "title: Review the next quality bar\n")
-	assertContains(t, recommendationReport, "data:\n  - data/run-manifest.json")
-	assertContains(t, recommendationReport, "  - data/advice/recommendations/rec-001/recommendation-result.json")
+	assertNotContains(t, recommendationReport, "\ndata:\n")
+	assertContains(t, recommendationReport, "## Source Data\n\n- [data/run-manifest.json](../data/run-manifest.json)")
+	assertContains(t, recommendationReport, "- [data/advice/recommendations/rec-001/recommendation-result.json](../data/advice/recommendations/rec-001/recommendation-result.json)")
 	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
 	assertContains(t, recommendationReport, "| Rank | Impact | Confidence |")
 	assertNotContains(t, recommendationReport, "| Rank | Impact | Confidence | Data |")
@@ -476,8 +482,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "# Area: Navigation model")
 	assertContains(t, rootReport, "Area: [Navigation model](root-area.md)")
 	assertNotContains(t, rootReport, "Path: `/`")
-	assertContains(t, rootReport, "data:\n  - data/run-manifest.json")
-	assertContains(t, rootReport, "  - data/areas/root/area-analysis-result.json")
+	assertNotContains(t, rootReport, "\ndata:\n")
+	assertContains(t, rootReport, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, rootReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
 	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence |")
 	assertNotContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
 	assertNotContains(t, rootReport, "## Findings")
@@ -509,8 +516,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, factorReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
 	assertNotContains(t, factorReport, "Path: `reliability`")
-	assertContains(t, factorReport, "data:\n  - data/run-manifest.json")
-	assertContains(t, factorReport, "  - data/areas/root/factors/reliability/factor-analysis-result.json")
+	assertNotContains(t, factorReport, "\ndata:\n")
+	assertContains(t, factorReport, "## Source Data\n\n- [data/run-manifest.json](../../data/run-manifest.json)")
+	assertContains(t, factorReport, "- [data/areas/root/factors/reliability/factor-analysis-result.json](../../data/areas/root/factors/reliability/factor-analysis-result.json)")
 	assertContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence |")
 	assertNotContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence | Data |")
 	assertNotContains(t, factorReport, "## Findings")
@@ -548,9 +556,10 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "| Advice Rank | Tier | Ranking Rationale |")
 	assertContains(t, requirementReport, "| 1 / 1 | P1 | This finding most directly informs next advice. |")
 	assertNotContains(t, requirementReport, "Name: `has-tests`")
-	assertContains(t, requirementReport, "data:\n  - data/run-manifest.json")
-	assertContains(t, requirementReport, "  - data/areas/root/requirements/has-tests/requirement-assessment-result.json")
-	assertContains(t, requirementReport, "  - data/areas/root/requirements/has-tests/requirement-rating-result.json")
+	assertNotContains(t, requirementReport, "\ndata:\n")
+	assertContains(t, requirementReport, "## Source Data\n\n- [data/run-manifest.json](../../data/run-manifest.json)")
+	assertContains(t, requirementReport, "- [data/areas/root/requirements/has-tests/requirement-assessment-result.json](../../data/areas/root/requirements/has-tests/requirement-assessment-result.json)")
+	assertContains(t, requirementReport, "- [data/areas/root/requirements/has-tests/requirement-rating-result.json](../../data/areas/root/requirements/has-tests/requirement-rating-result.json)")
 	assertContains(t, requirementReport, "| Rating | Assessment | Confidence |")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Confidence | Data |")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
@@ -565,9 +574,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, findingsReport, "title: Findings\n")
 	assertContains(t, findingsReport, "# Findings")
 	assertContains(t, findingsReport, "Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)")
-	assertContains(t, findingsReport, "data:\n  - data/run-manifest.json")
-	assertContains(t, findingsReport, "  - data/advice/finding-ranking-result.json")
-	assertNotContains(t, findingsReport, "[finding-ranking-result.json](data/advice/finding-ranking-result.json)")
+	assertNotContains(t, findingsReport, "\ndata:\n")
+	assertContains(t, findingsReport, "## Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, findingsReport, "- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)")
 	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
 	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 

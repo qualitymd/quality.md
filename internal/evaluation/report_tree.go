@@ -444,13 +444,13 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 
 func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts) string {
 	var b strings.Builder
+	data := reportSourceData(append([]string{runManifestPath}, rankedFindingSourceData(artifacts, 0)...)...)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFindingIndex,
 		Title:      "Findings",
 		Heading:    "Findings",
 		ReportPath: "findings.md",
 		Run:        artifacts.Manifest,
-		Data:       reportSourceData(append([]string{runManifestPath}, rankedFindingSourceData(artifacts, 0)...)...),
 		SummaryHead: []string{
 			"Findings",
 			"Highest Severity",
@@ -462,6 +462,7 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 	})
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
 	writeEvaluationLegend(&b)
+	writeSourceDataSection(&b, "findings.md", data)
 	return b.String()
 }
 
@@ -469,13 +470,13 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 	var reports []evaluationRenderedReport
 	recommendations := artifacts.rankedRecommendations()
 	var index strings.Builder
+	indexData := reportSourceData(append([]string{runManifestPath}, rankedRecommendationSourceData(artifacts, 0)...)...)
 	renderReportHeader(&index, reportHeader{
 		Type:       reportTypeRecommendationIndex,
 		Title:      "Recommendations",
 		Heading:    "Recommendations",
 		ReportPath: "recommendations.md",
 		Run:        artifacts.Manifest,
-		Data:       reportSourceData(append([]string{runManifestPath}, rankedRecommendationSourceData(artifacts, 0)...)...),
 		SummaryHead: []string{
 			"Recommendations",
 			"Highest Impact",
@@ -489,6 +490,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 	})
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
 	writeAdviceCoverageSummary(&index, artifacts)
+	writeSourceDataSection(&index, "recommendations.md", indexData)
 	reports = append(reports, evaluationRenderedReport{
 		Kind:    string(ReportKindAdviceIndex),
 		Path:    "recommendations.md",
@@ -530,7 +532,6 @@ type reportHeader struct {
 	Heading     string
 	ReportPath  string
 	Run         *RunManifest
-	Data        []string
 	Context     []string
 	SummaryHead []string
 	SummaryRow  []string
@@ -546,7 +547,6 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 	b.WriteString(md.Frontmatter(
 		md.FrontmatterField{Name: "type", Value: header.Type},
 		md.FrontmatterField{Name: "title", Value: header.Title},
-		md.FrontmatterField{Name: "data", Values: header.Data},
 	))
 	b.WriteString("# " + header.Heading + "\n\n")
 	if line := reportRunLine(header.ReportPath, header.Run); line != "" {
@@ -622,6 +622,21 @@ func reportSourceData(paths ...string) []string {
 		out = append(out, path)
 	}
 	return out
+}
+
+func writeSourceDataSection(b *strings.Builder, reportPath string, paths []string) {
+	switch content := b.String(); {
+	case strings.HasSuffix(content, "\n\n"):
+	case strings.HasSuffix(content, "\n"):
+		b.WriteString("\n")
+	default:
+		b.WriteString("\n\n")
+	}
+	b.WriteString("## Source Data\n\n")
+	for _, path := range reportSourceData(paths...) {
+		b.WriteString("- " + reportLink(reportPath, path, path) + "\n")
+	}
+	b.WriteString("\n")
 }
 
 func runReportSourceData(artifacts *evaluationArtifacts, plan *evaluationReportPlan) []string {
@@ -885,13 +900,13 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 	reportPath := recommendationReportPath(item.Rank, firstString(rec, "title"))
 	recDataPath := recommendationDataPath(firstString(rec, "id"))
 	rankingPath := "data/advice/recommendation-ranking-result.json"
+	data := reportSourceData(append([]string{runManifestPath, recDataPath, rankingPath}, recommendationTraceSourceData(artifacts, rec)...)...)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeRecommendation,
 		Title:      firstString(rec, "title"),
 		Heading:    "Recommendation: " + firstString(rec, "title"),
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       reportSourceData(append([]string{runManifestPath, recDataPath, rankingPath}, recommendationTraceSourceData(artifacts, rec)...)...),
 		SummaryHead: []string{
 			"Rank",
 			"Impact",
@@ -925,6 +940,7 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 		b.WriteString("\n")
 	}
 	writeEvaluationLegend(&b)
+	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
@@ -942,13 +958,13 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	scopedArea := scopedMap(plan.ScopedAreaAnalysis, "localAndDescendantAnalysis")
 	localArea := scopedMap(plan.ScopedAreaAnalysis, "localAnalysis")
 	var b strings.Builder
+	data := runReportSourceData(artifacts, plan)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeEvaluationOverview,
 		Title:      title,
 		Heading:    "Evaluation Report: Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       runReportSourceData(artifacts, plan),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, plan.ScopedAreaID, reportPath),
 		},
@@ -990,6 +1006,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	}
 	writeEvaluationLimitsTable(&b, scopes...)
 	writeEvaluationLegend(&b)
+	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
@@ -1008,13 +1025,13 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	local := scopedMap(area.Analysis, "localAnalysis")
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
 	var b strings.Builder
+	data := areaReportSourceData(artifacts, area)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeAreaEvaluation,
 		Title:      title,
 		Heading:    "Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       areaReportSourceData(artifacts, area),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, area.ID, reportPath),
 		},
@@ -1047,6 +1064,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writeEvaluationLegend(&b)
+	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
@@ -1055,13 +1073,13 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
 	title := factorTitle(spec, factor.ID)
 	var b strings.Builder
+	data := factorReportSourceData(artifacts, factor)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFactorEvaluation,
 		Title:      title,
 		Heading:    "Factor: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       factorReportSourceData(artifacts, factor),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, factor.ID.DeclaringArea, reportPath),
 			evaluationFactorTrailLine(spec, factor.ID, reportPath),
@@ -1108,19 +1126,20 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writeEvaluationLegend(&b)
+	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
 func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts, reportPath string) string {
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
+	data := requirementReportSourceData(req)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeRequirementEvaluation,
 		Title:      title,
 		Heading:    "Requirement: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       requirementReportSourceData(req),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, req.ID.DeclaringArea, reportPath),
 			evaluationRequirementFactorsLine(req, reportPath),
@@ -1156,6 +1175,7 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	b.WriteString("## Unknowns & Missing Evidence\n\n")
 	writeEvaluationUnknownsTable(&b, req.Assessment, req.Rating)
 	writeEvaluationLegend(&b)
+	writeSourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 

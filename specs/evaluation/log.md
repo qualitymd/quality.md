@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Updated the Evaluation report-tree contract for
+  [0162 - Report Source Data Section](../../changes/archive/0162-report-source-data-section.md).
+  Generated Markdown reports now keep frontmatter to report identity fields and
+  render report-local structured payload links in a bottom `Source Data`
+  section.
+
+- **Revision**: Updated the Evaluation report-tree contract for
   [0160 - Report Body Rating Drivers](../../changes/archive/0160-report-body-rating-drivers.md).
   Run, Area, and Factor Markdown reports no longer render standalone
   `Rating Drivers` sections or raw driver-input tables; the structured driver

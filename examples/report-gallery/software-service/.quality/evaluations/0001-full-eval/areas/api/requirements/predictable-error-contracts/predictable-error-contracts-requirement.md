@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: error responses are predictable for callers
-data:
-  - data/run-manifest.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: error responses are predictable for callers
@@ -83,3 +78,11 @@ Rating effect: supports target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

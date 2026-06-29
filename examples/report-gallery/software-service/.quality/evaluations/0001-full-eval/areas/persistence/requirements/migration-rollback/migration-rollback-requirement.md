@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: migrations have rehearsed rollback paths
-data:
-  - data/run-manifest.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: migrations have rehearsed rollback paths
@@ -83,3 +78,11 @@ Rating effect: constrains target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

@@ -35,17 +35,17 @@ behavior.
 For Evaluation runs, `build` validates the structured payload graph under
 `data/`, assembles `data/evaluation-output-result.json`, and renders the
 deterministic Markdown report tree from completed structured outputs, including
-the generated report frontmatter and header contract defined by
+the generated report frontmatter, header, and source-data section contract defined by
 [Evaluation report tree](../evaluation/reports/report-tree.md). It renders
 recorded judgment; it **MUST NOT** reread evaluated source, infer or recompute
 ratings, invent findings, choose new recommendations by evaluator judgment, or
-read generated report frontmatter as source data. It **MUST** fail before
-writing generated report files when the run is not renderable, including when
-required Evaluation data is missing, malformed, schema-incompatible, or
-structurally incomplete. The failure **MUST** identify the blocking gap and
-point the caller to `qualitymd evaluation status <run>` for the complete gap
-list. It **MUST** be deterministic and idempotent: unchanged structured data
-produces byte-identical report files.
+read generated report frontmatter or Markdown body content as source data. It
+**MUST** fail before writing generated report files when the run is not
+renderable, including when required Evaluation data is missing, malformed,
+schema-incompatible, or structurally incomplete. The failure **MUST** identify
+the blocking gap and point the caller to `qualitymd evaluation status <run>` for
+the complete gap list. It **MUST** be deterministic and idempotent: unchanged
+structured data produces byte-identical report files.
 
 `build` **MUST** read the run scope from `RunManifest.plannedScope`.
 `report.md` **MUST** render as the scoped Area report for
@@ -61,10 +61,12 @@ Recommendations sections capped at 10 rows each and **MUST** link to
 rendered from persisted Advice data and the model snapshot, not from YAML
 frontmatter or Markdown body content in other generated reports.
 
-Generated Markdown report frontmatter `data` **MUST** list the structured
-Evaluation payload files used as source data for the specific report artifact.
-The generated `data/evaluation-output-result.json` index **MUST NOT** be listed
-as report source data unless a report is directly rendered from it.
+Generated Markdown report frontmatter **MUST** contain only report identity
+fields. Every generated Markdown report **MUST** end with a `Source Data`
+section listing the structured Evaluation payload files used as source data for
+the specific report artifact. The generated
+`data/evaluation-output-result.json` index **MUST NOT** be listed as report
+source data unless a report is directly rendered from it.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

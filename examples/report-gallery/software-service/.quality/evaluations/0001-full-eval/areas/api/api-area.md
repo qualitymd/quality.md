@@ -1,18 +1,6 @@
 ---
 type: Area Evaluation Report
 title: Public API
-data:
-  - data/run-manifest.json
-  - data/areas/api/area-analysis-result.json
-  - data/areas/api/factors/correctness/factor-analysis-result.json
-  - data/areas/api/factors/operability/factor-analysis-result.json
-  - data/advice/finding-ranking-result.json
-  - data/advice/recommendation-ranking-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
-  - data/advice/recommendations/rec-001/recommendation-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
 ---
 
 # Area: Public API
@@ -56,3 +44,18 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../data/run-manifest.json)
+- [data/areas/api/area-analysis-result.json](../../data/areas/api/area-analysis-result.json)
+- [data/areas/api/factors/correctness/factor-analysis-result.json](../../data/areas/api/factors/correctness/factor-analysis-result.json)
+- [data/areas/api/factors/operability/factor-analysis-result.json](../../data/areas/api/factors/operability/factor-analysis-result.json)
+- [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
+- [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
+- [data/advice/recommendations/rec-001/recommendation-result.json](../../data/advice/recommendations/rec-001/recommendation-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
+

@@ -64,8 +64,9 @@ Use visible Markdown for:
 - findings and recommendations;
 - limits and incomplete inputs.
 
-Use frontmatter only to make report identity and links cheap for agents or
-secondary tooling.
+Use frontmatter only to make report identity cheap for agents or secondary
+tooling. Put source-data links in the visible `Source Data` section at the end
+of the report.
 
 ### One-second orientation
 
@@ -87,15 +88,15 @@ Evaluation data. Do not introduce report-only findings, ratings, evidence,
 limits, recommendations, or analysis in the Markdown body or in frontmatter.
 
 Structured data under `data/` remains the machine-readable source of truth.
-Report frontmatter may point to that data, but must not become a second result
-format.
+The report body may point to that data in its bottom `Source Data` section, but
+the report must not become a second result format.
 
 Keep rating drivers in structured Evaluation payloads instead of rendering
 standalone `Rating Drivers` body sections. If a reader or agent needs the full
-rating trace, the report's `data` frontmatter should point them to the relevant
-analysis payload; the visible body should foreground summaries, ratings,
-findings, recommendations, Area / Factor breakdowns, limits, and incomplete
-inputs.
+rating trace, the report's `Source Data` section should point them to the
+relevant analysis payload; the visible body should foreground summaries,
+ratings, findings, recommendations, Area / Factor breakdowns, limits, and
+incomplete inputs.
 
 ### Report-specific headers
 
@@ -151,14 +152,13 @@ Long pages should add a `Jump to:` line after the header area. Useful targets:
 
 Skip jump links on short pages where they add more noise than navigation value.
 
-### OKF-compatible pointer frontmatter
+### Identity frontmatter
 
-Generated report YAML frontmatter stays tiny. It is a source-data pointer layer,
-not a metadata summary. Keep it OKF-compatible by including a `type` and
-`title`, then list the structured Evaluation payloads used to render that
-specific report artifact with `data`. Do not repeat Evaluation result facts that
-already live in the associated JSON files or visible header, including generated
-time, run identity, subject identity, scope, ratings, confidence, findings,
+Generated report YAML frontmatter stays tiny. It is an identity layer, not a
+metadata summary or source-data manifest. Keep it OKF-compatible by including
+only a `type` and `title`. Do not repeat Evaluation result facts that already
+live in the associated JSON files or visible body, including generated time, run
+identity, subject identity, scope, ratings, confidence, findings,
 recommendations, limits, or display labels.
 
 Generated reports are runtime artifacts, so they do not yet require a report
@@ -169,26 +169,19 @@ Do not rename report files such as `findings.md` or `recommendations.md` to
 `findings.md` is still a report concept whose subject is the ranked Findings
 index.
 
-Use only a stable report `type`, a human-friendly `title`, and the canonical
-JSON payloads used as source data for the report:
+Use only a stable report `type` and a human-friendly `title`:
 
 ```yaml
 ---
 type: Requirement Evaluation Report
 title: mutation endpoints are idempotent under retry
-data:
-  - data/run-manifest.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 ```
 
 Good frontmatter fields:
 
 - `type`;
-- `title`;
-- `data`.
+- `title`.
 
 The frontmatter `title` should name the report subject without repeating the
 type prefix. Keep prefixes such as `Requirement:` or `Area:` in the visible H1,
@@ -234,13 +227,41 @@ visible Markdown header, especially:
 
 This keeps the first lines of a report readable in editors that expose
 frontmatter and keeps the structured Evaluation data as the single source of
-truth. Do not list `data/evaluation-output-result.json` merely because it exists:
-that file is a generated output index, not report source data unless a future
-renderer directly consumes it. If a future consumer needs richer machine access,
-use `data/evaluation-output-result.json` and the payloads it indexes instead of
+truth. If a future consumer needs richer machine access, use
+`data/evaluation-output-result.json` and the payloads it indexes instead of
 expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
+
+### Source Data at the bottom
+
+Every generated report should end with a stable `## Source Data` section. The
+section lists the structured Evaluation payloads used to render that report
+artifact:
+
+```markdown
+## Source Data
+
+- [data/run-manifest.json](data/run-manifest.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
+```
+
+Use path-as-label links. Human-friendly labels would read better locally, but
+paths are more useful to agents, avoid another naming surface, and make the
+target obvious in plain text. In nested reports, keep the label
+run-root-relative and make the link target relative to the report file, for
+example:
+
+```markdown
+- [data/run-manifest.json](../../data/run-manifest.json)
+```
+
+Keep the list report-local. Do not list every payload in the run, and do not
+list `data/evaluation-output-result.json` merely because it exists: that file is
+a generated output index, not report source data unless a future renderer
+directly consumes it.
 
 ## Header patterns
 
@@ -394,7 +415,8 @@ Before changing report output, check:
 - Hierarchical context is visible through Area, Factor, or Factors lines.
 - The header uses a report-specific summary table.
 - Long pages have useful jump links; short pages do not add noisy jump links.
-- Frontmatter contains identity and source-data links only.
+- Frontmatter contains identity only.
 - No generated report introduces claims that are absent from structured data.
-- Frontmatter `data` lists the structured payloads used to render the report.
+- The bottom `Source Data` section lists the structured payloads used to render
+  the report.
 - Empty values render visibly and consistently.

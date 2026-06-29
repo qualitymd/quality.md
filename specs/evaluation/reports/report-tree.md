@@ -26,9 +26,10 @@ Report generation **MUST NOT** introduce new findings, ratings, evidence, limits
 analysis, or recommendations. It **MUST** render persisted Advice outputs when
 the run is otherwise renderable.
 
-Generated report frontmatter **MUST NOT** be read as report-generation input.
-It is an output convenience for readers, agents, and editor previews; structured
-Evaluation data remains the source of truth.
+Generated report frontmatter and Markdown body content **MUST NOT** be read as
+report-generation input. Generated reports are output conveniences for readers,
+agents, and editor previews; structured Evaluation data remains the source of
+truth.
 
 ## Report Paths
 
@@ -79,7 +80,7 @@ recommendation ID when needed.
 ## Report Frontmatter
 
 Every generated Markdown report **MUST** begin with YAML frontmatter containing
-only `type`, `title`, and `data`.
+only `type` and `title`.
 
 The `type` field **MUST** use this report-subject taxonomy:
 
@@ -101,28 +102,43 @@ report-kind prefix. For example, a Requirement report frontmatter title uses the
 Requirement title alone, while its visible H1 renders as
 `# Requirement: <title>`.
 
-The `data` field **MUST** list run-root-relative structured Evaluation payload
-paths used as source data for that specific Markdown report artifact. Reports
-that render run number, creation time, or requested scope from the run manifest
-**MUST** include `data/run-manifest.json`.
+Report frontmatter **MUST NOT** duplicate generated time, run identity, model
+snapshot, subject identity, scope, ratings, confidence, summaries, rating
+drivers, findings, recommendations, limits, evidence, or rendered display
+labels when those values are available from structured Evaluation payloads or
+the visible Markdown body.
 
-Report frontmatter `data` **MUST NOT** include
+> Rationale: `type` and subject-only `title` make generated reports
+> OKF-compatible enough for lightweight discovery without turning the first
+> screen of every report into a source-data manifest. Report-local source-data
+> pointers live in the visible bottom section instead. — 0158, 0162
+
+## Source Data Section
+
+Every generated Markdown report **MUST** end with a `## Source Data` section.
+
+The `Source Data` section **MUST** list the run-root-relative structured
+Evaluation payload paths used as source data for that specific Markdown report
+artifact.
+
+Each source-data list item **MUST** render as a Markdown link whose label is the
+run-root-relative payload path and whose target is relative to the report file
+that contains the section.
+
+Reports that render run number, creation time, or requested scope from the run
+manifest **MUST** include `data/run-manifest.json`.
+
+The `Source Data` section **MUST NOT** include
 `data/evaluation-output-result.json` solely because that generated output index
 exists. A report **MAY** list `data/evaluation-output-result.json` only if that
 report is directly rendered from it.
 
-Report frontmatter **MUST NOT** duplicate generated time, run identity, model
-snapshot, subject identity, scope, ratings, confidence, summaries, rating
-drivers, findings, recommendations, limits, evidence, or rendered display
-labels when those values are available from linked JSON payloads or the visible
-Markdown header.
-
-> Rationale: `type` and subject-only `title` make generated reports
-> OKF-compatible enough for lightweight discovery, while `data` points agents to
-> the exact payloads used to render the artifact instead of turning report
-> Markdown into another result format. `EvaluationOutputResult` indexes generated
-> outputs after report build; it is not source data for those reports unless a
-> renderer explicitly consumes it. — 0158, 0159
+> Rationale: The bottom section keeps source payloads visible and parseable for
+> people and agents without making frontmatter noisy. Path labels make the
+> source files discoverable in plain text, while report-relative targets keep
+> nested reports navigable. `EvaluationOutputResult` indexes generated outputs
+> after report build; it is not source data for those reports unless a renderer
+> explicitly consumes it. — 0159, 0162
 
 ## Run Report
 
@@ -142,7 +158,8 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 
 The run-level `report.md` **MUST NOT** render a standalone `Rating Drivers`
 section or `Driver | Effect | Inputs` table. Rating drivers remain structured
-source data available through the payloads listed in report frontmatter.
+source data available through the payloads listed in the report's `Source Data`
+section.
 
 When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
 filtered Factors and **MUST** avoid presenting the result as a complete Area
@@ -273,15 +290,16 @@ Factor report.
 Report tables **MUST** render the row subject as the generated human report link
 when that row has exactly one generated human report target. Generated Markdown
 report bodies **MUST NOT** duplicate report-level source-data links in `Data`
-columns or equivalent body-only source-data link lines; report frontmatter
-`data` owns the source-data manifest.
+columns or equivalent header source-data lines; the `Source Data` section owns
+the visible source-data manifest.
 
 > Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
 > links make report navigation land on the named thing readers naturally open.
-> Machine data links live in frontmatter because they target structured payloads,
-> not generated human report pages. Keeping those links out of visible summary
-> tables makes the body easier to scan without hiding the source-data manifest
-> from agents or secondary tooling. — 0104, 0105, 0109, 0159
+> Machine data links target structured payloads, not generated human report
+> pages, so they live in a dedicated bottom section rather than summary tables.
+> Keeping those links out of visible summary tables makes the report header
+> easier to scan without hiding the source-data manifest from agents or
+> secondary tooling. — 0104, 0105, 0109, 0159, 0162
 
 ## Area Reports
 
@@ -298,7 +316,8 @@ Area reports **MUST** include:
 
 Area reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
-structured Area Analysis Result payloads listed in report frontmatter.
+structured Area Analysis Result payloads listed in the report's `Source Data`
+section.
 
 ## Factor Reports
 
@@ -319,7 +338,8 @@ Factor reports **MUST** include:
 
 Factor reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
-structured Factor Analysis Result payloads listed in report frontmatter.
+structured Factor Analysis Result payloads listed in the report's `Source Data`
+section.
 
 ## Requirement Reports
 
@@ -365,8 +385,8 @@ condition, criteria, basis, effect, and evidence. Requirement Finding details
 Area and Factor reports **MUST NOT** render `Findings` sections. Their
 human-facing roll-up explanation belongs in summary, ratings, confidence,
 limits, incomplete inputs, and breakdown tables. Structured `ratingDrivers`
-remain available through report frontmatter `data` links and routine JSON
-payloads, not standalone Markdown body sections.
+remain available through report `Source Data` links and routine JSON payloads,
+not standalone Markdown body sections.
 
 Run and Area reports **MUST** render an `Area / Factor Breakdown` section before
 scope or Requirement detail sections. The breakdown table **MUST** use the

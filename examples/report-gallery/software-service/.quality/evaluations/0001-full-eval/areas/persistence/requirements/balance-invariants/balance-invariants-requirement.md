@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: ledger mutations preserve balance invariants
-data:
-  - data/run-manifest.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: ledger mutations preserve balance invariants
@@ -83,3 +78,11 @@ Rating effect: supports target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

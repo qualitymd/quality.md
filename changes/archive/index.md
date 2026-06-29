@@ -685,3 +685,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   replaces flat generated subject-report tables and split Area structure tables
   with compact Area / Factor breakdowns in generated Evaluation reports
   (`Done`).
+- [0162 — Report Source Data Section](0162-report-source-data-section.md) - moved
+  generated report source-data pointers from YAML frontmatter into visible
+  bottom `Source Data` sections (`Done`).

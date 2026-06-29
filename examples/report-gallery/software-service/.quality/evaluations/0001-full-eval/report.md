@@ -1,32 +1,6 @@
 ---
 type: Evaluation Overview Report
 title: LedgerLite Service
-data:
-  - data/run-manifest.json
-  - data/areas/root/area-analysis-result.json
-  - data/advice/finding-ranking-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
-  - data/advice/recommendation-ranking-result.json
-  - data/advice/recommendations/rec-001/recommendation-result.json
-  - data/advice/recommendations/rec-002/recommendation-result.json
-  - data/advice/recommendations/rec-003/recommendation-result.json
-  - data/areas/agent-harness/area-analysis-result.json
-  - data/areas/api/area-analysis-result.json
-  - data/areas/operations/area-analysis-result.json
-  - data/areas/persistence/area-analysis-result.json
-  - data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json
-  - data/areas/api/factors/correctness/factor-analysis-result.json
-  - data/areas/api/factors/operability/factor-analysis-result.json
-  - data/areas/operations/factors/observability/factor-analysis-result.json
-  - data/areas/operations/factors/recoverability/factor-analysis-result.json
-  - data/areas/persistence/factors/integrity/factor-analysis-result.json
-  - data/areas/persistence/factors/recoverability/factor-analysis-result.json
 ---
 
 # Evaluation Report: Area: LedgerLite Service
@@ -110,3 +84,32 @@ Full recommendation index: [recommendations.md](recommendations.md)
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](data/run-manifest.json)
+- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
+- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
+- [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
+- [data/advice/recommendations/rec-001/recommendation-result.json](data/advice/recommendations/rec-001/recommendation-result.json)
+- [data/advice/recommendations/rec-002/recommendation-result.json](data/advice/recommendations/rec-002/recommendation-result.json)
+- [data/advice/recommendations/rec-003/recommendation-result.json](data/advice/recommendations/rec-003/recommendation-result.json)
+- [data/areas/agent-harness/area-analysis-result.json](data/areas/agent-harness/area-analysis-result.json)
+- [data/areas/api/area-analysis-result.json](data/areas/api/area-analysis-result.json)
+- [data/areas/operations/area-analysis-result.json](data/areas/operations/area-analysis-result.json)
+- [data/areas/persistence/area-analysis-result.json](data/areas/persistence/area-analysis-result.json)
+- [data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json](data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json)
+- [data/areas/api/factors/correctness/factor-analysis-result.json](data/areas/api/factors/correctness/factor-analysis-result.json)
+- [data/areas/api/factors/operability/factor-analysis-result.json](data/areas/api/factors/operability/factor-analysis-result.json)
+- [data/areas/operations/factors/observability/factor-analysis-result.json](data/areas/operations/factors/observability/factor-analysis-result.json)
+- [data/areas/operations/factors/recoverability/factor-analysis-result.json](data/areas/operations/factors/recoverability/factor-analysis-result.json)
+- [data/areas/persistence/factors/integrity/factor-analysis-result.json](data/areas/persistence/factors/integrity/factor-analysis-result.json)
+- [data/areas/persistence/factors/recoverability/factor-analysis-result.json](data/areas/persistence/factors/recoverability/factor-analysis-result.json)
+

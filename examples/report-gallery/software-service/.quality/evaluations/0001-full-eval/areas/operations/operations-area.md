@@ -1,18 +1,6 @@
 ---
 type: Area Evaluation Report
 title: Operations
-data:
-  - data/run-manifest.json
-  - data/areas/operations/area-analysis-result.json
-  - data/areas/operations/factors/observability/factor-analysis-result.json
-  - data/areas/operations/factors/recoverability/factor-analysis-result.json
-  - data/advice/finding-ranking-result.json
-  - data/advice/recommendation-ranking-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
-  - data/advice/recommendations/rec-003/recommendation-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
 ---
 
 # Area: Operations
@@ -56,3 +44,18 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../data/run-manifest.json)
+- [data/areas/operations/area-analysis-result.json](../../data/areas/operations/area-analysis-result.json)
+- [data/areas/operations/factors/observability/factor-analysis-result.json](../../data/areas/operations/factors/observability/factor-analysis-result.json)
+- [data/areas/operations/factors/recoverability/factor-analysis-result.json](../../data/areas/operations/factors/recoverability/factor-analysis-result.json)
+- [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
+- [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
+- [data/advice/recommendations/rec-003/recommendation-result.json](../../data/advice/recommendations/rec-003/recommendation-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json](../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json](../../data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json)
+

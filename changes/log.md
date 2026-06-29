@@ -3,6 +3,39 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0162 - Report Source Data Section](archive/0162-report-source-data-section.md).
+  Generated Evaluation Markdown reports now use identity-only frontmatter and
+  end with report-local `Source Data` sections; durable specs, report design
+  guidance, focused tests, report-gallery output, and `mise run check` are
+  aligned.
+
+- **In-Review**: Completed implementation for
+  [0162 - Report Source Data Section](archive/0162-report-source-data-section.md).
+  Generated report frontmatter is now identity-only; every generated report ends
+  with a report-local `Source Data` section; durable report specs, report design
+  guidance, tests, and report-gallery output are aligned.
+
+- **In-Progress**: Advanced
+  [0162 - Report Source Data Section](archive/0162-report-source-data-section.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable report specs, focused tests, and
+  report-gallery output.
+
+- **Design**: Added the
+  [design doc](archive/0162-report-source-data-section/design.md) for
+  [0162 - Report Source Data Section](archive/0162-report-source-data-section.md).
+  The design keeps existing report-local source path computation, removes YAML
+  `data` emission, and appends a shared bottom `Source Data` section to every
+  generated report.
+
+- **Draft**: Created
+  [0162 - Report Source Data Section](archive/0162-report-source-data-section.md)
+  with its
+  [functional spec](archive/0162-report-source-data-section/spec.md). The case
+  moves generated report source-data pointers from noisy YAML frontmatter into a
+  stable bottom `Source Data` section.
+
+- **Done**: Implemented and archived
   [0161 - Area / Factor Breakdown Reports](archive/0161-area-factor-breakdown.md).
   Generated run and Area reports now render Area / Factor Breakdown tables with
   Area/Factor links, overall and local ratings, ranked finding counts, and

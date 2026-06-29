@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0162 - Report Source Data Section](../changes/archive/0162-report-source-data-section.md).
+  Generated Evaluation Markdown reports now keep frontmatter to `type` and
+  `title`, and render report-local structured source payload links in a bottom
+  `Source Data` section.
+
+- **Revision**: Implemented durable spec changes for
   [0160 - Report Body Rating Drivers](../changes/archive/0160-report-body-rating-drivers.md).
   Generated Evaluation Markdown reports no longer render standalone
   rating-driver body sections, while structured `ratingDrivers` remain available

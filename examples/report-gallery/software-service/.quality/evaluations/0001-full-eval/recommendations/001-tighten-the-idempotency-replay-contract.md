@@ -1,11 +1,6 @@
 ---
 type: Recommendation Report
 title: Tighten the idempotency replay contract
-data:
-  - data/run-manifest.json
-  - data/advice/recommendations/rec-001/recommendation-result.json
-  - data/advice/recommendation-ranking-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
 ---
 
 # Recommendation: Tighten the idempotency replay contract
@@ -48,3 +43,11 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../data/run-manifest.json)
+- [data/advice/recommendations/rec-001/recommendation-result.json](../data/advice/recommendations/rec-001/recommendation-result.json)
+- [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+

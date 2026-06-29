@@ -1,11 +1,6 @@
 ---
 type: Factor Evaluation Report
 title: Recoverability
-data:
-  - data/run-manifest.json
-  - data/areas/operations/factors/recoverability/factor-analysis-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
 ---
 
 # Factor: Recoverability
@@ -48,3 +43,11 @@ Recoverability follows its direct requirement signal.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/operations/factors/recoverability/factor-analysis-result.json](../../../../data/areas/operations/factors/recoverability/factor-analysis-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
+

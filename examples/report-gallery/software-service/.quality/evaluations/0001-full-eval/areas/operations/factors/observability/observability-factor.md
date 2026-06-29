@@ -1,11 +1,6 @@
 ---
 type: Factor Evaluation Report
 title: Observability
-data:
-  - data/run-manifest.json
-  - data/areas/operations/factors/observability/factor-analysis-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
 ---
 
 # Factor: Observability
@@ -48,3 +43,11 @@ Observability follows its direct requirement signal.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/operations/factors/observability/factor-analysis-result.json](../../../../data/areas/operations/factors/observability/factor-analysis-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
+

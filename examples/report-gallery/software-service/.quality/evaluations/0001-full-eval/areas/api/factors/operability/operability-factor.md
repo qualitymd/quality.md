@@ -1,11 +1,6 @@
 ---
 type: Factor Evaluation Report
 title: Operability
-data:
-  - data/run-manifest.json
-  - data/areas/api/factors/operability/factor-analysis-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
 ---
 
 # Factor: Operability
@@ -48,3 +43,11 @@ Operability follows its direct requirement signal.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/api/factors/operability/factor-analysis-result.json](../../../../data/areas/api/factors/operability/factor-analysis-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
+

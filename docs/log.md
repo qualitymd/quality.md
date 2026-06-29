@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0162 - Report Source Data Section](../changes/archive/0162-report-source-data-section.md).
+  Generated report design guidance now keeps YAML frontmatter identity-only and
+  puts report-local source payload links in a bottom `Source Data` section.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0160 - Report Body Rating Drivers](../changes/archive/0160-report-body-rating-drivers.md).
   Generated report design guidance now keeps rating drivers in structured
   Evaluation payloads instead of standalone visible body sections.

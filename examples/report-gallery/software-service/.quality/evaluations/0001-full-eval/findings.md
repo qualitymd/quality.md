@@ -1,16 +1,6 @@
 ---
 type: Finding Index Report
 title: Findings
-data:
-  - data/run-manifest.json
-  - data/advice/finding-ranking-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
-  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
 ---
 
 # Findings
@@ -37,3 +27,16 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](data/run-manifest.json)
+- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+- [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
+

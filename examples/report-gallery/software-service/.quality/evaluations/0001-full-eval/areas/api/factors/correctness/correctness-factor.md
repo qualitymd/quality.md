@@ -1,11 +1,6 @@
 ---
 type: Factor Evaluation Report
 title: Correctness
-data:
-  - data/run-manifest.json
-  - data/areas/api/factors/correctness/factor-analysis-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
 ---
 
 # Factor: Correctness
@@ -48,3 +43,11 @@ Correctness follows its direct requirement signal.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/api/factors/correctness/factor-analysis-result.json](../../../../data/areas/api/factors/correctness/factor-analysis-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+

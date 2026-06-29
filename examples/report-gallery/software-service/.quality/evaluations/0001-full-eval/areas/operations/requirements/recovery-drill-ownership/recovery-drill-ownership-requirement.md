@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: recovery drills have current owners
-data:
-  - data/run-manifest.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
-  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: recovery drills have current owners
@@ -83,3 +78,11 @@ Rating effect: constrains target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
+- [data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

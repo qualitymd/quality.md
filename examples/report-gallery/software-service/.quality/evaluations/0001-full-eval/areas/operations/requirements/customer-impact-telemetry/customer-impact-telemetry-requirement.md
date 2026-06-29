@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: health signals explain customer impact
-data:
-  - data/run-manifest.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
-  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: health signals explain customer impact
@@ -83,3 +78,11 @@ Rating effect: supports target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
+- [data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

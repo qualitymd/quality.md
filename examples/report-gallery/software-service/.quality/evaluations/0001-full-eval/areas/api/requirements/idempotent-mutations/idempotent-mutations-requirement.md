@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: mutation endpoints are idempotent under retry
-data:
-  - data/run-manifest.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
-  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: mutation endpoints are idempotent under retry
@@ -83,3 +78,11 @@ Rating effect: constrains target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
+- [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

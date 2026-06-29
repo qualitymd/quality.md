@@ -1,11 +1,6 @@
 ---
 type: Requirement Evaluation Report
 title: agent guidance routes quality evaluation work
-data:
-  - data/run-manifest.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
-  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: agent guidance routes quality evaluation work
@@ -83,3 +78,11 @@ Rating effect: supports target
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json)
+- [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
+

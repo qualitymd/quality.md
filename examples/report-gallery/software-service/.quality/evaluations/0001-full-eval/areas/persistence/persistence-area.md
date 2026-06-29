@@ -1,18 +1,6 @@
 ---
 type: Area Evaluation Report
 title: Ledger Persistence
-data:
-  - data/run-manifest.json
-  - data/areas/persistence/area-analysis-result.json
-  - data/areas/persistence/factors/integrity/factor-analysis-result.json
-  - data/areas/persistence/factors/recoverability/factor-analysis-result.json
-  - data/advice/finding-ranking-result.json
-  - data/advice/recommendation-ranking-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
-  - data/advice/recommendations/rec-002/recommendation-result.json
-  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
-  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
 ---
 
 # Area: Ledger Persistence
@@ -56,3 +44,18 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../data/run-manifest.json)
+- [data/areas/persistence/area-analysis-result.json](../../data/areas/persistence/area-analysis-result.json)
+- [data/areas/persistence/factors/integrity/factor-analysis-result.json](../../data/areas/persistence/factors/integrity/factor-analysis-result.json)
+- [data/areas/persistence/factors/recoverability/factor-analysis-result.json](../../data/areas/persistence/factors/recoverability/factor-analysis-result.json)
+- [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
+- [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
+- [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
+- [data/advice/recommendations/rec-002/recommendation-result.json](../../data/advice/recommendations/rec-002/recommendation-result.json)
+- [data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json](../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json)
+- [data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json](../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json)
+

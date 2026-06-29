@@ -1,11 +1,6 @@
 ---
 type: Factor Evaluation Report
 title: Agent Accessibility
-data:
-  - data/run-manifest.json
-  - data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
-  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
 ---
 
 # Factor: Agent Accessibility
@@ -48,3 +43,11 @@ Agent Accessibility follows its direct requirement signal.
 ## Legend
 
 - `—` - not applicable or not recorded.
+
+## Source Data
+
+- [data/run-manifest.json](../../../../data/run-manifest.json)
+- [data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json](../../../../data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json)
+- [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)
+
