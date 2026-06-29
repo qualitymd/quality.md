@@ -2,6 +2,10 @@
 
 ## 2026-06-29
 
+- **Release prep**: Bumped the root `SPECIFICATION.md` version to `0.9 (Draft)`
+  for the `v0.26.0` release, matching the updated Evaluation run identity,
+  recommendation numbering, and finding reference semantics.
+
 - **Revision**: Implemented durable spec changes for
   [0165 - Run IDs and Artifact Numbering](../changes/archive/0165-run-id-artifact-numbering.md).
   Evaluation runs now carry a globally-unique `RunManifest.id`, recommendations

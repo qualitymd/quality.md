@@ -2,6 +2,9 @@
 
 ## 2026-06-29
 
+- **Release prep**: Bumped the runtime skill metadata to `0.26.0` with
+  `qualitymd >=0.26.0 <0.27.0` compatibility for the `v0.26.0` release.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0165 - Run IDs and
   Artifact Numbering. Runtime evaluation guidance now lets the CLI assign

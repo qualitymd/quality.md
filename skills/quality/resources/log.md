@@ -1,5 +1,11 @@
 # /quality Runtime Resources Update Log
 
+## 2026-06-29
+
+- **Release prep**: Bumped the bundled
+  [QUALITY.md specification](SPECIFICATION.md) resource to `0.9 (Draft)` for the
+  `v0.26.0` release.
+
 ## 2026-06-27
 
 - **Revision**: Updated the bundled

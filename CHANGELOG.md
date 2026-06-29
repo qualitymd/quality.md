@@ -5,6 +5,10 @@ QUALITY.md specification.
 
 ## Unreleased
 
+No changes yet.
+
+## v0.26.0 - 2026-06-29
+
 ### CLI
 
 - Evaluation runs now persist a globally-unique `RunManifest.id` alongside the
@@ -12,6 +16,31 @@ QUALITY.md specification.
   render typed references such as
   `evaluation:<run-id>/recommendation/<number>`; ranked findings no longer carry
   synthetic artifact IDs.
+
+### /quality skill
+
+- `/quality evaluate` guidance now authors Advice against CLI-assigned
+  recommendation numbers and references Requirement Findings by `findingRef`
+  selectors only.
+
+### Specification
+
+- QUALITY.md specification version is now `0.9 (Draft)`, reflecting the updated
+  Evaluation run identity, recommendation numbering, and finding reference
+  semantics.
+
+### Compatibility / Migration
+
+- Breaking Evaluation data/report artifact contract change: pre-`v0.26.0`
+  Evaluation runs that use `QEVAL`, `QREC`, or `QFIND` artifact IDs are
+  historical data and are not migrated.
+- `/quality` skill version `0.26.0` requires the `qualitymd` CLI `0.26.x` line.
+
+Compatibility:
+
+- CLI: `v0.26.0`
+- QUALITY.md specification: `0.9 (Draft)`
+- /quality skill: `0.26.0`, requires `qualitymd >=0.26.0 <0.27.0`
 
 ## v0.25.6 - 2026-06-29
 

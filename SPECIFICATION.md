@@ -1,6 +1,6 @@
 # QUALITY.md Specification
 
-**Specification version:** 0.8 (Draft)
+**Specification version:** 0.9 (Draft)
 
 This document specifies the QUALITY.md standard: a Markdown file with YAML
 frontmatter that declares a quality model and a Markdown body that documents its
