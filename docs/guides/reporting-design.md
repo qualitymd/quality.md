@@ -30,8 +30,8 @@ Factor reports, Requirement reports, and recommendation detail reports.
 - Structure is navigation. W3C WAI guidance emphasizes meaningful page
   structure, headings, and regions:
   [Page Structure Tutorial](https://www.w3.org/WAI/tutorials/page-structure/).
-  Long documents benefit from compact local jump links when the headings below
-  are stable and useful.
+  Multi-section generated reports benefit from a standard local Contents section
+  when the headings below are stable and useful.
 - Metadata should be useful, not exhaustive. Page metadata patterns commonly
   reserve metadata for facts such as date, type, owner, category, and reference
   number while including only what helps the reader:
@@ -88,7 +88,7 @@ The top of a primary run report should have one stable job per section:
 1. H1: report kind and subject.
 2. `Summary`: bottom line, main reason, and consequence.
 3. `Key Details`: compact table of scan-critical facts.
-4. Local navigation: compact jump links for the major sections in this report.
+4. `Contents`: local navigation for the major sections in this report.
 5. `Model Evaluation`: the evaluated Model structure and ratings.
 6. Ranked findings and recommendations.
 
@@ -159,7 +159,7 @@ Keep the existing model context lines:
 Use breadcrumb trails for hierarchy and a separate report-nav line for sibling
 report-list artifacts. Do not overload breadcrumbs with every report in the run.
 
-### Summary, key details, and local navigation
+### Summary, key details, and contents
 
 Put the bottom line before long tables. For the run report, use an explicit
 `## Summary` section before Top Findings and Top Recommendations. The summary is
@@ -170,9 +170,17 @@ Use `## Key Details` for scan-critical facts. This prevents the summary from
 turning into a metadata dump and prevents the key-details table from trying to
 explain judgment.
 
-Use a compact `Jump to:` line for local navigation when local section navigation
-materially improves scanning. Do not render a `## Contents` section in generated
-reports.
+Use a `## Contents` section for generated report artifacts that contain multiple
+substantive top-level sections. Keep Contents shallow: list visible `##`
+sections in the report, do not include `Contents` itself, and do not nest `###`
+headings.
+
+Do not render compact `Jump to:` lines. A single Contents idiom keeps report
+navigation predictable for people and agents.
+
+Do not add Contents to OKF `index.md` files or other listing/index artifacts
+whose primary job is navigation. Do not add Contents to a generated report with
+fewer than two substantive top-level body sections.
 
 Useful run-report targets, when the corresponding sections are rendered:
 
@@ -189,10 +197,9 @@ Useful detail-report targets, when the corresponding sections are rendered:
 - `Finding Details`;
 - `Unknowns & Missing Evidence`.
 
-For `report.md`, render `Jump to:` when the report contains multiple major
-sections beyond the opening stack. For detail and list reports, render
-`Jump to:` only when local section navigation materially improves scanning. Skip
-local navigation on short pages where it adds more noise than value.
+For `report.md`, render Contents after the opening summary and key details, so
+the reader sees the bottom line before document navigation. For detail and list
+reports, render Contents after the opening context and key details.
 
 ### Frontmatter
 
@@ -320,6 +327,15 @@ Empty: `—`.
 ```markdown
 Type: ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note.
 Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
+
+## Contents
+
+- [Ranked Findings](#ranked-findings)
+- [Primary Source Data](#primary-source-data)
+
+## Ranked Findings
+
+| Rank | Finding | Area | Factors | Type | Severity |
 ```
 
 ```markdown
@@ -391,7 +407,12 @@ Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
-Jump to: [Model Evaluation](#model-evaluation) - [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Primary Source Data](#primary-source-data)
+## Contents
+
+- [Model Evaluation](#model-evaluation)
+- [Top Findings](#top-findings)
+- [Top Recommendations](#top-recommendations)
+- [Primary Source Data](#primary-source-data)
 
 ## Model Evaluation
 
@@ -463,6 +484,14 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
+## Contents
+
+- [Summary](#summary)
+- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Requirements](#requirements)
+- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
+- [Primary Source Data](#primary-source-data)
+
 ## Summary
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
@@ -501,6 +530,14 @@ Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
+## Contents
+
+- [Summary](#summary)
+- [Requirements](#requirements)
+- [Sub-Factors](#sub-factors)
+- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
+- [Primary Source Data](#primary-source-data)
+
 ## Summary
 
 Correctness follows its direct requirement signal.
@@ -531,7 +568,13 @@ Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 
-Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
+## Contents
+
+- [Summary](#summary)
+- [Findings Summary](#findings-summary)
+- [Finding Details](#finding-details)
+- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
+- [Primary Source Data](#primary-source-data)
 ```
 
 ### Recommendation detail reports
@@ -555,6 +598,16 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 
 Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
+
+## Contents
+
+- [Description](#description)
+- [Background](#background)
+- [Expected value](#expected-value)
+- [Done criterion](#done-criterion)
+- [Ranking rationale](#ranking-rationale)
+- [Trace](#trace)
+- [Primary Source Data](#primary-source-data)
 ```
 
 ## Checklist
@@ -568,7 +621,7 @@ Before changing report output, check:
   where those reports exist.
 - Detail report hierarchical context is visible through Area, Factor, or Factors
   lines.
-- `report.md` uses `## Summary`, `## Key Details`, compact local jump links, and
+- `report.md` uses `## Summary`, `## Key Details`, `## Contents`, and
   `## Model Evaluation` before ranked lists.
 - Frontmatter-only routing metadata is not repeated in the visible body unless
   it materially helps human judgment.
@@ -576,8 +629,8 @@ Before changing report output, check:
   metadata list or a recommendation table.
 - Key details tables contain scan-critical facts, not prose, evidence, or
   recommendations.
-- Primary long reports have compact local jump links; short reports do not add
-  noisy local navigation.
+- Generated report artifacts with multiple substantive top-level sections have
+  `## Contents`; OKF `index.md` and other listing/index artifacts do not.
 - Local keys appear after first use, render one family per line, and stay
   notation-only.
 - Report cells keep text labels; markers and icons are supplemental and never

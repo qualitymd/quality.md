@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0175 - Report Contents Sections](../changes/archive/0175-report-contents-sections.md).
+  Generated Evaluation Markdown reports now use standard Contents sections for
+  multi-section report artifacts and no longer render compact `Jump to:` local
+  navigation lines.
+
+- **Revision**: Implemented durable spec changes for
   [0174 - Report Local Keys and Navigation](../changes/archive/0174-report-local-keys.md).
   Generated Evaluation Markdown reports now use compact local navigation and
   notation-only local keys instead of generated Contents and bottom Legend

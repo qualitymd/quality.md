@@ -21,6 +21,14 @@ Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
+## Contents
+
+- [Summary](#summary)
+- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Requirements](#requirements)
+- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
+- [Primary Source Data](#primary-source-data)
+
 ## Summary
 
 Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.

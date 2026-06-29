@@ -4,6 +4,13 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0175 - Report Contents Sections](../changes/archive/0175-report-contents-sections.md).
+  The guide now treats Contents as the standard local navigation idiom for
+  multi-section generated report artifacts and keeps OKF `index.md` files as the
+  listing-artifact exception.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0174 - Report Local Keys and Navigation](../changes/archive/0174-report-local-keys.md).
   The guide now defines compact generated report navigation, notation-only local
   keys, and marker/text-label accessibility expectations.

@@ -24,6 +24,14 @@ Status: ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
+## Contents
+
+- [Summary](#summary)
+- [Requirements](#requirements)
+- [Sub-Factors](#sub-factors)
+- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
+- [Primary Source Data](#primary-source-data)
+
 ## Summary
 
 Recoverability follows its direct requirement signal.

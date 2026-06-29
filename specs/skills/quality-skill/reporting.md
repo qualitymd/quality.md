@@ -49,11 +49,11 @@ Generated Markdown reports carry identity frontmatter and visible bottom
 frontmatter `title` matches the visible H1 document title; `type` carries the
 report artifact taxonomy. The `Primary Source Data` section lists report-local
 primary structured Evaluation payloads used to render the specific report
-artifact. Generated reports use compact local navigation and local notation keys
-instead of generated `Contents` or bottom `Legend` sections. The Evaluation run
-folder is not yet a full OKF bundle: it does not require generated `index.md`,
-`schema.md`, or `log.md` files, and generated reports do not require
-registration in `specs/schema.md`.
+artifact. Generated reports use standard `Contents` sections and local notation
+keys instead of compact `Jump to:` lines or bottom `Legend` sections. The
+Evaluation run folder is not yet a full OKF bundle: it does not require
+generated `index.md`, `schema.md`, or `log.md` files, and generated reports do
+not require registration in `specs/schema.md`.
 
 ## Report Generation
 

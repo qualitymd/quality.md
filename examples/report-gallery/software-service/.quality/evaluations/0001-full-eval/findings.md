@@ -18,6 +18,13 @@ Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 Severity: 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low.
 Empty: `—`.
 
+## Contents
+
+- [Ranked Findings](#ranked-findings)
+- [Primary Source Data](#primary-source-data)
+
+## Ranked Findings
+
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |
 | 1 | [Mutation retry behavior is not fully specified for duplicate idempotency keys.](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md#finding-gap-001) | [Public API](areas/api/api-area.md) | [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⚠️ Gap | 🔴 High |

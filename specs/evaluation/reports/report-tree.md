@@ -258,8 +258,8 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 `RunManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
-- `## Summary`, `## Key Details`, optional compact `Jump to:` local navigation,
-  and `## Model Evaluation` before Top Findings;
+- `## Summary`, `## Key Details`, `## Contents`, and `## Model Evaluation`
+  before Top Findings;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
 - link to the Findings report;
@@ -280,9 +280,24 @@ The run report `## Key Details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
 order. The section **MUST NOT** include limits or incomplete-input counts.
 
-Generated reports **MUST NOT** render a `## Contents` section. The run report
-**MAY** render a compact `Jump to:` line whose links target visible sections
-rendered in that run report.
+Generated reports **MUST** render a `## Contents` section when they contain at
+least two substantive top-level body sections. Generated `## Contents` sections
+**MUST** render a simple bullet list of Markdown links to visible `##` sections
+in the same report, excluding the `Contents` section itself. Generated Contents
+**MUST NOT** include nested `###` or deeper headings.
+
+Generated reports **MUST NOT** render compact `Jump to:` lines.
+
+Generated reports **MUST NOT** render a `## Contents` section when the artifact
+is an OKF `index.md`, another listing/index artifact whose primary purpose is
+navigation, or a report with fewer than two substantive top-level body sections.
+The `## Primary Source Data` section **MUST** be eligible for generated Contents
+when it is one of multiple substantive top-level sections in a generated report.
+
+> Rationale: report artifacts are reader-facing Markdown documents, and standard
+> Contents sections give readers and agents a predictable way to scan
+> multi-section reports. Index files are already navigation artifacts, so a
+> Contents section would duplicate their purpose. — 0175
 
 The run-level `report.md` **MUST NOT** render `## Scope`, `## Coverage`, or
 `## Report Details` sections.
@@ -338,6 +353,7 @@ impact display label. The `Reason` cell **MUST** render
 `findings.md` **MUST** render a complete ranked Findings report from
 `FindingRankingResult`. It **MUST** include:
 
+- a `## Ranked Findings` section;
 - all ranked findings ordered by rank;
 - the same columns and link behavior as the run report Top Findings table.
 
@@ -347,6 +363,7 @@ impact display label. The `Reason` cell **MUST** render
 persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
 It **MUST** include:
 
+- a `## Ranked Recommendations` section;
 - all ranked recommendations;
 - Area / Factors links resolved from `RecommendationResult.traceRefs`;
 - impact;
@@ -368,6 +385,7 @@ Each recommendation detail report **MUST** include:
 - background;
 - expected value;
 - done criterion;
+- ranking rationale when ranked;
 - trace refs.
 
 Recommendation Markdown reports **MUST** remain human-first and **MUST NOT**
@@ -599,10 +617,6 @@ Details.
 > a report. The H1 should name the quality-evaluation scope, while
 > factor-scoped evaluations preserve both the Area context and the user's
 > requested Factors. — 0168
-
-Long reports **SHOULD** include a compact `Jump to:` line after the header when
-local section navigation materially improves scanning. Short reports may omit
-the line when it would add noise.
 
 When a report table cell would otherwise render an empty scalar value, including
 one component of a paired Confidence or Status cell, the cell **MUST** render an

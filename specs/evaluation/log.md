@@ -2,6 +2,12 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0175 - Report Contents Sections](../../changes/archive/0175-report-contents-sections.md).
+  Generated Markdown reports now render standard Contents sections for
+  multi-section report artifacts and no longer render compact `Jump to:` local
+  navigation lines.
+
 - **Revision**: Updated Evaluation payload, JSON convention, and report-tree
   contracts for
   [0173 - Evaluation Enum Catalogs](../../changes/archive/0173-evaluation-enum-catalogs.md).

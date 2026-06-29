@@ -19,6 +19,14 @@ Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
 Coverage: ✅ Addressed by Recommendation, ⬜ Not Advice Driving.
 Empty: `—`.
 
+## Contents
+
+- [Ranked Recommendations](#ranked-recommendations)
+- [Coverage](#coverage)
+- [Primary Source Data](#primary-source-data)
+
+## Ranked Recommendations
+
 | Rank | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ▲ High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. | Recommendation rank follows the synthetic finding priority and expected quality-management value. |

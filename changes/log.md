@@ -3,6 +3,35 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0175 - Report Contents Sections](archive/0175-report-contents-sections.md).
+  Generated Evaluation reports now use standard Contents sections for
+  multi-section report artifacts and no longer render compact `Jump to:` local
+  navigation lines.
+
+- **In-Review**: Completed implementation for
+  [0175 - Report Contents Sections](archive/0175-report-contents-sections.md).
+  Renderer code, durable report specs, report design guidance, release notes,
+  tests, and report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0175 - Report Contents Sections](archive/0175-report-contents-sections.md).
+  Functional spec and design are settled; implementation is beginning across
+  generated report rendering, durable specs, report design guidance, tests, and
+  generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0175-report-contents-sections/design.md) for
+  [0175 - Report Contents Sections](archive/0175-report-contents-sections.md).
+  The design renders deterministic shallow Contents sections from each report
+  renderer's known top-level sections and removes compact `Jump to:` output.
+
+- **Draft**: Created
+  [0175 - Report Contents Sections](archive/0175-report-contents-sections.md)
+  with its [functional spec](archive/0175-report-contents-sections/spec.md).
+  The case restores generated report Contents sections for multi-section report
+  artifacts and removes compact `Jump to:` local navigation lines.
+
+- **Done**: Implemented and archived
   [0174 - Report Local Keys and Navigation](archive/0174-report-local-keys.md).
   Generated Evaluation reports now use compact local navigation and
   notation-only local keys instead of generated Contents and bottom Legend

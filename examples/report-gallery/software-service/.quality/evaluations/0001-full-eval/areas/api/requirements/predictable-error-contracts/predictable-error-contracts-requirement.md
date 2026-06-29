@@ -24,7 +24,13 @@ Assessment: ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
-Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
+## Contents
+
+- [Summary](#summary)
+- [Findings Summary](#findings-summary)
+- [Finding Details](#finding-details)
+- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
+- [Primary Source Data](#primary-source-data)
 
 ## Summary
 

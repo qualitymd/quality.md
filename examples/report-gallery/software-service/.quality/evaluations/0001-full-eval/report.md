@@ -24,7 +24,12 @@ Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
-Jump to: [Model Evaluation](#model-evaluation) - [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Primary Source Data](#primary-source-data)
+## Contents
+
+- [Model Evaluation](#model-evaluation)
+- [Top Findings](#top-findings)
+- [Top Recommendations](#top-recommendations)
+- [Primary Source Data](#primary-source-data)
 
 ## Model Evaluation
 

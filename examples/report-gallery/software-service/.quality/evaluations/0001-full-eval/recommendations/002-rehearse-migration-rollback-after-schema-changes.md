@@ -19,7 +19,15 @@ Impact: ◆ Very high, ▲ High, ● Medium, ○ Low.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
-Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
+## Contents
+
+- [Description](#description)
+- [Background](#background)
+- [Expected value](#expected-value)
+- [Done criterion](#done-criterion)
+- [Ranking rationale](#ranking-rationale)
+- [Trace](#trace)
+- [Primary Source Data](#primary-source-data)
 
 ## Description
 

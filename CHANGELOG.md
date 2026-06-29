@@ -7,9 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
-- Generated Evaluation reports now use compact `Jump to:` navigation and local
-  notation keys instead of generated `Contents` and bottom `Legend` sections,
-  while keeping marker/icon values paired with text labels in report tables.
+- Generated Evaluation reports now use standard `Contents` sections and local
+  notation keys instead of compact `Jump to:` navigation or bottom `Legend`
+  sections, while keeping marker/icon values paired with text labels in report
+  tables.
 - Evaluation data validation, schemas, and generated Markdown reports now share
   typed enum catalogs for fixed values such as statuses, confidence, finding
   type/severity/basis status, recommendation impact, ranking tier, coverage
@@ -34,7 +35,7 @@ QUALITY.md specification.
   move the Area/Factor table up as `Model Evaluation`; and use
   `Primary Source Data` sections with report-local primary payloads.
 - Generated Evaluation reports now render recommendation impact with subtle
-  shape markers (`◆ Very high`, `▲ High`, `● Medium`, `○ Low`), restore impact
+  shape markers (`⬥ Very high`, `▲ High`, `● Medium`, `○ Low`), restore impact
   to `report.md` Top Recommendations, and use quieter Area / Factor Breakdown
   row markers.
 - Generated Evaluation run reports now open with `Summary`, `Key Details`, and

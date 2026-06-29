@@ -464,7 +464,12 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 			fixedEnumKeyLine("Severity", findingSeverityValues),
 			emptyKeyLine(),
 		},
+		Contents: []reportContentLink{
+			{Label: "Ranked Findings", Anchor: "#ranked-findings"},
+			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+		},
 	})
+	b.WriteString("## Ranked Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
 	writeLocalKeys(&b, fixedEnumKeyLine("Type", findingTypeValues))
 	writePrimarySourceDataSection(&b, "findings.md", data)
@@ -496,7 +501,13 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			fixedEnumKeyLine("Coverage", findingCoverageDispositionValues),
 			emptyKeyLine(),
 		},
+		Contents: []reportContentLink{
+			{Label: "Ranked Recommendations", Anchor: "#ranked-recommendations"},
+			{Label: "Coverage", Anchor: "#coverage"},
+			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+		},
 	})
+	index.WriteString("## Ranked Recommendations\n\n")
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
 	writeLocalKeys(&index, fixedEnumKeyLine("Confidence", confidenceValues))
 	writeAdviceCoverageSummary(&index, artifacts)
@@ -544,10 +555,10 @@ type reportHeader struct {
 	SummaryHead []string
 	SummaryRow  []string
 	KeyLines    []string
-	JumpLinks   []reportJumpLink
+	Contents    []reportContentLink
 }
 
-type reportJumpLink struct {
+type reportContentLink struct {
 	Label  string
 	Anchor string
 }
@@ -572,9 +583,7 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 		writeReportSummaryTable(b, header.SummaryHead, header.SummaryRow)
 	}
 	writeLocalKeys(b, header.KeyLines...)
-	if len(header.JumpLinks) > 0 {
-		b.WriteString("Jump to: " + reportJumpLinks(header.JumpLinks) + "\n\n")
-	}
+	writeContentsSection(b, header.Contents)
 }
 
 func reportRunLine(reportPath string, manifest *RunManifest) string {
@@ -735,19 +744,15 @@ func requirementReportSourceData(req *evaluationRequirementArtifacts) []string {
 	return reportSourceData(paths...)
 }
 
-func reportJumpLinks(links []reportJumpLink) string {
-	parts := make([]string, 0, len(links))
-	for _, link := range links {
-		parts = append(parts, md.Link(link.Label, link.Anchor))
-	}
-	return strings.Join(parts, " - ")
-}
-
-func writeJumpLinksLine(b *strings.Builder, links []reportJumpLink) {
-	if len(links) == 0 {
+func writeContentsSection(b *strings.Builder, links []reportContentLink) {
+	if len(links) < 2 {
 		return
 	}
-	b.WriteString("Jump to: " + reportJumpLinks(links) + "\n\n")
+	b.WriteString("## Contents\n\n")
+	for _, link := range links {
+		b.WriteString("- " + md.Link(link.Label, link.Anchor) + "\n")
+	}
+	b.WriteString("\n")
 }
 
 func writeLocalKeys(b *strings.Builder, lines ...string) {
@@ -933,12 +938,14 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 			fixedEnumKeyLine("Confidence", confidenceValues),
 			emptyKeyLine(),
 		},
-		JumpLinks: []reportJumpLink{
+		Contents: []reportContentLink{
 			{Label: "Description", Anchor: "#description"},
 			{Label: "Background", Anchor: "#background"},
 			{Label: "Expected value", Anchor: "#expected-value"},
 			{Label: "Done criterion", Anchor: "#done-criterion"},
+			{Label: "Ranking rationale", Anchor: "#ranking-rationale"},
 			{Label: "Trace", Anchor: "#trace"},
+			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
 		},
 	})
 	writeRecommendationSection(&b, "Description", firstString(rec, "description"))
@@ -987,7 +994,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
 	writeLocalKeys(&b, ratingKeyLine(spec), fixedEnumKeyLine("Confidence", confidenceValues), emptyKeyLine())
-	writeJumpLinksLine(&b, []reportJumpLink{
+	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
 		{Label: "Top Findings", Anchor: "#top-findings"},
 		{Label: "Top Recommendations", Anchor: "#top-recommendations"},
@@ -1098,6 +1105,13 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 			fixedEnumKeyLine("Confidence", confidenceValues),
 			emptyKeyLine(),
 		},
+		Contents: []reportContentLink{
+			{Label: "Summary", Anchor: "#summary"},
+			{Label: "Area / Factor Breakdown", Anchor: "#area--factor-breakdown"},
+			{Label: "Requirements", Anchor: "#requirements"},
+			{Label: "Limits & Incomplete Inputs", Anchor: "#limits--incomplete-inputs"},
+			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+		},
 	})
 	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(overall))
@@ -1154,6 +1168,13 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 			fixedEnumKeyLine("Status", analysisStatusValues),
 			fixedEnumKeyLine("Confidence", confidenceValues),
 			emptyKeyLine(),
+		},
+		Contents: []reportContentLink{
+			{Label: "Summary", Anchor: "#summary"},
+			{Label: "Requirements", Anchor: "#requirements"},
+			{Label: "Sub-Factors", Anchor: "#sub-factors"},
+			{Label: "Limits & Incomplete Inputs", Anchor: "#limits--incomplete-inputs"},
+			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
 		},
 	})
 	b.WriteString("## Summary\n\n")
@@ -1219,10 +1240,12 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 			fixedEnumKeyLine("Confidence", confidenceValues),
 			emptyKeyLine(),
 		},
-		JumpLinks: []reportJumpLink{
+		Contents: []reportContentLink{
+			{Label: "Summary", Anchor: "#summary"},
 			{Label: "Findings Summary", Anchor: "#findings-summary"},
 			{Label: "Finding Details", Anchor: "#finding-details"},
 			{Label: "Unknowns & Missing Evidence", Anchor: "#unknowns--missing-evidence"},
+			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
 		},
 	})
 	b.WriteString("## Summary\n\n")

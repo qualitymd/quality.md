@@ -21,6 +21,14 @@ Ratings: 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable.
 Confidence: 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None.
 Empty: `—`.
 
+## Contents
+
+- [Summary](#summary)
+- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Requirements](#requirements)
+- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
+- [Primary Source Data](#primary-source-data)
+
 ## Summary
 
 Agent guidance exposes the quality evaluation entry point clearly.

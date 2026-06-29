@@ -726,3 +726,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0174 — Report Local Keys and Navigation](0174-report-local-keys.md) -
   replaces generated report contents and legend sections with compact navigation
   and local indicator keys (`Done`).
+- [0175 — Report Contents Sections](0175-report-contents-sections.md) -
+  restores generated report Contents sections for multi-section report artifacts
+  and removes compact `Jump to:` lines (`Done`).
