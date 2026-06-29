@@ -11,6 +11,7 @@ Task-oriented guides for contributing to the `qualitymd` repo. The Diátaxis
 - [Writing design docs](write-design-docs.md) - how to write a design doc.
 - [Working with OKF](work-with-okf.md) - how to read and edit the OKF bundles in this repo.
 - [Designing agent-mediated UX](agent-mediated-ux.md) - how to design workflows that users experience through an AI assistant or coding agent.
+- [Designing report outputs](reporting-design.md) - how to design generated Evaluation report Markdown for fast human reading and light agent accessibility.
 - [Modeling quality across domains](model-quality-across-domains.md) - how to keep examples quality-domain agnostic, with the society/sphere/quality-context model, the stress axes, a role-tagged catalog of quality contexts, and a worked non-software example.
 - [Designing CLI interfaces](cli-design.md) - how to design a command's arguments, flags, output, and errors, with per-aspect guidelines adapted from clig.dev.
 - [Designing Go packages](design-go-packages.md) - how to decide which package a type belongs in.

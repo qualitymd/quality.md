@@ -1,4 +1,17 @@
+---
+type: Requirement Evaluation Report
+title: agent guidance routes quality evaluation work
+data:
+  - data/evaluation-output-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
+---
+
 # Requirement: agent guidance routes quality evaluation work
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../agent-harness-area.md)
 
@@ -7,6 +20,8 @@ Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibi
 | Rating | Assessment | Confidence | Data |
 | --- | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High | [requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json) |
+
+Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
 Summary:
 

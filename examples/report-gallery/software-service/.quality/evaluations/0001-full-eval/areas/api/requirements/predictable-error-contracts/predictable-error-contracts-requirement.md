@@ -1,4 +1,17 @@
+---
+type: Requirement Evaluation Report
+title: error responses are predictable for callers
+data:
+  - data/evaluation-output-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
+---
+
 # Requirement: error responses are predictable for callers
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-area.md)
 
@@ -7,6 +20,8 @@ Factors: [operability](../../factors/operability/operability-factor.md)
 | Rating | Assessment | Confidence | Data |
 | --- | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High | [requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json) |
+
+Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
 Summary:
 

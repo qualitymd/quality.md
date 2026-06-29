@@ -1,5 +1,14 @@
 # Specs Update Log
 
+## 2026-06-29
+
+- **Revision**: Implemented durable spec changes for
+  [0158 - OKF-compatible report headers](../changes/archive/0158-okf-report-headers.md).
+  Generated Evaluation Markdown reports now begin with pointer-only
+  OKF-compatible frontmatter, use a subject-shaped report type taxonomy, render
+  visible run/header navigation, keep report files such as `findings.md` stable,
+  and source run freshness from `RunManifest.createdAt`.
+
 ## 2026-06-27
 
 - **Revision**: Implemented durable spec changes for

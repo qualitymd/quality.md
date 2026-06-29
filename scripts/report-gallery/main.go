@@ -12,6 +12,7 @@ import (
 )
 
 const galleryRel = "examples/report-gallery/software-service"
+const galleryCreatedAt = "2026-06-29T12:00:00Z"
 
 func main() {
 	if err := run(); err != nil {
@@ -45,6 +46,9 @@ func run() error {
 		return fmt.Errorf("creating gallery run: %w", err)
 	}
 	runPath := filepath.Join(exampleDir, filepath.FromSlash(created.Path))
+	if err := pinRunCreatedAt(runPath, galleryCreatedAt); err != nil {
+		return err
+	}
 	payloads, err := json.MarshalIndent(galleryPayloads(), "", "  ")
 	if err != nil {
 		return fmt.Errorf("encoding payload batch: %w", err)
@@ -59,6 +63,27 @@ func run() error {
 		return fmt.Errorf("building gallery reports: %w", err)
 	}
 	fmt.Printf("Generated %s\n", filepath.ToSlash(filepath.Join(galleryRel, created.Path, "report.md")))
+	return nil
+}
+
+func pinRunCreatedAt(runPath, createdAt string) error {
+	path := filepath.Join(runPath, "data", "run-manifest.json")
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("reading run manifest: %w", err)
+	}
+	var manifest evaluation.RunManifest
+	if err := json.Unmarshal(raw, &manifest); err != nil {
+		return fmt.Errorf("decoding run manifest: %w", err)
+	}
+	manifest.CreatedAt = createdAt
+	pinned, err := json.MarshalIndent(manifest, "", "  ")
+	if err != nil {
+		return fmt.Errorf("encoding run manifest: %w", err)
+	}
+	if err := os.WriteFile(path, append(pinned, '\n'), 0o644); err != nil {
+		return fmt.Errorf("writing run manifest: %w", err)
+	}
 	return nil
 }
 

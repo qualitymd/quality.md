@@ -3,6 +3,7 @@ package evaluation
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/qualitymd/quality.md/internal/receipt"
 )
@@ -49,9 +50,14 @@ type RunManifest struct {
 	SchemaVersion  int             `json:"schemaVersion"`
 	Kind           DataKind        `json:"kind"`
 	Number         int             `json:"number"`
+	CreatedAt      string          `json:"createdAt"`
 	Model          string          `json:"model"`
 	RequestedScope RunScope        `json:"requestedScope"`
 	PlannedScope   PlannedRunScope `json:"plannedScope"`
+}
+
+func newRunCreatedAt() string {
+	return time.Now().UTC().Format(time.RFC3339)
 }
 
 // CreateRunReceipt is the JSON contract emitted after creating a run.

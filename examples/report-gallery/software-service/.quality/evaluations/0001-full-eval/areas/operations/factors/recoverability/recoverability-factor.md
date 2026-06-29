@@ -1,4 +1,16 @@
+---
+type: Factor Evaluation Report
+title: Recoverability
+data:
+  - data/evaluation-output-result.json
+  - data/areas/operations/factors/recoverability/factor-analysis-result.json
+---
+
 # Factor: Recoverability
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operations-area.md)
 

@@ -1,4 +1,16 @@
+---
+type: Area Evaluation Report
+title: Operations
+data:
+  - data/evaluation-output-result.json
+  - data/areas/operations/area-analysis-result.json
+---
+
 # Area: Operations
+
+Run: [#1](../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
 
 Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md)
 

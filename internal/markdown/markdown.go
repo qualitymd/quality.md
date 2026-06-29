@@ -4,6 +4,7 @@ package markdown
 
 import (
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -14,6 +15,13 @@ type Writer struct {
 	b strings.Builder
 }
 
+// FrontmatterField is one YAML frontmatter field.
+type FrontmatterField struct {
+	Name   string
+	Value  string
+	Values []string
+}
+
 // WriteString appends raw Markdown.
 func (w *Writer) WriteString(s string) {
 	w.b.WriteString(s)
@@ -22,6 +30,31 @@ func (w *Writer) WriteString(s string) {
 // String returns the generated Markdown.
 func (w *Writer) String() string {
 	return w.b.String()
+}
+
+// Frontmatter renders a small YAML frontmatter block. It supports scalar string
+// fields and string-list fields, which is enough for generated report metadata.
+func Frontmatter(fields ...FrontmatterField) string {
+	var b strings.Builder
+	b.WriteString("---\n")
+	for _, field := range fields {
+		if len(field.Values) > 0 {
+			b.WriteString(field.Name)
+			b.WriteString(":\n")
+			for _, value := range field.Values {
+				b.WriteString("  - ")
+				b.WriteString(yamlScalar(value))
+				b.WriteString("\n")
+			}
+			continue
+		}
+		b.WriteString(field.Name)
+		b.WriteString(": ")
+		b.WriteString(yamlScalar(field.Value))
+		b.WriteString("\n")
+	}
+	b.WriteString("---\n\n")
+	return b.String()
 }
 
 // Heading writes a Markdown ATX heading followed by a blank line.
@@ -159,6 +192,28 @@ func RelLink(fromPath, toPath, label string) string {
 // DataLink renders a generated report link to a source data artifact.
 func DataLink(fromPath, toPath string) string {
 	return RelLink(fromPath, toPath, filepath.Base(toPath))
+}
+
+func yamlScalar(s string) string {
+	if isPlainYAMLScalar(s) {
+		return s
+	}
+	return strconv.Quote(s)
+}
+
+func isPlainYAMLScalar(s string) bool {
+	if s == "" || strings.TrimSpace(s) != s || strings.ContainsAny(s, "\r\n:#[]{}&,*!|>@`\"'") {
+		return false
+	}
+	switch strings.ToLower(s) {
+	case "null", "true", "false", "~":
+		return false
+	}
+	switch s[0] {
+	case '-', '?':
+		return false
+	}
+	return true
 }
 
 func linkLabel(label string) string {

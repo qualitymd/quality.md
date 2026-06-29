@@ -1,9 +1,23 @@
-# Assign a current recovery drill owner
+---
+type: Recommendation Report
+title: Assign a current recovery drill owner
+data:
+  - data/evaluation-output-result.json
+  - data/advice/recommendations/rec-003/recommendation-result.json
+  - data/advice/recommendation-ranking-result.json
+---
 
-**Rank:** 3
-**Impact:** Medium
-**Confidence:** 🟡 Low
-**Data:** [recommendation-result.json](../data/advice/recommendations/rec-003/recommendation-result.json), [recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
+# Recommendation: Assign a current recovery drill owner
+
+Run: [#1](../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
+
+| Rank | Impact | Confidence | Data |
+| --- | --- | --- | --- |
+| 3 | Medium | 🟡 Low | [recommendation-result.json](../data/advice/recommendations/rec-003/recommendation-result.json), [recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json) |
+
+Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
 
 ## Description
 

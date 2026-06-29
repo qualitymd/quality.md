@@ -1,4 +1,17 @@
+---
+type: Requirement Evaluation Report
+title: health signals explain customer impact
+data:
+  - data/evaluation-output-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
+---
+
 # Requirement: health signals explain customer impact
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operations-area.md)
 
@@ -7,6 +20,8 @@ Factors: [observability](../../factors/observability/observability-factor.md)
 | Rating | Assessment | Confidence | Data |
 | --- | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🔵 Medium / 🔵 Medium | [requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json) |
+
+Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
 Summary:
 

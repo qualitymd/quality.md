@@ -1,4 +1,17 @@
+---
+type: Requirement Evaluation Report
+title: ledger mutations preserve balance invariants
+data:
+  - data/evaluation-output-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
+---
+
 # Requirement: ledger mutations preserve balance invariants
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
 
@@ -7,6 +20,8 @@ Factors: [integrity](../../factors/integrity/integrity-factor.md)
 | Rating | Assessment | Confidence | Data |
 | --- | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High | [requirement-assessment-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json) |
+
+Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
 Summary:
 

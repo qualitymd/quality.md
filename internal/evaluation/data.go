@@ -1226,6 +1226,7 @@ func runManifestExample() map[string]any {
 		"schemaVersion": SchemaVersion,
 		"kind":          string(DataKindRunManifest),
 		"number":        1,
+		"createdAt":     "2026-06-29T12:00:00Z",
 		"model":         "QUALITY.md",
 		"requestedScope": map[string]any{
 			"areaId":       exampleAreaID(),

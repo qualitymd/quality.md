@@ -92,6 +92,7 @@ func init() {
 			Description: "CLI-owned Evaluation run manifest written at create time.",
 			Object: topContract(DataKindRunManifest,
 				field("number", dataNumber, true),
+				field("createdAt", dataString, true),
 				field("model", dataString, true),
 				field("requestedScope", dataObject, true, runRequestedScopeContract()),
 				field("plannedScope", dataObject, true, runPlannedScopeContract()),

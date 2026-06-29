@@ -1,4 +1,16 @@
+---
+type: Area Evaluation Report
+title: Agent Harness
+data:
+  - data/evaluation-output-result.json
+  - data/areas/agent-harness/area-analysis-result.json
+---
+
 # Area: Agent Harness
+
+Run: [#1](../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
 
 Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-area.md)
 

@@ -1,5 +1,40 @@
 # Changes Update Log
 
+## 2026-06-29
+
+- **Done**: Implemented and archived
+  [0158 - OKF-compatible report headers](archive/0158-okf-report-headers.md).
+  Generated Evaluation Markdown reports now carry pointer-only OKF-compatible
+  frontmatter, subject-shaped report types, visible overview/findings/
+  recommendations navigation, run freshness from `RunManifest.createdAt`, and
+  regenerated report-gallery examples.
+
+- **In-Review**: Completed implementation for
+  [0158 - OKF-compatible report headers](archive/0158-okf-report-headers.md).
+  Added shared report frontmatter/header rendering, RunManifest `createdAt`,
+  durable report specs, report design guidance, updated tests, and regenerated
+  report-gallery output.
+
+- **In-Progress**: Advanced
+  [0158 - OKF-compatible report headers](archive/0158-okf-report-headers.md). Functional
+  spec and design are settled; implementation is beginning across generated
+  Evaluation reports, durable report specs, focused tests, and report-gallery
+  examples.
+
+- **Design**: Added the
+  [design doc](archive/0158-okf-report-headers/design.md) for
+  [0158 - OKF-compatible report headers](archive/0158-okf-report-headers.md).
+  The design centralizes report frontmatter, report type taxonomy, navigation,
+  and header rendering while keeping report-specific summary data near existing
+  report logic.
+
+- **Draft**: Created
+  [0158 - OKF-compatible report headers](archive/0158-okf-report-headers.md) with its
+  [functional spec](archive/0158-okf-report-headers/spec.md). The case adds
+  OKF-compatible pointer frontmatter and consistent human navigation headers to
+  generated Evaluation reports without making report Markdown a new source of
+  Evaluation result data.
+
 ## 2026-06-27
 
 - **Done**: Implemented and archived

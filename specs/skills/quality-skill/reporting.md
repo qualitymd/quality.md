@@ -42,9 +42,12 @@ Workflow-experience feedback for current runs lives in
 `.quality/logs/<timestamp>-evaluate-feedback-log.md`, not in the evaluation run
 folder.
 
-Runtime evaluation artifacts are raw outputs in the evaluated repository, not
-OKF concepts. They **MUST NOT** carry OKF frontmatter or require registration in
-`specs/schema.md`.
+Runtime evaluation artifacts are raw outputs in the evaluated repository.
+Generated Markdown reports carry OKF-compatible pointer frontmatter as defined
+by the [Evaluation report tree](../../evaluation/reports/report-tree.md), but
+the Evaluation run folder is not yet a full OKF bundle: it does not require
+generated `index.md`, `schema.md`, or `log.md` files, and generated reports do
+not require registration in `specs/schema.md`.
 
 ## Report Generation
 
@@ -69,6 +72,9 @@ rendering Markdown reports.
 Reports **MUST** be deterministic projections over completed structured data.
 The skill **MUST NOT** add report-only findings, ratings, evidence, limits,
 analysis, or recommendations.
+
+Reports **MUST NOT** read generated report frontmatter or Markdown body content
+from other generated reports as source data.
 
 Area and Factor reports **MUST NOT** render `Findings` sections. Their roll-up
 explanation belongs in `Rating Drivers`, rationale, confidence, limits, and
@@ -95,6 +101,10 @@ the owning Area report folder, such as
 `requirements/<requirement>/<requirement>-requirement.md`.
 
 Every report **MUST** include the navigation trails required by the
+[Evaluation report tree](../../evaluation/reports/report-tree.md).
+
+Every generated Markdown report **MUST** include the frontmatter, run context,
+report-level navigation, and report-specific header summary required by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md).
 
 Area reports **MUST** link to local root Factor reports, local Requirement

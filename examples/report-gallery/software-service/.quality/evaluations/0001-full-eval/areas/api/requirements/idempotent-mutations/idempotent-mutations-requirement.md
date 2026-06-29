@@ -1,4 +1,17 @@
+---
+type: Requirement Evaluation Report
+title: mutation endpoints are idempotent under retry
+data:
+  - data/evaluation-output-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+---
+
 # Requirement: mutation endpoints are idempotent under retry
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-area.md)
 
@@ -7,6 +20,8 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | Rating | Assessment | Confidence | Data |
 | --- | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium | [requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json) |
+
+Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
 Summary:
 

@@ -26,6 +26,10 @@ Report generation **MUST NOT** introduce new findings, ratings, evidence, limits
 analysis, or recommendations. It **MUST** render persisted Advice outputs when
 the run is otherwise renderable.
 
+Generated report frontmatter **MUST NOT** be read as report-generation input.
+It is an output convenience for readers, agents, and editor previews; structured
+Evaluation data remains the source of truth.
+
 ## Report Paths
 
 The run-level Evaluation report **MUST** be generated as `report.md` at the run
@@ -51,6 +55,11 @@ rendered human labels.
 The report builder **MUST NOT** write duplicate compatibility copies using old
 root Area or descendant `report.md` filenames.
 
+The report builder **MUST NOT** rename report content files such as
+`findings.md` or `recommendations.md` to `index.md` for OKF compatibility.
+Generated `index.md`, `schema.md`, and `log.md` files for Evaluation run folders
+are deferred.
+
 The recommendation index **MUST** be generated as `recommendations.md` at the
 run root. Recommendation detail reports **MUST** be generated under
 `recommendations/` with rank-prefixed filenames:
@@ -66,6 +75,48 @@ recommendation ID when needed.
 > filenames keep enough local subject context for editor and browser tabs.
 > Structural IDs keep paths stable; the existing directory tree carries full
 > identity. — 0108, 0137
+
+## Report Frontmatter
+
+Every generated Markdown report **MUST** begin with YAML frontmatter containing
+only `type`, `title`, and `data`.
+
+The `type` field **MUST** use this report-subject taxonomy:
+
+| Report output                  | `type`                          |
+| ------------------------------ | ------------------------------- |
+| `report.md`                    | `Evaluation Overview Report`    |
+| root and non-root Area reports | `Area Evaluation Report`        |
+| Factor reports                 | `Factor Evaluation Report`      |
+| Requirement reports            | `Requirement Evaluation Report` |
+| `findings.md`                  | `Finding Index Report`          |
+| `recommendations.md`           | `Recommendation Index Report`   |
+| recommendation detail reports  | `Recommendation Report`         |
+
+Report frontmatter **MUST NOT** use Model concept names such as `Area`,
+`Factor`, or `Requirement` as the report `type`.
+
+The `title` field **MUST** name the report subject without the visible H1's
+report-kind prefix. For example, a Requirement report frontmatter title uses the
+Requirement title alone, while its visible H1 renders as
+`# Requirement: <title>`.
+
+The `data` field **MUST** list run-root-relative canonical JSON payload paths.
+Every generated report **MUST** include `data/evaluation-output-result.json`.
+Subject and index reports **MUST** also include the direct payloads their header
+or body renders from, such as Area, Factor, Requirement, Finding Ranking,
+Recommendation Ranking, or Recommendation Result payloads.
+
+Report frontmatter **MUST NOT** duplicate generated time, run identity, model
+snapshot, subject identity, scope, ratings, confidence, summaries, rating
+drivers, findings, recommendations, limits, evidence, or rendered display
+labels when those values are available from linked JSON payloads or the visible
+Markdown header.
+
+> Rationale: `type` and subject-only `title` make generated reports
+> OKF-compatible enough for lightweight discovery, while `data` points agents to
+> the authoritative payloads instead of turning report Markdown into another
+> result format. — 0158
 
 ## Run Report
 
@@ -168,10 +219,17 @@ be conflated with `RecommendationResult.background` or `expectedValue`.
 
 ## Navigation
 
-Every report **MUST** render its H1 title line as the first content of the
-report. The H1 **MUST** prefix the subject display title with the report kind:
-`Area:` for root and non-root Area reports, `Factor:` for Factor reports, and
-`Requirement:` for Requirement reports.
+Every report **MUST** render its H1 title line as the first Markdown content
+after frontmatter. The H1 **MUST** prefix the subject display title with the
+report kind: `Area:` for root and non-root Area reports, `Factor:` for Factor
+reports, `Requirement:` for Requirement reports, and `Recommendation:` for
+recommendation detail reports. The run-level H1 **MUST** identify the report as
+an Evaluation Report.
+
+Every report **MUST** render a run context line and a report navigation line near
+the H1. The report navigation line **MUST** link to the run overview
+`report.md`, full findings index `findings.md`, and full recommendation index
+`recommendations.md` when the current report is not that target.
 
 The `Area:` navigation trail **MUST** render after the H1. Its elements **MUST**
 link to generated Area reports from the root Area through the current Area
@@ -300,18 +358,24 @@ explanation belongs in `Rating Drivers`, rationale, confidence, limits, and
 incomplete inputs.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
-generic `Field | Value` key-value table. Area headers should summarize
-`Overall Rating`, `Local Rating`, `Confidence`, and `Data`; Factor headers should
-summarize `Overall Rating`, `Local Rating`, `Status`, `Confidence`, and `Data`;
-Requirement headers should summarize `Rating`, `Assessment`, `Confidence`, and
-`Data`; attached Factors belong in the plural `Factors:` context line, not in
-the summary table.
+generic `Field | Value` key-value table. Run reports should summarize
+`Overall Rating`, `Scope`, `Confidence`, and `Data`; Area headers should
+summarize `Overall Rating`, `Local Rating`, `Confidence`, and `Data`; Factor
+headers should summarize `Overall Rating`, `Local Rating`, `Status`,
+`Confidence`, and `Data`; Requirement headers should summarize `Rating`,
+`Assessment`, `Confidence`, and `Data`; findings and recommendations indexes
+should summarize index-specific counts, priority signals, and `Data`; attached
+Factors belong in the plural `Factors:` context line, not in the summary table.
 
 > Rationale: the title identifies the report subject, so the header table should
 > prioritize state and navigation rather than repeat the subject kind as
 > metadata. The subject kind now rides the H1 title; location rides the
 > navigation trail, so separate `Path:` / `Name:` header lines would be
 > redundant. — 0104, 0119
+
+Long reports **SHOULD** include a compact `Jump to:` line after the header when
+local section navigation materially improves scanning. Short reports may omit
+the line when it would add noise.
 
 When a report table cell would otherwise render an empty scalar value, including
 one component of a paired Confidence or Status cell, the cell **MUST** render an

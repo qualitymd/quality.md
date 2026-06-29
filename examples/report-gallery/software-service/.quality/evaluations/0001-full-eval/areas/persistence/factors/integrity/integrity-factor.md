@@ -1,4 +1,16 @@
+---
+type: Factor Evaluation Report
+title: Integrity
+data:
+  - data/evaluation-output-result.json
+  - data/areas/persistence/factors/integrity/factor-analysis-result.json
+---
+
 # Factor: Integrity
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
 

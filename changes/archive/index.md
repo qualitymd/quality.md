@@ -670,3 +670,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   centralizes generated Evaluation report Markdown authoring with shared table,
   link, code-span, and empty-cell helpers while preserving deterministic Go
   rendering (`Done`).
+- [0158 — OKF-compatible report headers](0158-okf-report-headers.md) - adds
+  pointer-only OKF-compatible frontmatter, visible run/header navigation,
+  subject-shaped report types, and `RunManifest.createdAt`-backed freshness to
+  generated Evaluation reports (`Done`).

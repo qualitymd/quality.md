@@ -2,6 +2,7 @@
   "schemaVersion": 3,
   "kind": "RunManifest",
   "number": 1,
+  "createdAt": "2026-06-29T12:00:00Z",
   "model": "QUALITY.md",
   "requestedScope": {},
   "plannedScope": {

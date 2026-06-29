@@ -53,9 +53,10 @@ it. Those IDs **MUST** use the canonical qualified reference strings defined in
 Agents **MUST NOT** write `RunManifest` or `EvaluationOutputResult` through
 `qualitymd evaluation data set`.
 
-`RunManifest` **MUST** include `number`, `model`, `requestedScope`, and
-`plannedScope`. `requestedScope` **MUST** record requested `areaId` and
-`factorFilter` fields only when scope was supplied. `plannedScope` **MUST**
+`RunManifest` **MUST** include `number`, `createdAt`, `model`,
+`requestedScope`, and `plannedScope`. `createdAt` **MUST** be a UTC RFC 3339
+timestamp for run creation. `requestedScope` **MUST** record requested `areaId`
+and `factorFilter` fields only when scope was supplied. `plannedScope` **MUST**
 include an `areaId` and `factorFilter` array.
 
 `EvaluationOutputResult` **MUST** include `runReportRef`,

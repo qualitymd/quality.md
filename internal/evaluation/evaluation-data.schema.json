@@ -3254,6 +3254,9 @@
     "RunManifest": {
       "additionalProperties": false,
       "properties": {
+        "createdAt": {
+          "type": "string"
+        },
         "kind": {
           "enum": [
             "RunManifest"
@@ -3312,6 +3315,7 @@
         "schemaVersion",
         "kind",
         "number",
+        "createdAt",
         "model",
         "requestedScope",
         "plannedScope"

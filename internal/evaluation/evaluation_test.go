@@ -273,17 +273,26 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading report.md: %v", err)
 	}
-	if !strings.HasPrefix(string(runReport), "# Evaluation Report: Area: Test model") {
+	if !strings.Contains(string(runReport), "type: Evaluation Overview Report\n") ||
+		!strings.Contains(string(runReport), "title: Test model\n") ||
+		!strings.Contains(string(runReport), "# Evaluation Report: Area: Test model") {
 		t.Fatalf("report.md = %s, want run report title", runReport)
 	}
-	if !strings.Contains(string(runReport), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [evaluation-output-result.json](data/evaluation-output-result.json) |") {
+	if !strings.Contains(string(runReport), "Run: #1 - Created: ") ||
+		!strings.Contains(string(runReport), "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)") {
+		t.Fatalf("report.md = %s, want run header navigation", runReport)
+	}
+	if !strings.Contains(string(runReport), "| 🔵 Target | full evaluation | 🟢 High / 🟢 High | [evaluation-output-result.json](data/evaluation-output-result.json) |") {
 		t.Fatalf("report.md = %s, want scoped Area rating row", runReport)
 	}
 	report, err := os.ReadFile(filepath.Join(runPath, "root-area.md"))
 	if err != nil {
 		t.Fatalf("reading root-area.md: %v", err)
 	}
-	if !strings.HasPrefix(string(report), "# Area: Test model\n\nArea: [Test model](root-area.md)") {
+	if !strings.Contains(string(report), "type: Area Evaluation Report\n") ||
+		!strings.Contains(string(report), "title: Test model\n") ||
+		!strings.Contains(string(report), "# Area: Test model") ||
+		!strings.Contains(string(report), "Area: [Test model](root-area.md)") {
 		t.Fatalf("root-area.md = %s, want kind-prefixed title before Area trail", report)
 	}
 	if !strings.Contains(string(report), "| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [area-analysis-result.json](data/areas/root/area-analysis-result.json) |") {
@@ -387,7 +396,12 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 		t.Fatalf("BuildReport() error = %v", err)
 	}
 	runReport := readReport(t, runPath, "report.md")
+	assertContains(t, runReport, "type: Evaluation Overview Report\n")
+	assertContains(t, runReport, "title: Navigation model\n")
+	assertContains(t, runReport, "data:\n  - data/evaluation-output-result.json")
 	assertContains(t, runReport, "# Evaluation Report: Area: Navigation model")
+	assertContains(t, runReport, "Run: #1 - Created: ")
+	assertContains(t, runReport, "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)")
 	assertContains(t, runReport, "Area: [Navigation model](root-area.md)")
 	assertContains(t, runReport, "[evaluation-output-result.json](data/evaluation-output-result.json)")
 	assertContains(t, runReport, "## Top Findings")
@@ -400,10 +414,16 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "[recommendations.md](recommendations.md)")
 
 	recommendationIndex := readReport(t, runPath, "recommendations.md")
+	assertContains(t, recommendationIndex, "type: Recommendation Index Report\n")
+	assertContains(t, recommendationIndex, "title: Recommendations\n")
+	assertContains(t, recommendationIndex, "Report: [Overview](report.md) - [Findings](findings.md) - Recommendations")
 	assertContains(t, recommendationIndex, "| Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |")
 	assertContains(t, recommendationIndex, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. | This recommendation addresses the highest-ranked finding. |")
 
 	recommendationReport := readReport(t, runPath, "recommendations/001-review-the-next-quality-bar.md")
+	assertContains(t, recommendationReport, "type: Recommendation Report\n")
+	assertContains(t, recommendationReport, "title: Review the next quality bar\n")
+	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
 	assertContains(t, recommendationReport, "## Description")
 	assertContains(t, recommendationReport, "## Background")
 	assertContains(t, recommendationReport, "## Expected value")
@@ -413,7 +433,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, recommendationReport, "## Expected benefit")
 
 	rootReport := readReport(t, runPath, "root-area.md")
-	assertContains(t, rootReport, "# Area: Navigation model\n\nArea: [Navigation model](root-area.md)")
+	assertContains(t, rootReport, "type: Area Evaluation Report\n")
+	assertContains(t, rootReport, "title: Navigation model\n")
+	assertContains(t, rootReport, "# Area: Navigation model")
 	assertContains(t, rootReport, "Area: [Navigation model](root-area.md)")
 	assertNotContains(t, rootReport, "Path: `/`")
 	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
@@ -434,7 +456,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, rootReport, "| Details |")
 
 	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
-	assertContains(t, factorReport, "# Factor: Reliability\n\nArea: [Navigation model](../../root-area.md)")
+	assertContains(t, factorReport, "type: Factor Evaluation Report\n")
+	assertContains(t, factorReport, "title: Reliability\n")
+	assertContains(t, factorReport, "# Factor: Reliability")
 	assertContains(t, factorReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
 	assertNotContains(t, factorReport, "Path: `reliability`")
@@ -461,10 +485,11 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, childFactorReport, "Child Factors")
 
 	requirementReport := readReport(t, runPath, "requirements/has-tests/has-tests-requirement.md")
-	assertContains(t, requirementReport, "# Requirement: Has tests\n\nArea: [Navigation model](../../root-area.md)")
+	assertContains(t, requirementReport, "type: Requirement Evaluation Report\n")
+	assertContains(t, requirementReport, "title: Has tests\n")
+	assertContains(t, requirementReport, "# Requirement: Has tests")
 	assertContains(t, requirementReport, "Area: [Navigation model](../../root-area.md)")
 	assertContains(t, requirementReport, "Factors: [reliability](../../factors/reliability/reliability-factor.md)")
-	assertContains(t, requirementReport, "# Requirement: Has tests\n\nArea: [Navigation model](../../root-area.md)\n\nFactors: [reliability](../../factors/reliability/reliability-factor.md)")
 	assertContains(t, requirementReport, `<a id="finding-strength-1"></a>`)
 	assertContains(t, requirementReport, "| Advice Rank | Tier | Ranking Rationale |")
 	assertContains(t, requirementReport, "| 1 / 1 | P1 | This finding most directly informs next advice. |")
@@ -478,8 +503,11 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertOnlyRootReportMD(t, runPath)
 
 	findingsReport := readReport(t, runPath, "findings.md")
+	assertContains(t, findingsReport, "type: Finding Index Report\n")
+	assertContains(t, findingsReport, "title: Findings\n")
 	assertContains(t, findingsReport, "# Findings")
-	assertContains(t, findingsReport, "Data: [finding-ranking-result.json](data/advice/finding-ranking-result.json)")
+	assertContains(t, findingsReport, "Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)")
+	assertContains(t, findingsReport, "[finding-ranking-result.json](data/advice/finding-ranking-result.json)")
 	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
 	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
 
@@ -550,7 +578,8 @@ areas:
 	assertContains(t, runReport, "| Planned Area | `area:payments/refunds` |")
 	assertContains(t, runReport, "Root Area was not evaluated in this run.")
 	areaReport := readReport(t, runPath, "areas/payments/refunds/refunds-area.md")
-	assertContains(t, areaReport, "# Area: Refunds\n\nArea: Scoped model / Payments / [Refunds](refunds-area.md)")
+	assertContains(t, areaReport, "# Area: Refunds")
+	assertContains(t, areaReport, "Area: Scoped model / Payments / [Refunds](refunds-area.md)")
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
 		t.Fatalf("reading EvaluationOutputResult: %v", err)
@@ -609,7 +638,8 @@ factors:
 	assertContains(t, runReport, "| Factor Filter | `factor:root::reliability` Reliability |")
 	assertContains(t, runReport, "The scoped Area rating is a partial roll-up, not a complete Area assessment.")
 	factorReport := readReport(t, runPath, "factors/reliability/reliability-factor.md")
-	assertContains(t, factorReport, "# Factor: Reliability\n\nArea: [Factor scoped model](../../root-area.md)")
+	assertContains(t, factorReport, "# Factor: Reliability")
+	assertContains(t, factorReport, "Area: [Factor scoped model](../../root-area.md)")
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
 	if err != nil {
 		t.Fatalf("reading EvaluationOutputResult: %v", err)

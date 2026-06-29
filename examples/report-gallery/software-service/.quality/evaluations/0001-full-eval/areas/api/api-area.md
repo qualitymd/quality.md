@@ -1,4 +1,16 @@
+---
+type: Area Evaluation Report
+title: Public API
+data:
+  - data/evaluation-output-result.json
+  - data/areas/api/area-analysis-result.json
+---
+
 # Area: Public API
+
+Run: [#1](../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
 
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 

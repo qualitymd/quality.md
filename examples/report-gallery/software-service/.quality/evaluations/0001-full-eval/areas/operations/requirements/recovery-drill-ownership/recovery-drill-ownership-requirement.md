@@ -1,4 +1,17 @@
+---
+type: Requirement Evaluation Report
+title: recovery drills have current owners
+data:
+  - data/evaluation-output-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
+---
+
 # Requirement: recovery drills have current owners
+
+Run: [#1](../../../../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operations-area.md)
 
@@ -7,6 +20,8 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 | Rating | Assessment | Confidence | Data |
 | --- | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🟡 Low / 🟡 Low | [requirement-assessment-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json) |
+
+Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 
 Summary:
 

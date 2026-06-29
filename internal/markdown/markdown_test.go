@@ -51,6 +51,24 @@ func TestRelLinkAndDataLink(t *testing.T) {
 	}
 }
 
+func TestFrontmatter(t *testing.T) {
+	got := Frontmatter(
+		FrontmatterField{Name: "type", Value: "Requirement Evaluation Report"},
+		FrontmatterField{Name: "title", Value: "needs: quoting"},
+		FrontmatterField{Name: "data", Values: []string{"data/evaluation-output-result.json", "data/areas/api/report.json"}},
+	)
+	want := "---\n" +
+		"type: Requirement Evaluation Report\n" +
+		"title: \"needs: quoting\"\n" +
+		"data:\n" +
+		"  - data/evaluation-output-result.json\n" +
+		"  - data/areas/api/report.json\n" +
+		"---\n\n"
+	if got != want {
+		t.Fatalf("Frontmatter() =\n%s\nwant:\n%s", got, want)
+	}
+}
+
 func TestWriterTable(t *testing.T) {
 	var w Writer
 	w.Heading(1, "Report")

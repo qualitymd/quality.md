@@ -34,15 +34,18 @@ behavior.
 
 For Evaluation runs, `build` validates the structured payload graph under
 `data/`, assembles `data/evaluation-output-result.json`, and renders the
-deterministic Markdown report tree from completed structured outputs. It renders
+deterministic Markdown report tree from completed structured outputs, including
+the generated report frontmatter and header contract defined by
+[Evaluation report tree](../evaluation/reports/report-tree.md). It renders
 recorded judgment; it **MUST NOT** reread evaluated source, infer or recompute
-ratings, invent findings, or choose new recommendations by evaluator judgment.
-It **MUST** fail before writing generated report files when the run is not
-renderable, including when required Evaluation data is missing, malformed,
-schema-incompatible, or structurally incomplete. The failure **MUST** identify
-the blocking gap and point the caller to `qualitymd evaluation status <run>` for
-the complete gap list. It **MUST** be deterministic and idempotent: unchanged
-structured data produces byte-identical report files.
+ratings, invent findings, choose new recommendations by evaluator judgment, or
+read generated report frontmatter as source data. It **MUST** fail before
+writing generated report files when the run is not renderable, including when
+required Evaluation data is missing, malformed, schema-incompatible, or
+structurally incomplete. The failure **MUST** identify the blocking gap and
+point the caller to `qualitymd evaluation status <run>` for the complete gap
+list. It **MUST** be deterministic and idempotent: unchanged structured data
+produces byte-identical report files.
 
 `build` **MUST** read the run scope from `RunManifest.plannedScope`.
 `report.md` **MUST** render as the scoped Area report for

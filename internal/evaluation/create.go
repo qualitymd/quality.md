@@ -116,6 +116,7 @@ func resolveCreateScope(spec *model.Spec, opts Options) (RunManifest, error) {
 	return RunManifest{
 		SchemaVersion:  SchemaVersion,
 		Kind:           DataKindRunManifest,
+		CreatedAt:      newRunCreatedAt(),
 		RequestedScope: requested,
 		PlannedScope:   planned,
 	}, nil

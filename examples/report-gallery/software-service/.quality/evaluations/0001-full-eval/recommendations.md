@@ -1,6 +1,20 @@
+---
+type: Recommendation Index Report
+title: Recommendations
+data:
+  - data/evaluation-output-result.json
+  - data/advice/recommendation-ranking-result.json
+---
+
 # Recommendations
 
-Data: [recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
+Run: [#1](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
+
+| Recommendations | Highest Impact | Coverage | Data |
+| --- | --- | --- | --- |
+| 3 ranked recommendations | High | 3 addressed / 4 not advice-driving | [recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json) |
 
 | Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
 | --- | --- | --- | --- | --- | --- | --- |

@@ -1,6 +1,20 @@
+---
+type: Finding Index Report
+title: Findings
+data:
+  - data/evaluation-output-result.json
+  - data/advice/finding-ranking-result.json
+---
+
 # Findings
 
-Data: [finding-ranking-result.json](data/advice/finding-ranking-result.json)
+Run: [#1](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
+
+| Findings | Highest Severity | Data |
+| --- | --- | --- |
+| 7 ranked findings | 🔴 High | [finding-ranking-result.json](data/advice/finding-ranking-result.json) |
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |

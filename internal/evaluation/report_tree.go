@@ -444,8 +444,25 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 
 func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts) string {
 	var b strings.Builder
-	b.WriteString("# Findings\n\n")
-	b.WriteString("Data: " + reportDataLink("findings.md", "data/advice/finding-ranking-result.json") + "\n\n")
+	dataPath := "data/advice/finding-ranking-result.json"
+	renderReportHeader(&b, reportHeader{
+		Type:       reportTypeFindingIndex,
+		Title:      "Findings",
+		Heading:    "Findings",
+		ReportPath: "findings.md",
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath, dataPath},
+		SummaryHead: []string{
+			"Findings",
+			"Highest Severity",
+			"Data",
+		},
+		SummaryRow: []string{
+			fmt.Sprintf("%d ranked findings", len(artifacts.rankedFindings())),
+			highestFindingSeverityTitle(artifacts),
+			reportDataLink("findings.md", dataPath),
+		},
+	})
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
 	writeEvaluationLegend(&b)
 	return b.String()
@@ -454,9 +471,28 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluationArtifacts) []evaluationRenderedReport {
 	var reports []evaluationRenderedReport
 	recommendations := artifacts.rankedRecommendations()
+	rankingPath := "data/advice/recommendation-ranking-result.json"
 	var index strings.Builder
-	index.WriteString("# Recommendations\n\n")
-	index.WriteString("Data: " + reportDataLink("recommendations.md", "data/advice/recommendation-ranking-result.json") + "\n\n")
+	renderReportHeader(&index, reportHeader{
+		Type:       reportTypeRecommendationIndex,
+		Title:      "Recommendations",
+		Heading:    "Recommendations",
+		ReportPath: "recommendations.md",
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath, rankingPath},
+		SummaryHead: []string{
+			"Recommendations",
+			"Highest Impact",
+			"Coverage",
+			"Data",
+		},
+		SummaryRow: []string{
+			fmt.Sprintf("%d ranked recommendations", len(recommendations)),
+			highestRecommendationImpactTitle(recommendations),
+			recommendationCoverageSummary(artifacts),
+			reportDataLink("recommendations.md", rankingPath),
+		},
+	})
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
 	writeAdviceCoverageSummary(&index, artifacts)
 	reports = append(reports, evaluationRenderedReport{
@@ -472,7 +508,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			Kind:             string(ReportKindAdvice),
 			Path:             path,
 			RecommendationID: id,
-			Content:          renderEvaluationRecommendationReport(item),
+			Content:          renderEvaluationRecommendationReport(artifacts, item),
 		})
 	}
 	return reports
@@ -482,6 +518,178 @@ type rankedRecommendation struct {
 	Rank           int
 	Recommendation map[string]any
 	Ranking        map[string]any
+}
+
+const (
+	reportTypeEvaluationOverview    = "Evaluation Overview Report"
+	reportTypeAreaEvaluation        = "Area Evaluation Report"
+	reportTypeFactorEvaluation      = "Factor Evaluation Report"
+	reportTypeRequirementEvaluation = "Requirement Evaluation Report"
+	reportTypeFindingIndex          = "Finding Index Report"
+	reportTypeRecommendationIndex   = "Recommendation Index Report"
+	reportTypeRecommendation        = "Recommendation Report"
+
+	evaluationOutputResultPath = "data/evaluation-output-result.json"
+)
+
+type reportHeader struct {
+	Type        string
+	Title       string
+	Heading     string
+	ReportPath  string
+	Run         *RunManifest
+	Data        []string
+	Context     []string
+	SummaryHead []string
+	SummaryRow  []string
+	JumpLinks   []reportJumpLink
+}
+
+type reportJumpLink struct {
+	Label  string
+	Anchor string
+}
+
+func renderReportHeader(b *strings.Builder, header reportHeader) {
+	b.WriteString(md.Frontmatter(
+		md.FrontmatterField{Name: "type", Value: header.Type},
+		md.FrontmatterField{Name: "title", Value: header.Title},
+		md.FrontmatterField{Name: "data", Values: header.Data},
+	))
+	b.WriteString("# " + header.Heading + "\n\n")
+	if line := reportRunLine(header.ReportPath, header.Run); line != "" {
+		b.WriteString(line + "\n\n")
+	}
+	b.WriteString(reportNavigationLine(header.ReportPath) + "\n\n")
+	for _, line := range header.Context {
+		if line != "" {
+			b.WriteString(line + "\n\n")
+		}
+	}
+	if len(header.SummaryHead) > 0 {
+		writeReportSummaryTable(b, header.SummaryHead, header.SummaryRow)
+	}
+	if len(header.JumpLinks) > 0 {
+		b.WriteString("Jump to: " + reportJumpLinks(header.JumpLinks) + "\n\n")
+	}
+}
+
+func reportRunLine(reportPath string, manifest *RunManifest) string {
+	if manifest == nil {
+		return ""
+	}
+	label := fmt.Sprintf("#%d", manifest.Number)
+	if reportPath != "report.md" {
+		label = reportLink(reportPath, "report.md", label)
+	}
+	created := manifest.CreatedAt
+	if created == "" {
+		created = "—"
+	}
+	return "Run: " + label + " - Created: " + created + " - Scope: " + requestedScopeLabel(manifest.RequestedScope)
+}
+
+func reportNavigationLine(reportPath string) string {
+	return "Report: " + strings.Join([]string{
+		reportNavItem(reportPath, "report.md", "Overview"),
+		reportNavItem(reportPath, "findings.md", "Findings"),
+		reportNavItem(reportPath, "recommendations.md", "Recommendations"),
+	}, " - ")
+}
+
+func reportNavItem(reportPath, target, label string) string {
+	if reportPath == target {
+		return label
+	}
+	return reportLink(reportPath, target, label)
+}
+
+func writeReportSummaryTable(b *strings.Builder, headers, row []string) {
+	b.WriteString(md.TableRow(headers...))
+	separator := make([]string, len(headers))
+	for i := range separator {
+		separator[i] = "---"
+	}
+	b.WriteString(md.TableRow(separator...))
+	b.WriteString(md.TableRow(row...))
+	b.WriteString("\n")
+}
+
+func reportJumpLinks(links []reportJumpLink) string {
+	parts := make([]string, 0, len(links))
+	for _, link := range links {
+		parts = append(parts, md.Link(link.Label, link.Anchor))
+	}
+	return strings.Join(parts, " - ")
+}
+
+func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
+	bestRank := len(findingSeverityOrder)
+	best := ""
+	for _, row := range artifacts.rankedFindings() {
+		severity := firstString(row.Finding, "severity")
+		rank, ok := findingSeverityOrder[severity]
+		if !ok {
+			continue
+		}
+		if rank < bestRank {
+			bestRank = rank
+			best = severity
+		}
+	}
+	if best == "" {
+		return "—"
+	}
+	return findingSeverityTitle(best)
+}
+
+var findingSeverityOrder = map[string]int{
+	"critical": 0,
+	"high":     1,
+	"medium":   2,
+	"low":      3,
+}
+
+func highestRecommendationImpactTitle(items []rankedRecommendation) string {
+	bestRank := len(recommendationImpactOrder)
+	best := ""
+	for _, item := range items {
+		impact := firstString(item.Recommendation, "impact")
+		rank, ok := recommendationImpactOrder[impact]
+		if !ok {
+			continue
+		}
+		if rank < bestRank {
+			bestRank = rank
+			best = impact
+		}
+	}
+	if best == "" {
+		return "—"
+	}
+	return impactTitle(best)
+}
+
+var recommendationImpactOrder = map[string]int{
+	"very_high": 0,
+	"high":      1,
+	"medium":    2,
+	"low":       3,
+}
+
+func recommendationCoverageSummary(artifacts *evaluationArtifacts) string {
+	coverage := objectSlice(artifacts.RecommendationRanking["findingCoverage"])
+	addressed := 0
+	notDriving := 0
+	for _, item := range coverage {
+		switch firstString(item, "disposition") {
+		case "addressed_by_recommendation":
+			addressed++
+		case "not_advice_driving":
+			notDriving++
+		}
+	}
+	return fmt.Sprintf("%d addressed / %d not advice-driving", addressed, notDriving)
 }
 
 func (a *evaluationArtifacts) rankedRecommendations() []rankedRecommendation {
@@ -522,15 +730,39 @@ func sortedRecommendationIDs(recommendations map[string]map[string]any) []string
 	return ids
 }
 
-func renderEvaluationRecommendationReport(item rankedRecommendation) string {
+func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item rankedRecommendation) string {
 	rec := item.Recommendation
 	var b strings.Builder
-	b.WriteString("# " + firstString(rec, "title") + "\n\n")
-	fmt.Fprintf(&b, "**Rank:** %d\n", item.Rank)
-	b.WriteString("**Impact:** " + impactTitle(firstString(rec, "impact")) + "\n")
-	b.WriteString("**Confidence:** " + confidenceTitle(firstString(rec, "confidence")) + "\n")
 	reportPath := recommendationReportPath(item.Rank, firstString(rec, "title"))
-	b.WriteString("**Data:** " + reportDataLink(reportPath, recommendationDataPath(firstString(rec, "id"))) + ", " + reportDataLink(reportPath, "data/advice/recommendation-ranking-result.json") + "\n\n")
+	recDataPath := recommendationDataPath(firstString(rec, "id"))
+	rankingPath := "data/advice/recommendation-ranking-result.json"
+	renderReportHeader(&b, reportHeader{
+		Type:       reportTypeRecommendation,
+		Title:      firstString(rec, "title"),
+		Heading:    "Recommendation: " + firstString(rec, "title"),
+		ReportPath: reportPath,
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath, recDataPath, rankingPath},
+		SummaryHead: []string{
+			"Rank",
+			"Impact",
+			"Confidence",
+			"Data",
+		},
+		SummaryRow: []string{
+			fmt.Sprintf("%d", item.Rank),
+			impactTitle(firstString(rec, "impact")),
+			confidenceTitle(firstString(rec, "confidence")),
+			reportDataLink(reportPath, recDataPath) + ", " + reportDataLink(reportPath, rankingPath),
+		},
+		JumpLinks: []reportJumpLink{
+			{Label: "Description", Anchor: "#description"},
+			{Label: "Background", Anchor: "#background"},
+			{Label: "Expected value", Anchor: "#expected-value"},
+			{Label: "Done criterion", Anchor: "#done-criterion"},
+			{Label: "Trace", Anchor: "#trace"},
+		},
+	})
 	writeRecommendationSection(&b, "Description", firstString(rec, "description"))
 	writeRecommendationSection(&b, "Background", firstString(rec, "background"))
 	writeRecommendationSection(&b, "Expected value", firstString(rec, "expectedValue"))
@@ -563,12 +795,36 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	scopedArea := scopedMap(plan.ScopedAreaAnalysis, "localAndDescendantAnalysis")
 	localArea := scopedMap(plan.ScopedAreaAnalysis, "localAnalysis")
 	var b strings.Builder
-	b.WriteString("# Evaluation Report: Area: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, artifacts, plan.ScopedAreaID, reportPath)
-	b.WriteString("| Overall Rating | Local Rating | Confidence | Data |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
-	b.WriteString(md.TableRow(evaluationRatingLabel(spec, scopedArea), evaluationRatingLabel(spec, localArea), evaluationConfidencePair(scopedArea, localArea), reportDataLink(reportPath, "data/evaluation-output-result.json")))
-	b.WriteString("\n")
+	renderReportHeader(&b, reportHeader{
+		Type:       reportTypeEvaluationOverview,
+		Title:      title,
+		Heading:    "Evaluation Report: Area: " + title,
+		ReportPath: reportPath,
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath},
+		Context: []string{
+			evaluationAreaTrailLine(spec, artifacts, plan.ScopedAreaID, reportPath),
+		},
+		SummaryHead: []string{
+			"Overall Rating",
+			"Scope",
+			"Confidence",
+			"Data",
+		},
+		SummaryRow: []string{
+			evaluationRatingLabel(spec, scopedArea),
+			requestedScopeLabel(plan.RequestedScope),
+			evaluationConfidencePair(scopedArea, localArea),
+			reportDataLink(reportPath, evaluationOutputResultPath),
+		},
+		JumpLinks: []reportJumpLink{
+			{Label: "Top Findings", Anchor: "#top-findings"},
+			{Label: "Top Recommendations", Anchor: "#top-recommendations"},
+			{Label: "Scope", Anchor: "#scope"},
+			{Label: "Subject Reports", Anchor: "#subject-reports"},
+			{Label: "Limits", Anchor: "#limits--incomplete-inputs"},
+		},
+	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(scopedArea))
 	b.WriteString("\n\n## Rating Drivers\n\n")
@@ -610,12 +866,30 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	local := scopedMap(area.Analysis, "localAnalysis")
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
 	var b strings.Builder
-	b.WriteString("# Area: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, artifacts, area.ID, reportPath)
-	b.WriteString("| Overall Rating | Local Rating | Confidence | Data |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
-	b.WriteString(md.TableRow(evaluationRatingLabel(spec, overall), evaluationRatingLabel(spec, local), evaluationConfidencePair(overall, local), reportDataLink(reportPath, areaDataPath(area.ID, "area-analysis-result.json"))))
-	b.WriteString("\n")
+	dataPath := areaDataPath(area.ID, "area-analysis-result.json")
+	renderReportHeader(&b, reportHeader{
+		Type:       reportTypeAreaEvaluation,
+		Title:      title,
+		Heading:    "Area: " + title,
+		ReportPath: reportPath,
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath, dataPath},
+		Context: []string{
+			evaluationAreaTrailLine(spec, artifacts, area.ID, reportPath),
+		},
+		SummaryHead: []string{
+			"Overall Rating",
+			"Local Rating",
+			"Confidence",
+			"Data",
+		},
+		SummaryRow: []string{
+			evaluationRatingLabel(spec, overall),
+			evaluationRatingLabel(spec, local),
+			evaluationConfidencePair(overall, local),
+			reportDataLink(reportPath, dataPath),
+		},
+	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
 	b.WriteString("\n\n## Rating Drivers\n\n")
@@ -669,13 +943,33 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
 	title := factorTitle(spec, factor.ID)
 	var b strings.Builder
-	b.WriteString("# Factor: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, artifacts, factor.ID.DeclaringArea, reportPath)
-	writeEvaluationFactorTrail(&b, spec, factor.ID, reportPath)
-	b.WriteString("| Overall Rating | Local Rating | Status | Confidence | Data |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
-	b.WriteString(md.TableRow(evaluationRatingLabel(spec, overall), evaluationRatingLabel(spec, local), evaluationAnalysisStatusPair(overall, local), evaluationConfidencePair(overall, local), reportDataLink(reportPath, factorDataPath(factor.ID, "factor-analysis-result.json"))))
-	b.WriteString("\n")
+	dataPath := factorDataPath(factor.ID, "factor-analysis-result.json")
+	renderReportHeader(&b, reportHeader{
+		Type:       reportTypeFactorEvaluation,
+		Title:      title,
+		Heading:    "Factor: " + title,
+		ReportPath: reportPath,
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath, dataPath},
+		Context: []string{
+			evaluationAreaTrailLine(spec, artifacts, factor.ID.DeclaringArea, reportPath),
+			evaluationFactorTrailLine(spec, factor.ID, reportPath),
+		},
+		SummaryHead: []string{
+			"Overall Rating",
+			"Local Rating",
+			"Status",
+			"Confidence",
+			"Data",
+		},
+		SummaryRow: []string{
+			evaluationRatingLabel(spec, overall),
+			evaluationRatingLabel(spec, local),
+			evaluationAnalysisStatusPair(overall, local),
+			evaluationConfidencePair(overall, local),
+			reportDataLink(reportPath, dataPath),
+		},
+	})
 	b.WriteString("Summary:\n\n")
 	b.WriteString(evaluationSummary(overall))
 	b.WriteString("\n\n## Rating Drivers\n\n")
@@ -713,13 +1007,37 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts, reportPath string) string {
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
-	b.WriteString("# Requirement: " + title + "\n\n")
-	writeEvaluationAreaTrail(&b, spec, artifacts, req.ID.DeclaringArea, reportPath)
-	writeEvaluationRequirementFactorsLine(&b, req, reportPath)
-	b.WriteString("| Rating | Assessment | Confidence | Data |\n")
-	b.WriteString("| --- | --- | --- | --- |\n")
-	b.WriteString(md.TableRow(evaluationRequirementRatingLabel(spec, req.Rating), assessmentStatusTitle(evaluationString(req.Assessment, "status")), evaluationRequirementConfidencePair(req), reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-assessment-result.json"))+", "+reportDataLink(reportPath, requirementDataPath(req.ID, "requirement-rating-result.json"))))
-	b.WriteString("\n")
+	assessmentPath := requirementDataPath(req.ID, "requirement-assessment-result.json")
+	ratingPath := requirementDataPath(req.ID, "requirement-rating-result.json")
+	renderReportHeader(&b, reportHeader{
+		Type:       reportTypeRequirementEvaluation,
+		Title:      title,
+		Heading:    "Requirement: " + title,
+		ReportPath: reportPath,
+		Run:        artifacts.Manifest,
+		Data:       []string{evaluationOutputResultPath, assessmentPath, ratingPath},
+		Context: []string{
+			evaluationAreaTrailLine(spec, artifacts, req.ID.DeclaringArea, reportPath),
+			evaluationRequirementFactorsLine(req, reportPath),
+		},
+		SummaryHead: []string{
+			"Rating",
+			"Assessment",
+			"Confidence",
+			"Data",
+		},
+		SummaryRow: []string{
+			evaluationRequirementRatingLabel(spec, req.Rating),
+			assessmentStatusTitle(evaluationString(req.Assessment, "status")),
+			evaluationRequirementConfidencePair(req),
+			reportDataLink(reportPath, assessmentPath) + ", " + reportDataLink(reportPath, ratingPath),
+		},
+		JumpLinks: []reportJumpLink{
+			{Label: "Findings Summary", Anchor: "#findings-summary"},
+			{Label: "Finding Details", Anchor: "#finding-details"},
+			{Label: "Unknowns & Missing Evidence", Anchor: "#unknowns--missing-evidence"},
+		},
+	})
 	b.WriteString("Summary:\n\n")
 	if summary := evaluationString(req.Assessment, "evidenceSummary"); summary != "" {
 		b.WriteString(summary)
@@ -1640,13 +1958,13 @@ func (a *evaluationArtifacts) requirementsForFactor(factor factorID) []*evaluati
 	return out
 }
 
-func writeEvaluationAreaTrail(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, areaID []string, reportPath string) {
+func evaluationAreaTrailLine(spec *model.Spec, artifacts *evaluationArtifacts, areaID []string, reportPath string) string {
 	parts := []string{areaTrailPart(spec, artifacts, nil, reportPath)}
 	for i := range areaID {
 		id := areaID[:i+1]
 		parts = append(parts, areaTrailPart(spec, artifacts, id, reportPath))
 	}
-	b.WriteString("Area: " + strings.Join(parts, " / ") + "\n\n")
+	return "Area: " + strings.Join(parts, " / ")
 }
 
 func areaTrailPart(spec *model.Spec, artifacts *evaluationArtifacts, areaID []string, reportPath string) string {
@@ -1657,21 +1975,21 @@ func areaTrailPart(spec *model.Spec, artifacts *evaluationArtifacts, areaID []st
 	return markdownCell(title)
 }
 
-func writeEvaluationFactorTrail(b *strings.Builder, spec *model.Spec, factor factorID, reportPath string) {
+func evaluationFactorTrailLine(spec *model.Spec, factor factorID, reportPath string) string {
 	parts := make([]string, 0, len(factor.Path))
 	for i := range factor.Path {
 		id := factorID{DeclaringArea: factor.DeclaringArea, Path: factor.Path[:i+1]}
 		parts = append(parts, reportLink(reportPath, factorReportPath(id), factorTitle(spec, id)))
 	}
-	b.WriteString("Factor: " + strings.Join(parts, " / ") + "\n\n")
+	return "Factor: " + strings.Join(parts, " / ")
 }
 
-func writeEvaluationRequirementFactorsLine(b *strings.Builder, req *evaluationRequirementArtifacts, reportPath string) {
+func evaluationRequirementFactorsLine(req *evaluationRequirementArtifacts, reportPath string) string {
 	links := requirementFactorLinks(req, reportPath)
 	if links == "" {
 		links = "(none)"
 	}
-	b.WriteString("Factors: " + links + "\n\n")
+	return "Factors: " + links
 }
 
 func writeEvaluationDriversTable(b *strings.Builder, spec *model.Spec, scope map[string]any) {

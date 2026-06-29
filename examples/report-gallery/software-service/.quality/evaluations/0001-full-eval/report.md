@@ -1,10 +1,23 @@
+---
+type: Evaluation Overview Report
+title: LedgerLite Service
+data:
+  - data/evaluation-output-result.json
+---
+
 # Evaluation Report: Area: LedgerLite Service
+
+Run: #1 - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+
+Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)
 
 Area: [LedgerLite Service](root-area.md)
 
-| Overall Rating | Local Rating | Confidence | Data |
+| Overall Rating | Scope | Confidence | Data |
 | --- | --- | --- | --- |
-| 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None | [evaluation-output-result.json](data/evaluation-output-result.json) |
+| 🟡 Minimum | full evaluation | 🔵 Medium / ⚪ None | [evaluation-output-result.json](data/evaluation-output-result.json) |
+
+Jump to: [Top Findings](#top-findings) - [Top Recommendations](#top-recommendations) - [Scope](#scope) - [Subject Reports](#subject-reports) - [Limits](#limits--incomplete-inputs)
 
 Summary:
 

@@ -1,5 +1,14 @@
 # Docs Update Log
 
+## 2026-06-29
+
+- **Addition**: Added
+  [Designing report outputs](guides/reporting-design.md) for
+  [0158 - OKF-compatible report headers](../changes/archive/0158-okf-report-headers.md).
+  The guide captures report UX research, human-first header principles,
+  OKF-compatible pointer frontmatter, report type taxonomy, and header patterns
+  for generated Evaluation reports.
+
 ## 2026-06-27
 
 - **Revision**: Updated
