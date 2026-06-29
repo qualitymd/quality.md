@@ -100,6 +100,20 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - Prefer lowercase in README, guides, tutorials, and user-facing prose unless
   capitalization improves precision.
 
+### Heading capitalization
+
+- Use sentence case for headings in README, docs, guides, and specs: capitalize
+  only the first word, the first word after a colon, and proper nouns.
+- Keep these capitalized in headings and prose as proper nouns: QUALITY.md,
+  `qualitymd`, acronyms (CLI, OKF, YAML), model vocabulary used as terms of art
+  (Model, Area, Factor, Agent Harnessability, Agent Harness), and the named loop
+  framing (Quality Loop Stack; the Inner Loop, Middle Loop, Meta Loop, Outer
+  Loop).
+- This proper-noun list is closed; lowercase generic or descriptive uses (quality
+  loops, loop engineering, "up the loop stack") and preserve a cited source's own
+  casing (e.g. Annie Vella's lowercase *middle loop*).
+- No trailing period in headings.
+
 ### Keep the motivation and taxonomy registers distinct
 
 - The stewardship/care core language — stewardship, care, tending, vulnerability,

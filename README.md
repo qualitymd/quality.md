@@ -1,6 +1,6 @@
 # QUALITY.md
 
-**QUALITY.md** is an [open format](./SPECIFICATION.md), agent skill, and CLI for
+**QUALITY.md** is an [open format](SPECIFICATION.md), agent skill, and CLI for
 managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), [compound learning](#the-outer-loop-dailyweekly), and achieve alignment around *what quality means for what matters most*.
 
 QUALITY.md helps teams **move quality judgment up the loop
@@ -24,17 +24,17 @@ npx skills add qualitymd/quality.md
 npm install -g quality.md
 ```
 
-**Stay up-to-date**: Invoke the `/quality update` to update both the skill and CLI to the latest compatible versions to take advantage of the latest improvements.
+**Stay up to date**: Invoke `/quality update` to update both the skill and CLI to the latest compatible versions to take advantage of the latest improvements.
 
-## Getting Started
+## Getting started
 
 ### Setup
 
 Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailored for your project.
 
-### Loop Engineering: The Quality Loop Stack
+### Loop engineering: the Quality Loop Stack
 
-#### The Middle/Meta Loop (daily/hourly)
+#### The Middle/Meta Loop (hourly/daily)
 
 1. **Evaluate** with `/quality evaluate` to
    create a quality evaluation report
@@ -43,11 +43,11 @@ Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailore
 
 #### The Inner Loop (continuously)
 
-3. **Act:** implement or delegate handoff-ready recommendations to people, agents, or other agent loops.
+3. **Act** by implementing or delegating handoff-ready recommendations to people, agents, or other agent loops.
 
 #### The Outer Loop (daily/weekly)
 
-4. **Improve:** by invoking `/quality improve` to refine
+4. **Improve** by invoking `/quality improve` to refine
    `QUALITY.md` and compound learning.
 
 > The three-loop framing and the term *middle loop* draw on Annie Vella,
@@ -57,7 +57,7 @@ Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailore
 
 ## Why QUALITY.md
 
-### Manage Quality Debt
+### Manage quality debt
 
 As work changes faster, quality erodes quietly unless expectations stay visible
 and current. One useful software-specific framing names three accumulating
@@ -71,10 +71,11 @@ debts:
 QUALITY.md makes a team's quality expectations explicit and checkable, so those
 gaps stay visible and addressable instead of compounding.
 
-> The three-debt framing draws on Margaret-Anne Storey, *The Triple Debt of
-> Software Development* ([arXiv:2603.22106](https://arxiv.org/abs/2603.22106)).
+> The three-debt framing draws on Margaret-Anne Storey,
+> *[The Triple Debt of Software Development](https://arxiv.org/abs/2603.22106)*
+> (arXiv:2603.22106).
 
-### Evaluate Agent Harnessability — and your agent harness
+### Evaluate Agent Harnessability and your agent harness
 
 **Agent Harnessability** names how accessible and operable a project is to an
 agent — whether its context is visible, its tasks specifiable, its checks
@@ -100,7 +101,7 @@ the gaps into concrete improvement work.
 > (martinfowler.com), and OpenAI,
 > *[Harness engineering](https://openai.com/index/harness-engineering/)*.
 
-### Quality Beyond Software
+### Quality beyond software
 
 QUALITY.md is useful whenever people need to be deliberate about the quality of
 something they maintain: software systems, documentation sets, data products,
@@ -192,7 +193,7 @@ the accounting system that consumes payment events.
 
 The full format is specified in [`SPECIFICATION.md`](SPECIFICATION.md).
 
-### File Structure
+### File structure
 
 A QUALITY.md file has two layers:
 
@@ -204,7 +205,7 @@ A QUALITY.md file has two layers:
 The document begins with the YAML frontmatter. The Markdown body can be empty,
 but it is where the model explains its purpose and context.
 
-### Model Schema
+### Model schema
 
 The root model is an area plus a model-wide `ratingScale`.
 
@@ -239,7 +240,7 @@ areas:                          # Optional*
 At least one of `factors`, `requirements`, or `areas` must be supplied.
 Areas can nest recursively. `ratingScale` exists only on the root model.
 
-### Core Concepts
+### Core concepts
 
 | Concept      | Meaning                                                        |
 | ------------ | -------------------------------------------------------------- |
@@ -252,7 +253,7 @@ Areas can nest recursively. `ratingScale` exists only on the root model.
 | Finding      | An observation produced by an assessment.                      |
 | Rating Scale | The ordered model-wide scale used to rate results.             |
 
-## CLI Quick Reference
+## CLI quick reference
 
 | Task                    | Command                          |
 | ----------------------- | -------------------------------- |
