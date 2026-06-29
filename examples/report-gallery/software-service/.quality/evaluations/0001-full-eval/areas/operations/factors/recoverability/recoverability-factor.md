@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Recoverability
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/operations/factors/recoverability/factor-analysis-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
 ---
 
 # Factor: Recoverability
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factor: [Recoverability](recoverability-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟡 Low / 🟡 Low | [factor-analysis-result.json](../../../../data/areas/operations/factors/recoverability/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟡 Low / 🟡 Low |
 
 Summary:
 

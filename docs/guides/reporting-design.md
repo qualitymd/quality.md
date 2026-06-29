@@ -77,7 +77,6 @@ The top of every report should answer:
 - What was the planned scope?
 - Where are the overview, findings, recommendations, and relevant parent or
   sibling reports?
-- Where is the canonical structured data?
 
 Prefer short lines and compact tables over paragraphs in the header.
 
@@ -95,18 +94,16 @@ format.
 
 Use report-specific summary tables instead of a generic `Field | Value` table.
 The title already identifies the subject; the header table should emphasize
-state, data, and scan-critical context.
+state and scan-critical context.
 
 Good header table examples:
 
-- run report: `Overall Rating`, `Scope`, `Confidence`, `Data`;
-- Area report: `Overall Rating`, `Local Rating`, `Confidence`, `Data`;
-- Factor report: `Overall Rating`, `Local Rating`, `Status`, `Confidence`,
-  `Data`;
-- Requirement report: `Rating`, `Assessment`, `Confidence`, `Data`;
-- findings index: `Findings`, `Highest Severity`, `Data`;
-- recommendations index: `Recommendations`, `Highest Impact`, `Coverage`,
-  `Data`.
+- run report: `Overall Rating`, `Scope`, `Confidence`;
+- Area report: `Overall Rating`, `Local Rating`, `Confidence`;
+- Factor report: `Overall Rating`, `Local Rating`, `Status`, `Confidence`;
+- Requirement report: `Rating`, `Assessment`, `Confidence`;
+- findings index: `Findings`, `Highest Severity`;
+- recommendations index: `Recommendations`, `Highest Impact`, `Coverage`.
 
 ### Navigation at the top
 
@@ -149,12 +146,13 @@ Skip jump links on short pages where they add more noise than navigation value.
 
 ### OKF-compatible pointer frontmatter
 
-Generated report YAML frontmatter stays tiny. It is a pointer layer, not a
-metadata summary. Keep it OKF-compatible by including a `type` and `title`, then
-point to canonical JSON payloads with `data`. Do not repeat Evaluation result
-facts that already live in the associated JSON files or visible header,
-including generated time, run identity, subject identity, scope, ratings,
-confidence, findings, recommendations, limits, or display labels.
+Generated report YAML frontmatter stays tiny. It is a source-data pointer layer,
+not a metadata summary. Keep it OKF-compatible by including a `type` and
+`title`, then list the structured Evaluation payloads used to render that
+specific report artifact with `data`. Do not repeat Evaluation result facts that
+already live in the associated JSON files or visible header, including generated
+time, run identity, subject identity, scope, ratings, confidence, findings,
+recommendations, limits, or display labels.
 
 Generated reports are runtime artifacts, so they do not yet require a report
 bundle `index.md`, `schema.md`, or `log.md`. A later Change Case should decide
@@ -165,16 +163,17 @@ Do not rename report files such as `findings.md` or `recommendations.md` to
 index.
 
 Use only a stable report `type`, a human-friendly `title`, and the canonical
-JSON payloads needed to understand the report:
+JSON payloads used as source data for the report:
 
 ```yaml
 ---
 type: Requirement Evaluation Report
 title: mutation endpoints are idempotent under retry
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
   - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
 ---
 ```
 
@@ -228,8 +227,10 @@ visible Markdown header, especially:
 
 This keeps the first lines of a report readable in editors that expose
 frontmatter and keeps the structured Evaluation data as the single source of
-truth. If a future consumer needs richer machine access, use
-`data/evaluation-output-result.json` and the payloads it indexes instead of
+truth. Do not list `data/evaluation-output-result.json` merely because it exists:
+that file is a generated output index, not report source data unless a future
+renderer directly consumes it. If a future consumer needs richer machine access,
+use `data/evaluation-output-result.json` and the payloads it indexes instead of
 expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
@@ -248,9 +249,9 @@ Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Model: [model-snapshot.m
 
 Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md) - [Root Area](root-area.md)
 
-| Overall Rating | Scope           | Confidence    | Data                                                                |
-| -------------- | --------------- | ------------- | ------------------------------------------------------------------- |
-| Minimum        | full evaluation | Medium / None | [evaluation-output-result.json](data/evaluation-output-result.json) |
+| Overall Rating | Scope           | Confidence    |
+| -------------- | --------------- | ------------- |
+| Minimum        | full evaluation | Medium / None |
 
 Summary:
 
@@ -271,9 +272,9 @@ Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
 Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
-| Findings          | Highest Severity | Data                                                                   |
-| ----------------- | ---------------- | ---------------------------------------------------------------------- |
-| 7 ranked findings | High             | [finding-ranking-result.json](data/advice/finding-ranking-result.json) |
+| Findings          | Highest Severity |
+| ----------------- | ---------------- |
+| 7 ranked findings | High             |
 ```
 
 ### Area reports
@@ -289,9 +290,9 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
-| Overall Rating | Local Rating | Confidence      | Data                                                                        |
-| -------------- | ------------ | --------------- | --------------------------------------------------------------------------- |
-| Minimum        | Minimum      | Medium / Medium | [area-analysis-result.json](../../data/areas/api/area-analysis-result.json) |
+| Overall Rating | Local Rating | Confidence      |
+| -------------- | ------------ | --------------- |
+| Minimum        | Minimum      | Medium / Medium |
 ```
 
 ### Factor reports
@@ -309,16 +310,16 @@ Area: [LedgerLite Service](../../../root-area.md) / [Public API](../api-area.md)
 
 Factor: [Correctness](correctness-factor.md)
 
-| Overall Rating | Local Rating | Status              | Confidence      | Data                                                                                                   |
-| -------------- | ------------ | ------------------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium | [factor-analysis-result.json](../../../data/areas/api/factors/correctness/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status              | Confidence      |
+| -------------- | ------------ | ------------------- | --------------- |
+| Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium |
 ```
 
 ### Requirement reports
 
 Requirement reports are often the deep link target from findings. Their header
-should make the owning Area, attached Factors, and data payloads immediately
-visible.
+should make the owning Area, attached Factors, rating state, assessment state,
+and confidence immediately visible.
 
 ```markdown
 # Requirement: mutation endpoints are idempotent under retry
@@ -331,9 +332,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factors: [correctness](../../factors/correctness/correctness-factor.md)
 
-| Rating  | Assessment | Confidence      | Data                                                                                                                                                                                                                                                                 |
-| ------- | ---------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Minimum | Assessed   | Medium / Medium | [requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json) |
+| Rating  | Assessment | Confidence      |
+| ------- | ---------- | --------------- |
+| Minimum | Assessed   | Medium / Medium |
 
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 ```
@@ -353,9 +354,9 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 
 Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/factors/correctness/correctness-factor.md)
 
-| Rank  | Impact | Confidence | Data                                                        |
-| ----- | ------ | ---------- | ----------------------------------------------------------- |
-| 1 / 3 | High   | High       | [rec-001.json](../data/advice/recommendations/rec-001.json) |
+| Rank  | Impact | Confidence |
+| ----- | ------ | ---------- |
+| 1 / 3 | High   | High       |
 ```
 
 ## Checklist
@@ -363,14 +364,14 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 Before changing report output, check:
 
 - The first visible Markdown content is one clear H1.
-- A reader can identify the run, generated time, scope, subject, and data source
-  in the header area.
+- A reader can identify the run, generated time, scope, and subject in the
+  header area.
 - Report-level navigation links to the overview, findings, and recommendations
   where those reports exist.
 - Hierarchical context is visible through Area, Factor, or Factors lines.
 - The header uses a report-specific summary table.
 - Long pages have useful jump links; short pages do not add noisy jump links.
-- Frontmatter, if present, contains identity and links only.
+- Frontmatter contains identity and source-data links only.
 - No generated report introduces claims that are absent from structured data.
-- Data links use concrete payload filenames, not generic labels.
+- Frontmatter `data` lists the structured payloads used to render the report.
 - Empty values render visibly and consistently.

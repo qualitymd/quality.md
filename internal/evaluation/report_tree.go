@@ -444,23 +444,20 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 
 func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts) string {
 	var b strings.Builder
-	dataPath := "data/advice/finding-ranking-result.json"
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFindingIndex,
 		Title:      "Findings",
 		Heading:    "Findings",
 		ReportPath: "findings.md",
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath, dataPath},
+		Data:       reportSourceData(append([]string{runManifestPath}, rankedFindingSourceData(artifacts, 0)...)...),
 		SummaryHead: []string{
 			"Findings",
 			"Highest Severity",
-			"Data",
 		},
 		SummaryRow: []string{
 			fmt.Sprintf("%d ranked findings", len(artifacts.rankedFindings())),
 			highestFindingSeverityTitle(artifacts),
-			reportDataLink("findings.md", dataPath),
 		},
 	})
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
@@ -471,7 +468,6 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluationArtifacts) []evaluationRenderedReport {
 	var reports []evaluationRenderedReport
 	recommendations := artifacts.rankedRecommendations()
-	rankingPath := "data/advice/recommendation-ranking-result.json"
 	var index strings.Builder
 	renderReportHeader(&index, reportHeader{
 		Type:       reportTypeRecommendationIndex,
@@ -479,18 +475,16 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 		Heading:    "Recommendations",
 		ReportPath: "recommendations.md",
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath, rankingPath},
+		Data:       reportSourceData(append([]string{runManifestPath}, rankedRecommendationSourceData(artifacts, 0)...)...),
 		SummaryHead: []string{
 			"Recommendations",
 			"Highest Impact",
 			"Coverage",
-			"Data",
 		},
 		SummaryRow: []string{
 			fmt.Sprintf("%d ranked recommendations", len(recommendations)),
 			highestRecommendationImpactTitle(recommendations),
 			recommendationCoverageSummary(artifacts),
-			reportDataLink("recommendations.md", rankingPath),
 		},
 	})
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
@@ -528,8 +522,6 @@ const (
 	reportTypeFindingIndex          = "Finding Index Report"
 	reportTypeRecommendationIndex   = "Recommendation Index Report"
 	reportTypeRecommendation        = "Recommendation Report"
-
-	evaluationOutputResultPath = "data/evaluation-output-result.json"
 )
 
 type reportHeader struct {
@@ -613,6 +605,164 @@ func writeReportSummaryTable(b *strings.Builder, headers, row []string) {
 	b.WriteString(md.TableRow(separator...))
 	b.WriteString(md.TableRow(row...))
 	b.WriteString("\n")
+}
+
+func reportSourceData(paths ...string) []string {
+	seen := map[string]struct{}{}
+	out := make([]string, 0, len(paths))
+	for _, path := range paths {
+		path = filepath.ToSlash(path)
+		if path == "" {
+			continue
+		}
+		if _, ok := seen[path]; ok {
+			continue
+		}
+		seen[path] = struct{}{}
+		out = append(out, path)
+	}
+	return out
+}
+
+func runReportSourceData(artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport) []string {
+	paths := []string{
+		runManifestPath,
+		areaDataPath(plan.ScopedAreaID, "area-analysis-result.json"),
+	}
+	paths = append(paths, rankedFindingSourceData(artifacts, 10)...)
+	paths = append(paths, rankedRecommendationSourceData(artifacts, 10)...)
+	paths = append(paths, subjectReportSourceData(artifacts, reports)...)
+	return reportSourceData(paths...)
+}
+
+func rankedFindingSourceData(artifacts *evaluationArtifacts, limit int) []string {
+	paths := []string{"data/advice/finding-ranking-result.json"}
+	for i, row := range artifacts.rankedFindings() {
+		if limit > 0 && i >= limit {
+			break
+		}
+		path, _, ok := strings.Cut(row.Key, "#")
+		if ok {
+			paths = append(paths, path)
+		}
+	}
+	return reportSourceData(paths...)
+}
+
+func rankedRecommendationSourceData(artifacts *evaluationArtifacts, limit int) []string {
+	paths := []string{"data/advice/recommendation-ranking-result.json"}
+	for i, item := range artifacts.rankedRecommendations() {
+		if limit > 0 && i >= limit {
+			break
+		}
+		paths = append(paths, recommendationDataPath(firstString(item.Recommendation, "id")))
+		paths = append(paths, recommendationTraceSourceData(artifacts, item.Recommendation)...)
+	}
+	return reportSourceData(paths...)
+}
+
+func recommendationTraceSourceData(artifacts *evaluationArtifacts, rec map[string]any) []string {
+	var paths []string
+	for _, ref := range objectSlice(rec["traceRefs"]) {
+		subject := objectMap(ref["subject"])
+		if id, err := requirementIDFrom(subject["requirementId"]); err == nil {
+			if req := artifacts.Requirements[requirementKey(id)]; req != nil && req.Assessment != nil {
+				paths = append(paths, requirementDataPath(id, "requirement-assessment-result.json"))
+			}
+		}
+	}
+	return reportSourceData(paths...)
+}
+
+func subjectReportSourceData(artifacts *evaluationArtifacts, reports []evaluationRenderedReport) []string {
+	var paths []string
+	for _, report := range reports {
+		if path := subjectReportRatingSourceData(artifacts, report); path != "" {
+			paths = append(paths, path)
+		}
+	}
+	return reportSourceData(paths...)
+}
+
+func subjectReportRatingSourceData(artifacts *evaluationArtifacts, report evaluationRenderedReport) string {
+	switch report.Kind {
+	case string(ReportKindArea):
+		if area := artifacts.Areas[areaKey(report.AreaID)]; area != nil && area.Analysis != nil {
+			return areaDataPath(report.AreaID, "area-analysis-result.json")
+		}
+	case string(ReportKindFactor):
+		if report.FactorID != nil {
+			if factor := artifacts.Factors[factorKey(*report.FactorID)]; factor != nil && factor.Analysis != nil {
+				return factorDataPath(*report.FactorID, "factor-analysis-result.json")
+			}
+		}
+	case string(ReportKindRequirement):
+		if report.RequirementID != nil {
+			if req := artifacts.Requirements[requirementKey(*report.RequirementID)]; req != nil && req.Rating != nil {
+				return requirementDataPath(*report.RequirementID, "requirement-rating-result.json")
+			}
+		}
+	}
+	return ""
+}
+
+func areaReportSourceData(artifacts *evaluationArtifacts, area *evaluationAreaArtifacts) []string {
+	paths := []string{runManifestPath}
+	if area.Analysis != nil {
+		paths = append(paths, areaDataPath(area.ID, "area-analysis-result.json"))
+	}
+	for _, factor := range artifacts.rootFactorsForArea(area.ID) {
+		if factor.Analysis != nil {
+			paths = append(paths, factorDataPath(factor.ID, "factor-analysis-result.json"))
+		}
+	}
+	for _, child := range artifacts.childAreas(area.ID) {
+		if child.Analysis != nil {
+			paths = append(paths, areaDataPath(child.ID, "area-analysis-result.json"))
+		}
+	}
+	for _, req := range artifacts.requirementsForArea(area.ID) {
+		if req.Rating != nil {
+			paths = append(paths, requirementDataPath(req.ID, "requirement-rating-result.json"))
+		}
+		if req.Assessment != nil {
+			paths = append(paths, requirementDataPath(req.ID, "requirement-assessment-result.json"))
+		}
+	}
+	return reportSourceData(paths...)
+}
+
+func factorReportSourceData(artifacts *evaluationArtifacts, factor *evaluationFactorArtifacts) []string {
+	paths := []string{runManifestPath}
+	if factor.Analysis != nil {
+		paths = append(paths, factorDataPath(factor.ID, "factor-analysis-result.json"))
+	}
+	for _, req := range artifacts.requirementsForFactor(factor.ID) {
+		if req.Rating != nil {
+			paths = append(paths, requirementDataPath(req.ID, "requirement-rating-result.json"))
+		}
+		if req.Assessment != nil {
+			paths = append(paths, requirementDataPath(req.ID, "requirement-assessment-result.json"))
+		}
+	}
+	for _, child := range artifacts.childFactors(factor.ID) {
+		if child.Analysis != nil {
+			paths = append(paths, factorDataPath(child.ID, "factor-analysis-result.json"))
+		}
+	}
+	return reportSourceData(paths...)
+}
+
+func requirementReportSourceData(req *evaluationRequirementArtifacts) []string {
+	paths := []string{runManifestPath}
+	if req.Assessment != nil {
+		paths = append(paths, requirementDataPath(req.ID, "requirement-assessment-result.json"))
+	}
+	if req.Rating != nil {
+		paths = append(paths, requirementDataPath(req.ID, "requirement-rating-result.json"))
+	}
+	paths = append(paths, "data/advice/finding-ranking-result.json")
+	return reportSourceData(paths...)
 }
 
 func reportJumpLinks(links []reportJumpLink) string {
@@ -742,18 +892,16 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 		Heading:    "Recommendation: " + firstString(rec, "title"),
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath, recDataPath, rankingPath},
+		Data:       reportSourceData(append([]string{runManifestPath, recDataPath, rankingPath}, recommendationTraceSourceData(artifacts, rec)...)...),
 		SummaryHead: []string{
 			"Rank",
 			"Impact",
 			"Confidence",
-			"Data",
 		},
 		SummaryRow: []string{
 			fmt.Sprintf("%d", item.Rank),
 			impactTitle(firstString(rec, "impact")),
 			confidenceTitle(firstString(rec, "confidence")),
-			reportDataLink(reportPath, recDataPath) + ", " + reportDataLink(reportPath, rankingPath),
 		},
 		JumpLinks: []reportJumpLink{
 			{Label: "Description", Anchor: "#description"},
@@ -801,7 +949,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 		Heading:    "Evaluation Report: Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath},
+		Data:       runReportSourceData(artifacts, plan, reports),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, plan.ScopedAreaID, reportPath),
 		},
@@ -809,13 +957,11 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 			"Overall Rating",
 			"Scope",
 			"Confidence",
-			"Data",
 		},
 		SummaryRow: []string{
 			evaluationRatingLabel(spec, scopedArea),
 			requestedScopeLabel(plan.RequestedScope),
 			evaluationConfidencePair(scopedArea, localArea),
-			reportDataLink(reportPath, evaluationOutputResultPath),
 		},
 		JumpLinks: []reportJumpLink{
 			{Label: "Top Findings", Anchor: "#top-findings"},
@@ -866,14 +1012,13 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	local := scopedMap(area.Analysis, "localAnalysis")
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
 	var b strings.Builder
-	dataPath := areaDataPath(area.ID, "area-analysis-result.json")
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeAreaEvaluation,
 		Title:      title,
 		Heading:    "Area: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath, dataPath},
+		Data:       areaReportSourceData(artifacts, area),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, area.ID, reportPath),
 		},
@@ -881,13 +1026,11 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 			"Overall Rating",
 			"Local Rating",
 			"Confidence",
-			"Data",
 		},
 		SummaryRow: []string{
 			evaluationRatingLabel(spec, overall),
 			evaluationRatingLabel(spec, local),
 			evaluationConfidencePair(overall, local),
-			reportDataLink(reportPath, dataPath),
 		},
 	})
 	b.WriteString("Summary:\n\n")
@@ -943,14 +1086,13 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
 	title := factorTitle(spec, factor.ID)
 	var b strings.Builder
-	dataPath := factorDataPath(factor.ID, "factor-analysis-result.json")
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFactorEvaluation,
 		Title:      title,
 		Heading:    "Factor: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath, dataPath},
+		Data:       factorReportSourceData(artifacts, factor),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, factor.ID.DeclaringArea, reportPath),
 			evaluationFactorTrailLine(spec, factor.ID, reportPath),
@@ -960,14 +1102,12 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 			"Local Rating",
 			"Status",
 			"Confidence",
-			"Data",
 		},
 		SummaryRow: []string{
 			evaluationRatingLabel(spec, overall),
 			evaluationRatingLabel(spec, local),
 			evaluationAnalysisStatusPair(overall, local),
 			evaluationConfidencePair(overall, local),
-			reportDataLink(reportPath, dataPath),
 		},
 	})
 	b.WriteString("Summary:\n\n")
@@ -1007,15 +1147,13 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts, reportPath string) string {
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
-	assessmentPath := requirementDataPath(req.ID, "requirement-assessment-result.json")
-	ratingPath := requirementDataPath(req.ID, "requirement-rating-result.json")
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeRequirementEvaluation,
 		Title:      title,
 		Heading:    "Requirement: " + title,
 		ReportPath: reportPath,
 		Run:        artifacts.Manifest,
-		Data:       []string{evaluationOutputResultPath, assessmentPath, ratingPath},
+		Data:       requirementReportSourceData(req),
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, req.ID.DeclaringArea, reportPath),
 			evaluationRequirementFactorsLine(req, reportPath),
@@ -1024,13 +1162,11 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 			"Rating",
 			"Assessment",
 			"Confidence",
-			"Data",
 		},
 		SummaryRow: []string{
 			evaluationRequirementRatingLabel(spec, req.Rating),
 			assessmentStatusTitle(evaluationString(req.Assessment, "status")),
 			evaluationRequirementConfidencePair(req),
-			reportDataLink(reportPath, assessmentPath) + ", " + reportDataLink(reportPath, ratingPath),
 		},
 		JumpLinks: []reportJumpLink{
 			{Label: "Findings Summary", Anchor: "#findings-summary"},
@@ -2238,13 +2374,6 @@ func reportAreaDirParts(areaID []string) []string {
 		return nil
 	}
 	return append([]string{"areas"}, areaID...)
-}
-
-// reportDataLink renders a Data-column link to a machine-readable payload using
-// the payload's base filename as the link text, so readers can tell which
-// *-result.json a link opens.
-func reportDataLink(fromReport, toPath string) string {
-	return md.DataLink(fromReport, toPath)
 }
 
 func reportLink(fromReport, toPath, label string) string {

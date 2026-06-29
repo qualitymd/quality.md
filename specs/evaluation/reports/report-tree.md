@@ -101,11 +101,15 @@ report-kind prefix. For example, a Requirement report frontmatter title uses the
 Requirement title alone, while its visible H1 renders as
 `# Requirement: <title>`.
 
-The `data` field **MUST** list run-root-relative canonical JSON payload paths.
-Every generated report **MUST** include `data/evaluation-output-result.json`.
-Subject and index reports **MUST** also include the direct payloads their header
-or body renders from, such as Area, Factor, Requirement, Finding Ranking,
-Recommendation Ranking, or Recommendation Result payloads.
+The `data` field **MUST** list run-root-relative structured Evaluation payload
+paths used as source data for that specific Markdown report artifact. Reports
+that render run number, creation time, or requested scope from the run manifest
+**MUST** include `data/run-manifest.json`.
+
+Report frontmatter `data` **MUST NOT** include
+`data/evaluation-output-result.json` solely because that generated output index
+exists. A report **MAY** list `data/evaluation-output-result.json` only if that
+report is directly rendered from it.
 
 Report frontmatter **MUST NOT** duplicate generated time, run identity, model
 snapshot, subject identity, scope, ratings, confidence, summaries, rating
@@ -115,8 +119,10 @@ Markdown header.
 
 > Rationale: `type` and subject-only `title` make generated reports
 > OKF-compatible enough for lightweight discovery, while `data` points agents to
-> the authoritative payloads instead of turning report Markdown into another
-> result format. — 0158
+> the exact payloads used to render the artifact instead of turning report
+> Markdown into another result format. `EvaluationOutputResult` indexes generated
+> outputs after report build; it is not source data for those reports unless a
+> renderer explicitly consumes it. — 0158, 0159
 
 ## Run Report
 
@@ -124,7 +130,6 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 `RunManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
-- link to `data/evaluation-output-result.json`;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
 - link to the full findings index;
@@ -176,8 +181,7 @@ can be resolved. The `Reason` cell **MUST** render
 `FindingRankingResult`. It **MUST** include:
 
 - all ranked findings ordered by rank;
-- the same columns and link behavior as the run report Top Findings table; and
-- a source data link to `data/advice/finding-ranking-result.json`.
+- the same columns and link behavior as the run report Top Findings table.
 
 ## Recommendation Reports
 
@@ -204,8 +208,7 @@ Each recommendation detail report **MUST** include:
 - background;
 - expected value;
 - done criterion;
-- trace refs; and
-- source data links.
+- trace refs.
 
 Recommendation Markdown reports **MUST** remain human-first and **MUST NOT**
 require YAML frontmatter for machine readability.
@@ -264,17 +267,17 @@ Requirement reports **MUST** link to their owning Area report and every attached
 Factor report.
 
 Report tables **MUST** render the row subject as the generated human report link
-when that row has exactly one generated human report target. Reports **MUST**
-keep explicit `Data` links for machine-readable payloads instead of moving those
-links onto subject labels. Each `Data` link **MUST** use the linked payload's
-base filename as its link text (for example `area-analysis-result.json`), not a
-generic word.
+when that row has exactly one generated human report target. Generated Markdown
+report bodies **MUST NOT** duplicate report-level source-data links in `Data`
+columns or equivalent body-only source-data link lines; report frontmatter
+`data` owns the source-data manifest.
 
 > Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
 > links make report navigation land on the named thing readers naturally open.
-> Machine data links remain explicit because they target structured payloads, not
-> generated human report pages. The payload filename is the one detail a generic
-> label omits, and it matches the file a reader opens. — 0104, 0105, 0109
+> Machine data links live in frontmatter because they target structured payloads,
+> not generated human report pages. Keeping those links out of visible summary
+> tables makes the body easier to scan without hiding the source-data manifest
+> from agents or secondary tooling. — 0104, 0105, 0109, 0159
 
 ## Area Reports
 
@@ -284,7 +287,6 @@ Area reports **MUST** include:
 - Area navigation trail;
 - overall and local ratings;
 - overall and local confidence;
-- data links;
 - summary;
 - rating drivers;
 - local root Factors;
@@ -304,7 +306,6 @@ Factor reports **MUST** include:
   rating;
 - local and local-and-descendant statuses;
 - confidence;
-- data links;
 - summary;
 - rating drivers;
 - direct Requirements;
@@ -321,7 +322,6 @@ Requirement reports **MUST** include:
 - Requirement rating status and selected rating when present;
 - assessment status;
 - confidence;
-- data links;
 - summary;
 - findings summary;
 - finding detail sections; and
@@ -359,13 +359,13 @@ incomplete inputs.
 
 Report headers **SHOULD** use report-specific summary tables instead of a
 generic `Field | Value` key-value table. Run reports should summarize
-`Overall Rating`, `Scope`, `Confidence`, and `Data`; Area headers should
-summarize `Overall Rating`, `Local Rating`, `Confidence`, and `Data`; Factor
-headers should summarize `Overall Rating`, `Local Rating`, `Status`,
-`Confidence`, and `Data`; Requirement headers should summarize `Rating`,
-`Assessment`, `Confidence`, and `Data`; findings and recommendations indexes
-should summarize index-specific counts, priority signals, and `Data`; attached
-Factors belong in the plural `Factors:` context line, not in the summary table.
+`Overall Rating`, `Scope`, and `Confidence`; Area headers should summarize
+`Overall Rating`, `Local Rating`, and `Confidence`; Factor headers should
+summarize `Overall Rating`, `Local Rating`, `Status`, and `Confidence`;
+Requirement headers should summarize `Rating`, `Assessment`, and `Confidence`;
+findings and recommendations indexes should summarize index-specific counts and
+priority signals; attached Factors belong in the plural `Factors:` context line,
+not in the summary table.
 
 > Rationale: the title identifies the report subject, so the header table should
 > prioritize state and navigation rather than repeat the subject kind as

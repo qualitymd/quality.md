@@ -2,8 +2,14 @@
 type: Area Evaluation Report
 title: Public API
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/api/area-analysis-result.json
+  - data/areas/api/factors/correctness/factor-analysis-result.json
+  - data/areas/api/factors/operability/factor-analysis-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
 ---
 
 # Area: Public API
@@ -14,9 +20,9 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
-| Overall Rating | Local Rating | Confidence | Data |
-| --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium | [area-analysis-result.json](../../data/areas/api/area-analysis-result.json) |
+| Overall Rating | Local Rating | Confidence |
+| --- | --- | --- |
+| 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
 Summary:
 

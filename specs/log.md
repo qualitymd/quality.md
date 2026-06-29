@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0159 - Report source-data frontmatter](../changes/archive/0159-report-source-data-frontmatter.md).
+  Generated Evaluation report frontmatter `data` now lists the structured
+  source payloads used to render each report artifact, while visible report
+  bodies omit duplicate report-level `Data` columns and source-data links.
+
+- **Revision**: Implemented durable spec changes for
   [0158 - OKF-compatible report headers](../changes/archive/0158-okf-report-headers.md).
   Generated Evaluation Markdown reports now begin with pointer-only
   OKF-compatible frontmatter, use a subject-shaped report type taxonomy, render

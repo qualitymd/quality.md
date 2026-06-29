@@ -2,9 +2,10 @@
 type: Requirement Evaluation Report
 title: migrations have rehearsed rollback paths
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
   - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: migrations have rehearsed rollback paths
@@ -17,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../.
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
-| Rating | Assessment | Confidence | Data |
-| --- | --- | --- | --- |
-| 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium | [requirement-assessment-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json) |
+| Rating | Assessment | Confidence |
+| --- | --- | --- |
+| 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 

@@ -2,9 +2,10 @@
 type: Requirement Evaluation Report
 title: agent guidance routes quality evaluation work
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
   - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: agent guidance routes quality evaluation work
@@ -17,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../age
 
 Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibility-factor.md)
 
-| Rating | Assessment | Confidence | Data |
-| --- | --- | --- | --- |
-| 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High | [requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json) |
+| Rating | Assessment | Confidence |
+| --- | --- | --- |
+| 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 

@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Recoverability
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/persistence/factors/recoverability/factor-analysis-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
 ---
 
 # Factor: Recoverability
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../.
 
 Factor: [Recoverability](recoverability-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium | [factor-analysis-result.json](../../../../data/areas/persistence/factors/recoverability/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
 Summary:
 

@@ -2,8 +2,14 @@
 type: Area Evaluation Report
 title: Operations
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/operations/area-analysis-result.json
+  - data/areas/operations/factors/observability/factor-analysis-result.json
+  - data/areas/operations/factors/recoverability/factor-analysis-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
 ---
 
 # Area: Operations
@@ -14,9 +20,9 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md)
 
-| Overall Rating | Local Rating | Confidence | Data |
-| --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low | [area-analysis-result.json](../../data/areas/operations/area-analysis-result.json) |
+| Overall Rating | Local Rating | Confidence |
+| --- | --- | --- |
+| 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
 
 Summary:
 

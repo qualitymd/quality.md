@@ -2,9 +2,10 @@
 type: Requirement Evaluation Report
 title: error responses are predictable for callers
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
   - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: error responses are predictable for callers
@@ -17,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factors: [operability](../../factors/operability/operability-factor.md)
 
-| Rating | Assessment | Confidence | Data |
-| --- | --- | --- | --- |
-| 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High | [requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json) |
+| Rating | Assessment | Confidence |
+| --- | --- | --- |
+| 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 

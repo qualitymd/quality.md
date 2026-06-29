@@ -2,6 +2,13 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0159 - Report source-data frontmatter](../changes/archive/0159-report-source-data-frontmatter.md).
+  Generated report design guidance now treats frontmatter `data` as the
+  report-local source-data manifest and removes duplicate visible `Data` columns
+  from report header patterns.
+
 - **Addition**: Added
   [Designing report outputs](guides/reporting-design.md) for
   [0158 - OKF-compatible report headers](../changes/archive/0158-okf-report-headers.md).

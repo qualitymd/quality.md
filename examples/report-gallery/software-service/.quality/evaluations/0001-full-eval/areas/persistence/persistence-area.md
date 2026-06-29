@@ -2,8 +2,14 @@
 type: Area Evaluation Report
 title: Ledger Persistence
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/persistence/area-analysis-result.json
+  - data/areas/persistence/factors/integrity/factor-analysis-result.json
+  - data/areas/persistence/factors/recoverability/factor-analysis-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
 ---
 
 # Area: Ledger Persistence
@@ -14,9 +20,9 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Ledger Persistence](persistence-area.md)
 
-| Overall Rating | Local Rating | Confidence | Data |
-| --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium | [area-analysis-result.json](../../data/areas/persistence/area-analysis-result.json) |
+| Overall Rating | Local Rating | Confidence |
+| --- | --- | --- |
+| 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
 Summary:
 

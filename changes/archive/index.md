@@ -674,3 +674,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   pointer-only OKF-compatible frontmatter, visible run/header navigation,
   subject-shaped report types, and `RunManifest.createdAt`-backed freshness to
   generated Evaluation reports (`Done`).
+- [0159 — Report source-data frontmatter](0159-report-source-data-frontmatter.md) -
+  makes generated report frontmatter `data` the report-local source-data
+  manifest and removes duplicate body `Data` columns from generated Evaluation
+  reports (`Done`).

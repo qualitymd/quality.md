@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Correctness
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/api/factors/correctness/factor-analysis-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
 ---
 
 # Factor: Correctness
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factor: [Correctness](correctness-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium | [factor-analysis-result.json](../../../../data/areas/api/factors/correctness/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
 Summary:
 

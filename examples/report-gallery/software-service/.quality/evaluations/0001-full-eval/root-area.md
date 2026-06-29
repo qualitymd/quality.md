@@ -2,8 +2,12 @@
 type: Area Evaluation Report
 title: LedgerLite Service
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/root/area-analysis-result.json
+  - data/areas/agent-harness/area-analysis-result.json
+  - data/areas/api/area-analysis-result.json
+  - data/areas/operations/area-analysis-result.json
+  - data/areas/persistence/area-analysis-result.json
 ---
 
 # Area: LedgerLite Service
@@ -14,9 +18,9 @@ Report: [Overview](report.md) - [Findings](findings.md) - [Recommendations](reco
 
 Area: [LedgerLite Service](root-area.md)
 
-| Overall Rating | Local Rating | Confidence | Data |
-| --- | --- | --- | --- |
-| 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None | [area-analysis-result.json](data/areas/root/area-analysis-result.json) |
+| Overall Rating | Local Rating | Confidence |
+| --- | --- | --- |
+| 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None |
 
 Summary:
 

@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Agent Accessibility
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
 ---
 
 # Factor: Agent Accessibility
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../age
 
 Factor: [Agent Accessibility](agent-accessibility-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High | [factor-analysis-result.json](../../../../data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
 Summary:
 

@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Integrity
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/persistence/factors/integrity/factor-analysis-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
 ---
 
 # Factor: Integrity
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../.
 
 Factor: [Integrity](integrity-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High | [factor-analysis-result.json](../../../../data/areas/persistence/factors/integrity/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
 Summary:
 

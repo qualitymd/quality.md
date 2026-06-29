@@ -2,9 +2,10 @@
 type: Recommendation Report
 title: Rehearse migration rollback after schema changes
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/advice/recommendations/rec-002/recommendation-result.json
   - data/advice/recommendation-ranking-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
 ---
 
 # Recommendation: Rehearse migration rollback after schema changes
@@ -13,9 +14,9 @@ Run: [#1](../report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 
-| Rank | Impact | Confidence | Data |
-| --- | --- | --- | --- |
-| 2 | High | 🔵 Medium | [recommendation-result.json](../data/advice/recommendations/rec-002/recommendation-result.json), [recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json) |
+| Rank | Impact | Confidence |
+| --- | --- | --- |
+| 2 | High | 🔵 Medium |
 
 Jump to: [Description](#description) - [Background](#background) - [Expected value](#expected-value) - [Done criterion](#done-criterion) - [Trace](#trace)
 

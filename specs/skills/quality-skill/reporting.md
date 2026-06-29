@@ -43,11 +43,13 @@ Workflow-experience feedback for current runs lives in
 folder.
 
 Runtime evaluation artifacts are raw outputs in the evaluated repository.
-Generated Markdown reports carry OKF-compatible pointer frontmatter as defined
-by the [Evaluation report tree](../../evaluation/reports/report-tree.md), but
-the Evaluation run folder is not yet a full OKF bundle: it does not require
-generated `index.md`, `schema.md`, or `log.md` files, and generated reports do
-not require registration in `specs/schema.md`.
+Generated Markdown reports carry OKF-compatible source-data pointer frontmatter
+as defined by the
+[Evaluation report tree](../../evaluation/reports/report-tree.md). The
+frontmatter `data` field lists structured Evaluation payloads used to render the
+specific report artifact. The Evaluation run folder is not yet a full OKF
+bundle: it does not require generated `index.md`, `schema.md`, or `log.md`
+files, and generated reports do not require registration in `specs/schema.md`.
 
 ## Report Generation
 
@@ -105,7 +107,9 @@ Every report **MUST** include the navigation trails required by the
 
 Every generated Markdown report **MUST** include the frontmatter, run context,
 report-level navigation, and report-specific header summary required by the
-[Evaluation report tree](../../evaluation/reports/report-tree.md).
+[Evaluation report tree](../../evaluation/reports/report-tree.md). Report bodies
+**MUST NOT** duplicate report-level source-data links in header `Data` columns;
+the report frontmatter `data` field owns those source-data pointers.
 
 Area reports **MUST** link to local root Factor reports, local Requirement
 reports, and direct Child Area reports.

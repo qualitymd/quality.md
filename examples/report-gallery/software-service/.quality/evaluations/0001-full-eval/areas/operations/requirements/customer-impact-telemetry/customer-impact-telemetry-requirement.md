@@ -2,9 +2,10 @@
 type: Requirement Evaluation Report
 title: health signals explain customer impact
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
   - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: health signals explain customer impact
@@ -17,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factors: [observability](../../factors/observability/observability-factor.md)
 
-| Rating | Assessment | Confidence | Data |
-| --- | --- | --- | --- |
-| 🔵 Target | ✅ Assessed | 🔵 Medium / 🔵 Medium | [requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json) |
+| Rating | Assessment | Confidence |
+| --- | --- | --- |
+| 🔵 Target | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 

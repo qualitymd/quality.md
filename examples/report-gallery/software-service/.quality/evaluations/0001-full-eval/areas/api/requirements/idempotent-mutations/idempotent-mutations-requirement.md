@@ -2,9 +2,10 @@
 type: Requirement Evaluation Report
 title: mutation endpoints are idempotent under retry
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
   - data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json
+  - data/advice/finding-ranking-result.json
 ---
 
 # Requirement: mutation endpoints are idempotent under retry
@@ -17,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factors: [correctness](../../factors/correctness/correctness-factor.md)
 
-| Rating | Assessment | Confidence | Data |
-| --- | --- | --- | --- |
-| 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium | [requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json), [requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json) |
+| Rating | Assessment | Confidence |
+| --- | --- | --- |
+| 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
 Jump to: [Findings Summary](#findings-summary) - [Finding Details](#finding-details) - [Unknowns & Missing Evidence](#unknowns--missing-evidence)
 

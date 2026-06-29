@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Operability
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/api/factors/operability/factor-analysis-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
 ---
 
 # Factor: Operability
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factor: [Operability](operability-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High | [factor-analysis-result.json](../../../../data/areas/api/factors/operability/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
 Summary:
 

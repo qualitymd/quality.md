@@ -2,8 +2,14 @@
 type: Recommendation Index Report
 title: Recommendations
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/advice/recommendation-ranking-result.json
+  - data/advice/recommendations/rec-001/recommendation-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
+  - data/advice/recommendations/rec-002/recommendation-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
+  - data/advice/recommendations/rec-003/recommendation-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
 ---
 
 # Recommendations
@@ -12,9 +18,9 @@ Run: [#1](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](report.md) - [Findings](findings.md) - Recommendations
 
-| Recommendations | Highest Impact | Coverage | Data |
-| --- | --- | --- | --- |
-| 3 ranked recommendations | High | 3 addressed / 4 not advice-driving | [recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json) |
+| Recommendations | Highest Impact | Coverage |
+| --- | --- | --- |
+| 3 ranked recommendations | High | 3 addressed / 4 not advice-driving |
 
 | Rank | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
 | --- | --- | --- | --- | --- | --- | --- |

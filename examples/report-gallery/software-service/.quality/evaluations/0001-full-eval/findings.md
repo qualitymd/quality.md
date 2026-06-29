@@ -2,8 +2,15 @@
 type: Finding Index Report
 title: Findings
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/advice/finding-ranking-result.json
+  - data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json
+  - data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json
+  - data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json
+  - data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
+  - data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
 ---
 
 # Findings
@@ -12,9 +19,9 @@ Run: [#1](report.md) - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
-| Findings | Highest Severity | Data |
-| --- | --- | --- |
-| 7 ranked findings | 🔴 High | [finding-ranking-result.json](data/advice/finding-ranking-result.json) |
+| Findings | Highest Severity |
+| --- | --- |
+| 7 ranked findings | 🔴 High |
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |

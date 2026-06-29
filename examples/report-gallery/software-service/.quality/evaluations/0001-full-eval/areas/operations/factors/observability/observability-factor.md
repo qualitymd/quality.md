@@ -2,8 +2,10 @@
 type: Factor Evaluation Report
 title: Observability
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/operations/factors/observability/factor-analysis-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json
+  - data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json
 ---
 
 # Factor: Observability
@@ -16,9 +18,9 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factor: [Observability](observability-factor.md)
 
-| Overall Rating | Local Rating | Status | Confidence | Data |
-| --- | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium | [factor-analysis-result.json](../../../../data/areas/operations/factors/observability/factor-analysis-result.json) |
+| Overall Rating | Local Rating | Status | Confidence |
+| --- | --- | --- | --- |
+| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
 Summary:
 

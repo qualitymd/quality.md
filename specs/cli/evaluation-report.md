@@ -61,6 +61,11 @@ Recommendations sections capped at 10 rows each and **MUST** link to
 rendered from persisted Advice data and the model snapshot, not from YAML
 frontmatter or Markdown body content in other generated reports.
 
+Generated Markdown report frontmatter `data` **MUST** list the structured
+Evaluation payload files used as source data for the specific report artifact.
+The generated `data/evaluation-output-result.json` index **MUST NOT** be listed
+as report source data unless a report is directly rendered from it.
+
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by
 `report.md`.

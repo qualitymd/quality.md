@@ -3,6 +3,39 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0159 - Report source-data frontmatter](archive/0159-report-source-data-frontmatter.md).
+  Generated report frontmatter `data` now lists the structured source payloads
+  used to render each report artifact, visible report bodies no longer duplicate
+  report-level `Data` columns, the report gallery is regenerated, and
+  `mise run check` passes.
+
+- **In-Review**: Completed implementation for
+  [0159 - Report source-data frontmatter](archive/0159-report-source-data-frontmatter.md).
+  Durable report specs and design guidance now define `data` frontmatter as a
+  source-data manifest; the renderer emits report-local source payload lists and
+  removes body `Data` summary columns; tests and gallery output are updated.
+
+- **In-Progress**: Advanced
+  [0159 - Report source-data frontmatter](archive/0159-report-source-data-frontmatter.md).
+  Functional spec and design are settled; implementation is beginning across
+  durable report specs, the report design guide, renderer tests, and generated
+  report-gallery output.
+
+- **Design**: Added the
+  [design doc](archive/0159-report-source-data-frontmatter/design.md) for
+  [0159 - Report source-data frontmatter](archive/0159-report-source-data-frontmatter.md).
+  The design keeps `data` frontmatter as the only report-level source-data
+  pointer surface, removes visible `Data` summary columns, and builds
+  deterministic report-local source payload lists.
+
+- **Draft**: Created
+  [0159 - Report source-data frontmatter](archive/0159-report-source-data-frontmatter.md)
+  with its
+  [functional spec](archive/0159-report-source-data-frontmatter/spec.md). The case makes
+  generated report `data` frontmatter the report-local source-data manifest and
+  removes duplicate source-data links from visible report bodies.
+
+- **Done**: Implemented and archived
   [0158 - OKF-compatible report headers](archive/0158-okf-report-headers.md).
   Generated Evaluation Markdown reports now carry pointer-only OKF-compatible
   frontmatter, subject-shaped report types, visible overview/findings/

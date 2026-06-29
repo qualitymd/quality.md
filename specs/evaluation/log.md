@@ -1,5 +1,14 @@
 # Evaluation v2 Update Log
 
+## 2026-06-29
+
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0159 - Report source-data frontmatter](../../changes/archive/0159-report-source-data-frontmatter.md).
+  Generated report frontmatter `data` now lists report-local structured source
+  payloads, `data/evaluation-output-result.json` is no longer a blanket
+  frontmatter entry, and report bodies no longer duplicate those pointers in
+  `Data` summary columns.
+
 ## 2026-06-27
 
 - **Revision**: Updated the Evaluation report-tree contract for

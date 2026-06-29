@@ -2,8 +2,11 @@
 type: Area Evaluation Report
 title: Agent Harness
 data:
-  - data/evaluation-output-result.json
+  - data/run-manifest.json
   - data/areas/agent-harness/area-analysis-result.json
+  - data/areas/agent-harness/factors/agent-accessibility/factor-analysis-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-rating-result.json
+  - data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json
 ---
 
 # Area: Agent Harness
@@ -14,9 +17,9 @@ Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommend
 
 Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-area.md)
 
-| Overall Rating | Local Rating | Confidence | Data |
-| --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High | [area-analysis-result.json](../../data/areas/agent-harness/area-analysis-result.json) |
+| Overall Rating | Local Rating | Confidence |
+| --- | --- | --- |
+| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High |
 
 Summary:
 
