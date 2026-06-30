@@ -7,8 +7,6 @@ title: "Requirement: ledger mutations preserve balance invariants"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
 
 Factors: [integrity](../../factors/integrity/integrity-factor.md)
@@ -19,12 +17,7 @@ Factors: [integrity](../../factors/integrity/integrity-factor.md)
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -44,14 +37,6 @@ The sampled persistence evidence supports balance preservation.
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-002` | Ledger mutation checks preserve balance invariants in the sampled paths. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target integrity rating for ledger persistence. | ✅ Verified: The synthetic test matrix includes both success and failure paths for balance preservation. |
 
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
-- *Empty:* `—`
-
 ## Finding Details
 
 <a id="finding-strength-002"></a>
@@ -61,11 +46,6 @@ Legend
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 3 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
-
-Legend
-
-- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
-- *Empty:* `—`
 
 #### Condition
 

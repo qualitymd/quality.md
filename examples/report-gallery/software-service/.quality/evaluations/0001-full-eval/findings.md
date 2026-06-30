@@ -7,18 +7,13 @@ title: Findings
 
 Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
-
 ## Key Details
 
 | Findings | Highest Severity |
 | --- | --- |
 | 7 findings | 🔴 High |
 
-Legend
-
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-- *Empty:* `—`
+**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 
 ## Contents
 
@@ -36,10 +31,6 @@ Legend
 | 5 | [Health dashboards connect service errors to failed customer actions.](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md#finding-strength-003) | [Operations](areas/operations/operations-area.md) | [Observability](areas/operations/factors/observability/observability-factor.md) | ✅ Strength | 🔵 Low |
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-gap-002) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🚩 Gap | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | 🔵 Low |
-
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
 
 ## Primary Source Data
 

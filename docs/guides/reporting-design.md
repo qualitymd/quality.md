@@ -297,7 +297,7 @@ and the payloads it indexes instead of expanding generated report frontmatter.
 
 The visible H1 remains the first Markdown content after report frontmatter.
 
-### Local keys and indicator labels
+### Evaluation links and indicator labels
 
 Generated reports may use markers or icons to make values scannable, but the
 text label is authoritative. Report content must render every rating, status,
@@ -305,65 +305,31 @@ confidence, severity, finding type, recommendation impact, and priority-like
 value as a text label, optionally preceded by a marker or icon. Markers are
 supplemental scanning aids; do not rely on color or icon shape alone.
 
-Use short local keys immediately after the first table or section that uses an
-indicator family in that artifact. Keys are notation-only: each local `Legend`
-block uses one list item per family, with an italic family label followed by
-the marker-plus-label set. Fixed
-Evaluation enum keys use the catalog's family label, such as `Finding type`,
-while dense table headers may stay compact when the table context scopes the
-value. Do not add term definitions, rationale, or explanatory prose to generated
-keys. Do not collect keys in a bottom `Legend` section. Do not end local keys
-with terminal periods.
-
-Examples:
+Use one compact `Evaluation links:` line near the top of every generated report,
+after the opening summary, key-details table, or report-specific orientation and
+before `## Contents` when Contents is present. The line links to the run
+overview, Findings, Recommendations, and the workspace-root glossary:
 
 ```markdown
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 ```
 
-```markdown
-Legend
+Use filename link text. Link targets are relative to the current report
+artifact. Do not link every table cell or enum value to `glossary.md`; the one
+navigation line keeps definitions reachable without making generated Markdown
+noisy.
 
-- *Rows:* ▦ Area, □ Factor
-- *Empty:* `—`
-```
-
-```markdown
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-
-## Contents
-
-- [Ranked Findings](#ranked-findings)
-- [Primary Source Data](#primary-source-data)
-
-## Ranked Findings
-
-| Rank | Finding | Area | Factors | Type | Severity |
-```
-
-```markdown
-*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
-```
-
-For Rating Levels, use `Quality rating` as the local-key family label and render
-the configured Rating Scale from the run's model snapshot. For CLI-owned display
-catalogs such as confidence, finding type, severity, recommendation impact,
-finding ranking tier, and coverage disposition, render the known catalog set.
-Unknown free-form values remain readable through their rendered text labels and
-do not need invented key entries.
+Do not render local `Legend` blocks. The workspace-root `glossary.md` owns
+definitions and fixed vocabulary tables. Reports must still render text labels
+in cells, so the reader should not need the glossary to understand basic table
+values.
 
 ### Primary Source Data at the bottom
 
 Every generated report should end with a stable `## Primary Source Data`
 section. The section lists the report-local primary structured Evaluation
 payloads used to render that report artifact. This is the only standard footer
-utility section; local keys belong near first use.
+utility section.
 
 ```markdown
 ## Primary Source Data
@@ -411,13 +377,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 | Overall Rating | Confidence | Scope                                 | Findings | Recommendations |
 | -------------- | ---------- | ------------------------------------- | -------- | --------------- |
-| Minimum        | Medium     | Full evaluation of LedgerLite Service | 7 total  | 3 total         |
-
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+| 🟡 Minimum     | 🔵 Medium  | Full evaluation of LedgerLite Service | 7 total  | 3 total         |
 
 Finding Summary
 
@@ -428,11 +388,7 @@ Finding Summary
 | ✅ Strength  |     4 | —                        |
 | ℹ️ Note       |     0 | —                        |
 
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-- *Empty:* `—`
+**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 
 ## Contents
 
@@ -449,27 +405,13 @@ Legend
 | ↳ [▦ Public API](areas/api/api-area.md)                                | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 
-Legend
-
-- *Rows:* ▦ Area, □ Factor
-
 ...
 
 ## Top Findings
 
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-
 **Full findings report:** [findings.md](findings.md) (7 total)
 
 ## Top Recommendations
-
-Legend
-
-- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 
@@ -493,13 +435,11 @@ using frontmatter `type` to carry the report artifact taxonomy.
 
 Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
-Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
-
 | Findings   | Highest Severity |
 | ---------- | ---------------- |
 | 7 findings | High             |
 
-*Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 ```
 
 ### Area reports
@@ -511,18 +451,13 @@ Area reports should orient with both run navigation and Area hierarchy.
 
 Run: [0001-full-eval](../../report.md) - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
-Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
-
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
-| Overall Rating | Local Rating | Confidence      |
-| -------------- | ------------ | --------------- |
-| Minimum        | Minimum      | Medium / Medium |
+| Overall Rating | Local Rating | Confidence            |
+| -------------- | ------------ | --------------------- |
+| 🟡 Minimum     | 🟡 Minimum   | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+**Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
 
 ## Contents
 
@@ -543,10 +478,6 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | **[▦ Public API](api-area.md)**                              | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
-
-Legend
-
-- *Rows:* ▦ Area, □ Factor
 ```
 
 ### Factor reports
@@ -558,21 +489,15 @@ Factor reports should preserve Area context and Factor hierarchy.
 
 Run: [0001-full-eval](../../../report.md) - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
-Report: [Overview](../../../report.md) - [Findings](../../../findings.md) - [Recommendations](../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../root-area.md) / [Public API](../api-area.md)
 
 Factor: [Correctness](correctness-factor.md)
 
-| Overall Rating | Local Rating | Status              | Confidence      |
-| -------------- | ------------ | ------------------- | --------------- |
-| Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium |
+| Overall Rating | Local Rating | Status                    | Confidence            |
+| -------------- | ------------ | ------------------------- | --------------------- |
+| 🟡 Minimum     | 🟡 Minimum   | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+**Evaluation links:** [report.md](../../../report.md) | [findings.md](../../../findings.md) | [recommendations.md](../../../recommendations.md) | [glossary.md](../../../../../../glossary.md)
 
 ## Contents
 
@@ -598,21 +523,15 @@ and confidence immediately visible.
 
 Run: [Run 0001](../../../../report.md) - Evaluation ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
-Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-area.md)
 
 Factors: [correctness](../../factors/correctness/correctness-factor.md)
 
-| Rating  | Assessment | Confidence      |
-| ------- | ---------- | --------------- |
-| Minimum | Assessed   | Medium / Medium |
+| Rating     | Assessment  | Confidence            |
+| ---------- | ----------- | --------------------- |
+| 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -634,18 +553,13 @@ navigation visible before the recommendation prose.
 
 Run: [Run 0001](../report.md) - Evaluation ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
-Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
-
 Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/factors/correctness/correctness-factor.md)
 
 | # | ID           | Impact | Confidence | Reference                                                            |
 | - | ------------ | ------ | ---------- | -------------------------------------------------------------------- |
-| 1 | qrec_example | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
+| 1 | qrec_example | ⬥ High | 🟢 High    | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
 
-Legend
-
-- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+**Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
 
 ## Contents
 
@@ -679,12 +593,11 @@ Before changing report output, check:
   recommendations.
 - Generated report artifacts with multiple substantive top-level sections have
   `## Contents`; OKF `index.md` and other listing/index artifacts do not.
-- Local keys appear after first use, use italic family labels, stay
-  notation-only, separate adjacent family segments with `|`, and do not end
-  with terminal periods.
+- Every generated report has an `Evaluation links:` line before `## Contents`,
+  with filename link text and a relative link to `glossary.md`.
 - Report cells keep text labels; markers and icons are supplemental and never
   the only meaning for semantic values.
-- Generated reports do not render bottom `Legend` sections.
+- Generated reports do not render local or bottom `Legend` sections.
 - Frontmatter contains readable, non-judgmental document metadata only.
 - No generated report introduces claims that are absent from structured data.
 - The bottom `Primary Source Data` section lists report-local primary payloads,

@@ -7,8 +7,6 @@ title: "Requirement: mutation endpoints are idempotent under retry"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-area.md)
 
 Factors: [correctness](../../factors/correctness/correctness-factor.md)
@@ -19,12 +17,7 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -44,14 +37,6 @@ The idempotency contract is present but incomplete for retry recovery.
 | --- | --- | --- | --- | --- | --- | --- |
 | `gap-001` | Mutation retry behavior is not fully specified for duplicate idempotency keys. | 🚩 Gap | 🔴 High | 🔵 Medium | The API reaches the minimum bar but does not meet the target correctness criterion for retry semantics. | ✅ Verified: The synthetic contract excerpt names idempotency keys but omits partial-write replay behavior. |
 
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
-- *Empty:* `—`
-
 ## Finding Details
 
 <a id="finding-gap-001"></a>
@@ -61,11 +46,6 @@ Legend
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 1 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
-
-Legend
-
-- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
-- *Empty:* `—`
 
 #### Condition
 

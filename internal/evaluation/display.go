@@ -48,14 +48,6 @@ func enumDisplay[T ~string](catalog enumCatalog[T], raw string) (string, bool) {
 	return "", false
 }
 
-func enumKeyLabels[T ~string](catalog enumCatalog[T]) []string {
-	out := make([]string, 0, len(catalog.Values))
-	for _, item := range catalog.Values {
-		out = append(out, markerLabel(item.Marker, item.Label))
-	}
-	return out
-}
-
 func enumRank[T ~string](catalog enumCatalog[T], raw string) (int, bool) {
 	for _, item := range catalog.Values {
 		if string(item.Value) == raw {

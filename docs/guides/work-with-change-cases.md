@@ -136,13 +136,20 @@ grouped by kind so it stays skimmable:
   updating — **code**, durable specs, the format spec, durable docs, the bundled
   skill, install/scaffold files. Keep it honest: an empty kind (and an empty
   whole) must read as a deliberate "no impact of this kind," not an oversight.
-- A Change Case should raise suggestions for any *new* durable specs worth
-  creating — a contract its work reveals is under-specified or worth lifting out
-  of code. Suggesting is enough; actually creating the new spec is not a
-  precondition for the case to land. New specs may be 1:1 artifact specs or
-  behavioral component specs. Name 1:1 artifact specs with the artifact-spec
-  convention in [Writing functional specs](write-functional-specs.md#conventions);
-  name behavioral component specs after the capability or component they govern.
+- A Change Case that creates a new public, durable, named artifact should either
+  add a durable spec for that artifact or explicitly state which existing
+  durable spec owns the complete artifact contract and why a new spec is not
+  warranted. Workspace-root or root-adjacent documentation artifacts used by
+  generated outputs, such as a shared glossary, count as durable named
+  artifacts; do not hide their contracts under a neighboring workflow or
+  renderer spec by default. For other contracts the work reveals as
+  under-specified or worth lifting out of code, raise
+  suggestions for any *new* durable specs worth creating. Suggesting those
+  non-blocking specs is enough; actually creating them is not a precondition for
+  the case to land. New specs may be 1:1 artifact specs or behavioral component
+  specs. Name 1:1 artifact specs with the artifact-spec convention in
+  [Writing functional specs](write-functional-specs.md#conventions); name
+  behavioral component specs after the capability or component they govern.
   For a large existing spec, do not stop at the first obvious split: inventory
   its major headings and classify each by durable contract so workflows,
   lifecycles, generated artifacts, examples, and shared invariants each land in

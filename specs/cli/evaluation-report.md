@@ -73,13 +73,13 @@ frontmatter or Markdown body content in other generated reports.
 Generated Markdown report frontmatter **MUST** contain only non-judgmental
 report metadata allowed by the report-tree contract, and its `title` **MUST**
 match the report's visible H1 title text. Generated reports **MUST** render
-Contents sections and local notation keys and **MUST NOT** render compact
-`Jump to:` lines or a bottom `Legend` section as defined by the report-tree
-contract. Every generated Markdown report **MUST** end with a
-`Primary Source Data` section listing the report-local primary structured
-Evaluation payload files used as source data for the specific report artifact.
-The generated `data/evaluation-output-result.json` index **MUST NOT** be listed
-as report source data unless a report is directly rendered from it.
+Contents sections and `Evaluation links:` navigation and **MUST NOT** render
+compact `Jump to:` lines, local `Legend` blocks, or a bottom `Legend` section as
+defined by the report-tree contract. Every generated Markdown report **MUST**
+end with a `Primary Source Data` section listing the report-local primary
+structured Evaluation payload files used as source data for the specific report
+artifact. The generated `data/evaluation-output-result.json` index **MUST NOT**
+be listed as report source data unless a report is directly rendered from it.
 
 On success, the build receipt's `reportMd` field **MUST** point to `report.md`.
 The receipt's `ratingResult` **MUST** describe the scoped Area result rendered by

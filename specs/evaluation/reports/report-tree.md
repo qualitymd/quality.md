@@ -218,54 +218,53 @@ Finding severity ordering **MUST** use `critical`, `high`, `medium`, then
 
 Each fixed Evaluation enum catalog **MUST** carry a human key label and concise
 catalog description. Each fixed Evaluation enum value **MUST** carry a concise
-value description. Generated report local keys **MUST** render the catalog key
-label and marker-plus-label values only; they **MUST NOT** render catalog or
-value descriptions.
+value description. Generated reports **MUST NOT** render fixed enum catalog or
+value descriptions inline; those descriptions belong in `glossary.md`.
 
 > Rationale: fixed Evaluation values are strict machine data, but Markdown
 > reports are a human scanning surface. Keeping labels, markers, ordering, and
 > key labels in one contract prevents validation and report presentation from
-> drifting. Descriptions belong in catalog metadata for future glossary or help
-> surfaces, not in compact report keys. — 0173, 0179
+> drifting. Descriptions belong in catalog metadata and the shared glossary, not
+> repeated in generated report bodies. — 0173, 0179, 0183
 
-## Local Keys
+## Evaluation Links
 
-Generated Markdown reports **MUST** render local keys for indicator families
-near their first use in each report artifact.
+Generated Markdown reports **MUST** render a compact cross-artifact navigation
+line labeled exactly `Evaluation links:`.
 
-Local keys **MUST** be notation-only list items under plain `Legend` text. Each
-list item **MUST** render one italicized indicator family name, a colon, and the
-marker-plus-label values for that family. Fixed Evaluation enum keys **MUST**
-use the catalog key label as the indicator family name. Local keys **MUST NOT**
-include prose definitions, rationale, or semantic explanations beyond the
-marker-plus-label set. Local keys **MUST NOT** end with terminal punctuation.
+The line **MUST** render inline links in this order, separated by `|`:
 
-When one table first introduces multiple indicator families, each family key
-**MUST** render as a distinct list item in the same local `Legend` block.
+```markdown
+**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+```
 
-Quality rating keys **MUST** use `*Quality rating:*` as the local-key family
-label and render the Rating Level `title` values from the run's
-`model-snapshot.md` snapshot in Rating Scale order. Fixed Evaluation enum keys
-**MUST** render the known marker-plus-label display set from
-[Fixed Enum Display](#fixed-enum-display). Structural row keys **MUST** render
-`*Rows:*` followed by the Area and Factor row markers. Empty-cell keys **MUST**
-render `*Empty:*` followed by the em dash marker.
+The link text **MUST** be the filename: `report.md`, `findings.md`,
+`recommendations.md`, and `glossary.md`.
 
-Dense table headers **MAY** use compact labels such as `Type`, `Severity`,
-`Basis`, and `Impact` when the table context already scopes the enum family.
+The `report.md`, `findings.md`, and `recommendations.md` links **MUST** target
+the generated artifacts for the same Evaluation run. The `glossary.md` link
+**MUST** target the workspace-root `glossary.md`. All four targets **MUST** be
+relative to the current report artifact.
 
-Generated reports **MUST NOT** rely on local keys to make marker-only content
+Generated reports **MUST** render the `Evaluation links:` line after the report
+opening summary, key-details table, or report-specific orientation, and before
+`## Contents` when a Contents section is present.
+
+Generated reports **MUST NOT** link every table cell or enum value to
+`glossary.md`.
+
+Generated reports **MUST NOT** rely on `glossary.md` to make marker-only content
 acceptable. Semantic table cells **MUST** render text labels for ratings,
 statuses, confidence, finding type, severity, recommendation impact, finding
 ranking tiers, and other priority-like values, optionally preceded by markers.
 
-Generated reports **MUST NOT** render a bottom `## Legend` section.
+Generated reports **MUST NOT** render local `Legend` blocks or a bottom
+`## Legend` section.
 
-> Rationale: local keys orient readers where notation first appears, while text
-> labels in the table cells remain the accessible and agent-readable meaning.
-> Keeping keys notation-only prevents generated reports from becoming
-> glossaries, while list items keep adjacent keys readable without overloading a
-> single pipe-separated line. — 0174
+> Rationale: generated reports should stay readable on their own while using one
+> stable link line for cross-artifact movement and glossary access. A single
+> glossary-backed navigation line avoids repeating partial legends in every
+> report and avoids noisy cell-level links. — 0183
 
 ## Run Report
 
@@ -282,11 +281,11 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 - summary from the scoped Area result;
 - Model Evaluation table for the scoped Area;
 - requested Evaluation scope in Key Details; and
-- local keys for indicators first used by the run report.
+- `Evaluation links:` navigation.
 
 The run-level `report.md` **MUST NOT** render the visible top `Run:` context
-line used by detail reports. It **MUST NOT** render the top `Report:` or
-`Area:` navigation lines used by detail reports.
+line used by detail reports. It **MUST NOT** render the top `Area:` context line
+used by detail reports.
 
 The run report `## Summary` section **MUST** render the scoped Area summary.
 It **MUST NOT** render a `Recommended next action:` sentence.
@@ -671,14 +670,15 @@ rows rather than being replaced by the cell marker. Generated report table cells
 so persisted Evaluation text cannot alter the table column shape.
 
 Generated reports **MUST NOT** render blank table cells for empty scalar values.
-When an em dash appears as an empty-cell marker, the report **MUST** define it
-through a local `*Empty:*` key near first use instead of a bottom legend.
+When an em dash appears as an empty-cell marker, the report **MUST NOT** define
+it through a local Legend block.
 
 > Rationale: blank cells are ambiguous in committed Markdown reports. A neutral
 > em dash makes absence visible without overclaiming `N/A`; escaping table
 > separators and normalizing multiline text prevents persisted structured data
-> from corrupting the generated Markdown table. Local keys keep the absence
-> marker close to the tables that use it. — 0118, 0157, 0174
+> from corrupting the generated Markdown table. The shared glossary and the
+> report's text labels now own marker definitions, so local keys no longer need
+> to define the absence marker beside every table. — 0118, 0157, 0174, 0183
 
 Every rating column **MUST** name what it rates. A header summary table **MUST**
 label its descendant-inclusive rating column `Overall Rating` and its local

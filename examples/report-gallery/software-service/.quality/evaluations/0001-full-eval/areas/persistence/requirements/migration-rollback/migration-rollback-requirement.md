@@ -7,8 +7,6 @@ title: "Requirement: migrations have rehearsed rollback paths"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../../persistence-area.md)
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
@@ -19,12 +17,7 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -44,14 +37,6 @@ Rollback instructions are present, but the rehearsal signal is stale.
 | --- | --- | --- | --- | --- | --- | --- |
 | `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | 🟡 Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
 
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
-- *Empty:* `—`
-
 ## Finding Details
 
 <a id="finding-risk-001"></a>
@@ -61,11 +46,6 @@ Legend
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 4 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
-
-Legend
-
-- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
-- *Empty:* `—`
 
 #### Condition
 

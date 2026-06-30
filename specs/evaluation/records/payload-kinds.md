@@ -196,7 +196,6 @@ Finding `type` **MUST** be one of:
 - `strength`
 - `gap`
 - `risk`
-- `unknown`
 - `note`
 
 Finding `severity` **MUST** be one of:

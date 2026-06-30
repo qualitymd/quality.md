@@ -2,6 +2,18 @@
 
 ## 2026-06-30
 
+- **Revision**: Updated Change Case, functional-spec, and OKF guidance to make
+  new public durable artifact contracts explicit. Change cases that add named
+  artifacts now need a durable-spec owner or a documented reason for not adding a
+  new spec.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0183 - Glossary and Report Links](../changes/archive/0183-glossary-report-links.md).
+  Report examples now use `Evaluation links:` navigation to `report.md`,
+  `findings.md`, `recommendations.md`, and `glossary.md` instead of local
+  `Legend` blocks.
+
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
   [0182 - Finding Summary Display Order](../changes/archive/0182-finding-summary-display-order.md).

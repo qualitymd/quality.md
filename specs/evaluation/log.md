@@ -3,6 +3,12 @@
 ## 2026-06-30
 
 - **Revision**: Updated the Evaluation report-tree contract for
+  [0183 - Glossary and Report Links](../../changes/archive/0183-glossary-report-links.md).
+  Generated reports now use `Evaluation links:` navigation to the overview,
+  Findings, Recommendations, and workspace-root glossary instead of local
+  `Legend` blocks.
+
+- **Revision**: Updated the Evaluation report-tree contract for
   [0182 - Finding Summary Display Order](../../changes/archive/0182-finding-summary-display-order.md).
   The run report now renders `Finding Summary` with all Finding types in
   concern-first order and a `Severity` column that lists only observed gap/risk

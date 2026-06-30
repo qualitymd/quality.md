@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation reports now link to `report.md`, `findings.md`,
+  `recommendations.md`, and the new workspace-root `glossary.md` through one
+  `Evaluation links:` line, and no longer repeat local `Legend` blocks in each
+  report artifact.
 - Generated Evaluation run reports now label the type-count table `Finding
   Summary`, show every Finding type including zero-count types, order Finding
   types as `Gap`, `Risk`, `Strength`, then `Note`, and rename the summary detail
@@ -16,12 +20,10 @@ QUALITY.md specification.
   `run` metadata. Generated `report.md` frontmatter now exposes
   `evaluationId`, `created`, `model`, and `run`, and no longer duplicates scope
   as frontmatter.
-- Generated Evaluation report local keys now use canonical labels such as
+- Generated Evaluation reports now use canonical labels such as
   `Quality rating`, `Finding type`, `Finding severity`, and
   `Recommendation impact`, and the internal fixed enum catalogs now carry
-  type-level and value-level descriptions for future glossary/help surfaces.
-  Adjacent local keys now use italicized labels and pipe separators, omit
-  terminal periods, and render Area/Factor row glyphs without code formatting.
+  type-level and value-level descriptions for glossary/help surfaces.
 - Generated recommendation list tables now show a single recommendation number
   column (`#`) instead of duplicate `Rank` and `#` columns.
 - Generated Evaluation run reports now emphasize the full Findings and
@@ -32,10 +34,10 @@ QUALITY.md specification.
   structured ranking/coverage refs. Generated reports reserve recommendation
   numbers for ranked order, so "recommendation #1" means the first ranked
   recommendation.
-- Generated Evaluation reports now use standard `Contents` sections and local
-  notation keys instead of compact `Jump to:` navigation or bottom `Legend`
-  sections, while keeping marker/icon values paired with text labels in report
-  tables.
+- Generated Evaluation reports now use standard `Contents` sections and
+  `Evaluation links:` navigation instead of compact `Jump to:` navigation or
+  bottom `Legend` sections, while keeping marker/icon values paired with text
+  labels in report tables.
 - Evaluation data validation, schemas, and generated Markdown reports now share
   typed enum catalogs for fixed values such as statuses, confidence, finding
   type/severity/basis status, recommendation impact, ranking tier, coverage

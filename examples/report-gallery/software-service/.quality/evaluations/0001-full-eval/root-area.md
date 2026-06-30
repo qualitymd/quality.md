@@ -7,8 +7,6 @@ title: "Area: LedgerLite Service"
 
 Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](report.md) - [Findings](findings.md) - [Recommendations](recommendations.md)
-
 Area: [LedgerLite Service](root-area.md)
 
 ## Key Details
@@ -17,11 +15,7 @@ Area: [LedgerLite Service](root-area.md)
 | --- | --- | --- |
 | 🟡 Minimum | ⬜ Empty | 🔵 Medium / ⚪ None |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 
 ## Contents
 
@@ -52,20 +46,11 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-Legend
-
-- *Rows:* ▦ Area, □ Factor
-
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | (no local Requirements) | — | — | — |
-
-Legend
-
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

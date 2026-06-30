@@ -3,6 +3,38 @@
 ## 2026-06-30
 
 - **Done**: Implemented and archived
+  [0183 - Glossary and Report Links](archive/0183-glossary-report-links.md).
+  Generated reports now link to `report.md`, `findings.md`,
+  `recommendations.md`, and the workspace-root `glossary.md`, while local
+  `Legend` blocks are removed.
+
+- **In-Review**: Completed implementation for
+  [0183 - Glossary and Report Links](archive/0183-glossary-report-links.md).
+  The workspace-root glossary, generated `Evaluation links:` navigation,
+  removed report legends, durable specs, guidance, tests, and report-gallery
+  output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0183 - Glossary and Report Links](archive/0183-glossary-report-links.md). Functional
+  requirements and design are settled; implementation is beginning across the
+  glossary artifact, durable specs, generated report rendering, docs, tests, and
+  generated examples.
+
+- **Design**: Added the
+  [design doc](archive/0183-glossary-report-links/design.md) for
+  [0183 - Glossary and Report Links](archive/0183-glossary-report-links.md).
+  The design keeps the glossary authored for this slice, gives `glossary.md` a
+  1:1 durable spec, and replaces report legends with one `Evaluation links:`
+  line.
+
+- **Draft**: Created
+  [0183 - Glossary and Report Links](archive/0183-glossary-report-links.md) with
+  its [functional spec](archive/0183-glossary-report-links/spec.md). The case
+  defines a shared workspace-root glossary, generated `Evaluation links:`
+  navigation, removal of per-report legends, and cleanup for the stale `unknown`
+  Finding type spec entry.
+
+- **Done**: Implemented and archived
   [0182 - Finding Summary Display Order](archive/0182-finding-summary-display-order.md).
   Generated run reports now render `Finding Summary`, show all Finding types in
   concern-first order including zero-count rows, and label sparse gap/risk

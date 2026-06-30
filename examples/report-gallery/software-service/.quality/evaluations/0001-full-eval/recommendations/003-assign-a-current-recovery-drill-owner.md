@@ -7,19 +7,13 @@ title: "Recommendation: Assign a current recovery drill owner"
 
 Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
-
 ## Key Details
 
 | # | ID | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
 | 3 | `qrec_gallery3` | ● Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_gallery3` |
 
-Legend
-
-- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
 
 ## Contents
 

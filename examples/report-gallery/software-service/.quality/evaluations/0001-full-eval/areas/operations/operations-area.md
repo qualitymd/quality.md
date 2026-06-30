@@ -7,8 +7,6 @@ title: "Area: Operations"
 
 Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
-
 Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md)
 
 ## Key Details
@@ -17,11 +15,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
 
 ## Contents
 
@@ -43,21 +37,12 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 | ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-Legend
-
-- *Rows:* ▦ Area, □ Factor
-
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | [health signals explain customer impact](requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed | [observability](factors/observability/observability-factor.md) |
 | [recovery drills have current owners](requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
-
-Legend
-
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

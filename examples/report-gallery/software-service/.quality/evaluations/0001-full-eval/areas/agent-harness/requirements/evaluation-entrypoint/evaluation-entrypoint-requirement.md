@@ -7,8 +7,6 @@ title: "Requirement: agent guidance routes quality evaluation work"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../agent-harness-area.md)
 
 Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibility-factor.md)
@@ -19,12 +17,7 @@ Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibi
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -44,14 +37,6 @@ The agent-facing entry point is clear enough for quality evaluation work.
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-004` | Agent guidance points to the quality model and generated report path. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target agent-accessibility rating. | ✅ Verified: The synthetic guidance gives an agent a direct path from model to evaluation report. |
 
-Legend
-
-- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
-- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
-- *Empty:* `—`
-
 ## Finding Details
 
 <a id="finding-strength-004"></a>
@@ -61,11 +46,6 @@ Legend
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
 | 7 / 7 | 🟡 P3 Medium | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
-
-Legend
-
-- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
-- *Empty:* `—`
 
 #### Condition
 

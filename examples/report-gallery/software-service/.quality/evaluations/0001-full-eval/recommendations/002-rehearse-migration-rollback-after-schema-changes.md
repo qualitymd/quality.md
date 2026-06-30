@@ -7,19 +7,13 @@ title: "Recommendation: Rehearse migration rollback after schema changes"
 
 Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
-
 ## Key Details
 
 | # | ID | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
 | 2 | `qrec_gallery2` | ⬥ High | 🔵 Medium | `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_gallery2` |
 
-Legend
-
-- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
 
 ## Contents
 

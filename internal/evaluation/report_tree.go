@@ -93,7 +93,8 @@ func buildEvaluationReport(path, displayPath string) (*BuildReportReceipt, error
 	if gap != nil {
 		return nil, nonReportableRunError(displayPath, *gap)
 	}
-	reports := renderEvaluationReportTree(spec, artifacts, plan)
+	runRel := workspaceRelativeRunPath(runAbs, artifacts.Manifest)
+	reports := renderEvaluationReportTree(spec, artifacts, plan, runRel)
 	for _, report := range reports {
 		reportAbs := filepath.Join(runAbs, report.Path)
 		if err := os.MkdirAll(filepath.Dir(reportAbs), 0o755); err != nil {
@@ -385,7 +386,7 @@ func (a *evaluationArtifacts) requirement(key string) *evaluationRequirementArti
 	return created
 }
 
-func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan) []evaluationRenderedReport {
+func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, runRel string) []evaluationRenderedReport {
 	var reports []evaluationRenderedReport
 	for _, area := range artifacts.sortedAreas() {
 		if area.Analysis == nil {
@@ -396,7 +397,7 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 			Kind:    string(ReportKindArea),
 			Path:    path,
 			AreaID:  copyStrings(area.ID),
-			Content: renderEvaluationAreaReport(spec, artifacts, area, path),
+			Content: renderEvaluationAreaReport(spec, artifacts, area, path, runRel),
 		})
 	}
 	for _, factor := range artifacts.sortedFactors() {
@@ -410,7 +411,7 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 			Path:     path,
 			AreaID:   copyStrings(id.DeclaringArea),
 			FactorID: &id,
-			Content:  renderEvaluationFactorReport(spec, artifacts, factor, path),
+			Content:  renderEvaluationFactorReport(spec, artifacts, factor, path, runRel),
 		})
 	}
 	for _, requirement := range artifacts.sortedRequirements() {
@@ -424,33 +425,34 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 			Path:          path,
 			AreaID:        copyStrings(id.DeclaringArea),
 			RequirementID: &id,
-			Content:       renderEvaluationRequirementReport(spec, artifacts, requirement, path),
+			Content:       renderEvaluationRequirementReport(spec, artifacts, requirement, path, runRel),
 		})
 	}
 	findingsIndex := evaluationRenderedReport{
 		Kind:    string(ReportKindFindings),
 		Path:    "findings.md",
-		Content: renderEvaluationFindingsIndex(spec, artifacts),
+		Content: renderEvaluationFindingsIndex(spec, artifacts, runRel),
 	}
-	recommendationReports := renderEvaluationRecommendationReports(spec, artifacts)
+	recommendationReports := renderEvaluationRecommendationReports(spec, artifacts, runRel)
 	reports = append(reports, findingsIndex)
 	reports = append(reports, recommendationReports...)
 	linkEvaluationReportPlan(plan, reports)
 	run := evaluationRenderedReport{
 		Kind:    string(ReportKindRun),
 		Path:    "report.md",
-		Content: renderEvaluationRunReport(spec, artifacts, plan, reports, "report.md"),
+		Content: renderEvaluationRunReport(spec, artifacts, plan, reports, "report.md", runRel),
 	}
 	return append([]evaluationRenderedReport{run}, reports...)
 }
 
-func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts) string {
+func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts, runRel string) string {
 	var b strings.Builder
 	data := reportSourceData(append([]string{evaluationManifestPath}, rankedFindingSourceData(artifacts, 0)...)...)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFindingIndex,
 		Heading:    "Findings",
 		ReportPath: "findings.md",
+		RunPath:    runRel,
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
 			"Findings",
@@ -460,10 +462,6 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 			fmt.Sprintf("%d findings", len(artifacts.rankedFindings())),
 			highestFindingSeverityTitle(artifacts),
 		},
-		KeyLines: []string{
-			fixedEnumKeyLine(findingSeverityValues),
-			emptyKeyLine(),
-		},
 		Contents: []reportContentLink{
 			{Label: "Ranked Findings", Anchor: "#ranked-findings"},
 			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
@@ -471,12 +469,11 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 	})
 	b.WriteString("## Ranked Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
-	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues))
 	writePrimarySourceDataSection(&b, "findings.md", data)
 	return b.String()
 }
 
-func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluationArtifacts) []evaluationRenderedReport {
+func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluationArtifacts, runRel string) []evaluationRenderedReport {
 	var reports []evaluationRenderedReport
 	recommendations := artifacts.rankedRecommendations()
 	var index strings.Builder
@@ -485,6 +482,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 		Type:       reportTypeRecommendationIndex,
 		Heading:    "Recommendations",
 		ReportPath: "recommendations.md",
+		RunPath:    runRel,
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
 			"Recommendations",
@@ -496,11 +494,6 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			highestRecommendationImpactTitle(recommendations),
 			recommendationCoverageSummary(artifacts),
 		},
-		KeyLines: []string{
-			fixedEnumKeyLine(recommendationImpactValues),
-			fixedEnumKeyLine(findingCoverageDispositionValues),
-			emptyKeyLine(),
-		},
 		Contents: []reportContentLink{
 			{Label: "Ranked Recommendations", Anchor: "#ranked-recommendations"},
 			{Label: "Coverage", Anchor: "#coverage"},
@@ -509,7 +502,6 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 	})
 	index.WriteString("## Ranked Recommendations\n\n")
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
-	writeLocalKeys(&index, fixedEnumKeyLine(confidenceValues))
 	writeAdviceCoverageSummary(&index, artifacts)
 	writePrimarySourceDataSection(&index, "recommendations.md", indexData)
 	reports = append(reports, evaluationRenderedReport{
@@ -524,7 +516,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			Kind:             string(ReportKindAdvice),
 			Path:             path,
 			RecommendationID: recommendationID(item.Recommendation),
-			Content:          renderEvaluationRecommendationReport(artifacts, item),
+			Content:          renderEvaluationRecommendationReport(artifacts, item, runRel),
 		})
 	}
 	return reports
@@ -550,11 +542,11 @@ type reportHeader struct {
 	Type        string
 	Heading     string
 	ReportPath  string
+	RunPath     string
 	Run         *EvaluationManifest
 	Context     []string
 	SummaryHead []string
 	SummaryRow  []string
-	KeyLines    []string
 	Contents    []reportContentLink
 }
 
@@ -572,7 +564,6 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 	if line := reportRunLine(header.ReportPath, header.Run); line != "" {
 		b.WriteString(line + "\n\n")
 	}
-	b.WriteString(reportNavigationLine(header.ReportPath) + "\n\n")
 	for _, line := range header.Context {
 		if line != "" {
 			b.WriteString(line + "\n\n")
@@ -582,7 +573,7 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 		b.WriteString("## Key Details\n\n")
 		writeReportSummaryTable(b, header.SummaryHead, header.SummaryRow)
 	}
-	writeLocalKeys(b, header.KeyLines...)
+	writeEvaluationLinks(b, header.ReportPath, header.RunPath)
 	writeContentsSection(b, header.Contents)
 }
 
@@ -603,21 +594,6 @@ func reportRunLine(reportPath string, manifest *EvaluationManifest) string {
 		created = "—"
 	}
 	return "Run: " + label + " - Evaluation ID: " + md.Code(evaluationID) + " - Created: " + created + " - Scope: " + requestedScopeLabel(manifest.RequestedScope)
-}
-
-func reportNavigationLine(reportPath string) string {
-	return "Report: " + strings.Join([]string{
-		reportNavItem(reportPath, "report.md", "Overview"),
-		reportNavItem(reportPath, "findings.md", "Findings"),
-		reportNavItem(reportPath, "recommendations.md", "Recommendations"),
-	}, " - ")
-}
-
-func reportNavItem(reportPath, target, label string) string {
-	if reportPath == target {
-		return label
-	}
-	return reportLink(reportPath, target, label)
 }
 
 func writeReportSummaryTable(b *strings.Builder, headers, row []string) {
@@ -755,62 +731,14 @@ func writeContentsSection(b *strings.Builder, links []reportContentLink) {
 	b.WriteString("\n")
 }
 
-func writeLocalKeys(b *strings.Builder, lines ...string) {
-	clean := make([]string, 0, len(lines))
-	for _, line := range lines {
-		if line == "" {
-			continue
-		}
-		clean = append(clean, line)
+func writeEvaluationLinks(b *strings.Builder, reportPath, runPath string) {
+	links := []string{
+		reportLink(reportPath, "report.md", "report.md"),
+		reportLink(reportPath, "findings.md", "findings.md"),
+		reportLink(reportPath, "recommendations.md", "recommendations.md"),
+		md.Link("glossary.md", glossaryLinkTarget(reportPath, runPath)),
 	}
-	if len(clean) == 0 {
-		return
-	}
-	b.WriteString("Legend\n\n")
-	for _, line := range clean {
-		b.WriteString("- " + line + "\n")
-	}
-	b.WriteString("\n")
-}
-
-func fixedEnumKeyLine[T ~string](catalog enumCatalog[T]) string {
-	labels := enumKeyLabels(catalog)
-	if len(labels) == 0 {
-		return ""
-	}
-	return keyLabel(catalog.Label) + " " + strings.Join(labels, ", ")
-}
-
-func ratingKeyLine(spec *model.Spec) string {
-	if spec == nil || len(spec.RatingScale) == 0 {
-		return ""
-	}
-	labels := make([]string, 0, len(spec.RatingScale))
-	for _, level := range spec.RatingScale {
-		label := level.Title
-		if label == "" {
-			label = level.Level
-		}
-		if label != "" {
-			labels = append(labels, label)
-		}
-	}
-	if len(labels) == 0 {
-		return ""
-	}
-	return keyLabel("Quality rating") + " " + strings.Join(labels, ", ")
-}
-
-func rowKeyLine() string {
-	return keyLabel("Rows") + " ▦ Area, □ Factor"
-}
-
-func emptyKeyLine() string {
-	return keyLabel("Empty") + " `—`"
-}
-
-func keyLabel(label string) string {
-	return "*" + label + ":*"
+	b.WriteString("**Evaluation links:** " + strings.Join(links, " | ") + "\n\n")
 }
 
 func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
@@ -914,7 +842,7 @@ func sortedRecommendationIDs(recommendations map[string]map[string]any) []string
 	return ids
 }
 
-func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item rankedRecommendation) string {
+func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item rankedRecommendation, runRel string) string {
 	rec := item.Recommendation
 	var b strings.Builder
 	reportPath := recommendationReportPath(item.Rank, firstString(rec, "title"))
@@ -926,6 +854,7 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 		Type:       reportTypeRecommendation,
 		Heading:    "Recommendation: " + firstString(rec, "title"),
 		ReportPath: reportPath,
+		RunPath:    runRel,
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
 			"#",
@@ -940,11 +869,6 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 			impactTitle(firstString(rec, "impact")),
 			confidenceTitle(firstString(rec, "confidence")),
 			md.Code(recommendationArtifactRef(artifacts.Manifest, id)),
-		},
-		KeyLines: []string{
-			fixedEnumKeyLine(recommendationImpactValues),
-			fixedEnumKeyLine(confidenceValues),
-			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
 			{Label: "Description", Anchor: "#description"},
@@ -990,7 +914,7 @@ func writeRecommendationSection(b *strings.Builder, title, body string) {
 	b.WriteString(body + "\n\n")
 }
 
-func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport, reportPath string) string {
+func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts, plan *evaluationReportPlan, reports []evaluationRenderedReport, reportPath, runRel string) string {
 	title := evaluationRunReportTitle(spec, plan)
 	scopedArea := scopedMap(plan.ScopedAreaAnalysis, "localAndDescendantAnalysis")
 	localArea := scopedMap(plan.ScopedAreaAnalysis, "localAnalysis")
@@ -1001,9 +925,8 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString(evaluationSummary(scopedArea))
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
-	writeLocalKeys(&b, ratingKeyLine(spec), fixedEnumKeyLine(confidenceValues), emptyKeyLine())
 	writeRunReportFindingSummary(&b, artifacts)
-	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues), emptyKeyLine())
+	writeEvaluationLinks(&b, reportPath, runRel)
 	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
 		{Label: "Top Findings", Anchor: "#top-findings"},
@@ -1011,15 +934,12 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 		{Label: "Primary Source Data", Anchor: "#primary-source-data"},
 	})
 	writeAreaFactorBreakdownSection(&b, "Model Evaluation", spec, artifacts, plan.ScopedAreaID, reportPath)
-	writeLocalKeys(&b, rowKeyLine())
 	writeRunReportCoverageNote(&b, reports, reportPath)
 	b.WriteString("## Top Findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
-	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues))
 	writeFullListReportLink(&b, reportPath, "Full findings report", "findings.md", len(artifacts.rankedFindings()))
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
-	writeLocalKeys(&b, fixedEnumKeyLine(recommendationImpactValues), fixedEnumKeyLine(confidenceValues))
 	writeFullListReportLink(&b, reportPath, "Full recommendations report", "recommendations.md", len(artifacts.rankedRecommendations()))
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
@@ -1204,7 +1124,7 @@ func writeRunReportCoverageNote(b *strings.Builder, reports []evaluationRendered
 	b.WriteString(".\n\n")
 }
 
-func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts, area *evaluationAreaArtifacts, reportPath string) string {
+func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts, area *evaluationAreaArtifacts, reportPath, runRel string) string {
 	title := areaTitle(spec, area.ID)
 	local := scopedMap(area.Analysis, "localAnalysis")
 	overall := scopedMap(area.Analysis, "localAndDescendantAnalysis")
@@ -1214,6 +1134,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		Type:       reportTypeAreaEvaluation,
 		Heading:    "Area: " + title,
 		ReportPath: reportPath,
+		RunPath:    runRel,
 		Run:        artifacts.Manifest,
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, area.ID, reportPath),
@@ -1228,11 +1149,6 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 			evaluationRatingLabel(spec, local),
 			evaluationConfidencePair(overall, local),
 		},
-		KeyLines: []string{
-			ratingKeyLine(spec),
-			fixedEnumKeyLine(confidenceValues),
-			emptyKeyLine(),
-		},
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
 			{Label: "Area / Factor Breakdown", Anchor: "#area--factor-breakdown"},
@@ -1245,7 +1161,6 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 	b.WriteString(evaluationSummary(overall))
 	b.WriteString("\n\n")
 	writeAreaFactorBreakdownSection(&b, "Area / Factor Breakdown", spec, artifacts, area.ID, reportPath)
-	writeLocalKeys(&b, rowKeyLine())
 	b.WriteString("## Requirements\n\n")
 	b.WriteString("| Requirement | Rating | Status | Factors |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
@@ -1257,14 +1172,13 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		}
 		b.WriteString("\n")
 	}
-	writeLocalKeys(&b, fixedEnumKeyLine(assessmentStatusValues), emptyKeyLine())
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
-func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifacts, factor *evaluationFactorArtifacts, reportPath string) string {
+func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifacts, factor *evaluationFactorArtifacts, reportPath, runRel string) string {
 	local := scopedMap(factor.Analysis, "localAnalysis")
 	overall := scopedMap(factor.Analysis, "localAndDescendantAnalysis")
 	title := factorTitle(spec, factor.ID)
@@ -1274,6 +1188,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		Type:       reportTypeFactorEvaluation,
 		Heading:    "Factor: " + title,
 		ReportPath: reportPath,
+		RunPath:    runRel,
 		Run:        artifacts.Manifest,
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, factor.ID.DeclaringArea, reportPath),
@@ -1290,12 +1205,6 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 			evaluationRatingLabel(spec, local),
 			evaluationAnalysisStatusPair(overall, local),
 			evaluationConfidencePair(overall, local),
-		},
-		KeyLines: []string{
-			ratingKeyLine(spec),
-			fixedEnumKeyLine(analysisStatusValues),
-			fixedEnumKeyLine(confidenceValues),
-			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
@@ -1318,7 +1227,6 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		}
 		b.WriteString("\n")
 	}
-	writeLocalKeys(&b, fixedEnumKeyLine(assessmentStatusValues), emptyKeyLine())
 	b.WriteString("## Sub-Factors\n\n")
 	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
@@ -1332,14 +1240,13 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		}
 		b.WriteString("\n")
 	}
-	writeLocalKeys(&b, emptyKeyLine())
 	b.WriteString("## Limits & Incomplete Inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
 }
 
-func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts, reportPath string) string {
+func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationArtifacts, req *evaluationRequirementArtifacts, reportPath, runRel string) string {
 	title := requirementTitle(spec, req.ID)
 	var b strings.Builder
 	data := requirementReportSourceData(req)
@@ -1347,6 +1254,7 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 		Type:       reportTypeRequirementEvaluation,
 		Heading:    "Requirement: " + title,
 		ReportPath: reportPath,
+		RunPath:    runRel,
 		Run:        artifacts.Manifest,
 		Context: []string{
 			evaluationAreaTrailLine(spec, artifacts, req.ID.DeclaringArea, reportPath),
@@ -1361,12 +1269,6 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 			evaluationRequirementRatingLabel(spec, req.Rating),
 			assessmentStatusTitle(evaluationString(req.Assessment, "status")),
 			evaluationRequirementConfidencePair(req),
-		},
-		KeyLines: []string{
-			ratingKeyLine(spec),
-			fixedEnumKeyLine(assessmentStatusValues),
-			fixedEnumKeyLine(confidenceValues),
-			emptyKeyLine(),
 		},
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
@@ -1386,7 +1288,6 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	}
 	b.WriteString("\n\n## Findings Summary\n\n")
 	writeEvaluationFindingsTable(&b, req.Assessment)
-	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues), fixedEnumKeyLine(confidenceValues), fixedEnumKeyLine(findingBasisStatusValues), emptyKeyLine())
 	b.WriteString("## Finding Details\n\n")
 	writeEvaluationFindingDetails(&b, artifacts, req)
 	b.WriteString("## Unknowns & Missing Evidence\n\n")
@@ -2446,12 +2347,10 @@ func writeFindingRankingContext(b *strings.Builder, ranking rankedFinding, ranke
 	b.WriteString("| --- | --- | --- |\n")
 	if !ranked {
 		b.WriteString("| (not ranked) | — | — |\n\n")
-		writeLocalKeys(b, fixedEnumKeyLine(findingRankingTierValues), emptyKeyLine())
 		return
 	}
 	b.WriteString(md.TableRow(fmt.Sprintf("%d / %d", ranking.Rank, ranking.Total), findingRankingTierTitle(firstString(ranking.Ranking, "tier")), firstString(ranking.Ranking, "rationale")))
 	b.WriteString("\n")
-	writeLocalKeys(b, fixedEnumKeyLine(findingRankingTierValues), emptyKeyLine())
 }
 
 func writeFindingSection(b *strings.Builder, headingLevel int, title, body string) {
@@ -2640,6 +2539,51 @@ func reportAreaDirParts(areaID []string) []string {
 
 func reportLink(fromReport, toPath, label string) string {
 	return md.RelLink(fromReport, toPath, label)
+}
+
+func workspaceRelativeRunPath(runAbs string, manifest *EvaluationManifest) string {
+	if manifest == nil || manifest.Model == "" {
+		return ""
+	}
+	for dir := runAbs; dir != "" && dir != filepath.Dir(dir); dir = filepath.Dir(dir) {
+		if _, err := os.Stat(filepath.Join(dir, manifest.Model)); err == nil {
+			if rel, relErr := filepath.Rel(dir, runAbs); relErr == nil {
+				return filepath.ToSlash(rel)
+			}
+			return ""
+		}
+	}
+	return ""
+}
+
+func glossaryLinkTarget(reportPath, runPath string) string {
+	return filepath.ToSlash(filepath.Join(workspaceBackrefs(runPath, reportPath), "glossary.md"))
+}
+
+func workspaceBackrefs(runPath, reportPath string) string {
+	depth := pathDepth(runPath) + pathDepth(filepath.Dir(reportPath))
+	if depth == 0 {
+		return "."
+	}
+	parts := make([]string, depth)
+	for i := range parts {
+		parts[i] = ".."
+	}
+	return filepath.Join(parts...)
+}
+
+func pathDepth(path string) int {
+	path = filepath.ToSlash(filepath.Clean(path))
+	if path == "" || path == "." {
+		return 0
+	}
+	depth := 0
+	for _, part := range strings.Split(path, "/") {
+		if part != "" && part != "." {
+			depth++
+		}
+	}
+	return depth
 }
 
 func areaTitle(spec *model.Spec, areaID []string) string {

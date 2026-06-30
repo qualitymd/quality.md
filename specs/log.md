@@ -2,6 +2,15 @@
 
 ## 2026-06-30
 
+- **Addition**: Added [glossary.md](glossary-md.md), the artifact contract for
+  the workspace-root glossary used by generated reports and readers.
+
+- **Revision**: Implemented durable spec changes for
+  [0183 - Glossary and Report Links](../changes/archive/0183-glossary-report-links.md).
+  Generated reports now use `Evaluation links:` navigation to the overview,
+  Findings, Recommendations, and workspace-root glossary instead of local
+  `Legend` blocks.
+
 - **Revision**: Implemented durable spec changes for
   [0182 - Finding Summary Display Order](../changes/archive/0182-finding-summary-display-order.md).
   Generated run reports now render `Finding Summary`, show every Finding type in

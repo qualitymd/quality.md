@@ -257,6 +257,15 @@ change and which deliberately do not — never a silent omission. The annotation
 **MUST NOT** restate the normative text; it maps the requirement to the durable
 contract it lands in.
 
+When a requirement creates a new public, durable, named artifact, first apply
+the artifact-contract test: will readers, tools, generated outputs, or workflows
+rely on this file by name, location, shape, lifecycle, or link target? If yes,
+the requirement's annotation should usually be `Durable spec: add <spec path>`
+for a 1:1 artifact spec, or it must name the existing durable spec that owns the
+complete artifact contract and why no new spec is needed. A new artifact listed
+only as a durable doc, with no durable-spec owner or justification, is
+under-accounted.
+
 > The single-kind form **MUST** emit a self-contained schema.
 >
 >> Durable spec: modify `specs/cli/evaluation-data.md` — replace "rooted at that
@@ -345,6 +354,12 @@ tracked in the change case's parent **Affected artifacts** index, not here.
   concept extension. Example: an `evaluation-output-result.json` artifact spec
   would use `evaluation-output-result-json.md`. This keeps the artifact identity
   visible without creating filenames with multiple operational meanings.
+- **Do not bury new artifact contracts in adjacent specs.** If a change adds a
+  named artifact such as `glossary.md`, prefer a 1:1 artifact spec such as
+  `glossary-md.md` unless an existing durable spec truly owns the whole artifact:
+  purpose, location, structure, maintenance source, link behavior, and reader
+  contract. If you choose the existing-spec route, state that ownership
+  explicitly in the change case.
 - **Name behavioral component specs after the capability.** When a durable spec
   governs behavior rather than one concrete artifact, name it for the command,
   workflow, phase, lifecycle, or component it specifies. For example, a

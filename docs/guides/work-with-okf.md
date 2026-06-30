@@ -100,7 +100,10 @@ tolerated — they may just point at not-yet-written concepts.
 1. Give it parseable frontmatter with a non-empty `type`.
 2. Update the enclosing `index.md` so the listing stays accurate.
 3. Add a `log.md` entry for the change.
+4. If the concept introduces a new `type` value for that bundle, add it to the
+   bundle's `schema.md`.
 
 That's the whole contract: parseable frontmatter, a `type`, and tidy `index.md` /
-`log.md`. Everything else is soft guidance — consumers won't reject a bundle over
-missing optional fields, unknown types, or broken links.
+`log.md`, plus schema registration for new local concept types. Everything else
+is soft guidance — consumers won't reject a bundle over missing optional fields,
+unknown types, or broken links.

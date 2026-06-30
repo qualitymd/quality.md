@@ -16,6 +16,7 @@ before it lands.
 
 # Specs
 
+- [glossary.md](glossary-md.md) - artifact contract for the workspace-root glossary used by generated reports and readers.
 - [qualitymd CLI](cli.md) - high-level requirements for the deterministic command-line surface.
 - [Evaluation](evaluation/evaluation.md) - replacement evaluation
   workflow, protocol, structured data, orchestration, and reports.

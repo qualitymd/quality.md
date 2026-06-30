@@ -206,6 +206,8 @@ the accounting system that consumes payment events.
 ### Specification
 
 The full format is specified in [`SPECIFICATION.md`](SPECIFICATION.md).
+Shared report terms and fixed vocabularies are defined in
+[`glossary.md`](glossary.md).
 
 ### File structure
 

@@ -750,3 +750,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0182 — Finding Summary Display Order](0182-finding-summary-display-order.md) -
   renames the run report Finding Breakdown to Finding Summary, shows all Finding
   types in concern-first order, and labels sparse severity counts (`Done`).
+- [0183 — Glossary and Report Links](0183-glossary-report-links.md) - adds a
+  workspace-root glossary, replaces generated report legends with `Evaluation
+  links:`, and seeds glossary terms and vocabularies (`Done`).

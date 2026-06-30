@@ -7,8 +7,6 @@ title: "Factor: Observability"
 
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
-
 Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operations-area.md)
 
 Factor: [Observability](observability-factor.md)
@@ -19,12 +17,7 @@ Factor: [Observability](observability-factor.md)
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -44,20 +37,11 @@ Observability follows its direct requirement signal.
 | --- | --- | --- |
 | [health signals explain customer impact](../../requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed |
 
-Legend
-
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Empty:* `—`
-
 ## Sub-Factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating |
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
-
-Legend
-
-- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

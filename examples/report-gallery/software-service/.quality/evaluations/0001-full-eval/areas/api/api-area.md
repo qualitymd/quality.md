@@ -7,8 +7,6 @@ title: "Area: Public API"
 
 Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
-
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
 ## Key Details
@@ -17,11 +15,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
-Legend
-
-- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
-- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
-- *Empty:* `—`
+**Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
 
 ## Contents
 
@@ -43,21 +37,12 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
-Legend
-
-- *Rows:* ▦ Area, □ Factor
-
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | [mutation endpoints are idempotent under retry](requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed | [correctness](factors/correctness/correctness-factor.md) |
 | [error responses are predictable for callers](requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed | [operability](factors/operability/operability-factor.md) |
-
-Legend
-
-- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
-- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 
