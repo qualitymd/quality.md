@@ -53,7 +53,8 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/qualitymd/quality.md"
+      "github": "https://github.com/qualitymd/quality.md",
+      "x": "https://x.com/qualitydotmd"
     }
   },
   "integrations": {
