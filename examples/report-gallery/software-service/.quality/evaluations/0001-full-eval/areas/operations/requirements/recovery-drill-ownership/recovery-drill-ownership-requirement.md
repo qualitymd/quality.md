@@ -19,7 +19,12 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🟡 Low / 🟡 Low |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -37,21 +42,30 @@ Recovery ownership is visible but ambiguous across the sampled records.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `unknown-001` | The current owner for ledger recovery drills is ambiguous. | ❓ Unknown | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
+| `gap-002` | The current owner for ledger recovery drills is ambiguous. | 🚩 Gap | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
 
-*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable | *Empty:* `—`
+Legend
+
+- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
+- *Empty:* `—`
 
 ## Finding Details
 
-<a id="finding-unknown-001"></a>
+<a id="finding-gap-002"></a>
 
-### unknown-001 The current owner for ledger recovery drills is ambiguous.
+### gap-002 The current owner for ledger recovery drills is ambiguous.
 
 | Advice Rank | Tier | Ranking Rationale |
 | --- | --- | --- |
-| 6 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
+| 6 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-*Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low | *Empty:* `—`
+Legend
+
+- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
+- *Empty:* `—`
 
 #### Condition
 

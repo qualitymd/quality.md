@@ -17,7 +17,11 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +43,9 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
-*Rows:* ▦ Area, □ Factor
+Legend
+
+- *Rows:* ▦ Area, □ Factor
 
 ## Requirements
 
@@ -48,7 +54,10 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | [mutation endpoints are idempotent under retry](requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed | [correctness](factors/correctness/correctness-factor.md) |
 | [error responses are predictable for callers](requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed | [operability](factors/operability/operability-factor.md) |
 
-*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
+Legend
+
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

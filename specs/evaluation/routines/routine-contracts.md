@@ -78,8 +78,11 @@ Finding Core: statement, condition, criteria, basis, effect, and evidence.
 
 Requirement assessment **MUST** classify findings by type using these semantics:
 `gap` falls short of declared criteria, `risk` could plausibly cause future
-quality loss, `strength` supports or exceeds criteria, `unknown` records missing
-or ambiguous evidence, and `note` preserves relevant non-driving context.
+quality loss, `strength` supports or exceeds criteria, and `note` preserves
+relevant non-driving context. Ambiguous current-state evidence that constrains a
+rating is a `gap`. Missing or insufficient evidence that prevents rating belongs
+in assessment/rating status, `unknowns`, or `missingEvidence`, not in a Finding
+type.
 
 Requirement assessment **MUST NOT** record `basis.status: verified` unless
 finding evidence directly supports the basis statement. When a `gap` or `risk`

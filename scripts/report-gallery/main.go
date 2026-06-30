@@ -343,7 +343,7 @@ var requirements = []requirementCase{
 	{
 		Area: "operations", AreaTitle: "Operations", Factor: "recoverability", FactorTitle: "Recoverability",
 		Name: "recovery-drill-ownership", Title: "recovery drills have current owners",
-		Rating: "minimum", Confidence: "low", FindingID: "unknown-001", FindingType: "unknown", Severity: "medium",
+		Rating: "minimum", Confidence: "low", FindingID: "gap-002", FindingType: "gap", Severity: "medium",
 		Statement:   "The current owner for ledger recovery drills is ambiguous.",
 		Condition:   "The synthetic recovery calendar names a team, while the incident playbook names a former individual owner.",
 		Criterion:   "Recovery drills should meet the target recoverability bar with current named ownership.",
@@ -667,8 +667,8 @@ func advicePayloads() []map[string]any {
 		if i < 3 {
 			tier = []string{"P1", "P1", "P2"}[i]
 		}
-		if req.FindingType == "gap" || req.FindingType == "risk" || req.FindingType == "unknown" {
-			tier = map[string]string{"gap": "P1", "risk": "P1", "unknown": "P2"}[req.FindingType]
+		if req.FindingType == "gap" || req.FindingType == "risk" {
+			tier = map[string]string{"gap": "P1", "risk": "P1"}[req.FindingType]
 		}
 		ordered = append(ordered, map[string]any{
 			"rank":       i + 1,
@@ -704,10 +704,10 @@ func advicePayloads() []map[string]any {
 			entry["disposition"] = "addressed_by_recommendation"
 			entry["recommendationRefs"] = []any{"qrec_gallery2"}
 			entry["rationale"] = "The rollback rehearsal recommendation directly addresses this risk."
-		case "unknown-001":
+		case "gap-002":
 			entry["disposition"] = "addressed_by_recommendation"
 			entry["recommendationRefs"] = []any{"qrec_gallery3"}
-			entry["rationale"] = "The ownership recommendation resolves the unknown."
+			entry["rationale"] = "The ownership recommendation resolves this gap."
 		default:
 			entry["disposition"] = "not_advice_driving"
 			entry["rationale"] = "The strength supports the rating but does not require follow-up advice."

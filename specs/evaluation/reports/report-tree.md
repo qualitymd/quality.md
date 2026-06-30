@@ -181,9 +181,8 @@ Known fixed enum report displays are:
 | Confidence            | `low`                         | `🟡 Low`                         |
 | Confidence            | `none`                        | `⚪ None`                        |
 | Finding type          | `strength`                    | `✅ Strength`                    |
-| Finding type          | `gap`                         | `⚠️ Gap`                          |
+| Finding type          | `gap`                         | `🚩 Gap`                         |
 | Finding type          | `risk`                        | `⚠️ Risk`                         |
-| Finding type          | `unknown`                     | `❓ Unknown`                     |
 | Finding type          | `note`                        | `ℹ️ Note`                         |
 | Finding severity      | `critical`                    | `🔴 Critical`                    |
 | Finding severity      | `high`                        | `🔴 High`                        |
@@ -233,16 +232,15 @@ value descriptions.
 Generated Markdown reports **MUST** render local keys for indicator families
 near their first use in each report artifact.
 
-Local keys **MUST** be notation-only segments. Each segment **MUST** render one
-italicized indicator family name, a colon, and the marker-plus-label values for
-that family. Fixed Evaluation enum keys **MUST** use the catalog key label as
-the indicator family name. Local keys **MUST NOT** include prose definitions,
-rationale, or semantic explanations beyond the marker-plus-label set.
-Local keys **MUST NOT** end with terminal punctuation. When multiple local-key
-segments appear together, adjacent segments **MUST** be separated by `|`.
+Local keys **MUST** be notation-only list items under plain `Legend` text. Each
+list item **MUST** render one italicized indicator family name, a colon, and the
+marker-plus-label values for that family. Fixed Evaluation enum keys **MUST**
+use the catalog key label as the indicator family name. Local keys **MUST NOT**
+include prose definitions, rationale, or semantic explanations beyond the
+marker-plus-label set. Local keys **MUST NOT** end with terminal punctuation.
 
 When one table first introduces multiple indicator families, each family key
-**MUST** render as a distinct segment.
+**MUST** render as a distinct list item in the same local `Legend` block.
 
 Quality rating keys **MUST** use `*Quality rating:*` as the local-key family
 label and render the Rating Level `title` values from the run's
@@ -264,8 +262,9 @@ Generated reports **MUST NOT** render a bottom `## Legend` section.
 
 > Rationale: local keys orient readers where notation first appears, while text
 > labels in the table cells remain the accessible and agent-readable meaning.
-> Keeping keys notation-only prevents generated reports from becoming glossaries.
-> — 0174
+> Keeping keys notation-only prevents generated reports from becoming
+> glossaries, while list items keep adjacent keys readable without overloading a
+> single pipe-separated line. — 0174
 
 ## Run Report
 
@@ -293,7 +292,19 @@ It **MUST NOT** render a `Recommended next action:` sentence.
 
 The run report `## Key Details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
-order. The section **MUST NOT** include limits or incomplete-input counts.
+order. `Confidence` **MUST** render the scoped Area confidence paired with the
+visible `Overall Rating`, not a paired overall/local confidence value. `Scope`
+**MUST** render a human-readable description of the evaluated Area and filtered
+Factors when present. `Findings` and `Recommendations` **MUST** render total
+ranked counts as `<N> total` and **MUST NOT** include the word `ranked`. The
+section **MUST NOT** include limits or incomplete-input counts.
+
+The run report **MUST** render a compact `Finding Breakdown` table near
+`## Key Details`. The table **MUST** render one row per present Finding type,
+with columns `Finding Type`, `Count`, and `Detail`. For `gap` and `risk`, the
+`Detail` cell **MUST** render a severity breakdown ordered by the Finding
+severity catalog. For `strength` and `note`, the `Detail` cell **MUST** render
+`—`.
 
 Generated reports **MUST** render a `## Contents` section when they contain at
 least two substantive top-level body sections. Generated `## Contents` sections
@@ -364,16 +375,18 @@ the number of rows rendered in the capped `report.md` table.
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
 at 10 rows. It **MUST** render the columns `#`, `Recommendation`, `Area /
-Factors`, `Impact`, and `Reason`, in that order. The `#` cell **MUST** render
-the user-facing recommendation number derived from the ranking entry's `rank`.
-The table **MUST NOT** render a separate `Rank` column. The `Recommendation`
-cell **MUST** use `RecommendationResult.title` as link text and link to the
-generated recommendation detail report. The `Area / Factors` cell **MUST**
-render linked Area and Factor names resolved from
+Factors`, `Impact`, `Confidence`, and `Reason`, in that order. The `#` cell
+**MUST** render the user-facing recommendation number derived from the ranking
+entry's `rank`. The table **MUST NOT** render a separate `Rank` column. The
+`Recommendation` cell **MUST** use `RecommendationResult.title` as link text and
+link to the generated recommendation detail report. The `Area / Factors` cell
+**MUST** render linked Area and Factor names resolved from
 `RecommendationResult.traceRefs` through persisted evaluation data and the model
 snapshot, or `—` when no Area or Factor can be resolved. The `Impact` cell
-**MUST** render the shared recommendation impact display label. The `Reason`
-cell **MUST** render `RecommendationResult.expectedValue`.
+**MUST** render the shared recommendation impact display label. The `Confidence`
+cell **MUST** render the shared confidence display label from the Recommendation
+ranking entry. The `Reason` cell **MUST** render
+`RecommendationResult.expectedValue`.
 
 ## Finding Reports
 

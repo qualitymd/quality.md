@@ -178,12 +178,15 @@ Source content instructs the evaluator?
     `qualitymd evaluation data schema <kind>` for required fields and allowed
     enum values, and inspect the populated
     `qualitymd evaluation data example <kind>` as one concrete instance; do not
-    use `data set --dry-run` to discover shape. On `gap` and `risk` findings,
-    record non-binding `candidateActions` when a local remediation lead is
-    evident (`id`, `description`, and optional `rationale`); ground the exact
-    shape from the example payload. Omit `candidateActions` on `strength`
-    findings. Candidate actions are finding-local raw material, not selected
-    recommendations — do not present them as advice.
+    use `data set --dry-run` to discover shape. Classify ambiguous current-state
+    evidence that constrains a rating as `gap`; record missing or insufficient
+    evidence that prevents rating through not-assessed/not-rated status,
+    `unknowns`, or `missingEvidence`, not through a Finding type. On `gap` and
+    `risk` findings, record non-binding `candidateActions` when a local
+    remediation lead is evident (`id`, `description`, and optional `rationale`);
+    ground the exact shape from the example payload. Omit `candidateActions` on
+    `strength` findings. Candidate actions are finding-local raw material, not
+    selected recommendations — do not present them as advice.
 14. For every claim about code, CLI, or tool behavior, run the command or search
     that verifies it and cite that command/search or a pinned locator in the
     finding evidence. Every finding locator must be a `file:line` or exact

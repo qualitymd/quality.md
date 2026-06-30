@@ -113,7 +113,6 @@ const (
 	FindingTypeStrength FindingType = "strength"
 	FindingTypeGap      FindingType = "gap"
 	FindingTypeRisk     FindingType = "risk"
-	FindingTypeUnknown  FindingType = "unknown"
 	FindingTypeNote     FindingType = "note"
 )
 
@@ -275,9 +274,8 @@ var findingTypeValues = enumCatalog[FindingType]{
 	Description: "Classification of what a finding contributes to the Evaluation judgment.",
 	Values: []enumValue[FindingType]{
 		{Value: FindingTypeStrength, Label: "Strength", Marker: "✅", Description: "Evidence of quality meeting or exceeding expectations."},
-		{Value: FindingTypeGap, Label: "Gap", Marker: "⚠️", Description: "Shortfall against the quality bar."},
+		{Value: FindingTypeGap, Label: "Gap", Marker: "🚩", Description: "Current shortfall against the quality bar."},
 		{Value: FindingTypeRisk, Label: "Risk", Marker: "⚠️", Description: "Plausible future or conditional quality concern."},
-		{Value: FindingTypeUnknown, Label: "Unknown", Marker: "❓", Description: "Material uncertainty or missing evidence."},
 		{Value: FindingTypeNote, Label: "Note", Marker: "ℹ️", Description: "Useful observation that is not itself a gap, risk, or strength."},
 	},
 }

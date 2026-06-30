@@ -136,9 +136,9 @@ Good header table examples:
 
 For `report.md`, render this table under `## Key Details` instead of leaving it
 as an unlabeled header table. The key-details table is for facts: rating,
-confidence, scope, ranked-finding count, and ranked-recommendation count. Do not
-use the key-details table for summary prose, recommendation text, evidence, or
-limits.
+confidence, scope, total Finding count, and total Recommendation count. Do not
+use the key-details table for summary prose, recommendation text, evidence,
+limits, or ranking-state wording.
 
 ### Navigation at the top
 
@@ -307,26 +307,36 @@ value as a text label, optionally preceded by a marker or icon. Markers are
 supplemental scanning aids; do not rely on color or icon shape alone.
 
 Use short local keys immediately after the first table or section that uses an
-indicator family in that artifact. Keys are notation-only: each family segment
-uses an italic family label followed by the marker-plus-label set. Fixed
+indicator family in that artifact. Keys are notation-only: each local `Legend`
+block uses one list item per family, with an italic family label followed by
+the marker-plus-label set. Fixed
 Evaluation enum keys use the catalog's family label, such as `Finding type`,
 while dense table headers may stay compact when the table context scopes the
 value. Do not add term definitions, rationale, or explanatory prose to generated
 keys. Do not collect keys in a bottom `Legend` section. Do not end local keys
-with terminal periods. Separate adjacent local-key family segments with `|`.
+with terminal periods.
 
 Examples:
 
 ```markdown
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 ```
 
 ```markdown
-*Rows:* ▦ Area, □ Factor | *Empty:* `—`
+Legend
+
+- *Rows:* ▦ Area, □ Factor
+- *Empty:* `—`
 ```
 
 ```markdown
-*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+Legend
+
+- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 
 ## Contents
 
@@ -400,11 +410,30 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 ## Key Details
 
-| Overall Rating | Confidence    | Scope           | Findings | Recommendations |
-| -------------- | ------------- | --------------- | -------- | --------------- |
-| Minimum        | Medium / None | full evaluation | 7 ranked | 3 ranked        |
+| Overall Rating | Confidence | Scope                                 | Findings | Recommendations |
+| -------------- | ---------- | ------------------------------------- | -------- | --------------- |
+| Minimum        | Medium     | Full evaluation of LedgerLite Service | 7 total  | 3 total         |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
+
+Finding Breakdown
+
+| Finding Type | Count | Detail       |
+| ------------ | ----: | ------------ |
+| 🚩 Gap       |     1 | 🔴 High: 1   |
+| ⚠️ Risk       |     1 | 🟡 Medium: 1 |
+| ✅ Strength  |     4 | —            |
+| ℹ️ Note       |     1 | —            |
+
+Legend
+
+- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+- *Empty:* `—`
 
 ## Contents
 
@@ -421,19 +450,27 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ [▦ Public API](areas/api/api-area.md)                                | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 
-*Rows:* ▦ Area, □ Factor
+Legend
+
+- *Rows:* ▦ Area, □ Factor
 
 ...
 
 ## Top Findings
 
-*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+Legend
+
+- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 
 **Full findings report:** [findings.md](findings.md) (7 total)
 
 ## Top Recommendations
 
-*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
+Legend
+
+- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 
@@ -459,9 +496,9 @@ Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
 Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
-| Findings          | Highest Severity |
-| ----------------- | ---------------- |
-| 7 ranked findings | High             |
+| Findings   | Highest Severity |
+| ---------- | ---------------- |
+| 7 findings | High             |
 
 *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 ```
@@ -483,7 +520,10 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | -------------- | ------------ | --------------- |
 | Minimum        | Minimum      | Medium / Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -505,7 +545,9 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
 | ↳ [□ Operability](factors/operability/operability-factor.md) | Target         | Target       | 1        | 0               |
 
-*Rows:* ▦ Area, □ Factor
+Legend
+
+- *Rows:* ▦ Area, □ Factor
 ```
 
 ### Factor reports
@@ -527,7 +569,11 @@ Factor: [Correctness](correctness-factor.md)
 | -------------- | ------------ | ------------------- | --------------- |
 | Minimum        | Minimum      | Analyzed / Analyzed | Medium / Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -563,7 +609,11 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | ------- | ---------- | --------------- |
 | Minimum | Assessed   | Medium / Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 
@@ -593,7 +643,10 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 | - | ------------ | ------ | ---------- | -------------------------------------------------------------------- |
 | 1 | qrec_example | ⬥ High | High       | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
 
-*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+Legend
+
+- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 
 ## Contents
 

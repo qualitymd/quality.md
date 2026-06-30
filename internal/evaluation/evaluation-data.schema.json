@@ -2770,7 +2770,6 @@
                   "strength",
                   "gap",
                   "risk",
-                  "unknown",
                   "note"
                 ],
                 "type": "string"

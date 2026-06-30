@@ -15,7 +15,11 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 | --- | --- | --- | --- | --- |
 | 1 | `qrec_gallery1` | ⬥ High | 🔵 Medium | `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_gallery1` |
 
-*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 

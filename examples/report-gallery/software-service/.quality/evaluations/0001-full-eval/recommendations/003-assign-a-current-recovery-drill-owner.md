@@ -15,7 +15,11 @@ Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations
 | --- | --- | --- | --- | --- |
 | 3 | `qrec_gallery3` | ● Medium | 🟡 Low | `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_gallery3` |
 
-*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -49,7 +53,7 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 
 ## Trace
 
-- `{"kind":"RequirementAssessmentResult","selector":"findings[unknown-001]","subject":{"requirementId":"requirement:operations::recovery-drill-ownership"}}`
+- `{"kind":"RequirementAssessmentResult","selector":"findings[gap-002]","subject":{"requirementId":"requirement:operations::recovery-drill-ownership"}}`
 
 ## Primary Source Data
 

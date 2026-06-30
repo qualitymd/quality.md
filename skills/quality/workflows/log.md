@@ -2,6 +2,11 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0180 - Finding
+  Taxonomy and Report Details. Evaluate now writes only `strength`, `gap`,
+  `risk`, and `note` Finding types, uses `gap` for ambiguous current-state
+  rating constraints, and records missing evidence through non-finding fields.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0165 - Run IDs
   and Artifact Numbering. Evaluation Advice now writes recommendation payloads
   before ranking when numbers are assigned, references recommendations by

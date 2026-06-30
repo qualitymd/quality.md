@@ -3,9 +3,16 @@
 ## 2026-06-29
 
 - **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0180 - Finding Taxonomy and Report Details](../changes/archive/0180-finding-taxonomy-report-details.md).
+  Run report examples now use a single Overall Rating confidence, descriptive
+  scope, total counts, a Finding Breakdown, `🚩 Gap`, and Top Recommendation
+  confidence.
+
+- **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md). Generated report
-  local-key guidance now uses italicized labels, pipe separators, no terminal
-  periods, and unformatted Area/Factor row glyphs.
+  local-key guidance now uses italicized labels in `Legend` list items, no
+  terminal periods, and unformatted Area/Factor row glyphs.
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for

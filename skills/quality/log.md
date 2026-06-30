@@ -3,6 +3,13 @@
 ## 2026-06-29
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
+  [`workflows/evaluate.md`](workflows/evaluate.md) for 0180 - Finding Taxonomy
+  and Report Details. Runtime evaluation guidance now treats ambiguous
+  current-state shortfalls as `gap` findings and routes missing evidence that
+  prevents rating to not-assessed/not-rated status, `unknowns`, or
+  `missingEvidence`.
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0176 - Recommendation IDs
   and Numbers. Runtime evaluation guidance now uses `qrec_...` recommendation
   IDs in structured ranking and coverage while reserving recommendation numbers

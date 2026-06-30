@@ -320,7 +320,9 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	if !strings.Contains(string(runReport), "## Summary\n\n") ||
 		strings.Contains(string(runReport), "Recommended next action:") ||
 		!strings.Contains(string(runReport), "## Key Details\n\n| Overall Rating | Confidence | Scope | Findings | Recommendations |") ||
-		!strings.Contains(string(runReport), "| 🔵 Target | 🟢 High / 🟢 High | full evaluation | 1 ranked | 1 ranked |") ||
+		!strings.Contains(string(runReport), "| 🔵 Target | 🟢 High | Full evaluation of Test model | 1 total | 1 total |") ||
+		!strings.Contains(string(runReport), "Finding Breakdown\n\n| Finding Type | Count | Detail |") ||
+		!strings.Contains(string(runReport), "| ✅ Strength | 1 | — |") ||
 		!strings.Contains(string(runReport), "## Contents\n\n- [Model Evaluation](#model-evaluation)\n- [Top Findings](#top-findings)\n- [Top Recommendations](#top-recommendations)\n- [Primary Source Data](#primary-source-data)\n\n") ||
 		strings.Contains(string(runReport), "Jump to:") ||
 		!strings.Contains(string(runReport), "## Model Evaluation\n\n| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |") ||
@@ -351,8 +353,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	}
 	assertContains(t, string(report), "## Key Details\n\n| Overall Rating | Local Rating | Confidence |")
 	assertContains(t, string(report), "## Summary\n\nThe model meets the bar overall.")
-	assertContains(t, string(report), "*Quality rating:* 🔵 Target, Minimum")
-	assertContains(t, string(report), "*Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None")
+	assertContains(t, string(report), "Legend\n\n- *Quality rating:* 🔵 Target, Minimum\n- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None")
 	assertNotContains(t, string(report), "## Legend")
 	if !strings.Contains(string(report), "Area: [Test model](root-area.md)") {
 		t.Fatalf("root-area.md = %s, want Area trail", report)
@@ -477,7 +478,9 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, runReport, "Recommended next action:")
 	assertContains(t, runReport, "## Key Details")
 	assertContains(t, runReport, "| Overall Rating | Confidence | Scope | Findings | Recommendations |")
-	assertContains(t, runReport, "| 🔵 Target | 🟢 High / 🟢 High | full evaluation | 1 ranked | 1 ranked |")
+	assertContains(t, runReport, "| 🔵 Target | 🟢 High | Full evaluation of Navigation model | 1 total | 1 total |")
+	assertContains(t, runReport, "Finding Breakdown\n\n| Finding Type | Count | Detail |")
+	assertContains(t, runReport, "| ✅ Strength | 1 | — |")
 	assertNotContains(t, runReport, "| Overall Rating | Scope | Confidence | Data |")
 	assertContains(t, runReport, "## Contents\n\n- [Model Evaluation](#model-evaluation)\n- [Top Findings](#top-findings)\n- [Top Recommendations](#top-recommendations)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, runReport, "Jump to:")
@@ -493,19 +496,17 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, runReport, "## Coverage")
 	assertContains(t, runReport, "## Model Evaluation")
 	assertBefore(t, runReport, "## Model Evaluation", "## Top Findings")
-	assertContains(t, runReport, "*Quality rating:* 🔵 Target, 🔴 Below | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`")
-	assertContains(t, runReport, "*Empty:* `—`")
-	assertContains(t, runReport, "*Rows:* ▦ Area, □ Factor")
+	assertContains(t, runReport, "Legend\n\n- *Quality rating:* 🔵 Target, 🔴 Below\n- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None\n- *Empty:* `—`")
+	assertContains(t, runReport, "- *Rows:* ▦ Area, □ Factor")
 	assertContains(t, runReport, "## Top Findings")
 	assertContains(t, runReport, "| Rank | Finding | Area | Factors | Type | Severity |")
 	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
-	assertContains(t, runReport, "*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low")
-	assertContains(t, runReport, "*Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low")
+	assertContains(t, runReport, "Legend\n\n- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note\n- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low")
 	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total)")
 	assertContains(t, runReport, "## Top Recommendations")
-	assertContains(t, runReport, "| # | Recommendation | Area / Factors | Impact | Reason |")
-	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | The quality model stays aligned with the evaluated evidence and next bar. |")
-	assertContains(t, runReport, "*Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low")
+	assertContains(t, runReport, "| # | Recommendation | Area / Factors | Impact | Confidence | Reason |")
+	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. |")
+	assertContains(t, runReport, "Legend\n\n- *Recommendation impact:* ⬥⬥ Very high, ⬥ High, ● Medium, ○ Low\n- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None")
 	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (1 total)")
 	assertNotContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |")
@@ -570,7 +571,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "## Contents\n\n- [Summary](#summary)\n- [Area / Factor Breakdown](#area--factor-breakdown)\n- [Requirements](#requirements)\n- [Limits & Incomplete Inputs](#limits--incomplete-inputs)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, rootReport, "Jump to:")
 	assertContains(t, rootReport, "## Summary\n\nRoot work meets the bar overall.")
-	assertContains(t, rootReport, "*Quality rating:* 🔵 Target, 🔴 Below")
+	assertContains(t, rootReport, "Legend\n\n- *Quality rating:* 🔵 Target, 🔴 Below")
 	assertContains(t, rootReport, "| Overall Rating | Local Rating | Confidence |")
 	assertNotContains(t, rootReport, "| Overall Rating | Local Rating | Confidence | Data |")
 	assertNotContains(t, rootReport, "## Findings")
@@ -583,7 +584,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "| ↳ [□ Reliability](factors/reliability/reliability-factor.md) | 🔴 Below | 🔵 Target | 1 | 1 |")
 	assertContains(t, rootReport, "| ↳ ↳ [□ Latency](factors/reliability/factors/latency/latency-factor.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
 	assertContains(t, rootReport, "| ↳ [▦ Payments](areas/payments/payments-area.md) | 🔵 Target | 🔵 Target | 0 | 0 |")
-	assertContains(t, rootReport, "*Rows:* ▦ Area, □ Factor")
+	assertContains(t, rootReport, "- *Rows:* ▦ Area, □ Factor")
 	assertNotContains(t, rootReport, "## Factors")
 	assertNotContains(t, rootReport, "## Child Areas")
 	assertNotContains(t, rootReport, "| Factor | Path | Local Rating | + Sub-Factors Rating | Sub-Factors |")
@@ -658,7 +659,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, requirementReport, "Jump to:")
 	assertContains(t, requirementReport, "## Summary\n\nTests meet the bar.")
 	assertContains(t, requirementReport, "*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked")
-	assertContains(t, requirementReport, "*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note")
+	assertContains(t, requirementReport, "*Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Confidence | Data |")
 	assertNotContains(t, requirementReport, "| Rating | Assessment | Factors | Confidence | Data |")
 	assertNotContains(t, requirementReport, "[requirement-assessment-result.json](")
@@ -680,8 +681,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, findingsReport, "Jump to:")
 	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
 	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
-	assertContains(t, findingsReport, "*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note")
-	assertContains(t, findingsReport, "*Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low")
+	assertContains(t, findingsReport, "Legend\n\n- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low\n- *Empty:* `—`")
+	assertContains(t, findingsReport, "Legend\n\n- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note")
 	assertNotContains(t, findingsReport, "## Legend")
 
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
@@ -773,7 +774,7 @@ areas:
 	}
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "# Quality Evaluation - Refunds")
-	assertContains(t, runReport, "| 🔵 Target | 🟢 High / 🟢 High | area:payments/refunds | 0 ranked | 1 ranked |")
+	assertContains(t, runReport, "| 🔵 Target | 🟢 High | Full evaluation of Refunds | 0 total | 1 total |")
 	assertNotContains(t, runReport, "| Planned Area | `area:payments/refunds` |")
 	assertContains(t, runReport, "Root Area was not evaluated in this run.")
 	areaReport := readReport(t, runPath, "areas/payments/refunds/refunds-area.md")
@@ -840,7 +841,7 @@ factors:
 	assertContains(t, runReport, "title: \"Quality Evaluation - Factor scoped model (Reliability, Correctness)\"\n")
 	assertContains(t, runReport, "# Quality Evaluation - Factor scoped model (Reliability, Correctness)")
 	assertContains(t, runReport, "scope: \"area:root / factor:root::reliability; factor:root::correctness\"\n")
-	assertContains(t, runReport, "| 🔵 Target | 🟢 High / 🟢 High | area:root / factor:root::reliability; factor:root::correctness | 0 ranked | 1 ranked |")
+	assertContains(t, runReport, "| 🔵 Target | 🟢 High | Evaluation of Factor scoped model for Reliability, Correctness | 0 total | 1 total |")
 	assertNotContains(t, runReport, "| Factor Filter | `factor:root::reliability` Reliability; `factor:root::correctness` Correctness |")
 	assertContains(t, runReport, "Correctness")
 	assertNotContains(t, runReport, "The scoped Area rating is a partial roll-up, not a complete Area assessment.")
@@ -1160,7 +1161,7 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 		{
 			name: "requirement finding invalid type",
 			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"type": "evidence"}) + `]}`,
-			want: `type = "evidence", want one of strength, gap, risk, unknown, note`,
+			want: `type = "evidence", want one of strength, gap, risk, note`,
 		},
 		{
 			name: "requirement finding invalid confidence",

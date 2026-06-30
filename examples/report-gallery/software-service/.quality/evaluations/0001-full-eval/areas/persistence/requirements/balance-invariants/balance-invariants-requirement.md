@@ -19,7 +19,12 @@ Factors: [integrity](../../factors/integrity/integrity-factor.md)
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +44,13 @@ The sampled persistence evidence supports balance preservation.
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-002` | Ledger mutation checks preserve balance invariants in the sampled paths. | ✅ Strength | 🔵 Low | 🟢 High | The finding supports the target integrity rating for ledger persistence. | ✅ Verified: The synthetic test matrix includes both success and failure paths for balance preservation. |
 
-*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable | *Empty:* `—`
+Legend
+
+- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
+- *Empty:* `—`
 
 ## Finding Details
 
@@ -51,7 +62,10 @@ The sampled persistence evidence supports balance preservation.
 | --- | --- | --- |
 | 3 / 7 | 🟠 P2 High | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-*Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low | *Empty:* `—`
+Legend
+
+- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
+- *Empty:* `—`
 
 #### Condition
 

@@ -2,9 +2,15 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated Evaluation record, routine, and report-tree contracts for
+  [0180 - Finding Taxonomy and Report Details](../../changes/archive/0180-finding-taxonomy-report-details.md).
+  Requirement Findings now use `strength`, `gap`, `risk`, and `note`; missing
+  evidence stays in non-finding fields; generated run reports show a Finding
+  Breakdown, total counts, and recommendation confidence.
+
 - **Revision**: Updated the Evaluation report-tree contract so adjacent local
-  keys use italicized labels and pipe separators, omit terminal punctuation, and
-  render row-marker glyphs without code formatting.
+  keys use italicized labels in `Legend` list items, omit terminal punctuation,
+  and render row-marker glyphs without code formatting.
 
 - **Revision**: Updated the Evaluation report-tree contract for
   [0179 - Enum Catalog Metadata](../../changes/archive/0179-enum-catalog-metadata.md).

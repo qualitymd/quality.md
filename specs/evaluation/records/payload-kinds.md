@@ -242,6 +242,12 @@ Each `evidence` entry **MUST** include `sourceRef` and `statement`. Each
 Requirement Findings **MAY** include `candidateActions`, a list of
 finding-local candidate action objects.
 
+Requirement Findings use the fixed Finding type values `strength`, `gap`,
+`risk`, and `note`. `unknown` is not a valid Finding type. Missing or
+insufficient evidence that prevents rating belongs in assessment/rating status,
+assessment `unknowns`, or rating `missingEvidence`; ambiguous current-state
+evidence that constrains a rating is a `gap`.
+
 Each candidate action object **MUST** include:
 
 - `id`; and

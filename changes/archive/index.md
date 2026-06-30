@@ -741,3 +741,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0179 — Enum Catalog Metadata](0179-enum-catalog-metadata.md) - added
   type-level labels and descriptions plus value descriptions to Evaluation enum
   catalogs, and generated report local keys now render catalog labels (`Done`).
+- [0180 — Finding Taxonomy and Report Details](0180-finding-taxonomy-report-details.md) -
+  removes `unknown` as a Finding type, distinguishes gap/risk markers, and
+  improves generated run report key details (`Done`).

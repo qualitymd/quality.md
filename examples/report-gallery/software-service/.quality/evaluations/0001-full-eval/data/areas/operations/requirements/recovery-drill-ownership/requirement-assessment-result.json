@@ -39,10 +39,10 @@
           "statement": "The synthetic calendar and playbook disagree about who owns the next recovery drill."
         }
       ],
-      "id": "unknown-001",
+      "id": "gap-002",
       "severity": "medium",
       "statement": "The current owner for ledger recovery drills is ambiguous.",
-      "type": "unknown"
+      "type": "gap"
     }
   ],
   "kind": "RequirementAssessmentResult",

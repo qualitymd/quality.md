@@ -457,7 +457,7 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 			"Highest Severity",
 		},
 		SummaryRow: []string{
-			fmt.Sprintf("%d ranked findings", len(artifacts.rankedFindings())),
+			fmt.Sprintf("%d findings", len(artifacts.rankedFindings())),
 			highestFindingSeverityTitle(artifacts),
 		},
 		KeyLines: []string{
@@ -492,7 +492,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			"Coverage",
 		},
 		SummaryRow: []string{
-			fmt.Sprintf("%d ranked recommendations", len(recommendations)),
+			fmt.Sprintf("%d recommendations", len(recommendations)),
 			highestRecommendationImpactTitle(recommendations),
 			recommendationCoverageSummary(artifacts),
 		},
@@ -766,7 +766,10 @@ func writeLocalKeys(b *strings.Builder, lines ...string) {
 	if len(clean) == 0 {
 		return
 	}
-	b.WriteString(strings.Join(clean, " | ") + "\n")
+	b.WriteString("Legend\n\n")
+	for _, line := range clean {
+		b.WriteString("- " + line + "\n")
+	}
 	b.WriteString("\n")
 }
 
@@ -999,6 +1002,8 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
 	writeLocalKeys(&b, ratingKeyLine(spec), fixedEnumKeyLine(confidenceValues), emptyKeyLine())
+	writeRunReportFindingBreakdown(&b, artifacts)
+	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues), emptyKeyLine())
 	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
 		{Label: "Top Findings", Anchor: "#top-findings"},
@@ -1014,7 +1019,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeFullListReportLink(&b, reportPath, "Full findings report", "findings.md", len(artifacts.rankedFindings()))
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
-	writeLocalKeys(&b, fixedEnumKeyLine(recommendationImpactValues))
+	writeLocalKeys(&b, fixedEnumKeyLine(recommendationImpactValues), fixedEnumKeyLine(confidenceValues))
 	writeFullListReportLink(&b, reportPath, "Full recommendations report", "recommendations.md", len(artifacts.rankedRecommendations()))
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
@@ -1062,12 +1067,110 @@ func writeRunReportKeyDetails(b *strings.Builder, spec *model.Spec, artifacts *e
 	b.WriteString(md.TableRow("---", "---", "---", "---", "---"))
 	b.WriteString(md.TableRow(
 		evaluationRatingLabel(spec, scopedArea),
-		evaluationConfidencePair(scopedArea, localArea),
-		requestedScopeLabel(plan.RequestedScope),
-		fmt.Sprintf("%d ranked", len(artifacts.rankedFindings())),
-		fmt.Sprintf("%d ranked", len(artifacts.rankedRecommendations())),
+		emDashIfEmpty(confidenceTitle(evaluationString(scopedArea, "confidence"))),
+		runReportScopeLabel(spec, plan),
+		fmt.Sprintf("%d total", len(artifacts.rankedFindings())),
+		fmt.Sprintf("%d total", len(artifacts.rankedRecommendations())),
 	))
 	b.WriteString("\n")
+	_ = localArea
+}
+
+func runReportScopeLabel(spec *model.Spec, plan *evaluationReportPlan) string {
+	if plan == nil {
+		return "—"
+	}
+	area := areaTitle(spec, plan.ScopedAreaID)
+	if len(plan.FactorFilter) == 0 {
+		return "Full evaluation of " + area
+	}
+	factors := make([]string, 0, len(plan.FactorFilter))
+	for _, factor := range plan.FactorFilter {
+		factors = append(factors, factorTitle(spec, factor))
+	}
+	return "Evaluation of " + area + " for " + strings.Join(factors, ", ")
+}
+
+func writeRunReportFindingBreakdown(b *strings.Builder, artifacts *evaluationArtifacts) {
+	b.WriteString("Finding Breakdown\n\n")
+	b.WriteString("| Finding Type | Count | Detail |\n")
+	b.WriteString("| --- | ---: | --- |\n")
+	rows := runReportFindingBreakdownRows(artifacts)
+	if len(rows) == 0 {
+		b.WriteString("| (none) | 0 | — |\n\n")
+		return
+	}
+	for _, row := range rows {
+		b.WriteString(md.TableRow(row.Type, row.Count, row.Detail))
+	}
+	b.WriteString("\n")
+}
+
+type findingBreakdownRow struct {
+	Type   string
+	Count  string
+	Detail string
+}
+
+func runReportFindingBreakdownRows(artifacts *evaluationArtifacts) []findingBreakdownRow {
+	counts := map[string]int{}
+	severities := map[string]map[string]int{}
+	for _, row := range artifacts.rankedFindings() {
+		typ := firstString(row.Finding, "type")
+		if typ == "" {
+			continue
+		}
+		counts[typ]++
+		if typ == string(FindingTypeGap) || typ == string(FindingTypeRisk) {
+			sev := firstString(row.Finding, "severity")
+			if sev == "" {
+				sev = "none"
+			}
+			if severities[typ] == nil {
+				severities[typ] = map[string]int{}
+			}
+			severities[typ][sev]++
+		}
+	}
+	out := make([]findingBreakdownRow, 0, len(counts))
+	for _, value := range findingTypeValues.Values {
+		typ := string(value.Value)
+		count := counts[typ]
+		if count == 0 {
+			continue
+		}
+		out = append(out, findingBreakdownRow{
+			Type:   findingTypeTitle(typ),
+			Count:  fmt.Sprintf("%d", count),
+			Detail: findingBreakdownDetail(typ, severities[typ]),
+		})
+	}
+	return out
+}
+
+func findingBreakdownDetail(typ string, severities map[string]int) string {
+	if typ != string(FindingTypeGap) && typ != string(FindingTypeRisk) {
+		return "—"
+	}
+	if len(severities) == 0 {
+		return "—"
+	}
+	parts := make([]string, 0, len(severities))
+	for _, value := range findingSeverityValues.Values {
+		sev := string(value.Value)
+		count := severities[sev]
+		if count == 0 {
+			continue
+		}
+		parts = append(parts, fmt.Sprintf("%s: %d", findingSeverityTitle(sev), count))
+	}
+	if count := severities["none"]; count > 0 {
+		parts = append(parts, fmt.Sprintf("—: %d", count))
+	}
+	if len(parts) == 0 {
+		return "—"
+	}
+	return strings.Join(parts, "; ")
 }
 
 func writeFullListReportLink(b *strings.Builder, fromReport, label, target string, total int) {
@@ -1943,11 +2046,11 @@ func requirementIDForAssessmentPath(path string) requirementID {
 }
 
 func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifacts *evaluationArtifacts, reportPath string, limit int) {
-	b.WriteString("| # | Recommendation | Area / Factors | Impact | Reason |\n")
-	b.WriteString("| --- | --- | --- | --- | --- |\n")
+	b.WriteString("| # | Recommendation | Area / Factors | Impact | Confidence | Reason |\n")
+	b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
 	items := artifacts.rankedRecommendations()
 	if len(items) == 0 {
-		b.WriteString("| (no recommendations) | — | — | — | — |\n\n")
+		b.WriteString("| (no recommendations) | — | — | — | — | — |\n\n")
 		return
 	}
 	for i, item := range items {
@@ -1964,6 +2067,7 @@ func writeTopRecommendationsTable(b *strings.Builder, spec *model.Spec, artifact
 			reportLink(reportPath, path, title),
 			recommendationAreaFactorLinks(spec, artifacts, item.Recommendation, reportPath),
 			impactTitle(firstString(item.Recommendation, "impact")),
+			emDashIfEmpty(confidenceTitle(firstString(item.Ranking, "confidence"))),
 			firstString(item.Recommendation, "expectedValue"),
 		))
 	}

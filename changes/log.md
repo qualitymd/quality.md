@@ -3,6 +3,26 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0180 - Finding Taxonomy and Report Details](archive/0180-finding-taxonomy-report-details.md).
+  Evaluation Finding types now use `strength`, `gap`, `risk`, and `note`;
+  generated reports render `🚩 Gap`, add a run Finding Breakdown, use a single
+  Overall Rating confidence, and include confidence in run Top Recommendations.
+
+- **In-Review**: Completed implementation for
+  [0180 - Finding Taxonomy and Report Details](archive/0180-finding-taxonomy-report-details.md).
+  Finding type validation, generated reports, durable specs, runtime skill
+  guidance, tests, and report-gallery output are aligned for review.
+
+- **In-Progress**: Created
+  [0180 - Finding Taxonomy and Report Details](archive/0180-finding-taxonomy-report-details.md)
+  with its
+  [functional spec](archive/0180-finding-taxonomy-report-details/spec.md) and
+  [design doc](archive/0180-finding-taxonomy-report-details/design.md). Functional
+  requirements and design are settled; implementation is beginning across
+  Finding type validation, generated reports, skill guidance, durable specs,
+  tests, and generated examples.
+
+- **Done**: Implemented and archived
   [0179 - Enum Catalog Metadata](archive/0179-enum-catalog-metadata.md).
   Fixed Evaluation enum catalogs now carry type-level labels and descriptions
   plus value descriptions, and generated report local keys render catalog labels.

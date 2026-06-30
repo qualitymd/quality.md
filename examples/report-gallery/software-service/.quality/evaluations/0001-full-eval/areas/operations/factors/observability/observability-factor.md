@@ -19,7 +19,12 @@ Factor: [Observability](observability-factor.md)
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +44,10 @@ Observability follows its direct requirement signal.
 | --- | --- | --- |
 | [health signals explain customer impact](../../requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed |
 
-*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
+Legend
+
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Empty:* `—`
 
 ## Sub-Factors
 
@@ -47,7 +55,9 @@ Observability follows its direct requirement signal.
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-*Empty:* `—`
+Legend
+
+- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

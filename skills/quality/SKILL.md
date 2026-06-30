@@ -447,17 +447,21 @@ top-level finding rationale. Do not write legacy finding `description` or
 Classify finding types by analysis pattern:
 
 - `gap`: observed condition falls short of declared criteria; include the unmet
-  criterion and rating effect.
+  criterion and rating effect. Ambiguous current-state evidence that constrains
+  a rating is a gap.
 - `risk`: observed condition could plausibly cause future quality loss; include
   the plausible path and confidence limit.
 - `strength`: observed condition supports or exceeds criteria; use
   `basis.status: verified` when the positive condition's basis is directly
   supported by cited evidence, or `basis.status: not_applicable` when no
   separate basis beyond the cited evidence is claimed.
-- `unknown`: evidence needed for judgment is missing, inaccessible, stale, or
-  ambiguous; name the blocked criterion or confidence limit.
 - `note`: relevant context worth preserving that does not drive a rating by
   itself.
+
+Evidence needed for judgment that is missing, inaccessible, stale, or ambiguous
+enough to prevent rating is not a Finding type. Record it through
+not-assessed/not-rated status, `unknowns`, or `missingEvidence`, and name the
+blocked criterion or confidence limit there.
 
 Write canonical fixed enum values in Evaluation data, not report display labels,
 emoji markers, shape markers, or case variants. For example, use `gap`, `high`,

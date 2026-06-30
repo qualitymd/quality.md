@@ -3,6 +3,12 @@
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for
+  [0180 - Finding Taxonomy and Report Details](../changes/archive/0180-finding-taxonomy-report-details.md).
+  Evaluation Finding types now exclude `unknown`, generated reports render
+  `🚩 Gap`, run report key details use single confidence and total counts, and
+  Top Recommendations include confidence.
+
+- **Revision**: Implemented durable spec changes for
   [0178 - Recommendation Number Columns](../changes/archive/0178-recommendation-number-columns.md).
   Generated recommendation list tables now use `#` as the single visible
   recommendation number column and no longer duplicate it with `Rank`.

@@ -210,8 +210,11 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
 - **Finding types carry distinct analysis.** The skill **MUST** classify `gap`
   as an observed shortfall against criteria, `risk` as a plausible future
   quality loss path, `strength` as support for or margin above criteria,
-  `unknown` as missing or ambiguous evidence, and `note` as relevant context
-  that does not drive a rating by itself.
+  and `note` as relevant context that does not drive a rating by itself. The
+  skill **MUST** classify ambiguous current-state evidence that constrains a
+  rating as `gap`. The skill **MUST** record missing or insufficient evidence
+  that prevents rating through not-assessed/not-rated status, `unknowns`, or
+  `missingEvidence`, not through a Finding type.
 - **Canonical enum values stay raw.** When writing Evaluation data, the skill
   **MUST** use canonical fixed enum values such as `gap`, `high`, `verified`,
   `P1`, `addressed_by_recommendation`, and `very_high`, not report display

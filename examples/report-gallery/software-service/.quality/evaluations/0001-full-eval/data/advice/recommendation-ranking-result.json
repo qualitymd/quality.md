@@ -65,12 +65,12 @@
       "disposition": "addressed_by_recommendation",
       "findingRef": {
         "kind": "RequirementAssessmentResult",
-        "selector": "findings[unknown-001]",
+        "selector": "findings[gap-002]",
         "subject": {
           "requirementId": "requirement:operations::recovery-drill-ownership"
         }
       },
-      "rationale": "The ownership recommendation resolves the unknown.",
+      "rationale": "The ownership recommendation resolves this gap.",
       "recommendationRefs": [
         "qrec_gallery3"
       ]

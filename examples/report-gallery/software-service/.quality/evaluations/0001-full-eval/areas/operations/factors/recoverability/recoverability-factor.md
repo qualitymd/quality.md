@@ -19,7 +19,12 @@ Factor: [Recoverability](recoverability-factor.md)
 | --- | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟡 Low / 🟡 Low |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +44,10 @@ Recoverability follows its direct requirement signal.
 | --- | --- | --- |
 | [recovery drills have current owners](../../requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
-*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
+Legend
+
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Empty:* `—`
 
 ## Sub-Factors
 
@@ -47,7 +55,9 @@ Recoverability follows its direct requirement signal.
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-*Empty:* `—`
+Legend
+
+- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

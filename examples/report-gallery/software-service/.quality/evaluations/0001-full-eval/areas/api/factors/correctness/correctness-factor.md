@@ -19,7 +19,12 @@ Factor: [Correctness](correctness-factor.md)
 | --- | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +44,10 @@ Correctness follows its direct requirement signal.
 | --- | --- | --- |
 | [mutation endpoints are idempotent under retry](../../requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
-*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
+Legend
+
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Empty:* `—`
 
 ## Sub-Factors
 
@@ -47,7 +55,9 @@ Correctness follows its direct requirement signal.
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-*Empty:* `—`
+Legend
+
+- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

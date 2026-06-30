@@ -19,7 +19,12 @@ Factor: [Integrity](integrity-factor.md)
 | --- | --- | --- | --- |
 | 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Analysis status:* ✅ Analyzed, ⬜ Empty, ⚪ Not Analyzed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +44,10 @@ Integrity follows its direct requirement signal.
 | --- | --- | --- |
 | [ledger mutations preserve balance invariants](../../requirements/balance-invariants/balance-invariants-requirement.md) | 🔵 Target | ✅ Assessed |
 
-*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
+Legend
+
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Empty:* `—`
 
 ## Sub-Factors
 
@@ -47,7 +55,9 @@ Integrity follows its direct requirement signal.
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-*Empty:* `—`
+Legend
+
+- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

@@ -17,7 +17,11 @@ Area: [LedgerLite Service](../../root-area.md) / [Ledger Persistence](persistenc
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +43,9 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 | ↳ [□ Integrity](factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-*Rows:* ▦ Area, □ Factor
+Legend
+
+- *Rows:* ▦ Area, □ Factor
 
 ## Requirements
 
@@ -48,7 +54,10 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 | [ledger mutations preserve balance invariants](requirements/balance-invariants/balance-invariants-requirement.md) | 🔵 Target | ✅ Assessed | [integrity](factors/integrity/integrity-factor.md) |
 | [migrations have rehearsed rollback paths](requirements/migration-rollback/migration-rollback-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
 
-*Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Empty:* `—`
+Legend
+
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Empty:* `—`
 
 ## Limits & Incomplete Inputs
 

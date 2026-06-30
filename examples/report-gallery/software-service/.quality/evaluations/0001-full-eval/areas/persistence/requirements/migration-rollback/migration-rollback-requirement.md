@@ -19,7 +19,12 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 | --- | --- | --- |
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
 
-*Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable | *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Empty:* `—`
+Legend
+
+- *Quality rating:* 🟢 Outstanding, 🔵 Target, 🟡 Minimum, 🔴 Unacceptable
+- *Assessment status:* ✅ Assessed, 🟡 Partially Assessed, ⚪ Not Assessed, ⛔ Blocked
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Empty:* `—`
 
 ## Contents
 
@@ -39,7 +44,13 @@ Rollback instructions are present, but the rehearsal signal is stale.
 | --- | --- | --- | --- | --- | --- | --- |
 | `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | 🟡 Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
 
-*Finding type:* ✅ Strength, ⚠️ Gap, ⚠️ Risk, ❓ Unknown, ℹ️ Note | *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low | *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None | *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable | *Empty:* `—`
+Legend
+
+- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
+- *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
+- *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable
+- *Empty:* `—`
 
 ## Finding Details
 
@@ -51,7 +62,10 @@ Rollback instructions are present, but the rehearsal signal is stale.
 | --- | --- | --- |
 | 4 / 7 | 🔴 P1 Highest | Ranked by expected impact on the service quality bar and report-gallery usefulness. |
 
-*Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low | *Empty:* `—`
+Legend
+
+- *Finding rank:* 🔴 P1 Highest, 🟠 P2 High, 🟡 P3 Medium, ⚪ P4 Low
+- *Empty:* `—`
 
 #### Condition
 
