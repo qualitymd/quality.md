@@ -134,6 +134,52 @@ mode: custom
     <li>Move judgement and taste up the loop stack</li>
     <li>Compound learning at the highest leverage point</li>
   </ul>
+  <h3 className="mt-12 text-xl sm:text-md lg:text-lg font-bold tracking-tight text-gray-900 dark:text-zinc-50 text-center">
+    How to use QUALITY.md?
+  </h3>
+  <div className="mt-4 text-md lg:text-md leading-relaxed text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto">
+    <Steps>
+      <Step title="Set up">
+        Install the `/quality` agent skill and `qualitymd` CLI, then run
+        `/quality setup` to create a project quality model.
+      </Step>
+      <Step title="Evaluate">
+        Run `/quality evaluate` to generate a holistic quality report with
+        findings and actionable recommendations.
+      </Step>
+      <Step title="Act">
+        Hand off quality improvement recommendations to inner agent loops,
+        teammates, or the workflow best suited to the change.
+      </Step>
+      <Step title="Improve">
+        Run `/quality improve` to refine `QUALITY.md` from what the evaluation
+        and improvement work revealed.
+      </Step>
+      <Step title="Loop">
+        Return to Evaluate with a sharper model and continue compounding quality
+        learning.
+      </Step>
+    </Steps>
+  </div>
+  <a
+    href="/loops"
+    className="mt-6 block max-w-2xl mx-auto rounded-lg border border-gray-200 p-5 text-left no-underline transition-colors hover:bg-gray-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
+  >
+    <div className="flex items-start gap-3">
+      <Icon icon="repeat" size={18} className="mt-1" />
+      <div>
+        <p className="font-semibold text-gray-900 dark:text-zinc-50">
+          Engineer quality loops
+        </p>
+        <p className="mt-1 text-md lg:text-md leading-relaxed text-gray-600 dark:text-zinc-400">
+          Go deeper on the Quality Loop orientation: integrating evaluation and
+          improvement into team workflows, recurring GitHub Actions, Claude Code
+          routines, Codex automations, and handoffs through GitHub Issues,
+          Linear, and other systems.
+        </p>
+      </div>
+    </div>
+  </a>
 </div>
 <div></div>
 
