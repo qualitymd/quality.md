@@ -1,0 +1,44 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "QUALITY.md",
+  "colors": {
+    "primary": "#15803D",
+    "light": "#22C55E",
+    "dark": "#16A34A"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get started",
+        "pages": ["overview", "quickstart"]
+      },
+      {
+        "group": "Using QUALITY.md",
+        "pages": ["quality-skill", "quality-loop-stack", "concepts"]
+      },
+      {
+        "group": "Reference",
+        "pages": ["specification", "cli-reference"]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/qualitymd/quality.md"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get started",
+      "href": "/quickstart"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/qualitymd/quality.md"
+    }
+  }
+}

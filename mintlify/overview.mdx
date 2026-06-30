@@ -1,0 +1,49 @@
+---
+title: Overview
+description: What QUALITY.md is, the file format, and how the skill and CLI work together.
+---
+
+{/* TODO: Refine content. This page is a scaffold — structure first, prose later. */}
+
+QUALITY.md is an open format, agent skill, and CLI for modeling a project's
+quality so teams and agents can evaluate it, stay aligned on what good means,
+and improve it over time.
+
+## The three surfaces
+
+{/* TODO: Describe the format, the /quality skill, and the qualitymd CLI, and
+    that the experience is skill-first — users mostly work through the agent. */}
+
+- **The format** — a `QUALITY.md` file that declares a quality model.
+- **The /quality skill** — the primary way you work with QUALITY.md, through an
+  AI assistant or coding agent.
+- **The qualitymd CLI** — the deterministic tooling the skill builds on.
+
+## The QUALITY.md file
+
+{/* TODO: Explain the two layers and when each matters. */}
+
+A QUALITY.md file has two layers:
+
+1. **YAML frontmatter** — the structured quality model.
+2. **Markdown body** — the context, scope, and rationale that help people and
+   agents interpret and evaluate the model.
+
+## The Quality Loop Stack
+
+{/* TODO: Summarize evaluate → review → act → improve and link to the loop
+    stack page. */}
+
+See [The Quality Loop Stack](/quality-loop-stack) for the workflow QUALITY.md is
+built around.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Install the skill and CLI and create your first QUALITY.md.
+  </Card>
+  <Card title="The /quality skill" icon="sparkles" href="/quality-skill">
+    The commands you use day to day.
+  </Card>
+</Columns>

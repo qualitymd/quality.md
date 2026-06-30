@@ -68,6 +68,9 @@ case "$mode" in
 		printf 'Regenerating report gallery for staged changes...\n'
 		mise run report-gallery
 		git add examples/report-gallery
+		printf 'Regenerating Mintlify spec page for staged changes...\n'
+		mise run sync-spec-docs
+		git add mintlify/specification.mdx
 		printf 'Running mise run check against staged changes...\n'
 		;;
 	committed)

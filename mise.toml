@@ -36,8 +36,8 @@ fi
 '''
 
 [tasks.check]
-description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, npm package check)"
-depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "npm-pack-check"]
+description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, generated docs check, npm package check)"
+depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "npm-pack-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"
@@ -96,6 +96,14 @@ run = "go run ./scripts/report-gallery"
 [tasks.report-gallery-check]
 description = "Verify generated report gallery examples are current"
 run = ["mise run report-gallery", "git diff --exit-code examples/report-gallery"]
+
+[tasks.sync-spec-docs]
+description = "Regenerate the Mintlify specification page from SPECIFICATION.md"
+run = "node scripts/sync-spec-docs.mjs"
+
+[tasks.sync-spec-docs-check]
+description = "Verify the generated Mintlify specification page is current"
+run = ["mise run sync-spec-docs", "git diff --exit-code mintlify/specification.mdx"]
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"
