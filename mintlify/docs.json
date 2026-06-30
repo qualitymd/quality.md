@@ -16,22 +16,28 @@
     "dark": "#16A34A"
   },
   "navigation": {
-    "groups": [
+    "anchors": [
       {
-        "group": "Get started",
-        "pages": ["overview", "quickstart"]
+        "anchor": "Documentation",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": ["overview", "quickstart"]
+          },
+          {
+            "group": "Using QUALITY.md",
+            "pages": ["quality-skill", "quality-loop-stack", "concepts"]
+          },
+          {
+            "group": "Reference",
+            "pages": ["specification", "cli-reference"]
+          }
+        ]
       },
       {
-        "group": "Using QUALITY.md",
-        "pages": ["quality-skill", "quality-loop-stack", "concepts"]
-      },
-      {
-        "group": "Reference",
-        "pages": ["specification", "cli-reference"]
-      },
-      {
-        "group": "Examples",
-        "pages": ["examples/software-service/report"]
+        "anchor": "Example report",
+        "icon": "external-link",
+        "href": "https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/report.md"
       }
     ]
   },

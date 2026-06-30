@@ -37,7 +37,7 @@ fi
 
 [tasks.check]
 description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, generated docs check, npm package check)"
-depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "report-docs-check", "npm-pack-check"]
+depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "npm-pack-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"
@@ -112,20 +112,6 @@ run = "go run ./scripts/cli-docs"
 [tasks.cli-docs-check]
 description = "Verify the generated Mintlify CLI reference page is current"
 run = ["mise run cli-docs", "git diff --exit-code mintlify/cli-reference.mdx"]
-
-[tasks.report-docs]
-description = "Regenerate the Mintlify example evaluation pages from the report gallery"
-run = "node scripts/report-docs.mjs"
-
-[tasks.report-docs-check]
-description = "Verify the generated Mintlify example evaluation pages are current"
-# Reads the report gallery, so it must run after the gallery is (re)generated —
-# otherwise it races report-gallery-check rewriting those files in the check gate.
-depends = ["report-gallery-check"]
-run = [
-	"mise run report-docs",
-	"git diff --exit-code mintlify/examples mintlify/docs.json",
-]
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"

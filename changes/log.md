@@ -2,6 +2,16 @@
 
 ## 2026-06-30
 
+- **In-Review**: Reworked
+  [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md)
+  to link out instead of generate. Removed `scripts/report-docs.mjs` and the
+  generated `mintlify/examples/**` tree, dropped the `report-docs` /
+  `report-docs-check` tasks from `mise.toml` (and the `check` gate) and the
+  example-page regeneration step from `.githooks/run-check`, and pruned the task
+  docs from [`CONTRIBUTING.md`](../CONTRIBUTING.md). `mintlify/docs.json` now
+  surfaces the gallery report through a single `Example report` sidebar link that
+  opens `report.md` on GitHub. Updated the change case and its functional spec.
+
 - **In-Review**: Created and implemented
   [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md).
   Added `scripts/report-docs.mjs`, which renders the report-gallery LedgerLite
