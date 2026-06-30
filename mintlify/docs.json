@@ -26,8 +26,7 @@
       {
         "group": "The Quality Loop",
         "pages": [
-          "loops",
-          "run-loop",
+          "orientation",
           "claude-code",
           "codex"
         ]

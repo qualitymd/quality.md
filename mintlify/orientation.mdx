@@ -1,0 +1,78 @@
+---
+title: Loop orientation
+description: How the Quality Loop Stack works and how to run your first loop on a real project.
+---
+
+{/* TODO: Refine content. This page collapses the loop model and the first-run
+    practice into one orientation. Tighten prose later. */}
+
+This is the page that ties QUALITY.md together. It orients you the way the
+*Orient* step orients an [OODA loop](https://en.wikipedia.org/wiki/OODA_loop):
+not a one-time setup step, but the place you keep returning to as your project
+and your understanding of its quality change.
+
+QUALITY.md is built around a set of nested loops that move quality judgment up
+the loop stack instead of relying on ad hoc prompts and reactive reviews. Make
+that judgment explicit once, and every loop below it gets faster and more
+consistent.
+
+## The Quality Loop Stack
+
+{/* TODO: Expand each loop and its cadence. Keep the named-loop capitalization
+    (Inner Loop, Middle Loop, Meta Loop, Outer Loop). */}
+
+The stack is one workflow — evaluate, review, act, improve — running at four
+cadences at once. Each loop hands its output up or down to the next.
+
+- **The Middle / Meta Loop** (hourly / daily / weekly) — evaluate, then review
+  the report. This is where quality judgment is observed and oriented.
+- **The Inner Loop** (continuous) — act on handoff-ready recommendations as you
+  work, with the model as shared context.
+- **The Outer Loop** (daily / weekly) — improve by refining the quality model
+  and raising the bar, compounding learning and maximizing leverage.
+
+> The three-loop framing and the term *middle loop* draw on Annie Vella,
+> *[The Middle Loop](https://annievella.com/posts/the-middle-loop/)*. The
+> loop-engineering framing also draws on Latent Space,
+> *[Loopcraft: The Art of Stacking Loops](https://www.latent.space/p/ainews-loopcraft-the-art-of-stacking)*.
+
+## Run your first loop
+
+{/* TODO: Walk through running the loop on a real project end to end,
+    harness-agnostic. Expand each step. */}
+
+You run the loop through the `/quality` skill, harness-agnostic. One pass
+through all four steps is your first loop.
+
+<Steps>
+  <Step title="Evaluate">
+    Run `/quality evaluate` to produce an evaluation report — quality ratings,
+    assessment findings, and recommendations across your project.
+  </Step>
+  <Step title="Review">
+    Read ratings, findings, and recommendations by area or factor. Decide what
+    matters now.
+  </Step>
+  <Step title="Act">
+    Implement or delegate handoff-ready recommendations to people, agents, or
+    other agent loops.
+  </Step>
+  <Step title="Improve">
+    Run `/quality improve` to refine `QUALITY.md` so the next loop starts from a
+    sharper model.
+  </Step>
+</Steps>
+
+Then run it again. The model you sharpen in *Improve* is what your next *Orient*
+reads from — that compounding is the point.
+
+## Next steps
+
+<Columns cols={2}>
+  <Card title="The /quality skill" icon="sparkles" href="/skill">
+    The primary way you set up, evaluate, and improve a QUALITY.md.
+  </Card>
+  <Card title="Specification" icon="book-open" href="/specification">
+    Document structure, model vocabulary, and evaluation semantics.
+  </Card>
+</Columns>
