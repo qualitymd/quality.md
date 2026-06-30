@@ -1,0 +1,7 @@
+/* Hide the top navbar chrome on custom-mode pages (the home page) while
+   keeping the alpha announcement banner. The navbar carries the `is-custom`
+   class only while a `mode: custom` page is rendered, so this scopes the rule
+   to the home page; `#banner` is left visible. */
+#navbar.is-custom > *:not(#banner) {
+  display: none;
+}
