@@ -323,11 +323,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		strings.Contains(string(runReport), "Recommended next action:") ||
 		!strings.Contains(string(runReport), "## Key Details\n\n| Overall Rating | Confidence | Scope | Findings | Recommendations |") ||
 		!strings.Contains(string(runReport), "| 🔵 Target | 🟢 High | Full evaluation of Test model | 1 total | 1 total |") ||
-		!strings.Contains(string(runReport), "Finding Summary\n\n| Finding Type | Count | Severity |") ||
-		!strings.Contains(string(runReport), "| 🚩 Gap | 0 | — |") ||
-		!strings.Contains(string(runReport), "| ⚠️ Risk | 0 | — |") ||
-		!strings.Contains(string(runReport), "| 💪 Strength | 1 | — |") ||
-		!strings.Contains(string(runReport), "| ℹ️ Note | 0 | — |") ||
+		strings.Contains(string(runReport), "Finding Summary\n\n| Finding Type | Count | Severity |") ||
 		!strings.Contains(string(runReport), "## Contents\n\n- [Model Evaluation](#model-evaluation)\n- [Top Findings](#top-findings)\n- [Top Recommendations](#top-recommendations)\n- [Primary Source Data](#primary-source-data)\n\n") ||
 		strings.Contains(string(runReport), "Jump to:") ||
 		!strings.Contains(string(runReport), "## Model Evaluation\n\n| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |") ||
@@ -493,11 +489,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "## Key Details")
 	assertContains(t, runReport, "| Overall Rating | Confidence | Scope | Findings | Recommendations |")
 	assertContains(t, runReport, "| 🔵 Target | 🟢 High | Full evaluation of Navigation model | 1 total | 1 total |")
-	assertContains(t, runReport, "Finding Summary\n\n| Finding Type | Count | Severity |")
-	assertContains(t, runReport, "| 🚩 Gap | 0 | — |")
-	assertContains(t, runReport, "| ⚠️ Risk | 0 | — |")
-	assertContains(t, runReport, "| 💪 Strength | 1 | — |")
-	assertContains(t, runReport, "| ℹ️ Note | 0 | — |")
+	assertNotContains(t, runReport, "Finding Summary\n\n| Finding Type | Count | Severity |")
 	assertNotContains(t, runReport, "| Overall Rating | Scope | Confidence | Data |")
 	assertContains(t, runReport, "## Contents\n\n- [Model Evaluation](#model-evaluation)\n- [Top Findings](#top-findings)\n- [Top Recommendations](#top-recommendations)\n- [Primary Source Data](#primary-source-data)")
 	assertNotContains(t, runReport, "Jump to:")

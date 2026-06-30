@@ -926,7 +926,6 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString(evaluationSummary(scopedArea))
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
-	writeRunReportFindingSummary(&b, artifacts)
 	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
 		{Label: "Top Findings", Anchor: "#top-findings"},
@@ -1028,82 +1027,6 @@ func runReportScopeLabel(spec *model.Spec, plan *evaluationReportPlan) string {
 		factors = append(factors, factorTitle(spec, factor))
 	}
 	return "Evaluation of " + area + " for " + strings.Join(factors, ", ")
-}
-
-func writeRunReportFindingSummary(b *strings.Builder, artifacts *evaluationArtifacts) {
-	b.WriteString("Finding Summary\n\n")
-	b.WriteString("| Finding Type | Count | Severity |\n")
-	b.WriteString("| --- | ---: | --- |\n")
-	rows := runReportFindingSummaryRows(artifacts)
-	if len(rows) == 0 {
-		b.WriteString("| (none) | 0 | — |\n\n")
-		return
-	}
-	for _, row := range rows {
-		b.WriteString(md.TableRow(row.Type, row.Count, row.Severity))
-	}
-	b.WriteString("\n")
-}
-
-type findingSummaryRow struct {
-	Type     string
-	Count    string
-	Severity string
-}
-
-func runReportFindingSummaryRows(artifacts *evaluationArtifacts) []findingSummaryRow {
-	counts := map[string]int{}
-	severities := map[string]map[string]int{}
-	for _, row := range artifacts.rankedFindings() {
-		typ := firstString(row.Finding, "type")
-		if typ == "" {
-			continue
-		}
-		counts[typ]++
-		if typ == string(FindingTypeGap) || typ == string(FindingTypeRisk) {
-			sev := findingConcernSeverity(row.Finding)
-			if sev == "" {
-				continue
-			}
-			if severities[typ] == nil {
-				severities[typ] = map[string]int{}
-			}
-			severities[typ][sev]++
-		}
-	}
-	out := make([]findingSummaryRow, 0, len(findingTypeValues.Values))
-	for _, value := range findingTypeValues.Values {
-		typ := string(value.Value)
-		count := counts[typ]
-		out = append(out, findingSummaryRow{
-			Type:     findingTypeTitle(typ),
-			Count:    fmt.Sprintf("%d", count),
-			Severity: findingSummarySeverity(typ, severities[typ]),
-		})
-	}
-	return out
-}
-
-func findingSummarySeverity(typ string, severities map[string]int) string {
-	if typ != string(FindingTypeGap) && typ != string(FindingTypeRisk) {
-		return "—"
-	}
-	if len(severities) == 0 {
-		return "—"
-	}
-	parts := make([]string, 0, len(severities))
-	for _, value := range findingSeverityValues.Values {
-		sev := string(value.Value)
-		count := severities[sev]
-		if count == 0 {
-			continue
-		}
-		parts = append(parts, fmt.Sprintf("%s: %d", findingSeverityTitle(sev), count))
-	}
-	if len(parts) == 0 {
-		return "—"
-	}
-	return strings.Join(parts, "; ")
 }
 
 func writeFullFindingsReportLink(b *strings.Builder, fromReport string, artifacts *evaluationArtifacts) {

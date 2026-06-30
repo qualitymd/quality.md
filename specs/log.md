@@ -3,6 +3,12 @@
 ## 2026-06-30
 
 - **Revision**: Implemented durable spec changes for
+  [0187 - Remove Run Finding Summary](../changes/archive/0187-remove-run-finding-summary.md).
+  Generated run reports no longer render the standalone `Finding Summary` table
+  near `## Key Details`; the total count remains in Key Details and the complete
+  breakdown remains beside the full `findings.md` link.
+
+- **Revision**: Implemented durable spec changes for
   [0186 - Report Count Summary Hierarchy](../changes/archive/0186-report-count-summary-hierarchy.md).
   Generated run reports now place both full-list links above capped preview
   tables, use marked inline count summaries, label recommendation count groups

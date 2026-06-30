@@ -7,6 +7,9 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation run reports no longer render the standalone Finding
+  Summary table near Key Details. The Key Details total and the full
+  `findings.md` link's type/severity count summary remain.
 - Generated Evaluation run reports now place both full Findings and full
   Recommendations report links above their capped preview tables, add semantic
   markers to full-list count summaries, label recommendation count groups by
@@ -22,10 +25,6 @@ QUALITY.md specification.
 - Generated `Model Evaluation` and `Area / Factor Breakdown` tables now label
   their first column `▦ Area / □ Factor`, making Area and Factor row markers
   visible in the table header.
-- Generated Evaluation run reports now label the type-count table `Finding
-  Summary`, show every Finding type including zero-count types, order Finding
-  types as `Gap`, `Risk`, `Strength`, then `Note`, and rename the summary detail
-  column to `Severity`.
 - Evaluation runs now persist `data/evaluation-manifest.json` with
   `kind: "EvaluationManifest"`, a durable `evaluationId`, and nested local
   `run` metadata. Generated `report.md` frontmatter now exposes

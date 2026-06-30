@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0187 - Remove Run Finding Summary](../changes/archive/0187-remove-run-finding-summary.md).
+  Run report examples no longer show the standalone `Finding Summary` table; the
+  opening keeps the Key Details total and the Top Findings full-list summary.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0186 - Report Count Summary Hierarchy](../changes/archive/0186-report-count-summary-hierarchy.md).
   Run report examples now place full-list links before capped tables and show
   marked Finding type, severity, and recommendation impact count summaries.

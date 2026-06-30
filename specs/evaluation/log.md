@@ -2,6 +2,12 @@
 
 ## 2026-06-30
 
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0187 - Remove Run Finding Summary](../../changes/archive/0187-remove-run-finding-summary.md).
+  Generated run reports no longer render the standalone `Finding Summary` table
+  near `## Key Details`; the total remains in Key Details and the complete
+  Finding breakdown remains beside the full `findings.md` link.
+
 - **Revision**: Updated Evaluation record, routine, and report-tree contracts for
   [0185 - Concern Finding Severity](../../changes/archive/0185-concern-finding-severity.md).
   Finding severity is now limited to concern Findings, with generated reports

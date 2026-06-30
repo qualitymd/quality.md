@@ -3,6 +3,26 @@
 ## 2026-06-30
 
 - **Done**: Implemented and archived
+  [0187 - Remove Run Finding Summary](archive/0187-remove-run-finding-summary.md).
+  Generated run reports no longer render the standalone `Finding Summary` table
+  near `## Key Details`; the total remains in Key Details and the complete
+  Finding breakdown remains beside the full `findings.md` link.
+
+- **In-Review**: Completed implementation for
+  [0187 - Remove Run Finding Summary](archive/0187-remove-run-finding-summary.md).
+  Report rendering, durable specs, docs, changelog, tests, and report-gallery
+  output are aligned for review.
+
+- **In-Progress**: Created
+  [0187 - Remove Run Finding Summary](archive/0187-remove-run-finding-summary.md)
+  with
+  its
+  [functional spec](archive/0187-remove-run-finding-summary/spec.md) and
+  [design doc](archive/0187-remove-run-finding-summary/design.md). Functional
+  requirements and design are settled; implementation is beginning across report
+  rendering, durable specs, docs, tests, release notes, and generated examples.
+
+- **Done**: Implemented and archived
   [0186 - Report Count Summary Hierarchy](archive/0186-report-count-summary-hierarchy.md).
   Generated run reports now place both full-list links above capped preview
   tables, use marked inline count summaries, label recommendation count groups

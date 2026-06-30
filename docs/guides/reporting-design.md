@@ -384,15 +384,6 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | -------------- | ---------- | ------------------------------------- | -------- | --------------- |
 | 🟡 Minimum     | 🔵 Medium  | Full evaluation of LedgerLite Service | 7 total  | 3 total         |
 
-Finding Summary
-
-| Finding Type | Count | Severity                 |
-| ------------ | ----: | ------------------------ |
-| 🚩 Gap       |     2 | 🔴 High: 1; 🟡 Medium: 1 |
-| ⚠️ Risk       |     1 | 🟡 Medium: 1             |
-| 💪 Strength  |     4 | —                        |
-| ℹ️ Note       |     0 | —                        |
-
 ## Contents
 
 - [Model Evaluation](#model-evaluation)

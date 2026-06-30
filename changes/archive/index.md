@@ -762,3 +762,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0186 — Report Count Summary Hierarchy](0186-report-count-summary-hierarchy.md) -
   makes run-report full-list links and count summaries more scannable with
   consistent placement, semantic markers, and clearer grouping grammar (`Done`).
+- [0187 — Remove Run Finding Summary](0187-remove-run-finding-summary.md) -
+  removes the redundant run-level Finding Summary table while preserving Key
+  Details totals and full Findings report count summaries (`Done`).

@@ -299,13 +299,14 @@ Factors when present. `Findings` and `Recommendations` **MUST** render total
 ranked counts as `<N> total` and **MUST NOT** include the word `ranked`. The
 section **MUST NOT** include limits or incomplete-input counts.
 
-The run report **MUST** render a compact `Finding Summary` table near
-`## Key Details`. The table **MUST** render one row for every Finding type,
-including zero-count types, with columns `Finding Type`, `Count`, and
-`Severity`. For `gap` and `risk`, the `Severity` cell **MUST** render only
-observed severity counts ordered by the Finding severity catalog. It **MUST NOT**
-render zero-count severity values. For `strength`, `note`, and concern types
-with no observed severities, the `Severity` cell **MUST** render `—`.
+The run report **MUST NOT** render a standalone `Finding Summary` table near
+`## Key Details`.
+
+> Rationale: `## Key Details` carries the quick total count, while the full
+> Findings report link under `## Top Findings` carries the complete ranked count
+> and inline type/severity summary beside the capped table it explains. Keeping a
+> second run-level count table in the opening repeats that hierarchy without
+> adding a destination link. — 0187
 
 Generated reports **MUST** render a `## Contents` section when they contain at
 least two substantive top-level body sections. Generated `## Contents` sections
