@@ -753,3 +753,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0183 — Glossary and Report Links](0183-glossary-report-links.md) - adds a
   workspace-root glossary, replaces generated report legends with `Evaluation
   links:`, and seeds glossary terms and vocabularies (`Done`).
+- [0184 — Evaluation Links Blockquote](0184-evaluation-links-blockquote.md) -
+  renders generated report `Evaluation links:` navigation as a blockquote
+  immediately below each H1 (`Done`).

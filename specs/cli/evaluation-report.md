@@ -56,9 +56,9 @@ payload ordering. `report.md` **MUST** title the run entrypoint as
 `Quality Evaluation - <Area title>` and append a parenthesized comma-separated
 Factor title list when `plannedScope.factorFilter` is present. `report.md`
 **MUST** render non-judgmental run metadata in YAML frontmatter, omit the
-visible top run-context and report navigation lines, and open with `Summary`,
-`Key Details`, a compact Finding Summary, `Contents`, and `Model Evaluation`
-before Top Findings.
+visible top run-context line, and open with the standard `Evaluation links:`
+blockquote, `Summary`, `Key Details`, a compact Finding Summary, `Contents`, and
+`Model Evaluation` before Top Findings.
 `report.md` **MUST NOT** render visible `Limits & Incomplete Inputs`, `Scope`,
 `Coverage`, or `Report Details` sections.
 

@@ -2,6 +2,15 @@
 
 ## 2026-06-30
 
+- **Revision**: Implemented durable spec changes for
+  [0184 - Evaluation Links Blockquote](../changes/archive/0184-evaluation-links-blockquote.md).
+  Generated reports now render `Evaluation links:` as a blockquote immediately
+  below each H1 while preserving the existing link targets and order.
+
+- **Revision**: Updated generated report specs so Model Evaluation and
+  Area / Factor Breakdown tables label their first column as
+  `▦ Area / □ Factor`, making the row-marker key visible in the table header.
+
 - **Addition**: Added [glossary.md](glossary-md.md), the artifact contract for
   the workspace-root glossary used by generated reports and readers.
 

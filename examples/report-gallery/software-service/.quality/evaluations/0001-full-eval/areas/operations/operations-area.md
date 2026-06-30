@@ -5,6 +5,8 @@ title: "Area: Operations"
 
 # Area: Operations
 
+> **Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
+
 Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md)
@@ -14,8 +16,6 @@ Area: [LedgerLite Service](../../root-area.md) / [Operations](operations-area.md
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🟡 Low / 🟡 Low |
-
-**Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
 
 ## Contents
 
@@ -31,7 +31,7 @@ Customer-impact telemetry is useful, but recovery drill ownership is ambiguous.
 
 ## Area / Factor Breakdown
 
-| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ Operations](operations-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ [□ Observability](factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |

@@ -9,8 +9,11 @@ QUALITY.md specification.
 
 - Generated Evaluation reports now link to `report.md`, `findings.md`,
   `recommendations.md`, and the new workspace-root `glossary.md` through one
-  `Evaluation links:` line, and no longer repeat local `Legend` blocks in each
-  report artifact.
+  H1-adjacent `Evaluation links:` blockquote, and no longer repeat local
+  `Legend` blocks in each report artifact.
+- Generated `Model Evaluation` and `Area / Factor Breakdown` tables now label
+  their first column `▦ Area / □ Factor`, making Area and Factor row markers
+  visible in the table header.
 - Generated Evaluation run reports now label the type-count table `Finding
   Summary`, show every Finding type including zero-count types, order Finding
   types as `Gap`, `Risk`, `Strength`, then `Note`, and rename the summary detail

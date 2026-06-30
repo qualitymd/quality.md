@@ -230,12 +230,12 @@ value descriptions inline; those descriptions belong in `glossary.md`.
 ## Evaluation Links
 
 Generated Markdown reports **MUST** render a compact cross-artifact navigation
-line labeled exactly `Evaluation links:`.
+blockquote labeled exactly `Evaluation links:`.
 
-The line **MUST** render inline links in this order, separated by `|`:
+The blockquote **MUST** render inline links in this order, separated by `|`:
 
 ```markdown
-**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+> **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 ```
 
 The link text **MUST** be the filename: `report.md`, `findings.md`,
@@ -246,9 +246,9 @@ the generated artifacts for the same Evaluation run. The `glossary.md` link
 **MUST** target the workspace-root `glossary.md`. All four targets **MUST** be
 relative to the current report artifact.
 
-Generated reports **MUST** render the `Evaluation links:` line after the report
-opening summary, key-details table, or report-specific orientation, and before
-`## Contents` when a Contents section is present.
+Generated reports **MUST** render the `Evaluation links:` blockquote immediately
+after the visible H1 and before the report opening summary, key-details table,
+report-specific orientation, or `## Contents`.
 
 Generated reports **MUST NOT** link every table cell or enum value to
 `glossary.md`.
@@ -262,9 +262,9 @@ Generated reports **MUST NOT** render local `Legend` blocks or a bottom
 `## Legend` section.
 
 > Rationale: generated reports should stay readable on their own while using one
-> stable link line for cross-artifact movement and glossary access. A single
-> glossary-backed navigation line avoids repeating partial legends in every
-> report and avoids noisy cell-level links. — 0183
+> stable link blockquote for cross-artifact movement and glossary access. A single
+> glossary-backed navigation blockquote avoids repeating partial legends in every
+> report and avoids noisy cell-level links. — 0183, 0184
 
 ## Run Report
 
@@ -456,16 +456,16 @@ recommendation detail reports. The run-level H1 **MUST** identify the report as
 a Quality Evaluation. The H1 title line and frontmatter `title` **MUST** use the
 same plain-text title.
 
-Every non-run report **MUST** render a run context line near the H1. Every
-non-run report **MUST** render a report navigation line near the H1. The report
-navigation line **MUST** link to the run overview `report.md`, full findings
-report `findings.md`, and Recommendations report `recommendations.md` when the
-current report is not that target. The run-level `report.md` **MUST NOT** render
-that report navigation line.
+Every non-run report **MUST** render a run context line near the H1, after the
+standard `Evaluation links:` blockquote. The standard `Evaluation links:`
+blockquote **MUST** be the only generated report navigation line that links to
+the run overview `report.md`, full findings report `findings.md`, and
+Recommendations report `recommendations.md`.
 
-The `Area:` navigation trail **MUST** render after the H1. Its elements **MUST**
-link to generated Area reports from the root Area through the current Area
-report or owning Area report. When an ancestor Area report was not generated
+The `Area:` navigation trail **MUST** render after the standard
+`Evaluation links:` blockquote. Its elements **MUST** link to generated Area
+reports from the root Area through the current Area report or owning Area
+report. When an ancestor Area report was not generated
 because the run was scoped below it, the trail **MUST** render that ancestor as
 plain text. The root trail element **MUST** render the Model `title` when
 present.
@@ -599,20 +599,21 @@ payloads, not standalone Markdown body sections.
 Run reports **MUST** render a `Model Evaluation` section before Top Findings.
 Area reports **MUST** render an `Area / Factor Breakdown` section before
 Requirement detail sections. Both sections use the same breakdown table columns:
-`Area / Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
-`Recommendations`, in that order. The `Area / Factor` cell **MUST** render the
-row subject as the generated human report link when that report exists, and the
-table **MUST NOT** render a separate `Report` column.
+`▦ Area / □ Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
+`Recommendations`, in that order. The first column label **MUST** include the
+Area and Factor row markers as a compact key. The first column cell **MUST**
+render the row subject as the generated human report link when that report
+exists, and the table **MUST NOT** render a separate `Report` column.
 
 The run report's Model Evaluation table **MUST** list the scoped Area as the
 first row, followed by in-scope descendant Areas and Factors in deterministic
 model order. An Area report's Area / Factor Breakdown **MUST** list the reported
 Area as the first row, followed by its evaluated descendant Areas and Factors in
 deterministic model order. The first row **MUST** emphasize only the table's
-root Area in the `Area / Factor` cell. Area rows **MUST** carry the `▦` marker,
-and Factor rows **MUST** carry the `□` marker, inline in the `Area / Factor`
-cell instead of using a separate Kind column. The marker **MUST** be part of the
-row subject's visible link text when a report link exists.
+root Area in the first column cell. Area rows **MUST** carry the `▦` marker,
+and Factor rows **MUST** carry the `□` marker, inline in the first column cell
+instead of using a separate Kind column. The marker **MUST** be part of the row
+subject's visible link text when a report link exists.
 
 The `Findings` column **MUST** count ranked findings that resolve to each row's
 Area or Factor. The `Recommendations` column **MUST** count ranked

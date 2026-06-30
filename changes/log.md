@@ -3,6 +3,12 @@
 ## 2026-06-30
 
 - **Done**: Implemented and archived
+  [0184 - Evaluation Links Blockquote](archive/0184-evaluation-links-blockquote.md).
+  Generated reports now render `Evaluation links:` as a blockquote immediately
+  below each H1 while preserving the overview, Findings, Recommendations, and
+  glossary links.
+
+- **Done**: Implemented and archived
   [0183 - Glossary and Report Links](archive/0183-glossary-report-links.md).
   Generated reports now link to `report.md`, `findings.md`,
   `recommendations.md`, and the workspace-root `glossary.md`, while local

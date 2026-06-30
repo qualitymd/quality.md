@@ -5,6 +5,8 @@ title: "Recommendation: Rehearse migration rollback after schema changes"
 
 # Recommendation: Rehearse migration rollback after schema changes
 
+> **Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
+
 Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 ## Key Details
@@ -12,8 +14,6 @@ Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-012345678
 | # | ID | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
 | 2 | `qrec_gallery2` | ⬥ High | 🔵 Medium | `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_gallery2` |
-
-**Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
 
 ## Contents
 

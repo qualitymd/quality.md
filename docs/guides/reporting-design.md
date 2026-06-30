@@ -305,19 +305,22 @@ confidence, severity, finding type, recommendation impact, and priority-like
 value as a text label, optionally preceded by a marker or icon. Markers are
 supplemental scanning aids; do not rely on color or icon shape alone.
 
-Use one compact `Evaluation links:` line near the top of every generated report,
-after the opening summary, key-details table, or report-specific orientation and
-before `## Contents` when Contents is present. The line links to the run
-overview, Findings, Recommendations, and the workspace-root glossary:
+In `Model Evaluation` and `Area / Factor Breakdown` tables, use
+`▦ Area / □ Factor` as the first column label. This keeps the Area and Factor row
+markers visible as a compact key while row cells still carry linked text labels.
+
+Use one compact `Evaluation links:` blockquote immediately below the H1 in every
+generated report. The blockquote links to the run overview, Findings,
+Recommendations, and the workspace-root glossary:
 
 ```markdown
-**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+> **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 ```
 
 Use filename link text. Link targets are relative to the current report
 artifact. Do not link every table cell or enum value to `glossary.md`; the one
-navigation line keeps definitions reachable without making generated Markdown
-noisy.
+navigation blockquote keeps definitions reachable without making generated
+Markdown noisy.
 
 Do not render local `Legend` blocks. The workspace-root `glossary.md` owns
 definitions and fixed vocabulary tables. Reports must still render text labels
@@ -369,6 +372,8 @@ duplicating detail-report navigation or provenance sections.
 ```markdown
 # Quality Evaluation - LedgerLite Service
 
+> **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+
 ## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
@@ -388,8 +393,6 @@ Finding Summary
 | ✅ Strength  |     4 | —                        |
 | ℹ️ Note       |     0 | —                        |
 
-**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
-
 ## Contents
 
 - [Model Evaluation](#model-evaluation)
@@ -399,7 +402,7 @@ Finding Summary
 
 ## Model Evaluation
 
-| Area / Factor                                                          | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor                                                      | Overall Rating | Local Rating | Findings | Recommendations |
 | ---------------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
 | **[▦ LedgerLite Service](root-area.md)**                               | Minimum        | —            | 7        | 3               |
 | ↳ [▦ Public API](areas/api/api-area.md)                                | Minimum        | Minimum      | 2        | 1               |
@@ -433,13 +436,13 @@ using frontmatter `type` to carry the report artifact taxonomy.
 ```markdown
 # Findings
 
+> **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+
 Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
 | Findings   | Highest Severity |
 | ---------- | ---------------- |
 | 7 findings | High             |
-
-**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 ```
 
 ### Area reports
@@ -449,6 +452,8 @@ Area reports should orient with both run navigation and Area hierarchy.
 ```markdown
 # Area: Public API
 
+> **Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
+
 Run: [0001-full-eval](../../report.md) - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
@@ -456,8 +461,6 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 | Overall Rating | Local Rating | Confidence            |
 | -------------- | ------------ | --------------------- |
 | 🟡 Minimum     | 🟡 Minimum   | 🔵 Medium / 🔵 Medium |
-
-**Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
 
 ## Contents
 
@@ -473,7 +476,7 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 
 ## Area / Factor Breakdown
 
-| Area / Factor                                                | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor                                            | Overall Rating | Local Rating | Findings | Recommendations |
 | ------------------------------------------------------------ | -------------- | ------------ | -------- | --------------- |
 | **[▦ Public API](api-area.md)**                              | Minimum        | Minimum      | 2        | 1               |
 | ↳ [□ Correctness](factors/correctness/correctness-factor.md) | Minimum        | Minimum      | 1        | 1               |
@@ -487,6 +490,8 @@ Factor reports should preserve Area context and Factor hierarchy.
 ```markdown
 # Factor: Correctness
 
+> **Evaluation links:** [report.md](../../../report.md) | [findings.md](../../../findings.md) | [recommendations.md](../../../recommendations.md) | [glossary.md](../../../../../../glossary.md)
+
 Run: [0001-full-eval](../../../report.md) - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
 Area: [LedgerLite Service](../../../root-area.md) / [Public API](../api-area.md)
@@ -496,8 +501,6 @@ Factor: [Correctness](correctness-factor.md)
 | Overall Rating | Local Rating | Status                    | Confidence            |
 | -------------- | ------------ | ------------------------- | --------------------- |
 | 🟡 Minimum     | 🟡 Minimum   | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
-
-**Evaluation links:** [report.md](../../../report.md) | [findings.md](../../../findings.md) | [recommendations.md](../../../recommendations.md) | [glossary.md](../../../../../../glossary.md)
 
 ## Contents
 
@@ -521,6 +524,8 @@ and confidence immediately visible.
 ```markdown
 # Requirement: mutation endpoints are idempotent under retry
 
+> **Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
+
 Run: [Run 0001](../../../../report.md) - Evaluation ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-area.md)
@@ -530,8 +535,6 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 | Rating     | Assessment  | Confidence            |
 | ---------- | ----------- | --------------------- |
 | 🟡 Minimum | ✅ Assessed | 🔵 Medium / 🔵 Medium |
-
-**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 
@@ -551,6 +554,8 @@ navigation visible before the recommendation prose.
 ```markdown
 # Recommendation: Tighten the idempotency replay contract
 
+> **Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
+
 Run: [Run 0001](../report.md) - Evaluation ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
 Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/factors/correctness/correctness-factor.md)
@@ -558,8 +563,6 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 | # | ID           | Impact | Confidence | Reference                                                            |
 | - | ------------ | ------ | ---------- | -------------------------------------------------------------------- |
 | 1 | qrec_example | ⬥ High | 🟢 High    | evaluation:20260629T184200Z-0123456789ab/recommendation/qrec_example |
-
-**Evaluation links:** [report.md](../report.md) | [findings.md](../findings.md) | [recommendations.md](../recommendations.md) | [glossary.md](../../../../glossary.md)
 
 ## Contents
 
@@ -593,8 +596,8 @@ Before changing report output, check:
   recommendations.
 - Generated report artifacts with multiple substantive top-level sections have
   `## Contents`; OKF `index.md` and other listing/index artifacts do not.
-- Every generated report has an `Evaluation links:` line before `## Contents`,
-  with filename link text and a relative link to `glossary.md`.
+- Every generated report has an `Evaluation links:` blockquote immediately below
+  the H1, with filename link text and a relative link to `glossary.md`.
 - Report cells keep text labels; markers and icons are supplemental and never
   the only meaning for semantic values.
 - Generated reports do not render local or bottom `Legend` sections.

@@ -3,6 +3,11 @@
 ## 2026-06-30
 
 - **Revision**: Updated the Evaluation report-tree contract for
+  [0184 - Evaluation Links Blockquote](../../changes/archive/0184-evaluation-links-blockquote.md).
+  Generated reports now render `Evaluation links:` as a blockquote immediately
+  below each H1 while preserving the existing link targets and order.
+
+- **Revision**: Updated the Evaluation report-tree contract for
   [0183 - Glossary and Report Links](../../changes/archive/0183-glossary-report-links.md).
   Generated reports now use `Evaluation links:` navigation to the overview,
   Findings, Recommendations, and workspace-root glossary instead of local

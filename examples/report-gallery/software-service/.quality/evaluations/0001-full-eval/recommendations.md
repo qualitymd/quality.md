@@ -5,6 +5,8 @@ title: Recommendations
 
 # Recommendations
 
+> **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+
 Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 ## Key Details
@@ -12,8 +14,6 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 | Recommendations | Highest Impact | Coverage |
 | --- | --- | --- |
 | 3 recommendations | ⬥ High | ✅ Addressed by Recommendation: 3 / ⬜ Not Advice Driving: 4 |
-
-**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 
 ## Contents
 

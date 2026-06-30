@@ -5,6 +5,8 @@ title: "Requirement: agent guidance routes quality evaluation work"
 
 # Requirement: agent guidance routes quality evaluation work
 
+> **Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
+
 Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../agent-harness-area.md)
@@ -16,8 +18,6 @@ Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibi
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
 | 🔵 Target | ✅ Assessed | 🟢 High / 🟢 High |
-
-**Evaluation links:** [report.md](../../../../report.md) | [findings.md](../../../../findings.md) | [recommendations.md](../../../../recommendations.md) | [glossary.md](../../../../../../../glossary.md)
 
 ## Contents
 

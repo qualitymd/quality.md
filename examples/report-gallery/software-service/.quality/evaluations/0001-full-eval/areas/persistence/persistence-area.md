@@ -5,6 +5,8 @@ title: "Area: Ledger Persistence"
 
 # Area: Ledger Persistence
 
+> **Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
+
 Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Area: [LedgerLite Service](../../root-area.md) / [Ledger Persistence](persistence-area.md)
@@ -14,8 +16,6 @@ Area: [LedgerLite Service](../../root-area.md) / [Ledger Persistence](persistenc
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
 | 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
-
-**Evaluation links:** [report.md](../../report.md) | [findings.md](../../findings.md) | [recommendations.md](../../recommendations.md) | [glossary.md](../../../../../glossary.md)
 
 ## Contents
 
@@ -31,7 +31,7 @@ Ledger integrity is well covered, while rollback rehearsal evidence is stale.
 
 ## Area / Factor Breakdown
 
-| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ Ledger Persistence](persistence-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ [□ Integrity](factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |

@@ -9,6 +9,8 @@ run: 0001-full-eval
 
 # Quality Evaluation - LedgerLite Service
 
+> **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
+
 ## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
@@ -28,8 +30,6 @@ Finding Summary
 | ✅ Strength | 4 | — |
 | ℹ️ Note | 0 | — |
 
-**Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
-
 ## Contents
 
 - [Model Evaluation](#model-evaluation)
@@ -39,7 +39,7 @@ Finding Summary
 
 ## Model Evaluation
 
-| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
 | **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
 | ↳ [▦ Agent Harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 1 | 0 |

@@ -2,6 +2,17 @@
 
 ## 2026-06-30
 
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0184 - Evaluation Links Blockquote](../changes/archive/0184-evaluation-links-blockquote.md).
+  Report examples now render `Evaluation links:` as a blockquote immediately
+  below each H1.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md). Model Evaluation and
+  Area / Factor Breakdown examples now label the first column as
+  `▦ Area / □ Factor`, keeping the row-marker key visible in the table header.
+
 - **Revision**: Updated Change Case, functional-spec, and OKF guidance to make
   new public durable artifact contracts explicit. Change cases that add named
   artifacts now need a durable-spec owner or a documented reason for not adding a

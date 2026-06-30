@@ -561,6 +561,7 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 		md.FrontmatterField{Name: "title", Value: header.Heading},
 	))
 	b.WriteString("# " + header.Heading + "\n\n")
+	writeEvaluationLinks(b, header.ReportPath, header.RunPath)
 	if line := reportRunLine(header.ReportPath, header.Run); line != "" {
 		b.WriteString(line + "\n\n")
 	}
@@ -573,7 +574,6 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 		b.WriteString("## Key Details\n\n")
 		writeReportSummaryTable(b, header.SummaryHead, header.SummaryRow)
 	}
-	writeEvaluationLinks(b, header.ReportPath, header.RunPath)
 	writeContentsSection(b, header.Contents)
 }
 
@@ -738,7 +738,7 @@ func writeEvaluationLinks(b *strings.Builder, reportPath, runPath string) {
 		reportLink(reportPath, "recommendations.md", "recommendations.md"),
 		md.Link("glossary.md", glossaryLinkTarget(reportPath, runPath)),
 	}
-	b.WriteString("**Evaluation links:** " + strings.Join(links, " | ") + "\n\n")
+	b.WriteString("> **Evaluation links:** " + strings.Join(links, " | ") + "\n\n")
 }
 
 func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
@@ -921,12 +921,12 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	var b strings.Builder
 	data := runReportSourceData(plan)
 	renderRunReportHeader(&b, artifacts, title)
+	writeEvaluationLinks(&b, reportPath, runRel)
 	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(scopedArea))
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
 	writeRunReportFindingSummary(&b, artifacts)
-	writeEvaluationLinks(&b, reportPath, runRel)
 	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
 		{Label: "Top Findings", Anchor: "#top-findings"},
@@ -1536,7 +1536,7 @@ func factorInScope(id factorID, plan *evaluationReportPlan) bool {
 
 func writeAreaFactorBreakdownSection(b *strings.Builder, heading string, spec *model.Spec, artifacts *evaluationArtifacts, rootAreaID []string, reportPath string) {
 	b.WriteString("## " + heading + "\n\n")
-	b.WriteString("| Area / Factor | Overall Rating | Local Rating | Findings | Recommendations |\n")
+	b.WriteString("| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |\n")
 	b.WriteString("| --- | --- | --- | --- | --- |\n")
 	root := artifacts.Areas[areaKey(rootAreaID)]
 	if root == nil || root.Analysis == nil {
