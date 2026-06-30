@@ -1,6 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4160 512" preserveAspectRatio="xMidYMid meet">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by potrace 1.16, written by Peter Selinger 2001-2019
+</metadata>
 <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-fill="#FFFFFF" stroke="none">
+fill="#000000" stroke="none">
 <path d="M2375 5034 c-16 -2 -73 -9 -125 -15 -336 -38 -693 -165 -998 -353
 -117 -73 -131 -85 -138 -123 -5 -27 -1 -37 25 -64 40 -39 68 -36 149 19 479
 325 1114 452 1702 341 249 -48 510 -143 712 -260 73 -42 238 -149 238 -154 0
@@ -75,5 +83,4 @@ c0 51 -68 83 -120 55 -41 -22 -48 -122 -13 -178 8 -13 28 -32 46 -42 31 -19
 -487 -2546 31 -46 30 -83 56 -83 57 0 2 28 0 63 -2 60 -5 65 -4 85 22 28 35
 28 67 0 100 -21 22 -44 29 -218 60 -216 39 -239 41 -263 23z"/>
 </g>
-<text x="700" y="450" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="560" font-weight="700" fill="#FFFFFF">QUALITY.md</text>
 </svg>
