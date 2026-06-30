@@ -24,8 +24,8 @@
       "index",
       "quickstart",
       {
-        "group": "Quality Loop Engineering",
-        "pages": ["orientation", "claude-code", "codex"]
+        "group": "The Quality Loop",
+        "pages": ["loops", "claude-code", "codex"]
       },
       {
         "group": "Reference",
