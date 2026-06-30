@@ -2,6 +2,15 @@
 
 ## 2026-06-30
 
+- **Design**: Created
+  [0189 - Heading sentence case](0189-heading-sentence-case.md) with its
+  [functional spec](0189-heading-sentence-case/spec.md) and
+  [design doc](0189-heading-sentence-case/design.md). The case scopes
+  sentence-case heading alignment across active docs, specs, Mintlify output,
+  runtime skill files, generated reports, and checked-in report-gallery output
+  while preserving proper names, model titles, and historical archives. It
+  explicitly excludes heading-case automation.
+
 - **In-Review**: Reworked
   [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md)
   to link out instead of generate. Removed `scripts/report-docs.mjs` and the
