@@ -390,7 +390,7 @@ Finding Summary
 | ------------ | ----: | ------------------------ |
 | 🚩 Gap       |     2 | 🔴 High: 1; 🟡 Medium: 1 |
 | ⚠️ Risk       |     1 | 🟡 Medium: 1             |
-| ✅ Strength  |     4 | —                        |
+| 💪 Strength  |     4 | —                        |
 | ℹ️ Note       |     0 | —                        |
 
 ## Contents
@@ -412,11 +412,11 @@ Finding Summary
 
 ## Top Findings
 
-**Full findings report:** [findings.md](findings.md) (7 total: 2 Gaps - 1 High, 1 Medium; 1 Risk - 1 Medium; 4 Strengths)
+**Full findings report:** [findings.md](findings.md) (7 total: 🚩 2 Gaps: 🔴 1 High, 🟡 1 Medium; ⚠️ 1 Risk: 🟡 1 Medium; 💪 4 Strengths)
 
 ## Top Recommendations
 
-**Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
+**Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 1 High, ● 2 Medium)
 
 ...
 

@@ -3,6 +3,32 @@
 ## 2026-06-30
 
 - **Done**: Implemented and archived
+  [0186 - Report Count Summary Hierarchy](archive/0186-report-count-summary-hierarchy.md).
+  Generated run reports now place both full-list links above capped preview
+  tables, use marked inline count summaries, label recommendation count groups
+  by impact, and render Strength Findings as `💪 Strength`.
+
+- **In-Review**: Completed implementation for
+  [0186 - Report Count Summary Hierarchy](archive/0186-report-count-summary-hierarchy.md).
+  Report rendering, durable specs, docs, glossary, changelog, tests, and
+  report-gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0186 - Report Count Summary Hierarchy](archive/0186-report-count-summary-hierarchy.md).
+  Functional requirements and design are settled; implementation is beginning
+  across report rendering, durable specs, docs, tests, glossary, changelog, and
+  generated examples.
+
+- **Design**: Created
+  [0186 - Report Count Summary Hierarchy](archive/0186-report-count-summary-hierarchy.md)
+  with its
+  [functional spec](archive/0186-report-count-summary-hierarchy/spec.md) and
+  [design doc](archive/0186-report-count-summary-hierarchy/design.md). The case
+  covers moving the full Recommendations report link above its capped table,
+  adding semantic markers and clearer grouping grammar to full-list count
+  summaries, and changing the Strength Finding type display marker to `💪`.
+
+- **Done**: Implemented and archived
   [0185 - Concern Finding Severity](archive/0185-concern-finding-severity.md).
   Finding `severity` is now concern-only in validation, schema, examples,
   generated reports, runtime guidance, and durable specs.

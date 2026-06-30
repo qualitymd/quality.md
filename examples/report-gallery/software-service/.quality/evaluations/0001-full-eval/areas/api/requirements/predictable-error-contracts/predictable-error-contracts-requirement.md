@@ -35,7 +35,7 @@ The error contract is consistent across the sampled API cases.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-001` | Common caller error cases share a documented response shape. | ✅ Strength | — | 🟢 High | The finding supports the target operability rating for caller-facing errors. | ✅ Verified: The synthetic handler matrix and API reference agree on the error envelope fields. |
+| `strength-001` | Common caller error cases share a documented response shape. | 💪 Strength | — | 🟢 High | The finding supports the target operability rating for caller-facing errors. | ✅ Verified: The synthetic handler matrix and API reference agree on the error envelope fields. |
 
 ## Finding Details
 

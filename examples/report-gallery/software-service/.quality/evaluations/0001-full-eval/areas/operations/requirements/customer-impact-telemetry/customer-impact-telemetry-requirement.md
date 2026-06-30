@@ -35,7 +35,7 @@ The sampled telemetry explains customer impact for core failure modes.
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
-| `strength-003` | Health dashboards connect service errors to failed customer actions. | ✅ Strength | — | 🔵 Medium | The finding supports the target observability rating. | ✅ Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
+| `strength-003` | Health dashboards connect service errors to failed customer actions. | 💪 Strength | — | 🔵 Medium | The finding supports the target observability rating. | ✅ Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
 
 ## Finding Details
 

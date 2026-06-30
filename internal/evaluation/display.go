@@ -267,7 +267,7 @@ var findingTypeValues = enumCatalog[FindingType]{
 	Values: []enumValue[FindingType]{
 		{Value: FindingTypeGap, Label: "Gap", Marker: "🚩", Description: "Current shortfall against the quality bar."},
 		{Value: FindingTypeRisk, Label: "Risk", Marker: "⚠️", Description: "Plausible future or conditional quality concern."},
-		{Value: FindingTypeStrength, Label: "Strength", Marker: "✅", Description: "Evidence of quality meeting or exceeding expectations."},
+		{Value: FindingTypeStrength, Label: "Strength", Marker: "💪", Description: "Evidence of quality meeting or exceeding expectations."},
 		{Value: FindingTypeNote, Label: "Note", Marker: "ℹ️", Description: "Useful observation that is not itself a gap, risk, or strength."},
 	},
 }

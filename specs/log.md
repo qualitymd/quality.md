@@ -3,6 +3,12 @@
 ## 2026-06-30
 
 - **Revision**: Implemented durable spec changes for
+  [0186 - Report Count Summary Hierarchy](../changes/archive/0186-report-count-summary-hierarchy.md).
+  Generated run reports now place both full-list links above capped preview
+  tables, use marked inline count summaries, label recommendation count groups
+  by impact, and render Strength Findings as `💪 Strength`.
+
+- **Revision**: Implemented durable spec changes for
   [0185 - Concern Finding Severity](../changes/archive/0185-concern-finding-severity.md).
   Evaluation Finding severity is now concern-only: required for `gap` and
   `risk`, forbidden for `strength` and `note`, and reflected in validation,

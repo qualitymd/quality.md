@@ -27,7 +27,7 @@ Finding Summary
 | --- | ---: | --- |
 | 🚩 Gap | 2 | 🔴 High: 1; 🟡 Medium: 1 |
 | ⚠️ Risk | 1 | 🟡 Medium: 1 |
-| ✅ Strength | 4 | — |
+| 💪 Strength | 4 | — |
 | ℹ️ Note | 0 | — |
 
 ## Contents
@@ -56,27 +56,27 @@ Finding Summary
 
 ## Top Findings
 
-**Full findings report:** [findings.md](findings.md) (7 total: 2 Gaps - 1 High, 1 Medium; 1 Risk - 1 Medium; 4 Strengths)
+**Full findings report:** [findings.md](findings.md) (7 total: 🚩 2 Gaps: 🔴 1 High, 🟡 1 Medium; ⚠️ 1 Risk: 🟡 1 Medium; 💪 4 Strengths)
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |
 | 1 | [Mutation retry behavior is not fully specified for duplicate idempotency keys.](areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md#finding-gap-001) | [Public API](areas/api/api-area.md) | [Correctness](areas/api/factors/correctness/correctness-factor.md) | 🚩 Gap | 🔴 High |
-| 2 | [Common caller error cases share a documented response shape.](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md#finding-strength-001) | [Public API](areas/api/api-area.md) | [Operability](areas/api/factors/operability/operability-factor.md) | ✅ Strength | — |
-| 3 | [Ledger mutation checks preserve balance invariants in the sampled paths.](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md#finding-strength-002) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | ✅ Strength | — |
+| 2 | [Common caller error cases share a documented response shape.](areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md#finding-strength-001) | [Public API](areas/api/api-area.md) | [Operability](areas/api/factors/operability/operability-factor.md) | 💪 Strength | — |
+| 3 | [Ledger mutation checks preserve balance invariants in the sampled paths.](areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md#finding-strength-002) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 💪 Strength | — |
 | 4 | [Rollback guidance exists, but rehearsal evidence is stale.](areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md#finding-risk-001) | [Ledger Persistence](areas/persistence/persistence-area.md) | [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⚠️ Risk | 🟡 Medium |
-| 5 | [Health dashboards connect service errors to failed customer actions.](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md#finding-strength-003) | [Operations](areas/operations/operations-area.md) | [Observability](areas/operations/factors/observability/observability-factor.md) | ✅ Strength | — |
+| 5 | [Health dashboards connect service errors to failed customer actions.](areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md#finding-strength-003) | [Operations](areas/operations/operations-area.md) | [Observability](areas/operations/factors/observability/observability-factor.md) | 💪 Strength | — |
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-gap-002) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🚩 Gap | 🟡 Medium |
-| 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | ✅ Strength | — |
+| 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 💪 Strength | — |
 
 ## Top Recommendations
+
+**Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 2 High, ● 1 Medium)
 
 | # | Recommendation | Area / Factors | Impact | Confidence | Reason |
 | --- | --- | --- | --- | --- | --- |
 | 1 | [Tighten the idempotency replay contract](recommendations/001-tighten-the-idempotency-replay-contract.md) | [Public API](areas/api/api-area.md) / [Correctness](areas/api/factors/correctness/correctness-factor.md) | ⬥ High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. |
 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. |
-
-**Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 
 ## Primary Source Data
 

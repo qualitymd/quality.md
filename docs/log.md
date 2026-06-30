@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0186 - Report Count Summary Hierarchy](../changes/archive/0186-report-count-summary-hierarchy.md).
+  Run report examples now place full-list links before capped tables and show
+  marked Finding type, severity, and recommendation impact count summaries.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0185 - Concern Finding Severity](../changes/archive/0185-concern-finding-severity.md).
   Report guidance now treats Finding severity as a concern-only signal and names
   the Findings report priority field `Highest Concern Severity`.

@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation run reports now place both full Findings and full
+  Recommendations report links above their capped preview tables, add semantic
+  markers to full-list count summaries, label recommendation count groups by
+  `impact`, and render Strength Findings as `💪 Strength`.
 - Evaluation Finding `severity` is now concern-only: required for `gap` and
   `risk` Findings and rejected for `strength` and `note` Findings. Generated
   reports render `—` for non-concern severity cells and summarize full Findings

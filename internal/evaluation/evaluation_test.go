@@ -326,7 +326,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		!strings.Contains(string(runReport), "Finding Summary\n\n| Finding Type | Count | Severity |") ||
 		!strings.Contains(string(runReport), "| 🚩 Gap | 0 | — |") ||
 		!strings.Contains(string(runReport), "| ⚠️ Risk | 0 | — |") ||
-		!strings.Contains(string(runReport), "| ✅ Strength | 1 | — |") ||
+		!strings.Contains(string(runReport), "| 💪 Strength | 1 | — |") ||
 		!strings.Contains(string(runReport), "| ℹ️ Note | 0 | — |") ||
 		!strings.Contains(string(runReport), "## Contents\n\n- [Model Evaluation](#model-evaluation)\n- [Top Findings](#top-findings)\n- [Top Recommendations](#top-recommendations)\n- [Primary Source Data](#primary-source-data)\n\n") ||
 		strings.Contains(string(runReport), "Jump to:") ||
@@ -496,7 +496,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, runReport, "Finding Summary\n\n| Finding Type | Count | Severity |")
 	assertContains(t, runReport, "| 🚩 Gap | 0 | — |")
 	assertContains(t, runReport, "| ⚠️ Risk | 0 | — |")
-	assertContains(t, runReport, "| ✅ Strength | 1 | — |")
+	assertContains(t, runReport, "| 💪 Strength | 1 | — |")
 	assertContains(t, runReport, "| ℹ️ Note | 0 | — |")
 	assertNotContains(t, runReport, "| Overall Rating | Scope | Confidence | Data |")
 	assertContains(t, runReport, "## Contents\n\n- [Model Evaluation](#model-evaluation)\n- [Top Findings](#top-findings)\n- [Top Recommendations](#top-recommendations)\n- [Primary Source Data](#primary-source-data)")
@@ -519,12 +519,13 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, runReport, "Legend\n\n")
 	assertContains(t, runReport, "## Top Findings")
 	assertContains(t, runReport, "| Rank | Finding | Area | Factors | Type | Severity |")
-	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total: 1 Strength)")
-	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | — |")
+	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total: 💪 1 Strength)")
+	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | 💪 Strength | — |")
 	assertContains(t, runReport, "## Top Recommendations")
+	assertBefore(t, runReport, "**Full recommendations report:**", "| # | Recommendation | Area / Factors | Impact | Confidence | Reason |")
 	assertContains(t, runReport, "| # | Recommendation | Area / Factors | Impact | Confidence | Reason |")
 	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. |")
-	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (1 total)")
+	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (1 total; impact: ⬥ 1 High)")
 	assertNotContains(t, runReport, "## Area / Factor Breakdown")
 	assertContains(t, runReport, "| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |")
 	assertContains(t, runReport, "| **[▦ Navigation model](root-area.md)** | 🔵 Target | 🔵 Target | 1 | 1 |")
@@ -709,7 +710,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, findingsReport, "## Ranked Findings\n\n| Rank | Finding | Area | Factors | Type | Severity |")
 	assertNotContains(t, findingsReport, "Jump to:")
 	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
-	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | — |")
+	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | 💪 Strength | — |")
 	assertNotContains(t, findingsReport, "Legend\n\n")
 
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
@@ -742,8 +743,8 @@ func TestEvaluationRunReportFullListLinksUseTotalRankedCounts(t *testing.T) {
 	}
 
 	runReport := readReport(t, runPath, "report.md")
-	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (11 total: 11 Gaps - 11 High)")
-	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (11 total)")
+	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (11 total: 🚩 11 Gaps: 🔴 11 High)")
+	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (11 total; impact: ⬥ 11 High)")
 	assertContains(t, runReport, "| 10 | [Finding 10.](requirements/has-tests/has-tests-requirement.md#finding-gap-10)")
 	assertNotContains(t, runReport, "| 11 | [Finding 11.](requirements/has-tests/has-tests-requirement.md#finding-gap-11)")
 	assertContains(t, readReport(t, runPath, "findings.md"), "| 11 | [Finding 11.](requirements/has-tests/has-tests-requirement.md#finding-gap-11)")
@@ -1789,7 +1790,7 @@ func TestReportDisplayTitles(t *testing.T) {
 		{"recommendation report kind", reportKindTitle(string(ReportKindAdvice)), "💡 Recommendation"},
 		{"boolean", boolTitle(true), "✅ Yes"},
 		{"known finding severity", findingSeverityTitle("high"), "🔴 High"},
-		{"known finding type", findingTypeTitle("strength"), "✅ Strength"},
+		{"known finding type", findingTypeTitle("strength"), "💪 Strength"},
 		{"known basis status", basisStatusTitle("verified"), "✅ Verified"},
 		{"known ranking tier", findingRankingTierTitle("P1"), "🔴 P1 Highest"},
 		{"known coverage disposition", findingCoverageDispositionTitle("addressed_by_recommendation"), "✅ Addressed by Recommendation"},

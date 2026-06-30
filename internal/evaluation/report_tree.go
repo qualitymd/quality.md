@@ -939,8 +939,8 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeFullFindingsReportLink(&b, reportPath, artifacts)
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
 	b.WriteString("## Top Recommendations\n\n")
+	writeFullRecommendationsReportLink(&b, reportPath, artifacts)
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
-	writeFullListReportLink(&b, reportPath, "Full recommendations report", "recommendations.md", len(artifacts.rankedRecommendations()))
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
 }
@@ -1141,10 +1141,10 @@ func findingInlineCountSummary(artifacts *evaluationArtifacts) string {
 		if count == 0 {
 			continue
 		}
-		part := fmt.Sprintf("%d %s", count, pluralize(value.Label, count))
+		part := inlineMarkedCount(value.Marker, value.Label, count, true)
 		if typ == string(FindingTypeGap) || typ == string(FindingTypeRisk) {
 			if severitySummary := findingInlineSeveritySummary(severities[typ]); severitySummary != "" {
-				part += " - " + severitySummary
+				part += ": " + severitySummary
 			}
 		}
 		parts = append(parts, part)
@@ -1159,20 +1159,49 @@ func findingInlineSeveritySummary(severities map[string]int) string {
 		if count == 0 {
 			continue
 		}
-		parts = append(parts, fmt.Sprintf("%d %s", count, value.Label))
+		parts = append(parts, inlineMarkedCount(value.Marker, value.Label, count, false))
 	}
 	return strings.Join(parts, ", ")
 }
 
-func pluralize(label string, count int) string {
-	if count == 1 {
-		return label
+func writeFullRecommendationsReportLink(b *strings.Builder, fromReport string, artifacts *evaluationArtifacts) {
+	total := len(artifacts.rankedRecommendations())
+	summary := recommendationImpactInlineCountSummary(artifacts)
+	if summary == "" {
+		fmt.Fprintf(b, "**Full recommendations report:** %s (%d total)\n\n", reportLink(fromReport, "recommendations.md", "recommendations.md"), total)
+		return
 	}
-	return label + "s"
+	fmt.Fprintf(b, "**Full recommendations report:** %s (%d total; impact: %s)\n\n", reportLink(fromReport, "recommendations.md", "recommendations.md"), total, summary)
 }
 
-func writeFullListReportLink(b *strings.Builder, fromReport, label, target string, total int) {
-	fmt.Fprintf(b, "**%s:** %s (%d total)\n\n", label, reportLink(fromReport, target, target), total)
+func recommendationImpactInlineCountSummary(artifacts *evaluationArtifacts) string {
+	counts := map[string]int{}
+	for _, item := range artifacts.rankedRecommendations() {
+		impact := firstString(item.Recommendation, "impact")
+		if impact == "" {
+			continue
+		}
+		counts[impact]++
+	}
+	parts := make([]string, 0, len(recommendationImpactValues.Values))
+	for _, value := range recommendationImpactValues.Values {
+		count := counts[string(value.Value)]
+		if count == 0 {
+			continue
+		}
+		parts = append(parts, inlineMarkedCount(value.Marker, value.Label, count, false))
+	}
+	return strings.Join(parts, ", ")
+}
+
+func inlineMarkedCount(marker, label string, count int, plural bool) string {
+	if plural && count != 1 {
+		label += "s"
+	}
+	if marker == "" {
+		return fmt.Sprintf("%d %s", count, label)
+	}
+	return fmt.Sprintf("%s %d %s", marker, count, label)
 }
 
 func writeRunReportCoverageNote(b *strings.Builder, reports []evaluationRenderedReport, reportPath string) {

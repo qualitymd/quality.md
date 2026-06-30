@@ -183,7 +183,7 @@ Known fixed enum report displays are:
 | Confidence            | `none`                        | `⚪ None`                        |
 | Finding type          | `gap`                         | `🚩 Gap`                         |
 | Finding type          | `risk`                        | `⚠️ Risk`                         |
-| Finding type          | `strength`                    | `✅ Strength`                    |
+| Finding type          | `strength`                    | `💪 Strength`                    |
 | Finding type          | `note`                        | `ℹ️ Note`                         |
 | Finding severity      | `critical`                    | `🔴 Critical`                    |
 | Finding severity      | `high`                        | `🔴 High`                        |
@@ -362,23 +362,36 @@ labels, including their emoji, for known finding type enum values. `Severity`
 The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
 link to `findings.md` and `recommendations.md` when the report tree is built.
-Because the run-report tables are capped overview tables, those full-list links
-**MUST** render as emphasized sentence-case labels followed by filename-as-label
-links and the complete ranked count outside the link text:
+Because the run-report tables are capped overview tables, each full-list link
+**MUST** render immediately after its corresponding `## Top Findings` or
+`## Top Recommendations` heading and before the capped table. Those full-list
+links **MUST** render as emphasized sentence-case labels followed by
+filename-as-label links and the complete ranked count outside the link text:
 
 ```markdown
-**Full findings report:** [findings.md](findings.md) (7 total: 4 Gaps - 1 Critical, 2 High, 1 Medium; 1 Risk - 1 High; 2 Strengths)
-**Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
+**Full findings report:** [findings.md](findings.md) (7 total: 🚩 4 Gaps: 🔴 1 Critical, 🔴 2 High, 🟡 1 Medium; ⚠️ 1 Risk: 🔴 1 High; 💪 2 Strengths)
+**Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 1 High, ● 2 Medium)
 ```
 
 The count **MUST** reflect the complete ranked list for the linked report, not
 the number of rows rendered in the capped `report.md` table.
 
 When ranked Findings exist, the full Findings report link count **MUST** include
-an inline summary ordered by Finding type: gaps, risks, strengths, then notes.
-Gap and risk segments **MUST** include only observed severity counts ordered by
-the Finding severity catalog. Zero-count Finding types and zero-count severity
-values **MUST NOT** render in the inline summary.
+an inline summary ordered by Finding type: gaps, risks, strengths, then notes,
+using the Finding type marker, count, and text label. Gap and risk segments
+**MUST** include only observed severity counts ordered by the Finding severity
+catalog, using the severity marker, count, and text label after a colon.
+Finding type groups **MUST** be separated with semicolons; severity groups
+within a gap or risk segment **MUST** be separated with commas. Zero-count
+Finding types and zero-count severity values **MUST NOT** render in the inline
+summary.
+
+When ranked Recommendations exist, the full Recommendations report link count
+**MUST** include an inline recommendation impact summary after the complete
+ranked count. The total count and impact summary **MUST** be separated with a
+semicolon. The impact summary **MUST** begin with lowercase `impact:` and then
+render non-zero recommendation impact groups in Recommendation impact catalog
+order, using the impact marker, count, and text label separated by commas.
 
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped

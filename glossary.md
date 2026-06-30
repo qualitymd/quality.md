@@ -130,7 +130,7 @@ Classification of what a finding contributes to the Evaluation judgment.
 | ----------- | ---------- | --------------------------------------------------------------- |
 | 🚩 Gap      | `gap`      | Current shortfall against the quality bar.                      |
 | ⚠️ Risk      | `risk`     | Plausible future or conditional quality concern.                |
-| ✅ Strength | `strength` | Evidence of quality meeting or exceeding expectations.          |
+| 💪 Strength | `strength` | Evidence of quality meeting or exceeding expectations.          |
 | ℹ️ Note      | `note`     | Useful observation that is not itself a gap, risk, or strength. |
 
 ## Quality rating

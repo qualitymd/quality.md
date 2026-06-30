@@ -759,3 +759,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0185 — Concern Finding Severity](0185-concern-finding-severity.md) - makes
   Finding `severity` concern-only, requiring it for gaps and risks while
   forbidding it for strengths and notes (`Done`).
+- [0186 — Report Count Summary Hierarchy](0186-report-count-summary-hierarchy.md) -
+  makes run-report full-list links and count summaries more scannable with
+  consistent placement, semantic markers, and clearer grouping grammar (`Done`).
