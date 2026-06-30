@@ -55,5 +55,12 @@
     "socials": {
       "github": "https://github.com/qualitymd/quality.md"
     }
+  },
+  "integrations": {
+    "analytics": {
+      "ga4": {
+        "measurementId": "G-GQJYPWLMMJ"
+      }
+    }
   }
 }
