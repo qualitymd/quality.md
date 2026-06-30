@@ -40,7 +40,6 @@
         }
       ],
       "id": "strength-002",
-      "severity": "low",
       "statement": "Ledger mutation checks preserve balance invariants in the sampled paths.",
       "type": "strength"
     }

@@ -2686,6 +2686,50 @@
         "findings": {
           "items": {
             "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "gap",
+                        "risk"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "severity"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "strength",
+                        "note"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ]
+                },
+                "then": {
+                  "not": {
+                    "required": [
+                      "severity"
+                    ]
+                  }
+                }
+              }
+            ],
             "properties": {
               "basis": {
                 "additionalProperties": false,
@@ -2866,7 +2910,6 @@
             "required": [
               "id",
               "type",
-              "severity",
               "confidence",
               "statement",
               "condition",

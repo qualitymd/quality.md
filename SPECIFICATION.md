@@ -486,6 +486,9 @@ Evaluation Limits.
 Requirement Findings are evidence-backed assessment observations. Each Finding
 records:
 
+- `type`: whether the observation is a gap, risk, strength, or note;
+- `severity`: for gaps and risks only, the concern severity;
+- `confidence`: the evaluator's confidence in the Finding;
 - `statement`: the short claim a report can list;
 - `condition`: the observed state or missing-evidence state;
 - `criteria`: one or more Model criteria the observation is judged against;
@@ -573,8 +576,9 @@ Roll-up analysis MUST NOT produce new Findings or introduce evidence absent from
 the lower-level outputs it cites.
 
 Evaluation Finding severity values are `critical`, `high`, `medium`, and `low`.
-Informational observations use Finding `type: note`; `info` is not a severity
-value.
+Finding `severity` is required for `gap` and `risk` Findings and MUST NOT be
+present for `strength` or `note` Findings. Informational observations use
+Finding `type: note`; `info` is not a severity value.
 
 ### Advice
 

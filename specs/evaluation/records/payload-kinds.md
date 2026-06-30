@@ -178,7 +178,6 @@ Each Finding Core object **MUST** include:
 
 - `id`;
 - `type`;
-- `severity`;
 - `confidence`;
 - `statement`;
 - `condition`;
@@ -198,6 +197,8 @@ Finding `type` **MUST** be one of:
 - `risk`
 - `note`
 
+Finding `severity` **MUST** be present when `type` is `gap` or `risk`, and
+**MUST NOT** be present when `type` is `strength` or `note`. When present,
 Finding `severity` **MUST** be one of:
 
 - `critical`

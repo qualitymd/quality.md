@@ -40,7 +40,6 @@
         }
       ],
       "id": "strength-003",
-      "severity": "low",
       "statement": "Health dashboards connect service errors to failed customer actions.",
       "type": "strength"
     }

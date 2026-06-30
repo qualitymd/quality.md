@@ -40,7 +40,6 @@
         }
       ],
       "id": "strength-001",
-      "severity": "low",
       "statement": "Common caller error cases share a documented response shape.",
       "type": "strength"
     }

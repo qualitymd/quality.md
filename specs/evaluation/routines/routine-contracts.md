@@ -74,7 +74,9 @@ Judgment routines **MUST** use only their frames and declared inputs.
 
 Requirement assessment **MUST** produce `RequirementAssessmentResult` and **MUST
 NOT** assign a Rating Level. Each Requirement Finding **MUST** use the shared
-Finding Core: statement, condition, criteria, basis, effect, and evidence.
+Finding Core: type, confidence, statement, condition, criteria, basis, effect,
+and evidence. `gap` and `risk` Findings **MUST** include severity; `strength`
+and `note` Findings **MUST NOT** include severity.
 
 Requirement assessment **MUST** classify findings by type using these semantics:
 `gap` falls short of declared criteria, `risk` could plausibly cause future
@@ -126,8 +128,8 @@ Advice routines **MUST** run after Area analysis and before report generation.
 
 `rankFindings` **MUST** produce `FindingRankingResult` from persisted
 Requirement Findings. Ranking **MUST** use judgment about quality-bar relevance,
-finding severity, binding effect on ratings, confidence, affected scope, and
-whether the finding changes next quality-management action.
+concern severity when present, binding effect on ratings, confidence, affected
+scope, and whether the finding changes next quality-management action.
 
 `recommend` **MUST** produce one or more `RecommendationResult` payloads. A
 recommendation **MUST** be quality-domain agnostic: it should name the quality

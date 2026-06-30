@@ -404,10 +404,9 @@ func batchPayloads(payloads ...string) []byte {
 }
 
 func testFindingCore(id, typ, severity, confidence, statement string) map[string]any {
-	return map[string]any{
+	finding := map[string]any{
 		"id":         id,
 		"type":       typ,
-		"severity":   severity,
 		"confidence": confidence,
 		"statement":  statement,
 		"condition":  statement + " condition.",
@@ -430,6 +429,10 @@ func testFindingCore(id, typ, severity, confidence, statement string) map[string
 			"statement": "Evidence is available.",
 		}},
 	}
+	if severity != "" {
+		finding["severity"] = severity
+	}
+	return finding
 }
 
 func testFindingJSON(finding map[string]any) string {
@@ -443,6 +446,10 @@ func testFindingJSON(finding map[string]any) string {
 func testRequirementFindingJSON(overrides map[string]any) string {
 	finding := testFindingCore("gap-1", "gap", "high", "high", "Gap")
 	for k, v := range overrides {
+		if v == nil {
+			delete(finding, k)
+			continue
+		}
 		finding[k] = v
 	}
 	return testFindingJSON(finding)
@@ -512,8 +519,8 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertNotContains(t, runReport, "Legend\n\n")
 	assertContains(t, runReport, "## Top Findings")
 	assertContains(t, runReport, "| Rank | Finding | Area | Factors | Type | Severity |")
-	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
-	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total)")
+	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (1 total: 1 Strength)")
+	assertContains(t, runReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | — |")
 	assertContains(t, runReport, "## Top Recommendations")
 	assertContains(t, runReport, "| # | Recommendation | Area / Factors | Impact | Confidence | Reason |")
 	assertContains(t, runReport, "| 1 | [Review the next quality bar](recommendations/001-review-the-next-quality-bar.md) | [Navigation model](root-area.md) / [Reliability](factors/reliability/reliability-factor.md) | ⬥ High | 🟢 High | The quality model stays aligned with the evaluated evidence and next bar. |")
@@ -702,7 +709,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, findingsReport, "## Ranked Findings\n\n| Rank | Finding | Area | Factors | Type | Severity |")
 	assertNotContains(t, findingsReport, "Jump to:")
 	assertContains(t, findingsReport, "| Rank | Finding | Area | Factors | Type | Severity |")
-	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | 🔵 Low |")
+	assertContains(t, findingsReport, "| 1 | [Tests are present.](requirements/has-tests/has-tests-requirement.md#finding-strength-1) | [Navigation model](root-area.md) | [Reliability](factors/reliability/reliability-factor.md) | ✅ Strength | — |")
 	assertNotContains(t, findingsReport, "Legend\n\n")
 
 	outputRaw, err := os.ReadFile(filepath.Join(runPath, "data", "evaluation-output-result.json"))
@@ -735,7 +742,7 @@ func TestEvaluationRunReportFullListLinksUseTotalRankedCounts(t *testing.T) {
 	}
 
 	runReport := readReport(t, runPath, "report.md")
-	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (11 total)")
+	assertContains(t, runReport, "**Full findings report:** [findings.md](findings.md) (11 total: 11 Gaps - 11 High)")
 	assertContains(t, runReport, "**Full recommendations report:** [recommendations.md](recommendations.md) (11 total)")
 	assertContains(t, runReport, "| 10 | [Finding 10.](requirements/has-tests/has-tests-requirement.md#finding-gap-10)")
 	assertNotContains(t, runReport, "| 11 | [Finding 11.](requirements/has-tests/has-tests-requirement.md#finding-gap-11)")
@@ -1164,6 +1171,26 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 			want: `severity = "info", want one of critical, high, medium, low`,
 		},
 		{
+			name: "gap finding missing severity",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"severity": nil}) + `]}`,
+			want: `RequirementAssessmentResult.findings[0] is missing required field severity for gap finding`,
+		},
+		{
+			name: "risk finding missing severity",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"type": "risk", "severity": nil}) + `]}`,
+			want: `RequirementAssessmentResult.findings[0] is missing required field severity for risk finding`,
+		},
+		{
+			name: "strength finding forbids severity",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"type": "strength", "severity": "low"}) + `]}`,
+			want: `RequirementAssessmentResult.findings[0].severity is forbidden when type is strength`,
+		},
+		{
+			name: "note finding forbids severity",
+			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + testRequirementFindingJSON(map[string]any{"type": "note", "severity": "low"}) + `]}`,
+			want: `RequirementAssessmentResult.findings[0].severity is forbidden when type is note`,
+		},
+		{
 			name: "requirement assessment invalid status",
 			raw:  `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"done","findings":[` + testRequirementFindingJSON(nil) + `]}`,
 			want: `status = "done", want one of assessed, partially_assessed, not_assessed, blocked`,
@@ -1235,6 +1262,26 @@ func TestSetDataRejectsUnknownFieldsAndUnresolvedModelReferences(t *testing.T) {
 				t.Fatalf("SetData() error = %v, want %q", err, tc.want)
 			}
 		})
+	}
+}
+
+func TestSetDataAcceptsConcernOnlyFindingSeverity(t *testing.T) {
+	repo := testRepo(t)
+	result, err := CreateRun(Options{RepoRoot: repo, Model: "QUALITY.md"})
+	if err != nil {
+		t.Fatalf("CreateRun() error = %v", err)
+	}
+	runPath := filepath.Join(repo, result.Path)
+	for _, finding := range []string{
+		testRequirementFindingJSON(map[string]any{"id": "gap-1", "type": "gap", "severity": "critical"}),
+		testRequirementFindingJSON(map[string]any{"id": "risk-1", "type": "risk", "severity": "high"}),
+		testRequirementFindingJSON(map[string]any{"id": "strength-1", "type": "strength", "severity": nil}),
+		testRequirementFindingJSON(map[string]any{"id": "note-1", "type": "note", "severity": nil}),
+	} {
+		raw := `{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","findings":[` + finding + `]}`
+		if _, err := SetData(runPath, batchPayloads(raw), DataSetOptions{DryRun: true}); err != nil {
+			t.Fatalf("SetData() error = %v\npayload: %s", err, raw)
+		}
 	}
 }
 
@@ -1424,6 +1471,13 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 	if !ok {
 		t.Fatalf("requirement schema finding properties = %#v, want object", items["properties"])
 	}
+	findingRequired, ok := items["required"].([]any)
+	if !ok {
+		t.Fatalf("requirement schema finding required = %#v, want array", items["required"])
+	}
+	if jsonArrayContains(findingRequired, "severity") {
+		t.Fatalf("requirement schema finding required = %#v, want severity type-conditional", findingRequired)
+	}
 	for field, wantValues := range map[string][]string{
 		"type":       enumStrings(findingTypeValues),
 		"severity":   enumStrings(findingSeverityValues),
@@ -1441,6 +1495,24 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 			if !jsonArrayContains(enumValues, want) {
 				t.Fatalf("requirement schema finding %s enum = %#v, want %q", field, enumValues, want)
 			}
+		}
+	}
+	findingRules, ok := items["allOf"].([]any)
+	if !ok {
+		t.Fatalf("requirement schema finding allOf = %#v, want conditional rules", items["allOf"])
+	}
+	findingRulesRaw, err := json.Marshal(findingRules)
+	if err != nil {
+		t.Fatalf("Marshal(finding schema allOf) error = %v", err)
+	}
+	for _, want := range []string{
+		`"enum":["gap","risk"]`,
+		`"required":["severity"]`,
+		`"enum":["strength","note"]`,
+		`"not":{"required":["severity"]}`,
+	} {
+		if !strings.Contains(string(findingRulesRaw), want) {
+			t.Fatalf("requirement schema finding allOf = %s, want %s", findingRulesRaw, want)
 		}
 	}
 	basis, ok := findingProps["basis"].(map[string]any)
@@ -1495,6 +1567,20 @@ func TestDataSchemaAndExamplesUseContract(t *testing.T) {
 		if !strings.Contains(string(example), want) {
 			t.Fatalf("example = %s, want %q", example, want)
 		}
+	}
+	var examplePayload map[string]any
+	if err := json.Unmarshal(example, &examplePayload); err != nil {
+		t.Fatalf("Unmarshal(example) error = %v", err)
+	}
+	exampleFindings := objectSlice(examplePayload["findings"])
+	if len(exampleFindings) < 2 {
+		t.Fatalf("example findings = %#v, want strength and gap examples", exampleFindings)
+	}
+	if _, ok := exampleFindings[0]["severity"]; ok {
+		t.Fatalf("example strength finding = %#v, want no severity", exampleFindings[0])
+	}
+	if got := firstString(exampleFindings[1], "severity"); got == "" {
+		t.Fatalf("example gap finding = %#v, want severity", exampleFindings[1])
 	}
 }
 
@@ -1816,7 +1902,7 @@ func completeRootEvaluationPayloads() []string {
 		`{"schemaVersion":3,"kind":"EvaluationFrame"}`,
 		`{"schemaVersion":3,"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}`,
 		`{"schemaVersion":3,"kind":"AreaAnalysisResult","areaId":"area:root","localAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"Local work meets the bar.","ratingDrivers":[{"description":"Area frame supports local analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}]}],"confidence":"high"},"localAndDescendantAnalysis":{"status":"analyzed","ratingLevelId":"rating:target","rationale":"The model meets the bar overall.","ratingDrivers":[{"description":"Area frame supports overall analysis.","effect":"supports target","inputRefs":[{"kind":"AreaEvaluationFrame","subject":{"areaId":"area:root"}}]}],"confidence":"high"}}`,
-		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","evidenceSummary":"Tests were inspected.","findings":[{"id":"strength-1","type":"strength","severity":"low","confidence":"high","statement":"Tests exist.","condition":"A focused test exists.","criteria":[{"requirementId":"requirement:root::has-tests","ratingLevelId":"rating:target","criterion":"Meets it."}],"basis":{"status":"not_applicable","statement":"No separate basis beyond cited evidence is claimed."},"effect":{"statement":"The finding supports the target rating."},"evidence":[{"sourceRef":"tests/example_test.go","statement":"A focused test exists."}]}]}`,
+		`{"schemaVersion":3,"kind":"RequirementAssessmentResult","requirementId":"requirement:root::has-tests","status":"assessed","evidenceSummary":"Tests were inspected.","findings":[{"id":"strength-1","type":"strength","confidence":"high","statement":"Tests exist.","condition":"A focused test exists.","criteria":[{"requirementId":"requirement:root::has-tests","ratingLevelId":"rating:target","criterion":"Meets it."}],"basis":{"status":"not_applicable","statement":"No separate basis beyond cited evidence is claimed."},"effect":{"statement":"The finding supports the target rating."},"evidence":[{"sourceRef":"tests/example_test.go","statement":"A focused test exists."}]}]}`,
 		`{"schemaVersion":3,"kind":"RequirementRatingResult","requirementId":"requirement:root::has-tests","status":"rated","ratingLevelId":"rating:target","rationale":"Evidence satisfies the target criterion.","ratingDrivers":[{"description":"Assessment finding supports the target rating.","effect":"supports target","inputRefs":[{"kind":"RequirementAssessmentResult","subject":{"requirementId":"requirement:root::has-tests"}}]}],"confidence":"high"}`,
 	}
 	return append(payloads, singleFindingAdvicePayloads("requirement:root::has-tests", "strength-1")...)
@@ -1853,7 +1939,7 @@ func navigationReportPayloads() []string {
 	requirementFinding := testRequirementFindingJSON(map[string]any{
 		"id":         "strength-1",
 		"type":       "strength",
-		"severity":   "low",
+		"severity":   nil,
 		"confidence": "high",
 		"statement":  "Tests are present.",
 		"condition":  "The inspected source includes focused tests.",

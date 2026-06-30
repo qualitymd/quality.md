@@ -4,6 +4,12 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0185 - Concern Finding Severity](../changes/archive/0185-concern-finding-severity.md).
+  Report guidance now treats Finding severity as a concern-only signal and names
+  the Findings report priority field `Highest Concern Severity`.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0184 - Evaluation Links Blockquote](../changes/archive/0184-evaluation-links-blockquote.md).
   Report examples now render `Evaluation links:` as a blockquote immediately
   below each H1.

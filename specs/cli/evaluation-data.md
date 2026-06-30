@@ -70,8 +70,10 @@ Fixed enum validation **MUST** use the same canonical value sets as
 emoji or shape markers, aliases, case variants, or legacy values in place of
 canonical enum values.
 
-For Evaluation Findings, validation **MUST** reject `severity` values outside
-`critical`, `high`, `medium`, and `low`; `info` is not a severity value.
+For Evaluation Findings, validation **MUST** require `severity` when `type` is
+`gap` or `risk`, and **MUST** reject `severity` when `type` is `strength` or
+`note`. When present, `severity` values **MUST** be limited to `critical`,
+`high`, `medium`, and `low`; `info` is not a severity value.
 
 Validation **MUST** resolve every Area ID, Factor ID, Requirement ID, and Rating
 Level ID in the payload against the run's `model-snapshot.md`. If the snapshot is
@@ -170,7 +172,8 @@ surface; with `<kind>` it **MUST** emit a self-contained schema for that kind so
 the required fields and allowed enum values are legible from the emitted
 document without dereferencing a top-level `$ref` into a separate `$defs` map.
 The no-argument full-surface schema **MAY** use `$defs` and `$ref`. Finding
-severity enums in the schema **MUST** use the same reduced value set:
+severity in the schema **MUST** use the same type-conditional required/forbidden
+contract as validation, and its enum **MUST** use the same reduced value set:
 `critical`, `high`, `medium`, and `low`. `data schema` **MUST NOT** provide a
 second JSON result-wrapper mode.
 

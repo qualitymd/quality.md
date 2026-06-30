@@ -414,12 +414,13 @@ Assess every in-scope Requirement against a full read of the in-scope Area
 evidence or explicitly recorded as not assessed with a reason. The report must
 state anything not assessed so a limited run never reads as whole coverage.
 
-Write every Requirement Finding with the Finding Core: `id`, `type`, `severity`,
+Write every Requirement Finding with the Finding Core: `id`, `type`,
 `confidence`, `statement`, `condition`, `criteria`, `basis`, `effect`, and
-`evidence`. Use short payload-local IDs such as `gap-001`; do not use semantic
-slugs or treat finding IDs as durable cross-run identifiers. Reference findings
-from other payloads only through `inputRefs` with a selector such as
-`findings[gap-001]`.
+`evidence`. Include `severity` for `gap` and `risk` Findings only; omit
+`severity` from `strength` and `note` Findings. Use short payload-local IDs such
+as `gap-001`; do not use semantic slugs or treat finding IDs as durable
+cross-run identifiers. Reference findings from other payloads only through
+`inputRefs` with a selector such as `findings[gap-001]`.
 
 A Requirement Rating Result with `status: rated` must be backed by one or more
 Requirement Findings from the paired Requirement Assessment and must include
@@ -447,16 +448,16 @@ top-level finding rationale. Do not write legacy finding `description` or
 Classify finding types by analysis pattern:
 
 - `gap`: observed condition falls short of declared criteria; include the unmet
-  criterion and rating effect. Ambiguous current-state evidence that constrains
-  a rating is a gap.
+  criterion, concern severity, and rating effect. Ambiguous current-state
+  evidence that constrains a rating is a gap.
 - `risk`: observed condition could plausibly cause future quality loss; include
-  the plausible path and confidence limit.
+  the plausible path, concern severity, and confidence limit.
 - `strength`: observed condition supports or exceeds criteria; use
   `basis.status: verified` when the positive condition's basis is directly
   supported by cited evidence, or `basis.status: not_applicable` when no
-  separate basis beyond the cited evidence is claimed.
+  separate basis beyond the cited evidence is claimed. Do not write `severity`.
 - `note`: relevant context worth preserving that does not drive a rating by
-  itself.
+  itself. Do not write `severity`.
 
 Evidence needed for judgment that is missing, inaccessible, stale, or ambiguous
 enough to prevent rating is not a Finding type. Record it through

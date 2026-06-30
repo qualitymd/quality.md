@@ -1,5 +1,12 @@
 # /quality Runtime Skill Update Log
 
+## 2026-06-30
+
+- **Revision**: Updated [`SKILL.md`](SKILL.md) for 0185 - Concern Finding
+  Severity.
+  Runtime evaluation guidance now tells agents to write `severity` only for
+  `gap` and `risk` Findings, omitting it from `strength` and `note` Findings.
+
 ## 2026-06-29
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md),

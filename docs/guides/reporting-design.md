@@ -131,7 +131,7 @@ Good header table examples:
 - Area report: `Overall Rating`, `Local Rating`, `Confidence`;
 - Factor report: `Overall Rating`, `Local Rating`, `Status`, `Confidence`;
 - Requirement report: `Rating`, `Assessment`, `Confidence`;
-- Findings report: `Findings`, `Highest Severity`;
+- Findings report: `Findings`, `Highest Concern Severity`;
 - Recommendations report: `Recommendations`, `Highest Impact`, `Coverage`.
 
 For `report.md`, render this table under `## Key Details` instead of leaving it
@@ -412,7 +412,7 @@ Finding Summary
 
 ## Top Findings
 
-**Full findings report:** [findings.md](findings.md) (7 total)
+**Full findings report:** [findings.md](findings.md) (7 total: 2 Gaps - 1 High, 1 Medium; 1 Risk - 1 Medium; 4 Strengths)
 
 ## Top Recommendations
 
@@ -440,9 +440,9 @@ using frontmatter `type` to carry the report artifact taxonomy.
 
 Run: 0001-full-eval - Generated: 2026-06-29 18:42 UTC - Scope: full evaluation
 
-| Findings   | Highest Severity |
-| ---------- | ---------------- |
-| 7 findings | High             |
+| Findings   | Highest Concern Severity |
+| ---------- | ------------------------ |
+| 7 findings | High                     |
 ```
 
 ### Area reports

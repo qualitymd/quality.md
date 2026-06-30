@@ -40,7 +40,6 @@
         }
       ],
       "id": "strength-004",
-      "severity": "low",
       "statement": "Agent guidance points to the quality model and generated report path.",
       "type": "strength"
     }

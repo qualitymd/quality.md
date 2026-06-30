@@ -354,9 +354,10 @@ The Top Findings table **MUST** render rows from
 Requirement report. The table **MUST NOT** render a finding artifact-ID column.
 The `Area` cell **MUST** link the declaring Area title to the Area report. The
 `Factors` cell **MUST** render comma-separated attached Factor title links, or
-`—` when no Factor link can be rendered. `Type` and `Severity` **MUST** render
-existing display labels, including their emoji, for known finding type and
-severity enum values.
+`—` when no Factor link can be rendered. `Type` **MUST** render existing display
+labels, including their emoji, for known finding type enum values. `Severity`
+**MUST** render existing display labels, including their emoji, for `gap` and
+`risk` Findings and `—` for `strength` and `note` Findings.
 
 The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
@@ -366,12 +367,18 @@ Because the run-report tables are capped overview tables, those full-list links
 links and the complete ranked count outside the link text:
 
 ```markdown
-**Full findings report:** [findings.md](findings.md) (7 total)
+**Full findings report:** [findings.md](findings.md) (7 total: 4 Gaps - 1 Critical, 2 High, 1 Medium; 1 Risk - 1 High; 2 Strengths)
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total)
 ```
 
 The count **MUST** reflect the complete ranked list for the linked report, not
 the number of rows rendered in the capped `report.md` table.
+
+When ranked Findings exist, the full Findings report link count **MUST** include
+an inline summary ordered by Finding type: gaps, risks, strengths, then notes.
+Gap and risk segments **MUST** include only observed severity counts ordered by
+the Finding severity catalog. Zero-count Finding types and zero-count severity
+values **MUST NOT** render in the inline summary.
 
 The Top Recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
@@ -634,8 +641,9 @@ generic `Field | Value` key-value table. Run reports should summarize
 summarize `Overall Rating`, `Local Rating`, `Status`, and `Confidence`;
 Requirement headers should summarize `Rating`, `Assessment`, and `Confidence`;
 Findings and Recommendations reports should summarize list-specific counts and
-priority signals; attached Factors belong in the plural `Factors:` context line,
-not in the summary table.
+priority signals. The Findings report's priority signal should be labeled
+`Highest Concern Severity` and calculated from gap and risk Findings; attached
+Factors belong in the plural `Factors:` context line, not in the summary table.
 
 Opening summary tables **MUST** render under `## Key Details` when they are part
 of the report opening.

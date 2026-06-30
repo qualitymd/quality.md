@@ -1491,7 +1491,6 @@ func requirementAssessmentExample(kind DataKind) map[string]any {
 			map[string]any{
 				"id":         "strength-001",
 				"type":       "strength",
-				"severity":   "medium",
 				"confidence": "medium",
 				"statement":  "Focused test coverage is present.",
 				"condition":  "A focused test covers the requirement's primary path.",

@@ -756,3 +756,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0184 — Evaluation Links Blockquote](0184-evaluation-links-blockquote.md) -
   renders generated report `Evaluation links:` navigation as a blockquote
   immediately below each H1 (`Done`).
+- [0185 — Concern Finding Severity](0185-concern-finding-severity.md) - makes
+  Finding `severity` concern-only, requiring it for gaps and risks while
+  forbidding it for strengths and notes (`Done`).

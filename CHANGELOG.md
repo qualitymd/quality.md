@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Evaluation Finding `severity` is now concern-only: required for `gap` and
+  `risk` Findings and rejected for `strength` and `note` Findings. Generated
+  reports render `—` for non-concern severity cells and summarize full Findings
+  links with type and concern-severity counts.
 - Generated Evaluation reports now link to `report.md`, `findings.md`,
   `recommendations.md`, and the new workspace-root `glossary.md` through one
   H1-adjacent `Evaluation links:` blockquote, and no longer repeat local
@@ -53,6 +57,8 @@ QUALITY.md specification.
 
 ### /quality skill
 
+- `/quality evaluate` guidance now writes `severity` only for `gap` and `risk`
+  Findings, omitting it from `strength` and `note` Findings.
 - `/quality evaluate` guidance now writes recommendation payloads before ranking,
   reads assigned `qrec_...` IDs, and uses ranked order as the user-facing
   recommendation number.

@@ -473,41 +473,44 @@ func requirementFrame(req requirementCase) map[string]any {
 }
 
 func requirementAssessment(req requirementCase) map[string]any {
-	return map[string]any{
-		"schemaVersion":   evaluation.SchemaVersion,
-		"kind":            string(evaluation.DataKindRequirementAssessment),
-		"requirementId":   reqRef(req.Area, req.Name),
-		"status":          "assessed",
-		"evidenceSummary": req.Assessment,
-		"summary":         req.Assessment,
-		"factors":         []any{factorRef(req.Area, req.Factor)},
-		"findings": []any{map[string]any{
-			"id":         req.FindingID,
-			"type":       req.FindingType,
-			"severity":   req.Severity,
-			"confidence": req.Confidence,
-			"statement":  req.Statement,
-			"condition":  req.Condition,
-			"criteria": []any{map[string]any{
-				"requirementId": reqRef(req.Area, req.Name),
-				"ratingLevelId": "rating:target",
-				"criterion":     req.Criterion,
-				"rationale":     "The gallery records one finding per requirement so report tables stay easy to inspect.",
-			}},
-			"basis": map[string]any{
-				"status":    req.BasisStatus,
-				"statement": req.Basis,
-			},
-			"effect": map[string]any{
-				"statement":    req.Effect,
-				"ratingEffect": req.RatingEffect,
-			},
-			"evidence": []any{map[string]any{
-				"sourceRef": req.EvidenceRef,
-				"statement": req.Evidence,
-				"rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
-			}},
+	finding := map[string]any{
+		"id":         req.FindingID,
+		"type":       req.FindingType,
+		"confidence": req.Confidence,
+		"statement":  req.Statement,
+		"condition":  req.Condition,
+		"criteria": []any{map[string]any{
+			"requirementId": reqRef(req.Area, req.Name),
+			"ratingLevelId": "rating:target",
+			"criterion":     req.Criterion,
+			"rationale":     "The gallery records one finding per requirement so report tables stay easy to inspect.",
 		}},
+		"basis": map[string]any{
+			"status":    req.BasisStatus,
+			"statement": req.Basis,
+		},
+		"effect": map[string]any{
+			"statement":    req.Effect,
+			"ratingEffect": req.RatingEffect,
+		},
+		"evidence": []any{map[string]any{
+			"sourceRef": req.EvidenceRef,
+			"statement": req.Evidence,
+			"rationale": "Synthetic source reference retained to demonstrate evidence rendering.",
+		}},
+	}
+	if req.FindingType == "gap" || req.FindingType == "risk" {
+		finding["severity"] = req.Severity
+	}
+	return map[string]any{
+		"schemaVersion":    evaluation.SchemaVersion,
+		"kind":             string(evaluation.DataKindRequirementAssessment),
+		"requirementId":    reqRef(req.Area, req.Name),
+		"status":           "assessed",
+		"evidenceSummary":  req.Assessment,
+		"summary":          req.Assessment,
+		"factors":          []any{factorRef(req.Area, req.Factor)},
+		"findings":         []any{finding},
 		"confidence":       req.Confidence,
 		"confidenceReason": "Synthetic evidence is intentionally bounded to report-gallery demonstration data.",
 		"evaluationLimits": []any{map[string]any{

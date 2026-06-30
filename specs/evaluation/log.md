@@ -2,6 +2,12 @@
 
 ## 2026-06-30
 
+- **Revision**: Updated Evaluation record, routine, and report-tree contracts for
+  [0185 - Concern Finding Severity](../../changes/archive/0185-concern-finding-severity.md).
+  Finding severity is now limited to concern Findings, with generated reports
+  rendering non-concern severity cells as `—` and full Findings links carrying
+  inline type/severity summaries.
+
 - **Revision**: Updated the Evaluation report-tree contract for
   [0184 - Evaluation Links Blockquote](../../changes/archive/0184-evaluation-links-blockquote.md).
   Generated reports now render `Evaluation links:` as a blockquote immediately

@@ -204,9 +204,11 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
   record rating drivers and a brief rationale naming the binding constraints
   (per [Analyze](../../../SPECIFICATION.md#analyze)).
 - **Findings use the shared core.** The skill **MUST** write Requirement Findings
-  with `statement`, `condition`, `criteria`, `basis`, `effect`, and `evidence`.
-  Rationale belongs on the nested field it explains, such as a criterion, basis,
-  effect, or evidence entry, not on the finding as a whole.
+  with `type`, `confidence`, `statement`, `condition`, `criteria`, `basis`,
+  `effect`, and `evidence`. The skill **MUST** include `severity` for `gap` and
+  `risk` Findings and **MUST NOT** include `severity` for `strength` or `note`
+  Findings. Rationale belongs on the nested field it explains, such as a
+  criterion, basis, effect, or evidence entry, not on the finding as a whole.
 - **Finding types carry distinct analysis.** The skill **MUST** classify `gap`
   as an observed shortfall against criteria, `risk` as a plausible future
   quality loss path, `strength` as support for or margin above criteria,

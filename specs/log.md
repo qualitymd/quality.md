@@ -3,6 +3,12 @@
 ## 2026-06-30
 
 - **Revision**: Implemented durable spec changes for
+  [0185 - Concern Finding Severity](../changes/archive/0185-concern-finding-severity.md).
+  Evaluation Finding severity is now concern-only: required for `gap` and
+  `risk`, forbidden for `strength` and `note`, and reflected in validation,
+  schema, examples, report rendering, and `/quality` guidance.
+
+- **Revision**: Implemented durable spec changes for
   [0184 - Evaluation Links Blockquote](../changes/archive/0184-evaluation-links-blockquote.md).
   Generated reports now render `Evaluation links:` as a blockquote immediately
   below each H1 while preserving the existing link targets and order.

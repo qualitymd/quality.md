@@ -456,7 +456,7 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 		Run:        artifacts.Manifest,
 		SummaryHead: []string{
 			"Findings",
-			"Highest Severity",
+			"Highest Concern Severity",
 		},
 		SummaryRow: []string{
 			fmt.Sprintf("%d findings", len(artifacts.rankedFindings())),
@@ -745,7 +745,7 @@ func highestFindingSeverityTitle(artifacts *evaluationArtifacts) string {
 	bestRank := len(findingSeverityValues.Values)
 	best := ""
 	for _, row := range artifacts.rankedFindings() {
-		severity := firstString(row.Finding, "severity")
+		severity := findingConcernSeverity(row.Finding)
 		rank, ok := enumRank(findingSeverityValues, severity)
 		if !ok {
 			continue
@@ -936,8 +936,8 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeAreaFactorBreakdownSection(&b, "Model Evaluation", spec, artifacts, plan.ScopedAreaID, reportPath)
 	writeRunReportCoverageNote(&b, reports, reportPath)
 	b.WriteString("## Top Findings\n\n")
+	writeFullFindingsReportLink(&b, reportPath, artifacts)
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
-	writeFullListReportLink(&b, reportPath, "Full findings report", "findings.md", len(artifacts.rankedFindings()))
 	b.WriteString("## Top Recommendations\n\n")
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
 	writeFullListReportLink(&b, reportPath, "Full recommendations report", "recommendations.md", len(artifacts.rankedRecommendations()))
@@ -1061,9 +1061,9 @@ func runReportFindingSummaryRows(artifacts *evaluationArtifacts) []findingSummar
 		}
 		counts[typ]++
 		if typ == string(FindingTypeGap) || typ == string(FindingTypeRisk) {
-			sev := firstString(row.Finding, "severity")
+			sev := findingConcernSeverity(row.Finding)
 			if sev == "" {
-				sev = "none"
+				continue
 			}
 			if severities[typ] == nil {
 				severities[typ] = map[string]int{}
@@ -1100,13 +1100,75 @@ func findingSummarySeverity(typ string, severities map[string]int) string {
 		}
 		parts = append(parts, fmt.Sprintf("%s: %d", findingSeverityTitle(sev), count))
 	}
-	if count := severities["none"]; count > 0 {
-		parts = append(parts, fmt.Sprintf("—: %d", count))
-	}
 	if len(parts) == 0 {
 		return "—"
 	}
 	return strings.Join(parts, "; ")
+}
+
+func writeFullFindingsReportLink(b *strings.Builder, fromReport string, artifacts *evaluationArtifacts) {
+	total := len(artifacts.rankedFindings())
+	summary := findingInlineCountSummary(artifacts)
+	if summary == "" {
+		fmt.Fprintf(b, "**Full findings report:** %s (%d total)\n\n", reportLink(fromReport, "findings.md", "findings.md"), total)
+		return
+	}
+	fmt.Fprintf(b, "**Full findings report:** %s (%d total: %s)\n\n", reportLink(fromReport, "findings.md", "findings.md"), total, summary)
+}
+
+func findingInlineCountSummary(artifacts *evaluationArtifacts) string {
+	counts := map[string]int{}
+	severities := map[string]map[string]int{}
+	for _, row := range artifacts.rankedFindings() {
+		typ := firstString(row.Finding, "type")
+		if typ == "" {
+			continue
+		}
+		counts[typ]++
+		sev := findingConcernSeverity(row.Finding)
+		if sev == "" {
+			continue
+		}
+		if severities[typ] == nil {
+			severities[typ] = map[string]int{}
+		}
+		severities[typ][sev]++
+	}
+	parts := make([]string, 0, len(findingTypeValues.Values))
+	for _, value := range findingTypeValues.Values {
+		typ := string(value.Value)
+		count := counts[typ]
+		if count == 0 {
+			continue
+		}
+		part := fmt.Sprintf("%d %s", count, pluralize(value.Label, count))
+		if typ == string(FindingTypeGap) || typ == string(FindingTypeRisk) {
+			if severitySummary := findingInlineSeveritySummary(severities[typ]); severitySummary != "" {
+				part += " - " + severitySummary
+			}
+		}
+		parts = append(parts, part)
+	}
+	return strings.Join(parts, "; ")
+}
+
+func findingInlineSeveritySummary(severities map[string]int) string {
+	parts := make([]string, 0, len(findingSeverityValues.Values))
+	for _, value := range findingSeverityValues.Values {
+		count := severities[string(value.Value)]
+		if count == 0 {
+			continue
+		}
+		parts = append(parts, fmt.Sprintf("%d %s", count, value.Label))
+	}
+	return strings.Join(parts, ", ")
+}
+
+func pluralize(label string, count int) string {
+	if count == 1 {
+		return label
+	}
+	return label + "s"
 }
 
 func writeFullListReportLink(b *strings.Builder, fromReport, label, target string, total int) {
@@ -1829,7 +1891,7 @@ func writeRankedFindingsTable(b *strings.Builder, spec *model.Spec, artifacts *e
 			rankedFindingAreaLink(spec, row, reportPath),
 			rankedFindingFactorLinks(spec, row, reportPath),
 			findingTypeTitle(firstString(row.Finding, "type")),
-			findingSeverityTitle(firstString(row.Finding, "severity")),
+			findingSeverityCell(row.Finding),
 		))
 		wrote++
 	}
@@ -2465,7 +2527,7 @@ func writeEvaluationFindingsTable(b *strings.Builder, assessment map[string]any)
 		if id == "" {
 			id = fmt.Sprintf("finding-%d", i+1)
 		}
-		b.WriteString(md.TableRow(md.Code(id), firstString(finding, "statement"), findingTypeTitle(firstString(finding, "type")), findingSeverityTitle(firstString(finding, "severity")), confidenceTitle(firstString(finding, "confidence")), findingEffectSummary(finding), findingBasisSummary(finding)))
+		b.WriteString(md.TableRow(md.Code(id), firstString(finding, "statement"), findingTypeTitle(firstString(finding, "type")), findingSeverityCell(finding), confidenceTitle(firstString(finding, "confidence")), findingEffectSummary(finding), findingBasisSummary(finding)))
 	}
 	b.WriteString("\n")
 }
@@ -2554,6 +2616,22 @@ func workspaceRelativeRunPath(runAbs string, manifest *EvaluationManifest) strin
 		}
 	}
 	return ""
+}
+
+func findingConcernSeverity(finding map[string]any) string {
+	switch firstString(finding, "type") {
+	case string(FindingTypeGap), string(FindingTypeRisk):
+		return firstString(finding, "severity")
+	default:
+		return ""
+	}
+}
+
+func findingSeverityCell(finding map[string]any) string {
+	if severity := findingConcernSeverity(finding); severity != "" {
+		return findingSeverityTitle(severity)
+	}
+	return "—"
 }
 
 func glossaryLinkTarget(reportPath, runPath string) string {

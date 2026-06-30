@@ -3,6 +3,20 @@
 ## 2026-06-30
 
 - **Done**: Implemented and archived
+  [0185 - Concern Finding Severity](archive/0185-concern-finding-severity.md).
+  Finding `severity` is now concern-only in validation, schema, examples,
+  generated reports, runtime guidance, and durable specs.
+
+- **In-Progress**: Created
+  [0185 - Concern Finding Severity](archive/0185-concern-finding-severity.md)
+  with its
+  [functional spec](archive/0185-concern-finding-severity/spec.md) and
+  [design doc](archive/0185-concern-finding-severity/design.md). Functional
+  requirements and design are settled; implementation is beginning across
+  Finding data validation, schemas, reports, runtime guidance, durable specs,
+  tests, and generated examples.
+
+- **Done**: Implemented and archived
   [0184 - Evaluation Links Blockquote](archive/0184-evaluation-links-blockquote.md).
   Generated reports now render `Evaluation links:` as a blockquote immediately
   below each H1 while preserving the overview, Findings, Recommendations, and

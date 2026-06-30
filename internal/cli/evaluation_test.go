@@ -33,7 +33,6 @@ func TestEvaluationDataSetGetAndExample(t *testing.T) {
   "findings": [{
     "id": "strength-001",
     "type": "strength",
-    "severity": "low",
     "confidence": "medium",
     "statement": "A focused test exists.",
     "condition": "A test covers the primary path.",

@@ -40,8 +40,9 @@ type dataField struct {
 }
 
 type dataObjectContract struct {
-	Fields []dataField
-	Open   bool
+	Fields      []dataField
+	Open        bool
+	SchemaAllOf []map[string]any
 }
 
 type dataKindContract struct {
@@ -391,14 +392,14 @@ func findingContract() dataObjectContract {
 	fields := append(findingCoreFields(),
 		field("candidateActions", dataArray, false, arrayOfObject(candidateActionContract())),
 	)
-	return object(fields...)
+	return objectWithSchemaRules(fields, findingSeveritySchemaRules()...)
 }
 
 func findingCoreFields() []dataField {
 	return []dataField{
 		field("id", dataString, true),
 		field("type", dataString, true, enumStrings(findingTypeValues)),
-		field("severity", dataString, true, enumStrings(findingSeverityValues)),
+		field("severity", dataString, false, enumStrings(findingSeverityValues)),
 		field("confidence", dataString, true, enumStrings(confidenceValues)),
 		field("statement", dataString, true),
 		field("condition", dataString, true),
@@ -406,6 +407,39 @@ func findingCoreFields() []dataField {
 		field("basis", dataObject, true, findingBasisContract()),
 		field("effect", dataObject, true, findingEffectContract()),
 		field("evidence", dataArray, true, arrayOfObject(findingEvidenceContract()), minItems(1)),
+	}
+}
+
+func findingSeveritySchemaRules() []map[string]any {
+	return []map[string]any{
+		{
+			"if": map[string]any{
+				"properties": map[string]any{
+					"type": map[string]any{
+						"enum": []any{string(FindingTypeGap), string(FindingTypeRisk)},
+					},
+				},
+				"required": []any{"type"},
+			},
+			"then": map[string]any{
+				"required": []any{"severity"},
+			},
+		},
+		{
+			"if": map[string]any{
+				"properties": map[string]any{
+					"type": map[string]any{
+						"enum": []any{string(FindingTypeStrength), string(FindingTypeNote)},
+					},
+				},
+				"required": []any{"type"},
+			},
+			"then": map[string]any{
+				"not": map[string]any{
+					"required": []any{"severity"},
+				},
+			},
+		},
 	}
 }
 
@@ -550,6 +584,10 @@ func areaOutputContract() dataObjectContract {
 
 func object(fields ...dataField) dataObjectContract {
 	return dataObjectContract{Fields: fields}
+}
+
+func objectWithSchemaRules(fields []dataField, rules ...map[string]any) dataObjectContract {
+	return dataObjectContract{Fields: fields, SchemaAllOf: rules}
 }
 
 func openObject() dataObjectContract {
@@ -781,6 +819,18 @@ func validatePayloadSemantics(kind DataKind, payload map[string]any) error {
 func validateRequirementAssessmentResultSemantics(payload map[string]any) error {
 	for i, finding := range objectSlice(payload["findings"]) {
 		path := fmt.Sprintf("RequirementAssessmentResult.findings[%d]", i)
+		typ := firstString(finding, "type")
+		_, hasSeverity := finding["severity"]
+		switch typ {
+		case string(FindingTypeGap), string(FindingTypeRisk):
+			if !hasSeverity {
+				return usagef("%s is missing required field severity for %s finding", path, typ)
+			}
+		case string(FindingTypeStrength), string(FindingTypeNote):
+			if hasSeverity {
+				return usagef("%s.severity is forbidden when type is %s", path, typ)
+			}
+		}
 		seen := map[string]struct{}{}
 		for j, action := range objectSlice(finding["candidateActions"]) {
 			actionPath := fmt.Sprintf("%s.candidateActions[%d]", path, j)
@@ -1002,6 +1052,13 @@ func schemaForObject(contract dataObjectContract) map[string]any {
 	}
 	if !contract.Open {
 		out["additionalProperties"] = false
+	}
+	if len(contract.SchemaAllOf) > 0 {
+		allOf := make([]any, 0, len(contract.SchemaAllOf))
+		for _, rule := range contract.SchemaAllOf {
+			allOf = append(allOf, rule)
+		}
+		out["allOf"] = allOf
 	}
 	return out
 }
