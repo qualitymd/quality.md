@@ -19,7 +19,7 @@ distributed separately from the CLI and declares its skill version and supported
 `qualitymd` SemVer range for released installs in
 `skills/quality/SKILL.md` frontmatter metadata (see
 [`Versioning`](../../../docs/reference/versioning.md)). The skill is responsible
-for **specifying and implementing** the *evaluation* it performs — this spec, the
+for **specifying and implementing** the _evaluation_ it performs — this spec, the
 skill's own prompt, and the CLI together. That evaluation **MUST conform to** the
 format spec's
 
@@ -27,7 +27,7 @@ format spec's
 > **not defer** its definition to it: the process below is the skill's own,
 > written to satisfy that contract rather than to merely point at it (see
 > [Conformance to the format spec](#conformance-to-the-format-spec)). Recording
-> assessment results *through the CLI* is **deferred** in step with the CLI's deferred
+> assessment results _through the CLI_ is **deferred** in step with the CLI's deferred
 > record/gate surface (see [Deferred](#deferred)).
 
 This document uses BCP 14 keywords only for testable conformance requirements.
@@ -187,9 +187,9 @@ To stay in sync with the format, the metadata and prompt **MUST NOT** embed a
 copy of the format's rules or rating vocabulary that can drift from
 [`SPECIFICATION.md`](../../../SPECIFICATION.md); the skill grounds those at runtime
 from `qualitymd spec` (see [Driving the CLI](#driving-the-cli)). This applies to
-the *format and schema rules and the rating vocabulary* — the structure of
+the _format and schema rules and the rating vocabulary_ — the structure of
 QUALITY.md and the meaning of its terms, which are grounded at runtime. It does
-**not** apply to the skill's *evaluation process*, which the skill owns and
+**not** apply to the skill's _evaluation process_, which the skill owns and
 specifies here and carries in its prompt (see
 [Conformance to the format spec](#conformance-to-the-format-spec)); that process
 conforms to the spec's Evaluation contract rather than being fetched from it.
@@ -240,7 +240,7 @@ scope:
   labels, the skill **SHOULD** resolve the Area label first, then resolve the
   Factor label within that Area. When a Factor label is present in multiple
   Areas, the skill **SHOULD** ask `What area do you want to evaluate <Factor>
-  for?` and lead clarification options with human-readable Area titles or names.
+for?` and lead clarification options with human-readable Area titles or names.
   The skill **MUST** continue to accept qualified model references such as
   `area:<area-path>` and `factor:<declaring-area-path>::<factor-path>` for exact
   addressing, disambiguation, and advanced workflows. It may also accept
@@ -281,7 +281,7 @@ materially equivalent wording. Concrete files, commands, fields, model
 references, IDs, and literal user replies in examples **SHOULD** use code spans
 so exact operational text is visually distinct from prose.
 
-Each user interaction is an *intent* — a single-select closed choice with a
+Each user interaction is an _intent_ — a single-select closed choice with a
 recommended default, a multi-select, a binary confirmation, an open-ended
 correction — not a fixed rendering. The skill **MUST** render each interaction
 through the richest fit-for-purpose native interaction affordance the runtime
@@ -372,7 +372,7 @@ combination of those.
 > the run frame must not emit `Mode: wizard`. — 0110
 >
 > First-output timing is the same lesson as the header rules: the frame only lets
-> the user catch a wrong inference if it arrives *before* the agent spends effort,
+> the user catch a wrong inference if it arrives _before_ the agent spends effort,
 > so it must not sit behind a runway of tool calls. 0096 fixed this for `setup`
 > by ordering; 0114 lifts the ordering rule to this shared contract so every
 > workflow inherits it, with a provisional / `resolving…` value for any field
@@ -706,8 +706,8 @@ output as the source of truth:
   **MUST NOT** proceed to judgment on a file with `lint` errors (an invalid
   `QUALITY.md` has no well-defined model to evaluate). Warnings do not block.
 - **`spec`** emits the format specification; the skill **MUST** ground its
-  understanding of the *format and schema rules and rating vocabulary* in this
-  output rather than a hard-coded copy. Its *evaluation process* is the skill's
+  understanding of the _format and schema rules and rating vocabulary_ in this
+  output rather than a hard-coded copy. Its _evaluation process_ is the skill's
   own (see [Evaluation Workflow](#evaluation-workflow)) and **conforms to**,
   rather than is fetched from, the spec.
 
@@ -757,8 +757,8 @@ responsibilities, and the deferred CLI surface.
 
 ## Workflow feedback log
 
-A *workflow feedback log* is a hand-authored, runtime Markdown artifact that
-records the *experience* of running a `/quality` workflow — friction, errors,
+A _workflow feedback log_ is a hand-authored, runtime Markdown artifact that
+records the _experience_ of running a `/quality` workflow — friction, errors,
 UX/AX rough edges, and efficiency observations — so the skill, CLI, and prompts
 can be improved from real runs. The shared artifact contract lives in
 [workflow feedback log](workflow-feedback-log.md): logs are written under
@@ -780,7 +780,7 @@ recommendation state. Historical evaluation runs may still contain
 `debug-log.md`; current feedback belongs in the evaluate feedback log.
 
 > Rationale: `/quality` workflows had no durable, central place to record what
-> was slow, confusing, or wrong about *running* them. The signal behind the 0065
+> was slow, confusing, or wrong about _running_ them. The signal behind the 0065
 > setup refinements was hand-captured once from a single field test; the feedback
 > log makes that improvement loop durable and actionable across runs. Evaluation
 > now uses the same artifact family rather than a separate debug-log concept. —

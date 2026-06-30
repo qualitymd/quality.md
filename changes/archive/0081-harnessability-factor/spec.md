@@ -9,9 +9,9 @@ timestamp: 2026-06-24T00:00:00Z
 # Harnessability factor — functional spec
 
 Companion to the [Harnessability factor](../0081-harnessability-factor.md) change
-case. This spec states *what* the skill's factor guidance must say; the
-[design doc](design.md) covers *how* the six sub-factors were derived and verified
-and *why* the concern leads with its factor projection. It governs the bundled
+case. This spec states _what_ the skill's factor guidance must say; the
+[design doc](design.md) covers _how_ the six sub-factors were derived and verified
+and _why_ the concern leads with its factor projection. It governs the bundled
 skill ([`skills/quality/`](../../../skills/quality/)) and its functional-spec
 mirror ([`specs/skills/quality-skill/`](../../../specs/skills/quality-skill/)), and
 defers the QUALITY.md format itself to
@@ -25,8 +25,8 @@ capitals.
 
 The skill carries the agent-collaboration concern only as a **constituent** — the
 agent harness — and 0080 made that constituent model-by-default. But the concern's
-most useful projection across a composite root is a **factor**: *how well does
-each part of this project equip an agent to work on it well?* That question recurs
+most useful projection across a composite root is a **factor**: _how well does
+each part of this project equip an agent to work on it well?_ That question recurs
 across constituents (the server, the schema, the tests, the docs are each more or
 less so), which is the guide's own signature of a model-wide factor. Leading with
 the factor projection also makes the concern robust to thinness the way
@@ -34,8 +34,8 @@ the factor projection also makes the concern robust to thinness the way
 surfaces a finding everywhere, instead of being deferrable as an immature area.
 
 The quality is the one the harness-engineering literature names: agent legibility,
-steerability, and verifiability of the whole project — *guides and sensors* around
-the model (Böckeler), *"what the agent can't see doesn't exist"* (OpenAI). This
+steerability, and verifiability of the whole project — _guides and sensors_ around
+the model (Böckeler), _"what the agent can't see doesn't exist"_ (OpenAI). This
 case names that quality **harnessability** and decomposes it into six sub-factors
 that trace the agent's working loop, so an evaluator assesses a project's
 agent-equipping directly rather than inferring it from one steering artifact's
@@ -75,8 +75,8 @@ scarce resource in agent-collaborated work is human attention.
 The guide **MUST** present harnessability as a **deliberate umbrella**: it does not
 roll up directly but decomposes into the sub-factors below, each independently
 assessable and contributing one non-overlapping share. It **MUST** name the
-*quality the project exhibits* and **MUST NOT** let the name denote the harness
-artifact — guides, sensors, sandboxes, and scripts are *evidence*, not the factor
+_quality the project exhibits_ and **MUST NOT** let the name denote the harness
+artifact — guides, sensors, sandboxes, and scripts are _evidence_, not the factor
 (per [Name the quality, not the practice](../../../skills/quality/guides/authoring.md)).
 
 > Rationale: the concern recurs across constituents, which is the guide's own test
@@ -106,13 +106,13 @@ exhaustive or mandatory checklist.
 
 1. **agent-accessibility** — the degree to which a project's decision-relevant
    knowledge, structure, intent, and observable behavior are present and
-   intelligible in materials an agent can reach *in-context at the moment of work*
+   intelligible in materials an agent can reach _in-context at the moment of work_
    (durably recorded docs, a navigable map of where things live, scoped
    instruction files, consistently structured and searchable materials, decision
    records, machine-parseable signals of observable behavior), so the agent can
-   build an accurate model of the project from the project itself. *Matters
+   build an accurate model of the project from the project itself. _Matters
    because what an agent cannot reach or parse in-context effectively does not
-   exist to it.*
+   exist to it._
    - Example requirements (illustrative; the materials differ by domain — a
      version-controlled repo for software, a shared matter file and document store
      for a legal case, recorded accounts and rules for a budgeting project): a
@@ -122,7 +122,7 @@ exhaustive or mandatory checklist.
      out-of-band or in a person's head; runtime behavior the agent needs is
      reachable and machine-parseable in-context.
    - Boundary: vs `understandability` (general human comprehensibility) — this is
-     in-context *machine* reachability and intelligibility; route human-prose
+     in-context _machine_ reachability and intelligibility; route human-prose
      clarity to `understandability`. vs `traceability` — cede "is a decision
      durably recorded" to `traceability`; scope this to in-context reachability of
      that record. vs `observability` — if the area carries `observability`, assess
@@ -131,25 +131,25 @@ exhaustive or mandatory checklist.
 2. **task-specifiability** — the degree to which a project lets a unit of work be
    handed to an agent as a self-contained, scoped assignment with explicit success
    criteria and known boundaries, so the agent knows what "done" means and where
-   the work stops before it starts. *Matters because an ambiguous or unbounded task
+   the work stops before it starts. _Matters because an ambiguous or unbounded task
    forces the human to re-specify work mid-flight — the supervision harnessability
-   exists to remove.*
+   exists to remove._
    - Example requirements: units of work can be expressed with explicit success
      criteria the agent can target and check against; scope and non-goals are
      articulable; task entry points (where to start, what to read first) are
      discoverable in-context.
-   - Boundary: vs `agent-accessibility` (can the agent understand the *project*) —
-     this is whether a *task* can be framed with goal, criteria, and bounds. vs
-     `self-verifiability` — criteria are *stated* here, *mechanically checked*
+   - Boundary: vs `agent-accessibility` (can the agent understand the _project_) —
+     this is whether a _task_ can be framed with goal, criteria, and bounds. vs
+     `self-verifiability` — criteria are _stated_ here, _mechanically checked_
      there.
 
 3. **agent-operability** — the degree to which an agent, including a fresh session
    with no prior memory, can establish and operate the project's working
    environment — reaching a known, ready-to-work state and connecting to the tools,
    data, accounts, and systems the work runs on — from recorded materials rather
-   than tacit knowledge or human-led setup. *Matters because an agent that cannot
+   than tacit knowledge or human-led setup. _Matters because an agent that cannot
    reliably stand up and operate the working environment can neither act, observe,
-   nor verify.*
+   nor verify._
    - Example requirements (illustrative; the working environment differs by domain
      — a runnable dev environment for software, connected accounts and a ledger for
      a budgeting project, a loaded matter with its documents and research tools for
@@ -162,21 +162,21 @@ exhaustive or mandatory checklist.
      stays within a bounded, stated turnaround.
    - Boundary: vs `operability` (the evaluated entity's general fitness to be run or
      operated in its live setting, often by humans) — agent-operability is that same
-     lens turned on the *agent's working environment*: whether an agent doing the
+     lens turned on the _agent's working environment_: whether an agent doing the
      project's work can stand it up and operate it, fast and repeatably, just as
      `agent-accessibility` turns `understandability` toward the agent. vs
-     `agent-accessibility` — accessibility is whether the agent can *know* the
-     project; this is whether it can *operate* its workspace. vs
-     `containment-of-action` — this *equips* working access; that *confines* it. The
+     `agent-accessibility` — accessibility is whether the agent can _know_ the
+     project; this is whether it can _operate_ its workspace. vs
+     `containment-of-action` — this _equips_ working access; that _confines_ it. The
      bring-up confirmation is owned here ("can the working environment stand up");
-     confirming a *change* is correct is `self-verifiability`.
+     confirming a _change_ is correct is `self-verifiability`.
 
 4. **self-verifiability** — the degree to which a project gives an agent objective,
    machine-readable signals it can run on demand to confirm whether its own change
    is correct, whose output carries the remediation the agent needs to self-correct
    (an on-demand, objective check the agent runs on its own work and reads the
-   result of). *Matters because without a check it can run, "looks done" is the
-   only signal the agent has.*
+   result of). _Matters because without a check it can run, "looks done" is the
+   only signal the agent has._
    - Example requirements (illustrative; the check differs by domain — pass/fail
      tests, type checks, and build exit codes for software; a citation and
      rules-of-court check for a legal filing; a reconciliation that proves the
@@ -186,17 +186,17 @@ exhaustive or mandatory checklist.
      non-deterministic or behavioral outcomes have runnable evals that gate the
      work, and prior real-world failures are captured back as coverage.
    - Boundary: vs `testability` (general ease of testing the entity) — this is
-     whether the *agent itself* can obtain a fast, objective, remediation-bearing
+     whether the _agent itself_ can obtain a fast, objective, remediation-bearing
      pass/fail in-loop. It **owns** the actionability-of-feedback requirement (a
      check's failure message carrying the fix); `agent-accessibility` keeps only
      static guidance prose. vs `enforcement-of-standards` — a check here is a signal
-     the agent *chooses to consume*; a gate there *binds regardless of the agent*.
+     the agent _chooses to consume_; a gate there _binds regardless of the agent_.
 
 5. **enforcement-of-standards** — the degree to which a project's stated quality
-   standards hold *regardless of agent behavior* — non-compliant output is
+   standards hold _regardless of agent behavior_ — non-compliant output is
    prevented by deterministic gates rather than depending on the agent honoring
-   advisory prose. *Matters because LLM compliance with instructions is
-   probabilistic; a written rule an agent may ignore is not a guarantee.*
+   advisory prose. _Matters because LLM compliance with instructions is
+   probabilistic; a written rule an agent may ignore is not a guarantee._
    - Example requirements (illustrative; the gate differs by domain — structural
      tests, linters, and CI invariants that block a merge for software; a template
      that refuses a filing missing a mandatory disclosure for a legal case; a close
@@ -207,28 +207,28 @@ exhaustive or mandatory checklist.
      push the agent into over-engineering spirals or feedback overload; suppression
      escape hatches (inline disables, forced-pass) are constrained so the agent
      fixes rather than silences violations.
-   - Boundary: named as a quality (non-compliant output is *prevented*), not a tally
+   - Boundary: named as a quality (non-compliant output is _prevented_), not a tally
      of gates. vs `self-verifiability` — bind-regardless-of-agent vs
      agent-consumed-signal. vs `containment-of-action` — this prevents
-     *non-compliant output*; that confines *out-of-scope action*.
+     _non-compliant output_; that confines _out-of-scope action_.
 
 6. **containment-of-action** — the degree to which an agent's permitted actions are
    confined so out-of-scope or unsafe action is contained by enforced limits
    (sandboxing, permission allowlists, action-blocking hooks) rather than trusted
-   to advisory prose. *Matters because an unbounded agent's mistaken action has
-   unbounded blast radius.*
+   to advisory prose. _Matters because an unbounded agent's mistaken action has
+   unbounded blast radius._
    - Example requirements: the agent's permitted actions are confined so an
      erroneous or unattended run cannot escalate scope, reach sensitive resources,
      or take a consequential real-world action without an approval gate (e.g. file
      to a court, move money, email a client, or delete records); containment is
      enforced (sandboxed filesystem/network, scoped permissions), not merely
      documented.
-   - Boundary: named as a quality (out-of-scope action is *prevented*), not a tally
+   - Boundary: named as a quality (out-of-scope action is _prevented_), not a tally
      of sandboxes. vs `security` (the entity's posture against external threats) —
      if the area carries `security`, assess threat posture there and confine this to
-     containment of the *agent's own* actions while doing the project's work, to
+     containment of the _agent's own_ actions while doing the project's work, to
      avoid double-counting sandbox/permission evidence. vs `enforcement-of-standards`
-     — confines *action*, not *output*.
+     — confines _action_, not _output_.
 
 > Rationale: the six trace the agent's loop — perceive (agent-accessibility),
 > receive direction (task-specifiability), operate (agent-operability), verify
@@ -249,10 +249,10 @@ and the agent as the three projections of one concern under the existing
 constituent rather than replacing it with the factor.
 
 The guide **MUST** give the double-count boundary between the factor and the
-constituent: harnessability-the-factor rates how well *each constituent equips an
-agent*; the agent-harness *area* rates the *steering artifact's own quality* (is
+constituent: harnessability-the-factor rates how well _each constituent equips an
+agent_; the agent-harness _area_ rates the _steering artifact's own quality_ (is
 its map accurate, current, a map not a manual). The guide **MUST** state that
-harnessability is not assessed *on* the agent-harness area as a recursion of the
+harnessability is not assessed _on_ the agent-harness area as a recursion of the
 same evidence.
 
 > Rationale: same discipline the guide already applies to `secure` projecting as a

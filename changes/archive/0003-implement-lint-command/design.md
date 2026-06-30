@@ -180,7 +180,7 @@ preservation is best-effort around the edited nodes: keep map order, comments,
 and scalar style that `yaml.Node` can preserve, and avoid reordering unrelated
 keys.
 
-Only `internal/spec` writes bytes to disk. `internal/lint` decides *what* repair
+Only `internal/spec` writes bytes to disk. `internal/lint` decides _what_ repair
 operations exist; `internal/spec` owns rendering and atomic replacement. That
 keeps lint rules from growing filesystem behavior and gives future write
 commands a single low-level write path to reuse or replace.
@@ -319,7 +319,7 @@ the same `Result`, not rerun lint or use a separate finding shape.
 
 ## Open questions
 
-- **Parent CLI invocation contract** *(open).* This change implements
+- **Parent CLI invocation contract** _(open)._ This change implements
   `lint [path]`, defaulting to `QUALITY.md`, as a provisional shape and leaves
   stdin and the shared file-argument convention to the parent
   [CLI spec](../../../specs/cli.md), where they remain "To be specified." `lint` may

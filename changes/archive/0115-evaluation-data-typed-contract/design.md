@@ -99,7 +99,7 @@ of re-parsing maps; in scope only if it falls out cleanly, otherwise deferred.
 ## Alternatives
 
 - **Keep `map[string]any`, extend the hand validator.** Add per-kind key
-  allowlists to catch wrong finding fields. Cheapest, but it adds a *third*
+  allowlists to catch wrong finding fields. Cheapest, but it adds a _third_
   hand-maintained copy of the shape, doesn't give a discoverable schema, and
   drifts from the examples — it treats the symptom, not the root (no source of
   truth). Rejected as the long-term answer; viable only as an interim patch.
@@ -110,19 +110,19 @@ of re-parsing maps; in scope only if it falls out cleanly, otherwise deferred.
 - **Runtime JSON-Schema validation** (e.g. validate each payload against the
   emitted schema at `set` time). Doubles the validation path and still needs Go
   types for model-binding. Rejected: typed decode + `Validate(spec)` is simpler
-  and keeps a single validation path; the schema is for *discovery*, not runtime
+  and keeps a single validation path; the schema is for _discovery_, not runtime
   enforcement.
 
 ## Trade-offs & risks
 
 - **Dependency choice (the main open decision).** Runtime stays zero-dep
-  (typed decode + `Validate`). For *generate-time* schema emission, either
+  (typed decode + `Validate`). For _generate-time_ schema emission, either
   hand-build the JSON Schema from the registry (zero deps, more code) or use a
   reflection library — `github.com/google/jsonschema-go` (now the canonical,
   LLM-oriented Go choice: inference via `jsonschema.For[T]()`, plus validation and
   serialization) or `invopop/jsonschema`. Recommendation: take the generate-time
   dep for far less code, keeping runtime dep-free — consistent with the
-  frontmatter side's zero *runtime* deps. Final call deferred to a prototype.
+  frontmatter side's zero _runtime_ deps. Final call deferred to a prototype.
 - **Required-vs-optional in Go.** Zero values hide "missing." Mitigated with
   explicit presence checks or pointers per kind; the example round-trip test
   guards against an under-specified `Validate`.

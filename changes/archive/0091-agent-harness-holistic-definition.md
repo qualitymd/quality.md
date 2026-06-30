@@ -28,8 +28,8 @@ Detail lives in:
 
 ## Motivation
 
-[0089](0089-agent-harness-modeling-guidance.md) grounded the *projection
-split* correctly — the model-wide Agent Harnessability factor rates how the
+[0089](0089-agent-harness-modeling-guidance.md) grounded the _projection
+split_ correctly — the model-wide Agent Harnessability factor rates how the
 project equips an agent, while the agent-harness area rates a checked-in artifact
 — but it left the constituent's own **definition** narrow. The authoring guide
 [`agent-harness.md`](../../skills/quality/guides/authoring/agent-harness.md) opens:
@@ -45,7 +45,7 @@ code, configuration, and execution logic that turns a model into an agent, split
 into **feedforward controls** that steer before action (entry points, guides,
 skills, prompts, tool/MCP definitions, sandbox, orchestration) and **feedback
 controls** that catch and correct after (verification, tests, logs, evals,
-review). Instructions are *one feedforward component*, not the whole harness. An
+review). Instructions are _one feedforward component_, not the whole harness. An
 instructions-only definition silently drops the entire feedback half and the
 project-owned runtime controls (hooks, sandbox/permission policy, orchestration
 config).
@@ -54,8 +54,8 @@ The error has a visible downstream cost. A reader who opens a generated model,
 sees an "Agent Harness" area scoped to CLAUDE.md-style steering files, and asks
 "why is the harness only instructions?" is reading the guidance correctly — the
 name claims the whole system while the definition delivers one slice. The fix is
-not to narrow the *name* (rename considered and rejected, see design) but to widen
-the *definition*: define the harness at full breadth, then scope the area as the
+not to narrow the _name_ (rename considered and rejected, see design) but to widen
+the _definition_: define the harness at full breadth, then scope the area as the
 checked-in, project-owned **governing-artifacts** projection, with explicit
 boundaries against the factor (capability), the tests area (the feedback corpus),
 and the operations area (the runtime environment) so the breadth does not
@@ -99,7 +99,7 @@ Deferred / non-goals:
 
 - **No rename** of the agent-harness area, its `agent-harness` key, or title.
   "Agent harness" is the correct term for the system; this case fixes the
-  *definition*, not the name. (Rename considered and rejected — see design.)
+  _definition_, not the name. (Rename considered and rejected — see design.)
 - **No collapse** of the Agent Harnessability factor and the agent-harness area;
   they remain distinct projections with the boundary
   [0087](0087-encode-projection-boundaries.md)/0089 set intact.

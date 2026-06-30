@@ -10,8 +10,8 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the
 [Domain constituent kinds and stewardship concerns](../0076-domain-constituent-kinds.md)
-change case. This spec states *what* the guidance must say; the
-[design doc](design.md) covers the taxonomy and *why*.
+change case. This spec states _what_ the guidance must say; the
+[design doc](design.md) covers the taxonomy and _why_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they
@@ -32,9 +32,9 @@ any heavy treatment in `getting-started.md` beyond an optional one-line pointer.
 ## Background / Motivation
 
 [0074](../0074-composite-root-areas.md) named the composite root shape
-and the recurring *use-context* constituents but gave *domain* constituents no
+and the recurring _use-context_ constituents but gave _domain_ constituents no
 equally prescriptive treatment, so a setup-authored model enumerates
-constituents by walking the repository's folders and never asks what *kinds* of
+constituents by walking the repository's folders and never asks what _kinds_ of
 constituent the domain implies. Thin, scattered, or missing constituents (tests,
 specs, documentation, a threat model) leave no folder to trip over and so vanish
 instead of being recorded as findings. This spec adds a domain-agnostic generator
@@ -53,8 +53,8 @@ for constituent kinds so that absence becomes visible.
   **stewardship-concern** axis (R3–R4) and an **audience × purpose** axis (R5).
 - R3. The guide **MUST** name a **lifecycle** band of stewardship concerns —
   discover, define, realize, verify, enable, operate, and maintain — and
-  **MUST** describe each as a concern that *tends to leave an authored,
-  inspectable artifact* that is a candidate constituent, naming the concern (its
+  **MUST** describe each as a concern that _tends to leave an authored,
+  inspectable artifact_ that is a candidate constituent, naming the concern (its
   function) rather than a domain-specific artifact (so "enable its audiences",
   not "docs").
 - R4. The guide **MUST** name a cross-cutting **protective** pair distinct from
@@ -70,7 +70,7 @@ for constituent kinds so that absence becomes visible.
 - R5. The guide **MUST** teach that a single stewardship concern can yield
   several constituents when they serve different **audiences** or **purposes**,
   and **MUST** cite [Diátaxis](https://diataxis.fr/) once as this lens applied to
-  the *enable* concern (tutorial, how-to, reference, and explanation as
+  the _enable_ concern (tutorial, how-to, reference, and explanation as
   constituents with different factor families, not one "documentation" area).
 - R6. The guide **MUST** teach that the audience side is derivable from the
   body's Needs (which already name the stakeholders), so that each audience a
@@ -86,7 +86,7 @@ for constituent kinds so that absence becomes visible.
   concern, not duplication.
 - R8. The guide **MUST** instruct the author to identify which projection is
   being modeled and model it once, so the same concern is not double-counted —
-  the security *of* an area is a factor on that area, while a security policy is
+  the security _of_ an area is a factor on that area, while a security policy is
   its own constituent area.
 
 ### Accounting and guardrails
@@ -150,7 +150,7 @@ for constituent kinds so that absence becomes visible.
   non-exhaustive, agentic language is scoped to context of use, and software
   product quality is not implied as the default modeled domain. The protective
   pair and the lifecycle band **MUST** read as stewardship concerns of caring for
-  *any* entity, not as software-specific phases.
+  _any_ entity, not as software-specific phases.
 
 ## Durable spec changes
 

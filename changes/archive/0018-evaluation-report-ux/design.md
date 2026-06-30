@@ -9,7 +9,7 @@ timestamp: 2026-06-18T00:00:00Z
 # Evaluation report UX - design doc
 
 Design behind the [Evaluation report UX](../0018-evaluation-report-ux.md)
-change and its [functional spec](spec.md). The spec fixes *what* the generated
+change and its [functional spec](spec.md). The spec fixes _what_ the generated
 reports must expose; this doc covers the intended approach.
 
 ## Context
@@ -104,7 +104,7 @@ collections or implicit rating states:
 - not-assessed/null rating -> explicit rating object carrying `rating: null` and
   `notAssessed: true`;
 - structural local rating -> explicit non-rating state such as `kind:
-  "structural"`.
+"structural"`.
 
 ### Markdown order
 

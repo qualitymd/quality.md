@@ -10,7 +10,7 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the
 [Umbrella factor roll-up framing](../0086-umbrella-factor-rollup-framing.md)
-change case. This spec states *what* the `/quality` skill guidance must say about
+change case. This spec states _what_ the `/quality` skill guidance must say about
 how the model-wide **Agent Harnessability** umbrella factor (0081) is rated. There
 is no design doc: the correction has no design choice to settle.
 
@@ -29,7 +29,7 @@ Both overstate it. The QUALITY.md format defines no special umbrella semantics. 
 factor that has sub-factors and carries no requirements of its own is rated by
 rolling up its children — the same mechanism as a grouping area with no local
 rating, already specified in
-[`SPECIFICATION.md`](../../../SPECIFICATION.md). The umbrella *is* rated; its
+[`SPECIFICATION.md`](../../../SPECIFICATION.md). The umbrella _is_ rated; its
 rating just comes from its sub-factors rather than from parent-level requirements.
 The overstated phrasing reads as an exemption from rating, and a setup agent
 paraphrased it into a generated model as "never rated directly" — a claim that is

@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 # Public Review and Improve Workflows
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0143-public-review-improve-workflows/spec.md) - what the

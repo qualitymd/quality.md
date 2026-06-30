@@ -23,13 +23,13 @@ in all capitals.
 
 ## Quality changelog
 
-A `QUALITY.md` snapshot and `git log` together record *what* the model is and
-*how* it changed, but not *why*: which evaluation surfaced a gap, whether a
+A `QUALITY.md` snapshot and `git log` together record _what_ the model is and
+_how_ it changed, but not _why_: which evaluation surfaced a gap, whether a
 criterion moved by recalibration or drift, what a new Factor was reacting to.
 That rationale is what the [learn loop](evaluation.md#evaluation-workflow) runs on, and it is
 lost once a commit scrolls away. The **quality changelog** is a curated,
 evidence-linked timeline of meaningful model changes the skill maintains under
-`.quality/changelog/`: it preserves the *why* and links each change to the evaluation
+`.quality/changelog/`: it preserves the _why_ and links each change to the evaluation
 evidence behind it. It is the model's own history for a project that has a
 `QUALITY.md` and `.quality/evaluations/` but no `changes/` bundle of its own.
 
@@ -38,7 +38,7 @@ The changelog is deliberately **curated, not complete**. Hand edits to
 not try to be — git remains the complete diff history, and the changelog carries
 the judgment git cannot.
 It is **not** an evaluation record and **not** a defect backlog: it records model
-changes only and *references* evaluation runs rather than copying them.
+changes only and _references_ evaluation runs rather than copying them.
 
 The changelog is a **runtime output** of the skill, not a QUALITY.md format
 concept; the format and evaluation semantics remain governed by
@@ -81,7 +81,7 @@ machine metadata, not OKF concept frontmatter.
 Each entry **MUST** carry small machine-readable frontmatter and a prose
 rationale body. The frontmatter records the change kind, the model target it
 affects, and — when the change came from an evaluation — the source run and
-recommendation it traces to. The body states *why* the change was made.
+recommendation it traces to. The body states _why_ the change was made.
 
 > Rationale: the cross-link to the evaluation run and recommendation is the
 > changelog's differentiator over `git log`; without it the entry is just a diff in
@@ -89,8 +89,8 @@ recommendation it traces to. The body states *why* the change was made.
 
 ### What is meaningful
 
-The skill **MUST** log a change that alters what the model *is* or *how it
-judges*: adding, removing, or renaming an Area, Factor, or Requirement; changing
+The skill **MUST** log a change that alters what the model _is_ or _how it
+judges_: adding, removing, or renaming an Area, Factor, or Requirement; changing
 the rating scale, a criterion, or a relative weight; shifting scope; changing the
 apex or required margin; or applying an evaluation recommendation. An entry
 **SHOULD** state whether a criterion change is deliberate recalibration or a drift
@@ -130,7 +130,7 @@ NOT** write to the quality changelog.
 Read-only orientation **MUST** remain read-only with respect to the changelog. It
 **SHOULD** surface model history (the latest entry), and when the model has
 changed out of band since the last logged entry it **SHOULD** classify that
-under *needs reconciliation* readiness and offer a backfill route. The backfill
+under _needs reconciliation_ readiness and offer a backfill route. The backfill
 itself is performed by confirmed model-authoring or recommendation follow-up
 work, not by orientation.
 

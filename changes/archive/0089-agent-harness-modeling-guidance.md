@@ -22,10 +22,10 @@ also shows that long-running work continuity is too central to leave implicit in
 the root Agent Harnessability decomposition.
 
 This case closes that gap, grounded in harness-engineering practice, and settles a
-doctrinal question the work surfaces: the agent harness is a *use-context*
+doctrinal question the work surfaces: the agent harness is a _use-context_
 constituent, so the project may give it explicit, opinionated modeling guidance —
 but that guidance must keep the harness's factors and requirements agnostic to the
-*served* domain, so a generated harness area does not assume software engineering.
+_served_ domain, so a generated harness area does not assume software engineering.
 
 Detail lives in:
 
@@ -40,12 +40,12 @@ Detail lives in:
 
 The `/quality` skill is meant to produce the fullest, most sufficient model a
 project's evidence supports in one setup pass. For an agent-collaborated project it
-does this well on the *factor* side — [Carry Agent Harnessability for
+does this well on the _factor_ side — [Carry Agent Harnessability for
 agent-collaborated composite roots](../../skills/quality/guides/authoring.md) gives
 the umbrella factor six independently assessable sub-factors with explicit
-boundaries. But on the *constituent* side it is lopsided: [Carry the recurring
+boundaries. But on the _constituent_ side it is lopsided: [Carry the recurring
 use-context constituents](../../skills/quality/guides/authoring.md) tells the author
-to model the agent harness *and* the QUALITY.md self-check by default, then gives
+to model the agent harness _and_ the QUALITY.md self-check by default, then gives
 the self-check a concrete shape (key, title, `source`, factor kinds, a governing
 requirement) while giving the harness no comparable factor-family or requirement
 template — only its normative/dual-role and projection-boundary guidance. An author
@@ -59,8 +59,8 @@ a much higher factor-depth aim. The harness is not hard to model richly; the
 guidance simply does not say how.
 
 Research into harness engineering confirms two things. First, the field's central
-framing — Agent = Model + Harness, with the harness split into *guides*
-(feedforward, steering before action), *sensors* (feedback, observing after),
+framing — Agent = Model + Harness, with the harness split into _guides_
+(feedforward, steering before action), _sensors_ (feedback, observing after),
 tools, runtime environment, memory/state, orchestration, guardrails, and traces —
 maps cleanly onto the model's projection split: the agent-harness area is the
 checked-in steering-materials artifact, while the model-wide Agent Harnessability
@@ -70,13 +70,13 @@ harness work makes **continuity** a first-class harnessability concern: a projec
 that cannot preserve state, decisions, remaining work, and verification status
 across compaction, handoff, interruption, or long tasks is not fully harnessable,
 even if its entry point and checks are good. The "good sensor" properties from
-*Sensors for Coding Agents* still sharpen `self-verifiability`: feedback should be
+_Sensors for Coding Agents_ still sharpen `self-verifiability`: feedback should be
 fast, actionable, grounded in evidence, context-aware, and suppressible through
 visible reviewable exceptions, with inferential signals where no deterministic
 oracle exists.
 
 Finally, the work surfaces a doctrine gap. [Modeling quality across domains](../../docs/guides/model-quality-across-domains.md) settles that QUALITY.md is
-*domain agnostic but not context neutral* — but it does not say how that resolves
+_domain agnostic but not context neutral_ — but it does not say how that resolves
 for the harness specifically. The harness is the canonical case where the two
 registers meet: it recurs from the agentic **use context** (so explicit guidance is
 licensed, exactly as for the self-check), yet it **serves** whatever domain the

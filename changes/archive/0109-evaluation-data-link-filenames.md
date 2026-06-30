@@ -22,7 +22,7 @@ choices to settle.
 
 Evaluation v2 reports expose each subject's machine-readable payloads through a
 `Data` column. The link targets already point at the structured
-`*-result.json` files, but the link *text* is a generic word — `analysis` on
+`*-result.json` files, but the link _text_ is a generic word — `analysis` on
 Area and Factor reports, and `assessment`, `rating` on Requirement reports. A
 reader cannot tell from the link which file they are about to open, and the
 generic word restates information the surrounding report already conveys.
@@ -42,7 +42,7 @@ Covered:
 
 Deferred / non-goals:
 
-- no change to data-link *targets* or to structured routine data paths under
+- no change to data-link _targets_ or to structured routine data paths under
   `data/`;
 - no change to the `Data` column header, navigation trails, or subject links;
   and

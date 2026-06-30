@@ -10,20 +10,20 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the [Encode projection boundaries in the
 model](../0087-encode-projection-boundaries.md) Change Case. This spec states
-*what* the guidance must require; the [design doc](design.md) covers *how* and
-*why*.
+_what_ the guidance must require; the [design doc](design.md) covers _how_ and
+_why_.
 
 The key words **MUST**, **SHOULD**, and **MAY** are to be interpreted as described
 in IETF RFC 2119 (BCP 14) when, and only when, they appear in all capitals.
 
 ## Background / Motivation
 
-The authoring guide's three-projections rule teaches the author to *name the
-projection meant and model it once*, preventing double-counting during modeling.
+The authoring guide's three-projections rule teaches the author to _name the
+projection meant and model it once_, preventing double-counting during modeling.
 It is addressed to the author's reasoning, not to the model's reader: a concern
 that legitimately appears as both a factor and an area (the Agent Harnessability
-factor and the agent-harness area) leaves no trace in the emitted model of *why*
-both exist or *how* they differ. A field setup run produced exactly that model —
+factor and the agent-harness area) leaves no trace in the emitted model of _why_
+both exist or _how_ they differ. A field setup run produced exactly that model —
 correct, and even carrying clarifying YAML comments — yet a reader still asked
 whether the factor was meant to replace the area. The clarifying comments were the
 agent's own judgment, not a guidance requirement, so the legibility is not

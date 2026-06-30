@@ -15,7 +15,7 @@ Per-command behavior lives in the command sub-specs under [Commands](#commands).
 
 It is a companion to the
 [QUALITY.md format specification](../SPECIFICATION.md): where this document
-constrains the *tool*, the format spec constrains the *file*.
+constrains the _tool_, the format spec constrains the _file_.
 
 This document uses BCP 14 keywords only for testable conformance requirements.
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -171,7 +171,7 @@ auto-detection: passing `--json` is the only way to switch a command to emitting
 a JSON document on stdout, the form agents and CI consume.
 
 A command can omit `--json` only when its output is a verbatim artifact that
-*is* the payload and is meant to be redirected, so wrapping it adds nothing. For
+_is_ the payload and is meant to be redirected, so wrapping it adds nothing. For
 example, [`spec`](./cli/spec.md) emits the format specification itself.
 
 Commands whose stdout is already a JSON artifact, such as a JSON Schema, example
@@ -190,22 +190,22 @@ Among the current commands, [`init`](./cli/init.md) offers a receipt,
 is the verbatim-artifact carve-out.
 
 **Suggested next actions.** A command may close its response with a short list of
-*next actions* — the commands a caller would most plausibly run next, given what
+_next actions_ — the commands a caller would most plausibly run next, given what
 just happened. They are advisory: they never change behavior or the exit code,
 and a command with no useful follow-up omits them.
 
-- *Concrete over vague.* Each action is, where possible, a runnable command the
+- _Concrete over vague._ Each action is, where possible, a runnable command the
   caller can copy (`qualitymd lint QUALITY.md`), not prose like "consider
   validating your file."
-- *Deterministic.* The same outcome yields the same suggestions; they are derived
+- _Deterministic._ The same outcome yields the same suggestions; they are derived
   from the command's result, not ranked or sampled.
-- *Subordinate to the payload.* In human output they render as a distinct footer
+- _Subordinate to the payload._ In human output they render as a distinct footer
   on stderr, after the primary output, so redirecting or piping stdout
   (`qualitymd spec > SPECIFICATION.md`) is never polluted by them. Under `--json`
   they instead appear in-band as a `nextActions` array in the document, so agents
   receive them as data; a command that does not offer `--json` still shows the
   human footer.
-- *Useful on success and failure alike.* After a successful `init`, the next
+- _Useful on success and failure alike._ After a successful `init`, the next
   action points to linting or editing the new file; after a `lint` failure, to
   the command that re-runs the check or opens the offending file.
 

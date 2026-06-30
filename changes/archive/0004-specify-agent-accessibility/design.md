@@ -9,8 +9,8 @@ timestamp: 2026-06-17T00:00:00Z
 # agent accessibility — design doc
 
 Design behind the [Specify and enforce agent accessibility](../0004-specify-agent-accessibility.md)
-change and its [functional spec](spec.md). The spec fixes *what* the contract
-requires; this doc covers *how* the code makes it so. The specification half of
+change and its [functional spec](spec.md). The spec fixes _what_ the contract
+requires; this doc covers _how_ the code makes it so. The specification half of
 the change (the durable [CLI spec](../../../specs/cli.md) edits) is prose, not
 code, so this doc concerns the **conformance** half: categorized exit codes and
 the `init --json` receipt.
@@ -22,7 +22,7 @@ have:
 
 - **Categorized exit codes.** [`cli.Execute`](../../../internal/cli/root.go)
   today does `os.Exit(1)` on any non-nil error from `fang.Execute`, so a `lint`
-  that *found problems* is indistinguishable from a usage or internal failure.
+  that _found problems_ is indistinguishable from a usage or internal failure.
 - **`init --json`.** [`init`](../../../internal/cli/init.go) has no `--json`; the
   revised convention makes it owe a result receipt.
 
@@ -33,7 +33,7 @@ delegating to the exported `DefaultErrorHandler`) and already prints plainly whe
 stderr is not a TTY. So the exit-code contract is entirely ours to impose at the
 `Execute` boundary; we are not fighting the framework.
 
-This shapes the whole design: returning the error rather than exiting *is* Fang's
+This shapes the whole design: returning the error rather than exiting _is_ Fang's
 intended model for letting the caller assign exit codes, and `WithErrorHandler`
 is its sanctioned rendering hook. The conformance work should ride those two
 extension points plus Cobra-native hooks (`FlagErrorFunc`, `Args`), not bolt a
@@ -94,7 +94,7 @@ func codeFor(err error) int {
 }
 ```
 
-Only commands that need a *non-default* category construct a `CodedError`.
+Only commands that need a _non-default_ category construct a `CodedError`.
 Everything that returns a plain error falls through to `ExitInternal` — the right
 default for an I/O failure or a bug, and what the existing I/O paths
 (`scaffold.Create`, `lint.Check` on a missing file) already produce, so they need
@@ -113,11 +113,11 @@ raises them, so they arrive already typed:
   is tagged too: `Args: usage(cobra.MaximumNArgs(1))`, where `usage` maps a
   non-nil result to `ExitUsage`.
 
-`codeFor`'s `isUsageError` fallback is then a *thin defensive net* we own — a
+`codeFor`'s `isUsageError` fallback is then a _thin defensive net_ we own — a
 small prefix check over the residual Cobra-generated strings (notably
 `"unknown command"`) for cases without a typed hook — not the main mechanism. If
 that net misses, the outcome degrades to `ExitInternal`, never to a wrong
-*success*. This keeps the typed path authoritative and the fragile string match
+_success_. This keeps the typed path authoritative and the fragile string match
 secondary.
 
 ### Silent rendering for already-reported outcomes
@@ -166,7 +166,7 @@ type InitReceipt struct {
 }
 ```
 
-The receipt describes the *action*, not the scaffold contents — that is what
+The receipt describes the _action_, not the scaffold contents — that is what
 makes `--json` meaningful for a command whose human output is a confirmation. The
 `nextActions` (lint the new file) appear in-band, satisfying the convention that
 agents receive next actions as data under `--json`.
@@ -175,11 +175,11 @@ agents receive next actions as data under `--json`.
 leave it in `lint`.** The element today lives as
 [`lint.Action`](../../../internal/lint/result.go) (`{id, label, command}`) only
 because `lint` was the first command to emit one. But a "next action" is an
-*agent-receipt* concept, not a lint concept: `init` emits the same `{id, label,
+_agent-receipt_ concept, not a lint concept: `init` emits the same `{id, label,
 command}` shape for a non-lint purpose. Reusing `lint.Action` from `internal/cli`
 would read as though `init` has something to do with linting, and the only
 argument for it — `internal/cli` already imports `internal/lint`, so reuse adds
-no edge — justifies *convenience*, not *ownership*. So this change extracts the
+no edge — justifies _convenience_, not _ownership_. So this change extracts the
 type to a neutral `internal/receipt` package that both `lint` and `cli` import;
 `Result.NextActions` and `InitReceipt.NextActions` both carry `[]receipt.Action`.
 
@@ -193,10 +193,10 @@ the JSON wire shape is unchanged, so no agent notices the Go type's new home.
 is not a candidate home — hence a fresh `internal/receipt`.)
 
 **`schemaVersion` is a per-contract namespace, not a shared counter.** `init`'s
-receipt and `lint`'s result each version their *own* JSON contract, so they keep
+receipt and `lint`'s result each version their _own_ JSON contract, so they keep
 independent `schemaVersion` values (`lint` today holds a private
 `const schemaVersion = 1`); `init` gets its own. What is shared is the
-*convention* — the field name and that it is a per-contract integer — not the
+_convention_ — the field name and that it is a per-contract integer — not the
 number. The two must not be wired to a single constant.
 
 **One source for the next action, two renderings.** `init` today hardcodes the
@@ -214,7 +214,7 @@ Two interactions to pin down, both required by the spec:
   than given a contrived precedence. Deterministic and easy to explain.
 - **Overwrite refusal under `--json`.** When the target exists and `--force` is
   absent, `init` refuses. This is not a malformed invocation and not a bug; it is
-  the command *declining to complete the requested action*. It maps to
+  the command _declining to complete the requested action_. It maps to
   `ExitInternal` under the broadened reading below, and under `--json` it emits a
   distinct **error object** to stderr — `{schemaVersion, path, reason}`, not a
   success receipt and not an `{ok:false}`-wrapped success shape. Success goes bare
@@ -223,7 +223,7 @@ Two interactions to pin down, both required by the spec:
 
 ### One refinement back to the spec
 
-Implementing the above surfaces that the *internal error* category is better read
+Implementing the above surfaces that the _internal error_ category is better read
 as **"the command could not complete the requested action"** (I/O failure,
 unmet precondition such as overwrite refusal, or a bug) than the spec's narrower
 "I/O failure, a bug." The functional spec and the durable CLI-spec section should
@@ -246,8 +246,8 @@ the design feeds a wording change back into the spec before it lands.
   no gain.
 - **Map overwrite refusal to a new "refusal" code or to `ExitProblems`.**
   Rejected. A fifth category overcomplicates the contract for one case, and
-  `ExitProblems` is reserved for a *reported negative result* (findings), not an
-  action the command declined. Broadening *internal error* to "could not complete
+  `ExitProblems` is reserved for a _reported negative result_ (findings), not an
+  action the command declined. Broadening _internal error_ to "could not complete
   the action" covers it within the four categories.
 - **Give `-`+`--json` a precedence instead of erroring.** Rejected. Any precedence
   silently discards one requested output; a usage error is the honest, agent-
@@ -273,26 +273,26 @@ the design feeds a wording change back into the spec before it lands.
   side-effecting commands adopt the receipt shape; keep the receipt fields and the
   `schemaVersion` convention consistent with `lint`'s result.
 - **Silent errors can hide real failures if misapplied.** The `Silent` flag must
-  be set *only* where the command has already reported the outcome on stdout
+  be set _only_ where the command has already reported the outcome on stdout
   (today: `lint` found-problems). A test should assert that usage and internal
   errors still render to stderr.
 
 ## Open questions
 
-- **Receipt envelope shape** *(settled).* No shared `{ok, …}` envelope. Success
+- **Receipt envelope shape** _(settled)._ No shared `{ok, …}` envelope. Success
   goes **bare** to stdout (`{schemaVersion, path, created, nextActions}`, matching
   `lint`'s bare result); failure goes as a **distinct error object** to stderr
   (`{schemaVersion, path, reason}`); and the **exit code** is the success/failure
   discriminator. An agent never branches on a body flag.
 
   This follows the dominant CLI convention rather than the API one. `gh`, `kubectl
-  -o json`, and `aws` all emit the bare resource on success with no `{ok}` wrapper,
-  and `gh` ships a *categorized* exit-code contract (`0` ok, `1` error, `2`
+-o json`, and `aws` all emit the bare resource on success with no `{ok}` wrapper,
+  and `gh` ships a _categorized_ exit-code contract (`0` ok, `1` error, `2`
   cancelled, `4` auth-required) — the same shape as this change's exit categories,
   confirming the exit code is the idiomatic discriminator. AWS CLI's opt-in
   structured error output is the precedent for the stderr error object: even the
   CLI that went furthest toward machine-readable errors kept success and error as
-  *separate shapes told apart by channel + exit code*, not merged into one `{ok}`
+  _separate shapes told apart by channel + exit code_, not merged into one `{ok}`
   envelope. The `{ok}` / `result`-xor-`error` envelope is an HTTP/RPC convention
   (Slack Web API, JSON-RPC, GraphQL) forced by the absence of an out-of-band status
   channel; a CLI has exit code and stderr, so the envelope would only restate the
@@ -301,15 +301,16 @@ the design feeds a wording change back into the spec before it lands.
   ran-with-findings (`ExitProblems`) vs could-not-complete (`ExitInternal`)
   distinction this change introduces is exactly what a single bool collapses.
 
-  What *is* shared across commands is the **convention set**, not an envelope: the
+  What _is_ shared across commands is the **convention set**, not an envelope: the
   `schemaVersion` field (per-contract integer), the `nextActions: []receipt.Action`
   shape, and a consistent error-object shape when an error body is emitted. A
   unified `status`/envelope is reconsidered only if a future command's outcome
   genuinely cannot be expressed by exit code + bare body.
-- **Where the exit-code constants live** *(settled).* In `internal/cli`, beside
+
+- **Where the exit-code constants live** _(settled)._ In `internal/cli`, beside
   the mapping. `internal/lint` stays exit-code-agnostic; no shared `internal/exit`
   package until a second producer of coded errors exists outside `internal/cli`.
-- **Where `Action` lives** *(settled).* Extract it to a neutral
+- **Where `Action` lives** _(settled)._ Extract it to a neutral
   `internal/receipt` package that both `lint` and `cli` import; do not redefine
   it and do not leave it owned by `lint`. A "next action" is an agent-receipt
   concept, not a lint concept — `lint` was just its first emitter. This is a
@@ -317,7 +318,7 @@ the design feeds a wording change back into the spec before it lands.
   guard does not apply; the move happens now (see the `init --json` section and
   [Designing Go packages](../../../docs/guides/design-go-packages.md)). The wire
   shape is unchanged, so the relocation breaks no agent.
-- **Unknown-subcommand detection** *(settled).* Keep the thin, owned prefix check
+- **Unknown-subcommand detection** _(settled)._ Keep the thin, owned prefix check
   so `qualitymd bogus` maps to `ExitUsage` — option (a). Flag and argument usage
   errors are tagged through the idiomatic `FlagErrorFunc` / wrapped-`Args` hooks;
   the unknown-subcommand case has no Cobra tagging hook, so a small string check

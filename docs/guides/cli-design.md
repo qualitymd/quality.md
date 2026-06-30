@@ -11,7 +11,7 @@ timestamp: 2026-06-18T00:00:00Z
 Use this guide when you're designing a new `qualitymd` command — or reshaping an
 existing one — to decide its arguments, flags, output, errors, and behavior. It
 gives the principles to design by and a per-aspect checklist to work through. It
-covers the *how* of design; the binding *what* lives in the
+covers the _how_ of design; the binding _what_ lives in the
 [CLI functional spec](../../specs/cli.md) and its command sub-specs. Where the two
 meet, the spec wins — this guide is the reasoning that should make the spec feel
 inevitable.
@@ -48,10 +48,10 @@ wins.
    something, the tool responds, they adjust. Good errors, confirmations, and
    next-action hints keep that loop tight.
 7. **Robustness.** Handle unexpected input without falling over. Keep operations
-   idempotent and recoverable where you can, and make the tool *feel* solid —
+   idempotent and recoverable where you can, and make the tool _feel_ solid —
    responsiveness and considered detail are part of robustness, not polish on top
    of it.
-8. **Empathy.** Treat the CLI as something people *want* to use. Thoughtful
+8. **Empathy.** Treat the CLI as something people _want_ to use. Thoughtful
    defaults, forgiving input, and clear language signal that you want the user to
    succeed.
 9. **Chaos.** Conventions exist to be broken when following them would demonstrably
@@ -81,7 +81,7 @@ Help is the front door. Most users meet a command through its help before its
 docs.
 
 - Respond to both `-h` and `--help`.
-- Default (no-args, where there's nothing to do) shows *concise* help: a one-line
+- Default (no-args, where there's nothing to do) shows _concise_ help: a one-line
   description, one or two examples, the most common flags, and a pointer to
   `--help` for the rest.
 - `--help` shows the full text: every flag, grouped and ordered by how often it's
@@ -105,7 +105,7 @@ Help is for the terminal; docs are for depth.
 
 - Provide web documentation that is searchable and linkable, and keep the
   terminal help in sync with it.
-- Make docs reachable *from* the tool — a link in help text, a `spec`-style
+- Make docs reachable _from_ the tool — a link in help text, a `spec`-style
   command that emits the canonical artifact.
 - Examples first here too. People copy, adapt, then read.
 - **Make drift impossible, don't rely on diligence.** "Keep help in sync" is a
@@ -124,7 +124,7 @@ fighting.
 - **Machine-readable on request, via `--json`.** Offer structured output spelled
   `--json` — never `--format json` or a per-command variant — wherever it's
   meaningful, so a caller can reach for it without checking whether it exists. The
-  carve-out is a command whose output already *is* a verbatim artifact meant to be
+  carve-out is a command whose output already _is_ a verbatim artifact meant to be
   redirected; wrapping that in JSON adds nothing.
 - **Do not add a second JSON mode for JSON artifacts.** A command whose stdout is
   already the JSON artifact, such as a schema, example payload, or stored JSON
@@ -133,7 +133,7 @@ fighting.
   JSON and should be rerun without `--json`.
 - **No format auto-detection.** Passing `--json` is the only switch into JSON.
   Don't silently change the payload based on whether `stdout` is a pipe; changing
-  *styling* off a TTY is fine, changing *content* is not.
+  _styling_ off a TTY is fine, changing _content_ is not.
 - **Say what changed.** After a side effect, state what happened in plain terms.
   Under `--json`, a side-effecting command emits a result receipt describing what
   it did, so `--json` is meaningful even when the human output is just a
@@ -193,7 +193,7 @@ The distinction matters: **arguments** are positional (order carries meaning);
 - **Prefer flags to positional arguments.** Flags are self-documenting and leave
   room to grow; a wall of positional args is hard to read and easy to get wrong.
   Multiple positional args are fine for the obvious case (a list of files);
-  positional args with *different meanings* are not.
+  positional args with _different meanings_ are not.
 - **Give every flag a full `--long` form;** add a one-letter short form only for
   the genuinely common ones.
 - **Use the conventional names** when one exists, so muscle memory carries over:
@@ -202,7 +202,7 @@ The distinction matters: **arguments** are positional (order carries meaning);
 - **Have sensible defaults.** The common case should need few or no flags. Don't
   make the user remember what they could have inferred.
 - **Don't require interactive prompts.** Prompting is acceptable as a convenience
-  when input is missing *and* `stdin` is an interactive terminal, but there must
+  when input is missing _and_ `stdin` is an interactive terminal, but there must
   always be a flag or argument that supplies the same input non-interactively.
 - **Support `-` for stdin/stdout** where a command reads or writes a file, so it
   composes in pipelines.
@@ -263,11 +263,11 @@ user is already stuck. Treat them as the conversation's most important turn.
 
 ## Robustness
 
-Robustness is both objective (it doesn't break) and subjective (it doesn't *feel*
+Robustness is both objective (it doesn't break) and subjective (it doesn't _feel_
 fragile).
 
 - **Validate input early,** before doing irreversible work.
-- **Be responsive:** print *something* within ~100ms, even if the real work takes
+- **Be responsive:** print _something_ within ~100ms, even if the real work takes
   longer. Show progress for anything slow, and an estimate where you can.
 - **Set timeouts** on network operations with reasonable defaults.
 - **Make operations recoverable and, where possible, idempotent** — safe to
@@ -287,7 +287,7 @@ Beyond clig.dev, because `qualitymd` is consumed by automation:
 
 ## Conversation and next actions
 
-A command may close with a short list of *next actions* — the commands the caller
+A command may close with a short list of _next actions_ — the commands the caller
 would most plausibly run next.
 
 - **Concrete over vague:** a runnable command to copy

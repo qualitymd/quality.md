@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 # Evaluation run scaffold — functional spec
 
 Companion to [Evaluation run scaffold](../0013-evaluation-run-scaffold.md). This
-spec states *what* `qualitymd evaluation create-run` does; it does not specify the
+spec states _what_ `qualitymd evaluation create-run` does; it does not specify the
 implementation.
 
 `evaluation create-run` inherits the cross-cutting CLI contract from the
@@ -103,7 +103,7 @@ The command **MUST** seed three files the skill then fills in:
   quality meta-model (the same model the skill obtains via
   `qualitymd models view quality-meta-model`). Snapshotting the model in the
   deterministic surface is deliberate: the model is mechanically resolvable
-  content, and capturing it here keeps the run's record of *what was evaluated*
+  content, and capturing it here keeps the run's record of _what was evaluated_
   off the judging skill, consistent with the contract's CLI-writes /
   skill-judges division. The skill still authors `design.md` and `plan.md`,
   which are judgment.

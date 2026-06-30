@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 Companion to the
 [Evaluation command surface redesign](../0039-evaluation-command-surface.md)
-change case. This spec states *what* the reshaped `qualitymd evaluation` surface
+change case. This spec states _what_ the reshaped `qualitymd evaluation` surface
 must require. It defers the on-disk record contract to
 [`specs/evaluation-records.md`](../../../specs/evaluation-records.md), the
 cross-cutting CLI contract to [`specs/cli.md`](../../../specs/cli.md), and

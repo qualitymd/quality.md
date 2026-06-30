@@ -32,7 +32,7 @@ The CLI's deterministic format-tooling layer is built —
 [`init`](../../specs/cli/init.md) scaffolds, [`lint`](../../specs/cli/lint.md)
 validates, [`spec`](../../specs/cli/spec.md) emits the format rules — but the
 judgment layer those commands were designed to pair with does not exist. The
-`QUALITY.md` standard's value is the *evaluation* — assessing a subject against
+`QUALITY.md` standard's value is the _evaluation_ — assessing a subject against
 its model, rating the evidence, rolling it up, and advising — and the
 [format spec](../../SPECIFICATION.md#evaluation) assigns that work to a skill, not
 the CLI. Without the `/quality` skill the repository specifies an evaluation
@@ -71,7 +71,7 @@ Covered:
 Deferred (inheriting the skill spec's own
 [Deferred](../../specs/skills/quality-skill/quality-skill.md#deferred) surface):
 
-- Recording per-target verdicts *through the CLI* and gating CI on them — the CLI
+- Recording per-target verdicts _through the CLI_ and gating CI on them — the CLI
   record/log/gate surface is itself deferred in [`cli.md`](../../specs/cli.md).
 - `improve` apply-staging/isolation mechanics and bundled `references/` assets,
   both already deferred in the skill spec.
@@ -79,7 +79,7 @@ Deferred (inheriting the skill spec's own
 ## Affected specs & docs
 
 The durable artifacts this change creates or updates, decided up front. The skill
-*implementation* itself is the change's primary product (its location is
+_implementation_ itself is the change's primary product (its location is
 [open item 1](0010-implement-quality-skill/spec.md#open-items-and-gaps));
 the durable spec/doc deltas that accompany it are:
 
@@ -89,8 +89,8 @@ the durable spec/doc deltas that accompany it are:
       in Frontmatter and metadata, `.quality/config.yaml` with `evaluationDir`, the
       `improve` re-evaluation folder, the raw (non-OKF) machine-readable artifact
       form (JSON assessment/analysis records plus a `report.json`), the
-      altitude-first folder-naming convention, the *Limitations* vs *not assessed*
-      distinction, and the *not assessed* done-criterion — so the spec matches what
+      altitude-first folder-naming convention, the _Limitations_ vs _not assessed_
+      distinction, and the _not assessed_ done-criterion — so the spec matches what
       is built.
 - [x] the [worked example bundle](../../specs/skills/quality-skill/examples/index.md)
       and [`specs/schema.md`](../../specs/schema.md) — re-capture the example to match

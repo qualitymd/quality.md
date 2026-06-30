@@ -9,7 +9,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Self-contained per-kind data schema
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0130-self-contained-data-schema/spec.md) — what the case must do.
@@ -58,7 +58,7 @@ Deferred / **rejected** (recorded so they are not re-litigated):
   with the model as a default kind. The QUALITY.md frontmatter (authored input)
   and the evaluation payloads (run output) are different artifact families across
   a pipeline boundary, not peers in one taxonomy — the forced special-case default
-  is the tell. They share *machinery*, not a *command surface* or a `kinds`
+  is the tell. They share _machinery_, not a _command surface_ or a `kinds`
   registry.
 - **No** new `data describe` command and **no** annotation of `data example`
   output. Both would create a third surface re-deriving constraints the schema
@@ -91,7 +91,7 @@ guidance.
 - [x] `specs/cli/evaluation-data.md` — strengthen the `data schema <kind>`
       requirement from "rooted at that kind" to self-contained legibility; note
       the optional terminal-rendering alignment.
-- [x] `specs/skills/quality-skill/quality-skill.md` — the skill's *durable spec*
+- [x] `specs/skills/quality-skill/quality-skill.md` — the skill's _durable spec_
       (distinct from its runtime content below): sharpen the Evaluation
       payload-discovery `MUST` so required fields and enum values are read from
       `data schema <kind>` and `data example <kind>` is a concrete instance only.

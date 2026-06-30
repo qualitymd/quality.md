@@ -10,7 +10,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 Companion to the
 [Self-describing evaluation record input](../0055-evaluation-input-ergonomics.md)
-change case. This spec states *what* the `qualitymd evaluation` record-writing
+change case. This spec states _what_ the `qualitymd evaluation` record-writing
 surface must require so that an author-supplied payload is discoverable and
 validatable from inside the tool. It defers the on-disk record contract to
 [`specs/evaluation-records/`](../../../specs/evaluation-records/index.md), the
@@ -34,7 +34,7 @@ probe invocations reverse-engineering record schemas from rejection messages —
 and because the only schema oracle was "submit and read the error," every probe
 persisted a real numbered record that then had to be deleted by hand. The
 recommendation schema alone took ~12 probes. None of this touched the evaluation
-*judgment*, which went cleanly; all of it was the input layer.
+_judgment_, which went cleanly; all of it was the input layer.
 
 The durable record contract is already well specified under
 [`specs/evaluation-records/`](../../../specs/evaluation-records/index.md). The
@@ -76,17 +76,17 @@ Non-goals:
   `evaluation recommendation add` — **MUST** document its payload contract in
   `--help`: every field, its type, whether it is required, and the allowed values
   for any enum (e.g. finding `category`/`severity`, `criterionSource`).
-  *Rationale: the 0.8.0 help listed flags only, forcing schema discovery by
-  rejection; an agent cannot infer a payload's shape from context.*
+  _Rationale: the 0.8.0 help listed flags only, forcing schema discovery by
+  rejection; an agent cannot infer a payload's shape from context._
 - That help **MUST** include at least one complete, valid example payload — every
   required field present, real enum values — not a fragment.
-  *Rationale: the recommendation record took ~12 probes precisely because no
-  worked example existed; required fields surfaced one at a time.*
+  _Rationale: the recommendation record took ~12 probes precisely because no
+  worked example existed; required fields surfaced one at a time._
 - The `plan.md` coverage contract read by `evaluation status` **SHOULD** be
   discoverable the same way (documented shape with an example, or a seeded
   commented stub), since it is the same write-and-fail trap on a different
-  payload. *Rationale: the run hit two failed `status` round-trips guessing
-  `assessmentResults`/`analyses` keys and object-vs-string entries.*
+  payload. _Rationale: the run hit two failed `status` round-trips guessing
+  `assessmentResults`/`analyses` keys and object-vs-string entries._
 
 ### Validate without persisting
 
@@ -94,9 +94,9 @@ Non-goals:
   the payload fully and reports what would happen — what records would be written
   and where — without creating, numbering, serializing, or otherwise persisting
   any record or mutating the run folder.
-  *Rationale: the only schema oracle was a real write, so every probe left a
+  _Rationale: the only schema oracle was a real write, so every probe left a
   numbered junk record that had to be `rm`'d — uncomfortably close to the skill's
-  "never hand-create record files" rule.*
+  "never hand-create record files" rule._
 - Under `--dry-run`, exit status **MUST** reflect validity (zero when the payload
   would be accepted, the usage-error category when it would be rejected), and
   `--json` **MUST** emit a receipt describing the validation outcome, so the
@@ -106,16 +106,16 @@ Non-goals:
 
 - Payload validation **MUST** report every problem it can detect in a single
   pass, rather than returning on the first failure.
-  *Rationale: sequential required-field checks forced fix-one-resubmit-discover-
-  the-next round-trips across assessment, analysis, and recommendation writes.*
+  _Rationale: sequential required-field checks forced fix-one-resubmit-discover-
+  the-next round-trips across assessment, analysis, and recommendation writes._
 - Each validation error **MUST** name the offending field by the JSON key the
   author wrote, and **SHOULD** state the expected type and, for an enum, the
   allowed values. It **MUST NOT** echo an internal or language-level field name
-  the caller never typed. *Rationale: 0.8.0 reported TitleCased struct names like
+  the caller never typed. _Rationale: 0.8.0 reported TitleCased struct names like
   `Donecriterion is required`, forcing the reader to re-camelCase and guess word
   boundaries. Current HEAD already emits the JSON key for the explicit checks;
   this requirement makes that the contract and extends it to the unknown-field
-  and type-mismatch paths.*
+  and type-mismatch paths._
 
 ### Drift-proofing the surfaced contract
 
@@ -124,21 +124,21 @@ Non-goals:
   structs or the
   [`specs/evaluation-records/`](../../../specs/evaluation-records/index.md)
   contract, such that a divergence between a surfaced example and the accepted
-  schema fails a test. *Rationale: the shipped `cli-quick-reference.md` had all
+  schema fails a test. _Rationale: the shipped `cli-quick-reference.md` had all
   three example payloads wrong for 0.8.0 because they were hand-maintained;
-  "keep in sync" is not a mechanism.*
+  "keep in sync" is not a mechanism._
 
 ### Skill reach and packaging
 
 - `SKILL.md` **MUST NOT** cite a record source-of-truth path that is absent from
   the published skill bundle; it **MUST** instead direct record writing to the
   in-tool authority (command help and `--dry-run`).
-  *Rationale: `SKILL.md` named `../../specs/evaluation-records.md` as the source
+  _Rationale: `SKILL.md` named `../../specs/evaluation-records.md` as the source
   of truth, but only `SKILL.md`, `modes/`, `guides/`, `resources/` ship — the
-  single most useful artifact was unreachable at the point of use.*
+  single most useful artifact was unreachable at the point of use._
 - The published skill bundle **MUST** be checked so that every relative link in
   its shipped files resolves within the bundle, failing CI when one does not.
-  *Rationale: a dead in-skill citation should fail a build, not a field run.*
+  _Rationale: a dead in-skill citation should fail a build, not a field run._
 - The skill's record-writing procedure (`modes/evaluate.md`) and quick reference
   (`resources/cli-quick-reference.md`) **MUST** reflect the discover-via-help /
   validate-via-dry-run flow and carry correct payloads.
@@ -148,9 +148,9 @@ Non-goals:
 - The analysis record specs **MUST** state that `evaluation analysis set` writes
   the whole area set atomically and how `childAnalysisRecords` links resolve
   (by path, to records the same `set` writes).
-  *Rationale: the run inferred — correctly but unsupported by any doc — that a
+  _Rationale: the run inferred — correctly but unsupported by any doc — that a
   single `analysis set` writes all areas atomically, which is the only reason a
-  `childAnalysisRecords` path to a not-yet-written record validated.*
+  `childAnalysisRecords` path to a not-yet-written record validated._
 
 ## Durable spec changes
 

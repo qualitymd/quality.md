@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 # Ranked Findings Reports
 
 Companion to the [Ranked Findings Reports](../0154-ranked-findings-reports.md)
-Change Case. This spec states *what* the change must do. It defers to
+Change Case. This spec states _what_ the change must do. It defers to
 [Evaluation report tree](../../specs/evaluation/reports/report-tree.md),
 [qualitymd evaluation report](../../specs/cli/evaluation-report.md), and
 [Evaluation Advice](../0150-evaluation-advice/spec.md) as normative context for

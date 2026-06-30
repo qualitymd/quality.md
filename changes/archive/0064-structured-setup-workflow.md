@@ -72,15 +72,12 @@ Code:
 
 Specs:
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-      - describe `/quality setup` as a setup workflow in public-facing
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md) - describe `/quality setup` as a setup workflow in public-facing
       summaries while preserving internal dispatch semantics.
-- [x] [`specs/skills/quality-skill/modes/setup.md`](../specs/skills/quality-skill/modes/setup.md)
-      - replace abstract setup-mode requirements with a concrete workflow
+- [x] [`specs/skills/quality-skill/modes/setup.md`](../specs/skills/quality-skill/modes/setup.md) - replace abstract setup-mode requirements with a concrete workflow
       contract, fixed discovery question set, prompt templates, and branching
       rules.
-- [x] [`specs/skills/quality-skill/guides/getting-started-md.md`](../specs/skills/quality-skill/guides/getting-started-md.md)
-      - align post-setup iteration guidance with the structured setup
+- [x] [`specs/skills/quality-skill/guides/getting-started-md.md`](../specs/skills/quality-skill/guides/getting-started-md.md) - align post-setup iteration guidance with the structured setup
       assumptions recorded in `QUALITY.md`.
 - [x] OKF logs under [`specs/`](../specs/log.md) - record durable spec updates
       when they land.
@@ -93,12 +90,10 @@ Runtime skill and docs:
 - [x] [`skills/quality/modes/setup.md`](../skills/quality/modes/setup.md) -
       rewrite as an operator playbook with concrete prompts, required question
       framing, synthesis steps, validation, and completion output.
-- [x] [`skills/quality/guides/getting-started.md`](../skills/quality/guides/getting-started.md)
-      - ensure first-run follow-on guidance refers to the structured setup
+- [x] [`skills/quality/guides/getting-started.md`](../skills/quality/guides/getting-started.md) - ensure first-run follow-on guidance refers to the structured setup
       assumptions consistently.
 - [x] [`README.md`](../README.md) and
-      [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md)
-      - update setup wording if implementation changes public phrasing.
+      [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md) - update setup wording if implementation changes public phrasing.
 - [x] [`npm/quality.md/README.md`](../npm/quality.md/README.md) - keep the
       packaged README copy aligned with root README setup wording.
 - [x] [`CHANGELOG.md`](../CHANGELOG.md) - add the unreleased entry when the

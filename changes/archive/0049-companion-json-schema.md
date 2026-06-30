@@ -9,7 +9,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 # Companion JSON Schema
 
-A **Change Case** capturing the *why* and *status* for publishing a companion
+A **Change Case** capturing the _why_ and _status_ for publishing a companion
 JSON Schema for QUALITY.md frontmatter and a `qualitymd schema` command that
 emits it. The detail lives in its
 [functional spec](0049-companion-json-schema/spec.md).
@@ -34,9 +34,9 @@ validation and autocomplete for hand-authors (via a
 `# yaml-language-server: $schema=…` reference) and third-party tools that
 exchange QUALITY.md documents.
 
-A JSON Schema can capture the *structural* layer — shapes, required/optional
+A JSON Schema can capture the _structural_ layer — shapes, required/optional
 presence, recursion, `minItems`, map-keyed entries, and the "at least one of
-factors/requirements/areas" rule — but it cannot express the *semantic* layer
+factors/requirements/areas" rule — but it cannot express the _semantic_ layer
 the linter owns (factor-reference resolution, rating-override keys matching
 declared levels, the placement-dependent factor-connection rule, level ordering
 and uniqueness). The companion schema must therefore be explicitly
@@ -55,7 +55,7 @@ Deferred / non-goals:
 - No change to the normative format or to evaluation/report semantics.
 - The JSON Schema does **not** replace or duplicate the linter's semantic
   checks; structural-only by design.
-- No JSON form of the specification *prose* — that is a separate deferral noted
+- No JSON form of the specification _prose_ — that is a separate deferral noted
   in [`spec`](../../specs/cli/spec.md) and is not this case.
 - No schema-driven rewrite of the linter; `internal/schema` stays the structural
   source of truth and the schema is derived from it.

@@ -92,7 +92,7 @@ factors:
 If this file was created with `qualitymd init` outside `/quality setup`, invoke
 `/quality setup` with your agent to tailor it to this project.
 
-The frontmatter above fixes *what* is assessed and *how* it is rated. This body
+The frontmatter above fixes _what_ is assessed and _how_ it is rated. This body
 records the judgment context a reader needs to trust the model, evaluate the
 model's quality, and weigh future findings. Fill in each section and delete
 these hints as you go.
@@ -114,20 +114,20 @@ What is this, who relies on it, and what does "good" look like for them? Quality
 is value to the people who depend on the thing, so name them and the value they
 expect.
 
-*Unknowns* — <broad uncertainties about the root area, or "none known">
-*Open questions* — <specific unresolved questions, or "none">
+_Unknowns_ — <broad uncertainties about the root area, or "none known">
+_Open questions_ — <specific unresolved questions, or "none">
 
-*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
+_Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>_
 
 ## Scope
 
 Draw the boundary: what this model covers, and what it deliberately leaves out.
 What is left out is an exclusion by design, not a failing.
 
-*Unknowns* — <broad uncertainties about the boundary, or "none known">
-*Open questions* — <specific unresolved questions, or "none">
+_Unknowns_ — <broad uncertainties about the boundary, or "none known">
+_Open questions_ — <specific unresolved questions, or "none">
 
-*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
+_Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>_
 
 ## Needs
 
@@ -135,17 +135,17 @@ The outcomes your stakeholders are counting on. Each requirement above should
 answer to a need here — this is what tells an evaluator how much each one
 matters.
 
-*Unknowns* — <broad uncertainties about the needs, or "none known">
-*Open questions* — <specific unresolved questions, or "none">
+_Unknowns_ — <broad uncertainties about the needs, or "none known">
+_Open questions_ — <specific unresolved questions, or "none">
 
-*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
+_Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>_
 
 ## Risks
 
 What goes wrong, and for whom, when a need goes unmet? Naming the worst outcomes
 is what keeps a rating meaningful rather than mechanical.
 
-*Unknowns* — <broad uncertainties about the risks, or "none known">
-*Open questions* — <specific unresolved questions, or "none">
+_Unknowns_ — <broad uncertainties about the risks, or "none known">
+_Open questions_ — <specific unresolved questions, or "none">
 
-*Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>*
+_Reviewed — <name>, <date>; agent-reviewed — <agent>, <date>_

@@ -14,7 +14,7 @@ timestamp: 2026-06-17T00:00:00Z
 > it and its folder as the starting point for a new case.
 
 A **Change Case** is a unit of incremental work on the repo. This parent concept
-captures the *why* and the *status*; the detail lives in its children:
+captures the _why_ and the _status_; the detail lives in its children:
 
 - [Functional spec](0001-example-change/spec.md) — what the case must do.
 - [Design doc](0001-example-change/design.md) — how it's built, and why.
@@ -39,7 +39,7 @@ motivation and scope. List each artifact with what changes; an empty list must
 read as a deliberate "no durable changes," not an oversight. Every listed
 artifact is created or updated **before** this change reaches `Done`.
 
-- [ ] `path/to/spec.md` — *what changes, and why*.
+- [ ] `path/to/spec.md` — _what changes, and why_.
 
 ## Status
 

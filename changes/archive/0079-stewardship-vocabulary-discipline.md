@@ -11,9 +11,9 @@ timestamp: 2026-06-24T00:00:00Z
 
 A **Change Case** that draws a clean line between two registers the recent
 stewardship/care work introduced and the established model taxonomy. The
-philosophical core language — *stewardship, care, tending, vulnerability,
-concern* — explains *why* a concern exists and what it means to tend an entity.
-The taxonomy — *Factor, Area, Constituent, Requirement, Audience* — names the
+philosophical core language — _stewardship, care, tending, vulnerability,
+concern_ — explains _why_ a concern exists and what it means to tend an entity.
+The taxonomy — _Factor, Area, Constituent, Requirement, Audience_ — names the
 slots in the Model. This case keeps the first register from modifying or
 standing in for the second, so the core language can stay without eroding the
 terms of art it sits beside.
@@ -36,16 +36,16 @@ Detail lives in:
 ## Motivation
 
 0076 and 0077 gave the authoring guide a strong philosophical grounding: a
-stewardship concern is *care* — an activity of tending — that *projects into* the
+stewardship concern is _care_ — an activity of tending — that _projects into_ the
 model as a factor, a constituent, or an audience (the three-projections rule).
 That grounding is good and load-bearing. But the new vocabulary has started to
 leak across the projection boundary it defines:
 
 - The guide twice calls the root's recurring factors "**stewardship lenses**"
-  (`authoring.md:109`, `:878`). "Lens" is the guide's own gloss for *factor*
+  (`authoring.md:109`, `:878`). "Lens" is the guide's own gloss for _factor_
   (`authoring.md:792`), so "stewardship lenses" reads as "stewardship factors" —
-  it makes *stewardship* a kind of factor, when the three-projections rule says a
-  stewardship concern is the *source* a factor projects from, not a factor itself.
+  it makes _stewardship_ a kind of factor, when the three-projections rule says a
+  stewardship concern is the _source_ a factor projects from, not a factor itself.
 - A real `/quality setup` run reproduced the fusion verbatim, reporting
   "**stewardship factors** (maintainability, consistency, currentness,
   traceability)." The agent reached for the nearest grouping word and demoted the
@@ -87,8 +87,8 @@ Deferred / non-goals:
   care-grounding, the nine concerns, the two axes, and the three-projections rule
   all stand unchanged. This case adds a register guardrail; it removes nothing
   substantive.
-- The legitimate gloss "a factor is a quality *lens*" (singular, defining what a
-  factor is) stays — only "stewardship lens(es)" as a *substitute name* for the
+- The legitimate gloss "a factor is a quality _lens_" (singular, defining what a
+  factor is) stays — only "stewardship lens(es)" as a _substitute name_ for the
   recurring factors is the target.
 - No QUALITY.md format change and no `SPECIFICATION.md` change.
 - No new concern, no change to the three-projections rule, the nine concerns, or

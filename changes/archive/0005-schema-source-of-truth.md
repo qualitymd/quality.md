@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 # Single source of truth for the structural schema
 
-This change extracts the QUALITY.md *structural schema* — the valid frontmatter
+This change extracts the QUALITY.md _structural schema_ — the valid frontmatter
 keys at each node, which are required, and the rating-scale shape — into a single
 authoritative definition the linter derives from, rather than re-encoding it in
 rule code. The detail lives in its children:

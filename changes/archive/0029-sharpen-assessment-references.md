@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # Sharpen assessment references and traceability
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 [functional spec](0029-sharpen-assessment-references/spec.md). No design doc — the
 change needs no separate design discussion.
 
@@ -23,8 +23,8 @@ their origin) and slice one assessable claim into several per-factor requirement
 that each re-cite the same artifact.
 
 The deeper point is that the entity an assessment references is usually itself a
-target in the model — a spec is a target *and* the criteria the code that
-implements it is judged against; a how-to guide is a target *and* the criteria
+target in the model — a spec is a target _and_ the criteria the code that
+implements it is judged against; a how-to guide is a target _and_ the criteria
 for the docs it governs. The connections between these targets — which entity is
 the criteria for which — form a traceability graph that is among the most
 valuable things a model records, yet nothing in the guidance helps an author make

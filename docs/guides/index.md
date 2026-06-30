@@ -1,7 +1,7 @@
 # How-to guides
 
 Task-oriented guides for contributing to the `qualitymd` repo. The Diátaxis
-*how-to* mode.
+_how-to_ mode.
 
 # Guides
 

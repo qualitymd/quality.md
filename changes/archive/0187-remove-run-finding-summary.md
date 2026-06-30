@@ -9,7 +9,7 @@ timestamp: 2026-06-30T00:00:00Z
 
 # Remove Run Finding Summary
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0187-remove-run-finding-summary/spec.md) - what the case must do.

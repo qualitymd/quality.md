@@ -27,8 +27,8 @@ gaps get skimmed, and a reader cannot tell which context a human has actually
 vetted versus what an agent drafted.
 
 This change gives each section a common shape (purpose, contents, its own
-unknowns and open questions) and a state line that records the last *human*
-review (cite a person) distinctly from the last *agent* review — so unreviewed
+unknowns and open questions) and a state line that records the last _human_
+review (cite a person) distinctly from the last _agent_ review — so unreviewed
 agent edits are visible. Unknowns and open questions are scoped to the section's
 own topic and are kept distinct: an unknown is a broad area of uncertainty that
 may not resolve to a single answer; an open question is a specific question with

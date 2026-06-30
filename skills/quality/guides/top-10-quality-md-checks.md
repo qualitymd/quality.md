@@ -14,10 +14,10 @@ workflow.
 
 Keep two concerns distinct:
 
-- *Lifecycle state* is where the model sits in the evaluation lifecycle and is
+- _Lifecycle state_ is where the model sits in the evaluation lifecycle and is
   owned by `qualitymd status` (`readiness`): missing, invalid, ready to evaluate
   (valid, no runs yet), has evaluation history, or needs reconciliation.
-- *Model usefulness* is whether the current model is specific, grounded, and
+- _Model usefulness_ is whether the current model is specific, grounded, and
   assessable enough to support authoring, evaluation, or follow-up work.
 
 The CLI's lifecycle `ready-to-evaluate` signal means "valid, with no runs yet."

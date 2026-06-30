@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 Companion to the
 [Casual Review Gate Wording](../0140-casual-review-gate-wording.md) change case.
-This spec states *what* the change must do.
+This spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

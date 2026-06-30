@@ -9,8 +9,8 @@ timestamp: 2026-06-24T00:00:00Z
 # Model constituents by default — functional spec
 
 Companion to the [Model constituents by default](../0080-model-constituents-by-default.md)
-change case. This spec states *what* the skill's constituent-coverage guidance
-must say; the [design doc](design.md) covers *how* the reframe is worded and why.
+change case. This spec states _what_ the skill's constituent-coverage guidance
+must say; the [design doc](design.md) covers _how_ the reframe is worded and why.
 It governs the bundled skill ([`skills/quality/`](../../../skills/quality/)) and
 its functional-spec mirror
 ([`specs/skills/quality-skill/`](../../../specs/skills/quality-skill/)), and defers
@@ -26,7 +26,7 @@ capitals.
 The skill made an area something a constituent must **earn**: a three-part test
 (owned, inspectable artifact; divergent factor family; traced to a Need or Risk)
 inside "a prompt, not a quota" / "not a roster" language. That guidance guards
-only against *over*-modeling; nothing counters *under*-modeling, and "defer it in
+only against _over_-modeling; nothing counters _under_-modeling, and "defer it in
 Scope" sits as a cost-free peer of "model it." On a real multi-service monorepo,
 setup produced a flat root with five model-wide factors and deferred every
 per-constituent area to "the next iteration," then passed the maturity bar because
@@ -64,14 +64,14 @@ The authoring guide, the setup workflow, and their spec mirrors **MUST** state
 that, for a composite root, the author enumerates the constituent kinds the domain
 implies and **models each as its own area by default**. Giving a constituent its
 own area is the default outcome, **MUST NOT** be framed as something the
-constituent must *earn*, and the thinness of a first pass **MUST NOT** be given as
+constituent must _earn_, and the thinness of a first pass **MUST NOT** be given as
 a reason to defer or omit a constituent.
 
 > Rationale: setup runs once per project with the user most engaged; an under-built
 > first model teaches that a flat root is normal and coverage is optional. The old
 > "earn an area" framing supplied only anti-over-modeling pressure. — 0080
 
-The guidance **MUST** still teach the author to scale coverage to *this* entity:
+The guidance **MUST** still teach the author to scale coverage to _this_ entity:
 the enumerated kinds remain a prompt for what the entity asks to be cared for, not
 a universal roster, and a constituent is modeled because it is germane here, not
 because the generator names it. The model-by-default default and the
@@ -102,8 +102,8 @@ the constituent's artifact) as a reason to omit a germane constituent.
 
 The guidance **MUST** state that a germane concern is **never** omitted by being
 recorded only in prose (a Scope or "deferred" note). When a germane concern's
-artifact is absent or thin, its absence **MUST** be surfaced as a *ratable element
-of the model* — one that produces a rating — by one of:
+artifact is absent or thin, its absence **MUST** be surfaced as a _ratable element
+of the model_ — one that produces a rating — by one of:
 
 - **(a)** modeling it as a minimal area carrying a missing-anchor finding, or
 - **(b)** a requirement on its parent or a sibling area that rates poorly because
@@ -152,7 +152,7 @@ throwaway or narrowly scoped entity would not carry (i.e. a constituent that hit
 the not-germane disqualifier).
 
 > Rationale: the old check treated constituent presence as an "earned default" and
-> explicitly did *not* flag a missing one, so a deferral note passed maturity
+> explicitly did _not_ flag a missing one, so a deferral note passed maturity
 > silently. The bar is what makes model-by-default enforceable rather than
 > advisory. — 0080
 
@@ -167,7 +167,7 @@ roll-up, unchanged.
 
 The getting-started first-model guidance **MUST NOT** advise a "small first model"
 in a way that reads as endorsing under-coverage; it **MUST** instead guard
-*assessability* (prefer assessable requirements over aspirational ones) while
+_assessability_ (prefer assessable requirements over aspirational ones) while
 leaving constituent coverage governed by model-by-default.
 
 ## Durable spec changes

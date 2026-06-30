@@ -11,10 +11,10 @@ Incremental work on the `qualitymd` repo, as an OKF knowledge bundle. Each
 that way). A case that needs no design doc simply omits it.
 
 The `changes/` and enduring [`specs/`](../specs/index.md) bundles play different
-roles. A Change Case's **Functional Specification** states the *delta* — what
+roles. A Change Case's **Functional Specification** states the _delta_ — what
 this one unit of work must do — and is archived with the case once it lands. The
 enduring `specs/` bundle and the repository-root
-[`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of truth
+[`SPECIFICATION.md`](../SPECIFICATION.md) hold the _cumulative_ source of truth
 for the tool's current behavior. A Change Case bridges the two: durable specs
 and docs **MAY** be edited at any time (within a case or on their own), but a
 Change Case **MUST** record every artifact its work impacts — code, specs, docs,
@@ -29,8 +29,8 @@ the result forward.
 
 A Change Case's `status` frontmatter moves through, in order:
 
-- **Draft** — writing up the functional spec (the *what*).
-- **Design** — working out the technical design (the *how*).
+- **Draft** — writing up the functional spec (the _what_).
+- **Design** — working out the technical design (the _how_).
 - **In-Progress** — implementing it.
 - **In-Review** — implementation complete and ready for review.
 - **Done** — landed.

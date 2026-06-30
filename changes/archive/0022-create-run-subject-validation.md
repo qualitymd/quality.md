@@ -38,8 +38,7 @@ rules, and adding rollback for failures that happen after creation starts.
 Created or updated during `In-Progress`, before this change reaches
 `In-Review`:
 
-- [x] [`specs/cli/evaluation-create-run.md`](../../specs/cli/evaluation-create-run.md)
-      - document subject path validation and no-partial-run behavior for invalid
+- [x] [`specs/cli/evaluation-create-run.md`](../../specs/cli/evaluation-create-run.md) - document subject path validation and no-partial-run behavior for invalid
       subjects.
 
 ## Status

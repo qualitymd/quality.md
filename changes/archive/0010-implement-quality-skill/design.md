@@ -10,10 +10,10 @@ timestamp: 2026-06-17T00:00:00Z
 
 How the [Implement the /quality skill](../0010-implement-quality-skill.md) change
 is built — the technical approach behind its
-[functional spec](spec.md). Where the spec says *what* must hold (and defers the
+[functional spec](spec.md). Where the spec says _what_ must hold (and defers the
 behavioral contract to the durable
 [`/quality` skill spec](../../../specs/skills/quality-skill/quality-skill.md)), this
-doc says *how* the implementation makes it so, and why that way.
+doc says _how_ the implementation makes it so, and why that way.
 
 ## Context
 
@@ -34,7 +34,7 @@ Three things shape every decision below:
   source of truth. Anything mechanical that the skill needs and the CLI lacks is
   CLI work this change must also deliver (that is `qualitymd models`).
 - **The durable spec is the conformance target, not a script.** The skill is one
-  *implementation* of an evaluator; this doc is free to choose concrete artifacts,
+  _implementation_ of an evaluator; this doc is free to choose concrete artifacts,
   schemas, and ordering so long as the result satisfies the contract.
 - **The open items already carry recommended resolutions.** This doc confirms the
   three [blocking](spec.md#blocking--resolve-before-design) ones (their resolution
@@ -49,7 +49,7 @@ Three things shape every decision below:
 The blocking items resolve as the spec recommends, confirmed here:
 
 - **Item 1 — packaging.** Source home `skills/quality/`, settled. The deferred
-  Design sub-decision — *distribution and installation* — is decided in
+  Design sub-decision — _distribution and installation_ — is decided in
   [§2](#2-packaging-for-agent-skills): the repo is an Agent Skills source installed
   with `npx skills add qualitymd/quality.md`; Claude plugin packaging is a
   possible secondary channel, not the main onboarding path.
@@ -141,7 +141,7 @@ self-describing; its body carries the **evaluation process** the skill owns.
   trigger matching rather than documentation; include the supported mode keywords
   (`setup`, `wizard`, `evaluate`, `improve`); include broad quality vocabulary
   users naturally ask with (`quality management`, `quality evaluation`, `quality
-  improvement`, factors, characteristics, attributes, criteria); include
+improvement`, factors, characteristics, attributes, criteria); include
   `QUALITY.md` vocabulary (Targets, Factors, Requirements) for users who know the
   format; frame the assessed thing broadly as a project/entity and scoped
   component/target rather than enumerating a closed list of subject types; include
@@ -164,7 +164,7 @@ self-describing; its body carries the **evaluation process** the skill owns.
   and writes under the resolved evaluation directory. It does not rely on
   frontmatter tool grants. Install or upgrade commands for a missing/stale CLI use
   normal agent permissioning and platform detection rather than being silently
-  pre-granted. The skill deliberately does **not** pre-grant edits to the *subject*
+  pre-granted. The skill deliberately does **not** pre-grant edits to the _subject_
   or the `QUALITY.md`; under `improve` those go through normal permissioning after
   the explicit confirmation the spec requires, so an apply is never silent.
 - **Body.** The process the skill owns, carried in the prompt: the operating model
@@ -287,7 +287,8 @@ quality/evaluations/                    # default parent; configurable via .qual
   re-capture).** Rating levels are stored as the model's own `level` slugs (grounded,
   not hard-coded). Representative shapes:
 
-  *assessment* — one per in-scope requirement, the assess→finding→rating chain:
+  _assessment_ — one per in-scope requirement, the assess→finding→rating chain:
+
   ```json
   {
     "schemaVersion": 1,
@@ -309,7 +310,8 @@ quality/evaluations/                    # default parent; configurable via .qual
     "recommendations": ["001-rotate-committed-gateway-key"]
   }
   ```
-  A *not assessed* requirement sets `rating: null`, `notAssessed: true`, and states
+
+  A _not assessed_ requirement sets `rating: null`, `notAssessed: true`, and states
   the absent evidence in `rationale`. Each finding uses the same generic top-level
   fields: a primary `locator`, the observed fact, an open `category`, optional
   `severity`, supporting `evidence`, and optional `attributes` for category-specific
@@ -319,8 +321,9 @@ quality/evaluations/                    # default parent; configurable via .qual
   (per
   [Boundaries](../../../specs/skills/quality-skill/quality-skill.md#boundaries-and-hard-rules)).
 
-  *analysis* — one per target node, the inferred weighted roll-up, citing what it
+  _analysis_ — one per target node, the inferred weighted roll-up, citing what it
   derives from:
+
   ```json
   {
     "schemaVersion": 1,
@@ -334,17 +337,19 @@ quality/evaluations/                    # default parent; configurable via .qual
     "derivedFrom": { "assessments": ["006-webhooks-signing"], "childAnalyses": ["delivery"] }
   }
   ```
+
   `factors` nests sub-factors recursively; `contributing` makes a secondary-factor
   requirement declared on a descendant identifiable under the factor it lenses.
 
-  *report.json* — the **render over** the records (not an independent copy): the
-  top-level Rating and rationale, Scope, per-target ratings, the *not assessed*
+  _report.json_ — the **render over** the records (not an independent copy): the
+  top-level Rating and rationale, Scope, per-target ratings, the _not assessed_
   roll-up, Limitations, Advice, and a minimal finding summary for single-file gate
   and dashboard consumption. Each summary item carries only generic fields
   (`assessmentRef`, `category`, optional `severity`, `locator`, `observation`, and
   recommendation refs); full detail stays in `assessments/*.json`, so `report.json`
   remains a render/cache over the source records rather than a second source of
   truth. `report.md` is the same result for a person.
+
   ```json
   {
     "schemaVersion": 1,
@@ -362,12 +367,13 @@ quality/evaluations/                    # default parent; configurable via .qual
     ]
   }
   ```
+
 - **`improve` re-evaluation (item 5).** The post-apply re-assessment writes a
-  **new** numbered folder: run *N* applies the chosen option; run *N+1* re-rates the
-  affected scope and links back to *N* (its `design.md` cites "re-evaluation of
-  *N* after applying recommendation 00X"). Reusing *N* would mutate write-once records
+  **new** numbered folder: run _N_ applies the chosen option; run _N+1_ re-rates the
+  affected scope and links back to _N_ (its `design.md` cites "re-evaluation of
+  _N_ after applying recommendation 00X"). Reusing _N_ would mutate write-once records
   or mix two subject revisions under one model snapshot. The done-criterion is checked
-  against *N+1*'s rating.
+  against _N+1_'s rating.
 
 ### 6. Driving the CLI and resolving inputs
 
@@ -396,7 +402,7 @@ quality/evaluations/                    # default parent; configurable via .qual
   discovery; the skill defers to the CLI's file convention once
   [`cli.md`](../../../specs/cli.md#to-be-specified) lands one.
 - **Model outline (item 7).** The `wizard`'s and the workflow's orientation comes
-  from the **single-file read** the *Read the resolved target file* step already
+  from the **single-file read** the _Read the resolved target file_ step already
   performs — parsing the declared target/factor outline is a judgment-free
   structural read of one file, not source resolution or validation, so it needs no
   new CLI surface. A future top-level `qualitymd outline QUALITY.md --json` is
@@ -417,8 +423,8 @@ already commit to, so nothing outside this change folder is touched yet:
   trigger-description criteria in Frontmatter and metadata, default-file rule,
   `.quality/config.yaml` with `evaluationDir`, the `improve` new-folder re-eval
   (correct the workflow diagram), the raw JSON artifact form, altitude-first folder
-  naming, the **Limitations vs *not assessed*** distinction (item 10), the *not
-  assessed* done-criterion (item 11), and the *say-it-once* consolidation of the
+  naming, the **Limitations vs _not assessed_** distinction (item 10), the _not
+  assessed_ done-criterion (item 11), and the _say-it-once_ consolidation of the
   conformance point (item 12).
 - the [example bundle](../../../specs/skills/quality-skill/examples/index.md) and
   [`specs/schema.md`](../../../specs/schema.md) — re-capture assessments/analysis as
@@ -469,7 +475,7 @@ Before **Done**, the implementation satisfies this checklist:
   from [§3](#3-the-quality-skill-artifact), body-level argument guidance for
   mode/altitude/path/scope/effort, and the prompt body for the required modes.
 - The skill installs from the published repo path (`npx skills add
-  qualitymd/quality.md`) and from the working tree for dogfooding when the installer
+qualitymd/quality.md`) and from the working tree for dogfooding when the installer
   supports a local path.
 - `setup`, `wizard`, `evaluate`, and `improve` check for `qualitymd`, accept a
   compatible release, accept a dev build that exposes the required commands, and
@@ -502,9 +508,9 @@ Before **Done**, the implementation satisfies this checklist:
 
 ## Alternatives
 
-- **Skill distribution (item 1).** *Claude plugin marketplace first* was rejected:
+- **Skill distribution (item 1).** _Claude plugin marketplace first_ was rejected:
   it makes the onboarding agent-specific, introduces namespaced invocation in Claude
-  Code, and inverts the desired flow. *CLI-installs-the-skill* was also rejected as
+  Code, and inverts the desired flow. _CLI-installs-the-skill_ was also rejected as
   the primary path because the user may not have the CLI yet; it remains a possible
   convenience later. `npx skills add qualitymd/quality.md` wins because it lets the
   skill be the entry point and leaves CLI setup to `setup`/`wizard` diagnostics.
@@ -516,7 +522,7 @@ Before **Done**, the implementation satisfies this checklist:
   byte-for-byte; `--json` exposes the same rewritten model as data.
 - **Re-pointing `source`.** Considered leaving `view` purely verbatim and having the
   skill note the real subject only in `design.md`; chose the `--source` flag so the
-  snapshot *is* the evaluated model and the substitution stays a mechanical CLI step
+  snapshot _is_ the evaluated model and the substitution stays a mechanical CLI step
   rather than skill-side YAML editing.
 - **`report.json` shape.** Considered a full inline twin duplicating every finding;
   chose a structured roll-up that **references** the assessment/analysis records,
@@ -525,7 +531,7 @@ Before **Done**, the implementation satisfies this checklist:
   independent copy" while letting simple consumers avoid opening every assessment
   file for a top-level failure list.
 - **Artifact format.** Keeping all records as Markdown (rejected — not a machine
-  source of record) and making *everything* JSON including the report (rejected — the
+  source of record) and making _everything_ JSON including the report (rejected — the
   human `report.md` and the narrative `design.md`/`plan.md` earn their prose).
 - **Configuration scope.** Considered adding broader `.quality/config.yaml`
   settings for default target file, default effort, output formats, severity
@@ -551,7 +557,7 @@ Before **Done**, the implementation satisfies this checklist:
   entry mode checks the CLI version before relying on `models`, `spec`, `lint`, or
   `init`, and setup gives a concrete upgrade path.
 - **Installer diversity.** `qualitymd` may be installed through Homebrew, `go
-  install`, npm, or another channel. The skill should prefer the documented install
+install`, npm, or another channel. The skill should prefer the documented install
   guide and verify the resulting binary rather than trying to infer every package
   manager state perfectly.
 - **Bundled vs user-file surfaces.** `models` is intentionally plural because it is
@@ -583,8 +589,7 @@ None for this design. Deferred follow-ups:
 - A future `qualitymd outline QUALITY.md --json` command may replace the
   skill's direct structural read of a user's model. It is not part of 0010.
 - A future evaluation-management CLI surface may persist verdicts and gate CI
-  through the CLI, likely under an `evaluations` command family. It is not part of
-  0010.
+  through the CLI, likely under an `evaluations` command family. It is not part of 0010.
 - Optional installer/UI metadata such as `agents/openai.yaml` is deferred until the
   Agent Skills installer or target agent documentation makes it necessary. For
   0010, `skills/quality/SKILL.md` is the canonical skill artifact.

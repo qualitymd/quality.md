@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 # Evaluate ranking and umbrella-factor authoring clarity
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0153-evaluate-ranking-and-umbrella-clarity/spec.md) — what the case must do.
@@ -98,7 +98,7 @@ runtime.
 No planned impact: `SPECIFICATION.md`, `README.md`, install/scaffold files,
 `CHANGELOG.md`, or the generated JSON Schema artifact. The analysis-scope status
 enum already includes `empty`, and examples are not part of the schema (matching
-the precedent set by case 0133). The skill *behavior* contract is unchanged —
+the precedent set by case 0133). The skill _behavior_ contract is unchanged —
 the runtime edit only clarifies already-required behavior — so no skill
 functional spec change is needed.
 

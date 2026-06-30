@@ -28,7 +28,7 @@ embedding a list that drifts." Yet `skills/quality/resources/cli-quick-reference
 is exactly such an embedded list — roughly 40% of its 183 lines duplicate command
 shapes and flags that the CLI's per-command `--help` and discovery commands
 (`evaluation data kinds` / `data example` / `data schema`) already provide — and
-the *same* skill spec prescribes reading that resource (`quality-skill.md:146-147`).
+the _same_ skill spec prescribes reading that resource (`quality-skill.md:146-147`).
 The spec contradicts itself, and the embedded listing is a live drift/typo
 source: the [0126](0126-bulk-data-set.md) breaking change otherwise has to
 hand-edit a `data set` invocation listing that `--help` already carries. Landed
@@ -37,7 +37,7 @@ rows to the same embedded listing; those command-shape rows should now disappear
 with the rest of the duplicated CLI surface rather than becoming another manual
 maintenance obligation.
 
-The other ~50–60% of the resource is content `--help` *cannot* carry — skill
+The other ~50–60% of the resource is content `--help` _cannot_ carry — skill
 conventions with no CLI home: the `.quality/` workspace-artifact layout, the
 feedback-log sequencing, the narrowing-slug rule, the do/don't command rules, and
 the cross-command orchestration sequences. So the fix is not "delete the resource
@@ -68,10 +68,10 @@ Settled premises (not open questions):
 Deferred / non-goals:
 
 - No new CLI introspection command — the surface (`--help`, `data
-  kinds`/`example`/`schema`) already exists; this case consumes it, it does not
+kinds`/`example`/`schema`) already exists; this case consumes it, it does not
   extend it.
 - No change to the CLI's help output or to any command's behavior.
-- No change to the *other* skill resources or workflows beyond the references
+- No change to the _other_ skill resources or workflows beyond the references
   that point at this resource.
 
 ## Affected artifacts

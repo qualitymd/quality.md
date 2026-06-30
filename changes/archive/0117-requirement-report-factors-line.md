@@ -34,10 +34,10 @@ Giving the Requirement report a parallel `Factors:` line makes both placement
 axes visible at a glance and matches the rest of the report tree.
 
 One subtlety the report tree deliberately encodes: a Requirement can attach to
-*several* unrelated Factors, so the report **MUST NOT** render a singular
+_several_ unrelated Factors, so the report **MUST NOT** render a singular
 `Factor:` breadcrumb or pick one attached Factor as a navigation parent
 ([`report-tree.md`](../specs/evaluation-v2/reports/report-tree.md) lines 60–61).
-The new line respects that exactly — it is a *plural* `Factors:` set with no
+The new line respects that exactly — it is a _plural_ `Factors:` set with no
 nesting and no chosen parent. It uses a set separator (`;`, matching the
 existing `requirementFactorLinks` join), not the `/` nesting separator the
 `Area:` and `Factor:` trails use, so the flat-set semantics stay distinct from a

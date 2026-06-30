@@ -55,11 +55,11 @@ CLI performs the mechanical steps. That process realizes the five phases of the
 format spec's [Evaluation](../../../SPECIFICATION.md#evaluation) contract —
 **Define → Assess and Rate → Analyze → Advise → Report** — and every evaluation
 the skill performs **MUST conform to** that contract: the assessment → finding →
-rating chain, *not assessed* over guessing, inferred (not computed) roll-up
+rating chain, _not assessed_ over guessing, inferred (not computed) roll-up
 weighted by what matters, and the required report contents.
 
 Conformance is the binding relationship, not deference. The skill is **not** a
-mere executor of the spec text; it is one *implementation* of an evaluator, free
+mere executor of the spec text; it is one _implementation_ of an evaluator, free
 to specify its own concrete workflow, ordering, heuristics, QC phase, and
 artifacts so long as the result satisfies the contract. The format spec remains
 the **conformance target**: where the skill's process and the contract would
@@ -192,9 +192,9 @@ The skill's judgment is bound to the model and its evidence, not free opinion:
 - **Ratings stay scale-agnostic.** A Requirement rating **MUST** justify the
   selected configured Rating Level against the applied criteria and **MUST NOT**
   assume fixed meanings such as target, sub-target, pass, or fail.
-- **Insufficient evidence is *not assessed*, not a guess.** When there are no
+- **Insufficient evidence is _not assessed_, not a guess.** When there are no
   findings or the evidence cannot be rated against the scale, the requirement (or
-  roll-up) **MUST** be recorded as *not assessed* and noted, never assigned a
+  roll-up) **MUST** be recorded as _not assessed_ and noted, never assigned a
   level to fill the gap (per
   [Assess and Rate](../../../SPECIFICATION.md#assess-and-rate) and
   [Analyze](../../../SPECIFICATION.md#analyze)).

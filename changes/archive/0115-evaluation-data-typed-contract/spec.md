@@ -10,8 +10,8 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Type-safe, model-bound Evaluation v2 data](../0115-evaluation-data-typed-contract.md)
-change case. This spec states *what* the change must do; the
-[design doc](design.md) covers *how*.
+change case. This spec states _what_ the change must do; the
+[design doc](design.md) covers _how_.
 
 Normative durable specs this delta lands in: the
 [`qualitymd evaluation data`](../../../specs/cli/evaluation-data.md) command spec
@@ -168,7 +168,7 @@ of an authored payload rather than the means of discovering its shape.
 
 ### To add
 
-None. (A 1:1 artifact spec for the generated JSON Schema file is *suggested* in
+None. (A 1:1 artifact spec for the generated JSON Schema file is _suggested_ in
 the parent's Affected artifacts, not required to land this case.)
 
 ### To modify

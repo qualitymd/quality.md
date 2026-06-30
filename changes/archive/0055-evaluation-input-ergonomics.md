@@ -18,7 +18,7 @@ it. The detail lives in its
 
 A field evaluation run against `qualitymd` 0.8.0 (run `0001-quality-eval`,
 captured in an external project's `observations.md`) found that the evaluation
-*judgment* went smoothly — model valid, evidence clean, ratings bound to
+_judgment_ went smoothly — model valid, evidence clean, ratings bound to
 evidence — but the **record-writing layer cost ~25–30 failed or probe CLI
 invocations**, every one of them avoidable. The root cause is that an
 author-supplied structured payload (the assessment / analysis / recommendation
@@ -28,7 +28,7 @@ and the tool does nothing to make it reachable:
 - **The shape is invisible.** `evaluation <kind> add --help` lists flags only —
   no fields, no required-ness, no enums, no example. The recommendation schema in
   particular took ~12 probes to reverse-engineer (`remediationOptions` is an
-  array of *strings*, not objects; `doneCriterion` and `evidenceLocators` are
+  array of _strings_, not objects; `doneCriterion` and `evidenceLocators` are
   required but each surfaced only after everything else was already correct).
 - **There is no way to check a payload without writing one.** `qualitymd schema`
   emits only the QUALITY.md frontmatter schema; there is no record schema and no
@@ -42,12 +42,12 @@ and the tool does nothing to make it reachable:
   0.8.0's TitleCased struct names — but the one-at-a-time behavior remains.)
 - **The skill's own pointers are broken or stale.** `SKILL.md` cites
   `../../specs/evaluation-records.md` as the record source of truth, but that
-  path does not resolve in the *published* skill (only `SKILL.md`, `modes/`,
+  path does not resolve in the _published_ skill (only `SKILL.md`, `modes/`,
   `guides/`, `resources/` ship). The one in-bundle payload reference,
   `resources/cli-quick-reference.md`, had all three example payloads wrong for
   0.8.0.
 
-The durable record contract itself is *not* the problem — it is well specified
+The durable record contract itself is _not_ the problem — it is well specified
 in [`specs/evaluation-records/`](../../specs/evaluation-records/index.md). The
 problem is purely that the CLI does not surface that contract, and the skill
 cannot reach it. This case closes both gaps, and it is the operational
@@ -78,7 +78,7 @@ Covered:
   the in-tool help / dry-run as the authority; `cli-quick-reference.md` payloads
   are corrected and pinned to fixtures; the evaluate mode's record-writing
   procedure uses help/dry-run for discovery.
-- **Packaging guard.** A check that every relative link in the *published* skill
+- **Packaging guard.** A check that every relative link in the _published_ skill
   bundle resolves, so a dead in-skill citation fails CI rather than a field run.
 - **Document the implicit `analysis set` contract** (#8): that it writes the
   whole area set atomically and how `childAnalysisRecords` links resolve.
@@ -93,7 +93,7 @@ Deferred / non-goals:
 - **`evaluation <kind> remove`.** The dry-run removes the need to write probe
   records, so in-tool cleanup is not pursued here; add it only if a real
   consumer needs it.
-- A standalone `evaluation <kind> schema` *command*. If machine-readable JSON
+- A standalone `evaluation <kind> schema` _command_. If machine-readable JSON
   Schema is wanted, prefer a flag on the existing command over a new noun; the
   functional spec decides.
 - No change to evaluation semantics, the rating vocabulary, the on-disk record

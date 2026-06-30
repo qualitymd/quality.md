@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 # Evaluation Advice
 
 Companion to the [Evaluation Advice](../0150-evaluation-advice.md) Change Case.
-This spec states *what* the change must do. It defers to the
+This spec states _what_ the change must do. It defers to the
 [Evaluation](../../../specs/evaluation/evaluation.md) contract,
 [`SPECIFICATION.md`](../../../SPECIFICATION.md), and
 [Modeling quality across domains](../../../docs/guides/model-quality-across-domains.md)
@@ -438,42 +438,42 @@ coverage accounting, and a review-or-raise-bar Recommendation.
 ## Acceptance criteria
 
 - AC1. `qualitymd evaluation status <run>` reports a run with complete
-  assessment and roll-up data but no Advice payloads as not reportable. *(R2)*
+  assessment and roll-up data but no Advice payloads as not reportable. _(R2)_
 - AC2. A run with one or more Requirement Findings, a valid
   `FindingRankingResult`, at least one valid `RecommendationResult`, a valid
   `RecommendationRankingResult`, and complete coverage accounting is reportable
-  when all non-Advice reportability requirements are also met. *(R2, R19, R20)*
+  when all non-Advice reportability requirements are also met. _(R2, R19, R20)_
 - AC3. `data set` rejects a `FindingRankingResult` that omits a persisted
   Finding, references a non-existent Finding, duplicates a Finding, or carries
-  disallowed effort/ROI/quick-win fields. *(R4, R6)*
+  disallowed effort/ROI/quick-win fields. _(R4, R6)_
 - AC4. `data set` rejects a `RecommendationResult` without title, why it
   matters, recommended next move, expected benefit, how to know it worked,
-  impact, confidence, or trace support. *(R9, R12)*
+  impact, confidence, or trace support. _(R9, R12)_
 - AC5. `data set` rejects Recommendation impact outside
   `very_high | high | medium | low` and Recommendation confidence outside the
-  Evaluation confidence vocabulary. *(R10)*
+  Evaluation confidence vocabulary. _(R10)_
 - AC6. `data set` rejects a `RecommendationResult` with effort, ROI, quick-win,
-  backlog-priority, or numeric score fields. *(R11)*
+  backlog-priority, or numeric score fields. _(R11)_
 - AC7. `data set` rejects a `RecommendationRankingResult` that omits,
-  duplicates, or references a non-existent Recommendation. *(R16, R17)*
+  duplicates, or references a non-existent Recommendation. _(R16, R17)_
 - AC8. `data set` or status validation rejects coverage accounting where an
   addressed Finding has no Recommendation reference, a not-advice-driving
-  Finding has no rationale, or any persisted Finding is unaccounted for. *(R19,
-  R20)*
+  Finding has no rationale, or any persisted Finding is unaccounted for. _(R19,
+  R20)_
 - AC9. `evaluation report build` renders `report.md` with capped Top Findings
-  and Top Recommendations tables and a link to `recommendations.md`. *(R22-R25)*
+  and Top Recommendations tables and a link to `recommendations.md`. _(R22-R25)_
 - AC10. `evaluation report build` writes `recommendations.md` and
   `recommendations/<NNN>-<slug>.md` files whose detail pages include the core
-  user-facing Recommendation fields and trace links. *(R26-R28)*
+  user-facing Recommendation fields and trace links. _(R26-R28)_
 - AC11. Generated Recommendation Markdown contains no YAML frontmatter or YAML
-  appendix. *(R29)*
+  appendix. _(R29)_
 - AC12. Durable specs or examples include a non-software Advice example that
   demonstrates Top Findings, Recommendations, coverage accounting, and
-  review-or-raise-bar advice. *(R15, R33)*
+  review-or-raise-bar advice. _(R15, R33)_
 - AC13. Durable skill workflow guidance shows the Advice sequence as Finding
   ranking, Recommendation generation, coverage accounting, Recommendation
   ranking, and Advice closure, with progressive QC checkpoints at each artifact
-  boundary. *(R1, R18, R19, R30-R32)*
+  boundary. _(R1, R18, R19, R30-R32)_
 
 ## Durable spec changes
 

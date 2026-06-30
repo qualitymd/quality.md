@@ -28,7 +28,7 @@ Keep the run report renderer deterministic over ranked Findings:
 - the row builder iterates the full Finding type catalog and no longer skips
   zero-count types;
 - `writeRunReportFindingBreakdown` is renamed around the visible `Finding
-  Summary` label and writes the `Severity` column;
+Summary` label and writes the `Severity` column;
 - `findingBreakdownDetail` continues to list only observed severities for `gap`
   and `risk`, preserving `—` for non-concern types and empty severity sets.
 

@@ -35,7 +35,7 @@ completed with no blocking errors, but logged three avoidable frictions:
    no-op read every run.
 3. **"Readiness" collision at close.** The close step classifies model
    "readiness" as `starter | immature | ready to evaluate`, while the CLI
-   `status` command emits a *lifecycle* `readiness` (`ready-to-evaluate` meaning
+   `status` command emits a _lifecycle_ `readiness` (`ready-to-evaluate` meaning
    only "valid, no runs yet"). The two are different axes under one word, and the
    top-10 checklist blends maturity labels with lifecycle labels in one list. An
    agent can read the CLI's `ready-to-evaluate` as the model being mature, which
@@ -117,16 +117,13 @@ Specs:
       → `specs/skills/quality-skill/workflows/` - rename the whole folder
       (`evaluate.md`, `update.md`, `log.md`, `index.md`) and update its
       `index.md`/intra-folder links.
-- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
-      - separate the model-maturity classification from CLI lifecycle states and
+- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md) - separate the model-maturity classification from CLI lifecycle states and
       specify the condensed close checklist.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-      - rename "readiness" to the maturity term only where it means the skill's
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md) - rename "readiness" to the maturity term only where it means the skill's
       model-maturity judgment (keep CLI/tooling readiness wording intact), and
       update its `modes/` path references to `workflows/`.
 - [x] [`specs/skills/quality-skill/index.md`](../specs/skills/quality-skill/index.md)
-      and [`specs/skills/quality-skill/evaluation.md`](../specs/skills/quality-skill/evaluation.md)
-      - update `modes/` path references to `workflows/`.
+      and [`specs/skills/quality-skill/evaluation.md`](../specs/skills/quality-skill/evaluation.md) - update `modes/` path references to `workflows/`.
 - [x] OKF logs and indexes under [`specs/`](../specs/log.md) - record durable
       spec updates when they land. The append-only [`specs/log.md`](../specs/log.md)
       keeps its historical `modes/` references frozen; do not rewrite past
@@ -141,15 +138,13 @@ Runtime skill and docs:
       rewrite the discovery section to the tiered-iteration rule, add the
       read-before-author step, and update the close step to the maturity
       vocabulary and condensed checklist.
-- [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md)
-      - disentangle maturity from lifecycle labels and add the condensed
+- [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md) - disentangle maturity from lifecycle labels and add the condensed
       checklist setup reads at close.
 - [x] [`skills/quality/SKILL.md`](../skills/quality/SKILL.md) - update `modes/`
       path references to `workflows/`, align dispatch wording, and review close /
       routing wording for the maturity-vs-lifecycle distinction; keep CLI status
       `readiness` references intact.
-- [x] [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md)
-      - align the "ready to evaluate" close wording with the maturity term.
+- [x] [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md) - align the "ready to evaluate" close wording with the maturity term.
 - [x] [`README.md`](../README.md) and
       [`npm/quality.md/README.md`](../npm/quality.md/README.md) - update setup
       wording only if public phrasing changes.

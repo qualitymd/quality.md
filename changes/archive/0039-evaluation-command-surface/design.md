@@ -10,8 +10,8 @@ timestamp: 2026-06-19T00:00:00Z
 
 Design behind the
 [Evaluation command surface redesign](../0039-evaluation-command-surface.md)
-change case and its [functional spec](spec.md). The spec says *what* the surface
-must be; this doc says *how* the Go code delivers it and why these choices over
+change case and its [functional spec](spec.md). The spec says _what_ the surface
+must be; this doc says _how_ the Go code delivers it and why these choices over
 the alternatives. Behavior and requirements live in the spec — this doc does not
 restate them.
 
@@ -72,7 +72,7 @@ rather than per-command copies:
   calls this instead of taking `cobra.ExactArgs(1)` directly.
 - **Payload reading + batching.** The current `readPayload` already centralizes
   `--file`/`-`/stdin and terminal-stdin rejection. Extend the decode step to
-  accept a single object *or* a JSON array of that kind: peek the first
+  accept a single object _or_ a JSON array of that kind: peek the first
   non-whitespace byte (`[` vs `{`), normalize to a slice, then validate and write
   each element in order with `DisallowUnknownFields` per element. The write
   receipt aggregates the written paths into an array.
@@ -89,7 +89,7 @@ This is the one change that moves data, not just names.
 
 - **Seeding.** `create` seeds `plan.md` as **body-only** (prose headings), with no
   `coverage:` frontmatter. Absent frontmatter — or an absent `coverage` key —
-  means "no planned coverage declared," so no drift checks run. The skill *adds* a
+  means "no planned coverage declared," so no drift checks run. The skill _adds_ a
   `coverage:` frontmatter block when it chooses to declare coverage. Seeding an
   empty `coverage:` is deliberately avoided, because an empty block would read as
   "planned nothing" and make every written record `unexpected`.

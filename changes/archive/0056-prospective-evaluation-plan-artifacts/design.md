@@ -10,7 +10,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 Design behind the
 [Prospective evaluation plan artifacts](../0056-prospective-evaluation-plan-artifacts.md)
-change case and its [functional spec](spec.md). The spec says *what* must hold:
+change case and its [functional spec](spec.md). The spec says _what_ must hold:
 `design.md` and the initial `plan.md` are authored before assessment starts.
 This doc says how to land that behavior across the durable specs and runtime
 skill without changing the CLI's mechanical run scaffolding.

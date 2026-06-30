@@ -66,9 +66,9 @@ verbatim (spec R10).
 
 ### Fan-out and fallback
 
-Fan-out is an execution detail the prompt expresses as: *if a subagent capability
+Fan-out is an execution detail the prompt expresses as: _if a subagent capability
 is present, dispatch independent per-Area (or per-Requirement) collection and the
-two QC prongs as concurrent subagents; otherwise do the identical work serially.*
+two QC prongs as concurrent subagents; otherwise do the identical work serially._
 The skill does not name a specific subagent tool — it tests for the capability,
 matching how the agent-mediated UX contract already tells the skill to choose the
 richest affordance it has and fall back when absent. Each subagent prompt is
@@ -81,8 +81,8 @@ the run's data store.
 ### The two QC prongs
 
 The verify prong generalizes today's headline-only re-check (it already exists in
-the procedure as step 16) to *every* roll-up-binding finding plus low-confidence
-findings, and keeps the re-*run* (not re-read) rule and its rationale.
+the procedure as step 16) to _every_ roll-up-binding finding plus low-confidence
+findings, and keeps the re-_run_ (not re-read) rule and its rationale.
 
 The completeness sweep is the genuinely new machinery. It is three concrete
 checks the orchestrator (or a per-Area sweep subagent) performs:
@@ -90,7 +90,7 @@ checks the orchestrator (or a per-Area sweep subagent) performs:
 1. **Coverage ledger** — diff the in-scope Requirement ID set (from the model
    snapshot, already queried in the create-run step) against the Requirements
    that reached a terminal evidentiary state. Any ID with neither a rating nor a
-   reasoned *not assessed* fails the sweep and re-enters collection.
+   reasoned _not assessed_ fails the sweep and re-enters collection.
 2. **Quiet-zone re-examination** — any Area/Requirement whose first pass yielded
    only `strength` findings or none gets a fresh adversarial "find the gap/risk"
    look. This is where missed findings hide.
@@ -102,7 +102,7 @@ prong before it can bind a rating (spec R14).
 
 ### Convergence
 
-The loop terminates on the converged state (no new in-scope findings *and* every
+The loop terminates on the converged state (no new in-scope findings _and_ every
 in-scope Requirement terminal), bounded by a fixed cap of **two** re-collection
 rounds. If the cap is hit first, the orchestrator proceeds to roll-up and lists
 every still-unexamined or unresolved zone as an explicit limitation in the report
@@ -154,7 +154,7 @@ re-verify them, small enough to bound cost.
   binding/quiet zones rather than universal re-verification.
 - **Sweep quality depends on the prompt.** The quiet-zone re-examination is only
   as good as its adversarial framing; a weak prompt regresses to "looks clean."
-  The spec pins the *what* (R13); the prompt must carry a genuinely skeptical
+  The spec pins the _what_ (R13); the prompt must carry a genuinely skeptical
   lens, which the design calls out explicitly.
 - **Capability detection.** Misjudging whether a subagent tool exists would push a
   run onto the serial path — slower but not wrong, since coverage and QC are

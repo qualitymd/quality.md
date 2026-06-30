@@ -10,7 +10,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Quality skill UX action clarity](../0101-quality-skill-ux-action-clarity.md)
-change case. This spec states *what* the change must do; it does not choose the
+change case. This spec states _what_ the change must do; it does not choose the
 implementation sequence.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -67,6 +67,7 @@ interactions.
 - Where this change names a prompt, checkpoint, gate, or closeout, the
   corresponding durable spec and runtime guidance **MUST** make the shortest
   acceptable user response explicit.
+
   > Rationale: the reviewed failure mode was often not a missing instruction but
   > a weak affordance. The guide's checklist now names "the shortest acceptable
   > user response is clear" as a shipping check, so each affected prompt needs
@@ -87,6 +88,7 @@ interactions.
   visually emphasized primary question, adjacent `Why it matters`,
   `Recommended`, `Confidence`, and `Answer` labels when Markdown is available,
   and a shortest accept path such as replying `yes` or naming a correction.
+
   > Rationale: closed-choice setup prompts were already strengthened in 0099, but
   > the open-ended setup questions still lacked the same clear answer affordance.
   > Users should not infer how to accept a recommended default. — 0101
@@ -97,6 +99,7 @@ interactions.
   When reviewing several inferred values together, it **SHOULD** render a compact
   table or equivalent structure with item, draft, confidence, and requested user
   action.
+
   > Rationale: the guide says checkpoints are for correcting inferred context and
   > that the primary call to action must still be explicit. The current runtime
   > template can bury "correct this draft" in prose while repeating "Why it
@@ -105,6 +108,7 @@ interactions.
 - The setup human context checkpoint **MUST** place unresolved-context caveats
   after the primary action and before or near the table, without making the caveat
   the first or strongest user-facing element.
+
   > Rationale: warning that unresolved items become Unknowns is important, but it
   > supports the action. Leading with consequence makes the user reconstruct the
   > actual task from surrounding explanation. — 0101
@@ -114,6 +118,7 @@ interactions.
   exists. The brief **MUST** name the proposed change, evidence or reason,
   recommended option, non-mutating alternatives, and done criterion or
   verification.
+
   > Rationale: the final review gate is the mutation boundary for creating or
   > editing `QUALITY.md`. The current existing-file path has a decision brief,
   > but the new-file path can advance from a conversational "looks good" prompt
@@ -134,6 +139,7 @@ interactions.
   labels first, qualified model references as secondary context where useful, and
   an `Answer` line that accepts a number. If there is no evidence-backed
   recommendation, the prompt **MUST NOT** invent one.
+
   > Rationale: ambiguity prompts are closed choices even when no option is
   > recommended. Numbering gives the user a terse response path without forcing
   > the skill to pretend one Area is preferred. — 0101
@@ -150,6 +156,7 @@ interactions.
 - The update runtime and durable workflow specs **MUST** require `/quality update`
   to emit a public run frame before tool inspection, naming the mode, mutation
   surface, artifacts or lack of local project artifacts, and next visible gate.
+
   > Rationale: the shared skill contract says public modes emit a run frame, but
   > the update workflow begins with inspection steps. Update can mutate installed
   > tooling, so the user needs orientation before those checks run. — 0101
@@ -168,6 +175,7 @@ interactions.
   include an `Answer` line. When the available recommendation evidence supports a
   recommended path, that path **SHOULD** be option `1`; otherwise the prompt
   **MUST** avoid inventing a recommendation.
+
   > Rationale: the workflow allows only apply or handoff as productive outcomes.
   > Presenting them as numbered options makes that boundary operational instead
   > of just descriptive. — 0101
@@ -176,6 +184,7 @@ interactions.
   creating any external issue. The brief **MUST** name what external artifact will
   be created, what local artifacts will not change, the evidence or reason, the
   recommended option, alternatives, and verification.
+
   > Rationale: creating an external issue is a mutation. The current guide
   > requires explicit confirmation, and the shared UX guide requires mutation
   > gates to state the change, reason, alternatives, and done criterion. — 0101

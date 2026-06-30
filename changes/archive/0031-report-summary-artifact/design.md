@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 Design behind the
 [Evaluation report summary artifact](../0031-report-summary-artifact.md) change
-and its [functional spec](spec.md). The spec fixes *what* the generated summary
+and its [functional spec](spec.md). The spec fixes _what_ the generated summary
 artifact must provide; this doc covers the intended approach.
 
 ## Context

@@ -16,16 +16,16 @@ Thanks for your interest in improving QUALITY.md.
 
 ## Prerequisites
 
-The project uses [mise](https://mise.jdx.dev) to pin tools (Go, Node, dprint,
+The project uses [mise](https://mise.jdx.dev) to pin tools (Go, Node, prettier,
 goreleaser) and define tasks. With mise installed:
 
 ```sh
 mise install        # install pinned tool versions
 ```
 
-If you prefer not to use mise, install Go 1.26+, Node 22+, and dprint yourself;
-the `mise run …` commands below map to plain `go`, `npm`, and `dprint`
-invocations.
+If you prefer not to use mise, install Go 1.26+, Node 22+, and prettier
+yourself; the `mise run …` commands below map to plain `go`, `npm`, and
+`prettier` invocations.
 
 ## Development tasks
 
@@ -34,9 +34,9 @@ mise run run -- init -   # run the current CLI scaffold command to stdout
 mise run build           # build ./dist/qualitymd
 mise run test            # go test ./...
 mise run vet             # go vet ./...
-mise run fmt             # gofmt -w . and dprint fmt
+mise run fmt             # gofmt -w . and prettier --write
 mise run check           # run the same gate as CI and git hooks
-mise run fmt-md-check    # dprint check
+mise run fmt-md-check    # prettier --check
 mise run npm-pack-check  # verify npm package README packaging
 mise run report-gallery  # regenerate checked-in example evaluation reports
 mise run report-gallery-check  # verify generated report gallery is current

@@ -14,8 +14,8 @@ change and its [functional spec](spec.md).
 
 ## Context
 
-A target's only label is its map key, and the spec frames the root as an *apex
-target* with a "non-root target MUST NOT declare `title`/`ratingScale`"
+A target's only label is its map key, and the spec frames the root as an _apex
+target_ with a "non-root target MUST NOT declare `title`/`ratingScale`"
 prohibition. The change adds `title` and `description` to every target and
 reframes the root as a **Model** = the model-wide `ratingScale` plus the
 **Target** properties. The structural schema already models `Model` and `Target`
@@ -35,8 +35,8 @@ drive everything downstream:
 `SPECIFICATION.md` absorbs the matching prose: the Target YAML snippet lists
 `title` (`# Recommended`) and `description` (`# Optional`); the Model snippet adds
 `description` (`# Optional`); and the Target intro plus the "shares the
-structure … but for two keys" sentence are rewritten as *Model = Target
-properties + `ratingScale`*, with `ratingScale` named the one Model-only
+structure … but for two keys" sentence are rewritten as _Model = Target
+properties + `ratingScale`_, with `ratingScale` named the one Model-only
 property. The evaluation prose's "root target" wording (the top of the target
 tree) stays — it remains true under the new framing.
 
@@ -44,7 +44,7 @@ Two consequences fall out without changing rule logic:
 
 - **`misplaced-root-key` self-narrows.** The rule
   ([`rules.go`](../../../internal/lint/rules.go)) fires in `checkSchemaProperties`
-  when a key is *not* a property of the current node but *is* a property of
+  when a key is _not_ a property of the current node but _is_ a property of
   `Model` — i.e. a Model-only key on a target. Once `title`/`description` are
   Target properties, the only key in `Model` and not in `Target` is
   `ratingScale`, so the branch fires for `ratingScale` alone. The diagnostic
@@ -60,7 +60,7 @@ Two consequences fall out without changing rule logic:
 
 So the only test change is in
 [`rules_test.go`](../../../internal/lint/rules_test.go): the "nested target
-title" case currently *expects* `misplaced-root-key` and must flip to a valid
+title" case currently _expects_ `misplaced-root-key` and must flip to a valid
 model (no findings), joined by a case covering `description` on a nested target.
 The "nested target rating scale" case stays as the surviving root-only assertion,
 with a second `ratingScale` fixture kept for the catalog's fixture-count guard.
@@ -75,7 +75,7 @@ row and the rule catalog description change from root-only-key wording to
   the duplicated lists. With `title` and `description` now sharing presence across
   the two nodes, composition is closer than before. Rejected anyway: the Model
   carries the `model-content` `RequiredAny` group a Target lacks, and inserts
-  `ratingScale` *between* `description` and `factors` rather than appending it, so
+  `ratingScale` _between_ `description` and `factors` rather than appending it, so
   composition would still need a positional splice plus the extra `RequiredAny` —
   more code, and less obvious, than the two explicit lists it replaces. The drift
   composition guards against is already caught by the consistency test, so

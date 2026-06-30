@@ -258,10 +258,10 @@ finding, not evidence that the root area is low quality.
 The checklist **MUST** keep lifecycle state distinct from model-usefulness
 findings and **MUST NOT** present them as one blended classification:
 
-- *Lifecycle state* — where the model sits in the evaluation lifecycle — is owned
+- _Lifecycle state_ — where the model sits in the evaluation lifecycle — is owned
   by `qualitymd status` (`readiness`): missing, invalid, ready to evaluate (valid
   with no runs), has evaluation history, or needs reconciliation.
-- *Model usefulness* — whether the current model is specific, grounded, and
+- _Model usefulness_ — whether the current model is specific, grounded, and
   assessable enough to support authoring, evaluation, or follow-up work — is the
   checklist's own finding set.
 

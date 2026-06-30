@@ -26,7 +26,7 @@ Add duplicate assessment detection to `Run.Renderable()` before analysis
 reference checks:
 
 - Build a map keyed by `strings.Join(targetPath, "\x00") + "\x00" +
-  requirement`.
+requirement`.
 - Store the first assessment file for each key.
 - For each later assessment with the same key, append a
   `duplicate-assessment` gap whose `Ref` is the later file and whose detail

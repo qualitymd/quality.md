@@ -10,7 +10,7 @@ timestamp: 2026-06-17T00:00:00Z
 
 Companion to the
 [Single source of truth for the structural schema](../0005-schema-source-of-truth.md)
-change. This spec states *what* the change must do; a design doc covers *how*. The
+change. This spec states _what_ the change must do; a design doc covers _how_. The
 format itself is defined in [`SPECIFICATION.md`](../../../SPECIFICATION.md); this spec
 does not restate it.
 
@@ -19,7 +19,7 @@ as described in IETF RFC 2119.
 
 ## Scope
 
-Covers a single authoritative definition of the QUALITY.md *structural schema* and
+Covers a single authoritative definition of the QUALITY.md _structural schema_ and
 the linter deriving its structural validation from it. **Deferred:** generating
 prose specs or user docs from the source; any runtime configuration surface;
 unknown-key typo suggestions; and changes to the rule catalog's severities or

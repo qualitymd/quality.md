@@ -9,8 +9,8 @@ timestamp: 2026-06-26T00:00:00Z
 # Model query commands — functional spec
 
 Companion to the [Model query commands](../0125-model-query-commands.md) change
-case. This spec states *what* the `model` command group must do; a later design
-doc covers *how*. The model structure and the canonical reference grammar are
+case. This spec states _what_ the `model` command group must do; a later design
+doc covers _how_. The model structure and the canonical reference grammar are
 defined by [`SPECIFICATION.md`](../../../SPECIFICATION.md) (normative); the
 invocation-wide CLI contract — output posture, exit codes, agent accessibility —
 is defined by [`specs/cli.md`](../../../specs/cli.md) (normative). Design conventions
@@ -31,7 +31,7 @@ See the change case
 [Motivation](../0125-model-query-commands.md#motivation) for the originating
 evidence.
 
-The group is deliberately bounded to *structure and identity* so it does not
+The group is deliberately bounded to _structure and identity_ so it does not
 overlap two existing surfaces: `status` owns project state/readiness and source
 coverage, and `evaluation` owns runs, payloads, reports, and snapshots. Keeping
 those lines clean is a primary design constraint of this case, not an
@@ -60,9 +60,9 @@ Deferred / non-goals (each absence is deliberate):
   source coverage, aggregate element-count summaries, evaluation results, or
   readiness state. Those remain the responsibility of `status` and `evaluation`.
 
-  >> Rationale: `model` is introduced as a *non-overlapping* surface; duplicating
-  >> `status`'s coverage/counts or `evaluation`'s results would create two homes
-  >> for one fact. — 0125
+  > > Rationale: `model` is introduced as a _non-overlapping_ surface; duplicating
+  > > `status`'s coverage/counts or `evaluation`'s results would create two homes
+  > > for one fact. — 0125
 
 ### Shared behavior (every verb)
 
@@ -70,9 +70,9 @@ Deferred / non-goals (each absence is deliberate):
   `./QUALITY.md`, or a `[path]` argument when given — and **MUST NOT** be aware of
   evaluation runs, run IDs, or run-folder layout.
 
-  >> Rationale: a run's `model-snapshot.md` is itself a model file, reachable by
-  >> path; resolving runs would couple `model` to the `evaluation` surface this
-  >> case keeps separate. — 0125
+  > > Rationale: a run's `model-snapshot.md` is itself a model file, reachable by
+  > > path; resolving runs would couple `model` to the `evaluation` surface this
+  > > case keeps separate. — 0125
 
 - **SB2 — Output posture.** Each verb **MUST** default to a human-readable form on
   `stdout` and **MUST** offer `--json` for the structured form. Terminal styling
@@ -92,8 +92,8 @@ Deferred / non-goals (each absence is deliberate):
   does not resolve), and `70` when the model file cannot be read or parsed. The
   group **MUST NOT** return `1`; it reports no negative result of its own.
 
-  >> Rationale: an unresolved `--area`/`<id>` is a *usage* error — the model is
-  >> valid, the request named a non-element — not a found-problem (`1`). — 0125
+  > > Rationale: an unresolved `--area`/`<id>` is a _usage_ error — the model is
+  > > valid, the request named a non-element — not a found-problem (`1`). — 0125
 
 - **SB6 — Flags.** Beyond the shared `[path]`, `--json`, `-h/--help`, and
   `--no-color`, each verb **MUST** accept only the flags named for it below and
@@ -105,8 +105,8 @@ Deferred / non-goals (each absence is deliberate):
   area reference, or that does not resolve to an area in the model, is a usage
   error.
 
-  >> Rationale: one addressing vocabulary. Accepting a bare path too would create
-  >> a second way to name an area that the tool must then keep consistent. — 0125
+  > > Rationale: one addressing vocabulary. Accepting a bare path too would create
+  > > a second way to name an area that the tool must then keep consistent. — 0125
 
 ### `model tree`
 
@@ -159,10 +159,10 @@ change must deliver.
   `RequirementEvaluationFrame`, `FactorAnalysisFrame`, `AreaAnalysisFrame`) from
   that result rather than deriving IDs from `QUALITY.md` text.
 
-  >> Rationale: the orchestrator hand-deriving tens of IDs is the cited pain; a
-  >> queried, authoritative ID set removes the silent-typo class at authoring
-  >> time rather than catching it after the fact via identity resolution and the
-  >> 0124 reference-`kind` enum. — 0125
+  > > Rationale: the orchestrator hand-deriving tens of IDs is the cited pain; a
+  > > queried, authoritative ID set removes the silent-typo class at authoring
+  > > time rather than catching it after the fact via identity resolution and the
+  > > 0124 reference-`kind` enum. — 0125
 
 - **SK2 — Query the snapshot.** Once the run exists, the workflow **MUST** query
   the run's `model-snapshot.md` by path, not the live `./QUALITY.md`, so the IDs
@@ -226,9 +226,9 @@ Shared:
 
 Skill integration:
 
-- [ ] The evaluate workflow obtains in-scope element IDs from a `model list
-      --json` query and authors every payload reference from that result — no ID
-      is derived from `QUALITY.md` text.
+- [ ] The evaluate workflow obtains in-scope element IDs from a
+      `model list --json` query and authors every payload reference from that
+      result — no ID is derived from `QUALITY.md` text.
 - [ ] The query targets the run's `model-snapshot.md` by path, so authored IDs
       match the frozen evaluated model rather than a since-edited `QUALITY.md`.
 - [ ] The query is scoped with `--area`/`--type` to the run's resolved scope, and

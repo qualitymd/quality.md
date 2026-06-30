@@ -19,7 +19,7 @@ Depends on:
 
 ## Factor
 
-A **factor** is a quality characteristic — a *lens* through which an area's
+A **factor** is a quality characteristic — a _lens_ through which an area's
 quality is described. It groups the requirements assessed through it.
 Conventional factor families differ by quality domain: a software product might
 be viewed through `reliability`, `security`, or `maintainability`, a document or
@@ -95,35 +95,35 @@ enough for the decisions it supports.
 - **Do** pick the focused set of quality characteristics that genuinely drive this
   entity's quality. **Avoid** importing a standard checklist of characteristics
   wholesale.
-- **Do** derive initial factors from the body's Needs and Risks. *Needs point at
+- **Do** derive initial factors from the body's Needs and Risks. _Needs point at
   the outcomes quality should preserve; Risks point at the failure modes worth
-  assessing.*
+  assessing._
 - **Do** reconcile major Needs and Risks back to factors after drafting them.
-  *If an important concern has no factor, either add the factor, mark the concern
+  _If an important concern has no factor, either add the factor, mark the concern
   out of scope, or note the unresolved concern as an unknown in the relevant
-  body section.*
-- **Do** justify each factor by something concrete about *this* root area — who
+  body section._
+- **Do** justify each factor by something concrete about _this_ root area — who
   depends on it, what it is for, where it runs — not by its presence on a general
-  list. *A characteristic with no user, no failure mode, and no decision riding on
-  it here does not earn a factor, however standard it is elsewhere.*
+  list. _A characteristic with no user, no failure mode, and no decision riding on
+  it here does not earn a factor, however standard it is elsewhere._
 - **Do** prefer general-purpose, conventional factor names for the quality
-  domain once a concern earns a factor. *For software product quality, examples
+  domain once a concern earns a factor. _For software product quality, examples
   include `reliability`, `security`, `usability`, `maintainability`,
   `performance`, `compatibility`, and `portability`; other domains have their
   own conventional factor families. Requirements and assessments map those
-  lenses to the root area's unique quality expectations.*
+  lenses to the root area's unique quality expectations._
 - **Avoid** inventing bespoke factor names for the subject's domain when a
-  conventional quality attribute covers the concern. *The factor names the
-  quality lens; the requirement says what that quality means for this entity.*
+  conventional quality attribute covers the concern. _The factor names the
+  quality lens; the requirement says what that quality means for this entity._
 - **Do** anchor each factor to a stakeholder whose concern it carries — the user
   who needs it to work, the maintainer who needs to change it, the operator who
-  runs it. *Where stakeholders disagree on what "good enough" means, surface the
-  conflict rather than averaging it into one criterion.*
-- **Consider** whether a factor names something a stakeholder *experiences* (the
-  system is available, decisions are correct) or something *internal* that matters
-  only because it produces that experience (low coupling, clear structure). *Keep
+  runs it. _Where stakeholders disagree on what "good enough" means, surface the
+  conflict rather than averaging it into one criterion._
+- **Consider** whether a factor names something a stakeholder _experiences_ (the
+  system is available, decisions are correct) or something _internal_ that matters
+  only because it produces that experience (low coupling, clear structure). _Keep
   internal factors tied to the outcome they serve, so an evaluator can tell a real
-  weakness from a stylistic preference.*
+  weakness from a stylistic preference._
 
 #### Cover the domain's stable stakes before specializing
 
@@ -132,83 +132,83 @@ affect trust, cost, change, use, operation, or stewardship for that kind of
 entity. They matter even when the current root area is immature, performs poorly
 on them, or lacks evidence about them.
 
-- **Do** identify the quality domain before finalizing root factors. *A software
+- **Do** identify the quality domain before finalizing root factors. _A software
   product, document, data set, research report, model, service operation, and
-  human process each has a different conventional factor family.*
+  human process each has a different conventional factor family._
 - **Do** include the domain's common stable-stakes factors for the root area, or
   explicitly justify why each omitted one is out of scope, delegated to a child
-  area, or still unresolved as an unknown. *A sparse root model should be a
+  area, or still unresolved as an unknown. _A sparse root model should be a
   conscious decision, not the result of only modeling the first risks that came
-  to mind.*
+  to mind._
 - **Do** treat roughly ten factors as a reasonable aim for a **primary-subject
   node** (see [Choose the decomposition shape](model-structure.md#choose-the-decomposition-shape-primary-subject-collection-or-composite)).
-  *Fewer than eight should trigger a coverage review; four to six is usually too
+  _Fewer than eight should trigger a coverage review; four to six is usually too
   thin unless that node is deliberately narrow, temporary, or mostly delegated to
-  child areas.* At a **composite** root the aim applies **per constituent**, not at
+  child areas._ At a **composite** root the aim applies **per constituent**, not at
   the root: each primary-subject constituent earns its own ~ten-factor family,
   while the composite root itself carries only the factors that recur across
   constituents — typically those tracing to stewardship concerns (currentness,
   traceability, consistency, maintainability), each refined per child.
 - **Avoid** dropping a conventional factor because the current artifact lacks
-  evidence or performs poorly on it. *No tests is not a reason to omit
+  evidence or performs poorly on it. _No tests is not a reason to omit
   `testability`; it is a reason to write requirements that make testability, test
-  evidence, or the absence of evidence assessable.*
+  evidence, or the absence of evidence assessable._
 - **Do** keep stable-stakes factors conventional and put subject-specific
-  interpretation in requirements. *The factor names the durable quality lens; the
-  requirements say what that quality means for this root area.*
+  interpretation in requirements. _The factor names the durable quality lens; the
+  requirements say what that quality means for this root area._
 - **Avoid** padding the model with factors no stakeholder would notice and no
-  decision would use. *The aim is coverage adequacy, not ceremony.*
+  decision would use. _The aim is coverage adequacy, not ceremony._
 
 #### Name the quality, not the practice
 
 - **Do** name a factor as a quality characteristic the area can exhibit to a
   degree: `completeness`, `consistency`, `credibility`, `currentness`,
   `understandability`, `traceability`, `assessability`, `maintainability`,
-  `modifiability`, `testability`. *The name should read as the thing being
-  judged, not the work someone does to improve it.*
+  `modifiability`, `testability`. _The name should read as the thing being
+  judged, not the work someone does to improve it._
 - **Avoid** factor names that describe a workflow, lifecycle phase, authoring
-  technique, or evaluation tactic. *For example, `lifecycle-stewardship` is a
+  technique, or evaluation tactic. _For example, `lifecycle-stewardship` is a
   practice; `maintainability`, `modifiability`, or `currentness` names the
   quality it is meant to protect. `grounding` is a tactic or metaphor;
-  `credibility` or `traceability` names the observable quality.*
+  `credibility` or `traceability` names the observable quality._
 - **Do** choose the narrower attribute when a broad label hides the real concern.
-  *If the concern is missing expected context, use `completeness`; if claims
+  _If the concern is missing expected context, use `completeness`; if claims
   contradict, use `consistency`; if claims lack believable support, use
   `credibility`; if context is stale, use `currentness`; if readers cannot
   interpret it, use `understandability`; if origin, rationale, or dependency
-  paths are unclear, use `traceability`.*
+  paths are unclear, use `traceability`._
 - **Do** draw from established attribute families as prompts, not quotas.
 
 #### Write the description as an operational definition
 
-- **Do** define the characteristic as the *degree or capability to achieve some
-  end under the conditions that matter*, and say why it matters and to whom. A
-  useful shape: *"\<factor\> is the degree to which \<entity\> \<achieves some
-  end\> under \<conditions\>; it matters because \<stakeholder concern\>."*
+- **Do** define the characteristic as the _degree or capability to achieve some
+  end under the conditions that matter_, and say why it matters and to whom. A
+  useful shape: _"\<factor\> is the degree to which \<entity\> \<achieves some
+  end\> under \<conditions\>; it matters because \<stakeholder concern\>."_
 - **Avoid** an adjective or a synonym for the factor name ("Reliability: how
-  reliable it is"). *That tells a reader nothing and doesn't distinguish it from
-  its siblings.*
+  reliable it is"). _That tells a reader nothing and doesn't distinguish it from
+  its siblings._
 
 - **Do** write each factor's description so the factors on an area read as a
-  distinct, non-overlapping set. *Overlapping factors make it ambiguous where a
-  requirement belongs and double-count concerns in roll-up.*
+  distinct, non-overlapping set. _Overlapping factors make it ambiguous where a
+  requirement belongs and double-count concerns in roll-up._
 
 #### Decompose into sub-factors only when it aids understanding
 
 - **Consider** sub-factors when a factor carries more than one distinct concern
   that's clearer assessed apart than together.
 - **Avoid** decomposing a factor whose requirements already speak for themselves.
-  *Decompose only as far as it helps.*
+  _Decompose only as far as it helps._
 - **Consider** decomposing a factor when its concern resists any direct
-  assessment — a sub-factor you *can* observe or proxy is more useful than a parent
-  you can only assert. *Decompose for measurability, not only for readability.*
+  assessment — a sub-factor you _can_ observe or proxy is more useful than a parent
+  you can only assert. _Decompose for measurability, not only for readability._
 
 - **Do** treat a child area's factor that shares a name with an ancestor's as a
-  local refinement tailored to the child. *They're distinct factors with
+  local refinement tailored to the child. _They're distinct factors with
   distinct IDs; a Requirement in the child area references the child factor, not
-  the ancestor.*
+  the ancestor._
 - **Avoid** reusing the same factor name in multiple places inside one area's
-  own factor tree. *Scalar `factors` references name local factors by name, so
-  duplicate names inside one area make the intended connection ambiguous.*
+  own factor tree. _Scalar `factors` references name local factors by name, so
+  duplicate names inside one area make the intended connection ambiguous._
 
 ---

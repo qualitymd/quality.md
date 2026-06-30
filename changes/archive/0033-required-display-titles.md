@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # Required display titles
 
-A **Change Case** capturing the *why* and *status* for making display labels a
+A **Change Case** capturing the _why_ and _status_ for making display labels a
 required part of the `QUALITY.md` model. The detail lives in its
 [functional spec](0033-required-display-titles/spec.md).
 
@@ -53,20 +53,17 @@ Implementation is complete and archived.
       context-specific finding messages.
 - [x] [`specs/cli/init.md`](../../specs/cli/init.md) - require the scaffold to seed
       valid placeholder titles wherever the format now requires them.
-- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md)
-      - specify title-based display for rendered target, factor, and rating
+- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md) - specify title-based display for rendered target, factor, and rating
       labels while preserving stable ids/paths where needed.
 - [x] [`specs/cli/status.md`](../../specs/cli/status.md) - specify that human labels
       in status/source coverage use required titles while JSON paths remain
       identifier-based.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       and
-      [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
-      - update the skill contract and authoring-guide spec for required display
+      [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md) - update the skill contract and authoring-guide spec for required display
       titles and title-first human output.
 - [x] [`README.md`](../../README.md) - update examples and schema reference.
-- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
-      - update runtime authoring guidance.
+- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md) - update runtime authoring guidance.
 - [x] [`internal/scaffold/skeleton.md`](../../internal/scaffold/skeleton.md) -
       include required placeholder titles in generated scaffolds.
 - [x] [`QUALITY.md`](../../QUALITY.md) and example model fixtures under

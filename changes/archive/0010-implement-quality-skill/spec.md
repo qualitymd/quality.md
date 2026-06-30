@@ -10,10 +10,10 @@ timestamp: 2026-06-17T00:00:00Z
 
 > Companion to
 > [Implement the /quality skill](../0010-implement-quality-skill.md). This spec
-> states *what* the change must do; the design doc covers *how*.
+> states _what_ the change must do; the design doc covers _how_.
 
 This change **implements an existing durable spec** rather than authoring a new
-behavioral contract. The *what* — operating model, invocation, evaluation
+behavioral contract. The _what_ — operating model, invocation, evaluation
 workflow, grounding, effort levels, and the reporting and artifact contract —
 already lives in the
 [`/quality` skill spec](../../../specs/skills/quality-skill/quality-skill.md) and its
@@ -35,7 +35,7 @@ durable spec to the resolution.
 
 Deferred: everything the skill spec's own
 [Deferred](../../../specs/skills/quality-skill/quality-skill.md#deferred) section
-defers — recording verdicts *through the CLI*, `improve` apply-staging mechanics,
+defers — recording verdicts _through the CLI_, `improve` apply-staging mechanics,
 and bundled `references/` assets — none of which this change introduces.
 
 ## Requirements
@@ -92,7 +92,7 @@ and bundled `references/` assets — none of which this change introduces.
 
 ## Open items and gaps
 
-A review of the durable skill spec surfaced the items below. Each is a *what*
+A review of the durable skill spec surfaced the items below. Each is a _what_
 decision this change owns, **surfaced now while Draft** — recorded here so it
 stays visible rather than discovered mid-implementation — with a **recommended
 resolution** to confirm or revise. They resolve on the schedule their grouping
@@ -114,8 +114,8 @@ example where affected); see the parent's
      packaging **MAY** be added later as a secondary channel, but it is not the
      primary onboarding path for this change.
 
-2. **The `model` altitude's criteria source.** Evaluating *the model itself* needs
-   criteria for what makes a `QUALITY.md` *good*, but the spec never says where
+2. **The `model` altitude's criteria source.** Evaluating _the model itself_ needs
+   criteria for what makes a `QUALITY.md` _good_, but the spec never says where
    they come from; grounding (`qualitymd spec`) supplies only the **format** rules.
    The repo already ships a built-in
    [quality meta-model](../../../internal/models/quality-meta-model.md)
@@ -154,7 +154,7 @@ example where affected); see the parent's
 
 4. **Default target-file resolution.** The spec says the skill resolves a default
    file "the way the CLI does," but the CLI's file-argument convention is itself
-   listed under *To be specified* in [`cli.md`](../../../specs/cli.md).
+   listed under _To be specified_ in [`cli.md`](../../../specs/cli.md).
    - **Resolution:** adopt the one concrete CLI precedent now — default to
      `QUALITY.md` in the current working directory (as
      [`init`](../../../specs/cli/init.md)'s output target does), accept an explicit
@@ -196,10 +196,10 @@ example where affected); see the parent's
 7. **The wizard's model-outline source.** The wizard inspects "the targets and
    factors the model declares," but [`lint`](../../../specs/cli/lint.md) emits
    findings, not a model outline, and no command emits one (`lint.md` only
-   *reserves* a future `model-summary` info rule) — in tension with "every
+   _reserves_ a future `model-summary` info rule) — in tension with "every
    mechanical step driven through the CLI."
    - **Resolution:** the wizard's model orientation comes from the same single-file
-     read the workflow's *Read the resolved target file* step already performs.
+     read the workflow's _Read the resolved target file_ step already performs.
      Parsing the model's declared target/factor outline is a judgment-free
      structural read of one declared file, not source resolution or validation, so
      it does not require a new CLI surface. When no model exists or the model is
@@ -237,32 +237,32 @@ example) when the durable spec is brought into sync.
      whole-model). Re-slug the example to `0001-subject-quality-eval`. This is less
      evocative than the subject name, but predictable and sortable.
 
-10. **`Limitations` vs *not assessed*.** The example report separates a
+10. **`Limitations` vs _not assessed_.** The example report separates a
     **Limitations** section (effort ceilings, point-in-time scans, single-test
-    confidence) from per-requirement *not assessed* outcomes; the spec folds both
+    confidence) from per-requirement _not assessed_ outcomes; the spec folds both
     under one "what was not assessed" phrase.
 
-- **Resolution:** name two distinct report elements in Reporting — (a) *not
-  assessed* outcomes (a Rating Result where evidence was absent, shown per
+- **Resolution:** name two distinct report elements in Reporting — (a) _not
+  assessed_ outcomes (a Rating Result where evidence was absent, shown per
   requirement and roll-up) and (b) a **Limitations** statement that bounds how
-  far a *rated* outcome should be trusted and reconciles coverage against the
+  far a _rated_ outcome should be trusted and reconciles coverage against the
   plan. The example already implements both; the spec just needs the vocabulary.
 
-11. **Done-criterion for a *not assessed* gap.** The spec defines a done-criterion
-    as "the target rating level the requirement should reach," but a *not assessed*
-    gap's fix is to *become assessable, then* reach a level — the wording example
+11. **Done-criterion for a _not assessed_ gap.** The spec defines a done-criterion
+    as "the target rating level the requirement should reach," but a _not assessed_
+    gap's fix is to _become assessable, then_ reach a level — the wording example
     recommendation 002 improvises.
     - **Resolution:** broaden the definition to "the outcome the in-scope
       requirement should reach against its `criterion` — for a rated gap, a target
-      rating level; for a *not assessed* gap, becoming assessable and reaching at
+      rating level; for a _not assessed_ gap, becoming assessable and reaching at
       least the acceptable floor."
 
 12. **Say it once.** The conformance-vs-deference point is restated in four-plus
-    places (draft banner, *Frontmatter and metadata*, *Driving the CLI*, the
-    *Conformance to the format spec* section, the *Workflow* intro).
-    - **Resolution:** keep the *Conformance to the format spec* section as the
+    places (draft banner, _Frontmatter and metadata_, _Driving the CLI_, the
+    _Conformance to the format spec_ section, the _Workflow_ intro).
+    - **Resolution:** keep the _Conformance to the format spec_ section as the
       single home; cut the draft banner to a one-line pointer and replace the other
-      repeats with links. Leave *Frontmatter and metadata* its one distinct rule —
+      repeats with links. Leave _Frontmatter and metadata_ its one distinct rule —
       format rules and vocabulary are grounded at runtime while the evaluation
       process is owned — stated once, linking to Conformance for the rest. Per
       [the spec-writing guide](../../../docs/guides/write-functional-specs.md).

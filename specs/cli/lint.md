@@ -18,7 +18,7 @@ exiting non-zero on errors so it drops into CI.
 
 **Boundary.** `lint` applies qualitymd's default lint profile: normative
 QUALITY.md Model checks plus documented qualitymd tooling-key checks, such as
-the root `config` pointer. It does not assess whether the model is a *good*
+the root `config` pointer. It does not assess whether the model is a _good_
 quality model; that judgment lives in the evaluation skills, not the
 deterministic CLI.
 

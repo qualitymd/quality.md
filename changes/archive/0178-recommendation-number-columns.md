@@ -9,7 +9,7 @@ timestamp: 2026-06-29T00:00:00Z
 
 # Recommendation Number Columns
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0178-recommendation-number-columns/spec.md) - what the case must do.

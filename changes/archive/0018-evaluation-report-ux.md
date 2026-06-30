@@ -47,15 +47,13 @@ other evaluator workflow improvements.
 Created or updated during `In-Progress`, before this change reaches
 `In-Review`:
 
-- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md)
-      - describe the summary-first report rendering.
+- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md) - describe the summary-first report rendering.
 - [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md) - update
       the `report.json` contract and any required run metadata fields.
 - [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) - clarify that human renderings
       may front-load summary, scope, limitations, evidence basis, and target
       summary while preserving the complete report.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - require the skill to record enough plan/design metadata for the report
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - require the skill to record enough plan/design metadata for the report
       summary.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - update the
       evaluation workflow to record scope, exclusions, evidence basis, and

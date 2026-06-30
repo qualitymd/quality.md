@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # CLI managed upgrades
 
-A **Change Case** capturing the *why* and *status* for adding a long-term
+A **Change Case** capturing the _why_ and _status_ for adding a long-term
 `qualitymd` install and upgrade contract. The detail lives in its
 [functional spec](0032-cli-managed-upgrades/spec.md).
 
@@ -74,8 +74,7 @@ Implementation is complete and archived.
       `install/install.cmd` (new) - provide the GitHub-hosted Unix/macOS and
       Windows managed standalone installer entrypoints.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) and
-      [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
-      - teach the skill to use structured version/upgrade checks before
+      [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md) - teach the skill to use structured version/upgrade checks before
       CLI-dependent workflows.
 - [x] [`npm/quality.md/bin/qualitymd.js`](../../npm/quality.md/bin/qualitymd.js) -
       mark npm-launched binaries so install-method detection is reliable.

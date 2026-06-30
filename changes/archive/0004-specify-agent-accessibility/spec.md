@@ -76,9 +76,9 @@ command:
     I/O failure, an unmet precondition such as a guarded overwrite refusal, or a
     bug).
 - The section **MUST** assign each category a concrete, distinct exit code, so a
-  caller can branch on the category without parsing output. *Ran-but-found-problems*
-  **MUST** be distinguishable from *usage error* and *internal error*.
-- The section **MUST** state that a command exits `0` only on *success*.
+  caller can branch on the category without parsing output. _Ran-but-found-problems_
+  **MUST** be distinguishable from _usage error_ and _internal error_.
+- The section **MUST** state that a command exits `0` only on _success_.
 
 ### The `--json` convention
 
@@ -93,7 +93,7 @@ should-offer gate to a SHOULD-by-default, so that:
   emitted-by-default format and there is no format auto-detection. A command
   switches to JSON only when `--json` is passed.
 - A command **MAY** omit `--json` only when its output is a verbatim artifact
-  that *is* the payload and is meant to be redirected (so wrapping it adds
+  that _is_ the payload and is meant to be redirected (so wrapping it adds
   nothing) — for example [`spec`](../../../specs/cli/spec.md).
 - Under `--json`, a side-effecting command **MUST** emit a **result receipt** — a
   JSON document describing what it did, carrying its `nextActions` in-band —
@@ -120,8 +120,8 @@ should-offer gate to a SHOULD-by-default, so that:
 
 ### Housekeeping
 
-- The change **MUST** remove *Agent-accessibility and CI requirements* and
-  *Exit-code semantics* from the CLI spec's **To be specified** list once the
+- The change **MUST** remove _Agent-accessibility and CI requirements_ and
+  _Exit-code semantics_ from the CLI spec's **To be specified** list once the
   section lands.
 - The new and revised text **MUST NOT** contradict the existing `nextActions` or
   scope text; where it overlaps it **MUST** reconcile by reference.
@@ -137,11 +137,11 @@ should-offer gate to a SHOULD-by-default, so that:
   compliance under this change.
 - `qualitymd` **MUST** exit with the category code matching the outcome, replacing
   the current blanket `os.Exit(1)`:
-  - a `lint` run that *finds findings* **MUST** exit with the
-    *ran-but-found-problems* code, distinct from the *usage error* and
-    *internal error* codes;
-  - a malformed invocation **MUST** exit with the *usage error* code;
-  - an I/O or unexpected failure **MUST** exit with the *internal error* code;
+  - a `lint` run that _finds findings_ **MUST** exit with the
+    _ran-but-found-problems_ code, distinct from the _usage error_ and
+    _internal error_ codes;
+  - a malformed invocation **MUST** exit with the _usage error_ code;
+  - an I/O or unexpected failure **MUST** exit with the _internal error_ code;
   - a clean run **MUST** exit `0`.
 - `init` **MUST** gain a `--json` mode that emits a result receipt — at minimum
   the written path, whether the file was created, and its `nextActions` — to
@@ -166,7 +166,7 @@ should-offer gate to a SHOULD-by-default, so that:
   section with the baseline invariants, the concrete exit-code categories, the
   gated opt-in capabilities, and the revised SHOULD-by-default `--json`
   convention.
-- The *Agent-accessibility and CI requirements* and *Exit-code semantics* lines
+- The _Agent-accessibility and CI requirements_ and _Exit-code semantics_ lines
   no longer appear on that spec's **To be specified** list.
 - [`specs/cli/init.md`](../../../specs/cli/init.md) documents the `init --json`
   receipt instead of "offers no `--json`".

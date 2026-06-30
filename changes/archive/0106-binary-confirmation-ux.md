@@ -71,29 +71,21 @@ Deferred / non-goals:
 
 ### Durable specs
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - add the binary-confirmation exception to the shared interaction contract
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - add the binary-confirmation exception to the shared interaction contract
       and decision-brief requirements.
-- [x] [`specs/skills/quality-skill/workflows/update.md`](../../specs/skills/quality-skill/workflows/update.md)
-      - require the update-plan confirmation brief to show `y`/`n`.
-- [x] [`specs/skills/quality-skill/recommendation-follow-up.md`](../../specs/skills/quality-skill/recommendation-follow-up.md)
-      - require `y`/`n` for local apply and external issue creation gates.
-- [x] [`specs/skills/quality-skill/workflows/setup.md`](../../specs/skills/quality-skill/workflows/setup.md)
-      - require `y`/`n` on the fallback existing-file update brief, while
+- [x] [`specs/skills/quality-skill/workflows/update.md`](../../specs/skills/quality-skill/workflows/update.md) - require the update-plan confirmation brief to show `y`/`n`.
+- [x] [`specs/skills/quality-skill/recommendation-follow-up.md`](../../specs/skills/quality-skill/recommendation-follow-up.md) - require `y`/`n` for local apply and external issue creation gates.
+- [x] [`specs/skills/quality-skill/workflows/setup.md`](../../specs/skills/quality-skill/workflows/setup.md) - require `y`/`n` on the fallback existing-file update brief, while
       preserving the final review's `looks good` fast path.
 
 ### Durable docs / bundled skill
 
-- [x] [`docs/guides/agent-mediated-ux.md`](../../docs/guides/agent-mediated-ux.md)
-      - already clarified that true binary confirmations use visible `y`/`n`.
+- [x] [`docs/guides/agent-mediated-ux.md`](../../docs/guides/agent-mediated-ux.md) - already clarified that true binary confirmations use visible `y`/`n`.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - mirror the
       binary-confirmation exception and decision-brief answer guidance.
-- [x] [`skills/quality/workflows/update.md`](../../skills/quality/workflows/update.md)
-      - add `y`/`n` answer guidance to the update-plan confirmation brief.
-- [x] [`skills/quality/guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md)
-      - add `y`/`n` answer guidance to local apply and issue-creation briefs.
-- [x] [`skills/quality/workflows/setup.md`](../../skills/quality/workflows/setup.md)
-      - add `y`/`n` answer guidance to the fallback existing-file update brief.
+- [x] [`skills/quality/workflows/update.md`](../../skills/quality/workflows/update.md) - add `y`/`n` answer guidance to the update-plan confirmation brief.
+- [x] [`skills/quality/guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md) - add `y`/`n` answer guidance to local apply and issue-creation briefs.
+- [x] [`skills/quality/workflows/setup.md`](../../skills/quality/workflows/setup.md) - add `y`/`n` answer guidance to the fallback existing-file update brief.
 
 ### Suggested new durable specs
 

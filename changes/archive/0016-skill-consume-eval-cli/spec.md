@@ -33,8 +33,8 @@ they create the run folder, persist records, and produce the report.
 Intentionally **deferred**: the CLI command behaviors (changes 0013/0014/0015); and
 the skill's evaluation **rigor and efficiency** — effort levels, evidence rigor,
 rating-binding re-check, batched writes, deep fan-out — owned by sibling change
-[0017](../0017-skill-rigor-efficiency.md). This spec governs *which mechanical
-surface produces the artifacts*, not how much judgment goes into them.
+[0017](../0017-skill-rigor-efficiency.md). This spec governs _which mechanical
+surface produces the artifacts_, not how much judgment goes into them.
 
 ## Requirements
 

@@ -13,7 +13,7 @@ A **Change Case** to turn the existing, untyped `findings[].actions` stub into a
 typed, populated **candidate-action** field: the assessor records, on each
 shortcoming finding, one or more non-binding leads describing what fixing it
 might look like, captured where the evidence and context are richest. These are
-*raw material* for a later recommendation-producing **Advise** phase — not
+_raw material_ for a later recommendation-producing **Advise** phase — not
 recommendations themselves, and not surfaced in the Evaluation v0 report.
 
 This is option **A** ("per-finding candidate actions") from the recommendation
@@ -44,9 +44,9 @@ rendered by the report tree — but it is an untyped `arrayOfAny()` with no shap
 no authoring guidance, and is never populated.
 
 Findings today are purely diagnostic. The remediation context is richest at
-assessment time — the assessor has the source open and knows exactly *why* a gap
+assessment time — the assessor has the source open and knows exactly _why_ a gap
 is a gap and what closing it would take. A future Advise phase that synthesizes a
-final recommendation set will only see finding *descriptions*, not the source, so
+final recommendation set will only see finding _descriptions_, not the source, so
 discarding that context forces it to re-derive what the assessor already knew.
 
 Capturing finding-local candidate actions as **typed raw material** preserves

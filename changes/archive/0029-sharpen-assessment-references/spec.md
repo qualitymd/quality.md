@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 Companion to the
 [Sharpen assessment references and traceability](../0029-sharpen-assessment-references.md)
-change case. This spec states *what* the change must do. The format it sharpens
+change case. This spec states _what_ the change must do. The format it sharpens
 is defined by [`SPECIFICATION.md`](../../../SPECIFICATION.md), the source of truth.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
@@ -28,7 +28,7 @@ claim gets split into several per-factor requirements that each re-cite the same
 artifact.
 
 An entity an assessment references is usually itself a target — a spec is judged
-for quality *and* is the criteria its implementation is judged against. The edges
+for quality _and_ is the criteria its implementation is judged against. The edges
 between these targets form a traceability graph, but nothing helps an author make
 them visible. Compounding this, "source" is already bound to `Target.source`, so
 naming the referenced criteria a second "source" overloads the term.

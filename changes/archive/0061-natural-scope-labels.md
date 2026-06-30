@@ -63,11 +63,9 @@ Code:
 
 Specs:
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - make natural labels the primary scoped-evaluation input and move
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - make natural labels the primary scoped-evaluation input and move
       qualified references to exact-addressing guidance.
-- [x] [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md)
-      - align evaluation-mode scope resolution and ambiguity behavior.
+- [x] [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md) - align evaluation-mode scope resolution and ambiguity behavior.
 - [x] OKF logs under [`specs/`](../../specs/log.md) - record durable spec updates
       when they land.
 
@@ -76,8 +74,7 @@ Runtime skill and docs:
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - update argument
       parsing and invocation examples so one-label and two-label scoped
       evaluation are the documented happy path.
-- [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md)
-      - update the scope-resolution decision tree and ambiguity prompts.
+- [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md) - update the scope-resolution decision tree and ambiguity prompts.
 - [x] [`README.md`](../../README.md) - update usage examples to foreground natural
       labels and present qualified references as exact/advanced syntax.
 - [x] [`CHANGELOG.md`](../../CHANGELOG.md) - add the unreleased entry when the

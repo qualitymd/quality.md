@@ -32,29 +32,29 @@ quality changelog.
   evaluation — a new factor that matters, a requirement whose assessment changed,
   a scope that shifted.
 - **Do** update the model when an evaluation finding shows the model no longer
-  reflects the root area's real scope, risks, or decision needs. *That is model
-  drift, not merely a weak root area rating.*
-- **Do** keep the body current with the frontmatter. *A model whose body no
-  longer explains its factors misleads the next evaluator.*
-- **Avoid** using `QUALITY.md` as a defect backlog. *Evaluated-source defects belong in
+  reflects the root area's real scope, risks, or decision needs. _That is model
+  drift, not merely a weak root area rating._
+- **Do** keep the body current with the frontmatter. _A model whose body no
+  longer explains its factors misleads the next evaluator._
+- **Avoid** using `QUALITY.md` as a defect backlog. _Evaluated-source defects belong in
   the root area's normal planning system unless they also change what quality
-  means or how it should be assessed.*
-- **Do** distinguish *recalibration* (a deliberate decision to reset a criterion
-  because you have learned what is achievable) from *drift* (the model silently
-  falling out of step with the root area). *Recalibration is healthy: after a
+  means or how it should be assessed._
+- **Do** distinguish _recalibration_ (a deliberate decision to reset a criterion
+  because you have learned what is achievable) from _drift_ (the model silently
+  falling out of step with the root area). _Recalibration is healthy: after a
   breakthrough, raise `minimum` so the new floor sticks; after hitting a real
-  constraint, lower a `target` consciously and say why in the body.*
-- **Avoid** sharpening criteria only to keep ratings green. *The review's job is to
+  constraint, lower a `target` consciously and say why in the body._
+- **Avoid** sharpening criteria only to keep ratings green. _The review's job is to
   keep the rubric valid, not passing; locked baselines and an honest "not assessed"
-  guard against gaming it.*
+  guard against gaming it._
 - **Do** treat a finding that no existing requirement anticipated as a signal to
-  add a requirement or factor. *A real weakness your model could not express is the
+  add a requirement or factor. _A real weakness your model could not express is the
   strongest evidence the model is incomplete — the model improves by being used,
-  not only by being authored.*
+  not only by being authored._
 - **Do** periodically check that satisfying the requirement set would actually
-  deliver the body's Needs. *If the model can be fully green while the root area
+  deliver the body's Needs. _If the model can be fully green while the root area
   still fails its purpose, the requirement set is incomplete — that is model drift,
-  not a strong root area.*
+  not a strong root area._
 
 ### Logging a model change
 
@@ -62,19 +62,19 @@ When a confirmed recommendation follow-up or direct model-authoring edit actuall
 changes the model, record it in the **quality changelog**. Its format contract lives in
 [`SKILL.md`](../../SKILL.md); this guide covers what counts as meaningful:
 
-- **Do** log a change that alters what the model *is* or *how it judges*: adding,
+- **Do** log a change that alters what the model _is_ or _how it judges_: adding,
   removing, or renaming an Area, Factor, or Requirement; changing the rating
   scale, a criterion, or a relative weight; shifting scope; changing the apex or
   required margin; or applying an evaluation recommendation.
-- **Do** state whether a criterion move is deliberate *recalibration* or a *drift
-  correction*, and cross-link the evaluation run and recommendation behind it when
+- **Do** state whether a criterion move is deliberate _recalibration_ or a _drift
+  correction_, and cross-link the evaluation run and recommendation behind it when
   the change came from one.
 - **Do** write **one entry per coherent change** — a confirmed recommendation
   apply, a direct model-authoring change, or the initial population — not one per
-  field touched. *The unit of record is the decision, not the edit.*
+  field touched. _The unit of record is the decision, not the edit._
 - **Avoid** logging Markdown-body wording, typo, or formatting changes, or
-  evaluated-source fixes that leave the model unchanged. *Those are not model
+  evaluated-source fixes that leave the model unchanged. _Those are not model
   changes; git already records them, and logging them turns a curated timeline
-  into noise.*
+  into noise._
 - **Avoid** treating the log as a second evaluation record or a defect backlog.
-  *It references evaluation runs; it never copies them.*
+  _It references evaluation runs; it never copies them._

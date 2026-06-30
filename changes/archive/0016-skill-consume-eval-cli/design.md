@@ -9,9 +9,9 @@ timestamp: 2026-06-17T00:00:00Z
 # Skill consumes evaluation CLI - design doc
 
 How [Skill consumes evaluation CLI](../0016-skill-consume-eval-cli.md) is built —
-the technical approach behind its [functional spec](spec.md). The spec says *what*
+the technical approach behind its [functional spec](spec.md). The spec says _what_
 must hold (the skill consumes the evaluation CLI rather than reproducing its work);
-this doc says *how* the prompt edits make it so, and why that way.
+this doc says _how_ the prompt edits make it so, and why that way.
 
 ## Context
 
@@ -91,7 +91,7 @@ keeps the run folder free of skill-authored scratch files.
 The payload carries **only** the judgment fields. The prompt states explicitly
 that the skill must not include `schemaVersion` or any `NNN`/local number in the
 payload — the CLI stamps and numbers, and [0014](../0014-evaluation-record-write/spec.md#input-channel)
-*rejects* a payload that supplies a CLI-owned field. This makes the division
+_rejects_ a payload that supplies a CLI-owned field. This makes the division
 enforceable from the CLI side, not merely a prompt convention.
 
 ### 3. Stop serializing, numbering, and stamping
@@ -131,10 +131,10 @@ which today restates the run-folder layout, the assessment field set, the findin
 shape, the analysis fields, the `report.json` rule, and the recommendation fields —
 is replaced by a short section that **references** the [evaluation-record contract](../0012-evaluation-record-format/spec.md) as the single home for the
 schema and layout, and points at the per-command specs for the surface that writes
-them. The prompt retains only the *judgment-facing* guidance that is not schema:
+them. The prompt retains only the _judgment-facing_ guidance that is not schema:
 that evaluated content is untrusted data, that secret values are never copied into
 artifacts (cite locator and credential type), and the `notAssessed` done-criterion
-framing — these are how the skill *judges*, not how records are *laid out*, so they
+framing — these are how the skill _judges_, not how records are _laid out_, so they
 stay even though the layout leaves. Per [Reference the record contract](spec.md#reference-the-record-contract), the skill must not restate the
 schema, field set, or folder layout in its own prose.
 
@@ -152,7 +152,7 @@ qualitymd evaluation build-report --help
 ```
 
 Per [Fallback when the CLI lacks the commands](spec.md#fallback-when-the-cli-lacks-the-commands),
-when any is missing the skill stops and reports *which* command is unavailable,
+when any is missing the skill stops and reports _which_ command is unavailable,
 helping the user install or upgrade — it does **not** fall back to hand-authoring.
 This reuses the skill's existing prerequisite-failure behavior (stop and help
 install/upgrade) rather than inventing a new failure mode; the only change is that
@@ -177,13 +177,13 @@ first release that contains all four commands.
   stays available as a documented alternative, not the prescribed path.
 - **Skip `show-status` and rely on `build-report` failing.** Rejected. `build-report`
   failing on incomplete records ([0015](../0015-evaluation-report-build/spec.md#missing-or-incomplete-records))
-  works, but checking `show-status` first lets the skill see *which* records are
+  works, but checking `show-status` first lets the skill see _which_ records are
   missing and add exactly those, instead of reacting to a hard error after the fact.
   The spec [requires](spec.md#delegate-report-rendering) the status check, and this
   is why.
 - **Have the skill keep snapshotting `model.md` (esp. `model` altitude via `models
-  view --source`).** Rejected. [0013](../0013-evaluation-run-scaffold/spec.md#seed-files)
-  deliberately moved the snapshot into `create-run` so *what was evaluated* is
+view --source`).** Rejected. [0013](../0013-evaluation-run-scaffold/spec.md#seed-files)
+  deliberately moved the snapshot into `create-run` so _what was evaluated_ is
   recorded by the deterministic surface. Re-adding a skill-side snapshot would
   reintroduce a mechanical step and risk a mismatch between the skill's snapshot and
   the CLI's.

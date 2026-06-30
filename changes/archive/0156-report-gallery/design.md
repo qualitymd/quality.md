@@ -40,7 +40,7 @@ Two `mise` tasks wrap the generator:
 
 - `report-gallery` regenerates the checked-in example.
 - `report-gallery-check` regenerates it and runs `git diff --exit-code
-  examples/report-gallery`.
+examples/report-gallery`.
 
 `mise run check` depends on `report-gallery-check` so stale examples fail in the
 normal local/CI gate.

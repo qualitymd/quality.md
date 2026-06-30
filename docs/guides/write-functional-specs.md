@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Writing functional specs
 
-A **functional spec** describes *what* a piece of `qualitymd` does and the
+A **functional spec** describes _what_ a piece of `qualitymd` does and the
 requirements it must meet — not how it's implemented. Our specs live in the
 [`specs/`](../../specs/index.md) bundle, authored as [OKF](work-with-okf.md) concepts.
 
@@ -39,35 +39,35 @@ out of order. The elements below are a palette, not a checklist (see
   [`SPECIFICATION.md`](../../SPECIFICATION.md)). Distinguish **normative**
   references — the binding sources of truth this spec defers to, whose rules it
   inherits — from **informational** ones that supply only context; a reader
-  should be able to tell which links *bind*.
+  should be able to tell which links _bind_.
 - **Background / motivation** — a short prose section near the top stating the
-  big-picture *why*: the problem or failure-mode the capability addresses, and
+  big-picture _why_: the problem or failure-mode the capability addresses, and
   any spec-scale lessons worth carrying forward. This is distinct from **Scope**
-  (which says *what's* covered or deferred), from the companion note (which says
+  (which says _what's_ covered or deferred), from the companion note (which says
   what the spec governs), and from a **Scenario** (which names the self-contained
   case the spec solves, not the broader why). It exists so a spec's durable
   rationale lives with the spec, not only in the change that introduced it. Keep
-  it to a paragraph or so; the fine-grained *why* goes on individual requirements
+  it to a paragraph or so; the fine-grained _why_ goes on individual requirements
   (see below).
 - **Scenario / use case** — when the spec exists to satisfy a self-contained use
   case, state it: the concrete thing a caller is trying to accomplish that this
   spec, on its own, makes possible. Draw the line against **Background /
   motivation**: a scenario that's merely one step of a larger process or
-  job-to-be-done *is* background — context for the big-picture *why*. But when the
+  job-to-be-done _is_ background — context for the big-picture _why_. But when the
   spec stands on its own as the answer to a particular case, state that case
   directly — a short walkthrough of who reaches for the capability and what they
   need to come away with — so the requirements that follow read as its solution.
   Keep it concrete and brief; many specs need only background.
-- **Scope** — what's covered now, and what's left out *on purpose*, so an absence
+- **Scope** — what's covered now, and what's left out _on purpose_, so an absence
   reads as deliberate rather than forgotten. Two kinds of absence belong here:
   **deferred** (real, but not yet — recorded so it isn't re-litigated) and
-  **non-goals** (out of scope by design, e.g. *the CLI never calls a model*).
+  **non-goals** (out of scope by design, e.g. _the CLI never calls a model_).
   Naming a non-goal kills the recurring "should it also…?" before it's asked.
 - **Assumptions & dependencies** — external facts the requirements rest on that
   this spec does not control: another component's behavior, a file or folder
-  layout, an environment guarantee. List them when a *change* to one would
+  layout, an environment guarantee. List them when a _change_ to one would
   invalidate a requirement here. This is distinct from **Scope** (what's covered)
-  and **Background** (the *why*): an assumption is a load-bearing fact that, if it
+  and **Background** (the _why_): an assumption is a load-bearing fact that, if it
   shifts, should flag the requirements that depend on it rather than let them fail
   silently.
 - **Requirements** — the normative content (see below).
@@ -102,7 +102,7 @@ testable.
 
 Phrase each requirement in the active voice with an explicit subject — the actor
 or surface under obligation — followed by the keyword and the result:
-*"`qualitymd lint` MUST exit non-zero…"*, not *"a non-zero exit is required"*.
+_"`qualitymd lint` MUST exit non-zero…"_, not _"a non-zero exit is required"_.
 Keep the BCP 14 keyword as the obligation verb; do not rewrite `MUST` as `shall`.
 
 ### Requirement quality bar
@@ -155,7 +155,7 @@ one plausible behavior over another.
 ### The requirement set
 
 The bar above tests one requirement at a time; a set of individually sound
-requirements can still fail *as a set*. Before a spec drives design, check the
+requirements can still fail _as a set_. Before a spec drives design, check the
 requirements together for:
 
 - **Consistent.** No requirement conflicts with or duplicates another, and one
@@ -169,7 +169,7 @@ requirements together for:
   missing and nothing pulling against it.
 
 This complements the per-requirement bar; it is the requirements-engineering
-distinction between well-formed *requirements* and a well-formed *set*. For a
+distinction between well-formed _requirements_ and a well-formed _set_. For a
 change-case spec, the set-level pass pairs
 with the [validation check](work-with-change-cases.md#write-the-spec-then-the-design)
 at the Draft→Design boundary.
@@ -206,12 +206,12 @@ form is **Divergence handled** — the syntactic home for the cases
 A requirement **may** carry a subordinate rationale annotation directly beneath
 it — the fine-grained counterpart to **Background / motivation**. Use one when
 the requirement's reason is load-bearing but not obvious from the nearby prose.
-Lead with the testable sentence; put the *why* in a blockquote under it:
+Lead with the testable sentence; put the _why_ in a blockquote under it:
 
 > A command **MUST** exit non-zero when it finds errors.
 >
->> Rationale: CI gates on exit code alone; a zero exit on lint failure
->> green-lit broken files in practice. — 0012
+> > Rationale: CI gates on exit code alone; a zero exit on lint failure
+> > green-lit broken files in practice. — 0012
 
 The form: a blockquote led by `Rationale:` (the terser `Why:` is fine), one or
 two sentences, optionally citing the originating change id (`— 0012`) for
@@ -219,7 +219,7 @@ provenance. The requirement stays the lead; the annotation is subordinate and
 must never wrap around or bury it. A change-case spec requirement carries a second
 subordinate annotation alongside this one — the `Durable spec:` line that records
 its spec impact (see [Durable spec changes](#durable-spec-changes)); the two are
-distinct (one carries *why*, the other maps to the durable contract) and each sits
+distinct (one carries _why_, the other maps to the durable contract) and each sits
 on its own blockquote.
 
 Annotate by this litmus: **when a future editor would otherwise repeat a mistake,
@@ -229,7 +229,7 @@ an imperative with no visible reason should be treated as suspect: add rationale
 weaken it, or remove it. Dead-end alternatives and the full decision record stay
 in the (archived) [design doc](write-design-docs.md); only the durable intent and
 the lesson get promoted onto the requirement. Background carries the spec-scale
-*why*; an annotation carries one requirement's — they must not restate each other,
+_why_; an annotation carries one requirement's — they must not restate each other,
 and stale rationale is superseded, not left to accrete.
 
 ## Durable spec changes
@@ -241,7 +241,7 @@ change-case delta to the cumulative source of truth.
 
 Unlike the [Shape](#shape) sections, which are a palette, this section is
 **required** for a change-case spec. A silent omission is how a contract change
-lands undocumented, and the *what* of a spec change belongs with the spec, not
+lands undocumented, and the _what_ of a spec change belongs with the spec, not
 buried in the design doc. Durable specs do not carry this section; they absorb
 the resulting contract and rationale directly. (See
 [Working with change cases](work-with-change-cases.md#account-for-the-artifacts-it-touches)
@@ -268,8 +268,8 @@ under-accounted.
 
 > The single-kind form **MUST** emit a self-contained schema.
 >
->> Durable spec: modify `specs/cli/evaluation-data.md` — replace "rooted at that
->> kind" with the self-contained-legibility requirement.
+> > Durable spec: modify `specs/cli/evaluation-data.md` — replace "rooted at that
+> > kind" with the self-contained-legibility requirement.
 
 Then **roll those annotations up** into a `## Durable spec changes` section with
 four subsections, in order — **To add** (new durable specs), **To modify**, **To
@@ -313,13 +313,13 @@ None
 Scope is durable **specs** only — the [`specs/`](../../specs/index.md) bundle and
 the format spec [`SPECIFICATION.md`](../../SPECIFICATION.md), including the skill's
 functional spec under [`specs/skills/`](../../specs/index.md) when a change alters
-skill *behavior*. The other artifact kinds — durable *docs* (README, guides,
-scaffold, the bundled skill's runtime content under `skills/`) and *code* — are
+skill _behavior_. The other artifact kinds — durable _docs_ (README, guides,
+scaffold, the bundled skill's runtime content under `skills/`) and _code_ — are
 tracked in the change case's parent **Affected artifacts** index, not here.
 
 ## Conventions
 
-- **Specify behavior, not implementation.** Say *what* must hold; leave *how* to
+- **Specify behavior, not implementation.** Say _what_ must hold; leave _how_ to
   the code.
 - **One source of truth.** Don't restate the format spec — link to it.
 - **Inventory before splitting.** Before reshaping a large spec, list its major
@@ -373,17 +373,17 @@ tracked in the change case's parent **Affected artifacts** index, not here.
   "while we're here." Every requirement is a constraint someone has to implement
   and uphold; speculative ones cost more than they save. When a need is real
   but not yet, record it under **deferred** rather than specifying it.
-- **An unspecified case is a decision delegated.** A spec *decides* behavior; it
+- **An unspecified case is a decision delegated.** A spec _decides_ behavior; it
   doesn't just describe the happy path. Each error, conflict, empty input, or
   concurrent-use case left unstated isn't left flexible — it's handed silently to
   whoever writes the code (or the agent driving it), decided ad hoc and invisibly.
   For a deterministic tool that's the whole game: spec the cases where behavior
   could plausibly diverge so one input can't yield two defensible results. This is
-  the complement to YAGNI, not its contradiction — decide the cases that *exist*
+  the complement to YAGNI, not its contradiction — decide the cases that _exist_
   (the run folder already collides; `--subject` can already point at a directory);
   don't invent ones that don't.
 - **Sections are a palette, not a checklist.** The [Shape](#shape) list is what a
-  spec *may* need, not boxes every spec must fill. Take only what a spec earns: a
+  spec _may_ need, not boxes every spec must fill. Take only what a spec earns: a
   cross-cutting spec may use them all; a single-command spec is often just its
   companion note and requirements (see
   [`evaluation create`](../../specs/cli/evaluation-create.md)). Forcing
@@ -392,22 +392,22 @@ tracked in the change case's parent **Affected artifacts** index, not here.
   non-negotiables.
 - **Use sentence-case headings.** Spec headings use sentence case while
   preserving proper nouns and formal type names. Prefer `Background /
-  motivation`, `Durable spec changes`, and `Open questions` in change-case
+motivation`, `Durable spec changes`, and `Open questions` in change-case
   functional specs.
-- **Say it once.** This applies *within* a spec too: each requirement gets one
-  home. An overview or principles list should *name* a property and link to the
+- **Say it once.** This applies _within_ a spec too: each requirement gets one
+  home. An overview or principles list should _name_ a property and link to the
   section that enforces it, not re-assert the requirement in full. A spec that
   introduces its properties up front and then repeats each as its own normative
   section is saying everything twice — collapse the overview to links.
 - **Two whys, each in its place.** Rationale earns its place — durable specs
   should carry the reasons their requirements exist, or those reasons die in the
-  archived change. Split it by grain. The big-picture *why* (the problem or
+  archived change. Split it by grain. The big-picture _why_ (the problem or
   failure-mode the capability addresses) goes in
-  [Background / motivation](#shape). A single requirement's *why* goes in a
+  [Background / motivation](#shape). A single requirement's _why_ goes in a
   subordinate [annotation](#per-requirement-rationale) beneath it — a sentence or
   two, not a paragraph wrapped around the rule. The failure mode to avoid is
-  rationale that *buries or outweighs* the requirement, not rationale itself:
-  keep the requirement the lead, testable sentence and let the *why* sit under
+  rationale that _buries or outweighs_ the requirement, not rationale itself:
+  keep the requirement the lead, testable sentence and let the _why_ sit under
   it.
 - **Show, don't only tell.** A concrete example often pins a contract more
   precisely than prose and doubles as a test: a sample invocation, a fenced record
@@ -427,19 +427,19 @@ If a spec feels bloated, look for these — each is over-specification, not
 thoroughness:
 
 - **The same requirement in two sections** — e.g. a "Design requirements"
-  overview *and* an "Agent accessibility" section both asserting the JSON-output
+  overview _and_ an "Agent accessibility" section both asserting the JSON-output
   rule. Pick one home; link from the other.
 - **A principles list that's really a second copy** of the normative body. If
   every bullet maps to a section that says the same thing, the list should be
   links.
 - **Rationale that buries the rule** — justification wrapped around a one-line
   requirement until it is no longer the lead, testable sentence. The cure
-  is order and subordination, not deletion: lead with the rule, drop the *why*
+  is order and subordination, not deletion: lead with the rule, drop the _why_
   into a [`Rationale:` annotation](#per-requirement-rationale) (or
   [Background](#shape)) beneath it.
 - **Rationale said twice** — a per-requirement annotation that restates what
   [Background / motivation](#shape) already says, or vice versa. Background
-  carries the spec-scale *why*; an annotation carries one requirement's. Say each
+  carries the spec-scale _why_; an annotation carries one requirement's. Say each
   once, in its own place, and supersede stale rationale rather than letting it
   accrete.
 - **Implementation detail leaking in** — exact env-var names, escape sequences,

@@ -14,7 +14,7 @@ frontmatter, shipped at the repository root beside
 [`qualitymd schema`](cli/schema.md).
 
 The normative format is [`SPECIFICATION.md`](../SPECIFICATION.md); this artifact
-is a derived, machine-readable description of the frontmatter's *structural*
+is a derived, machine-readable description of the frontmatter's _structural_
 layer and is **subordinate** to it. This spec owns the artifact's content and
 guarantees; the command that emits it is specified in
 [`qualitymd schema`](cli/schema.md).
@@ -34,10 +34,10 @@ structural frontmatter schema in Go for the linter to consume. External consumer
 exchange QUALITY.md documents — have no portable schema to point at without
 running the Go linter. `quality.schema.json` fills that gap.
 
-It can only fill the *structural* layer: shapes, required/optional presence,
+It can only fill the _structural_ layer: shapes, required/optional presence,
 recursion, `minItems`, map-keyed entries, strict model-name patterns where JSON
 Schema can express them, and the "at least one of factors/requirements/areas"
-rule. The *semantic* layer the linter owns
+rule. The _semantic_ layer the linter owns
 (factor-reference resolution, rating-override keys matching declared levels, the
 placement-dependent factor-connection rule, level ordering and uniqueness) cannot
 be expressed in JSON Schema. Drawing that line explicitly is what keeps the
@@ -57,7 +57,7 @@ Deferred / non-goals:
 
 - No encoding of the linter's semantic rules; structural-only by design. A
   document this schema accepts can still fail [`lint`](cli/lint.md).
-- No JSON form of the specification *prose* — that is a separate deferral noted
+- No JSON form of the specification _prose_ — that is a separate deferral noted
   in [`spec`](cli/spec.md), distinct from this structural artifact.
 - No qualitymd-only tooling conventions such as the root `config` pointer; those
   are lint/CLI behavior, not normative Model structure.

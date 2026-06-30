@@ -9,21 +9,21 @@ timestamp: 2026-06-24T00:00:00Z
 
 # Harnessability factor
 
-A **Change Case** to give the agent-collaboration concern its *factor* projection
+A **Change Case** to give the agent-collaboration concern its _factor_ projection
 in the `/quality` skill. Today the skill carries that concern only as a
-*constituent* — the **agent harness** (see [Carry the recurring use-context
+_constituent_ — the **agent harness** (see [Carry the recurring use-context
 constituents](../../skills/quality/guides/authoring.md)) — and 0080 made that
 constituent model-by-default. But the concern's most useful projection across a
-composite root is a **factor**: *how well does each part of this project equip an
-agent to work on it well?* That question recurs across constituents, which is the
+composite root is a **factor**: _how well does each part of this project equip an
+agent to work on it well?_ That question recurs across constituents, which is the
 signature of a model-wide factor, and unlike an area it is never dropped for
 thinness — a thin harness just rates low and surfaces a finding everywhere.
 
 This case adds **harnessability** as a deliberate **umbrella** model-wide factor,
 decomposed into six sub-factors that trace the agent's working loop, and teaches
 the skill to propose it by default for an agent-collaborated composite root. The
-agent harness stays a constituent (the *artifact* projection) and the agent stays
-an *audience*; harnessability is the *factor* projection of the same concern.
+agent harness stays a constituent (the _artifact_ projection) and the agent stays
+an _audience_; harnessability is the _factor_ projection of the same concern.
 
 Detail lives in:
 
@@ -37,7 +37,7 @@ Detail lives in:
 
 A real setup run on a multi-service monorepo (the same run that motivated 0080)
 reported the agent harness as "thin — only the quality skill symlinked — not
-earning its own area yet," and deferred it. 0080 fixes the *area-inclusion* side
+earning its own area yet," and deferred it. 0080 fixes the _area-inclusion_ side
 of that failure: a germane constituent is now modeled by default and a thin one
 surfaces as a ratable gap rather than a deferral. But it leaves the concern on the
 **constituent** axis, where it is measured by the substance of one steering
@@ -45,10 +45,10 @@ artifact.
 
 The harness-engineering literature frames the concern differently. The quality at
 stake is **agent legibility / steerability / verifiability of the whole project**
-— *"anything an agent can't see doesn't exist"* (OpenAI), *guides and sensors*
+— _"anything an agent can't see doesn't exist"_ (OpenAI), _guides and sensors_
 around the model (Böckeler) — a property that applies to every part of the
 codebase, not just the steering files. That is a quality lens, i.e. a **factor**,
-and a *model-wide* one: it recurs across constituents (the server, the schema, the
+and a _model-wide_ one: it recurs across constituents (the server, the schema, the
 tests, the docs are each more or less harnessable). Leading with the factor
 projection puts the concern where the guide's own rules say it belongs (a concern
 projects as factor / constituent / audience; name the projection meant), and makes

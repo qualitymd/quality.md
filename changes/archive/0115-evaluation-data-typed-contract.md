@@ -83,13 +83,13 @@ Covered:
 - improve the `/quality` skill's payload-discovery procedure to use
   `data schema` (and the now-populated `data example`) as the authoritative source
   of payload shape, and reframe `data set --dry-run` as validation of an authored
-  payload rather than the loop used to *sniff* shape — updating both the durable
+  payload rather than the loop used to _sniff_ shape — updating both the durable
   skill spec's discovery requirement and the runtime skill resources.
 
 Deferred / non-goals:
 
 - no change to the v2 wire format: `schemaVersion` stays `1` and a currently
-  *valid* payload's on-disk JSON is byte-unchanged — only acceptance is tightened;
+  _valid_ payload's on-disk JSON is byte-unchanged — only acceptance is tightened;
 - no change to the set of accepted kinds, the protocol order, or the routine
   prompt contracts;
 - no retroactive rewrite of already-persisted data: existing files are only
@@ -108,8 +108,7 @@ data kinds, and the `data` command surface across `internal/`, `cmd/`, `specs/`,
 ### Code
 
 - [ ] [`internal/evaluation/data.go`](../../internal/evaluation/data.go) —
-      replace `map[string]any` decode + the per-kind `validateDataPayload` switch
-      + the empty-array example builders with typed decode and registry dispatch.
+      replace `map[string]any` decode + the per-kind `validateDataPayload` switch + the empty-array example builders with typed decode and registry dispatch.
 - [ ] New package (e.g. `internal/evaluation/datakind/`) — typed per-kind
       definitions, shared sub-shapes, ID value types, enums, the kind registry,
       and `Validate(spec)`; plus a `gen/` generator behind `//go:generate`,
@@ -143,8 +142,7 @@ data kinds, and the `data` command surface across `internal/`, `cmd/`, `specs/`,
       model-binding, dry-run parity); document `data schema` and `data verify`;
       tie `data example` to the schema.
 - [ ] [`specs/evaluation-v2/records/payload-kinds.md`](../../specs/evaluation-v2/records/payload-kinds.md)
-      — "the CLI **MUST** validate each accepted kind" becomes structural + typed
-      + model-bound, from one source of truth.
+      — "the CLI **MUST** validate each accepted kind" becomes structural + typed + model-bound, from one source of truth.
 - [ ] [`specs/evaluation-v2/records/json-conventions.md`](../../specs/evaluation-v2/records/json-conventions.md)
       — note that persisted identity fields are resolved against the run's model
       snapshot, and that unknown fields are rejected.

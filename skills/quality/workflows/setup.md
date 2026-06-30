@@ -225,12 +225,12 @@ point to missed agent-accessible evidence for. These discovery inputs do double
 duty: they capture context the model needs, and they teach the user the
 dimensions a quality model spans.
 
-Setup optimizes for *teaching* the user those dimensions over minimizing
+Setup optimizes for _teaching_ the user those dimensions over minimizing
 interaction round-trips. Setup runs roughly once per project, so spending the
 interaction to make each dimension legible — and to leave the user knowing why
 each answer shapes the model — is worth more than saving round-trips. Ask every
 one of questions 1-5 on every run, including ones whose inferred default is
-high-confidence: high confidence is a reason to *recommend* a default firmly,
+high-confidence: high confidence is a reason to _recommend_ a default firmly,
 never to hide the question. Present the human context dimensions from questions
 6-9 every run as a checkpoint — never drop or silently default them away to fit
 an interaction surface — and do not optimize the teaching back out to save turns.
@@ -609,7 +609,7 @@ frontmatter model:
   Individual Factors should be consequential, then refined until they are
   bounded, operational, traceable, and neutral. Use the reviewed depth labels to
   decide where starter Requirements should be light, normal, or deep.
-- When the root is composite, enumerate the constituent *kinds* the domain
+- When the root is composite, enumerate the constituent _kinds_ the domain
   implies — not only the components that already have folders in the repository.
   Walk the stewardship concerns (discover, define, realize, verify, enable,
   operate, maintain; and the protective pair secure and safeguard) and the
@@ -650,7 +650,7 @@ frontmatter model:
   the checked-in steering and owned-control artifacts, while Agent
   Harnessability rates the broader equipping capability.
 - When naming the model in any recap or summary, name factors as Factors (or
-  model-wide factors); the stewardship concerns are the *source* factors trace to,
+  model-wide factors); the stewardship concerns are the _source_ factors trace to,
   not a kind of factor. Do not call them "stewardship factors" or "stewardship
   lenses" — keep the motivation-layer vocabulary from modifying a taxonomy noun.
 - Requirements are small, concrete, and assessable from agent-accessible
@@ -736,7 +736,7 @@ log from another run. Updating the current run's file in place is allowed.
 `.quality/logs/` is the flat workflow-log home and is distinct from the quality
 changelog's `.quality/changelog/`, which setup still does not write.
 
-The log records the *experience* of running setup, not model content. Do not
+The log records the _experience_ of running setup, not model content. Do not
 restate `QUALITY.md` body material (Overview, Scope, Needs, Risks, Unknowns) or
 its authoring rationale here.
 

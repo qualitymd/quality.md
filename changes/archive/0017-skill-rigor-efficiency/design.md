@@ -10,14 +10,14 @@ timestamp: 2026-06-17T00:00:00Z
 
 How the [Skill rigor and efficiency](../0017-skill-rigor-efficiency.md) change is
 built — the technical approach behind its [functional spec](spec.md). The spec
-says *what* the evaluation behavior must hold; this doc says *how* the prompt
+says _what_ the evaluation behavior must hold; this doc says _how_ the prompt
 makes it so, and why that way.
 
 ## Context
 
 The only artifact this change edits is the prompt:
 [`skills/quality/SKILL.md`](../../../skills/quality/SKILL.md). There is no code,
-schema, or CLI surface to design — the work is entirely *prompt engineering* that
+schema, or CLI surface to design — the work is entirely _prompt engineering_ that
 turns five loosely stated process habits into observable, decidable rules an
 evaluation run can be audited against. The change is **independent of the CLI
 work** (0012–0016): every rule below holds against the current CLI and the
@@ -35,7 +35,7 @@ Two facts shape every decision:
   claim carries a cited command/locator in the assessment record, and a failed
   re-check blocks the headline. Rigor is enforced by what the artifacts must
   contain, not by trust in the model.
-- **The artifact contract is fixed.** This change sharpens *how* the existing
+- **The artifact contract is fixed.** This change sharpens _how_ the existing
   artifacts are produced; it adds no new files and changes no required layout or
   record fields. The evidence and locator requirements ride on fields the
   [assessment record](../../../skills/quality/SKILL.md#artifact-contract) already
@@ -62,7 +62,7 @@ so an auditor can read `plan.md` and decide whether the run obeyed it:
 | `deep`     | every in-scope requirement, full source | adversarially verify every rating-binding finding |
 
 The operative design decision is **recording, not just selecting**: the skill
-writes the chosen effort *and the concrete requirement set it produced* into
+writes the chosen effort _and the concrete requirement set it produced_ into
 `plan.md` during step 6 (the existing `Write … plan.md` step). Breadth becomes
 decidable from the artifact rather than asserted, which is what makes `quick`'s
 "hotspots only" auditable — the omitted requirements are visible by their absence
@@ -80,7 +80,7 @@ Two rules attach to the assess step (current step 7) and the record fields:
   performed (e.g. `{ "kind": "command", "ref": "qualitymd lint QUALITY.md" }`,
   `{ "kind": "search", "ref": "rg 'apiKey' -n" }`), alongside the existing
   `kind: source` file references. The prompt states the prohibition directly:
-  *do not assert code/CLI/tool behavior from memory.*
+  _do not assert code/CLI/tool behavior from memory._
 - **Pinned locators.** Every `finding.locator` must be a verifiable position — a
   `file:line` or an exact searchable string — not a recalled or approximate one.
   This is a tightening of the field's existing meaning, not a new field. "Exact
@@ -137,14 +137,14 @@ asks for compute-then-emit with batched independent writes. The design:
   parallel tool calls, the skill emits the assessment files in one parallel
   block; absent that, it still batches rather than interleaving a write between
   each judgment.
-- **Content-invariant.** Batching changes only *when and how many round trips*,
+- **Content-invariant.** Batching changes only _when and how many round trips_,
   never record content, field names, file names, or the required layout. The
   acceptance check is that a batched run and a serial run produce byte-identical
   artifact trees.
 
 This is a `SHOULD` for the compute-first ordering and a `MUST` for "not one
 serial write per round trip," matching the spec. No artifact contract change — it
-constrains the *emission* of the same files.
+constrains the _emission_ of the same files.
 
 ### 5. Recommendation actionability
 
@@ -170,7 +170,7 @@ At `deep` effort only, and only when the in-scope work justifies it, the skill
 may fan assessment out to subagents. The architecture is **orchestrator keeps
 judgment; workers gather evidence**:
 
-- **What fans out.** Per-requirement or per-target *assessment* — the
+- **What fans out.** Per-requirement or per-target _assessment_ — the
   evidence-gathering and per-requirement rating that is naturally parallel.
 - **What stays central.** All roll-up judgment — aggregate, factor, and headline
   ratings — stays with the orchestrating skill. A subagent never decides the

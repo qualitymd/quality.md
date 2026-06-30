@@ -30,7 +30,7 @@ and flag surface.
 
 Deferred:
 
-- A structured or JSON form of the specification *prose* — the rules in this
+- A structured or JSON form of the specification _prose_ — the rules in this
   document rendered as structured data. This is distinct from the structural
   `qualitymd schema` command (see [`schema`](schema.md)), which emits the
   companion frontmatter JSON Schema, not this prose.

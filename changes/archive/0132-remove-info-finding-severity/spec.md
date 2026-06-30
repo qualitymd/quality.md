@@ -10,7 +10,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Remove info finding severity](../0132-remove-info-finding-severity.md) change
-case. This spec states *what* the change must do.
+case. This spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119.

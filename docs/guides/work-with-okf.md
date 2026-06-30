@@ -10,7 +10,7 @@ timestamp: 2026-06-16T00:00:00Z
 
 Some of our docs — notably the [`specs/`](../../specs/index.md) bundle — are
 authored as **OKF** (Open Knowledge Format): a directory of Markdown files with
-YAML frontmatter, where each file is a self-describing *concept*. This guide
+YAML frontmatter, where each file is a self-describing _concept_. This guide
 covers the essentials for reading and editing those files. For the full format,
 see the [OKF specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md).
 
@@ -85,7 +85,7 @@ types:
 ```
 
 This keeps each bundle self-describing: its vocabulary travels with it. The list
-is a *recommendation, not enforcement* — consumers still tolerate unknown types.
+is a _recommendation, not enforcement_ — consumers still tolerate unknown types.
 Reuse a listed type when it fits, or coin a new descriptive one and add it to
 `schema.md` in the same change.
 

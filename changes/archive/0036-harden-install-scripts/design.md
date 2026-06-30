@@ -30,7 +30,7 @@ archive's SHA-256 from the first available of `sha256sum`, `shasum -a 256`,
 `openssl` output is normalized). If `checksums.txt` was fetched but no tool is
 found, or the archive is absent from it, print a `warning: …` to stderr and
 proceed; a positive mismatch still aborts. Verification stays best-effort by
-design (the script is fetched over TLS from the same origin), but the *skip*
+design (the script is fetched over TLS from the same origin), but the _skip_
 becomes visible instead of silent.
 
 ### TLS 1.2 (`install.ps1`)
@@ -63,8 +63,8 @@ line is the Deno-style floor; auto-editing dotfiles is out of scope.
 
 ### Non-interactive semantics (`install.sh` / `install.ps1`)
 
-`--non-interactive` / `--yes` / `QUALITYMD_NO_INPUT=1` now gate the *human
-guidance*, not a phantom prompt: interactive runs print the PATH guidance and a
+`--non-interactive` / `--yes` / `QUALITYMD_NO_INPUT=1` now gate the _human
+guidance_, not a phantom prompt: interactive runs print the PATH guidance and a
 friendly summary; non-interactive runs print a single completion line and skip
 the guidance. The flags stay accepted (the install-smoke workflow and documented
 CI forms pass them) and the install/PATH actions are identical either way — only
@@ -78,7 +78,7 @@ Add `golang.org/x/mod/semver` (already in the module graph) and rewrite
 `semver.Compare`/`semver.IsValid` expect, and report an update only when
 `semver.Compare(latest, current) > 0`. When either side isn't valid SemVer, fall
 back to the prior string-inequality behavior so unusual version strings still
-surface *a* difference. Development builds (`dev…`) never report an update, as
+surface _a_ difference. Development builds (`dev…`) never report an update, as
 today.
 
 ### Homebrew cask — keep, document
@@ -95,7 +95,7 @@ pattern. Mirror the rationale in `CONTRIBUTING.md` and `cut-a-release.md`.
   v3), Homebrew steers pre-built binaries to casks, and `brew audit --new`
   rejects binary-only formulae. It would move onto a deprecated path to satisfy a
   pre-2024 rule of thumb. The genuinely-more-idiomatic option, a `homebrew-core`
-  *source* formula (`brew install qualitymd`), is notability-gated and
+  _source_ formula (`brew install qualitymd`), is notability-gated and
   externally maintained — recorded as a non-goal, not done here.
 - **Auto-edit Unix shell profiles** (Bun-style). Rejected for now: requires TTY
   consent or a profile-detection heuristic that misfires across shells; printing

@@ -61,7 +61,7 @@ points at it. No skill changes happen in this spec-only change.
   it are the per-command specs that belong under `cli/`.
 - **Define it as an OKF bundle / schema for the run folder.** Rejected, and the
   spec says so explicitly: a run's records are raw runtime outputs, not OKF
-  concepts. The enduring *spec* is an OKF concept; the *records it governs* are
+  concepts. The enduring _spec_ is an OKF concept; the _records it governs_ are
   not.
 - **Encode the contract as Go types now.** Rejected for this change — that is
   implementation, which the spec-only scope and the lifecycle defer to 0013–0015.

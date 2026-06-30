@@ -32,7 +32,7 @@ not new machinery:
    the literal reads clearest where it is.
 2. Move the existing trail-writer calls (`writeEvaluationAreaTrail`, and for
    Factor `writeEvaluationFactorTrail`, for Requirement
-   `writeEvaluationRequirementFactorsLine`) to run *after* the title line,
+   `writeEvaluationRequirementFactorsLine`) to run _after_ the title line,
    unchanged.
 3. Delete the `Path:` (Area, Factor) and `Name:` (Requirement) lines.
 

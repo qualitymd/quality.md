@@ -13,7 +13,7 @@ timestamp: 2026-06-23T00:00:00Z
 A first field run of `/quality setup` (recorded in an external setup-observations
 report) completed end to end but logged four recurring frictions. None block,
 but each costs every run, and one can mislead routing. The
-[functional spec](spec.md) settles *what* must change; this doc settles *how*,
+[functional spec](spec.md) settles _what_ must change; this doc settles _how_,
 and records the alternatives weighed in discussion.
 
 The four items, and the durable surfaces they touch:
@@ -28,8 +28,7 @@ The four items, and the durable surfaces they touch:
 
 ### Discovery presentation — three tiers keyed to agent capability
 
-Replace the current "compact prompt or short sequence" guidance (introduced by
-0064) with one agent-agnostic rule. The agent picks a tier from its *own*
+Replace the current "compact prompt or short sequence" guidance (introduced by 0064) with one agent-agnostic rule. The agent picks a tier from its _own_
 interaction capabilities, so no specific tool is ever named:
 
 - **Tier 1 — structured question tool available.** Page all ten questions
@@ -61,7 +60,7 @@ costs a no-op read. One line removes a guaranteed round-trip.
 ### Maturity vs lifecycle readiness
 
 The close step today classifies model "readiness" as
-`starter | immature | ready to evaluate`, while CLI `status` emits a *lifecycle*
+`starter | immature | ready to evaluate`, while CLI `status` emits a _lifecycle_
 `readiness` (`ready-to-evaluate` = valid, no runs yet). Same word, different
 axes. The top-10 guide compounds this by listing maturity labels and lifecycle
 labels (`missing`, `invalid`, `has evaluation history`, `needs reconciliation`)
@@ -84,7 +83,7 @@ Resolution:
 
 0064 deferred this rename to "a later design"; this is that design. Rename the
 folder in both `skills/quality/` and `specs/skills/quality-skill/`, and update
-every *live* path reference (`SKILL.md`, `quality-skill.md`, `index.md`,
+every _live_ path reference (`SKILL.md`, `quality-skill.md`, `index.md`,
 `evaluation.md`, and intra-folder links). Align surrounding text to "workflow"
 terminology; "mode" survives only where it names internal dispatch state, not the
 files.
@@ -105,7 +104,7 @@ history to keep links live) violates the append-only contract.
   default, with grouping not needed once tiers are capability-keyed.
 - **Drop the questions the agent is highly confident about.** Rejected: the
   questions serve a pedagogical purpose and capture critical context; confidence
-  in a default is a reason to *recommend* it, not to hide the question.
+  in a default is a reason to _recommend_ it, not to hide the question.
 - **Keep "readiness" and just annotate the difference.** Rejected: one word for
   two axes is the root confusion; a distinct term is cleaner than a footnote.
 - **Rewrite `modes/` links in historical logs so nothing breaks.** Rejected:

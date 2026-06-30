@@ -54,13 +54,13 @@ Kind of structured Evaluation payload stored for a run.
 | ------------------------------- | ----------------------------- | ------------------------------------------------- |
 | 📋 Evaluation Manifest          | `EvaluationManifest`          | Evaluation metadata, scope, and run context.      |
 | 🧭 Evaluation Frame             | `EvaluationFrame`             | Top-level evaluation planning frame.              |
-| 🗺️ Area Evaluation Frame         | `AreaEvaluationFrame`         | Planned evaluation frame for an Area.             |
+| 🗺️ Area Evaluation Frame        | `AreaEvaluationFrame`         | Planned evaluation frame for an Area.             |
 | 📋 Requirement Evaluation Frame | `RequirementEvaluationFrame`  | Planned assessment frame for a Requirement.       |
 | 🔎 Requirement Assessment       | `RequirementAssessmentResult` | Judgment evidence and findings for a Requirement. |
-| 🎚️ Requirement Rating            | `RequirementRatingResult`     | Rating assigned to a Requirement.                 |
+| 🎚️ Requirement Rating           | `RequirementRatingResult`     | Rating assigned to a Requirement.                 |
 | 🧩 Factor Analysis Frame        | `FactorAnalysisFrame`         | Planned analysis frame for a Factor.              |
 | 📊 Factor Analysis              | `FactorAnalysisResult`        | Synthesized judgment for a Factor.                |
-| 🏗️ Area Analysis Frame           | `AreaAnalysisFrame`           | Planned analysis frame for an Area.               |
+| 🏗️ Area Analysis Frame          | `AreaAnalysisFrame`           | Planned analysis frame for an Area.               |
 | 📈 Area Analysis                | `AreaAnalysisResult`          | Synthesized judgment for an Area.                 |
 | 🔝 Finding Ranking              | `FindingRankingResult`        | Ordered finding priority set.                     |
 | 💡 Recommendation               | `RecommendationResult`        | Proposed improvement action.                      |
@@ -129,9 +129,9 @@ Classification of what a finding contributes to the Evaluation judgment.
 | Label       | Value      | Description                                                     |
 | ----------- | ---------- | --------------------------------------------------------------- |
 | 🚩 Gap      | `gap`      | Current shortfall against the quality bar.                      |
-| ⚠️ Risk      | `risk`     | Plausible future or conditional quality concern.                |
+| ⚠️ Risk     | `risk`     | Plausible future or conditional quality concern.                |
 | 💪 Strength | `strength` | Evidence of quality meeting or exceeding expectations.          |
-| ℹ️ Note      | `note`     | Useful observation that is not itself a gap, risk, or strength. |
+| ℹ️ Note     | `note`     | Useful observation that is not itself a gap, risk, or strength. |
 
 ## Quality rating
 
@@ -189,7 +189,7 @@ Kind of generated Markdown report artifact.
 | Label              | Value             | Description                   |
 | ------------------ | ----------------- | ----------------------------- |
 | 📄 Run             | `run`             | Run entrypoint report.        |
-| 🗺️ Area             | `area`            | Area report.                  |
+| 🗺️ Area            | `area`            | Area report.                  |
 | 🧩 Factor          | `factor`          | Factor report.                |
 | 📋 Requirement     | `requirement`     | Requirement report.           |
 | 🔝 Findings        | `findings`        | Findings index report.        |
@@ -210,6 +210,6 @@ reportability.
 | Label                         | Value                        | Description                                            |
 | ----------------------------- | ---------------------------- | ------------------------------------------------------ |
 | 📭 Missing Evaluation Data    | `missing-evaluation-data`    | Required payload is absent.                            |
-| ⚠️ Malformed Evaluation Data   | `malformed-evaluation-data`  | Payload cannot be parsed or has the wrong structure.   |
+| ⚠️ Malformed Evaluation Data  | `malformed-evaluation-data`  | Payload cannot be parsed or has the wrong structure.   |
 | 🚫 Unreadable Evaluation Data | `unreadable-evaluation-data` | Payload exists but cannot be read.                     |
 | 🧩 Incomplete Evaluation Data | `incomplete-evaluation-data` | Payload is readable but lacks required usable content. |

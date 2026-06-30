@@ -11,7 +11,7 @@ timestamp: 2026-06-22T00:00:00Z
 How the [functional spec](spec.md) is delivered: how the schema artifact is
 generated from `internal/schema`, bundled into the binary, and emitted by
 `qualitymd schema`. Behavior and requirements live in the spec; this doc records
-the *how* and the *why*.
+the _how_ and the _why_.
 
 ## Context
 
@@ -48,7 +48,7 @@ dependency — a one-line `go.mod` change, no new download. It ships a `json`
 lexer, terminal formatters (`terminal16m` truecolor, `terminal256`), and a style
 registry.
 
-Two reasons this is byte-safe: chroma only injects ANSI escapes *around* tokens,
+Two reasons this is byte-safe: chroma only injects ANSI escapes _around_ tokens,
 so the highlighted form differs from the plain form only by escape codes —
 indentation and content are untouched — and highlighting runs **only** on the
 TTY branch, never on the bytes a redirect captures.
@@ -118,7 +118,7 @@ convention.
 Generation is a **`go:generate` tool that writes the committed root file**
 (decided over runtime generation): `qualitymd schema` emits the embedded bytes,
 exactly as `spec` emits the embedded `SPECIFICATION.md`, so the embedded file
-*is* the golden file. A test re-runs `GenerateJSON()` and fails if its output
+_is_ the golden file. A test re-runs `GenerateJSON()` and fails if its output
 differs from the committed/embedded file, so the bundled artifact can never
 drift from `internal/schema`. This keeps schema changes visible as a reviewable
 diff in the committed file — the win that runtime generation would forfeit for a
@@ -127,7 +127,7 @@ guarantee the test already provides.
 ## Alternatives
 
 **Highlighting via a glamour code fence (rejected).** Wrapping the JSON in a
-`` ```json `` fence and rendering through the glamour `TermRenderer` `spec` already
+` ```json ` fence and rendering through the glamour `TermRenderer` `spec` already
 uses needs zero new deps and looks identical to `qualitymd spec`. Rejected
 because glamour reflows content — `WithWordWrap(100)` wraps long lines and it
 adds code-block padding/background — so the rendered view stops being a faithful

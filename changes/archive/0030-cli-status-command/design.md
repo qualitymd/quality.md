@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 Design behind the
 [CLI status snapshot command](../0030-cli-status-command.md) change and its
-[functional spec](spec.md). The spec fixes *what* the snapshot must report; this
+[functional spec](spec.md). The spec fixes _what_ the snapshot must report; this
 doc covers the intended implementation approach.
 
 ## Context

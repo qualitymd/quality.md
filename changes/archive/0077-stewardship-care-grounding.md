@@ -12,8 +12,8 @@ timestamp: 2026-06-24T00:00:00Z
 A **Change Case** that refines the stewardship-concern generator
 [0076](0076-domain-constituent-kinds.md) introduced, using the phenomenology of
 care set out in two essays by B. Scot Rousse and David Spivak —
-[*Notes on care*](https://withoutwhy.substack.com/p/notes-on-care-with-david-spivak-a)
-and [*Clarifications of care*](https://withoutwhy.substack.com/p/clarifications-of-care).
+[_Notes on care_](https://withoutwhy.substack.com/p/notes-on-care-with-david-spivak-a)
+and [_Clarifications of care_](https://withoutwhy.substack.com/p/clarifications-of-care).
 0076 named the generator and shipped it, framed as "caring for any entity
 carries a recurring set of concerns, and each tends to leave an authored,
 inspectable artifact that is a candidate constituent." The care essays sharpen
@@ -39,23 +39,23 @@ constituent." Read literally that is artifact-first — it invites enumerating
 residue (specs, tests, docs) and treating the presence of a folder as the
 presence of care. The care essays name care as an activity — "tending and
 attending to what matters", "doing what is required, well" — whose artifacts are
-its *trace*, not its substance. That distinction, and four others the essays
+its _trace_, not its substance. That distinction, and four others the essays
 draw, tighten language 0076 already half-encodes:
 
 - **Artifact as evidence, not as care.** A thin or missing artifact does not
-  prove a concern unmet; a thick one does not prove it met *well*. 0076 already
+  prove a concern unmet; a thick one does not prove it met _well_. 0076 already
   carries the first half (an empty area with a missing-anchor finding); the
-  second half — that presence is the area question and *done-well* is the factor
+  second half — that presence is the area question and _done-well_ is the factor
   question — is unstated.
 - **The claim comes from the entity, not the list.** "To experience something as
   required is to find oneself addressed. The situation makes a claim." The
   legitimate source of a constituent is a Need or Risk the entity presents; the
-  nine concerns are a device for *hearing* that claim. 0076's "prompt, not a
+  nine concerns are a device for _hearing_ that claim. 0076's "prompt, not a
   quota" guardrail asserts this; the care framing supplies its principle.
 - **The protective band is care under vulnerability.** The essays' caregiving
   mode — asymmetric responsibility toward a party that can be harmed and cannot
   fully protect itself — is exactly what `secure`/`safeguard` answer to. This
-  grounds *why* the band cross-cuts the lifecycle rather than sitting inside it:
+  grounds _why_ the band cross-cuts the lifecycle rather than sitting inside it:
   it tracks who is exposed, not which phase the work is in.
 - **"Steward" is the caregiving word.** A steward cares for what is held in
   trust, answerable to stakeholders and the future, not as private property.
@@ -75,12 +75,12 @@ Covered:
 
 - Reframe the opening of the authoring-guide subsection "Cover the domain's
   constituent kinds":
-  - define *steward* as caring for something held in trust, answerable to its
+  - define _steward_ as caring for something held in trust, answerable to its
     stakeholders and its future;
-  - state that the constituent kinds are a prompt for what *this* entity asks to
+  - state that the constituent kinds are a prompt for what _this_ entity asks to
     be cared for, with the claim that earns one originating in a Need or Risk it
     presents, never in the list itself;
-  - present each concern as an activity of tending whose artifact is its *trace*,
+  - present each concern as an activity of tending whose artifact is its _trace_,
     read as evidence rather than proof of quality.
 - Present the **lifecycle** band as recurring rather than a once-through
   pipeline: the order is a typical first pass, the concerns are standing, and
@@ -90,8 +90,8 @@ Covered:
   not which phase the work is in — preserving the 0076 direction-of-harm
   distinction.
 - Add a "Do" bullet separating the constituent question (whether a tending leaves
-  an owned, inspectable artifact — an *area*) from the stewardship-quality
-  question (whether it is done *well* — a *factor*).
+  an owned, inspectable artifact — an _area_) from the stewardship-quality
+  question (whether it is done _well_ — a _factor_).
 - Align the durable authoring guide spec with matching requirements and promote
   the rationale.
 - Record the guide-spec update in the guides log and add a CHANGELOG note.
@@ -107,7 +107,7 @@ Deferred / non-goals:
   the lens-like shape of the three-projections rule is noted in the design doc,
   not promoted into the guide as formalism.
 - No change to the setup workflow or the Top 10 checks: their use of the
-  stewardship concerns is about constituent *presence and accounting*, which
+  stewardship concerns is about constituent _presence and accounting_, which
   these refinements do not alter (see Affected artifacts).
 - No change to evaluation, reporting, or CLI behavior.
 

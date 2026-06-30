@@ -24,37 +24,37 @@ The candidate factor families and the self-verifiability sharpening are grounded
 current agent-harness, context-engineering, and trace-driven improvement sources
 (fetched and verified 2026-06-24):
 
-- Martin Fowler / Birgitta Böckeler, *Harness Engineering* — **Agent = Model +
+- Martin Fowler / Birgitta Böckeler, _Harness Engineering_ — **Agent = Model +
   Harness**; the harness is everything except the model. It splits into **guides**
-  (feedforward controls that steer *before* action: conventions, skills, how-tos,
+  (feedforward controls that steer _before_ action: conventions, skills, how-tos,
   AGENTS.md, bootstrap scripts, language servers) and **sensors** (feedback controls
-  that observe *after* action: tests, linters, type checkers, review agents).
+  that observe _after_ action: tests, linters, type checkers, review agents).
   Controls are **computational** (deterministic, fast) or **inferential** (AI,
   semantic, slower). The article names the system property **"harnessability"** —
   how amenable a system is to control — and stresses the **steering loop** (humans
   iterate the harness when issues recur) and **coherence** (guides and sensors must
   not contradict).
-- Martin Fowler / Birgitta Böckeler, *Sensors for Coding Agents* — a *good* sensor
+- Martin Fowler / Birgitta Böckeler, _Sensors for Coding Agents_ — a _good_ sensor
   is grounded in concrete evidence, actionable (custom messages carrying
   self-correction guidance and the rule's rationale), context-aware, **suppressible**
   with visible reviewable exceptions, has **flexible thresholds** (not binary), and
   gives fast feedback; computational and inferential sensors complement each other.
-- LangChain, *The Anatomy of an Agent Harness* — the harness is state/storage,
+- LangChain, _The Anatomy of an Agent Harness_ — the harness is state/storage,
   execution environment (sandboxes, allow-listing, network isolation), the
   tool/capability layer, control/orchestration, **context management** (compaction,
   offloading, progressive disclosure against "context rot"), verification/feedback,
   knowledge/learning, and middleware/hooks.
-- Anthropic, *Effective harnesses for long-running agents* and *Harness design for
-  long-running application development* — long-running work fails when agents try to
+- Anthropic, _Effective harnesses for long-running agents_ and _Harness design for
+  long-running application development_ — long-running work fails when agents try to
   do too much at once, lose coherent state across context windows, or declare victory
   too early; effective harnesses decompose work, leave structured progress and
   handoff artifacts, preserve enough state for the next session, and use evaluator
   loops for closure.
-- Anthropic, *Effective context engineering for AI agents* and *Equipping agents for
-  the real world with Agent Skills* — context is a scarce, task-shaped resource;
+- Anthropic, _Effective context engineering for AI agents_ and _Equipping agents for
+  the real world with Agent Skills_ — context is a scarce, task-shaped resource;
   progressive disclosure, just-in-time retrieval, skill metadata, split reference
   files, and observed agent use are key to making steering materials scalable.
-- OpenAI, *Harness engineering: leveraging Codex in an agent-first world* — a short
+- OpenAI, _Harness engineering: leveraging Codex in an agent-first world_ — a short
   `AGENTS.md` acts as a table of contents to deeper sources of truth; agent struggles
   become signals for missing tools, guardrails, or documentation; and agents produce
   code, tests, CI, docs, evaluation harnesses, review responses, and scripts when the
@@ -62,8 +62,8 @@ current agent-harness, context-engineering, and trace-driven improvement sources
 - OpenAI Agents SDK guardrails documentation — guardrails attach at input, output,
   and tool boundaries, supporting a domain-neutral refinement of
   `enforcement-of-standards`.
-- LangChain, *Improving Deep Agents with harness engineering*, and the AHE paper
-  (*Agentic Harness Engineering*) — traces and component-level observability make
+- LangChain, _Improving Deep Agents with harness engineering_, and the AHE paper
+  (_Agentic Harness Engineering_) — traces and component-level observability make
   harness improvement evidence-driven; the editable harness components include
   prompts, tools, memory, and middleware, and component interactions can create
   regressions if optimized blindly.
@@ -149,7 +149,7 @@ otherwise it risks double-counting the evidence surface for those concerns.
 Adding `continuity` ripples through the guide's existing count language, which the
 implementation reconciles in the same pass: the example umbrella `description` gains
 the state-preservation/resume capability; the "improve the harness over time"
-avoid-note becomes the *eighth* candidate beside the seven; and the legacy-recognition
+avoid-note becomes the _eighth_ candidate beside the seven; and the legacy-recognition
 notes (authoring guide and Top 10 check 8) keep reading a pre-existing six-sub-factor
 `harnessability` as prior coverage while active authoring adds `continuity`.
 
@@ -158,7 +158,7 @@ notes (authoring guide and Top 10 check 8) keep reading a pre-existing six-sub-f
 Extend [Carry the recurring use-context constituents] so the harness bullet reaches
 the same concreteness as the self-check bullet beside it. Add:
 
-- A one-line framing: the harness area is an *enable* + partly *normative*
+- A one-line framing: the harness area is an _enable_ + partly _normative_
   steering-materials constituent — the checked-in guide layer of the broader
   harness — judged as an artifact (is the map accurate, current, coherent, selective,
   discoverable, and maintainable). Runtime harness code, sandboxes, tools, hooks, or
@@ -171,8 +171,8 @@ the same concreteness as the self-check bullet beside it. Add:
   never a roster — the same hedge the guide already applies to every factor list.
 - Domain-agnostic requirement shapes: a stable minimal entry point orients an agent
   and links deeper without exhausting context; recorded conventions match actual
-  practice; steering materials point to *how work is verified* and *what is
-  off-limits*; no two steering documents contradict each other; skill names and
+  practice; steering materials point to _how work is verified_ and _what is
+  off-limits_; no two steering documents contradict each other; skill names and
   descriptions trigger the right guidance; executable or third-party guidance is
   trusted only through reviewable provenance; representative traces or feedback logs
   show whether the guidance helps in real work; steering materials are updated when
@@ -185,7 +185,7 @@ primary-subject constituent, while still illustrative rather than prescriptive.
 
 State once in the doctrine guide and reference it from the authoring template
 (say-it-once). The guardrail: harness factors/requirements are authored agnostic to
-the *served* domain; where a concrete mechanism is shown (lint/type-check/CI), frame
+the _served_ domain; where a concrete mechanism is shown (lint/type-check/CI), frame
 it as one domain's instance of "how this project verifies work / enforces standards
 / bounds action," which resolves to a link-checker or build (docs), a validation
 suite (data), or a review checklist (a judgment domain).
@@ -193,7 +193,7 @@ suite (data), or a review checklist (a judgment domain).
 ### 4. Self-verifiability sharpening (authoring guide)
 
 In the `self-verifiability` sub-factor's example requirements, name the good-sensor
-bar from *Sensors for Coding Agents*: fast; actionable (output carries remediation
+bar from _Sensors for Coding Agents_: fast; actionable (output carries remediation
 guidance and the rule's rationale); grounded in concrete evidence; context-aware;
 and suppressible through visible, reviewable exceptions rather than binary — with
 deterministic (computational) signals distinguished from inferential (LLM-judge)
@@ -207,7 +207,7 @@ side — the sensor surfaces the escape, the gate constrains it.
 
 Add a short subsection to
 [Modeling quality across domains](../../../docs/guides/model-quality-across-domains.md),
-adjacent to *Agentic use context*, that refines the existing "domain agnostic is not
+adjacent to _Agentic use context_, that refines the existing "domain agnostic is not
 context neutral" line into an actionable rule: explicit, opinionated modeling
 guidance is licensed for **use-context constituents** (the agent harness and the
 QUALITY.md self-check), never for a **modeled domain**; and even for a use-context
@@ -229,10 +229,10 @@ requirements that assume a software toolchain when the served domain is not soft
 
 - **Treat the agent harness as a modeled domain with a catalog entry** in the
   doctrine guide's quality-context catalog (beside documentation, data, service).
-  Rejected: the catalog is for *modeled* domains, and giving the harness a catalog
-  slot would imply the harness is a domain QUALITY.md is *about*, privileging the use
+  Rejected: the catalog is for _modeled_ domains, and giving the harness a catalog
+  slot would imply the harness is a domain QUALITY.md is _about_, privileging the use
   context as a modeled domain — the precise anti-pattern the guide forbids. The
-  harness belongs in the use-context register, so it is licensed as a *constituent*,
+  harness belongs in the use-context register, so it is licensed as a _constituent_,
   not catalogued as a domain.
 - **Keep the original six sub-factors unchanged** and only sharpen
   `self-verifiability`. Rejected after fresh research: long-running-agent work makes

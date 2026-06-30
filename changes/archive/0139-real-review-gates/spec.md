@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 # Real Review Gates - functional spec
 
 Companion to the [Real Review Gates](../0139-real-review-gates.md) change case.
-This spec states *what* the change must do.
+This spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

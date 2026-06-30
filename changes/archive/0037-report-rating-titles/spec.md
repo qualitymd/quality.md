@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 Companion to the
 [Render display titles in evaluation reports](../0037-report-rating-titles.md)
-change case. This spec states *what* the report renderers must display. It defers
+change case. This spec states _what_ the report renderers must display. It defers
 the broad `build-report` contract to
 [`specs/cli/evaluation-build-report.md`](../../../specs/cli/evaluation-build-report.md)
 and the rating-scale schema to [`SPECIFICATION.md`](../../../SPECIFICATION.md).

@@ -9,7 +9,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Quality skill UX action clarity
 
-This parent concept captures the *why* and *status*; the detail lives in its
+This parent concept captures the _why_ and _status_; the detail lives in its
 child:
 
 - [Functional spec](0101-quality-skill-ux-action-clarity/spec.md) — what the

@@ -23,7 +23,7 @@ reference object: an `AreaAnalysisResult` lists the `FactorAnalysisResult` and
 child `AreaAnalysisResult` inputs that drove it, the generated
 `EvaluationOutputResult` points back at the area outputs, and rating drivers cite
 the assessments and ratings behind them. The `kind` member of those references
-names the *type of the referenced payload*.
+names the _type of the referenced payload_.
 
 The data contract already constrains the closed vocabularies it cares about —
 `finding.type`, `severity`, `confidence`, and `status` are all enum-validated, so
@@ -36,11 +36,11 @@ validation and persists. Identity fields in the same reference are already
 resolved against the model snapshot and rejected when absent; `kind` is the one
 part of a reference the CLI does not check against its own closed set.
 
-Each reference shape's `kind` names a *different* closed vocabulary. A routine
-reference (`*Ref` / `inputRefs[]`) `kind` names the *type of the referenced
-payload* — an `AreaAnalysisResult` lists the `FactorAnalysisResult` and child
+Each reference shape's `kind` names a _different_ closed vocabulary. A routine
+reference (`*Ref` / `inputRefs[]`) `kind` names the _type of the referenced
+payload_ — an `AreaAnalysisResult` lists the `FactorAnalysisResult` and child
 `AreaAnalysisResult` inputs that drove it — so its vocabulary is the supported
-payload kinds. A report reference `kind` names a *report kind* (`area`, `factor`,
+payload kinds. A report reference `kind` names a _report kind_ (`area`, `factor`,
 `requirement`), the scope of the generated report it points at. Both are closed
 sets the CLI already owns as typed constants; neither was pinned in the contract.
 
@@ -79,8 +79,8 @@ Deferred / non-goals:
 
 - No change to the top-level payload `kind` field. It is already pinned by the
   `evaluation data set <kind>` argument path and the agent-writable
-  `acceptedDataKinds` gate; this change touches only the `kind` *inside reference
-  objects*.
+  `acceptedDataKinds` gate; this change touches only the `kind` _inside reference
+  objects_.
 - No change to reference `subject` identity resolution or to the `selector`
   field. `selector` is also a bounded string and a candidate for the same
   treatment, but its full vocabulary needs confirming first; it is tracked
@@ -151,6 +151,6 @@ In-Review.
 sources (`supportedDataKinds` for routine references, `reportKinds` for report
 references); the committed schema is regenerated; a routine-reference rejection
 test is in place; `json-conventions.md` records the rule. During implementation
-the design's premise that *both* reference `kind` fields name payload kinds was
+the design's premise that _both_ reference `kind` fields name payload kinds was
 corrected: a report reference `kind` names a report kind, so it is constrained to
 the report-kind set instead. `mise run check` passes.

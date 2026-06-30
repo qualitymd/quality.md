@@ -60,7 +60,7 @@ parent, bundle index, and bundle log):
 - [x] [`specs/skills/quality-skill/examples/`](../../specs/skills/quality-skill/examples/)
       — refresh reference artifacts as needed for CLI-written record numbering and
       recommendation records.
-- [x] [`README.md`](../../README.md) — move `evaluation add-record` from *planned*
+- [x] [`README.md`](../../README.md) — move `evaluation add-record` from _planned_
       to built when it lands.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) — drive the
       evaluation loop through `evaluation add-record` rather than writing records

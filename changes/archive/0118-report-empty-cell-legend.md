@@ -27,17 +27,17 @@ several uncoordinated empty-value treatments — a blank cell (the default throu
 the descendant roll-up column, and parenthetical `(no …)` rows for empty
 sections — so the same "nothing here" reads differently in different places.
 
-The fix is one consistent, visible marker for an empty *cell* — the em dash
+The fix is one consistent, visible marker for an empty _cell_ — the em dash
 (`—`), already used for the roll-up column — plus a single static legend per
 report that says what it means. The em dash is chosen over a literal `N/A`
 because "not applicable" is usually the wrong claim (the value is most often
-simply *not recorded*); a neutral dash states absence without overclaiming. A
+simply _not recorded_); a neutral dash states absence without overclaiming. A
 static legend is chosen over per-cell asterisks because reports are written to
 disk and diffed: an asterisk anchored to the "first instance" migrates as data
 changes and there is no natural "first" cell in a Markdown table, whereas a
 fixed legend stays put across re-runs.
 
-This case touches only empty *scalar cells*. The not-assessed / not-rated /
+This case touches only empty _scalar cells_. The not-assessed / not-rated /
 not-analyzed / blocked **outcomes** are a different thing — an evaluation result
 the format requires be shown distinctly — and they keep their existing status
 labels untouched.
@@ -93,7 +93,7 @@ Deferred / non-goals:
 
 - [x] None - `SPECIFICATION.md` does not govern Evaluation generated report
       presentation (consistent with 0117). Its `not assessed` distinctness rule
-      concerns the rating *outcome*, which this case does not touch.
+      concerns the rating _outcome_, which this case does not touch.
       (Deliberate.)
 
 ### Durable specs

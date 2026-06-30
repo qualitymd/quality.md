@@ -12,7 +12,7 @@ timestamp: 2026-06-17T00:00:00Z
 `qualitymd` already runs on the Charm stack — [Cobra](https://github.com/spf13/cobra)
 for structure, [Fang](https://github.com/charmbracelet/fang) for the harness,
 [Glamour](https://github.com/charmbracelet/glamour) for `spec` — so help, errors,
-and the rendered specification are already styled. The *commands' own* human
+and the rendered specification are already styled. The _commands' own_ human
 output was not: `lint` and `init` printed flat monochrome text from
 `fmt.Fprintf`, help carried no examples, a long `spec` scrolled off-screen, and
 `--version` printed a bare `dev`. The styled harness and the unstyled command
@@ -26,7 +26,7 @@ path only. The detail lives in its children:
 
 ## Motivation
 
-The "moment of delight" the Charm tools are known for comes from *cohesion* —
+The "moment of delight" the Charm tools are known for comes from _cohesion_ —
 every surface sharing one palette and a consistent visual grammar. `qualitymd`
 had the harness half of that and not the command half. The fix is cheap because
 the stack is already present; the work is wiring a single brand palette through
@@ -78,7 +78,7 @@ Updated before this change reached **Done**:
 
 - [x] [`specs/cli.md`](../../specs/cli.md) — added the **Human output styling**
       and **Binary version** conventions, and narrowed the matching
-      *To be specified* entries.
+      _To be specified_ entries.
 - [x] [`specs/cli/spec.md`](../../specs/cli/spec.md) — added the optional paging
       behavior, riding the same terminal-detection rule as rendering.
 

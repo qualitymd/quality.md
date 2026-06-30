@@ -10,10 +10,10 @@ timestamp: 2026-06-18T00:00:00Z
 
 Incremental work on the repo is tracked in the
 [`changes/`](../../changes/index.md) OKF bundle. A **Change Case** is a formal
-unit of work: a parent concept that records *why*, *what state* it's in, and
-*which artifacts it touches* — code, specs, docs, the bundled skill — over a
-[functional spec](write-functional-specs.md) (the *what*) and an optional
-[design doc](write-design-docs.md) (the *how*). This guide covers creating one
+unit of work: a parent concept that records _why_, _what state_ it's in, and
+_which artifacts it touches_ — code, specs, docs, the bundled skill — over a
+[functional spec](write-functional-specs.md) (the _what_) and an optional
+[design doc](write-design-docs.md) (the _how_). This guide covers creating one
 and moving it through its full lifecycle to review and landing.
 
 Routine prompted edits do not require a Change Case. Use `changes/` only when
@@ -62,8 +62,8 @@ basis.
 
 ## Write the spec, then the design
 
-Write them in order — settle *what* the change case must do before working out
-*how*.
+Write them in order — settle _what_ the change case must do before working out
+_how_.
 The two stages line up with the `status` lifecycle below.
 
 1. **Functional spec first** (`spec.md`, `type: Functional Specification`), while
@@ -82,7 +82,7 @@ The two stages line up with the `status` lifecycle below.
    requirement would achieve the case's **motivation** — no more, no less. This
    is the validation question ("did we scope the right thing?") that the
    per-requirement verification path ("can we prove each one?") does not ask. Pin
-   down the *what* before moving on.
+   down the _what_ before moving on.
 2. **Design doc next** (`design.md`, `type: Design Doc`), once the spec is
    settled and the change case moves to **Design**. Follow
    [Writing design docs](write-design-docs.md): it answers the spec, so don't
@@ -96,9 +96,9 @@ durable artifacts alongside it: the enduring [`specs/`](../../specs/index.md)
 bundle, the repository-root [`SPECIFICATION.md`](../../SPECIFICATION.md), the
 [`README.md`](../../README.md), the [`docs/`](../index.md) guides, the bundled
 [`skills/`](../../skills/), and install/scaffold files. Its
-[functional spec](write-functional-specs.md) states the *delta* — what this unit
+[functional spec](write-functional-specs.md) states the _delta_ — what this unit
 of work must do — and is archived with the case once it lands; the durable
-artifacts hold the *cumulative* source of truth for the tool's current behavior.
+artifacts hold the _cumulative_ source of truth for the tool's current behavior.
 A Change Case is the bridge between them: it proposes a delta, and the enduring
 artifacts absorb it.
 
@@ -107,22 +107,22 @@ pre-decide its shape. Framing the impact as "specs and docs" is exactly how code
 edits and skill or scaffold files go unlisted: a surface redesign that names only
 the spec files it rewrites — and silently leaves the implementation and the
 bundled skill that drives it off the list — has under-accounted for its own work.
-The question is *"what does this work change?"*, answered across all artifact
-kinds, not *"which specs and docs does it touch?"*
+The question is _"what does this work change?"_, answered across all artifact
+kinds, not _"which specs and docs does it touch?"_
 
-**Find them by analysis, not recall.** The list is the *output* of a deliberate
+**Find them by analysis, not recall.** The list is the _output_ of a deliberate
 sweep, not a memory of what you think you touched — the artifact that gets missed
 is always the one you forgot existed. Don't author the list from intuition;
-*derive* it. Start from the concrete things the work changes — command and flag
+_derive_ it. Start from the concrete things the work changes — command and flag
 names, type and function names, file and artifact paths, and the names it
-*renames away from* — and search the whole repo for each one across every bundle:
+_renames away from_ — and search the whole repo for each one across every bundle:
 the code (`cmd/`, `internal/`), the [`specs/`](../../specs/index.md) bundle and
 [`SPECIFICATION.md`](../../SPECIFICATION.md), the [`docs/`](../index.md) guides,
 the bundled [`skills/`](../../skills/), `README.md`, install/scaffold files, and
 `CHANGELOG.md`. Follow inbound cross-references too: a renamed or deleted spec
 breaks every link to it, and an old command name lingers in examples and `--help`
 blocks. Then triage what the sweep returns — separate live artifacts that must
-change from historical ones that must *not* (append-only `log.md` files and
+change from historical ones that must _not_ (append-only `log.md` files and
 [`archive/`](../../changes/archive/index.md) cases record past state and stay
 frozen). For a wide-reaching change, a search agent over the repo is the fast way
 to run this sweep. It is cheap; a contract change that lands with its skill or
@@ -144,7 +144,7 @@ grouped by kind so it stays skimmable:
   artifacts; do not hide their contracts under a neighboring workflow or
   renderer spec by default. For other contracts the work reveals as
   under-specified or worth lifting out of code, raise
-  suggestions for any *new* durable specs worth creating. Suggesting those
+  suggestions for any _new_ durable specs worth creating. Suggesting those
   non-blocking specs is enough; actually creating them is not a precondition for
   the case to land. New specs may be 1:1 artifact specs or behavioral component
   specs. Name 1:1 artifact specs with the artifact-spec convention in
@@ -162,7 +162,7 @@ grouped by kind so it stays skimmable:
   not the only path to that update — but it must not leave a doc it listed
   silently stale.
 
-Listing an artifact is *accounting*, not license to edit it now. The two move on
+Listing an artifact is _accounting_, not license to edit it now. The two move on
 different clocks (see [the lifecycle below](#move-it-through-the-lifecycle)):
 **code** is gated to **In-Progress**, while durable specs and docs are not locked
 to the lifecycle at all — they may be edited in any phase, within a Change Case
@@ -170,9 +170,9 @@ or on their own with no case, whenever the current source of truth is wrong,
 stale, or incomplete. What a Change Case owes is honest accounting for the full
 footprint of its work, not exclusive custody of the edits.
 
-The parent's **Affected artifacts** is the *index* — the skimmable list of
+The parent's **Affected artifacts** is the _index_ — the skimmable list of
 every artifact the case touches, and the checklist reconciled before
-**In-Review**. The *substance* of a durable **spec** change lives one level down,
+**In-Review**. The _substance_ of a durable **spec** change lives one level down,
 in the [functional spec](write-functional-specs.md): which durable specs the
 change rewrites, and what they must say differently, belong with the requirements
 that drive them — not in the design doc, and not discovered at the end. So each
@@ -189,15 +189,15 @@ catches any change no single requirement owns. Both cover the
 [`SPECIFICATION.md`](../../SPECIFICATION.md). A spec rename belongs in **To
 rename** (`old → new`), not split across add and delete.
 
-The other artifact kinds — durable *docs* (README, guides, scaffold) and *code* —
+The other artifact kinds — durable _docs_ (README, guides, scaffold) and _code_ —
 need no such breakdown; the parent's index is their only home. The **bundled
 skill is the exception that hides**: its runtime content under
 [`skills/`](../../skills/) is a durable doc, but its functional spec under
 [`specs/skills/`](../../specs/index.md) is part of the `specs/` bundle — so a
-change to skill *behavior* belongs in the **Durable spec changes** breakdown like
+change to skill _behavior_ belongs in the **Durable spec changes** breakdown like
 any other durable spec, even when the runtime skill files change alongside it.
 
-What gets absorbed is not only the *what* but the **enduring *why***. A Change
+What gets absorbed is not only the _what_ but the **enduring _why_**. A Change
 Case's **motivation** and its [design doc](write-design-docs.md)'s durable
 rationale are the reasons its requirements exist — and they archive with the
 case. Unless they are promoted into the durable spec, the spec inherits the rule
@@ -205,8 +205,8 @@ and loses the reason, and a later editor re-litigates a settled lesson or
 "simplifies" a rule back into the bug it fixed. So when a Change Case updates a
 durable spec, it should lift that rationale into the spec's
 **Background / motivation** (the
-big-picture *why*) and its per-requirement **annotations** (the fine-grained
-*why*), exactly as the [functional-spec guide](write-functional-specs.md)
+big-picture _why_) and its per-requirement **annotations** (the fine-grained
+_why_), exactly as the [functional-spec guide](write-functional-specs.md)
 describes — not just port the functional delta. The design doc stays in the
 archive as the fuller record of alternatives and trade-offs; the spec carries
 forward the intent and the lessons.
@@ -218,9 +218,9 @@ A Change Case's `status` frontmatter advances, in order:
 **Draft → Design → In-Progress → In-Review → Done**
 
 - **Draft** while you write up and review the
-  [functional spec](write-functional-specs.md) (the *what*); **Design** while you
+  [functional spec](write-functional-specs.md) (the _what_); **Design** while you
   work out the
-  [design doc](write-design-docs.md) (the *how*); **In-Progress** while it's
+  [design doc](write-design-docs.md) (the _how_); **In-Progress** while it's
   being implemented; **In-Review** after implementation is complete and ready for
   review; **Done** only after the work lands.
 - **Modify nothing outside what the current phase authorizes.** This is a
@@ -233,8 +233,8 @@ A Change Case's `status` frontmatter advances, in order:
   **In-Progress** is the first phase that authorizes touching the **code**; all
   code stays untouched until then. **Implementation does not begin until the
   Change Case is In-Progress**: advance the `status` first, then implement. This
-  is what keeps *what* and *how* settled before any code is written. Durable
-  specs and docs are the exception to the gate — they track the *current* source
+  is what keeps _what_ and _how_ settled before any code is written. Durable
+  specs and docs are the exception to the gate — they track the _current_ source
   of truth, not this case's unimplemented delta, so they may be edited in any
   phase (or with no Change Case at all; see
   [Account for the artifacts it touches](#account-for-the-artifacts-it-touches)).
@@ -252,7 +252,7 @@ A Change Case's `status` frontmatter advances, in order:
   already independently up to date), so the enduring source of truth matches the
   landed behavior and is ready for review with the implementation. When a Change
   Case updates a durable spec, it should also promote the
-  [enduring *why*](#account-for-the-artifacts-it-touches) — the Change Case's
+  [enduring _why_](#account-for-the-artifacts-it-touches) — the Change Case's
   motivation and the design doc's durable rationale — into the spec's
   **Background / motivation** and per-requirement annotations, so the reason a
   requirement exists survives the change's archival rather than dying with it.

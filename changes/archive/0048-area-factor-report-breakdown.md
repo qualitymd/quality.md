@@ -9,7 +9,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 # Area factor report breakdown
 
-A **Change Case** capturing the *why* and *status* for improving generated
+A **Change Case** capturing the _why_ and _status_ for improving generated
 evaluation reports so readers can see, at a glance, which Areas were evaluated
 and which Factors drove their ratings. The detail lives in its
 [functional spec](0048-area-factor-report-breakdown/spec.md).

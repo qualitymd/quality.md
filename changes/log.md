@@ -932,14 +932,14 @@
   `RecommendationResult` now uses `description`, `background`, `expectedValue`,
   and `doneCriterion`; generated recommendation reports render from persisted
   Advice data only; Top Recommendations shows `Rank`, `Recommendation`, `Area /
-  Factors`, and `Reason`; and `mise run check` passes.
+Factors`, and `Reason`; and `mise run check` passes.
 
 - **In-Review**: Completed implementation for
   [0155 - Recommendation Result Shape](archive/0155-recommendation-result-shape.md).
   `RecommendationResult` now uses `description`, `background`, `expectedValue`,
   and `doneCriterion`; generated recommendation reports render from persisted
   Advice data only; Top Recommendations shows `Rank`, `Recommendation`, `Area /
-  Factors`, and `Reason`; and `mise run check` passes.
+Factors`, and `Reason`; and `mise run check` passes.
 
 - **In-Progress**: Created
   [0155 - Recommendation Result Shape](archive/0155-recommendation-result-shape.md)
@@ -948,7 +948,7 @@
   replaces the old recommendation prose fields with `description`, `background`,
   `expectedValue`, and `doneCriterion`, keeps recommendation reports data-only,
   and reshapes Top Recommendations around `Rank`, `Recommendation`, `Area /
-  Factors`, and `Reason`.
+Factors`, and `Reason`.
 
 - **Done**: Implemented and archived
   [0154 - Ranked Findings Reports](archive/0154-ranked-findings-reports.md).
@@ -1036,7 +1036,7 @@
   now runs credential preflight, creates draft GitHub releases, publishes
   Homebrew and npm through independently visible jobs, verifies all release
   channels before publication, and provides verifier/repair tasks. `node
-  scripts/release-verify.mjs v0.25.0` passes against the current public release.
+scripts/release-verify.mjs v0.25.0` passes against the current public release.
 
 - **Done**: Implemented and archived
   [0151 - Evaluation Report CTA](archive/0151-evaluation-report-cta.md).
@@ -1182,7 +1182,7 @@
   `/quality` runtime guidance, durable skill specs, workflow and guide templates,
   logs, and release notes are aligned around labeled, scan-friendly review
   gates, summaries, closeouts, and next-workflow prompts. `mise run
-  fmt-md-check` and `mise run check` pass.
+fmt-md-check` and `mise run check` pass.
 
 - **Done**: Implemented and archived
   [0146 - Changelog Directory](archive/0146-changelog-directory.md).
@@ -1263,7 +1263,7 @@
   `unknown-factor` rejects ancestor-only references, lint warns on duplicate
   Factor names within one Area's Factor tree, and format/spec/skill/docs
   guidance is aligned. `go test ./...`, `go run ./cmd/qualitymd lint QUALITY.md
-  --json`, `mise run fmt-md-check`, and `mise run check` pass.
+--json`, `mise run fmt-md-check`, and `mise run check` pass.
 
 - **In-Progress**: Advanced
   [0141 - Area-local Factor References](archive/0141-area-local-factor-references.md).
@@ -1521,7 +1521,7 @@
   Area Findings, regenerated `evaluation-data.schema.json`, updated report
   severity display/sort helpers, durable specs, bundled skill guidance, and
   release notes for `v0.21.0`. `qualitymd evaluation data schema
-  area-analysis-result` now exposes only `critical`, `high`, `medium`, and
+area-analysis-result` now exposes only `critical`, `high`, `medium`, and
   `low`; `go test ./internal/evaluation` passes.
 
 - **In-Progress**: Advanced
@@ -1769,7 +1769,7 @@
   Renames/refocuses the skill's former `cli-quick-reference.md` as
   `cli-workflow-conventions.md`: strips the duplicated command/flag listings the
   CLI's own `--help` and discovery commands (`evaluation data
-  kinds`/`example`/`schema`) already provide, retains the content that is
+kinds`/`example`/`schema`) already provide, retains the content that is
   non-introspectable skill convention (workspace-artifact layout, feedback-log
   sequencing, narrowing-slug rule, do/don't rules, orchestration sequences), and
   routes command/flag/payload discovery to the CLI's structured introspection
@@ -1851,7 +1851,7 @@
   elements, their canonical reference IDs (`area:…`/`factor:…::…`/`requirement:…::…`),
   labels, and containment, with a human default form and `--json` everywhere. The
   driving need is payload authoring: nothing emits canonical IDs today, so agents
-  hand-derive tens of them from `QUALITY.md`. Bounded to *structure and identity*
+  hand-derive tens of them from `QUALITY.md`. Bounded to _structure and identity_
   to avoid overlap — `status` keeps state/readiness/source-coverage/counts,
   `evaluation` keeps runs/payloads/reports/snapshots; `model` has no `--run` flag,
   no provenance, no validation (defers to `lint`), no ratings. `--area` accepts
@@ -1929,7 +1929,7 @@
 
 - **Done**: Implemented and archived
   [0121 - Scannable interaction hierarchy](archive/0121-scannable-interaction-hierarchy.md).
-  Fixed the *flat-wall* failure in agent-mediated output — decision gates,
+  Fixed the _flat-wall_ failure in agent-mediated output — decision gates,
   discovery questions, progress, and result blocks that stacked the question and
   supporting labels at equal weight so the call to action was buried and collapsed
   when bold was stripped. The driving guide
@@ -2101,7 +2101,7 @@
 - **Creation**: Drafted
   [0115 - Type-safe, model-bound Evaluation v2 data](0115-evaluation-data-typed-contract.md)
   (`status: Draft`). Motivated by a field evaluation where `qualitymd evaluation
-  data set` accepted findings with wrong field names (rendered blank in the
+data set` accepted findings with wrong field names (rendered blank in the
   report) and references to non-existent model nodes, because v2 data has no typed
   source of truth. The case defines each kind as typed Go definitions feeding
   strict decode, model-binding validation against the run snapshot, and generated
@@ -2857,11 +2857,11 @@
   [design doc](archive/0089-agent-harness-modeling-guidance/design.md). The case fixes an
   asymmetry in the `/quality` authoring guidance: the model-wide Agent
   Harnessability factor is richly specified (six sub-factors with boundaries and
-  example requirements) while the agent-harness *area* — the steering-materials
+  example requirements) while the agent-harness _area_ — the steering-materials
   constituent the same guidance says to model by default — gets no factor family or
   requirement template, so generated harness areas come out thinly factored.
-  Grounded in harness-engineering practice (Fowler's *Harness Engineering* and
-  *Sensors for Coding Agents*; LangChain's *Anatomy of an Agent Harness*), which
+  Grounded in harness-engineering practice (Fowler's _Harness Engineering_ and
+  _Sensors for Coding Agents_; LangChain's _Anatomy of an Agent Harness_), which
   confirms the six sub-factors already map onto the field's harness anatomy. The
   case (a) gives the harness area an illustrative, domain-agnostic factor and
   requirement template at parity with the self-check template, (b) adds a
@@ -3113,8 +3113,7 @@
   task-specifiability, operational-readiness, self-verifiability,
   enforcement-of-standards, containment-of-action), proposed by default for an
   agent-collaborated composite root. Gives the agent-collaboration concern its
-  factor projection alongside the agent-harness constituent (0080); relates to
-  0077. Added the parent concept and child folder
+  factor projection alongside the agent-harness constituent (0080); relates to 0077. Added the parent concept and child folder
   ([index](0081-harnessability-factor/index.md)), and registered it in the
   bundle-root [index](index.md). Skill-guidance, spec-mirror, and README only; no
   `SPECIFICATION.md` or code change.
@@ -3235,7 +3234,7 @@
   [index](archive/0077-stewardship-care-grounding/index.md) and
   [functional spec](archive/0077-stewardship-care-grounding/spec.md). The case refines
   [0076](archive/0076-domain-constituent-kinds.md)'s stewardship-concern generator
-  with the phenomenology of care (Rousse & Spivak): the artifact is the *trace* of
+  with the phenomenology of care (Rousse & Spivak): the artifact is the _trace_ of
   tending rather than the care itself, the claim that earns a constituent comes
   from a Need or Risk rather than the list, the protective pair answers to
   vulnerability, stewardship is defined as holding-in-trust, and the lifecycle band
@@ -4080,7 +4079,7 @@
   [0055 - Self-describing evaluation record input](archive/0055-evaluation-input-ergonomics.md)
   (`Draft`) with its [functional spec](archive/0055-evaluation-input-ergonomics/spec.md).
   Motivated by field run `0001-quality-eval`, the case makes the `qualitymd
-  evaluation` record-writing surface self-describing — payload-documenting help, a
+evaluation` record-writing surface self-describing — payload-documenting help, a
   no-persist `-n/--dry-run`, aggregated key-named validation — and repairs the
   `/quality` skill surfaces that drifted from the binary (the unshipped
   source-of-truth citation, the stale quick-reference payloads) plus a published-
@@ -4121,7 +4120,7 @@
 
 - **Creation**: Added
   [0054 - Remove improve mode](archive/0054-remove-improve-mode.md) (`status:
-  Draft`) with its
+Draft`) with its
   [functional spec](archive/0054-remove-improve-mode/spec.md) and
   [child index](archive/0054-remove-improve-mode/index.md). The case simplifies
   the `/quality` skill surface by removing the separate improve mode while
@@ -4367,7 +4366,7 @@
 - **Design**: Closed the remaining
   [0049 - Companion JSON Schema](0049-companion-json-schema.md) open questions.
   Generation is a `go:generate` tool writing the committed root file (the embed
-  *is* the golden, guarded by a consistency test re-running an exported
+  _is_ the golden, guarded by a consistency test re-running an exported
   `GenerateJSON()`) over runtime generation — keeping schema changes visible as a
   reviewable diff. The schema declares JSON Schema draft 2020-12 and an
   unversioned `$id` of `https://quality.md/quality.schema.json` (identity, not
@@ -4796,7 +4795,7 @@
   Moved the parent concept and child folder into [`archive/`](archive/), fixed
   archive-relative links, added the entry to the [archive index](archive/index.md),
   and removed it from the open [changes index](index.md). Verified `go test
-  ./...`, `go vet ./...`, targeted `dprint check`, and CLI smoke checks for the
+./...`, `go vet ./...`, targeted `dprint check`, and CLI smoke checks for the
   new and removed evaluation command surfaces.
 
 - **Design**: Reconciled the
@@ -5410,7 +5409,7 @@
 - **Creation**: Added change
   [0022 — Create-run subject validation](archive/0022-create-run-subject-validation.md)
   in `Draft` after the E14 improve/re-evaluate experiment found that `qualitymd
-  evaluation create-run --subject .` failed after creating an empty run
+evaluation create-run --subject .` failed after creating an empty run
   skeleton.
 
 - **Status**: Advanced change
@@ -5561,7 +5560,7 @@
 - **Design**: Advanced the evaluation-workflow set and the skill rigor pass from
   `Draft` to `Design`, adding a
   [design doc](../docs/guides/write-design-docs.md) to each (drafted in parallel,
-  one per change). The designs settle the *how* against the settled specs:
+  one per change). The designs settle the _how_ against the settled specs:
   - [0012 — Evaluation record format](archive/0012-evaluation-record-format.md) - the
     contract lives as one enduring bundle-root concept `specs/evaluation-records.md`
     (not under `cli/`), registered the normal OKF way; the skill's switch from
@@ -5656,7 +5655,7 @@
     (`Draft`) - operationalized effort levels, verified evidence and pinned
     locators, rating-binding re-check, batched writes, optional deep fan-out;
     independent of the CLI work.
-    Updated the bundle [index](index.md). Each spec is the change's *delta*;
+    Updated the bundle [index](index.md). Each spec is the change's _delta_;
     durable `specs/`/skill/README sync happens per change at In-Progress.
 
 - **Done**: Archived change
@@ -5796,12 +5795,12 @@
   [0010 — Implement the /quality skill](archive/0010-implement-quality-skill.md) from
   `Draft` to `Design` and added its
   [design doc](archive/0010-implement-quality-skill/design.md). Confirmed the three
-  **blocking** open items at their recommended resolutions and worked out the *how*:
+  **blocking** open items at their recommended resolutions and worked out the _how_:
   the skill ships from `skills/quality/SKILL.md` as an Agent Skills artifact
   installable with `npx skills add qualitymd/quality.md`, while `setup`/`wizard`
   verify the separate `qualitymd` CLI prerequisite before doing CLI-dependent work.
   Specified the `qualitymd models` surface (`list` with `--json`; `view <name>
-  [--source]` as verbatim Markdown by default and structured JSON with `--json`,
+[--source]` as verbatim Markdown by default and structured JSON with `--json`,
   reusing the `lint --fix` node-rewrite to re-point the meta-model's apex
   `source`), homed in a new `internal/models` package for the bundled-model
   catalog. Settled the raw, non-OKF evaluation
@@ -5849,7 +5848,7 @@
 
 - **Completion**: Implemented and archived
   [0009 — Diagnose rating-scale soundness in the meta-model](archive/0009-rating-scale-diagnostic.md),
-  adding the *rating scale and any overrides are well-formed and meaningful*
+  adding the _rating scale and any overrides are well-formed and meaningful_
   requirement to the [meta-model](../internal/models/quality-meta-model.md)'s
   Functionality factor. The meta-model previously assessed the rating scale only
   structurally (lint's "well-shaped" check) and as one clause in a conformance
@@ -5924,7 +5923,7 @@
   [functional spec](archive/0008-target-display-fields/spec.md). A target's only
   human-facing label today is its map key; the change lets every target carry an
   optional `title` (display name) and a recommended `description` (what the target
-  *is*), and adds `description` to the model root. It also reframes the root as a
+  _is_), and adds `description` to the model root. It also reframes the root as a
   **Model** — the model-wide `ratingScale` plus all **Target** properties — so
   the difference from a nested target is a type distinction (`ratingScale` is the
   one Model-only property) rather than the awkward "a non-root target MUST NOT
@@ -6043,7 +6042,7 @@
   Cobra-native `FlagErrorFunc`/`Args` hooks to tag usage errors at their source —
   with only an unknown-subcommand string fallback left as an explicit open
   decision. Picked `0`/`1`/`2`/`70` for success / found-problems / usage /
-  internal, broadened *internal error* to "could not complete the requested
+  internal, broadened _internal error_ to "could not complete the requested
   action" so guarded refusals (e.g. `init` overwrite without `--force`) have a
   home, and ruled `-` plus `--json` a usage error. Settled the one open
   design decision — keep a thin, owned prefix check so an unknown subcommand maps
@@ -6074,11 +6073,11 @@
 - **Scope**: Expanded change
   [0004 — Specify and enforce agent accessibility](archive/0004-specify-agent-accessibility.md)
   from a spec-only change to spec **plus** conformance after auditing the shipped
-  commands. `internal/cli` exits `1` on every error path, so a `lint` that *found
-  problems* is indistinguishable from a usage or internal error — a baseline
+  commands. `internal/cli` exits `1` on every error path, so a `lint` that _found
+  problems_ is indistinguishable from a usage or internal error — a baseline
   violation. The change now settles the **exit-code categories** (success,
   ran-but-found-problems, usage error, internal error) concretely, removes both
-  *Agent-accessibility and CI requirements* and *Exit-code semantics* from the
+  _Agent-accessibility and CI requirements_ and _Exit-code semantics_ from the
   [CLI spec](../specs/cli.md)'s "To be specified" list, and brings `init` and
   `lint` into compliance with tests. Threading distinct codes through Fang is a
   real design question, so the change now carries a forthcoming
@@ -6092,7 +6091,7 @@
   [0004 — Specify agent accessibility](archive/0004-specify-agent-accessibility.md)
   (`status: Draft`) with its
   [functional spec](archive/0004-specify-agent-accessibility/spec.md). The change settles
-  the *Agent-accessibility and CI requirements* item on the
+  the _Agent-accessibility and CI requirements_ item on the
   [CLI spec](../specs/cli.md)'s "To be specified" list by adding an **Agent
   accessibility** section framed as two tiers: a baseline every in-scope command
   owes (non-interactivity, stdout-is-payload/stderr-is-everything-else,
@@ -6201,8 +6200,8 @@
 
 - **Process**: Defined the relationship between `changes/` and the enduring
   [`specs/`](../specs/index.md) bundle (replacing the "independent for now"
-  note) — a Change Case states a *delta* and is archived, while `specs/` and
-  [`SPECIFICATION.md`](../SPECIFICATION.md) hold the *cumulative* source of
+  note) — a Change Case states a _delta_ and is archived, while `specs/` and
+  [`SPECIFICATION.md`](../SPECIFICATION.md) hold the _cumulative_ source of
   truth. Added an **Affected specs & docs** section to the
   [Change Case concept](archive/0001-example-change.md) so each change records the durable
   specs and docs it creates or updates, brought into sync before `Done`.

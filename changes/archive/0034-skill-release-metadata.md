@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # Skill release metadata
 
-A **Change Case** capturing the *why* and *status* for making the `/quality`
+A **Change Case** capturing the _why_ and _status_ for making the `/quality`
 skill's release identity and CLI prerequisite explicit in the installable skill
 artifact. The detail lives in its
 [functional spec](0034-skill-release-metadata/spec.md).
@@ -47,8 +47,7 @@ Implementation is complete and archived.
 
 ## Affected specs & docs
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - require the `/quality` installable artifact to carry project-owned
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - require the `/quality` installable artifact to carry project-owned
       Agent Skills metadata for the skill version and required `qualitymd` CLI
       range.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - add the
@@ -59,8 +58,7 @@ Implementation is complete and archived.
 - [x] [`docs/guides/cut-a-release.md`](../../docs/guides/cut-a-release.md) -
       update release preparation and process-boundary guidance for skill
       metadata and deferred installer enforcement.
-- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md)
-      - point prerequisite checks at the metadata-declared CLI range.
+- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md) - point prerequisite checks at the metadata-declared CLI range.
 - [x] [`scripts/check-release.mjs`](../../scripts/check-release.mjs) and related
       test coverage - validate skill metadata and changelog compatibility drift.
 - [x] [`CHANGELOG.md`](../../CHANGELOG.md) - record the user-facing release-note

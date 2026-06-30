@@ -20,7 +20,7 @@ appear in all capitals.
 
 The run frame is a status-first preamble that lets the user catch a wrong
 inference before the skill spends effort or mutates anything (the 0038
-rationale). That value is only realized if the frame reaches the user *first* —
+rationale). That value is only realized if the frame reaches the user _first_ —
 before any read or command. The 0096 annotation records the failure mode from a
 field run of `setup`: the agent front-loaded CLI checks, repository scans, and
 the feedback-log write before flushing any text, so the frame arrived after one
@@ -74,6 +74,7 @@ reports, or rating semantics.
 - A public `/quality` workflow **MUST** emit the run frame as its first output,
   before any tool call — before CLI prerequisite checks, repository reads, lint,
   history inspection, or any feedback-log write.
+
   > Rationale: the frame's purpose is to let the user catch a wrong inference
   > before the skill spends effort. A frame emitted after a runway of tool calls
   > is indistinguishable from a stall and forfeits that purpose. This generalizes

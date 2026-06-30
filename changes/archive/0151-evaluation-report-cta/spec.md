@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 Companion to the
 [Evaluation Report CTA](../0151-evaluation-report-cta.md) Change Case. This
-spec states *what* the change must do. It defers to the
+spec states _what_ the change must do. It defers to the
 [/quality reporting](../../../specs/skills/quality-skill/reporting.md),
 [/quality evaluate](../../../specs/skills/quality-skill/workflows/evaluate.md),
 [Evaluation report tree](../../../specs/evaluation/reports/report-tree.md), and

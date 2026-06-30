@@ -10,7 +10,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 Companion to the
 [/quality skill interaction UX](../0038-quality-skill-interaction-ux.md) change
-case. This spec states *what* the `/quality` skill's user interaction contract
+case. This spec states _what_ the `/quality` skill's user interaction contract
 must require. It defers the existing `/quality` skill operating model to
 [`specs/skills/quality-skill/quality-skill.md`](../../../specs/skills/quality-skill/quality-skill.md),
 the CLI contract to [`specs/cli.md`](../../../specs/cli.md), and the `QUALITY.md`

@@ -58,7 +58,7 @@ Deferred / non-goals (each absence is deliberate):
 The `model` command group **MUST NOT** emit source declaration/provenance,
 source coverage, aggregate element-count summaries, evaluation results, or
 readiness state. Those remain the responsibility of [`status`](status.md) and
-the `evaluation` commands. `model` owns *logical structure and identity*:
+the `evaluation` commands. `model` owns _logical structure and identity_:
 elements, canonical IDs, labels, and containment.
 
 ## Invocation

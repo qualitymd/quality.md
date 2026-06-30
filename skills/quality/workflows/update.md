@@ -108,6 +108,7 @@ Verify
 
    The choices must name which owner command performs each mutation; the
    `Done when` line states how compatibility is checked afterward.
+
 9. If confirmed, delegate only to owner commands:
    - CLI: `qualitymd update` when available and applicable, or the
      package-manager/install command recommended by `qualitymd update --check`.

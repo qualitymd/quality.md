@@ -35,12 +35,12 @@ so every workflow inherits a prose-only default and ignores whatever richer
 affordance the runtime offers.
 
 One workflow already solved this locally. `setup`'s "How to present them" block
-tells the agent to *"choose the presentation form from your own interaction
-capabilities"* and lays out three tiers — Markdown, a structured question tool,
+tells the agent to _"choose the presentation form from your own interaction
+capabilities"_ and lays out three tiers — Markdown, a structured question tool,
 and a no-affordance fallback — without naming any specific UI. That pattern is
 correct and agent-agnostic; it is simply trapped in one workflow. This change
 lifts it into the shared contract and reframes the prose renderings as the text
-*fallback* rather than the sole required form, so the skill leverages native
+_fallback_ rather than the sole required form, so the skill leverages native
 affordances when present while still degrading cleanly when absent.
 
 The contract changes presentation only. No mutation boundary or confirmation
@@ -77,7 +77,7 @@ Deferred / non-goals:
 
 **R1 — Interactions are intents rendered through a fit-for-purpose affordance.**
 The shared interaction contract **MUST** state that each user interaction is an
-*intent* (for example, a single-select closed choice with a recommended default)
+_intent_ (for example, a single-select closed choice with a recommended default)
 rendered through the richest fit-for-purpose native affordance the runtime
 exposes, and that a complete text rendering is always authored as the fallback
 when no such affordance is present.
@@ -97,7 +97,7 @@ labels.
 > on those surfaces. — 0123
 
 **R3 — Agent-agnostic phrasing.** The contract **MUST** express interactions as
-an intent plus an affordance *category* and **MUST NOT** name a specific question
+an intent plus an affordance _category_ and **MUST NOT** name a specific question
 UI, tool, or harness. Capability-conditional phrasing ("if the runtime exposes a
 structured single-select affordance, render through it; otherwise emit the text
 fallback") is the required form.

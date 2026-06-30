@@ -57,7 +57,7 @@ recommendations.
   handoff never write it. See [Quality Changelog](#quality-changelog).
 - `setup` and `evaluate` write workflow feedback logs under `.quality/logs/`
   (the flat workflow-log directory, distinct from `.quality/changelog/`)
-  recording the *experience* of running the workflow. `setup` writes
+  recording the _experience_ of running the workflow. `setup` writes
   `<timestamp>-setup-feedback-log.md` after the setup preview when the run
   continues into discovery or authoring; early setup stops before that point may
   leave no feedback log. `evaluate` writes
@@ -591,7 +591,7 @@ not restate the full schema or folder layout in this prompt.
 
 The quality changelog is a curated, evidence-linked timeline of meaningful changes to
 the QUALITY.md model, written as dated entries under the workspace's
-`.quality/changelog/`. It preserves the *why* a model changed — which evaluation
+`.quality/changelog/`. It preserves the _why_ a model changed — which evaluation
 surfaced a gap, whether a criterion moved by recalibration or drift — that
 `git log` does not capture. It is the model's own history; it is **not** an
 evaluation record (those own `.quality/evaluations/`) and **not** a defect
@@ -610,7 +610,7 @@ Format contract:
 - **Each entry** carries small frontmatter plus a prose rationale body. The
   frontmatter records the change kind, the model target it affects, and — when the
   change came from an evaluation — the source run and recommendation it traces to.
-  The body states *why*. Reference any secret value by `file:line` and type only.
+  The body states _why_. Reference any secret value by `file:line` and type only.
 
   ```markdown
   ---
@@ -630,7 +630,7 @@ Format contract:
 The changelog is **curated, not complete**: hand edits to `QUALITY.md` and
 setup's initial model creation bypass the changelog, so git remains the full
 diff history while the changelog carries later model-change judgment. Record a
-change that alters what the model *is* or *how it judges*; do **not** record
+change that alters what the model _is_ or _how it judges_; do **not** record
 Markdown-body wording, typo, or formatting changes, nor evaluated-source fixes
 that leave the model unchanged. Write one entry per coherent change (a confirmed
 recommendation apply or direct model-authoring change), not one per field

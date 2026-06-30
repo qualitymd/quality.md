@@ -58,13 +58,15 @@ evaluation records, reports, or rating semantics.
   non-binary closed-choice prompts keep numbered options with the recommended
   option first, while true binary confirmations use visible `y`/`n` as the
   shortest responses.
+
   > Rationale: `1` remains correct when the user chooses among several options.
   > For a yes/no mutation gate, `y`/`n` matches the question's semantic shape and
   > avoids mixed answer vocabulary such as `1` versus `skip`. — 0106
 
 - When a decision brief asks a true binary confirmation, the durable and runtime
   guidance **MUST** include an explicit answer path equivalent to `Reply y to
-  <perform the action>, or n to <decline/skip/stop>`.
+<perform the action>, or n to <decline/skip/stop>`.
+
   > Rationale: a decision brief names the action, evidence, alternatives, and
   > verification, but it still needs to tell the user what to type. The observed
   > update prompt had the right plan fields but the wrong answer shape. — 0106
@@ -97,6 +99,7 @@ evaluation records, reports, or rating semantics.
   stop-response routing options, and recommendation follow-up's initial
   apply-vs-handoff outcome selection **MUST NOT** be converted to binary `y`/`n`
   prompts solely because this change exists.
+
   > Rationale: those prompts ask the user to choose among multiple options or
   > provide a correction/routing decision. Converting them to yes/no would erase
   > information and weaken the interaction. — 0106

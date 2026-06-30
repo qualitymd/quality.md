@@ -10,8 +10,8 @@ timestamp: 2026-06-19T00:00:00Z
 
 Companion to the
 [Harden install scripts and upgrade idiomatics](../0036-harden-install-scripts.md)
-change case. This spec states *what* the installers and the upgrade check must
-do; the [design doc](design.md) covers *how*. It defers the format and the broad
+change case. This spec states _what_ the installers and the upgrade check must
+do; the [design doc](design.md) covers _how_. It defers the format and the broad
 install/upgrade contract to [`specs/cli/upgrade.md`](../../../specs/cli/upgrade.md)
 and the [versioning reference](../../../docs/reference/versioning.md).
 

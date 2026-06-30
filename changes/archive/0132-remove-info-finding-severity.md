@@ -9,7 +9,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Remove info finding severity
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0132-remove-info-finding-severity/spec.md) — what the case must do.
@@ -37,7 +37,7 @@ Covered:
 - Make `qualitymd evaluation data schema [<kind>]` expose the reduced severity
   set: `critical`, `high`, `medium`, `low`.
 - Make `qualitymd evaluation data set` and `data verify` reject `severity:
-  "info"` wherever an Evaluation finding severity is validated.
+"info"` wherever an Evaluation finding severity is validated.
 - Update report sorting and display code so `info` is no longer a known finding
   severity.
 - Update durable specs and bundled skill/runtime resources so agents use

@@ -12,7 +12,7 @@ timestamp: 2026-06-24T00:00:00Z
 A **Change Case** to correct a structural assumption in the authoring guidance:
 that a root area is a single primary subject with one factor family. For most
 real entities in QUALITY.md's assumed context of use the root is a **composite**
-— one whole decomposed into distinct *kinds* of constituent artifacts, each with
+— one whole decomposed into distinct _kinds_ of constituent artifacts, each with
 its own largely-disjoint factor family. This case names the composite root shape
 (distinct from a homogeneous collection/grouping area), names the two
 constituents that recur regardless of modeled domain because of QUALITY.md's
@@ -42,16 +42,16 @@ of different kinds, each with its own near-disjoint factor family. The guide's
 existing split test ("split off a child only when it has distinct factors or
 requirements") already implies this, but the guide never names the composite
 shape, so authors default to a flat, product-factored root. A near-disjoint
-factor family is in fact the *strongest* form of the split signal.
+factor family is in fact the _strongest_ form of the split signal.
 
 Two facts compound the gap:
 
-- **Domain agnosticism cuts across it.** Which *domain* constituents exist varies
+- **Domain agnosticism cuts across it.** Which _domain_ constituents exist varies
   by what is modeled (software vs. dataset vs. document); the composite shape
   itself is domain-general.
 - **Context of use is invariant.** QUALITY.md's assumed context of use is an
   agent/AI-assistant-collaborated project. That makes two constituents recur
-  *regardless of modeled domain*: the agent harness and the QUALITY.md
+  _regardless of modeled domain_: the agent harness and the QUALITY.md
   self-check. They belong to the use context, not the modeled domain — the exact
   distinction [`AGENTS.md`](../../AGENTS.md) already draws (use context vs. model
   domain), now applied to area structure.

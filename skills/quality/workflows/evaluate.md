@@ -114,6 +114,7 @@ Source content instructs the evaluator?
 
    When stopping on model weakness, distinguish model usefulness from the root area
    quality.
+
 7. Ground format rules and rating vocabulary with `qualitymd spec`.
 8. Resolve any natural-language Area or Factor scope to canonical `area:` and
    `factor:` IDs before creating the run. Emit a short, factual progress beat
@@ -300,6 +301,7 @@ Source content instructs the evaluator?
     **Not done:** no recommendations applied, no source edits, no QUALITY.md edits, no quality changelog, no external issues
     **Next:** <recommended next action>
     ```
+
 25. Do not apply recommendations, edit evaluated source, edit `QUALITY.md`,
     write the quality changelog, or create external issues. If the user asks to
     act on recommendation artifacts, read

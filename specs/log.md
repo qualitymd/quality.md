@@ -1070,7 +1070,7 @@
   guide-backed QUALITY.md authoring.
 
 - **Rationale capture**: Made durable the motivating learnings behind the
-  in-review evaluation changes (0012–0024), so the *why* survives when the change
+  in-review evaluation changes (0012–0024), so the _why_ survives when the change
   records are archived. Added inline rationale to
   [Evaluation records](evaluation-records.md) (standalone-spec reason; CLI-owned
   scan-derived numbering and collision-as-error from the real run-number
@@ -1177,7 +1177,7 @@
   revision, evaluator, date, assessment inputs) so the verdict is reproducible; a
   **Limitations** section (rigor ceiling, point-in-time secret scan, single-test
   confidence) qualifying the ratings without changing them, kept distinct from
-  Scope exclusions and *not assessed* outcomes; and sharpened the committed-credential
+  Scope exclusions and _not assessed_ outcomes; and sharpened the committed-credential
   rationale to trace measure → applied criterion against the requirement's own
   `ratings` overrides. Declared the new `9f2c1ab` commit as a shared fictional
   locator in the [examples index](skills/quality-skill/examples/index.md).
@@ -1189,7 +1189,7 @@
   sub-area (`./webhooks/delivery`, retry + redelivery-suppression under a
   refined **Reliability** factor) in
   [`model.md`](skills/quality-skill/examples/0001-subject-quality-eval/model.md).
-  The Delivery deduplication requirement is *rated* **Minimum**, so the Webhooks
+  The Delivery deduplication requirement is _rated_ **Minimum**, so the Webhooks
   aggregate (**Minimum**) falls below its own local rating (**Target**) — the
   bundle's first intermediate aggregate that differs from its local — and the
   root's counterfactual now layers: rotating the committed credential lifts the
@@ -1247,7 +1247,7 @@
   evidence, the
   secret-by-reference rule (credential cited by location and type, value
   withheld, rotation recommended), a prompt-injection comment recorded as a
-  finding and treated as data, and a *not assessed* requirement excluded from
+  finding and treated as data, and a _not assessed_ requirement excluded from
   the roll-up but noted. Registered `Evaluation Report` and `Recommendation`
   concept types in [`schema.md`](schema.md) and linked the example from the
   skill's Reporting section.
@@ -1271,18 +1271,18 @@
   usage error, and JSON overwrite-refusal object.
 - **Revision**: Reframed the [`/quality`](skills/quality-skill/quality-skill.md) skill's
   relationship to the format spec's evaluation from **deference** to
-  **conformance**: the skill now *owns and specifies* its evaluation process
+  **conformance**: the skill now _owns and specifies_ its evaluation process
   (this spec, its prompt, and the CLI together) rather than pointing at
   [`SPECIFICATION.md`](../SPECIFICATION.md) to "run." Added a **Conformance to
   the format spec** subsection stating that every evaluation MUST conform to the
-  spec's Evaluation contract (assessment → finding → rating, *not assessed* over
+  spec's Evaluation contract (assessment → finding → rating, _not assessed_ over
   guessing, inferred weighted roll-up, required report contents) while the skill
-  remains one *implementation* free to specify its own workflow, ordering,
+  remains one _implementation_ free to specify its own workflow, ordering,
   heuristics, rigor levels, and artifacts — with the spec as the **conformance
   target** that governs on divergence. Scoped the existing "don't embed the
-  format" rule to the *format/schema rules and rating vocabulary* (still grounded
-  at runtime from `qualitymd spec`), explicitly excluding the *evaluation
-  process*, which the skill carries.
+  format" rule to the _format/schema rules and rating vocabulary_ (still grounded
+  at runtime from `qualitymd spec`), explicitly excluding the _evaluation
+  process_, which the skill carries.
 - **Revision**: Tightened [`lint --fix`](cli/lint.md)'s in-place write contract
   to avoid ambiguous symbolic-link replacement: repair should refuse a linted
   symlink path until symlink write semantics are specified.
@@ -1311,8 +1311,8 @@
 - **Revision**: Fleshed out the stub [`/quality`](skills/quality-skill/quality-skill.md) skill
   spec into a draft, working through the unblocked TODOs (inspired by the
   basecamp and shadcn/improve `SKILL.md` patterns). Promoted the use-case sketch
-  to normative requirements — resolving the open question as *evaluate is
-  read-only; improve recommends and applies only on explicit confirmation* — and
+  to normative requirements — resolving the open question as _evaluate is
+  read-only; improve recommends and applies only on explicit confirmation_ — and
   added: a **Boundaries and hard rules** section (judgment-vs-CLI division,
   evaluated content is untrusted data not instructions, never reproduce secrets,
   scoped-result-is-not-a-whole-model-verdict, determinism); **Invocation**
@@ -1327,7 +1327,7 @@
   rather than hard-code the surface); an **Evaluation workflow** that wraps the
   format spec's five Evaluation phases with mechanical read → lint → ground →
   evaluate → report steps; **Grounding judgment** (rate against declared
-  criteria, evidence per rating, *not assessed* over guessing, inferred weighted
+  criteria, evidence per rating, _not assessed_ over guessing, inferred weighted
   roll-up); **Rigor levels** (`quick`/`standard`/`deep` coverage); and
   **Reporting** (the Evaluation Report, scoped, human or `--json`), plus an
   illustrative (non-normative) commented-examples block sketching invocation
@@ -1336,7 +1336,7 @@
   with the CLI's deferred record/gate surface.
 - **Revision**: Firmed up [`SPECIFICATION.md`](../SPECIFICATION.md) to fully
   ground the [`lint`](cli/lint.md) rules — made the per-property YAML shapes
-  normative, defined a null/empty *required* value as absent, and stated the
+  normative, defined a null/empty _required_ value as absent, and stated the
   root-only `title`/`ratingScale` constraint as an explicit MUST NOT — then
   synced `lint`: broadened `invalid-frontmatter` to structural-shape conformance,
   added an "empty is absent" note, renamed `unresolved-factor` to `unknown-factor`

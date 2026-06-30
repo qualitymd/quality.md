@@ -30,9 +30,9 @@ in all capitals.
 structural frontmatter schema in Go for the linter. External consumers — editor
 validation/autocomplete for hand-authors, and third-party tools that exchange
 QUALITY.md documents — have no portable schema to point at without running the
-Go linter. A JSON Schema fills that gap, but only for the *structural* layer:
+Go linter. A JSON Schema fills that gap, but only for the _structural_ layer:
 shapes, presence, recursion, `minItems`, map-keyed entries, and the
-"at least one of factors/requirements/areas" rule. The *semantic* layer
+"at least one of factors/requirements/areas" rule. The _semantic_ layer
 (factor-reference resolution, rating-override keys matching declared levels, the
 placement-dependent factor-connection rule, level ordering and uniqueness) stays
 with the linter and cannot be expressed in JSON Schema. The artifact must
@@ -54,7 +54,7 @@ Covered: the companion JSON Schema artifact (its content and guarantees) and the
 
 Deferred / non-goals:
 
-- No JSON form of the specification *prose* — that is a separate deferral in
+- No JSON form of the specification _prose_ — that is a separate deferral in
   [`spec`](../../../specs/cli/spec.md) and is not this artifact.
 - The schema does not encode the linter's semantic rules; structural-only by
   design. A document the schema accepts can still fail `lint`.
@@ -79,17 +79,17 @@ Deferred / non-goals:
   requirement-reachability check that is semantic, not a structural key rule, so
   the schema does not encode it; see below.)
 
-  >> Rationale: the value of a companion schema is that it agrees with the tool;
-  >> a schema that accepts what the linter rejects (or vice versa) is worse than
-  >> none. — 0049
+  > > Rationale: the value of a companion schema is that it agrees with the tool;
+  > > a schema that accepts what the linter rejects (or vice versa) is worse than
+  > > none. — 0049
 
 - The artifact **MUST** be derived from the same structural schema the linter
   uses, such that it cannot encode a structural rule the linter does not, or omit
   one it does. The repository **MUST** carry a check (generation step or test)
   that fails when the shipped artifact and the structural schema disagree.
 
-  >> Rationale: two hand-maintained copies drift; binding the artifact to
-  >> `internal/schema` keeps the structural contract single-sourced. — 0049
+  > > Rationale: two hand-maintained copies drift; binding the artifact to
+  > > `internal/schema` keeps the structural contract single-sourced. — 0049
 
 - The artifact **MUST** identify itself as structural-only and non-normative,
   and point to `SPECIFICATION.md` as the normative source — e.g. via the
@@ -106,8 +106,8 @@ Deferred / non-goals:
   format's [Extensions](../../../SPECIFICATION.md#extensions) rules rather than
   forbidding all additional keys.
 
-  >> Rationale: the format permits extension frontmatter; a closed schema would
-  >> reject conforming documents that use it. — 0049
+  > > Rationale: the format permits extension frontmatter; a closed schema would
+  > > reject conforming documents that use it. — 0049
 
 ### The `qualitymd schema` command
 

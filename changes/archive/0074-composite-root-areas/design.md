@@ -17,7 +17,7 @@ change case and its [functional spec](spec.md).
 The authoring guide implicitly treats the root area as a single primary subject
 with one factor family — the "aim for ~ten root-level factors" heuristic assumes
 it. For most real entities in QUALITY.md's assumed context of use the root is a
-**composite**: one whole decomposed into distinct *kinds* of constituent
+**composite**: one whole decomposed into distinct _kinds_ of constituent
 artifacts, each with its own largely-disjoint factor family. The guide's existing
 split test already implies this but never names the shape, so authors default to
 a flat, product-factored root that either drops other high-leverage artifacts or
@@ -29,20 +29,20 @@ statement; the spec states the required content.
 
 ### Three decomposition shapes (recursive, composable)
 
-The shapes describe how *any* area decomposes, not a one-time root
+The shapes describe how _any_ area decomposes, not a one-time root
 classification. They apply at the root and recurse at every node:
 
 | Shape               | A node's children are                       | The node's own concern                                                       | Factor-count heuristic      |
 | ------------------- | ------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------- |
 | **Primary-subject** | none, or refinements; one factor family     | the subject's own factors                                                    | applies here                |
-| **Collection**      | many of the *same* kind                     | set-level concerns no member has (coverage, balance, non-redundancy)         | applies per member family   |
-| **Composite**       | many *different* kinds, each its own family | cross-part **coherence** (alignment, conformance, currentness between parts) | applies **per constituent** |
+| **Collection**      | many of the _same_ kind                     | set-level concerns no member has (coverage, balance, non-redundancy)         | applies per member family   |
+| **Composite**       | many _different_ kinds, each its own family | cross-part **coherence** (alignment, conformance, currentness between parts) | applies **per constituent** |
 
 The collection case is already covered by the guide's whole-set-concern material
 ("a test suite is a different area"); the composite case is the gap. The two are
-genuinely different: a collection holds *like* things judged by set-level
-concerns; a composite holds *unlike*, interdependent parts whose emergent concern
-is coherence *between* them — and that coherence is exactly the assessment-edge
+genuinely different: a collection holds _like_ things judged by set-level
+concerns; a composite holds _unlike_, interdependent parts whose emergent concern
+is coherence _between_ them — and that coherence is exactly the assessment-edge
 graph the guide already prizes in "Make the traceability graph visible". A real
 project is almost always composite, which is why a product-factored root felt
 wrong.
@@ -70,17 +70,17 @@ carries only the stewardship factors that recur across its constituents.
 ### Two sources of composite constituents
 
 - **Domain constituents** — intrinsic to the modeled entity's domain, so they
-  *vary*: product + requirements + docs (software); data + schema +
+  _vary_: product + requirements + docs (software); data + schema +
   collection-methodology (dataset); document + terminology-standard + sources
   (reference doc).
-- **Use-context constituents** — present because of *how QUALITY.md is used*, so
-  they *recur across domains*: the **agent harness** (the instructions steering
+- **Use-context constituents** — present because of _how QUALITY.md is used_, so
+  they _recur across domains_: the **agent harness** (the instructions steering
   the agent on the project) and the **QUALITY.md self-check** (the model's own
   quality).
 
 This is the `AGENTS.md` use-context-vs-model-domain distinction applied to area
-structure: we keep agnosticism in *what the constituents are about* while letting
-the agentic context of use determine *which constituents recur regardless*. A
+structure: we keep agnosticism in _what the constituents are about_ while letting
+the agentic context of use determine _which constituents recur regardless_. A
 dataset project and a document project carry different domain constituents but the
 same two use-context constituents.
 
@@ -100,13 +100,13 @@ guide must say so or authors will model them wrong:
 
 ### Root-level factors, made precise
 
-At a composite root, declare only factors that genuinely *recur across every
-constituent* — typically the stewardship/internal lenses (currentness,
+At a composite root, declare only factors that genuinely _recur across every
+constituent_ — typically the stewardship/internal lenses (currentness,
 traceability, consistency, maintainability), each **refined** per child.
 Artifact-specific experiential factors (reliability/security for a runtime
 product; credibility for docs) stay local to their constituent. This is the
 precise meaning "model-wide factors at the root" should carry, and it is why the
-~ten-factor heuristic moves to *per primary subject / per constituent*.
+~ten-factor heuristic moves to _per primary subject / per constituent_.
 
 ### Where it lands
 
@@ -148,7 +148,7 @@ precise meaning "model-wide factors at the root" should carry, and it is why the
   learn. Mitigated by additive subsections and a single table; a primary-subject
   author can ignore it.
 - **Over-decomposition.** Authors may split trivially. Mitigation: the split is
-  *earned by each constituent having a real, separately-trusted factor family* —
+  _earned by each constituent having a real, separately-trusted factor family_ —
   stated explicitly; a narrow product with thin docs need not decompose.
 - **Roll-up confusion** around the self-check's out-of-band axis. Mitigation:
   state it inline and cross-link the two-loops section.

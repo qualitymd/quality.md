@@ -46,9 +46,9 @@ Deferred — owned elsewhere, not restated here:
 - The CLI command behaviors themselves (changes 0013/0014/0015).
 - The skill's evaluation **rigor and efficiency** — effort levels, evidence rigor,
   rating-binding re-check, batched writes, deep fan-out — owned by sibling change
-  [0017](0017-skill-rigor-efficiency.md). This change governs *which mechanical
-  surface produces the artifacts*; 0017 governs *how much judgment and verification
-  goes into them*. They share the skill prompt but not requirements.
+  [0017](0017-skill-rigor-efficiency.md). This change governs _which mechanical
+  surface produces the artifacts_; 0017 governs _how much judgment and verification
+  goes into them_. They share the skill prompt but not requirements.
 
 No code here — `Design` authorizes only this change's own folder plus the
 change parent, bundle index, and bundle log.

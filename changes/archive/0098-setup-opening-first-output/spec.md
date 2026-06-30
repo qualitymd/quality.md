@@ -9,8 +9,8 @@ timestamp: 2026-06-25T00:00:00Z
 # Setup opening as first output — functional spec
 
 Companion to the [Setup opening as first output](../0098-setup-opening-first-output.md)
-change case. This spec states *what* the change must do; the
-[design doc](design.md) covers *how*.
+change case. This spec states _what_ the change must do; the
+[design doc](design.md) covers _how_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119 and RFC 8174.

@@ -78,31 +78,25 @@ Specs:
 - [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) - define unqualified references,
       allowed render/accept contexts, Area/Factor/Rating forms, and persistence
       limits.
-- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md)
-      - allow the Area Breakdown `Path` column to use unqualified Area
+- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md) - allow the Area Breakdown `Path` column to use unqualified Area
       references.
 - [x] [`specs/reports/report-md.md`](../../specs/reports/report-md.md) - keep the
       full report's shared compact Area Breakdown aligned with summary behavior.
 - [x] [`specs/reports/report-json.md`](../../specs/reports/report-json.md) and
-      [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md)
-      - preserve structured path arrays and forbid durable machine reliance on
+      [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md) - preserve structured path arrays and forbid durable machine reliance on
       unqualified strings.
-- [x] [`specs/skills/quality-skill/reporting.md`](../../specs/skills/quality-skill/reporting.md)
-      - align skill-facing report guidance with unqualified Area Breakdown paths
+- [x] [`specs/skills/quality-skill/reporting.md`](../../specs/skills/quality-skill/reporting.md) - align skill-facing report guidance with unqualified Area Breakdown paths
       in human reports and structured identifiers in `report.json`.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      and [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md)
-      - align fixed-type input guidance with unqualified references.
+      and [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md) - align fixed-type input guidance with unqualified references.
 - [x] OKF logs under [`specs/`](../../specs/log.md) - record durable spec updates.
 
 Runtime skill and docs:
 
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) and
-      [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md)
-      - distinguish canonical typed references from unqualified fixed-type
+      [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md) - distinguish canonical typed references from unqualified fixed-type
       references.
-- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md)
-      - update the bundled specification copy when `SPECIFICATION.md` changes.
+- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md) - update the bundled specification copy when `SPECIFICATION.md` changes.
 - [x] [`CHANGELOG.md`](../../CHANGELOG.md) - add the unreleased entry when the
       implementation lands.
 

@@ -13,8 +13,8 @@ timestamp: 2026-06-24T00:00:00Z
 Answers the [functional spec](spec.md) for the
 [0081 change case](../0081-harnessability-factor.md). The work is a guidance
 addition across the bundled skill and its spec mirror, plus a README use case — no
-code. The design questions are *which projection* the agent-collaboration concern
-should lead with, *what* the sub-factors are, and *how* to keep them from
+code. The design questions are _which projection_ the agent-collaboration concern
+should lead with, _what_ the sub-factors are, and _how_ to keep them from
 double-counting against each other, the existing common factors, and the agent
 harness constituent.
 
@@ -25,12 +25,12 @@ harness constituent.
 The guide's [three-projections rule](../../../skills/quality/guides/authoring.md)
 already says a stewardship concern projects as a **factor**, a **constituent**, and
 an **audience**. The agent-collaboration concern was modeled only as a constituent
-(the agent harness). The fix is not to move it but to *add the projection that was
-missing*: harnessability as the **factor**, the agent harness as the
+(the agent harness). The fix is not to move it but to _add the projection that was
+missing_: harnessability as the **factor**, the agent harness as the
 **constituent** (unchanged, still model-by-default per 0080), the agent as the
 **audience**.
 
-The factor is the better *lead* because the quality recurs across constituents —
+The factor is the better _lead_ because the quality recurs across constituents —
 every part of a repo is more or less legible, steerable, and verifiable to an agent
 — which is the guide's own definition of a model-wide factor. And a factor is never
 dropped for thinness, where an area can be deferred as immature. That property is
@@ -41,9 +41,9 @@ survives a project with no tests.
 ### 2. Derive the sub-factors from the harness-engineering discourse, then verify adversarially
 
 The six sub-factors are not invented; they are the convergent dimensions of the
-2025–2026 harness-engineering literature (Böckeler/Thoughtworks' *guides and
-sensors*; OpenAI's *agent legibility* and *system-of-record*; Augment's
-*constraint harnesses / feedback loops / quality gates*), clustered and then run
+2025–2026 harness-engineering literature (Böckeler/Thoughtworks' _guides and
+sensors_; OpenAI's _agent legibility_ and _system-of-record_; Augment's
+_constraint harnesses / feedback loops / quality gates_), clustered and then run
 through an adversarial overlap critique against QUALITY.md's existing factor
 families. They trace the agent's working loop:
 
@@ -57,9 +57,9 @@ families. They trace the agent's working loop:
 | stay bounded (action)         | containment-of-action    |
 
 The critique forced four corrections that shaped the final set: it dropped a
-*runtime-transparency* candidate (a renamed `observability`), folding only its
+_runtime-transparency_ candidate (a renamed `observability`), folding only its
 distinct slice — in-context reachability of runtime data — into
-`agent-accessibility`; it dropped a *self-correctiveness* candidate as a meta-loop
+`agent-accessibility`; it dropped a _self-correctiveness_ candidate as a meta-loop
 that improves the others (routed to the model-wide learn loop, not a sibling); it
 added `task-specifiability` as the genuinely-missing front-of-loop dimension; and
 it pinned the remediation-bearing-feedback requirement to `self-verifiability`
@@ -67,9 +67,9 @@ alone, leaving `agent-accessibility` only static guidance prose.
 
 ### 3. Split boundedness into output vs action
 
-The critique's fused *agent-boundedness* candidate bundled two qualities that hold
-independently: enforcement of standards on *output* (a project can block
-non-compliant output) and containment of *action* (yet still permit a destructive
+The critique's fused _agent-boundedness_ candidate bundled two qualities that hold
+independently: enforcement of standards on _output_ (a project can block
+non-compliant output) and containment of _action_ (yet still permit a destructive
 action). They are modeled as two sub-factors so one rating cannot absorb two
 non-correlated signals. `enforcement-of-standards` is a quality gate on the agent's
 output; `containment-of-action` is blast-radius control and explicitly cedes
@@ -79,9 +79,9 @@ external threat posture to the `security` common factor where an area carries it
 
 Each sub-factor carries a boundary note in the spec because the failure mode of an
 umbrella factor is silent double-counting. The two that matter most: the
-factor-vs-constituent boundary (harnessability rates *each constituent's*
-agent-equipping; the agent-harness *area* rates the *steering artifact's own*
-quality; harnessability is not assessed *on* that area, which would recurse the
+factor-vs-constituent boundary (harnessability rates _each constituent's_
+agent-equipping; the agent-harness _area_ rates the _steering artifact's own_
+quality; harnessability is not assessed _on_ that area, which would recurse the
 same evidence), and the sub-factor-vs-common-factor boundaries
 (`agent-accessibility` vs `understandability`/`observability`,
 `agent-operability` vs `operability`, `self-verifiability` vs `testability`,
@@ -93,15 +93,15 @@ it once.
 
 QUALITY.md is quality-domain agnostic in what a model evaluates, so the sub-factor
 definitions must not assume the evaluated project is software under development. The
-first synthesis defined the operate sub-factor as *bringing up a development
-environment* — a runnable build, a checked-in setup script, per-worktree isolation,
+first synthesis defined the operate sub-factor as _bringing up a development
+environment_ — a runnable build, a checked-in setup script, per-worktree isolation,
 an inner loop — which silently made software-product quality the default. It is
 renamed **agent-operability** and redefined as the agent's ability to establish and
-operate its *working environment* — the tools, data, accounts, and systems the work
+operate its _working environment_ — the tools, data, accounts, and systems the work
 runs on — from recorded materials; a runnable dev environment is one instance, a
 budgeting project's connected accounts and a legal case's loaded matter are others.
 
-The rename also names the *quality* (operability), not a state (readiness), per
+The rename also names the _quality_ (operability), not a state (readiness), per
 [Name the quality, not the practice](../../../skills/quality/guides/authoring.md),
 and completes a pattern the loop's core already half-followed: **agent-accessibility**,
 **agent-operability**, and **self-verifiability** are each a general common factor
@@ -113,7 +113,7 @@ moves into the description, where subject-specific interpretation belongs.
 The other five keep domain-neutral definitions with software as one illustrative
 instance among several (a legal filing's citation check, a budget's reconciliation),
 not the definition. `containment-of-action`'s sandbox/permission language is agentic
-*use context*, not a software *modeled domain*, so it stays.
+_use context_, not a software _modeled domain_, so it stays.
 
 ## Alternatives
 
@@ -128,13 +128,13 @@ not the definition. `containment-of-action`'s sandbox/permission language is age
   `understandability` to an agent audience. `agent-accessibility` carries the
   legibility slice as a sub-factor.
 - **Name the operate sub-factor plain `operability` (no prefix).** Rejected: the
-  model already carries `operability` as the common factor for the *operate*
+  model already carries `operability` as the common factor for the _operate_
   stewardship concern (the entity's fitness to be run in its live setting), so an
   unprefixed name would give two different qualities one identifier and collapse the
   boundary that separates them. The `agent-` prefix buys the distinction, the same
   way `agent-accessibility` is distinguished from `understandability`.
 - **Keep the four-factor "static equipping" spine** (drop `task-specifiability`).
-  Rejected: the front of the loop — can the *work* be scoped and given success
+  Rejected: the front of the loop — can the _work_ be scoped and given success
   criteria — is distinct from perceiving the project, and was smeared across
   `agent-accessibility`/`agent-operability` in the first synthesis.
 - **Keep boundedness fused.** Considered; rejected by the user in favor of the

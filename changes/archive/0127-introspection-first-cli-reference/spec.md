@@ -10,7 +10,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Introspection-first CLI workflow conventions](../0127-introspection-first-cli-reference.md)
-change case. This spec states *what* the refocus must achieve; no design doc is
+change case. This spec states _what_ the refocus must achieve; no design doc is
 planned. The skill's contract is defined by
 [`specs/skills/quality-skill/quality-skill.md`](../../../specs/skills/quality-skill/quality-skill.md)
 (normative); the CLI's introspection contract is defined by
@@ -44,7 +44,7 @@ discovery to introspection, and the skill-spec reconciliation.
 Out of scope (unchanged):
 
 - The CLI's introspection surface — per-command `--help`, `evaluation data
-  kinds`/`example`/`schema`, `--json` — already exists; this case consumes it.
+kinds`/`example`/`schema`, `--json` — already exists; this case consumes it.
 - The CLI's help output, command behavior, and exit codes.
 - The skill's other resources and workflows, except references that point at the
   refocused resource.
@@ -63,17 +63,17 @@ remaining content is workflow convention.
   `data example`, `data schema`) already provide, including the `model`
   command-shape rows landed by 0125.
 
-  >> Rationale: an embedded copy of the CLI's own command/flag surface is the
-  >> "list that drifts" the skill spec forbids (`quality-skill.md:589-591`); a
-  >> breaking CLI change otherwise has to hand-edit it. — 0127
+  > > Rationale: an embedded copy of the CLI's own command/flag surface is the
+  > > "list that drifts" the skill spec forbids (`quality-skill.md:589-591`); a
+  > > breaking CLI change otherwise has to hand-edit it. — 0127
 
 - **RF2 — Retain non-introspectable conventions.** The resource **MUST** retain
   the workflow conventions the CLI's help cannot express: the `.quality/`
   workspace-artifact layout, feedback-log sequencing, the narrowing-slug rule,
   the do/don't command rules, and cross-command orchestration sequences.
 
-  >> Rationale: these have no CLI home; removing the resource wholesale would
-  >> orphan them. The split keeps what is uniquely the skill's. — 0127
+  > > Rationale: these have no CLI home; removing the resource wholesale would
+  > > orphan them. The split keeps what is uniquely the skill's. — 0127
 
 - **RF3 — Introspection-first routing.** The skill **MUST** direct its
   command, flag, and payload discovery to the CLI's introspection channels
@@ -85,9 +85,9 @@ remaining content is workflow convention.
   structured forms (`--json`, `data schema`, `data example`) over human-formatted
   help tables, whose wording is not a guaranteed-stable contract.
 
-  >> Rationale: `data kinds`' human output is tab-delimited free text; the
-  >> stability guarantees in `specs/cli.md` attach to `--json`/schema/example. —
-  >> 0127
+  > > Rationale: `data kinds`' human output is tab-delimited free text; the
+  > > stability guarantees in `specs/cli.md` attach to `--json`/schema/example. —
+  > > 0127
 
 - **RF5 — Reconcile the spec.** `quality-skill.md` **MUST NOT** both prescribe an
   embedded command/flag listing and mandate introspection over embedding. The

@@ -46,7 +46,7 @@ Setup closeout should stop saying `Maturity:` and stop producing
 - lint reports validity;
 - important gaps report model-usefulness concerns;
 - the next action is one of `continue iterating on QUALITY.md`, `run /quality
-  evaluate`, or `stop here`.
+evaluate`, or `stop here`.
 
 The "important gaps" check reuses the same underlying concerns that made the old
 maturity check useful — thin body context, unmodeled germane constituents, missing

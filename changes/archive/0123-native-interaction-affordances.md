@@ -15,8 +15,8 @@ contract mandates a prose rendering — numbered options with an `Answer` line f
 closed choices, a `[y]`/`[n]` decision brief for gates — and only one workflow
 (`setup`) has locally climbed out of that default to say "render through your own
 interaction capabilities." This case lifts that pattern into the shared contract
-so every workflow inherits it, and reframes the prose blocks as the *text
-fallback* rather than the sole required form.
+so every workflow inherits it, and reframes the prose blocks as the _text
+fallback_ rather than the sole required form.
 
 Detail lives in:
 
@@ -45,8 +45,8 @@ real picker.
 
 Only the setup workflow escaped this. Its "How to present them" block
 ([`skills/quality/workflows/setup.md`](../../skills/quality/workflows/setup.md))
-already says *"Choose the presentation form from your own interaction
-capabilities. Do not assume or name a specific question UI,"* with three tiers:
+already says _"Choose the presentation form from your own interaction
+capabilities. Do not assume or name a specific question UI,"_ with three tiers:
 Markdown rendering, a structured question tool (page questions through it, keep
 the teaching in the message), and a no-affordance fallback. That pattern is
 correct and agent-agnostic — it is simply trapped in one workflow.
@@ -55,7 +55,7 @@ A second, related gap: some confirmation gates fire for mutations the harness
 itself will prompt to authorize (external issue creation, installed-tooling
 mutation). Stacking a hand-rolled prose `[y]`/`[n]` gate on top of a native
 authorization prompt is redundant friction — the binary-confirm intent should be
-rendered *through* the native gate, with the teaching in the preceding message.
+rendered _through_ the native gate, with the teaching in the preceding message.
 
 The fix changes presentation contract only. It does not change any mutation
 boundary, confirmation requirement, or quality, evaluation, or CLI semantics: a
@@ -69,8 +69,8 @@ Covered:
   "Channels and progressive enhancement" section (intent over rendering, native
   affordance taxonomy, not-fit-for-purpose tests), reframes closed-choice and
   decision gates as renderings of an intent, adds a "don't double-gate a harness
-  authorization prompt" rule, and updates the checklist. *(Already applied; this
-  case accounts for it.)*
+  authorization prompt" rule, and updates the checklist. _(Already applied; this
+  case accounts for it.)_
 - Lift the three-tier "render through your own interaction capabilities" pattern
   out of `setup` and into the shared `/quality` interaction contract
   (`SKILL.md` and the `quality-skill.md` spec) so all workflows inherit it.
@@ -156,7 +156,7 @@ verification-only kinds are deliberate.
 - [x] `docs/guides/agent-mediated-ux.md` — "Channels and progressive enhancement"
       section added, closed-choice and decision-gate sections reframed as
       renderings of an intent, no-double-gate rule added, checklist updated.
-      *(Applied.)*
+      _(Applied.)_
 - [x] `skills/quality/SKILL.md` — add the progressive-enhancement contract to the
       User Interaction Contract; reframe the numbered-option and decision-brief
       templates as the text fallback; add the no-double-gate rule.

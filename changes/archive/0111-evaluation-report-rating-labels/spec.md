@@ -96,15 +96,15 @@ report child Factors table each list a subject's children with one row per child
 ## Acceptance Criteria
 
 - The Area report header table reads `| Overall Rating | Local Rating |
-  Confidence | Data |`.
+Confidence | Data |`.
 - The Factor report header table reads `| Overall Rating | Local Rating |
-  Status | Confidence | Data |`.
+Status | Confidence | Data |`.
 - The Area report Factors table header reads `| Factor | Path | Local Rating |
   - Sub-Factors Rating | Sub-Factors |`, with`Local Rating`sourced from`localAnalysis`and`+ Sub-Factors Rating`from`localAndDescendantAnalysis`.
 - The Area report Sub-Areas table header reads `| Area | Path | Local Rating |
   - Sub-Areas Rating | Factors |`, sourced the same way.
 - The Factor report child Factors table header reads `| Factor | Path |
-  Local Rating | + Sub-Factors Rating |`, sourced the same way.
+Local Rating | + Sub-Factors Rating |`, sourced the same way.
 - A breakdown row for a child with no descendants renders `—` in its
   `+ Sub-X Rating` cell.
 - No generated report renders a `✅ Yes` / `⬜ No` boolean in a rating column.

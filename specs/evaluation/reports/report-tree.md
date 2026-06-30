@@ -182,9 +182,9 @@ Known fixed enum report displays are:
 | Confidence            | `low`                         | `🟡 Low`                         |
 | Confidence            | `none`                        | `⚪ None`                        |
 | Finding type          | `gap`                         | `🚩 Gap`                         |
-| Finding type          | `risk`                        | `⚠️ Risk`                         |
+| Finding type          | `risk`                        | `⚠️ Risk`                        |
 | Finding type          | `strength`                    | `💪 Strength`                    |
-| Finding type          | `note`                        | `ℹ️ Note`                         |
+| Finding type          | `note`                        | `ℹ️ Note`                        |
 | Finding severity      | `critical`                    | `🔴 Critical`                    |
 | Finding severity      | `high`                        | `🔴 High`                        |
 | Finding severity      | `medium`                      | `🟡 Medium`                      |
@@ -204,7 +204,7 @@ Known fixed enum report displays are:
 | Finding coverage      | `addressed_by_recommendation` | `✅ Addressed by Recommendation` |
 | Finding coverage      | `not_advice_driving`          | `⬜ Not Advice Driving`          |
 | Report kind           | `run`                         | `📄 Run`                         |
-| Report kind           | `area`                        | `🗺️ Area`                         |
+| Report kind           | `area`                        | `🗺️ Area`                        |
 | Report kind           | `factor`                      | `🧩 Factor`                      |
 | Report kind           | `requirement`                 | `📋 Requirement`                 |
 | Report kind           | `findings`                    | `🔝 Findings`                    |

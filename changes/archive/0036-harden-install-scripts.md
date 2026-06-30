@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # Harden install scripts and upgrade idiomatics
 
-A **Change Case** capturing the *why* and *status* for a focused hardening pass
+A **Change Case** capturing the _why_ and _status_ for a focused hardening pass
 on the `qualitymd` install and upgrade surfaces. The detail lives in its
 [functional spec](0036-harden-install-scripts/spec.md) and
 [design doc](0036-harden-install-scripts/design.md).
@@ -24,7 +24,7 @@ in the details that imitate those idioms:
 
 1. **Checksum verification is dead on most Linux.** `install.sh` gates SHA-256
    verification on `command -v shasum`; stock Linux ships `sha256sum`, not
-   `shasum`, so the downloaded `checksums.txt` is verified against *nothing* on a
+   `shasum`, so the downloaded `checksums.txt` is verified against _nothing_ on a
    typical Linux host — and the skip is silent.
 2. **`install.ps1` can fail on stock Windows.** Windows PowerShell 5.1 defaults
    to TLS 1.0/1.1, which GitHub's endpoints reject, so `Invoke-WebRequest` can

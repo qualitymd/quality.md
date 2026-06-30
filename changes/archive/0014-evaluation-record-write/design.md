@@ -9,10 +9,10 @@ timestamp: 2026-06-17T00:00:00Z
 # Evaluation record write — design doc
 
 Design behind the [Evaluation record write](../0014-evaluation-record-write.md)
-change and its [functional spec](spec.md). The spec fixes *what*
+change and its [functional spec](spec.md). The spec fixes _what_
 `qualitymd evaluation add-record assessment|analysis|recommendation <run>` must
 do — the input channel, numbering, `schemaVersion` stamping, validation, atomic
-write, and outputs. This doc covers *how* the code makes it so, on the
+write, and outputs. This doc covers _how_ the code makes it so, on the
 established Go + Cobra + Fang stack, and why a new package owns the record layer
 rather than reusing `internal/schema` or `internal/document`.
 
@@ -31,7 +31,7 @@ record per invocation into that already-existing run.
 Three forces shape the design:
 
 1. **Records are not QUALITY.md documents.** The existing `internal/schema`,
-   `internal/model`, and `internal/document` packages model the *quality model*
+   `internal/model`, and `internal/document` packages model the _quality model_
    frontmatter — targets, factors, requirements, rating scale. A record is a
    different artifact: a flat JSON judgment object (assessment, analysis) or a
    Markdown-with-frontmatter advice file (recommendation). Their field sets do
@@ -39,10 +39,10 @@ Three forces shape the design:
    `internal/model`'s typed `Spec` validates a record.
 
 2. **The atomic-write helper does not fit.** `document.WriteAtomic` is built for
-   *replacing an existing* QUALITY.md: it `Lstat`s the target (erroring if it is
+   _replacing an existing_ QUALITY.md: it `Lstat`s the target (erroring if it is
    absent), preserves the prior mode, and refuses symlinks. Records are new
    files in a fresh run; assessment and recommendation writes must additionally
-   *fail* if the computed `NNN` path already exists (collision detection), which
+   _fail_ if the computed `NNN` path already exists (collision detection), which
    a replace-in-place helper cannot express.
 
 3. **The CLI owns numbering and stamping; the skill owns judgment.** The payload
@@ -62,8 +62,8 @@ selection, `--json` routing, and exit status — mirroring how `lint`/`init`
 delegate to `internal/lint`/`internal/scaffold`.
 
 This package is deliberately separate from `internal/schema`/`internal/model`:
-those define the QUALITY.md *model*; `internal/evaluation` defines the *run
-outputs*. It depends on `internal/model` only to read the run's rating scale (see
+those define the QUALITY.md _model_; `internal/evaluation` defines the _run
+outputs_. It depends on `internal/model` only to read the run's rating scale (see
 [rating validation](#rating-validation-reads-the-runs-modelmd)), and on
 `internal/receipt` for the shared `Action` type. The dependency runs one way —
 `evaluation` may import `model`/`document`/`receipt`; none import `evaluation`.
@@ -269,8 +269,8 @@ refuses to write.
   `internal/evaluation` is smaller, gives precise field-level messages, and keeps
   the two artifact families' contracts from entangling.
 - **Reuse `document.WriteAtomic` for record writes.** Rejected. It is built to
-  *replace an existing* file (it `Lstat`s the target and errors when absent, and
-  refuses symlinks). Records are new files, and numbered records must *fail* on an
+  _replace an existing_ file (it `Lstat`s the target and errors when absent, and
+  refuses symlinks). Records are new files, and numbered records must _fail_ on an
   existing target to detect collisions — the opposite of replace-in-place. A small
   create-or-fail / create-or-replace writer in `internal/evaluation` expresses
   both placements; the temp-then-rename mechanics are shared by convention, not by
@@ -293,7 +293,7 @@ refuses to write.
   output deterministic and keeps the human layout a CLI concern; a pass-through
   body would let the skill own serialization, against the contract.
 - **Read the rating scale from the working-directory `QUALITY.md`.** Rejected. The
-  run's `model.md` snapshot is the authority for *that run*; reading the live file
+  run's `model.md` snapshot is the authority for _that run_; reading the live file
   would let a mid-run model edit silently change what ratings are valid.
 
 ## Trade-offs & risks

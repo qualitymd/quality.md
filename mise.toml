@@ -1,5 +1,5 @@
 [tools]
-dprint = "0.54.0"
+"npm:prettier" = "3.9.4"
 go = "1.26"
 goreleaser = "latest"
 golangci-lint = "2"
@@ -40,16 +40,16 @@ description = "Run the full CI gate locally (format, tidy, vet, lint, test, gene
 depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "docs-links-check", "npm-pack-check"]
 
 [tasks.fmt]
-description = "Format the codebase (Go + Markdown)"
-run = ["gofmt -w .", "dprint fmt"]
+description = "Format the codebase (Go + Markdown/MDX)"
+run = ["gofmt -w .", "prettier --write \"**/*.{md,mdx}\""]
 
 [tasks.fmt-md]
-description = "Format Markdown files with dprint"
-run = "dprint fmt"
+description = "Format Markdown and MDX files with prettier"
+run = "prettier --write \"**/*.{md,mdx}\""
 
 [tasks.fmt-md-check]
-description = "Check Markdown formatting without writing (CI-friendly)"
-run = "dprint check"
+description = "Check Markdown/MDX formatting without writing (CI-friendly)"
+run = "prettier --check \"**/*.{md,mdx}\""
 
 [tasks.hooks]
 description = "Install the repo's git hooks (run once after clone)"

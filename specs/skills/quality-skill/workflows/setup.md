@@ -131,7 +131,7 @@ preview, the discovery questions, the human context checkpoint, or the review
 gate.
 
 > Annotation: 0096 added the opening but a field run showed it did not reach the
-> user *first* — the agent front-loaded CLI checks, repository scans, and even the
+> user _first_ — the agent front-loaded CLI checks, repository scans, and even the
 > feedback-log write before flushing any text, so the welcome, run frame, and
 > preview all arrived after 1–2 minutes of silence. The fix is ordering: the
 > opening and run frame have no tool dependency (the frame's only variable, the
@@ -737,7 +737,7 @@ are owned by the [Setup feedback log](setup/feedback-log.md) sub-spec. Writing,
 updating, or finalizing a feedback log **MUST NOT** change setup's completion
 criteria, important-gap judgment, or next-step routing.
 
-> Annotation: the feedback log records the *experience* of running setup so the
+> Annotation: the feedback log records the _experience_ of running setup so the
 > skill, CLI, and prompts can improve from real runs — distinct from the user-
 > facing completion summary, which stays terse. Always creating the log removes
 > ambiguity from absence and preserves partial feedback when a setup run is

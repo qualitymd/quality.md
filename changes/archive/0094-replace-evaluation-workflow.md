@@ -74,8 +74,9 @@ Deferred:
 - [x] `specs/cli.md` - align the shared CLI contract with Evaluation v2
       artifact JSON behavior where needed.
 - [x] `specs/cli/evaluation-*.md` - replace the current evaluation command
-      surface with `evaluation create`, `evaluation data set`, `evaluation data
-      list/get/kinds/example`, `evaluation status`, `evaluation list`, and
+      surface with `evaluation create`, `evaluation data set`,
+      `evaluation data list/get/kinds/example`, `evaluation status`,
+      `evaluation list`, and
       `evaluation report build`.
 - [x] `specs/skills/quality-skill/evaluation.md` and
       `specs/skills/quality-skill/reporting.md` - replace the durable skill

@@ -12,21 +12,21 @@ timestamp: 2026-06-24T00:00:00Z
 A **Change Case** to bring the repo's example corpus and front-door guidance into
 alignment with the doctrine guide added by
 [0083](0083-quality-domain-agnosticism.md). 0083 made the agnosticism claim
-*operational* — it added
+_operational_ — it added
 [Modeling quality across domains](../../docs/guides/model-quality-across-domains.md)
 and aligned the first-pass domain enumerations. A multi-agent content audit
 against that now-authoritative guide then found the repo carries **no normative
 (P0) violations** and strong register and care-not-conformance discipline — but a
-recurring residual pattern the guide exists to prevent: every *worked* example in
-the repo is software, several are the *same* one, and a few high-traffic guidance
+recurring residual pattern the guide exists to prevent: every _worked_ example in
+the repo is software, several are the _same_ one, and a few high-traffic guidance
 surfaces still under-state the doctrine.
 
 Each individual example is fine — illustrative-marked, with factors visibly
-earned. The gap is at the level of the *corpus*: the guide's own documentation-set
+earned. The gap is at the level of the _corpus_: the guide's own documentation-set
 worked example is currently the only non-software counterweight to the README
 example, the `SPECIFICATION.md` minimal example, and the `0001` skill fixture
 (rendered again by the report specs). This case closes that gap so the example set
-*demonstrates* invariance rather than asserting it, and brings the
+_demonstrates_ invariance rather than asserting it, and brings the
 highest-leverage guidance (the `AGENTS.md` summary, the README front door) into
 full agreement with the guide.
 
@@ -42,15 +42,15 @@ Detail lives in:
 ## Motivation
 
 A domain-agnostic format proven only against software is not proven. 0083 supplied
-the doctrine and one worked non-software example *inside the guide*; the rest of
+the doctrine and one worked non-software example _inside the guide_; the rest of
 the repo's worked examples remain software, so a contributor reading the README,
 the spec's minimal example, or the skill's reference evaluation still sees
 software as the de facto "real" example. The audit confirmed this is the dominant
 residual pattern, alongside two cheap, high-leverage guidance gaps: the `AGENTS.md`
 domain-agnostic summary omits the guide's most concrete and most-violated rule
 (factors are earned per Model; never adopt a standard's characteristic list), and
-the README opening pins the *modeled domain* to AI-assistant and coding-agent
-projects rather than keeping that agentic framing in the *use context* where it
+the README opening pins the _modeled domain_ to AI-assistant and coding-agent
+projects rather than keeping that agentic framing in the _use context_ where it
 belongs. `AGENTS.md` is the single source for the gitignored `CLAUDE.md`/`GEMINI.md`
 symlinks, so the summary gap propagates to every agent reading this repo's
 instructions — the highest-leverage single fix in the set.
@@ -63,14 +63,14 @@ Covered:
   reference example set, in a cite-worthy secondary domain distinct from both the
   existing software-service example (`0001`) and the guide's documentation-set
   example.
-- Give the existing software example corpus an explicit *domain-illustrative*
-  marking — distinct from the current *fiction* disclaimer about invented subjects
+- Give the existing software example corpus an explicit _domain-illustrative_
+  marking — distinct from the current _fiction_ disclaimer about invented subjects
   and locators — and cross-link the guide's worked non-software example.
 - Add the factors-earned-per-Model / no-default-characteristic-list rule to the
   `AGENTS.md` domain-agnostic summary.
 - Re-scope the README so the opening presents the modeled domain as agnostic
   (preserving the agent- and skill-first use context) and the Agent Harnessability
-  material reads as one illustrative factor family a project *earns* for an
+  material reads as one illustrative factor family a project _earns_ for an
   agent-collaborated entity, with a domain-neutral counterweight — not a built-in
   capability or default factor.
 - Optional reinforcements: a non-software bracket in the Top 10 readiness check, a

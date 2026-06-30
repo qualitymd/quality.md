@@ -25,7 +25,7 @@ capitals.
 
 ## Background / Motivation
 
-The big-picture *why* is recorded in the
+The big-picture _why_ is recorded in the
 [parent concept's Motivation](../0120-string-model-identity-fields.md#motivation):
 one identity concept is persisted in three physical shapes (a string
 `ratingLevelId`, an array `areaId`, and object `factorId` / `requirementId`),
@@ -158,18 +158,18 @@ artifact spec, but creating it is not required for this case to land.)
 - `specs/evaluation/records/json-conventions.md` — rewrite "Identity And
   References" so persisted identity fields are canonical qualified
   model-reference strings, dropping the structured-shape mandate and the ban on
-  string forms (per the *Persisted identity fields* requirements above); promote
+  string forms (per the _Persisted identity fields_ requirements above); promote
   the losslessness and reversal rationale into the spec.
 - `specs/evaluation/records/payload-kinds.md` — align the per-kind identity field
-  descriptions with the string shape (per the *Persisted identity fields*
+  descriptions with the string shape (per the _Persisted identity fields_
   requirements above).
 - `specs/evaluation/reports/report-tree.md` — align the ordering rules that name
   "declaring Area ID and structural Factor path / Requirement name" with the
-  string shape (per the *Persisted identity fields* requirements above).
+  string shape (per the _Persisted identity fields_ requirements above).
 - `SPECIFICATION.md` — reserve `root` as a forbidden Area name in the name-grammar
-  section (per the *Reserved `root` Area name* requirement above).
+  section (per the _Reserved `root` Area name_ requirement above).
 - `specs/cli/lint-rules.md` and `specs/cli/lint.md` — add the reserved-`root`
-  Area-name diagnostic (per the *Reserved `root` Area name* requirement above).
+  Area-name diagnostic (per the _Reserved `root` Area name_ requirement above).
 
 ### To rename
 

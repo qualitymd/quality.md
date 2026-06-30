@@ -18,29 +18,29 @@ change case and its [functional spec](spec.md).
 generator for a composite root's constituent kinds, with stewardship concerns as
 one of its two axes. Its framing sentence — a concern "tends to leave an
 authored, inspectable artifact that is a candidate constituent" — is
-artifact-first: it reads as *enumerate the residue*, and it lets a reader treat a
+artifact-first: it reads as _enumerate the residue_, and it lets a reader treat a
 folder's presence as a concern met. That is serviceable but slightly off from
 what the generator is for.
 
 Two essays by B. Scot Rousse and David Spivak —
-[*Notes on care*](https://withoutwhy.substack.com/p/notes-on-care-with-david-spivak-a)
-and [*Clarifications of care*](https://withoutwhy.substack.com/p/clarifications-of-care)
+[_Notes on care_](https://withoutwhy.substack.com/p/notes-on-care-with-david-spivak-a)
+and [_Clarifications of care_](https://withoutwhy.substack.com/p/clarifications-of-care)
 — supply a sharper footing. Their load-bearing claims, for our purposes:
 
-- Care is something one *does and is*, "tending and attending to what matters",
+- Care is something one _does and is_, "tending and attending to what matters",
   not a possession or a list of values. Its artifacts are its trace.
-- "Doing what is required, *well*" — the *well* is attunement, not mere presence
+- "Doing what is required, _well_" — the _well_ is attunement, not mere presence
   or efficiency.
-- The *required* is what the situation addresses to the carer: "to experience
+- The _required_ is what the situation addresses to the carer: "to experience
   something as required is to find oneself addressed; the situation makes a
   claim."
-- Caregiving is the intensified, *asymmetric* mode of care — responsibility
+- Caregiving is the intensified, _asymmetric_ mode of care — responsibility
   toward a vulnerable other who cannot fully protect itself.
 - Care is open-ended: "always more to do."
 
 A caveat that shapes scope: despite Spivak's billing, the published essays are
 phenomenological, not categorical — they contain no functors, lenses, or
-adjunctions. So this change takes the *framing*, not a formal apparatus (see
+adjunctions. So this change takes the _framing_, not a formal apparatus (see
 [Alternatives](#alternatives)).
 
 ## Approach
@@ -50,18 +50,18 @@ adds a concern, a factor family, or an area; none touches the format. All land i
 the single authoring-guide subsection "Cover the domain's constituent kinds" and
 its durable spec.
 
-| # | Care concept                                     | Refinement                                                                                               | Where it lands                           |
-| - | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| 1 | Care is tending; artifacts are its trace         | Present each concern as an activity whose artifact is *evidence*, not the care itself; presence ≠ proof  | Subsection opening (R2)                  |
-| 2 | The required is what the situation *claims*      | The constituent kinds are a prompt; the claim that earns an area comes from a Need or Risk, not the list | Subsection opening + earn-it bullet (R3) |
-| 3 | Caregiving = asymmetric care under vulnerability | Ground `secure`/`safeguard` in vulnerability; the band cross-cuts because it tracks who is exposed       | Protective-band bullet (R5)              |
-| 4 | Steward = caring for what is held in trust       | One-sentence definition of *stewardship*                                                                 | Subsection opening (R1)                  |
-| 5 | Care is open-ended                               | Lifecycle band is recurring, not a once-through pipeline; `operate`/`maintain` never conclude            | Lifecycle-band bullet (R6)               |
+| #   | Care concept                                     | Refinement                                                                                               | Where it lands                           |
+| --- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| 1   | Care is tending; artifacts are its trace         | Present each concern as an activity whose artifact is _evidence_, not the care itself; presence ≠ proof  | Subsection opening (R2)                  |
+| 2   | The required is what the situation _claims_      | The constituent kinds are a prompt; the claim that earns an area comes from a Need or Risk, not the list | Subsection opening + earn-it bullet (R3) |
+| 3   | Caregiving = asymmetric care under vulnerability | Ground `secure`/`safeguard` in vulnerability; the band cross-cuts because it tracks who is exposed       | Protective-band bullet (R5)              |
+| 4   | Steward = caring for what is held in trust       | One-sentence definition of _stewardship_                                                                 | Subsection opening (R1)                  |
+| 5   | Care is open-ended                               | Lifecycle band is recurring, not a once-through pipeline; `operate`/`maintain` never conclude            | Lifecycle-band bullet (R6)               |
 
-Plus one structural consequence of #1 and the *well*: a new "Do" bullet
+Plus one structural consequence of #1 and the _well_: a new "Do" bullet
 separating the **constituent question** (does a tending leave an owned artifact?
-— an *area*) from the **stewardship-quality question** (is it done *well*? — a
-*factor*). This is where the care framing pays off operationally: it routes
+— an _area_) from the **stewardship-quality question** (is it done _well_? — a
+_factor_). This is where the care framing pays off operationally: it routes
 "present but poor" to the factor layer and keeps "absent but high-leverage" as an
 empty area with a missing-anchor finding — both already latent in 0076, now
 named (R4).
@@ -70,7 +70,7 @@ named (R4).
 
 The generator's machinery is unchanged. The nine concerns, the lifecycle ×
 protective banding, the audience × purpose axis, the three-projections rule, and
-the earn-it guardrail all stand verbatim. What changes is the *reading*: from
+the earn-it guardrail all stand verbatim. What changes is the _reading_: from
 "collect the artifacts a domain leaves" to "hear what this entity asks to be
 cared for, and model where that asking has — or should have — left an inspectable
 trace." That reading makes the existing guardrails (prompt-not-quota,
@@ -97,16 +97,16 @@ is noted here for a future editor; it stays out of the guide.
   three-projections rule is recorded in this doc only.
 - **Add a new `care` concern, or a "stewardship-quality" factor family.**
   Rejected — care is not a tenth concern; it is what the whole generator is
-  *about*. The presence-vs-quality distinction is already carried by the existing
+  _about_. The presence-vs-quality distinction is already carried by the existing
   area/factor split; R4 names it rather than inventing a new construct.
 - **Replace "stewardship" with "care" throughout.** Rejected — the two do
-  distinct work. *Care* is the activity (tending); *steward* is the role (holding
+  distinct work. _Care_ is the activity (tending); _steward_ is the role (holding
   in trust, answerable to others and the future). Keeping both lets R1 define the
   role and R2 describe the activity.
 - **Drop the secure/safeguard direction-of-harm split in favour of a single
   "vulnerability" framing.** Rejected — direction of harm is the operational
   distinction (who is protected from whom) and stays load-bearing, especially for
-  agentic projects. Vulnerability grounds *why* the band exists; it does not
+  agentic projects. Vulnerability grounds _why_ the band exists; it does not
   replace the split. R5 keeps both.
 - **Redraw the lifecycle as an explicit cycle diagram.** Rejected as overkill —
   one clause ("recurring, not a once-through pipeline; `operate` and `maintain`
@@ -146,7 +146,7 @@ is noted here for a future editor; it stays out of the guide.
 - 0076 asked whether the protective pair should graduate into named factors. The
   vulnerability grounding plus the three-projections rule reinforce keeping it
   cross-cutting and constituent-side by default; left unchanged.
-- Should the *well* / attunement reading earn explicit treatment in the
+- Should the _well_ / attunement reading earn explicit treatment in the
   stable-stakes factor guidance (not just at the area/factor boundary)? Deferred;
   R4 names it where the boundary is decided, and the factor guidance is out of
   scope here.

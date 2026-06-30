@@ -8,7 +8,7 @@ timestamp: 2026-06-24T00:00:00Z
 
 # Agent-harness holistic definition - design
 
-Answers the [functional spec](spec.md). Settles *how* the harness definition is
+Answers the [functional spec](spec.md). Settles _how_ the harness definition is
 re-thought and where the edits land. Builds on
 [0089](../../archive/0089-agent-harness-modeling-guidance.md)'s projection split
 and [0087](../../archive/0087-encode-projection-boundaries.md)'s boundary rule;
@@ -18,8 +18,8 @@ neither is reopened.
 
 The definition follows the now-common account of an agent harness:
 
-- **Agent = Model + Harness.** The harness is *everything that isn't the model
-  itself* — code, configuration, and execution logic.
+- **Agent = Model + Harness.** The harness is _everything that isn't the model
+  itself_ — code, configuration, and execution logic.
 - The harness has two halves: **feedforward controls** (guides) that steer the
   agent before it acts, and **feedback controls** (sensors) that observe and
   correct after. Tools, runtime/sandbox, memory/state, orchestration, and
@@ -27,13 +27,13 @@ The definition follows the now-common account of an agent harness:
 
 0089 already cited this body of practice to justify the projection split and to
 add `continuity` and the good-sensor properties. This case applies the same
-grounding to the one place 0089 left narrow — the *definition* of the harness in
+grounding to the one place 0089 left narrow — the _definition_ of the harness in
 the constituent guide.
 
 ## Concept-first framing
 
-The current guide commits a definitional inversion: it defines the *concept*
-("the agent harness is…") by the *area's* contents ("…the instructions that steer
+The current guide commits a definitional inversion: it defines the _concept_
+("the agent harness is…") by the _area's_ contents ("…the instructions that steer
 the agent"). The fix inverts that:
 
 1. Define the harness at full breadth (the concept).
@@ -42,7 +42,7 @@ the agent"). The fix inverts that:
 So `agent-harness.md` opens with "What the agent harness is" (the system), then
 "The harness is projected, not rated as one object" (three projections), then
 "Scoping the agent-harness area" (the project-owned slice). The area becomes a
-*stated projection with named boundaries* instead of a silent redefinition.
+_stated projection with named boundaries_ instead of a silent redefinition.
 
 ## The three-projection model
 
@@ -54,7 +54,7 @@ So `agent-harness.md` opens with "What the agent harness is" (the system), then
 | Runtime environment                                                                              | operations area (cross-referenced) |
 
 This is what keeps the holistic definition from causing double-counting: the
-harness *is* broad, but each part has exactly one home. The area owns the
+harness _is_ broad, but each part has exactly one home. The area owns the
 governing artifacts the project authors; the rest is cross-referenced.
 
 ## The area-scoping decision rule
@@ -90,7 +90,7 @@ word and fixes the actual error (the part-for-whole definition). The area stays
 Could make the area literally "everything but the model." Rejected: it would
 swallow the tests and operations constituents and overlap the Agent Harnessability
 factor, reintroducing the double-counting 0087/0089 removed. The three-projection
-model is the right shape — broad *concept*, scoped *area*.
+model is the right shape — broad _concept_, scoped _area_.
 
 ### Vocabulary: feedforward/feedback vs. proper nouns (chosen: plain terms)
 

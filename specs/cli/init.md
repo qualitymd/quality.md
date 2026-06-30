@@ -47,11 +47,11 @@ its default agent-instruction pointer and `--json` result receipt.
 
 ### Scaffold variant
 
-- By default `init` writes the *guided* scaffold: a structurally valid skeleton
+- By default `init` writes the _guided_ scaffold: a structurally valid skeleton
   whose frontmatter placeholders carry inline YAML comments and whose body
   includes the recommended headed sections, so the file reads as a guided
   starting point for an author filling it in by hand.
-- A `--minimal` flag **MUST** write a *minimal* scaffold instead: the same
+- A `--minimal` flag **MUST** write a _minimal_ scaffold instead: the same
   structurally valid frontmatter skeleton — seeded rating scale, placeholder
   factor, requirement, and assessment, with non-empty placeholder `title`
   values — but **without** the guided inline-comment prose and **without** the

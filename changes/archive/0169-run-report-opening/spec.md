@@ -109,7 +109,7 @@ Deferred:
    > Durable spec: modify `specs/evaluation/reports/report-tree.md`.
 
 9. Generated run-level `report.md` **MUST NOT** render `## Limits & Incomplete
-   Inputs`.
+Inputs`.
 
    > Rationale: The visible limits section is deliberately removed from the run
    > report for this pass, without changing structured Area Analysis data.

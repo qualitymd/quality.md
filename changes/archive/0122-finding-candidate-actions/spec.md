@@ -10,7 +10,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Finding-level candidate actions](../0122-finding-candidate-actions.md) change
-case. This spec states *what* the change must do.
+case. This spec states _what_ the change must do.
 
 **Normative references:**
 
@@ -42,7 +42,7 @@ and the remediation context that is richest at assessment time (the assessor has
 the source open) is discarded.
 
 A future **Advise** phase will synthesize a final, prioritized recommendation set
-but will only see finding *descriptions*, not the source. Capturing finding-local
+but will only see finding _descriptions_, not the source. Capturing finding-local
 remediation leads as typed raw material preserves that context for it. Evaluation
 v0 forbids recommendation generation, so this raw material MUST stay finding-local
 and non-binding and MUST NOT appear as recommendations in the v0 report or
@@ -156,19 +156,19 @@ None.
 
 - `specs/evaluation/routines/routine-contracts.md` — state that requirement
   assessment MAY record finding-local candidate actions and MUST NOT synthesize,
-  aggregate, or prioritize them (per the *Candidate-action shape* and *v0
-  boundary* requirements above).
+  aggregate, or prioritize them (per the _Candidate-action shape_ and _v0
+  boundary_ requirements above).
 - `specs/evaluation/reports/report-tree.md` — state that finding detail does not
-  render candidate actions in v0 (per the *v0 boundary* report requirement above).
+  render candidate actions in v0 (per the _v0 boundary_ report requirement above).
 - `specs/skills/quality-skill/evaluation.md` — state that the skill records
   non-binding candidate actions on `gap`/`risk` findings as raw material for a
-  later Advise phase (per the *Authoring guidance* requirements above).
+  later Advise phase (per the _Authoring guidance_ requirements above).
 - `specs/skills/quality-skill/reporting.md` — state that candidate actions are not
-  recommendations and that the v0 report and closeout exclude them (per the *v0
-  boundary* requirements above).
-- `SPECIFICATION.md` — in *Assess Requirements*, note that a Finding MAY carry
+  recommendations and that the v0 report and closeout exclude them (per the _v0
+  boundary_ requirements above).
+- `SPECIFICATION.md` — in _Assess Requirements_, note that a Finding MAY carry
   non-binding candidate actions, distinct from the Advice phase's recommendations
-  (per the *Candidate-action shape* and *v0 boundary* requirements above).
+  (per the _Candidate-action shape_ and _v0 boundary_ requirements above).
 
 ### To rename
 

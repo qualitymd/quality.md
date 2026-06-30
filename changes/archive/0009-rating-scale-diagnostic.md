@@ -13,7 +13,7 @@ A **Change Case** to the CLI's built-in
 [quality meta-model](../../internal/models/quality-meta-model.md)
 — the model it uses to judge whether a project's `QUALITY.md` is a good quality
 model. It adds one Functionality requirement so the rating scale, the instrument
-that turns assessments into verdicts, is assessed for *meaning* and not only
+that turns assessments into verdicts, is assessed for _meaning_ and not only
 structure. Detail lives in the child:
 
 - [Functional spec](0009-rating-scale-diagnostic/spec.md) — what the change must do.
@@ -27,9 +27,9 @@ The meta-model lavishes attention on a model's prose — six separate requiremen
 cover the Overview, Scope, Needs, Risks, Factors, and Known gaps body sections —
 yet the rating scale, which is what actually turns a requirement's findings into
 a verdict, is assessed almost in passing. Today only two requirements touch it:
-*the model passes structural lint* checks that the scale **parses** ("the rating
-scale is well-shaped"), and *the model correctly applies the QUALITY.md format
-spec* mentions "rating criteria are used for their intended purposes" inside a
+_the model passes structural lint_ checks that the scale **parses** ("the rating
+scale is well-shaped"), and _the model correctly applies the QUALITY.md format
+spec_ mentions "rating criteria are used for their intended purposes" inside a
 longer conformance list. Neither asks whether the scale's levels carry distinct,
 coherent meaning for the subject, whether the acceptable floor sits where the
 model's needs and risks put it, or whether a requirement's own `ratings`
@@ -40,7 +40,7 @@ per-requirement `ratings` override (see
 [`SPECIFICATION.md`](../../SPECIFICATION.md) § Requirement) replaces a level's
 criterion for one requirement — e.g. a measured `p99 ≤ 150 ms` threshold. A
 miscalibrated threshold, or an override that quietly redefines what a level
-*means* — which the spec forbids, since overrides change the criterion alone —
+_means_ — which the spec forbids, since overrides change the criterion alone —
 produces wrong verdicts while passing every check the meta-model makes today. The
 rating scale is the heart of the gradient; the meta-model should be able to judge
 it.
@@ -49,8 +49,8 @@ it.
 
 Covered:
 
-- One new Functionality requirement, *the rating scale and any overrides are
-  well-formed and meaningful*, assessing level ordering, each level's description
+- One new Functionality requirement, _the rating scale and any overrides are
+  well-formed and meaningful_, assessing level ordering, each level's description
   fixing a fixed model-wide standing, band separability for the subject, floor
   placement against the model's needs and risks, and `ratings` overrides that
   change only a level's criterion and only where the shared criterion cannot
@@ -80,7 +80,7 @@ traces to the rating-scale semantics already normative in
 
 ## Status
 
-`Done`. Implemented and archived after adding the *rating scale and any overrides
-are well-formed and meaningful* requirement to the meta-model's Functionality
+`Done`. Implemented and archived after adding the _rating scale and any overrides
+are well-formed and meaningful_ requirement to the meta-model's Functionality
 factor, syncing the Functionality summary and the diagnostic coverage checklist,
 and confirming `qualitymd lint` still reports the model valid.

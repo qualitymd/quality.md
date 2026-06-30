@@ -18,8 +18,8 @@ behavior of the `/quality` **evaluate** workflow and its shared evaluation
 semantics. The binding sources of truth it defers to are the durable component
 spec [`specs/skills/quality-skill/evaluation.md`](../../../specs/skills/quality-skill/evaluation.md)
 (normative) and the format spec
-[`SPECIFICATION.md`](../../../SPECIFICATION.md) (normative, for *Assess and Rate* /
-*Analyze* semantics). The durable contracts these requirements land in are mapped
+[`SPECIFICATION.md`](../../../SPECIFICATION.md) (normative, for _Assess and Rate_ /
+_Analyze_ semantics). The durable contracts these requirements land in are mapped
 in [Durable spec changes](#durable-spec-changes).
 
 ## Background / Motivation
@@ -30,11 +30,11 @@ a footgun that produces shallow passes reading as whole coverage. The durable
 knob is **scope**, already expressed by model references and `--narrowing`.
 
 Verification was conditional and one-sided: it re-checked findings the skill
-*had* (guarding false positives) but never hunted for findings it *missed*
+_had_ (guarding false positives) but never hunted for findings it _missed_
 (false negatives). The two failure modes need different machinery, so this change
 promotes verification into a first-class QC phase with both prongs. See the
 [change case motivation](../0129-evaluation-orchestration-overhaul.md#motivation)
-for the full rationale; the durable *why* is promoted into `evaluation.md` on
+for the full rationale; the durable _why_ is promoted into `evaluation.md` on
 landing.
 
 ## Scope
@@ -52,7 +52,7 @@ Non-goals:
 
 ## Assumptions & dependencies
 
-- The harness *may or may not* expose a subagent capability (e.g. a Task/Agent
+- The harness _may or may not_ expose a subagent capability (e.g. a Task/Agent
   tool). Requirements that mention fan-out are conditioned on that capability;
   the coverage and QC obligations do not depend on it.
 - Subagents, where used, return text/structured data to the orchestrator and
@@ -90,9 +90,9 @@ Non-goals:
 
 - **R5.** Each in-scope Requirement **MUST** end the run in one of two terminal
   evidentiary states: rated against the rating scale on cited verified evidence,
-  or recorded as *not assessed* with a stated reason. The run **MUST NOT** leave
+  or recorded as _not assessed_ with a stated reason. The run **MUST NOT** leave
   an in-scope Requirement silently unexamined, and **MUST NOT** assign a level to
-  fill an evidence gap (per `SPECIFICATION.md` *Assess and Rate*).
+  fill an evidence gap (per `SPECIFICATION.md` _Assess and Rate_).
 
 - **R6.** The report **MUST** state what was not assessed, so no run reads as
   whole coverage when it is not. (Unchanged obligation; restated because the
@@ -149,7 +149,7 @@ Non-goals:
 - **R13. Completeness sweep (false-negative guard).** The QC phase **MUST**
   perform a coverage check that:
   - confirms every in-scope Requirement reached a terminal evidentiary state
-    (R5), failing the sweep if any was silently skipped or marked *not assessed*
+    (R5), failing the sweep if any was silently skipped or marked _not assessed_
     without a stated reason;
   - re-examines, with an adversarial gap/risk lens, every Area or Requirement
     whose first pass produced only `strength` findings or no findings;
@@ -200,7 +200,7 @@ worth revisiting if `evaluation.md` grows, but is not earned now.)
   intro framing.
 - `specs/skills/quality-skill/quality-skill.md` — remove the `Rigor:` run-frame
   field and the `--rigor`/`deep` invocation examples; drop the **Rigor** frame
-  bullet and the cross-references to *Rigor levels* (per R1, R2).
+  bullet and the cross-references to _Rigor levels_ (per R1, R2).
 - `specs/skills/quality-skill/index.md` — update the `evaluation.md` one-line
   description to drop "rigor" and name the QC phase (per R11).
 - `specs/skills/quality-skill/workflows/evaluate/feedback-log.md` — remove the

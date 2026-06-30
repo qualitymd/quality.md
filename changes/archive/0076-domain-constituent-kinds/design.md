@@ -19,7 +19,7 @@ and the two recurring use-context constituents. It deliberately left domain
 constituents to "vary with what is modeled" and pointed at "Ground high-leverage
 concerns in normative artifacts" for the rest. In practice that is not enough: a
 setup-authored model enumerates constituents by walking the repository's folders,
-so it models the services it can see and silently omits the constituent *kinds*
+so it models the services it can see and silently omits the constituent _kinds_
 that have no folder — tests that are thin, specs that do not exist yet, docs
 beyond a README, a threat model that was never written. The
 [acquire-roi model](../0076-domain-constituent-kinds.md#motivation) that prompted
@@ -31,7 +31,7 @@ statement; the spec states the required content.
 
 The asymmetry to fix: factor coverage is prescribed sharply, use-context
 constituents are prescribed sharply, but domain-constituent coverage is left to
-improvisation. The guide needs a *generator* for constituent kinds that is
+improvisation. The guide needs a _generator_ for constituent kinds that is
 domain-agnostic in form yet inferable once a domain is named.
 
 ## Approach
@@ -47,7 +47,7 @@ which names a domain:
 2. **Whom does that artifact serve, and for what job?** The same concern splits
    into several constituents when they serve different audiences or purposes.
 
-Naming the axes by *function* keeps them domain-neutral. "Enable its audiences"
+Naming the axes by _function_ keeps them domain-neutral. "Enable its audiences"
 rather than "docs" — because "docs" already presumes a written-document domain; a
 data set's enabling artifact is a data dictionary, a service's is a runbook.
 
@@ -69,7 +69,7 @@ concern that is woven through every phase.
 | Protective | **secure**    | threat model, security policy, secrets/auth config        | security                                     |
 | Protective | **safeguard** | safety case, privacy/impact assessment, output guardrails | safety, privacy, compliance                  |
 
-The table is the part that makes the kinds *inferable* — it is the answer to the
+The table is the part that makes the kinds _inferable_ — it is the answer to the
 original ask ("we should be able to infer what these composite parts are from the
 domain"). It ships as one illustrative, domain-scoped column, explicitly a prompt
 rather than a checklist.
@@ -79,10 +79,10 @@ rather than a checklist.
 The protective band is two concerns, not one, split by who is being protected
 from whom:
 
-- **secure** — guard the entity *from* the world: breach, tampering, injection,
+- **secure** — guard the entity _from_ the world: breach, tampering, injection,
   theft. Inward-facing.
 - **safeguard** — guard stakeholders and the environment, internal and external,
-  *from* the entity: a destructive action, an unsafe output, privacy harm to a
+  _from_ the entity: a destructive action, an unsafe output, privacy harm to a
   data subject. Outward-facing.
 
 They are orthogonal — an entity can be hardened against attackers yet routinely
@@ -92,24 +92,24 @@ harm its own users, and vice versa — and they generalize cleanly: a data set
 (secure: attack; safeguard: failure that injures the public). The pair earns its
 keep in QUALITY.md's own agentic context of use, where the harness constituent
 has a clean secure-vs-safeguard reading the guidance currently has no vocabulary
-for. Privacy and compliance stop being their own band entries and *distribute*
+for. Privacy and compliance stop being their own band entries and _distribute_
 across the pair (data-breach-privacy is secure; subject-harm-privacy is
 safeguard).
 
 ### Axis B — audience × purpose
 
 The same concern yields several constituents when audience or purpose diverges.
-[Diátaxis](https://diataxis.fr/) is exactly this axis applied to the *enable*
+[Diátaxis](https://diataxis.fr/) is exactly this axis applied to the _enable_
 concern: tutorial / how-to / reference / explanation are four constituents with
 different factor families (a tutorial's quality is "does a novice succeed";
 reference's is "accurate, complete, fast to look up"), not one "documentation"
 area. The same split recurs elsewhere — a maintainer-facing CI gate and a
-user-facing acceptance suite are two *verify* constituents.
+user-facing acceptance suite are two _verify_ constituents.
 
 Axis B is wired to the body's **Needs**, which already enumerate stakeholders, so
 it introduces no new roster: each audience a Need names should have an enabling
-and verifying constituent that is modeled or accounted for. Axis B is also *how
-you discover a constituent's internal shape* — a constituent that fans out by
+and verifying constituent that is modeled or accounted for. Axis B is also _how
+you discover a constituent's internal shape_ — a constituent that fans out by
 audience or purpose is itself composite or a collection, which nests directly
 into 0074's decomposition-shape material rather than competing with it.
 
@@ -127,7 +127,7 @@ concern **projects** into the model up to three ways:
 
 They share a name because they share a root concern, not because they duplicate.
 The author names the projection being modeled and models it once; the security
-*of* the server is a factor on the server area, while the security policy is its
+_of_ the server is a factor on the server area, while the security policy is its
 own area. That is the rule that keeps the table from double-counting against the
 existing factor guidance.
 

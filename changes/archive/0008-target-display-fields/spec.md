@@ -37,11 +37,11 @@ prose's "root target" wording (the top of the target tree) is unaffected.
   `title` — it is **RECOMMENDED** for readable reports — and a declared `title`
   overrides the map key for display; the map key remains the identifier.
 - A target **MAY** declare a `description`: a concise statement of what the
-  target *is* — the entity or scope it covers (e.g. "Functional specifications
+  target _is_ — the entity or scope it covers (e.g. "Functional specifications
   for the ACME Products API"). `description` is **OPTIONAL**.
 - `title` and `description` **MUST** each be a single scalar string when present.
 - A `description` **SHOULD NOT** restate or stand in for the target's factors or
-  requirements; it fixes *what is evaluated*, not the expectations, which remain
+  requirements; it fixes _what is evaluated_, not the expectations, which remain
   in `factors` and `requirements`.
 
 ### The Model / Target relationship

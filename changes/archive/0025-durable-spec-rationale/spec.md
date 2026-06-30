@@ -9,8 +9,8 @@ timestamp: 2026-06-18T00:00:00Z
 # Durable spec rationale - functional spec
 
 Companion to [Durable spec rationale](../0025-durable-spec-rationale.md). This
-spec states the *delta* to three durable contributor guides; the
-[design doc](design.md) covers *why this shape*.
+spec states the _delta_ to three durable contributor guides; the
+[design doc](design.md) covers _why this shape_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119.
@@ -20,13 +20,13 @@ interpreted as described in IETF RFC 2119.
 A [Change Case](../../../docs/guides/work-with-change-cases.md) is archived once
 it lands, and the enduring [`specs/`](../../../specs/index.md) bundle carries
 the result forward. That hand-off has been lossy: the durable spec inherits the
-requirement but not the *why* — the case's motivation and the design doc's
+requirement but not the _why_ — the case's motivation and the design doc's
 rationale stay in [`archive/`](../) with the case. Editors then meet rules
 stripped of
 the failure-modes that produced them, and re-introduce fixed bugs by
 "simplifying" rules that only looked arbitrary. The guides below are revised so
 the spec itself holds durable rationale at two grains — one big-picture, one
-per-requirement — and so a landing case deposits its *why* there instead of in
+per-requirement — and so a landing case deposits its _why_ there instead of in
 the archive.
 
 ## Scope
@@ -46,28 +46,28 @@ The [functional-spec guide](../../../docs/guides/write-functional-specs.md) **MU
 establish two distinct, co-located homes for durable rationale in a spec:
 
 1. **Background / Motivation** (spec-level). The guide **MUST** add this to a
-   spec's shape: a short prose section near the top stating *why the capability
-   exists* — the problem or failure-mode it addresses and any spec-scale lessons.
+   spec's shape: a short prose section near the top stating _why the capability
+   exists_ — the problem or failure-mode it addresses and any spec-scale lessons.
    The guide **MUST** distinguish it from **Scope** (what is covered or deferred)
    and from the companion note (what the spec governs, plus the source-of-truth
    link), so the three are not confused for one another.
 
    > Rationale: a change's big-picture motivation had no durable home in the
-   > spec and died in the archive; Scope and the companion note answer *what*,
-   > not *why*, so the *why* needs its own named section.
+   > spec and died in the archive; Scope and the companion note answer _what_,
+   > not _why_, so the _why_ needs its own named section.
 
 2. **Per-requirement annotation** (requirement-level). The guide **MUST**
    establish that an individual requirement **MAY** carry a subordinate rationale
    annotation directly beneath it.
 
 The two grains **MUST NOT** restate each other: Background carries the
-spec-scale *why*; an annotation carries one requirement's *why*. The guide
+spec-scale _why_; an annotation carries one requirement's _why_. The guide
 **MUST** direct authors to supersede stale rationale rather than let it accrete,
 so requirements stay skimmable.
 
 > Rationale: two homes invite saying the same thing twice; without a
 > say-it-once rule the duplication is the predictable failure-mode, and stale
-> rationale left to pile up is what buried the *what* under the *why* before.
+> rationale left to pile up is what buried the _what_ under the _why_ before.
 
 ## Annotation form
 
@@ -84,7 +84,7 @@ consistently:
 
 ## Litmus for annotating
 
-The guide **MUST** give the litmus for *when* a requirement earns an annotation:
+The guide **MUST** give the litmus for _when_ a requirement earns an annotation:
 annotate when a future editor would otherwise repeat a mistake or be misled.
 Dead-end alternatives and full decision records **MUST** stay in the (archived)
 design doc; only durable intent and lessons are promoted into the spec.
@@ -97,7 +97,7 @@ design doc; only durable intent and lessons are promoted into the spec.
 
 The [change-cases guide](../../../docs/guides/work-with-change-cases.md) **MUST**
 extend the existing "the enduring artifacts absorb [the delta]" account so that
-absorbing a case includes its **enduring *why***, not only its functional
+absorbing a case includes its **enduring _why_**, not only its functional
 delta. When a case updates a durable spec, its motivation and its design doc's
 durable rationale **SHOULD** be promoted into that spec's **Background /
 Motivation** and per-requirement annotations. Durable specs **MAY** be edited at

@@ -21,7 +21,7 @@ tests) to "the next iteration."
 
 This case flips the default: **enumerate the constituents the domain implies and
 model each as its own area by default.** A constituent skips its own area only
-when one of two simple disqualifiers holds, and a germane concern is *never*
+when one of two simple disqualifiers holds, and a germane concern is _never_
 silently omitted — its absence must surface as a ratable element of the model.
 
 Detail lives in:
@@ -41,15 +41,15 @@ that a flat root is the normal starting shape and coverage is something to add
 later. It rarely gets added later.
 
 The current guidance is not buggy — it does exactly what it says. The problem is
-the encoded philosophy: it guards hard against *over*-modeling (quota, roster,
-earn-it) with no counterweight against *under*-modeling, and it makes deferral a
+the encoded philosophy: it guards hard against _over_-modeling (quota, roster,
+earn-it) with no counterweight against _under_-modeling, and it makes deferral a
 neutral accounting option. So when the agent is uncertain, every explicit
 pressure removes areas, and a deferral note silently passes the maturity bar.
 
 The deeper correction is that a germane concern whose artifact is thin or missing
 is one of the highest-value early signals a model can carry. "Nothing to evaluate
-yet" must therefore never be a reason to omit — the absence has to land *in the
-model* as a poor rating (a minimal area with a missing-anchor finding, or a
+yet" must therefore never be a reason to omit — the absence has to land _in the
+model_ as a poor rating (a minimal area with a missing-anchor finding, or a
 requirement on an existing area that rates poorly because the artifact is
 missing), not as a sentence in Scope.
 
@@ -62,8 +62,8 @@ Covered:
   mirrors).
 - Replace the three-part "earn an area" inclusion test with a short, explicit
   **"don't give a constituent its own area unless…"** list of two disqualifiers:
-  *no distinct concerns* (fold into an existing area) and *not germane / outside
-  the boundary* (out of scope).
+  _no distinct concerns_ (fold into an existing area) and _not germane / outside
+  the boundary_ (out of scope).
 - Add the **no-silent-omission** rule: a germane concern is always surfaced as a
   ratable element — a minimal area with a missing-anchor finding, or a requirement
   on an existing area — never dropped to prose; with the (a)-vs-(b) routing
@@ -81,8 +81,8 @@ Covered:
 Deferred / non-goals:
 
 - No change to the QUALITY.md format or schema, and **no change to
-  `SPECIFICATION.md`** — this is authoring *judgment* (how to build a good model),
-  not format *semantics* (what a model is).
+  `SPECIFICATION.md`** — this is authoring _judgment_ (how to build a good model),
+  not format _semantics_ (what a model is).
 - No change to the CLI.
 - Re-checking this repo's own dogfooded `QUALITY.md` against the new rule is a
   follow-up, not part of this case.

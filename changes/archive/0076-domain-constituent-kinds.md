@@ -10,18 +10,18 @@ timestamp: 2026-06-24T00:00:00Z
 # Domain constituent kinds and stewardship concerns
 
 A **Change Case** to close a coverage gap the [0074 composite-root work](0074-composite-root-areas.md) left open. 0074 named the composite
-root shape and the two recurring *use-context* constituents (agent harness,
+root shape and the two recurring _use-context_ constituents (agent harness,
 QUALITY.md self-check), but gave **domain constituents** no equally prescriptive
 treatment. The result: a setup-authored model enumerates constituents by walking
 the repository's folders — modeling the services it can see — and never asks what
-*kinds* of constituent the entity's domain implies. Constituents that are thin,
+_kinds_ of constituent the entity's domain implies. Constituents that are thin,
 scattered, or missing (tests, specs/requirements, documentation, a threat model)
 produce no folder to trip over, so their absence is invisible rather than
 recorded as a finding.
 
 This case adds a domain-agnostic generator for constituent kinds, built on two
 axes: a set of **stewardship concerns** (a lifecycle band — discover, define,
-realize, verify, enable, operate, maintain — plus a cross-cutting *protective*
+realize, verify, enable, operate, maintain — plus a cross-cutting _protective_
 pair, **secure** and **safeguard**) and an **audience × purpose** axis (the
 generalization of Diátaxis). It adds the rule that a concern projects into the
 model in up to three ways — as a factor, a constituent, and an audience — so the
@@ -39,17 +39,17 @@ Detail lives in:
 ## Motivation
 
 A real evaluated entity is usually a composite (0074). Deciding the root is
-composite raises the next question — *which* constituents — and the authoring
+composite raises the next question — _which_ constituents — and the authoring
 guide answers it only indirectly. "Ground high-leverage concerns in normative
 artifacts" names requirements/intent, data quality, and interface contracts as
 software examples and says to carry a germane high-leverage concern even when its
 anchor is missing; but it is framed around normative anchors, not as a way to
-*enumerate the constituent kinds a domain implies*, and it is hedged repeatedly
+_enumerate the constituent kinds a domain implies_, and it is hedged repeatedly
 against "a universal roster of areas every model must carry."
 
 That hedge is correct across domains and overcorrected within one. Once the
 domain is named (software product, data set, reference document, service), there
-*is* a recognizable set of constituent kinds, and the guide stops one step short
+_is_ a recognizable set of constituent kinds, and the guide stops one step short
 of letting the author use it. The asymmetry is the gap: factor coverage is
 prescribed sharply ("aim for ~ten factors; fewer than eight triggers a coverage
 review"), and the use-context constituents are prescribed sharply (a whole 0074
@@ -60,7 +60,7 @@ and specs when no folder exists.
 The fix has two parts a domain-agnostic generator must supply:
 
 - **A way to enumerate kinds without naming a domain.** Caring for any entity
-  carries a recurring set of *stewardship concerns*; each tends to leave an
+  carries a recurring set of _stewardship concerns_; each tends to leave an
   authored, inspectable artifact that is a candidate constituent. Naming the
   concerns (not the artifacts) keeps the generator domain-neutral — "enable its
   audiences" rather than "docs", which already presumes a written-document
@@ -81,11 +81,11 @@ Covered:
     maintain; plus a cross-cutting **protective** pair: **secure** — guard the
     entity from harm by the world; **safeguard** — guard stakeholders and the
     environment from harm by the entity) and an **audience × purpose** axis;
-  - cites Diátaxis once as the audience×purpose lens applied to the *enable*
+  - cites Diátaxis once as the audience×purpose lens applied to the _enable_
     concern;
   - states the **three-projections rule**: a concern projects as a factor, a
     constituent, and an audience; model the projection you mean and do not
-    double-count (the security *of* an area is a factor; a security policy is a
+    double-count (the security _of_ an area is a factor; a security policy is a
     constituent);
   - derives the audience side from the body's Needs;
   - reuses the "carry a germane high-leverage kind even when its artifact is

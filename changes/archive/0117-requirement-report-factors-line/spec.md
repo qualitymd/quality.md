@@ -33,7 +33,7 @@ This change adds a parallel `Factors:` context line to the Requirement report
 header so both placement axes are visible at a glance. Because a Requirement can
 attach to several unrelated Factors, the report tree forbids a singular `Factor:`
 breadcrumb and forbids choosing one attached Factor as a navigation parent; the
-new line honors that by rendering a *flat set* of all attached Factors with no
+new line honors that by rendering a _flat set_ of all attached Factors with no
 nesting and no chosen parent, separated by `;` (the set separator already used
 for Factor lists) rather than the `/` nesting separator of the `Area:` and
 `Factor:` trails. With the Factors now in the header line, the summary-table
@@ -108,7 +108,7 @@ JSON field names, report paths, filenames, links; and migration of existing runs
 - A Requirement with multiple attached Factors shows all of them on the one line,
   `;`-separated; a Requirement with none shows an explicit empty-state marker.
 - The Requirement header summary table reads `| Rating | Assessment | Confidence |
-  Data |` with no `Factors` column.
+Data |` with no `Factors` column.
 - No Requirement report renders a line beginning `Factor:` (singular).
 - Report paths, links, navigation labels, and structured `data/` outputs are
   unchanged.

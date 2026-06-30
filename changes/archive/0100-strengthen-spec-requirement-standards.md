@@ -9,15 +9,15 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Strengthen spec requirement standards (29148 + EARS)
 
-This parent concept captures the *why* and *status*; the detail lives in its
+This parent concept captures the _why_ and _status_; the detail lives in its
 child:
 
 - [Functional spec](0100-strengthen-spec-requirement-standards/spec.md) — what
   the change must do.
 
 No separate design doc: the change is bounded wording added to two existing
-guides, and the per-requirement rationale in the spec carries the *how* and
-*why*.
+guides, and the per-requirement rationale in the spec carries the _how_ and
+_why_.
 
 ## Motivation
 
@@ -30,7 +30,7 @@ almost one-to-one. But the assessment surfaced concrete gaps the standard
 addresses and we do not:
 
 - **No set-level review.** Our bar checks each requirement alone; 29148 §5.2.6
-  asks the requirement *set* to be consistent (no conflicts/overlaps, consistent
+  asks the requirement _set_ to be consistent (no conflicts/overlaps, consistent
   terminology), complete (no unresolved TBD/TBR), and able to be validated.
 - **No validation-vs-verification distinction.** We check "did we build it
   right?" (a per-requirement verification path) but never "did we build the right

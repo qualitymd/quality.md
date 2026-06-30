@@ -70,15 +70,15 @@ The relevant existing pieces in `internal/evaluation`:
 
 ## Spec response
 
-- *Constrain reference `kind`* and *single typed source per vocabulary*: steps
+- _Constrain reference `kind`_ and _single typed source per vocabulary_: steps
   1–2 — `routineRefContract` reads `supportedDataKinds` (the same list that
   defines what the CLI persists) and `reportRefContract` reads `reportKinds` (the
   `ReportKind` constants); neither is a hand-maintained second list.
-- *Full payload vocabulary including `EvaluationOutputResult`*: step 1 uses the
+- _Full payload vocabulary including `EvaluationOutputResult`_: step 1 uses the
   ten-kind superset for routine references, not `acceptedDataKinds`.
-- *Reject out-of-vocabulary at write time, naming field and value*: inherited
+- _Reject out-of-vocabulary at write time, naming field and value_: inherited
   from `validateDataValue`'s existing enum check (step 2), no new code.
-- *Each constraint appears as an `enum` in `data schema`*: inherited from
+- _Each constraint appears as an `enum` in `data schema`_: inherited from
   `schemaForField` (step 2), verified by the regenerated golden (step 3).
 
 ## Alternatives
@@ -96,8 +96,8 @@ The relevant existing pieces in `internal/evaluation`:
   contract self-check (the value is CLI-generated) rather than typo prevention,
   but it is still worth pinning.
 - **Restrict the routine enum to the agent-writable nine.** Rejected: a reference
-  *names* a payload type; whether an agent may *write* that type through `set` is a
-  a payload type; whether an agent may *write* that type through `set` is a
+  _names_ a payload type; whether an agent may _write_ that type through `set` is a
+  a payload type; whether an agent may _write_ that type through `set` is a
   separate concern. Restricting would reject a legitimate reference to the
   CLI-owned `EvaluationOutputResult` and conflate two ideas. Using the superset is
   both simpler (no special-case exclusion) and more correct.

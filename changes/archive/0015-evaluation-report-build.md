@@ -63,7 +63,7 @@ parent, bundle index, and bundle log):
       for the `evaluation build-report` command; list it in
       [`specs/cli.md`](../../specs/cli.md) and [`specs/cli/index.md`](../../specs/cli/index.md).
 - [x] [`README.md`](../../README.md) — move `evaluation show-status` and
-      `evaluation build-report --fail-at-or-below` from *planned* to built.
+      `evaluation build-report --fail-at-or-below` from _planned_ to built.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
       — update the reporting contract to say reports are rendered through
       `qualitymd evaluation build-report` after `qualitymd evaluation show-status`.

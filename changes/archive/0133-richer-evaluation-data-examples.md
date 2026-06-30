@@ -9,7 +9,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Richer evaluation data examples
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0133-richer-evaluation-data-examples/spec.md) — what the case must do.

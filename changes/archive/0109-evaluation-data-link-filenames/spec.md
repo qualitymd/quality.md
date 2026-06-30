@@ -48,7 +48,7 @@ semantics.
   Requirement report `Data` cell **MUST** list
   `requirement-assessment-result.json` and `requirement-rating-result.json`.
 
-- Generated data-link *targets* **MUST NOT** change; only the rendered link text
+- Generated data-link _targets_ **MUST NOT** change; only the rendered link text
   changes.
 
   > Rationale: the filename is the one piece of information the generic word

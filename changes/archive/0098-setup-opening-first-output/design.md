@@ -22,7 +22,7 @@ timestamp probe) and even wrote the feedback log before emitting its first line.
 The governing spec permits this. Two seams matter:
 
 1. The opening-orientation requirement reads "before setup performs long-running
-   context work" — silent on whether *any* tool call may precede the opening. An
+   context work" — silent on whether _any_ tool call may precede the opening. An
    agent reasonably batches quick checks first.
 2. The Workflow structure step list couples the run frame to prerequisite
    verification: "Resolve the target `QUALITY.md`, verify setup prerequisites,
@@ -56,7 +56,7 @@ Implementation touches two files:
   current Workflow structure step 2 so the run frame is emitted with the opening
   (step 1) and prerequisite verification is its own step before the scan; and
   strengthen the Context-analysis opening requirement to "before any tool call"
-  plus the roadmap and scan-cue requirements. Carry the *why* into an annotation
+  plus the roadmap and scan-cue requirements. Carry the _why_ into an annotation
   citing this case.
 - **Runtime skill** `skills/quality/workflows/setup.md`: reorder the procedure
   text block; rewrite the Opening orientation section to lead with the welcome +

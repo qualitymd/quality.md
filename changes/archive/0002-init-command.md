@@ -23,7 +23,7 @@ detail lives in its children:
 a good scaffold teaches the target → factor → requirement shape and the rating
 scale by example, so the author edits rather than authors from scratch. Right now
 nothing says what that scaffold contains or how the command behaves, so it can't
-be built. Settling the *what* unblocks the design and implementation that follow.
+be built. Settling the _what_ unblocks the design and implementation that follow.
 
 ## Scope
 
@@ -44,7 +44,7 @@ Updated before this change reaches **Done**:
 - [x] [`specs/cli/init.md`](../../specs/cli/init.md) — replace the stub and its "To
       be specified" list with the durable `init` sub-spec, absorbing this
       change's functional spec.
-- [x] [`README.md`](../../README.md) — drop the *(planned)* marker on `init` once
+- [x] [`README.md`](../../README.md) — drop the _(planned)_ marker on `init` once
       the command ships.
 
 ## Status

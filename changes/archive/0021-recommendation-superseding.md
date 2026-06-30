@@ -43,12 +43,9 @@ Created or updated during `In-Progress`, before this change reaches
 
 - [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md) - define
       optional recommendation superseding metadata.
-- [x] [`specs/cli/evaluation-add-record.md`](../../specs/cli/evaluation-add-record.md)
-      - document recommendation payload support for superseding.
-- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md)
-      - document invalid superseding-reference gaps.
-- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md)
-      - document active recommendation selection for Next Action and reports.
+- [x] [`specs/cli/evaluation-add-record.md`](../../specs/cli/evaluation-add-record.md) - document recommendation payload support for superseding.
+- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md) - document invalid superseding-reference gaps.
+- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md) - document active recommendation selection for Next Action and reports.
 - [x] [quality skill spec](../../specs/skills/quality-skill/quality-skill.md) -
       guide correction workflows to supersede stale recommendations.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - teach the skill

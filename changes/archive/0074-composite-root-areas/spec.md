@@ -10,8 +10,8 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the
 [Composite root areas and use-context constituents](../0074-composite-root-areas.md)
-change case. This spec states *what* the guidance must say; the
-[design doc](design.md) covers the taxonomy and *why*.
+change case. This spec states _what_ the guidance must say; the
+[design doc](design.md) covers the taxonomy and _why_.
 
 The key words **MUST**, **SHOULD**, and **MAY** are to be interpreted as
 described in IETF RFC 2119.
@@ -43,7 +43,7 @@ and the alignment of their governing guide specs. **Deferred:** any change to
 - R3. The guide **MUST** state that a near-disjoint factor family is a first-class
   signal to split a constituent into its own area.
 - R4. The guide **MUST** identify the composite root's emergent concern as
-  cross-part coherence (alignment, conformance, currentness *between* parts), and
+  cross-part coherence (alignment, conformance, currentness _between_ parts), and
   **SHOULD** connect it to the assessment edges between areas already described in
   "Make the traceability graph visible".
 

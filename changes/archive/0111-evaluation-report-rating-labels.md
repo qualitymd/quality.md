@@ -25,7 +25,7 @@ Evaluation v2 reports refer to ratings inconsistently. Two problems compound:
    two rating columns `Overall` and `Local`. The neighboring columns
    (`Confidence`, `Status`, `Data`) are self-describing nouns, but `Overall` and
    `Local` are bare adjectives with no noun — a reader has to infer "overall
-   *what*?". Spelling them `Overall Rating` and `Local Rating` removes the guess
+   _what_?". Spelling them `Overall Rating` and `Local Rating` removes the guess
    and makes every rating column name what it rates.
 
 2. **Wrong breakdown columns.** The Area report's Factors and Sub-Areas tables,

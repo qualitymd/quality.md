@@ -10,8 +10,8 @@ timestamp: 2026-06-22T00:00:00Z
 
 Design behind the
 [Self-describing evaluation record input](../0055-evaluation-input-ergonomics.md)
-change case and its [functional spec](spec.md). The spec says *what* the record
-surface must require; this doc says *how* the Go code delivers it and why these
+change case and its [functional spec](spec.md). The spec says _what_ the record
+surface must require; this doc says _how_ the Go code delivers it and why these
 choices over the alternatives. Behavior and requirements live in the spec — this
 doc does not restate them.
 
@@ -46,7 +46,7 @@ for the run) and **commit** (the only stage that touches disk). `WriteRecords`
 gains a `WriteOptions{DryRun bool}` parameter; on `DryRun` it runs
 decode→validate→plan and returns, skipping commit. This single seam delivers
 three requirements at once: the dry-run validates without persisting, the receipt
-can report the paths it *would* write, and the commit stage shrinks to "write
+can report the paths it _would_ write, and the commit stage shrinks to "write
 these bytes."
 
 Path numbering moves into plan: `writeNumbered`'s directory scan splits into a
@@ -82,7 +82,7 @@ validation runs, in a shared `decodeRecord` helper:
 `UsageError` path already maps to category 2. The `--json` receipt reuses
 `WriteRecordReceipt` with a `"dryRun": true` marker and `paths` set to the
 intended writes, so the dry-run is usable unattended. Human output states what
-*would* be written rather than "Wrote …".
+_would_ be written rather than "Wrote …".
 
 ### Self-describing help
 
@@ -130,8 +130,8 @@ so the shape is discoverable without a failed `status`.
   non-goal: help already carries the contract, and a new noun is one more surface
   to learn. If machine-readable JSON Schema is ever wanted, a `--schema` flag on
   the existing command is the smaller move.
-- **A full reflective schema/example *generator*.** Rejected as over-built. A
-  generator that synthesizes a valid example from types needs example *values*
+- **A full reflective schema/example _generator_.** Rejected as over-built. A
+  generator that synthesizes a valid example from types needs example _values_
   per field anyway, so it doesn't remove the hand-authored content — it just adds
   machinery. A single golden-tested fixture gets the same guarantee (the example
   is provably valid) for far less.
@@ -172,6 +172,6 @@ so the shape is discoverable without a failed `status`.
   payload decodes-and-validates through the real path, not byte- or
   semantic-equality. That catches the exact failure the field run hit — a payload
   the binary would reject shipping in the docs — while surviving harmless
-  formatting differences that byte-equality would fail on. If a *value* (not
+  formatting differences that byte-equality would fail on. If a _value_ (not
   formatting) drift ever slips past it, the upgrade is normalized semantic-equality,
   not byte-equality.

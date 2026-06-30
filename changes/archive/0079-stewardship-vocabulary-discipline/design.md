@@ -16,7 +16,7 @@ change case and its [functional spec](spec.md). The spec requires the
 stewardship/care vocabulary to stay in its motivation register and never modify
 or replace a taxonomy noun (R1–R2), removes the two "stewardship lenses" fusions
 in the authoring guide (R3), guards the setup model summary (R4), and preserves
-the 0076/0077 grounding (R5). This doc records *where* each lands and *why* that
+the 0076/0077 grounding (R5). This doc records _where_ each lands and _why_ that
 placement.
 
 ## Approach
@@ -53,15 +53,15 @@ adjective:
 - `authoring.md:109` — "often stewardship lenses like currentness or
   traceability" → "often factors that trace to stewardship concerns, like
   currentness or traceability". `factor` is restored as the noun; the stewardship
-  link becomes a *trace to*, per R2.
+  link becomes a _trace to_, per R2.
 - `authoring.md:878` — "typically stewardship lenses (currentness, traceability,
   consistency, maintainability)" → "typically those tracing to stewardship
   concerns (currentness, traceability, consistency, maintainability)". "those"
   refers back to "the factors that recur across constituents" in the same
   sentence, so the taxonomy noun is already in hand.
 
-The singular gloss "a factor is a quality *lens*" (`:792`, `:102`, `:844`,
-`:885`) is untouched (R5) — it *defines* factor rather than substituting a
+The singular gloss "a factor is a quality _lens_" (`:792`, `:102`, `:844`,
+`:885`) is untouched (R5) — it _defines_ factor rather than substituting a
 philosophical word for it.
 
 **Setup guard is operational, not a new spec contract (R4).** The setup closeout
@@ -78,12 +78,12 @@ finer than the spec, not a new MUST.
 ## Alternatives
 
 - **Drop "lens" as a factor gloss entirely.** Rejected: the singular "quality
-  lens" gloss is well-established and clear, and defines what a factor *is*. Only
+  lens" gloss is well-established and clear, and defines what a factor _is_. Only
   the fused plural "stewardship lenses" — a philosophical adjective on the
   taxonomy noun — is the problem.
 - **Forbid "stewardship" anywhere near "factor."** Rejected: "factors that trace
   to stewardship concerns" is legitimate and useful; it expresses the projection
-  the three-projections rule defines. The rule targets *modifying or replacing*
+  the three-projections rule defines. The rule targets _modifying or replacing_
   the noun, not co-occurrence.
 - **Put the rule only in AGENTS.md.** Rejected: the leak originated in the
   authoring guide and surfaced in agent output; the operational echo at the

@@ -10,7 +10,7 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the
 [Agent Harnessability naming](../0085-agent-harnessability-naming.md) change
-case. This spec states *what* the `/quality` skill guidance must say when it
+case. This spec states _what_ the `/quality` skill guidance must say when it
 renames the 0081 harnessability factor to **Agent Harnessability**. The
 [design doc](design.md) covers why the display name, recommended key, and
 accountability wording were chosen.

@@ -13,7 +13,7 @@ timestamp: 2026-06-24T00:00:00Z
 QUALITY.md is **quality-domain agnostic**: a Model can describe quality for
 software, documentation, data sets, research, services, operations, processes, or
 other evaluated entities. That breadth is not a neutral fact about a schema — it
-follows from what the format is finally *for*.
+follows from what the format is finally _for_.
 
 The format exists to serve care: to help people tend and keep what is entrusted to
 them in their work, and through that work, to serve the society their work holds up.
@@ -24,14 +24,14 @@ something in their charge, and the format means to serve that care no less than 
 professional kind. [Why care, not conformance](#why-care-not-conformance) develops
 the claim; the rest of the guide puts it to work.
 
-Domain agnostic is not context neutral. QUALITY.md is agnostic about *what* a Model
-evaluates and opinionated about *how* it is used — the agent- and skill-first
+Domain agnostic is not context neutral. QUALITY.md is agnostic about _what_ a Model
+evaluates and opinionated about _how_ it is used — the agent- and skill-first
 workflow described under [Agentic use context](#agentic-use-context).
 
 ## What this guide is for
 
 This guide is for contributors writing example content, docs, specs, or skill
-guidance. The agnosticism claim is easy to *assert* and easy to leave *untested* — a
+guidance. The agnosticism claim is easy to _assert_ and easy to leave _untested_ — a
 claim exercised against one domain is no claim at all. The guide explains why a
 domain makes a good stress test, gives a catalog of quality contexts to draw on,
 fixes which to reach for, and demonstrates the claim with a worked non-software
@@ -46,14 +46,14 @@ governs.
 
 ## Why care, not conformance
 
-To *work* and to *keep* is the double charge — "The Lord God took the man and put
+To _work_ and to _keep_ is the double charge — "The Lord God took the man and put
 him in the Garden of Eden to work it and take care of it" (Genesis 2:15). The
-*keeping* half is the quieter one, and it is the half a quality model serves. To
+_keeping_ half is the quieter one, and it is the half a quality model serves. To
 keep a garden is to tend it before it is overgrown — to meet what is small while it
 is still small. The same counsel runs through the Tao Te Ching — "Magnify what is
 small, increase what is meager"; "deal with great affairs while they are still small
 matters"; "prepare for hardships while it is still easy to do so" — for "what has
-not yet happened is easily prevented" (*Tao Te Ching* 63–64, trans. David Bentley
+not yet happened is easily prevented" (_Tao Te Ching_ 63–64, trans. David Bentley
 Hart). A `QUALITY.md` is an instrument of that keeping: not a gate that catches
 failure at the end, but a way of attending continuously, so concerns are seen and
 met while they are still small.
@@ -65,27 +65,27 @@ most formalize such care belong to one family explains where quality finally liv
 
 Ministry, law, medicine, and engineering have long been treated together. Donald
 Schön groups engineering with the "learned professions" of medicine and law under a
-single epistemology of practice — knowing- and reflecting-in-action (*The Reflective
-Practitioner*, 1983) — and the older professions tradition binds the same set by a
+single epistemology of practice — knowing- and reflecting-in-action (_The Reflective
+Practitioner_, 1983) — and the older professions tradition binds the same set by a
 service whose "primary obligation is to the public good"
-([J. R. Wilcox, *New Catholic Encyclopedia*](https://www.encyclopedia.com/religion/encyclopedias-almanacs-transcripts-and-maps/professional-ethics)).
+([J. R. Wilcox, _New Catholic Encyclopedia_](https://www.encyclopedia.com/religion/encyclopedias-almanacs-transcripts-and-maps/professional-ethics)).
 Each tends a different entrusted good, but the shape repeats:
 
-- **Ministry** tends the formation of persons — the "cure of souls" (*cura
-  animarum*) that Gregory the Great's sixth-century *Pastoral Rule* calls "the art
+- **Ministry** tends the formation of persons — the "cure of souls" (_cura
+  animarum_) that Gregory the Great's sixth-century _Pastoral Rule_ calls "the art
   of arts." Its excellence is discernment fitted to the person — "one and the same
   exhortation does not suit all" — never faithful repetition of a rite.
 - **Medicine** tends the patient's good through a healing relationship; its
-  excellence is the "right and good healing action for *this* patient" (Pellegrino
-  and Thomasma, *For the Patient's Good*, 1988) — the practical wisdom medicine calls
-  *phronesis*, which guideline-concordant care can satisfy on paper and still miss.
+  excellence is the "right and good healing action for _this_ patient" (Pellegrino
+  and Thomasma, _For the Patient's Good_, 1988) — the practical wisdom medicine calls
+  _phronesis_, which guideline-concordant care can satisfy on paper and still miss.
 - **Law** tends the rule of law and the administration of justice; its calling is to
   the public good, not to winning. At its best a contract sets clear, fair terms
   that order relationships toward justice. Law is not by nature adversarial:
-  adversarial advocacy is one contingent means to that end, and other traditions reach it without (the civil-law *notaire* advises
+  adversarial advocacy is one contingent means to that end, and other traditions reach it without (the civil-law _notaire_ advises
   all parties impartially). The lawyer is an officer of the court and fiduciary, not
   merely a hired advocate, and legal quality is fidelity to the law's purposes (Lon
-  Fuller, *The Morality of Law*, 1964).
+  Fuller, _The Morality of Law_, 1964).
 - **Engineering** tends a public it never meets; its codes require holding
   "paramount the safety, health, and welfare of the public" (NSPE Canon 1), and
   because engineering runs ahead of complete science, quality is judgment about
@@ -98,9 +98,9 @@ in its care.
 
 ### Care under-determines conformance
 
-The same lineage explains *why* care, not conformance, is where quality lives. In
-the practice tradition running from Heidegger's account of care (*Sorge*) through
-Hubert Dreyfus's model of skill acquisition, expertise is *constituted* by
+The same lineage explains _why_ care, not conformance, is where quality lives. In
+the practice tradition running from Heidegger's account of care (_Sorge_) through
+Hubert Dreyfus's model of skill acquisition, expertise is _constituted_ by
 involvement: the detached rule-follower is the novice, and mastery is the
 situational coping that rules can only approximate. A `QUALITY.md` read as a
 checklist captures only the beginner's stage of a craft — the requirements name the
@@ -114,14 +114,14 @@ transformed, not conformed" (Rom 12). And the caution lands closest of all on a
 written format like this one — "the letter kills, but the Spirit gives life" (2 Cor
 3): a `QUALITY.md` held as literal requirements to satisfy becomes the very deadness
 these texts condemn, while the same document held as living care orients
-transformation. Quality here is known by *fruit* over time, not surface conformance
+transformation. Quality here is known by _fruit_ over time, not surface conformance
 at an instant. That the good is known by discernment — told from its lack — is not
 confined to one lineage: "All who dwell under Heaven recognize beauty ... by
 distinguishing it from deformity; all recognize the good by distinguishing it from
-wickedness" (*Tao Te Ching* 2).
+wickedness" (_Tao Te Ching_ 2).
 
 Contemporary work sharpens the consequence for a format. B. Scot Rousse and David
-Spivak describe care as *tending and attending* — "the ongoing activity of
+Spivak describe care as _tending and attending_ — "the ongoing activity of
 cultivation that brings things out at their best" — and stress that "you can't fully
 specify in advance what caring for something will require"
 ([Notes on Care](https://withoutwhy.substack.com/p/notes-on-care-with-david-spivak-a)).
@@ -129,25 +129,25 @@ That is the deepest reason a `QUALITY.md` under-determines quality: not a gap to
 close with more requirements, but the nature of care, which a written artifact can
 point toward and never exhaust. Their caution also lands on this project's own use
 context — they worry about systems that "process our values but do not care." A
-Model handed to an agent or a team can be *processed* without being *cared* through;
+Model handed to an agent or a team can be _processed_ without being _cared_ through;
 the requirements read the same either way, and only the second is quality.
 
 ## Three axes that do not line up
 
 It is tempting to collapse "the work," "the kind of quality in play," and "the
-lenses a model uses" into one idea called a *domain*. Pulling them apart gives a
+lenses a model uses" into one idea called a _domain_. Pulling them apart gives a
 simple picture of where quality lives:
 
 **society → spheres → quality contexts → a Model → factors**
 
 - A **society** is held up by its **spheres** — family, the trades, commerce and
   industry, the academy, civic life, the arts, and the rest. A sphere is a domain of
-  responsibility with an entrusted good of its own; it carries the *motivation and
-  stakes* — why the quality matters, and to whom.
+  responsibility with an entrusted good of its own; it carries the _motivation and
+  stakes_ — why the quality matters, and to whom.
 - Within and across spheres, work happens in **quality contexts** — recurring
-  *kinds* of quality concern, or contexts of use: requirements quality, data
+  _kinds_ of quality concern, or contexts of use: requirements quality, data
   quality, documentation, budgeting, caregiving, the quality of an analysis or a
-  decision. This axis carries the *shape* of the concern.
+  decision. This axis carries the _shape_ of the concern.
 - A **Model** is a single `QUALITY.md` for a single entity, and it earns its
   **factors** — the specific quality lenses — from that entity's own risks and needs
   (see [the authoring guide](../../skills/quality/guides/authoring.md)).
@@ -159,10 +159,10 @@ The nesting orients, but it is not a tree, and the axes do not line up:
   quality concerns the scientist, the clinician, and the logistics planner alike.
   This is why the [catalog below](#a-catalog-of-quality-contexts) is organized by
   context, not filed under spheres.
-- Some familiar groupings are **cross-cutting, not spheres.** The *learned
-  professions* (medicine, law, ministry, engineering) thread through several spheres,
-  bound by service to a public good ([above](#why-care-not-conformance)). *Knowledge
-  work* — cognitive, informational work — likewise cuts across spheres, and it is
+- Some familiar groupings are **cross-cutting, not spheres.** The _learned
+  professions_ (medicine, law, ministry, engineering) thread through several spheres,
+  bound by service to a public good ([above](#why-care-not-conformance)). _Knowledge
+  work_ — cognitive, informational work — likewise cuts across spheres, and it is
   the attribute most tied to the [agentic use context](#agentic-use-context): an
   assistant is most often in the loop on knowledge-work contexts, whatever the
   sphere.
@@ -174,13 +174,13 @@ taxonomies to fill in. That holds throughout; the
 content.
 
 The quality-context axis is the one with the most external formalization, and that
-is worth leaning on when *naming* a context. Decades of measurement and evaluation
+is worth leaning on when _naming_ a context. Decades of measurement and evaluation
 practice — the lineage QUALITY.md draws on (see [`SPECIFICATION.md`](../../SPECIFICATION.md),
 Lineage) — grew up around specific contexts: product quality, data quality,
 requirements quality, process quality, and service quality, among others. That each
-earned its own body of practice is the best evidence that *quality context* is a
+earned its own body of practice is the best evidence that _quality context_ is a
 real, recurring axis. Two cautions keep the borrowing honest. First, use that
-lineage to bound the *context*, never to populate the *factors*: a standard's
+lineage to bound the _context_, never to populate the _factors_: a standard's
 characteristic list (reliability, security, maintainability, and the rest) is
 factor-axis content and stays earned per entity, not adopted as defaults — importing
 it wholesale is the exact anti-pattern the
@@ -191,7 +191,7 @@ not the checklist stance.
 ## What makes a domain a useful test
 
 Software is the project's primary illustrative domain — most contributors think in
-it fluently — but it is *unrepresentative* in ways that quietly bias the format's
+it fluently — but it is _unrepresentative_ in ways that quietly bias the format's
 abstractions. In a software Model the `source` is a readable code path, the
 `assessment` can often lean on a runnable check, the audience is a roughly aligned
 team, and "good" usually means correctness. A format tuned only against that domain
@@ -199,29 +199,29 @@ can develop hidden assumptions — that a source is always a file an agent can r
 that an assessment always has an executable oracle — without anyone noticing,
 because the one domain in view never contradicts them.
 
-A *secondary* domain earns its place by contradicting one of those assumptions — by
+A _secondary_ domain earns its place by contradicting one of those assumptions — by
 pressing the abstractions along an axis where software does not push back. A few axes
 matter most (illustrative and overlapping, not a closed taxonomy):
 
 - **Source materiality.** Is the evaluated thing a readable artifact (code, prose),
-  a data set, a *live process* with no static artifact, or a personal system?
+  a data set, a _live process_ with no static artifact, or a personal system?
   Software sits at the readable-artifact end; a service has no file to read.
 - **Assessment oracle.** Can a requirement be checked by something executable, only
-  by expert *judgment* against a rubric, or only against *values or tradition*? A
-  second cut runs underneath: *internal* quality (static properties of the artifact),
-  *external* quality (its behavior in operation), and *quality in use* (whether
+  by expert _judgment_ against a rubric, or only against _values or tradition_? A
+  second cut runs underneath: _internal_ quality (static properties of the artifact),
+  _external_ quality (its behavior in operation), and _quality in use_ (whether
   someone accomplishes their goal with it in a real context) often need different
   oracles. Software's runnable check usually covers internal and external and stops
   short of quality in use — so a domain that lives in the in-use view stresses the
   oracle in a way software does not.
 - **Constituency.** Does quality serve a single self, a roughly aligned team, or
-  *multiple parties* whose immediate interests differ but who answer to a shared
+  _multiple parties_ whose immediate interests differ but who answer to a shared
   good? A contract serves several parties under the law's public purpose; a personal
   system answers to one person.
 - **Stakes.** Is the dominant stake correctness, fitness-for-purpose, persuasion, or
-  *meaning*? Software stakes are usually correctness; a liturgy's stakes are meaning.
+  _meaning_? Software stakes are usually correctness; a liturgy's stakes are meaning.
 
-The skill already carries the machinery for *authoring* in any domain once it is
+The skill already carries the machinery for _authoring_ in any domain once it is
 named: the [authoring guide](../../skills/quality/guides/authoring.md) enumerates a
 composite entity's constituents from stewardship concerns × audience/purpose, so the
 same generator works in any domain — lean on it rather than inventing a parallel
@@ -230,10 +230,10 @@ taxonomy.
 ## A catalog of quality contexts
 
 When an example needs a non-software illustration, draw from the catalog below. It is
-organized by *quality context*, because a context recurs across spheres rather than
+organized by _quality context_, because a context recurs across spheres rather than
 belonging to one — each entry notes the spheres it **recurs across** to show that.
 Everything here is illustrative, non-exhaustive, and overlapping (as throughout); the
-factor sketches are *not* default factor sets — a real Model earns its factors (see
+factor sketches are _not_ default factor sets — a real Model earns its factors (see
 [the authoring guide](../../skills/quality/guides/authoring.md)). Two roles are
 tagged: **cite-worthy** contexts are the ones to reach for in worked or substantial
 examples; **range-finders** probe the edges of the format's reach.
@@ -242,14 +242,14 @@ examples; **range-finders** probe the edges of the format's reach.
 
 These four keep a readable source but have no runnable oracle, so quality rests on
 judgment. That is not a step down from software but a clarification of it: even a
-software requirement's executable check is a *proxy* for the judgment that finally
+software requirement's executable check is a _proxy_ for the judgment that finally
 decides whether the thing is good. These remove the proxy and leave the judgment in
 plain view. The [worked example below](#worked-example-a-documentation-set) develops
 the first.
 
 | Quality context                                 | Stresses                                | Recurs across                                         | Illustrative factor sketch                                      |
 | ----------------------------------------------- | --------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------- |
-| **Documentation / written corpus** *(flagship)* | judgment oracle; prose source           | the professions, commerce, the academy, the household | accuracy, completeness, findability, clarity, currentness       |
+| **Documentation / written corpus** _(flagship)_ | judgment oracle; prose source           | the professions, commerce, the academy, the household | accuracy, completeness, findability, clarity, currentness       |
 | **Data set / data product**                     | source is data, not a code path         | science, commerce, civic and public life              | accuracy, completeness, provenance, timeliness, fitness for use |
 | **Research / analytical report**                | credibility without an executable check | the academy, commerce, the professions                | rigor, reproducibility, sourcing, calibration, clarity          |
 | **Service / operation**                         | no static artifact at all               | commerce, the professions, civic life                 | resolution quality, consistency, recoverability, responsiveness |
@@ -260,23 +260,23 @@ These push constituency and stakes hardest. They are reasoning aids, not worked
 models, and the project takes no position on any tradition, legal stance, or personal
 arrangement:
 
-- **Legal / contract.** Quality serves *multiple parties under a shared good* — the
+- **Legal / contract.** Quality serves _multiple parties under a shared good_ — the
   law's public purpose — so a Model cannot reduce "good" to one party's preference;
   it names the good a fair ordering serves. Law is not by nature adversarial; legal
   quality is fidelity to the law's purposes, not winning. (Developed under
   [Why care, not conformance](#why-care-not-conformance).) Recurs
   across civic and commercial life.
 - **Finance / budgeting.** A hard, objective floor (the books must balance; the plan
-  must be solvent) sits *over* value-laden priorities (what is worth spending on) —
+  must be solvent) sits _over_ value-laden priorities (what is worth spending on) —
   an executable-style constraint paired with judgment about fit-to-goals. Recurs
   across the household, commerce, and civic life.
-- **Personal productivity.** The evaluated entity is a *system of one* — a personal
+- **Personal productivity.** The evaluated entity is a _system of one_ — a personal
   workflow — with no external audience and a legitimately self-defined bar. It tests
   whether the format works when the only constituent is the author. Recurs across any
   sphere, lived individually.
 - **Devotional / religious practice.** Quality is defined by a tradition's account of
   the good and resists every reduction to checkable conformance; it is known by
-  *fruit* over time, not surface conformance at an instant. This is not a distant
+  _fruit_ over time, not surface conformance at an instant. This is not a distant
   domain from engineering quality — it clarifies the center of all of them.
   (Developed under [Why care, not conformance](#why-care-not-conformance).)
 
@@ -296,7 +296,7 @@ to the quietest thing kept at home.
 ## Worked example: a documentation set
 
 Asserting agnosticism is cheap; the README and SPECIFICATION already show the model
-*shape* with a software service. What follows shows it holding in a different domain
+_shape_ with a software service. What follows shows it holding in a different domain
 — a complete documentation / knowledge-base Model. Two things make it a real stress
 test rather than the software example relabeled: the `source` is a prose corpus, and
 every `assessment` describes a human-judgment check, with no runnable oracle. It also
@@ -414,7 +414,7 @@ illustrative and mark it so.
 - **Pair the primary with a secondary.** For worked or substantial example content,
   anchor in software/product quality — the familiar domain contributors read
   fluently — and pair it with one **cite-worthy** secondary context (above), so the
-  example *demonstrates invariance*: the same model shape, with only domain-carried
+  example _demonstrates invariance_: the same model shape, with only domain-carried
   content changing. One anchor plus one contrast is the sweet spot; avoid stacking
   multiple software cases, and keep the pairing balanced so software does not read as
   the privileged "real" example with the secondary as an afterthought. Brief inline
@@ -428,8 +428,8 @@ illustrative and mark it so.
   examples from several domains when examples help. Use software quality as the
   default only for explicitly software topics; do not imply software product quality
   is the default use.
-- **Keep the registers straight.** Domain-agnostic *model content* is separate from
-  the agent-first *use context* (next section). AI-assistant and harness language is
+- **Keep the registers straight.** Domain-agnostic _model content_ is separate from
+  the agent-first _use context_ (next section). AI-assistant and harness language is
   appropriate when describing how QUALITY.md is used or this project itself; it is
   not the default modeled domain.
 
@@ -439,9 +439,9 @@ These rules are normative for repo content. [`AGENTS.md`](../../AGENTS.md) carri
 one-line summary and links here; this section governs.
 
 Domain agnostic does not mean context neutral. QUALITY.md is domain agnostic in
-*what a quality model can describe* — software, documents, data sets, research or
+_what a quality model can describe_ — software, documents, data sets, research or
 analytical reports, services, operations, processes, AI assistants, agent harnesses,
-or other evaluated entities. This project is not context neutral in *how* QUALITY.md
+or other evaluated entities. This project is not context neutral in _how_ QUALITY.md
 is used.
 
 That distinction licenses explicit guidance for **use-context constituents**, not

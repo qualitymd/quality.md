@@ -94,13 +94,13 @@ also describes being current).
   paths): parse `assets[]`; `Ready` requires both `qualitymd_<os>_<arch>.tar.gz`
   (reusing the installer's GOOS/GOARCH → token mapping in one helper) and
   `checksums.txt`. `ReleaseNotesURL` = the release `html_url`.
-- npm: the registry `/latest` *is* the installable latest, so `Ready` is true
+- npm: the registry `/latest` _is_ the installable latest, so `Ready` is true
   whenever a version returns; `ReleaseNotesURL` left empty (no GitHub URL in the
   registry response — see Alternatives).
 - Homebrew: route to a new `latestHomebrewVersion` that reads the tap cask the
   project publishes — `GET https://raw.githubusercontent.com/qualitymd/homebrew-tap/main/Casks/qualitymd.rb`
   — and parses its `version "X.Y.Z"` line (a small regex; the cask is generated,
-  so the line is stable). The cask *is* what `brew upgrade qualitymd/tap/qualitymd`
+  so the line is stable). The cask _is_ what `brew upgrade qualitymd/tap/qualitymd`
   installs, so like npm `Ready` is true whenever a version parses — never gated on
   the GitHub release tag. Unlike npm, brew gets a real `ReleaseNotesURL`: the
   cask's `url` pins `releases/download/v<version>/…`, so the notes URL is
@@ -110,7 +110,7 @@ also describes being current).
   bug: brew was resolving latest from the GitHub tag instead of the tap.
 
 Brew apply is unchanged (`brew upgrade qualitymd/tap/qualitymd`), but a user's
-*local* Homebrew can still lag the published tap until it refreshes — which a
+_local_ Homebrew can still lag the published tap until it refreshes — which a
 version check can't see. So the post-apply `qualitymd --version` verify that the
 managed standalone path already performs is now required on every apply path (the
 spec's Apply verification requirement), brew most notably: if the running version
@@ -160,7 +160,7 @@ explicitly rather than leaning on "TTY implies not-CI": some CI runners allocate
 pseudo-TTY, and a CI run must never spawn a network subprocess the user didn't
 invoke. The refresh needs no `--json` gate of its own — `--json` only suppresses
 the visible line, not the background warming — and skipping dev builds avoids a
-network subprocess for a build that can never report an update. When those gates pass, the foreground process spawns a *detached*
+network subprocess for a build that can never report an update. When those gates pass, the foreground process spawns a _detached_
 `qualitymd` subprocess from the root `PersistentPreRunE` — so the child has
 maximum lead time, overlaps the real command, and still spawns even if the command
 later errors before post-run. The child performs the check and rewrites the cache, then the parent
@@ -173,7 +173,7 @@ cache as a side effect, so an interactive check keeps it warm.
 
 **Opt-out.** `QUALITYMD_NO_UPDATE_CHECK=1` disables both the refresh and the
 notice — the documented contract for now. A config-file key is the intended
-*primary* opt-out for centrally managed and air-gapped fleets once qualitymd grows
+_primary_ opt-out for centrally managed and air-gapped fleets once qualitymd grows
 a config surface (an env var doesn't persist across a managed fleet the way a
 checked-in config setting does, which is exactly the audience the opt-out serves),
 so the env var should not ossify as the only knob. This mirrors how Codex exposes
@@ -198,10 +198,10 @@ its update check solely as a `check_for_update_on_startup` config flag documente
   cross-platform process detachment and an extra short-lived process (see risks).
 - **Construct an npm release-notes URL from the version.** Rejected — assumes the
   `v`-prefixed tag format and can 404; honest omission beats a broken link. (Brew
-  is different: the cask *pins* the release it installs, so the tag is known-good,
+  is different: the cask _pins_ the release it installs, so the tag is known-good,
   not assumed — hence brew gets a notes URL and npm doesn't.)
 - **Resolve brew latest via `brew info` / a local brew invocation.** Rejected —
-  reads the user's *local* tap state, which is exactly the staleness we don't want
+  reads the user's _local_ tap state, which is exactly the staleness we don't want
   to treat as authoritative, and shells out to brew on a plain version check.
   Reading the published cask over HTTP gives the canonical "what brew would install
   after a tap refresh." Local staleness is instead caught by the post-apply verify.
@@ -255,5 +255,5 @@ its update check solely as a `check_for_update_on_startup` config flag documente
   the post-apply `--version` verify to the brew path. This fixes the pre-existing
   0032 bug — brew was comparing against GitHub — and implements 0032's unfulfilled
   "compare against the owning channel" SHOULD. Deferring it would leave 0041's
-  readiness gate confirming the wrong signal for brew. Mechanics in *Widen the
-  latest-version provider*.
+  readiness gate confirming the wrong signal for brew. Mechanics in _Widen the
+  latest-version provider_.

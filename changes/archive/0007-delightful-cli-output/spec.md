@@ -9,8 +9,8 @@ timestamp: 2026-06-17T00:00:00Z
 # delightful CLI output — functional spec
 
 Companion to the [Delightful human CLI output](../0007-delightful-cli-output.md)
-change. This spec states *what* the human surface must do; the
-[design doc](design.md) covers *how*, on the existing stack.
+change. This spec states _what_ the human surface must do; the
+[design doc](design.md) covers _how_, on the existing stack.
 
 It inherits the cross-cutting contract — the
 [baseline](../../../specs/cli.md#baseline), exit codes, and the `--json` and

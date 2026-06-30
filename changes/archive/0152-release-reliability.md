@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 # Release Reliability
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0152-release-reliability/spec.md) - what the case must do.

@@ -14,7 +14,7 @@ change case and its [functional spec](spec.md).
 ## Context
 
 This is a documentation-and-runtime-skill alignment change. There is no Go or
-CLI behavior under design — the artifact under change is the *ordering* of the
+CLI behavior under design — the artifact under change is the _ordering_ of the
 agent's rendered run frame relative to its tool calls, and the durable contract
 that states that ordering.
 

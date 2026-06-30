@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 # Evaluation status and report build — functional spec
 
 Companion to [Evaluation status and report build](../0015-evaluation-report-build.md). This
-spec states *what* `qualitymd evaluation show-status` and
+spec states _what_ `qualitymd evaluation show-status` and
 `qualitymd evaluation build-report` must do; it specifies behavior, not
 implementation.
 
@@ -22,7 +22,7 @@ Two source-of-truth boundaries bind this spec:
 
 - The **Evaluation Report** — what a report must present — is defined in
   [`SPECIFICATION.md` → Report](../../../SPECIFICATION.md#report). `build-report`
-  *renders* that report; it does not redefine it.
+  _renders_ that report; it does not redefine it.
 - The **record contract** — the run-folder layout and the schema of
   `assessments/*.json`, `analysis/*.json`, `recommendations/*.md`, and
   `report.json` — is defined in the
@@ -51,7 +51,7 @@ and the in-scope root — are skill judgment, already recorded in the run's
 `assessments/*.json` and `analysis/*.json` records (written by
 [0014](../0014-evaluation-record-write.md)). `build-report` **renders** those
 recorded ratings into the report; it **MUST NOT** infer, recompute, or alter any
-rating, rationale, or *not assessed* outcome. Where the records and a derived
+rating, rationale, or _not assessed_ outcome. Where the records and a derived
 report disagree, the records are authoritative.
 
 ## Status command
@@ -104,7 +104,7 @@ record file, or a malformed record that prevents the run from being inspected
   ratings, each with rationale; and
 - the **advice** — key gaps, options, and recommendations.
 
-*Not assessed* outcomes **MUST** be shown wherever they occur, distinct from
+_Not assessed_ outcomes **MUST** be shown wherever they occur, distinct from
 rated outcomes, at every level of the report.
 [Appendix A](../../../SPECIFICATION.md#appendix-a-sample-evaluation-report) of the
 format spec is the non-normative reference rendering.
@@ -145,7 +145,7 @@ report the [Report phase](../../../SPECIFICATION.md#report) requires:
   name the missing or inconsistent record on stderr, and **MUST NOT** write a
   partial report. The same missing or inconsistent records are reported by
   `show-status` with exit `0` and `reportable: false`.
-- A *not assessed* outcome recorded in the records is **not** a missing record:
+- A _not assessed_ outcome recorded in the records is **not** a missing record:
   it is valid, expected content and **MUST** be rendered as such (see
   [report.md](#reportmd)), never treated as an error.
 
@@ -158,11 +158,11 @@ ordered best to worst, and the gate compares against that order.
 
 - The gate is driven by the **in-scope root aggregate rating** — the same rating
   `report.md` presents as the Rating.
-- The command **MUST** exit non-zero with the *ran-but-found-problems* code (`1`)
+- The command **MUST** exit non-zero with the _ran-but-found-problems_ code (`1`)
   when that rating is **at or below** `<level>` in the scale's order (i.e. equal
   to `<level>` or worse). It **MUST** exit `0` when the rating is strictly better
   than `<level>`.
-- When the in-scope root aggregate rating is *not assessed*, the gate **MUST**
+- When the in-scope root aggregate rating is _not assessed_, the gate **MUST**
   treat the run as failing and exit `1`: an unrated root cannot clear a quality
   bar.
 - When `<level>` does not name a level of the model's rating scale, the command

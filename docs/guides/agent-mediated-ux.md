@@ -49,7 +49,7 @@ proceeding anyway.
 
 Design the interaction, not the rendering.
 
-The unit of design is the *intent* — for example, "a single-select closed choice
+The unit of design is the _intent_ — for example, "a single-select closed choice
 with a recommended default and rationale" — not the Markdown that happens to
 render it. A given runtime may render that intent through a native interaction
 affordance (a selectable option list, a confirm gate, a multi-select) or through
@@ -60,20 +60,20 @@ Two rules keep this both useful and agent-agnostic:
 
 - **Always author a working text rendering.** A harness with no question tool
   must still get a complete, well-structured interaction. The numbered list and
-  the `y`/`n` gate described later are the *fallback renderings* of these
+  the `y`/`n` gate described later are the _fallback renderings_ of these
   intents, not a lesser path.
 - **Keep the semantics in the message, not the widget.** Native option labels
   are small, vary in how much they display, and are sometimes truncated or
-  stripped. The widget carries the *selection mechanic*; the surrounding message
-  carries the *teaching* — the question, why it matters, the recommendation, and
+  stripped. The widget carries the _selection mechanic_; the surrounding message
+  carries the _teaching_ — the question, why it matters, the recommendation, and
   the evidence. Never compress design-critical rationale into an option label.
 
 Express the choice as intent plus affordance category, never as a named tool:
 "present a single-select closed choice with the recommended option first," and
 let whatever the runtime offers fulfill it. When in doubt, detect the
-capability rather than assume it: *if the runtime exposes a structured
+capability rather than assume it: _if the runtime exposes a structured
 single-select affordance, render through it; otherwise emit the numbered-list
-fallback.* Both branches are part of the design.
+fallback._ Both branches are part of the design.
 
 ### Native interaction affordances to watch for
 
@@ -95,7 +95,7 @@ that fits. Describe them by capability, never by a specific tool name.
 - **Progress or task-list indicator** — native status UI that can replace or
   supplement the textual progress block.
 
-### When a native affordance is *not* fit-for-purpose
+### When a native affordance is _not_ fit-for-purpose
 
 Reaching for a widget is not always right. Prefer the text rendering when:
 
@@ -200,7 +200,7 @@ Use Markdown emphasis as interaction structure.
   the user's main task should be the strongest visual element.
 - **Bold labels** such as `Recommended`, `Why it matters`, `Confidence`,
   `Changed`, `Validation`, `Important gaps`, and `Next`.
-- Use *italics* for soft notes or caveats, not for required actions.
+- Use _italics_ for soft notes or caveats, not for required actions.
 - Use `code` for exact files, commands, fields, model references, IDs, and
   literal values.
 - Do not bold whole paragraphs, repeated prose, or every heading-like phrase.
@@ -322,7 +322,7 @@ for when to reach for the affordance and when to stay in text.
 
 ### Closed-choice questions
 
-A closed-choice question is an *intent*: a single-select pick with a recommended
+A closed-choice question is an _intent_: a single-select pick with a recommended
 default. Render it through a native option picker when one is present and
 fit-for-purpose; otherwise render the numbered-list fallback below. Either way
 the recommended option comes first and the rationale stays in the message.
@@ -486,7 +486,7 @@ stack a second prose gate on top of it; that is redundant friction. For a
 file-mutating plan, prefer a native plan-or-diff review affordance when present
 so the user inspects the artifact before approving.
 
-A gate has one job: make the user see *what is being asked* and *how to respond*
+A gate has one job: make the user see _what is being asked_ and _how to respond_
 at a glance. Lead with the question, render the choices as a visually separated
 block, and demote the rationale below them. Do not stack the question and its
 supporting labels at the same weight — that is the flat-wall failure, where the

@@ -21,7 +21,7 @@ children:
 
 The run frame earns its place by letting the user catch a wrong inference before
 the skill spends effort or mutates anything (the 0038 rationale). That value only
-exists if the frame reaches the user *first* — before the agent reads files and
+exists if the frame reaches the user _first_ — before the agent reads files and
 runs commands. A field run of `setup` showed the failure mode directly (the 0096
 annotation): the agent front-loaded CLI checks, repository scans, and the
 feedback-log write before flushing any text, so the frame arrived after one to
@@ -33,13 +33,13 @@ Two gaps remain:
 - **`evaluate` never got the guard.** Its runtime procedure resolves the
   QUALITY.md workspace (step 1) before emitting the run frame (step 2), and the
   durable `evaluate` spec's Required flow does not mention the run frame at all.
-  Workspace resolution invites tool calls, so the frame can slip behind a *silent
-  runway* of reads and commands — the same failure 0096 fixed for `setup`,
+  Workspace resolution invites tool calls, so the frame can slip behind a _silent
+  runway_ of reads and commands — the same failure 0096 fixed for `setup`,
   reproduced here.
 - **The rule lives only as per-workflow prose.** The two shared homes — the
   `SKILL.md` dispatcher instruction and the durable spec's `Run frames` section —
   say the frame is emitted "at the start of a public workflow" without requiring
-  it be the *first output before any tool call*. The timing rule is re-derived
+  it be the _first output before any tool call_. The timing rule is re-derived
   per workflow rather than bound once where every workflow inherits it.
 
 The companion design guidance now states the rule:
@@ -69,7 +69,7 @@ Covered:
 
 Deferred / non-goals:
 
-- no change to the run frame's *fields* (header, model file, scope, rigor,
+- no change to the run frame's _fields_ (header, model file, scope, rigor,
   mutation, artifacts, next gate are unchanged);
 - no behavior change to `setup` or `update`, which already satisfy the timing
   rule; no vocabulary churn there;
@@ -89,24 +89,19 @@ Deferred / non-goals:
 
 ### Durable specs
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - `Run frames` section: require the frame be the first output before any
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - `Run frames` section: require the frame be the first output before any
       tool call, and allow a provisional / `resolving…` value for a field that
       needs a tool to resolve.
-- [x] [`specs/skills/quality-skill/workflows/evaluate.md`](../../specs/skills/quality-skill/workflows/evaluate.md)
-      - Required flow: require the run frame be emitted as the first output
+- [x] [`specs/skills/quality-skill/workflows/evaluate.md`](../../specs/skills/quality-skill/workflows/evaluate.md) - Required flow: require the run frame be emitted as the first output
       before tool inspection, matching `setup` and `update`.
 
 ### Durable docs / bundled skill
 
-- [x] [`docs/guides/agent-mediated-ux.md`](../../docs/guides/agent-mediated-ux.md)
-      - already synced ahead of this case: the new **Opening** section states the
+- [x] [`docs/guides/agent-mediated-ux.md`](../../docs/guides/agent-mediated-ux.md) - already synced ahead of this case: the new **Opening** section states the
       rule this case enforces.
-- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md)
-      - dispatcher run-frame instruction: add the first-output/pre-tool timing
+- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - dispatcher run-frame instruction: add the first-output/pre-tool timing
       rule and the provisional-value allowance.
-- [x] [`skills/quality/workflows/evaluate.md`](../../skills/quality/workflows/evaluate.md)
-      - reorder so the run frame is the first output before workspace resolution;
+- [x] [`skills/quality/workflows/evaluate.md`](../../skills/quality/workflows/evaluate.md) - reorder so the run frame is the first output before workspace resolution;
       allow a provisional `Scope: resolving…` value.
 
 ### Suggested new durable specs

@@ -73,20 +73,15 @@ Code:
 
 Specs:
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-      - update the shared setup summary, mutation surfaces, run-frame
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md) - update the shared setup summary, mutation surfaces, run-frame
       expectations, and quality-log writer contract.
-- [x] [`specs/skills/quality-skill/modes/setup.md`](../specs/skills/quality-skill/modes/setup.md)
-      - replace current guided-population procedure with contextual discovery,
+- [x] [`specs/skills/quality-skill/modes/setup.md`](../specs/skills/quality-skill/modes/setup.md) - replace current guided-population procedure with contextual discovery,
       model write, lint/readiness inspection, and next-step routing.
-- [x] [`specs/skills/quality-skill/quality-log.md`](../specs/skills/quality-skill/quality-log.md)
-      - remove setup as a quality-log writer because setup should mutate only
+- [x] [`specs/skills/quality-skill/quality-log.md`](../specs/skills/quality-skill/quality-log.md) - remove setup as a quality-log writer because setup should mutate only
       `QUALITY.md`.
-- [x] [`specs/skills/quality-skill/guides/getting-started-md.md`](../specs/skills/quality-skill/guides/getting-started-md.md)
-      - align first-run guidance with the new setup flow and post-setup
+- [x] [`specs/skills/quality-skill/guides/getting-started-md.md`](../specs/skills/quality-skill/guides/getting-started-md.md) - align first-run guidance with the new setup flow and post-setup
       iteration path.
-- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
-      - confirm whether the already-expanded checklist needs further setup
+- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md) - confirm whether the already-expanded checklist needs further setup
       readiness wording.
 - [x] OKF logs under [`specs/`](../specs/log.md) - record durable spec updates
       when they land.
@@ -97,14 +92,11 @@ Runtime skill and docs:
       mutation surfaces, quality-log hard rule, and setup interaction contract.
 - [x] [`skills/quality/modes/setup.md`](../skills/quality/modes/setup.md) -
       implement the new runtime setup procedure.
-- [x] [`skills/quality/guides/getting-started.md`](../skills/quality/guides/getting-started.md)
-      - align the first-run playbook with the setup handoff.
-- [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md)
-      - confirm no further runtime checklist update is needed beyond the
+- [x] [`skills/quality/guides/getting-started.md`](../skills/quality/guides/getting-started.md) - align the first-run playbook with the setup handoff.
+- [x] [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md) - confirm no further runtime checklist update is needed beyond the
       durable setup-readiness concerns already added.
 - [x] [`README.md`](../README.md), [`install.md`](../install.md), and
-      [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md)
-      - update public setup guidance and quality-loop wording.
+      [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md) - update public setup guidance and quality-loop wording.
 - [x] [`CHANGELOG.md`](../CHANGELOG.md) - add the unreleased entry when the
       implementation lands.
 

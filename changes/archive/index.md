@@ -77,7 +77,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   focused tests for high-risk generated report behavior found by the experiment
   program (`Done`).
 - [0025 — Durable spec rationale](0025-durable-spec-rationale.md) - taught the
-  contributor guides so durable specs carry their *why* — a spec-level
+  contributor guides so durable specs carry their _why_ — a spec-level
   Background/Motivation section and per-requirement annotations — so a landing
   change absorbs its rationale instead of leaving it in the archive (`Done`).
 - [0026 — Authoring guide replaces meta-model workflow](0026-authoring-guide-remove-meta-model.md) -
@@ -226,7 +226,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   and renamed the skill `modes/` folder to `workflows/` (`Done`).
 - [0066 — Setup feedback log](0066-setup-feedback-log.md) - added a hand-authored,
   skill-only workflow feedback log under `.quality/logs/`
-  (`<timestamp>-setup-feedback-log.md`) recording the setup run *experience*,
+  (`<timestamp>-setup-feedback-log.md`) recording the setup run _experience_,
   distinct from the quality log and evaluation `debug-log.md`, recorded locally
   and never transmitted, with secrets/prompt-injection excluded and sensitive
   context sanitized; no CLI/Go change (`Done`).
@@ -285,7 +285,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   Top 10 guidance; guide and guide-spec edits only, no CLI/Go change (`Done`).
 - [0077 — Care-grounded stewardship concerns](0077-stewardship-care-grounding.md) -
   refined 0076's stewardship-concern generator with the phenomenology of care
-  (Rousse & Spivak): the artifact is the *trace* of tending rather than the care
+  (Rousse & Spivak): the artifact is the _trace_ of tending rather than the care
   itself, the claim that earns a constituent comes from a Need or Risk rather than
   the list, the protective pair answers to vulnerability, stewardship is
   holding-in-trust, and the lifecycle band is recurring; authoring guide and
@@ -401,7 +401,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   semantics; docs/spec/skill guidance only, no CLI/Go or format-spec change
   (`Done`).
 - [0096 — Setup intro preview](0096-setup-intro-preview.md) - makes `/quality
-  setup` open with educational orientation, show a project-specific setup preview
+setup` open with educational orientation, show a project-specific setup preview
   before discovery, and create the setup feedback log after that preview when the
   run continues; docs/spec/skill guidance only, no CLI/Go or format-spec change
   (`Done`).
@@ -752,7 +752,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
   types in concern-first order, and labels sparse severity counts (`Done`).
 - [0183 — Glossary and Report Links](0183-glossary-report-links.md) - adds a
   workspace-root glossary, replaces generated report legends with `Evaluation
-  links:`, and seeds glossary terms and vocabularies (`Done`).
+links:`, and seeds glossary terms and vocabularies (`Done`).
 - [0184 — Evaluation Links Blockquote](0184-evaluation-links-blockquote.md) -
   renders generated report `Evaluation links:` navigation as a blockquote
   immediately below each H1 (`Done`).

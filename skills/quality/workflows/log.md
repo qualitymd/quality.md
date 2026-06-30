@@ -113,7 +113,7 @@
 - **Revision**: Updated the [evaluate](evaluate.md) procedure for 0115 -
   Type-safe, model-bound Evaluation v2 data.
   Evaluate now discovers payload shape with `qualitymd evaluation data schema
-  <kind>`, uses populated examples for samples, and treats `data set --dry-run`
+<kind>`, uses populated examples for samples, and treats `data set --dry-run`
   as validation of authored payloads.
 
 - **Revision**: Reordered the [evaluate](evaluate.md) procedure for 0114 - Run

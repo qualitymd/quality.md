@@ -10,9 +10,9 @@ timestamp: 2026-06-17T00:00:00Z
 
 Design behind the
 [Evaluation status and report build](../0015-evaluation-report-build.md) change
-and its [functional spec](spec.md). The spec fixes *what*
+and its [functional spec](spec.md). The spec fixes _what_
 `qualitymd evaluation show-status` and `qualitymd evaluation build-report` must
-do; this doc covers *how* the code makes it so, and why this way. The on-disk
+do; this doc covers _how_ the code makes it so, and why this way. The on-disk
 record contract these commands read is the
 [record format spec](../0012-evaluation-record-format/spec.md); the records they
 consume are written by [0014](../0014-evaluation-record-write.md). The
@@ -33,8 +33,8 @@ already exist (0013, 0014). Two distinct jobs:
   `report.md` and `report.json`, write both, and (with `--fail-at-or-below`) map
   the rendered root rating to an exit code for CI.
 
-The spec's hard line is *render, never judge*: every rating, rationale, and *not
-assessed* outcome already lives in the records; these commands transcribe them
+The spec's hard line is _render, never judge_: every rating, rationale, and _not
+assessed_ outcome already lives in the records; these commands transcribe them
 and **MUST NOT** infer or recompute. That makes both commands pure functions of
 the record set, which is what lets idempotency and a stable CI gate hold.
 
@@ -93,8 +93,8 @@ read contract, the same convention `internal/lint` uses for its result.
 
 `show-status` calls `Load`, then a single completeness check
 (`func (r *Run) Renderable() ([]Gap, error)` — see below) and reports. It never
-writes. Because the spec wants it to exit `0` even when the run is *not*
-reportable — missing records are the *payload*, not a failure — the command
+writes. Because the spec wants it to exit `0` even when the run is _not_
+reportable — missing records are the _payload_, not a failure — the command
 distinguishes two outcomes:
 
 - **Inspectable but incomplete** → exit `0`, with `reportable: false` and the
@@ -136,9 +136,9 @@ record graph for the closure conditions the spec enumerates:
 - every `recommendations/*.md` referenced by an assessment is present and has
   parseable runtime frontmatter.
 
-Each unmet condition becomes a `Gap{kind, ref, detail}`. A *not assessed*
+Each unmet condition becomes a `Gap{kind, ref, detail}`. A _not assessed_
 outcome recorded in a record is **not** a gap — it is valid content and renders
-as such; the check only flags *absent* or *dangling* records, never a recorded
+as such; the check only flags _absent_ or _dangling_ records, never a recorded
 judgment. `show-status` reports the gaps and exits `0`; `build-report` treats a
 non-empty gap list as fatal: `ExitInternal` (70), the offending record named on
 stderr, and **no partial report written**.
@@ -156,9 +156,9 @@ Load(run) → Renderable (fail 70 if gaps) → Report (in-memory) → {report.md
 rationale, the scope, per-target results (root first, recursive: each
 requirement's findings summary / rating / rationale; each factor + every
 sub-factor at every depth; the target's local and aggregate ratings), and the
-advice from the recommendation records. It carries *only recorded values* —
+advice from the recommendation records. It carries _only recorded values_ —
 ratings and rationales are copied verbatim from `analysis/*.json` and
-`assessments/*.json`. *Not assessed* is a first-class state on every rating-
+`assessments/*.json`. _Not assessed_ is a first-class state on every rating-
 bearing node (mirroring the `notAssessed` flag in the records), rendered
 distinctly at every level, never collapsed to a missing or default rating.
 
@@ -168,9 +168,9 @@ Two renderers consume `Report`:
   [`SPECIFICATION.md` → Report](../../../SPECIFICATION.md#report), with
   [Appendix A](../../../SPECIFICATION.md#appendix-a-sample-evaluation-report) as the
   reference rendering. The renderer produces **plain Markdown bytes** and
-  `document.WriteAtomic`s them to `report.md`. Terminal styling is *not* applied
+  `document.WriteAtomic`s them to `report.md`. Terminal styling is _not_ applied
   to the file — the file is the deterministic artifact and must be byte-stable.
-  (When a future command *displays* a report on a TTY it can route through the
+  (When a future command _displays_ a report on a TTY it can route through the
   existing `writeMarkdown`/Glamour path, exactly as `spec` and `models view` do;
   build-report itself only writes the file.)
 - **report.json** — the machine rendering conforming to
@@ -199,7 +199,7 @@ to pinning every ordering and excluding every non-record input:
 - **Assessment order** within a requirement follows `assessments/NNN-*`
   filename order.
 - **No volatile content**: no timestamps, no host paths beyond the run-relative
-  references, no rendering jitter. Glamour is *never* in the file-write path, so
+  references, no rendering jitter. Glamour is _never_ in the file-write path, so
   renderer/version drift cannot change the artifact.
 
 Idempotency then falls out: re-running over unchanged records reproduces both
@@ -225,9 +225,9 @@ successful render, the command compares the **in-scope root aggregate rating**
    not re-render an error blob — this matches how `lint` returns
    `silentProblems` after printing findings.
 3. Root rating strictly better than `<level>` → `ExitOK` (0).
-4. Root rating *not assessed* → `ExitProblems` (1): an unrated root cannot clear
-   a bar. This reuses the same `silentProblems` path; *not assessed* is treated
-   as failing only for the gate, while still rendering as *not assessed* in both
+4. Root rating _not assessed_ → `ExitProblems` (1): an unrated root cannot clear
+   a bar. This reuses the same `silentProblems` path; _not assessed_ is treated
+   as failing only for the gate, while still rendering as _not assessed_ in both
    files.
 
 Without `--fail-at-or-below`, a successful render is always `ExitOK` (0)
@@ -240,8 +240,8 @@ the gate needs no new exit machinery: it just returns the right constructor.
 
 `skills/quality/SKILL.md` (updated in the In-Progress phase, not now) stops
 hand-authoring `report.md`/`report.json` and instead calls `build-report` after
-its `add-record` writes. The skill keeps owning *judgment* (it wrote the
-ratings into the records); the CLI now owns *rendering*. `--json` from both
+its `add-record` writes. The skill keeps owning _judgment_ (it wrote the
+ratings into the records); the CLI now owns _rendering_. `--json` from both
 commands gives the skill a structured status/receipt to act on without parsing
 human text.
 
@@ -268,13 +268,13 @@ human text.
 - **Apply Glamour/terminal styling when writing report.md.** Rejected: the file
   must be byte-deterministic and idempotent, and Glamour output varies with
   terminal width, color scheme, and renderer version. The TTY-rendering path
-  (`writeMarkdown`) belongs to commands that *display* a report, not to the one
-  that *writes* it.
+  (`writeMarkdown`) belongs to commands that _display_ a report, not to the one
+  that _writes_ it.
 - **Fold `show-status` into `build-report --dry-run`.** Rejected: probing must
   guarantee zero writes and exit `0` on an incomplete-but-readable run, whereas
   build-report's contract is to write and to gate. Two commands keep those two
   contracts unambiguous, and a polling skill wants the read-only one by name.
-- **A new exit code for "gate failed."** Rejected: a failed gate *is* the CLI's
+- **A new exit code for "gate failed."** Rejected: a failed gate _is_ the CLI's
   "ran but found problems" category (`ExitProblems` 1), the same code `lint`
   uses. Reusing it keeps CI semantics consistent across commands.
 

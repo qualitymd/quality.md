@@ -10,14 +10,14 @@ timestamp: 2026-06-24T00:00:00Z
 
 Design behind the
 [Domain-agnostic corpus alignment](../0088-domain-agnostic-corpus-alignment.md)
-change case and its [functional spec](spec.md). The spec settles *what* must hold;
+change case and its [functional spec](spec.md). The spec settles _what_ must hold;
 this doc settles the choices the spec deliberately leaves open — chiefly the new
 example's domain and bundle scope, and the shape of the README edits.
 
 ## Context
 
 [0083](../0083-quality-domain-agnosticism.md) added the doctrine guide and one
-worked non-software example *inside it*. A multi-agent audit then confirmed the
+worked non-software example _inside it_. A multi-agent audit then confirmed the
 residual pattern the guide is meant to prevent: the repo's other worked examples
 are uniformly software. The spec's substantive new artifact is a second,
 non-software reference example for the `/quality` skill, paired with marking and
@@ -30,8 +30,8 @@ and needs no design; three decisions do, and are settled here.
 
 The new example models a **data set / data product**. The cite-worthy set in the
 guide is documentation, data product, research report, and service. The repo
-already spends two of those: the guide's own worked example is a *documentation
-set*, and `0001` is a software *service* (a payments API). A data product is the
+already spends two of those: the guide's own worked example is a _documentation
+set_, and `0001` is a software _service_ (a payments API). A data product is the
 remaining choice that is maximally distinct from both, and it stresses the format's
 abstractions where software does not:
 
@@ -44,7 +44,7 @@ abstractions where software does not:
 
 Concretely (final subject fixed in implementation): a small fictional reference or
 analytics dataset, with two Areas such as **Schema & structure** and **Provenance &
-freshness**, and factors *earned* from the entity's own risks — e.g. accuracy,
+freshness**, and factors _earned_ from the entity's own risks — e.g. accuracy,
 completeness, provenance, timeliness — never imported as a default set. Assessments
 read as a reviewer's judgment ("a reviewer profiles column X against the documented
 range and treats out-of-range values as defects"), and recommendations follow
@@ -70,7 +70,7 @@ scaled down. The generated reports are produced from the runtime records and
 regenerated when inputs change, exactly as the `0001` bundle note already states.
 
 This keeps the fixture demonstrative without doubling the maintenance surface: the
-point is invariance of *shape*, which a small complete bundle shows as well as a
+point is invariance of _shape_, which a small complete bundle shows as well as a
 large one.
 
 ### Decision 3 — placement and corpus marking
@@ -87,16 +87,16 @@ subjects and locators) stay shared while the Sparrow-specific detail moves into 
 
 ### Decision 4 — README re-scoping, by minimal edit
 
-Two edits, both subtractive of *implication* rather than of agentic content:
+Two edits, both subtractive of _implication_ rather than of agentic content:
 
 - The opening sentence changes from "continuously improve AI assistant and coding
   agent projects" to a domain-agnostic object ("align your team and AI agents on
-  what *good* means — for software, docs, data, services, or whatever you tend"),
+  what _good_ means — for software, docs, data, services, or whatever you tend"),
   keeping the `/quality`-skill use context intact. The existing "That agentic
   workflow is the primary experience" sentence stays untouched — it is correct
   use-context framing.
 - The "Evaluate and Improve Agent Harnessability" section keeps all of its harness
-  references (the guide forbids removing them) but is reframed as *one example* of a
+  references (the guide forbids removing them) but is reframed as _one example_ of a
   factor family a project earns for an agent-collaborated entity, sitting beside a
   domain-neutral statement of why a QUALITY.md helps, so it and the
   software-specific "Manage Quality Debt" section read as two illustrations rather
@@ -111,7 +111,7 @@ Two edits, both subtractive of *implication* rather than of agentic content:
 - **Replace the `0001` Sparrow example with a non-software one** (one example, not
   two). Rejected — `0001` exercises genuinely software-shaped runtime behavior
   (secret-by-reference, prompt-injection-as-data, a layered binding constraint) worth
-  keeping. The goal is a *pair* that shows invariance, not swapping which single
+  keeping. The goal is a _pair_ that shows invariance, not swapping which single
   domain is privileged.
 - **Full-parity bundle** (same size as `0001`). Rejected — more maintenance for no
   extra demonstrative value; invariance of shape does not need scale.

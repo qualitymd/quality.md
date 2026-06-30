@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 # init command — functional spec
 
 Companion to the [Specify the init command](../0002-init-command.md) change.
-This spec states *what* `qualitymd init` must do; it is the delta that the
+This spec states _what_ `qualitymd init` must do; it is the delta that the
 durable [`specs/cli/init.md`](../../../specs/cli/init.md) sub-spec absorbs when the
 change lands.
 
@@ -49,7 +49,7 @@ offers no `--json` output.
 
 - When the target file already exists, `init` **MUST NOT** overwrite it: it
   **MUST** leave the file untouched and exit non-zero, reporting that the file
-  already exists. *(An author's existing model is never silently clobbered.)*
+  already exists. _(An author's existing model is never silently clobbered.)_
 - A `--force` flag **MUST** permit overwriting an existing target file.
 
 ### Scaffold contents

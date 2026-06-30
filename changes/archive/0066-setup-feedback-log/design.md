@@ -23,7 +23,7 @@ Three facts from the codebase shape the design:
 - **Directory creation is already on demand.** `internal/evaluation/create.go`
   `MkdirAll`s `.quality/evaluations/...` at the moment it writes a run, and
   `qualitymd init` does not touch `.quality/` at all — it only writes
-  `QUALITY.md`. The `internal/workspace` package *computes* paths; it never
+  `QUALITY.md`. The `internal/workspace` package _computes_ paths; it never
   creates them. So nothing needs to "ensure" `.quality/logs/`; whatever writes a
   feedback file creates the directory the same way evaluation does.
 - **The CLI carries no consent or location need here.** Location is already
@@ -76,7 +76,7 @@ directory on demand. No CLI flag, no new command, no config field, no Go change.
   also runs only once on the create-new path, so it could not seed per-run files
   anyway.
 - **General-purpose `--data-dir` flag.** Rejected for this case. It conflates
-  *location* with the feedback feature; location is already configurable via the
+  _location_ with the feedback feature; location is already configurable via the
   frontmatter `config` pointer and `evaluationDir`, and the directory is
   auto-created. A general data-dir override could be a separate ergonomic change,
   but it should not stand in for or ride on this work.

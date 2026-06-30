@@ -159,7 +159,7 @@
   [0164 - Agent Instruction Init Pointer](../changes/archive/0164-agent-instruction-init-pointer.md).
   Direct `qualitymd init` documentation now notes the default concise agent
   instruction pointer, the `--no-agent-instructions` opt-out, and the `/quality
-  setup` follow-up.
+setup` follow-up.
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
@@ -563,7 +563,7 @@
   requirement rather than restating it.
   [Writing design docs](guides/write-design-docs.md) records that a design doc
   does not carry its own durable-spec/doc list; durable impact is the spec's job
-  and the design covers only *how*.
+  and the design covers only _how_.
 
 - **Rename**: Renamed the change workflow guide to
   [Working with change cases](guides/work-with-change-cases.md), updated the
@@ -576,14 +576,14 @@
   subject evaluation rather than model-altitude evaluation.
 
 - **Revision**: Expanded [Writing functional specs](guides/write-functional-specs.md)
-  with lessons adapted from Joel Spolsky's *Painless Functional Specifications*
+  with lessons adapted from Joel Spolsky's _Painless Functional Specifications_
   (parts 2 and 4). Added a **Scenario / use case** shape entry — the self-contained
-  case a spec solves, distinguished from the larger-process *why* that belongs in
+  case a spec solves, distinguished from the larger-process _why_ that belongs in
   **Background / Motivation** — and broadened **Scope** to name **non-goals** (out
-  of scope by design) alongside **deferred**. New conventions: *an unspecified case
-  is a decision delegated* (spec the divergent cases or hand the decision silently
-  to the implementer), *sections are a palette, not a checklist* (against
-  template-bloat), and *show, don't only tell* (a concrete example pins a contract).
+  of scope by design) alongside **deferred**. New conventions: _an unspecified case
+  is a decision delegated_ (spec the divergent cases or hand the decision silently
+  to the implementer), _sections are a palette, not a checklist_ (against
+  template-bloat), and _show, don't only tell_ (a concrete example pins a contract).
   Reframed the **Shape** intro to order a spec for a reader. Did not adopt Joel's
   humour or vivid personas — they fight the brevity ethos and the
   deterministic-contract purpose.
@@ -594,7 +594,7 @@
   **MUST** list every durable spec or doc its work impacts in **Affected specs &
   docs** and **SHOULD** suggest any new durable specs worth creating, and
   **SHOULD** bring the listed docs into sync before **In-Review**. Softened the
-  absorb-the-*why* step from a MUST gated on In-Review to a SHOULD encouraged
+  absorb-the-_why_ step from a MUST gated on In-Review to a SHOULD encouraged
   whenever a Change Case updates a spec, and made reading
   [Writing functional specs](guides/write-functional-specs.md) a required
   precondition for creating or updating any change case spec. Mirrored the policy
@@ -606,9 +606,9 @@
   **Background / Motivation** shape entry and a per-requirement `Rationale:`
   annotation convention (with form, the annotate-when litmus, and a say-it-once
   rule); its "Motivation in asides" convention is rewritten as a two-whys split,
-  and its rationale smells now target rationale that *buries* the rule and
+  and its rationale smells now target rationale that _buries_ the rule and
   rationale said twice. [Working with change cases](guides/work-with-change-cases.md) now
-  requires absorbing a landing Change Case's enduring *why* — its motivation and the
+  requires absorbing a landing Change Case's enduring _why_ — its motivation and the
   design doc's rationale — into the durable spec's Background and annotations,
   tied to the **Before setting In-Review** gate.
   [Writing design docs](guides/write-design-docs.md) records that the design
@@ -631,11 +631,11 @@
 
 - **Creation**: Added [Use the /quality skill](guides/use-quality-skill.md), a
   how-to guide for installing the skill with `npx skills add
-  qualitymd/quality.md`, verifying the `qualitymd` CLI prerequisite, running
+qualitymd/quality.md`, verifying the `qualitymd` CLI prerequisite, running
   setup/wizard/evaluation modes, and configuring `.quality/config.yaml`
   `evaluationDir`.
 
-- **Rename**: Renamed the changes-workflow guide from *Proposing a change*
+- **Rename**: Renamed the changes-workflow guide from _Proposing a change_
   (`propose-a-change.md`) to [Working with change cases](guides/work-with-change-cases.md)
   (`work-with-change-cases.md`), because the old title named only the first step while
   the guide covers the whole lifecycle (create → spec → design → implement →

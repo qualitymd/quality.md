@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # Evaluation report summary artifact
 
-A **Change Case** capturing the *why* and *status* for adding a concise
+A **Change Case** capturing the _why_ and _status_ for adding a concise
 `report-summary.md` companion artifact to generated evaluation runs. The detail
 lives in its [functional spec](0031-report-summary-artifact/spec.md).
 
@@ -46,8 +46,7 @@ Implementation is complete and archived.
 
 ## Affected specs & docs
 
-- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md)
-      - require `build-report` to render `report-summary.md` alongside
+- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md) - require `build-report` to render `report-summary.md` alongside
       `report.md` and `report.json`, with deterministic contents derived from the
       same summary-layer data.
 - [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md) - add
@@ -56,13 +55,11 @@ Implementation is complete and archived.
 - [x] [`specs/cli.md`](../../specs/cli.md) and
       [`specs/cli/index.md`](../../specs/cli/index.md) - update the command overview
       so `evaluation build-report` names all generated report artifacts.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - update the reporting/folder layout description for the additional
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - update the reporting/folder layout description for the additional
       generated summary artifact.
 - [x] [`README.md`](../../README.md) - update the command summary for
       `evaluation build-report`.
-- [x] [`specs/skills/quality-skill/examples/`](../../specs/skills/quality-skill/examples/)
-      - update example run bundles to include representative `report-summary.md`
+- [x] [`specs/skills/quality-skill/examples/`](../../specs/skills/quality-skill/examples/) - update example run bundles to include representative `report-summary.md`
       output or explicitly cover it in the example index.
 
 No `SPECIFICATION.md` update is expected: `report-summary.md` is a CLI-generated

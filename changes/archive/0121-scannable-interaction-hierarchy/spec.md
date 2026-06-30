@@ -76,7 +76,7 @@ what will not happen when that mutation boundary matters.
 ### Discovery questions
 
 Setup discovery questions MUST keep the purpose, recommended answer, and
-confidence/evidence adjacent to the question and ordered *before* the answer
+confidence/evidence adjacent to the question and ordered _before_ the answer
 line, so rationale supports the choice rather than trailing it.
 
 Discovery rationale MUST NOT grow into a wall that buries the choice. Where a

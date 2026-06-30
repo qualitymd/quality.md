@@ -10,8 +10,8 @@ timestamp: 2026-06-27T00:00:00Z
 
 Companion to the
 [Evaluate ranking and umbrella-factor authoring clarity](../0153-evaluate-ranking-and-umbrella-clarity.md)
-change case. This spec states *what* the change must do; the
-[design doc](design.md) covers *how*. It defers to the durable Evaluation
+change case. This spec states _what_ the change must do; the
+[design doc](design.md) covers _how_. It defers to the durable Evaluation
 [protocol](../../../specs/evaluation/protocol.md) and
 [payload kinds](../../../specs/evaluation/records/payload-kinds.md) specs for the
 contracts it clarifies.

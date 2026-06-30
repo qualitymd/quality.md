@@ -9,7 +9,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 # Quality log
 
-A **Change Case** capturing the *why* and *status* for a **quality log**: a
+A **Change Case** capturing the _why_ and _status_ for a **quality log**: a
 curated, evidence-linked history of meaningful changes to a QUALITY.md model,
 written by the `/quality` skill as dated entries under `quality/log/`. The detail
 lives in its [functional spec](0050-quality-log/spec.md).
@@ -24,10 +24,10 @@ lives in its [functional spec](0050-quality-log/spec.md).
 ## Motivation
 
 A `QUALITY.md` is a point-in-time snapshot, and `git log` already records its
-literal diffs. What neither captures is the **judgment layer**: *why* an apex
-requirement tightened, *which* evaluation surfaced the gap a new Factor closes,
-*whether* a criterion moved as deliberate recalibration or as drift. That
-rationale is exactly what the authoring guide's *learn loop* depends on, and
+literal diffs. What neither captures is the **judgment layer**: _why_ an apex
+requirement tightened, _which_ evaluation surfaced the gap a new Factor closes,
+_whether_ a criterion moved as deliberate recalibration or as drift. That
+rationale is exactly what the authoring guide's _learn loop_ depends on, and
 today it evaporates into commit messages that scroll away.
 
 A quality log fills that gap as a **model-evolution timeline cross-linked to
@@ -36,10 +36,10 @@ the evaluation run and recommendation that motivated it. This is genuinely usefu
 for the skill's target audience: a project adopting QUALITY.md has a `QUALITY.md`
 and `quality/evaluations/` but no `changes/` bundle, so the quality log is the
 model's own curated history for them. It is distinct from `changes/log.md`, which
-tracks Change Cases on *this* repository.
+tracks Change Cases on _this_ repository.
 
 The value is the rationale and the evidence cross-link, not a second copy of the
-diff — so the log records *why the model changed*, and defers the complete
+diff — so the log records _why the model changed_, and defers the complete
 diff history to git.
 
 ## Scope
@@ -69,10 +69,10 @@ Deferred / non-goals:
 - **No standalone artifact-spec** (like `evaluation-records.md`) and **no
   machine-queryable index file** in `quality/log/` — both belong with the CLI
   phase.
-- **No automatic git-based backfill.** `wizard` *flags* out-of-band drift and
+- **No automatic git-based backfill.** `wizard` _flags_ out-of-band drift and
   offers a backfill route; the user (via `improve`/authoring) performs it.
 - No change to evaluation records, reports, or the evaluation semantics. The log
-  *references* evaluation runs; it does not duplicate them.
+  _references_ evaluation runs; it does not duplicate them.
 
 ## Affected artifacts
 

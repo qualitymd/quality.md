@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # /quality upgrade mode
 
-A **Change Case** capturing the *why* and *status* for adding an upgrade
+A **Change Case** capturing the _why_ and _status_ for adding an upgrade
 orchestration mode to the `/quality` skill. The detail lives in its
 [functional spec](0035-quality-skill-upgrade-mode/spec.md).
 
@@ -47,8 +47,7 @@ Implementation is complete and archived.
 
 ## Affected specs & docs
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - add `upgrade` to invocation, mode dispatch, and the skill's maintenance
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - add `upgrade` to invocation, mode dispatch, and the skill's maintenance
       workflow contract.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) and new
       `skills/quality/modes/upgrade.md` - route and specify the runtime upgrade
@@ -56,8 +55,7 @@ Implementation is complete and archived.
 - [x] [`skills/quality/modes/wizard.md`](../../skills/quality/modes/wizard.md) -
       allow the wizard to recommend `/quality upgrade` for stale or incompatible
       skill/CLI state.
-- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md)
-      - document the upgrade mode as the skill-facing maintenance path.
+- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md) - document the upgrade mode as the skill-facing maintenance path.
 - [x] [`install.md`](../../install.md) - document `/quality upgrade` for existing
       installs and clarify manual fallbacks.
 - [x] [`docs/reference/versioning.md`](../../docs/reference/versioning.md) -

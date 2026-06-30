@@ -9,8 +9,8 @@ The QUALITY.md format itself is specified in the repository-root
 [`SPECIFICATION.md`](../SPECIFICATION.md), the source of truth for the file
 format and evaluation semantics.
 
-This bundle holds the *cumulative* source of truth for the tool's current
-behavior. The [`changes/`](../changes/index.md) bundle proposes *deltas* to it:
+This bundle holds the _cumulative_ source of truth for the tool's current
+behavior. The [`changes/`](../changes/index.md) bundle proposes _deltas_ to it:
 each change lists the specs here it creates or updates, and brings them into sync
 before it lands.
 

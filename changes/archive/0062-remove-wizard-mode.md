@@ -59,24 +59,19 @@ Code:
 
 Specs:
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-      - remove `wizard` from the public mode model, invocation examples, mode
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md) - remove `wizard` from the public mode model, invocation examples, mode
       dispatch, and default routing language.
 - [x] `specs/skills/quality-skill/modes/wizard.md` - delete the public wizard
       mode component spec.
 - [x] [`specs/skills/quality-skill/modes/index.md`](../specs/skills/quality-skill/modes/index.md)
-      and [`specs/skills/quality-skill/index.md`](../specs/skills/quality-skill/index.md)
-      - remove public wizard listings and broken links.
+      and [`specs/skills/quality-skill/index.md`](../specs/skills/quality-skill/index.md) - remove public wizard listings and broken links.
 - [x] [`specs/skills/quality-skill/modes/setup.md`](../specs/skills/quality-skill/modes/setup.md)
-      and [`specs/skills/quality-skill/guides/getting-started-md.md`](../specs/skills/quality-skill/guides/getting-started-md.md)
-      - stop routing setup completion to wizard.
+      and [`specs/skills/quality-skill/guides/getting-started-md.md`](../specs/skills/quality-skill/guides/getting-started-md.md) - stop routing setup completion to wizard.
 - [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
-      and [`specs/skills/quality-skill/guides/index.md`](../specs/skills/quality-skill/guides/index.md)
-      - describe the checklist as internal orientation/model-review support, not
+      and [`specs/skills/quality-skill/guides/index.md`](../specs/skills/quality-skill/guides/index.md) - describe the checklist as internal orientation/model-review support, not
       wizard-specific behavior.
 - [x] [`specs/skills/quality-skill/quality-log.md`](../specs/skills/quality-skill/quality-log.md)
-      and [`specs/skills/quality-skill/recommendation-follow-up.md`](../specs/skills/quality-skill/recommendation-follow-up.md)
-      - remove wizard-specific routing/reconciliation wording.
+      and [`specs/skills/quality-skill/recommendation-follow-up.md`](../specs/skills/quality-skill/recommendation-follow-up.md) - remove wizard-specific routing/reconciliation wording.
 - [x] OKF logs under [`specs/`](../specs/log.md) - record durable spec updates
       when they land.
 
@@ -88,8 +83,7 @@ Runtime skill and docs:
 - [x] `skills/quality/modes/wizard.md` - delete the runtime wizard mode file.
 - [x] [`skills/quality/modes/setup.md`](../skills/quality/modes/setup.md),
       [`skills/quality/guides/getting-started.md`](../skills/quality/guides/getting-started.md),
-      and [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md)
-      - remove wizard-specific handoff and checklist language.
+      and [`skills/quality/guides/top-10-quality-md-checks.md`](../skills/quality/guides/top-10-quality-md-checks.md) - remove wizard-specific handoff and checklist language.
 - [x] [`README.md`](../README.md) - remove `/quality wizard` usage.
 - [x] [`docs/guides/use-quality-skill.md`](../docs/guides/use-quality-skill.md)
       and [`docs/guides/index.md`](../docs/guides/index.md) - remove wizard from

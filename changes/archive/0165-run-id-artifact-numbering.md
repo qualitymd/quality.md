@@ -9,7 +9,7 @@ timestamp: 2026-06-29T00:00:00Z
 
 # Run IDs and Artifact Numbering
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0165-run-id-artifact-numbering/spec.md) - what the case must do.
@@ -27,15 +27,15 @@ nowhere above it, which produces two collisions once an artifact leaves the repo
 - **Cross-project (loud).** Project A's `QREC-0001-002` equals project B's. A
   human notices because the two reports are visibly about different entities.
 - **Ad-hoc reproduction (silent, dangerous).** Because the run counter is
-  *derived from the directory*, it is not durable unless the directory is. An
+  _derived from the directory_, it is not durable unless the directory is. An
   uncommitted or ephemeral run — a fresh clone, a CI scratch workspace, a
-  teammate re-running locally — restarts at `0001`. Two *different* runs then
+  teammate re-running locally — restarts at `0001`. Two _different_ runs then
   mint the same `QEVAL-0001` / `QREC-0001-002` with conflicting content and
   nothing to tell them apart.
 
 Evaluation outputs are handoff artifacts: a recommendation is assigned to a
 person or tracker, a run anchors provenance. So identity needs a uniqueness
-guarantee that survives leaving the repo, *without* sacrificing the short,
+guarantee that survives leaving the repo, _without_ sacrificing the short,
 sayable handle that motivated 0163.
 
 This case revises 0163's identity model around one rule: **`id` names only the

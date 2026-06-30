@@ -26,7 +26,7 @@ public surface does not have:
 
 - The header renders literally as `**/quality run**`. There is no `run`
   invocation; the real ones are `/quality`, `/quality setup`, `/quality
-  evaluate`, and `/quality update`. A command-style header advertises an
+evaluate`, and `/quality update`. A command-style header advertises an
   invocation that does not exist — the same leak the skill already forbids for
   `status`, `next`, and `review`.
 - The frame's first field is `Mode:`. "Mode" is an internal name for what the
@@ -54,7 +54,7 @@ Diátaxis documentation modes, OS file modes) are out of scope.
 
 - The run-frame requirement and rationale established by 0038 (and the
   wizard-removal constraint from 0062, which already forbids emitting `Mode:
-  wizard`) remain in force; this case extends that line of constraints.
+wizard`) remain in force; this case extends that line of constraints.
 - The durable `/quality` skill specs under `specs/skills/quality-skill/` mirror
   runtime skill behavior closely enough that a contract change must update both
   durable specs and bundled runtime guidance.
@@ -64,6 +64,7 @@ Diátaxis documentation modes, OS file modes) are out of scope.
 ### Run frame header
 
 - The run frame header **MUST** identify the resolved workflow.
+
   > Rationale: the header is the strongest visual element of the frame; naming
   > the workflow there lets the field set carry only the variable run details. —
   > 0110
@@ -71,11 +72,13 @@ Diátaxis documentation modes, OS file modes) are out of scope.
 - The run frame header **MUST NOT** render a string that reads as an invokable
   `/quality` command for a token that is not a real invocation. In particular it
   **MUST NOT** render `/quality run`.
+
   > Rationale: a command-style header invites the user to type a command that
   > does not exist, the same leak the skill forbids for `status`, `next`, and
   > `review`. — 0110
 
 - The run frame **MUST NOT** use a `Mode:` field label.
+
   > Rationale: "Mode" is internal vocabulary the public surface does not use, and
   > a field label reads as a settable argument. The workflow name belongs in the
   > header, not in a `Mode:` field. This extends 0062's constraint that the run
@@ -95,12 +98,14 @@ Diátaxis documentation modes, OS file modes) are out of scope.
   public-surface concept "workflow", not "mode", when referring to `setup`,
   `evaluate`, `update`, or the set of them. Recommendation follow-up **MUST** be
   described as "not a workflow" rather than "not a mode".
+
   > Rationale: one concept should carry one name. The public surface already
   > routes through `workflows/` and lists workflows; "mode" is the inconsistent
   > second name. — 0110
 
 - This rename **MUST NOT** alter unrelated uses of "mode" (failure modes, CLI
   output/JSON modes, Diátaxis documentation modes, OS file modes).
+
   > Rationale: "mode" is a correct word in those senses; only its use as a name
   > for a `/quality` workflow is being retired. — 0110
 
@@ -119,7 +124,7 @@ None.
 ### To modify
 
 - [`specs/skills/quality-skill/quality-skill.md`](../../../../specs/skills/quality-skill/quality-skill.md)
-  - update the Run frames section to name the resolved *workflow*, forbid a
+  - update the Run frames section to name the resolved _workflow_, forbid a
     command-style header and a `Mode:` field label, and retire "mode" as the
     public-surface concept across the shared contract. Driven by
     [Run frame header](#run-frame-header) and

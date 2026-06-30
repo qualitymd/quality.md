@@ -51,18 +51,15 @@ Deferred / non-goals:
 
 ## Affected specs & docs
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - add the durable user interaction contract.
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - add the durable user interaction contract.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - add the shared
       runtime rules for run frames, decision briefs, stop rules, history context,
       and improvement delta output.
 - [x] [`skills/quality/modes/wizard.md`](../../skills/quality/modes/wizard.md) -
       align readiness and next-step output with the interaction contract.
-- [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md)
-      - add evaluate-specific run framing, stop/reroute behavior, and history
+- [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md) - add evaluate-specific run framing, stop/reroute behavior, and history
       context.
-- [x] [`skills/quality/modes/improve.md`](../../skills/quality/modes/improve.md)
-      - add mutating decision briefs and before/after improvement reporting.
+- [x] [`skills/quality/modes/improve.md`](../../skills/quality/modes/improve.md) - add mutating decision briefs and before/after improvement reporting.
 - [x] [`skills/quality/modes/setup.md`](../../skills/quality/modes/setup.md) -
       apply the mutating decision-brief shape where setup changes an existing
       model.

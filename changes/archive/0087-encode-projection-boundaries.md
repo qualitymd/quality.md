@@ -9,9 +9,9 @@ timestamp: 2026-06-24T00:00:00Z
 
 # Encode projection boundaries in the model
 
-A **Change Case** to make the [three-projections rule](../../skills/quality/guides/authoring.md) produce a *legible* model. The guide
+A **Change Case** to make the [three-projections rule](../../skills/quality/guides/authoring.md) produce a _legible_ model. The guide
 already teaches the author to reason about the boundary between a concern's
-projections — *name the projection meant, model it once* — and the Agent
+projections — _name the projection meant, model it once_ — and the Agent
 Harnessability factor vs. the agent-harness area is its sharpest instance. But
 nothing tells the author to **encode that boundary into the model they emit**. The
 reasoning archives with the setup run; the reader of the generated `QUALITY.md` is
@@ -45,9 +45,9 @@ agent's own judgment, not something the guidance requires, so the next model may
 omit them and re-create the confusion.
 
 The guide's [three-projections rule](../../skills/quality/guides/authoring.md) (and the 0081/0085 Agent
-Harnessability guidance built on it) is addressed to the *author's reasoning*: it
+Harnessability guidance built on it) is addressed to the _author's reasoning_: it
 prevents double-counting during modeling. It does not ask the author to leave a
-trace of that reasoning *in the model*, so the boundary is invisible to whoever
+trace of that reasoning _in the model_, so the boundary is invisible to whoever
 reads the result. The same gap applies to any concern modeled in more than one
 projection — the guide's own `secure` example (a security factor, a threat-model
 constituent, an auditor audience). The fix belongs at the general rule, with Agent

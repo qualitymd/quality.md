@@ -44,10 +44,8 @@ rendering beyond the existing renderability gate.
 Created or updated during `In-Progress`, before this change reaches
 `In-Review`:
 
-- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md)
-      - document planned-coverage status gaps or warnings.
-- [x] [`specs/cli/evaluation-set-planned-coverage.md`](../../specs/cli/evaluation-set-planned-coverage.md)
-      - document the planned coverage writer command.
+- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md) - document planned-coverage status gaps or warnings.
+- [x] [`specs/cli/evaluation-set-planned-coverage.md`](../../specs/cli/evaluation-set-planned-coverage.md) - document the planned coverage writer command.
 - [x] [`specs/cli.md`](../../specs/cli.md) and
       [`specs/cli/index.md`](../../specs/cli/index.md) - list the planned coverage
       writer command.
@@ -55,8 +53,7 @@ Created or updated during `In-Progress`, before this change reaches
       the optional planned coverage runtime artifact.
 - [x] [`README.md`](../../README.md) - list the planned coverage writer in the CLI
       surface.
-- [x] [quality skill spec](../../specs/skills/quality-skill/quality-skill.md)
-      - require the skill to record planned coverage when the run needs
+- [x] [quality skill spec](../../specs/skills/quality-skill/quality-skill.md) - require the skill to record planned coverage when the run needs
       resume diagnostics.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - teach the skill
       when to create planned coverage metadata.

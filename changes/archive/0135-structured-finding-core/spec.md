@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 Companion to the
 [Structured Finding Core](../0135-structured-finding-core.md) change case. This
-spec states *what* the change must do.
+spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

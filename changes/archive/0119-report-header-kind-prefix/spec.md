@@ -24,7 +24,7 @@ capitals.
 ## Background / Motivation
 
 Every report opens with its navigation trail and then a bare H1 — the subject's
-display title with no statement of the report's *kind*. Because an Area, Factor,
+display title with no statement of the report's _kind_. Because an Area, Factor,
 and Requirement can share a title, a report opened cold or linked from outside
 the run does not say plainly what it covers; the kind is only inferable from the
 trail label and a secondary `Path:` / `Name:` line.
@@ -32,7 +32,7 @@ trail label and a secondary `Path:` / `Name:` line.
 This change states the kind in the report's most prominent line — a kind prefix
 on the H1 — and renders that title first, with the trails following it. That puts
 the kind where the subject's identity already lives (the title), consistent with
-the existing rule that the header *table* must not repeat the kind as metadata
+the existing rule that the header _table_ must not repeat the kind as metadata
 ([0104](../../changes/archive/0104-evaluation-v2-report-header-navigation.md)).
 With kind on the title and location on the trail, the `Path:` / `Name:`
 identifier line is redundant — its remaining job, surfacing the canonical
@@ -66,19 +66,19 @@ Every generated report **MUST** render its H1 title line as the first content of
 the report, before the `Area:` navigation trail and before any other context
 line.
 
->> Rationale: a kind-prefixed title-first header states *what this is* before
->> *where it sits*; leading with the trail made navigation chrome the opening
->> line. — 0119
+> > Rationale: a kind-prefixed title-first header states _what this is_ before
+> > _where it sits_; leading with the trail made navigation chrome the opening
+> > line. — 0119
 
 Every generated report's H1 **MUST** be the subject's display title prefixed with
 the report's kind label and a colon — `Area:` for the root and non-root Area
 reports, `Factor:` for Factor reports, and `Requirement:` for Requirement
 reports (for example, `# Requirement: Inputs are validated`).
 
->> Rationale: an Area, Factor, and Requirement can share a title; stating the
->> kind in the most prominent line lets a report opened cold or linked from
->> outside the run identify itself. The kind rides the title — where identity
->> already lives — not the state table. — 0104, 0119
+> > Rationale: an Area, Factor, and Requirement can share a title; stating the
+> > kind in the most prominent line lets a report opened cold or linked from
+> > outside the run identify itself. The kind rides the title — where identity
+> > already lives — not the state table. — 0104, 0119
 
 ### Trails follow the title
 
@@ -87,9 +87,9 @@ Requirement report `Factors:` context line **MUST** render after the H1 title
 line, preserving their existing relative order, content, separators, and link
 targets.
 
->> Rationale: this change moves only the title's position relative to the trails;
->> the trail contract (root-through-current `Area:` links, the Factor trail, the
->> plural `Factors:` set) is unchanged. — 0119
+> > Rationale: this change moves only the title's position relative to the trails;
+> > the trail contract (root-through-current `Area:` links, the Factor trail, the
+> > plural `Factors:` set) is unchanged. — 0119
 
 ### No separate identifier line
 
@@ -97,20 +97,20 @@ Reports **MUST NOT** render a separate `Path:` or `Name:` identifier line in the
 header. The report's kind is carried by the H1 prefix and its location by the
 navigation trail.
 
->> Rationale: with kind on the title and location on the trail, the line was
->> redundant. Its one unique payload — the canonical structural ID — is not lost:
->> report filenames and `Data` links already derive from structural IDs, so the
->> ID remains reachable without a duplicate header line. — 0119
+> > Rationale: with kind on the title and location on the trail, the line was
+> > redundant. Its one unique payload — the canonical structural ID — is not lost:
+> > report filenames and `Data` links already derive from structural IDs, so the
+> > ID remains reachable without a duplicate header line. — 0119
 
 ### Trail root element
 
 The `Area:` navigation trail's root element **MUST** render the Model `title`
 when the model defines one.
 
->> Rationale: the title-first header surfaces the root element prominently (the
->> root report shows the model title in both its H1 and its trail). The renderer
->> already resolves this; pinning it to the durable contract guards against a
->> regression to a generic "Root" label. — 0119
+> > Rationale: the title-first header surfaces the root element prominently (the
+> > root report shows the model title in both its H1 and its trail). The renderer
+> > already resolves this; pinning it to the durable contract guards against a
+> > regression to a generic "Root" label. — 0119
 
 ## Durable spec changes
 

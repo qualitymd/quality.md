@@ -1,7 +1,7 @@
 # Reference
 
 Information-oriented material: factual, lookup-style references the project
-cites. The Diátaxis *reference* mode.
+cites. The Diátaxis _reference_ mode.
 
 # References
 

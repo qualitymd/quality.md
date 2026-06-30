@@ -56,7 +56,7 @@ fix works within that contract rather than emitting multiple examples.
   Requirements and Factors. Add a dedicated `factorAnalysisExample` for the
   umbrella case: `localAnalysis` with `status: empty`, a `statusReason`, and no
   Requirement inputs; `localAndDescendantAnalysis` with `status: analyzed`, a
-  rating, drivers, and `inputRefs`/driver inputs that reference a *child* Factor
+  rating, drivers, and `inputRefs`/driver inputs that reference a _child_ Factor
   analysis (`exampleChildFactorID()` with the `localAndDescendantAnalysis`
   selector). Repoint the `FactorAnalysis` registry entry in `data_contract.go` to
   the new constructor.
@@ -99,8 +99,8 @@ Then run `go test ./...` and a `qualitymd evaluation data example` /
   concrete shapes. Making the CLI's single factor example the umbrella case is
   more discoverable at authoring time and keeps the spec prose-first.
 - **Only fix the example, not the skill instruction.** Rejected: the dry-run
-  already enforces completeness, so the cost being removed is the *wasted first
-  attempt*; that comes from the instruction's framing, so the instruction must
+  already enforces completeness, so the cost being removed is the _wasted first
+  attempt_; that comes from the instruction's framing, so the instruction must
   change too.
 - **Add a new validator rule rejecting curated rankings.** Unnecessary: the
   existing "account for every finding exactly once" validation already rejects a
@@ -109,7 +109,7 @@ Then run `go test ./...` and a `qualitymd evaluation data example` /
 ## Trade-offs & risks
 
 - Making the single factor example the umbrella case means `data example
-  factor-analysis` no longer shows a factor *with* direct Requirements. Accepted:
+factor-analysis` no longer shows a factor _with_ direct Requirements. Accepted:
   the area example shows both-blocks-analyzed shape, and `data schema` carries the
   exhaustive constraint surface.
 - A longer finding-ranking example is slightly heavier, but the tail entry is the

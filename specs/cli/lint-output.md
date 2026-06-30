@@ -108,7 +108,7 @@ Under `--json`, `location` **MUST** contain:
   keys and numbers for list indexes. For example, the first rating level's
   missing `criterion` is `["ratingScale", 0, "criterion"]`; a requirement under
   a factor is `["factors", "<factor-name>", "requirements",
-  "<requirement-name>", "assessment"]`.
+"<requirement-name>", "assessment"]`.
 - `label` — a concise human-readable rendering of the same location, suitable
   for human output.
 

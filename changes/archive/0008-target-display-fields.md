@@ -19,7 +19,7 @@ distinction rather than a list of prohibited keys. Detail lives in the children:
 ## Motivation
 
 A target's only human-facing label today is its **map key**, which doubles as
-identifier. There is no place to record what a target *is* — neither a display
+identifier. There is no place to record what a target _is_ — neither a display
 name ("ACME Products API") nor a descriptive line ("Functional specifications
 for the ACME Products API"). The spec makes the omission sharper than it should
 be: it states "the model root is itself the apex target" and that every target
@@ -27,7 +27,7 @@ is "another target of the same shape," yet `title` is reserved to the root and
 no target — root or not — can carry a `description`.
 
 Fixing the fields exposes a second, framing problem. The spec explains the root
-as an *apex target* that "shares the structure of the model root but for two
+as an _apex target_ that "shares the structure of the model root but for two
 keys … which are declared only on the model root: a non-root target MUST NOT
 declare either." Once `title` and `description` belong to every target, the only
 remaining difference is `ratingScale`, and the "non-root target MUST NOT" framing
@@ -62,7 +62,7 @@ Evaluation roll-up and the "root target" terminology in the evaluation prose
       (Recommended) and `description` (Optional) with their prose; the Model schema
       gains `description`; the Target intro and the "shares the structure … but for
       two keys … a non-root target MUST NOT declare either" sentence are reframed as
-      *Model = Target properties + `ratingScale`*, naming `ratingScale` the sole
+      _Model = Target properties + `ratingScale`_, naming `ratingScale` the sole
       Model-only property.
 - [x] [`specs/cli/lint.md`](../../specs/cli/lint.md) — the `misplaced-root-key` row
       changes from "`title` or `ratingScale`" to `ratingScale` only.

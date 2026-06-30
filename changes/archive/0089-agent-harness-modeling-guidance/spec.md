@@ -15,7 +15,7 @@ This spec states what the guidance must say. The doctrine it extends is settled 
 the format itself is governed by
 [`SPECIFICATION.md`](../../../SPECIFICATION.md). This spec changes guidance prose only —
 it adds no normative format rule and no schema default. The
-[design doc](design.md) settles *how* the root Agent Harnessability refinement, the
+[design doc](design.md) settles _how_ the root Agent Harnessability refinement, the
 harness-area template, and the doctrine principle are shaped.
 
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
@@ -25,7 +25,7 @@ described in BCP 14 when, and only when, they appear in all capitals.
 
 The authoring guide specifies the model-wide Agent Harnessability factor richly
 (six sub-factors, each with a boundary and example requirements) but gives the
-agent-harness *area* — the steering-materials constituent it tells authors to model
+agent-harness _area_ — the steering-materials constituent it tells authors to model
 by default — no factor family or requirement guidance, even though it gives the
 sibling QUALITY.md self-check constituent a concrete shape. A model generated from
 that guidance carried a harness area with one or two thin factors, below the depth a
@@ -38,7 +38,7 @@ checked-in steering-materials artifact. Fresh long-running-agent, context, trace
 and skills guidance also shows that the current six-sub-factor decomposition leaves
 one fit-for-purpose concern implicit: continuity across compaction, handoff,
 interruption, and long tasks. The work also surfaces a doctrine gap: the harness is
-the canonical case where *domain agnostic but not context neutral* must be resolved —
+the canonical case where _domain agnostic but not context neutral_ must be resolved —
 it recurs from the agentic use context (explicit guidance licensed) yet serves
 whatever domain the project models (its requirements must not assume software).
 
@@ -124,7 +124,7 @@ possible under `self-verifiability`, `enforcement-of-standards`, and `continuity
 
 The guide **MUST** reconcile every existing reference that hard-codes the old
 sub-factor count so the seven-sub-factor decomposition reads consistently. The
-"improve the harness over time" guidance is now the *eighth* candidate beside the
+"improve the harness over time" guidance is now the _eighth_ candidate beside the
 seven, not the seventh beside six; and the legacy-recognition guidance — which today
 accepts an existing `harnessability` factor with the "six-sub-factor shape" as
 semantic coverage — **MUST** keep reading a pre-existing six-sub-factor model as prior
@@ -135,13 +135,13 @@ coverage while directing active authoring or revision to add `continuity`.
 The authoring guide **MUST** give the agent-harness area a concrete modeling
 template at parity with the QUALITY.md self-check template beside it, where today it
 gives only a bare "model it by default" instruction. The template **MUST** identify
-the harness area as an *enable* and partly *normative* constituent for the project's
+the harness area as an _enable_ and partly _normative_ constituent for the project's
 checked-in steering materials — agent entry points, agent guidance files, skills,
 prompts, and related instructions that orient and govern an agent — and **MUST**
 offer a candidate factor family richer than one or two factors.
 
-> Rationale: the guide specified the umbrella *factor* and the *self-check*
-> constituent concretely but left the *harness* constituent a bare instruction; an
+> Rationale: the guide specified the umbrella _factor_ and the _self-check_
+> constituent concretely but left the _harness_ constituent a bare instruction; an
 > author following the guide literally had a template for one use-context
 > constituent and a placeholder for the other, and generated models came out thinly
 > factored as a result. - 0089
@@ -201,13 +201,13 @@ permitted) rather than around any one domain's toolchain.
 The guide **MUST NOT** present software-specific mechanisms (for example lint,
 type-check, test, or CI/deploy gates) as the harness's requirements; where it needs
 a concrete illustration it **MUST** frame such mechanisms as one domain's instance
-of a domain-neutral expectation (how *this* project verifies work, enforces
+of a domain-neutral expectation (how _this_ project verifies work, enforces
 standards, or bounds action), which resolves differently for a documentation,
 data, or service project.
 
 To keep the guardrail stated once, the authoring guide **SHOULD** carry it by
-reference to the doctrine guide's served-domain principle (*Add the
-use-context-constituent explicitness principle* below) rather than restating it in
+reference to the doctrine guide's served-domain principle (_Add the
+use-context-constituent explicitness principle_ below) rather than restating it in
 full.
 
 > Rationale: the agent harness of a non-software project is as real as a codebase's;
@@ -236,7 +236,7 @@ escape, the gate constrains it — so the shared suppression evidence is not
 double-counted.
 
 > Rationale: harness-engineering practice treats feedback signals (sensors) as the
-> central reliability lever and characterizes a *good* sensor by these properties;
+> central reliability lever and characterizes a _good_ sensor by these properties;
 > the sub-factor already gestured at them but did not make them the assessable bar. -
 > 0089
 
@@ -264,7 +264,7 @@ guidance may be about a quality context:
 The principle **MUST** carry the served-domain guardrail: even for a use-context
 constituent, its factors and requirements are authored agnostic to the served
 domain, so explicit harness or self-check guidance never assumes software. The guide
-**MUST** define the *served domain* on first use as the domain the project's model is
+**MUST** define the _served domain_ on first use as the domain the project's model is
 about — the domain a use-context constituent serves — distinct from the agentic use
 context itself. The guide **SHOULD** include a good/avoid example pair illustrating a
 domain-neutral harness requirement versus a software-leaking one.
@@ -313,13 +313,13 @@ None
   Harnessability continuity refinement (including the reconciled sub-factor count
   references and the updated umbrella `description`), the agent-harness-area modeling
   template, the served-domain guardrail, and the self-verifiability
-  sensor/trace-quality sharpening (per *Refine the root Agent Harnessability factor*,
-  *Give the agent-harness area a modeling template*, *Keep harness factors and
-  requirements agnostic to the served domain*, and *Sharpen self-verifiability with
-  good-sensor and trace properties* above).
+  sensor/trace-quality sharpening (per _Refine the root Agent Harnessability factor_,
+  _Give the agent-harness area a modeling template_, _Keep harness factors and
+  requirements agnostic to the served domain_, and _Sharpen self-verifiability with
+  good-sensor and trace properties_ above).
 - `specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md` - mirror the
   check-8 additions and the reconciled legacy six-sub-factor recognition note (per
-  *Extend Top 10 check 8* above).
+  _Extend Top 10 check 8_ above).
 
 ### To rename
 

@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 # Evaluation record format — functional spec
 
 Companion to [Evaluation record format](../0012-evaluation-record-format.md).
-This spec states *what* the evaluation-record contract is; it does not specify
+This spec states _what_ the evaluation-record contract is; it does not specify
 the CLI commands that produce the records (deferred — see
 [Scope](#scope)).
 

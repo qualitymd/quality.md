@@ -29,7 +29,7 @@ user-facing recommendation numbers and opaque recommendation IDs.
 
 1. The run report Top Recommendations table **MUST** render one user-facing
    recommendation number column labeled `#`, followed by `Recommendation`, `Area
-   / Factors`, `Impact`, and `Reason`.
+/ Factors`, `Impact`, and `Reason`.
 
    > Rationale: `#` is the common-parlance recommendation number; a second `Rank`
    > column repeats the same value and invites users to distinguish two numbers
@@ -61,9 +61,9 @@ user-facing recommendation numbers and opaque recommendation IDs.
 ## Acceptance criteria
 
 - `report.md` Top Recommendations tables use `# | Recommendation | Area /
-  Factors | Impact | Reason`.
+Factors | Impact | Reason`.
 - `recommendations.md` Ranked Recommendations tables use `# | Recommendation |
-  Area / Factors | Impact | Confidence | Reason | Ranking Rationale`.
+Area / Factors | Impact | Confidence | Reason | Ranking Rationale`.
 - Generated rows no longer duplicate the recommendation number in adjacent
   `Rank` and `#` cells.
 - Recommendation detail reports still show `#` and `ID`; no structured payload

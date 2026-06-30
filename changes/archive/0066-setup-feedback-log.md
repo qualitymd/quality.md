@@ -9,8 +9,8 @@ timestamp: 2026-06-23T00:00:00Z
 
 # Setup feedback log
 
-A **Change Case** adding a *workflow feedback log*: a hand-authored Markdown
-artifact that records the *experience* of running a `/quality` workflow — errors,
+A **Change Case** adding a _workflow feedback log_: a hand-authored Markdown
+artifact that records the _experience_ of running a `/quality` workflow — errors,
 friction, UX/AX rough edges, and efficiency/speed observations — so the skill,
 CLI, and prompts can be improved from real runs. It is written locally; the user
 may choose to share it. `setup` is the first adopter; the artifact and its
@@ -32,13 +32,13 @@ The [0065 setup refinements](archive/0065-setup-discovery-and-close-refinements.
 existed only because a human ran `/quality setup` against a real external repo
 and hand-captured three recurring frictions. That feedback loop is valuable but
 ad hoc: there is no durable place for a workflow run to record what was slow,
-confusing, or wrong about the *experience* of running it, and no consistent
+confusing, or wrong about the _experience_ of running it, and no consistent
 context (which agent/model, which skill/CLI version) to make such notes
 actionable for a maintainer reading them out of context.
 
-This is different from evaluation's `debug-log.md`, which is a *per-run* process
+This is different from evaluation's `debug-log.md`, which is a _per-run_ process
 audit living inside one evaluation run folder. A feedback log is
-*improvement-oriented* and *workflow-level*: it captures the workflow experience
+_improvement-oriented_ and _workflow-level_: it captures the workflow experience
 across runs in one central place, and carries enough environment context to act
 on. It is recorded locally and is not transmitted anywhere; sharing it with
 maintainers is an explicit user action, so no opt-in/consent gate is needed.
@@ -110,8 +110,8 @@ Deferred / non-goals:
 
 ### Durable specs
 
-- [x] `specs/skills/quality-skill/workflows/setup/feedback-log.md` *(new
-      sub-spec)* - the feedback-log artifact contract: purpose, location/naming,
+- [x] `specs/skills/quality-skill/workflows/setup/feedback-log.md` _(new
+      sub-spec)_ - the feedback-log artifact contract: purpose, location/naming,
       environment header, body schema, redaction, and no-transmission posture.
       Adding it made `setup.md` a parent concept with a `setup/` child folder
       (with its own `index.md`). Filename uses the capability-named

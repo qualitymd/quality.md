@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 # Scope-driven evaluation runs
 
-This parent concept captures the *why* and *status*; the detail lives in its
+This parent concept captures the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0149-scope-driven-evaluation-runs/spec.md) — what the case must do.
@@ -34,7 +34,7 @@ reconstructed later by the agent into the frame. Naming, traversal, and headline
 each read a different, hand-maintained source.
 
 This case makes scope a first-class, CLI-owned run parameter captured at
-`create`, and reshapes the run report so it simply *is* the scoped Area's report.
+`create`, and reshapes the run report so it simply _is_ the scoped Area's report.
 The "headline" concept is removed: there is no subject to select, so there is no
 selection to get wrong.
 
@@ -111,7 +111,7 @@ for the per-requirement breakdown. Index:
 - [x] `specs/skills/quality-skill/workflows/evaluate.md` — same.
 - [x] `specs/skills/quality-skill/quality-skill.md` — narrowing references.
 - [x] `SPECIFICATION.md` — reframe any headline/scope wording.
-- [x] *(suggested new, not added)* `specs/evaluation/records/run-manifest-json.md`
+- [x] _(suggested new, not added)_ `specs/evaluation/records/run-manifest-json.md`
       — not needed because the contract remains in `payload-kinds.md`.
 
 ### Durable docs
@@ -124,7 +124,7 @@ for the per-requirement breakdown. Index:
 
 ### Install / scaffold
 
-- [x] No impact. *(Run scaffolding is produced by `create`, covered under Code.)*
+- [x] No impact. _(Run scaffolding is produced by `create`, covered under Code.)_
 
 ## Status
 

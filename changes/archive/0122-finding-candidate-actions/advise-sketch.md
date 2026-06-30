@@ -8,7 +8,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Advise phase — design sketch
 
-> 🧭 **Non-binding exploration.** This is a *sketch*, not a spec or a design doc.
+> 🧭 **Non-binding exploration.** This is a _sketch_, not a spec or a design doc.
 > It captures ideas and considerations for the future **Advise** phase (option
 > **B**) so the harvest layer this change ships (option **A**, the typed
 > [candidate actions](spec.md)) is shaped to feed it. None of this is committed
@@ -33,11 +33,11 @@ closure-trackable artifact.
 Three distinct things, kept distinct:
 
 - **Candidate actions** (option A, shipping here) — finding-local, non-binding
-  *inputs*. Born where evidence is richest. Noisy and un-prioritized by design.
-- **Rating drivers** (already produced by analysis) — the *spine*. They name the
+  _inputs_. Born where evidence is richest. Noisy and un-prioritized by design.
+- **Rating drivers** (already produced by analysis) — the _spine_. They name the
   shortcomings that actually hold a rating down, so they are the natural
   prioritization anchor.
-- **Recommendations** (option B) — the synthesized *output*. A small, ranked set,
+- **Recommendations** (option B) — the synthesized _output_. A small, ranked set,
   each tracing to the rating it would move.
 
 Candidate actions are necessary but **not sufficient**: a final set requires
@@ -58,8 +58,8 @@ Compose, don't pick one:
 - **Gap-anchored synthesis (how the phase should work internally).** Synthesize
   from the **key gaps** the analysis already surfaces (rating drivers, held-down
   factor ratings), not from "all findings." Generate options/recommendations only
-  for gaps that hold a rating down. Mirrors the spec's *key gaps → options →
-  recommendations* exactly, and naturally dedups and bounds the set.
+  for gaps that hold a rating down. Mirrors the spec's _key gaps → options →
+  recommendations_ exactly, and naturally dedups and bounds the set.
 - **Trace recommendations to ratings, not just findings.** Each recommendation
   cites which rating it would move and the from→to it targets, so it carries a
   verifiable value claim and a later re-evaluation can check closure ("did the
@@ -87,7 +87,7 @@ enrichments.
   deferred until there is a consumer.
 - **Action shape evolution.** A keeps the candidate action minimal
   (`description` + optional `rationale`). B may want effort/impact/risk hints. Add
-  them on the *recommendation*, not the candidate action, to keep assessment
+  them on the _recommendation_, not the candidate action, to keep assessment
   diagnostic and synthesis prescriptive.
 - **Inputs are leads, not promises.** B must be free to reframe, merge, or drop
   candidate actions; they are raw material, never a recommendation B is obliged to

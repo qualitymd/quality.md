@@ -47,7 +47,7 @@ Updated before this change reaches **Done**:
 - [x] [`specs/cli/lint.md`](../../specs/cli/lint.md) - scope `--fix` into the
       durable lint contract, including in-place repair behavior and repair
       reporting.
-- [x] [`README.md`](../../README.md) - drop the *(planned)* marker on `lint` and
+- [x] [`README.md`](../../README.md) - drop the _(planned)_ marker on `lint` and
       update the implementation-status note once the command ships.
 
 The `lint [path]` invocation shape (defaulting to `QUALITY.md`) is **deliberately

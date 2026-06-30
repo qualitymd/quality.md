@@ -20,7 +20,7 @@ children:
 ## Motivation
 
 Every generated report opens with its navigation trail and then a **bare** H1 —
-just the subject's display title, with no statement of what *kind* of thing the
+just the subject's display title, with no statement of what _kind_ of thing the
 report covers. The kind is only inferable: from the trail label, and from a
 secondary `Path:` (Area/Factor) or `Name:` (Requirement) identifier line below
 the title. Because an Area, a Factor, and a Requirement can share a display
@@ -32,15 +32,15 @@ Two coupled changes fix this:
 - **Kind in the title.** Prefix each report's H1 with its kind —
   `# Area: <title>`, `# Factor: <title>`, `# Requirement: <title>` — so the
   report self-identifies in its most prominent line. This puts the subject kind
-  where the subject's *identity* already lives (the title), which is consistent
-  with the existing rule that the header summary *table* should not repeat the
+  where the subject's _identity_ already lives (the title), which is consistent
+  with the existing rule that the header summary _table_ should not repeat the
   kind as metadata ([0104](archive/0104-evaluation-v2-report-header-navigation.md));
   the title is the right home for the kind, the state table is not.
 - **Title first.** Render the H1 as the report's first line, with the `Area:`
   trail (and the Factor `Factor:` trail / Requirement `Factors:` line) following
   it. Trail-first makes navigation chrome the opening line, which reads
-  backwards; a kind-prefixed title-first header states *what this is* before
-  *where it sits*.
+  backwards; a kind-prefixed title-first header states _what this is_ before
+  _where it sits_.
 
 Together these make the `Path:` / `Name:` identifier line redundant: the trail
 already carries **location** and the kind prefix now carries **kind**. The line's
@@ -96,12 +96,11 @@ Deferred / non-goals:
 
 - [x] `internal/evaluation/report_tree.go` - in `renderEvaluationAreaReport`,
       `renderEvaluationFactorReport`, and `renderEvaluationRequirementReport`:
-      write the kind-prefixed H1 (`# Area:` / `# Factor:` / `# Requirement:`
-      + title) as the first line, move the `writeEvaluationAreaTrail` /
+      write the kind-prefixed H1 (`# Area:` / `# Factor:` / `# Requirement:` + title) as the first line, move the `writeEvaluationAreaTrail` /
       `writeEvaluationFactorTrail` / `writeEvaluationRequirementFactorsLine`
-      calls to render *after* the title, and delete the `Path:` / `Name:` lines.
-      The root-element model title already resolves through `areaTitle(spec,
-      nil)`; no change there beyond the test lock.
+      calls to render _after_ the title, and delete the `Path:` / `Name:` lines.
+      The root-element model title already resolves through
+      `areaTitle(spec, nil)`; no change there beyond the test lock.
 - [x] `internal/evaluation/evaluation_test.go` - update report header
       assertions: expect the kind-prefixed H1 as the first line, expect the
       `Area:` trail (and Factor `Factor:` / Requirement `Factors:` lines) after

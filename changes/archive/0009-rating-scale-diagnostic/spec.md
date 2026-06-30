@@ -66,8 +66,8 @@ and any wiring of the meta-model into code or tests.
 
 ## Done criteria
 
-- The meta-model's **Functionality** factor carries the new *rating scale and any
-  overrides are well-formed and meaningful* requirement, with an assessment
+- The meta-model's **Functionality** factor carries the new _rating scale and any
+  overrides are well-formed and meaningful_ requirement, with an assessment
   meeting the requirements above.
 - The Functionality summary and the diagnostic coverage checklist name the new
   concern.

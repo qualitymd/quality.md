@@ -10,7 +10,7 @@ timestamp: 2026-06-29T00:00:00Z
 
 Companion to the
 [Publish the example evaluation to the docs site](../0188-publish-example-evaluation-to-docs.md)
-change case. This spec states *what* the navigation link must do.
+change case. This spec states _what_ the navigation link must do.
 
 The key words **MUST**, **SHOULD**, and **MAY** are to be interpreted as
 described in IETF RFC 2119.

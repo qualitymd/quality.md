@@ -43,10 +43,8 @@ Deferred: replacing, deleting, or superseding existing records; adding an
 Created or updated during `In-Progress`, before this change reaches
 `In-Review`:
 
-- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md)
-      - document the duplicate-assessment reportability gap.
-- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md)
-      - clarify that non-renderable duplicate-assessment runs fail before
+- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md) - document the duplicate-assessment reportability gap.
+- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md) - clarify that non-renderable duplicate-assessment runs fail before
       writing reports.
 - [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md) - clarify
       assessment record uniqueness for a target path and requirement.

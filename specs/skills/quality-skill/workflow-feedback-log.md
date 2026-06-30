@@ -8,9 +8,9 @@ timestamp: 2026-06-23T00:00:00Z
 
 # Workflow feedback log
 
-This spec defines the shared *workflow feedback log* artifact used by `/quality`
+This spec defines the shared _workflow feedback log_ artifact used by `/quality`
 workflows that adopt feedback logging. A feedback log is one kind of workflow
-log: a hand-authored Markdown artifact that records the *experience* of running
+log: a hand-authored Markdown artifact that records the _experience_ of running
 a workflow — friction, errors, UX/AX rough edges, efficiency observations, and
 preservation signals — so the skill, CLI, and prompts can be improved from real
 runs.

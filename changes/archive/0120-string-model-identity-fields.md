@@ -36,13 +36,13 @@ qualified model reference for each kind (`area:<path>`,
 `factor:<area>::<path>`, `requirement:<area>::<name>`, `rating:<id>`) and a
 strict name grammar (no `/`, `:`, `.`, or spaces in names) whose entire purpose
 is to make that string parse back to the composite identity unambiguously. The
-object is just the *parsed* form of the string, persisted in full.
+object is just the _parsed_ form of the string, persisted in full.
 
 So the identity fields can collapse to single canonical-reference strings with no
 loss of information, giving every payload one uniform identity shape. This is the
 direction [`SPECIFICATION.md`](../SPECIFICATION.md) already points: it requires
-durable machine-readable artifacts to carry *qualified* references and forbids
-only the *unqualified* (prefixless) forms there.
+durable machine-readable artifacts to carry _qualified_ references and forbids
+only the _unqualified_ (prefixless) forms there.
 
 Two things make this a deliberate reversal rather than a free refactor, and the
 spec must account for both:
@@ -53,7 +53,7 @@ spec must account for both:
   to replace the structured `areaPath`/`factorPath` arrays with string
   references in durable machine artifacts, and
   [`json-conventions.md`](../specs/evaluation/records/json-conventions.md)
-  currently *mandates* the structured shapes and *forbids* the string forms in
+  currently _mandates_ the structured shapes and _forbids_ the string forms in
   persisted routine JSON. This case rewrites that rule.
 - The string form is lossless only if the rendering is unambiguous. The one gap
   is the root-Area token: `area:root` (and the `root` segment in
@@ -85,7 +85,7 @@ Covered:
 
 Deferred / non-goals:
 
-- No change to the *human-facing* rendered reports (Markdown tables, titles,
+- No change to the _human-facing_ rendered reports (Markdown tables, titles,
   ratings, trails, links) beyond what re-deriving an identity string from data
   requires; report values shown to people are titles and labels, not these IDs.
 - No migration of existing completed evaluation runs under `.quality/`; they are
@@ -162,8 +162,7 @@ In-Review.
 
 ### Durable docs / bundled skill
 
-- [x] `skills/quality/SKILL.md` and `specs/skills/quality-skill/quality-skill.md`
-      - update Evaluation artifact identity wording to canonical qualified
+- [x] `skills/quality/SKILL.md` and `specs/skills/quality-skill/quality-skill.md` - update Evaluation artifact identity wording to canonical qualified
       model-reference strings and align `/quality` compatibility metadata with
       the `0.16` CLI line.
 

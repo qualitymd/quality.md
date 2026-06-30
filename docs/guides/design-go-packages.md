@@ -13,7 +13,7 @@ covers one recurring decision: **which package a type belongs in.** It exists
 because the easy answer — "wherever it's already imported" — is usually the
 wrong one.
 
-It is about *data and contract types* — the structs that model a concept or
+It is about _data and contract types_ — the structs that model a concept or
 marshal to an agent-facing shape. Interfaces follow a different placement rule:
 define them in the package that consumes them, not by the concept they abstract.
 See [Go style](go-style.md) for that and the rest of the line-level conventions.
@@ -30,15 +30,15 @@ misplacement this guide warns against.
 
 This repo faced exactly this choice. `lint` defined an `Action` type for its
 findings, and when `init` needed a "next action" for its receipt, the tempting
-shortcut was *"package `cli` already imports `lint`, so just reuse
-`lint.Action`."* An existing import justifies **convenience**, not
+shortcut was _"package `cli` already imports `lint`, so just reuse
+`lint.Action`."_ An existing import justifies **convenience**, not
 **ownership**. By that logic any type could live anywhere the import graph
 already reaches — which is how a "next action" contract ends up named after, and
 owned by, whichever feature happened to emit one first.
 
 The reader would have paid for that on every read: `cli.InitReceipt` referencing
 `lint.Action` reads as though `init` had something to do with linting. It does
-not — the type is an *agent-receipt* concept; `lint` was merely its first
+not — the type is an _agent-receipt_ concept; `lint` was merely its first
 emitter. So it got a neutral home instead: `Action` lives in `receipt`, and
 `cli.InitReceipt` consumes `receipt.Action`.
 
@@ -47,10 +47,10 @@ emitter. So it got a neutral home instead: `Action` lives in `receipt`, and
 The "wait until you have a third use" instinct (the rule of three) is sound — but
 only for one of these axes. Keep them apart:
 
-- **Abstraction extraction** — pulling shared *behavior* into a common helper.
+- **Abstraction extraction** — pulling shared _behavior_ into a common helper.
   Here the rule of three applies: don't build the shared abstraction until real
   duplication proves the shape. Defer.
-- **Concept ownership** — deciding which package *owns* a contract or
+- **Concept ownership** — deciding which package _owns_ a contract or
   protocol type. Here consumer count is irrelevant. A contract is its own
   concept with one consumer or three; counting emitters answers the wrong
   question. Place it correctly up front.
@@ -66,8 +66,8 @@ yes, it is a contract type and wants a neutral home. Signals:
 
 - It marshals to a stable JSON shape agents depend on (a receipt element, an
   error object, a `schemaVersion`-bearing document).
-- Its fields describe a *protocol* (what the agent should do next, how an error
-  is reported) rather than a *feature's internals* (a lint rule, a model node).
+- Its fields describe a _protocol_ (what the agent should do next, how an error
+  is reported) rather than a _feature's internals_ (a lint rule, a model node).
 
 Feature-internal types — ones only their own package emits and reasons about —
 stay in the feature package.
@@ -75,7 +75,7 @@ stay in the feature package.
 ## Cost of deferring
 
 Where a Go struct lives is an internal detail. If it marshals to a stable JSON
-shape, *moving the struct between packages does not change the wire contract* —
+shape, _moving the struct between packages does not change the wire contract_ —
 agents never notice. So the mechanical cost of relocating a contract type later
 is low.
 

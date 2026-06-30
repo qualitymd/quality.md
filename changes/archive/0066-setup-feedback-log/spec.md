@@ -22,13 +22,13 @@ all capitals.
 ## Background
 
 `/quality` workflows have no durable, central place to record what was slow,
-confusing, or wrong about the *experience* of running them. The only existing
+confusing, or wrong about the _experience_ of running them. The only existing
 process artifact, evaluation's `debug-log.md`, is a per-run audit that lives
 inside one evaluation run folder. The improvement signal that produced the
 [0065 setup refinements](../archive/0065-setup-discovery-and-close-refinements.md)
 was captured by hand, once, from a single field test.
 
-A *workflow feedback log* fills that gap: a hand-authored Markdown artifact about
+A _workflow feedback log_ fills that gap: a hand-authored Markdown artifact about
 the workflow experience, written to a central `.quality/logs/` directory and
 carrying enough environment context to be actionable by a maintainer reading it
 out of context. It is recorded locally and is never transmitted, so it needs no
@@ -57,7 +57,7 @@ Deferred:
 ### Artifact identity
 
 A workflow feedback log MUST be a hand-authored, runtime Markdown artifact whose
-subject is the *experience* of running a `/quality` workflow.
+subject is the _experience_ of running a `/quality` workflow.
 
 A workflow feedback log MUST be a runtime artifact, not an OKF `log.md`, and MUST
 NOT be interpreted as OKF concept history.
@@ -170,8 +170,8 @@ maturity classification, or next-step routing.
 
 ### To add
 
-- `specs/skills/quality-skill/workflows/setup/feedback-log.md` *(new sub-spec of
-  the setup workflow spec)* - the feedback-log artifact contract (purpose,
+- `specs/skills/quality-skill/workflows/setup/feedback-log.md` _(new sub-spec of
+  the setup workflow spec)_ - the feedback-log artifact contract (purpose,
   location/naming, environment header, body schema, redaction, no-transmission
   posture). Creating it makes `setup.md` a parent concept with a `setup/` child
   folder carrying its own `index.md`. The exact spec filename follows the

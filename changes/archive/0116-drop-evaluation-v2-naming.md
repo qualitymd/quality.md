@@ -21,7 +21,7 @@ but the code grain (symbol and filename renames) may warrant one at **Design**.
 
 "Evaluation v2" was the name for the replacement evaluation workflow while it
 coexisted, conceptually, with the workflow it superseded. The
-[clean break](archive/0097-evaluation-v2-clean-break.md) made v2 the *only*
+[clean break](archive/0097-evaluation-v2-clean-break.md) made v2 the _only_
 runtime evaluation workflow — the predecessor is gone. With nothing to
 distinguish it from, the `v2` suffix no longer carries meaning: it is vestigial
 naming that reads as "there is also a v1" to anyone new to the code, specs, and
@@ -43,12 +43,12 @@ Deferred / out of scope:
 
 - **The `schemaVersion` JSON field and its values.** `schemaVersion` is a
   payload-shape marker for the evaluation JSON contract, not an instance of the
-  "v2" *name*; this case does not change the field, its values, or the payload
+  "v2" _name_; this case does not change the field, its values, or the payload
   shape.
 - **Frozen historical records.** Archived change cases
   ([`changes/archive/**`](archive/index.md)), append-only `log.md` files, and
   existing `CHANGELOG.md` release entries record past state under the name in
-  force at the time and stay as written. (A new `CHANGELOG.md` entry for *this*
+  force at the time and stay as written. (A new `CHANGELOG.md` entry for _this_
   change is added when it lands.)
 - **Restructuring the evaluation specs.** This is a rename, not a reshaping of
   the spec tree's contents or boundaries.
@@ -93,7 +93,7 @@ section; this index is the skimmable checklist.
       examples" reference and its link into the renamed folder.
 - [ ] `evaluation-v2-sketch.md` — superseded root sketch; remove it (and any live
       inbound references), since the durable `specs/evaluation/**` specs replaced it.
-- [ ] `CHANGELOG.md` — *no edits to historical entries*; add a new entry when the
+- [ ] `CHANGELOG.md` — _no edits to historical entries_; add a new entry when the
       change lands.
 
 ### Bundled skill

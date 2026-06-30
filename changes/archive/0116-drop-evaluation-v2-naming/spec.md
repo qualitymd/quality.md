@@ -36,7 +36,7 @@ the rename and fence those two hazards.
 ## Scope
 
 Covered: every occurrence of the "Evaluation v2" / "v2-as-evaluation-name" token
-on the *live* evaluation surface — the durable [`specs/`](../../specs/index.md)
+on the _live_ evaluation surface — the durable [`specs/`](../../specs/index.md)
 bundle, [`SPECIFICATION.md`](../../SPECIFICATION.md), the bundled
 [`/quality` skill](../../skills/quality/), the Go implementation, and the
 superseded root sketch.

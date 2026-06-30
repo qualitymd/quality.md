@@ -21,10 +21,10 @@ children:
 Authoring evaluation payloads requires the canonical reference IDs of a model's
 elements — `area:<path>`, `factor:<area>::<path>`,
 `requirement:<area>::<name>`. No command emits them today: `status --json`
-reports `sourceCoverage` by area *path* and label, not canonical IDs, and does
+reports `sourceCoverage` by area _path_ and label, not canonical IDs, and does
 not enumerate factors or requirements. So an agent hand-derives tens of IDs from
 `QUALITY.md` — slow, and a silent-typo source that the 0124 reference-`kind`
-enum and the existing identity-resolution checks can only catch *after* the fact.
+enum and the existing identity-resolution checks can only catch _after_ the fact.
 
 The acquire-roi-next evaluation made this concrete: the orchestrator manually
 derived every area/factor/requirement ID it needed for ~115 payloads. A
@@ -43,12 +43,12 @@ those IDs (querying the run's `model-snapshot.md`) instead of hand-deriving them
 
 This case draws a hard boundary so `model` does not overlap existing surfaces:
 
-- **`model`** owns *logical structure and identity*: elements, canonical IDs,
+- **`model`** owns _logical structure and identity_: elements, canonical IDs,
   labels, and containment relationships.
-- **`status`** keeps *state & readiness*: lint summary, evaluation history, next
+- **`status`** keeps _state & readiness_: lint summary, evaluation history, next
   actions, source coverage/provenance, and the aggregate `shape` counts.
-- **`evaluation`** keeps *runs, payloads, reports, and the `model-snapshot.md`
-  artifact*.
+- **`evaluation`** keeps _runs, payloads, reports, and the `model-snapshot.md`
+  artifact_.
 
 Deferred / non-goals:
 
@@ -60,7 +60,7 @@ Deferred / non-goals:
 - No source/provenance, coverage, or aggregate count summaries — those stay in
   `status`.
 - No evaluation-run awareness — no `--run` flag, no run-folder resolution; `model`
-  reads a model *file* (a `model-snapshot.md` is reachable only as a file path).
+  reads a model _file_ (a `model-snapshot.md` is reachable only as a file path).
 - No ratings or evaluation results.
 
 ## Affected artifacts

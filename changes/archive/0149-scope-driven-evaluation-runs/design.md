@@ -16,7 +16,7 @@ Answers the [functional spec](spec.md). The headline bug
 symptom: scope lives only as a lossy `--narrowing` slug plus an agent-authored
 frame enumeration, and the headline is selected positionally from that
 enumeration. The fix makes scope a CLI-owned run parameter and lets the report
-*be* the scoped Area report.
+_be_ the scoped Area report.
 
 ## Approach
 
@@ -58,7 +58,7 @@ agents-MUST-NOT-write rule enforced on the `data set` path.
 5. Write `run-manifest.json`.
 
 The skill resolves the user's natural-language ask to canonical IDs against the
-live model *before* calling `create` (R9, R11); `create` re-validates against the
+live model _before_ calling `create` (R9, R11); `create` re-validates against the
 frozen snapshot, so a live-vs-snapshot drift surfaces as a create-time error
 rather than a silent mismatch.
 
@@ -101,7 +101,7 @@ stays linked in the index. No special case.
 still have a structured pointer to the run's lead result.
 
 For a full run, `report.md` and the root Area's report are the same content, so
-the scoped Area's report *is* `report.md` — no duplicate file is emitted for the
+the scoped Area's report _is_ `report.md` — no duplicate file is emitted for the
 scoped Area. Child Areas still get their per-Area subject reports in the index.
 
 ## Spec response
@@ -128,7 +128,7 @@ of `plannedScope` alone, with no agent-authored ordering in the path.
   pure function of `plannedScope` + snapshot, so storing it adds a field that can
   drift or go stale on an interrupted run. Derive it.
 - **Keep a headline subject, fix only its selection rule.** Rejected: once
-  `plannedScope` names the subject, the report *is* that Area's report; a separate
+  `plannedScope` names the subject, the report _is_ that Area's report; a separate
   selection step is needless surface that can still be got wrong.
 - **Keep scope (resolved set) in the frame for the coverage check.** Rejected:
   the CLI-derived planned expansion is a stronger expected-set baseline than an
@@ -148,6 +148,6 @@ of `plannedScope` alone, with no agent-authored ordering in the path.
 ## Open questions
 
 - Whether to lift `RunManifest` into its own `run-manifest-json.md` artifact spec
-  now or leave the contract in `payload-kinds.md` (spec lists it as *suggested*).
+  now or leave the contract in `payload-kinds.md` (spec lists it as _suggested_).
 - Exact field name for the output-result pointer to the scoped Area analysis
   (`scopedAreaAnalysisRef` proposed).

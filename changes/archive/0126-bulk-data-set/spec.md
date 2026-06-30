@@ -9,8 +9,8 @@ timestamp: 2026-06-26T00:00:00Z
 # Bulk data set — functional spec
 
 Companion to the [Bulk data set](../0126-bulk-data-set.md) change case. This
-spec states *what* the new `data set` stdin contract must do; a later design doc
-covers *how*. The payload kinds, their fields, and the canonical reference
+spec states _what_ the new `data set` stdin contract must do; a later design doc
+covers _how_. The payload kinds, their fields, and the canonical reference
 grammar are defined by [`SPECIFICATION.md`](../../../SPECIFICATION.md) (normative)
 and the Evaluation data records under
 [`specs/evaluation/`](../../../specs/evaluation/index.md); the invocation-wide CLI
@@ -31,7 +31,7 @@ workflow persists a model's tens of routine payloads one invocation at a time �
 turns that loop into a single write. See the change case
 [Motivation](../0126-bulk-data-set.md#motivation) for the originating evidence.
 
-The contract is **array-only**: the array *replaces* the single-object form
+The contract is **array-only**: the array _replaces_ the single-object form
 rather than adding a second path, so the tool keeps one transport contract to
 validate, document, and test. A one-payload write is a one-element array. This
 is a deliberate clean break from the v0 single-object rule, appropriate while
@@ -75,9 +75,9 @@ Deferred / non-goals (each absence is deliberate):
   not a JSON array (including a bare JSON object) with a usage error that names
   the expected array form.
 
-  >> Rationale: the array replaces the single-object form rather than adding a
-  >> second path, so there is one transport contract. A one-payload write is a
-  >> one-element array. — 0126
+  > > Rationale: the array replaces the single-object form rather than adding a
+  > > second path, so there is one transport contract. A one-payload write is a
+  > > one-element array. — 0126
 
 - **IN2 — Non-empty.** `data set` **MUST** reject an empty array (`[]`) as a usage
   error; a set with no payloads is a mistake, not a successful no-op.
@@ -97,9 +97,9 @@ Deferred / non-goals (each absence is deliberate):
   **MUST** write **no** element, **MUST** exit non-zero, and **MUST NOT** leave
   the run's `data/` directory partially modified by the batch.
 
-  >> Rationale: a partial batch leaves a run in a state neither the agent nor a
-  >> later reader can reason about; atomicity makes a failed `data set` a no-op to
-  >> retry after fixing. — 0126
+  > > Rationale: a partial batch leaves a run in a state neither the agent nor a
+  > > later reader can reason about; atomicity makes a failed `data set` a no-op to
+  > > retry after fixing. — 0126
 
 - **AT3 — Aggregated, indexed diagnostics.** When a batch fails validation,
   `data set` **MUST** report each invalid element identified by its position in
@@ -107,8 +107,8 @@ Deferred / non-goals (each absence is deliberate):
   every invalid element, not only the first, so the whole batch can be corrected
   in one pass.
 
-  >> Rationale: stopping at the first error would re-impose the round-trip cost
-  >> the batch contract removes — the agent would resubmit once per error. — 0126
+  > > Rationale: stopping at the first error would re-impose the round-trip cost
+  > > the batch contract removes — the agent would resubmit once per error. — 0126
 
 - **AT4 — Snapshot fail-closed.** As today, if the run's `model-snapshot.md` is
   missing or unparseable, `data set` **MUST** fail closed for the whole batch
@@ -126,9 +126,9 @@ Deferred / non-goals (each absence is deliberate):
   batch as a usage error naming the colliding elements, rather than silently
   letting a later element overwrite an earlier one.
 
-  >> Rationale: two payloads writing one path in a single batch is almost always a
-  >> duplicate-authoring mistake; surfacing it beats a silent last-writer-wins. —
-  >> 0126
+  > > Rationale: two payloads writing one path in a single batch is almost always a
+  > > duplicate-authoring mistake; surfacing it beats a silent last-writer-wins. —
+  > > 0126
 
 ### Receipt and dry-run
 
@@ -166,17 +166,17 @@ below is what the change must deliver.
   authoring the array from the payloads it has assembled — rather than one
   invocation per Requirement, Factor, or Area.
 
-  >> Rationale: the per-element loop is the ~115-invocation cost the array
-  >> contract exists to remove; the win is realized in the workflow, not the CLI.
-  >> — 0126
+  > > Rationale: the per-element loop is the ~115-invocation cost the array
+  > > contract exists to remove; the win is realized in the workflow, not the CLI.
+  > > — 0126
 
 - **SK2 — One whole-batch dry-run.** Where the workflow validates before
   persisting, it **MUST** dry-run the assembled batch once (one `data set
-  --dry-run`) rather than dry-running each payload, relying on the aggregated,
+--dry-run`) rather than dry-running each payload, relying on the aggregated,
   indexed diagnostics (AT3) to correct the whole batch in one pass.
 
-  >> Rationale: per-payload dry-runs reintroduce the round-trips the batch
-  >> contract removes; whole-batch validation matches whole-batch writes. — 0126
+  > > Rationale: per-payload dry-runs reintroduce the round-trips the batch
+  > > contract removes; whole-batch validation matches whole-batch writes. — 0126
 
 ## Acceptance criteria
 
@@ -221,7 +221,7 @@ None.
   payload from stdin …" to read a JSON array (IN1–IN3); replace "`data set`
   **MUST NOT** accept batch payloads in v0." with the atomicity, aggregated-error,
   intra-batch-collision, and batch-receipt rules (AT1–AT4, ID1–ID2, RC1–RC2);
-  update the command listing to the `payloads.json` array form. Carry the *why*
+  update the command listing to the `payloads.json` array form. Carry the _why_
   — round-trip cost and the atomic-no-op retry property — into its Background /
   Motivation.
 - `specs/cli.md` — update the `data set` signature in the command listing and

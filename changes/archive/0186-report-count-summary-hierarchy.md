@@ -9,7 +9,7 @@ timestamp: 2026-06-30T00:00:00Z
 
 # Report Count Summary Hierarchy
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0186-report-count-summary-hierarchy/spec.md) - what the case must do.
@@ -65,8 +65,8 @@ Non-goals:
 **Durable specs**
 
 - [x] `specs/evaluation/reports/report-tree.md` - specify link placement, inline
-      count summary grammar, recommendation impact summaries, and the `💪
-      Strength` display label.
+      count summary grammar, recommendation impact summaries, and the
+      `💪 Strength` display label.
 - [x] `specs/log.md` - record the durable spec update.
 
 **Durable docs / generated examples**

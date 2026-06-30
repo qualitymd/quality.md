@@ -10,7 +10,7 @@ timestamp: 2026-06-22T00:00:00Z
 
 Companion to the
 [Prospective evaluation plan artifacts](../0056-prospective-evaluation-plan-artifacts.md)
-change case. This spec states *what* the `/quality evaluate` workflow and
+change case. This spec states _what_ the `/quality evaluate` workflow and
 evaluation-record artifact contracts must require so `design.md` and the initial
 `plan.md` are prospective planning artifacts rather than after-the-fact
 summaries. It defers the run-folder layout to

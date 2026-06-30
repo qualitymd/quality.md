@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 # Area-local Factor References
 
-A **Change Case** capturing the *why* and *status*; the detail lives in its
+A **Change Case** capturing the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0141-area-local-factor-references/spec.md) - what the case

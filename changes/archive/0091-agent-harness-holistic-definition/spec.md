@@ -17,7 +17,7 @@ harness-area modeling template from
 either. The format itself is governed by
 [`SPECIFICATION.md`](../../../SPECIFICATION.md). This spec changes guidance prose
 only — it adds no normative format rule and no schema default. The
-[design doc](design.md) settles *how* the holistic definition, the three-projection
+[design doc](design.md) settles _how_ the holistic definition, the three-projection
 model, and the scoping rule are shaped, and records the redefine-not-rename
 decision.
 
@@ -85,11 +85,11 @@ The guide **MUST** state that a composite root does not carry one "harness" area
 that owns the whole system, and that the harness is rated through three
 projections, each part of the harness belonging to exactly one:
 
-- the *capability* of equipping an agent — the model-wide **Agent Harnessability**
+- the _capability_ of equipping an agent — the model-wide **Agent Harnessability**
   factor;
-- the *checked-in, project-owned governing artifacts* — the **agent-harness**
+- the _checked-in, project-owned governing artifacts_ — the **agent-harness**
   area;
-- the *verification corpus* and the *runtime environment* — the tests and
+- the _verification corpus_ and the _runtime environment_ — the tests and
   operations constituents respectively, cross-referenced rather than absorbed.
 
 The guide **MUST** keep the agent-harness area distinct from the Agent
@@ -213,23 +213,23 @@ None
 - `specs/skills/quality-skill/guides/authoring/agent-harness.md` - mirror the
   holistic definition, the three-projection derivation, the area-scoping decision
   rule, the owned-runtime-machinery scope, the expanded requirement shapes, and the
-  never-define-as-instructions doctrine (per *Define the agent harness
-  holistically*, *Derive the area as one projection*, *Scope the area to the
-  project-owned governing artifacts*, *Expand the requirement shapes across both
-  halves*, and *Add the never-define-as-instructions doctrine* above).
+  never-define-as-instructions doctrine (per _Define the agent harness
+  holistically_, _Derive the area as one projection_, _Scope the area to the
+  project-owned governing artifacts_, _Expand the requirement shapes across both
+  halves_, and _Add the never-define-as-instructions doctrine_ above).
 - `specs/skills/quality-skill/guides/authoring/agent-harnessability.md` - mirror
   the updated cross-reference that distinguishes Agent Harnessability from the
   agent-harness Area as checked-in, project-owned governing artifacts, not the
-  whole equipping capability or instructions alone (per *Derive the area as one
-  projection, with explicit boundaries* above).
+  whole equipping capability or instructions alone (per _Derive the area as one
+  projection, with explicit boundaries_ above).
 - `specs/skills/quality-skill/guides/authoring/model-structure.md` - mirror the
-  "Carry the recurring use-context constituents" definition fix (per *Fix the
-  matching definition in model-structure and setup* above).
+  "Carry the recurring use-context constituents" definition fix (per _Fix the
+  matching definition in model-structure and setup_ above).
 - `specs/skills/quality-skill/workflows/setup.md` - mirror the generated area
   `description`, projection-boundary comment, recap line, and owned-machinery check
-  (per *Fix the matching definition in model-structure and setup* above).
+  (per _Fix the matching definition in model-structure and setup_ above).
 - `specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md` - mirror the
-  check-8 additions (per *Extend Top 10 check 8* above).
+  check-8 additions (per _Extend Top 10 check 8_ above).
 
 ### To rename
 

@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 # Recommendation Result Shape
 
 Companion to the [Recommendation Result Shape](../0155-recommendation-result-shape.md)
-Change Case. This spec states *what* the change must do. It defers to
+Change Case. This spec states _what_ the change must do. It defers to
 [Evaluation payload kinds](../../specs/evaluation/records/payload-kinds.md),
 [Evaluation report tree](../../specs/evaluation/reports/report-tree.md),
 [qualitymd evaluation report](../../specs/cli/evaluation-report.md), and

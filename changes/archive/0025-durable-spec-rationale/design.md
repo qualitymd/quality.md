@@ -9,14 +9,14 @@ timestamp: 2026-06-18T00:00:00Z
 # Durable spec rationale - design doc
 
 Design behind the [Durable spec rationale](../0025-durable-spec-rationale.md)
-change and its [functional spec](spec.md). The spec fixes *what* the three
-guides must require; this doc covers *why that shape*, and what was rejected.
+change and its [functional spec](spec.md). The spec fixes _what_ the three
+guides must require; this doc covers _why that shape_, and what was rejected.
 
 ## Context
 
-The repo already separates the *delta* (a Change Case and its archived spec/design)
-from the *cumulative* source of truth (the enduring `specs/` bundle). The
-mechanism is sound for the *what* but lossy for the *why*: motivation lives in
+The repo already separates the _delta_ (a Change Case and its archived spec/design)
+from the _cumulative_ source of truth (the enduring `specs/` bundle). The
+mechanism is sound for the _what_ but lossy for the _why_: motivation lives in
 the Change Case, deeper rationale lives in the design doc, and both archive with
 the case — so the durable spec keeps the rule and loses the reason. The
 functional-spec guide compounds it by capping all rationale at a clause or
@@ -30,7 +30,7 @@ convention takes effect as specs are next edited.
 Two layers of durable rationale, both **co-located in the spec**:
 
 1. **Background / Motivation** — one short prose section near the top of a spec,
-   for the spec-scale *why* (the problem or failure-mode the capability
+   for the spec-scale _why_ (the problem or failure-mode the capability
    addresses). It sits alongside Scope and the companion note, and is explicitly
    not either of them.
 2. **Per-requirement annotation** — an optional subordinate blockquote led by
@@ -45,7 +45,7 @@ from restating each other, and authors supersede stale rationale rather than
 letting it pile up.
 
 The change-cases guide closes the loop: absorbing a landing case into the
-durable specs now includes promoting its *why* (the Change Case's motivation and
+durable specs now includes promoting its _why_ (the Change Case's motivation and
 the design doc's durable rationale) into the spec's Background and annotations.
 Because durable specs may be edited at any time — with or without a case — this
 promotion is a **SHOULD** encouraged whenever a case updates a spec, not a gate
@@ -57,8 +57,8 @@ example the guides can point at.
 
 ## Alternatives
 
-**A separate Diátaxis *explanation* doc per capability.** Rejected. Diátaxis
-would file the *why* as explanation, away from the normative spec. That keeps the
+**A separate Diátaxis _explanation_ doc per capability.** Rejected. Diátaxis
+would file the _why_ as explanation, away from the normative spec. That keeps the
 spec lean but reopens the same gap this change exists to close: the rationale
 sits in a different file from the requirement it justifies, so an editor changing
 the rule need never see it. Co-location is the whole point.
@@ -76,7 +76,7 @@ smell the guide warns against, and duplicate the design doc. The design doc
 already is the decision record; the spec promotes only durable intent and
 lessons.
 
-In-spec two-layer rationale wins because it puts the *why* where the *what*
+In-spec two-layer rationale wins because it puts the _why_ where the _what_
 lives (unlike the explanation doc), carries enough to prevent regressions (unlike
 intent-only), and stays subordinate to the rule (unlike an ADR).
 

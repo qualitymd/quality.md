@@ -9,7 +9,7 @@ timestamp: 2026-06-25T00:00:00Z
 
 # Setup opening as first output
 
-This parent concept captures the *why* and *status*; the detail lives in its
+This parent concept captures the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0098-setup-opening-first-output/spec.md) — what the change
@@ -20,7 +20,7 @@ children:
 ## Motivation
 
 0096 gave `/quality setup` an educational opening, but a real run showed the
-opening does not reach the user *first*. The runtime ordering lets the agent
+opening does not reach the user _first_. The runtime ordering lets the agent
 front-load cheap tool calls — CLI checks, repository scans, even writing the
 feedback log — before flushing any text, so the user stares at 1–2 minutes of
 silent work and the warm welcome, run frame, and setup preview all arrive at the
@@ -28,8 +28,8 @@ end, after the slow part.
 
 The spec is the root cause on two points:
 
-- The opening-orientation requirement says the opening must precede *long-running
-  context work*, but it does not forbid tool calls before the opening. An agent
+- The opening-orientation requirement says the opening must precede _long-running
+  context work_, but it does not forbid tool calls before the opening. An agent
   reads "present the opening, then scan" as compatible with "run a few quick
   checks first, then present everything together."
 - The run frame is coupled to prerequisite verification (Workflow structure step
@@ -39,7 +39,7 @@ The spec is the root cause on two points:
   the invocation, and the frame does not display CLI status. Nothing the user
   sees first actually depends on a tool result.
 
-The opening should also tell the user *what is about to happen* — a short phase
+The opening should also tell the user _what is about to happen_ — a short phase
 roadmap — so the silent scan that follows reads as an expected step, not a hang.
 
 ## Scope
@@ -50,8 +50,8 @@ Covered:
   frame — to be emitted as the first user-visible output, before any tool call.
 - Decouple run-frame emission from CLI prerequisite verification, since the frame
   has no tool dependency.
-- Keep the CLI prerequisite check as a fail-fast gate that runs *after* the
-  opening and *before* the read-only context scan.
+- Keep the CLI prerequisite check as a fail-fast gate that runs _after_ the
+  opening and _before_ the read-only context scan.
 - Add the phase-roadmap requirement to the opening, and a one-line cue that the
   scan may take a moment on a large repository.
 

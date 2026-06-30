@@ -32,7 +32,7 @@ the entire surface is that top-level envelope.** `schemaForObject` and
 `schemaForField` emit no references — nested objects (findings, rating drivers,
 routine refs) are inlined recursively, and each field's `enum` and the object's
 `required` sit directly in the object schema. So every `$defs[<kind>]` entry is
-*already* a self-contained schema. The legibility problem was never reference
+_already_ a self-contained schema. The legibility problem was never reference
 depth; it was that the single-kind request wrapped a self-contained object in a
 ten-kind envelope and pointed a `$ref` at it.
 

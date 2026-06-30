@@ -32,7 +32,7 @@ and flag surface.
 
 Deferred:
 
-- A JSON form of the specification *prose* — a separate deferral in
+- A JSON form of the specification _prose_ — a separate deferral in
   [`spec`](spec.md), distinct from this structural schema.
 - `schema`-specific flags beyond cross-cutting CLI flags.
 

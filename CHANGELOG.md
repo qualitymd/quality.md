@@ -11,7 +11,7 @@ QUALITY.md specification.
 
 - Generated Evaluation report titles, section headings, and Contents labels now
   use sentence case for fixed report labels such as `Quality evaluation`, `Key
-  details`, `Model evaluation`, and `Primary source data`, while preserving
+details`, `Model evaluation`, and `Primary source data`, while preserving
   model-provided titles, table headers, and structured metadata.
 - Generated Evaluation run reports no longer render the standalone Finding
   Summary table near Key details. The Key details total and the full
@@ -760,7 +760,7 @@ Compatibility:
 
 ### Specification
 
-- *Assess Requirements* now notes that a Finding MAY carry non-binding candidate
+- _Assess Requirements_ now notes that a Finding MAY carry non-binding candidate
   actions — finding-local remediation leads — distinct from the recommendations
   the Advice phase produces.
 - The CLI spec now defines `qualitymd model tree|list|get` as the deterministic
@@ -834,7 +834,7 @@ Compatibility:
 
 - Existing completed Evaluation runs are not migrated. Recreate or rewrite run
   data with schema version `2` before rebuilding reports with `qualitymd
-  evaluation report build`.
+evaluation report build`.
 - Consumers of Evaluation JSON must read identity fields as qualified strings,
   not arrays or objects.
 
@@ -854,7 +854,7 @@ Compatibility:
   `--dry-run` performs the same validation without writing.
 - Added `qualitymd evaluation data schema [<kind>]` for discovering the
   structured Evaluation payload contract and `qualitymd evaluation data verify
-  <run>` for checking persisted run data.
+<run>` for checking persisted run data.
 - `qualitymd evaluation data example <kind>` now includes representative nested
   entries for findings, rating drivers, unknowns, inputs, and limits instead of
   leaving those arrays empty.
@@ -1098,8 +1098,8 @@ Compatibility:
   its factor, local, and aggregate ratings roll up like any other modeled area.
   Quality-log entries remain reserved for meaningful confirmed model changes.
 - The authoring guide now teaches enumerating a composite root's domain
-  constituents by *constituent kind* — drawn from the entity's stewardship
-  concerns (a lifecycle band plus the protective pair *secure* and *safeguard*)
+  constituents by _constituent kind_ — drawn from the entity's stewardship
+  concerns (a lifecycle band plus the protective pair _secure_ and _safeguard_)
   and an audience×purpose axis (Diátaxis) — so high-leverage constituents such as
   tests, specs, docs, and a threat model are modeled or consciously accounted for
   instead of silently missing. Setup and the Top 10 QUALITY.md checks gain
@@ -1108,12 +1108,12 @@ Compatibility:
   phenomenology of care: a constituent kind is a prompt for what the entity asks
   to be cared for (the claim comes from a Need or Risk, not the list), its artifact
   is read as evidence of tending rather than proof of quality, the protective pair
-  *secure*/*safeguard* answers to who is vulnerable, and the lifecycle concerns
+  _secure_/_safeguard_ answers to who is vulnerable, and the lifecycle concerns
   recur rather than completing. Framing only — the concerns and the earn-it
   guardrail are unchanged.
 - The authoring guide and setup now keep the stewardship/care language in its
   motivation register so it never modifies or replaces a model term: recurring
-  root factors are named *model-wide factors* (which may trace to stewardship
+  root factors are named _model-wide factors_ (which may trace to stewardship
   concerns) rather than "stewardship factors" or "stewardship lenses." Wording
   discipline only — the concerns, axes, and three-projections rule are unchanged.
 - The authoring guide, setup, and the Top 10 QUALITY.md checks now **model a
@@ -1144,7 +1144,7 @@ Compatibility:
   assessability. The Top 10 checks now flag a germane harness area carried by only
   one or two thin factors, and harness requirements that assume a software
   toolchain outside a software served domain.
-- The authoring guide now teaches encoding a concern's *projection boundary* in the
+- The authoring guide now teaches encoding a concern's _projection boundary_ in the
   model: when a model carries two or more projections of one concern (factor,
   constituent/area, audience), each node gets a YAML comment naming its sibling
   projection and the distinction, and — when both projections are rated nodes that
@@ -1183,7 +1183,7 @@ Compatibility:
   domains and links to the worked non-software guide example; the non-normative
   lineage section clarifies that QUALITY.md borrows boundaries and vocabulary from
   prior traditions, not their characteristic lists as default Factors.
-- Added a contributor guide, *Modeling quality across domains*, that consolidates
+- Added a contributor guide, _Modeling quality across domains_, that consolidates
   the quality-domain-agnosticism doctrine, names the stress axes and a canonical
   set of secondary knowledge-work domains (documentation, data sets, research
   reports, services and operations), and carries a full worked non-software

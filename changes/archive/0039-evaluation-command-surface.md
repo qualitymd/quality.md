@@ -100,8 +100,7 @@ Code (edited only once the case is `In-Progress`):
       the `model`-altitude residue from the create path and receipt.
 - [x] [`internal/evaluation/write.go`](../../internal/evaluation/write.go) - back the
       per-resource `add`/`set` verbs and batched (object-or-array) input.
-- [x] [`internal/evaluation/planned_coverage.go`](../../internal/evaluation/planned_coverage.go)
-      - remove the `planned-coverage.json` write path; coverage moves to `plan.md`
+- [x] [`internal/evaluation/planned_coverage.go`](../../internal/evaluation/planned_coverage.go) - remove the `planned-coverage.json` write path; coverage moves to `plan.md`
       frontmatter, validated at read time.
 - [x] [`internal/evaluation/report.go`](../../internal/evaluation/report.go) - split
       the `--fail-at-or-below` gate out of `build` into a side-effect-free `gate`.
@@ -125,8 +124,7 @@ Specs:
 - [x] [`specs/cli/evaluation-assessment.md`](../../specs/cli/evaluation-assessment.md),
       [`specs/cli/evaluation-analysis.md`](../../specs/cli/evaluation-analysis.md),
       and
-      [`specs/cli/evaluation-recommendation.md`](../../specs/cli/evaluation-recommendation.md)
-      - split from `evaluation-add-record.md` with honest verbs and batched
+      [`specs/cli/evaluation-recommendation.md`](../../specs/cli/evaluation-recommendation.md) - split from `evaluation-add-record.md` with honest verbs and batched
       input.
 - [x] [`specs/cli/evaluation-report.md`](../../specs/cli/evaluation-report.md) -
       renamed from `evaluation-build-report.md`; splits `build` from `gate`.
@@ -140,14 +138,12 @@ Specs:
 - [x] [`specs/cli.md`](../../specs/cli.md) - review for evaluation command-name
       references and confirm the cross-cutting stdout/stderr and `--file`
       contract covers the normalized surface.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - update the skill's functional spec: the evaluation procedure, workflow
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - update the skill's functional spec: the evaluation procedure, workflow
       diagram, and every old command name it references.
 
 Docs:
 
-- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
-      - rewrite the evaluation command table, decision trees, and workflows.
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md) - rewrite the evaluation command table, decision trees, and workflows.
 - [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md) -
       update the procedure to the new commands and the `plan.md` coverage fold.
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - update the
@@ -161,8 +157,7 @@ Docs:
       update the same verbatim `--help` block.
 - [x] [`docs/guides/cli-design.md`](../../docs/guides/cli-design.md) - update the
       `evaluation create-run` worked example of the noun/verb grammar.
-- [x] [`docs/guides/write-functional-specs.md`](../../docs/guides/write-functional-specs.md)
-      - update the `evaluation create-run` example/link (the spec is being
+- [x] [`docs/guides/write-functional-specs.md`](../../docs/guides/write-functional-specs.md) - update the `evaluation create-run` example/link (the spec is being
       renamed to `evaluation-create.md`).
 - [x] [`CHANGELOG.md`](../../CHANGELOG.md) - add the 0039 entry; the new command
       names supersede the historical `evaluation build-report` references.

@@ -10,7 +10,7 @@ timestamp: 2026-06-26T00:00:00Z
 # Scannable interaction hierarchy
 
 A **Change Case** to fix a recurring scan failure in agent-mediated workflow
-output: the *flat wall*, where a decision gate (or discovery question, or result
+output: the _flat wall_, where a decision gate (or discovery question, or result
 block) stacks the primary question and several supporting labels at equal
 visual weight, so the actual call to action — the choice the user must make —
 becomes one more bolded line at the bottom and disappears entirely when bold is
@@ -30,7 +30,7 @@ A user reviewing an `Apply update plan?` gate from the `/quality` update workflo
 could not tell at a glance what was being asked. The gate followed the
 established pattern faithfully — `Changes`, `Evidence/reason`, `Recommended
 option`, `Alternatives`, `Done criterion / verification`, then a prose `Answer:`
-line — but that pattern *is* the problem. Six bolded labels compete for
+line — but that pattern _is_ the problem. Six bolded labels compete for
 attention, the `y`/`n` choice is the last line after a wall of rationale, and
 with bold stripped nothing distinguishes the question from its supporting
 context.
@@ -56,10 +56,10 @@ evaluation, or CLI semantics.
 Covered:
 
 - Update the [agent-mediated UX guide](../../docs/guides/agent-mediated-ux.md) so
-  Decision gates teach a *question → visually separated choices → demoted
-  rationale* shape, cap supporting fields, add a "don't rely on bold alone"
-  rule, and include an Avoid counter-example. *(Already applied; this case
-  accounts for it.)*
+  Decision gates teach a _question → visually separated choices → demoted
+  rationale_ shape, cap supporting fields, add a "don't rely on bold alone"
+  rule, and include an Avoid counter-example. _(Already applied; this case
+  accounts for it.)_
 - Reshape the shared `/quality` interaction contract's decision-brief template
   and its "make the primary action stand out (with bold)" prose to match.
 - Bring every mutation gate in the bundled skill into the new shape

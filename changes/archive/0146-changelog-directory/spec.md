@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 # Changelog Directory - functional spec
 
 Companion to the [Changelog Directory](../0146-changelog-directory.md) change
-case. This spec states *what* the change must do.
+case. This spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

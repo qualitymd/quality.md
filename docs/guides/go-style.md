@@ -23,11 +23,11 @@ misspellings (`misspell`), and size/complexity limits (`cyclop`, `gocognit`,
 left out on purpose — let the tool be the source of truth.
 
 `staticcheck` here is the golangci-lint v2 linter, which folds in the former
-`stylecheck` (ST) checks — so a few *style* conventions are enforced too, not
+`stylecheck` (ST) checks — so a few _style_ conventions are enforced too, not
 just correctness: notably `self`/`this` receiver names (ST1006) and
 error-string punctuation (ST1005). Don't restate those below.
 
-For *which package a type belongs in*, see
+For _which package a type belongs in_, see
 [Designing Go packages](design-go-packages.md). This guide is about everything
 else.
 
@@ -38,7 +38,7 @@ else.
   `lint.Result`, not `lint.LintResult`.
 - **No `Get` prefix on accessors.** A getter is named for the thing it returns:
   `cfg.Timeout()`, not `cfg.GetTimeout()`. Reserve verb prefixes for methods
-  that *do* something.
+  that _do_ something.
 - **Package names are short, lowercase, singular, and meaningful.** Name the
   package for the concept it provides; never a catch-all (`util`, `common`,
   `helpers`, `misc`). [Designing Go packages](design-go-packages.md) covers why
@@ -52,9 +52,9 @@ else.
 ## Errors
 
 - **Add context as you return.** Wrap with `fmt.Errorf("loading %s: %w", path,
-  err)`. Skip noise like `"failed to"` / `"error while"` — the fact that it is
+err)`. Skip noise like `"failed to"` / `"error while"` — the fact that it is
   an error is already clear, and the chain reads as a path: `loading config:
-  parsing yaml: unexpected EOF`.
+parsing yaml: unexpected EOF`.
 - **`%w` only when the caller should inspect the cause.** Use `%w` to preserve
   a cause that callers match with `errors.Is` / `errors.As`. Use `%v` to flatten
   an error at a trust boundary where the underlying type is an implementation
@@ -113,7 +113,7 @@ else.
 ## Documentation comments
 
 - **Document every exported identifier, starting with its name:** `// Load reads
-  …`, `// Evaluation represents …`. This is the form `go doc` expects.
+…`, `// Evaluation represents …`. This is the form `go doc` expects.
 - **Document the contract, not the obvious.** Call out what a reader can't infer
   from the signature: nil-on-error behavior, which sentinel errors come back,
   whether a type is safe for concurrent use, and any cleanup the caller owes

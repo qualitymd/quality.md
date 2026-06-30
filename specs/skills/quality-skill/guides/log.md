@@ -270,7 +270,7 @@
   The authoring guide must now teach enumerating a composite root's domain
   constituents by **constituent kind** using two generators — a
   stewardship-concern axis (a lifecycle band plus the protective pair secure and
-  safeguard) and an audience×purpose axis (Diátaxis on the *enable* concern) —
+  safeguard) and an audience×purpose axis (Diátaxis on the _enable_ concern) —
   the three-projections rule (a concern projects as factor, constituent, and
   audience without double-counting), and the rule that germane high-leverage kinds
   are carried as areas even when thin or missing, earned not as a roster. The Top

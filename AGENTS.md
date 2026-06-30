@@ -114,7 +114,7 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
   Loop).
 - This proper-noun list is closed; lowercase generic or descriptive uses (quality
   loops, loop engineering, "up the loop stack") and preserve a cited source's own
-  casing (e.g. Annie Vella's lowercase *middle loop*).
+  casing (e.g. Annie Vella's lowercase _middle loop_).
 - Generated Contents labels follow the same rule. Table headers, frontmatter
   `type`, enum display labels, structured metadata, and user/model-provided
   display titles are separate surfaces.
@@ -126,18 +126,18 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 ### Keep the motivation and taxonomy registers distinct
 
 - The stewardship/care core language — stewardship, care, tending, vulnerability,
-  concern — is **motivation-layer**: it describes *why* a concern exists and what
+  concern — is **motivation-layer**: it describes _why_ a concern exists and what
   it means to tend an entity. The taxonomy — factor, area, requirement,
   constituent, audience — names the slots in the Model.
 - Do not let a motivation-layer word modify or replace a taxonomy noun. A
-  stewardship concern *projects into* a factor/constituent/audience; it is not one.
+  stewardship concern _projects into_ a factor/constituent/audience; it is not one.
   Avoid "stewardship factor" / "stewardship lens" / "care requirement" — they
   demote a term of art to a subcategory of the philosophical word.
 - Name the root's recurring factors **model-wide** or **cross-cutting factors**
-  (the established terms). You may note they *trace to* stewardship concerns, but
+  (the established terms). You may note they _trace to_ stewardship concerns, but
   do not render that link by making "stewardship" an adjective on the taxonomy
   noun.
-- The singular gloss "a factor is a quality *lens*" is fine — it defines what a
+- The singular gloss "a factor is a quality _lens_" is fine — it defines what a
   factor is. Only a philosophical word substituting for the noun is the problem.
 
 ### Quality-domain agnostic examples and agentic use context
@@ -156,8 +156,8 @@ Read it before adding or reviewing example quality-model content. Summary:
   secondary domain, balanced.
 - Factors are earned per Model from the modeled entity's own risks and needs; do
   not adopt an external standard's characteristic list as a default factor family.
-- Domain agnostic is not context neutral: the *modeled domain* stays agnostic, but
-  the *use context* is agent- and skill-first. Preserve agentic/AI references that
+- Domain agnostic is not context neutral: the _modeled domain_ stays agnostic, but
+  the _use context_ is agent- and skill-first. Preserve agentic/AI references that
   describe how QUALITY.md is used; do not treat that operating context as the
   default modeled domain. Flag AI/harness wording only when it sounds inherent to
   all QUALITY.md files, not when it correctly describes a use context or this

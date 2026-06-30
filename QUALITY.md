@@ -108,7 +108,7 @@ factors:
           core-project-standards-are-backed-by-enforceable-checks-or-reviewable-gates:
             title: core project standards are backed by enforceable checks or reviewable gates
             assessment: >
-              Inspect mise.toml, .github/workflows/, .githooks/, dprint.json,
+              Inspect mise.toml, .github/workflows/, .githooks/, .prettierrc.json,
               .golangci.yml, specs, and qualitymd lint behavior to confirm
               formatting, code quality, schema validity, packaging, and release
               expectations are enforced or explicitly routed through review.
@@ -581,13 +581,13 @@ where this repository defines a normative contract. The format specification,
 skill functional specs, CLI specs, design guides, and authoring guides are
 sources of truth for the artifacts they govern.
 
-*Unknowns* — human ownership/review expectations, real adopter feedback across
+_Unknowns_ — human ownership/review expectations, real adopter feedback across
 domains, support burden, and private roadmap or issue-tracker priorities are not
 agent-accessible.
-*Open questions* — what human review cadence should endorse this model after
+_Open questions_ — what human review cadence should endorse this model after
 agent-authored changes?
 
-*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
+_Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25._
 
 ## Scope
 
@@ -615,12 +615,12 @@ Out of scope by design: dependencies and services the project does not own,
 including the Go toolchain, package registries, Agent Skills installers,
 Homebrew infrastructure, GitHub platform behavior, and third-party libraries.
 
-*Unknowns* — release-readiness thresholds beyond the visible repo checks are not
+_Unknowns_ — release-readiness thresholds beyond the visible repo checks are not
 fully captured.
-*Open questions* — whether future evaluations should add per-requirement rating
+_Open questions_ — whether future evaluations should add per-requirement rating
 overrides for the strongest safety, conformance, and release-readiness vetoes.
 
-*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
+_Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25._
 
 ## Needs
 
@@ -648,12 +648,12 @@ Later evaluation recommendations should default to GitHub Issues for handoff
 when external tracking is useful, but setup does not create issues or configure
 integrations.
 
-*Unknowns* — real adopter feedback and support burden across non-software and
+_Unknowns_ — real adopter feedback and support burden across non-software and
 software domains are not visible in the repository.
-*Open questions* — which adopter domains should be sampled first when future
+_Open questions_ — which adopter domains should be sampled first when future
 examples or evaluations test domain breadth?
 
-*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
+_Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25._
 
 ## Risks
 
@@ -676,12 +676,12 @@ evaluations optimize the wrong constituents or miss project-wide factors. Stale
 or malformed evaluation history can mislead maintainers if it is mistaken for
 current evaluated-source quality rather than history status.
 
-*Unknowns* — the private roadmap and issue-tracker priorities that may drive
+_Unknowns_ — the private roadmap and issue-tracker priorities that may drive
 near-term release risk are not visible.
-*Open questions* — which risks are hard release blockers for the next public
+_Open questions_ — which risks are hard release blockers for the next public
 version?
 
-*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
+_Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25._
 
 ## Model shape
 
@@ -703,8 +703,8 @@ agent-harness Area: the factor asks how the project equips agents to work well;
 the Area asks whether the owned harness artifacts themselves are complete,
 coherent, current, and assessable.
 
-*Unknowns* — none known.
-*Open questions* — whether distribution and evaluation history should split into
+_Unknowns_ — none known.
+_Open questions_ — whether distribution and evaluation history should split into
 smaller child Areas after the next full evaluation produces findings.
 
-*Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
+_Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25._

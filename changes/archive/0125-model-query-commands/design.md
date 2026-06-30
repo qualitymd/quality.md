@@ -42,7 +42,7 @@ canonical-reference grammar.
    stay in `evaluation`: they address the rating scale, not model structure, and
    `model` never emits them.
 
-   This is what lets the `model` command both *emit* canonical IDs and *resolve*
+   This is what lets the `model` command both _emit_ canonical IDs and _resolve_
    `--area`/`<id>` inputs without importing `evaluation` — the parser it needs
    comes home with the encoder.
 
@@ -113,7 +113,7 @@ the workflow — not the CLI — knows the run path and builds the snapshot path
 
 ## Spec response
 
-- **Boundary / SB1–SB7.** `model` reads a model *file* and depends only on
+- **Boundary / SB1–SB7.** `model` reads a model _file_ and depends only on
   `internal/model`; it emits no coverage, counts, provenance, or results because
   it has no access to the `status`/`evaluation` types that hold them. `--area`
   parses through the moved `ParseAreaReference`, so it accepts only the

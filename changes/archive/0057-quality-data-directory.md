@@ -89,16 +89,13 @@ Specs:
 - [x] [`specs/cli/lint-rules.md`](../../specs/cli/lint-rules.md) - add the root
       `config` validation rule and the internally configurable unknown-key rule
       behavior.
-- [x] [`specs/skills/quality-skill/reporting.md`](../../specs/skills/quality-skill/reporting.md)
-      - align evaluation artifact paths and workspace config resolution.
-- [x] [`specs/skills/quality-skill/quality-log.md`](../../specs/skills/quality-skill/quality-log.md)
-      - move the default quality log to `.quality/log/`.
+- [x] [`specs/skills/quality-skill/reporting.md`](../../specs/skills/quality-skill/reporting.md) - align evaluation artifact paths and workspace config resolution.
+- [x] [`specs/skills/quality-skill/quality-log.md`](../../specs/skills/quality-skill/quality-log.md) - move the default quality log to `.quality/log/`.
 - [x] [`specs/skills/quality-skill/modes/setup.md`](../../specs/skills/quality-skill/modes/setup.md),
       [`modes/evaluate.md`](../../specs/skills/quality-skill/modes/evaluate.md),
       and [`modes/wizard.md`](../../specs/skills/quality-skill/modes/wizard.md) -
       align mode contracts with the quality data directory.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - align shared skill config and artifact terminology.
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - align shared skill config and artifact terminology.
 - [x] [`specs/quality-schema-json.md`](../../specs/quality-schema-json.md) -
       confirm the companion JSON Schema remains a normative-format schema and
       does not describe the qualitymd-only `config` convention.
@@ -114,12 +111,9 @@ Runtime skill and docs:
       paths and artifact descriptions.
 - [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
       and
-      [`guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md)
-      - update quality log paths.
-- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
-      - update evaluation path examples and config notes.
-- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md)
-      - describe the quality data directory and updated defaults.
+      [`guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md) - update quality log paths.
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md) - update evaluation path examples and config notes.
+- [x] [`docs/guides/use-quality-skill.md`](../../docs/guides/use-quality-skill.md) - describe the quality data directory and updated defaults.
 - [x] [`install.md`](../../install.md) - describe the quality data directory,
       updated evaluation default, and root `config` pointer in install guidance.
 - [x] [`README.md`](../../README.md) - update any user-facing CLI/skill artifact

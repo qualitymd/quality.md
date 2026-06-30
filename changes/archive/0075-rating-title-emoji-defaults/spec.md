@@ -10,7 +10,7 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the
 [Rating title emoji defaults](../0075-rating-title-emoji-defaults.md) change
-case. This spec states *what* the change must do; a later
+case. This spec states _what_ the change must do; a later
 [design doc](design.md) will cover how the implementation lands.
 
 The key words **MUST**, **SHOULD**, and **MAY** are to be interpreted as

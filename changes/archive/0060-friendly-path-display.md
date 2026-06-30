@@ -70,29 +70,24 @@ Specs:
 
 - [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) - distinguish display values
       from model references and keep reference grammar unchanged.
-- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md)
-      - require or allow friendly Area path display for the Area Breakdown
+- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md) - require or allow friendly Area path display for the Area Breakdown
       `Path` column, including `/` for root.
 - [x] [`specs/reports/report-md.md`](../../specs/reports/report-md.md) - keep full
       report Area Breakdown and Area Detail path display aligned with summary
       behavior.
 - [x] [`specs/reports/report-json.md`](../../specs/reports/report-json.md) and
-      [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md)
-      - preserve structured path arrays and avoid display string persistence in
+      [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md) - preserve structured path arrays and avoid display string persistence in
       machine artifacts.
 - [x] [`specs/skills/quality-skill/reporting.md`](../../specs/skills/quality-skill/reporting.md)
-      and [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - align durable skill guidance with display values versus references.
+      and [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - align durable skill guidance with display values versus references.
 - [x] OKF logs under [`specs/`](../../specs/log.md) - record durable spec updates.
 
 Runtime skill and docs:
 
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) and
-      [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md)
-      - distinguish human display values from model references where reports are
+      [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md) - distinguish human display values from model references where reports are
       discussed.
-- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md)
-      - update the bundled specification copy when `SPECIFICATION.md` changes.
+- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md) - update the bundled specification copy when `SPECIFICATION.md` changes.
 - [x] [`CHANGELOG.md`](../../CHANGELOG.md) - add the unreleased entry when the
       implementation lands.
 

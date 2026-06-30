@@ -106,8 +106,7 @@ section is authoritative. In summary:
 ### Bundled skill (`skills/quality/`)
 
 - [x] `skills/quality/SKILL.md` - require the routed authoring reading contract.
-- [x] `skills/quality/index.md`, `skills/quality/schema.md`, `skills/quality/log.md`
-      - root runtime OKF map, concept-type registry, and update log.
+- [x] `skills/quality/index.md`, `skills/quality/schema.md`, `skills/quality/log.md` - root runtime OKF map, concept-type registry, and update log.
 - [x] `skills/quality/guides/authoring.md` - entry point and router.
 - [x] `skills/quality/guides/authoring/` - sub-guides and local index/log.
 - [x] `skills/quality/guides/index.md` and `skills/quality/guides/log.md` -

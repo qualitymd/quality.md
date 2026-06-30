@@ -10,8 +10,8 @@ timestamp: 2026-06-24T00:00:00Z
 
 Companion to the
 [Care-grounded stewardship concerns](../0077-stewardship-care-grounding.md)
-change case. This spec states *what* the guidance must say; the
-[design doc](design.md) covers the care concepts behind each refinement and *why*.
+change case. This spec states _what_ the guidance must say; the
+[design doc](design.md) covers the care concepts behind each refinement and _why_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they
@@ -41,7 +41,7 @@ collecting residue and reading a folder's presence as a concern met. The
 phenomenology of care in the two source essays (see the
 [change case](../0077-stewardship-care-grounding.md)) names care as an activity —
 "tending and attending to what matters", "doing what is required, well" — whose
-artifacts are its *trace*, and names the *required* as what the situation, by
+artifacts are its _trace_, and names the _required_ as what the situation, by
 making a claim, addresses to the carer. This spec re-grounds the generator on
 that footing. It changes framing, not the generator's shape: the nine concerns,
 the two axes, the three-projections rule, and the earn-it guardrail all stand.
@@ -51,18 +51,18 @@ the two axes, the three-projections rule, and the earn-it guardrail all stand.
 ### Stewardship as care
 
 - R1. Where the guide introduces the stewardship-concern generator, it **MUST**
-  define *stewardship* as caring for an entity held in trust — answerable to its
+  define _stewardship_ as caring for an entity held in trust — answerable to its
   stakeholders and its future — rather than as private ownership.
 - R2. The guide **MUST** present each stewardship concern as an ongoing activity
-  of *tending*, whose authored, inspectable artifact is the concern's **trace**
+  of _tending_, whose authored, inspectable artifact is the concern's **trace**
   and the candidate constituent. It **MUST** state that the artifact is read as
-  *evidence* of tending, not as the tending itself: a thin or missing artifact
+  _evidence_ of tending, not as the tending itself: a thin or missing artifact
   does not by itself prove the concern unmet, and a populated artifact does not
   prove it met well.
 
 ### The claim that earns a constituent
 
-- R3. The guide **MUST** frame the constituent kinds as a prompt for what *this*
+- R3. The guide **MUST** frame the constituent kinds as a prompt for what _this_
   entity asks to be cared for, and **MUST** state that the claim which earns a
   constituent an area originates in a **Need or Risk** the entity presents, not
   in the generator list itself. This **MUST** be consistent with, and **MUST
@@ -72,10 +72,10 @@ the two axes, the three-projections rule, and the earn-it guardrail all stand.
 ### Constituent presence vs. stewardship quality
 
 - R4. The guide **MUST** distinguish the **constituent question** — whether a
-  tending leaves an owned, inspectable artifact, modeled as an *area* — from the
-  **stewardship-quality question** — whether it is done *well*, attuned to the
+  tending leaves an owned, inspectable artifact, modeled as an _area_ — from the
+  **stewardship-quality question** — whether it is done _well_, attuned to the
   entity's situation rather than merely present or complete, carried by
-  *factors*. It **MUST** preserve the existing rule that a germane, high-leverage
+  _factors_. It **MUST** preserve the existing rule that a germane, high-leverage
   kind is carried as an area even when its artifact is thin or missing, recording
   the gap as a finding within it.
 
@@ -84,7 +84,7 @@ the two axes, the three-projections rule, and the earn-it guardrail all stand.
 - R5. The guide **MUST** present the protective pair (`secure`, `safeguard`) as
   the mode of stewardship that answers to **vulnerability** — a party that can be
   harmed and cannot fully protect itself — and **MUST** state that the band
-  cross-cuts the lifecycle because it tracks *who is exposed* rather than which
+  cross-cuts the lifecycle because it tracks _who is exposed_ rather than which
   phase the work is in. It **MUST** preserve the 0076 direction-of-harm
   distinction (`secure` guards the entity from the world; `safeguard` guards
   stakeholders and the environment from the entity) and **MUST NOT** collapse the

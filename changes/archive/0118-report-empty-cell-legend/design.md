@@ -15,7 +15,7 @@ Implements the [0118 functional spec](spec.md): every empty scalar cell in a
 generated Evaluation report renders as `—`, composite pair cells render `— / —`
 when a component is absent, and each report carries one static legend defining
 the marker. All rendering lives in `internal/evaluation/report_tree.go`, with the
-enum/title helpers in `internal/evaluation/display.go`. This doc decides *where*
+enum/title helpers in `internal/evaluation/display.go`. This doc decides _where_
 the empty-cell policy lives so the marker lands once, at the right altitude,
 without a wide blast radius.
 
@@ -47,7 +47,7 @@ rating drivers, limits, and unknowns. The existing roll-up `—` in
 the two unify rather than collide.
 
 **2. Composite pair cells — fix the builders.** Three cells assemble two scoped
-values *before* `markdownCell` sees them, so an all-empty pair reaches the guard
+values _before_ `markdownCell` sees them, so an all-empty pair reaches the guard
 as `" / "` (non-empty) and slips through:
 
 - `evaluationConfidencePair` (report_tree.go:1174) — Area and Factor headers;
@@ -101,8 +101,8 @@ satisfying the static-legend requirement.
   status header renders `— / —`, asserted from a fixture with no confidence.
 - **Distinctness from outcomes** — untouched by design. `evaluationRatingLabel`,
   `evaluationRequirementRatingLabel`, `assessmentStatusTitle`, etc. resolve a
-  missing *rating/assessment outcome* to its own label (`⚪ Not Rated`,
-  `⚪ Not Analyzed`, `⛔ Blocked`) *before* the value reaches `markdownCell`, so a
+  missing _rating/assessment outcome_ to its own label (`⚪ Not Rated`,
+  `⚪ Not Analyzed`, `⛔ Blocked`) _before_ the value reaches `markdownCell`, so a
   non-empty status string flows through the guard unchanged and never becomes
   `—`. The em dash only appears where the upstream value is genuinely empty.
 - **Section rows unchanged** — the `(no findings)` / `(no rating drivers)` /
@@ -122,12 +122,12 @@ satisfying the static-legend requirement.
   static legend is the fix for exactly that.
 - **Single chokepoint at `humanizeEnum`** — rejected. It would em-dash every
   empty enum title system-wide (status badges, data-kind titles, run-gap titles),
-  a far wider blast radius than "table cells," *and* still wouldn't catch raw
+  a far wider blast radius than "table cells," _and_ still wouldn't catch raw
   string cells (finding description, `compactJSON` evidence) that never pass
   through a title helper — so `markdownCell` would need the guard anyway. Two
   chokepoints, the wider one unnecessary.
 - **Dedicated `cellOrDash` helper at every cell site** instead of overloading
-  `markdownCell` — rejected as churn. `markdownCell` already *means* "render a
+  `markdownCell` — rejected as churn. `markdownCell` already _means_ "render a
   table cell"; its two non-table uses (a link label at report_tree.go:819, the
   `Name:` backtick at :451) only ever receive non-empty input, so overloading it
   is safe and touches one line instead of ~25 sites that could be missed.

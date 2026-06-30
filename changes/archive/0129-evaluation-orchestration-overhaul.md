@@ -74,8 +74,8 @@ Deferred / non-goals:
 ## Affected artifacts
 
 Derived by repo sweep for the evaluation-rigor tokens (`rigor`, `--rigor`,
-`evaluate deep`, the `Rigor:` frame field), excluding the unrelated *modeling
-rigor* / *assessment rigor* senses and frozen history (`changes/archive/`,
+`evaluate deep`, the `Rigor:` frame field), excluding the unrelated _modeling
+rigor_ / _assessment rigor_ senses and frozen history (`changes/archive/`,
 append-only `log.md` files, prior `.quality/` run records). Reconciled before
 archival.
 

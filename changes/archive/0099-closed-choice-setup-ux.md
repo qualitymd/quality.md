@@ -9,7 +9,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 # Closed-choice setup UX
 
-This parent concept captures the *why* and *status*; the detail lives in its
+This parent concept captures the _why_ and _status_; the detail lives in its
 children:
 
 - [Functional spec](0099-closed-choice-setup-ux/spec.md) — what the change must

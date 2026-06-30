@@ -24,8 +24,8 @@ model is built to judge. Its map key is a stable **Requirement name** used for
 identity and model references. Its `title` is the natural-language statement
 that should read well in reports. Its `assessment` produces **findings** —
 observations about the source — and those findings are rated together to yield
-the requirement's **rating result**: one level on the rating scale, or *not
-assessed*.
+the requirement's **rating result**: one level on the rating scale, or _not
+assessed_.
 
 Every requirement must be connected to at least one factor:
 
@@ -59,103 +59,103 @@ something inspectable is the core authoring move.
 
 - **Do** name a concrete, observable property of the entity that the factor
   depends on, then phrase the requirement as the expectation about that property.
-  *Reliability (abstract) → "recovers from a dependency outage without data loss"
+  _Reliability (abstract) → "recovers from a dependency outage without data loss"
   (property) → the requirement and its assessment. The move is domain-general:
   for a reference document, credibility → "every load-bearing claim cites a
-  verifiable source."*
+  verifiable source."_
 - **Do** preflight each requirement by naming its **scale** (the dimension and
-  unit a finding lands on — *time for a novice to complete a one-item order*), its
-  **meter** (the agreed procedure that produces the finding — *median over 100 test
-  users using only online help*), and the rating boundary it tests. *If you cannot
+  unit a finding lands on — _time for a novice to complete a one-item order_), its
+  **meter** (the agreed procedure that produces the finding — _median over 100 test
+  users using only online help_), and the rating boundary it tests. _If you cannot
   name a scale and a meter, the statement is still a slogan — "easy to use" has
-  neither.*
+  neither._
 - **Avoid** jumping straight from a factor to a convenient metric with no property
-  in between. *That is how you get measurements no one can tie back to why they
-  matter.*
+  in between. _That is how you get measurements no one can tie back to why they
+  matter._
 
 #### Write stable names and ratable requirement titles
 
 - **Do** make the map key a stable, id-like name such as
-  `records-have-unique-keys` or `p99-latency-within-budget`. *The name is the
-  durable identity; changing it breaks references and history.*
+  `records-have-unique-keys` or `p99-latency-within-budget`. _The name is the
+  durable identity; changing it breaks references and history._
 - **Do** phrase `title` as the thing you expect to be true ("Every record has a
-  unique key", "p99 request latency stays within budget"). *The title is what
+  unique key", "p99 request latency stays within budget"). _The title is what
   shows up in reports; it should read as a claim that can be true or false to a
-  degree.*
+  degree._
 
 - **Do** write requirements specific enough that a single result stands on its
-  own. *A vague requirement produces a vague rating.*
-- **Do** write requirements that make the body context assessable. *A requirement
+  own. _A vague requirement produces a vague rating._
+- **Do** write requirements that make the body context assessable. _A requirement
   should turn an important need, risk, or noted unknown into an expectation an
-  evaluator can inspect.*
+  evaluator can inspect._
 - **Do**, for behavioral qualities (reliability, recoverability, security under
-  attack), phrase the statement around the *triggering condition and operating
-  environment*, not just the steady state: "When a downstream dependency times out,
+  attack), phrase the statement around the _triggering condition and operating
+  environment_, not just the steady state: "When a downstream dependency times out,
   requests fail over within 2 s and surface a degraded-mode response" — or, for a
   support process, "when an urgent ticket arrives after hours, it is acknowledged
-  within 15 minutes." *A bare "is reliable" hides the condition that makes the
-  quality observable.*
-- **Do** make every requirement *verifiable*: its assessment must name a concrete
-  method by which a finding could be produced. *If you cannot state how the source
-  would be examined, the requirement is not assessable yet, however well it reads.*
+  within 15 minutes." _A bare "is reliable" hides the condition that makes the
+  quality observable._
+- **Do** make every requirement _verifiable_: its assessment must name a concrete
+  method by which a finding could be produced. _If you cannot state how the source
+  would be examined, the requirement is not assessable yet, however well it reads._
 - **Do** name the evidence the assessment draws on and check it can actually speak
-  to the claim. *A latency claim needs runtime telemetry; a structure claim needs
+  to the claim. _A latency claim needs runtime telemetry; a structure claim needs
   the source. If the only available evidence cannot address the claim, the
   requirement returns "not assessed" no matter how well written — narrow it to what
-  the evidence supports, or note the gap as an unknown in the relevant section.*
+  the evidence supports, or note the gap as an unknown in the relevant section._
 - **Do** apply the discard test: if a requirement were deleted, would any decision
-  about this root area change? *If not, it is ritual — drop it or note it as an
+  about this root area change? _If not, it is ritual — drop it or note it as an
   unknown in the relevant section. Imported requirements meant to "be thorough" inflate
   the model and dilute the
-  ratings that drive choices.*
+  ratings that drive choices._
 
 #### Let risk decide where requirements go deep
 
 - **Do** spend requirement detail where risk exposure (likelihood × impact) is
-  highest — the failure modes named in body Risks. *A high-risk concern deserves a
+  highest — the failure modes named in body Risks. _A high-risk concern deserves a
   sharply bounded requirement with measured criteria; a low-risk one can stay
-  coarse or be noted as an unknown.*
-- **Avoid** spreading equal effort across all requirements. *Uniform depth spends
-  scarce judgment on concerns that will not change a decision.*
+  coarse or be noted as an unknown._
+- **Avoid** spreading equal effort across all requirements. _Uniform depth spends
+  scarce judgment on concerns that will not change a decision._
 
 #### Give each requirement exactly one assessment
 
 - **Do** declare one `assessment`, stated **inline** (criteria, a measurement
   procedure, an inspection checklist, a diagnostic) or as a **reference** to an
   entity that defines one.
-- **Avoid** stacking several independent assessments under one statement. *Split
+- **Avoid** stacking several independent assessments under one statement. _Split
   it into separate requirements instead — each result must be independently
-  ratable.*
+  ratable._
 - **Do** write an inline assessment so a second person would gather the same
   evidence and reach the same rating — name the window, the sample, the tool, or
-  the checklist. *"Review the write path" is not reproducible; "review production
+  the checklist. _"Review the write path" is not reproducible; "review production
   write-path telemetry over a representative window and the recovery-test results"
-  is.*
+  is._
 - **Consider** matching assessment rigor to stakes: a requirement that gates a
   release deserves a repeatable, reproducible method; a low-stakes or exploratory
-  one can name a lighter inspection. *Over-specifying rigor everywhere wastes
-  effort; under-specifying it where it counts hides risk.*
+  one can name a lighter inspection. _Over-specifying rigor everywhere wastes
+  effort; under-specifying it where it counts hides risk._
 - **Do** make sure every assessment answers "which factor's question does this
-  finding help rate?" *An assessment that measures something only because it is
-  easy to measure, tied to no factor's concern, is noise that dilutes the report.*
+  finding help rate?" _An assessment that measures something only because it is
+  easy to measure, tied to no factor's concern, is noise that dilutes the report._
 - **Avoid** an assessment so narrowly metric-shaped that satisfying the letter
-  abandons the intent ("coverage ≥ 80%" met by trivial tests). *Where a single
+  abandons the intent ("coverage ≥ 80%" met by trivial tests). _Where a single
   number invites gaming, pair it with an inspection of intent or phrase the
-  statement as the outcome you actually want.*
+  statement as the outcome you actually want._
 
 #### Reference an external assessment; don't copy it
 
 - **Do** point at the spec, doc, or checklist that defines the assessment, naming
   it once.
 - **Avoid** extracting, summarizing, or duplicating that content into the
-  requirement. *Duplicated criteria drift out of sync with their origin.*
+  requirement. _Duplicated criteria drift out of sync with their origin._
 - **Do** reference that entity by the same selector used as its own
-  area's `source`. *That shared selector is the edge between the two areas; it is
-  what makes the dependency traceable.*
+  area's `source`. _That shared selector is the edge between the two areas; it is
+  what makes the dependency traceable._
 - **Do** point at the specific applicable part of the referenced entity, and pin a
-  version where it matters. *An unversioned, whole-document reference leaves the
+  version where it matters. _An unversioned, whole-document reference leaves the
   verification scope unbounded — name the section or rule that defines the
-  assessment.*
+  assessment._
 
 #### Use one referenced assessment when one guide governs several factors
 
@@ -192,15 +192,15 @@ requirements:
 - **Do** declare `factors` explicitly for a requirement placed directly under an
   area — it's required there, and `null`/`[]`/empty entries don't satisfy it.
 - **Do** name in `factors` only factors declared on the same area as the
-  requirement. *A named factor that lives on an ancestor, sibling, descendant, or
+  requirement. _A named factor that lives on an ancestor, sibling, descendant, or
   unrelated area does not resolve. If a child area needs the same quality lens,
-  declare a local same-named factor there.*
+  declare a local same-named factor there._
 
 #### Split by assessable claim, not by factor
 
 - **Do** size a requirement to one claim you want to rate as a single judgment —
-  not to one factor or one section of an assessment. *The requirement is the unit
-  assessed and rated, once.*
+  not to one factor or one section of an assessment. _The requirement is the unit
+  assessed and rated, once._
 - **Do** connect a claim that reads through several lenses to multiple factors
   (placement for the primary, `factors` for the rest) instead of copying it into
   a per-factor requirement.
@@ -208,34 +208,34 @@ requirements:
   assessment, sliced one per factor.
 - **But** keep genuinely independent claims separate even when they share a
   reference — the test is whether their results could legitimately diverge (one
-  strong, one weak). *Many requirements can draw on one rich entity; that is not
-  duplication.*
+  strong, one weak). _Many requirements can draw on one rich entity; that is not
+  duplication._
 - **Avoid** joining two assessable claims with "and" / "or" / "and/or" in one
-  statement — that is usually two requirements. *A conjunction signals a
-  non-singular requirement whose halves could rate differently.*
+  statement — that is usually two requirements. _A conjunction signals a
+  non-singular requirement whose halves could rate differently._
 - **Do**, when a statement uses totality words ("every", "all", "never"), make the
   assessment say how exhaustiveness is checked — enumerate the population or sample
-  it. *A totality claim is only verifiable if the assessment establishes the
-  "every."*
+  it. _A totality claim is only verifiable if the assessment establishes the
+  "every."_
 - **Do** keep conformance and fitness as separate requirements when they can
-  legitimately diverge. *A root area can match its specification yet fail the user's
+  legitimately diverge. _A root area can match its specification yet fail the user's
   real need, or serve the need while departing from spec; one result cannot carry
-  both judgments.*
+  both judgments._
 
 #### Override criteria only when the shared scale can't express the gradient
 
-*Read this subsection when you are actually authoring rating overrides; a first
-model rarely needs it.*
+_Read this subsection when you are actually authoring rating overrides; a first
+model rarely needs it._
 
 - **Consider** a `ratings` override when a requirement has a natural measured
   threshold or a distinct qualitative spectrum (e.g. latency bands).
-- **Do** key overrides by existing Rating Level IDs and change *only* the
+- **Do** key overrides by existing Rating Level IDs and change _only_ the
   `criterion`. **Avoid** touching a level's `description`, order, or `title` —
   those stay fixed across the model.
 - **Do** treat a measured override as a pair: the value you aim for (lands at
-  `target`) and the range you will still accept (lands at `minimum`). *If a
+  `target`) and the range you will still accept (lands at `minimum`). _If a
   requirement has a natural number but you cannot name both, you have not yet
-  decided what "good enough" means.*
+  decided what "good enough" means._
 
 ```yaml
 p99-latency-within-budget:
@@ -262,7 +262,7 @@ conflicts, or duplicates. Run a closing pass over the set:
   the same source, and the same term or unit means the same thing across
   statements and criteria.
 - **Avoid** **redundancy**: two statements that would always rate together against
-  the same source are one requirement. *(Same test as for splitting — could their
-  results legitimately diverge?)*
+  the same source are one requirement. _(Same test as for splitting — could their
+  results legitimately diverge?)_
 - **Do** note unresolved holes as unknowns rather than keeping a vague,
   unratable requirement to stand in for them.

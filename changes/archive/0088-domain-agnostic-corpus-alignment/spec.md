@@ -15,7 +15,7 @@ serves is settled in
 [Modeling quality across domains](../../../docs/guides/model-quality-across-domains.md),
 which is the source of truth; this spec does not restate the guide's rules, it
 brings repo artifacts into agreement with them. The
-[design doc](design.md) settles *how* the new example is built.
+[design doc](design.md) settles _how_ the new example is built.
 
 The key words "MUST", "MUST NOT", "SHOULD", and "MAY" are to be interpreted as
 described in BCP 14 when, and only when, they appear in all capitals.
@@ -24,14 +24,14 @@ described in BCP 14 when, and only when, they appear in all capitals.
 
 QUALITY.md is meant to model quality across domains, but the easiest examples for
 this repo to reach for are software. 0083 supplied the doctrine guide and one
-worked non-software example *within the guide*. A multi-agent audit against that
-guide found no normative violations, but confirmed that the repo's *worked*
+worked non-software example _within the guide_. A multi-agent audit against that
+guide found no normative violations, but confirmed that the repo's _worked_
 examples are otherwise uniformly software — the README example, the
 `SPECIFICATION.md` minimal example, and the `0001` skill fixture (which the report
 specs render against) — so software still reads as the default domain. Two
 guidance surfaces also under-state the doctrine: the `AGENTS.md` summary omits the
 earned-factors rule, and the README opening pins the modeled domain to AI/agent
-projects. This change closes those gaps so the example *corpus* demonstrates
+projects. This change closes those gaps so the example _corpus_ demonstrates
 invariance and the front-door guidance states the doctrine in full, without
 disturbing the project's correct agent- and skill-first use context.
 
@@ -75,7 +75,7 @@ The new example's Assessments **MUST** describe checks appropriate to a domain w
 no runnable oracle — human judgment against the artifact — rather than leaning on
 an executable check.
 
-> Rationale: software's runnable check is a *proxy* for judgment; a domain that
+> Rationale: software's runnable check is a _proxy_ for judgment; a domain that
 > removes the proxy stresses the assessment oracle in a way software does not, which
 > is the point of a secondary example. - 0088
 
@@ -84,14 +84,14 @@ the marking requirement below.
 
 ### Mark and cross-link the existing example corpus
 
-The reference example set's index **MUST** carry an explicit *domain-illustrative*
+The reference example set's index **MUST** carry an explicit _domain-illustrative_
 marking: that its examples model particular domains (a software service; the new
 secondary domain) and are not the default modeled domain. This is distinct from,
-and in addition to, the existing *fiction* disclaimer about invented subjects,
+and in addition to, the existing _fiction_ disclaimer about invented subjects,
 revisions, and `file:line` locators.
 
 > Rationale: telling a reader the company and locators are invented does not tell
-> them the *domain* is one of many; the audit found the fiction disclaimer standing
+> them the _domain_ is one of many; the audit found the fiction disclaimer standing
 > in for a domain-illustrative marking it does not provide. - 0088
 
 Repo locations that present a worked software example as a lead illustration — the
@@ -116,20 +116,20 @@ characteristic list.
 
 The README opening **MUST** present what a QUALITY.md models as domain-agnostic, and
 **MUST NOT** state or imply that AI-assistant and coding-agent projects are the
-default modeled domain. It **MUST** preserve the agent- and skill-first *use
-context* (the `/quality` skill as the primary experience, the CLI as support
+default modeled domain. It **MUST** preserve the agent- and skill-first _use
+context_ (the `/quality` skill as the primary experience, the CLI as support
 tooling).
 
 > Rationale: the modeled domain and the use context are different registers (per the
-> guide's decision test). Foregrounding the agentic *workflow* is correct; pinning
-> the modeled *domain* to AI/agent projects is the flagged anti-pattern. - 0088
+> guide's decision test). Foregrounding the agentic _workflow_ is correct; pinning
+> the modeled _domain_ to AI/agent projects is the flagged anti-pattern. - 0088
 
 The README's Agent Harnessability material **MUST** read as one illustrative factor
 family a project may earn for an agent-collaborated entity — framed alongside a
 domain-neutral statement of why a QUALITY.md helps — not as a built-in QUALITY.md
 capability or a default factor. All agentic and harness-engineering wording that
 describes the use context **MUST** be preserved; this requirement re-scopes the
-*modeled domain*, it does not remove agentic references.
+_modeled domain_, it does not remove agentic references.
 
 ### Optional reinforcements
 
@@ -158,24 +158,24 @@ record the new example and the alignment edits before the case reaches `In-Revie
 
 - `specs/skills/quality-skill/examples/0002-<slug>/` - the new non-software worked
   example bundle: the `model.md` and its reportable runtime trail in the same shape
-  as `0001` (per *Add a non-software worked example* above). The design doc fixes
+  as `0001` (per _Add a non-software worked example_ above). The design doc fixes
   the bundle's exact file set and size.
 
 ### To modify
 
 - `specs/skills/quality-skill/examples/index.md` - add the domain-illustrative
   marking, register the new example, and generalize the `0001`-specific shared note
-  so it no longer reads as the bundle's only subject (per *Mark and cross-link the
-  existing example corpus* and *Add a non-software worked example*).
+  so it no longer reads as the bundle's only subject (per _Mark and cross-link the
+  existing example corpus_ and _Add a non-software worked example_).
 - `SPECIFICATION.md` - add the Appendix B model-shape invariance note and the
-  optional lineage clause (per *Mark and cross-link the existing example corpus* and
-  *Optional reinforcements*). No normative format rule changes.
+  optional lineage clause (per _Mark and cross-link the existing example corpus_ and
+  _Optional reinforcements_). No normative format rule changes.
 - `specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md` - add the
-  non-software constituent bracket (per *Optional reinforcements*).
+  non-software constituent bracket (per _Optional reinforcements_).
 - `specs/reports/report-summary-md.md` - re-cast or pair the rendering fixture (per
-  *Optional reinforcements*).
+  _Optional reinforcements_).
 - `specs/skills/quality-skill/reporting.md` - cross-reference the guide and the new
-  example (per *Mark and cross-link the existing example corpus*).
+  example (per _Mark and cross-link the existing example corpus_).
 
 ### To rename
 

@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Writing design docs
 
-A **design doc** describes *how* a piece of `qualitymd` is built — the technical
+A **design doc** describes _how_ a piece of `qualitymd` is built — the technical
 approach behind a [functional spec](write-functional-specs.md). Where a spec says what
 must hold, a design doc says how the code makes it so, and why that way.
 
@@ -42,10 +42,10 @@ Keep it short and decision-focused:
   code and durable docs go in the change case's parent **Affected artifacts**
   index. A
   design doc does **not** carry its own list of durable specs or docs to edit. It
-  says *how* the code delivers the change; the *what* stays out of it.
+  says _how_ the code delivers the change; the _what_ stays out of it.
 - **Record the why.** The durable value is the rationale and rejected
   alternatives, not a re-description of the final code. When the Change Case lands,
-  that value is *promoted*, not abandoned: the enduring rationale is lifted into
+  that value is _promoted_, not abandoned: the enduring rationale is lifted into
   the [functional spec](write-functional-specs.md)'s **Background / motivation**
   and per-requirement annotations, while this doc stays in the archive as the
   fuller record of alternatives and trade-offs.

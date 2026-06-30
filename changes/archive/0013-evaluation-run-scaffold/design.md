@@ -9,10 +9,10 @@ timestamp: 2026-06-17T00:00:00Z
 # Evaluation run scaffold — design doc
 
 Design behind the [Evaluation run scaffold](../0013-evaluation-run-scaffold.md)
-change and its [functional spec](spec.md). The spec fixes *what*
+change and its [functional spec](spec.md). The spec fixes _what_
 `qualitymd evaluation create-run` does; the
 [evaluation-record contract](../0012-evaluation-record-format/spec.md) fixes the
-run-folder layout, naming, and shared numbering. This doc covers *how* the code
+run-folder layout, naming, and shared numbering. This doc covers _how_ the code
 makes it so, on the established Go + Cobra + Fang stack.
 
 ## Context
@@ -151,7 +151,7 @@ scan and create under true concurrency; see [Trade-offs](#trade-offs--risks).)
 
 After the run folder and its three subdirectories are created, seed the files
 with plain `os.WriteFile` into the new (own) directory — `document.WriteAtomic`
-is for *replacing* existing files and `Lstat`s the target, so it does not apply
+is for _replacing_ existing files and `Lstat`s the target, so it does not apply
 to creating files in a folder this command just made.
 
 - `model.md` is snapshotted by the CLI. For `--altitude model`, reuse
@@ -227,8 +227,7 @@ error returned from `RunE`.
 
 - **Scan-then-create is not atomic under concurrency.** Two `create-run`
   invocations racing on the same evaluation directory could both compute the same
-  `NNNN`; the loser's `os.Mkdir` fails `EEXIST` and the command errors out (exit
-  70) rather than corrupting state. That is the spec's intended behavior —
+  `NNNN`; the loser's `os.Mkdir` fails `EEXIST` and the command errors out (exit 70) rather than corrupting state. That is the spec's intended behavior —
   surface the race, don't hide it — but it means the command is safe, not
   serializable. A lock file is deferred until a real concurrent-use need appears.
 - **Repository-root detection depends on `.git`.** Resolving the root by walking

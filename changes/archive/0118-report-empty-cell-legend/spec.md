@@ -30,14 +30,14 @@ confidence pair, an em dash for the descendant roll-up column, parenthetical
 `(no …)` rows for empty sections), so "nothing here" reads differently in
 different spots.
 
-This change settles on one visible marker for an empty *cell* — the em dash
+This change settles on one visible marker for an empty _cell_ — the em dash
 (`—`), already in use for the roll-up column — and one static legend per report
 that defines it. The em dash is preferred over a literal `N/A` because the
 absence is usually "not recorded," not "not applicable," and a neutral dash
 states absence without overclaiming. A static legend is preferred over per-cell
 asterisks because reports are committed and diffed: a "first instance" asterisk
 has no stable anchor in a Markdown table and migrates as data changes, while a
-fixed legend stays put. The not-assessed family of *outcomes* is out of scope —
+fixed legend stays put. The not-assessed family of _outcomes_ is out of scope —
 it is an evaluation result, not an empty cell, and keeps its distinct labels.
 
 ## Scope
@@ -58,17 +58,17 @@ its source field is absent, null, or empty, or because the cell does not apply
 to its row — the report **MUST** render an em dash (`—`) in place of a blank
 cell.
 
->> Rationale: a blank cell is indistinguishable from a rendering fault; one
->> visible marker makes the absence explicit and unmistakable. — 0118
+> > Rationale: a blank cell is indistinguishable from a rendering fault; one
+> > visible marker makes the absence explicit and unmistakable. — 0118
 
 When a cell pairs two scoped values — the Confidence and analysis-status cells
 render an overall/local pair — and either component value is absent, the report
 **MUST** render `—` for that component (for example, `— / —`), not an empty
 segment.
 
->> Rationale: the pair string is assembled before the empty-cell guard sees it,
->> so without this an all-empty confidence cell renders a bare `/` that reads
->> as a formatting glitch rather than "no confidence recorded." — 0118
+> > Rationale: the pair string is assembled before the empty-cell guard sees it,
+> > so without this an all-empty confidence cell renders a bare `/` that reads
+> > as a formatting glitch rather than "no confidence recorded." — 0118
 
 ### Distinctness from outcomes and sections
 
@@ -78,19 +78,19 @@ status labels. A not-assessed, not-rated, not-analyzed, or blocked outcome
 **MUST** continue to render with its existing distinct status label, never the
 em dash.
 
->> Rationale: "not assessed" is an evaluation *outcome* the format requires be
->> shown distinctly from a Rating Level; collapsing it into a generic empty
->> marker would erase a meaningful result. The em dash marks an absent cell
->> *value*, not an absent rating. — 0118
+> > Rationale: "not assessed" is an evaluation _outcome_ the format requires be
+> > shown distinctly from a Rating Level; collapsing it into a generic empty
+> > marker would erase a meaningful result. The em dash marks an absent cell
+> > _value_, not an absent rating. — 0118
 
 Empty whole-section placeholder rows — such as `(no findings)`,
 `(no rating drivers)`, and `(none recorded)` — **MUST** remain rendered as their
 parenthetical empty-state rows and **MUST NOT** be replaced by the em-dash cell
 marker.
 
->> Rationale: a section that produced nothing and a single missing value within
->> a populated row are different absences; the parenthetical names the empty
->> section in words, while the em dash marks one missing cell. — 0118
+> > Rationale: a section that produced nothing and a single missing value within
+> > a populated row are different absences; the parenthetical names the empty
+> > section in words, while the em dash marks one missing cell. — 0118
 
 ### Per-report legend
 
@@ -102,16 +102,16 @@ is not applicable or not recorded.
 A report's legend **MUST** render regardless of whether that report contains any
 em-dash cells, so the legend's presence does not vary with evaluation data.
 
->> Rationale: the legend was chosen over per-cell asterisks specifically for
->> diff stability across re-runs; conditioning its presence on the data would
->> reintroduce the appear/disappear churn it exists to avoid. — 0118
+> > Rationale: the legend was chosen over per-cell asterisks specifically for
+> > diff stability across re-runs; conditioning its presence on the data would
+> > reintroduce the appear/disappear churn it exists to avoid. — 0118
 
 The legend **MUST** define the em-dash marker only; the status labels and the
 parenthetical empty-section rows are self-describing and **MUST NOT** be added to
 the legend.
 
->> Rationale: a legend that re-explains self-evident worded labels is noise;
->> scope it to the one marker a reader cannot infer. — 0118
+> > Rationale: a legend that re-explains self-evident worded labels is noise;
+> > scope it to the one marker a reader cannot infer. — 0118
 
 ## Durable spec changes
 

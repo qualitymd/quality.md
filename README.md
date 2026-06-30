@@ -1,7 +1,7 @@
 # QUALITY.md
 
 **QUALITY.md** is an [open format](SPECIFICATION.md), agent skill, and CLI for
-managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), [compound learning](#the-outer-loop-dailyweekly), and achieve alignment around *what quality means for what matters most*.
+managing the quality of your AI assistant and coding-agent projects. Use it to [improve project quality](#getting-started), [engineer quality loops](#loop-engineering-the-quality-loop-stack), [compound learning](#the-outer-loop-dailyweekly), and achieve alignment around _what quality means for what matters most_.
 
 QUALITY.md helps teams **move quality judgment up the loop
 stack**, enabling a continuous and comprehensive approach to improving and maintaining project quality instead of ad hoc prompts, passive skills, reactive reviews, and low-level inspections.
@@ -50,10 +50,10 @@ Invoke `/quality setup` for guided creation of your initial `QUALITY.md` tailore
 4. **Improve** by invoking `/quality improve` to refine
    `QUALITY.md` and compound learning.
 
-> The three-loop framing and the term *middle loop* draw on Annie Vella,
-> *[The Middle Loop](https://annievella.com/posts/the-middle-loop/)*. The
+> The three-loop framing and the term _middle loop_ draw on Annie Vella,
+> _[The Middle Loop](https://annievella.com/posts/the-middle-loop/)_. The
 > loop-engineering framing also draws on Latent Space,
-> *[Loopcraft: The Art of Stacking Loops](https://www.latent.space/p/ainews-loopcraft-the-art-of-stacking)*.
+> _[Loopcraft: The Art of Stacking Loops](https://www.latent.space/p/ainews-loopcraft-the-art-of-stacking)_.
 
 ## Why QUALITY.md
 
@@ -72,7 +72,7 @@ QUALITY.md makes a team's quality expectations explicit and checkable, so those
 gaps stay visible and addressable instead of compounding.
 
 > The three-debt framing draws on Margaret-Anne Storey,
-> *[The Triple Debt of Software Development](https://arxiv.org/abs/2603.22106)*
+> _[The Triple Debt of Software Development](https://arxiv.org/abs/2603.22106)_
 > (arXiv:2603.22106).
 
 ### Evaluate Agent Harnessability and your agent harness
@@ -96,10 +96,10 @@ environment setup, checks, and guardrails your project owns and maintains —
 as artifacts judged on their own quality. Either way, the `/quality` skill turns
 the gaps into concrete improvement work.
 
-> The term *harnessability* and the guides-and-sensors framing draw on
-> Birgitta Böckeler, *[Harness Engineering](https://martinfowler.com/articles/harness-engineering.html)*
+> The term _harnessability_ and the guides-and-sensors framing draw on
+> Birgitta Böckeler, _[Harness Engineering](https://martinfowler.com/articles/harness-engineering.html)_
 > (martinfowler.com), and OpenAI,
-> *[Harness engineering](https://openai.com/index/harness-engineering/)*.
+> _[Harness engineering](https://openai.com/index/harness-engineering/)_.
 
 ### Quality beyond software
 

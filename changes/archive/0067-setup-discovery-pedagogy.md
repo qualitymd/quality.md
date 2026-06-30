@@ -21,7 +21,7 @@ authoring. Detail lives in its
 ## Motivation
 
 The discovery questions carry a dual purpose the current workflow names but does
-not fully serve: they capture the context the model needs *and* teach the user
+not fully serve: they capture the context the model needs _and_ teach the user
 the dimensions a quality model spans. Today the teaching half is left to the
 agent to improvise per run — the skill only asserts the questions "do double
 duty" — so the pedagogy is inconsistent across runs and impossible for a human
@@ -33,8 +33,8 @@ strong the per-question paging feels like pure overhead rather than instruction.
 
 This case deliberately resolves that tension in favor of teaching. Setup runs
 roughly once per project; spending extra interaction to make each dimension
-legible — and to leave the user knowing *why* each answer shapes the model and
-*how* to change it later — is worth more than minimizing round-trips. Four
+legible — and to leave the user knowing _why_ each answer shapes the model and
+_how_ to change it later — is worth more than minimizing round-trips. Four
 deltas implement that stance:
 
 1. **Authored per-question pedagogy.** Each discovery question gains authored
@@ -128,12 +128,10 @@ In-Review.
 
 ### Durable specs
 
-- [x] [`specs/skills/quality-skill/workflows/setup.md`](../specs/skills/quality-skill/workflows/setup.md)
-      - required authored per-question pedagogy, required asking every question and
+- [x] [`specs/skills/quality-skill/workflows/setup.md`](../specs/skills/quality-skill/workflows/setup.md) - required authored per-question pedagogy, required asking every question and
       removed the accept-all escape, changed the confidence-vocabulary
       `MUST` to `Low`/`Med`/`High`, and added the final-review-recap requirement.
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md)
-      - reviewed the "confidence-labeled defaults" framing (line ~384); it is
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../specs/skills/quality-skill/quality-skill.md) - reviewed the "confidence-labeled defaults" framing (line ~384); it is
       generic and does not pin the old terms, so left unchanged.
 - [x] OKF logs and indexes under [`specs/`](../specs/log.md) - recorded durable
       spec updates in [`specs/log.md`](../specs/log.md) and the
@@ -150,8 +148,7 @@ In-Review.
 
 ### Bundled skill
 
-- [x] [`skills/quality/workflows/setup.md`](../skills/quality/workflows/setup.md)
-      - the primary change: added authored per-question background and
+- [x] [`skills/quality/workflows/setup.md`](../skills/quality/workflows/setup.md) - the primary change: added authored per-question background and
       how-to-change-later copy inline, added the teaching-first framing note,
       required asking every question and removed the accept-all escape,
       relabeled confidence to `Low`/`Med`/`High` in the setup brief and presentation

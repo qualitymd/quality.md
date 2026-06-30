@@ -83,15 +83,13 @@ Specs:
 - [x] [`SPECIFICATION.md`](../../SPECIFICATION.md) - define name grammar, Area ID,
       Factor ID, Rating Level ID, canonical model references, and shorthand
       rules.
-- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md)
-      - update the concise Area Breakdown table contract.
+- [x] [`specs/reports/report-summary-md.md`](../../specs/reports/report-summary-md.md) - update the concise Area Breakdown table contract.
 - [x] [`specs/reports/report-md.md`](../../specs/reports/report-md.md) - keep the
       shared compact Area Breakdown table aligned with the summary.
 - [x] [`specs/reports/report-json.md`](../../specs/reports/report-json.md) -
       clarify that JSON preserves structured IDs and may add canonical
       references only without replacing arrays.
-- [x] [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md)
-      - align shared report-model terminology with canonical model references.
+- [x] [`specs/evaluation-records/report-outputs.md`](../../specs/evaluation-records/report-outputs.md) - align shared report-model terminology with canonical model references.
 - [x] [`specs/cli/evaluation-create.md`](../../specs/cli/evaluation-create.md),
       [`specs/cli/evaluation-report.md`](../../specs/cli/evaluation-report.md),
       and other CLI selector specs as discovered - align user-facing selectors
@@ -107,8 +105,7 @@ Specs:
       generated schema supports it.
 - [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md),
       [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md),
-      and [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md)
-      - align durable skill contracts and authoring-guide contract with model
+      and [`specs/skills/quality-skill/guides/authoring-md.md`](../../specs/skills/quality-skill/guides/authoring-md.md) - align durable skill contracts and authoring-guide contract with model
       references and strict names.
 - [x] OKF logs under [`specs/`](../../specs/log.md) - record durable spec updates.
 
@@ -116,16 +113,13 @@ Runtime skill and docs:
 
 - [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - align scope
       resolution and stable identifier language with model references.
-- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md)
-      - update the bundled specification copy when `SPECIFICATION.md` changes.
-- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
-      - update CLI selector examples. No selector examples needed changes in
+- [x] [`skills/quality/resources/SPECIFICATION.md`](../../skills/quality/resources/SPECIFICATION.md) - update the bundled specification copy when `SPECIFICATION.md` changes.
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md) - update CLI selector examples. No selector examples needed changes in
       this phase; record payload examples already use structured arrays.
 - [x] [`skills/quality/modes/evaluate.md`](../../skills/quality/modes/evaluate.md)
       and related mode docs - use model-reference terminology for scoped
       evaluations.
-- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md)
-      - teach strict names, IDs, and canonical model references in the
+- [x] [`skills/quality/guides/authoring.md`](../../skills/quality/guides/authoring.md) - teach strict names, IDs, and canonical model references in the
       self-contained authoring guide.
 - [x] [`README.md`](../../README.md) - update examples if command examples adopt
       canonical model references.

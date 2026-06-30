@@ -9,8 +9,8 @@ timestamp: 2026-06-17T00:00:00Z
 # spec command — functional spec
 
 Companion to the [Specify and implement the spec command](../0006-spec-command.md)
-change. This spec states *what* `qualitymd spec` must do; the
-[design doc](design.md) covers *how* the specification is embedded and emitted.
+change. This spec states _what_ `qualitymd spec` must do; the
+[design doc](design.md) covers _how_ the specification is embedded and emitted.
 
 `spec` inherits the cross-cutting contract — invocation, exit codes, the
 baseline, and the `--json` convention — from the [CLI spec](../../../specs/cli.md);
@@ -50,7 +50,7 @@ and any `spec`-specific flags.
 - `spec` **MUST NOT** require any argument, and **MUST** treat an unexpected
   argument or flag as a usage error (exit `2`).
 - `spec` **MUST NOT** offer `--json`. It is the verbatim-artifact carve-out named
-  in the [`--json` convention](../../../specs/cli.md#conventions): its output *is*
+  in the [`--json` convention](../../../specs/cli.md#conventions): its output _is_
   the payload, so wrapping it adds nothing.
 - On success `spec` **MUST** exit `0`; if it cannot emit the specification (an
   I/O failure writing stdout) it **MUST** exit `70`, per the

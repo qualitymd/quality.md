@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # Installs the tools pinned in mise.toml (go, golangci-lint, dprint, …)
+      # Installs the tools pinned in mise.toml (go, golangci-lint, prettier, …)
       # so CI and `mise run check` stay in lockstep.
       - uses: jdx/mise-action@v4
 

@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 Companion to the
 [Public Review and Improve Workflows](../0143-public-review-improve-workflows.md)
-change case. This spec states *what* the change must do.
+change case. This spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

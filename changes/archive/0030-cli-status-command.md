@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # CLI status snapshot command
 
-A **Change Case** capturing the *why* and *status* for adding a deterministic
+A **Change Case** capturing the _why_ and _status_ for adding a deterministic
 `qualitymd status` snapshot command. The detail lives in its
 [functional spec](0030-cli-status-command/spec.md).
 
@@ -24,7 +24,7 @@ reconstruct project state by hand — parsing `QUALITY.md` frontmatter with
 ad-hoc shell to count targets/factors/requirements, opening evaluation
 `report.md` bodies to learn the latest rating and open recommendations, and
 resolving build/install paths. That is slow, brittle, and — worst of all — does
-mechanical work *in the skill*, inverting the project's core split: the CLI owns
+mechanical work _in the skill_, inverting the project's core split: the CLI owns
 deterministic mechanical work, the skill owns judgment.
 
 A first-class `qualitymd status [--json]` command fixes the root cause. It emits
@@ -44,7 +44,7 @@ Covered: a new read-only `qualitymd status` command with a human form and a
 it.
 
 Deferred / non-goals: no change to evaluation record formats or the model
-schema; the command only *reports* existing state. The wizard's read-only
+schema; the command only _reports_ existing state. The wizard's read-only
 routing behavior and its lean-probe contract are already in place (routine
 change to `modes/wizard.md`); this case supplies the structured source those
 signals should come from. No new lint semantics.

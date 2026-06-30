@@ -9,7 +9,7 @@ timestamp: 2026-06-19T00:00:00Z
 
 # Readable report summary
 
-A **Change Case** capturing the *why* and *status* for reshaping
+A **Change Case** capturing the _why_ and _status_ for reshaping
 `report-summary.md` into a more readable, action-oriented triage artifact. The
 detail lives in its [functional spec](0040-readable-report-summary/spec.md).
 

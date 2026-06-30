@@ -9,8 +9,8 @@ timestamp: 2026-06-26T00:00:00Z
 # Closed-choice setup UX — functional spec
 
 Companion to the [Closed-choice setup UX](../0099-closed-choice-setup-ux.md)
-change case. This spec states *what* the change must do; the
-[design doc](design.md) covers *how*.
+change case. This spec states _what_ the change must do; the
+[design doc](design.md) covers _how_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119 and RFC 8174.
@@ -37,6 +37,7 @@ commands, or evaluation/report behavior.
 - For small closed-choice discovery questions, setup **MUST** present numbered
   options, put the recommended option first, mark it as recommended, and make
   `1` the shortest confirmation.
+
   > Rationale: the recommendation is the default path. Keeping it at `1` makes
   > the easiest answer also the most likely correct answer, while still leaving
   > alternatives visible. — 0099
@@ -45,6 +46,7 @@ commands, or evaluation/report behavior.
   stored model or setup brief uses different internal vocabulary, setup **MUST**
   map the visible answer to that internal value without making the user translate
   while answering.
+
   > Rationale: "How costly is poor quality?" should be answered with cost
   > choices, not tolerance labels. Internal vocabulary can remain precise without
   > leaking into the interaction. — 0099

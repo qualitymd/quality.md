@@ -40,7 +40,7 @@ complex (iterate + batch-failure semantics); the orchestration it drives gets
 dramatically simpler.
 
 This is the write-side companion to landed
-[0125](0125-model-query-commands.md), which removes the *read*-side
+[0125](0125-model-query-commands.md), which removes the _read_-side
 friction of the same loop (query canonical IDs once instead of hand-deriving ~115
 of them). Together they reshape the evaluate workflow's element loop: query the
 in-scope IDs in one call, author all payloads, persist them in one call. 0125 is
@@ -57,7 +57,7 @@ payloads in batches instead of one at a time.
 Settled in design discussion (these are the spec's premises, not open
 questions):
 
-- **Exclusive bulk, not a second path.** The array contract *replaces* the
+- **Exclusive bulk, not a second path.** The array contract _replaces_ the
   single-object contract; a one-payload write is a one-element array. The CLI is
   agent/skill-driven, so the ergonomic tax of `[{…}]` for a human one-off is
   negligible, and maintaining a single-object contract alongside an array

@@ -10,8 +10,8 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Constrain reference kind fields](../0124-reference-kind-enum.md) change case.
-This spec states *what* the change must do; the [design doc](design.md) covers
-*how*. The supported payload kinds are defined by
+This spec states _what_ the change must do; the [design doc](design.md) covers
+_how_. The supported payload kinds are defined by
 [`Evaluation payload kinds`](../../../specs/evaluation/records/payload-kinds.md)
 (normative); reference encoding is defined by
 [`Evaluation JSON conventions`](../../../specs/evaluation/records/json-conventions.md)
@@ -60,20 +60,20 @@ Deferred / non-goals:
   supported Evaluation payload kinds, and the report reference shape to the set of
   report kinds (`area`, `factor`, `requirement`).
 
-  >> Rationale: `kind` is the only required reference field not validated against
-  >> a closed set, while every other closed vocabulary in the contract already is;
-  >> a free-string kind is the contract's one silent typo path. The two shapes
-  >> name different closed sets — a payload kind versus a report scope — so each is
-  >> pinned to its own. — 0124
+  > > Rationale: `kind` is the only required reference field not validated against
+  > > a closed set, while every other closed vocabulary in the contract already is;
+  > > a free-string kind is the contract's one silent typo path. The two shapes
+  > > name different closed sets — a payload kind versus a report scope — so each is
+  > > pinned to its own. — 0124
 
 - The supported payload-kind vocabulary for a routine reference `kind` **MUST**
   include every payload kind the CLI can persist, including the CLI-owned
   `EvaluationOutputResult`, and **MUST NOT** be narrowed to only the
   agent-writable kinds.
 
-  >> Rationale: naming a payload type in a reference is distinct from being
-  >> permitted to *write* that type through `evaluation data set`; coupling the
-  >> two would reject a legitimate reference to a CLI-owned payload. — 0124
+  > > Rationale: naming a payload type in a reference is distinct from being
+  > > permitted to _write_ that type through `evaluation data set`; coupling the
+  > > two would reject a legitimate reference to a CLI-owned payload. — 0124
 
 - When `qualitymd evaluation data set` validates a payload whose reference `kind`
   is present but names a value outside its reference shape's vocabulary, it
@@ -90,9 +90,9 @@ Deferred / non-goals:
   payload kinds for routine references, the report kinds for report references —
   so the enum cannot drift from the set of kinds the CLI actually supports.
 
-  >> Rationale: the payload-kinds spec already requires validation to derive from
-  >> one typed source for fields, enum values, schema, and examples; a
-  >> hand-maintained second kind list would violate that and rot. — 0124
+  > > Rationale: the payload-kinds spec already requires validation to derive from
+  > > one typed source for fields, enum values, schema, and examples; a
+  > > hand-maintained second kind list would violate that and rot. — 0124
 
 ## Durable spec changes
 

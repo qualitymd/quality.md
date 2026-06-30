@@ -9,7 +9,7 @@ timestamp: 2026-06-17T00:00:00Z
 # Evaluation record write — functional spec
 
 Companion to [Evaluation record write](../0014-evaluation-record-write.md). This
-spec states *what* the record-writing command must do.
+spec states _what_ the record-writing command must do.
 
 The on-disk contract every written record must satisfy — the run-folder layout,
 record schemas, required fields, `schemaVersion`, and the CLI-writes /
@@ -51,11 +51,12 @@ Deferred:
   record, and `qualitymd evaluation add-record recommendation <run>` writes one
   recommendation record. Each invocation writes exactly **one** record.
 
-  *Note:* the kind is a subcommand rather than a flag because the two payloads
+  _Note:_ the kind is a subcommand rather than a flag because the two payloads
   have different required fields and land in different subdirectories; making the
   kind structural keeps each subcommand's contract distinct. Placing the writer
   under `evaluation` keeps the full run lifecycle discoverable in one command
   namespace.
+
 - The named run **MUST** already exist as a run folder per the
   [record format spec](../0012-evaluation-record-format/spec.md#run-folder).
   `evaluation add-record` **MUST NOT** create the run; a missing or non-run

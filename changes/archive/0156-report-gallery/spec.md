@@ -9,7 +9,7 @@ timestamp: 2026-06-27T00:00:00Z
 # Report Gallery — functional spec
 
 Companion to the [Report Gallery](../0156-report-gallery.md). This spec states
-*what* the case must do; the [design doc](design.md) covers *how*.
+_what_ the case must do; the [design doc](design.md) covers _how_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

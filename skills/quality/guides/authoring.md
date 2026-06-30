@@ -122,6 +122,6 @@ stable text handle, it uses canonical model references such as `area:root`,
 
 ## Maintenance
 
-When authoring changes meaningfully alter what the model *is* or *how it judges*,
+When authoring changes meaningfully alter what the model _is_ or _how it judges_,
 read [`authoring/quality-changelog.md`](authoring/quality-changelog.md) before changing the
 model or writing a quality changelog entry.

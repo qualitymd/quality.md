@@ -43,9 +43,9 @@ artifact itself: guides, sensors, sandboxes, scripts, and gates are evidence for
 the factor, not the factor.
 
 - **Do** include Agent Harnessability by default for an agent-collaborated
-  composite root. *A thin or absent harness is not a reason to drop the factor; it
+  composite root. _A thin or absent harness is not a reason to drop the factor; it
   is a low rating and a finding, the same way no tests is not a reason to omit
-  `testability`.*
+  `testability`._
 - **Do** use these sub-factors as the Agent Harnessability decomposition,
   adapting the example requirements to the entity's domain:
   - **agent-accessibility** — the degree to which decision-relevant knowledge,
@@ -115,15 +115,15 @@ the factor, not the factor.
     where an area carries it; this confines the agent's own actions while working.
     Audit trails make consequential actions reviewable after the fact.
 - **Do** keep Agent Harnessability separate from the agent harness constituent.
-  *Agent Harnessability rates how each constituent equips an agent. The
+  _Agent Harnessability rates how each constituent equips an agent. The
   agent-harness area rates the checked-in, project-owned governing artifacts'
   own quality (see
-  [Carry the recurring use-context constituents](model-structure.md#carry-the-recurring-use-context-constituents)).*
+  [Carry the recurring use-context constituents](model-structure.md#carry-the-recurring-use-context-constituents))._
 - **Do** treat an existing `harnessability` factor as stale legacy naming, not
-  current Agent Harnessability coverage. *When you are authoring or revising the
+  current Agent Harnessability coverage. _When you are authoring or revising the
   model, recommend renaming it to `agent-harnessability` /
   Agent Harnessability and adding any missing current sub-factors such as
-  `continuity`.*
-- **Avoid** adding "improve the harness over time" as an eighth sub-factor. *That
+  `continuity`._
+- **Avoid** adding "improve the harness over time" as an eighth sub-factor. _That
   is the model-wide learn loop improving this equipping, not a sibling quality
-  beside the seven.*
+  beside the seven._

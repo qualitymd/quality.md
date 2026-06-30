@@ -32,7 +32,7 @@ derives by scanning the local run directory. That counter is not durable when
 the directory is not: an uncommitted or ad-hoc run restarts at `0001`, so two
 different runs can mint the same `QEVAL-0001` / `QREC-0001-002` with conflicting
 content and no way to disambiguate them. Cross-project handoff collides the same
-way. The fix is to give the *run* a highly-improbable, globally-unique `id` and
+way. The fix is to give the _run_ a highly-improbable, globally-unique `id` and
 address everything inside the run through it, while keeping the short tokens
 people actually cite. The governing rule: `id` names only the run; recommendations
 carry a per-run `number`; findings are addressed by their existing

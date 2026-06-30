@@ -10,7 +10,7 @@ timestamp: 2026-06-26T00:00:00Z
 
 Companion to the
 [Self-contained per-kind data schema](../0130-self-contained-data-schema.md)
-change case. This spec states *what* the change must do.
+change case. This spec states _what_ the change must do.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in IETF RFC 2119.
@@ -68,7 +68,7 @@ and any annotation of `data example` output — all rejected in the
 ### Command surface
 
 - `qualitymd schema` (QUALITY.md frontmatter) and `qualitymd evaluation data
-  schema` (evaluation payloads) **MUST** remain separate commands. This change
+schema` (evaluation payloads) **MUST** remain separate commands. This change
   **MUST NOT** introduce a unified `qualitymd schema <kind>` whose kind set spans
   both the model frontmatter and the evaluation payload kinds.
 
@@ -106,8 +106,8 @@ and any annotation of `data example` output — all rejected in the
   > Durable spec: modify
   > `specs/skills/quality-skill/quality-skill.md` — sharpen the payload-discovery
   > `MUST` (which already designates `data schema [<kind>]` "the authoritative
-  > payload contract" and bars dry-run shape-discovery) to name *required fields
-  > and enum value sets* as the schema's job and `data example` as a concrete
+  > payload contract" and bars dry-run shape-discovery) to name _required fields
+  > and enum value sets_ as the schema's job and `data example` as a concrete
   > instance only. The CLI legibility fix above is what makes it followable.
 
 ## Durable spec changes

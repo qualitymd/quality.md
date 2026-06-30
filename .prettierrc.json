@@ -1,0 +1,12 @@
+{
+  "proseWrap": "preserve",
+  "embeddedLanguageFormatting": "off",
+  "overrides": [
+    {
+      "files": "*.mdx",
+      "options": {
+        "embeddedLanguageFormatting": "auto"
+      }
+    }
+  ]
+}

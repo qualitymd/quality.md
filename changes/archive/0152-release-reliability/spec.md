@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 
 Companion to the
 [Release Reliability](../0152-release-reliability.md) Change Case. This spec
-states *what* the change must do. It defers to
+states _what_ the change must do. It defers to
 [Cut a release](../../../docs/guides/cut-a-release.md),
 the release workflow, npm package scripts, and GoReleaser configuration as the
 current release surfaces.

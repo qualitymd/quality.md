@@ -28,14 +28,14 @@ contract, and rendering is the agent's runtime job.
 correct, agent-agnostic three-tier pattern in its "How to present them" block:
 Markdown rendering → structured question tool (page questions through it, keep the
 teaching in the message, do not force fixed options) → no-affordance fallback
-(iterate one at a time). The core move is to *lift* that text — generalized away
+(iterate one at a time). The core move is to _lift_ that text — generalized away
 from setup's specific questions — into the shared User Interaction Contract in
 `SKILL.md` and its `quality-skill.md` spec mirror, so all workflows inherit it
 (R1–R3, R9).
 
 **Organize the contract as intent → affordance → fallback.** In the shared
 contract, the existing "number the options / use `[y]`/`[n]`" prose stops being
-the headline rule and becomes the *fallback rendering* under a short
+the headline rule and becomes the _fallback rendering_ under a short
 progressive-enhancement frame (R4). The frame states: name the interaction
 intent; render through the richest fit-for-purpose affordance the runtime
 exposes; always author the text fallback; keep the teaching in the message, not
@@ -84,7 +84,7 @@ is explicitly locked as free-text so the reframe cannot widget-ize it (R8).
   named UI exists at runtime. Capability-conditional phrasing covers the same
   ground without binding to one harness.
 - **Leave the prose-only contract and add a one-line "use a picker if you have
-  one" note.** Rejected: a note bolted onto a contract that still *mandates* the
+  one" note.** Rejected: a note bolted onto a contract that still _mandates_ the
   prose form is the status quo that produced the gap — the default stays
   prose-only and workflows keep emitting numbered prose. The reframe has to move
   the prose to the fallback slot to change the default.
@@ -94,7 +94,7 @@ is explicitly locked as free-text so the reframe cannot widget-ize it (R8).
 - **Build a shared renderer or interaction-template library.** Rejected as YAGNI
   and out of layer: rendering happens in the agent at runtime, not in the
   deterministic CLI, so there is no code surface to centralize. The shared
-  *contract* is the right abstraction; a code library is not.
+  _contract_ is the right abstraction; a code library is not.
 - **Convert every closed choice, including the human-context checkpoint, to a
   picker.** Rejected: open-cardinality, confirm-or-correct surfaces are the case
   where free text is the fit-for-purpose affordance. R8 locks this so the reframe

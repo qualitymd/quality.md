@@ -43,12 +43,9 @@ Created or updated during `In-Progress`, before this change reaches
 
 - [x] [`specs/evaluation-records.md`](../../specs/evaluation-records.md) - define
       optional assessment superseding metadata.
-- [x] [`specs/cli/evaluation-add-record.md`](../../specs/cli/evaluation-add-record.md)
-      - document assessment payload support for superseding.
-- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md)
-      - document invalid superseding references and stale analysis references.
-- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md)
-      - document active/superseded assessment rendering.
+- [x] [`specs/cli/evaluation-add-record.md`](../../specs/cli/evaluation-add-record.md) - document assessment payload support for superseding.
+- [x] [`specs/cli/evaluation-show-status.md`](../../specs/cli/evaluation-show-status.md) - document invalid superseding references and stale analysis references.
+- [x] [`specs/cli/evaluation-build-report.md`](../../specs/cli/evaluation-build-report.md) - document active/superseded assessment rendering.
 - [x] [quality skill spec](../../specs/skills/quality-skill/quality-skill.md) -
       guide correction workflows to update analyses when superseding
       assessments.

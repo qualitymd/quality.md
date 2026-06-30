@@ -58,7 +58,7 @@ Covered:
 
 Deferred / non-goals:
 
-- no change to the run frame's required *fields* beyond removing `Mode:` (model
+- no change to the run frame's required _fields_ beyond removing `Mode:` (model
   file, scope, rigor, mutation, artifacts, next gate are unchanged);
 - no change to which workflows exist or how invocations resolve;
 - the internal term "run frame" is retained — it is instructional, never
@@ -81,54 +81,35 @@ Deferred / non-goals:
 
 ### Durable specs
 
-- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md)
-      - update the Run frames section: name the resolved *workflow*, forbid a
+- [x] [`specs/skills/quality-skill/quality-skill.md`](../../specs/skills/quality-skill/quality-skill.md) - update the Run frames section: name the resolved _workflow_, forbid a
       command-style header and a `Mode:` field label; retire "mode" as the
       public-surface concept across the shared contract.
-- [x] [`specs/skills/quality-skill/index.md`](../../specs/skills/quality-skill/index.md)
-      - "cross-mode" → "cross-workflow"; "non-mode" follow-up wording.
-- [x] [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md)
-      - "cross-mode"/"evaluate mode"/"evaluation mode" → workflow wording.
-- [x] [`specs/skills/quality-skill/recommendation-follow-up.md`](../../specs/skills/quality-skill/recommendation-follow-up.md)
-      - "non-mode"/"runtime mode" → workflow wording.
-- [x] [`specs/skills/quality-skill/workflows/evaluate.md`](../../specs/skills/quality-skill/workflows/evaluate.md)
-      - frontmatter tag and prose "mode" → "workflow".
-- [x] [`specs/skills/quality-skill/workflows/setup.md`](../../specs/skills/quality-skill/workflows/setup.md)
-      - frontmatter tag and "dispatched as a mode" → "workflow".
-- [x] [`specs/skills/quality-skill/workflows/update.md`](../../specs/skills/quality-skill/workflows/update.md)
-      - frontmatter tag and prose "mode" → "workflow"; "public `/quality` run
+- [x] [`specs/skills/quality-skill/index.md`](../../specs/skills/quality-skill/index.md) - "cross-mode" → "cross-workflow"; "non-mode" follow-up wording.
+- [x] [`specs/skills/quality-skill/evaluation.md`](../../specs/skills/quality-skill/evaluation.md) - "cross-mode"/"evaluate mode"/"evaluation mode" → workflow wording.
+- [x] [`specs/skills/quality-skill/recommendation-follow-up.md`](../../specs/skills/quality-skill/recommendation-follow-up.md) - "non-mode"/"runtime mode" → workflow wording.
+- [x] [`specs/skills/quality-skill/workflows/evaluate.md`](../../specs/skills/quality-skill/workflows/evaluate.md) - frontmatter tag and prose "mode" → "workflow".
+- [x] [`specs/skills/quality-skill/workflows/setup.md`](../../specs/skills/quality-skill/workflows/setup.md) - frontmatter tag and "dispatched as a mode" → "workflow".
+- [x] [`specs/skills/quality-skill/workflows/update.md`](../../specs/skills/quality-skill/workflows/update.md) - frontmatter tag and prose "mode" → "workflow"; "public `/quality` run
       frame" wording.
-- [x] [`specs/skills/quality-skill/workflows/index.md`](../../specs/skills/quality-skill/workflows/index.md)
-      - "dispatched as a mode" → "workflow".
-- [x] [`specs/skills/quality-skill/workflows/evaluate/feedback-log.md`](../../specs/skills/quality-skill/workflows/evaluate/feedback-log.md)
-      - run-frame reference wording (term retained, no change required unless it
+- [x] [`specs/skills/quality-skill/workflows/index.md`](../../specs/skills/quality-skill/workflows/index.md) - "dispatched as a mode" → "workflow".
+- [x] [`specs/skills/quality-skill/workflows/evaluate/feedback-log.md`](../../specs/skills/quality-skill/workflows/evaluate/feedback-log.md) - run-frame reference wording (term retained, no change required unless it
       says "mode").
-- [x] [`specs/skills/quality-skill/guides/recommendation-follow-up-md.md`](../../specs/skills/quality-skill/guides/recommendation-follow-up-md.md)
-      - "not a `/quality` mode" → "workflow".
-- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md)
-      - "Other modes" → "Other workflows".
+- [x] [`specs/skills/quality-skill/guides/recommendation-follow-up-md.md`](../../specs/skills/quality-skill/guides/recommendation-follow-up-md.md) - "not a `/quality` mode" → "workflow".
+- [x] [`specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md`](../../specs/skills/quality-skill/guides/top-10-quality-md-checks-md.md) - "Other modes" → "Other workflows".
 
 ### Durable docs / bundled skill
 
-- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md)
-      - retitle the run-frame template, drop the `Mode:` line, retire "mode" in
+- [x] [`skills/quality/SKILL.md`](../../skills/quality/SKILL.md) - retitle the run-frame template, drop the `Mode:` line, retire "mode" in
       Arguments and Workflow Dispatch wording.
-- [x] [`skills/quality/workflows/evaluate.md`](../../skills/quality/workflows/evaluate.md)
-      - retitle the rendered frame, drop `Mode:`; H1 "Evaluate Mode" → "Evaluate
+- [x] [`skills/quality/workflows/evaluate.md`](../../skills/quality/workflows/evaluate.md) - retitle the rendered frame, drop `Mode:`; H1 "Evaluate Mode" → "Evaluate
       Workflow".
-- [x] [`skills/quality/workflows/setup.md`](../../skills/quality/workflows/setup.md)
-      - retitle the rendered frame, drop `Mode:`.
-- [x] [`skills/quality/workflows/update.md`](../../skills/quality/workflows/update.md)
-      - retitle the rendered frame, drop `Mode:`; H1 "Update Mode" → "Update
+- [x] [`skills/quality/workflows/setup.md`](../../skills/quality/workflows/setup.md) - retitle the rendered frame, drop `Mode:`.
+- [x] [`skills/quality/workflows/update.md`](../../skills/quality/workflows/update.md) - retitle the rendered frame, drop `Mode:`; H1 "Update Mode" → "Update
       Workflow".
-- [x] [`skills/quality/guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md)
-      - "not a `/quality` mode" → "workflow".
-- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md)
-      - run-frame references (term retained; confirm no "mode" wording).
-- [x] [`docs/reference/versioning.md`](../../docs/reference/versioning.md)
-      - "The mode" describing `/quality update` → "The workflow".
-- [x] [`docs/guides/cut-a-release.md`](../../docs/guides/cut-a-release.md)
-      - "skill modes" → "skill workflows".
+- [x] [`skills/quality/guides/recommendation-follow-up.md`](../../skills/quality/guides/recommendation-follow-up.md) - "not a `/quality` mode" → "workflow".
+- [x] [`skills/quality/resources/cli-quick-reference.md`](../../skills/quality/resources/cli-quick-reference.md) - run-frame references (term retained; confirm no "mode" wording).
+- [x] [`docs/reference/versioning.md`](../../docs/reference/versioning.md) - "The mode" describing `/quality update` → "The workflow".
+- [x] [`docs/guides/cut-a-release.md`](../../docs/guides/cut-a-release.md) - "skill modes" → "skill workflows".
 
 ### Suggested new durable specs
 

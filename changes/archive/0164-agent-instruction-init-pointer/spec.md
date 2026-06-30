@@ -10,8 +10,8 @@ timestamp: 2026-06-29T00:00:00Z
 
 Companion to the
 [Agent Instruction Init Pointer](../0164-agent-instruction-init-pointer.md).
-This spec states *what* the case must do; the [design doc](design.md) covers
-*how*.
+This spec states _what_ the case must do; the [design doc](design.md) covers
+_how_.
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all

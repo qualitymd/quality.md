@@ -1,0 +1,14 @@
+node_modules
+dist
+
+# Symlinked agent guidance (edit AGENTS.md only)
+CLAUDE.md
+GEMINI.md
+
+# Generated evaluation report artifacts (real and example trees;
+# owned by qualitymd / report-gallery generators, not prettier)
+**/.quality/evaluations
+
+# Generated Mintlify pages (owned by their generators; see sync-spec-docs / cli-docs)
+mintlify/specification.mdx
+mintlify/cli.mdx

@@ -10,8 +10,8 @@ timestamp: 2026-06-23T00:00:00Z
 
 ## Context
 
-The [functional spec](spec.md) settles *what* must change in the `/quality setup`
-discovery step; this doc settles *how*, and records the alternatives weighed in
+The [functional spec](spec.md) settles _what_ must change in the `/quality setup`
+discovery step; this doc settles _how_, and records the alternatives weighed in
 discussion. The change repositions discovery from efficient
 inference-confirmation toward a guided teaching walkthrough, motivated by a field
 run logged in `acquire-roi-next/setup-observations.md` and by the observation
@@ -48,7 +48,7 @@ carry two authored fields:
 
 The copy lives **inline** in the workflow (the user's decision), so the teaching
 text travels with the procedure and a single read loads both the question and its
-instruction. It is authored prose the agent presents, *not* widget text: the
+instruction. It is authored prose the agent presents, _not_ widget text: the
 spec forbids confining it to a structured tool's option/description fields, which
 are too small to teach in.
 
@@ -83,7 +83,7 @@ questions" escape directly contradicts that and is removed. What stays:
   question, so it does not conflict with ask-every-question.
 
 So the cost control shifts from "skip questions" to "answer them cheaply." High
-confidence in a default becomes a reason to *recommend* it firmly, never to hide
+confidence in a default becomes a reason to _recommend_ it firmly, never to hide
 the question.
 
 ### `Low`/`Med`/`High` confidence

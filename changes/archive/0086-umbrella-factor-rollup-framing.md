@@ -13,7 +13,7 @@ A **Change Case** to correct a misleading bit of guidance about the model-wide
 **Agent Harnessability** umbrella factor introduced in 0081. The guidance told
 authors the umbrella is "not rated directly" and the spec mirror said it "does
 not roll up directly." Both overstate the rule: an umbrella factor with
-sub-factors *does* receive a rating — it rolls up from its children, the same way
+sub-factors _does_ receive a rating — it rolls up from its children, the same way
 a grouping area with no local rating does. What is actually true is narrower: the
 umbrella carries **no requirements of its own**; its assessment lives in the
 sub-factors, and its rating comes from rolling those up.
