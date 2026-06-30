@@ -47,8 +47,31 @@ mode: custom
     Engineer loops to improve project and harness quality, aligning your team
     and agents on what quality means for what matters most.
   </p>
+  <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+    <a
+      href="/quickstart"
+      className="inline-flex items-center justify-center rounded-lg bg-[#5B68EE] px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-sm hover:bg-[#4853D6] transition-colors"
+    >
+      <Icon icon="rocket" color="#FFFFFF" size={16} className="mr-2" />
+      Getting started
+    </a>
+    <a
+      href="/loops"
+      className="inline-flex items-center justify-center rounded-lg border border-gray-200 dark:border-zinc-700 px-5 py-2.5 text-sm font-semibold text-gray-900 dark:text-zinc-100 no-underline hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
+    >
+      <Icon icon="repeat" size={16} className="mr-2" />
+      Engineer quality loops
+    </a>
+    <a
+      href="/specification"
+      className="inline-flex items-center justify-center rounded-lg border border-gray-200 dark:border-zinc-700 px-5 py-2.5 text-sm font-semibold text-gray-900 dark:text-zinc-100 no-underline hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
+    >
+      <Icon icon="book-open" size={16} className="mr-2" />
+      Read the spec
+    </a>
+  </div>
 </div>
-<div className="max-w-5xl mx-auto">
+<div className="px-6 sm:px-8 lg:px-6 max-w-5xl mx-auto">
   <h3 className="text-xl sm:text-md lg:text-lg font-bold tracking-tight text-gray-900 dark:text-zinc-50 text-center">
     What is QUALITY.md?
   </h3>
@@ -111,7 +134,7 @@ mode: custom
 </div>
 <div></div>
 
-<div className="px-6 pb-24 max-w-5xl mx-auto">
+<div className="pt-10 px-6 pb-24 max-w-5xl mx-auto">
   <Columns cols={3}>
     <Card title="Quickstart" icon="rocket" href="/quickstart">
       Create your first QUALITY.md to establish a project quality model.
@@ -136,4 +159,23 @@ mode: custom
       QUALITY.md linting and management utilities.
     </Card>
   </Columns>
+</div>
+
+<div role="contentinfo" className="px-6 pb-12 max-w-5xl mx-auto">
+  <div className="border-t border-gray-100 dark:border-zinc-800 pt-8 flex items-center justify-center gap-4">
+    <a
+      href="https://github.com/qualitymd/quality.md"
+      aria-label="GitHub"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 no-underline transition-colors hover:bg-gray-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
+    >
+      <Icon icon="github" size={18} />
+    </a>
+    <a
+      href="https://x.com/qualitydotmd"
+      aria-label="X"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 no-underline transition-colors hover:bg-gray-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
+    >
+      <Icon icon="x-twitter" size={18} />
+    </a>
+  </div>
 </div>
