@@ -1002,7 +1002,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	b.WriteString("\n\n## Key Details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
 	writeLocalKeys(&b, ratingKeyLine(spec), fixedEnumKeyLine(confidenceValues), emptyKeyLine())
-	writeRunReportFindingBreakdown(&b, artifacts)
+	writeRunReportFindingSummary(&b, artifacts)
 	writeLocalKeys(&b, fixedEnumKeyLine(findingTypeValues), fixedEnumKeyLine(findingSeverityValues), emptyKeyLine())
 	writeContentsSection(&b, []reportContentLink{
 		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
@@ -1110,28 +1110,28 @@ func runReportScopeLabel(spec *model.Spec, plan *evaluationReportPlan) string {
 	return "Evaluation of " + area + " for " + strings.Join(factors, ", ")
 }
 
-func writeRunReportFindingBreakdown(b *strings.Builder, artifacts *evaluationArtifacts) {
-	b.WriteString("Finding Breakdown\n\n")
-	b.WriteString("| Finding Type | Count | Detail |\n")
+func writeRunReportFindingSummary(b *strings.Builder, artifacts *evaluationArtifacts) {
+	b.WriteString("Finding Summary\n\n")
+	b.WriteString("| Finding Type | Count | Severity |\n")
 	b.WriteString("| --- | ---: | --- |\n")
-	rows := runReportFindingBreakdownRows(artifacts)
+	rows := runReportFindingSummaryRows(artifacts)
 	if len(rows) == 0 {
 		b.WriteString("| (none) | 0 | — |\n\n")
 		return
 	}
 	for _, row := range rows {
-		b.WriteString(md.TableRow(row.Type, row.Count, row.Detail))
+		b.WriteString(md.TableRow(row.Type, row.Count, row.Severity))
 	}
 	b.WriteString("\n")
 }
 
-type findingBreakdownRow struct {
-	Type   string
-	Count  string
-	Detail string
+type findingSummaryRow struct {
+	Type     string
+	Count    string
+	Severity string
 }
 
-func runReportFindingBreakdownRows(artifacts *evaluationArtifacts) []findingBreakdownRow {
+func runReportFindingSummaryRows(artifacts *evaluationArtifacts) []findingSummaryRow {
 	counts := map[string]int{}
 	severities := map[string]map[string]int{}
 	for _, row := range artifacts.rankedFindings() {
@@ -1151,23 +1151,20 @@ func runReportFindingBreakdownRows(artifacts *evaluationArtifacts) []findingBrea
 			severities[typ][sev]++
 		}
 	}
-	out := make([]findingBreakdownRow, 0, len(counts))
+	out := make([]findingSummaryRow, 0, len(findingTypeValues.Values))
 	for _, value := range findingTypeValues.Values {
 		typ := string(value.Value)
 		count := counts[typ]
-		if count == 0 {
-			continue
-		}
-		out = append(out, findingBreakdownRow{
-			Type:   findingTypeTitle(typ),
-			Count:  fmt.Sprintf("%d", count),
-			Detail: findingBreakdownDetail(typ, severities[typ]),
+		out = append(out, findingSummaryRow{
+			Type:     findingTypeTitle(typ),
+			Count:    fmt.Sprintf("%d", count),
+			Severity: findingSummarySeverity(typ, severities[typ]),
 		})
 	}
 	return out
 }
 
-func findingBreakdownDetail(typ string, severities map[string]int) string {
+func findingSummarySeverity(typ string, severities map[string]int) string {
 	if typ != string(FindingTypeGap) && typ != string(FindingTypeRisk) {
 		return "—"
 	}

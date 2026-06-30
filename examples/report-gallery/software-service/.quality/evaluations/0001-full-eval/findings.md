@@ -39,7 +39,7 @@ Legend
 
 Legend
 
-- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
 
 ## Primary Source Data
 

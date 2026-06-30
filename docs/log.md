@@ -1,5 +1,14 @@
 # Docs Update Log
 
+## 2026-06-30
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
+  [0182 - Finding Summary Display Order](../changes/archive/0182-finding-summary-display-order.md).
+  Run report examples now use `Finding Summary`, concern-first Finding type
+  order, all Finding type rows, and `Severity` as the sparse severity-count
+  column.
+
 ## 2026-06-29
 
 - **Revision**: Updated

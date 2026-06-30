@@ -747,3 +747,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0181 — Evaluation Identity Manifest](0181-evaluation-identity-manifest.md) -
   makes Evaluation identity primary with `evaluationId`, nests local run
   metadata in the manifest, and simplifies run report frontmatter (`Done`).
+- [0182 — Finding Summary Display Order](0182-finding-summary-display-order.md) -
+  renames the run report Finding Breakdown to Finding Summary, shows all Finding
+  types in concern-first order, and labels sparse severity counts (`Done`).

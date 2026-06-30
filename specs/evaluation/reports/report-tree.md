@@ -181,9 +181,9 @@ Known fixed enum report displays are:
 | Confidence            | `medium`                      | `🔵 Medium`                      |
 | Confidence            | `low`                         | `🟡 Low`                         |
 | Confidence            | `none`                        | `⚪ None`                        |
-| Finding type          | `strength`                    | `✅ Strength`                    |
 | Finding type          | `gap`                         | `🚩 Gap`                         |
 | Finding type          | `risk`                        | `⚠️ Risk`                         |
+| Finding type          | `strength`                    | `✅ Strength`                    |
 | Finding type          | `note`                        | `ℹ️ Note`                         |
 | Finding severity      | `critical`                    | `🔴 Critical`                    |
 | Finding severity      | `high`                        | `🔴 High`                        |
@@ -300,12 +300,13 @@ Factors when present. `Findings` and `Recommendations` **MUST** render total
 ranked counts as `<N> total` and **MUST NOT** include the word `ranked`. The
 section **MUST NOT** include limits or incomplete-input counts.
 
-The run report **MUST** render a compact `Finding Breakdown` table near
-`## Key Details`. The table **MUST** render one row per present Finding type,
-with columns `Finding Type`, `Count`, and `Detail`. For `gap` and `risk`, the
-`Detail` cell **MUST** render a severity breakdown ordered by the Finding
-severity catalog. For `strength` and `note`, the `Detail` cell **MUST** render
-`—`.
+The run report **MUST** render a compact `Finding Summary` table near
+`## Key Details`. The table **MUST** render one row for every Finding type,
+including zero-count types, with columns `Finding Type`, `Count`, and
+`Severity`. For `gap` and `risk`, the `Severity` cell **MUST** render only
+observed severity counts ordered by the Finding severity catalog. It **MUST NOT**
+render zero-count severity values. For `strength`, `note`, and concern types
+with no observed severities, the `Severity` cell **MUST** render `—`.
 
 Generated reports **MUST** render a `## Contents` section when they contain at
 least two substantive top-level body sections. Generated `## Contents` sections

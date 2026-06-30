@@ -1,5 +1,12 @@
 # Specs Update Log
 
+## 2026-06-30
+
+- **Revision**: Implemented durable spec changes for
+  [0182 - Finding Summary Display Order](../changes/archive/0182-finding-summary-display-order.md).
+  Generated run reports now render `Finding Summary`, show every Finding type in
+  concern-first order, and label sparse concern severity counts as `Severity`.
+
 ## 2026-06-29
 
 - **Revision**: Implemented durable spec changes for

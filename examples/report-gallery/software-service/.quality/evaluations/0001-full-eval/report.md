@@ -25,17 +25,18 @@ Legend
 - *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 - *Empty:* `—`
 
-Finding Breakdown
+Finding Summary
 
-| Finding Type | Count | Detail |
+| Finding Type | Count | Severity |
 | --- | ---: | --- |
-| ✅ Strength | 4 | — |
 | 🚩 Gap | 2 | 🔴 High: 1; 🟡 Medium: 1 |
 | ⚠️ Risk | 1 | 🟡 Medium: 1 |
+| ✅ Strength | 4 | — |
+| ℹ️ Note | 0 | — |
 
 Legend
 
-- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
 - *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 - *Empty:* `—`
 
@@ -81,7 +82,7 @@ Legend
 
 Legend
 
-- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
 - *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 
 **Full findings report:** [findings.md](findings.md) (7 total)

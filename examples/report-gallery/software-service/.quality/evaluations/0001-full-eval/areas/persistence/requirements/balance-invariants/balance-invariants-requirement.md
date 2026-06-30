@@ -46,7 +46,7 @@ The sampled persistence evidence supports balance preservation.
 
 Legend
 
-- *Finding type:* ✅ Strength, 🚩 Gap, ⚠️ Risk, ℹ️ Note
+- *Finding type:* 🚩 Gap, ⚠️ Risk, ✅ Strength, ℹ️ Note
 - *Finding severity:* 🔴 Critical, 🔴 High, 🟡 Medium, 🔵 Low
 - *Confidence:* 🟢 High, 🔵 Medium, 🟡 Low, ⚪ None
 - *Finding basis:* ✅ Verified, 🟡 Plausible, ⚪ Not Assessed, ⬜ Not Applicable

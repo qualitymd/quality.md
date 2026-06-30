@@ -1,5 +1,13 @@
 # Evaluation v2 Update Log
 
+## 2026-06-30
+
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0182 - Finding Summary Display Order](../../changes/archive/0182-finding-summary-display-order.md).
+  The run report now renders `Finding Summary` with all Finding types in
+  concern-first order and a `Severity` column that lists only observed gap/risk
+  severities.
+
 ## 2026-06-29
 
 - **Revision**: Updated Evaluation identity, records, and report-tree contracts

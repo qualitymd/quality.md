@@ -7,6 +7,10 @@ QUALITY.md specification.
 
 ### CLI
 
+- Generated Evaluation run reports now label the type-count table `Finding
+  Summary`, show every Finding type including zero-count types, order Finding
+  types as `Gap`, `Risk`, `Strength`, then `Note`, and rename the summary detail
+  column to `Severity`.
 - Evaluation runs now persist `data/evaluation-manifest.json` with
   `kind: "EvaluationManifest"`, a durable `evaluationId`, and nested local
   `run` metadata. Generated `report.md` frontmatter now exposes

@@ -1,5 +1,27 @@
 # Changes Update Log
 
+## 2026-06-30
+
+- **Done**: Implemented and archived
+  [0182 - Finding Summary Display Order](archive/0182-finding-summary-display-order.md).
+  Generated run reports now render `Finding Summary`, show all Finding types in
+  concern-first order including zero-count rows, and label sparse gap/risk
+  severity counts as `Severity`.
+
+- **In-Review**: Completed implementation for
+  [0182 - Finding Summary Display Order](archive/0182-finding-summary-display-order.md).
+  Report rendering, durable specs, reporting guidance, release notes, tests,
+  generated schema, and report-gallery output are aligned for review.
+
+- **In-Progress**: Created
+  [0182 - Finding Summary Display Order](archive/0182-finding-summary-display-order.md)
+  with its
+  [functional spec](archive/0182-finding-summary-display-order/spec.md) and
+  [design doc](archive/0182-finding-summary-display-order/design.md). Functional
+  requirements and design are settled; implementation is beginning across
+  generated report rendering, durable specs, docs, tests, and report-gallery
+  output.
+
 ## 2026-06-29
 
 - **Done**: Implemented and archived

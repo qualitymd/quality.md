@@ -2855,9 +2855,9 @@
               },
               "type": {
                 "enum": [
-                  "strength",
                   "gap",
                   "risk",
+                  "strength",
                   "note"
                 ],
                 "type": "string"
