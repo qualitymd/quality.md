@@ -11,9 +11,13 @@
     "dark": "/images/favicon-dark.svg"
   },
   "colors": {
-    "primary": "#15803D",
-    "light": "#22C55E",
-    "dark": "#16A34A"
+    "primary": "#5B68EE",
+    "light": "#A4ACF2",
+    "dark": "#5B68EE"
+  },
+  "banner": {
+    "content": "👋 Welcome! QUALITY.md is being built in the open — [help shape it on GitHub](https://github.com/qualitymd/quality.md).",
+    "dismissible": true
   },
   "navigation": {
     "pages": [
@@ -22,7 +26,7 @@
       "quickstart",
       {
         "group": "Using QUALITY.md",
-        "pages": ["quality-skill", "quality-loop-stack", "concepts"]
+        "pages": ["skill", "loops", "concepts"]
       },
       {
         "group": "Reference",

@@ -1,49 +1,55 @@
 ---
 title: Overview
-description: What QUALITY.md is, the file format, and how the skill and CLI work together.
+description: Model your project's quality so teams and agents can evaluate it, stay aligned on what good means, and improve it over time.
+mode: custom
 ---
 
-{/* TODO: Refine content. This page is a scaffold — structure first, prose later. */}
+<div className="relative px-6 pt-20 pb-12 lg:pt-28 max-w-5xl mx-auto text-center">
+  <p className="text-sm font-semibold uppercase tracking-widest text-[#5B68EE] dark:text-[#A4ACF2]">
+    Open format · Agent skill · CLI
+  </p>
+  <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-gray-900 dark:text-zinc-50">
+    QUALITY.md
+  </h1>
+  <p className="mt-6 text-lg lg:text-xl leading-relaxed text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto">
+    Continuously improve project quality with your team and agents aligned on
+    what quality means for what matters most.
+  </p>
+  <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+    <a
+      href="/quickstart"
+      className="inline-flex items-center justify-center rounded-lg bg-[#5B68EE] px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-sm hover:bg-[#4853D6] transition-colors"
+    >
+      Get started
+    </a>
+    <a
+      href="/specification"
+      className="inline-flex items-center justify-center rounded-lg border border-gray-200 dark:border-zinc-700 px-5 py-2.5 text-sm font-semibold text-gray-900 dark:text-zinc-100 no-underline hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors"
+    >
+      Read the spec
+    </a>
+  </div>
+</div>
 
-QUALITY.md is an open format, agent skill, and CLI for modeling a project's
-quality so teams and agents can evaluate it, stay aligned on what good means,
-and improve it over time.
-
-## The three surfaces
-
-{/* TODO: Describe the format, the /quality skill, and the qualitymd CLI, and
-    that the experience is skill-first — users mostly work through the agent. */}
-
-- **The format** — a `QUALITY.md` file that declares a quality model.
-- **The /quality skill** — the primary way you work with QUALITY.md, through an
-  AI assistant or coding agent.
-- **The qualitymd CLI** — the deterministic tooling the skill builds on.
-
-## The QUALITY.md file
-
-{/* TODO: Explain the two layers and when each matters. */}
-
-A QUALITY.md file has two layers:
-
-1. **YAML frontmatter** — the structured quality model.
-2. **Markdown body** — the context, scope, and rationale that help people and
-   agents interpret and evaluate the model.
-
-## The Quality Loop Stack
-
-{/* TODO: Summarize evaluate → review → act → improve and link to the loop
-    stack page. */}
-
-See [The Quality Loop Stack](/quality-loop-stack) for the workflow QUALITY.md is
-built around.
-
-## Next steps
-
-<Columns cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Install the skill and CLI and create your first QUALITY.md.
-  </Card>
-  <Card title="The /quality skill" icon="sparkles" href="/quality-skill">
-    The commands you use day to day.
-  </Card>
-</Columns>
+<div className="px-6 pb-24 max-w-5xl mx-auto">
+  <Columns cols={3}>
+    <Card title="Quickstart" icon="rocket" href="/quickstart">
+      Install the skill and CLI, then create your first QUALITY.md.
+    </Card>
+    <Card title="The /quality skill" icon="sparkles" href="/skill">
+      The primary way you set up, evaluate, and improve a QUALITY.md.
+    </Card>
+    <Card title="Specification" icon="book-open" href="/specification">
+      Document structure, model vocabulary, schema, and evaluation semantics.
+    </Card>
+    <Card title="The Quality Loop Stack" icon="repeat" href="/loops">
+      The evaluate, review, act, and improve workflow it is built around.
+    </Card>
+    <Card title="Concepts" icon="puzzle" href="/concepts">
+      The core vocabulary of a QUALITY.md quality model.
+    </Card>
+    <Card title="CLI reference" icon="terminal" href="/cli-reference">
+      The qualitymd command-line interface the skill builds on.
+    </Card>
+  </Columns>
+</div>
