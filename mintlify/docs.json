@@ -22,15 +22,19 @@
   "navigation": {
     "pages": [
       "overview",
-      "specification",
       "quickstart",
       {
-        "group": "Using QUALITY.md",
-        "pages": ["skill", "loops"]
+        "group": "The Quality Loop",
+        "pages": [
+          "loops",
+          "run-loop",
+          "claude-code",
+          "codex"
+        ]
       },
       {
         "group": "Reference",
-        "pages": ["cli"]
+        "pages": ["specification", "skill", "cli"]
       }
     ]
   },
