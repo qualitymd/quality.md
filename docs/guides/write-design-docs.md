@@ -46,10 +46,12 @@ Keep it short and decision-focused:
 - **Record the why.** The durable value is the rationale and rejected
   alternatives, not a re-description of the final code. When the Change Case lands,
   that value is *promoted*, not abandoned: the enduring rationale is lifted into
-  the [functional spec](write-functional-specs.md)'s **Background / Motivation**
+  the [functional spec](write-functional-specs.md)'s **Background / motivation**
   and per-requirement annotations, while this doc stays in the archive as the
   fuller record of alternatives and trade-offs.
 - **Match the scope.** A one-paragraph note for a small change; a fuller doc for
   anything cross-cutting. Don't over-document.
+- **Use sentence-case headings.** Design doc headings use sentence case while
+  preserving proper nouns, formal type names, and cited source casing.
 - **Let it age gracefully.** A design doc reflects a decision at a point in time;
   supersede it with a new one rather than silently rewriting history.

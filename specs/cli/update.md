@@ -18,7 +18,7 @@ described in [RFC 2119](../../docs/reference/rfc2119.md) and
 [RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
-## Command Shape
+## Command shape
 
 `qualitymd update` invoked without a mode flag **MUST** attempt to apply an
 available update through the install channel that owns the binary. When no newer
@@ -47,7 +47,7 @@ build is a development build, `update` **MUST** report no available update and
 
 There is no `upgrade` alias.
 
-## Install Ownership and Apply
+## Install ownership and apply
 
 Install-method detection **MUST** distinguish at least npm, Homebrew, managed
 standalone, Go/source, archive, and unknown installs when evidence is available.
@@ -73,7 +73,7 @@ convention: update the per-user PATH directly where the platform offers a safe
 API (Windows), and otherwise print the exact line to add rather than editing
 shell profiles.
 
-## Release Readiness and Notes
+## Release readiness and notes
 
 An update **MUST NOT** be reported available, and `update` **MUST NOT** apply,
 unless the area release is retrievable for the owning channel. For the
@@ -91,7 +91,7 @@ a reference to the area release's notes when one is known. `update --json`
 **MUST** carry that reference under a stable field, omitted when not known. The
 reference is advisory and **MUST NOT** change availability or apply behavior.
 
-## Ambient Notice
+## Ambient notice
 
 The cross-command ambient update notice contract lives in
 [`qualitymd update notice`](update-notice.md). The explicit `qualitymd update`

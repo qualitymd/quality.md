@@ -14,7 +14,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Common Fields
+## Common fields
 
 Every Evaluation JSON payload **MUST** include `schemaVersion`.
 
@@ -26,7 +26,7 @@ Every Evaluation JSON payload **MUST** include `kind`.
 silently migrate, upgrade, downgrade, or transform payloads across schema
 versions.
 
-## Identity And References
+## Identity and references
 
 Persisted routine JSON **MUST** encode model identity fields as canonical
 qualified model-reference strings:
@@ -125,7 +125,7 @@ example
 artifact references do not replace routine `*Ref` objects or canonical Model
 references.
 
-## Optional And Repeated Fields
+## Optional and repeated fields
 
 Optional fields **SHOULD** be omitted when absent.
 

@@ -1,4 +1,11 @@
-# /quality Skill Guides Update Log
+# /quality skill guides update log
+
+## 2026-06-30
+
+- **Revision**: Updated durable guide specs for
+  [0189 - Heading sentence case](../../../../changes/archive/0189-heading-sentence-case.md).
+  Active `/quality` guide spec headings now use sentence case while preserving
+  formal model concept names.
 
 ## 2026-06-29
 

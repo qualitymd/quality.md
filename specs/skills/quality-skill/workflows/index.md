@@ -1,4 +1,4 @@
-# /quality Skill Workflows
+# /quality skill workflows
 
 Behavioral component specs for the `/quality` runtime workflows. The parent
 [/quality skill](../quality-skill.md) spec owns shared contracts; these specs own

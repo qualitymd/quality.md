@@ -11,7 +11,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 Area: [LedgerLite Service](root-area.md)
 
-## Key Details
+## Key details
 
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
@@ -20,16 +20,16 @@ Area: [LedgerLite Service](root-area.md)
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Area / Factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
-- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
-- [Primary Source Data](#primary-source-data)
+- [Limits and incomplete inputs](#limits-and-incomplete-inputs)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-## Area / Factor Breakdown
+## Area / Factor breakdown
 
 | ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
@@ -52,13 +52,13 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | --- | --- | --- | --- |
 | (no local Requirements) | — | — | — |
 
-## Limits & Incomplete Inputs
+## Limits and incomplete inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)

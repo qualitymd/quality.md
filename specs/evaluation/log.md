@@ -1,6 +1,12 @@
-# Evaluation v2 Update Log
+# Evaluation v2 update log
 
 ## 2026-06-30
+
+- **Revision**: Updated the Evaluation report-tree contract for
+  [0189 - Heading sentence case](../../changes/archive/0189-heading-sentence-case.md).
+  Generated Evaluation report titles, section headings, and Contents labels now
+  use sentence case for fixed report labels while preserving model-provided
+  display titles.
 
 - **Revision**: Updated the Evaluation report-tree contract for
   [0187 - Remove Run Finding Summary](../../changes/archive/0187-remove-run-finding-summary.md).

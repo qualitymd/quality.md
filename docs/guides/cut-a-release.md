@@ -6,7 +6,7 @@ tags: [release, changelog, versioning]
 timestamp: 2026-06-27T00:00:00Z
 ---
 
-# Cut a Release
+# Cut a release
 
 Use this guide when publishing a tagged release of the `qualitymd` CLI and any
 same-repo release notes for the `/quality` skill or QUALITY.md specification.
@@ -42,7 +42,7 @@ token must be able to publish the `quality.md` package and every package in the
 `@qualitymd` scope. Rotate either token before tagging if preflight cannot prove
 that access.
 
-## Choose the Release Version
+## Choose the release version
 
 The CLI release version is the git tag, for example `v0.3.0`.
 
@@ -57,7 +57,7 @@ While the CLI is still `0.x`:
 
 After `1.0`, use normal SemVer major/minor/patch rules.
 
-## Check Versioned Surfaces
+## Check versioned surfaces
 
 This repo has three separately versioned surfaces:
 
@@ -92,7 +92,7 @@ change.
 When a release changes more than one surface, update every affected version and
 compatibility declaration in the same release-prep change.
 
-## Prepare Release Notes
+## Prepare release notes
 
 Use the bundle logs as source material:
 
@@ -115,7 +115,7 @@ Suggested release-note groups:
 
 ### CLI
 
-### /quality Skill
+### /quality skill
 
 ### Specification
 
@@ -123,7 +123,7 @@ Suggested release-note groups:
 
 ### Packaging
 
-### Compatibility / Migration
+### Compatibility / migration
 ```
 
 Each release should include a compatibility block when relevant:
@@ -142,7 +142,7 @@ Preview the exact notes that the release workflow will publish:
 mise run release-notes -- v0.3.0
 ```
 
-## Commit Release Preparation
+## Commit release preparation
 
 Commit the release-prep changes before tagging.
 
@@ -159,7 +159,7 @@ Use a direct message such as:
 git commit -m "Prepare v0.3.0 release"
 ```
 
-## Run Release Check
+## Run release check
 
 After committing the release-prep change and before tagging, run:
 
@@ -208,7 +208,7 @@ git push origin main
 gh run list --branch main --limit 5
 ```
 
-## Tag and Publish
+## Tag and publish
 
 Create and push the tag:
 
@@ -246,7 +246,7 @@ Do not move a published tag to repair a release. If a published release is wrong
 fix forward with a new patch release unless no artifacts were published and the
 tag is still only local or clearly failed before publication.
 
-## Verify Published Artifacts
+## Verify published artifacts
 
 After the workflow finishes, verify:
 
@@ -275,7 +275,7 @@ The mechanical channel verification is:
 mise run release-verify -- v0.3.0
 ```
 
-## Handle a Failed Release
+## Handle a failed release
 
 If the workflow fails before publishing anything, fix the problem and rerun the
 workflow or replace the tag only if it has not been consumed externally.
@@ -301,7 +301,7 @@ npm versions are immutable in normal practice. The repair helper skips npm
 versions that already exist, refreshes the Homebrew cask, restores curated
 release notes, and runs release verification.
 
-## After Release
+## After release
 
 After verifying the release:
 
@@ -311,7 +311,7 @@ After verifying the release:
   versioning reference are still aligned.
 - Close or archive any completed Change Cases whose work shipped in the release.
 
-## Process Support Boundaries
+## Process support boundaries
 
 The guide is enough to run the curated-release process. Keep release support
 small and add mechanics only when they remove repeated mistakes or manual

@@ -17,22 +17,22 @@ Full evaluation
 - **In scope:** QUALITY.md; qualitymd CLI; Format specification; README
 - **Out of scope:** Hosted CI and publication checks are deferred to the release runbook.; Exhaustive CLI matrix testing is deferred; focused behavior checks and package tests cover the release-relevant regressions found in this run.
 
-## Selected Findings and Limitations
+## Selected findings and limitations
 
 - `assessments/001-format-spec-the-format-specification-is-complete.json` at `SPECIFICATION.md:137` [low]: Scalar placeholders such as <string> and <level-name> intentionally do not define detailed character-set or length bounds, leaving edge cases to conforming tools.
 - `assessments/002-format-spec-the-format-specification-admits-a-single-interpretation.json` at `SPECIFICATION.md:344` [low]: The not-assessed boundary still depends on evaluator judgment about evidence sufficiency, but the report distinction is explicit.
 - `assessments/006-format-spec-each-rule-is-observable-or-testable.json` at `SPECIFICATION.md:356` [low]: Roll-up intentionally has no numeric aggregation formula, so exact rating inference remains evaluator judgment constrained by required distinctions.
 - Limitation: The spec now includes valid minimal/suggested examples and explicit invalid counter-examples for missing required title, missing direct-requirement factors, and list-valued assessment
 
-## Evidence Basis
+## Evidence basis
 
 No command or source evidence basis was recorded in findings.
 
-## Next Action
+## Next action
 
 No recommendation records exist for this run.
 
-## Target Summary
+## Target summary
 
 | Target | Local rating | Aggregate rating | Covered requirements | Note |
 | --- | --- | --- | --- | --- |
@@ -41,7 +41,7 @@ No recommendation records exist for this run.
 | Format specification | 🔵 Target | 🔵 Target | 9 |   |
 | README | 🔵 Target | 🔵 Target | 4 |   |
 
-## Target Details
+## Target details
 
 ### QUALITY.md
 

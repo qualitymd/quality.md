@@ -1,4 +1,4 @@
-# /quality Skill Guides
+# /quality skill guides
 
 Runtime guides bundled with the `/quality` skill, plus their governing
 contracts.

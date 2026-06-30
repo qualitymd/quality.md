@@ -1,6 +1,10 @@
-# /quality Runtime Workflows Update Log
+# /quality runtime workflows update log
 
 ## 2026-06-29
+
+- **Revision**: Updated runtime workflow headings for 0189 - Heading Sentence
+  Case. Active setup/evaluate/review/improve/update headings now use sentence
+  case while preserving formal workflow and model concept names.
 
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0181 -
   Evaluation Identity Manifest. Evaluate now names

@@ -20,7 +20,7 @@ described in [RFC 2119](../../../docs/reference/rfc2119.md) and
 [RFC 8174](../../../docs/reference/rfc8174.md) when, and only when, they appear
 in all capitals.
 
-## Runtime Artifacts
+## Runtime artifacts
 
 The CLI creates a numbered evaluation folder per run. The default parent
 directory is `.quality/evaluations/` under the workspace quality data directory
@@ -44,10 +44,10 @@ folder.
 
 Runtime evaluation artifacts are raw outputs in the evaluated repository.
 Generated Markdown reports carry identity frontmatter and visible bottom
-`Primary Source Data` sections as defined by the
+`Primary source data` sections as defined by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Report
 frontmatter `title` matches the visible H1 document title; `type` carries the
-report artifact taxonomy. The `Primary Source Data` section lists report-local
+report artifact taxonomy. The `Primary source data` section lists report-local
 primary structured Evaluation payloads used to render the specific report
 artifact. Generated reports use standard `Contents` sections and
 `Evaluation links:` navigation instead of compact `Jump to:` lines or local
@@ -56,7 +56,7 @@ yet a full OKF bundle: it does not require
 generated `index.md`, `schema.md`, or `log.md` files, and generated reports do
 not require registration in `specs/schema.md`.
 
-## Report Generation
+## Report generation
 
 The skill **MUST** build reports through:
 
@@ -87,11 +87,11 @@ Area and Factor reports **MUST NOT** render `Findings` sections or standalone
 `Rating Drivers` sections. Their human-facing roll-up explanation belongs in
 summary, ratings, confidence, limits, incomplete inputs, and breakdown tables,
 while structured `ratingDrivers` remain available through the payloads listed in
-the report's `Primary Source Data` section.
+the report's `Primary source data` section.
 
-Run reports **MUST** render the Model Evaluation section required by the
+Run reports **MUST** render the Model evaluation section required by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Area reports
-**MUST** render the Area / Factor Breakdown required by that report tree. These
+**MUST** render the Area / Factor breakdown required by that report tree. These
 sections are the human-facing Area / Factor structure and status surface; the
 machine-readable generated-report manifest remains
 `data/evaluation-output-result.json`.
@@ -99,7 +99,7 @@ machine-readable generated-report manifest remains
 Reports **MUST** preserve secret-handling boundaries: cite locator and
 credential type only, never secret values or unsafe raw content.
 
-## Report Tree
+## Report tree
 
 The run-level Evaluation report **MUST** be `report.md` at the run root.
 
@@ -123,13 +123,13 @@ Every generated Markdown report **MUST** include the frontmatter, run context,
 `Evaluation links:` navigation, and report-specific header summary required for
 that report kind by the
 [Evaluation report tree](../../evaluation/reports/report-tree.md). Every
-generated Markdown report **MUST** include the `Primary Source Data` section
+generated Markdown report **MUST** include the `Primary source data` section
 required by that report tree. Report bodies **MUST NOT** duplicate report-level
-source-data links in header `Data` columns; the `Primary Source Data` section
+source-data links in header `Data` columns; the `Primary source data` section
 owns those pointers.
 
 Area reports **MUST** link to local and descendant Area and Factor reports
-through the Area / Factor Breakdown, and to local Requirement reports through
+through the Area / Factor breakdown, and to local Requirement reports through
 their Requirement table.
 
 Factor reports **MUST** link to their owning Area report when that Area report
@@ -139,7 +139,7 @@ direct Requirement reports.
 Requirement reports **MUST** link to their owning Area report and every attached
 Factor report.
 
-## User-Facing Closeout
+## User-facing closeout
 
 The agent's user-facing evaluation closeout is governed by the shared
 [user interaction contract](quality-skill.md#user-interaction-contract).

@@ -13,7 +13,7 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factors: [observability](../../factors/observability/observability-factor.md)
 
-## Key Details
+## Key details
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
@@ -22,22 +22,22 @@ Factors: [observability](../../factors/observability/observability-factor.md)
 ## Contents
 
 - [Summary](#summary)
-- [Findings Summary](#findings-summary)
-- [Finding Details](#finding-details)
-- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
-- [Primary Source Data](#primary-source-data)
+- [Findings summary](#findings-summary)
+- [Finding details](#finding-details)
+- [Unknowns and missing evidence](#unknowns-and-missing-evidence)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 The sampled telemetry explains customer impact for core failure modes.
 
-## Findings Summary
+## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-003` | Health dashboards connect service errors to failed customer actions. | 💪 Strength | — | 🔵 Medium | The finding supports the target observability rating. | ✅ Verified: The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions. |
 
-## Finding Details
+## Finding details
 
 <a id="finding-strength-003"></a>
 
@@ -62,7 +62,7 @@ Status: ✅ Verified
 
 The synthetic dashboard inventory maps technical symptoms to customer-visible failed actions.
 
-##### Basis Evidence
+##### Basis evidence
 
 (none recorded)
 
@@ -77,13 +77,13 @@ Rating effect: supports target
 - `synthetic-source:operations/customer-impact-dashboard`: The synthetic dashboard inventory includes panels for failed customer mutations and retry exhaustion.
   Rationale: Synthetic source reference retained to demonstrate evidence rendering.
 
-## Unknowns & Missing Evidence
+## Unknowns and missing evidence
 
 | Type | Detail |
 | --- | --- |
 | (none recorded) | — |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)

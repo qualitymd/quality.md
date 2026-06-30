@@ -60,7 +60,7 @@ not an Evaluation Report.
 
 ## Requirements
 
-### Runtime Use
+### Runtime use
 
 The skill root prompt **MUST** tell agents to read the checklist when quickly
 inspecting a QUALITY.md file's current state, quality, or lifecycle.
@@ -75,7 +75,7 @@ Other workflows **MAY** use checklist findings as context when they need to
 explain why model-focused improve, review, evaluation, or
 history/reconciliation is the next workflow.
 
-### Inspection Boundary
+### Inspection boundary
 
 The checklist **MUST** stay read-only. It **MUST NOT** edit `QUALITY.md`, inspect
 root area source files, read evaluation report bodies, create evaluation records,
@@ -116,7 +116,7 @@ what good authoring looks like. It should route skeleton or placeholder models t
 getting-started for first-run process, and route populated models with
 best-practice gaps to model-focused `review` or `improve`.
 
-### Required Checks
+### Required checks
 
 The checklist **MUST** contain ten checks:
 
@@ -269,7 +269,7 @@ The checklist **MUST NOT** treat the CLI's lifecycle `ready-to-evaluate` signal
 as a model-usefulness verdict; a valid model with no runs can still have gaps
 that should route to model-focused improve before evaluation.
 
-### Summary Judgment
+### Summary judgment
 
 The checklist **MUST** end by reporting lifecycle state and model-usefulness
 findings separately. Lifecycle state is a classification from `qualitymd status`.

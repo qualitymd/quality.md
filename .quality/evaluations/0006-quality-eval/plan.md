@@ -80,7 +80,7 @@ coverage:
 
 Standard.
 
-## Requirement Set
+## Requirement set
 
 Assess all 30 in-scope Requirements from the current `model-snapshot.md` snapshot:
 
@@ -97,7 +97,7 @@ Assess all 30 in-scope Requirements from the current `model-snapshot.md` snapsho
 - QUALITY.md Project QUALITY.md: 1 Requirement.
 - Evaluation History: 1 Requirement.
 
-## Evidence Strategy
+## Evidence strategy
 
 Use targeted repository evidence for each Area:
 
@@ -112,7 +112,7 @@ Use targeted repository evidence for each Area:
   limitations unless represented by repository-visible scripts, workflows, or
   docs.
 
-## Planned Limitations
+## Planned limitations
 
 This run will not publish releases, install from remote registries, inspect
 private issue trackers, or run full cross-platform smoke tests. Findings about

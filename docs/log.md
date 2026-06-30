@@ -1,6 +1,11 @@
-# Docs Update Log
+# Docs update log
 
 ## 2026-06-30
+
+- **Revision**: Updated active documentation headings and report examples for
+  [0189 - Heading sentence case](../changes/archive/0189-heading-sentence-case.md).
+  Current docs now state the active Markdown/MDX heading convention, preserve
+  historical records, and show generated report labels in sentence case.
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for

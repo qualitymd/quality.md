@@ -40,7 +40,7 @@ out of order. The elements below are a palette, not a checklist (see
   references — the binding sources of truth this spec defers to, whose rules it
   inherits — from **informational** ones that supply only context; a reader
   should be able to tell which links *bind*.
-- **Background / Motivation** — a short prose section near the top stating the
+- **Background / motivation** — a short prose section near the top stating the
   big-picture *why*: the problem or failure-mode the capability addresses, and
   any spec-scale lessons worth carrying forward. This is distinct from **Scope**
   (which says *what's* covered or deferred), from the companion note (which says
@@ -52,7 +52,7 @@ out of order. The elements below are a palette, not a checklist (see
 - **Scenario / use case** — when the spec exists to satisfy a self-contained use
   case, state it: the concrete thing a caller is trying to accomplish that this
   spec, on its own, makes possible. Draw the line against **Background /
-  Motivation**: a scenario that's merely one step of a larger process or
+  motivation**: a scenario that's merely one step of a larger process or
   job-to-be-done *is* background — context for the big-picture *why*. But when the
   spec stands on its own as the answer to a particular case, state that case
   directly — a short walkthrough of who reaches for the capability and what they
@@ -145,7 +145,7 @@ when any planned in-scope Requirement lacks a Requirement Rating Result, and the
 JSON output **MUST** include the missing Requirement IDs.
 ```
 
-When the reason would not be obvious from the nearby Background / Motivation,
+When the reason would not be obvious from the nearby Background / motivation,
 scenario, or surrounding requirements, add a short
 [per-requirement rationale](#per-requirement-rationale). This is especially
 important for prohibitions, surprising defaults, consent gates, compatibility
@@ -204,7 +204,7 @@ form is **Divergence handled** — the syntactic home for the cases
 ### Per-requirement rationale
 
 A requirement **may** carry a subordinate rationale annotation directly beneath
-it — the fine-grained counterpart to **Background / Motivation**. Use one when
+it — the fine-grained counterpart to **Background / motivation**. Use one when
 the requirement's reason is load-bearing but not obvious from the nearby prose.
 Lead with the testable sentence; put the *why* in a blockquote under it:
 
@@ -390,6 +390,10 @@ tracked in the change case's parent **Affected artifacts** index, not here.
   every heading onto every spec is how specs bloat and authors stall. The OKF
   mechanics — frontmatter `type`, a tidy `index.md` and `log.md` — are the only
   non-negotiables.
+- **Use sentence-case headings.** Spec headings use sentence case while
+  preserving proper nouns and formal type names. Prefer `Background /
+  motivation`, `Durable spec changes`, and `Open questions` in change-case
+  functional specs.
 - **Say it once.** This applies *within* a spec too: each requirement gets one
   home. An overview or principles list should *name* a property and link to the
   section that enforces it, not re-assert the requirement in full. A spec that
@@ -399,7 +403,7 @@ tracked in the change case's parent **Affected artifacts** index, not here.
   should carry the reasons their requirements exist, or those reasons die in the
   archived change. Split it by grain. The big-picture *why* (the problem or
   failure-mode the capability addresses) goes in
-  [Background / Motivation](#shape). A single requirement's *why* goes in a
+  [Background / motivation](#shape). A single requirement's *why* goes in a
   subordinate [annotation](#per-requirement-rationale) beneath it — a sentence or
   two, not a paragraph wrapped around the rule. The failure mode to avoid is
   rationale that *buries or outweighs* the requirement, not rationale itself:
@@ -434,7 +438,7 @@ thoroughness:
   into a [`Rationale:` annotation](#per-requirement-rationale) (or
   [Background](#shape)) beneath it.
 - **Rationale said twice** — a per-requirement annotation that restates what
-  [Background / Motivation](#shape) already says, or vice versa. Background
+  [Background / motivation](#shape) already says, or vice versa. Background
   carries the spec-scale *why*; an annotation carries one requirement's. Say each
   once, in its own place, and supersede stale rationale rather than letting it
   accrete.

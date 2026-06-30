@@ -1,4 +1,11 @@
-# /quality Skill Workflows Update Log
+# /quality skill workflows update log
+
+## 2026-06-30
+
+- **Revision**: Updated durable workflow specs for
+  [0189 - Heading sentence case](../../../../changes/archive/0189-heading-sentence-case.md).
+  Active `/quality` workflow spec headings now use sentence case while preserving
+  formal workflow and model concept names.
 
 ## 2026-06-29
 

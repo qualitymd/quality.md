@@ -18,7 +18,7 @@ described in [RFC 2119](../../docs/reference/rfc2119.md) and
 [RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
-## Ambient Notice
+## Ambient notice
 
 Ordinary `qualitymd` commands **MAY** surface a one-line update-available notice
 when a local cache indicates that a newer, ready release exists. The notice

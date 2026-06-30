@@ -4,13 +4,13 @@ title: CLI Workflow Conventions
 description: Workflow conventions for how the /quality skill drives qualitymd CLI introspection and artifacts.
 ---
 
-# CLI Workflow Conventions
+# CLI workflow conventions
 
 Use this resource for workflow conventions the CLI cannot teach by itself:
 artifact layout, feedback-log sequencing, scoped-evaluation naming, and
 cross-command orchestration. Do not treat it as a command reference.
 
-## Introspection First
+## Introspection first
 
 Discover command shapes, flags, and payload contracts from the CLI at runtime:
 
@@ -32,7 +32,7 @@ Prefer stable structured channels (`--json`, schemas, examples) over parsing
 human-formatted help tables when the result will drive routing or authored
 artifacts.
 
-## Workspace Artifacts
+## Workspace artifacts
 
 Evaluation runs default under `.quality/evaluations/` relative to the selected
 `QUALITY.md`. A repository can set `evaluationDir` in the resolved workspace
@@ -55,7 +55,7 @@ continues into discovery. Evaluate creates and updates its current-run feedback
 log after the run frame. Record material workflow-experience events only; do not
 duplicate assessment evidence.
 
-## Starting Or Repairing A Model
+## Starting or repairing a Model
 
 Sequence the work this way:
 
@@ -90,7 +90,7 @@ Use the queried model IDs as the source of truth for every authored payload
 reference. The post-hoc identity-resolution check is a backstop, not the primary
 guard.
 
-## Resuming Or Diagnosing A Run
+## Resuming or diagnosing a run
 
 Sequence recovery work this way:
 
@@ -111,14 +111,14 @@ When the CLI is missing, stale, incompatible, or uncertain:
 2. Use the install-aware update check to identify remediation.
 3. Apply an update only after confirmation.
 
-## Evaluation Scope
+## Evaluation scope
 
 Use `--area <area-id>` and repeatable `--factor <factor-id>` for scoped
 evaluations. Pass canonical `area:` and `factor:` references resolved from the
 model. Let `qualitymd evaluation create` write `EvaluationManifest`, apply the root
 default, and derive the run-folder slug.
 
-## Command Rules
+## Command rules
 
 - Use `--json` when a command offers it and the agent must consume the result.
 - Prefer structured status output for readiness, model shape, evaluation

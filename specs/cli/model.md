@@ -23,7 +23,7 @@ described in [RFC 2119](../../docs/reference/rfc2119.md) and
 [RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
-## Background / Motivation
+## Background / motivation
 
 Authoring evaluation payloads requires the canonical reference IDs of a model's
 elements — `area:<path>`, `factor:<area>::<path>`, `requirement:<area>::<name>`.

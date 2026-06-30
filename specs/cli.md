@@ -110,7 +110,7 @@ Every in-scope command:
   stdout and stderr human surfaces. The Fang / Lip Gloss stack's idiomatic
   non-TTY behavior is the expected mechanism for this.
 
-### Exit Codes
+### Exit codes
 
 `qualitymd` exits `0` only on success. Non-zero outcomes use these stable,
 documented categories so callers can branch without parsing output:
@@ -122,7 +122,7 @@ documented categories so callers can branch without parsing output:
 | `2`  | Usage error            | The invocation was malformed: unknown flag, bad argument, incompatible options, or unknown command.                               |
 | `70` | Internal error         | The command could not complete the requested action: I/O failure, unmet precondition such as guarded overwrite refusal, or a bug. |
 
-### Opt-in Capabilities
+### Opt-in capabilities
 
 Agent-facing enrichments are opt-in per invocation and do not weaken the
 baseline. `--json` is a near-universal default across commands, with the detailed

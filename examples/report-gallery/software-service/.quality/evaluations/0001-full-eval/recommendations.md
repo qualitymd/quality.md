@@ -9,7 +9,7 @@ title: Recommendations
 
 Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-## Key Details
+## Key details
 
 | Recommendations | Highest Impact | Coverage |
 | --- | --- | --- |
@@ -17,11 +17,11 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 ## Contents
 
-- [Ranked Recommendations](#ranked-recommendations)
+- [Ranked recommendations](#ranked-recommendations)
 - [Coverage](#coverage)
-- [Primary Source Data](#primary-source-data)
+- [Primary source data](#primary-source-data)
 
-## Ranked Recommendations
+## Ranked recommendations
 
 | # | Recommendation | Area / Factors | Impact | Confidence | Reason | Ranking Rationale |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 - ✅ Addressed by Recommendation: 3
 - ⬜ Not Advice Driving: 4
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)

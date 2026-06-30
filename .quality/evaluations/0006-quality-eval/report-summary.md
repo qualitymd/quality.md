@@ -1,4 +1,4 @@
-# Quality Evaluation Summary
+# Quality evaluation summary
 
 | Field | Value |
 | --- | --- |
@@ -14,7 +14,7 @@
 
 The root local rating is target, but aggregate quality is held to minimum by minimum-rated child areas for docs, distribution, and evaluation history.
 
-## Area Breakdown
+## Area breakdown
 
 | Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |
 | --- | --- | --- | --- | --- |
@@ -29,7 +29,7 @@ The root local rating is target, but aggregate quality is held to minimum by min
 | /quality Skill | `quality-skill` | 🔵 Target | 🔵 Target | Judgment Grounding: 🔵 Target; Mutation Safety: 🔵 Target; Agent-Mediated UX: 🔵 Target; Workflow Completeness: 🔵 Target |
 | Tooling Specs Bundle | `specs-bundle` | 🔵 Target | 🔵 Target | Traceability: 🔵 Target; Consistency: 🔵 Target |
 
-## Selected Findings
+## Selected findings
 
 1. **Low**  
    AGENTS.md names README.md and CONTRIBUTING.md as required context and links task-specific guides.
@@ -52,7 +52,7 @@ The root local rating is target, but aggregate quality is held to minimum by min
    `command:mise run check`
    Assessment: `assessments/005-root-verification-signals-are-discoverable-and-remediation-bearing.json`
 
-## Recommended Actions
+## Recommended actions
 
 Primary next action: use `001-refresh-pinned-installer-examples`.
 
@@ -61,7 +61,7 @@ Primary next action: use `001-refresh-pinned-installer-examples`.
 | `001-refresh-pinned-installer-examples` | 1 | [Refresh Pinned Installer Examples](recommendations/001-refresh-pinned-installer-examples.md) | The install guide no longer contains stale v0.5.1 pins, pinned examples cannot age silently, and the docs and distribution assessments reach target on re-evaluation. |
 | `002-reconcile-stale-evaluation-history` | 2 | [Reconcile Stale Evaluation History](recommendations/002-reconcile-stale-evaluation-history.md) | qualitymd status QUALITY.md --json no longer reports a stale non-reportable prior run, or the repository has an explicit documented archive state that keeps stale runs out of current-readiness gaps. |
 
-## Scope & Limitations
+## Scope and limitations
 
 Scope: **Standard.**
 

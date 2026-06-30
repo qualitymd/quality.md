@@ -37,7 +37,7 @@ When `--model` is supplied with a relative positional `<run>` path, the command
 `--model` is absent and a positional `<run>` path is supplied, the command
 **MAY** preserve ordinary filesystem-path behavior.
 
-## Background / Motivation
+## Background / motivation
 
 `data set` is driven primarily by the `/quality` evaluate workflow, which
 authors many routine payloads for one run. A JSON-array transport lets the skill

@@ -13,7 +13,7 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Public API](../../api-ar
 
 Factors: [operability](../../factors/operability/operability-factor.md)
 
-## Key Details
+## Key details
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
@@ -22,22 +22,22 @@ Factors: [operability](../../factors/operability/operability-factor.md)
 ## Contents
 
 - [Summary](#summary)
-- [Findings Summary](#findings-summary)
-- [Finding Details](#finding-details)
-- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
-- [Primary Source Data](#primary-source-data)
+- [Findings summary](#findings-summary)
+- [Finding details](#finding-details)
+- [Unknowns and missing evidence](#unknowns-and-missing-evidence)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 The error contract is consistent across the sampled API cases.
 
-## Findings Summary
+## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-001` | Common caller error cases share a documented response shape. | 💪 Strength | — | 🟢 High | The finding supports the target operability rating for caller-facing errors. | ✅ Verified: The synthetic handler matrix and API reference agree on the error envelope fields. |
 
-## Finding Details
+## Finding details
 
 <a id="finding-strength-001"></a>
 
@@ -62,7 +62,7 @@ Status: ✅ Verified
 
 The synthetic handler matrix and API reference agree on the error envelope fields.
 
-##### Basis Evidence
+##### Basis evidence
 
 (none recorded)
 
@@ -77,13 +77,13 @@ Rating effect: supports target
 - `synthetic-source:api/error-contracts`: The synthetic error matrix maps common failure modes to a stable code, message, and retryable flag.
   Rationale: Synthetic source reference retained to demonstrate evidence rendering.
 
-## Unknowns & Missing Evidence
+## Unknowns and missing evidence
 
 | Type | Detail |
 | --- | --- |
 | (none recorded) | — |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)

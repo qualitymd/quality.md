@@ -15,7 +15,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Work Units
+## Work units
 
 An orchestrator **MUST** treat these as the primary work-unit boundaries:
 

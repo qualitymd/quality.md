@@ -1,6 +1,10 @@
-# /quality Runtime Skill Update Log
+# /quality runtime skill update log
 
 ## 2026-06-30
+
+- **Revision**: Updated runtime skill headings for 0189 - Heading sentence case.
+  Active `/quality` skill, guide, resource, and workflow headings now follow
+  sentence case while preserving formal QUALITY.md concept names.
 
 - **Revision**: Updated [`SKILL.md`](SKILL.md) for 0185 - Concern Finding
   Severity.

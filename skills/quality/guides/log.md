@@ -1,4 +1,10 @@
-# /quality Runtime Guides Update Log
+# /quality runtime guides update log
+
+## 2026-06-30
+
+- **Revision**: Updated runtime guide headings for 0189 - Heading sentence case.
+  Active guide headings now use sentence case while preserving QUALITY.md,
+  model concept names, and guide titles where they act as formal labels.
 
 ## 2026-06-27
 

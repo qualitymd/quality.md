@@ -15,7 +15,7 @@ review, mutate, evaluate, or recommend changing.
 This guide conforms to [`SPECIFICATION.md`](../resources/SPECIFICATION.md). The
 specification governs on any conflict.
 
-## Reading Path
+## Reading path
 
 - Markdown body, unknowns, open questions, review provenance, stakeholder
   grounding, and the governing sense of "good" →
@@ -69,7 +69,7 @@ is modeled. The file's location carries meaning: a `QUALITY.md` in a directory
 makes that directory and everything under it (`**/*`) the default scope of
 evaluation, unless an area narrows it with a `source`.
 
-## Core Concepts
+## Core concepts
 
 | Concept      | Meaning                                                        |
 | ------------ | -------------------------------------------------------------- |
@@ -106,7 +106,7 @@ stable text handle, it uses canonical model references such as `area:root`,
 `area:api`, `factor:api::reliability`,
 `requirement:api::retry-window`, or `rating:target`.
 
-## Authoring Order
+## Authoring order
 
 1. Name the entity with `title` and think through the body's Overview first.
 2. Fill the Markdown body before expanding the frontmatter.

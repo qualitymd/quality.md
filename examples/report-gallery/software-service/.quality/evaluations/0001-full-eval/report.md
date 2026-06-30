@@ -1,13 +1,13 @@
 ---
 type: Evaluation Overview Report
-title: Quality Evaluation - LedgerLite Service
+title: Quality evaluation - LedgerLite Service
 evaluationId: 20260629T120000Z-0123456789ab
 created: "2026-06-29T12:00:00Z"
 model: QUALITY.md
 run: 0001-full-eval
 ---
 
-# Quality Evaluation - LedgerLite Service
+# Quality evaluation - LedgerLite Service
 
 > **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 
@@ -15,7 +15,7 @@ run: 0001-full-eval
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-## Key Details
+## Key details
 
 | Overall Rating | Confidence | Scope | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
@@ -23,12 +23,12 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 ## Contents
 
-- [Model Evaluation](#model-evaluation)
-- [Top Findings](#top-findings)
-- [Top Recommendations](#top-recommendations)
-- [Primary Source Data](#primary-source-data)
+- [Model evaluation](#model-evaluation)
+- [Top findings](#top-findings)
+- [Top recommendations](#top-recommendations)
+- [Primary source data](#primary-source-data)
 
-## Model Evaluation
+## Model evaluation
 
 | ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
@@ -45,7 +45,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 
-## Top Findings
+## Top findings
 
 **Full findings report:** [findings.md](findings.md) (7 total: 🚩 2 Gaps: 🔴 1 High, 🟡 1 Medium; ⚠️ 1 Risk: 🟡 1 Medium; 💪 4 Strengths)
 
@@ -59,7 +59,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-gap-002) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🚩 Gap | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 💪 Strength | — |
 
-## Top Recommendations
+## Top recommendations
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 2 High, ● 1 Medium)
 
@@ -69,7 +69,7 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 | 2 | [Rehearse migration rollback after schema changes](recommendations/002-rehearse-migration-rollback-after-schema-changes.md) | [Ledger Persistence](areas/persistence/persistence-area.md) / [Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. |
 | 3 | [Assign a current recovery drill owner](recommendations/003-assign-a-current-recovery-drill-owner.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)

@@ -16,7 +16,7 @@ Standard.
 - **In scope:** QUALITY.md Project; Agent Harness; qualitymd CLI; Installation and Distribution; Documentation and Examples; Evaluation History; Format Specification; QUALITY.md Project QUALITY.md; /quality Skill; Tooling Specs Bundle
 - **Out of scope:** Applying recommendations, editing evaluated source, editing `QUALITY.md`, or creating external issues.; Migrating or rewriting stale historical evaluation records.; Exhaustive release matrix verification, hosted registry validation, or live install-channel tests beyond repository-visible smoke-check definitions.
 
-## Selected Findings and Limitations
+## Selected findings and limitations
 
 - `assessments/001-root-agents-can-reach-the-minimum-project-context-and-deeper-routed-guidance.json` at `AGENTS.md:5` [Low]: AGENTS.md names README.md and CONTRIBUTING.md as required context and links task-specific guides.
 - `assessments/002-root-project-guidance-makes-task-boundaries-and-done-criteria-explicit.json` at `AGENTS.md:33` [Low]: Routine changes are scoped directly, while guide routing and change-case rules define when durable design history is needed.
@@ -28,15 +28,15 @@ Standard.
 - `assessments/008-format-spec-the-format-specification-admits-a-single-interpretation.json` at `SPECIFICATION.md:236` [Low]: The schema section defines required model properties and the model-wide ratingScale.
 - Additional selected findings or limitations are available in `report.json`.
 
-## Evidence Basis
+## Evidence basis
 
 No command or source evidence basis was recorded in findings.
 
-## Next Action
+## Next action
 
 - [001-refresh-pinned-installer-examples](recommendations/001-refresh-pinned-installer-examples.md) - The install guide no longer contains stale v0.5.1 pins, pinned examples cannot age silently, and the docs and distribution assessments reach target on re-evaluation.
 
-## Area Breakdown
+## Area breakdown
 
 | Area | Path | Area Rating | Area + Sub-Areas Rating | Factors |
 | --- | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ No command or source evidence basis was recorded in findings.
 | /quality Skill | `quality-skill` | 🔵 Target | 🔵 Target | Judgment Grounding: 🔵 Target; Mutation Safety: 🔵 Target; Agent-Mediated UX: 🔵 Target; Workflow Completeness: 🔵 Target |
 | Tooling Specs Bundle | `specs-bundle` | 🔵 Target | 🔵 Target | Traceability: 🔵 Target; Consistency: 🔵 Target |
 
-## Area Details
+## Area details
 
 ### QUALITY.md Project
 
@@ -112,7 +112,7 @@ No command or source evidence basis was recorded in findings.
   - Go formatting, tests, vetting, linting, and package checks pass.
 - **Analysis record:** `analysis/cli.json`
 
-### Installation and Distribution
+### Installation and distribution
 
 - **Path:** distribution
 - **Area rating:** 🟡 Minimum
@@ -125,7 +125,7 @@ No command or source evidence basis was recorded in findings.
   - Release and smoke workflows verify GitHub, npm, and Homebrew channels.
 - **Analysis record:** `analysis/distribution.json`
 
-### Documentation and Examples
+### Documentation and examples
 
 - **Path:** docs
 - **Area rating:** 🟡 Minimum
@@ -140,7 +140,7 @@ No command or source evidence basis was recorded in findings.
   - Install examples pin stale v0.5.1 values.
 - **Analysis record:** `analysis/docs.json`
 
-### Evaluation History
+### Evaluation history
 
 - **Path:** evaluation-history
 - **Area rating:** 🟡 Minimum
@@ -153,7 +153,7 @@ No command or source evidence basis was recorded in findings.
   - The repository separates evaluation records, quality-log entries, and workflow feedback logs.
 - **Analysis record:** `analysis/evaluation-history.json`
 
-### Format Specification
+### Format specification
 
 - **Path:** format-spec
 - **Area rating:** 🔵 Target
@@ -189,7 +189,7 @@ No command or source evidence basis was recorded in findings.
   - The model names evaluation history, quality log, feedback logs, and future recommendation loops.
 - **Analysis record:** `analysis/quality-md.json`
 
-### /quality Skill
+### /quality skill
 
 - **Path:** quality-skill
 - **Area rating:** 🔵 Target
@@ -206,7 +206,7 @@ No command or source evidence basis was recorded in findings.
   - Workflow instructions match the CLI-supported record/report surface.
 - **Analysis record:** `analysis/quality-skill.json`
 
-### Tooling Specs Bundle
+### Tooling specs bundle
 
 - **Path:** specs-bundle
 - **Area rating:** 🔵 Target

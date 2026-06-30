@@ -1,6 +1,10 @@
-# /quality Runtime Resources Update Log
+# /quality runtime resources update log
 
 ## 2026-06-29
+
+- **Revision**: Updated runtime resource headings for 0189 - Heading Sentence
+  Case. Active resource headings now use sentence case while preserving formal
+  QUALITY.md concept names.
 
 - **Release prep**: Bumped the bundled
   [QUALITY.md specification](SPECIFICATION.md) resource to `0.9 (Draft)` for the

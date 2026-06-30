@@ -4,13 +4,13 @@ title: Update Workflow
 description: Runtime workflow for updating the /quality skill and qualitymd CLI pair.
 ---
 
-# Update Workflow
+# Update workflow
 
 Use update to keep the installed `/quality` skill and `qualitymd` CLI
 compatible. Update is maintenance orchestration: diagnose the pair, plan the
 actions, ask before mutation, delegate mechanics, and verify afterward.
 
-## Decision Tree
+## Decision tree
 
 ```text
 Collect current state

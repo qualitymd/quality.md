@@ -1,6 +1,12 @@
-# Specs Update Log
+# Specs update log
 
 ## 2026-06-30
+
+- **Revision**: Implemented durable spec changes for
+  [0189 - Heading sentence case](../changes/archive/0189-heading-sentence-case.md).
+  Active specs now use sentence-case headings, and generated Evaluation report
+  titles, headings, and Contents labels use sentence case for fixed labels while
+  preserving model-provided titles and formal concept names.
 
 - **Revision**: Implemented durable spec changes for
   [0187 - Remove Run Finding Summary](../changes/archive/0187-remove-run-finding-summary.md).

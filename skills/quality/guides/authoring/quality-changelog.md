@@ -5,7 +5,7 @@ description: Guidance for deciding when QUALITY.md model changes require quality
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Quality Changelog Changes
+# Authoring quality changelog changes
 
 Read this when:
 

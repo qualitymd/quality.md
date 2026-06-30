@@ -16,7 +16,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Prompt Contract Shape
+## Prompt contract shape
 
 Each agent-run routine prompt **SHOULD** define:
 
@@ -32,7 +32,7 @@ The prompt contract **MUST** make clear what inputs the agent may use, what
 output shape is required, and when the agent must stop rather than inventing
 precision.
 
-## Routine Set
+## Routine set
 
 Evaluation **MUST** define prompt contracts for:
 
@@ -60,7 +60,7 @@ Helper routines such as `prepareAreaContext`, `validateEvaluationFrame`,
 outputs **MUST NOT** become required persisted payloads unless a later spec adds
 them.
 
-## Framing Routines
+## Framing routines
 
 Framing routines **MUST** produce structured frame payloads before judgment
 routines run.
@@ -68,7 +68,7 @@ routines run.
 Framing routines **MUST NOT** inspect evidence to decide findings, assign Rating
 Levels, synthesize Factor or Area ratings, or write report prose.
 
-## Judgment Routines
+## Judgment routines
 
 Judgment routines **MUST** use only their frames and declared inputs.
 
@@ -122,7 +122,7 @@ Requirement Rating Results, Factor Analysis Results, or Area Analysis Results
 through `inputRefs`. Analysis drivers **MUST NOT** introduce new evidence or
 claims absent from the referenced lower-level outputs.
 
-## Advice Routines
+## Advice routines
 
 Advice routines **MUST** run after Area analysis and before report generation.
 
@@ -153,7 +153,7 @@ evaluation meets the current bar and has no gap/risk requiring work, the Advice
 phase **MUST** still recommend whether to review, raise, clarify, or confirm the
 next quality bar.
 
-## Report Routine
+## Report routine
 
 `generateEvaluationReports` **MUST** be deterministic projection only.
 

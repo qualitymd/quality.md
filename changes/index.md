@@ -43,8 +43,6 @@ edit.
 
 # Open change cases
 
-- [0189 - Heading sentence case](0189-heading-sentence-case.md)
-  — `Design`.
 - [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md)
   — `In-Review`.
 

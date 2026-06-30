@@ -11,7 +11,7 @@ Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-012345
 
 Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-area.md)
 
-## Key Details
+## Key details
 
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
@@ -20,16 +20,16 @@ Area: [LedgerLite Service](../../root-area.md) / [Agent Harness](agent-harness-a
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Area / Factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
-- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
-- [Primary Source Data](#primary-source-data)
+- [Limits and incomplete inputs](#limits-and-incomplete-inputs)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 Agent guidance exposes the quality evaluation entry point clearly.
 
-## Area / Factor Breakdown
+## Area / Factor breakdown
 
 | ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
@@ -42,14 +42,14 @@ Agent guidance exposes the quality evaluation entry point clearly.
 | --- | --- | --- | --- |
 | [agent guidance routes quality evaluation work](requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md) | 🔵 Target | ✅ Assessed | [agent-accessibility](factors/agent-accessibility/agent-accessibility-factor.md) |
 
-## Limits & Incomplete Inputs
+## Limits and incomplete inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../data/evaluation-manifest.json)
 - [data/areas/agent-harness/area-analysis-result.json](../../data/areas/agent-harness/area-analysis-result.json)

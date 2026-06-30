@@ -1,4 +1,4 @@
-# Quality Evaluation Summary
+# Quality evaluation summary
 
 | Field | Value |
 | --- | --- |
@@ -22,7 +22,7 @@ The root is a grouping target. All three child deliverables now aggregate to tar
 | Format specification | 🔵 Target | 🔵 Target | Leaf target: aggregate equals local rating. The format spec satisfies every in-scope requirement at target or better. |
 | README | 🔵 Target | 🔵 Target | Leaf target: aggregate equals local rating. The front door now explains and demonstrates the tool adequately for release. |
 
-## Selected Findings
+## Selected findings
 
 1. **low**  
    Scalar placeholders such as <string> and <level-name> intentionally do not define detailed character-set or length bounds, leaving edge cases to conforming tools.
@@ -37,11 +37,11 @@ The root is a grouping target. All three child deliverables now aggregate to tar
    `SPECIFICATION.md:356`
    Assessment: `assessments/006-format-spec-each-rule-is-observable-or-testable.json`
 
-## Recommended Actions
+## Recommended actions
 
 No recommendation records exist for this run.
 
-## Scope & Limitations
+## Scope and limitations
 
 Scope: **Full evaluation**
 

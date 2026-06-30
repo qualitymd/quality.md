@@ -65,7 +65,7 @@ Use visible Markdown for:
 
 Use frontmatter only for non-judgmental document metadata that makes report
 identity, routing, and indexing cheap for agents or secondary tooling. Put
-source-data links in the visible `Primary Source Data` section at the end of the
+source-data links in the visible `Primary source data` section at the end of the
 report.
 
 ### One-second orientation
@@ -87,9 +87,9 @@ The top of a primary run report should have one stable job per section:
 
 1. H1: report kind and subject.
 2. `Summary`: bottom line, main reason, and consequence.
-3. `Key Details`: compact table of scan-critical facts.
+3. `Key details`: compact table of scan-critical facts.
 4. `Contents`: local navigation for the major sections in this report.
-5. `Model Evaluation`: the evaluated Model structure and ratings.
+5. `Model evaluation`: the evaluated Model structure and ratings.
 6. Ranked findings and recommendations.
 
 Keep these roles distinct. Do not repeat the same fact in navigation, summary
@@ -100,7 +100,7 @@ For run reports, frontmatter owns routing metadata. Do not repeat
 frontmatter-only facts such as Evaluation ID, creation time, and stable subject
 reference in the visible body unless they materially help human judgment. Keep
 scope visible when it changes how the rating should be read, usually in
-`Key Details` and the H1 title for factor-scoped runs.
+`Key details` and the H1 title for factor-scoped runs.
 
 ### Deterministic projection
 
@@ -109,12 +109,12 @@ Evaluation data. Do not introduce report-only findings, ratings, evidence,
 limits, recommendations, or analysis in the Markdown body or in frontmatter.
 
 Structured data under `data/` remains the machine-readable source of truth.
-The report body may point to that data in its bottom `Primary Source Data`
+The report body may point to that data in its bottom `Primary source data`
 section, but the report must not become a second result format.
 
 Keep rating drivers in structured Evaluation payloads instead of rendering
 standalone `Rating Drivers` body sections. If a reader or agent needs the full
-rating trace, the report's `Primary Source Data` section should point them to
+rating trace, the report's `Primary source data` section should point them to
 the relevant primary analysis payload; the visible body should foreground
 summaries, ratings, findings, recommendations, model evaluation, limits, and
 incomplete inputs.
@@ -134,7 +134,7 @@ Good header table examples:
 - Findings report: `Findings`, `Highest Concern Severity`;
 - Recommendations report: `Recommendations`, `Highest Impact`, `Coverage`.
 
-For `report.md`, render this table under `## Key Details` instead of leaving it
+For `report.md`, render this table under `## Key details` instead of leaving it
 as an unlabeled header table. The key-details table is for facts: rating,
 confidence, scope, total Finding count, and total Recommendation count. Do not
 use the key-details table for summary prose, recommendation text, evidence,
@@ -162,11 +162,11 @@ report-list artifacts. Do not overload breadcrumbs with every report in the run.
 ### Summary, key details, and contents
 
 Put the bottom line before long tables. For the run report, use an explicit
-`## Summary` section before Top Findings and Top Recommendations. The summary is
+`## Summary` section before Top findings and Top recommendations. The summary is
 prose: it should state the overall judgment, the main reason, the quality
 consequence, and the best next move when a recommendation is available.
 
-Use `## Key Details` for scan-critical facts. This prevents the summary from
+Use `## Key details` for scan-critical facts. This prevents the summary from
 turning into a metadata dump and prevents the key-details table from trying to
 explain judgment.
 
@@ -184,18 +184,18 @@ fewer than two substantive top-level body sections.
 
 Useful run-report targets, when the corresponding sections are rendered:
 
-- `Model Evaluation`;
-- `Top Findings`;
-- `Top Recommendations`;
-- `Primary Source Data`;
+- `Model evaluation`;
+- `Top findings`;
+- `Top recommendations`;
+- `Primary source data`;
 
 Useful detail-report targets, when the corresponding sections are rendered:
 
-- `Area / Factor Breakdown`;
-- `Limits & Incomplete Inputs`;
-- `Findings Summary`;
-- `Finding Details`;
-- `Unknowns & Missing Evidence`.
+- `Area / Factor breakdown`;
+- `Limits and incomplete inputs`;
+- `Findings summary`;
+- `Finding details`;
+- `Unknowns and missing evidence`.
 
 For `report.md`, render Contents after the opening summary and key details, so
 the reader sees the bottom line before document navigation. For detail and list
@@ -242,7 +242,7 @@ durable report spec for that artifact allows them:
 ```yaml
 ---
 type: Evaluation Overview Report
-title: "Quality Evaluation - LedgerLite Service"
+title: "Quality evaluation - LedgerLite Service"
 evaluationId: 20260629T120000Z-0123456789ab
 created: 2026-06-29T12:00:00Z
 model: QUALITY.md
@@ -264,8 +264,8 @@ leading Markdown `#` marker. Detail reports keep prefixes such as
 `Requirement:` or `Area:` in both the H1 and frontmatter title when they are
 part of the report document title; the `type` field already carries the report
 artifact taxonomy. The run report should title the user's quality-evaluation
-scope directly as `Quality Evaluation - <Area>` and append factor filters in
-parentheses, for example `Quality Evaluation - Public API (Reliability,
+scope directly as `Quality evaluation - <Area>` and append factor filters in
+parentheses, for example `Quality evaluation - Public API (Reliability,
 Correctness)`.
 
 Use report types that name the reported subject and keep the word `Report` in
@@ -278,8 +278,8 @@ the type so report artifacts do not collide with Model concepts:
 | `areas/<area>/<area>-area.md`         | `Area Evaluation Report`        | Area                           |
 | `factors/<factor>/<factor>-factor.md` | `Factor Evaluation Report`      | Factor                         |
 | `requirements/<requirement>/...`      | `Requirement Evaluation Report` | Requirement                    |
-| `findings.md`                         | `Finding Index Report`          | Ranked Findings                |
-| `recommendations.md`                  | `Recommendation Index Report`   | Ranked Recommendations         |
+| `findings.md`                         | `Finding Index Report`          | Ranked findings                |
+| `recommendations.md`                  | `Recommendation Index Report`   | Ranked recommendations         |
 | `recommendations/<number>-<slug>.md`  | `Recommendation Report`         | Recommendation                 |
 
 Avoid `type: Area`, `type: Factor`, or `type: Requirement`; those name Model
@@ -305,7 +305,7 @@ confidence, severity, finding type, recommendation impact, and priority-like
 value as a text label, optionally preceded by a marker or icon. Markers are
 supplemental scanning aids; do not rely on color or icon shape alone.
 
-In `Model Evaluation` and `Area / Factor Breakdown` tables, use
+In `Model evaluation` and `Area / Factor breakdown` tables, use
 `▦ Area / □ Factor` as the first column label. This keeps the Area and Factor row
 markers visible as a compact key while row cells still carry linked text labels.
 
@@ -327,15 +327,15 @@ definitions and fixed vocabulary tables. Reports must still render text labels
 in cells, so the reader should not need the glossary to understand basic table
 values.
 
-### Primary Source Data at the bottom
+### Primary source data at the bottom
 
-Every generated report should end with a stable `## Primary Source Data`
+Every generated report should end with a stable `## Primary source data`
 section. The section lists the report-local primary structured Evaluation
 payloads used to render that report artifact. This is the only standard footer
 utility section.
 
 ```markdown
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
@@ -370,7 +370,7 @@ result, key facts, evaluated Model shape, and ranked evidence obvious without
 duplicating detail-report navigation or provenance sections.
 
 ```markdown
-# Quality Evaluation - LedgerLite Service
+# Quality evaluation - LedgerLite Service
 
 > **Evaluation links:** [report.md](report.md) | [findings.md](findings.md) | [recommendations.md](recommendations.md) | [glossary.md](../../../glossary.md)
 
@@ -378,7 +378,7 @@ duplicating detail-report navigation or provenance sections.
 
 LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
 
-## Key Details
+## Key details
 
 | Overall Rating | Confidence | Scope                                 | Findings | Recommendations |
 | -------------- | ---------- | ------------------------------------- | -------- | --------------- |
@@ -386,12 +386,12 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 ## Contents
 
-- [Model Evaluation](#model-evaluation)
-- [Top Findings](#top-findings)
-- [Top Recommendations](#top-recommendations)
-- [Primary Source Data](#primary-source-data)
+- [Model evaluation](#model-evaluation)
+- [Top findings](#top-findings)
+- [Top recommendations](#top-recommendations)
+- [Primary source data](#primary-source-data)
 
-## Model Evaluation
+## Model evaluation
 
 | ▦ Area / □ Factor                                                      | Overall Rating | Local Rating | Findings | Recommendations |
 | ---------------------------------------------------------------------- | -------------- | ------------ | -------- | --------------- |
@@ -401,17 +401,17 @@ LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback 
 
 ...
 
-## Top Findings
+## Top findings
 
 **Full findings report:** [findings.md](findings.md) (7 total: 🚩 2 Gaps: 🔴 1 High, 🟡 1 Medium; ⚠️ 1 Risk: 🟡 1 Medium; 💪 4 Strengths)
 
-## Top Recommendations
+## Top recommendations
 
 **Full recommendations report:** [recommendations.md](recommendations.md) (3 total; impact: ⬥ 1 High, ● 2 Medium)
 
 ...
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
@@ -456,16 +456,16 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Area / Factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
-- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
-- [Primary Source Data](#primary-source-data)
+- [Limits and incomplete inputs](#limits-and-incomplete-inputs)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
-## Area / Factor Breakdown
+## Area / Factor breakdown
 
 | ▦ Area / □ Factor                                            | Overall Rating | Local Rating | Findings | Recommendations |
 | ------------------------------------------------------------ | -------------- | ------------ | -------- | --------------- |
@@ -497,9 +497,9 @@ Factor: [Correctness](correctness-factor.md)
 
 - [Summary](#summary)
 - [Requirements](#requirements)
-- [Sub-Factors](#sub-factors)
-- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
-- [Primary Source Data](#primary-source-data)
+- [Sub-factors](#sub-factors)
+- [Limits and incomplete inputs](#limits-and-incomplete-inputs)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
@@ -530,10 +530,10 @@ Factors: [correctness](../../factors/correctness/correctness-factor.md)
 ## Contents
 
 - [Summary](#summary)
-- [Findings Summary](#findings-summary)
-- [Finding Details](#finding-details)
-- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
-- [Primary Source Data](#primary-source-data)
+- [Findings summary](#findings-summary)
+- [Finding details](#finding-details)
+- [Unknowns and missing evidence](#unknowns-and-missing-evidence)
+- [Primary source data](#primary-source-data)
 ```
 
 ### Recommendation detail reports
@@ -563,7 +563,7 @@ Trace: [Public API](../areas/api/api-area.md) / [Correctness](../areas/api/facto
 - [Done criterion](#done-criterion)
 - [Ranking rationale](#ranking-rationale)
 - [Trace](#trace)
-- [Primary Source Data](#primary-source-data)
+- [Primary source data](#primary-source-data)
 ```
 
 ## Checklist
@@ -577,8 +577,8 @@ Before changing report output, check:
   where those reports exist.
 - Detail report hierarchical context is visible through Area, Factor, or Factors
   lines.
-- `report.md` uses `## Summary`, `## Key Details`, `## Contents`, and
-  `## Model Evaluation` before ranked lists.
+- `report.md` uses `## Summary`, `## Key details`, `## Contents`, and
+  `## Model evaluation` before ranked lists.
 - Frontmatter-only routing metadata is not repeated in the visible body unless
   it materially helps human judgment.
 - Summary prose states judgment, reason, and consequence without becoming a
@@ -594,6 +594,6 @@ Before changing report output, check:
 - Generated reports do not render local or bottom `Legend` sections.
 - Frontmatter contains readable, non-judgmental document metadata only.
 - No generated report introduces claims that are absent from structured data.
-- The bottom `Primary Source Data` section lists report-local primary payloads,
+- The bottom `Primary source data` section lists report-local primary payloads,
   not every transitive payload used by linked detail reports.
 - Empty values render visibly and consistently.

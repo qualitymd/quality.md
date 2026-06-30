@@ -1,4 +1,4 @@
-# Authoring Guides
+# Authoring guides
 
 Routed sub-guides for authoring, reviewing, and improving QUALITY.md files. Read
 [`../authoring.md`](../authoring.md) first, then the sub-guides relevant to the

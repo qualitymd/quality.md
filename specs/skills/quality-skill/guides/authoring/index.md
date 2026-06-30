@@ -1,4 +1,4 @@
-# Authoring Guide Specs
+# Authoring guide specs
 
 Durable sub-specs for the runtime authoring guide family. The structure mirrors
 `skills/quality/guides/authoring/`.

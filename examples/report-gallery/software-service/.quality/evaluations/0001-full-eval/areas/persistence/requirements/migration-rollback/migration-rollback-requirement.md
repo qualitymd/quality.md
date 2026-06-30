@@ -13,7 +13,7 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Ledger Persistence](../.
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
-## Key Details
+## Key details
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
@@ -22,22 +22,22 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 ## Contents
 
 - [Summary](#summary)
-- [Findings Summary](#findings-summary)
-- [Finding Details](#finding-details)
-- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
-- [Primary Source Data](#primary-source-data)
+- [Findings summary](#findings-summary)
+- [Finding details](#finding-details)
+- [Unknowns and missing evidence](#unknowns-and-missing-evidence)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 Rollback instructions are present, but the rehearsal signal is stale.
 
-## Findings Summary
+## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `risk-001` | Rollback guidance exists, but rehearsal evidence is stale. | ⚠️ Risk | 🟡 Medium | 🔵 Medium | The finding constrains recoverability to minimum until rollback rehearsal is refreshed. | 🟡 Plausible: Stale rehearsal evidence plausibly misses drift in newer migration behavior. |
 
-## Finding Details
+## Finding details
 
 <a id="finding-risk-001"></a>
 
@@ -62,7 +62,7 @@ Status: 🟡 Plausible
 
 Stale rehearsal evidence plausibly misses drift in newer migration behavior.
 
-##### Basis Evidence
+##### Basis evidence
 
 (none recorded)
 
@@ -77,13 +77,13 @@ Rating effect: constrains target
 - `synthetic-source:persistence/migration-runbook`: The synthetic runbook contains rollback steps and a rehearsal note older than the latest two migrations.
   Rationale: Synthetic source reference retained to demonstrate evidence rendering.
 
-## Unknowns & Missing Evidence
+## Unknowns and missing evidence
 
 | Type | Detail |
 | --- | --- |
 | (none recorded) | — |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)

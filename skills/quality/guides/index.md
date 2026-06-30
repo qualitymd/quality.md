@@ -1,4 +1,4 @@
-# /quality Runtime Guides
+# /quality runtime guides
 
 Runtime guide resources bundled with the `/quality` skill.
 

@@ -25,7 +25,7 @@ described in [RFC 2119](../docs/reference/rfc2119.md) and
 [RFC 8174](../docs/reference/rfc8174.md) when, and only when, they appear in all
 capitals.
 
-## Background / Motivation
+## Background / motivation
 
 [`internal/schema`](../internal/schema/schema.go) already expresses the
 structural frontmatter schema in Go for the linter to consume. External consumers

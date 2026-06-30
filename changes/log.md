@@ -1,11 +1,30 @@
-# Changes Update Log
+# Changes update log
 
 ## 2026-06-30
 
+- **Done**: Implemented and archived
+  [0189 - Heading sentence case](archive/0189-heading-sentence-case.md).
+  Active Markdown/MDX headings, generated Evaluation report titles/headings,
+  Contents labels, Mintlify specification output, runtime skill docs, and
+  checked-in report-gallery artifacts now use sentence case while preserving
+  proper names, formal model vocabulary, model-provided titles, and historical
+  archive records.
+
+- **In-Review**: Completed implementation for
+  [0189 - Heading sentence case](archive/0189-heading-sentence-case.md). Active
+  docs, durable specs, runtime skill content, generated report labels, generated
+  docs, tests, and checked-in gallery output are aligned for review.
+
+- **In-Progress**: Advanced
+  [0189 - Heading sentence case](archive/0189-heading-sentence-case.md). Functional
+  requirements and design are settled; implementation is beginning across active
+  docs, specs, runtime skill files, generated report labels, generated docs, and
+  checked-in gallery output.
+
 - **Design**: Created
-  [0189 - Heading sentence case](0189-heading-sentence-case.md) with its
-  [functional spec](0189-heading-sentence-case/spec.md) and
-  [design doc](0189-heading-sentence-case/design.md). The case scopes
+  [0189 - Heading sentence case](archive/0189-heading-sentence-case.md) with its
+  [functional spec](archive/0189-heading-sentence-case/spec.md) and
+  [design doc](archive/0189-heading-sentence-case/design.md). The case scopes
   sentence-case heading alignment across active docs, specs, Mintlify output,
   runtime skill files, generated reports, and checked-in report-gallery output
   while preserving proper names, model titles, and historical archives. It

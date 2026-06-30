@@ -4,7 +4,7 @@ title: Output Policy
 description: Policy for consuming and summarizing command output in /quality workflows.
 ---
 
-# Output Policy
+# Output policy
 
 Use CLI output in the form that matches the task.
 

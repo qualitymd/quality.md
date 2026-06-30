@@ -11,7 +11,7 @@ Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-012345
 
 Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 
-## Key Details
+## Key details
 
 | Overall Rating | Local Rating | Confidence |
 | --- | --- | --- |
@@ -20,16 +20,16 @@ Area: [LedgerLite Service](../../root-area.md) / [Public API](api-area.md)
 ## Contents
 
 - [Summary](#summary)
-- [Area / Factor Breakdown](#area--factor-breakdown)
+- [Area / Factor breakdown](#area--factor-breakdown)
 - [Requirements](#requirements)
-- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
-- [Primary Source Data](#primary-source-data)
+- [Limits and incomplete inputs](#limits-and-incomplete-inputs)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 The API has predictable errors, but idempotency retry semantics need a tighter contract.
 
-## Area / Factor Breakdown
+## Area / Factor breakdown
 
 | ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
@@ -44,14 +44,14 @@ The API has predictable errors, but idempotency retry semantics need a tighter c
 | [mutation endpoints are idempotent under retry](requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed | [correctness](factors/correctness/correctness-factor.md) |
 | [error responses are predictable for callers](requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed | [operability](factors/operability/operability-factor.md) |
 
-## Limits & Incomplete Inputs
+## Limits and incomplete inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../data/evaluation-manifest.json)
 - [data/areas/api/area-analysis-result.json](../../data/areas/api/area-analysis-result.json)

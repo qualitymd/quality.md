@@ -204,7 +204,7 @@ case. Unless they are promoted into the durable spec, the spec inherits the rule
 and loses the reason, and a later editor re-litigates a settled lesson or
 "simplifies" a rule back into the bug it fixed. So when a Change Case updates a
 durable spec, it should lift that rationale into the spec's
-**Background / Motivation** (the
+**Background / motivation** (the
 big-picture *why*) and its per-requirement **annotations** (the fine-grained
 *why*), exactly as the [functional-spec guide](write-functional-specs.md)
 describes — not just port the functional delta. The design doc stays in the
@@ -254,7 +254,7 @@ A Change Case's `status` frontmatter advances, in order:
   Case updates a durable spec, it should also promote the
   [enduring *why*](#account-for-the-artifacts-it-touches) — the Change Case's
   motivation and the design doc's durable rationale — into the spec's
-  **Background / Motivation** and per-requirement annotations, so the reason a
+  **Background / motivation** and per-requirement annotations, so the reason a
   requirement exists survives the change's archival rather than dying with it.
 - When implementation is complete, set **In-Review**. Do **not** archive the
   case at this point, and agents must not commit the changes. Leave the parent
@@ -274,3 +274,6 @@ from [`changes/schema.md`](../../changes/schema.md) or add a new one there. Afte
 any add, move, or status change, update the enclosing `index.md` and add a
 [`log.md`](../../changes/log.md) entry in the same edit. See
 [Working with OKF](work-with-okf.md) for the full editing contract.
+
+Use sentence case for active Change Case headings and current log headings.
+Preserve proper nouns, formal type names, and archived historical headings.

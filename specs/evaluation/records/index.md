@@ -1,4 +1,4 @@
-# Evaluation Records
+# Evaluation records
 
 Structured JSON payload and data-layout contracts for Evaluation.
 

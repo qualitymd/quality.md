@@ -4,7 +4,7 @@ title: Recommendation Follow-Up
 description: Guide for applying or handing off evaluation recommendations.
 ---
 
-# Recommendation Follow-Up
+# Recommendation follow-up
 
 Use recommendation follow-up after `/quality improve` resolves to a compatible
 recommendation artifact. It is not a separate public `/quality` workflow: it is
@@ -59,7 +59,7 @@ If the user does not choose one of those outcomes, stop without changing
 evaluated source, `QUALITY.md`, `.quality/changelog/`, or external systems. Do not
 present defer, skip, or keep open as formal options.
 
-## Apply Now
+## Apply now
 
 Before editing anything, present a decision brief:
 
@@ -108,7 +108,7 @@ Before applying a model-changing recommendation, read
 [`authoring.md`](authoring.md), the routed authoring sub-guide for the model
 element being changed, and [`authoring/quality-changelog.md`](authoring/quality-changelog.md).
 
-## Issue-Tracker Handoff
+## Issue-tracker handoff
 
 Issue handoff does not edit evaluated source, `QUALITY.md`, or `.quality/changelog/`.
 

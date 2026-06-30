@@ -53,18 +53,18 @@ structured data produces byte-identical report files.
 `plannedScope.areaId`, narrowed by `factorFilter` when present. It **MUST NOT**
 choose a headline subject from `EvaluationFrame` or any other agent-authored
 payload ordering. `report.md` **MUST** title the run entrypoint as
-`Quality Evaluation - <Area title>` and append a parenthesized comma-separated
+`Quality evaluation - <Area title>` and append a parenthesized comma-separated
 Factor title list when `plannedScope.factorFilter` is present. `report.md`
 **MUST** render non-judgmental run metadata in YAML frontmatter, omit the
 visible top run-context line, and open with the standard `Evaluation links:`
-blockquote, `Summary`, `Key Details`, `Contents`, and `Model Evaluation` before
-Top Findings.
-`report.md` **MUST NOT** render visible `Limits & Incomplete Inputs`, `Scope`,
+blockquote, `Summary`, `Key details`, `Contents`, and `Model evaluation` before
+Top findings.
+`report.md` **MUST NOT** render visible `Limits and incomplete inputs`, `Scope`,
 `Coverage`, or `Report Details` sections.
 
 `build` **MUST** render persisted Advice outputs into `report.md`,
 `findings.md`, `recommendations.md`, and recommendation detail reports under
-`recommendations/`. `report.md` **MUST** include Top Findings and Top
+`recommendations/`. `report.md` **MUST** include Top findings and Top
 Recommendations sections capped at 10 rows each and **MUST** link to
 `findings.md` and `recommendations.md`. Recommendation report content **MUST** be
 rendered from persisted Advice data and the model snapshot, not from YAML
@@ -76,7 +76,7 @@ match the report's visible H1 title text. Generated reports **MUST** render
 Contents sections and `Evaluation links:` navigation and **MUST NOT** render
 compact `Jump to:` lines, local `Legend` blocks, or a bottom `Legend` section as
 defined by the report-tree contract. Every generated Markdown report **MUST**
-end with a `Primary Source Data` section listing the report-local primary
+end with a `Primary source data` section listing the report-local primary
 structured Evaluation payload files used as source data for the specific report
 artifact. The generated `data/evaluation-output-result.json` index **MUST NOT**
 be listed as report source data unless a report is directly rendered from it.

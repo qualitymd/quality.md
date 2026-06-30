@@ -1,4 +1,4 @@
-# QUALITY.md Specification
+# QUALITY.md specification
 
 **Specification version:** 0.9 (Draft)
 
@@ -59,7 +59,7 @@ formats, filters, aggregation methods, or authoring aids, but it MUST NOT do so
 where explicitly disallowed or where doing so would make the application
 non-conforming.
 
-### Conformance Classes
+### Conformance classes
 
 A QUALITY.md document conforms when it satisfies the document and frontmatter
 requirements in this specification.
@@ -148,7 +148,7 @@ values are not model references unless a section explicitly says so.
 **Evaluation Report**: The structured result of evaluating a Model, including
 scope, Findings summaries, ratings, rationales, and advice.
 
-## Names and Model References
+## Names and Model references
 
 Area names, Factor names, Requirement names, and Rating Level IDs MUST match:
 
@@ -206,7 +206,7 @@ alone. Tools MUST NOT persist unqualified references in evaluation routine data,
 `EvaluationOutputResult`, or other durable machine-readable artifacts.
 Mixed-reference surfaces MUST require qualified model references.
 
-## Document Structure
+## Document structure
 
 A QUALITY.md document is a Markdown file containing:
 
@@ -224,7 +224,7 @@ The location of a QUALITY.md document defines the default Source for the root
 area: the directory containing the file and all descendants. A root area can
 override that default by declaring `source`.
 
-## Frontmatter Schema
+## Frontmatter schema
 
 Every property present in the frontmatter MUST use the YAML shape specified in
 this section. Frontmatter that parses as YAML but does not conform to these
@@ -411,7 +411,7 @@ direct Area Requirement.
 Model's Rating Scale. Each value MUST be a non-empty scalar criterion. A
 criterion override replaces only that level's criterion for that Requirement.
 
-## Body Semantics
+## Body semantics
 
 The Markdown body documents context for building, interpreting, using, and
 evaluating the Model. The format does not require any body section names,
@@ -422,7 +422,7 @@ open questions, evidence context, or other important context for the Model.
 Evaluators can use body content when judging model fit, importance, rationale,
 and advice.
 
-## Evaluation Semantics
+## Evaluation semantics
 
 Evaluation interprets a Model against selected Sources, produces Findings for
 Requirements, rates Requirement Assessments, analyzes Factors and Areas,
@@ -446,7 +446,7 @@ The current Evaluation workflow is specified in
 routine outputs under `data/` and renders reports deterministically from those
 outputs.
 
-### Define Scope
+### Define scope
 
 By default, an Evaluation's scope is the whole Model: every Area and every
 Requirement within each Area.
@@ -601,7 +601,7 @@ Advice SHOULD identify:
 - Top recommendations: ranked recommendations by expected quality impact,
   confidence, and quality-bar relevance.
 
-## Report Semantics
+## Report semantics
 
 An Evaluation Report is the structured result of an Evaluation.
 
@@ -667,7 +667,7 @@ ratingScale:
     criterion: "Does not meet the requirement to an acceptable degree."
 ```
 
-## Appendix B: Minimal Example
+## Appendix B: Minimal example
 
 This appendix is non-normative.
 
@@ -705,7 +705,7 @@ factors:
 This model covers the checkout API and the payment write path it owns.
 ```
 
-## Appendix C: Invalid Counter-Examples
+## Appendix C: Invalid counter-examples
 
 This appendix is non-normative.
 

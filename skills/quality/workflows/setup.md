@@ -4,7 +4,7 @@ title: Setup Workflow
 description: Runtime workflow for creating or updating a useful first QUALITY.md.
 ---
 
-# Setup Workflow
+# Setup workflow
 
 Run this workflow to create or update a useful first `QUALITY.md`. Setup writes
 the selected `QUALITY.md` and writes a current-run workflow feedback log under
@@ -128,7 +128,7 @@ read-only scan.
    [`../guides/getting-started.md`](../guides/getting-started.md) when setup
    needs first-run iteration guidance.
 
-## Read Context
+## Read context
 
 Inspect available repository context before asking setup questions. Keep this
 bounded to setup signals, not source-quality judgment.
@@ -215,7 +215,7 @@ preview. If there were material pre-log workflow-experience events, such as a
 slow context scan, CLI friction, or redaction decision, summarize them without
 duplicating model content from the preview.
 
-## Ask Discovery Questions
+## Ask discovery questions
 
 Ask the user to confirm or correct the setup assumptions before writing
 `QUALITY.md`. Questions 1-5 carry a recommended answer and confidence label.
@@ -424,7 +424,7 @@ Do not ask users to design factors, child Areas, Requirements, or custom Rating
 Level names cold. Derive model shape from the setup brief, discovery answers,
 authoring guide, and repository context.
 
-## Factor Proposal Checkpoint
+## Factor proposal checkpoint
 
 After discovery questions and the human context checkpoint, present a draft
 factor proposal before the final review gate. This checkpoint teaches the factor
@@ -498,7 +498,7 @@ materially changes root Area, domain, risk tolerance, or human context, update
 the affected discovery answer in the final recap rather than treating the factor
 proposal as isolated.
 
-## Review and Confirm
+## Review and confirm
 
 After all discovery questions, the human context checkpoint, and the factor
 proposal checkpoint are answered, stop for a review gate before writing
@@ -667,7 +667,7 @@ frontmatter model:
   Factor under `factors` when that guide defines one coherent judgment across
   the Factors.
 
-## Verify and Close
+## Verify and close
 
 Run `qualitymd lint [path]`. Stop on lint errors, report the CLI findings, and
 route to continued `QUALITY.md` iteration. Do not recommend evaluation while the

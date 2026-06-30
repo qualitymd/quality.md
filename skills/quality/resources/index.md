@@ -1,4 +1,4 @@
-# /quality Runtime Resources
+# /quality runtime resources
 
 Reference resources bundled with the `/quality` skill.
 

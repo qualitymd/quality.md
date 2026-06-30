@@ -463,11 +463,11 @@ func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifa
 			highestFindingSeverityTitle(artifacts),
 		},
 		Contents: []reportContentLink{
-			{Label: "Ranked Findings", Anchor: "#ranked-findings"},
-			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+			{Label: "Ranked findings", Anchor: "#ranked-findings"},
+			{Label: "Primary source data", Anchor: "#primary-source-data"},
 		},
 	})
-	b.WriteString("## Ranked Findings\n\n")
+	b.WriteString("## Ranked findings\n\n")
 	writeRankedFindingsTable(&b, spec, artifacts, "findings.md", 0)
 	writePrimarySourceDataSection(&b, "findings.md", data)
 	return b.String()
@@ -495,12 +495,12 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 			recommendationCoverageSummary(artifacts),
 		},
 		Contents: []reportContentLink{
-			{Label: "Ranked Recommendations", Anchor: "#ranked-recommendations"},
+			{Label: "Ranked recommendations", Anchor: "#ranked-recommendations"},
 			{Label: "Coverage", Anchor: "#coverage"},
-			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+			{Label: "Primary source data", Anchor: "#primary-source-data"},
 		},
 	})
-	index.WriteString("## Ranked Recommendations\n\n")
+	index.WriteString("## Ranked recommendations\n\n")
 	writeRecommendationIndexTable(&index, spec, artifacts, "recommendations.md")
 	writeAdviceCoverageSummary(&index, artifacts)
 	writePrimarySourceDataSection(&index, "recommendations.md", indexData)
@@ -571,7 +571,7 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 		}
 	}
 	if len(header.SummaryHead) > 0 {
-		b.WriteString("## Key Details\n\n")
+		b.WriteString("## Key details\n\n")
 		writeReportSummaryTable(b, header.SummaryHead, header.SummaryRow)
 	}
 	writeContentsSection(b, header.Contents)
@@ -632,7 +632,7 @@ func writePrimarySourceDataSection(b *strings.Builder, reportPath string, paths 
 	default:
 		b.WriteString("\n\n")
 	}
-	b.WriteString("## Primary Source Data\n\n")
+	b.WriteString("## Primary source data\n\n")
 	for _, path := range reportSourceData(paths...) {
 		b.WriteString("- " + reportLink(reportPath, path, path) + "\n")
 	}
@@ -877,7 +877,7 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 			{Label: "Done criterion", Anchor: "#done-criterion"},
 			{Label: "Ranking rationale", Anchor: "#ranking-rationale"},
 			{Label: "Trace", Anchor: "#trace"},
-			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+			{Label: "Primary source data", Anchor: "#primary-source-data"},
 		},
 	})
 	writeRecommendationSection(&b, "Description", firstString(rec, "description"))
@@ -924,20 +924,20 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	writeEvaluationLinks(&b, reportPath, runRel)
 	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(scopedArea))
-	b.WriteString("\n\n## Key Details\n\n")
+	b.WriteString("\n\n## Key details\n\n")
 	writeRunReportKeyDetails(&b, spec, artifacts, plan, scopedArea, localArea)
 	writeContentsSection(&b, []reportContentLink{
-		{Label: "Model Evaluation", Anchor: "#model-evaluation"},
-		{Label: "Top Findings", Anchor: "#top-findings"},
-		{Label: "Top Recommendations", Anchor: "#top-recommendations"},
-		{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+		{Label: "Model evaluation", Anchor: "#model-evaluation"},
+		{Label: "Top findings", Anchor: "#top-findings"},
+		{Label: "Top recommendations", Anchor: "#top-recommendations"},
+		{Label: "Primary source data", Anchor: "#primary-source-data"},
 	})
-	writeAreaFactorBreakdownSection(&b, "Model Evaluation", spec, artifacts, plan.ScopedAreaID, reportPath)
+	writeAreaFactorBreakdownSection(&b, "Model evaluation", spec, artifacts, plan.ScopedAreaID, reportPath)
 	writeRunReportCoverageNote(&b, reports, reportPath)
-	b.WriteString("## Top Findings\n\n")
+	b.WriteString("## Top findings\n\n")
 	writeFullFindingsReportLink(&b, reportPath, artifacts)
 	writeRankedFindingsTable(&b, spec, artifacts, reportPath, 10)
-	b.WriteString("## Top Recommendations\n\n")
+	b.WriteString("## Top recommendations\n\n")
 	writeFullRecommendationsReportLink(&b, reportPath, artifacts)
 	writeTopRecommendationsTable(&b, spec, artifacts, reportPath, 10)
 	writePrimarySourceDataSection(&b, reportPath, data)
@@ -1165,16 +1165,16 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		},
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
-			{Label: "Area / Factor Breakdown", Anchor: "#area--factor-breakdown"},
+			{Label: "Area / Factor breakdown", Anchor: "#area--factor-breakdown"},
 			{Label: "Requirements", Anchor: "#requirements"},
-			{Label: "Limits & Incomplete Inputs", Anchor: "#limits--incomplete-inputs"},
-			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+			{Label: "Limits and incomplete inputs", Anchor: "#limits-and-incomplete-inputs"},
+			{Label: "Primary source data", Anchor: "#primary-source-data"},
 		},
 	})
 	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(overall))
 	b.WriteString("\n\n")
-	writeAreaFactorBreakdownSection(&b, "Area / Factor Breakdown", spec, artifacts, area.ID, reportPath)
+	writeAreaFactorBreakdownSection(&b, "Area / Factor breakdown", spec, artifacts, area.ID, reportPath)
 	b.WriteString("## Requirements\n\n")
 	b.WriteString("| Requirement | Rating | Status | Factors |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
@@ -1186,7 +1186,7 @@ func renderEvaluationAreaReport(spec *model.Spec, artifacts *evaluationArtifacts
 		}
 		b.WriteString("\n")
 	}
-	b.WriteString("## Limits & Incomplete Inputs\n\n")
+	b.WriteString("## Limits and incomplete inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
@@ -1223,9 +1223,9 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
 			{Label: "Requirements", Anchor: "#requirements"},
-			{Label: "Sub-Factors", Anchor: "#sub-factors"},
-			{Label: "Limits & Incomplete Inputs", Anchor: "#limits--incomplete-inputs"},
-			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+			{Label: "Sub-factors", Anchor: "#sub-factors"},
+			{Label: "Limits and incomplete inputs", Anchor: "#limits-and-incomplete-inputs"},
+			{Label: "Primary source data", Anchor: "#primary-source-data"},
 		},
 	})
 	b.WriteString("## Summary\n\n")
@@ -1241,7 +1241,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		}
 		b.WriteString("\n")
 	}
-	b.WriteString("## Sub-Factors\n\n")
+	b.WriteString("## Sub-factors\n\n")
 	b.WriteString("| Factor | Path | Local Rating | + Sub-Factors Rating |\n")
 	b.WriteString("| --- | --- | --- | --- |\n")
 	if children := artifacts.childFactors(factor.ID); len(children) == 0 {
@@ -1254,7 +1254,7 @@ func renderEvaluationFactorReport(spec *model.Spec, artifacts *evaluationArtifac
 		}
 		b.WriteString("\n")
 	}
-	b.WriteString("## Limits & Incomplete Inputs\n\n")
+	b.WriteString("## Limits and incomplete inputs\n\n")
 	writeEvaluationLimitsTable(&b, local, overall)
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
@@ -1286,10 +1286,10 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 		},
 		Contents: []reportContentLink{
 			{Label: "Summary", Anchor: "#summary"},
-			{Label: "Findings Summary", Anchor: "#findings-summary"},
-			{Label: "Finding Details", Anchor: "#finding-details"},
-			{Label: "Unknowns & Missing Evidence", Anchor: "#unknowns--missing-evidence"},
-			{Label: "Primary Source Data", Anchor: "#primary-source-data"},
+			{Label: "Findings summary", Anchor: "#findings-summary"},
+			{Label: "Finding details", Anchor: "#finding-details"},
+			{Label: "Unknowns and missing evidence", Anchor: "#unknowns-and-missing-evidence"},
+			{Label: "Primary source data", Anchor: "#primary-source-data"},
 		},
 	})
 	b.WriteString("## Summary\n\n")
@@ -1300,11 +1300,11 @@ func renderEvaluationRequirementReport(spec *model.Spec, artifacts *evaluationAr
 	} else {
 		b.WriteString("No assessment summary was recorded.")
 	}
-	b.WriteString("\n\n## Findings Summary\n\n")
+	b.WriteString("\n\n## Findings summary\n\n")
 	writeEvaluationFindingsTable(&b, req.Assessment)
-	b.WriteString("## Finding Details\n\n")
+	b.WriteString("## Finding details\n\n")
 	writeEvaluationFindingDetails(&b, artifacts, req)
-	b.WriteString("## Unknowns & Missing Evidence\n\n")
+	b.WriteString("## Unknowns and missing evidence\n\n")
 	writeEvaluationUnknownsTable(&b, req.Assessment, req.Rating)
 	writePrimarySourceDataSection(&b, reportPath, data)
 	return b.String()
@@ -1427,13 +1427,13 @@ func reportForRootArea(reports []evaluationRenderedReport) *evaluationRenderedRe
 func evaluationRunReportTitle(spec *model.Spec, plan *evaluationReportPlan) string {
 	label := areaTitle(spec, plan.ScopedAreaID)
 	if len(plan.FactorFilter) == 0 {
-		return "Quality Evaluation - " + label
+		return "Quality evaluation - " + label
 	}
 	factors := make([]string, 0, len(plan.FactorFilter))
 	for _, factor := range plan.FactorFilter {
 		factors = append(factors, factorTitle(spec, factor))
 	}
-	return "Quality Evaluation - " + label + " (" + strings.Join(factors, ", ") + ")"
+	return "Quality evaluation - " + label + " (" + strings.Join(factors, ", ") + ")"
 }
 
 func requestedScopeLabel(scope RunScope) string {
@@ -2412,7 +2412,7 @@ func writeFindingBasisSection(b *strings.Builder, headingLevel int, finding map[
 	if rationale := firstString(basis, "rationale"); rationale != "" {
 		b.WriteString("Rationale: " + rationale + "\n\n")
 	}
-	writeFindingEvidenceSection(b, headingLevel+1, "Basis Evidence", objectSlice(basis["evidence"]))
+	writeFindingEvidenceSection(b, headingLevel+1, "Basis evidence", objectSlice(basis["evidence"]))
 }
 
 func writeFindingEffectSection(b *strings.Builder, headingLevel int, finding map[string]any) {

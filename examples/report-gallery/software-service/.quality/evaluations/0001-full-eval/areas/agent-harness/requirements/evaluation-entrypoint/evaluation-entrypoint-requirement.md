@@ -13,7 +13,7 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Agent Harness](../../age
 
 Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibility-factor.md)
 
-## Key Details
+## Key details
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
@@ -22,22 +22,22 @@ Factors: [agent-accessibility](../../factors/agent-accessibility/agent-accessibi
 ## Contents
 
 - [Summary](#summary)
-- [Findings Summary](#findings-summary)
-- [Finding Details](#finding-details)
-- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
-- [Primary Source Data](#primary-source-data)
+- [Findings summary](#findings-summary)
+- [Finding details](#finding-details)
+- [Unknowns and missing evidence](#unknowns-and-missing-evidence)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 The agent-facing entry point is clear enough for quality evaluation work.
 
-## Findings Summary
+## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `strength-004` | Agent guidance points to the quality model and generated report path. | 💪 Strength | — | 🟢 High | The finding supports the target agent-accessibility rating. | ✅ Verified: The synthetic guidance gives an agent a direct path from model to evaluation report. |
 
-## Finding Details
+## Finding details
 
 <a id="finding-strength-004"></a>
 
@@ -62,7 +62,7 @@ Status: ✅ Verified
 
 The synthetic guidance gives an agent a direct path from model to evaluation report.
 
-##### Basis Evidence
+##### Basis evidence
 
 (none recorded)
 
@@ -77,13 +77,13 @@ Rating effect: supports target
 - `synthetic-source:agent-harness/guidance`: The synthetic guidance links the model, evaluation workflow, and report output.
   Rationale: Synthetic source reference retained to demonstrate evidence rendering.
 
-## Unknowns & Missing Evidence
+## Unknowns and missing evidence
 
 | Type | Detail |
 | --- | --- |
 | (none recorded) | — |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/evaluation-entrypoint/requirement-assessment-result.json)

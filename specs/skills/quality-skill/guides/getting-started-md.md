@@ -53,7 +53,7 @@ detail.
 
 ## Requirements
 
-### Runtime Use
+### Runtime use
 
 The skill root prompt **MUST** tell agents to read the getting-started guide
 after setup leaves a valid `QUALITY.md` with important model gaps, or when a user
@@ -71,7 +71,7 @@ Read-only orientation **SHOULD** prefer the getting-started guide over the broad
 authoring guide when the user has just initialized a skeleton or asks how to
 start from one.
 
-### Guide Content
+### Guide content
 
 The guide **MUST** identify its starting point as a valid `QUALITY.md` with
 important model gaps, and **MUST** tell the reader to resolve lint errors before
@@ -114,7 +114,7 @@ stale.
 The next-workflow guidance **MUST** use a labeled recommendation, numbered
 options, and an explicit `Answer` line.
 
-### Relationship to Authoring Guide
+### Relationship to authoring guide
 
 The getting-started guide **MUST** depend on and link to the authoring guide for
 format reference, concept guidance, and authoring best practices. It should stay

@@ -9,7 +9,7 @@ title: Findings
 
 Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-## Key Details
+## Key details
 
 | Findings | Highest Concern Severity |
 | --- | --- |
@@ -17,10 +17,10 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 ## Contents
 
-- [Ranked Findings](#ranked-findings)
-- [Primary Source Data](#primary-source-data)
+- [Ranked findings](#ranked-findings)
+- [Primary source data](#primary-source-data)
 
-## Ranked Findings
+## Ranked findings
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |
@@ -32,7 +32,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 | 6 | [The current owner for ledger recovery drills is ambiguous.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-gap-002) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | 🚩 Gap | 🟡 Medium |
 | 7 | [Agent guidance points to the quality model and generated report path.](areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement.md#finding-strength-004) | [Agent Harness](areas/agent-harness/agent-harness-area.md) | [Agent Accessibility](areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor.md) | 💪 Strength | — |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)

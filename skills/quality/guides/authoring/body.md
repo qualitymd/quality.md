@@ -5,7 +5,7 @@ description: Markdown-body guidance for QUALITY.md judgment context, unknowns, o
 tags: [quality, authoring, guide]
 ---
 
-# Authoring the Markdown Body
+# Authoring the Markdown body
 
 Read this when:
 
@@ -185,7 +185,7 @@ from spec.
   operators, maintainers, downstream systems). *A quality no named stakeholder
   would miss is rarely worth modeling.*
 
-#### Keep Scope, unknowns, open questions, and "not assessed" distinct
+#### Keep scope, unknowns, open questions, and "not assessed" distinct
 
 - **Do** use **Scope** for concerns outside the model's remit, and a section's
   **Unknowns** for in-scope concerns you've deliberately deferred or cannot yet

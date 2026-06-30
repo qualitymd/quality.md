@@ -131,7 +131,7 @@ paragraphs when a user is choosing, confirming, or reviewing.
 Avoid burying the primary call to action after rationale. Rationale matters, but
 it supports the choice.
 
-## Scannable Output
+## Scannable output
 
 Design output for a five-second scan. A user should be able to tell what
 happened, what matters, and what to do next without reading every sentence.
@@ -391,7 +391,7 @@ The checkpoint's primary call to action should still be explicit. Do not end a
 structured checkpoint with a broad catch-all question that makes the specific
 dimensions feel optional.
 
-## Review Gates
+## Review gates
 
 Use review gates when the agent has inferred an edit or plan and needs the user
 to correct, approve, or add context before mutation. A review gate can be lighter

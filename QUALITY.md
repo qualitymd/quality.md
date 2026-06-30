@@ -683,7 +683,7 @@ version?
 
 *Reviewed — not yet human-endorsed; agent-reviewed — Codex (GPT-5), 2026-06-25.*
 
-## Model Shape
+## Model shape
 
 The model is composite by design. `format-spec` covers the normative format
 contract. `quality-skill` covers the runtime agent skill and its judgment-bearing

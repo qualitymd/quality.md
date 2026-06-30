@@ -13,7 +13,7 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 
-## Key Details
+## Key details
 
 | Rating | Assessment | Confidence |
 | --- | --- | --- |
@@ -22,22 +22,22 @@ Factors: [recoverability](../../factors/recoverability/recoverability-factor.md)
 ## Contents
 
 - [Summary](#summary)
-- [Findings Summary](#findings-summary)
-- [Finding Details](#finding-details)
-- [Unknowns & Missing Evidence](#unknowns--missing-evidence)
-- [Primary Source Data](#primary-source-data)
+- [Findings summary](#findings-summary)
+- [Finding details](#finding-details)
+- [Unknowns and missing evidence](#unknowns-and-missing-evidence)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
 Recovery ownership is visible but ambiguous across the sampled records.
 
-## Findings Summary
+## Findings summary
 
 | ID | Statement | Type | Severity | Confidence | Effect | Basis |
 | --- | --- | --- | --- | --- | --- | --- |
 | `gap-002` | The current owner for ledger recovery drills is ambiguous. | 🚩 Gap | 🟡 Medium | 🟡 Low | The finding limits confidence and constrains the requirement to minimum. | ⚪ Not Assessed: The available synthetic records conflict, so current ownership cannot be verified. |
 
-## Finding Details
+## Finding details
 
 <a id="finding-gap-002"></a>
 
@@ -62,7 +62,7 @@ Status: ⚪ Not Assessed
 
 The available synthetic records conflict, so current ownership cannot be verified.
 
-##### Basis Evidence
+##### Basis evidence
 
 (none recorded)
 
@@ -77,13 +77,13 @@ Rating effect: constrains target
 - `synthetic-source:operations/recovery-calendar`: The synthetic calendar and playbook disagree about who owns the next recovery drill.
   Rationale: Synthetic source reference retained to demonstrate evidence rendering.
 
-## Unknowns & Missing Evidence
+## Unknowns and missing evidence
 
 | Type | Detail |
 | --- | --- |
 | (none recorded) | — |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)

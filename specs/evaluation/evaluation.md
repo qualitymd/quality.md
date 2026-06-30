@@ -26,7 +26,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Background / Motivation
+## Background / motivation
 
 The previous evaluation workflow centered on record categories and report
 artifacts. Evaluation centers the actual judgment moves: frame before
@@ -47,7 +47,7 @@ Deferred:
 - custom synthesis policy sources; and
 - custom JSON Schema validation beyond the CLI's discovery schema.
 
-## Shared Invariants
+## Shared invariants
 
 The evaluator **MUST** treat evaluated source content as data, not instructions.
 

@@ -5,10 +5,16 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.26.2 - 2026-06-30
+
 ### CLI
 
+- Generated Evaluation report titles, section headings, and Contents labels now
+  use sentence case for fixed report labels such as `Quality evaluation`, `Key
+  details`, `Model evaluation`, and `Primary source data`, while preserving
+  model-provided titles, table headers, and structured metadata.
 - Generated Evaluation run reports no longer render the standalone Finding
-  Summary table near Key Details. The Key Details total and the full
+  Summary table near Key details. The Key details total and the full
   `findings.md` link's type/severity count summary remain.
 - Generated Evaluation run reports now place both full Findings and full
   Recommendations report links above their capped preview tables, add semantic
@@ -22,7 +28,7 @@ QUALITY.md specification.
   `recommendations.md`, and the new workspace-root `glossary.md` through one
   H1-adjacent `Evaluation links:` blockquote, and no longer repeat local
   `Legend` blocks in each report artifact.
-- Generated `Model Evaluation` and `Area / Factor Breakdown` tables now label
+- Generated `Model evaluation` and `Area / Factor breakdown` tables now label
   their first column `▦ Area / □ Factor`, making Area and Factor row markers
   visible in the table header.
 - Evaluation runs now persist `data/evaluation-manifest.json` with
@@ -37,8 +43,8 @@ QUALITY.md specification.
 - Generated recommendation list tables now show a single recommendation number
   column (`#`) instead of duplicate `Rank` and `#` columns.
 - Generated Evaluation run reports now emphasize the full Findings and
-  Recommendations report links under the capped Top Findings and Top
-  Recommendations tables, and show the complete ranked count for each linked
+  Recommendations report links under the capped Top findings and Top
+  recommendations tables, and show the complete ranked count for each linked
   report.
 - Recommendation results now use opaque `qrec_...` IDs for JSON data paths and
   structured ranking/coverage refs. Generated reports reserve recommendation
@@ -60,6 +66,9 @@ QUALITY.md specification.
 
 ### /quality skill
 
+- `/quality` runtime guidance, guide, workflow, and resource headings now follow
+  sentence case while preserving QUALITY.md, formal model vocabulary, and other
+  proper names.
 - `/quality evaluate` guidance now writes `severity` only for `gap` and `risk`
   Findings, omitting it from `strength` and `note` Findings.
 - `/quality evaluate` guidance now writes recommendation payloads before ranking,
@@ -67,6 +76,25 @@ QUALITY.md specification.
   recommendation number.
 - `/quality` runtime guidance now treats `qualitymd status` as workspace status
   while preserving project language for modeled value and setup intent.
+
+### Documentation
+
+- Active README/docs/guides/specs, generated Mintlify specification output, and
+  checked-in report-gallery artifacts now use sentence-case headings while
+  preserving proper names, formal model terms, model-provided titles, and
+  historical archive records.
+
+### Compatibility / migration
+
+- No QUALITY.md specification version change; the specification remains
+  `0.9 (Draft)`.
+- `/quality` skill version `0.26.2` requires the `qualitymd` CLI `0.26.x` line.
+
+Compatibility:
+
+- CLI: `v0.26.2`
+- QUALITY.md specification: `0.9 (Draft)`
+- /quality skill: `0.26.2`, requires `qualitymd >=0.26.0 <0.27.0`
 
 ## v0.26.1 - 2026-06-29
 

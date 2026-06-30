@@ -1,4 +1,10 @@
-# Authoring Guides Update Log
+# Authoring guides update log
+
+## 2026-06-30
+
+- **Revision**: Updated authoring guide headings for 0189 - Heading Sentence
+  Case. Active authoring headings now use sentence case while preserving formal
+  model concept names.
 
 ## 2026-06-27
 

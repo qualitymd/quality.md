@@ -57,7 +57,7 @@ its own `schema.md` (see below). You may add any other keys you need.
   headings:
 
   ```markdown
-  # Update Log
+  # Update log
 
   ## 2026-06-16
 
@@ -102,6 +102,10 @@ tolerated — they may just point at not-yet-written concepts.
 3. Add a `log.md` entry for the change.
 4. If the concept introduces a new `type` value for that bundle, add it to the
    bundle's `schema.md`.
+
+Use sentence case for concept headings, listing headings, and current log
+headings. Preserve proper nouns and type names, and do not rewrite historical
+dated log entries just to normalize casing.
 
 That's the whole contract: parseable frontmatter, a `type`, and tidy `index.md` /
 `log.md`, plus schema registration for new local concept types. Everything else

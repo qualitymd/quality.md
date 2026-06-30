@@ -2,7 +2,7 @@
 okf_version: "0.1"
 ---
 
-# /quality Runtime Skill
+# /quality runtime skill
 
 Runtime content bundled with the `/quality` skill. Start with
 [`SKILL.md`](SKILL.md) for the executable skill prompt. Use this index for

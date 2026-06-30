@@ -15,7 +15,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Source Of Truth
+## Source of truth
 
 Report generation **MUST** consume `EvaluationOutputResult` and referenced
 structured routine outputs.
@@ -31,7 +31,7 @@ report-generation input. Generated reports are output conveniences for readers,
 agents, and editor previews; structured Evaluation data remains the source of
 truth.
 
-## Report Paths
+## Report paths
 
 The run-level Evaluation report **MUST** be generated as `report.md` at the run
 root.
@@ -77,7 +77,7 @@ recommendation ID when needed.
 > Structural IDs keep paths stable; the existing directory tree carries full
 > identity. — 0108, 0137
 
-## Report Frontmatter
+## Report frontmatter
 
 Every generated Markdown report **MUST** begin with YAML frontmatter.
 
@@ -120,12 +120,12 @@ manifests, or rendered display labels.
 > judgment and navigation. Report-local source-data pointers live in the visible
 > bottom section instead. — 0158, 0162, 0167, 0169
 
-## Primary Source Data Section
+## Primary source data section
 
-Every generated Markdown report **MUST** end with a `## Primary Source Data`
+Every generated Markdown report **MUST** end with a `## Primary source data`
 section.
 
-The `Primary Source Data` section **MUST** list the run-root-relative
+The `Primary source data` section **MUST** list the run-root-relative
 structured Evaluation payload paths used as primary source data for that
 specific Markdown report artifact. Primary source data is report-local: it
 includes payloads that establish the report's identity, scope, subject result,
@@ -142,7 +142,7 @@ Reports that render run number, Evaluation ID, creation time, model path, or
 requested scope from the Evaluation manifest **MUST** include
 `data/evaluation-manifest.json`.
 
-The `Primary Source Data` section **MUST NOT** include
+The `Primary source data` section **MUST NOT** include
 `data/evaluation-output-result.json` solely because that generated output index
 exists. A report **MAY** list `data/evaluation-output-result.json` only if that
 report is directly rendered from it.
@@ -156,7 +156,7 @@ report is directly rendered from it.
 > duplicating granular report provenance while preserving a stable bridge to the
 > structured inputs for the current report. — 0159, 0162, 0171
 
-## Fixed Enum Display
+## Fixed enum display
 
 Generated Markdown reports **MUST** render known fixed Evaluation enum values
 with the shared marker-plus-label display for that vocabulary. Structured JSON,
@@ -227,7 +227,7 @@ value descriptions inline; those descriptions belong in `glossary.md`.
 > drifting. Descriptions belong in catalog metadata and the shared glossary, not
 > repeated in generated report bodies. — 0173, 0179, 0183
 
-## Evaluation Links
+## Evaluation links
 
 Generated Markdown reports **MUST** render a compact cross-artifact navigation
 blockquote labeled exactly `Evaluation links:`.
@@ -272,15 +272,15 @@ The run-level `report.md` **MUST** render as the scoped Area report described by
 `EvaluationManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
-- `## Summary`, `## Key Details`, `## Contents`, and `## Model Evaluation`
-  before Top Findings;
+- `## Summary`, `## Key details`, `## Contents`, and `## Model evaluation`
+  before Top findings;
 - top 10 ranked findings;
 - top 10 ranked recommendations;
 - link to the Findings report;
 - link to the Recommendations report;
 - summary from the scoped Area result;
-- Model Evaluation table for the scoped Area;
-- requested Evaluation scope in Key Details; and
+- Model evaluation table for the scoped Area;
+- requested Evaluation scope in Key details; and
 - `Evaluation links:` navigation.
 
 The run-level `report.md` **MUST NOT** render the visible top `Run:` context
@@ -290,7 +290,7 @@ used by detail reports.
 The run report `## Summary` section **MUST** render the scoped Area summary.
 It **MUST NOT** render a `Recommended next action:` sentence.
 
-The run report `## Key Details` section **MUST** render a table with `Overall
+The run report `## Key details` section **MUST** render a table with `Overall
 Rating`, `Confidence`, `Scope`, `Findings`, and `Recommendations`, in that
 order. `Confidence` **MUST** render the scoped Area confidence paired with the
 visible `Overall Rating`, not a paired overall/local confidence value. `Scope`
@@ -300,10 +300,10 @@ ranked counts as `<N> total` and **MUST NOT** include the word `ranked`. The
 section **MUST NOT** include limits or incomplete-input counts.
 
 The run report **MUST NOT** render a standalone `Finding Summary` table near
-`## Key Details`.
+`## Key details`.
 
-> Rationale: `## Key Details` carries the quick total count, while the full
-> Findings report link under `## Top Findings` carries the complete ranked count
+> Rationale: `## Key details` carries the quick total count, while the full
+> Findings report link under `## Top findings` carries the complete ranked count
 > and inline type/severity summary beside the capped table it explains. Keeping a
 > second run-level count table in the opening repeats that hierarchy without
 > adding a destination link. — 0187
@@ -319,7 +319,7 @@ Generated reports **MUST NOT** render compact `Jump to:` lines.
 Generated reports **MUST NOT** render a `## Contents` section when the artifact
 is an OKF `index.md`, another listing/index artifact whose primary purpose is
 navigation, or a report with fewer than two substantive top-level body sections.
-The `## Primary Source Data` section **MUST** be eligible for generated Contents
+The `## Primary source data` section **MUST** be eligible for generated Contents
 when it is one of multiple substantive top-level sections in a generated report.
 
 > Rationale: report artifacts are reader-facing Markdown documents, and standard
@@ -330,13 +330,13 @@ when it is one of multiple substantive top-level sections in a generated report.
 The run-level `report.md` **MUST NOT** render `## Scope`, `## Coverage`, or
 `## Report Details` sections.
 
-The run-level `report.md` **MUST NOT** render a `## Limits & Incomplete Inputs`
+The run-level `report.md` **MUST NOT** render a `## Limits and incomplete inputs`
 section.
 
 The run-level `report.md` **MUST NOT** render a standalone `Rating Drivers`
 section or `Driver | Effect | Inputs` table. Rating drivers remain structured
 source data available through routine JSON payloads and granular report
-`Primary Source Data` sections.
+`Primary source data` sections.
 
 When `plannedScope.factorFilter` is non-empty, `report.md` **MUST** identify the
 filtered Factors in visible report content such as the H1 title.
@@ -347,7 +347,7 @@ but it **MUST NOT** use a `## Coverage` section for that signal.
 The run report **MUST NOT** introduce report-only findings, ratings, evidence,
 limits, analysis, recommendations, candidate actions, or source claims.
 
-The Top Findings table **MUST** render rows from
+The Top findings table **MUST** render rows from
 `FindingRankingResult.orderedFindings` ordered by rank and capped at 10 rows. It
 **MUST** render the columns `Rank`, `Finding`, `Area`, `Factors`, `Type`, and
 `Severity`, in that order. The `Finding` cell **MUST** use the finding
@@ -364,8 +364,8 @@ The top finding and recommendation sections **MUST** be omitted only when the
 persisted Advice payloads contain no rows to render. `report.md` **MUST** always
 link to `findings.md` and `recommendations.md` when the report tree is built.
 Because the run-report tables are capped overview tables, each full-list link
-**MUST** render immediately after its corresponding `## Top Findings` or
-`## Top Recommendations` heading and before the capped table. Those full-list
+**MUST** render immediately after its corresponding `## Top findings` or
+`## Top recommendations` heading and before the capped table. Those full-list
 links **MUST** render as emphasized sentence-case labels followed by
 filename-as-label links and the complete ranked count outside the link text:
 
@@ -394,7 +394,7 @@ semicolon. The impact summary **MUST** begin with lowercase `impact:` and then
 render non-zero recommendation impact groups in Recommendation impact catalog
 order, using the impact marker, count, and text label separated by commas.
 
-The Top Recommendations table **MUST** render rows from
+The Top recommendations table **MUST** render rows from
 `RecommendationRankingResult.orderedRecommendations` ordered by rank and capped
 at 10 rows. It **MUST** render the columns `#`, `Recommendation`, `Area /
 Factors`, `Impact`, `Confidence`, and `Reason`, in that order. The `#` cell
@@ -415,17 +415,17 @@ ranking entry. The `Reason` cell **MUST** render
 `findings.md` **MUST** render a complete ranked Findings report from
 `FindingRankingResult`. It **MUST** include:
 
-- a `## Ranked Findings` section;
+- a `## Ranked findings` section;
 - all ranked findings ordered by rank;
-- the same columns and link behavior as the run report Top Findings table.
+- the same columns and link behavior as the run report Top findings table.
 
-## Recommendation Reports
+## Recommendation reports
 
 `recommendations.md` **MUST** render a complete Recommendations report from
 persisted `RecommendationResult` payloads and `RecommendationRankingResult`.
 It **MUST** include:
 
-- a `## Ranked Recommendations` section;
+- a `## Ranked recommendations` section;
 - all ranked recommendations with a `#` column derived from
   `RecommendationRankingResult.orderedRecommendations[].rank` and no separate
   `Rank` column;
@@ -474,7 +474,7 @@ after frontmatter. The H1 **MUST** prefix the subject display title with the
 report kind: `Area:` for root and non-root Area reports, `Factor:` for Factor
 reports, `Requirement:` for Requirement reports, and `Recommendation:` for
 recommendation detail reports. The run-level H1 **MUST** identify the report as
-a Quality Evaluation. The H1 title line and frontmatter `title` **MUST** use the
+a Quality evaluation. The H1 title line and frontmatter `title` **MUST** use the
 same plain-text title.
 
 Every non-run report **MUST** render a run context line near the H1, after the
@@ -519,7 +519,7 @@ Factor report.
 Report tables **MUST** render the row subject as the generated human report link
 when that row has exactly one generated human report target. Generated Markdown
 report bodies **MUST NOT** duplicate report-level source-data links in `Data`
-columns or equivalent header source-data lines; the `Primary Source Data`
+columns or equivalent header source-data lines; the `Primary source data`
 section owns those pointers.
 
 > Rationale: labeled trails expose the Model hierarchy directly, and subject-cell
@@ -539,14 +539,14 @@ Area reports **MUST** include:
 - overall and local ratings;
 - overall and local confidence;
 - summary;
-- Area / Factor Breakdown for the reported Area;
+- Area / Factor breakdown for the reported Area;
 - local Requirements; and
 - limits and incomplete inputs.
 
 Area reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
 structured Area Analysis Result payloads listed in the report's
-`Primary Source Data` section.
+`Primary source data` section.
 
 ## Factor Reports
 
@@ -562,13 +562,13 @@ Factor reports **MUST** include:
 - confidence;
 - summary;
 - direct Requirements;
-- direct Sub-Factors; and
+- direct Sub-factors; and
 - limits and incomplete inputs.
 
 Factor reports **MUST NOT** render standalone `Rating Drivers` sections or
 `Driver | Effect | Inputs` tables. Rating drivers remain available in the
 structured Factor Analysis Result payloads listed in the report's
-`Primary Source Data` section.
+`Primary source data` section.
 
 ## Requirement Reports
 
@@ -599,7 +599,7 @@ Finding detail sections **MUST NOT** render finding-local `candidateActions`.
 Candidate actions remain finding-local raw material; selected next moves belong
 in `RecommendationResult` and generated recommendation reports.
 
-## Rendering Rules
+## Rendering rules
 
 Reports **MUST** render empty tables with explicit empty-state rows.
 
@@ -614,11 +614,11 @@ condition, criteria, basis, effect, and evidence. Requirement Finding details
 Area and Factor reports **MUST NOT** render `Findings` sections. Their
 human-facing roll-up explanation belongs in summary, ratings, confidence,
 limits, incomplete inputs, and breakdown tables. Structured `ratingDrivers`
-remain available through report `Primary Source Data` links and routine JSON
+remain available through report `Primary source data` links and routine JSON
 payloads, not standalone Markdown body sections.
 
-Run reports **MUST** render a `Model Evaluation` section before Top Findings.
-Area reports **MUST** render an `Area / Factor Breakdown` section before
+Run reports **MUST** render a `Model evaluation` section before Top findings.
+Area reports **MUST** render an `Area / Factor breakdown` section before
 Requirement detail sections. Both sections use the same breakdown table columns:
 `▦ Area / □ Factor`, `Overall Rating`, `Local Rating`, `Findings`, and
 `Recommendations`, in that order. The first column label **MUST** include the
@@ -626,9 +626,9 @@ Area and Factor row markers as a compact key. The first column cell **MUST**
 render the row subject as the generated human report link when that report
 exists, and the table **MUST NOT** render a separate `Report` column.
 
-The run report's Model Evaluation table **MUST** list the scoped Area as the
+The run report's Model evaluation table **MUST** list the scoped Area as the
 first row, followed by in-scope descendant Areas and Factors in deterministic
-model order. An Area report's Area / Factor Breakdown **MUST** list the reported
+model order. An Area report's Area / Factor breakdown **MUST** list the reported
 Area as the first row, followed by its evaluated descendant Areas and Factors in
 deterministic model order. The first row **MUST** emphasize only the table's
 root Area in the first column cell. Area rows **MUST** carry the `▦` marker,
@@ -659,7 +659,7 @@ priority signals. The Findings report's priority signal should be labeled
 `Highest Concern Severity` and calculated from gap and risk Findings; attached
 Factors belong in the plural `Factors:` context line, not in the summary table.
 
-Opening summary tables **MUST** render under `## Key Details` when they are part
+Opening summary tables **MUST** render under `## Key details` when they are part
 of the report opening.
 
 > Rationale: the title identifies the report subject, so the header table should
@@ -669,15 +669,15 @@ of the report opening.
 > redundant. — 0104, 0119
 
 Run report frontmatter `title` and H1 text **MUST** render as
-`Quality Evaluation - <Area title>` for Area-only planned scopes. When the
+`Quality evaluation - <Area title>` for Area-only planned scopes. When the
 planned scope has a factor filter, the run report frontmatter `title` and H1
 text **MUST** render as
-`Quality Evaluation - <Area title> (<Factor title list>)`, where
+`Quality evaluation - <Area title> (<Factor title list>)`, where
 `<Factor title list>` contains every planned factor filter as comma-separated
 Factor titles in `EvaluationManifest.plannedScope.factorFilter` order. The run
 report title **MUST NOT** include `Evaluation Report`, `Area:`, raw Area
 references, or raw Factor references; stable scope references belong in
-`data/evaluation-manifest.json` and human-readable scope belongs in Key Details.
+`data/evaluation-manifest.json` and human-readable scope belongs in Key details.
 
 > Rationale: `report.md` and the report `type` already identify the artifact as
 > a report. The H1 should name the quality-evaluation scope, while
@@ -710,12 +710,12 @@ rating column `Local Rating`.
 > Rationale: the adjacent header columns are self-describing nouns, so bare
 > `Overall` / `Local` made a reader supply the missing noun. — 0111
 
-The Factor report Sub-Factors table lists a Factor's immediate descendant
+The Factor report Sub-factors table lists a Factor's immediate descendant
 Factors, one row per child. It **MUST** render a `Local Rating` column from the
-child's `localAnalysis` rating and a descendant-inclusive `+ Sub-Factors Rating`
+child's `localAnalysis` rating and a descendant-inclusive `+ Sub-factors Rating`
 column from the child's `localAndDescendantAnalysis` rating. It **MUST NOT**
 render a boolean in a rating column. When a row's subject has no descendant
-Factors, its `+ Sub-Factors Rating` cell **MUST** render an em dash (`—`) rather
+Factors, its `+ Sub-factors Rating` cell **MUST** render an em dash (`—`) rather
 than repeating the local rating.
 
 > Rationale: these breakdown tables previously rendered the aggregate rating in
@@ -725,7 +725,7 @@ than repeating the local rating.
 > signal without presenting a redundant rating. — 0097, 0111
 
 Factor reports **MUST** render the immediate descendant-Factor section heading
-as `Sub-Factors` and its empty-state row as `(no Sub-Factors)`. Reports
+as `Sub-factors` and its empty-state row as `(no Sub-factors)`. Reports
 **MUST NOT** use `Sub-Areas` or `Child Factors` for generated human-facing
 labels.
 

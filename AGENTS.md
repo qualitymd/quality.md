@@ -1,6 +1,6 @@
 # QUALITY.md
 
-## Project Context
+## Project context
 
 QUALITY.md is an open format for modeling a project's quality for the purpose
 of evaluation, team/agent alignment, and continuous improvement.
@@ -17,7 +17,7 @@ body. User-facing docs, guides, explainers, etc. should foreground the
 `/quality` agent skill or the `QUALITY.md` file itself and only highlight the
 CLI if necessary.
 
-## Major Components
+## Major components
 
 | Component         | Where to look                                                                                                                                                         |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -25,7 +25,7 @@ CLI if necessary.
 | `/quality` skill  | Runtime files live in [`skills/quality/`](skills/quality/); functional specs and guide outlines live in [`specs/skills/quality-skill/`](specs/skills/quality-skill/). |
 | `qualitymd` CLI   | Source starts at [`cmd/qualitymd/`](cmd/qualitymd/) and [`internal/`](internal/); CLI specs live in [`specs/cli/`](specs/cli/) and [`specs/cli.md`](specs/cli.md).    |
 
-## Working Rules
+## Working rules
 
 ### Instruction style
 
@@ -77,7 +77,7 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 | Adding a type or package to the Go code           | [Designing Go packages](docs/guides/design-go-packages.md)                     |
 | Writing Go code                                   | [Go style](docs/guides/go-style.md)                                            |
 
-## Repository Conventions
+## Repository conventions
 
 ### Naming QUALITY.md
 
@@ -103,8 +103,10 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 
 ### Heading capitalization
 
-- Use sentence case for headings in README, docs, guides, and specs: capitalize
-  only the first word, the first word after a colon, and proper nouns.
+- Use sentence case for headings in active Markdown/MDX surfaces, including
+  README, docs, guides, specs, runtime skill docs, Mintlify docs, generated
+  report artifacts, and active project records: capitalize only the first word,
+  the first word after a colon, and proper nouns.
 - Keep these capitalized in headings and prose as proper nouns: QUALITY.md,
   `qualitymd`, acronyms (CLI, OKF, YAML), model vocabulary used as terms of art
   (Model, Area, Factor, Agent Harnessability, Agent Harness), and the named loop
@@ -113,6 +115,12 @@ Before work, read the relevant [`docs/guides/`](docs/guides/index.md):
 - This proper-noun list is closed; lowercase generic or descriptive uses (quality
   loops, loop engineering, "up the loop stack") and preserve a cited source's own
   casing (e.g. Annie Vella's lowercase *middle loop*).
+- Generated Contents labels follow the same rule. Table headers, frontmatter
+  `type`, enum display labels, structured metadata, and user/model-provided
+  display titles are separate surfaces.
+- Preserve historical headings in `changes/archive/`,
+  `.quality/evaluations/archive/`, and historical changelog/log entries unless
+  intentionally editing history.
 - No trailing period in headings.
 
 ### Keep the motivation and taxonomy registers distinct

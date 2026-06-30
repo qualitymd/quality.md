@@ -4,13 +4,13 @@ title: Improve Workflow
 description: Runtime workflow stub for improving work or QUALITY.md after confirming focus and mutation surface.
 ---
 
-# Improve Workflow
+# Improve workflow
 
 Use improve to act on quality judgment. Improve starts read-only, confirms focus
 and mutation surface, then delegates to the existing safe route or stops at the
 stub boundary.
 
-## Decision Tree
+## Decision tree
 
 ```text
 Emit run frame first

@@ -19,7 +19,7 @@ Rigor: standard. Every in-scope Requirement is assessed with targeted evidence
 from the declared Area source and related assessment references. Rating-binding
 findings are re-checked before reporting.
 
-## In-Scope Areas
+## In-scope Areas
 
 - `/` (`area:root`) — QUALITY.md Project, including model-wide Agent
   Harnessability sub-factors.
@@ -33,7 +33,7 @@ findings are re-checked before reporting.
 - QUALITY.md Project QUALITY.md (`area:quality-md`).
 - Evaluation History (`area:evaluation-history`).
 
-## Out of Scope
+## Out of scope
 
 - Applying recommendations, editing evaluated source, editing `QUALITY.md`, or
   creating external issues.
@@ -41,14 +41,14 @@ findings are re-checked before reporting.
 - Exhaustive release matrix verification, hosted registry validation, or live
   install-channel tests beyond repository-visible smoke-check definitions.
 
-## History Context
+## History context
 
 The previous run `.quality/evaluations/0005-subject-quality-eval` is stale
 against the current model and not reportable with the current CLI record
 contract. It is used only as history context. Fresh evidence and the run's
 `model-snapshot.md` snapshot control this evaluation.
 
-## Methodological Constraints
+## Methodological constraints
 
 This evaluation is evidence-led but bounded to standard rigor. It inspects
 repository artifacts, local command behavior, and existing local evaluation

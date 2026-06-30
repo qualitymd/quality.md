@@ -2,7 +2,7 @@
 type: Change Case
 title: Heading sentence case
 description: Align active Markdown and MDX headings with the repository sentence-case convention while preserving proper names, model titles, and historical records.
-status: Design
+status: Done
 tags: [docs, specs, reports, skill, mintlify]
 timestamp: 2026-06-30T00:00:00Z
 ---
@@ -109,5 +109,9 @@ lint or checker.
 
 ## Status
 
-`Design`. The functional requirements and implementation approach are captured;
-code and document edits have not started. See the [status lifecycle](index.md#status-lifecycle).
+`Done`. Implemented and archived. Active authored docs/specs/skill files,
+generated Evaluation report labels, generated Mintlify spec output, and
+checked-in report-gallery artifacts now follow the sentence-case heading
+convention while preserving proper names, formal model terms, model-provided
+titles, and historical archives. See the
+[status lifecycle](../index.md#status-lifecycle).

@@ -1,4 +1,4 @@
-# /quality Runtime Workflows
+# /quality runtime workflows
 
 Workflow instruction files dispatched by `SKILL.md`.
 

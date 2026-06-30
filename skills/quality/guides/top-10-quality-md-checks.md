@@ -1,10 +1,10 @@
 ---
 type: Runtime Guide
-title: Top 10 QUALITY.md Checks
+title: Top 10 QUALITY.md checks
 description: Quick lifecycle and model-usefulness routing checks for QUALITY.md files.
 ---
 
-# Top 10 QUALITY.md Checks
+# Top 10 QUALITY.md checks
 
 Use this checklist for a fast, read-only inspection of a QUALITY.md file's
 lifecycle state and model usefulness. The result is not an Evaluation Report and
@@ -56,7 +56,7 @@ QUALITY.md inspection findings
 Keep evidence short. Cite section names, property paths, counts, or status JSON
 fields rather than quoting long passages.
 
-## The Checks
+## The checks
 
 ### 1. Model lifecycle state
 
@@ -68,7 +68,7 @@ valid with no history, valid with history, or needs evaluation reconciliation.
 - Finding when history needs reconciliation: route to history/reconciliation
   before a fresh evaluation unless the user explicitly wants a new run.
 
-### 2. Project Posture
+### 2. Project posture
 
 Inspect whether the model captures the project context that calibrates the
 quality bar: lifecycle, risk tolerance, and intended modeling rigor.
@@ -82,7 +82,7 @@ quality bar: lifecycle, risk tolerance, and intended modeling rigor.
 - Finding when production, maintenance, or sunset posture is stated but not
   reflected in factors or requirements: route to improve with model focus.
 
-### 3. Stakeholder and Needs Coverage
+### 3. Stakeholder and needs coverage
 
 Inspect whether the model makes the relevant stakeholder needs visible enough to
 justify the factors and requirements. Consider primary users,
@@ -98,7 +98,7 @@ collaborators/maintainers, and other affected stakeholders.
 - Finding when needs are generic enough that the same text could fit almost any
   project: route to improve with model focus.
 
-### 4. Agent and Collaboration Fit
+### 4. Agent and collaboration fit
 
 Inspect whether the model supports the assumed agent-heavy workflow plus the
 named human collaboration context.
@@ -113,7 +113,7 @@ named human collaboration context.
   contributor collaboration is implied but not reflected in factors,
   requirements, or body context: route to improve with model focus.
 
-### 5. Body Context and Missing Context
+### 5. Body context and missing context
 
 Inspect whether the Markdown body gives enough evaluable judgment context to
 build, use, and evaluate the model: Overview, Scope, Needs, and Risks should be
@@ -250,7 +250,7 @@ either inline or by referencing a traceable entity that defines it.
 - Finding when evidence or criteria cannot distinguish adjacent rating levels:
   route to improve with model focus before evaluation.
 
-### 10. Quality Loop Maintenance Signals
+### 10. Quality Loop maintenance signals
 
 Use evaluation history and visible model context to decide whether the next
 workflow is maintenance rather than new authoring or evaluation. The checklist
@@ -260,7 +260,7 @@ does not require or recommend CI or release gating by default.
   route to history/reconciliation. Treat malformed evaluation data as history status,
   not evaluated-source quality evidence; do not suggest manual data repair.
 
-## Summary Judgment
+## Summary judgment
 
 After the checks, report lifecycle state and the model-usefulness findings
 separately.

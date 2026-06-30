@@ -15,7 +15,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Protocol Order
+## Protocol order
 
 An Evaluation run **MUST** perform these protocol moves:
 
@@ -37,7 +37,7 @@ The protocol **MUST NOT** require a specific execution engine. Sequential
 execution and parallel worker execution are both valid when they satisfy the same
 dependency order and produce the same persisted outputs.
 
-## Area Traversal
+## Area traversal
 
 The evaluator **MUST** walk the Area tree bottom-up for analysis.
 
@@ -54,7 +54,7 @@ For each Area, the evaluator **MUST**:
 Root Area `localAndDescendantAnalysis`, when analyzed, is the overall evaluation
 result.
 
-## Planned Scope
+## Planned scope
 
 Evaluation output assembly **MUST** use `EvaluationManifest.plannedScope` as the run's
 authoritative scope. It **MUST NOT** select a headline subject from
@@ -69,7 +69,7 @@ Report generation **MUST** fail when required analysis data for the planned
 scope is missing. Coverage checks **MUST** compare the planned expansion against
 the structured analysis artifacts actually produced.
 
-## Factor Traversal
+## Factor traversal
 
 The evaluator **MUST** walk each Area's Factor tree bottom-up.
 
@@ -86,7 +86,7 @@ Analysis Result **MUST** record `localAnalysis` with the `empty` status and a
 reason, because there is no local signal to analyze; the Factor's
 `localAndDescendantAnalysis` carries the roll-up of its child Factor analyses.
 
-## Requirement Flow
+## Requirement flow
 
 A Requirement **MUST** be framed before evidence assessment.
 
@@ -96,7 +96,7 @@ Requirement rating **MUST** map the Requirement Assessment Result to the
 pre-framed applied Rating Level criteria. It **MUST NOT** inspect new evidence or
 change the criteria after evidence is observed.
 
-## Stop Conditions And Limits
+## Stop conditions and limits
 
 The protocol **MUST** distinguish stop conditions from evaluation limits.
 
@@ -108,7 +108,7 @@ When a routine cannot continue, it **SHOULD** produce no persisted output or a
 valid structured output with the appropriate non-complete status, such as
 `blocked`, `not_assessed`, `not_rated`, or `not_analyzed`.
 
-## Synthesis Defaults
+## Synthesis defaults
 
 Factor synthesis v0 **MUST** use
 `protocol:factor-synthesis-default-v0`.
@@ -123,7 +123,7 @@ Both defaults **MUST** preserve binding drivers and surface incomplete inputs.
 They **MUST NOT** synthesize new findings; roll-up explanation belongs in
 `ratingDrivers`, rationale, confidence, limits, and incomplete inputs.
 
-## Advice Flow
+## Advice flow
 
 Advice **MUST** run after Area analysis has completed and before output assembly
 or report generation.

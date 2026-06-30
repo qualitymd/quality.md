@@ -21,7 +21,7 @@ described in [RFC 2119](../../docs/reference/rfc2119.md) and
 [RFC 8174](../../docs/reference/rfc8174.md) when, and only when, they appear in
 all capitals.
 
-## Background / Motivation
+## Background / motivation
 
 Agents and CI need one cheap, deterministic way to answer "what state is this
 selected QUALITY.md workspace in?" without scraping `QUALITY.md`, evaluation

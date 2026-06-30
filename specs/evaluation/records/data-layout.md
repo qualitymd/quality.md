@@ -15,7 +15,7 @@ The key words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** are to be
 interpreted as described in BCP 14 when, and only when, they appear in all
 capitals.
 
-## Data Tree
+## Data tree
 
 An Evaluation run **MUST** store structured data under `data/`.
 
@@ -82,7 +82,7 @@ Factor data folders **MUST** contain:
 
 Nested Factors **MUST** recurse through nested `factors/` folders.
 
-## Report Tree
+## Report tree
 
 The run-level Evaluation report **MUST** be written to:
 
@@ -139,7 +139,7 @@ Recommendation detail reports **MUST** be written to:
 recommendations/<NNN>-<slug>.md
 ```
 
-## Path Derivation
+## Path derivation
 
 The CLI **MUST** derive data paths from payload `kind` and structural model IDs.
 For `RecommendationResult`, the CLI **MUST** derive the data path from the

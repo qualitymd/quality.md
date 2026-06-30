@@ -13,7 +13,7 @@ Area: [LedgerLite Service](../../../../root-area.md) / [Operations](../../operat
 
 Factor: [Observability](observability-factor.md)
 
-## Key Details
+## Key details
 
 | Overall Rating | Local Rating | Status | Confidence |
 | --- | --- | --- | --- |
@@ -23,9 +23,9 @@ Factor: [Observability](observability-factor.md)
 
 - [Summary](#summary)
 - [Requirements](#requirements)
-- [Sub-Factors](#sub-factors)
-- [Limits & Incomplete Inputs](#limits--incomplete-inputs)
-- [Primary Source Data](#primary-source-data)
+- [Sub-factors](#sub-factors)
+- [Limits and incomplete inputs](#limits-and-incomplete-inputs)
+- [Primary source data](#primary-source-data)
 
 ## Summary
 
@@ -37,20 +37,20 @@ Observability follows its direct requirement signal.
 | --- | --- | --- |
 | [health signals explain customer impact](../../requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md) | 🔵 Target | ✅ Assessed |
 
-## Sub-Factors
+## Sub-factors
 
 | Factor | Path | Local Rating | + Sub-Factors Rating |
 | --- | --- | --- | --- |
 | (no Sub-Factors) | — | — | — |
 
-## Limits & Incomplete Inputs
+## Limits and incomplete inputs
 
 | Type | Scope | Impact |
 | --- | --- | --- |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 | ⚠️ Evaluation Limits | synthetic-evaluation | Use for report design and example browsing only. |
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/operations/factors/observability/factor-analysis-result.json](../../../../data/areas/operations/factors/observability/factor-analysis-result.json)

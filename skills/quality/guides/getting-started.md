@@ -4,7 +4,7 @@ title: Getting Started with QUALITY.md
 description: First-run iteration guidance after setup leaves a valid QUALITY.md with important model gaps.
 ---
 
-# Getting Started with QUALITY.md
+# Getting started with QUALITY.md
 
 Use this guide after setup leaves a valid `QUALITY.md` with important model gaps,
 or when a user asks how to keep iterating on the first useful model. The goal is

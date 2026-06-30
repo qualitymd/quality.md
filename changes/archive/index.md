@@ -765,3 +765,7 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0187 — Remove Run Finding Summary](0187-remove-run-finding-summary.md) -
   removes the redundant run-level Finding Summary table while preserving Key
   Details totals and full Findings report count summaries (`Done`).
+- [0189 — Heading sentence case](0189-heading-sentence-case.md) - aligns active
+  Markdown/MDX headings, generated Evaluation report labels, runtime skill docs,
+  Mintlify output, and checked-in report artifacts with sentence case while
+  preserving proper names and historical records (`Done`).

@@ -9,7 +9,7 @@ title: "Recommendation: Rehearse migration rollback after schema changes"
 
 Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
-## Key Details
+## Key details
 
 | # | ID | Impact | Confidence | Reference |
 | --- | --- | --- | --- | --- |
@@ -23,7 +23,7 @@ Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-012345678
 - [Done criterion](#done-criterion)
 - [Ranking rationale](#ranking-rationale)
 - [Trace](#trace)
-- [Primary Source Data](#primary-source-data)
+- [Primary source data](#primary-source-data)
 
 ## Description
 
@@ -49,7 +49,7 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 
 - `{"kind":"RequirementAssessmentResult","selector":"findings[risk-001]","subject":{"requirementId":"requirement:persistence::migration-rollback"}}`
 
-## Primary Source Data
+## Primary source data
 
 - [data/evaluation-manifest.json](../data/evaluation-manifest.json)
 - [data/advice/recommendations/qrec_gallery2/recommendation-result.json](../data/advice/recommendations/qrec_gallery2/recommendation-result.json)

@@ -5,7 +5,7 @@ description: Area, source, decomposition, traceability, constituent, and use-con
 tags: [quality, authoring, guide]
 ---
 
-# Authoring Model Structure
+# Authoring Model structure
 
 Read this when:
 

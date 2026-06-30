@@ -49,7 +49,7 @@ writes (for example patch output or emitting a full rewritten file to stdout).
 `--fix` **MAY** be combined with `--json`; the JSON output then reports the
 post-repair findings and the repairs that were applied.
 
-## Rule System
+## Rule system
 
 The lint rule-system, rule-authoring guidance, and rule catalog live in
 [`qualitymd lint rules`](lint-rules.md). `lint` rules remain mechanically

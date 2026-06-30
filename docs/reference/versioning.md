@@ -17,7 +17,7 @@ This project has three separately versioned surfaces:
 The CLI and skill are distributed separately. They can be released from the same
 repository state, but the skill is not bundled with the CLI binary.
 
-## Where Versions Are Recorded
+## Where versions are recorded
 
 - CLI release version: the git release tag and build metadata reported by
   `qualitymd --version`.
@@ -26,7 +26,7 @@ repository state, but the skill is not bundled with the CLI binary.
   install documentation.
 - Specification version: the version line near the top of `SPECIFICATION.md`.
 
-## CLI Version
+## CLI version
 
 The `qualitymd` CLI uses SemVer and reports its version through:
 
@@ -71,7 +71,7 @@ change to the skill-facing CLI surface should bump the minor version; patch
 versions should preserve compatibility within the same minor line. After `1.0`,
 normal SemVer major-version compatibility rules apply.
 
-## Skill Version
+## Skill version
 
 The `/quality` skill has its own SemVer because it is installed and upgraded
 separately from the CLI.
@@ -98,7 +98,7 @@ CLI minor line. Current skill installers may ignore this project-owned metadata;
 release checks validate it, and release notes mirror it, but installer
 enforcement is deferred until an installer/package contract supports it.
 
-## Paired Skill and CLI Upgrades
+## Paired skill and CLI upgrades
 
 Use `/quality update` to maintain an existing `/quality` installation. The workflow
 plans the skill and CLI pair together: it reads the installed skill metadata,
@@ -115,7 +115,7 @@ Skill updates may not take effect in the currently running agent session. After
 the skill package changes, restart, reload, or start a new session when the
 agent discovers skills only at startup or caches loaded skill instructions.
 
-## Specification Version
+## Specification version
 
 `SPECIFICATION.md` carries a specification version for the QUALITY.md document
 format, frontmatter schema, evaluation semantics, and required report semantics.
@@ -128,7 +128,7 @@ require a specification version change.
 Each CLI release embeds one specification version. `qualitymd spec` emits the
 specification bundled with that CLI release.
 
-## Release Tags
+## Release tags
 
 Repository release tags coordinate the repository contents at release time. A
 tag can publish CLI binaries, npm packages, Homebrew artifacts, and skill
@@ -138,7 +138,7 @@ the CLI distribution.
 When a release changes more than one versioned surface, update every affected
 version and compatibility declaration in the same change.
 
-## Compatibility Policy
+## Compatibility policy
 
 The project does not currently maintain fine-grained capability versions. The
 skill uses the CLI SemVer range as the compatibility contract.

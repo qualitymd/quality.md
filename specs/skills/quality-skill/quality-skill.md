@@ -733,7 +733,7 @@ version/compatibility, update check, run creation, Evaluation data discovery and
 write/verify support, run listing/status, and report build. If any required
 surface is missing, it stops rather than hand-authoring the run.
 
-## Evaluation Workflow
+## Evaluation workflow
 
 The shared evaluation workflow lives in
 [/quality evaluation workflow](evaluation.md). That component spec owns
@@ -748,7 +748,7 @@ The reporting and run-artifact contract lives in
 folders, `model-snapshot.md`, structured `data/`, generated report forms,
 closeout behavior, and reportability expectations.
 
-## Quality Changelog
+## Quality changelog
 
 The convention-first quality changelog contract lives in
 [/quality quality changelog](quality-changelog.md). That component spec owns dated

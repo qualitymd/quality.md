@@ -4,12 +4,12 @@ title: Review Workflow
 description: Runtime workflow stub for reviewing an evaluation result, QUALITY.md model, or quality concern.
 ---
 
-# Review Workflow
+# Review workflow
 
 Use review to inspect what a quality signal means before deciding whether to
 act. Review is read-only by default.
 
-## Decision Tree
+## Decision tree
 
 ```text
 Emit run frame first
