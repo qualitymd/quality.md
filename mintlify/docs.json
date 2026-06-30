@@ -21,7 +21,7 @@
   },
   "navigation": {
     "pages": [
-      "overview",
+      "index",
       "quickstart",
       {
         "group": "The Quality Loop",
