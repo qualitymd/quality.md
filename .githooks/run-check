@@ -71,6 +71,9 @@ case "$mode" in
 		printf 'Regenerating Mintlify spec page for staged changes...\n'
 		mise run sync-spec-docs
 		git add mintlify/specification.mdx
+		printf 'Regenerating Mintlify CLI reference for staged changes...\n'
+		mise run cli-docs
+		git add mintlify/cli-reference.mdx
 		printf 'Running mise run check against staged changes...\n'
 		;;
 	committed)

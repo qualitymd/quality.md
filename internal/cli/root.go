@@ -107,6 +107,14 @@ func addCommand(root *cobra.Command, groupID string, cmd *cobra.Command) {
 	root.AddCommand(cmd)
 }
 
+// NewRootForDocs builds the command tree for offline introspection (for
+// example the CLI reference generator). It returns the same tree Execute runs,
+// but callers only read metadata and never invoke it, so the update-check and
+// completion side effects never fire.
+func NewRootForDocs() *cobra.Command {
+	return newRootCmd()
+}
+
 // Execute builds the command tree and runs it. It exits non-zero on error;
 // Fang renders the error.
 func Execute() {
