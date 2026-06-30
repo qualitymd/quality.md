@@ -57,10 +57,8 @@
     }
   },
   "integrations": {
-    "analytics": {
-      "ga4": {
-        "measurementId": "G-GQJYPWLMMJ"
-      }
+    "ga4": {
+      "measurementId": "G-GQJYPWLMMJ"
     }
   }
 }
