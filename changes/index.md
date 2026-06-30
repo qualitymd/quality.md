@@ -43,7 +43,8 @@ edit.
 
 # Open change cases
 
-No open change cases.
+- [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md)
+  — `In-Review`.
 
 Completed change cases live in [`archive/`](archive/); copy
 [`archive/0001-example-change`](archive/0001-example-change.md) as a starting

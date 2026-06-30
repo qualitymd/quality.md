@@ -1,0 +1,76 @@
+---
+title: Quality Evaluation - LedgerLite Service
+sidebarTitle: Example quality evaluation
+---
+
+{/* Generated from the report gallery by scripts/report-docs.mjs. Do not edit directly. */}
+
+> **Synthetic example.** This is a generated, illustrative quality evaluation for a fictional service. Ratings, findings, recommendations, and evidence are synthetic and demonstrate report structure only.
+
+> **Evaluation links:** [report.md](/examples/software-service/report) | [findings.md](/examples/software-service/findings) | [recommendations.md](/examples/software-service/recommendations) | [glossary.md](https://github.com/qualitymd/quality.md/blob/main/glossary.md)
+
+## Summary
+
+LedgerLite is usable in the synthetic evaluation, but API idempotency, rollback rehearsal, and recovery ownership keep the overall service below target.
+
+## Key Details
+
+| Overall Rating | Confidence | Scope | Findings | Recommendations |
+| --- | --- | --- | --- | --- |
+| 🟡 Minimum | 🔵 Medium | Full evaluation of LedgerLite Service | 7 total | 3 total |
+
+## Contents
+
+- [Model Evaluation](#model-evaluation)
+- [Top Findings](#top-findings)
+- [Top Recommendations](#top-recommendations)
+- [Primary Source Data](#primary-source-data)
+
+## Model Evaluation
+
+| ▦ Area / □ Factor | Overall Rating | Local Rating | Findings | Recommendations |
+| --- | --- | --- | --- | --- |
+| **[▦ LedgerLite Service](/examples/software-service/root-area)** | 🟡 Minimum | ⬜ Empty | 7 | 3 |
+| ↳ [▦ Agent Harness](/examples/software-service/areas/agent-harness/agent-harness-area) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Agent Accessibility](/examples/software-service/areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Public API](/examples/software-service/areas/api/api-area) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Correctness](/examples/software-service/areas/api/factors/correctness/correctness-factor) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Operability](/examples/software-service/areas/api/factors/operability/operability-factor) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Operations](/examples/software-service/areas/operations/operations-area) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Observability](/examples/software-service/areas/operations/factors/observability/observability-factor) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Recoverability](/examples/software-service/areas/operations/factors/recoverability/recoverability-factor) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [▦ Ledger Persistence](/examples/software-service/areas/persistence/persistence-area) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Integrity](/examples/software-service/areas/persistence/factors/integrity/integrity-factor) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Recoverability](/examples/software-service/areas/persistence/factors/recoverability/recoverability-factor) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+
+## Top Findings
+
+**Full findings report:** [findings.md](/examples/software-service/findings) (7 total: 🚩 2 Gaps: 🔴 1 High, 🟡 1 Medium; ⚠️ 1 Risk: 🟡 1 Medium; 💪 4 Strengths)
+
+| Rank | Finding | Area | Factors | Type | Severity |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [Mutation retry behavior is not fully specified for duplicate idempotency keys.](/examples/software-service/areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement#finding-gap-001) | [Public API](/examples/software-service/areas/api/api-area) | [Correctness](/examples/software-service/areas/api/factors/correctness/correctness-factor) | 🚩 Gap | 🔴 High |
+| 2 | [Common caller error cases share a documented response shape.](/examples/software-service/areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement#finding-strength-001) | [Public API](/examples/software-service/areas/api/api-area) | [Operability](/examples/software-service/areas/api/factors/operability/operability-factor) | 💪 Strength | — |
+| 3 | [Ledger mutation checks preserve balance invariants in the sampled paths.](/examples/software-service/areas/persistence/requirements/balance-invariants/balance-invariants-requirement#finding-strength-002) | [Ledger Persistence](/examples/software-service/areas/persistence/persistence-area) | [Integrity](/examples/software-service/areas/persistence/factors/integrity/integrity-factor) | 💪 Strength | — |
+| 4 | [Rollback guidance exists, but rehearsal evidence is stale.](/examples/software-service/areas/persistence/requirements/migration-rollback/migration-rollback-requirement#finding-risk-001) | [Ledger Persistence](/examples/software-service/areas/persistence/persistence-area) | [Recoverability](/examples/software-service/areas/persistence/factors/recoverability/recoverability-factor) | ⚠️ Risk | 🟡 Medium |
+| 5 | [Health dashboards connect service errors to failed customer actions.](/examples/software-service/areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement#finding-strength-003) | [Operations](/examples/software-service/areas/operations/operations-area) | [Observability](/examples/software-service/areas/operations/factors/observability/observability-factor) | 💪 Strength | — |
+| 6 | [The current owner for ledger recovery drills is ambiguous.](/examples/software-service/areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement#finding-gap-002) | [Operations](/examples/software-service/areas/operations/operations-area) | [Recoverability](/examples/software-service/areas/operations/factors/recoverability/recoverability-factor) | 🚩 Gap | 🟡 Medium |
+| 7 | [Agent guidance points to the quality model and generated report path.](/examples/software-service/areas/agent-harness/requirements/evaluation-entrypoint/evaluation-entrypoint-requirement#finding-strength-004) | [Agent Harness](/examples/software-service/areas/agent-harness/agent-harness-area) | [Agent Accessibility](/examples/software-service/areas/agent-harness/factors/agent-accessibility/agent-accessibility-factor) | 💪 Strength | — |
+
+## Top Recommendations
+
+**Full recommendations report:** [recommendations.md](/examples/software-service/recommendations) (3 total; impact: ⬥ 2 High, ● 1 Medium)
+
+| # | Recommendation | Area / Factors | Impact | Confidence | Reason |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [Tighten the idempotency replay contract](/examples/software-service/recommendations/001-tighten-the-idempotency-replay-contract) | [Public API](/examples/software-service/areas/api/api-area) / [Correctness](/examples/software-service/areas/api/factors/correctness/correctness-factor) | ⬥ High | 🔵 Medium | Callers and agents can verify retry behavior without inferring undocumented recovery semantics. |
+| 2 | [Rehearse migration rollback after schema changes](/examples/software-service/recommendations/002-rehearse-migration-rollback-after-schema-changes) | [Ledger Persistence](/examples/software-service/areas/persistence/persistence-area) / [Recoverability](/examples/software-service/areas/persistence/factors/recoverability/recoverability-factor) | ⬥ High | 🔵 Medium | Release risk drops because rollback instructions are proven against current migrations. |
+| 3 | [Assign a current recovery drill owner](/examples/software-service/recommendations/003-assign-a-current-recovery-drill-owner) | [Operations](/examples/software-service/areas/operations/operations-area) / [Recoverability](/examples/software-service/areas/operations/factors/recoverability/recoverability-factor) | ● Medium | 🟡 Low | Incident preparation has a clear owner agents and maintainers can route to. |
+
+## Primary Source Data
+
+- [data/evaluation-manifest.json](https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/data/evaluation-manifest.json)
+- [data/areas/root/area-analysis-result.json](https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/data/areas/root/area-analysis-result.json)
+- [data/advice/finding-ranking-result.json](https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/data/advice/finding-ranking-result.json)
+- [data/advice/recommendation-ranking-result.json](https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/data/advice/recommendation-ranking-result.json)
+

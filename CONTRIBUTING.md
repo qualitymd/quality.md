@@ -40,6 +40,8 @@ mise run fmt-md-check    # dprint check
 mise run npm-pack-check  # verify npm package README packaging
 mise run report-gallery  # regenerate checked-in example evaluation reports
 mise run report-gallery-check  # verify generated report gallery is current
+mise run report-docs  # regenerate the Mintlify example evaluation pages from the gallery
+mise run report-docs-check  # verify generated example evaluation pages are current
 mise run release-notes -- v0.3.0  # print curated release notes
 mise run release-check -- v0.3.0  # run pre-tag release checks
 mise run tidy            # go mod tidy
@@ -60,7 +62,8 @@ mise run hooks
 
 The repo-managed hooks run the same `mise run check` gate as CI. `pre-commit`
 temporarily stashes unstaged files, regenerates and stages
-`examples/report-gallery`, and checks the staged snapshot. `pre-push`
+`examples/report-gallery` and the generated Mintlify pages, and checks the
+staged snapshot. `pre-push`
 temporarily stashes local changes and checks the committed snapshot.
 
 ### Testing the CLI from another directory

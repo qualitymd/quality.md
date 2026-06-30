@@ -20,6 +20,10 @@
       {
         "group": "Reference",
         "pages": ["specification", "cli-reference"]
+      },
+      {
+        "group": "Examples",
+        "pages": ["examples/software-service/report"]
       }
     ]
   },

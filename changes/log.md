@@ -2,6 +2,18 @@
 
 ## 2026-06-30
 
+- **In-Review**: Created and implemented
+  [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md).
+  Added `scripts/report-docs.mjs`, which renders the report-gallery LedgerLite
+  evaluation into Mintlify pages under `mintlify/examples/software-service/`,
+  rewriting cross-links to internal docs routes (and data files / the glossary to
+  GitHub) and adding a single `Examples` nav group surfaced as
+  "Example quality evaluation". Wired `report-docs` / `report-docs-check` into
+  `mise.toml` (the `check` gate) and the `.githooks/run-check` staged path after
+  the gallery regenerates; documented the tasks in
+  [`CONTRIBUTING.md`](../CONTRIBUTING.md). The full `mise run check` gate and
+  `mint broken-links` pass. Updated the bundle [index](index.md).
+
 - **Done**: Implemented and archived
   [0187 - Remove Run Finding Summary](archive/0187-remove-run-finding-summary.md).
   Generated run reports no longer render the standalone `Finding Summary` table
