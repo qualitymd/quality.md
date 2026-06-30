@@ -2,6 +2,10 @@
 
 ## 2026-06-30
 
+- **Revision**: Updated [Cut a release](guides/cut-a-release.md). The release
+  guide now treats `release-check` as the local pre-tag gate and the GitHub
+  Actions preflight as the npm/Homebrew credential gate.
+
 - **Revision**: Updated active documentation headings and report examples for
   [0189 - Heading sentence case](../changes/archive/0189-heading-sentence-case.md).
   Current docs now state the active Markdown/MDX heading convention, preserve

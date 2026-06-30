@@ -83,6 +83,9 @@ QUALITY.md specification.
   checked-in report-gallery artifacts now use sentence-case headings while
   preserving proper names, formal model terms, model-provided titles, and
   historical archive records.
+- The release guide now treats local `release-check` as the pre-tag dry-run gate
+  and relies on GitHub Actions preflight to validate npm and Homebrew publishing
+  credentials from repository secrets.
 
 ### Compatibility / migration
 

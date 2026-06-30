@@ -22,11 +22,8 @@ Before cutting a release:
 - The main branch contains the intended release state.
 - CI is passing.
 - The working tree is clean.
-- `GITHUB_TOKEN` or `GH_TOKEN` is available locally for release preflight.
-- `NPM_TOKEN` is configured locally and as a repository secret for npm
-  publishing.
-- `HOMEBREW_TAP_GITHUB_TOKEN` is configured locally and as a repository secret
-  for the Homebrew tap.
+- The repository has `NPM_TOKEN` and `HOMEBREW_TAP_GITHUB_TOKEN` secrets
+  configured for the release workflow.
 - You can run the local dry-run tasks.
 
 Check the current state:
@@ -37,10 +34,10 @@ git fetch --tags
 git tag --list --sort=-version:refname | head
 ```
 
-The Homebrew token must be able to write to `qualitymd/homebrew-tap`. The npm
-token must be able to publish the `quality.md` package and every package in the
-`@qualitymd` scope. Rotate either token before tagging if preflight cannot prove
-that access.
+The Homebrew token secret must be able to write to `qualitymd/homebrew-tap`. The
+npm token secret must be able to publish the `quality.md` package and every
+package in the `@qualitymd` scope. The release workflow validates those
+credentials before publishing.
 
 ## Choose the release version
 
@@ -189,17 +186,6 @@ while `release-check` is validating the candidate tag. That is expected before
 the new tag exists; trust the final `release checks passed for <tag>` line and
 the release-note preview for the candidate version.
 
-Then run release preflight:
-
-```sh
-mise run release-preflight -- v0.3.0
-```
-
-The preflight check verifies that the target tag and GitHub Release do not
-already exist, that npm does not already contain the candidate package versions,
-that npm credentials authenticate, and that the Homebrew tap token can create
-and delete a temporary branch.
-
 After `release-check` passes, push the release-prep commit and wait for the
 hosted `main` CI run for that exact commit to pass before creating the tag:
 
@@ -235,6 +221,11 @@ The workflow requires two repository secrets in addition to the built-in
   package and the `@qualitymd` scope.
 - `HOMEBREW_TAP_GITHUB_TOKEN` — token with write access to
   `qualitymd/homebrew-tap`.
+
+The workflow runs `scripts/release-preflight.mjs --credentials-only` before
+publishing. That preflight verifies npm authentication and Homebrew tap write
+access from repository secrets; local release operators do not need npm or
+Homebrew credentials in their shell.
 
 Homebrew distribution uses a **cask**, not a formula: that is the
 recommended path for a self-published pre-built binary, so a binary-only formula
