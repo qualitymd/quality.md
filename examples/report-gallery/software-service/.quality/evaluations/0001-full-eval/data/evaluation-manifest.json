@@ -1,13 +1,16 @@
 {
   "schemaVersion": 3,
-  "kind": "RunManifest",
-  "id": "20260629T120000Z-0123456789ab",
-  "number": 1,
+  "kind": "EvaluationManifest",
+  "evaluationId": "20260629T120000Z-0123456789ab",
   "createdAt": "2026-06-29T12:00:00Z",
   "model": "QUALITY.md",
   "requestedScope": {},
   "plannedScope": {
     "areaId": "area:root",
     "factorFilter": []
+  },
+  "run": {
+    "number": 1,
+    "label": "0001-full-eval"
   }
 }

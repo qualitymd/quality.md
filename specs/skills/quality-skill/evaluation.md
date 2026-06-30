@@ -142,7 +142,7 @@ flowchart TD
 4. **Resolve scope and create the run** with
    `qualitymd evaluation create [model] [--area <area-id>] [--factor <factor-id>...]`,
    letting the CLI number the folder, snapshot `model-snapshot.md`, write
-   `data/run-manifest.json`, and prepare `data/`. When evaluation is narrowed to
+   `data/evaluation-manifest.json`, and prepare `data/`. When evaluation is narrowed to
    an Area or Factor, the skill **MUST** resolve the natural label or qualified
    reference to canonical `area:`/`factor:` IDs before invoking `create` and pass
    those IDs through `--area` and repeatable `--factor`. The skill **MUST NOT**
@@ -258,7 +258,7 @@ Scope **MUST** remain the mechanism by which a user bounds an evaluation's
 breadth: full evaluation by default, narrowed by an Area or Factor reference
 resolved to `--area` and/or `--factor` when supplied.
 
-Scoped evaluate runs **MUST** rely on the CLI-owned `RunManifest` for requested
+Scoped evaluate runs **MUST** rely on the CLI-owned `EvaluationManifest` for requested
 and planned scope. The skill **MUST NOT** write requested scope, Area lists, or
 Factor lists into the Evaluation Frame.
 

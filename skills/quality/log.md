@@ -2,6 +2,13 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated [`SKILL.md`](SKILL.md),
+  [`workflows/evaluate.md`](workflows/evaluate.md), and
+  [`resources/cli-workflow-conventions.md`](resources/cli-workflow-conventions.md)
+  for 0181 - Evaluation Identity Manifest. Runtime evaluation guidance now names
+  the CLI-owned Evaluation manifest and its `data/evaluation-manifest.json`
+  artifact.
+
 - **Revision**: Updated [`SKILL.md`](SKILL.md) and
   [`workflows/evaluate.md`](workflows/evaluate.md) for 0180 - Finding Taxonomy
   and Report Details. Runtime evaluation guidance now treats ambiguous

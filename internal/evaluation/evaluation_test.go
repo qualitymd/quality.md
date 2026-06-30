@@ -46,11 +46,11 @@ func TestCreateRunSeedsEvaluationLayoutOnly(t *testing.T) {
 			t.Fatalf("missing %s: %v", name, err)
 		}
 	}
-	manifest, err := loadRunManifest(filepath.Join(repo, result.Path))
+	manifest, err := loadEvaluationManifest(filepath.Join(repo, result.Path))
 	if err != nil {
-		t.Fatalf("loadRunManifest() error = %v", err)
+		t.Fatalf("loadEvaluationManifest() error = %v", err)
 	}
-	if manifest.Number != 1 || manifest.RequestedScope.AreaID != "" || manifest.PlannedScope.AreaID != "area:root" || len(manifest.PlannedScope.FactorFilter) != 0 {
+	if manifest.Run.Number != 1 || manifest.Run.Label != "0001-full-eval" || manifest.RequestedScope.AreaID != "" || manifest.PlannedScope.AreaID != "area:root" || len(manifest.PlannedScope.FactorFilter) != 0 {
 		t.Fatalf("manifest = %#v, want full root scope", manifest)
 	}
 	assertRunIdentity(t, manifest)
@@ -64,20 +64,20 @@ func TestCreateRunSeedsEvaluationLayoutOnly(t *testing.T) {
 	}
 }
 
-func assertRunIdentity(t *testing.T, manifest *RunManifest) {
+func assertRunIdentity(t *testing.T, manifest *EvaluationManifest) {
 	t.Helper()
 	if manifest == nil {
 		t.Fatal("manifest is nil")
 	}
-	if !regexp.MustCompile(`^[0-9]{8}T[0-9]{6}Z-[0-9a-z]{12}$`).MatchString(manifest.ID) {
-		t.Fatalf("RunManifest.id = %q, want timestamp plus 12-character tail", manifest.ID)
+	if !regexp.MustCompile(`^[0-9]{8}T[0-9]{6}Z-[0-9a-z]{12}$`).MatchString(manifest.EvaluationID) {
+		t.Fatalf("EvaluationManifest.evaluationId = %q, want timestamp plus 12-character tail", manifest.EvaluationID)
 	}
 	createdAt, err := time.Parse(time.RFC3339, manifest.CreatedAt)
 	if err != nil {
-		t.Fatalf("RunManifest.createdAt = %q: %v", manifest.CreatedAt, err)
+		t.Fatalf("EvaluationManifest.createdAt = %q: %v", manifest.CreatedAt, err)
 	}
-	if got, want := manifest.ID[:16], createdAt.UTC().Format("20060102T150405Z"); got != want {
-		t.Fatalf("RunManifest.id timestamp = %q, want createdAt timestamp %q", got, want)
+	if got, want := manifest.EvaluationID[:16], createdAt.UTC().Format("20060102T150405Z"); got != want {
+		t.Fatalf("EvaluationManifest.evaluationId timestamp = %q, want createdAt timestamp %q", got, want)
 	}
 }
 
@@ -131,9 +131,9 @@ factors:
 	if result.Path != ".quality/evaluations/0001-root-security-reliability-latency-eval" {
 		t.Fatalf("path = %q, want numbered scope-path run", result.Path)
 	}
-	manifest, err := loadRunManifest(filepath.Join(repo, result.Path))
+	manifest, err := loadEvaluationManifest(filepath.Join(repo, result.Path))
 	if err != nil {
-		t.Fatalf("loadRunManifest() error = %v", err)
+		t.Fatalf("loadEvaluationManifest() error = %v", err)
 	}
 	if manifest.RequestedScope.AreaID != "area:root" || manifest.PlannedScope.AreaID != "area:root" ||
 		len(manifest.PlannedScope.FactorFilter) != 1 || manifest.PlannedScope.FactorFilter[0] != "factor:root::security/reliability/latency" {
@@ -296,22 +296,24 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 	}
 	if !strings.Contains(string(runReport), "type: Evaluation Overview Report\n") ||
 		!strings.Contains(string(runReport), "title: Quality Evaluation - Test model\n") ||
-		!strings.Contains(string(runReport), "run: 0001-full-eval\n") ||
-		!strings.Contains(string(runReport), "runId: ") ||
+		!strings.Contains(string(runReport), "evaluationId: ") ||
 		!strings.Contains(string(runReport), "created: ") ||
-		!strings.Contains(string(runReport), "scope: full evaluation\n") ||
-		!strings.Contains(string(runReport), "subject: \"area:root\"\n") ||
+		!strings.Contains(string(runReport), "model: QUALITY.md\n") ||
+		!strings.Contains(string(runReport), "run: 0001-full-eval\n") ||
 		!strings.Contains(string(runReport), "# Quality Evaluation - Test model") {
 		t.Fatalf("report.md = %s, want run report title and frontmatter metadata", runReport)
 	}
-	if strings.Contains(string(runReport), "Run: Run 0001 - Run ID: `") ||
+	if strings.Contains(string(runReport), "runId: ") ||
+		strings.Contains(string(runReport), "scope: full evaluation\n") ||
+		strings.Contains(string(runReport), "subject: \"area:root\"\n") ||
+		strings.Contains(string(runReport), "Run: Run 0001 - Run ID: `") ||
 		strings.Contains(string(runReport), "Report: Overview - [Findings](findings.md) - [Recommendations](recommendations.md)") ||
 		strings.Contains(string(runReport), "Area: [Test model](root-area.md)") ||
 		strings.Contains(string(runReport), "## Report Details\n\n| Field | Value |") {
 		t.Fatalf("report.md = %s, want simplified run header without detail navigation", runReport)
 	}
 	if strings.Contains(string(runReport), "\ndata:\n") ||
-		!strings.Contains(string(runReport), "## Primary Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)\n") ||
+		!strings.Contains(string(runReport), "## Primary Source Data\n\n- [data/evaluation-manifest.json](data/evaluation-manifest.json)\n") ||
 		!strings.Contains(string(runReport), "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)\n") ||
 		strings.Contains(string(runReport), "- [data/areas/root/requirements/has-tests/requirement-assessment-result.json]") ||
 		strings.Contains(string(runReport), "[data/evaluation-output-result.json](") {
@@ -344,7 +346,7 @@ func TestSetDataAndBuildEvaluationReport(t *testing.T) {
 		t.Fatalf("root-area.md = %s, want kind-prefixed title before Area trail", report)
 	}
 	if strings.Contains(string(report), "\ndata:\n") ||
-		!strings.Contains(string(report), "## Primary Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)\n") ||
+		!strings.Contains(string(report), "## Primary Source Data\n\n- [data/evaluation-manifest.json](data/evaluation-manifest.json)\n") ||
 		!strings.Contains(string(report), "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)\n") {
 		t.Fatalf("root-area.md = %s, want source-data section", report)
 	}
@@ -460,13 +462,15 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "type: Evaluation Overview Report\n")
 	assertContains(t, runReport, "title: Quality Evaluation - Navigation model\n")
-	assertContains(t, runReport, "run: 0001-full-eval\n")
-	assertContains(t, runReport, "runId: ")
+	assertContains(t, runReport, "evaluationId: ")
 	assertContains(t, runReport, "created: ")
-	assertContains(t, runReport, "scope: full evaluation\n")
-	assertContains(t, runReport, "subject: \"area:root\"\n")
+	assertContains(t, runReport, "model: QUALITY.md\n")
+	assertContains(t, runReport, "run: 0001-full-eval\n")
+	assertNotContains(t, runReport, "runId: ")
+	assertNotContains(t, runReport, "scope: full evaluation\n")
+	assertNotContains(t, runReport, "subject: \"area:root\"\n")
 	assertNotContains(t, runReport, "\ndata:\n")
-	assertContains(t, runReport, "## Primary Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, runReport, "## Primary Source Data\n\n- [data/evaluation-manifest.json](data/evaluation-manifest.json)")
 	assertContains(t, runReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
 	assertNotContains(t, runReport, "- [data/areas/root/requirements/has-tests/requirement-assessment-result.json]")
 	assertNotContains(t, runReport, "[data/evaluation-output-result.json](")
@@ -521,7 +525,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationIndex, "type: Recommendation Index Report\n")
 	assertContains(t, recommendationIndex, "title: Recommendations\n")
 	assertNotContains(t, recommendationIndex, "\ndata:\n")
-	assertContains(t, recommendationIndex, "## Primary Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, recommendationIndex, "## Primary Source Data\n\n- [data/evaluation-manifest.json](data/evaluation-manifest.json)")
 	assertContains(t, recommendationIndex, "- [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)")
 	assertContains(t, recommendationIndex, "Report: [Overview](report.md) - [Findings](findings.md) - Recommendations")
 	assertContains(t, recommendationIndex, "| Recommendations | Highest Impact | Coverage |")
@@ -539,7 +543,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, recommendationReport, "type: Recommendation Report\n")
 	assertContains(t, recommendationReport, "title: \"Recommendation: Review the next quality bar\"\n")
 	assertNotContains(t, recommendationReport, "\ndata:\n")
-	assertContains(t, recommendationReport, "## Primary Source Data\n\n- [data/run-manifest.json](../data/run-manifest.json)")
+	assertContains(t, recommendationReport, "## Primary Source Data\n\n- [data/evaluation-manifest.json](../data/evaluation-manifest.json)")
 	assertContains(t, recommendationReport, "- [data/advice/recommendations/qrec_nextbar1/recommendation-result.json](../data/advice/recommendations/qrec_nextbar1/recommendation-result.json)")
 	assertContains(t, recommendationReport, "# Recommendation: Review the next quality bar")
 	assertContains(t, recommendationReport, "| # | ID | Impact | Confidence | Reference |")
@@ -565,7 +569,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, rootReport, "Area: [Navigation model](root-area.md)")
 	assertNotContains(t, rootReport, "Path: `/`")
 	assertNotContains(t, rootReport, "\ndata:\n")
-	assertContains(t, rootReport, "## Primary Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, rootReport, "## Primary Source Data\n\n- [data/evaluation-manifest.json](data/evaluation-manifest.json)")
 	assertContains(t, rootReport, "- [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)")
 	assertContains(t, rootReport, "## Key Details\n\n| Overall Rating | Local Rating | Confidence |")
 	assertContains(t, rootReport, "## Contents\n\n- [Summary](#summary)\n- [Area / Factor Breakdown](#area--factor-breakdown)\n- [Requirements](#requirements)\n- [Limits & Incomplete Inputs](#limits--incomplete-inputs)\n- [Primary Source Data](#primary-source-data)")
@@ -605,7 +609,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, factorReport, "Factor: [Reliability](reliability-factor.md)")
 	assertNotContains(t, factorReport, "Path: `reliability`")
 	assertNotContains(t, factorReport, "\ndata:\n")
-	assertContains(t, factorReport, "## Primary Source Data\n\n- [data/run-manifest.json](../../data/run-manifest.json)")
+	assertContains(t, factorReport, "## Primary Source Data\n\n- [data/evaluation-manifest.json](../../data/evaluation-manifest.json)")
 	assertContains(t, factorReport, "- [data/areas/root/factors/reliability/factor-analysis-result.json](../../data/areas/root/factors/reliability/factor-analysis-result.json)")
 	assertContains(t, factorReport, "| Overall Rating | Local Rating | Status | Confidence |")
 	assertContains(t, factorReport, "## Key Details\n\n| Overall Rating | Local Rating | Status | Confidence |")
@@ -650,7 +654,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, requirementReport, "| 1 / 1 | 🔴 P1 Highest | This finding most directly informs next advice. |")
 	assertNotContains(t, requirementReport, "Name: `has-tests`")
 	assertNotContains(t, requirementReport, "\ndata:\n")
-	assertContains(t, requirementReport, "## Primary Source Data\n\n- [data/run-manifest.json](../../data/run-manifest.json)")
+	assertContains(t, requirementReport, "## Primary Source Data\n\n- [data/evaluation-manifest.json](../../data/evaluation-manifest.json)")
 	assertContains(t, requirementReport, "- [data/areas/root/requirements/has-tests/requirement-assessment-result.json](../../data/areas/root/requirements/has-tests/requirement-assessment-result.json)")
 	assertContains(t, requirementReport, "- [data/areas/root/requirements/has-tests/requirement-rating-result.json](../../data/areas/root/requirements/has-tests/requirement-rating-result.json)")
 	assertContains(t, requirementReport, "| Rating | Assessment | Confidence |")
@@ -674,7 +678,7 @@ func TestEvaluationReportNavigationHeadersAndSubjectLinks(t *testing.T) {
 	assertContains(t, findingsReport, "# Findings")
 	assertContains(t, findingsReport, "Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)")
 	assertNotContains(t, findingsReport, "\ndata:\n")
-	assertContains(t, findingsReport, "## Primary Source Data\n\n- [data/run-manifest.json](data/run-manifest.json)")
+	assertContains(t, findingsReport, "## Primary Source Data\n\n- [data/evaluation-manifest.json](data/evaluation-manifest.json)")
 	assertContains(t, findingsReport, "- [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)")
 	assertContains(t, findingsReport, "## Contents\n\n- [Ranked Findings](#ranked-findings)\n- [Primary Source Data](#primary-source-data)")
 	assertContains(t, findingsReport, "## Ranked Findings\n\n| Rank | Finding | Area | Factors | Type | Severity |")
@@ -840,7 +844,7 @@ factors:
 	runReport := readReport(t, runPath, "report.md")
 	assertContains(t, runReport, "title: \"Quality Evaluation - Factor scoped model (Reliability, Correctness)\"\n")
 	assertContains(t, runReport, "# Quality Evaluation - Factor scoped model (Reliability, Correctness)")
-	assertContains(t, runReport, "scope: \"area:root / factor:root::reliability; factor:root::correctness\"\n")
+	assertNotContains(t, runReport, "scope: \"area:root / factor:root::reliability; factor:root::correctness\"\n")
 	assertContains(t, runReport, "| 🔵 Target | 🟢 High | Evaluation of Factor scoped model for Reliability, Correctness | 0 total | 1 total |")
 	assertNotContains(t, runReport, "| Factor Filter | `factor:root::reliability` Reliability; `factor:root::correctness` Correctness |")
 	assertContains(t, runReport, "Correctness")
@@ -891,9 +895,9 @@ func TestSetDataRejectsCLIOwnedOutput(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "CLI-owned") {
 		t.Fatalf("SetData(EvaluationOutputResult) error = %v, want CLI-owned diagnostic", err)
 	}
-	_, err = SetData(filepath.Join(repo, result.Path), batchPayloads(`{"schemaVersion":3,"kind":"RunManifest"}`), DataSetOptions{})
+	_, err = SetData(filepath.Join(repo, result.Path), batchPayloads(`{"schemaVersion":3,"kind":"EvaluationManifest"}`), DataSetOptions{})
 	if err == nil || !strings.Contains(err.Error(), "CLI-owned") {
-		t.Fatalf("SetData(RunManifest) error = %v, want CLI-owned diagnostic", err)
+		t.Fatalf("SetData(EvaluationManifest) error = %v, want CLI-owned diagnostic", err)
 	}
 }
 

@@ -48,7 +48,7 @@ the blocking gap and point the caller to `qualitymd evaluation status <run>` for
 the complete gap list. It **MUST** be deterministic and idempotent: unchanged
 structured data produces byte-identical report files.
 
-`build` **MUST** read the run scope from `RunManifest.plannedScope`.
+`build` **MUST** read the run scope from `EvaluationManifest.plannedScope`.
 `report.md` **MUST** render as the scoped Area report for
 `plannedScope.areaId`, narrowed by `factorFilter` when present. It **MUST NOT**
 choose a headline subject from `EvaluationFrame` or any other agent-authored

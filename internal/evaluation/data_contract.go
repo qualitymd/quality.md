@@ -68,7 +68,7 @@ type DataVerifyFailure struct {
 var dataContracts = map[DataKind]dataKindContract{}
 
 var dataContractOrder = []DataKind{
-	DataKindRunManifest,
+	DataKindEvaluationManifest,
 	DataKindEvaluationFrame,
 	DataKindAreaEvaluationFrame,
 	DataKindRequirementEvaluationFrame,
@@ -88,17 +88,20 @@ var dataContractOrder = []DataKind{
 func init() {
 	for _, contract := range []dataKindContract{
 		{
-			Kind:        DataKindRunManifest,
-			Description: "CLI-owned Evaluation run manifest written at create time.",
-			Object: topContract(DataKindRunManifest,
-				field("id", dataString, true),
-				field("number", dataNumber, true),
+			Kind:        DataKindEvaluationManifest,
+			Description: "CLI-owned Evaluation manifest written at create time.",
+			Object: topContract(DataKindEvaluationManifest,
+				field("evaluationId", dataString, true),
 				field("createdAt", dataString, true),
 				field("model", dataString, true),
 				field("requestedScope", dataObject, true, runRequestedScopeContract()),
 				field("plannedScope", dataObject, true, runPlannedScopeContract()),
+				field("run", dataObject, true, object(
+					field("number", dataNumber, true),
+					field("label", dataString, true),
+				)),
 			),
-			Example: runManifestExample,
+			Example: evaluationManifestExample,
 		},
 		{
 			Kind:        DataKindEvaluationFrame,

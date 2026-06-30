@@ -115,7 +115,7 @@ When the CLI is missing, stale, incompatible, or uncertain:
 
 Use `--area <area-id>` and repeatable `--factor <factor-id>` for scoped
 evaluations. Pass canonical `area:` and `factor:` references resolved from the
-model. Let `qualitymd evaluation create` write `RunManifest`, apply the root
+model. Let `qualitymd evaluation create` write `EvaluationManifest`, apply the root
 default, and derive the run-folder slug.
 
 ## Command Rules

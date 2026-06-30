@@ -1,11 +1,10 @@
 ---
 type: Evaluation Overview Report
 title: Quality Evaluation - LedgerLite Service
-run: 0001-full-eval
-runId: 20260629T120000Z-0123456789ab
+evaluationId: 20260629T120000Z-0123456789ab
 created: "2026-06-29T12:00:00Z"
-scope: full evaluation
-subject: "area:root"
+model: QUALITY.md
+run: 0001-full-eval
 ---
 
 # Quality Evaluation - LedgerLite Service
@@ -104,7 +103,7 @@ Legend
 
 ## Primary Source Data
 
-- [data/run-manifest.json](data/run-manifest.json)
+- [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)

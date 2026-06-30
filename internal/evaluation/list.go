@@ -113,9 +113,9 @@ func ListRunsForModel(model, evaluationDir, state string) (*RunList, error) {
 		if !includeRunState(status.Reportable, state) {
 			continue
 		}
-		manifest, err := loadRunManifest(dir.Abs)
+		manifest, err := loadEvaluationManifest(dir.Abs)
 		if err != nil {
-			return nil, fmt.Errorf("loading %s: %w", filepath.ToSlash(filepath.Join(dir.Rel, runManifestPath)), err)
+			return nil, fmt.Errorf("loading %s: %w", filepath.ToSlash(filepath.Join(dir.Rel, evaluationManifestPath)), err)
 		}
 		result.Runs = append(result.Runs, RunListEntry{
 			Path:           dir.Rel,

@@ -5,7 +5,7 @@ title: Findings
 
 # Findings
 
-Run: [Run 0001](report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](report.md) - Findings - [Recommendations](recommendations.md)
 
@@ -43,7 +43,7 @@ Legend
 
 ## Primary Source Data
 
-- [data/run-manifest.json](data/run-manifest.json)
+- [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)

@@ -19,10 +19,10 @@ capitals.
 
 An Evaluation run **MUST** store structured data under `data/`.
 
-The run **MUST** store the CLI-generated run manifest at:
+The run **MUST** store the CLI-generated Evaluation manifest at:
 
 ```text
-data/run-manifest.json
+data/evaluation-manifest.json
 ```
 
 The run **MUST** store the evaluation frame at:

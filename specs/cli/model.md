@@ -65,7 +65,7 @@ elements, canonical IDs, labels, and containment.
 
 Each `model` verb **MUST** read a model file — the default `QUALITY.md` in the
 current working directory, or a `[path]` argument when given — and **MUST NOT**
-be aware of evaluation runs, run IDs, or run-folder layout. A run's
+be aware of evaluation runs, Evaluation IDs, or run-folder layout. A run's
 `model-snapshot.md` is itself a model file, reachable by path.
 
 `model` **MUST NOT** write, create, repair, or delete files.

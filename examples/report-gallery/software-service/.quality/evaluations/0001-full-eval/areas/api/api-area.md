@@ -5,7 +5,7 @@ title: "Area: Public API"
 
 # Area: Public API
 
-Run: [Run 0001](../../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [0001-full-eval](../../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../../report.md) - [Findings](../../findings.md) - [Recommendations](../../recommendations.md)
 
@@ -68,7 +68,7 @@ Legend
 
 ## Primary Source Data
 
-- [data/run-manifest.json](../../data/run-manifest.json)
+- [data/evaluation-manifest.json](../../data/evaluation-manifest.json)
 - [data/areas/api/area-analysis-result.json](../../data/areas/api/area-analysis-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)

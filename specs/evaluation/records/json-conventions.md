@@ -88,25 +88,28 @@ containing Finding, not the payload or run. References to candidate actions
 **MUST** qualify the containing Finding selector, for example
 `findings[gap-001].candidateActions[action-001]`.
 
-Evaluation run identity has two parts:
+Evaluation identity has two parts:
 
-- `RunManifest.id` is the globally-unique, opaque run identifier. New run IDs
-  are generated as `<timestamp>-<nanoid>`, where `<timestamp>` is the UTC
-  ISO-8601 basic creation timestamp (`YYYYMMDDThhmmssZ`) and `<nanoid>` is at
-  least 12 lowercase base32 characters from cryptographic-strength randomness.
-  Readers **MUST** treat it as opaque and require only that it is non-empty.
-- `RunManifest.number` is the local, friendly run number used in folder names
-  and report headers. It is not globally unique and **MUST NOT** be presented as
-  a durable handoff identifier.
+- `EvaluationManifest.evaluationId` is the globally-unique, opaque Evaluation
+  identifier. New Evaluation IDs are generated as `<timestamp>-<nanoid>`, where
+  `<timestamp>` is the UTC ISO-8601 basic creation timestamp
+  (`YYYYMMDDThhmmssZ`) and `<nanoid>` is at least 12 lowercase base32 characters
+  from cryptographic-strength randomness. Readers **MUST** treat it as opaque
+  and require only that it is non-empty.
+- `EvaluationManifest.run.number` is the local, friendly run number used in
+  folder names and report headers. It is not globally unique and **MUST NOT** be
+  presented as a durable handoff identifier. `EvaluationManifest.run.label`
+  records the created run folder name.
 
 The structured Evaluation identity rule is: `id` names opaque artifact identity;
-user-facing `number` values name ranked report positions. `RunManifest.id`
-names the run. `RecommendationResult.id` names a recommendation artifact within
-the run and **MUST** use the `qrec_<token>` form, where `<token>` contains only
-lowercase ASCII letters and digits. Requirement Findings use their
-requirement-scoped selector. `qualitymd evaluation data set` **MUST** assign a
-missing `RecommendationResult.id` before writing a recommendation and **MUST
-NOT** assign an artifact ID to `FindingRankingResult.orderedFindings[]`.
+user-facing `number` values name ranked report positions.
+`EvaluationManifest.evaluationId` names the Evaluation. `RecommendationResult.id`
+names a recommendation artifact within the Evaluation and **MUST** use the
+`qrec_<token>` form, where `<token>` contains only lowercase ASCII letters and
+digits. Requirement Findings use their requirement-scoped selector. `qualitymd
+evaluation data set` **MUST** assign a missing `RecommendationResult.id` before
+writing a recommendation and **MUST NOT** assign an artifact ID to
+`FindingRankingResult.orderedFindings[]`.
 
 Recommendation ranking and finding coverage **MUST** reference recommendations by
 their assigned `id`. Cross-payload references to findings **MUST** use the
@@ -116,7 +119,7 @@ Requirement Assessment routine reference plus selector, for example
 The user-facing recommendation number is derived from
 `RecommendationRankingResult.orderedRecommendations[].rank`; in reports it is
 rendered as `#` or `Number`. Typed artifact references used in reports and
-external handoff text **SHOULD** combine the run ID and recommendation ID, for
+external handoff text **SHOULD** combine the Evaluation ID and recommendation ID, for
 example
 `evaluation:20260629T120000Z-0123456789ab/recommendation/qrec_7h4km2p9`. These
 artifact references do not replace routine `*Ref` objects or canonical Model

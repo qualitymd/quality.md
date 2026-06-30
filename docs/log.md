@@ -4,6 +4,13 @@
 
 - **Revision**: Updated
   [Designing report outputs](guides/reporting-design.md) for
+  [0181 - Evaluation Identity Manifest](../changes/archive/0181-evaluation-identity-manifest.md).
+  Report frontmatter guidance now treats `evaluationId`, `created`, `model`, and
+  `run` as the run-level routing fields and keeps scope in the report body and
+  structured Evaluation manifest.
+
+- **Revision**: Updated
+  [Designing report outputs](guides/reporting-design.md) for
   [0180 - Finding Taxonomy and Report Details](../changes/archive/0180-finding-taxonomy-report-details.md).
   Run report examples now use a single Overall Rating confidence, descriptive
   scope, total counts, a Finding Breakdown, `🚩 Gap`, and Top Recommendation

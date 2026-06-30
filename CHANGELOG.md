@@ -7,6 +7,11 @@ QUALITY.md specification.
 
 ### CLI
 
+- Evaluation runs now persist `data/evaluation-manifest.json` with
+  `kind: "EvaluationManifest"`, a durable `evaluationId`, and nested local
+  `run` metadata. Generated `report.md` frontmatter now exposes
+  `evaluationId`, `created`, `model`, and `run`, and no longer duplicates scope
+  as frontmatter.
 - Generated Evaluation report local keys now use canonical labels such as
   `Quality rating`, `Finding type`, `Finding severity`, and
   `Recommendation impact`, and the internal fixed enum catalogs now carry

@@ -2,6 +2,11 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated the [evaluate](evaluate.md) workflow for 0181 -
+  Evaluation Identity Manifest. Evaluate now names
+  `data/evaluation-manifest.json` as the CLI-owned manifest artifact for scoped
+  Evaluation runs.
+
 - **Revision**: Updated the [evaluate](evaluate.md) workflow for 0180 - Finding
   Taxonomy and Report Details. Evaluate now writes only `strength`, `gap`,
   `risk`, and `note` Finding types, uses `gap` for ambiguous current-state

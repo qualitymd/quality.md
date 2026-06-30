@@ -744,3 +744,6 @@ Completed change cases, moved here from the bundle root when they reach **Done**
 - [0180 — Finding Taxonomy and Report Details](0180-finding-taxonomy-report-details.md) -
   removes `unknown` as a Finding type, distinguishes gap/risk markers, and
   improves generated run report key details (`Done`).
+- [0181 — Evaluation Identity Manifest](0181-evaluation-identity-manifest.md) -
+  makes Evaluation identity primary with `evaluationId`, nests local run
+  metadata in the manifest, and simplifies run report frontmatter (`Done`).

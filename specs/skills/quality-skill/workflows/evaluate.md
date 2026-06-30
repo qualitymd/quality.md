@@ -63,7 +63,7 @@ Requirement IDs from `QUALITY.md` text.
 
 The query **MUST** target the run's `model-snapshot.md` by path, not the live
 `QUALITY.md`, so authored IDs match the frozen model being evaluated. It
-**SHOULD** be scoped from `RunManifest.plannedScope` when the model command
+**SHOULD** be scoped from `EvaluationManifest.plannedScope` when the model command
 supports an equivalent query. The post-hoc identity-resolution check is a
 backstop against ID typos, not the primary guard. `evaluate` **SHOULD** use
 `model` (`list` labels, `get`) to resolve a natural-label scope to its canonical

@@ -2,6 +2,14 @@
 
 ## 2026-06-29
 
+- **Revision**: Updated Evaluation identity, records, and report-tree contracts
+  for
+  [0181 - Evaluation Identity Manifest](../../changes/archive/0181-evaluation-identity-manifest.md).
+  The CLI-owned manifest is now `EvaluationManifest` at
+  `data/evaluation-manifest.json`, carries durable `evaluationId` and nested
+  local `run` metadata, and generated run report frontmatter no longer repeats
+  scope fields.
+
 - **Revision**: Updated Evaluation record, routine, and report-tree contracts for
   [0180 - Finding Taxonomy and Report Details](../../changes/archive/0180-finding-taxonomy-report-details.md).
   Requirement Findings now use `strength`, `gap`, `risk`, and `note`; missing

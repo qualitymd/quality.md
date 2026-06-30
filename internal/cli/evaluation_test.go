@@ -150,7 +150,7 @@ func TestEvaluationDataKindsDocumentsPayloadKinds(t *testing.T) {
 	for _, want := range []string{
 		`"kind": "RequirementAssessmentResult"`,
 		`"kind": "RequirementRatingResult"`,
-		`"kind": "RunManifest"`,
+		`"kind": "EvaluationManifest"`,
 		`"kind": "EvaluationOutputResult"`,
 		`"agentWritable": false`,
 	} {

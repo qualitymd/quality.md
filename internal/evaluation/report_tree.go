@@ -14,9 +14,9 @@ import (
 )
 
 func evaluationRenderableGaps(runAbs string) []RunGap {
-	manifest, err := loadRunManifest(runAbs)
+	manifest, err := loadEvaluationManifest(runAbs)
 	if err != nil {
-		return []RunGap{{Kind: GapMissingEvaluationData, Ref: runManifestPath, Detail: err.Error()}}
+		return []RunGap{{Kind: GapMissingEvaluationData, Ref: evaluationManifestPath, Detail: err.Error()}}
 	}
 	spec, err := loadRunModel(runAbs)
 	if err != nil {
@@ -163,7 +163,7 @@ type evaluationRequirementArtifacts struct {
 }
 
 type evaluationArtifacts struct {
-	Manifest              *RunManifest
+	Manifest              *EvaluationManifest
 	RunLabel              string
 	Frame                 map[string]any
 	FindingRanking        map[string]any
@@ -241,7 +241,7 @@ func collectEvaluationArtifacts(runAbs string) (*evaluationArtifacts, error) {
 type evaluationPayloadCollector func(*evaluationArtifacts, map[string]any) error
 
 var evaluationPayloadCollectors = map[DataKind]evaluationPayloadCollector{
-	DataKindRunManifest:                collectRunManifest,
+	DataKindEvaluationManifest:         collectEvaluationManifest,
 	DataKindEvaluationFrame:            collectEvaluationFrame,
 	DataKindAreaEvaluationFrame:        collectEvaluationAreaFrame,
 	DataKindAreaAnalysis:               collectEvaluationAreaAnalysis,
@@ -255,12 +255,12 @@ var evaluationPayloadCollectors = map[DataKind]evaluationPayloadCollector{
 	DataKindRecommendationRanking:      collectRecommendationRanking,
 }
 
-func collectRunManifest(out *evaluationArtifacts, payload map[string]any) error {
+func collectEvaluationManifest(out *evaluationArtifacts, payload map[string]any) error {
 	raw, err := canonicalJSON(payload)
 	if err != nil {
 		return err
 	}
-	var manifest RunManifest
+	var manifest EvaluationManifest
 	if err := json.Unmarshal(raw, &manifest); err != nil {
 		return err
 	}
@@ -446,7 +446,7 @@ func renderEvaluationReportTree(spec *model.Spec, artifacts *evaluationArtifacts
 
 func renderEvaluationFindingsIndex(spec *model.Spec, artifacts *evaluationArtifacts) string {
 	var b strings.Builder
-	data := reportSourceData(append([]string{runManifestPath}, rankedFindingSourceData(artifacts, 0)...)...)
+	data := reportSourceData(append([]string{evaluationManifestPath}, rankedFindingSourceData(artifacts, 0)...)...)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeFindingIndex,
 		Heading:    "Findings",
@@ -480,7 +480,7 @@ func renderEvaluationRecommendationReports(spec *model.Spec, artifacts *evaluati
 	var reports []evaluationRenderedReport
 	recommendations := artifacts.rankedRecommendations()
 	var index strings.Builder
-	indexData := reportSourceData(append([]string{runManifestPath}, rankedRecommendationSourceData(artifacts, 0)...)...)
+	indexData := reportSourceData(append([]string{evaluationManifestPath}, rankedRecommendationSourceData(artifacts, 0)...)...)
 	renderReportHeader(&index, reportHeader{
 		Type:       reportTypeRecommendationIndex,
 		Heading:    "Recommendations",
@@ -550,7 +550,7 @@ type reportHeader struct {
 	Type        string
 	Heading     string
 	ReportPath  string
-	Run         *RunManifest
+	Run         *EvaluationManifest
 	Context     []string
 	SummaryHead []string
 	SummaryRow  []string
@@ -586,23 +586,23 @@ func renderReportHeader(b *strings.Builder, header reportHeader) {
 	writeContentsSection(b, header.Contents)
 }
 
-func reportRunLine(reportPath string, manifest *RunManifest) string {
+func reportRunLine(reportPath string, manifest *EvaluationManifest) string {
 	if manifest == nil {
 		return ""
 	}
-	label := fmt.Sprintf("Run %04d", manifest.Number)
+	label := runLabel(manifest)
 	if reportPath != "report.md" {
 		label = reportLink(reportPath, "report.md", label)
 	}
-	runID := manifest.ID
-	if runID == "" {
-		runID = "—"
+	evaluationID := manifest.EvaluationID
+	if evaluationID == "" {
+		evaluationID = "—"
 	}
 	created := manifest.CreatedAt
 	if created == "" {
 		created = "—"
 	}
-	return "Run: " + label + " - Run ID: " + md.Code(runID) + " - Created: " + created + " - Scope: " + requestedScopeLabel(manifest.RequestedScope)
+	return "Run: " + label + " - Evaluation ID: " + md.Code(evaluationID) + " - Created: " + created + " - Scope: " + requestedScopeLabel(manifest.RequestedScope)
 }
 
 func reportNavigationLine(reportPath string) string {
@@ -665,7 +665,7 @@ func writePrimarySourceDataSection(b *strings.Builder, reportPath string, paths 
 
 func runReportSourceData(plan *evaluationReportPlan) []string {
 	paths := []string{
-		runManifestPath,
+		evaluationManifestPath,
 		areaDataPath(plan.ScopedAreaID, "area-analysis-result.json"),
 		"data/advice/finding-ranking-result.json",
 		"data/advice/recommendation-ranking-result.json",
@@ -699,7 +699,7 @@ func rankedRecommendationSourceData(artifacts *evaluationArtifacts, limit int) [
 }
 
 func areaReportSourceData(artifacts *evaluationArtifacts, area *evaluationAreaArtifacts) []string {
-	paths := []string{runManifestPath}
+	paths := []string{evaluationManifestPath}
 	if area.Analysis != nil {
 		paths = append(paths, areaDataPath(area.ID, "area-analysis-result.json"))
 	}
@@ -717,7 +717,7 @@ func areaReportSourceData(artifacts *evaluationArtifacts, area *evaluationAreaAr
 }
 
 func factorReportSourceData(artifacts *evaluationArtifacts, factor *evaluationFactorArtifacts) []string {
-	paths := []string{runManifestPath}
+	paths := []string{evaluationManifestPath}
 	if factor.Analysis != nil {
 		paths = append(paths, factorDataPath(factor.ID, "factor-analysis-result.json"))
 	}
@@ -733,7 +733,7 @@ func factorReportSourceData(artifacts *evaluationArtifacts, factor *evaluationFa
 }
 
 func requirementReportSourceData(req *evaluationRequirementArtifacts) []string {
-	paths := []string{runManifestPath}
+	paths := []string{evaluationManifestPath}
 	if req.Assessment != nil {
 		paths = append(paths, requirementDataPath(req.ID, "requirement-assessment-result.json"))
 	}
@@ -921,7 +921,7 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 	id := recommendationID(rec)
 	recDataPath := recommendationDataPath(id)
 	rankingPath := "data/advice/recommendation-ranking-result.json"
-	data := reportSourceData(runManifestPath, recDataPath, rankingPath)
+	data := reportSourceData(evaluationManifestPath, recDataPath, rankingPath)
 	renderReportHeader(&b, reportHeader{
 		Type:       reportTypeRecommendation,
 		Heading:    "Recommendation: " + firstString(rec, "title"),
@@ -974,11 +974,11 @@ func renderEvaluationRecommendationReport(artifacts *evaluationArtifacts, item r
 	return b.String()
 }
 
-func recommendationArtifactRef(manifest *RunManifest, recommendationID string) string {
-	if manifest == nil || manifest.ID == "" || !validRecommendationID(recommendationID) {
+func recommendationArtifactRef(manifest *EvaluationManifest, recommendationID string) string {
+	if manifest == nil || manifest.EvaluationID == "" || !validRecommendationID(recommendationID) {
 		return ""
 	}
-	return fmt.Sprintf("evaluation:%s/recommendation/%s", manifest.ID, recommendationID)
+	return fmt.Sprintf("evaluation:%s/recommendation/%s", manifest.EvaluationID, recommendationID)
 }
 
 func writeRecommendationSection(b *strings.Builder, title, body string) {
@@ -996,7 +996,7 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	localArea := scopedMap(plan.ScopedAreaAnalysis, "localAnalysis")
 	var b strings.Builder
 	data := runReportSourceData(plan)
-	renderRunReportHeader(&b, artifacts, plan, title)
+	renderRunReportHeader(&b, artifacts, title)
 	b.WriteString("## Summary\n\n")
 	b.WriteString(evaluationSummary(scopedArea))
 	b.WriteString("\n\n## Key Details\n\n")
@@ -1025,15 +1025,14 @@ func renderEvaluationRunReport(spec *model.Spec, artifacts *evaluationArtifacts,
 	return b.String()
 }
 
-func renderRunReportHeader(b *strings.Builder, artifacts *evaluationArtifacts, plan *evaluationReportPlan, title string) {
+func renderRunReportHeader(b *strings.Builder, artifacts *evaluationArtifacts, title string) {
 	b.WriteString(md.Frontmatter(
 		md.FrontmatterField{Name: "type", Value: reportTypeEvaluationOverview},
 		md.FrontmatterField{Name: "title", Value: title},
-		md.FrontmatterField{Name: "run", Value: runReportRunLabel(artifacts)},
-		md.FrontmatterField{Name: "runId", Value: runReportID(artifacts)},
+		md.FrontmatterField{Name: "evaluationId", Value: runReportEvaluationID(artifacts)},
 		md.FrontmatterField{Name: "created", Value: runReportCreated(artifacts)},
-		md.FrontmatterField{Name: "scope", Value: requestedScopeLabel(plan.RequestedScope)},
-		md.FrontmatterField{Name: "subject", Value: model.AreaPath(plan.ScopedAreaID).Reference()},
+		md.FrontmatterField{Name: "model", Value: runReportModel(artifacts)},
+		md.FrontmatterField{Name: "run", Value: runReportRunLabel(artifacts)},
 	))
 	b.WriteString("# " + title + "\n\n")
 }
@@ -1042,15 +1041,35 @@ func runReportRunLabel(artifacts *evaluationArtifacts) string {
 	if artifacts != nil && artifacts.RunLabel != "" && artifacts.RunLabel != "." && artifacts.RunLabel != string(filepath.Separator) {
 		return artifacts.RunLabel
 	}
-	if artifacts != nil && artifacts.Manifest != nil && artifacts.Manifest.Number > 0 {
-		return fmt.Sprintf("Run %04d", artifacts.Manifest.Number)
+	if artifacts != nil && artifacts.Manifest != nil {
+		return runLabel(artifacts.Manifest)
 	}
 	return ""
 }
 
-func runReportID(artifacts *evaluationArtifacts) string {
+func runLabel(manifest *EvaluationManifest) string {
+	if manifest == nil {
+		return ""
+	}
+	if manifest.Run.Label != "" {
+		return manifest.Run.Label
+	}
+	if manifest.Run.Number > 0 {
+		return fmt.Sprintf("Run %04d", manifest.Run.Number)
+	}
+	return ""
+}
+
+func runReportEvaluationID(artifacts *evaluationArtifacts) string {
 	if artifacts != nil && artifacts.Manifest != nil {
-		return artifacts.Manifest.ID
+		return artifacts.Manifest.EvaluationID
+	}
+	return ""
+}
+
+func runReportModel(artifacts *evaluationArtifacts) string {
+	if artifacts != nil && artifacts.Manifest != nil {
+		return artifacts.Manifest.Model
 	}
 	return ""
 }
@@ -1438,23 +1457,23 @@ func evaluationReportRef(report evaluationRenderedReport) map[string]any {
 
 func resolveEvaluationReportPlan(artifacts *evaluationArtifacts) (*evaluationReportPlan, *RunGap) {
 	if artifacts.Manifest == nil {
-		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: runManifestPath, Detail: "required RunManifest payload is missing"}
+		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: evaluationManifestPath, Detail: "required EvaluationManifest payload is missing"}
 	}
 	if artifacts.Frame == nil {
 		return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: "data/frame/evaluation-frame.json", Detail: "required Evaluation evaluation payload is missing"}
 	}
 	areaID, err := areaIDFrom(artifacts.Manifest.PlannedScope.AreaID)
 	if err != nil {
-		return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: runManifestPath, Detail: err.Error()}
+		return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: evaluationManifestPath, Detail: err.Error()}
 	}
 	var factors []factorID
 	for _, ref := range artifacts.Manifest.PlannedScope.FactorFilter {
 		id, err := factorIDFrom(ref)
 		if err != nil {
-			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: runManifestPath, Detail: err.Error()}
+			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: evaluationManifestPath, Detail: err.Error()}
 		}
 		if !sameStrings(id.DeclaringArea, areaID) {
-			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: runManifestPath, Detail: fmt.Sprintf("factor %s does not belong to planned Area %s", ref, artifacts.Manifest.PlannedScope.AreaID)}
+			return nil, &RunGap{Kind: GapIncompleteEvaluationData, Ref: evaluationManifestPath, Detail: fmt.Sprintf("factor %s does not belong to planned Area %s", ref, artifacts.Manifest.PlannedScope.AreaID)}
 		}
 		if factor := artifacts.Factors[factorKey(id)]; factor == nil || factor.Analysis == nil {
 			return nil, &RunGap{Kind: GapMissingEvaluationData, Ref: factorDataPath(id, "factor-analysis-result.json"), Detail: "required planned Factor analysis payload is missing"}

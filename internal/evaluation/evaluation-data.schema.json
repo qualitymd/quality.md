@@ -84,7 +84,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -137,7 +137,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -311,7 +311,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -380,7 +380,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
-                            "RunManifest",
+                            "EvaluationManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -548,7 +548,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -617,7 +617,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
-                            "RunManifest",
+                            "EvaluationManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -906,6 +906,94 @@
       ],
       "type": "object"
     },
+    "EvaluationManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "evaluationId": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "EvaluationManifest"
+          ],
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "plannedScope": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
+            },
+            "factorFilter": {
+              "items": {
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "areaId",
+            "factorFilter"
+          ],
+          "type": "object"
+        },
+        "requestedScope": {
+          "additionalProperties": false,
+          "properties": {
+            "areaId": {
+              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
+              "type": "string"
+            },
+            "factorFilter": {
+              "items": {
+                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "run": {
+          "additionalProperties": false,
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "number": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "number",
+            "label"
+          ],
+          "type": "object"
+        },
+        "schemaVersion": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "evaluationId",
+        "createdAt",
+        "model",
+        "requestedScope",
+        "plannedScope",
+        "run"
+      ],
+      "type": "object"
+    },
     "EvaluationOutputResult": {
       "additionalProperties": false,
       "properties": {
@@ -918,7 +1006,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -968,7 +1056,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1023,7 +1111,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
-                        "RunManifest",
+                        "EvaluationManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -1119,7 +1207,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
-                        "RunManifest",
+                        "EvaluationManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -1172,7 +1260,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
-                        "RunManifest",
+                        "EvaluationManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -1287,7 +1375,7 @@
           "properties": {
             "kind": {
               "enum": [
-                "RunManifest",
+                "EvaluationManifest",
                 "EvaluationFrame",
                 "AreaEvaluationFrame",
                 "RequirementEvaluationFrame",
@@ -1380,7 +1468,7 @@
           "properties": {
             "kind": {
               "enum": [
-                "RunManifest",
+                "EvaluationManifest",
                 "EvaluationFrame",
                 "AreaEvaluationFrame",
                 "RequirementEvaluationFrame",
@@ -1520,7 +1608,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1573,7 +1661,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1751,7 +1839,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -1820,7 +1908,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
-                            "RunManifest",
+                            "EvaluationManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -1988,7 +2076,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -2057,7 +2145,7 @@
                       "properties": {
                         "kind": {
                           "enum": [
-                            "RunManifest",
+                            "EvaluationManifest",
                             "EvaluationFrame",
                             "AreaEvaluationFrame",
                             "RequirementEvaluationFrame",
@@ -2175,7 +2263,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -2288,7 +2376,7 @@
                 "properties": {
                   "kind": {
                     "enum": [
-                      "RunManifest",
+                      "EvaluationManifest",
                       "EvaluationFrame",
                       "AreaEvaluationFrame",
                       "RequirementEvaluationFrame",
@@ -2470,7 +2558,7 @@
             "properties": {
               "kind": {
                 "enum": [
-                  "RunManifest",
+                  "EvaluationManifest",
                   "EvaluationFrame",
                   "AreaEvaluationFrame",
                   "RequirementEvaluationFrame",
@@ -3153,7 +3241,7 @@
                   "properties": {
                     "kind": {
                       "enum": [
-                        "RunManifest",
+                        "EvaluationManifest",
                         "EvaluationFrame",
                         "AreaEvaluationFrame",
                         "RequirementEvaluationFrame",
@@ -3248,88 +3336,13 @@
         "status"
       ],
       "type": "object"
-    },
-    "RunManifest": {
-      "additionalProperties": false,
-      "properties": {
-        "createdAt": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string"
-        },
-        "kind": {
-          "enum": [
-            "RunManifest"
-          ],
-          "type": "string"
-        },
-        "model": {
-          "type": "string"
-        },
-        "number": {
-          "type": "integer"
-        },
-        "plannedScope": {
-          "additionalProperties": false,
-          "properties": {
-            "areaId": {
-              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
-              "type": "string"
-            },
-            "factorFilter": {
-              "items": {
-                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
-                "type": "string"
-              },
-              "type": "array"
-            }
-          },
-          "required": [
-            "areaId",
-            "factorFilter"
-          ],
-          "type": "object"
-        },
-        "requestedScope": {
-          "additionalProperties": false,
-          "properties": {
-            "areaId": {
-              "pattern": "^area:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)$",
-              "type": "string"
-            },
-            "factorFilter": {
-              "items": {
-                "pattern": "^factor:(?:root|[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*)::[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?(?:/[A-Za-z0-9](?:[A-Za-z0-9_-]*[A-Za-z0-9])?)*$",
-                "type": "string"
-              },
-              "type": "array"
-            }
-          },
-          "type": "object"
-        },
-        "schemaVersion": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "schemaVersion",
-        "kind",
-        "id",
-        "number",
-        "createdAt",
-        "model",
-        "requestedScope",
-        "plannedScope"
-      ],
-      "type": "object"
     }
   },
   "$id": "https://getquality.md/evaluation-data.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "oneOf": [
     {
-      "$ref": "#/$defs/RunManifest"
+      "$ref": "#/$defs/EvaluationManifest"
     },
     {
       "$ref": "#/$defs/EvaluationFrame"

@@ -7,12 +7,12 @@ import (
 	"path/filepath"
 )
 
-const runManifestPath = "data/run-manifest.json"
+const evaluationManifestPath = "data/evaluation-manifest.json"
 
-func loadRunManifest(runAbs string) (*RunManifest, error) {
-	raw, err := os.ReadFile(filepath.Join(runAbs, runManifestPath))
+func loadEvaluationManifest(runAbs string) (*EvaluationManifest, error) {
+	raw, err := os.ReadFile(filepath.Join(runAbs, evaluationManifestPath))
 	if err != nil {
-		return nil, fmt.Errorf("reading %s: %w", runManifestPath, err)
+		return nil, fmt.Errorf("reading %s: %w", evaluationManifestPath, err)
 	}
 	payload, err := decodeDataPayload(raw)
 	if err != nil {
@@ -22,15 +22,15 @@ func loadRunManifest(runAbs string) (*RunManifest, error) {
 	if err != nil {
 		return nil, err
 	}
-	if kind != DataKindRunManifest {
-		return nil, usagef("%s kind = %s, want %s", runManifestPath, kind, DataKindRunManifest)
+	if kind != DataKindEvaluationManifest {
+		return nil, usagef("%s kind = %s, want %s", evaluationManifestPath, kind, DataKindEvaluationManifest)
 	}
 	if err := validateDataPayload(kind, payload); err != nil {
 		return nil, err
 	}
-	var manifest RunManifest
+	var manifest EvaluationManifest
 	if err := json.Unmarshal(raw, &manifest); err != nil {
-		return nil, fmt.Errorf("decoding %s: %w", runManifestPath, err)
+		return nil, fmt.Errorf("decoding %s: %w", evaluationManifestPath, err)
 	}
 	return &manifest, nil
 }

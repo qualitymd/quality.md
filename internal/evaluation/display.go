@@ -175,7 +175,7 @@ var dataKindValues = enumCatalog[DataKind]{
 	Label:       "Data kind",
 	Description: "Kind of structured Evaluation payload stored for a run.",
 	Values: []enumValue[DataKind]{
-		{Value: DataKindRunManifest, Label: "Run Manifest", Marker: "📋", Description: "Run metadata, scope, and creation context."},
+		{Value: DataKindEvaluationManifest, Label: "Evaluation Manifest", Marker: "📋", Description: "Evaluation metadata, scope, and run context."},
 		{Value: DataKindEvaluationFrame, Label: "Evaluation Frame", Marker: "🧭", Description: "Top-level evaluation planning frame."},
 		{Value: DataKindAreaEvaluationFrame, Label: "Area Evaluation Frame", Marker: "🗺️", Description: "Planned evaluation frame for an Area."},
 		{Value: DataKindRequirementEvaluationFrame, Label: "Requirement Evaluation Frame", Marker: "📋", Description: "Planned assessment frame for a Requirement."},

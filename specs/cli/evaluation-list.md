@@ -22,8 +22,8 @@ all capitals.
 The command **MUST** resolve the evaluation directory using the same precedence
 as [`evaluation create`](evaluation-create.md), anchored by `--model <model>`
 when supplied and otherwise by `QUALITY.md` in the current working directory. It
-**MUST** list runs with a valid `RunManifest` in deterministic
-`RunManifest.number` order and **MUST NOT** write or modify any run.
+**MUST** list runs with a valid `EvaluationManifest` in deterministic
+`EvaluationManifest.run.number` order and **MUST NOT** write or modify any run.
 
 `--model <model>` **MUST** select the `QUALITY.md` file whose model-relative
 workspace supplies the evaluation history. Listed run paths **MUST** be relative

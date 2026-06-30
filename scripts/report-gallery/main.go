@@ -68,16 +68,16 @@ func run() error {
 }
 
 func pinRunIdentity(runPath, createdAt, runID string) error {
-	path := filepath.Join(runPath, "data", "run-manifest.json")
+	path := filepath.Join(runPath, "data", "evaluation-manifest.json")
 	raw, err := os.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("reading run manifest: %w", err)
 	}
-	var manifest evaluation.RunManifest
+	var manifest evaluation.EvaluationManifest
 	if err := json.Unmarshal(raw, &manifest); err != nil {
 		return fmt.Errorf("decoding run manifest: %w", err)
 	}
-	manifest.ID = runID
+	manifest.EvaluationID = runID
 	manifest.CreatedAt = createdAt
 	pinned, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {

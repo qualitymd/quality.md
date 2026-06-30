@@ -123,12 +123,12 @@ Source content instructs the evaluator?
    the run folder with
    `qualitymd evaluation create [model] [--area <area-id>] [--factor <factor-id>...]`.
    The CLI computes the number, snapshots `model-snapshot.md`, writes
-   `data/run-manifest.json`, and prepares `data/` for structured routine outputs.
+   `data/evaluation-manifest.json`, and prepares `data/` for structured routine outputs.
    Do not compute a root default, planned expansion, or run-folder slug in the
    skill. Record the run path in the evaluate feedback log frontmatter or
    timeline. Then query the frozen model's canonical reference IDs from the run's
    snapshot: run `qualitymd model list --json <run>/model-snapshot.md`, scoped to
-   the run's `RunManifest.plannedScope` when needed. Query the snapshot by path,
+   the run's `EvaluationManifest.plannedScope` when needed. Query the snapshot by path,
    never the live `QUALITY.md`, so the IDs match the model being evaluated. This
    `id`/`kind`/`parentId` set is the source of truth for every payload reference
    authored in the steps below; do not derive Area, Factor, or Requirement IDs

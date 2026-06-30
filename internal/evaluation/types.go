@@ -48,16 +48,22 @@ type PlannedRunScope struct {
 	FactorFilter []string `json:"factorFilter"`
 }
 
-// RunManifest is the CLI-owned run metadata written when a run is created.
-type RunManifest struct {
+// RunMetadata records repository-local run numbering and folder identity.
+type RunMetadata struct {
+	Number int    `json:"number"`
+	Label  string `json:"label"`
+}
+
+// EvaluationManifest is the CLI-owned Evaluation metadata written when a run is created.
+type EvaluationManifest struct {
 	SchemaVersion  int             `json:"schemaVersion"`
 	Kind           DataKind        `json:"kind"`
-	ID             string          `json:"id"`
-	Number         int             `json:"number"`
+	EvaluationID   string          `json:"evaluationId"`
 	CreatedAt      string          `json:"createdAt"`
 	Model          string          `json:"model"`
 	RequestedScope RunScope        `json:"requestedScope"`
 	PlannedScope   PlannedRunScope `json:"plannedScope"`
+	Run            RunMetadata     `json:"run"`
 }
 
 const (
@@ -65,9 +71,9 @@ const (
 	runIDAlphabet   = "0123456789abcdefghjkmnpqrstvwxyz"
 )
 
-func newRunIdentity() (string, string, error) {
+func newEvaluationIdentity() (string, string, error) {
 	createdAt := time.Now().UTC()
-	tail, err := randomRunIDTail(runIDTailLength)
+	tail, err := randomEvaluationIDTail(runIDTailLength)
 	if err != nil {
 		return "", "", err
 	}
@@ -75,10 +81,10 @@ func newRunIdentity() (string, string, error) {
 	return id, createdAt.Format(time.RFC3339), nil
 }
 
-func randomRunIDTail(length int) (string, error) {
+func randomEvaluationIDTail(length int) (string, error) {
 	raw := make([]byte, length)
 	if _, err := io.ReadFull(rand.Reader, raw); err != nil {
-		return "", fmt.Errorf("generating run ID: %w", err)
+		return "", fmt.Errorf("generating evaluation ID: %w", err)
 	}
 	var b strings.Builder
 	b.Grow(length)

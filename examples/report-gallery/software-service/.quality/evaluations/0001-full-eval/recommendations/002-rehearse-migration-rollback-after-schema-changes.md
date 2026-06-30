@@ -5,7 +5,7 @@ title: "Recommendation: Rehearse migration rollback after schema changes"
 
 # Recommendation: Rehearse migration rollback after schema changes
 
-Run: [Run 0001](../report.md) - Run ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
+Run: [0001-full-eval](../report.md) - Evaluation ID: `20260629T120000Z-0123456789ab` - Created: 2026-06-29T12:00:00Z - Scope: full evaluation
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 
@@ -57,7 +57,7 @@ Recommendation rank follows the synthetic finding priority and expected quality-
 
 ## Primary Source Data
 
-- [data/run-manifest.json](../data/run-manifest.json)
+- [data/evaluation-manifest.json](../data/evaluation-manifest.json)
 - [data/advice/recommendations/qrec_gallery2/recommendation-result.json](../data/advice/recommendations/qrec_gallery2/recommendation-result.json)
 - [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
 

@@ -135,7 +135,7 @@ Parse the user's request from free-form arguments:
   `<area-label> <factor-label>`: resolve the Area first, then the Factor within
   that Area. Pass resolved canonical scope IDs to
   `qualitymd evaluation create` with `--area <area-id>` and repeatable
-  `--factor <factor-id>`; let the CLI write `RunManifest`, apply the root
+  `--factor <factor-id>`; let the CLI write `EvaluationManifest`, apply the root
   default, and derive the run-folder slug. When a Factor label exists in
   multiple Areas, ask exactly:
   `What area do you want to evaluate <Factor> for?`, list numbered runnable Area

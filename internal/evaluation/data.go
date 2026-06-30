@@ -19,7 +19,7 @@ import (
 type DataKind string
 
 const (
-	DataKindRunManifest                DataKind = "RunManifest"
+	DataKindEvaluationManifest         DataKind = "EvaluationManifest"
 	DataKindEvaluationFrame            DataKind = "EvaluationFrame"
 	DataKindAreaEvaluationFrame        DataKind = "AreaEvaluationFrame"
 	DataKindRequirementEvaluationFrame DataKind = "RequirementEvaluationFrame"
@@ -39,7 +39,7 @@ const (
 // including the CLI-owned EvaluationOutputResult. It is the single typed source
 // for the reference-kind vocabulary: any reference may name any of these kinds.
 var supportedDataKinds = []DataKind{
-	DataKindRunManifest,
+	DataKindEvaluationManifest,
 	DataKindEvaluationFrame,
 	DataKindAreaEvaluationFrame,
 	DataKindRequirementEvaluationFrame,
@@ -58,7 +58,7 @@ var supportedDataKinds = []DataKind{
 // acceptedDataKinds is the agent-writable subset of supportedDataKinds: every
 // supported kind except the CLI-owned EvaluationOutputResult, which only
 // evaluation report build generates. It gates data set payloads.
-var acceptedDataKinds = supportedDataKindsExcept(DataKindRunManifest, DataKindEvaluationOutput)
+var acceptedDataKinds = supportedDataKindsExcept(DataKindEvaluationManifest, DataKindEvaluationOutput)
 
 func supportedDataKindsExcept(excluded ...DataKind) []DataKind {
 	kinds := make([]DataKind, 0, len(supportedDataKinds))
@@ -150,9 +150,9 @@ func SetData(runPath string, raw []byte, opts DataSetOptions) (*DataSetReceipt, 
 	if err != nil {
 		return nil, err
 	}
-	manifest, err := loadRunManifest(runPath)
+	manifest, err := loadEvaluationManifest(runPath)
 	if err != nil {
-		return nil, fmt.Errorf("loading %s: %w", runManifestPath, err)
+		return nil, fmt.Errorf("loading %s: %w", evaluationManifestPath, err)
 	}
 	spec, err := loadRunModel(runPath)
 	if err != nil {
@@ -258,9 +258,9 @@ func EvaluationDataKinds() *DataKindList {
 		})
 	}
 	infos = append(infos, DataKindInfo{
-		Kind:          DataKindRunManifest,
+		Kind:          DataKindEvaluationManifest,
 		AgentWritable: false,
-		Description:   dataContracts[DataKindRunManifest].Description,
+		Description:   dataContracts[DataKindEvaluationManifest].Description,
 	})
 	infos = append(infos, DataKindInfo{
 		Kind:          DataKindEvaluationOutput,
@@ -331,7 +331,7 @@ func decodeDataPayloadBatch(raw []byte) ([]map[string]any, error) {
 	return payloads, nil
 }
 
-func dataWriteCandidates(runPath string, payloads []map[string]any, spec *model.Spec, manifest *RunManifest) ([]dataWriteCandidate, error) {
+func dataWriteCandidates(runPath string, payloads []map[string]any, spec *model.Spec, manifest *EvaluationManifest) ([]dataWriteCandidate, error) {
 	normalized, err := normalizeArtifactIDs(runPath, payloads, manifest)
 	if err != nil {
 		return nil, err
@@ -352,7 +352,7 @@ func dataWriteCandidates(runPath string, payloads []map[string]any, spec *model.
 	return candidates, nil
 }
 
-func normalizeArtifactIDs(runPath string, payloads []map[string]any, manifest *RunManifest) ([]map[string]any, error) {
+func normalizeArtifactIDs(runPath string, payloads []map[string]any, manifest *EvaluationManifest) ([]map[string]any, error) {
 	out := make([]map[string]any, 0, len(payloads))
 	for _, payload := range payloads {
 		cloned, err := cloneDataPayload(payload)
@@ -489,7 +489,7 @@ func dataWriteCandidateForPayload(index int, payload map[string]any, spec *model
 	if err != nil {
 		return dataWriteCandidate{}, err
 	}
-	if kind == DataKindRunManifest || kind == DataKindEvaluationOutput {
+	if kind == DataKindEvaluationManifest || kind == DataKindEvaluationOutput {
 		return dataWriteCandidate{}, usagef("%s is CLI-owned and cannot be written with evaluation data set", kind)
 	}
 	if !slices.Contains(acceptedDataKinds, kind) {
@@ -942,8 +942,8 @@ func dataPathForRoutineRef(ref map[string]any) (string, error) {
 	subject := objectMap(ref["subject"])
 	payload := map[string]any{}
 	switch kind {
-	case DataKindRunManifest:
-		return "data/run-manifest.json", nil
+	case DataKindEvaluationManifest:
+		return "data/evaluation-manifest.json", nil
 	case DataKindEvaluationFrame:
 	case DataKindAreaEvaluationFrame, DataKindAreaAnalysisFrame:
 		payload["subject"] = subject
@@ -1103,8 +1103,8 @@ func payloadKind(payload map[string]any) (DataKind, error) {
 //nolint:cyclop // Centralized kind-to-path dispatch keeps payload routing explicit.
 func dataPathForPayload(kind DataKind, payload map[string]any) (string, error) {
 	switch kind {
-	case DataKindRunManifest:
-		return "data/run-manifest.json", nil
+	case DataKindEvaluationManifest:
+		return "data/evaluation-manifest.json", nil
 	case DataKindEvaluationFrame:
 		return "data/frame/evaluation-frame.json", nil
 	case DataKindAreaEvaluationFrame:
@@ -1149,8 +1149,8 @@ func dataPathForPayload(kind DataKind, payload map[string]any) (string, error) {
 //nolint:cyclop // Centralized kind-to-path dispatch keeps query routing explicit.
 func dataPathForQuery(query DataQuery) (string, error) {
 	switch query.Kind {
-	case DataKindRunManifest:
-		return "data/run-manifest.json", nil
+	case DataKindEvaluationManifest:
+		return "data/evaluation-manifest.json", nil
 	case DataKindEvaluationFrame:
 		return "data/frame/evaluation-frame.json", nil
 	case DataKindAreaEvaluationFrame:
@@ -1400,12 +1400,11 @@ func parseFactorRef(ref string) (factorID, error) {
 	return factorID{DeclaringArea: area, Path: path}, nil
 }
 
-func runManifestExample() map[string]any {
+func evaluationManifestExample() map[string]any {
 	return map[string]any{
 		"schemaVersion": SchemaVersion,
-		"kind":          string(DataKindRunManifest),
-		"id":            "20260629T120000Z-0123456789ab",
-		"number":        1,
+		"kind":          string(DataKindEvaluationManifest),
+		"evaluationId":  "20260629T120000Z-0123456789ab",
 		"createdAt":     "2026-06-29T12:00:00Z",
 		"model":         "QUALITY.md",
 		"requestedScope": map[string]any{
@@ -1415,6 +1414,10 @@ func runManifestExample() map[string]any {
 		"plannedScope": map[string]any{
 			"areaId":       exampleAreaID(),
 			"factorFilter": []any{exampleFactorID()},
+		},
+		"run": map[string]any{
+			"number": 1,
+			"label":  "0001-full-eval",
 		},
 	}
 }

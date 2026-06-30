@@ -97,7 +97,7 @@ prose, key-details table, and local jump links. The opening area should read as 
 answer, not a pile of metadata.
 
 For run reports, frontmatter owns routing metadata. Do not repeat
-frontmatter-only facts such as run ID, creation time, and stable subject
+frontmatter-only facts such as Evaluation ID, creation time, and stable subject
 reference in the visible body unless they materially help human judgment. Keep
 scope visible when it changes how the rating should be read, usually in
 `Key Details` and the H1 title for factor-scoped runs.
@@ -208,11 +208,11 @@ an identity and indexing layer, not a second Evaluation result format,
 metadata-summary table, or source-data manifest.
 
 It is reasonable for frontmatter to carry document metadata such as stable report
-kind, title, run number or slug, run ID, creation time, requested scope, and
-subject reference when those fields help agents, static-site tooling, or editors
-find and route the report without making the file harder for people to open.
-These fields are metadata about the report document and run, not judgment about
-the evaluated subject.
+kind, title, Evaluation ID, creation time, model path, and run folder label when
+those fields help agents, static-site tooling, or editors find and route the
+report without making the file harder for people to open. These fields are
+metadata about the report document and Evaluation, not judgment about the
+evaluated subject.
 
 Do not repeat Evaluation judgment or evidence in frontmatter, including:
 
@@ -243,10 +243,10 @@ durable report spec for that artifact allows them:
 ---
 type: Evaluation Overview Report
 title: "Quality Evaluation - LedgerLite Service"
-run: 0001-full-eval
-runId: 20260629T120000Z-0123456789ab
+evaluationId: 20260629T120000Z-0123456789ab
 created: 2026-06-29T12:00:00Z
-scope: full evaluation
+model: QUALITY.md
+run: 0001-full-eval
 ---
 ```
 
@@ -254,11 +254,10 @@ Good frontmatter fields:
 
 - `type`;
 - `title`;
-- `run`;
-- `runId`;
+- `evaluationId`;
 - `created`;
-- `scope`;
-- `subject`.
+- `model`;
+- `run`.
 
 The frontmatter `title` should match the visible H1 title text without the
 leading Markdown `#` marker. Detail reports keep prefixes such as
@@ -369,7 +368,7 @@ utility section; local keys belong near first use.
 ```markdown
 ## Primary Source Data
 
-- [data/run-manifest.json](data/run-manifest.json)
+- [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
@@ -382,7 +381,7 @@ run-root-relative and make the link target relative to the report file, for
 example:
 
 ```markdown
-- [data/run-manifest.json](../../data/run-manifest.json)
+- [data/evaluation-manifest.json](../../data/evaluation-manifest.json)
 ```
 
 Keep the list report-local. Do not list every payload in the run, and do not
@@ -478,7 +477,7 @@ Legend
 
 ## Primary Source Data
 
-- [data/run-manifest.json](data/run-manifest.json)
+- [data/evaluation-manifest.json](data/evaluation-manifest.json)
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
@@ -597,7 +596,7 @@ and confidence immediately visible.
 ```markdown
 # Requirement: mutation endpoints are idempotent under retry
 
-Run: [Run 0001](../../../../report.md) - Run ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
+Run: [Run 0001](../../../../report.md) - Evaluation ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
 Report: [Overview](../../../../report.md) - [Findings](../../../../findings.md) - [Recommendations](../../../../recommendations.md)
 
@@ -633,7 +632,7 @@ navigation visible before the recommendation prose.
 ```markdown
 # Recommendation: Tighten the idempotency replay contract
 
-Run: [Run 0001](../report.md) - Run ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
+Run: [Run 0001](../report.md) - Evaluation ID: `20260629T184200Z-0123456789ab` - Created: 2026-06-29T18:42:00Z - Scope: full evaluation
 
 Report: [Overview](../report.md) - [Findings](../findings.md) - [Recommendations](../recommendations.md)
 

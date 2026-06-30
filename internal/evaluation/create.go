@@ -55,7 +55,8 @@ func CreateRun(opts Options) (*CreateRunReceipt, error) {
 	if err != nil {
 		return nil, err
 	}
-	scope.Number = number
+	scope.Run.Number = number
+	scope.Run.Label = name
 	scope.Model = ws.Model.Rel
 	runAbs := filepath.Join(evalDirAbs, name)
 	if err := os.Mkdir(runAbs, 0o755); err != nil {
@@ -85,14 +86,14 @@ func loadModel(path string) (*model.Spec, error) {
 	return model.Decode(doc)
 }
 
-func resolveCreateScope(spec *model.Spec, opts Options) (RunManifest, error) {
+func resolveCreateScope(spec *model.Spec, opts Options) (EvaluationManifest, error) {
 	requested := RunScope{}
 	planned := PlannedRunScope{AreaID: model.AreaPath{}.Reference(), FactorFilter: []string{}}
 
 	if opts.Area != "" {
 		area, err := model.ParseAreaReference(spec, opts.Area)
 		if err != nil {
-			return RunManifest{}, usagef("--area: %v", err)
+			return EvaluationManifest{}, usagef("--area: %v", err)
 		}
 		requested.AreaID = area.Reference()
 		planned.AreaID = area.Reference()
@@ -101,7 +102,7 @@ func resolveCreateScope(spec *model.Spec, opts Options) (RunManifest, error) {
 	for _, value := range opts.Factors {
 		area, factor, err := model.ParseFactorReference(spec, value)
 		if err != nil {
-			return RunManifest{}, usagef("--factor: %v", err)
+			return EvaluationManifest{}, usagef("--factor: %v", err)
 		}
 		factorRef := model.FactorReference(area, factor)
 		if requested.AreaID == "" {
@@ -111,26 +112,26 @@ func resolveCreateScope(spec *model.Spec, opts Options) (RunManifest, error) {
 			planned.AreaID = area.Reference()
 		}
 		if requested.AreaID != area.Reference() || planned.AreaID != area.Reference() {
-			return RunManifest{}, usagef("--factor %s does not belong to --area %s", value, planned.AreaID)
+			return EvaluationManifest{}, usagef("--factor %s does not belong to --area %s", value, planned.AreaID)
 		}
 		requested.FactorFilter = append(requested.FactorFilter, factorRef)
 		planned.FactorFilter = append(planned.FactorFilter, factorRef)
 	}
 
-	return RunManifest{
+	return EvaluationManifest{
 		SchemaVersion:  SchemaVersion,
-		Kind:           DataKindRunManifest,
+		Kind:           DataKindEvaluationManifest,
 		RequestedScope: requested,
 		PlannedScope:   planned,
 	}, nil
 }
 
-func completeRunIdentity(manifest RunManifest) (RunManifest, error) {
-	id, createdAt, err := newRunIdentity()
+func completeRunIdentity(manifest EvaluationManifest) (EvaluationManifest, error) {
+	id, createdAt, err := newEvaluationIdentity()
 	if err != nil {
-		return RunManifest{}, err
+		return EvaluationManifest{}, err
 	}
-	manifest.ID = id
+	manifest.EvaluationID = id
 	manifest.CreatedAt = createdAt
 	return manifest, nil
 }
@@ -171,7 +172,7 @@ func runScopeSlug(scope PlannedRunScope) string {
 	return strings.Join(parts, "-")
 }
 
-func createRunSkeleton(runAbs string, modelRaw []byte, manifest RunManifest) error {
+func createRunSkeleton(runAbs string, modelRaw []byte, manifest EvaluationManifest) error {
 	if err := os.Mkdir(filepath.Join(runAbs, "data"), 0o755); err != nil {
 		return fmt.Errorf("creating data: %w", err)
 	}
@@ -182,8 +183,8 @@ func createRunSkeleton(runAbs string, modelRaw []byte, manifest RunManifest) err
 	if err != nil {
 		return err
 	}
-	if err := os.WriteFile(filepath.Join(runAbs, "data", "run-manifest.json"), raw, 0o644); err != nil {
-		return fmt.Errorf("writing data/run-manifest.json: %w", err)
+	if err := os.WriteFile(filepath.Join(runAbs, "data", "evaluation-manifest.json"), raw, 0o644); err != nil {
+		return fmt.Errorf("writing data/evaluation-manifest.json: %w", err)
 	}
 	return nil
 }

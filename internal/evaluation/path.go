@@ -82,7 +82,7 @@ func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
 			continue
 		}
 		runAbs := filepath.Join(evalDirAbs, entry.Name())
-		manifest, err := loadRunManifest(runAbs)
+		manifest, err := loadEvaluationManifest(runAbs)
 		if err != nil {
 			parsed, ok := parseRunName(entry.Name())
 			if !ok {
@@ -97,7 +97,7 @@ func ListRunDirs(evalDirAbs, evalDirRel string) ([]RunDir, error) {
 			continue
 		}
 		runs = append(runs, RunDir{
-			Number: manifest.Number,
+			Number: manifest.Run.Number,
 			Name:   entry.Name(),
 			Abs:    runAbs,
 			Rel:    filepath.ToSlash(filepath.Join(evalDirRel, entry.Name())),
@@ -173,9 +173,9 @@ func nextRunNumber(dir string) (int, error) {
 		if !entry.IsDir() {
 			continue
 		}
-		manifest, err := loadRunManifest(filepath.Join(dir, entry.Name()))
-		if err == nil && manifest.Number > maxN {
-			maxN = manifest.Number
+		manifest, err := loadEvaluationManifest(filepath.Join(dir, entry.Name()))
+		if err == nil && manifest.Run.Number > maxN {
+			maxN = manifest.Run.Number
 			continue
 		}
 		parsed, ok := parseRunName(entry.Name())

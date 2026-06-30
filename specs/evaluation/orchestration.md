@@ -59,8 +59,8 @@ ranking **MUST** reference recommendations by `RecommendationResult.id`.
 `RecommendationRankingResult` **MUST** exist before
 `EvaluationOutputResult` and reports are generated.
 
-Report generation **MUST** require a valid `RunManifest`, a valid Evaluation
-Frame, the analysis outputs required by `RunManifest.plannedScope`, and the
+Report generation **MUST** require a valid `EvaluationManifest`, a valid Evaluation
+Frame, the analysis outputs required by `EvaluationManifest.plannedScope`, and the
 required Advice outputs. It **MUST NOT** select report scope from Evaluation
 Frame ordering.
 

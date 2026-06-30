@@ -3,6 +3,27 @@
 ## 2026-06-29
 
 - **Done**: Implemented and archived
+  [0181 - Evaluation Identity Manifest](archive/0181-evaluation-identity-manifest.md).
+  Evaluation manifests now use `EvaluationManifest`, `evaluationId`, nested
+  local `run` metadata, and `data/evaluation-manifest.json`; generated run
+  report frontmatter now carries `evaluationId`, `created`, `model`, and `run`
+  without duplicated scope fields.
+
+- **In-Review**: Completed implementation for
+  [0181 - Evaluation Identity Manifest](archive/0181-evaluation-identity-manifest.md).
+  Manifest data, report frontmatter, durable specs, runtime skill guidance,
+  tests, generated schema, and report-gallery output are aligned for review.
+
+- **In-Progress**: Created
+  [0181 - Evaluation Identity Manifest](archive/0181-evaluation-identity-manifest.md)
+  with its
+  [functional spec](archive/0181-evaluation-identity-manifest/spec.md) and
+  [design doc](archive/0181-evaluation-identity-manifest/design.md). Functional
+  requirements and design are settled; implementation is beginning across
+  Evaluation manifest data, report frontmatter, durable specs, runtime skill
+  guidance, tests, and generated examples.
+
+- **Done**: Implemented and archived
   [0180 - Finding Taxonomy and Report Details](archive/0180-finding-taxonomy-report-details.md).
   Evaluation Finding types now use `strength`, `gap`, `risk`, and `note`;
   generated reports render `🚩 Gap`, add a run Finding Breakdown, use a single

@@ -102,11 +102,11 @@ report frontmatter title uses `Requirement: <title>`, matching the visible H1
 `# Requirement: <title>`.
 
 The run-level `report.md` frontmatter **MUST** include only these fields:
-`type`, `title`, `run`, `runId`, `created`, `scope`, and `subject`.
-`run` **MUST** identify the run folder label when available. `runId` and
-`created` **MUST** render from `RunManifest.id` and `RunManifest.createdAt`.
-`scope` **MUST** render the requested-scope display string. `subject` **MUST**
-render the scoped Area model reference.
+`type`, `title`, `evaluationId`, `created`, `model`, and `run`. `evaluationId`
+and `created` **MUST** render from `EvaluationManifest.evaluationId` and
+`EvaluationManifest.createdAt`. `model` **MUST** render from
+`EvaluationManifest.model`. `run` **MUST** identify the run folder label when
+available.
 
 Non-run report frontmatter **MUST** contain only `type` and `title`.
 
@@ -138,8 +138,9 @@ Each source-data list item **MUST** render as a Markdown link whose label is the
 run-root-relative payload path and whose target is relative to the report file
 that contains the section.
 
-Reports that render run number, run ID, creation time, or requested scope from
-the run manifest **MUST** include `data/run-manifest.json`.
+Reports that render run number, Evaluation ID, creation time, model path, or
+requested scope from the Evaluation manifest **MUST** include
+`data/evaluation-manifest.json`.
 
 The `Primary Source Data` section **MUST NOT** include
 `data/evaluation-output-result.json` solely because that generated output index
@@ -269,7 +270,7 @@ Generated reports **MUST NOT** render a bottom `## Legend` section.
 ## Run Report
 
 The run-level `report.md` **MUST** render as the scoped Area report described by
-`RunManifest.plannedScope`. It **MUST** include:
+`EvaluationManifest.plannedScope`. It **MUST** include:
 
 - scoped Area title and rating;
 - `## Summary`, `## Key Details`, `## Contents`, and `## Model Evaluation`
@@ -650,10 +651,10 @@ planned scope has a factor filter, the run report frontmatter `title` and H1
 text **MUST** render as
 `Quality Evaluation - <Area title> (<Factor title list>)`, where
 `<Factor title list>` contains every planned factor filter as comma-separated
-Factor titles in `RunManifest.plannedScope.factorFilter` order. The run report
-title **MUST NOT** include `Evaluation Report`, `Area:`, raw Area references, or
-raw Factor references; stable scope references belong in frontmatter and Key
-Details.
+Factor titles in `EvaluationManifest.plannedScope.factorFilter` order. The run
+report title **MUST NOT** include `Evaluation Report`, `Area:`, raw Area
+references, or raw Factor references; stable scope references belong in
+`data/evaluation-manifest.json` and human-readable scope belongs in Key Details.
 
 > Rationale: `report.md` and the report `type` already identify the artifact as
 > a report. The H1 should name the quality-evaluation scope, while

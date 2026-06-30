@@ -56,19 +56,21 @@ directory. Invalid model paths **MUST** fail without creating a numbered run
 folder.
 
 The command **MUST** compute the next run number as one past the highest
-`RunManifest.number` in the evaluation directory, create the run directory,
-create `data/`, snapshot `model-snapshot.md`, and write
-`data/run-manifest.json`.
+`EvaluationManifest.run.number` in the evaluation directory, create the run
+directory, create `data/`, snapshot `model-snapshot.md`, and write
+`data/evaluation-manifest.json`.
 
-`data/run-manifest.json` **MUST** be a CLI-owned `RunManifest` payload containing
-`schemaVersion`, `kind`, `id`, `number`, `createdAt`, `model`,
-`requestedScope`, and `plannedScope`. `id` **MUST** be a globally-unique run ID
-generated from the creation instant plus a random tail and **MUST NOT** be
-derived from `number`. `createdAt` **MUST** be a UTC RFC 3339 timestamp for run
-creation and **MUST** be computed from the same instant as `id`. `requestedScope`
-**MUST** faithfully record supplied scope arguments. `plannedScope` **MUST**
-normalize the scope by defaulting `areaId` to `area:root`
-and `factorFilter` to an array.
+`data/evaluation-manifest.json` **MUST** be a CLI-owned `EvaluationManifest`
+payload containing `schemaVersion`, `kind`, `evaluationId`, `createdAt`,
+`model`, `requestedScope`, `plannedScope`, and `run`. `evaluationId` **MUST** be
+a globally-unique Evaluation ID generated from the creation instant plus a
+random tail and **MUST NOT** be derived from `run.number`. `createdAt` **MUST**
+be a UTC RFC 3339 timestamp for run creation and **MUST** be computed from the
+same instant as `evaluationId`. `requestedScope` **MUST** faithfully record
+supplied scope arguments. `plannedScope` **MUST** normalize the scope by
+defaulting `areaId` to `area:root` and `factorFilter` to an array. `run`
+**MUST** include `number` and `label`, where `label` is the created run folder
+name.
 
 The command **MUST** validate `--area` and every `--factor` against the model
 snapshot before creating a numbered run folder. If a Factor does not belong to

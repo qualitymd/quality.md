@@ -56,7 +56,7 @@ result.
 
 ## Planned Scope
 
-Evaluation output assembly **MUST** use `RunManifest.plannedScope` as the run's
+Evaluation output assembly **MUST** use `EvaluationManifest.plannedScope` as the run's
 authoritative scope. It **MUST NOT** select a headline subject from
 agent-authored frame input ordering.
 
