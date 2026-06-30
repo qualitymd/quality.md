@@ -1,0 +1,11 @@
+# Generated files. Do not edit by hand; regenerate with the listed task.
+# Marked linguist-generated so GitHub collapses their diffs and skips them in
+# language stats. Mintlify ties a page's URL slug to its file path, so generated
+# docs keep normal names/locations and are flagged here rather than by a path
+# convention.
+
+# mintlify/cli.mdx: mise run cli-docs
+mintlify/cli.mdx linguist-generated=true
+
+# mintlify/specification.mdx: mise run sync-spec-docs
+mintlify/specification.mdx linguist-generated=true

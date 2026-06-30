@@ -40,6 +40,10 @@ mise run fmt-md-check    # dprint check
 mise run npm-pack-check  # verify npm package README packaging
 mise run report-gallery  # regenerate checked-in example evaluation reports
 mise run report-gallery-check  # verify generated report gallery is current
+mise run cli-docs        # regenerate the generated mintlify/cli.mdx from the CLI
+mise run sync-spec-docs  # regenerate the generated mintlify/specification.mdx
+mise run docs-links-check  # check the Mintlify docs for broken links
+mise run docs-deps       # install the pinned Mintlify CLI under mintlify/
 mise run release-notes -- v0.3.0  # print curated release notes
 mise run release-check -- v0.3.0  # run pre-tag release checks
 mise run tidy            # go mod tidy

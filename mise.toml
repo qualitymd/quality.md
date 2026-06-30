@@ -36,8 +36,8 @@ fi
 '''
 
 [tasks.check]
-description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, generated docs check, npm package check)"
-depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "npm-pack-check"]
+description = "Run the full CI gate locally (format, tidy, vet, lint, test, generated example check, generated docs check, docs links check, npm package check)"
+depends = ["fmt-go-check", "tidy-check", "vet", "lint", "test", "fmt-md-check", "report-gallery-check", "sync-spec-docs-check", "cli-docs-check", "docs-links-check", "npm-pack-check"]
 
 [tasks.fmt]
 description = "Format the codebase (Go + Markdown)"
@@ -111,7 +111,18 @@ run = "go run ./scripts/cli-docs"
 
 [tasks.cli-docs-check]
 description = "Verify the generated Mintlify CLI reference page is current"
-run = ["mise run cli-docs", "git diff --exit-code mintlify/cli-reference.mdx"]
+run = ["mise run cli-docs", "git diff --exit-code mintlify/cli.mdx"]
+
+[tasks.docs-deps]
+description = "Install the Mintlify docs toolchain (pinned mint CLI) if missing"
+dir = "mintlify"
+run = "[ -d node_modules ] || npm ci --no-audit --no-fund"
+
+[tasks.docs-links-check]
+description = "Check the Mintlify docs site for broken links (after docs regeneration)"
+depends = ["docs-deps", "sync-spec-docs-check", "cli-docs-check"]
+dir = "mintlify"
+run = "npm exec --no -- mint broken-links"
 
 [tasks.npm-publish]
 description = "Cross-compile, assemble, and publish the npm packages"

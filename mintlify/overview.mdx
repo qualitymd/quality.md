@@ -5,13 +5,13 @@ mode: custom
 ---
 
 <div className="relative px-6 pt-20 pb-12 lg:pt-28 max-w-5xl mx-auto text-center">
-  <p className="text-sm font-semibold uppercase tracking-widest text-[#5B68EE] dark:text-[#A4ACF2]">
-    Open format · Agent skill · CLI
-  </p>
-  <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-gray-900 dark:text-zinc-50">
+  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-zinc-50">
     QUALITY.md
   </h1>
-  <p className="mt-6 text-lg lg:text-xl leading-relaxed text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto">
+  <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-[#5B68EE] dark:text-[#A4ACF2]">
+    Open format · Agent skill · CLI
+  </p>
+  <p className="mt-4 text-lg lg:text-xl leading-relaxed text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto">
     Continuously improve project quality with your team and agents aligned on
     what quality means for what matters most.
   </p>
@@ -45,10 +45,14 @@ mode: custom
     <Card title="The Quality Loop Stack" icon="repeat" href="/loops">
       The evaluate, review, act, and improve workflow it is built around.
     </Card>
-    <Card title="Concepts" icon="puzzle" href="/concepts">
-      The core vocabulary of a QUALITY.md quality model.
+    <Card
+      title="Quality evaluation reports"
+      icon="file-check"
+      href="https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/report.md"
+    >
+      Quality ratings, assessment findings, and actionable recommendations.
     </Card>
-    <Card title="CLI reference" icon="terminal" href="/cli-reference">
+    <Card title="CLI reference" icon="terminal" href="/cli">
       The qualitymd command-line interface the skill builds on.
     </Card>
   </Columns>

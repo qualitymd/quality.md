@@ -26,11 +26,11 @@
       "quickstart",
       {
         "group": "Using QUALITY.md",
-        "pages": ["skill", "loops", "concepts"]
+        "pages": ["skill", "loops"]
       },
       {
         "group": "Reference",
-        "pages": ["cli-reference"]
+        "pages": ["cli"]
       }
     ]
   },

@@ -1,0 +1,13 @@
+{
+  "name": "qualitymd-docs",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Mintlify documentation site for QUALITY.md",
+  "scripts": {
+    "dev": "mint dev",
+    "broken-links": "mint broken-links"
+  },
+  "devDependencies": {
+    "mint": "4.2.651"
+  }
+}
