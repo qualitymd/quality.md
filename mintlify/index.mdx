@@ -90,15 +90,14 @@ mode: custom
     needs, risks, etc.) for why they matter.{" "}
   </p>
   <p className="mt-2 text-md lg:text-md leading-relaxed text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto">
-    The QUALITY.md format
+    The QUALITY.md format{" "}
     <a
       href="/specification"
       className="font-medium text-[#5B68EE] underline decoration-[#5B68EE]/30 underline-offset-4 hover:decoration-current dark:text-[#A4ACF2] dark:decoration-[#A4ACF2]/40"
     >
       specification
     </a>{" "}
-    provides a standard for agents, tools, and skills to build on. To serve as a
-    starter kit and tool reference implmentation, a companion `/quality`{" "}
+    is designed to be agent, tool, and vendor agnostic. The companion `/quality`{" "}
     <a
       href="/skill"
       className="font-medium text-[#5B68EE] underline decoration-[#5B68EE]/30 underline-offset-4 hover:decoration-current dark:text-[#A4ACF2] dark:decoration-[#A4ACF2]/40"
@@ -112,7 +111,8 @@ mode: custom
     >
       CLI
     </a>{" "}
-    together can perform a comprehensive quality evaluation, producing a{" "}
+    serve as both a reference implementation and starter kit for working with
+    `QUALITY.md` files, including the ability to create a comprehensive{" "}
     <a
       href="https://github.com/qualitymd/quality.md/blob/main/examples/report-gallery/software-service/.quality/evaluations/0001-full-eval/report.md"
       className="font-medium text-[#5B68EE] underline decoration-[#5B68EE]/30 underline-offset-4 hover:decoration-current dark:text-[#A4ACF2] dark:decoration-[#A4ACF2]/40"
@@ -125,8 +125,9 @@ mode: custom
       className="font-medium text-[#5B68EE] underline decoration-[#5B68EE]/30 underline-offset-4 hover:decoration-current dark:text-[#A4ACF2] dark:decoration-[#A4ACF2]/40"
     >
       improvement recommendations
-    </a>
-    , ready for handoff or further review.
+    </a>{" "}
+    ready for handoff or further review, useful for engineering quality loops or
+    augmenting your existing workflow.
   </p>
   <h3 className="mt-12 text-xl sm:text-md lg:text-lg font-bold tracking-tight text-gray-900 dark:text-zinc-50 text-center">
     Why QUALITY.md?
@@ -148,8 +149,33 @@ mode: custom
   <div className="mt-4 text-md lg:text-md leading-relaxed text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto">
     <Steps>
       <Step title="Set up">
-        Install the `/quality` agent skill and `qualitymd` CLI, then run
-        `/quality setup` to create a project quality model.
+        <ol type="a">
+          <li>
+            <p>Install the `/quality` agent skill:</p>
+
+            ```sh
+            npx skills add qualitymd/quality.md
+            ```
+          </li>
+          <li>
+            <p>Install the `qualitymd` CLI:</p>
+
+            ```sh
+            npm install -g quality.md
+            ```
+
+            <p>
+              See <a href="/quickstart">getting started</a> for other install
+              methods.
+            </p>
+          </li>
+          <li>
+            <p>
+              Invoke `/quality setup` to create a tailored `QUALITY.md` for
+              evaluation and continued refinement.
+            </p>
+          </li>
+        </ol>
       </Step>
       <Step title="Evaluate">
         Run `/quality evaluate` to generate a holistic quality report with
@@ -168,7 +194,9 @@ mode: custom
         learning.
       </Step>
     </Steps>
+
   </div>
+  {/*
   <a
     href="/loops"
     className="mt-6 block max-w-2xl mx-auto rounded-lg border border-gray-200 p-5 text-left no-underline transition-colors hover:bg-gray-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
@@ -188,6 +216,7 @@ mode: custom
       </div>
     </div>
   </a>
+  */}
 </div>
 <div></div>
 
