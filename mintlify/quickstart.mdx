@@ -18,13 +18,32 @@ npx skills add qualitymd/quality.md
 
 ### Install the CLI
 
+Choose one CLI install method. Use npm or pnpm if you already use Node.js; use
+the hosted installer when you want a managed standalone install.
+
 <CodeGroup>
-  ```sh npm
-  npm install -g quality.md
-  ```
+```sh npm
+npm install -g quality.md
+```
 
 ```sh pnpm
 pnpm add -g quality.md
+```
+
+```sh macOS/Linux
+curl -fsSL https://getquality.md/install.sh | sh
+```
+
+```powershell Windows PowerShell
+iwr https://getquality.md/install.ps1 -UseB | iex
+```
+
+```sh Homebrew
+brew install qualitymd/tap/qualitymd
+```
+
+```sh Go
+go install github.com/qualitymd/quality.md/cmd/qualitymd@latest
 ```
 
 </CodeGroup>
