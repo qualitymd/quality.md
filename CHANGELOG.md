@@ -5,6 +5,14 @@ QUALITY.md specification.
 
 ## Unreleased
 
+### Packaging
+
+- Hosted installer URLs now use Mintlify redirects to supported static assets so
+  `https://getquality.md/install.sh`, `/install.ps1`, and `/install.cmd` resolve
+  in production.
+- The install smoke workflow now verifies the hosted installer URLs in addition
+  to the repository checkout scripts.
+
 ## v0.26.3 - 2026-07-01
 
 ### CLI

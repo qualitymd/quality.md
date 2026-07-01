@@ -91,6 +91,78 @@ jobs:
           "%RUNNER_TEMP%\qualitymd-cmd\bin\qualitymd.exe" --version
           "%RUNNER_TEMP%\qualitymd-cmd\bin\qualitymd.exe" lint --help
 
+  hosted-github-installer:
+    if: ${{ inputs.channel == 'all' || inputs.channel == 'github' }}
+    name: Hosted GitHub installer (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - name: Install with hosted shell installer
+        if: ${{ runner.os != 'Windows' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          install_dir="$RUNNER_TEMP/qualitymd-hosted-shell"
+          if [ "${{ inputs.version }}" = "latest" ]; then
+            curl -fsSL https://getquality.md/install.sh | sh -s -- --install-dir "$install_dir" --non-interactive
+          else
+            curl -fsSL https://getquality.md/install.sh | sh -s -- --version "${{ inputs.version }}" --install-dir "$install_dir" --non-interactive
+          fi
+
+          "$install_dir/bin/qualitymd" --version
+          "$install_dir/bin/qualitymd" lint --help >/dev/null
+          test -f "$install_dir/.qualitymd-managed-install"
+          grep -qx "channel=github" "$install_dir/.qualitymd-managed-install"
+          grep -Eq "^version=v?[0-9]+\\.[0-9]+\\.[0-9]+" "$install_dir/.qualitymd-managed-install"
+
+      - name: Install with hosted PowerShell installer
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "qualitymd-hosted-pwsh"
+          $env:QUALITYMD_HOME = $installDir
+          $env:QUALITYMD_NO_INPUT = "1"
+          if ("${{ inputs.version }}" -eq "latest") {
+            Remove-Item Env:QUALITYMD_VERSION -ErrorAction SilentlyContinue
+          } else {
+            $env:QUALITYMD_VERSION = "${{ inputs.version }}"
+          }
+
+          $script = (Invoke-WebRequest https://getquality.md/install.ps1 -UseBasicParsing).Content
+          Invoke-Expression $script
+
+          & (Join-Path $installDir "bin/qualitymd.exe") --version
+          & (Join-Path $installDir "bin/qualitymd.exe") lint --help | Out-Null
+          $marker = Join-Path $installDir ".qualitymd-managed-install"
+          if (-not (Test-Path $marker)) { throw "missing managed install marker" }
+          $markerLines = Get-Content $marker
+          if ($markerLines -notcontains "channel=github") { throw "missing github channel marker" }
+          if (-not ($markerLines | Where-Object { $_ -match "^version=v?[0-9]+\.[0-9]+\.[0-9]+" })) {
+            throw "missing release version marker"
+          }
+
+      - name: Install through hosted Windows cmd shim
+        if: ${{ runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $cmdPath = Join-Path $env:RUNNER_TEMP "install-hosted.cmd"
+          Invoke-WebRequest https://getquality.md/install.cmd -UseBasicParsing -OutFile $cmdPath
+          $installDir = Join-Path $env:RUNNER_TEMP "qualitymd-hosted-cmd"
+          if ("${{ inputs.version }}" -eq "latest") {
+            & cmd /c "`"$cmdPath`" -InstallDir `"$installDir`" -NonInteractive"
+          } else {
+            & cmd /c "`"$cmdPath`" -Version `"${{ inputs.version }}`" -InstallDir `"$installDir`" -NonInteractive"
+          }
+          if ($LASTEXITCODE -ne 0) { throw "hosted cmd installer failed with exit code $LASTEXITCODE" }
+          & (Join-Path $installDir "bin/qualitymd.exe") --version
+          & (Join-Path $installDir "bin/qualitymd.exe") lint --help | Out-Null
+
   npm:
     if: ${{ inputs.channel == 'all' || inputs.channel == 'npm' }}
     name: npm (${{ matrix.os }})
