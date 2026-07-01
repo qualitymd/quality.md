@@ -428,6 +428,8 @@ func sameRelease(got, want string) bool {
 	return got != "" && want != "" && got == want
 }
 
+const managedInstallerBaseURL = "https://getquality.md"
+
 func recommendedCommand(method installMethod) string {
 	switch method {
 	case installNPM:
@@ -436,9 +438,9 @@ func recommendedCommand(method installMethod) string {
 		return "brew upgrade qualitymd/tap/qualitymd"
 	case installManagedStandalone:
 		if runtime.GOOS == "windows" {
-			return `powershell -NoProfile -ExecutionPolicy Bypass -Command "$env:QUALITYMD_NO_INPUT='1'; iwr https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.ps1 -UseB | iex"`
+			return `powershell -NoProfile -ExecutionPolicy Bypass -Command "$env:QUALITYMD_NO_INPUT='1'; iwr ` + managedInstallerBaseURL + `/install.ps1 -UseB | iex"`
 		}
-		return "curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 sh"
+		return "curl -fsSL " + managedInstallerBaseURL + "/install.sh | QUALITYMD_NO_INPUT=1 sh"
 	default:
 		return ""
 	}
@@ -454,7 +456,7 @@ func recommendedAction(method installMethod, command string) string {
 	case installArchive:
 		return "download and replace the archive-installed binary from the latest GitHub release"
 	default:
-		return "install or upgrade with a managed channel such as npm, Homebrew, or the GitHub-hosted installer"
+		return "install or upgrade with a managed channel such as npm, Homebrew, or the hosted installer"
 	}
 }
 
@@ -470,9 +472,9 @@ func updateCommand(method installMethod) (string, []string) {
 		return "brew", []string{"upgrade", "qualitymd/tap/qualitymd"}
 	case installManagedStandalone:
 		if runtime.GOOS == "windows" {
-			return "powershell", []string{"-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "$env:QUALITYMD_NO_INPUT='1'; iwr https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.ps1 -UseB | iex"}
+			return "powershell", []string{"-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "$env:QUALITYMD_NO_INPUT='1'; iwr " + managedInstallerBaseURL + "/install.ps1 -UseB | iex"}
 		}
-		return "sh", []string{"-c", "curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 sh"}
+		return "sh", []string{"-c", "curl -fsSL " + managedInstallerBaseURL + "/install.sh | QUALITYMD_NO_INPUT=1 sh"}
 	default:
 		return "", nil
 	}

@@ -47,9 +47,9 @@ jobs:
           set -euo pipefail
           install_dir="$RUNNER_TEMP/qualitymd-shell"
           if [ "${{ inputs.version }}" = "latest" ]; then
-            sh install/install.sh --install-dir "$install_dir" --non-interactive
+            sh mintlify/install.sh --install-dir "$install_dir" --non-interactive
           else
-            sh install/install.sh --version "${{ inputs.version }}" --install-dir "$install_dir" --non-interactive
+            sh mintlify/install.sh --version "${{ inputs.version }}" --install-dir "$install_dir" --non-interactive
           fi
 
           "$install_dir/bin/qualitymd" --version
@@ -64,9 +64,9 @@ jobs:
         run: |
           $installDir = Join-Path $env:RUNNER_TEMP "qualitymd-pwsh"
           if ("${{ inputs.version }}" -eq "latest") {
-            ./install/install.ps1 -InstallDir $installDir -NonInteractive
+            ./mintlify/install.ps1 -InstallDir $installDir -NonInteractive
           } else {
-            ./install/install.ps1 -Version "${{ inputs.version }}" -InstallDir $installDir -NonInteractive
+            ./mintlify/install.ps1 -Version "${{ inputs.version }}" -InstallDir $installDir -NonInteractive
           }
 
           & (Join-Path $installDir "bin/qualitymd.exe") --version
@@ -84,9 +84,9 @@ jobs:
         shell: cmd
         run: |
           if "${{ inputs.version }}"=="latest" (
-            install\install.cmd -InstallDir "%RUNNER_TEMP%\qualitymd-cmd" -NonInteractive
+            mintlify\install.cmd -InstallDir "%RUNNER_TEMP%\qualitymd-cmd" -NonInteractive
           ) else (
-            install\install.cmd -Version "${{ inputs.version }}" -InstallDir "%RUNNER_TEMP%\qualitymd-cmd" -NonInteractive
+            mintlify\install.cmd -Version "${{ inputs.version }}" -InstallDir "%RUNNER_TEMP%\qualitymd-cmd" -NonInteractive
           )
           "%RUNNER_TEMP%\qualitymd-cmd\bin\qualitymd.exe" --version
           "%RUNNER_TEMP%\qualitymd-cmd\bin\qualitymd.exe" lint --help

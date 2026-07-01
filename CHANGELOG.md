@@ -5,6 +5,38 @@ QUALITY.md specification.
 
 ## Unreleased
 
+## v0.26.3 - 2026-07-01
+
+### CLI
+
+- Managed standalone `qualitymd update` now fetches hosted installer
+  entrypoints from `https://getquality.md/install.sh` and
+  `https://getquality.md/install.ps1` instead of GitHub raw source paths.
+
+### Packaging
+
+- Installer entrypoints now live in the Mintlify docs site root so the hosted
+  docs domain serves `/install.sh`, `/install.ps1`, and `/install.cmd` directly.
+- The install smoke workflow now tests the relocated Mintlify-root installer
+  files on macOS, Linux, and Windows.
+
+### Documentation
+
+- The Mintlify quickstart now shows npm and pnpm CLI install options, and the
+  release guide now verifies the docs-hosted installer entrypoints.
+
+### Compatibility / migration
+
+- No QUALITY.md specification version change; the specification remains
+  `0.9 (Draft)`.
+- `/quality` skill version `0.26.3` requires the `qualitymd` CLI `0.26.x` line.
+
+Compatibility:
+
+- CLI: `v0.26.3`
+- QUALITY.md specification: `0.9 (Draft)`
+- /quality skill: `0.26.3`, requires `qualitymd >=0.26.0 <0.27.0`
+
 ## v0.26.2 - 2026-06-30
 
 ### CLI

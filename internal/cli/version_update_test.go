@@ -249,8 +249,8 @@ func TestUpdateManagedStandaloneAppliesThroughInstaller(t *testing.T) {
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
 	}
-	if !strings.Contains(ran, "install.sh") && !strings.Contains(ran, "install.ps1") {
-		t.Fatalf("ran = %q, want managed installer", ran)
+	if !strings.Contains(ran, "https://getquality.md/install.sh") && !strings.Contains(ran, "https://getquality.md/install.ps1") {
+		t.Fatalf("ran = %q, want hosted managed installer", ran)
 	}
 	if !strings.Contains(ran, "QUALITYMD_NO_INPUT") {
 		t.Fatalf("ran = %q, want non-interactive installer env", ran)

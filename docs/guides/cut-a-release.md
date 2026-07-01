@@ -253,8 +253,9 @@ After the workflow finishes, verify:
   least one fresh install channel.
 - A downloaded archive binary reports the expected version.
 - `qualitymd spec` emits the expected bundled specification.
-- Public installer entrypoints under `install/` are present in the release
-  source and use GitHub-hosted release assets.
+- Public installer entrypoints under `mintlify/` are published by the docs site
+  as root URLs such as `/install.sh` and `/install.ps1`, and use GitHub-hosted
+  release assets.
 
 Use fresh installs where practical rather than already-built local binaries.
 A release-note comparison that differs only by a final trailing newline is

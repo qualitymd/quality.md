@@ -63,28 +63,28 @@ qualitymd evaluation report --help
 Released skill installs declare the `qualitymd` CLI SemVer range they support;
 see [Versioning](docs/reference/versioning.md) for the compatibility policy.
 
-If the CLI is missing or stale, prefer the GitHub-hosted managed installer.
+If the CLI is missing or stale, prefer the hosted managed installer.
 
 macOS/Linux:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh
+curl -fsSL https://getquality.md/install.sh | sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-iwr https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.ps1 -UseB | iex
+iwr https://getquality.md/install.ps1 -UseB | iex
 ```
 
 For agents and CI, use non-interactive and pinned forms:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.5.1 sh
+curl -fsSL https://getquality.md/install.sh | QUALITYMD_NO_INPUT=1 QUALITYMD_VERSION=v0.26.3 sh
 ```
 
 ```powershell
-.\install.ps1 -NonInteractive -Version v0.5.1
+$env:QUALITYMD_NO_INPUT = "1"; $env:QUALITYMD_VERSION = "v0.26.3"; iwr https://getquality.md/install.ps1 -UseB | iex
 ```
 
 When the install directory is not already on your `PATH`, the shell installer
@@ -96,7 +96,7 @@ runs; they do not change what is installed. To pass flags through a piped shell
 install, use `sh -s --`:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh | sh -s -- --version v0.5.1
+curl -fsSL https://getquality.md/install.sh | sh -s -- --version v0.26.3
 ```
 
 Alternative channels remain supported. Install via npm:
