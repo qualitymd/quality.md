@@ -22,17 +22,17 @@
   "redirects": [
     {
       "source": "/install.ps1",
-      "destination": "/install.ps1.js",
+      "destination": "https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.ps1",
       "permanent": false
     },
     {
       "source": "/install.sh",
-      "destination": "/install.sh.js",
+      "destination": "https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.sh",
       "permanent": false
     },
     {
       "source": "/install.cmd",
-      "destination": "/install.cmd.js",
+      "destination": "https://raw.githubusercontent.com/qualitymd/quality.md/main/install/install.cmd",
       "permanent": false
     }
   ],

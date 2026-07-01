@@ -7,9 +7,9 @@ QUALITY.md specification.
 
 ### Packaging
 
-- Hosted installer URLs now use Mintlify redirects to supported static assets so
-  `https://getquality.md/install.sh`, `/install.ps1`, and `/install.cmd` resolve
-  in production.
+- Hosted installer URLs now use Mintlify redirects to the GitHub-hosted
+  `install/` scripts so `https://getquality.md/install.sh`, `/install.ps1`, and
+  `/install.cmd` resolve in production.
 - The install smoke workflow now verifies the hosted installer URLs in addition
   to the repository checkout scripts.
 

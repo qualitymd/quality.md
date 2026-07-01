@@ -254,8 +254,8 @@ After the workflow finishes, verify:
 - A downloaded archive binary reports the expected version.
 - `qualitymd spec` emits the expected bundled specification.
 - Public installer entrypoints under `mintlify/` are published by the docs site
-  as root URLs such as `/install.sh` and `/install.ps1` through redirects to
-  supported static assets, and use GitHub-hosted release assets.
+  as root URLs such as `/install.sh` and `/install.ps1` through redirects to the
+  GitHub-hosted `install/` scripts, which use GitHub-hosted release assets.
 
 Use fresh installs where practical rather than already-built local binaries.
 A release-note comparison that differs only by a final trailing newline is
