@@ -15,10 +15,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+    "rationale": "Two mutation endpoints and one interrupted-write example remain incomplete; the rest are specified.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
@@ -35,10 +47,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+    "rationale": "Two mutation endpoints and one interrupted-write example remain incomplete; the rest are specified.",
     "status": "analyzed"
   },
   "schemaVersion": 3

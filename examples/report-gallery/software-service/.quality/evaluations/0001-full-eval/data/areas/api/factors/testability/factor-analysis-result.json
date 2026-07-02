@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:api::testability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The contract-test manifest maps every public endpoint to at least one success and one failure case.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Contract tests cover every public endpoint with success and failure cases.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The contract-test manifest maps every public endpoint to at least one success and one failure case.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Contract tests cover every public endpoint with success and failure cases.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

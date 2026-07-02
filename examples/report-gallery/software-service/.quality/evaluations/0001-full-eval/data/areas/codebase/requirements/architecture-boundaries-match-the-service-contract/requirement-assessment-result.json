@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Import-boundary tests and the contract endpoint map were compared.",
+  "evidenceSummary": "Structural import-boundary tests match handler ownership to the contract endpoint families.",
+  "factors": [
+    "factor:codebase::consistency",
+    "factor:codebase::maintainability/modifiability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Import-boundary tests and the contract endpoint map were compared.",
+        "status": "verified"
+      },
+      "condition": "Do implementation boundaries match the contract's endpoint families?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:structural-import-boundary-tests",
+          "statement": "Structural import-boundary tests match handler ownership to the contract endpoint families."
+        }
+      ],
+      "id": "auto-architecture-boundaries-match-the-service-contract",
+      "statement": "Structural import-boundary tests match handler ownership to the contract endpoint families.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Structural import-boundary tests match handler ownership to the contract endpoint families."
+}

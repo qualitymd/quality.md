@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:api::reliability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Timeouts fail safely, but retry reliability is capped by the interrupted-write replay gap.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Timeouts fail safely, but retry reliability is capped by the interrupted-write replay gap.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

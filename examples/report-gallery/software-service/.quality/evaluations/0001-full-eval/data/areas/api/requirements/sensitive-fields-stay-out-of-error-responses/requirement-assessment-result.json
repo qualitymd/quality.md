@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The error-envelope tests and failure payload samples were inspected.",
+  "evidenceSummary": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+  "factors": [
+    "factor:api::security",
+    "factor:api::operability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The error-envelope tests and failure payload samples were inspected.",
+        "status": "verified"
+      },
+      "condition": "Do failure payloads avoid sensitive fields while preserving branchable error codes?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/contract-tests",
+          "statement": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets."
+        }
+      ],
+      "id": "auto-sensitive-fields-stay-out-of-error-responses",
+      "statement": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets."
+}

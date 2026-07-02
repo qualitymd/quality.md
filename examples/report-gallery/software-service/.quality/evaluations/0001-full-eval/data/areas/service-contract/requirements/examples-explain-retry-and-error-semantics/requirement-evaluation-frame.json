@@ -1,0 +1,42 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do contract examples teach retry and error decisions callers need to make?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:service-contract"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do contract examples teach retry and error decisions callers need to make?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:service-contract::understandability",
+      "factor:service-contract::completeness"
+    ],
+    "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+  }
+}

@@ -29,13 +29,14 @@ Factor: [Completeness](completeness-factor.md)
 
 ## Summary
 
-Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.
+Two mutation endpoints and one interrupted-write example remain incomplete; the rest are specified.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
 | [the contract defines retry, idempotency, and error semantics for every mutation endpoint](../../requirements/contract-covers-mutation-semantics/contract-covers-mutation-semantics-requirement.md) | 🟡 Minimum | ✅ Assessed |
+| [examples explain retry and error semantics for integrators](../../requirements/examples-explain-retry-and-error-semantics/examples-explain-retry-and-error-semantics-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
 ## Sub-factors
 
@@ -55,4 +56,5 @@ Two of fourteen mutation endpoints lack replay semantics; the rest are fully spe
 - [data/areas/service-contract/factors/completeness/factor-analysis-result.json](../../../../data/areas/service-contract/factors/completeness/factor-analysis-result.json)
 - [data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-rating-result.json](../../../../data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-rating-result.json)
 - [data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-assessment-result.json](../../../../data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-assessment-result.json)
-
+- [data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-rating-result.json](../../../../data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-rating-result.json)
+- [data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-assessment-result.json](../../../../data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-assessment-result.json)

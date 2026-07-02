@@ -46,7 +46,7 @@ Duplicate-key replay is specified and tested; replay after an interrupted write 
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 1 / 21 | 🔴 P1 Highest | Unspecified interrupted-write replay on a money-moving API is the highest-exposure gap, exercised daily by real replay traffic. |
+| 1 / 42 | 🔴 P1 Highest | Unspecified interrupted-write replay on a money-moving API is the highest-exposure gap, exercised daily by real replay traffic. |
 
 #### Condition
 
@@ -83,7 +83,7 @@ Rating effect: constrains target
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 11 / 21 | ⚪ P4 Low | Replay-volume context informs the P1 gap's severity; no separate action. |
+| 11 / 42 | ⚪ P4 Low | Replay-volume context informs the P1 gap's severity; no separate action. |
 
 #### Condition
 
@@ -126,4 +126,3 @@ Rating effect: informs severity
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

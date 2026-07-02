@@ -1,0 +1,20 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "directRequirementRatingRefs": [
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:persistence::security"
+  }
+}

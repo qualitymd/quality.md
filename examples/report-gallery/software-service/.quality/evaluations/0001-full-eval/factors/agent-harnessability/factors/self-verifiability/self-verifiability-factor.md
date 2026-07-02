@@ -55,4 +55,3 @@ The recorded sensors are deterministic and their failures carry remediation.
 - [data/areas/root/factors/agent-harnessability/factors/self-verifiability/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/self-verifiability/factor-analysis-result.json)
 - [data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-rating-result.json](../../../../data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-rating-result.json)
 - [data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-assessment-result.json](../../../../data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-assessment-result.json)
-

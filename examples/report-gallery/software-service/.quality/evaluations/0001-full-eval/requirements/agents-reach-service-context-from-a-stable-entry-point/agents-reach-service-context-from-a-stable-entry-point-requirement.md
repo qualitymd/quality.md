@@ -45,7 +45,7 @@ The entry point routes a fresh agent to the contract, runbooks, and sensor catal
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 16 / 21 | ⚪ P4 Low | The entry point makes the rest of the harness reachable. |
+| 16 / 42 | ⚪ P4 Low | The entry point makes the rest of the harness reachable. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: supports target
 - [data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-assessment-result.json](../../data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-assessment-result.json)
 - [data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-rating-result.json](../../data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

@@ -45,7 +45,7 @@ The contract tests, invariant suite, and lint all run from the recorded commands
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 14 / 21 | ⚪ P4 Low | Remediation-bearing sensors underpin agent self-verification. |
+| 14 / 42 | ⚪ P4 Low | Remediation-bearing sensors underpin agent self-verification. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: supports target
 - [data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-assessment-result.json](../../data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-assessment-result.json)
 - [data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-rating-result.json](../../data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

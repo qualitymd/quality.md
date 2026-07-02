@@ -45,7 +45,7 @@ Recorded setup builds the service and runs the sensors; one required credential 
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 9 / 21 | 🟡 P3 Medium | One wiki-bound credential is a small, well-understood setup snag. |
+| 9 / 42 | 🟡 P3 Medium | One wiki-bound credential is a small, well-understood setup snag. |
 
 #### Condition
 
@@ -87,4 +87,3 @@ Rating effect: constrains target
 - [data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-assessment-result.json](../../data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-assessment-result.json)
 - [data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-rating-result.json](../../data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

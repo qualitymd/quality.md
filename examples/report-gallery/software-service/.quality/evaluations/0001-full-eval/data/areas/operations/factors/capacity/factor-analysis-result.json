@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:operations::capacity",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The load-test rollup reaches 1.4x forecast traffic, but the sales forecast changed after the latest run.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Load evidence nearly covers holiday peak, but the forecast moved after the latest run.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The load-test rollup reaches 1.4x forecast traffic, but the sales forecast changed after the latest run.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Load evidence nearly covers holiday peak, but the forecast moved after the latest run.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

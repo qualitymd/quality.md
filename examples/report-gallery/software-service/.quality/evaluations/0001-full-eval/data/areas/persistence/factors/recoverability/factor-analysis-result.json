@@ -15,10 +15,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
+    "rationale": "Restore drills pass, but rollback guidance is unrehearsed against the two most recent schema migrations.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
@@ -35,10 +47,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+            }
+          }
+        ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
+    "rationale": "Restore drills pass, but rollback guidance is unrehearsed against the two most recent schema migrations.",
     "status": "analyzed"
   },
   "schemaVersion": 3

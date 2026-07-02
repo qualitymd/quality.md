@@ -15,6 +15,27 @@
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
+          "factorId": "factor:api::reliability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:api::security"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:api::compatibility"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
           "factorId": "factor:api::operability"
         }
       },
@@ -23,6 +44,13 @@
         "selector": "localAndDescendantAnalysis",
         "subject": {
           "factorId": "factor:api::performance"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:api::testability"
         }
       }
     ]

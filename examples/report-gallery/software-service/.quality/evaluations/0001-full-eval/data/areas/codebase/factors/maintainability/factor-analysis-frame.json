@@ -1,0 +1,35 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "childFactorAnalysisRefs": [
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:codebase::maintainability/analyzability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:codebase::maintainability/modifiability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:codebase::maintainability/testability"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:codebase::maintainability"
+  }
+}

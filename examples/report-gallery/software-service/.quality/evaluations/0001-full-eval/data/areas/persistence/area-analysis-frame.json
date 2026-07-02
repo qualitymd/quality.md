@@ -15,7 +15,28 @@
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
+          "factorId": "factor:persistence::auditability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:persistence::security"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
           "factorId": "factor:persistence::recoverability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:persistence::durability"
         }
       }
     ]

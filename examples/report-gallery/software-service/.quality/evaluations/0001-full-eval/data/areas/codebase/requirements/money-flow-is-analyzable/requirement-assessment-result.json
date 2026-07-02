@@ -1,0 +1,45 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The trace and complexity check output were inspected.",
+  "evidenceSummary": "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow.",
+  "factors": [
+    "factor:codebase::maintainability/analyzability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The trace and complexity check output were inspected.",
+        "status": "verified"
+      },
+      "condition": "Can a maintainer trace money movement from handler to ledger write?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:codebase::money-flow-is-analyzable"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:codebase/handler-ledger-trace",
+          "statement": "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow."
+        }
+      ],
+      "id": "auto-money-flow-is-analyzable",
+      "severity": "medium",
+      "statement": "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:codebase::money-flow-is-analyzable",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow."
+}

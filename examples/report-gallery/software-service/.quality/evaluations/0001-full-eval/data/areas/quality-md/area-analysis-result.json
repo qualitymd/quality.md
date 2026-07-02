@@ -5,94 +5,94 @@
     "confidence": "high",
     "ratingDrivers": [
       {
-        "description": "Context Grounding: The body's unknowns and open questions have drifted behind the model's own changes.",
+        "description": "Credibility: The changelog explains model growth, but the body self-check still depends on inferential review.",
         "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:quality-md::context-grounding"
+              "factorId": "factor:quality-md::credibility"
             }
           }
         ]
       },
       {
-        "description": "Evaluability: Requirements are assessable from recorded evidence; the stale body context caps the shared requirement's rating.",
+        "description": "Assessability: Requirements are assessable from recorded evidence; body drift needs a computational detector.",
         "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:quality-md::evaluability"
+              "factorId": "factor:quality-md::assessability"
             }
           }
         ]
       },
       {
-        "description": "Lifecycle Maintenance: The changelog records why the model changed; the body has not kept pace with those changes.",
+        "description": "Currentness: The changelog is current, but body-context drift keeps the model self-check at minimum.",
         "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:quality-md::lifecycle-maintenance"
+              "factorId": "factor:quality-md::currentness"
             }
           }
         ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+    "rationale": "The model's structure and changelog practice follow the guides; one body-context check still needs a computational detector.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
     "confidence": "high",
     "ratingDrivers": [
       {
-        "description": "Context Grounding: The body's unknowns and open questions have drifted behind the model's own changes.",
+        "description": "Credibility: The changelog explains model growth, but the body self-check still depends on inferential review.",
         "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:quality-md::context-grounding"
+              "factorId": "factor:quality-md::credibility"
             }
           }
         ]
       },
       {
-        "description": "Evaluability: Requirements are assessable from recorded evidence; the stale body context caps the shared requirement's rating.",
+        "description": "Assessability: Requirements are assessable from recorded evidence; body drift needs a computational detector.",
         "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:quality-md::evaluability"
+              "factorId": "factor:quality-md::assessability"
             }
           }
         ]
       },
       {
-        "description": "Lifecycle Maintenance: The changelog records why the model changed; the body has not kept pace with those changes.",
+        "description": "Currentness: The changelog is current, but body-context drift keeps the model self-check at minimum.",
         "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
             "selector": "localAndDescendantAnalysis",
             "subject": {
-              "factorId": "factor:quality-md::lifecycle-maintenance"
+              "factorId": "factor:quality-md::currentness"
             }
           }
         ]
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+    "rationale": "The model's structure and changelog practice follow the guides; one body-context check still needs a computational detector.",
     "status": "analyzed"
   },
   "schemaVersion": 3

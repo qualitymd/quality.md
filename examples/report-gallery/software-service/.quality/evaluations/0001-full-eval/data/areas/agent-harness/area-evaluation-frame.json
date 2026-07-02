@@ -1,10 +1,11 @@
 {
   "derivedContext": {
-    "scope": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair."
+    "scope": "The harness orients agents and routes to runnable sensors, but catalog reuse still needs one sensor maturation."
   },
   "inputs": {
     "localRequirementIds": [
-      "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+      "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors",
+      "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
     ],
     "rootFactorIds": [
       "factor:agent-harness::completeness",

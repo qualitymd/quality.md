@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Can the latest restore drill replay current backups without balance drift?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:persistence/restore-drill",
+          "synthetic-source:persistence/reconciliation-job"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Can the latest restore drill replay current backups without balance drift?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:persistence::durability",
+      "factor:persistence::recoverability"
+    ],
+    "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+  }
+}

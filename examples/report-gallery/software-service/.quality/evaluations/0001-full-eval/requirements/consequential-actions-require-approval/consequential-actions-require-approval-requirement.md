@@ -45,7 +45,7 @@ Sandbox policy and deploy configuration put money movement and production schema
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 15 / 21 | ⚪ P4 Low | Containment gates keep agent autonomy safe on consequential actions. |
+| 15 / 42 | ⚪ P4 Low | Containment gates keep agent autonomy safe on consequential actions. |
 
 #### Condition
 
@@ -87,4 +87,3 @@ Rating effect: supports target
 - [data/areas/root/requirements/consequential-actions-require-approval/requirement-assessment-result.json](../../data/areas/root/requirements/consequential-actions-require-approval/requirement-assessment-result.json)
 - [data/areas/root/requirements/consequential-actions-require-approval/requirement-rating-result.json](../../data/areas/root/requirements/consequential-actions-require-approval/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

@@ -1,14 +1,18 @@
 {
   "derivedContext": {
-    "scope": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability."
+    "scope": "Customer-impact telemetry meets target, but security and capacity sit at minimum and drill ownership could not be assessed."
   },
   "inputs": {
     "localRequirementIds": [
       "requirement:operations::customer-impact-telemetry",
-      "requirement:operations::recovery-drill-ownership"
+      "requirement:operations::recovery-drill-ownership",
+      "requirement:operations::break-glass-access-is-reviewed",
+      "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
     ],
     "rootFactorIds": [
       "factor:operations::observability",
+      "factor:operations::security",
+      "factor:operations::capacity",
       "factor:operations::recoverability"
     ],
     "sourceRefs": [

@@ -9,6 +9,12 @@
         "subject": {
           "requirementId": "requirement:persistence::balance-invariants"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+        }
       }
     ]
   },

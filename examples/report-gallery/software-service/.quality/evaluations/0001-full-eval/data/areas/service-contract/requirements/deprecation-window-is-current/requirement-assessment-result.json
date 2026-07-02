@@ -1,0 +1,45 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The drift detector compared the contract appendix with the handler matrix.",
+  "evidenceSummary": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+  "factors": [
+    "factor:service-contract::currentness",
+    "factor:service-contract::understandability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The drift detector compared the contract appendix with the handler matrix.",
+        "status": "verified"
+      },
+      "condition": "Does the contract's deprecation appendix match shipped v1 fields?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:service-contract::deprecation-window-is-current"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:service-contract",
+          "statement": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix."
+        }
+      ],
+      "id": "note-005",
+      "statement": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+      "type": "note"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:service-contract::deprecation-window-is-current",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix."
+}

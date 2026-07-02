@@ -2,11 +2,11 @@
   "areaId": "area:agent-harness",
   "kind": "AreaAnalysisResult",
   "localAnalysis": {
-    "confidence": "high",
+    "confidence": "medium",
     "ratingDrivers": [
       {
-        "description": "Completeness: Harness artifacts cover setup, scoped work, verification, and handoff.",
-        "effect": "rates target",
+        "description": "Completeness: Harness artifacts cover the lifecycle, but the sensor catalog still has one maturing sensor.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -31,8 +31,8 @@
         ]
       },
       {
-        "description": "Currentness: Guidance matches the current layout except one stale sensor command name.",
-        "effect": "rates target",
+        "description": "Currentness: Guidance matches the current layout except one stale command and one maturing drift detector.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -44,8 +44,8 @@
         ]
       },
       {
-        "description": "Assessability: Harness quality is checkable through inspectable artifacts and runnable sensors.",
-        "effect": "rates target",
+        "description": "Assessability: Most harness quality is sensor-checkable; one catalog sensor has not yet become reused evidence.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -57,16 +57,16 @@
         ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The harness orients agents and routes to runnable sensors, but catalog reuse still needs one sensor maturation.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
-    "confidence": "high",
+    "confidence": "medium",
     "ratingDrivers": [
       {
-        "description": "Completeness: Harness artifacts cover setup, scoped work, verification, and handoff.",
-        "effect": "rates target",
+        "description": "Completeness: Harness artifacts cover the lifecycle, but the sensor catalog still has one maturing sensor.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -91,8 +91,8 @@
         ]
       },
       {
-        "description": "Currentness: Guidance matches the current layout except one stale sensor command name.",
-        "effect": "rates target",
+        "description": "Currentness: Guidance matches the current layout except one stale command and one maturing drift detector.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -104,8 +104,8 @@
         ]
       },
       {
-        "description": "Assessability: Harness quality is checkable through inspectable artifacts and runnable sensors.",
-        "effect": "rates target",
+        "description": "Assessability: Most harness quality is sensor-checkable; one catalog sensor has not yet become reused evidence.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -117,8 +117,8 @@
         ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The harness orients agents and routes to runnable sensors, but catalog reuse still needs one sensor maturation.",
     "status": "analyzed"
   },
   "schemaVersion": 3

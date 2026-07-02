@@ -45,7 +45,7 @@ The runbook has rollback steps, but the last rehearsal predates the two most rec
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 2 / 21 | 🔴 P1 Highest | An unrehearsed rollback over freshly partitioned ledger tables is the failure mode two past incidents already demonstrated. |
+| 2 / 42 | 🔴 P1 Highest | An unrehearsed rollback over freshly partitioned ledger tables is the failure mode two past incidents already demonstrated. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: constrains target
 - [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

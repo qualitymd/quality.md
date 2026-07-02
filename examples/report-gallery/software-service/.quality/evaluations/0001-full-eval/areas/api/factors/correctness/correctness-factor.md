@@ -29,13 +29,14 @@ Factor: [Correctness](correctness-factor.md)
 
 ## Summary
 
-Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.
+Sign semantics are proven, but the unspecified interrupted-write replay path holds correctness at minimum.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
 | [mutation endpoints are idempotent under retry](../../requirements/idempotent-mutations/idempotent-mutations-requirement.md) | 🟡 Minimum | ✅ Assessed |
+| [ledger entry signs match caller intent](../../requirements/ledger-entry-signs-match-intent/ledger-entry-signs-match-intent-requirement.md) | 🔵 Target | ✅ Assessed |
 
 ## Sub-factors
 
@@ -55,4 +56,5 @@ Duplicate replay is proven safe; the unspecified interrupted-write path holds co
 - [data/areas/api/factors/correctness/factor-analysis-result.json](../../../../data/areas/api/factors/correctness/factor-analysis-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-rating-result.json)
 - [data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json](../../../../data/areas/api/requirements/idempotent-mutations/requirement-assessment-result.json)
-
+- [data/areas/api/requirements/ledger-entry-signs-match-intent/requirement-rating-result.json](../../../../data/areas/api/requirements/ledger-entry-signs-match-intent/requirement-rating-result.json)
+- [data/areas/api/requirements/ledger-entry-signs-match-intent/requirement-assessment-result.json](../../../../data/areas/api/requirements/ledger-entry-signs-match-intent/requirement-assessment-result.json)

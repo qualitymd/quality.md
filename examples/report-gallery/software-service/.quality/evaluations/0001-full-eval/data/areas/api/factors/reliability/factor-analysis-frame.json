@@ -1,0 +1,20 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "directRequirementRatingRefs": [
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:api::reliability"
+  }
+}

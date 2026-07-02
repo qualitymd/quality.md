@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Break-glass logs were inspected for the latest quarter.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence leaves a visible gap below target."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The evidence is still sufficient to rely on with follow-up."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Every break-glass use in the latest quarter has an approver and incident link, but one post-use access review was recorded late.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-break-glass-access-is-reviewed]",
+          "subject": {
+            "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "The review path exists and is mostly followed, but the late review keeps operations security below target.",
+  "requirementId": "requirement:operations::break-glass-access-is-reviewed",
+  "schemaVersion": 3,
+  "status": "rated"
+}

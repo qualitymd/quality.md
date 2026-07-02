@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Audit append-path tests were run and the schema was inspected.",
+  "evidenceSummary": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes.",
+  "factors": [
+    "factor:persistence::auditability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Audit append-path tests were run and the schema was inspected.",
+        "status": "verified"
+      },
+      "condition": "Do audit append-path tests prove ordered tamper-evident events?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:persistence/audit-events",
+          "statement": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes."
+        }
+      ],
+      "id": "auto-audit-events-are-ordered-and-tamper-evident",
+      "statement": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes."
+}

@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:codebase::security",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

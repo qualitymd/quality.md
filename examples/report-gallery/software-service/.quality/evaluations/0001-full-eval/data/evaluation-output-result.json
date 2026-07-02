@@ -288,6 +288,12 @@
           "kind": "requirement",
           "path": "areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md",
           "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+        },
+        {
+          "areaId": "area:agent-harness",
+          "kind": "requirement",
+          "path": "areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/sensor-catalog-names-reusable-sensors-requirement.md",
+          "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
         }
       ],
       "requirementAssessmentRefs": [
@@ -296,6 +302,12 @@
           "subject": {
             "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
           }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+          }
         }
       ],
       "requirementRatingRefs": [
@@ -303,6 +315,12 @@
           "kind": "RequirementRatingResult",
           "subject": {
             "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
           }
         }
       ]
@@ -326,6 +344,13 @@
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
+            "factorId": "factor:api::compatibility"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
             "factorId": "factor:api::correctness"
           }
         },
@@ -342,6 +367,27 @@
           "subject": {
             "factorId": "factor:api::performance"
           }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:api::reliability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:api::security"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:api::testability"
+          }
         }
       ],
       "reportRefs": [
@@ -349,6 +395,12 @@
           "areaId": "area:api",
           "kind": "area",
           "path": "areas/api/api-area.md"
+        },
+        {
+          "areaId": "area:api",
+          "factorId": "factor:api::compatibility",
+          "kind": "factor",
+          "path": "areas/api/factors/compatibility/compatibility-factor.md"
         },
         {
           "areaId": "area:api",
@@ -370,9 +422,45 @@
         },
         {
           "areaId": "area:api",
+          "factorId": "factor:api::reliability",
+          "kind": "factor",
+          "path": "areas/api/factors/reliability/reliability-factor.md"
+        },
+        {
+          "areaId": "area:api",
+          "factorId": "factor:api::security",
+          "kind": "factor",
+          "path": "areas/api/factors/security/security-factor.md"
+        },
+        {
+          "areaId": "area:api",
+          "factorId": "factor:api::testability",
+          "kind": "factor",
+          "path": "areas/api/factors/testability/testability-factor.md"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/contract-tests-cover-public-endpoints/contract-tests-cover-public-endpoints-requirement.md",
+          "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/dependency-timeouts-return-safe-results/dependency-timeouts-return-safe-results-requirement.md",
+          "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+        },
+        {
+          "areaId": "area:api",
           "kind": "requirement",
           "path": "areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md",
           "requirementId": "requirement:api::idempotent-mutations"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/ledger-entry-signs-match-intent/ledger-entry-signs-match-intent-requirement.md",
+          "requirementId": "requirement:api::ledger-entry-signs-match-intent"
         },
         {
           "areaId": "area:api",
@@ -385,13 +473,49 @@
           "kind": "requirement",
           "path": "areas/api/requirements/predictable-error-contracts/predictable-error-contracts-requirement.md",
           "requirementId": "requirement:api::predictable-error-contracts"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/sensitive-fields-stay-out-of-error-responses/sensitive-fields-stay-out-of-error-responses-requirement.md",
+          "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/tenant-access-is-enforced/tenant-access-is-enforced-requirement.md",
+          "requirementId": "requirement:api::tenant-access-is-enforced"
+        },
+        {
+          "areaId": "area:api",
+          "kind": "requirement",
+          "path": "areas/api/requirements/v1-error-envelope-remains-compatible/v1-error-envelope-remains-compatible-requirement.md",
+          "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
         }
       ],
       "requirementAssessmentRefs": [
         {
           "kind": "RequirementAssessmentResult",
           "subject": {
+            "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
             "requirementId": "requirement:api::idempotent-mutations"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::ledger-entry-signs-match-intent"
           }
         },
         {
@@ -404,6 +528,24 @@
           "kind": "RequirementAssessmentResult",
           "subject": {
             "requirementId": "requirement:api::predictable-error-contracts"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::tenant-access-is-enforced"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
           }
         }
       ],
@@ -411,7 +553,25 @@
         {
           "kind": "RequirementRatingResult",
           "subject": {
+            "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
             "requirementId": "requirement:api::idempotent-mutations"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::ledger-entry-signs-match-intent"
           }
         },
         {
@@ -424,6 +584,199 @@
           "kind": "RequirementRatingResult",
           "subject": {
             "requirementId": "requirement:api::predictable-error-contracts"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::tenant-access-is-enforced"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+          }
+        }
+      ]
+    },
+    {
+      "areaAnalysisResultRef": {
+        "kind": "AreaAnalysisResult",
+        "subject": {
+          "areaId": "area:codebase"
+        }
+      },
+      "areaEvaluationFrameRef": {
+        "kind": "AreaEvaluationFrame",
+        "subject": {
+          "areaId": "area:codebase"
+        }
+      },
+      "areaId": "area:codebase",
+      "factorAnalysisRefs": [
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:codebase::consistency"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:codebase::maintainability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:codebase::security"
+          }
+        }
+      ],
+      "reportRefs": [
+        {
+          "areaId": "area:codebase",
+          "kind": "area",
+          "path": "areas/codebase/codebase-area.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "factorId": "factor:codebase::consistency",
+          "kind": "factor",
+          "path": "areas/codebase/factors/consistency/consistency-factor.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "factorId": "factor:codebase::maintainability",
+          "kind": "factor",
+          "path": "areas/codebase/factors/maintainability/maintainability-factor.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "factorId": "factor:codebase::maintainability/analyzability",
+          "kind": "factor",
+          "path": "areas/codebase/factors/maintainability/factors/analyzability/analyzability-factor.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "factorId": "factor:codebase::maintainability/modifiability",
+          "kind": "factor",
+          "path": "areas/codebase/factors/maintainability/factors/modifiability/modifiability-factor.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "factorId": "factor:codebase::maintainability/testability",
+          "kind": "factor",
+          "path": "areas/codebase/factors/maintainability/factors/testability/testability-factor.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "factorId": "factor:codebase::security",
+          "kind": "factor",
+          "path": "areas/codebase/factors/security/security-factor.md"
+        },
+        {
+          "areaId": "area:codebase",
+          "kind": "requirement",
+          "path": "areas/codebase/requirements/architecture-boundaries-match-the-service-contract/architecture-boundaries-match-the-service-contract-requirement.md",
+          "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+        },
+        {
+          "areaId": "area:codebase",
+          "kind": "requirement",
+          "path": "areas/codebase/requirements/changes-remain-local-to-owned-boundaries/changes-remain-local-to-owned-boundaries-requirement.md",
+          "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+        },
+        {
+          "areaId": "area:codebase",
+          "kind": "requirement",
+          "path": "areas/codebase/requirements/dependency-and-secret-handling-stay-within-policy/dependency-and-secret-handling-stay-within-policy-requirement.md",
+          "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+        },
+        {
+          "areaId": "area:codebase",
+          "kind": "requirement",
+          "path": "areas/codebase/requirements/implementation-has-focused-tests-for-risky-branches/implementation-has-focused-tests-for-risky-branches-requirement.md",
+          "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+        },
+        {
+          "areaId": "area:codebase",
+          "kind": "requirement",
+          "path": "areas/codebase/requirements/money-flow-is-analyzable/money-flow-is-analyzable-requirement.md",
+          "requirementId": "requirement:codebase::money-flow-is-analyzable"
+        }
+      ],
+      "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:codebase::money-flow-is-analyzable"
+          }
+        }
+      ],
+      "requirementRatingRefs": [
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:codebase::money-flow-is-analyzable"
           }
         }
       ]
@@ -447,6 +800,13 @@
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
+            "factorId": "factor:operations::capacity"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
             "factorId": "factor:operations::observability"
           }
         },
@@ -456,6 +816,13 @@
           "subject": {
             "factorId": "factor:operations::recoverability"
           }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:operations::security"
+          }
         }
       ],
       "reportRefs": [
@@ -463,6 +830,12 @@
           "areaId": "area:operations",
           "kind": "area",
           "path": "areas/operations/operations-area.md"
+        },
+        {
+          "areaId": "area:operations",
+          "factorId": "factor:operations::capacity",
+          "kind": "factor",
+          "path": "areas/operations/factors/capacity/capacity-factor.md"
         },
         {
           "areaId": "area:operations",
@@ -478,9 +851,27 @@
         },
         {
           "areaId": "area:operations",
+          "factorId": "factor:operations::security",
+          "kind": "factor",
+          "path": "areas/operations/factors/security/security-factor.md"
+        },
+        {
+          "areaId": "area:operations",
+          "kind": "requirement",
+          "path": "areas/operations/requirements/break-glass-access-is-reviewed/break-glass-access-is-reviewed-requirement.md",
+          "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+        },
+        {
+          "areaId": "area:operations",
           "kind": "requirement",
           "path": "areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md",
           "requirementId": "requirement:operations::customer-impact-telemetry"
+        },
+        {
+          "areaId": "area:operations",
+          "kind": "requirement",
+          "path": "areas/operations/requirements/holiday-peak-capacity-is-supported-by-load-evidence/holiday-peak-capacity-is-supported-by-load-evidence-requirement.md",
+          "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
         },
         {
           "areaId": "area:operations",
@@ -493,7 +884,19 @@
         {
           "kind": "RequirementAssessmentResult",
           "subject": {
+            "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
             "requirementId": "requirement:operations::customer-impact-telemetry"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
           }
         },
         {
@@ -507,7 +910,19 @@
         {
           "kind": "RequirementRatingResult",
           "subject": {
+            "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
             "requirementId": "requirement:operations::customer-impact-telemetry"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
           }
         },
         {
@@ -537,6 +952,20 @@
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
+            "factorId": "factor:persistence::auditability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:persistence::durability"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
             "factorId": "factor:persistence::integrity"
           }
         },
@@ -546,6 +975,13 @@
           "subject": {
             "factorId": "factor:persistence::recoverability"
           }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:persistence::security"
+          }
         }
       ],
       "reportRefs": [
@@ -553,6 +989,18 @@
           "areaId": "area:persistence",
           "kind": "area",
           "path": "areas/persistence/persistence-area.md"
+        },
+        {
+          "areaId": "area:persistence",
+          "factorId": "factor:persistence::auditability",
+          "kind": "factor",
+          "path": "areas/persistence/factors/auditability/auditability-factor.md"
+        },
+        {
+          "areaId": "area:persistence",
+          "factorId": "factor:persistence::durability",
+          "kind": "factor",
+          "path": "areas/persistence/factors/durability/durability-factor.md"
         },
         {
           "areaId": "area:persistence",
@@ -568,6 +1016,18 @@
         },
         {
           "areaId": "area:persistence",
+          "factorId": "factor:persistence::security",
+          "kind": "factor",
+          "path": "areas/persistence/factors/security/security-factor.md"
+        },
+        {
+          "areaId": "area:persistence",
+          "kind": "requirement",
+          "path": "areas/persistence/requirements/audit-events-are-ordered-and-tamper-evident/audit-events-are-ordered-and-tamper-evident-requirement.md",
+          "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+        },
+        {
+          "areaId": "area:persistence",
           "kind": "requirement",
           "path": "areas/persistence/requirements/balance-invariants/balance-invariants-requirement.md",
           "requirementId": "requirement:persistence::balance-invariants"
@@ -577,9 +1037,33 @@
           "kind": "requirement",
           "path": "areas/persistence/requirements/migration-rollback/migration-rollback-requirement.md",
           "requirementId": "requirement:persistence::migration-rollback"
+        },
+        {
+          "areaId": "area:persistence",
+          "kind": "requirement",
+          "path": "areas/persistence/requirements/persistence-access-is-least-privilege/persistence-access-is-least-privilege-requirement.md",
+          "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+        },
+        {
+          "areaId": "area:persistence",
+          "kind": "requirement",
+          "path": "areas/persistence/requirements/reconciliation-explains-balance-changes/reconciliation-explains-balance-changes-requirement.md",
+          "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+        },
+        {
+          "areaId": "area:persistence",
+          "kind": "requirement",
+          "path": "areas/persistence/requirements/restore-drills-replay-current-backups/restore-drills-replay-current-backups-requirement.md",
+          "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
         }
       ],
       "requirementAssessmentRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+          }
+        },
         {
           "kind": "RequirementAssessmentResult",
           "subject": {
@@ -590,6 +1074,24 @@
           "kind": "RequirementAssessmentResult",
           "subject": {
             "requirementId": "requirement:persistence::migration-rollback"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
           }
         }
       ],
@@ -597,6 +1099,12 @@
         {
           "kind": "RequirementRatingResult",
           "subject": {
+            "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
             "requirementId": "requirement:persistence::balance-invariants"
           }
         },
@@ -604,6 +1112,24 @@
           "kind": "RequirementRatingResult",
           "subject": {
             "requirementId": "requirement:persistence::migration-rollback"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
           }
         }
       ]
@@ -627,21 +1153,21 @@
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
-            "factorId": "factor:quality-md::context-grounding"
+            "factorId": "factor:quality-md::assessability"
           }
         },
         {
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
-            "factorId": "factor:quality-md::evaluability"
+            "factorId": "factor:quality-md::credibility"
           }
         },
         {
           "kind": "FactorAnalysisResult",
           "selector": "localAndDescendantAnalysis",
           "subject": {
-            "factorId": "factor:quality-md::lifecycle-maintenance"
+            "factorId": "factor:quality-md::currentness"
           }
         }
       ],
@@ -653,27 +1179,33 @@
         },
         {
           "areaId": "area:quality-md",
-          "factorId": "factor:quality-md::context-grounding",
+          "factorId": "factor:quality-md::assessability",
           "kind": "factor",
-          "path": "areas/quality-md/factors/context-grounding/context-grounding-factor.md"
+          "path": "areas/quality-md/factors/assessability/assessability-factor.md"
         },
         {
           "areaId": "area:quality-md",
-          "factorId": "factor:quality-md::evaluability",
+          "factorId": "factor:quality-md::credibility",
           "kind": "factor",
-          "path": "areas/quality-md/factors/evaluability/evaluability-factor.md"
+          "path": "areas/quality-md/factors/credibility/credibility-factor.md"
         },
         {
           "areaId": "area:quality-md",
-          "factorId": "factor:quality-md::lifecycle-maintenance",
+          "factorId": "factor:quality-md::currentness",
           "kind": "factor",
-          "path": "areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md"
+          "path": "areas/quality-md/factors/currentness/currentness-factor.md"
         },
         {
           "areaId": "area:quality-md",
           "kind": "requirement",
           "path": "areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md",
           "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+        },
+        {
+          "areaId": "area:quality-md",
+          "kind": "requirement",
+          "path": "areas/quality-md/requirements/the-quality-changelog-explains-model-growth/the-quality-changelog-explains-model-growth-requirement.md",
+          "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
         }
       ],
       "requirementAssessmentRefs": [
@@ -682,6 +1214,12 @@
           "subject": {
             "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
           }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
+          }
         }
       ],
       "requirementRatingRefs": [
@@ -689,6 +1227,12 @@
           "kind": "RequirementRatingResult",
           "subject": {
             "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
           }
         }
       ]
@@ -721,6 +1265,20 @@
           "subject": {
             "factorId": "factor:service-contract::consistency"
           }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:service-contract::currentness"
+          }
+        },
+        {
+          "kind": "FactorAnalysisResult",
+          "selector": "localAndDescendantAnalysis",
+          "subject": {
+            "factorId": "factor:service-contract::understandability"
+          }
         }
       ],
       "reportRefs": [
@@ -743,6 +1301,18 @@
         },
         {
           "areaId": "area:service-contract",
+          "factorId": "factor:service-contract::currentness",
+          "kind": "factor",
+          "path": "areas/service-contract/factors/currentness/currentness-factor.md"
+        },
+        {
+          "areaId": "area:service-contract",
+          "factorId": "factor:service-contract::understandability",
+          "kind": "factor",
+          "path": "areas/service-contract/factors/understandability/understandability-factor.md"
+        },
+        {
+          "areaId": "area:service-contract",
           "kind": "requirement",
           "path": "areas/service-contract/requirements/contract-covers-mutation-semantics/contract-covers-mutation-semantics-requirement.md",
           "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
@@ -752,6 +1322,18 @@
           "kind": "requirement",
           "path": "areas/service-contract/requirements/contract-matches-shipped-behavior/contract-matches-shipped-behavior-requirement.md",
           "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+        },
+        {
+          "areaId": "area:service-contract",
+          "kind": "requirement",
+          "path": "areas/service-contract/requirements/deprecation-window-is-current/deprecation-window-is-current-requirement.md",
+          "requirementId": "requirement:service-contract::deprecation-window-is-current"
+        },
+        {
+          "areaId": "area:service-contract",
+          "kind": "requirement",
+          "path": "areas/service-contract/requirements/examples-explain-retry-and-error-semantics/examples-explain-retry-and-error-semantics-requirement.md",
+          "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
         }
       ],
       "requirementAssessmentRefs": [
@@ -766,6 +1348,18 @@
           "subject": {
             "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
           }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::deprecation-window-is-current"
+          }
+        },
+        {
+          "kind": "RequirementAssessmentResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+          }
         }
       ],
       "requirementRatingRefs": [
@@ -779,6 +1373,18 @@
           "kind": "RequirementRatingResult",
           "subject": {
             "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::deprecation-window-is-current"
+          }
+        },
+        {
+          "kind": "RequirementRatingResult",
+          "subject": {
+            "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
           }
         }
       ]
@@ -804,6 +1410,11 @@
       "areaId": "area:api",
       "kind": "area",
       "path": "areas/api/api-area.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "kind": "area",
+      "path": "areas/codebase/codebase-area.md"
     },
     {
       "areaId": "area:operations",
@@ -899,6 +1510,12 @@
     },
     {
       "areaId": "area:api",
+      "factorId": "factor:api::compatibility",
+      "kind": "factor",
+      "path": "areas/api/factors/compatibility/compatibility-factor.md"
+    },
+    {
+      "areaId": "area:api",
       "factorId": "factor:api::correctness",
       "kind": "factor",
       "path": "areas/api/factors/correctness/correctness-factor.md"
@@ -916,6 +1533,66 @@
       "path": "areas/api/factors/performance/performance-factor.md"
     },
     {
+      "areaId": "area:api",
+      "factorId": "factor:api::reliability",
+      "kind": "factor",
+      "path": "areas/api/factors/reliability/reliability-factor.md"
+    },
+    {
+      "areaId": "area:api",
+      "factorId": "factor:api::security",
+      "kind": "factor",
+      "path": "areas/api/factors/security/security-factor.md"
+    },
+    {
+      "areaId": "area:api",
+      "factorId": "factor:api::testability",
+      "kind": "factor",
+      "path": "areas/api/factors/testability/testability-factor.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "factorId": "factor:codebase::consistency",
+      "kind": "factor",
+      "path": "areas/codebase/factors/consistency/consistency-factor.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "factorId": "factor:codebase::maintainability",
+      "kind": "factor",
+      "path": "areas/codebase/factors/maintainability/maintainability-factor.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "factorId": "factor:codebase::maintainability/analyzability",
+      "kind": "factor",
+      "path": "areas/codebase/factors/maintainability/factors/analyzability/analyzability-factor.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "factorId": "factor:codebase::maintainability/modifiability",
+      "kind": "factor",
+      "path": "areas/codebase/factors/maintainability/factors/modifiability/modifiability-factor.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "factorId": "factor:codebase::maintainability/testability",
+      "kind": "factor",
+      "path": "areas/codebase/factors/maintainability/factors/testability/testability-factor.md"
+    },
+    {
+      "areaId": "area:codebase",
+      "factorId": "factor:codebase::security",
+      "kind": "factor",
+      "path": "areas/codebase/factors/security/security-factor.md"
+    },
+    {
+      "areaId": "area:operations",
+      "factorId": "factor:operations::capacity",
+      "kind": "factor",
+      "path": "areas/operations/factors/capacity/capacity-factor.md"
+    },
+    {
       "areaId": "area:operations",
       "factorId": "factor:operations::observability",
       "kind": "factor",
@@ -926,6 +1603,24 @@
       "factorId": "factor:operations::recoverability",
       "kind": "factor",
       "path": "areas/operations/factors/recoverability/recoverability-factor.md"
+    },
+    {
+      "areaId": "area:operations",
+      "factorId": "factor:operations::security",
+      "kind": "factor",
+      "path": "areas/operations/factors/security/security-factor.md"
+    },
+    {
+      "areaId": "area:persistence",
+      "factorId": "factor:persistence::auditability",
+      "kind": "factor",
+      "path": "areas/persistence/factors/auditability/auditability-factor.md"
+    },
+    {
+      "areaId": "area:persistence",
+      "factorId": "factor:persistence::durability",
+      "kind": "factor",
+      "path": "areas/persistence/factors/durability/durability-factor.md"
     },
     {
       "areaId": "area:persistence",
@@ -940,22 +1635,28 @@
       "path": "areas/persistence/factors/recoverability/recoverability-factor.md"
     },
     {
-      "areaId": "area:quality-md",
-      "factorId": "factor:quality-md::context-grounding",
+      "areaId": "area:persistence",
+      "factorId": "factor:persistence::security",
       "kind": "factor",
-      "path": "areas/quality-md/factors/context-grounding/context-grounding-factor.md"
+      "path": "areas/persistence/factors/security/security-factor.md"
     },
     {
       "areaId": "area:quality-md",
-      "factorId": "factor:quality-md::evaluability",
+      "factorId": "factor:quality-md::assessability",
       "kind": "factor",
-      "path": "areas/quality-md/factors/evaluability/evaluability-factor.md"
+      "path": "areas/quality-md/factors/assessability/assessability-factor.md"
     },
     {
       "areaId": "area:quality-md",
-      "factorId": "factor:quality-md::lifecycle-maintenance",
+      "factorId": "factor:quality-md::credibility",
       "kind": "factor",
-      "path": "areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md"
+      "path": "areas/quality-md/factors/credibility/credibility-factor.md"
+    },
+    {
+      "areaId": "area:quality-md",
+      "factorId": "factor:quality-md::currentness",
+      "kind": "factor",
+      "path": "areas/quality-md/factors/currentness/currentness-factor.md"
     },
     {
       "areaId": "area:service-contract",
@@ -968,6 +1669,18 @@
       "factorId": "factor:service-contract::consistency",
       "kind": "factor",
       "path": "areas/service-contract/factors/consistency/consistency-factor.md"
+    },
+    {
+      "areaId": "area:service-contract",
+      "factorId": "factor:service-contract::currentness",
+      "kind": "factor",
+      "path": "areas/service-contract/factors/currentness/currentness-factor.md"
+    },
+    {
+      "areaId": "area:service-contract",
+      "factorId": "factor:service-contract::understandability",
+      "kind": "factor",
+      "path": "areas/service-contract/factors/understandability/understandability-factor.md"
     },
     {
       "areaId": "area:root",
@@ -1018,10 +1731,34 @@
       "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
     },
     {
+      "areaId": "area:agent-harness",
+      "kind": "requirement",
+      "path": "areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/sensor-catalog-names-reusable-sensors-requirement.md",
+      "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/contract-tests-cover-public-endpoints/contract-tests-cover-public-endpoints-requirement.md",
+      "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/dependency-timeouts-return-safe-results/dependency-timeouts-return-safe-results-requirement.md",
+      "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+    },
+    {
       "areaId": "area:api",
       "kind": "requirement",
       "path": "areas/api/requirements/idempotent-mutations/idempotent-mutations-requirement.md",
       "requirementId": "requirement:api::idempotent-mutations"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/ledger-entry-signs-match-intent/ledger-entry-signs-match-intent-requirement.md",
+      "requirementId": "requirement:api::ledger-entry-signs-match-intent"
     },
     {
       "areaId": "area:api",
@@ -1036,6 +1773,60 @@
       "requirementId": "requirement:api::predictable-error-contracts"
     },
     {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/sensitive-fields-stay-out-of-error-responses/sensitive-fields-stay-out-of-error-responses-requirement.md",
+      "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/tenant-access-is-enforced/tenant-access-is-enforced-requirement.md",
+      "requirementId": "requirement:api::tenant-access-is-enforced"
+    },
+    {
+      "areaId": "area:api",
+      "kind": "requirement",
+      "path": "areas/api/requirements/v1-error-envelope-remains-compatible/v1-error-envelope-remains-compatible-requirement.md",
+      "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+    },
+    {
+      "areaId": "area:codebase",
+      "kind": "requirement",
+      "path": "areas/codebase/requirements/architecture-boundaries-match-the-service-contract/architecture-boundaries-match-the-service-contract-requirement.md",
+      "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+    },
+    {
+      "areaId": "area:codebase",
+      "kind": "requirement",
+      "path": "areas/codebase/requirements/changes-remain-local-to-owned-boundaries/changes-remain-local-to-owned-boundaries-requirement.md",
+      "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+    },
+    {
+      "areaId": "area:codebase",
+      "kind": "requirement",
+      "path": "areas/codebase/requirements/dependency-and-secret-handling-stay-within-policy/dependency-and-secret-handling-stay-within-policy-requirement.md",
+      "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+    },
+    {
+      "areaId": "area:codebase",
+      "kind": "requirement",
+      "path": "areas/codebase/requirements/implementation-has-focused-tests-for-risky-branches/implementation-has-focused-tests-for-risky-branches-requirement.md",
+      "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+    },
+    {
+      "areaId": "area:codebase",
+      "kind": "requirement",
+      "path": "areas/codebase/requirements/money-flow-is-analyzable/money-flow-is-analyzable-requirement.md",
+      "requirementId": "requirement:codebase::money-flow-is-analyzable"
+    },
+    {
+      "areaId": "area:operations",
+      "kind": "requirement",
+      "path": "areas/operations/requirements/break-glass-access-is-reviewed/break-glass-access-is-reviewed-requirement.md",
+      "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+    },
+    {
       "areaId": "area:operations",
       "kind": "requirement",
       "path": "areas/operations/requirements/customer-impact-telemetry/customer-impact-telemetry-requirement.md",
@@ -1044,8 +1835,20 @@
     {
       "areaId": "area:operations",
       "kind": "requirement",
+      "path": "areas/operations/requirements/holiday-peak-capacity-is-supported-by-load-evidence/holiday-peak-capacity-is-supported-by-load-evidence-requirement.md",
+      "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+    },
+    {
+      "areaId": "area:operations",
+      "kind": "requirement",
       "path": "areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md",
       "requirementId": "requirement:operations::recovery-drill-ownership"
+    },
+    {
+      "areaId": "area:persistence",
+      "kind": "requirement",
+      "path": "areas/persistence/requirements/audit-events-are-ordered-and-tamper-evident/audit-events-are-ordered-and-tamper-evident-requirement.md",
+      "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
     },
     {
       "areaId": "area:persistence",
@@ -1060,10 +1863,34 @@
       "requirementId": "requirement:persistence::migration-rollback"
     },
     {
+      "areaId": "area:persistence",
+      "kind": "requirement",
+      "path": "areas/persistence/requirements/persistence-access-is-least-privilege/persistence-access-is-least-privilege-requirement.md",
+      "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+    },
+    {
+      "areaId": "area:persistence",
+      "kind": "requirement",
+      "path": "areas/persistence/requirements/reconciliation-explains-balance-changes/reconciliation-explains-balance-changes-requirement.md",
+      "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+    },
+    {
+      "areaId": "area:persistence",
+      "kind": "requirement",
+      "path": "areas/persistence/requirements/restore-drills-replay-current-backups/restore-drills-replay-current-backups-requirement.md",
+      "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+    },
+    {
       "areaId": "area:quality-md",
       "kind": "requirement",
       "path": "areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md",
       "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+    },
+    {
+      "areaId": "area:quality-md",
+      "kind": "requirement",
+      "path": "areas/quality-md/requirements/the-quality-changelog-explains-model-growth/the-quality-changelog-explains-model-growth-requirement.md",
+      "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
     },
     {
       "areaId": "area:service-contract",
@@ -1076,6 +1903,18 @@
       "kind": "requirement",
       "path": "areas/service-contract/requirements/contract-matches-shipped-behavior/contract-matches-shipped-behavior-requirement.md",
       "requirementId": "requirement:service-contract::contract-matches-shipped-behavior"
+    },
+    {
+      "areaId": "area:service-contract",
+      "kind": "requirement",
+      "path": "areas/service-contract/requirements/deprecation-window-is-current/deprecation-window-is-current-requirement.md",
+      "requirementId": "requirement:service-contract::deprecation-window-is-current"
+    },
+    {
+      "areaId": "area:service-contract",
+      "kind": "requirement",
+      "path": "areas/service-contract/requirements/examples-explain-retry-and-error-semantics/examples-explain-retry-and-error-semantics-requirement.md",
+      "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
     },
     {
       "kind": "findings",
@@ -1112,7 +1951,7 @@
     },
     {
       "kind": "recommendation",
-      "path": "recommendations/006-refresh-the-model-body-s-unknowns-and-open-questions.md",
+      "path": "recommendations/006-add-a-body-drift-detector-to-the-model-self-check.md",
       "recommendationId": "qrec_refreshmodelbody"
     }
   ],

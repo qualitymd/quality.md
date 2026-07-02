@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do structural import-boundary tests and recent changes show localized edits?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:structural-import-boundary-tests",
+          "synthetic-source:codebase/change-matrix"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do structural import-boundary tests and recent changes show localized edits?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:codebase::maintainability/modifiability",
+      "factor:codebase::consistency"
+    ],
+    "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+  }
+}

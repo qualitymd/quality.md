@@ -55,4 +55,3 @@ Guidance agrees with the contract and runbooks it routes to.
 - [data/areas/agent-harness/factors/coherence/factor-analysis-result.json](../../../../data/areas/agent-harness/factors/coherence/factor-analysis-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json)
-

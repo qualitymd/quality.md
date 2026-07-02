@@ -29,13 +29,14 @@ Factor: [Integrity](integrity-factor.md)
 
 ## Summary
 
-Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift.
+Two independent sensors show balance preservation with margin: property coverage and zero reconciliation drift.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
 | [ledger mutations preserve balance invariants](../../requirements/balance-invariants/balance-invariants-requirement.md) | 🟢 Outstanding | ✅ Assessed |
+| [reconciliation explains every balance change](../../requirements/reconciliation-explains-balance-changes/reconciliation-explains-balance-changes-requirement.md) | 🟢 Outstanding | ✅ Assessed |
 
 ## Sub-factors
 
@@ -55,4 +56,5 @@ Two independent sensors show balance preservation with margin: full-path propert
 - [data/areas/persistence/factors/integrity/factor-analysis-result.json](../../../../data/areas/persistence/factors/integrity/factor-analysis-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
-
+- [data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-rating-result.json](../../../../data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-rating-result.json)
+- [data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-assessment-result.json)

@@ -12,7 +12,7 @@
     ],
     "rationale": "Drill ownership records contradict each other; the factor awaits reconciled evidence.",
     "status": "blocked",
-    "statusReason": "The factor's only requirement is not assessed: recovery-ownership records conflict, so no judgment could be formed."
+    "statusReason": "Recovery-ownership records conflict, so no judgment could be formed."
   },
   "localAndDescendantAnalysis": {
     "confidence": "none",
@@ -25,7 +25,7 @@
     ],
     "rationale": "Drill ownership records contradict each other; the factor awaits reconciled evidence.",
     "status": "blocked",
-    "statusReason": "The factor's only requirement is not assessed: recovery-ownership records conflict, so no judgment could be formed."
+    "statusReason": "Recovery-ownership records conflict, so no judgment could be formed."
   },
   "schemaVersion": 3
 }

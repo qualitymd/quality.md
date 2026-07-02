@@ -1,14 +1,14 @@
 {
-  "background": "The body's judgment context predates the service-contract area, so the next evaluator inherits attention pointers that no longer match the model.",
+  "background": "The body-drift finding is inferential today: a reviewer noticed body context lagging the model. The quality loop should keep that judgment while adding a computational sensor for the repeatable stale-context failure mode.",
   "confidence": "high",
-  "description": "Revisit each body section's unknowns and open questions against the current model — retiring the resolved error-envelope question now owned by the contract area, adding the integrator-retry blind spot — and advance the review provenance lines.",
-  "doneCriterion": "Every body section's unknowns and open questions reflect the current model, and each section's review line postdates the contract area's changelog entry.",
-  "expectedValue": "Evaluations start from current judgment context, and the QUALITY.md self-check can return to target.",
+  "description": "Refresh each body section's unknowns, open questions, and review provenance against the current model, then add a detector that compares recent factor and requirement changes with body review lines so stale judgment context is caught before evaluation.",
+  "doneCriterion": "Every body section reflects the current model, each section's review line postdates the latest model-shape changelog entry, and a recorded body-drift detector fails when a factor or requirement changes without a corresponding body review refresh.",
+  "expectedValue": "Evaluations start from current judgment context, and future model growth has a repeatable detector rather than relying only on reviewer memory.",
   "id": "qrec_refreshmodelbody",
   "impact": "low",
   "kind": "RecommendationResult",
   "schemaVersion": 3,
-  "title": "Refresh the model body's unknowns and open questions",
+  "title": "Add a body-drift detector to the model self-check",
   "traceRefs": [
     {
       "kind": "RequirementAssessmentResult",

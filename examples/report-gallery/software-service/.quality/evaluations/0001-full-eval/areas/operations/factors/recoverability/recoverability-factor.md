@@ -35,6 +35,7 @@ Drill ownership records contradict each other; the factor awaits reconciled evid
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
+| [break-glass access is reviewed after use](../../requirements/break-glass-access-is-reviewed/break-glass-access-is-reviewed-requirement.md) | 🟡 Minimum | ✅ Assessed |
 | [recovery drills have current owners and recent practice records](../../requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md) | ⚪ Not Rated | ⚪ Not Assessed |
 
 ## Sub-factors
@@ -54,6 +55,7 @@ Drill ownership records contradict each other; the factor awaits reconciled evid
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/operations/factors/recoverability/factor-analysis-result.json](../../../../data/areas/operations/factors/recoverability/factor-analysis-result.json)
+- [data/areas/operations/requirements/break-glass-access-is-reviewed/requirement-rating-result.json](../../../../data/areas/operations/requirements/break-glass-access-is-reviewed/requirement-rating-result.json)
+- [data/areas/operations/requirements/break-glass-access-is-reviewed/requirement-assessment-result.json](../../../../data/areas/operations/requirements/break-glass-access-is-reviewed/requirement-assessment-result.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
-

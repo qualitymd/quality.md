@@ -45,7 +45,7 @@ Ownership records conflict; the requirement could not be assessed from the avail
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 5 / 21 | 🟠 P2 High | Missing evidence on drill ownership blocks the recoverability judgment entirely; restoring assessability is cheap. |
+| 5 / 42 | 🟠 P2 High | Missing evidence on drill ownership blocks the recoverability judgment entirely; restoring assessability is cheap. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: blocks rating
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-assessment-result.json)
 - [data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json](../../../../data/areas/operations/requirements/recovery-drill-ownership/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

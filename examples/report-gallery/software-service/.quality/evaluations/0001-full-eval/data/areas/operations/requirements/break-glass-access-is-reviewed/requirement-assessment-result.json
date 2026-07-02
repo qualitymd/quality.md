@@ -1,0 +1,46 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "Break-glass logs were inspected for the latest quarter.",
+  "evidenceSummary": "Every break-glass use in the latest quarter has an approver and incident link, but one post-use access review was recorded late.",
+  "factors": [
+    "factor:operations::security",
+    "factor:operations::recoverability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Break-glass logs were inspected for the latest quarter.",
+        "status": "verified"
+      },
+      "condition": "Does every break-glass use have approver, incident link, and timely review?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:operations/break-glass-log",
+          "statement": "Every break-glass use in the latest quarter has an approver and incident link, but one post-use access review was recorded late."
+        }
+      ],
+      "id": "auto-break-glass-access-is-reviewed",
+      "severity": "medium",
+      "statement": "Every break-glass use in the latest quarter has an approver and incident link, but one post-use access review was recorded late.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:operations::break-glass-access-is-reviewed",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Every break-glass use in the latest quarter has an approver and incident link, but one post-use access review was recorded late."
+}

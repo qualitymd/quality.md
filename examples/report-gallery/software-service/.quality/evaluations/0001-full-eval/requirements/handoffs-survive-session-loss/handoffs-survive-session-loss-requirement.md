@@ -45,7 +45,7 @@ Long-running work relies on chat scrollback; durable progress records exist for 
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 7 / 21 | 🟡 P3 Medium | Chat-bound progress records only hurt when an interruption lands mid-effort. |
+| 7 / 42 | 🟡 P3 Medium | Chat-bound progress records only hurt when an interruption lands mid-effort. |
 
 #### Condition
 
@@ -87,4 +87,3 @@ Rating effect: constrains target
 - [data/areas/root/requirements/handoffs-survive-session-loss/requirement-assessment-result.json](../../data/areas/root/requirements/handoffs-survive-session-loss/requirement-assessment-result.json)
 - [data/areas/root/requirements/handoffs-survive-session-loss/requirement-rating-result.json](../../data/areas/root/requirements/handoffs-survive-session-loss/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

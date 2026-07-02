@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The drift detector compared the contract appendix with the handler matrix.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence leaves a visible gap below target."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The evidence is still sufficient to rely on with follow-up."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[note-005]",
+          "subject": {
+            "requirementId": "requirement:service-contract::deprecation-window-is-current"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "The deprecation window is visible, but one shipped field remains contract drift.",
+  "requirementId": "requirement:service-contract::deprecation-window-is-current",
+  "schemaVersion": 3,
+  "status": "rated"
+}

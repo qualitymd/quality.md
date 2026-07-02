@@ -55,4 +55,3 @@ Money movement and schema changes sit behind declarative approval gates.
 - [data/areas/root/factors/agent-harnessability/factors/containment-of-action/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/containment-of-action/factor-analysis-result.json)
 - [data/areas/root/requirements/consequential-actions-require-approval/requirement-rating-result.json](../../../../data/areas/root/requirements/consequential-actions-require-approval/requirement-rating-result.json)
 - [data/areas/root/requirements/consequential-actions-require-approval/requirement-assessment-result.json](../../../../data/areas/root/requirements/consequential-actions-require-approval/requirement-assessment-result.json)
-

@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Does the contract's deprecation appendix match shipped v1 fields?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:service-contract",
+          "synthetic-source:contract-drift-detector"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Does the contract's deprecation appendix match shipped v1 fields?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:service-contract::currentness",
+      "factor:service-contract::understandability"
+    ],
+    "requirementId": "requirement:service-contract::deprecation-window-is-current"
+  }
+}

@@ -2,7 +2,7 @@
   "factorId": "factor:agent-harness::completeness",
   "kind": "FactorAnalysisResult",
   "localAnalysis": {
-    "confidence": "high",
+    "confidence": "medium",
     "ratingDrivers": [
       {
         "description": "The harness covers the agent work lifecycle and its guidance agrees with the material it routes to.",
@@ -15,14 +15,26 @@
             }
           }
         ]
+      },
+      {
+        "description": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+            }
+          }
+        ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Harness artifacts cover setup, scoped work, verification, and handoff.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Harness artifacts cover the lifecycle, but the sensor catalog still has one maturing sensor.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
-    "confidence": "high",
+    "confidence": "medium",
     "ratingDrivers": [
       {
         "description": "The harness covers the agent work lifecycle and its guidance agrees with the material it routes to.",
@@ -35,10 +47,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+            }
+          }
+        ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Harness artifacts cover setup, scoped work, verification, and handoff.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Harness artifacts cover the lifecycle, but the sensor catalog still has one maturing sensor.",
     "status": "analyzed"
   },
   "schemaVersion": 3

@@ -15,10 +15,46 @@
             }
           }
         ]
+      },
+      {
+        "description": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+            }
+          }
+        ]
+      },
+      {
+        "description": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+            }
+          }
+        ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Error responses follow one documented envelope callers can branch on.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Error responses are predictable, but compatibility drift creates caller confusion.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
@@ -35,10 +71,46 @@
             }
           }
         ]
+      },
+      {
+        "description": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+            }
+          }
+        ]
+      },
+      {
+        "description": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+            }
+          }
+        ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Error responses follow one documented envelope callers can branch on.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Error responses are predictable, but compatibility drift creates caller confusion.",
     "status": "analyzed"
   },
   "schemaVersion": 3

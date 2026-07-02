@@ -5,7 +5,7 @@
     "confidence": "medium",
     "ratingDrivers": [
       {
-        "description": "Correctness: Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.",
+        "description": "Correctness: Sign semantics are proven, but the unspecified interrupted-write replay path holds correctness at minimum.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -18,8 +18,47 @@
         ]
       },
       {
-        "description": "Operability: Error responses follow one documented envelope callers can branch on.",
+        "description": "Reliability: Timeouts fail safely, but retry reliability is capped by the interrupted-write replay gap.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::reliability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Security: Authorization and error-response sensors protect tenant access and sensitive fields.",
         "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::security"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Compatibility: V1 callers still work, but one undocumented deprecated field keeps compatibility below target.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::compatibility"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Operability: Error responses are predictable, but compatibility drift creates caller confusion.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -39,6 +78,19 @@
             "selector": "localAndDescendantAnalysis",
             "subject": {
               "factorId": "factor:api::performance"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Testability: Contract tests cover every public endpoint with success and failure cases.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::testability"
             }
           }
         ]
@@ -52,7 +104,7 @@
     "confidence": "medium",
     "ratingDrivers": [
       {
-        "description": "Correctness: Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum.",
+        "description": "Correctness: Sign semantics are proven, but the unspecified interrupted-write replay path holds correctness at minimum.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -65,8 +117,47 @@
         ]
       },
       {
-        "description": "Operability: Error responses follow one documented envelope callers can branch on.",
+        "description": "Reliability: Timeouts fail safely, but retry reliability is capped by the interrupted-write replay gap.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::reliability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Security: Authorization and error-response sensors protect tenant access and sensitive fields.",
         "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::security"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Compatibility: V1 callers still work, but one undocumented deprecated field keeps compatibility below target.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::compatibility"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Operability: Error responses are predictable, but compatibility drift creates caller confusion.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "FactorAnalysisResult",
@@ -86,6 +177,19 @@
             "selector": "localAndDescendantAnalysis",
             "subject": {
               "factorId": "factor:api::performance"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Testability: Contract tests cover every public endpoint with success and failure cases.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:api::testability"
             }
           }
         ]

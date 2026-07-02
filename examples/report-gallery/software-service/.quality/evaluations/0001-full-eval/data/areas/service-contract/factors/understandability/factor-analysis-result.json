@@ -1,0 +1,69 @@
+{
+  "factorId": "factor:service-contract::understandability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::deprecation-window-is-current"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Most examples are clear, but missing interrupted-write examples leave retry semantics hard to learn.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::deprecation-window-is-current"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Most examples are clear, but missing interrupted-write examples leave retry semantics hard to learn.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

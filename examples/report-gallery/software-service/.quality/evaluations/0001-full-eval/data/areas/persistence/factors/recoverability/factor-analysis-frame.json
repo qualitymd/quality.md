@@ -9,6 +9,12 @@
         "subject": {
           "requirementId": "requirement:persistence::migration-rollback"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+        }
       }
     ]
   },

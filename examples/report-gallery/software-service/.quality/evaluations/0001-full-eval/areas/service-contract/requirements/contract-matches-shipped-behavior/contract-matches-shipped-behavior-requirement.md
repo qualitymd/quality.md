@@ -46,7 +46,7 @@ Where the contract speaks, handlers agree; one deprecated response field still s
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 19 / 21 | ⚪ P4 Low | Contract-to-behavior conformance holds where specified. |
+| 19 / 42 | ⚪ P4 Low | Contract-to-behavior conformance holds where specified. |
 
 #### Condition
 
@@ -82,7 +82,7 @@ Rating effect: supports target
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 12 / 21 | ⚪ P4 Low | The deprecated field is drift-in-waiting worth watching, not acting on yet. |
+| 12 / 42 | ⚪ P4 Low | The deprecated field is drift-in-waiting worth watching, not acting on yet. |
 
 #### Condition
 
@@ -125,4 +125,3 @@ Rating effect: informational
 - [data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-assessment-result.json](../../../../data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-assessment-result.json)
 - [data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-rating-result.json](../../../../data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

@@ -1,0 +1,69 @@
+{
+  "factorId": "factor:codebase::consistency",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Structural import-boundary tests match handler ownership to the contract endpoint families.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Architecture boundaries match the service contract's endpoint families.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Structural import-boundary tests match handler ownership to the contract endpoint families.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Architecture boundaries match the service contract's endpoint families.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

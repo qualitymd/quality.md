@@ -6,12 +6,22 @@
     "localRequirementIds": [
       "requirement:api::idempotent-mutations",
       "requirement:api::predictable-error-contracts",
-      "requirement:api::p99-latency-within-budget"
+      "requirement:api::p99-latency-within-budget",
+      "requirement:api::ledger-entry-signs-match-intent",
+      "requirement:api::dependency-timeouts-return-safe-results",
+      "requirement:api::tenant-access-is-enforced",
+      "requirement:api::sensitive-fields-stay-out-of-error-responses",
+      "requirement:api::v1-error-envelope-remains-compatible",
+      "requirement:api::contract-tests-cover-public-endpoints"
     ],
     "rootFactorIds": [
       "factor:api::correctness",
+      "factor:api::reliability",
+      "factor:api::security",
+      "factor:api::compatibility",
       "factor:api::operability",
-      "factor:api::performance"
+      "factor:api::performance",
+      "factor:api::testability"
     ],
     "sourceRefs": [
       "synthetic-source:api"

@@ -45,7 +45,7 @@ Twelve of fourteen mutation endpoints have complete semantics; two lack replay c
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 4 / 21 | 🟠 P2 High | Two endpoints with silent replay semantics share a root cause and a fix with the P1 replay gap. |
+| 4 / 42 | 🟠 P2 High | Two endpoints with silent replay semantics share a root cause and a fix with the P1 replay gap. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: constrains target
 - [data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-assessment-result.json](../../../../data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-assessment-result.json)
 - [data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-rating-result.json](../../../../data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

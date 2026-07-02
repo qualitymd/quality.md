@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"embed"
 	"encoding/json"
 	"fmt"
@@ -74,6 +75,9 @@ func run() error {
 	if _, err := evaluation.BuildReport(runPath); err != nil {
 		return fmt.Errorf("building gallery reports: %w", err)
 	}
+	if err := trimGeneratedMarkdown(runPath); err != nil {
+		return err
+	}
 	fmt.Printf("Generated %s\n", filepath.ToSlash(filepath.Join(galleryRel, created.Path, "report.md")))
 	return nil
 }
@@ -113,6 +117,30 @@ func writeEmbedded(src, dst string) error {
 		return fmt.Errorf("writing %s: %w", filepath.ToSlash(dst), err)
 	}
 	return nil
+}
+
+func trimGeneratedMarkdown(root string) error {
+	return filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || filepath.Ext(path) != ".md" {
+			return nil
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("reading generated markdown %s: %w", filepath.ToSlash(path), err)
+		}
+		trimmed := bytes.TrimRight(data, "\n")
+		trimmed = append(trimmed, '\n')
+		if bytes.Equal(data, trimmed) {
+			return nil
+		}
+		if err := os.WriteFile(path, trimmed, 0o644); err != nil {
+			return fmt.Errorf("writing generated markdown %s: %w", filepath.ToSlash(path), err)
+		}
+		return nil
+	})
 }
 
 func pinRunIdentity(runPath, createdAt, runID string) error {

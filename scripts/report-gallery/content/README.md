@@ -8,9 +8,11 @@ running a fresh /quality evaluate.
 The [`QUALITY.md`](QUALITY.md) is written to demonstrate the /quality skill's
 authoring guide family: body sections with unknowns, open questions, and review
 provenance; a composite root with a model-wide agent harnessability factor; a
-normative service-contract area; a veto requirement; a measured rating
-override; and assessments that lean on guides, specs, runbooks, and
-computational sensors an agent could run.
+normative service-contract area; an implementation `codebase` area; a veto
+requirement; a measured rating override; and assessments that demonstrate the
+guide-and-sensor posture by reusing named computational sensors, reading sensor
+results against guides or runbooks, and leaving inferential judgment visible
+where no sensor exists yet.
 
 Open the generated run report:
 

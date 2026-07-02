@@ -55,4 +55,3 @@ Lint gates merges, but the contract and invariant sensors remain advisory.
 - [data/areas/root/factors/agent-harnessability/factors/enforcement-of-standards/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/enforcement-of-standards/factor-analysis-result.json)
 - [data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-rating-result.json](../../../../data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-rating-result.json)
 - [data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-assessment-result.json](../../../../data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-assessment-result.json)
-

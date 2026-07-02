@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Audit append-path tests were run and the schema was inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-audit-events-are-ordered-and-tamper-evident]",
+          "subject": {
+            "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Audit records are ordered and tamper-evident enough to explain balances.",
+  "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident",
+  "schemaVersion": 3,
+  "status": "rated"
+}

@@ -45,7 +45,7 @@ Recent handoffs state goals, but most omit done criteria and the confirming sens
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 6 / 21 | 🟡 P3 Medium | Missing done criteria degrade every agent handoff, but each instance is recoverable. |
+| 6 / 42 | 🟡 P3 Medium | Missing done criteria degrade every agent handoff, but each instance is recoverable. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: constrains target
 - [data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-assessment-result.json](../../data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-assessment-result.json)
 - [data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-rating-result.json](../../data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

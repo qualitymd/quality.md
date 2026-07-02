@@ -3,9 +3,9 @@
   "confidenceReason": "The model file and quality changelog are fully inspectable.",
   "evidenceSummary": "The model's structure, traceability, and changelog follow the guides; the body's unknowns and open questions have not kept up with the model's own changes.",
   "factors": [
-    "factor:quality-md::context-grounding",
-    "factor:quality-md::evaluability",
-    "factor:quality-md::lifecycle-maintenance"
+    "factor:quality-md::credibility",
+    "factor:quality-md::assessability",
+    "factor:quality-md::currentness"
   ],
   "findings": [
     {

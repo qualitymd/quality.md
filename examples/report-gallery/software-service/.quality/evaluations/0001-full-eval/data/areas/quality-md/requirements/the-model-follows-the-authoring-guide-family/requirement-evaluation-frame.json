@@ -34,9 +34,9 @@
   "schemaVersion": 3,
   "subject": {
     "factorIds": [
-      "factor:quality-md::context-grounding",
-      "factor:quality-md::evaluability",
-      "factor:quality-md::lifecycle-maintenance"
+      "factor:quality-md::credibility",
+      "factor:quality-md::assessability",
+      "factor:quality-md::currentness"
     ],
     "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
   }

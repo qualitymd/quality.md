@@ -765,7 +765,19 @@ links:`, and seeds glossary terms and vocabularies (`Done`).
 - [0187 — Remove Run Finding Summary](0187-remove-run-finding-summary.md) -
   removes the redundant run-level Finding Summary table while preserving Key
   Details totals and full Findings report count summaries (`Done`).
+- [0188 — Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md) -
+  surfaces the report-gallery evaluation from the Mintlify docs through a single
+  sidebar link to the report on GitHub, removing the earlier generated-pages
+  machinery (`Done`).
 - [0189 — Heading sentence case](0189-heading-sentence-case.md) - aligns active
   Markdown/MDX headings, generated Evaluation report labels, runtime skill docs,
   Mintlify output, and checked-in report artifacts with sentence case while
   preserving proper names and historical records (`Done`).
+- [0190 — Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md) -
+  expands the generated LedgerLite gallery into a best-practice QUALITY.md
+  exemplar with an exemplar model and body, synthetic quality changelog, and a
+  realistic generated evaluation run (`Done`).
+- [0191 — Deepen the report gallery exemplar model](0191-report-gallery-model-realism.md) -
+  expands the LedgerLite gallery to a realistic 39-requirement model with a
+  codebase area, deeper factor families, reusable sensor-grounded assessments,
+  refreshed body context, and workflow-faithful generated report prose (`Done`).

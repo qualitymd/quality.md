@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:api::compatibility",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "V1 callers still work, but one undocumented deprecated field keeps compatibility below target.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "V1 callers still work, but one undocumented deprecated field keeps compatibility below target.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

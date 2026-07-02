@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The generated quality changelog entries were inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The changelog records the codebase and security expansion and a sensor maturation entry before the evaluation run.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-the-quality-changelog-explains-model-growth]",
+          "subject": {
+            "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Meaningful model growth is recorded with rationale and timing.",
+  "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth",
+  "schemaVersion": 3,
+  "status": "rated"
+}

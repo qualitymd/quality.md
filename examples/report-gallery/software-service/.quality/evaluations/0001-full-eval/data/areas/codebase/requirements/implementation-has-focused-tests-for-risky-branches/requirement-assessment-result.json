@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The branch inventory and test manifest were diffed.",
+  "evidenceSummary": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests.",
+  "factors": [
+    "factor:codebase::maintainability/testability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The branch inventory and test manifest were diffed.",
+        "status": "verified"
+      },
+      "condition": "Does the test manifest cover risky implementation branches?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:codebase/test-manifest",
+          "statement": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests."
+        }
+      ],
+      "id": "auto-implementation-has-focused-tests-for-risky-branches",
+      "statement": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests."
+}

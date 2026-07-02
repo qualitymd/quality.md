@@ -1,0 +1,20 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "directRequirementRatingRefs": [
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:operations::capacity"
+  }
+}

@@ -5,11 +5,15 @@
   "inputs": {
     "localRequirementIds": [
       "requirement:service-contract::contract-covers-mutation-semantics",
-      "requirement:service-contract::contract-matches-shipped-behavior"
+      "requirement:service-contract::contract-matches-shipped-behavior",
+      "requirement:service-contract::deprecation-window-is-current",
+      "requirement:service-contract::examples-explain-retry-and-error-semantics"
     ],
     "rootFactorIds": [
       "factor:service-contract::completeness",
-      "factor:service-contract::consistency"
+      "factor:service-contract::consistency",
+      "factor:service-contract::currentness",
+      "factor:service-contract::understandability"
     ],
     "sourceRefs": [
       "synthetic-source:service-contract"

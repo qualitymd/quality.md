@@ -1,0 +1,26 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "directRequirementRatingRefs": [
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+        }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:codebase::consistency"
+  }
+}

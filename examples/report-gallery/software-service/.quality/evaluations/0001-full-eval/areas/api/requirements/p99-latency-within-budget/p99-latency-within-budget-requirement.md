@@ -45,7 +45,7 @@ The four-week telemetry window puts mutation p99 at 262 ms, inside the 300 ms ta
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 18 / 21 | ⚪ P4 Low | Latency sits inside the recalibrated band. |
+| 18 / 42 | ⚪ P4 Low | Latency sits inside the recalibrated band. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: supports target
 - [data/areas/api/requirements/p99-latency-within-budget/requirement-assessment-result.json](../../../../data/areas/api/requirements/p99-latency-within-budget/requirement-assessment-result.json)
 - [data/areas/api/requirements/p99-latency-within-budget/requirement-rating-result.json](../../../../data/areas/api/requirements/p99-latency-within-budget/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

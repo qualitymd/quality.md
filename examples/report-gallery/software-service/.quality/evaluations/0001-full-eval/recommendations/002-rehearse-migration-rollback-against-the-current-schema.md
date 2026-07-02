@@ -54,4 +54,3 @@ Ordered by expected effect on the required margin: money-path gaps first, then e
 - [data/evaluation-manifest.json](../data/evaluation-manifest.json)
 - [data/advice/recommendations/qrec_rollbackrehearsal/recommendation-result.json](../data/advice/recommendations/qrec_rollbackrehearsal/recommendation-result.json)
 - [data/advice/recommendation-ranking-result.json](../data/advice/recommendation-ranking-result.json)
-

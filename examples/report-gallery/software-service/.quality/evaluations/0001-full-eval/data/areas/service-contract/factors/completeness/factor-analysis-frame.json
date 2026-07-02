@@ -9,6 +9,12 @@
         "subject": {
           "requirementId": "requirement:service-contract::contract-covers-mutation-semantics"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+        }
       }
     ]
   },

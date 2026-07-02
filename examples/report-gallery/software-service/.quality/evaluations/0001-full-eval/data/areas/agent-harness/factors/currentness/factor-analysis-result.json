@@ -15,10 +15,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+            }
+          }
+        ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Guidance matches the current layout except one stale sensor command name.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Guidance matches the current layout except one stale command and one maturing drift detector.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
@@ -35,10 +47,22 @@
             }
           }
         ]
+      },
+      {
+        "description": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+            }
+          }
+        ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Guidance matches the current layout except one stale sensor command name.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Guidance matches the current layout except one stale command and one maturing drift detector.",
     "status": "analyzed"
   },
   "schemaVersion": 3

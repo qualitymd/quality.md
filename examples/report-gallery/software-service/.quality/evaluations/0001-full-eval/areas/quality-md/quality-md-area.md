@@ -27,22 +27,23 @@ Area: [LedgerLite Service](../../root-area.md) / [LedgerLite Service QUALITY.md]
 
 ## Summary
 
-The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.
+The model's structure and changelog practice follow the guides; one body-context check still needs a computational detector.
 
 ## Area / factor breakdown
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ LedgerLite Service QUALITY.md](quality-md-area.md)** | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [□ Context Grounding](factors/context-grounding/context-grounding-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [□ Evaluability](factors/evaluability/evaluability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [□ Lifecycle Maintenance](factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ LedgerLite Service QUALITY.md](quality-md-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [□ Assessability](factors/assessability/assessability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ [□ Credibility](factors/credibility/credibility-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [□ Currentness](factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
-| [the quality model follows its authoring guide family](requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md) | 🟡 Minimum | ✅ Assessed | [context-grounding](factors/context-grounding/context-grounding-factor.md); [evaluability](factors/evaluability/evaluability-factor.md); [lifecycle-maintenance](factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) |
+| [the quality model follows its authoring guide family](requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md) | 🟡 Minimum | ✅ Assessed | [credibility](factors/credibility/credibility-factor.md); [assessability](factors/assessability/assessability-factor.md); [currentness](factors/currentness/currentness-factor.md) |
+| [the quality changelog explains meaningful model growth](requirements/the-quality-changelog-explains-model-growth/the-quality-changelog-explains-model-growth-requirement.md) | 🔵 Target | ✅ Assessed | [credibility](factors/credibility/credibility-factor.md); [currentness](factors/currentness/currentness-factor.md) |
 
 ## Limits and incomplete inputs
 
@@ -58,4 +59,5 @@ The model's structure and changelog practice follow the guides; its body judgmen
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
 - [data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-rating-result.json](../../data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-rating-result.json)
 - [data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-assessment-result.json](../../data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-assessment-result.json)
-
+- [data/areas/quality-md/requirements/the-quality-changelog-explains-model-growth/requirement-rating-result.json](../../data/areas/quality-md/requirements/the-quality-changelog-explains-model-growth/requirement-rating-result.json)
+- [data/areas/quality-md/requirements/the-quality-changelog-explains-model-growth/requirement-assessment-result.json](../../data/areas/quality-md/requirements/the-quality-changelog-explains-model-growth/requirement-assessment-result.json)

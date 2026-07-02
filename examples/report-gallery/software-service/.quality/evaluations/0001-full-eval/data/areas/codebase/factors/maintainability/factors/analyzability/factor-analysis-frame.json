@@ -1,0 +1,20 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "directRequirementRatingRefs": [
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:codebase::money-flow-is-analyzable"
+        }
+      }
+    ]
+  },
+  "kind": "FactorAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorId": "factor:codebase::maintainability/analyzability"
+  }
+}

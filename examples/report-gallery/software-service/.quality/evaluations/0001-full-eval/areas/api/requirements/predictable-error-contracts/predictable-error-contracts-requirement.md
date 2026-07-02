@@ -45,7 +45,7 @@ Validation, authorization, and conflict responses all use the contract's error e
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 17 / 21 | ⚪ P4 Low | Stable error contracts support integrator trust. |
+| 17 / 42 | ⚪ P4 Low | Stable error contracts support integrator trust. |
 
 #### Condition
 
@@ -87,4 +87,3 @@ Rating effect: supports target
 - [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

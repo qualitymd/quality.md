@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Role manifests and dependency audit output were inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-persistence-access-is-least-privilege]",
+          "subject": {
+            "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Persistence access follows least privilege and no blocking dependency exposure was found.",
+  "requirementId": "requirement:persistence::persistence-access-is-least-privilege",
+  "schemaVersion": 3,
+  "status": "rated"
+}

@@ -1,0 +1,42 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Can a maintainer trace money movement from handler to ledger write?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:codebase/handler-ledger-trace",
+          "synthetic-source:complexity-check"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Can a maintainer trace money movement from handler to ledger write?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:codebase::maintainability/analyzability"
+    ],
+    "requirementId": "requirement:codebase::money-flow-is-analyzable"
+  }
+}

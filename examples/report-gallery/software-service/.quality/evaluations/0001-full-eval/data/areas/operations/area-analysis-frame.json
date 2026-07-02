@@ -15,6 +15,20 @@
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
+          "factorId": "factor:operations::security"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:operations::capacity"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
           "factorId": "factor:operations::recoverability"
         }
       }

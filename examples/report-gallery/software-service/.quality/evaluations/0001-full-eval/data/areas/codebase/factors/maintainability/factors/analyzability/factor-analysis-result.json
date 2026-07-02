@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:codebase::maintainability/analyzability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::money-flow-is-analyzable"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The reversal path is too complex to trace confidently.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::money-flow-is-analyzable"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The reversal path is too complex to trace confidently.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

@@ -11,7 +11,7 @@ Run: [0001-full-eval](../../../../report.md) - Evaluation ID: `20260629T120000Z-
 
 Area: [LedgerLite Service](../../../../root-area.md) / [LedgerLite Service QUALITY.md](../../quality-md-area.md)
 
-Factors: [context-grounding](../../factors/context-grounding/context-grounding-factor.md); [evaluability](../../factors/evaluability/evaluability-factor.md); [lifecycle-maintenance](../../factors/lifecycle-maintenance/lifecycle-maintenance-factor.md)
+Factors: [credibility](../../factors/credibility/credibility-factor.md); [assessability](../../factors/assessability/assessability-factor.md); [currentness](../../factors/currentness/currentness-factor.md)
 
 ## Key details
 
@@ -45,7 +45,7 @@ The model's structure, traceability, and changelog follow the guides; the body's
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 8 / 21 | 🟡 P3 Medium | Stale body context misdirects the next evaluation but does not affect the service itself. |
+| 8 / 42 | 🟡 P3 Medium | Stale body context misdirects the next evaluation but does not affect the service itself. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: constrains target
 - [data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-assessment-result.json](../../../../data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-assessment-result.json)
 - [data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-rating-result.json](../../../../data/areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

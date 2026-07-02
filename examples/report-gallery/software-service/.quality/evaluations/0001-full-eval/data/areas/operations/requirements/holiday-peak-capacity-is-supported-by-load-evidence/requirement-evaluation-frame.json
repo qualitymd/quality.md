@@ -1,0 +1,42 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Does load evidence cover the current holiday-peak forecast?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:operations/load-test-rollup",
+          "synthetic-source:operations/capacity-plan"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Does load evidence cover the current holiday-peak forecast?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:operations::capacity"
+    ],
+    "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+  }
+}

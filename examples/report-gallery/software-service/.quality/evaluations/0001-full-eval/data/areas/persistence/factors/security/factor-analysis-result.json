@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:persistence::security",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Database roles and dependency audit preserve persistence least privilege.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Database roles and dependency audit preserve persistence least privilege.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

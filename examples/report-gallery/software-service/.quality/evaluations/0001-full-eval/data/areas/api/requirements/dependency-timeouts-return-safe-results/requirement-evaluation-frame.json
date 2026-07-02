@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do dependency timeout tests prove safe retryable failures without partial writes?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:api/contract-tests",
+          "synthetic-source:operations/runbook"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do dependency timeout tests prove safe retryable failures without partial writes?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:api::reliability",
+      "factor:api::operability"
+    ],
+    "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+  }
+}

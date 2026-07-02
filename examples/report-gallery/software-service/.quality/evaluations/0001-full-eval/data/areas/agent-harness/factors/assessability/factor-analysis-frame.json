@@ -9,6 +9,12 @@
         "subject": {
           "requirementId": "requirement:agent-harness::harness-orients-agents-and-routes-to-sensors"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+        }
       }
     ]
   },

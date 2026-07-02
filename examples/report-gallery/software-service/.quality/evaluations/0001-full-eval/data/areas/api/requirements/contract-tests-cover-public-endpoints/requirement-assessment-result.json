@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The endpoint index and contract-test manifest were diffed.",
+  "evidenceSummary": "The contract-test manifest maps every public endpoint to at least one success and one failure case.",
+  "factors": [
+    "factor:api::testability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The endpoint index and contract-test manifest were diffed.",
+        "status": "verified"
+      },
+      "condition": "Does the contract-test manifest cover every endpoint in the index?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/contract-tests",
+          "statement": "The contract-test manifest maps every public endpoint to at least one success and one failure case."
+        }
+      ],
+      "id": "auto-contract-tests-cover-public-endpoints",
+      "statement": "The contract-test manifest maps every public endpoint to at least one success and one failure case.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::contract-tests-cover-public-endpoints",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The contract-test manifest maps every public endpoint to at least one success and one failure case."
+}

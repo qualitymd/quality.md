@@ -45,7 +45,7 @@ The property-based suite passes across all mutation paths and the nightly reconc
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 13 / 21 | ⚪ P4 Low | Outstanding balance integrity is the evaluation's anchor strength. |
+| 13 / 42 | ⚪ P4 Low | Outstanding balance integrity is the evaluation's anchor strength. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: supports outstanding
 - [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json](../../../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

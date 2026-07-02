@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The contract tests and sampled ledger records were compared directly.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Contract tests cover debit, credit, refund, and reversal sign semantics, and all sampled records match caller intent.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-ledger-entry-signs-match-intent]",
+          "subject": {
+            "requirementId": "requirement:api::ledger-entry-signs-match-intent"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The sign semantics are proven by the contract-test sensor and sampled ledger records.",
+  "requirementId": "requirement:api::ledger-entry-signs-match-intent",
+  "schemaVersion": 3,
+  "status": "rated"
+}

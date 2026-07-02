@@ -13,7 +13,7 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 
 | Recommendations | Highest impact | Coverage |
 | --- | --- | --- |
-| 6 recommendations | ⬥ High | ✅ Addressed by Recommendation: 8 / ⬜ Not Advice Driving: 13 |
+| 6 recommendations | ⬥ High | ✅ Addressed by Recommendation: 8 / ⬜ Not Advice Driving: 34 |
 
 ## Contents
 
@@ -30,12 +30,12 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 | 3 | [Make the contract-test and invariant sensors required at merge](recommendations/003-make-the-contract-test-and-invariant-sensors-required-at-merge.md) | [LedgerLite Service](root-area.md) / [Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | ⬥ High | 🔵 Medium | Contract conformance and ledger invariants hold regardless of reviewer attention, converting the two strongest sensors from advisory signals into enforced standards. | Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements. |
 | 4 | [Reconcile recovery drill ownership and restore assessability](recommendations/004-reconcile-recovery-drill-ownership-and-restore-assessability.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟢 High | The recoverability factor becomes assessable again, and the next evaluation can rate drill practice on evidence instead of recording missing evidence. | Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements. |
 | 5 | [Record done criteria and progress in durable handoff notes](recommendations/005-record-done-criteria-and-progress-in-durable-handoff-notes.md) | [LedgerLite Service](root-area.md) / [Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md), [Continuity](factors/agent-harnessability/factors/continuity/continuity-factor.md) | ● Medium | 🔵 Medium | Agents can declare completion against criteria and resume interrupted work from records, lifting task specifiability and continuity toward target. | Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements. |
-| 6 | [Refresh the model body's unknowns and open questions](recommendations/006-refresh-the-model-body-s-unknowns-and-open-questions.md) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) / [Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md), [Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md), [Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | ○ Low | 🟢 High | Evaluations start from current judgment context, and the QUALITY.md self-check can return to target. | Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements. |
+| 6 | [Add a body-drift detector to the model self-check](recommendations/006-add-a-body-drift-detector-to-the-model-self-check.md) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) / [Credibility](areas/quality-md/factors/credibility/credibility-factor.md), [Assessability](areas/quality-md/factors/assessability/assessability-factor.md), [Currentness](areas/quality-md/factors/currentness/currentness-factor.md) | ○ Low | 🟢 High | Evaluations start from current judgment context, and future model growth has a repeatable detector rather than relying only on reviewer memory. | Ordered by expected effect on the required margin: money-path gaps first, then enforcement, then assessability and workflow improvements. |
 
 ## Coverage
 
 - ✅ Addressed by Recommendation: 8
-- ⬜ Not Advice Driving: 13
+- ⬜ Not Advice Driving: 34
 
 ## Primary source data
 
@@ -47,4 +47,3 @@ Run: [0001-full-eval](report.md) - Evaluation ID: `20260629T120000Z-0123456789ab
 - [data/advice/recommendations/qrec_drillownership/recommendation-result.json](data/advice/recommendations/qrec_drillownership/recommendation-result.json)
 - [data/advice/recommendations/qrec_durablehandoffs/recommendation-result.json](data/advice/recommendations/qrec_durablehandoffs/recommendation-result.json)
 - [data/advice/recommendations/qrec_refreshmodelbody/recommendation-result.json](data/advice/recommendations/qrec_refreshmodelbody/recommendation-result.json)
-

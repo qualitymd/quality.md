@@ -45,7 +45,7 @@ Dashboards-as-code map service symptoms to failed customer actions, and the depl
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 20 / 21 | ⚪ P4 Low | Dashboards answer customer impact directly. |
+| 20 / 42 | ⚪ P4 Low | Dashboards answer customer impact directly. |
 
 #### Condition
 
@@ -87,4 +87,3 @@ Rating effect: supports target
 - [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
 - [data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

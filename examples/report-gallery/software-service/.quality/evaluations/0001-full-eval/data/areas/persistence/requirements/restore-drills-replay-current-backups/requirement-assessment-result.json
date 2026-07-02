@@ -1,0 +1,45 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "One restore drill and its reconciliation output were inspected.",
+  "evidenceSummary": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+  "factors": [
+    "factor:persistence::durability",
+    "factor:persistence::recoverability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "One restore drill and its reconciliation output were inspected.",
+        "status": "verified"
+      },
+      "condition": "Can the latest restore drill replay current backups without balance drift?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:persistence/restore-drill",
+          "statement": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state."
+        }
+      ],
+      "id": "auto-restore-drills-replay-current-backups",
+      "statement": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:persistence::restore-drills-replay-current-backups",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state."
+}

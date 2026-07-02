@@ -18,7 +18,7 @@
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+    "rationale": "Shipped behavior matches every specified clause.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
@@ -38,7 +38,7 @@
       }
     ],
     "ratingLevelId": "rating:target",
-    "rationale": "Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+    "rationale": "Shipped behavior matches every specified clause.",
     "status": "analyzed"
   },
   "schemaVersion": 3

@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Role manifests and dependency audit output were inspected.",
+  "evidenceSummary": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue.",
+  "factors": [
+    "factor:persistence::security"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Role manifests and dependency audit output were inspected.",
+        "status": "verified"
+      },
+      "condition": "Do database roles and dependency audit results preserve persistence least privilege?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:persistence/role-manifests",
+          "statement": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue."
+        }
+      ],
+      "id": "auto-persistence-access-is-least-privilege",
+      "statement": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:persistence::persistence-access-is-least-privilege",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue."
+}

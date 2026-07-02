@@ -9,6 +9,12 @@
         "subject": {
           "requirementId": "requirement:operations::recovery-drill-ownership"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+        }
       }
     ]
   },

@@ -1,0 +1,35 @@
+{
+  "derivedContext": {
+    "synthesisGuidanceRef": "model-body/model-shape-and-how-to-read-ratings"
+  },
+  "inputs": {
+    "factorAnalysisRefs": [
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:codebase::maintainability"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:codebase::consistency"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:codebase::security"
+        }
+      }
+    ]
+  },
+  "kind": "AreaAnalysisFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:codebase"
+  }
+}

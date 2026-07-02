@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The error-envelope tests and failure payload samples were inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-sensitive-fields-stay-out-of-error-responses]",
+          "subject": {
+            "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Error responses remain actionable without leaking sensitive fields.",
+  "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses",
+  "schemaVersion": 3,
+  "status": "rated"
+}

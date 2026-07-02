@@ -33,16 +33,23 @@ Balance integrity is outstanding on two independent sensors; unrehearsed rollbac
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ Ledger persistence](persistence-area.md)** | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ [□ Integrity](factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 1 | 0 |
-| ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ Ledger persistence](persistence-area.md)** | 🟡 Minimum | 🟡 Minimum | 6 | 1 |
+| ↳ [□ Auditability](factors/auditability/auditability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ [□ Durability](factors/durability/durability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ [□ Integrity](factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 2 | 0 |
+| ↳ [□ Recoverability](factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [□ Security](factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
+| [audit events are ordered and tamper-evident](requirements/audit-events-are-ordered-and-tamper-evident/audit-events-are-ordered-and-tamper-evident-requirement.md) | 🔵 Target | ✅ Assessed | [auditability](factors/auditability/auditability-factor.md) |
 | [ledger mutations preserve balance invariants](requirements/balance-invariants/balance-invariants-requirement.md) | 🟢 Outstanding | ✅ Assessed | [integrity](factors/integrity/integrity-factor.md) |
 | [migrations have rollback paths rehearsed against the current schema](requirements/migration-rollback/migration-rollback-requirement.md) | 🟡 Minimum | ✅ Assessed | [recoverability](factors/recoverability/recoverability-factor.md) |
+| [persistence access is least-privilege](requirements/persistence-access-is-least-privilege/persistence-access-is-least-privilege-requirement.md) | 🔵 Target | ✅ Assessed | [security](factors/security/security-factor.md) |
+| [reconciliation explains every balance change](requirements/reconciliation-explains-balance-changes/reconciliation-explains-balance-changes-requirement.md) | 🟢 Outstanding | ✅ Assessed | [integrity](factors/integrity/integrity-factor.md); [auditability](factors/auditability/auditability-factor.md) |
+| [restore drills replay current backups without ledger loss](requirements/restore-drills-replay-current-backups/restore-drills-replay-current-backups-requirement.md) | 🔵 Target | ✅ Assessed | [durability](factors/durability/durability-factor.md); [recoverability](factors/recoverability/recoverability-factor.md) |
 
 ## Limits and incomplete inputs
 
@@ -56,8 +63,15 @@ Balance integrity is outstanding on two independent sensors; unrehearsed rollbac
 - [data/areas/persistence/area-analysis-result.json](../../data/areas/persistence/area-analysis-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
+- [data/areas/persistence/requirements/audit-events-are-ordered-and-tamper-evident/requirement-rating-result.json](../../data/areas/persistence/requirements/audit-events-are-ordered-and-tamper-evident/requirement-rating-result.json)
+- [data/areas/persistence/requirements/audit-events-are-ordered-and-tamper-evident/requirement-assessment-result.json](../../data/areas/persistence/requirements/audit-events-are-ordered-and-tamper-evident/requirement-assessment-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json](../../data/areas/persistence/requirements/balance-invariants/requirement-rating-result.json)
 - [data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json](../../data/areas/persistence/requirements/balance-invariants/requirement-assessment-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json](../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
-
+- [data/areas/persistence/requirements/persistence-access-is-least-privilege/requirement-rating-result.json](../../data/areas/persistence/requirements/persistence-access-is-least-privilege/requirement-rating-result.json)
+- [data/areas/persistence/requirements/persistence-access-is-least-privilege/requirement-assessment-result.json](../../data/areas/persistence/requirements/persistence-access-is-least-privilege/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-rating-result.json](../../data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-rating-result.json)
+- [data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-assessment-result.json](../../data/areas/persistence/requirements/reconciliation-explains-balance-changes/requirement-assessment-result.json)
+- [data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-rating-result.json](../../data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-rating-result.json)
+- [data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-assessment-result.json](../../data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-assessment-result.json)

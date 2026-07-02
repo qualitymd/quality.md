@@ -1,0 +1,46 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The example inventory was reviewed against the endpoint index.",
+  "evidenceSummary": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+  "factors": [
+    "factor:service-contract::understandability",
+    "factor:service-contract::completeness"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The example inventory was reviewed against the endpoint index.",
+        "status": "verified"
+      },
+      "condition": "Do contract examples teach retry and error decisions callers need to make?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:service-contract",
+          "statement": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics."
+        }
+      ],
+      "id": "auto-examples-explain-retry-and-error-semantics",
+      "severity": "medium",
+      "statement": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics."
+}

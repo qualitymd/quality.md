@@ -1,15 +1,16 @@
 {
   "derivedContext": {
-    "scope": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model."
+    "scope": "The model's structure and changelog practice follow the guides; one body-context check still needs a computational detector."
   },
   "inputs": {
     "localRequirementIds": [
-      "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+      "requirement:quality-md::the-model-follows-the-authoring-guide-family",
+      "requirement:quality-md::the-quality-changelog-explains-model-growth"
     ],
     "rootFactorIds": [
-      "factor:quality-md::context-grounding",
-      "factor:quality-md::evaluability",
-      "factor:quality-md::lifecycle-maintenance"
+      "factor:quality-md::credibility",
+      "factor:quality-md::assessability",
+      "factor:quality-md::currentness"
     ],
     "sourceRefs": [
       "./QUALITY.md"

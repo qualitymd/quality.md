@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The example inventory was reviewed against the endpoint index.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence leaves a visible gap below target."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The evidence is still sufficient to rely on with follow-up."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-examples-explain-retry-and-error-semantics]",
+          "subject": {
+            "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Most examples are clear, but the missing interrupted-write example keeps understandability below target.",
+  "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics",
+  "schemaVersion": 3,
+  "status": "rated"
+}

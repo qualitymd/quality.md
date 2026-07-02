@@ -1,0 +1,44 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Are sensor names reused consistently across model assessments?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:agent-harness/sensor-catalog",
+          "./QUALITY.md"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Are sensor names reused consistently across model assessments?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:agent-harness::completeness",
+      "factor:agent-harness::currentness",
+      "factor:agent-harness::assessability"
+    ],
+    "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+  }
+}

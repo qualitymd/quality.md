@@ -1,0 +1,47 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The sensor catalog and QUALITY.md assessment text were compared.",
+  "evidenceSummary": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+  "factors": [
+    "factor:agent-harness::completeness",
+    "factor:agent-harness::currentness",
+    "factor:agent-harness::assessability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The sensor catalog and QUALITY.md assessment text were compared.",
+        "status": "verified"
+      },
+      "condition": "Are sensor names reused consistently across model assessments?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:agent-harness/sensor-catalog",
+          "statement": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target."
+        }
+      ],
+      "id": "auto-sensor-catalog-names-reusable-sensors",
+      "severity": "medium",
+      "statement": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target."
+}

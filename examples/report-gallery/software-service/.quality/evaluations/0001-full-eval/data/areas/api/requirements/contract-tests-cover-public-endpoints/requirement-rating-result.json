@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The endpoint index and contract-test manifest were diffed.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The contract-test manifest maps every public endpoint to at least one success and one failure case.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-contract-tests-cover-public-endpoints]",
+          "subject": {
+            "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The contract-test sensor covers the full public endpoint population.",
+  "requirementId": "requirement:api::contract-tests-cover-public-endpoints",
+  "schemaVersion": 3,
+  "status": "rated"
+}

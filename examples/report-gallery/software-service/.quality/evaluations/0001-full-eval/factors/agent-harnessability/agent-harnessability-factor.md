@@ -59,4 +59,3 @@ Sensors, accessibility, and containment equip agents well, but handoff records, 
 
 - [data/evaluation-manifest.json](../../data/evaluation-manifest.json)
 - [data/areas/root/factors/agent-harnessability/factor-analysis-result.json](../../data/areas/root/factors/agent-harnessability/factor-analysis-result.json)
-

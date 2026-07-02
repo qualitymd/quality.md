@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The reconciliation job output and audit-event stream were compared for the four-week window.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:outstanding",
+      "rationale": "The evidence exceeds the target bar with margin."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The target bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The reconciliation job traces every sampled balance delta to one ordered ledger event.",
+      "effect": "supports outstanding",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-reconciliation-explains-balance-changes]",
+          "subject": {
+            "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:outstanding"
+    }
+  ],
+  "ratingLevelId": "rating:outstanding",
+  "rationale": "Two independent evidence streams agree with no unexplained deltas.",
+  "requirementId": "requirement:persistence::reconciliation-explains-balance-changes",
+  "schemaVersion": 3,
+  "status": "rated"
+}

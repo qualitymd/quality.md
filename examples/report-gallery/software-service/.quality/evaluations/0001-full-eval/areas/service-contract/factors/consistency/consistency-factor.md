@@ -29,7 +29,7 @@ Factor: [Consistency](consistency-factor.md)
 
 ## Summary
 
-Shipped behavior matches every specified clause; one undocumented deprecated field ships on.
+Shipped behavior matches every specified clause.
 
 ## Requirements
 
@@ -55,4 +55,3 @@ Shipped behavior matches every specified clause; one undocumented deprecated fie
 - [data/areas/service-contract/factors/consistency/factor-analysis-result.json](../../../../data/areas/service-contract/factors/consistency/factor-analysis-result.json)
 - [data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-rating-result.json](../../../../data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-rating-result.json)
 - [data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-assessment-result.json](../../../../data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-assessment-result.json)
-

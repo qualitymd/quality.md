@@ -33,9 +33,11 @@ The contract matches shipped behavior where it speaks; two mutation endpoints wi
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ Service contract](service-contract-area.md)** | 🟡 Minimum | 🟡 Minimum | 3 | 1 |
-| ↳ [□ Completeness](factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| **[▦ Service contract](service-contract-area.md)** | 🟡 Minimum | 🟡 Minimum | 5 | 1 |
+| ↳ [□ Completeness](factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ [□ Consistency](factors/consistency/consistency-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ [□ Currentness](factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ [□ Understandability](factors/understandability/understandability-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 0 |
 
 ## Requirements
 
@@ -43,6 +45,8 @@ The contract matches shipped behavior where it speaks; two mutation endpoints wi
 | --- | --- | --- | --- |
 | [the contract defines retry, idempotency, and error semantics for every mutation endpoint](requirements/contract-covers-mutation-semantics/contract-covers-mutation-semantics-requirement.md) | 🟡 Minimum | ✅ Assessed | [completeness](factors/completeness/completeness-factor.md) |
 | [contract semantics match shipped handler behavior](requirements/contract-matches-shipped-behavior/contract-matches-shipped-behavior-requirement.md) | 🔵 Target | ✅ Assessed | [consistency](factors/consistency/consistency-factor.md) |
+| [the v1 deprecation window is current and visible](requirements/deprecation-window-is-current/deprecation-window-is-current-requirement.md) | 🟡 Minimum | ✅ Assessed | [currentness](factors/currentness/currentness-factor.md); [understandability](factors/understandability/understandability-factor.md) |
+| [examples explain retry and error semantics for integrators](requirements/examples-explain-retry-and-error-semantics/examples-explain-retry-and-error-semantics-requirement.md) | 🟡 Minimum | ✅ Assessed | [understandability](factors/understandability/understandability-factor.md); [completeness](factors/completeness/completeness-factor.md) |
 
 ## Limits and incomplete inputs
 
@@ -60,4 +64,7 @@ The contract matches shipped behavior where it speaks; two mutation endpoints wi
 - [data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-assessment-result.json](../../data/areas/service-contract/requirements/contract-covers-mutation-semantics/requirement-assessment-result.json)
 - [data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-rating-result.json](../../data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-rating-result.json)
 - [data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-assessment-result.json](../../data/areas/service-contract/requirements/contract-matches-shipped-behavior/requirement-assessment-result.json)
-
+- [data/areas/service-contract/requirements/deprecation-window-is-current/requirement-rating-result.json](../../data/areas/service-contract/requirements/deprecation-window-is-current/requirement-rating-result.json)
+- [data/areas/service-contract/requirements/deprecation-window-is-current/requirement-assessment-result.json](../../data/areas/service-contract/requirements/deprecation-window-is-current/requirement-assessment-result.json)
+- [data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-rating-result.json](../../data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-rating-result.json)
+- [data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-assessment-result.json](../../data/areas/service-contract/requirements/examples-explain-retry-and-error-semantics/requirement-assessment-result.json)

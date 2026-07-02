@@ -5,7 +5,7 @@
     "confidence": "high",
     "ratingDrivers": [
       {
-        "description": "Completeness: Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+        "description": "Completeness: Two mutation endpoints and one interrupted-write example remain incomplete; the rest are specified.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -18,7 +18,7 @@
         ]
       },
       {
-        "description": "Consistency: Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+        "description": "Consistency: Shipped behavior matches every specified clause.",
         "effect": "rates target",
         "inputRefs": [
           {
@@ -26,6 +26,32 @@
             "selector": "localAndDescendantAnalysis",
             "subject": {
               "factorId": "factor:service-contract::consistency"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Currentness: The deprecation window is visible, but a shipped deprecated field is missing from the appendix.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::currentness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Understandability: Most examples are clear, but missing interrupted-write examples leave retry semantics hard to learn.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::understandability"
             }
           }
         ]
@@ -39,7 +65,7 @@
     "confidence": "high",
     "ratingDrivers": [
       {
-        "description": "Completeness: Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified.",
+        "description": "Completeness: Two mutation endpoints and one interrupted-write example remain incomplete; the rest are specified.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -52,7 +78,7 @@
         ]
       },
       {
-        "description": "Consistency: Shipped behavior matches every specified clause; one undocumented deprecated field ships on.",
+        "description": "Consistency: Shipped behavior matches every specified clause.",
         "effect": "rates target",
         "inputRefs": [
           {
@@ -60,6 +86,32 @@
             "selector": "localAndDescendantAnalysis",
             "subject": {
               "factorId": "factor:service-contract::consistency"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Currentness: The deprecation window is visible, but a shipped deprecated field is missing from the appendix.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::currentness"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Understandability: Most examples are clear, but missing interrupted-write examples leave retry semantics hard to learn.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:service-contract::understandability"
             }
           }
         ]

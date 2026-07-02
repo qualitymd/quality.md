@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The contract tests and sampled ledger records were compared directly.",
+  "evidenceSummary": "Contract tests cover debit, credit, refund, and reversal sign semantics, and all sampled records match caller intent.",
+  "factors": [
+    "factor:api::correctness"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The contract tests and sampled ledger records were compared directly.",
+        "status": "verified"
+      },
+      "condition": "Do contract tests show ledger signs matching caller intent across operation kinds?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:api::ledger-entry-signs-match-intent"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/contract-tests",
+          "statement": "Contract tests cover debit, credit, refund, and reversal sign semantics, and all sampled records match caller intent."
+        }
+      ],
+      "id": "auto-ledger-entry-signs-match-intent",
+      "statement": "Contract tests cover debit, credit, refund, and reversal sign semantics, and all sampled records match caller intent.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::ledger-entry-signs-match-intent",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Contract tests cover debit, credit, refund, and reversal sign semantics, and all sampled records match caller intent."
+}

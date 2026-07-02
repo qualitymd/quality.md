@@ -1,0 +1,27 @@
+{
+  "derivedContext": {
+    "scope": "Implementation boundaries, tests, and security sensors meet target, but the reversal money-flow path is too hard to analyze."
+  },
+  "inputs": {
+    "localRequirementIds": [
+      "requirement:codebase::money-flow-is-analyzable",
+      "requirement:codebase::changes-remain-local-to-owned-boundaries",
+      "requirement:codebase::implementation-has-focused-tests-for-risky-branches",
+      "requirement:codebase::architecture-boundaries-match-the-service-contract",
+      "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+    ],
+    "rootFactorIds": [
+      "factor:codebase::maintainability",
+      "factor:codebase::consistency",
+      "factor:codebase::security"
+    ],
+    "sourceRefs": [
+      "synthetic-source:codebase"
+    ]
+  },
+  "kind": "AreaEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "areaId": "area:codebase"
+  }
+}

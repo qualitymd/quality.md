@@ -27,13 +27,13 @@ Area: [LedgerLite Service](root-area.md)
 
 ## Summary
 
-LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas below the target margin the model's body requires.
+LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas and agent loop below the target margin the model's body requires.
 
 ## Area / factor breakdown
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | 🟡 Minimum | 21 | 6 |
+| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | 🟡 Minimum | 42 | 6 |
 | ↳ [□ Agent Harnessability](factors/agent-harnessability/agent-harnessability-factor.md) | 🟡 Minimum | ⬜ Empty | 7 | 2 |
 | ↳ ↳ [□ Agent Accessibility](factors/agent-harnessability/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Agent Operability](factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
@@ -42,28 +42,46 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 | ↳ ↳ [□ Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 | ↳ ↳ [□ Self-Verifiability](factors/agent-harnessability/factors/self-verifiability/self-verifiability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ Agent harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ ↳ [□ Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ [▦ Agent harness](areas/agent-harness/agent-harness-area.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ ↳ [□ Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
 | ↳ ↳ [□ Coherence](areas/agent-harness/factors/coherence/coherence-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ ↳ [□ Completeness](areas/agent-harness/factors/completeness/completeness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ ↳ [□ Currentness](areas/agent-harness/factors/currentness/currentness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 4 | 1 |
-| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ [□ Operability](areas/api/factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Completeness](areas/agent-harness/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ ↳ [□ Currentness](areas/agent-harness/factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 10 | 1 |
+| ↳ ↳ [□ Compatibility](areas/api/factors/compatibility/compatibility-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 1 |
+| ↳ ↳ [□ Operability](areas/api/factors/operability/operability-factor.md) | 🟡 Minimum | 🟡 Minimum | 4 | 0 |
 | ↳ ↳ [□ Performance](areas/api/factors/performance/performance-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [▦ Operations](areas/operations/operations-area.md) | 🔵 Target | 🔵 Target | 2 | 1 |
+| ↳ ↳ [□ Reliability](areas/api/factors/reliability/reliability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Security](areas/api/factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Testability](areas/api/factors/testability/testability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Codebase](areas/codebase/codebase-area.md) | 🟡 Minimum | 🟡 Minimum | 5 | 0 |
+| ↳ ↳ [□ Consistency](areas/codebase/factors/consistency/consistency-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Maintainability](areas/codebase/factors/maintainability/maintainability-factor.md) | 🟡 Minimum | ⬜ Empty | 4 | 0 |
+| ↳ ↳ ↳ [□ Analyzability](areas/codebase/factors/maintainability/factors/analyzability/analyzability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ ↳ [□ Modifiability](areas/codebase/factors/maintainability/factors/modifiability/modifiability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ ↳ [□ Testability](areas/codebase/factors/maintainability/factors/testability/testability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Security](areas/codebase/factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Operations](areas/operations/operations-area.md) | 🟡 Minimum | 🟡 Minimum | 4 | 1 |
+| ↳ ↳ [□ Capacity](areas/operations/factors/capacity/capacity-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
 | ↳ ↳ [□ Observability](areas/operations/factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ⛔ Blocked | ⛔ Blocked | 1 | 1 |
-| ↳ [▦ Ledger persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 1 | 0 |
-| ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ [□ Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ [□ Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ [□ Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ Service contract](areas/service-contract/service-contract-area.md) | 🟡 Minimum | 🟡 Minimum | 3 | 1 |
-| ↳ ↳ [□ Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ⛔ Blocked | ⛔ Blocked | 2 | 1 |
+| ↳ ↳ [□ Security](areas/operations/factors/security/security-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ [▦ Ledger persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 6 | 1 |
+| ↳ ↳ [□ Auditability](areas/persistence/factors/auditability/auditability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Durability](areas/persistence/factors/durability/durability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 2 | 0 |
+| ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Security](areas/persistence/factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Assessability](areas/quality-md/factors/assessability/assessability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Credibility](areas/quality-md/factors/credibility/credibility-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Currentness](areas/quality-md/factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [▦ Service contract](areas/service-contract/service-contract-area.md) | 🟡 Minimum | 🟡 Minimum | 5 | 1 |
+| ↳ ↳ [□ Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ ↳ [□ Consistency](areas/service-contract/factors/consistency/consistency-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Currentness](areas/service-contract/factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Understandability](areas/service-contract/factors/understandability/understandability-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 0 |
 
 ## Requirements
 
@@ -103,4 +121,3 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 - [data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-assessment-result.json](data/areas/root/requirements/sensors-return-pass-fail-with-remediation/requirement-assessment-result.json)
 - [data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-rating-result.json](data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-rating-result.json)
 - [data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-assessment-result.json](data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-assessment-result.json)
-

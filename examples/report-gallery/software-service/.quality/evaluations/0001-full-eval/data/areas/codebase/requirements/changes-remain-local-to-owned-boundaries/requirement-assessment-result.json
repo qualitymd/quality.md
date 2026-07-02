@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Import-boundary tests and recent change matrices were inspected.",
+  "evidenceSummary": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries.",
+  "factors": [
+    "factor:codebase::maintainability/modifiability",
+    "factor:codebase::consistency"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Import-boundary tests and recent change matrices were inspected.",
+        "status": "verified"
+      },
+      "condition": "Do structural import-boundary tests and recent changes show localized edits?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:structural-import-boundary-tests",
+          "statement": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries."
+        }
+      ],
+      "id": "auto-changes-remain-local-to-owned-boundaries",
+      "statement": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries."
+}

@@ -17,7 +17,7 @@ Factor: [Assessability](assessability-factor.md)
 
 | Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
+| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
 ## Contents
 
@@ -29,13 +29,14 @@ Factor: [Assessability](assessability-factor.md)
 
 ## Summary
 
-Harness quality is checkable through inspectable artifacts and runnable sensors.
+Most harness quality is sensor-checkable; one catalog sensor has not yet become reused evidence.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
 | [the harness orients agents and routes them to runnable sensors](../../requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md) | 🔵 Target | ✅ Assessed |
+| [the sensor catalog names reusable sensors consistently](../../requirements/sensor-catalog-names-reusable-sensors/sensor-catalog-names-reusable-sensors-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
 ## Sub-factors
 
@@ -55,4 +56,5 @@ Harness quality is checkable through inspectable artifacts and runnable sensors.
 - [data/areas/agent-harness/factors/assessability/factor-analysis-result.json](../../../../data/areas/agent-harness/factors/assessability/factor-analysis-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json)
-
+- [data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-rating-result.json)
+- [data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-assessment-result.json)

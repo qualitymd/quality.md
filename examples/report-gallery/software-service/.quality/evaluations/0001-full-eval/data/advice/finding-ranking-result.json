@@ -252,6 +252,258 @@
       "rank": 21,
       "rationale": "Harness coverage and coherence hold up under inspection.",
       "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-ledger-entry-signs-match-intent]",
+        "subject": {
+          "requirementId": "requirement:api::ledger-entry-signs-match-intent"
+        }
+      },
+      "rank": 22,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-dependency-timeouts-return-safe-results]",
+        "subject": {
+          "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+        }
+      },
+      "rank": 23,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-tenant-access-is-enforced]",
+        "subject": {
+          "requirementId": "requirement:api::tenant-access-is-enforced"
+        }
+      },
+      "rank": 24,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-sensitive-fields-stay-out-of-error-responses]",
+        "subject": {
+          "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+        }
+      },
+      "rank": 25,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-v1-error-envelope-remains-compatible]",
+        "subject": {
+          "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+        }
+      },
+      "rank": 26,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-contract-tests-cover-public-endpoints]",
+        "subject": {
+          "requirementId": "requirement:api::contract-tests-cover-public-endpoints"
+        }
+      },
+      "rank": 27,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[note-005]",
+        "subject": {
+          "requirementId": "requirement:service-contract::deprecation-window-is-current"
+        }
+      },
+      "rank": 28,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-examples-explain-retry-and-error-semantics]",
+        "subject": {
+          "requirementId": "requirement:service-contract::examples-explain-retry-and-error-semantics"
+        }
+      },
+      "rank": 29,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-reconciliation-explains-balance-changes]",
+        "subject": {
+          "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+        }
+      },
+      "rank": 30,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-audit-events-are-ordered-and-tamper-evident]",
+        "subject": {
+          "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+        }
+      },
+      "rank": 31,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-persistence-access-is-least-privilege]",
+        "subject": {
+          "requirementId": "requirement:persistence::persistence-access-is-least-privilege"
+        }
+      },
+      "rank": 32,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-restore-drills-replay-current-backups]",
+        "subject": {
+          "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+        }
+      },
+      "rank": 33,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-break-glass-access-is-reviewed]",
+        "subject": {
+          "requirementId": "requirement:operations::break-glass-access-is-reviewed"
+        }
+      },
+      "rank": 34,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-holiday-peak-capacity-is-supported-by-load-evidence]",
+        "subject": {
+          "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+        }
+      },
+      "rank": 35,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-money-flow-is-analyzable]",
+        "subject": {
+          "requirementId": "requirement:codebase::money-flow-is-analyzable"
+        }
+      },
+      "rank": 36,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-changes-remain-local-to-owned-boundaries]",
+        "subject": {
+          "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+        }
+      },
+      "rank": 37,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-implementation-has-focused-tests-for-risky-branches]",
+        "subject": {
+          "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+        }
+      },
+      "rank": 38,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-architecture-boundaries-match-the-service-contract]",
+        "subject": {
+          "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+        }
+      },
+      "rank": 39,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-dependency-and-secret-handling-stay-within-policy]",
+        "subject": {
+          "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+        }
+      },
+      "rank": 40,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-sensor-catalog-names-reusable-sensors]",
+        "subject": {
+          "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+        }
+      },
+      "rank": 41,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
+    },
+    {
+      "findingRef": {
+        "kind": "RequirementAssessmentResult",
+        "selector": "findings[auto-the-quality-changelog-explains-model-growth]",
+        "subject": {
+          "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
+        }
+      },
+      "rank": 42,
+      "rationale": "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+      "tier": "P4"
     }
   ],
   "rationale": "Ranked by exposure of the money path first, then by what blocks judgment, then by agent-workflow drag; strengths anchor the tail.",

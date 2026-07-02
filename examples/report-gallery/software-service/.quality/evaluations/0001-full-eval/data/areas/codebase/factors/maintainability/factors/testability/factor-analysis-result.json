@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:codebase::maintainability/testability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Risky implementation branches have focused tests.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Risky implementation branches have focused tests.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

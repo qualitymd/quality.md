@@ -29,13 +29,14 @@ Factor: [Recoverability](recoverability-factor.md)
 
 ## Summary
 
-Rollback guidance exists but is unrehearsed against the two most recent schema migrations.
+Restore drills pass, but rollback guidance is unrehearsed against the two most recent schema migrations.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
 | [migrations have rollback paths rehearsed against the current schema](../../requirements/migration-rollback/migration-rollback-requirement.md) | 🟡 Minimum | ✅ Assessed |
+| [restore drills replay current backups without ledger loss](../../requirements/restore-drills-replay-current-backups/restore-drills-replay-current-backups-requirement.md) | 🔵 Target | ✅ Assessed |
 
 ## Sub-factors
 
@@ -55,4 +56,5 @@ Rollback guidance exists but is unrehearsed against the two most recent schema m
 - [data/areas/persistence/factors/recoverability/factor-analysis-result.json](../../../../data/areas/persistence/factors/recoverability/factor-analysis-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-rating-result.json)
 - [data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/migration-rollback/requirement-assessment-result.json)
-
+- [data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-rating-result.json](../../../../data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-rating-result.json)
+- [data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-assessment-result.json](../../../../data/areas/persistence/requirements/restore-drills-replay-current-backups/requirement-assessment-result.json)

@@ -1,0 +1,57 @@
+{
+  "factorId": "factor:codebase::maintainability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "none",
+    "status": "empty",
+    "statusReason": "The umbrella factor carries no direct requirements; its rating comes from sub-factor roll-up."
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Analyzability: The reversal path is too complex to trace confidently.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::maintainability/analyzability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Modifiability: Recent changes remain local to owned architecture boundaries.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::maintainability/modifiability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Testability: Risky implementation branches have focused tests.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::maintainability/testability"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Focused tests and localized boundaries are strong, but the reversal money-flow path is hard to analyze.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

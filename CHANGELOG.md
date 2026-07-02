@@ -14,6 +14,11 @@ QUALITY.md specification.
   measured rating override, and sensor-grounded assessments), and its generated
   evaluation includes all four finding types, a not-assessed result, and a
   synthetic quality changelog showing how the model matured.
+- The LedgerLite exemplar now uses a deeper 39-requirement model with a
+  `codebase` area, expanded security/auditability/capacity/compatibility
+  coverage, quality-named `quality-md` factors, reused sensor-catalog
+  assessments, and a recommendation that matures an inferential model-body
+  review into a repeatable drift detector.
 
 ## v0.27.1 - 2026-07-02
 

@@ -5,7 +5,7 @@
     "confidence": "medium",
     "ratingDrivers": [
       {
-        "description": "Integrity: Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift.",
+        "description": "Integrity: Two independent sensors show balance preservation with margin: property coverage and zero reconciliation drift.",
         "effect": "rates outstanding",
         "inputRefs": [
           {
@@ -18,7 +18,33 @@
         ]
       },
       {
-        "description": "Recoverability: Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
+        "description": "Auditability: Reconciliation and audit append tests explain balances through ordered, tamper-evident events.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::auditability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Security: Database roles and dependency audit preserve persistence least privilege.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::security"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Recoverability: Restore drills pass, but rollback guidance is unrehearsed against the two most recent schema migrations.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -26,6 +52,19 @@
             "selector": "localAndDescendantAnalysis",
             "subject": {
               "factorId": "factor:persistence::recoverability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Durability: Backups restore cleanly, but rollback rehearsal recency still caps durability confidence.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::durability"
             }
           }
         ]
@@ -39,7 +78,7 @@
     "confidence": "medium",
     "ratingDrivers": [
       {
-        "description": "Integrity: Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift.",
+        "description": "Integrity: Two independent sensors show balance preservation with margin: property coverage and zero reconciliation drift.",
         "effect": "rates outstanding",
         "inputRefs": [
           {
@@ -52,7 +91,33 @@
         ]
       },
       {
-        "description": "Recoverability: Rollback guidance exists but is unrehearsed against the two most recent schema migrations.",
+        "description": "Auditability: Reconciliation and audit append tests explain balances through ordered, tamper-evident events.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::auditability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Security: Database roles and dependency audit preserve persistence least privilege.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::security"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Recoverability: Restore drills pass, but rollback guidance is unrehearsed against the two most recent schema migrations.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -60,6 +125,19 @@
             "selector": "localAndDescendantAnalysis",
             "subject": {
               "factorId": "factor:persistence::recoverability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Durability: Backups restore cleanly, but rollback rehearsal recency still caps durability confidence.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:persistence::durability"
             }
           }
         ]

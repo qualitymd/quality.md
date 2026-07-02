@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Authorization matrix tests were run against the endpoint index.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-tenant-access-is-enforced]",
+          "subject": {
+            "requirementId": "requirement:api::tenant-access-is-enforced"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Every money-moving endpoint has a passing cross-tenant denial case.",
+  "requirementId": "requirement:api::tenant-access-is-enforced",
+  "schemaVersion": 3,
+  "status": "rated"
+}

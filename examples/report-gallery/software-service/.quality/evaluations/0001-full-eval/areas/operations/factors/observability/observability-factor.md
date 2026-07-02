@@ -55,4 +55,3 @@ Dashboards-as-code express customer impact and match what is deployed.
 - [data/areas/operations/factors/observability/factor-analysis-result.json](../../../../data/areas/operations/factors/observability/factor-analysis-result.json)
 - [data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-rating-result.json)
 - [data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json](../../../../data/areas/operations/requirements/customer-impact-telemetry/requirement-assessment-result.json)
-

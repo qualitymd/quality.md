@@ -55,4 +55,3 @@ A fresh agent reaches decision-relevant context from the stable entry point.
 - [data/areas/root/factors/agent-harnessability/factors/agent-accessibility/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/agent-accessibility/factor-analysis-result.json)
 - [data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-rating-result.json](../../../../data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-rating-result.json)
 - [data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-assessment-result.json](../../../../data/areas/root/requirements/agents-reach-service-context-from-a-stable-entry-point/requirement-assessment-result.json)
-

@@ -46,7 +46,7 @@ The entry point, routed guidance, and sensor catalog cover setup through handoff
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 21 / 21 | ⚪ P4 Low | Harness coverage and coherence hold up under inspection. |
+| 21 / 42 | ⚪ P4 Low | Harness coverage and coherence hold up under inspection. |
 
 #### Condition
 
@@ -82,7 +82,7 @@ Rating effect: supports target
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 10 / 21 | ⚪ P4 Low | The stale sensor command name is a one-line catalog fix. |
+| 10 / 42 | ⚪ P4 Low | The stale sensor command name is a one-line catalog fix. |
 
 #### Condition
 
@@ -125,4 +125,3 @@ Rating effect: informational
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../../../data/advice/finding-ranking-result.json)
-

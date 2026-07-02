@@ -32,6 +32,32 @@
         ]
       },
       {
+        "description": "Security: Break-glass access is reviewed, but one review was late.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::security"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Capacity: Load evidence nearly covers holiday peak, but the forecast moved after the latest run.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::capacity"
+            }
+          }
+        ]
+      },
+      {
         "description": "Recoverability: Drill ownership records contradict each other; the factor awaits reconciled evidence.",
         "effect": "blocked; contributes missing evidence",
         "inputRefs": [
@@ -45,8 +71,8 @@
         ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Customer-impact telemetry meets target, but security and capacity sit at minimum and drill ownership could not be assessed.",
     "status": "analyzed"
   },
   "localAndDescendantAnalysis": {
@@ -80,6 +106,32 @@
         ]
       },
       {
+        "description": "Security: Break-glass access is reviewed, but one review was late.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::security"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Capacity: Load evidence nearly covers holiday peak, but the forecast moved after the latest run.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:operations::capacity"
+            }
+          }
+        ]
+      },
+      {
         "description": "Recoverability: Drill ownership records contradict each other; the factor awaits reconciled evidence.",
         "effect": "blocked; contributes missing evidence",
         "inputRefs": [
@@ -93,8 +145,8 @@
         ]
       }
     ],
-    "ratingLevelId": "rating:target",
-    "rationale": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Customer-impact telemetry meets target, but security and capacity sit at minimum and drill ownership could not be assessed.",
     "status": "analyzed"
   },
   "schemaVersion": 3

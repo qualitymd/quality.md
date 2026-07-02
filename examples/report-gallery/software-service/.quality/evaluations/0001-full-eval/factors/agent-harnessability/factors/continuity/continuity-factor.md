@@ -55,4 +55,3 @@ In-flight work mostly lives in chat scrollback rather than durable progress reco
 - [data/areas/root/factors/agent-harnessability/factors/continuity/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/continuity/factor-analysis-result.json)
 - [data/areas/root/requirements/handoffs-survive-session-loss/requirement-rating-result.json](../../../../data/areas/root/requirements/handoffs-survive-session-loss/requirement-rating-result.json)
 - [data/areas/root/requirements/handoffs-survive-session-loss/requirement-assessment-result.json](../../../../data/areas/root/requirements/handoffs-survive-session-loss/requirement-assessment-result.json)
-

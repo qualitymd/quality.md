@@ -17,7 +17,7 @@ Factor: [Currentness](currentness-factor.md)
 
 | Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
+| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🔵 Medium / 🔵 Medium |
 
 ## Contents
 
@@ -29,13 +29,14 @@ Factor: [Currentness](currentness-factor.md)
 
 ## Summary
 
-Guidance matches the current layout except one stale sensor command name.
+Guidance matches the current layout except one stale command and one maturing drift detector.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
 | [the harness orients agents and routes them to runnable sensors](../../requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md) | 🔵 Target | ✅ Assessed |
+| [the sensor catalog names reusable sensors consistently](../../requirements/sensor-catalog-names-reusable-sensors/sensor-catalog-names-reusable-sensors-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
 ## Sub-factors
 
@@ -55,4 +56,5 @@ Guidance matches the current layout except one stale sensor command name.
 - [data/areas/agent-harness/factors/currentness/factor-analysis-result.json](../../../../data/areas/agent-harness/factors/currentness/factor-analysis-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json)
-
+- [data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-rating-result.json](../../../../data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-rating-result.json)
+- [data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-assessment-result.json](../../../../data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-assessment-result.json)

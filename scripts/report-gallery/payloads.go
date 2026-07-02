@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/qualitymd/quality.md/internal/evaluation"
 )
@@ -53,7 +54,7 @@ func areaFrames() []map[string]any {
 		"kind":           string(evaluation.DataKindAreaEvaluationFrame),
 		"subject":        map[string]any{"areaId": areaRef("")},
 		"inputs":         rootInputs,
-		"derivedContext": map[string]any{"scope": "The composite root: model-wide agent harnessability requirements plus six constituent areas."},
+		"derivedContext": map[string]any{"scope": "The composite root: model-wide agent harnessability requirements plus seven constituent areas."},
 	})
 	for _, area := range areas {
 		inputs := map[string]any{"sourceRefs": []any{area.Source}}
@@ -96,7 +97,11 @@ func requirementFrame(req requirementCase) map[string]any {
 		factorIDs = append(factorIDs, factorRef(req.Area, f))
 	}
 	var criteria []any
-	for _, c := range req.AppliedCriteria {
+	appliedCriteria := req.AppliedCriteria
+	if len(appliedCriteria) == 0 {
+		appliedCriteria = defaultAppliedCriteria(req)
+	}
+	for _, c := range appliedCriteria {
 		criteria = append(criteria, map[string]any{"ratingLevelId": "rating:" + c.Level, "criterion": c.Text})
 	}
 	var sourceRefs []any
@@ -163,7 +168,7 @@ func buildFinding(req requirementCase, f findingCase) map[string]any {
 
 func requirementAssessment(req requirementCase) map[string]any {
 	var findings []any
-	for _, f := range req.Findings {
+	for _, f := range findingsForRequirement(req) {
 		findings = append(findings, buildFinding(req, f))
 	}
 	if findings == nil {
@@ -213,7 +218,7 @@ func requirementRating(req requirementCase) map[string]any {
 	}
 	payload["ratingLevelId"] = "rating:" + req.Rating
 	var drivers []any
-	for _, f := range req.Findings {
+	for _, f := range findingsForRequirement(req) {
 		if !f.Driver {
 			continue
 		}
@@ -226,7 +231,11 @@ func requirementRating(req requirementCase) map[string]any {
 	}
 	payload["ratingDrivers"] = drivers
 	var results []any
-	for _, r := range req.CriteriaResults {
+	criteriaResults := req.CriteriaResults
+	if len(criteriaResults) == 0 {
+		criteriaResults = defaultCriteriaResults(req)
+	}
+	for _, r := range criteriaResults {
 		results = append(results, map[string]any{
 			"ratingLevelId": "rating:" + r.Level,
 			"matched":       r.Matched,
@@ -235,6 +244,102 @@ func requirementRating(req requirementCase) map[string]any {
 	}
 	payload["criteriaResults"] = results
 	return payload
+}
+
+func findingsForRequirement(req requirementCase) []findingCase {
+	if len(req.Findings) > 0 || req.AssessStatus != "assessed" || req.RatingStatus != "rated" {
+		return req.Findings
+	}
+	findingType := req.DefaultFindingType
+	if findingType == "" {
+		if req.Rating == "target" || req.Rating == "outstanding" {
+			findingType = "strength"
+		} else {
+			findingType = "gap"
+		}
+	}
+	findingID := req.DefaultFindingID
+	if findingID == "" {
+		findingID = "auto-" + req.Name
+	}
+	criterionLevel := "target"
+	criterion := "The recorded evidence satisfies the target criterion for this requirement."
+	ratingEffect := "supports target"
+	effect := "The evidence supports the target rating."
+	if req.Rating == "outstanding" {
+		criterionLevel = "outstanding"
+		criterion = "The recorded evidence exceeds the requirement with verified margin."
+		ratingEffect = "supports outstanding"
+		effect = "The evidence supports the outstanding rating."
+	}
+	if req.Rating == "minimum" {
+		criterion = defaultMinimumCriterion.Text
+		ratingEffect = "constrains target"
+		effect = "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+	}
+	evidenceRef := "synthetic-source:" + req.Area
+	if req.Area == "" {
+		evidenceRef = "synthetic-source:agent-harness"
+	}
+	if len(req.EvidenceRefs) > 0 {
+		evidenceRef = req.EvidenceRefs[0]
+	}
+	f := findingCase{
+		ID:                 findingID,
+		Type:               findingType,
+		Severity:           "medium",
+		Confidence:         req.Confidence,
+		Statement:          sentenceWithPeriod(req.Summary),
+		Condition:          sentenceWithPeriod(req.EvidenceQuestion),
+		CriterionLevel:     criterionLevel,
+		Criterion:          criterion,
+		CriterionRationale: "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+		BasisStatus:        "verified",
+		Basis:              sentenceWithPeriod(req.ConfidenceReason),
+		Effect:             effect,
+		RatingEffect:       ratingEffect,
+		EvidenceRef:        evidenceRef,
+		Evidence:           sentenceWithPeriod(req.Summary),
+		Driver:             true,
+	}
+	if f.Type == "note" {
+		f.Severity = ""
+	}
+	return []findingCase{f}
+}
+
+func defaultAppliedCriteria(req requirementCase) []criterionCase {
+	switch req.Rating {
+	case "outstanding":
+		return []criterionCase{{Level: "outstanding", Text: "The requirement is exceeded with meaningful margin."}, {Level: "target", Text: "The requirement is satisfied with evidence a maintainer can verify."}, defaultMinimumCriterion}
+	case "target":
+		return []criterionCase{{Level: "target", Text: "The requirement is satisfied with evidence a maintainer can verify."}, defaultMinimumCriterion}
+	default:
+		return []criterionCase{{Level: "target", Text: "The requirement is satisfied with evidence a maintainer can verify."}, defaultMinimumCriterion}
+	}
+}
+
+func defaultCriteriaResults(req requirementCase) []criteriaResultCase {
+	if req.Rating == "outstanding" {
+		return []criteriaResultCase{{Level: "outstanding", Matched: true, Rationale: "The evidence exceeds the target bar with margin."}, {Level: "target", Matched: true, Rationale: "The target bar is also satisfied."}}
+	}
+	if req.Rating == "target" {
+		return []criteriaResultCase{{Level: "target", Matched: true, Rationale: "The evidence satisfies the target bar."}, {Level: "minimum", Matched: true, Rationale: "The minimum bar is also satisfied."}}
+	}
+	return []criteriaResultCase{{Level: "target", Matched: false, Rationale: "The evidence leaves a visible gap below target."}, {Level: "minimum", Matched: true, Rationale: "The evidence is still sufficient to rely on with follow-up."}}
+}
+
+func sentenceWithPeriod(s string) string {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return "No additional evidence statement was provided."
+	}
+	switch s[len(s)-1] {
+	case '.', '!', '?':
+		return s
+	default:
+		return s + "."
+	}
 }
 
 func factorPayloads() []map[string]any {
@@ -332,9 +437,10 @@ func directRequirementDrivers(f factorCase) []any {
 			}
 			headline := req.RatingRationale
 			effect := "not rated"
-			if len(req.Findings) > 0 {
-				headline = req.Findings[0].Statement
-				effect = req.Findings[0].RatingEffect
+			findings := findingsForRequirement(req)
+			if len(findings) > 0 {
+				headline = findings[0].Statement
+				effect = findings[0].RatingEffect
 			}
 			drivers = append(drivers, driver(headline, effect,
 				routineRef(evaluation.DataKindRequirementRating, "requirementId", reqRef(req.Area, req.Name), "")))
@@ -413,7 +519,7 @@ func rootAnalysisPayloads() []map[string]any {
 	aggregateScope := analyzedScope(rootAggregateAnalysis.Rating, rootAggregateAnalysis.Confidence, rootAggregateAnalysis.Summary, aggregateDrivers)
 	aggregateScope["evaluationLimits"] = []any{map[string]any{
 		"id":          "below-required-margin",
-		"description": "The body requires money-touching areas (api, service-contract, persistence) to land at target or better; all three sit at minimum.",
+		"description": "The body requires money-touching areas (api, service-contract, persistence) and the codebase paths that realize money movement to land at target or better; api, service-contract, persistence, and codebase sit at minimum.",
 		"impact":      "Read the overall minimum as a stop-and-fix signal per the model's required margin, not as an acceptable steady state.",
 	}}
 	analysis := map[string]any{
@@ -428,7 +534,8 @@ func rootAnalysisPayloads() []map[string]any {
 
 func advicePayloads() []map[string]any {
 	var ordered []any
-	for i, ranked := range rankedFindings {
+	allRanked := allRankedFindings()
+	for i, ranked := range allRanked {
 		ordered = append(ordered, map[string]any{
 			"rank":       i + 1,
 			"findingRef": findingRefByID(ranked.FindingID),
@@ -474,7 +581,7 @@ func advicePayloads() []map[string]any {
 		})
 	}
 	var coverage []any
-	for _, ranked := range rankedFindings {
+	for _, ranked := range allRanked {
 		entry := map[string]any{"findingRef": findingRefByID(ranked.FindingID)}
 		if recIDs, ok := addressedBy[ranked.FindingID]; ok {
 			var refs []any
@@ -498,6 +605,28 @@ func advicePayloads() []map[string]any {
 		"rationale":              "Recommendations target the findings that hold money-touching areas below the required margin, restore blocked judgment, and harden the agent loop.",
 	})
 	return payloads
+}
+
+func allRankedFindings() []rankedFindingCase {
+	out := append([]rankedFindingCase{}, rankedFindings...)
+	seen := map[string]struct{}{}
+	for _, ranked := range out {
+		seen[ranked.FindingID] = struct{}{}
+	}
+	for _, req := range requirements {
+		for _, f := range findingsForRequirement(req) {
+			if _, ok := seen[f.ID]; ok {
+				continue
+			}
+			out = append(out, rankedFindingCase{
+				FindingID: f.ID,
+				Tier:      "P4",
+				Rationale: "Routine generated finding included for complete finding-ranking and advice-coverage accounting.",
+			})
+			seen[f.ID] = struct{}{}
+		}
+	}
+	return out
 }
 
 func analyzedScope(rating, confidence, rationale string, drivers []any) map[string]any {
@@ -544,7 +673,7 @@ func unknownList(limits []limitCase) []any {
 
 func findingRefByID(findingID string) map[string]any {
 	for _, req := range requirements {
-		for _, f := range req.Findings {
+		for _, f := range findingsForRequirement(req) {
 			if f.ID == findingID {
 				return routineRef(evaluation.DataKindRequirementAssessment, "requirementId",
 					reqRef(req.Area, req.Name), "findings["+findingID+"]")

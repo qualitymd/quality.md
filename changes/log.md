@@ -2,8 +2,51 @@
 
 ## 2026-07-02
 
+- **Done**: Implemented and archived
+  [0191 - Deepen the report gallery exemplar model](archive/0191-report-gallery-model-realism.md).
+  The LedgerLite gallery now carries a 39-requirement model with a `codebase`
+  area, expanded API/security/auditability/capacity/compatibility coverage,
+  quality-named `quality-md` factors, reused sensor-catalog assessments, new
+  synthetic changelog entries, and a generated recommendation that matures
+  inferential body review into a body-drift detector. The case moved into
+  [`archive/`](archive/index.md), and the bundle/archive indexes were updated.
+
+- **In-Progress**: Advanced
+  [0191 - Deepen the report gallery exemplar model](archive/0191-report-gallery-model-realism.md).
+  The functional spec is settled; no separate design doc is needed because the
+  0190 generator shape remains in place and the work is a content/table
+  expansion. Implementation begins on the generator-owned LedgerLite
+  `QUALITY.md`, synthetic changelog, README, and evaluation payload tables.
+
+- **Done**: Archived
+  [0190 - Make the report gallery an authoring exemplar](archive/0190-report-gallery-exemplar.md)
+  — set `status: Done` and moved the parent concept and child folder into
+  [`archive/`](archive/index.md). The exemplar gallery landed on `main`.
+  Updated the bundle [index](index.md), the archive index, and inbound links
+  (including 0191's references to the 0190 spec).
+
+- **Done**: Archived
+  [0188 - Publish the example evaluation to the docs site](archive/0188-publish-example-evaluation-to-docs.md)
+  — set `status: Done` and moved the parent concept and child folder into
+  [`archive/`](archive/index.md). The docs sidebar link landed on `main`.
+  Updated the bundle [index](index.md) and the archive index.
+
+- **Creation**: Added change
+  [0191 - Deepen the report gallery exemplar model](archive/0191-report-gallery-model-realism.md)
+  (`status: Draft`) with its
+  [functional spec](archive/0191-report-gallery-model-realism/spec.md): deepen the
+  LedgerLite gallery beyond 0190's structural exemplar to realistic scale and
+  grounding — a new `codebase` constituent, expanded per-area factor families
+  (security, auditability, compatibility, capacity, contract currentness),
+  quality-named `quality-md` factors, a named sensor catalog with a deliberate
+  computational / sensor-plus-guide / inferential assessment spread, a
+  re-derived body that earns every factor family from the fictional scenario,
+  conformance with the authoring guide family, and run prose consistent with
+  the setup and evaluate workflows. Depends on 0190 landing first. Updated the
+  bundle [index](index.md).
+
 - **In-Review**: Completed implementation for
-  [0190 - Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md).
+  [0190 - Make the report gallery an authoring exemplar](archive/0190-report-gallery-exemplar.md).
   The generator now embeds the exemplar `QUALITY.md`, README, and a synthetic
   quality changelog from content files, builds the expanded evaluation (18
   requirements across a composite root, all four finding types, a not-assessed
@@ -12,19 +55,19 @@
   gallery upgrade under Unreleased.
 
 - **In-Progress**: Advanced
-  [0190 - Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md).
+  [0190 - Make the report gallery an authoring exemplar](archive/0190-report-gallery-exemplar.md).
   Spec and design are settled; implementation begins on the generator
   restructure and exemplar content.
 
 - **Design**: Added the
-  [design doc](0190-report-gallery-exemplar/design.md) for 0190: embedded
+  [design doc](archive/0190-report-gallery-exemplar/design.md) for 0190: embedded
   content files via `go:embed`, generalized payload tables (multi-factor,
   multi-finding, not-assessed, umbrella-factor roll-up), and generator-owned
   changelog emission, keeping the byte-stable regeneration gate.
 
 - **Draft**: Created
-  [0190 - Make the report gallery an authoring exemplar](0190-report-gallery-exemplar.md)
-  with its [functional spec](0190-report-gallery-exemplar/spec.md). The case
+  [0190 - Make the report gallery an authoring exemplar](archive/0190-report-gallery-exemplar.md)
+  with its [functional spec](archive/0190-report-gallery-exemplar/spec.md). The case
   expands the LedgerLite gallery into a best-practice QUALITY.md exemplar — full
   body sections with unknowns and review provenance, model-wide
   agent-harnessability with seven sub-factors, a normative service-contract
@@ -64,7 +107,7 @@
   explicitly excludes heading-case automation.
 
 - **In-Review**: Reworked
-  [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md)
+  [0188 - Publish the example evaluation to the docs site](archive/0188-publish-example-evaluation-to-docs.md)
   to link out instead of generate. Removed `scripts/report-docs.mjs` and the
   generated `mintlify/examples/**` tree, dropped the `report-docs` /
   `report-docs-check` tasks from `mise.toml` (and the `check` gate) and the
@@ -74,7 +117,7 @@
   opens `report.md` on GitHub. Updated the change case and its functional spec.
 
 - **In-Review**: Created and implemented
-  [0188 - Publish the example evaluation to the docs site](0188-publish-example-evaluation-to-docs.md).
+  [0188 - Publish the example evaluation to the docs site](archive/0188-publish-example-evaluation-to-docs.md).
   Added `scripts/report-docs.mjs`, which renders the report-gallery LedgerLite
   evaluation into Mintlify pages under `mintlify/examples/software-service/`,
   rewriting cross-links to internal docs routes (and data files / the glossary to

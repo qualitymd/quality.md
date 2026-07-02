@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:service-contract::currentness",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::deprecation-window-is-current"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The deprecation window is visible, but a shipped deprecated field is missing from the appendix.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:service-contract::deprecation-window-is-current"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The deprecation window is visible, but a shipped deprecated field is missing from the appendix.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

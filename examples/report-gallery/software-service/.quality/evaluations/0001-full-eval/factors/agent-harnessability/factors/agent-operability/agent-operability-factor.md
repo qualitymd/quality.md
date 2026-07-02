@@ -55,4 +55,3 @@ Recorded setup works except for one credential documented outside agent reach.
 - [data/areas/root/factors/agent-harnessability/factors/agent-operability/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/agent-operability/factor-analysis-result.json)
 - [data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-rating-result.json](../../../../data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-rating-result.json)
 - [data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-assessment-result.json](../../../../data/areas/root/requirements/a-fresh-session-reaches-a-ready-to-work-environment/requirement-assessment-result.json)
-

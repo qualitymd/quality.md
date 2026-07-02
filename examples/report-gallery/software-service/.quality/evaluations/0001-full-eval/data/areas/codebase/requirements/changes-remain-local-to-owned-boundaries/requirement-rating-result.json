@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Import-boundary tests and recent change matrices were inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-changes-remain-local-to-owned-boundaries]",
+          "subject": {
+            "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The architecture keeps changes localized.",
+  "requirementId": "requirement:codebase::changes-remain-local-to-owned-boundaries",
+  "schemaVersion": 3,
+  "status": "rated"
+}

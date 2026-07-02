@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The load-test rollup and forecast were compared directly.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence leaves a visible gap below target."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The evidence is still sufficient to rely on with follow-up."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The load-test rollup reaches 1.4x forecast traffic, but the sales forecast changed after the latest run.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-holiday-peak-capacity-is-supported-by-load-evidence]",
+          "subject": {
+            "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Capacity evidence is close enough to rely on with follow-up, but it no longer proves the current forecast at target.",
+  "requirementId": "requirement:operations::holiday-peak-capacity-is-supported-by-load-evidence",
+  "schemaVersion": 3,
+  "status": "rated"
+}

@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "One restore drill and its reconciliation output were inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-restore-drills-replay-current-backups]",
+          "subject": {
+            "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The current backup path restored without ledger loss in the latest drill.",
+  "requirementId": "requirement:persistence::restore-drills-replay-current-backups",
+  "schemaVersion": 3,
+  "status": "rated"
+}

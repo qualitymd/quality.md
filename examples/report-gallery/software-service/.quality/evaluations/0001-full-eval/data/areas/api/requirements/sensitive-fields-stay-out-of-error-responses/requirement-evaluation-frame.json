@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do failure payloads avoid sensitive fields while preserving branchable error codes?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:api/contract-tests",
+          "synthetic-source:api/failure-payloads"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do failure payloads avoid sensitive fields while preserving branchable error codes?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:api::security",
+      "factor:api::operability"
+    ],
+    "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+  }
+}

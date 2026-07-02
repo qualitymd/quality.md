@@ -55,4 +55,3 @@ Handoffs scope the work but mostly omit done criteria and the confirming sensor.
 - [data/areas/root/factors/agent-harnessability/factors/task-specifiability/factor-analysis-result.json](../../../../data/areas/root/factors/agent-harnessability/factors/task-specifiability/factor-analysis-result.json)
 - [data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-rating-result.json](../../../../data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-rating-result.json)
 - [data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-assessment-result.json](../../../../data/areas/root/requirements/quality-loop-work-items-carry-done-criteria/requirement-assessment-result.json)
-

@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The branch inventory and test manifest were diffed.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-implementation-has-focused-tests-for-risky-branches]",
+          "subject": {
+            "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Risky implementation branches have focused tests at the right boundary.",
+  "requirementId": "requirement:codebase::implementation-has-focused-tests-for-risky-branches",
+  "schemaVersion": 3,
+  "status": "rated"
+}

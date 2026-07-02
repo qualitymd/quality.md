@@ -5,11 +5,18 @@
   "inputs": {
     "localRequirementIds": [
       "requirement:persistence::balance-invariants",
-      "requirement:persistence::migration-rollback"
+      "requirement:persistence::migration-rollback",
+      "requirement:persistence::reconciliation-explains-balance-changes",
+      "requirement:persistence::audit-events-are-ordered-and-tamper-evident",
+      "requirement:persistence::persistence-access-is-least-privilege",
+      "requirement:persistence::restore-drills-replay-current-backups"
     ],
     "rootFactorIds": [
       "factor:persistence::integrity",
-      "factor:persistence::recoverability"
+      "factor:persistence::auditability",
+      "factor:persistence::security",
+      "factor:persistence::recoverability",
+      "factor:persistence::durability"
     ],
     "sourceRefs": [
       "synthetic-source:persistence"

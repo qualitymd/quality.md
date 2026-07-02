@@ -9,6 +9,24 @@
         "subject": {
           "requirementId": "requirement:api::predictable-error-contracts"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+        }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+        }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+        }
       }
     ]
   },

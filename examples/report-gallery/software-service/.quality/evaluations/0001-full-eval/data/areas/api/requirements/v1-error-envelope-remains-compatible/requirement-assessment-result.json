@@ -1,0 +1,46 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The compatibility matrix and handler matrix were compared; integrator usage data is partial.",
+  "evidenceSummary": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+  "factors": [
+    "factor:api::compatibility",
+    "factor:api::operability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The compatibility matrix and handler matrix were compared; integrator usage data is partial.",
+        "status": "verified"
+      },
+      "condition": "Do v1 callers still receive documented fields through the deprecation window?",
+      "confidence": "medium",
+      "criteria": [
+        {
+          "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "constrains target",
+        "statement": "The evidence leaves a visible gap, constraining the result below target while remaining acceptable."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/compatibility-matrix",
+          "statement": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix."
+        }
+      ],
+      "id": "auto-v1-error-envelope-remains-compatible",
+      "severity": "medium",
+      "statement": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+      "type": "gap"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::v1-error-envelope-remains-compatible",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix."
+}

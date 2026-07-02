@@ -36,6 +36,13 @@
         "kind": "AreaAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
+          "areaId": "area:codebase"
+        }
+      },
+      {
+        "kind": "AreaAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
           "areaId": "area:agent-harness"
         }
       },

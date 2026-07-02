@@ -40,6 +40,8 @@ type requirementCase struct {
 	Confidence, ConfidenceReason string
 	RatingStatus, Rating         string
 	RatingRationale              string
+	DefaultFindingID             string
+	DefaultFindingType           string
 	AppliedCriteria              []criterionCase
 	CriteriaResults              []criteriaResultCase
 	EvidenceQuestion             string
@@ -659,7 +661,7 @@ var requirements = []requirementCase{
 	{
 		Area: "quality-md", Name: "the-model-follows-the-authoring-guide-family",
 		Title:        "the quality model follows its authoring guide family",
-		Factors:      []string{"context-grounding", "evaluability", "lifecycle-maintenance"},
+		Factors:      []string{"credibility", "assessability", "currentness"},
 		AssessStatus: "assessed",
 		Summary:      "The model's structure, traceability, and changelog follow the guides; the body's unknowns and open questions have not kept up with the model's own changes.",
 		Confidence:   "high", ConfidenceReason: "The model file and quality changelog are fully inspectable.",
@@ -687,6 +689,28 @@ var requirements = []requirementCase{
 			Evidence:    "The Risks open question predates the contract area's changelog entry; no body section's review line postdates it.",
 		}},
 	},
+	// Additional 0191 model-realism cases.
+	{Area: "api", Name: "ledger-entry-signs-match-intent", Title: "ledger entry signs match caller intent", Factors: []string{"correctness"}, AssessStatus: "assessed", Summary: "Contract tests cover debit, credit, refund, and reversal sign semantics, and all sampled records match caller intent.", Confidence: "high", ConfidenceReason: "The contract tests and sampled ledger records were compared directly.", RatingStatus: "rated", Rating: "target", RatingRationale: "The sign semantics are proven by the contract-test sensor and sampled ledger records.", EvidenceQuestion: "Do contract tests show ledger signs matching caller intent across operation kinds?", EvidenceRefs: []string{"synthetic-source:api/contract-tests"}},
+	{Area: "api", Name: "dependency-timeouts-return-safe-results", Title: "downstream dependency timeouts return safe results", Factors: []string{"reliability", "operability"}, AssessStatus: "assessed", Summary: "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.", Confidence: "high", ConfidenceReason: "The timeout-injection tests were run and the runbook branch was inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "The dependency-timeout path meets the contract and leaves no partial writes.", EvidenceQuestion: "Do dependency timeout tests prove safe retryable failures without partial writes?", EvidenceRefs: []string{"synthetic-source:api/contract-tests", "synthetic-source:operations/runbook"}},
+	{Area: "api", Name: "tenant-access-is-enforced", Title: "tenant access is enforced for every money-moving endpoint", Factors: []string{"security"}, AssessStatus: "assessed", Summary: "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers.", Confidence: "high", ConfidenceReason: "Authorization matrix tests were run against the endpoint index.", RatingStatus: "rated", Rating: "target", RatingRationale: "Every money-moving endpoint has a passing cross-tenant denial case.", EvidenceQuestion: "Does the authorization matrix prevent cross-tenant money movement?", EvidenceRefs: []string{"synthetic-source:api/authorization-matrix"}},
+	{Area: "api", Name: "sensitive-fields-stay-out-of-error-responses", Title: "sensitive fields stay out of error responses", Factors: []string{"security", "operability"}, AssessStatus: "assessed", Summary: "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.", Confidence: "high", ConfidenceReason: "The error-envelope tests and failure payload samples were inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "Error responses remain actionable without leaking sensitive fields.", EvidenceQuestion: "Do failure payloads avoid sensitive fields while preserving branchable error codes?", EvidenceRefs: []string{"synthetic-source:api/contract-tests", "synthetic-source:api/failure-payloads"}},
+	{Area: "api", Name: "v1-error-envelope-remains-compatible", Title: "v1 error-envelope behavior remains compatible during deprecation", Factors: []string{"compatibility", "operability"}, AssessStatus: "assessed", Summary: "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.", Confidence: "medium", ConfidenceReason: "The compatibility matrix and handler matrix were compared; integrator usage data is partial.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "Compatibility holds for callers today, but undocumented deprecation state keeps the result below target.", EvidenceQuestion: "Do v1 callers still receive documented fields through the deprecation window?", EvidenceRefs: []string{"synthetic-source:api/compatibility-matrix", "synthetic-source:service-contract"}, DefaultFindingID: "auto-v1-error-envelope-remains-compatible", DefaultFindingType: "gap"},
+	{Area: "api", Name: "contract-tests-cover-public-endpoints", Title: "contract tests cover every public endpoint", Factors: []string{"testability"}, AssessStatus: "assessed", Summary: "The contract-test manifest maps every public endpoint to at least one success and one failure case.", Confidence: "high", ConfidenceReason: "The endpoint index and contract-test manifest were diffed.", RatingStatus: "rated", Rating: "target", RatingRationale: "The contract-test sensor covers the full public endpoint population.", EvidenceQuestion: "Does the contract-test manifest cover every endpoint in the index?", EvidenceRefs: []string{"synthetic-source:api/contract-tests", "synthetic-source:service-contract"}},
+	{Area: "service-contract", Name: "deprecation-window-is-current", Title: "the v1 deprecation window is current and visible", Factors: []string{"currentness", "understandability"}, AssessStatus: "assessed", Summary: "The compatibility appendix names the active deprecation window, but the drift detector found one shipped deprecated field missing from the appendix.", Confidence: "medium", ConfidenceReason: "The drift detector compared the contract appendix with the handler matrix.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "The deprecation window is visible, but one shipped field remains contract drift.", EvidenceQuestion: "Does the contract's deprecation appendix match shipped v1 fields?", EvidenceRefs: []string{"synthetic-source:service-contract", "synthetic-source:contract-drift-detector"}, DefaultFindingID: "note-005", DefaultFindingType: "note"},
+	{Area: "service-contract", Name: "examples-explain-retry-and-error-semantics", Title: "examples explain retry and error semantics for integrators", Factors: []string{"understandability", "completeness"}, AssessStatus: "assessed", Summary: "Contract examples cover duplicate retries, authorization failures, and validation errors; interrupted-write examples are absent with the same gap as replay semantics.", Confidence: "medium", ConfidenceReason: "The example inventory was reviewed against the endpoint index.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "Most examples are clear, but the missing interrupted-write example keeps understandability below target.", EvidenceQuestion: "Do contract examples teach retry and error decisions callers need to make?", EvidenceRefs: []string{"synthetic-source:service-contract"}, DefaultFindingID: "auto-examples-explain-retry-and-error-semantics", DefaultFindingType: "gap"},
+	{Area: "persistence", Name: "reconciliation-explains-balance-changes", Title: "reconciliation explains every balance change", Factors: []string{"integrity", "auditability"}, AssessStatus: "assessed", Summary: "The reconciliation job traces every sampled balance delta to one ordered ledger event.", Confidence: "high", ConfidenceReason: "The reconciliation job output and audit-event stream were compared for the four-week window.", RatingStatus: "rated", Rating: "outstanding", RatingRationale: "Two independent evidence streams agree with no unexplained deltas.", EvidenceQuestion: "Can reconciliation explain every sampled balance change from ordered ledger events?", EvidenceRefs: []string{"synthetic-source:persistence/reconciliation-job", "synthetic-source:persistence/audit-events"}},
+	{Area: "persistence", Name: "audit-events-are-ordered-and-tamper-evident", Title: "audit events are ordered and tamper-evident", Factors: []string{"auditability"}, AssessStatus: "assessed", Summary: "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes.", Confidence: "high", ConfidenceReason: "Audit append-path tests were run and the schema was inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "Audit records are ordered and tamper-evident enough to explain balances.", EvidenceQuestion: "Do audit append-path tests prove ordered tamper-evident events?", EvidenceRefs: []string{"synthetic-source:persistence/audit-events"}},
+	{Area: "persistence", Name: "persistence-access-is-least-privilege", Title: "persistence access is least-privilege", Factors: []string{"security"}, AssessStatus: "assessed", Summary: "Database role manifests separate service, migration, and analytics privileges; dependency audit reports no high-severity data-store client issue.", Confidence: "high", ConfidenceReason: "Role manifests and dependency audit output were inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "Persistence access follows least privilege and no blocking dependency exposure was found.", EvidenceQuestion: "Do database roles and dependency audit results preserve persistence least privilege?", EvidenceRefs: []string{"synthetic-source:persistence/role-manifests", "synthetic-source:dependency-audit"}},
+	{Area: "persistence", Name: "restore-drills-replay-current-backups", Title: "restore drills replay current backups without ledger loss", Factors: []string{"durability", "recoverability"}, AssessStatus: "assessed", Summary: "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.", Confidence: "medium", ConfidenceReason: "One restore drill and its reconciliation output were inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "The current backup path restored without ledger loss in the latest drill.", EvidenceQuestion: "Can the latest restore drill replay current backups without balance drift?", EvidenceRefs: []string{"synthetic-source:persistence/restore-drill", "synthetic-source:persistence/reconciliation-job"}},
+	{Area: "operations", Name: "break-glass-access-is-reviewed", Title: "break-glass access is reviewed after use", Factors: []string{"security", "recoverability"}, AssessStatus: "assessed", Summary: "Every break-glass use in the latest quarter has an approver and incident link, but one post-use access review was recorded late.", Confidence: "medium", ConfidenceReason: "Break-glass logs were inspected for the latest quarter.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "The review path exists and is mostly followed, but the late review keeps operations security below target.", EvidenceQuestion: "Does every break-glass use have approver, incident link, and timely review?", EvidenceRefs: []string{"synthetic-source:operations/break-glass-log"}, DefaultFindingID: "auto-break-glass-access-is-reviewed", DefaultFindingType: "gap"},
+	{Area: "operations", Name: "holiday-peak-capacity-is-supported-by-load-evidence", Title: "holiday-peak capacity is supported by load evidence", Factors: []string{"capacity"}, AssessStatus: "assessed", Summary: "The load-test rollup reaches 1.4x forecast traffic, but the sales forecast changed after the latest run.", Confidence: "medium", ConfidenceReason: "The load-test rollup and forecast were compared directly.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "Capacity evidence is close enough to rely on with follow-up, but it no longer proves the current forecast at target.", EvidenceQuestion: "Does load evidence cover the current holiday-peak forecast?", EvidenceRefs: []string{"synthetic-source:operations/load-test-rollup", "synthetic-source:operations/capacity-plan"}, DefaultFindingID: "auto-holiday-peak-capacity-is-supported-by-load-evidence", DefaultFindingType: "risk"},
+	{Area: "codebase", Name: "money-flow-is-analyzable", Title: "money movement flow is analyzable from entry point to ledger write", Factors: []string{"maintainability/analyzability"}, AssessStatus: "assessed", Summary: "The handler-to-ledger trace is readable, but complexity check flags the reversal path as hard to follow.", Confidence: "medium", ConfidenceReason: "The trace and complexity check output were inspected.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "Most money movement is analyzable, but one high-risk path is too complex for target.", EvidenceQuestion: "Can a maintainer trace money movement from handler to ledger write?", EvidenceRefs: []string{"synthetic-source:codebase/handler-ledger-trace", "synthetic-source:complexity-check"}, DefaultFindingID: "auto-money-flow-is-analyzable", DefaultFindingType: "gap"},
+	{Area: "codebase", Name: "changes-remain-local-to-owned-boundaries", Title: "changes remain local to owned architecture boundaries", Factors: []string{"maintainability/modifiability", "consistency"}, AssessStatus: "assessed", Summary: "Structural import-boundary tests pass, and recent API changes stayed inside owned module boundaries.", Confidence: "high", ConfidenceReason: "Import-boundary tests and recent change matrices were inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "The architecture keeps changes localized.", EvidenceQuestion: "Do structural import-boundary tests and recent changes show localized edits?", EvidenceRefs: []string{"synthetic-source:structural-import-boundary-tests", "synthetic-source:codebase/change-matrix"}},
+	{Area: "codebase", Name: "implementation-has-focused-tests-for-risky-branches", Title: "risky implementation branches have focused tests", Factors: []string{"maintainability/testability"}, AssessStatus: "assessed", Summary: "Retry, authorization, rollback, and reconciliation branches each have focused unit or contract tests.", Confidence: "high", ConfidenceReason: "The branch inventory and test manifest were diffed.", RatingStatus: "rated", Rating: "target", RatingRationale: "Risky implementation branches have focused tests at the right boundary.", EvidenceQuestion: "Does the test manifest cover risky implementation branches?", EvidenceRefs: []string{"synthetic-source:codebase/test-manifest"}},
+	{Area: "codebase", Name: "architecture-boundaries-match-the-service-contract", Title: "architecture boundaries match the service contract", Factors: []string{"consistency", "maintainability/modifiability"}, AssessStatus: "assessed", Summary: "Structural import-boundary tests match handler ownership to the contract endpoint families.", Confidence: "high", ConfidenceReason: "Import-boundary tests and the contract endpoint map were compared.", RatingStatus: "rated", Rating: "target", RatingRationale: "Implementation boundaries remain aligned with the normative contract.", EvidenceQuestion: "Do implementation boundaries match the contract's endpoint families?", EvidenceRefs: []string{"synthetic-source:structural-import-boundary-tests", "synthetic-source:service-contract"}},
+	{Area: "codebase", Name: "dependency-and-secret-handling-stay-within-policy", Title: "dependencies and secret handling stay within policy", Factors: []string{"security"}, AssessStatus: "assessed", Summary: "Dependency audit and secret lint pass with no active suppressions on money-moving paths.", Confidence: "high", ConfidenceReason: "Dependency audit and lint output were inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "The implementation security sensors meet the policy bar.", EvidenceQuestion: "Do dependency audit and secret lint results stay within policy?", EvidenceRefs: []string{"synthetic-source:dependency-audit", "synthetic-source:lint"}},
+	{Area: "agent-harness", Name: "sensor-catalog-names-reusable-sensors", Title: "the sensor catalog names reusable sensors consistently", Factors: []string{"completeness", "currentness", "assessability"}, AssessStatus: "assessed", Summary: "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.", Confidence: "medium", ConfidenceReason: "The sensor catalog and QUALITY.md assessment text were compared.", RatingStatus: "rated", Rating: "minimum", RatingRationale: "The catalog mostly demonstrates reuse, but the drift detector is still maturing into a repeated sensor.", EvidenceQuestion: "Are sensor names reused consistently across model assessments?", EvidenceRefs: []string{"synthetic-source:agent-harness/sensor-catalog", "./QUALITY.md"}, DefaultFindingID: "auto-sensor-catalog-names-reusable-sensors", DefaultFindingType: "gap"},
+	{Area: "quality-md", Name: "the-quality-changelog-explains-model-growth", Title: "the quality changelog explains meaningful model growth", Factors: []string{"credibility", "currentness"}, AssessStatus: "assessed", Summary: "The changelog records the codebase and security expansion and a sensor maturation entry before the evaluation run.", Confidence: "high", ConfidenceReason: "The generated quality changelog entries were inspected.", RatingStatus: "rated", Rating: "target", RatingRationale: "Meaningful model growth is recorded with rationale and timing.", EvidenceQuestion: "Does the quality changelog explain why the model changed?", EvidenceRefs: []string{"synthetic-source:quality-changelog"}},
 }
 
 var factors = []factorCase{
@@ -705,68 +729,73 @@ var factors = []factorCase{
 		Rating: "minimum", Confidence: "medium",
 		Summary: "Sensors, accessibility, and containment equip agents well, but handoff records, done criteria, and advisory merge gates hold the equipping capability at minimum.",
 	},
-	{Area: "", Path: "agent-harnessability/agent-accessibility", Title: "Agent Accessibility", Rating: "target", Confidence: "high",
-		Summary: "A fresh agent reaches decision-relevant context from the stable entry point."},
-	{Area: "", Path: "agent-harnessability/task-specifiability", Title: "Task Specifiability", Rating: "minimum", Confidence: "high",
-		Summary: "Handoffs scope the work but mostly omit done criteria and the confirming sensor."},
-	{Area: "", Path: "agent-harnessability/agent-operability", Title: "Agent Operability", Rating: "minimum", Confidence: "medium",
-		Summary: "Recorded setup works except for one credential documented outside agent reach."},
-	{Area: "", Path: "agent-harnessability/continuity", Title: "Continuity", Rating: "minimum", Confidence: "medium",
-		Summary: "In-flight work mostly lives in chat scrollback rather than durable progress records."},
-	{Area: "", Path: "agent-harnessability/self-verifiability", Title: "Self-Verifiability", Rating: "target", Confidence: "high",
-		Summary: "The recorded sensors are deterministic and their failures carry remediation."},
-	{Area: "", Path: "agent-harnessability/enforcement-of-standards", Title: "Enforcement of Standards", Rating: "minimum", Confidence: "high",
-		Summary: "Lint gates merges, but the contract and invariant sensors remain advisory."},
-	{Area: "", Path: "agent-harnessability/containment-of-action", Title: "Containment of Action", Rating: "target", Confidence: "high",
-		Summary: "Money movement and schema changes sit behind declarative approval gates."},
+	{Area: "", Path: "agent-harnessability/agent-accessibility", Title: "Agent Accessibility", Rating: "target", Confidence: "high", Summary: "A fresh agent reaches decision-relevant context from the stable entry point."},
+	{Area: "", Path: "agent-harnessability/task-specifiability", Title: "Task Specifiability", Rating: "minimum", Confidence: "high", Summary: "Handoffs scope the work but mostly omit done criteria and the confirming sensor."},
+	{Area: "", Path: "agent-harnessability/agent-operability", Title: "Agent Operability", Rating: "minimum", Confidence: "medium", Summary: "Recorded setup works except for one credential documented outside agent reach."},
+	{Area: "", Path: "agent-harnessability/continuity", Title: "Continuity", Rating: "minimum", Confidence: "medium", Summary: "In-flight work mostly lives in chat scrollback rather than durable progress records."},
+	{Area: "", Path: "agent-harnessability/self-verifiability", Title: "Self-Verifiability", Rating: "target", Confidence: "high", Summary: "The recorded sensors are deterministic and their failures carry remediation."},
+	{Area: "", Path: "agent-harnessability/enforcement-of-standards", Title: "Enforcement of Standards", Rating: "minimum", Confidence: "high", Summary: "Lint gates merges, but the contract and invariant sensors remain advisory."},
+	{Area: "", Path: "agent-harnessability/containment-of-action", Title: "Containment of Action", Rating: "target", Confidence: "high", Summary: "Money movement and schema changes sit behind declarative approval gates."},
+
 	// Public API.
-	{Area: "api", Path: "correctness", Title: "Correctness", Rating: "minimum", Confidence: "medium",
-		Summary: "Duplicate replay is proven safe; the unspecified interrupted-write path holds correctness at minimum."},
-	{Area: "api", Path: "operability", Title: "Operability", Rating: "target", Confidence: "high",
-		Summary: "Error responses follow one documented envelope callers can branch on."},
-	{Area: "api", Path: "performance", Title: "Performance", Rating: "target", Confidence: "high",
-		Summary: "Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band."},
+	{Area: "api", Path: "correctness", Title: "Correctness", Rating: "minimum", Confidence: "medium", Summary: "Sign semantics are proven, but the unspecified interrupted-write replay path holds correctness at minimum."},
+	{Area: "api", Path: "reliability", Title: "Reliability", Rating: "minimum", Confidence: "medium", Summary: "Timeouts fail safely, but retry reliability is capped by the interrupted-write replay gap."},
+	{Area: "api", Path: "security", Title: "Security", Rating: "target", Confidence: "high", Summary: "Authorization and error-response sensors protect tenant access and sensitive fields."},
+	{Area: "api", Path: "compatibility", Title: "Compatibility", Rating: "minimum", Confidence: "medium", Summary: "V1 callers still work, but one undocumented deprecated field keeps compatibility below target."},
+	{Area: "api", Path: "operability", Title: "Operability", Rating: "minimum", Confidence: "high", Summary: "Error responses are predictable, but compatibility drift creates caller confusion."},
+	{Area: "api", Path: "performance", Title: "Performance", Rating: "target", Confidence: "high", Summary: "Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band."},
+	{Area: "api", Path: "testability", Title: "Testability", Rating: "target", Confidence: "high", Summary: "Contract tests cover every public endpoint with success and failure cases."},
+
 	// Service contract.
-	{Area: "service-contract", Path: "completeness", Title: "Completeness", Rating: "minimum", Confidence: "high",
-		Summary: "Two of fourteen mutation endpoints lack replay semantics; the rest are fully specified."},
-	{Area: "service-contract", Path: "consistency", Title: "Consistency", Rating: "target", Confidence: "high",
-		Summary: "Shipped behavior matches every specified clause; one undocumented deprecated field ships on."},
+	{Area: "service-contract", Path: "completeness", Title: "Completeness", Rating: "minimum", Confidence: "high", Summary: "Two mutation endpoints and one interrupted-write example remain incomplete; the rest are specified."},
+	{Area: "service-contract", Path: "consistency", Title: "Consistency", Rating: "target", Confidence: "high", Summary: "Shipped behavior matches every specified clause."},
+	{Area: "service-contract", Path: "currentness", Title: "Currentness", Rating: "minimum", Confidence: "medium", Summary: "The deprecation window is visible, but a shipped deprecated field is missing from the appendix."},
+	{Area: "service-contract", Path: "understandability", Title: "Understandability", Rating: "minimum", Confidence: "medium", Summary: "Most examples are clear, but missing interrupted-write examples leave retry semantics hard to learn."},
+
 	// Persistence.
-	{Area: "persistence", Path: "integrity", Title: "Integrity", Rating: "outstanding", Confidence: "high",
-		Summary: "Two independent sensors show balance preservation with margin: full-path property coverage and zero reconciliation drift."},
-	{Area: "persistence", Path: "recoverability", Title: "Recoverability", Rating: "minimum", Confidence: "medium",
-		Summary: "Rollback guidance exists but is unrehearsed against the two most recent schema migrations."},
+	{Area: "persistence", Path: "integrity", Title: "Integrity", Rating: "outstanding", Confidence: "high", Summary: "Two independent sensors show balance preservation with margin: property coverage and zero reconciliation drift."},
+	{Area: "persistence", Path: "auditability", Title: "Auditability", Rating: "target", Confidence: "high", Summary: "Reconciliation and audit append tests explain balances through ordered, tamper-evident events."},
+	{Area: "persistence", Path: "security", Title: "Security", Rating: "target", Confidence: "high", Summary: "Database roles and dependency audit preserve persistence least privilege."},
+	{Area: "persistence", Path: "recoverability", Title: "Recoverability", Rating: "minimum", Confidence: "medium", Summary: "Restore drills pass, but rollback guidance is unrehearsed against the two most recent schema migrations."},
+	{Area: "persistence", Path: "durability", Title: "Durability", Rating: "minimum", Confidence: "medium", Summary: "Backups restore cleanly, but rollback rehearsal recency still caps durability confidence."},
+
 	// Operations.
-	{Area: "operations", Path: "observability", Title: "Observability", Rating: "target", Confidence: "medium",
-		Summary: "Dashboards-as-code express customer impact and match what is deployed."},
+	{Area: "operations", Path: "observability", Title: "Observability", Rating: "target", Confidence: "medium", Summary: "Dashboards-as-code express customer impact and match what is deployed."},
+	{Area: "operations", Path: "security", Title: "Security", Rating: "minimum", Confidence: "medium", Summary: "Break-glass access is reviewed, but one review was late."},
+	{Area: "operations", Path: "capacity", Title: "Capacity", Rating: "minimum", Confidence: "medium", Summary: "Load evidence nearly covers holiday peak, but the forecast moved after the latest run."},
 	{
 		Area: "operations", Path: "recoverability", Title: "Recoverability",
 		Status:       "blocked",
-		StatusReason: "The factor's only requirement is not assessed: recovery-ownership records conflict, so no judgment could be formed.",
+		StatusReason: "Recovery-ownership records conflict, so no judgment could be formed.",
 		Confidence:   "none",
 		Summary:      "Drill ownership records contradict each other; the factor awaits reconciled evidence.",
-		Limits: []limitCase{{
-			ID:          "conflicting-ownership-records",
-			Description: "The recovery calendar and incident playbook name different current owners.",
-			Impact:      "The factor cannot be analyzed until ownership records are reconciled.",
-		}},
+		Limits:       []limitCase{{ID: "conflicting-ownership-records", Description: "The recovery calendar and incident playbook name different current owners.", Impact: "The factor cannot be analyzed until ownership records are reconciled."}},
 	},
+
+	// Codebase.
+	{
+		Area: "codebase", Path: "maintainability", Title: "Maintainability",
+		Children:   []string{"maintainability/analyzability", "maintainability/modifiability", "maintainability/testability"},
+		Rating:     "minimum",
+		Confidence: "medium",
+		Summary:    "Focused tests and localized boundaries are strong, but the reversal money-flow path is hard to analyze.",
+	},
+	{Area: "codebase", Path: "maintainability/analyzability", Title: "Analyzability", Rating: "minimum", Confidence: "medium", Summary: "The reversal path is too complex to trace confidently."},
+	{Area: "codebase", Path: "maintainability/modifiability", Title: "Modifiability", Rating: "target", Confidence: "high", Summary: "Recent changes remain local to owned architecture boundaries."},
+	{Area: "codebase", Path: "maintainability/testability", Title: "Testability", Rating: "target", Confidence: "high", Summary: "Risky implementation branches have focused tests."},
+	{Area: "codebase", Path: "consistency", Title: "Consistency", Rating: "target", Confidence: "high", Summary: "Architecture boundaries match the service contract's endpoint families."},
+	{Area: "codebase", Path: "security", Title: "Security", Rating: "target", Confidence: "high", Summary: "Dependency audit and secret lint pass with no active suppressions on money-moving paths."},
+
 	// Agent harness.
-	{Area: "agent-harness", Path: "completeness", Title: "Completeness", Rating: "target", Confidence: "high",
-		Summary: "Harness artifacts cover setup, scoped work, verification, and handoff."},
-	{Area: "agent-harness", Path: "coherence", Title: "Coherence", Rating: "target", Confidence: "high",
-		Summary: "Guidance agrees with the contract and runbooks it routes to."},
-	{Area: "agent-harness", Path: "currentness", Title: "Currentness", Rating: "target", Confidence: "medium",
-		Summary: "Guidance matches the current layout except one stale sensor command name."},
-	{Area: "agent-harness", Path: "assessability", Title: "Assessability", Rating: "target", Confidence: "high",
-		Summary: "Harness quality is checkable through inspectable artifacts and runnable sensors."},
+	{Area: "agent-harness", Path: "completeness", Title: "Completeness", Rating: "minimum", Confidence: "medium", Summary: "Harness artifacts cover the lifecycle, but the sensor catalog still has one maturing sensor."},
+	{Area: "agent-harness", Path: "coherence", Title: "Coherence", Rating: "target", Confidence: "high", Summary: "Guidance agrees with the contract and runbooks it routes to."},
+	{Area: "agent-harness", Path: "currentness", Title: "Currentness", Rating: "minimum", Confidence: "medium", Summary: "Guidance matches the current layout except one stale command and one maturing drift detector."},
+	{Area: "agent-harness", Path: "assessability", Title: "Assessability", Rating: "minimum", Confidence: "medium", Summary: "Most harness quality is sensor-checkable; one catalog sensor has not yet become reused evidence."},
+
 	// QUALITY.md self-check.
-	{Area: "quality-md", Path: "context-grounding", Title: "Context Grounding", Rating: "minimum", Confidence: "high",
-		Summary: "The body's unknowns and open questions have drifted behind the model's own changes."},
-	{Area: "quality-md", Path: "evaluability", Title: "Evaluability", Rating: "minimum", Confidence: "high",
-		Summary: "Requirements are assessable from recorded evidence; the stale body context caps the shared requirement's rating."},
-	{Area: "quality-md", Path: "lifecycle-maintenance", Title: "Lifecycle Maintenance", Rating: "minimum", Confidence: "high",
-		Summary: "The changelog records why the model changed; the body has not kept pace with those changes."},
+	{Area: "quality-md", Path: "credibility", Title: "Credibility", Rating: "minimum", Confidence: "high", Summary: "The changelog explains model growth, but the body self-check still depends on inferential review."},
+	{Area: "quality-md", Path: "assessability", Title: "Assessability", Rating: "minimum", Confidence: "high", Summary: "Requirements are assessable from recorded evidence; body drift needs a computational detector."},
+	{Area: "quality-md", Path: "currentness", Title: "Currentness", Rating: "minimum", Confidence: "high", Summary: "The changelog is current, but body-context drift keeps the model self-check at minimum."},
 }
 
 var areas = []areaCase{
@@ -787,8 +816,8 @@ var areas = []areaCase{
 	},
 	{
 		Name: "operations", Source: "synthetic-source:operations",
-		Rating: "target", Confidence: "low",
-		Summary: "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
+		Rating: "minimum", Confidence: "low",
+		Summary: "Customer-impact telemetry meets target, but security and capacity sit at minimum and drill ownership could not be assessed.",
 		Limits: []limitCase{{
 			ID:          "drill-ownership-unassessed",
 			Description: "Recovery drill ownership is not assessed because its records conflict.",
@@ -801,14 +830,19 @@ var areas = []areaCase{
 		}},
 	},
 	{
+		Name: "codebase", Source: "synthetic-source:codebase",
+		Rating: "minimum", Confidence: "medium",
+		Summary: "Implementation boundaries, tests, and security sensors meet target, but the reversal money-flow path is too hard to analyze.",
+	},
+	{
 		Name: "agent-harness", Source: "synthetic-source:agent-harness",
-		Rating: "target", Confidence: "high",
-		Summary: "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
+		Rating: "minimum", Confidence: "medium",
+		Summary: "The harness orients agents and routes to runnable sensors, but catalog reuse still needs one sensor maturation.",
 	},
 	{
 		Name: "quality-md", Source: "./QUALITY.md",
 		Rating: "minimum", Confidence: "high",
-		Summary: "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+		Summary: "The model's structure and changelog practice follow the guides; one body-context check still needs a computational detector.",
 	},
 }
 
@@ -819,7 +853,7 @@ var rootLocalAnalysis = areaCase{
 
 var rootAggregateAnalysis = areaCase{
 	Name: "", Rating: "minimum", Confidence: "medium",
-	Summary: "LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas below the target margin the model's body requires.",
+	Summary: "LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas and agent loop below the target margin the model's body requires.",
 }
 
 var recommendations = []recommendationCase{
@@ -875,11 +909,11 @@ var recommendations = []recommendationCase{
 	},
 	{
 		ID:            "qrec_refreshmodelbody",
-		Title:         "Refresh the model body's unknowns and open questions",
-		Description:   "Revisit each body section's unknowns and open questions against the current model — retiring the resolved error-envelope question now owned by the contract area, adding the integrator-retry blind spot — and advance the review provenance lines.",
-		Background:    "The body's judgment context predates the service-contract area, so the next evaluator inherits attention pointers that no longer match the model.",
-		ExpectedValue: "Evaluations start from current judgment context, and the QUALITY.md self-check can return to target.",
-		DoneCriterion: "Every body section's unknowns and open questions reflect the current model, and each section's review line postdates the contract area's changelog entry.",
+		Title:         "Add a body-drift detector to the model self-check",
+		Description:   "Refresh each body section's unknowns, open questions, and review provenance against the current model, then add a detector that compares recent factor and requirement changes with body review lines so stale judgment context is caught before evaluation.",
+		Background:    "The body-drift finding is inferential today: a reviewer noticed body context lagging the model. The quality loop should keep that judgment while adding a computational sensor for the repeatable stale-context failure mode.",
+		ExpectedValue: "Evaluations start from current judgment context, and future model growth has a repeatable detector rather than relying only on reviewer memory.",
+		DoneCriterion: "Every body section reflects the current model, each section's review line postdates the latest model-shape changelog entry, and a recorded body-drift detector fails when a factor or requirement changes without a corresponding body review refresh.",
 		Impact:        "low", Confidence: "high",
 		Traces: []string{"gap-006"},
 	},

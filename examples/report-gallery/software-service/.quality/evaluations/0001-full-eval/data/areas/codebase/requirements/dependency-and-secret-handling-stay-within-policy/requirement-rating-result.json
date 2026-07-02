@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Dependency audit and lint output were inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-dependency-and-secret-handling-stay-within-policy]",
+          "subject": {
+            "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The implementation security sensors meet the policy bar.",
+  "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy",
+  "schemaVersion": 3,
+  "status": "rated"
+}

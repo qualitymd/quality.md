@@ -1,0 +1,69 @@
+{
+  "factorId": "factor:api::security",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::tenant-access-is-enforced"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Authorization and error-response sensors protect tenant access and sensitive fields.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::tenant-access-is-enforced"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Error-envelope contract tests and sampled failure payloads contain stable codes but no account numbers, bank tokens, internal IDs, or tenant secrets.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:api::sensitive-fields-stay-out-of-error-responses"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Authorization and error-response sensors protect tenant access and sensitive fields.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

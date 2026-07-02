@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The timeout-injection tests were run and the runbook branch was inspected.",
+  "evidenceSummary": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+  "factors": [
+    "factor:api::reliability",
+    "factor:api::operability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The timeout-injection tests were run and the runbook branch was inspected.",
+        "status": "verified"
+      },
+      "condition": "Do dependency timeout tests prove safe retryable failures without partial writes?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/contract-tests",
+          "statement": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes."
+        }
+      ],
+      "id": "auto-dependency-timeouts-return-safe-results",
+      "statement": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::dependency-timeouts-return-safe-results",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes."
+}

@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The sensor catalog and QUALITY.md assessment text were compared.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence leaves a visible gap below target."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The evidence is still sufficient to rely on with follow-up."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Every named catalog sensor is referenced by at least two assessments, except the new drift detector, which appears once as the model-body maturation target.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-sensor-catalog-names-reusable-sensors]",
+          "subject": {
+            "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "The catalog mostly demonstrates reuse, but the drift detector is still maturing into a repeated sensor.",
+  "requirementId": "requirement:agent-harness::sensor-catalog-names-reusable-sensors",
+  "schemaVersion": 3,
+  "status": "rated"
+}

@@ -13,13 +13,13 @@ run: 0001-full-eval
 
 ## Summary
 
-LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas below the target margin the model's body requires.
+LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas and agent loop below the target margin the model's body requires.
 
 ## Key details
 
 | Overall rating | Confidence | Scope | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| 🟡 Minimum | 🔵 Medium | Full evaluation of LedgerLite Service | 21 total | 6 total |
+| 🟡 Minimum | 🔵 Medium | Full evaluation of LedgerLite Service | 42 total | 6 total |
 
 ## Contents
 
@@ -32,7 +32,7 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | 🟡 Minimum | 21 | 6 |
+| **[▦ LedgerLite Service](root-area.md)** | 🟡 Minimum | 🟡 Minimum | 42 | 6 |
 | ↳ [□ Agent Harnessability](factors/agent-harnessability/agent-harnessability-factor.md) | 🟡 Minimum | ⬜ Empty | 7 | 2 |
 | ↳ ↳ [□ Agent Accessibility](factors/agent-harnessability/factors/agent-accessibility/agent-accessibility-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Agent Operability](factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
@@ -41,32 +41,50 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 | ↳ ↳ [□ Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
 | ↳ ↳ [□ Self-Verifiability](factors/agent-harnessability/factors/self-verifiability/self-verifiability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
 | ↳ ↳ [□ Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ Agent harness](areas/agent-harness/agent-harness-area.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ ↳ [□ Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ [▦ Agent harness](areas/agent-harness/agent-harness-area.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ ↳ [□ Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
 | ↳ ↳ [□ Coherence](areas/agent-harness/factors/coherence/coherence-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ ↳ [□ Completeness](areas/agent-harness/factors/completeness/completeness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ ↳ [□ Currentness](areas/agent-harness/factors/currentness/currentness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 4 | 1 |
-| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ [□ Operability](areas/api/factors/operability/operability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Completeness](areas/agent-harness/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ ↳ [□ Currentness](areas/agent-harness/factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ [▦ Public API](areas/api/api-area.md) | 🟡 Minimum | 🟡 Minimum | 10 | 1 |
+| ↳ ↳ [□ Compatibility](areas/api/factors/compatibility/compatibility-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Correctness](areas/api/factors/correctness/correctness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 1 |
+| ↳ ↳ [□ Operability](areas/api/factors/operability/operability-factor.md) | 🟡 Minimum | 🟡 Minimum | 4 | 0 |
 | ↳ ↳ [□ Performance](areas/api/factors/performance/performance-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ [▦ Operations](areas/operations/operations-area.md) | 🔵 Target | 🔵 Target | 2 | 1 |
+| ↳ ↳ [□ Reliability](areas/api/factors/reliability/reliability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Security](areas/api/factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Testability](areas/api/factors/testability/testability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Codebase](areas/codebase/codebase-area.md) | 🟡 Minimum | 🟡 Minimum | 5 | 0 |
+| ↳ ↳ [□ Consistency](areas/codebase/factors/consistency/consistency-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Maintainability](areas/codebase/factors/maintainability/maintainability-factor.md) | 🟡 Minimum | ⬜ Empty | 4 | 0 |
+| ↳ ↳ ↳ [□ Analyzability](areas/codebase/factors/maintainability/factors/analyzability/analyzability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ ↳ [□ Modifiability](areas/codebase/factors/maintainability/factors/modifiability/modifiability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ ↳ [□ Testability](areas/codebase/factors/maintainability/factors/testability/testability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ ↳ [□ Security](areas/codebase/factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ Operations](areas/operations/operations-area.md) | 🟡 Minimum | 🟡 Minimum | 4 | 1 |
+| ↳ ↳ [□ Capacity](areas/operations/factors/capacity/capacity-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
 | ↳ ↳ [□ Observability](areas/operations/factors/observability/observability-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
-| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ⛔ Blocked | ⛔ Blocked | 1 | 1 |
-| ↳ [▦ Ledger persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
-| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 1 | 0 |
-| ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ [□ Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ [□ Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ ↳ [□ Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
-| ↳ [▦ Service contract](areas/service-contract/service-contract-area.md) | 🟡 Minimum | 🟡 Minimum | 3 | 1 |
-| ↳ ↳ [□ Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ⛔ Blocked | ⛔ Blocked | 2 | 1 |
+| ↳ ↳ [□ Security](areas/operations/factors/security/security-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ [▦ Ledger persistence](areas/persistence/persistence-area.md) | 🟡 Minimum | 🟡 Minimum | 6 | 1 |
+| ↳ ↳ [□ Auditability](areas/persistence/factors/auditability/auditability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Durability](areas/persistence/factors/durability/durability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Integrity](areas/persistence/factors/integrity/integrity-factor.md) | 🟢 Outstanding | 🟢 Outstanding | 2 | 0 |
+| ↳ ↳ [□ Recoverability](areas/persistence/factors/recoverability/recoverability-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Security](areas/persistence/factors/security/security-factor.md) | 🔵 Target | 🔵 Target | 1 | 0 |
+| ↳ [▦ LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Assessability](areas/quality-md/factors/assessability/assessability-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 1 |
+| ↳ ↳ [□ Credibility](areas/quality-md/factors/credibility/credibility-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ ↳ [□ Currentness](areas/quality-md/factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
+| ↳ [▦ Service contract](areas/service-contract/service-contract-area.md) | 🟡 Minimum | 🟡 Minimum | 5 | 1 |
+| ↳ ↳ [□ Completeness](areas/service-contract/factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 1 |
 | ↳ ↳ [□ Consistency](areas/service-contract/factors/consistency/consistency-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ ↳ [□ Currentness](areas/service-contract/factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 1 | 0 |
+| ↳ ↳ [□ Understandability](areas/service-contract/factors/understandability/understandability-factor.md) | 🟡 Minimum | 🟡 Minimum | 2 | 0 |
 
 ## Top findings
 
-**Full findings report:** [findings.md](findings.md) (21 total: 🚩 6 Gaps: 🔴 1 High, 🟡 4 Medium, 🔵 1 Low; ⚠️ 2 Risks: 🟡 2 Medium; 💪 9 Strengths; ℹ️ 4 Notes)
+**Full findings report:** [findings.md](findings.md) (42 total: 🚩 11 Gaps: 🔴 1 High, 🟡 9 Medium, 🔵 1 Low; ⚠️ 3 Risks: 🟡 3 Medium; 💪 23 Strengths; ℹ️ 5 Notes)
 
 | Rank | Finding | Area | Factors | Type | Severity |
 | --- | --- | --- | --- | --- | --- |
@@ -77,7 +95,7 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 | 5 | [Recovery drill ownership records contradict each other.](areas/operations/requirements/recovery-drill-ownership/recovery-drill-ownership-requirement.md#finding-note-003) | [Operations](areas/operations/operations-area.md) | [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ℹ️ Note | — |
 | 6 | [Most quality-loop handoffs omit done criteria and the confirming sensor.](requirements/quality-loop-work-items-carry-done-criteria/quality-loop-work-items-carry-done-criteria-requirement.md#finding-gap-001) | [LedgerLite Service](root-area.md) | [Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md) | 🚩 Gap | 🟡 Medium |
 | 7 | [In-flight decisions live in chat scrollback and would not survive a cold handoff.](requirements/handoffs-survive-session-loss/handoffs-survive-session-loss-requirement.md#finding-risk-001) | [LedgerLite Service](root-area.md) | [Continuity](factors/agent-harnessability/factors/continuity/continuity-factor.md) | ⚠️ Risk | 🟡 Medium |
-| 8 | [The body's unknowns and open questions have not been revisited since the service-contract area was added.](areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md#finding-gap-006) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | [Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md), [Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md), [Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | 🚩 Gap | 🟡 Medium |
+| 8 | [The body's unknowns and open questions have not been revisited since the service-contract area was added.](areas/quality-md/requirements/the-model-follows-the-authoring-guide-family/the-model-follows-the-authoring-guide-family-requirement.md#finding-gap-006) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) | [Credibility](areas/quality-md/factors/credibility/credibility-factor.md), [Assessability](areas/quality-md/factors/assessability/assessability-factor.md), [Currentness](areas/quality-md/factors/currentness/currentness-factor.md) | 🚩 Gap | 🟡 Medium |
 | 9 | [The telemetry read credential needed for latency checks is documented only in the private wiki.](requirements/a-fresh-session-reaches-a-ready-to-work-environment/a-fresh-session-reaches-a-ready-to-work-environment-requirement.md#finding-gap-002) | [LedgerLite Service](root-area.md) | [Agent Operability](factors/agent-harnessability/factors/agent-operability/agent-operability-factor.md) | 🚩 Gap | 🔵 Low |
 | 10 | [The sensor catalog's invariant-suite command name is one rename behind.](areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md#finding-note-004) | [Agent harness](areas/agent-harness/agent-harness-area.md) | [Completeness](areas/agent-harness/factors/completeness/completeness-factor.md), [Coherence](areas/agent-harness/factors/coherence/coherence-factor.md), [Currentness](areas/agent-harness/factors/currentness/currentness-factor.md), [Assessability](areas/agent-harness/factors/assessability/assessability-factor.md) | ℹ️ Note | — |
 
@@ -92,7 +110,7 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 | 3 | [Make the contract-test and invariant sensors required at merge](recommendations/003-make-the-contract-test-and-invariant-sensors-required-at-merge.md) | [LedgerLite Service](root-area.md) / [Enforcement of Standards](factors/agent-harnessability/factors/enforcement-of-standards/enforcement-of-standards-factor.md) | ⬥ High | 🔵 Medium | Contract conformance and ledger invariants hold regardless of reviewer attention, converting the two strongest sensors from advisory signals into enforced standards. |
 | 4 | [Reconcile recovery drill ownership and restore assessability](recommendations/004-reconcile-recovery-drill-ownership-and-restore-assessability.md) | [Operations](areas/operations/operations-area.md) / [Recoverability](areas/operations/factors/recoverability/recoverability-factor.md) | ● Medium | 🟢 High | The recoverability factor becomes assessable again, and the next evaluation can rate drill practice on evidence instead of recording missing evidence. |
 | 5 | [Record done criteria and progress in durable handoff notes](recommendations/005-record-done-criteria-and-progress-in-durable-handoff-notes.md) | [LedgerLite Service](root-area.md) / [Task Specifiability](factors/agent-harnessability/factors/task-specifiability/task-specifiability-factor.md), [Continuity](factors/agent-harnessability/factors/continuity/continuity-factor.md) | ● Medium | 🔵 Medium | Agents can declare completion against criteria and resume interrupted work from records, lifting task specifiability and continuity toward target. |
-| 6 | [Refresh the model body's unknowns and open questions](recommendations/006-refresh-the-model-body-s-unknowns-and-open-questions.md) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) / [Context Grounding](areas/quality-md/factors/context-grounding/context-grounding-factor.md), [Evaluability](areas/quality-md/factors/evaluability/evaluability-factor.md), [Lifecycle Maintenance](areas/quality-md/factors/lifecycle-maintenance/lifecycle-maintenance-factor.md) | ○ Low | 🟢 High | Evaluations start from current judgment context, and the QUALITY.md self-check can return to target. |
+| 6 | [Add a body-drift detector to the model self-check](recommendations/006-add-a-body-drift-detector-to-the-model-self-check.md) | [LedgerLite Service QUALITY.md](areas/quality-md/quality-md-area.md) / [Credibility](areas/quality-md/factors/credibility/credibility-factor.md), [Assessability](areas/quality-md/factors/assessability/assessability-factor.md), [Currentness](areas/quality-md/factors/currentness/currentness-factor.md) | ○ Low | 🟢 High | Evaluations start from current judgment context, and future model growth has a repeatable detector rather than relying only on reviewer memory. |
 
 ## Primary source data
 
@@ -100,4 +118,3 @@ LedgerLite is money-safe today — balance integrity is outstanding — but unsp
 - [data/areas/root/area-analysis-result.json](data/areas/root/area-analysis-result.json)
 - [data/advice/finding-ranking-result.json](data/advice/finding-ranking-result.json)
 - [data/advice/recommendation-ranking-result.json](data/advice/recommendation-ranking-result.json)
-

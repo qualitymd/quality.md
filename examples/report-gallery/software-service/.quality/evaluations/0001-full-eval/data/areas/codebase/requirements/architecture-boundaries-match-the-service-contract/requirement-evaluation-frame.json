@@ -1,0 +1,43 @@
+{
+  "derivedContext": {
+    "appliedRatingCriteria": [
+      {
+        "criterion": "The requirement is satisfied with evidence a maintainer can verify.",
+        "ratingLevelId": "rating:target"
+      },
+      {
+        "criterion": "Falls short of target with visible gaps or limited evidence, while remaining acceptable.",
+        "ratingLevelId": "rating:minimum"
+      }
+    ],
+    "evidenceTargets": [
+      {
+        "id": "primary-evidence",
+        "question": "Do implementation boundaries match the contract's endpoint families?",
+        "required": true,
+        "sourceRefs": [
+          "synthetic-source:structural-import-boundary-tests",
+          "synthetic-source:service-contract"
+        ]
+      }
+    ]
+  },
+  "inputs": {
+    "ratingLevelIds": [
+      "rating:outstanding",
+      "rating:target",
+      "rating:minimum",
+      "rating:unacceptable"
+    ],
+    "requirementAssessmentBasis": "Do implementation boundaries match the contract's endpoint families?"
+  },
+  "kind": "RequirementEvaluationFrame",
+  "schemaVersion": 3,
+  "subject": {
+    "factorIds": [
+      "factor:codebase::consistency",
+      "factor:codebase::maintainability/modifiability"
+    ],
+    "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+  }
+}

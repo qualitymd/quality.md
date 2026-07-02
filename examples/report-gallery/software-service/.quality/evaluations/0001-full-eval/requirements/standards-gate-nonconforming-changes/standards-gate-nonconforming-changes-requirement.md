@@ -45,7 +45,7 @@ Lint gates merges; the contract tests and invariant suite run on merge but are a
 
 | Advice rank | Tier | Ranking rationale |
 | --- | --- | --- |
-| 3 / 21 | 🟠 P2 High | Advisory merge gates let the two strongest sensors be ignored under pressure. |
+| 3 / 42 | 🟠 P2 High | Advisory merge gates let the two strongest sensors be ignored under pressure. |
 
 #### Condition
 
@@ -88,4 +88,3 @@ Rating effect: constrains target
 - [data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-assessment-result.json](../../data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-assessment-result.json)
 - [data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-rating-result.json](../../data/areas/root/requirements/standards-gate-nonconforming-changes/requirement-rating-result.json)
 - [data/advice/finding-ranking-result.json](../../data/advice/finding-ranking-result.json)
-

@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Dependency audit and lint output were inspected.",
+  "evidenceSummary": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+  "factors": [
+    "factor:codebase::security"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Dependency audit and lint output were inspected.",
+        "status": "verified"
+      },
+      "condition": "Do dependency audit and secret lint results stay within policy?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:dependency-audit",
+          "statement": "Dependency audit and secret lint pass with no active suppressions on money-moving paths."
+        }
+      ],
+      "id": "auto-dependency-and-secret-handling-stay-within-policy",
+      "statement": "Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:codebase::dependency-and-secret-handling-stay-within-policy",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "Dependency audit and secret lint pass with no active suppressions on money-moving paths."
+}

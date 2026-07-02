@@ -1,0 +1,45 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The reconciliation job output and audit-event stream were compared for the four-week window.",
+  "evidenceSummary": "The reconciliation job traces every sampled balance delta to one ordered ledger event.",
+  "factors": [
+    "factor:persistence::integrity",
+    "factor:persistence::auditability"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "The reconciliation job output and audit-event stream were compared for the four-week window.",
+        "status": "verified"
+      },
+      "condition": "Can reconciliation explain every sampled balance change from ordered ledger events?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence exceeds the requirement with verified margin.",
+          "ratingLevelId": "rating:outstanding",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports outstanding",
+        "statement": "The evidence supports the outstanding rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:persistence/reconciliation-job",
+          "statement": "The reconciliation job traces every sampled balance delta to one ordered ledger event."
+        }
+      ],
+      "id": "auto-reconciliation-explains-balance-changes",
+      "statement": "The reconciliation job traces every sampled balance delta to one ordered ledger event.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:persistence::reconciliation-explains-balance-changes",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The reconciliation job traces every sampled balance delta to one ordered ledger event."
+}

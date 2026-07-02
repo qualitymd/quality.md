@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "The timeout-injection tests were run and the runbook branch was inspected.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Timeout-injection contract tests show bank-connector failures return retryable errors without partial ledger writes.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-dependency-timeouts-return-safe-results]",
+          "subject": {
+            "requirementId": "requirement:api::dependency-timeouts-return-safe-results"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "The dependency-timeout path meets the contract and leaves no partial writes.",
+  "requirementId": "requirement:api::dependency-timeouts-return-safe-results",
+  "schemaVersion": 3,
+  "status": "rated"
+}

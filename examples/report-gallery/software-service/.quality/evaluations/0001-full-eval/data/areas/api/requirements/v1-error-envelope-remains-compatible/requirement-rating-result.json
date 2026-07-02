@@ -1,0 +1,38 @@
+{
+  "confidence": "medium",
+  "confidenceReason": "The compatibility matrix and handler matrix were compared; integrator usage data is partial.",
+  "criteriaResults": [
+    {
+      "matched": false,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence leaves a visible gap below target."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The evidence is still sufficient to rely on with follow-up."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "The compatibility matrix and handlers still preserve documented v1 fields, but one deprecated field remains undocumented in the contract appendix.",
+      "effect": "constrains target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-v1-error-envelope-remains-compatible]",
+          "subject": {
+            "requirementId": "requirement:api::v1-error-envelope-remains-compatible"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:minimum"
+    }
+  ],
+  "ratingLevelId": "rating:minimum",
+  "rationale": "Compatibility holds for callers today, but undocumented deprecation state keeps the result below target.",
+  "requirementId": "requirement:api::v1-error-envelope-remains-compatible",
+  "schemaVersion": 3,
+  "status": "rated"
+}

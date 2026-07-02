@@ -17,6 +17,20 @@
         "subject": {
           "factorId": "factor:service-contract::consistency"
         }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:service-contract::currentness"
+        }
+      },
+      {
+        "kind": "FactorAnalysisResult",
+        "selector": "localAndDescendantAnalysis",
+        "subject": {
+          "factorId": "factor:service-contract::understandability"
+        }
       }
     ]
   },

@@ -55,4 +55,3 @@ Mutation p99 of 262 ms sits inside the recalibrated 300 ms target band.
 - [data/areas/api/factors/performance/factor-analysis-result.json](../../../../data/areas/api/factors/performance/factor-analysis-result.json)
 - [data/areas/api/requirements/p99-latency-within-budget/requirement-rating-result.json](../../../../data/areas/api/requirements/p99-latency-within-budget/requirement-rating-result.json)
 - [data/areas/api/requirements/p99-latency-within-budget/requirement-assessment-result.json](../../../../data/areas/api/requirements/p99-latency-within-budget/requirement-assessment-result.json)
-

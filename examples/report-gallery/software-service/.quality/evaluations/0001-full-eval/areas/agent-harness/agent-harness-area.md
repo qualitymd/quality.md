@@ -15,7 +15,7 @@ Area: [LedgerLite Service](../../root-area.md) / [Agent harness](agent-harness-a
 
 | Overall rating | Local rating | Confidence |
 | --- | --- | --- |
-| 🔵 Target | 🔵 Target | 🟢 High / 🟢 High |
+| 🟡 Minimum | 🟡 Minimum | 🔵 Medium / 🔵 Medium |
 
 ## Contents
 
@@ -27,23 +27,24 @@ Area: [LedgerLite Service](../../root-area.md) / [Agent harness](agent-harness-a
 
 ## Summary
 
-The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.
+The harness orients agents and routes to runnable sensors, but catalog reuse still needs one sensor maturation.
 
 ## Area / factor breakdown
 
 | ▦ Area / □ Factor | Overall rating | Local rating | Findings | Recommendations |
 | --- | --- | --- | --- | --- |
-| **[▦ Agent harness](agent-harness-area.md)** | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ [□ Assessability](factors/assessability/assessability-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| **[▦ Agent harness](agent-harness-area.md)** | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ [□ Assessability](factors/assessability/assessability-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
 | ↳ [□ Coherence](factors/coherence/coherence-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ [□ Completeness](factors/completeness/completeness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
-| ↳ [□ Currentness](factors/currentness/currentness-factor.md) | 🔵 Target | 🔵 Target | 2 | 0 |
+| ↳ [□ Completeness](factors/completeness/completeness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
+| ↳ [□ Currentness](factors/currentness/currentness-factor.md) | 🟡 Minimum | 🟡 Minimum | 3 | 0 |
 
 ## Requirements
 
 | Requirement | Rating | Status | Factors |
 | --- | --- | --- | --- |
 | [the harness orients agents and routes them to runnable sensors](requirements/harness-orients-agents-and-routes-to-sensors/harness-orients-agents-and-routes-to-sensors-requirement.md) | 🔵 Target | ✅ Assessed | [completeness](factors/completeness/completeness-factor.md); [coherence](factors/coherence/coherence-factor.md); [currentness](factors/currentness/currentness-factor.md); [assessability](factors/assessability/assessability-factor.md) |
+| [the sensor catalog names reusable sensors consistently](requirements/sensor-catalog-names-reusable-sensors/sensor-catalog-names-reusable-sensors-requirement.md) | 🟡 Minimum | ✅ Assessed | [completeness](factors/completeness/completeness-factor.md); [currentness](factors/currentness/currentness-factor.md); [assessability](factors/assessability/assessability-factor.md) |
 
 ## Limits and incomplete inputs
 
@@ -59,4 +60,5 @@ The harness orients agents and routes to runnable sensors, with one stale comman
 - [data/advice/recommendation-ranking-result.json](../../data/advice/recommendation-ranking-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json](../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-rating-result.json)
 - [data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json](../../data/areas/agent-harness/requirements/harness-orients-agents-and-routes-to-sensors/requirement-assessment-result.json)
-
+- [data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-rating-result.json](../../data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-rating-result.json)
+- [data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-assessment-result.json](../../data/areas/agent-harness/requirements/sensor-catalog-names-reusable-sensors/requirement-assessment-result.json)

@@ -1,0 +1,44 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Authorization matrix tests were run against the endpoint index.",
+  "evidenceSummary": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers.",
+  "factors": [
+    "factor:api::security"
+  ],
+  "findings": [
+    {
+      "basis": {
+        "statement": "Authorization matrix tests were run against the endpoint index.",
+        "status": "verified"
+      },
+      "condition": "Does the authorization matrix prevent cross-tenant money movement?",
+      "confidence": "high",
+      "criteria": [
+        {
+          "criterion": "The recorded evidence satisfies the target criterion for this requirement.",
+          "ratingLevelId": "rating:target",
+          "rationale": "This generated gallery finding demonstrates the assessment evidence shape for this requirement.",
+          "requirementId": "requirement:api::tenant-access-is-enforced"
+        }
+      ],
+      "effect": {
+        "ratingEffect": "supports target",
+        "statement": "The evidence supports the target rating."
+      },
+      "evidence": [
+        {
+          "sourceRef": "synthetic-source:api/authorization-matrix",
+          "statement": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers."
+        }
+      ],
+      "id": "auto-tenant-access-is-enforced",
+      "statement": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers.",
+      "type": "strength"
+    }
+  ],
+  "kind": "RequirementAssessmentResult",
+  "requirementId": "requirement:api::tenant-access-is-enforced",
+  "schemaVersion": 3,
+  "status": "assessed",
+  "summary": "The authorization matrix covers every money-moving endpoint and rejects cross-tenant account identifiers."
+}

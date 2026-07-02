@@ -17,7 +17,7 @@ Factor: [Operability](operability-factor.md)
 
 | Overall rating | Local rating | Status | Confidence |
 | --- | --- | --- | --- |
-| 🔵 Target | 🔵 Target | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
+| 🟡 Minimum | 🟡 Minimum | ✅ Analyzed / ✅ Analyzed | 🟢 High / 🟢 High |
 
 ## Contents
 
@@ -29,13 +29,16 @@ Factor: [Operability](operability-factor.md)
 
 ## Summary
 
-Error responses follow one documented envelope callers can branch on.
+Error responses are predictable, but compatibility drift creates caller confusion.
 
 ## Requirements
 
 | Requirement | Rating | Status |
 | --- | --- | --- |
+| [downstream dependency timeouts return safe results](../../requirements/dependency-timeouts-return-safe-results/dependency-timeouts-return-safe-results-requirement.md) | 🔵 Target | ✅ Assessed |
 | [error responses are predictable for callers](../../requirements/predictable-error-contracts/predictable-error-contracts-requirement.md) | 🔵 Target | ✅ Assessed |
+| [sensitive fields stay out of error responses](../../requirements/sensitive-fields-stay-out-of-error-responses/sensitive-fields-stay-out-of-error-responses-requirement.md) | 🔵 Target | ✅ Assessed |
+| [v1 error-envelope behavior remains compatible during deprecation](../../requirements/v1-error-envelope-remains-compatible/v1-error-envelope-remains-compatible-requirement.md) | 🟡 Minimum | ✅ Assessed |
 
 ## Sub-factors
 
@@ -53,6 +56,11 @@ Error responses follow one documented envelope callers can branch on.
 
 - [data/evaluation-manifest.json](../../../../data/evaluation-manifest.json)
 - [data/areas/api/factors/operability/factor-analysis-result.json](../../../../data/areas/api/factors/operability/factor-analysis-result.json)
+- [data/areas/api/requirements/dependency-timeouts-return-safe-results/requirement-rating-result.json](../../../../data/areas/api/requirements/dependency-timeouts-return-safe-results/requirement-rating-result.json)
+- [data/areas/api/requirements/dependency-timeouts-return-safe-results/requirement-assessment-result.json](../../../../data/areas/api/requirements/dependency-timeouts-return-safe-results/requirement-assessment-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-rating-result.json)
 - [data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json](../../../../data/areas/api/requirements/predictable-error-contracts/requirement-assessment-result.json)
-
+- [data/areas/api/requirements/sensitive-fields-stay-out-of-error-responses/requirement-rating-result.json](../../../../data/areas/api/requirements/sensitive-fields-stay-out-of-error-responses/requirement-rating-result.json)
+- [data/areas/api/requirements/sensitive-fields-stay-out-of-error-responses/requirement-assessment-result.json](../../../../data/areas/api/requirements/sensitive-fields-stay-out-of-error-responses/requirement-assessment-result.json)
+- [data/areas/api/requirements/v1-error-envelope-remains-compatible/requirement-rating-result.json](../../../../data/areas/api/requirements/v1-error-envelope-remains-compatible/requirement-rating-result.json)
+- [data/areas/api/requirements/v1-error-envelope-remains-compatible/requirement-assessment-result.json](../../../../data/areas/api/requirements/v1-error-envelope-remains-compatible/requirement-assessment-result.json)

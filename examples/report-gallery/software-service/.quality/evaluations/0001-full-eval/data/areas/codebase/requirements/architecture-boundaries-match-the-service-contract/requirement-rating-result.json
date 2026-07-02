@@ -1,0 +1,38 @@
+{
+  "confidence": "high",
+  "confidenceReason": "Import-boundary tests and the contract endpoint map were compared.",
+  "criteriaResults": [
+    {
+      "matched": true,
+      "ratingLevelId": "rating:target",
+      "rationale": "The evidence satisfies the target bar."
+    },
+    {
+      "matched": true,
+      "ratingLevelId": "rating:minimum",
+      "rationale": "The minimum bar is also satisfied."
+    }
+  ],
+  "kind": "RequirementRatingResult",
+  "ratingDrivers": [
+    {
+      "description": "Structural import-boundary tests match handler ownership to the contract endpoint families.",
+      "effect": "supports target",
+      "inputRefs": [
+        {
+          "kind": "RequirementAssessmentResult",
+          "selector": "findings[auto-architecture-boundaries-match-the-service-contract]",
+          "subject": {
+            "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract"
+          }
+        }
+      ],
+      "ratingLevelId": "rating:target"
+    }
+  ],
+  "ratingLevelId": "rating:target",
+  "rationale": "Implementation boundaries remain aligned with the normative contract.",
+  "requirementId": "requirement:codebase::architecture-boundaries-match-the-service-contract",
+  "schemaVersion": 3,
+  "status": "rated"
+}

@@ -1,0 +1,99 @@
+{
+  "areaId": "area:codebase",
+  "kind": "AreaAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Maintainability: Focused tests and localized boundaries are strong, but the reversal money-flow path is hard to analyze.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::maintainability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Consistency: Architecture boundaries match the service contract's endpoint families.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::consistency"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Security: Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::security"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Implementation boundaries, tests, and security sensors meet target, but the reversal money-flow path is too hard to analyze.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "Maintainability: Focused tests and localized boundaries are strong, but the reversal money-flow path is hard to analyze.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::maintainability"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Consistency: Architecture boundaries match the service contract's endpoint families.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::consistency"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Security: Dependency audit and secret lint pass with no active suppressions on money-moving paths.",
+        "effect": "rates target",
+        "inputRefs": [
+          {
+            "kind": "FactorAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "factorId": "factor:codebase::security"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Implementation boundaries, tests, and security sensors meet target, but the reversal money-flow path is too hard to analyze.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

@@ -26,7 +26,7 @@
     "confidence": "medium",
     "evaluationLimits": [
       {
-        "description": "The body requires money-touching areas (api, service-contract, persistence) to land at target or better; all three sit at minimum.",
+        "description": "The body requires money-touching areas (api, service-contract, persistence) and the codebase paths that realize money movement to land at target or better; api, service-contract, persistence, and codebase sit at minimum.",
         "id": "below-required-margin",
         "impact": "Read the overall minimum as a stop-and-fix signal per the model's required margin, not as an acceptable steady state."
       }
@@ -85,8 +85,8 @@
         ]
       },
       {
-        "description": "Customer-impact telemetry meets target; drill ownership could not be assessed, which limits confidence in the area's recoverability.",
-        "effect": "rates target",
+        "description": "Customer-impact telemetry meets target, but security and capacity sit at minimum and drill ownership could not be assessed.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "AreaAnalysisResult",
@@ -98,8 +98,21 @@
         ]
       },
       {
-        "description": "The harness orients agents and routes to runnable sensors, with one stale command name noted for repair.",
-        "effect": "rates target",
+        "description": "Implementation boundaries, tests, and security sensors meet target, but the reversal money-flow path is too hard to analyze.",
+        "effect": "rates minimum",
+        "inputRefs": [
+          {
+            "kind": "AreaAnalysisResult",
+            "selector": "localAndDescendantAnalysis",
+            "subject": {
+              "areaId": "area:codebase"
+            }
+          }
+        ]
+      },
+      {
+        "description": "The harness orients agents and routes to runnable sensors, but catalog reuse still needs one sensor maturation.",
+        "effect": "rates minimum",
         "inputRefs": [
           {
             "kind": "AreaAnalysisResult",
@@ -111,7 +124,7 @@
         ]
       },
       {
-        "description": "The model's structure and changelog practice follow the guides; its body judgment context has drifted behind the model.",
+        "description": "The model's structure and changelog practice follow the guides; one body-context check still needs a computational detector.",
         "effect": "rates minimum",
         "inputRefs": [
           {
@@ -125,7 +138,7 @@
       }
     ],
     "ratingLevelId": "rating:minimum",
-    "rationale": "LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas below the target margin the model's body requires.",
+    "rationale": "LedgerLite is money-safe today — balance integrity is outstanding — but unspecified replay semantics, unrehearsed rollback, and advisory merge gates hold the money-touching areas and agent loop below the target margin the model's body requires.",
     "status": "analyzed"
   },
   "schemaVersion": 3

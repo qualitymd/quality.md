@@ -8,21 +8,21 @@
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
-          "factorId": "factor:quality-md::context-grounding"
+          "factorId": "factor:quality-md::credibility"
         }
       },
       {
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
-          "factorId": "factor:quality-md::evaluability"
+          "factorId": "factor:quality-md::assessability"
         }
       },
       {
         "kind": "FactorAnalysisResult",
         "selector": "localAndDescendantAnalysis",
         "subject": {
-          "factorId": "factor:quality-md::lifecycle-maintenance"
+          "factorId": "factor:quality-md::currentness"
         }
       }
     ]

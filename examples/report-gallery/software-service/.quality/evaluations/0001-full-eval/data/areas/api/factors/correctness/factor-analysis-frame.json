@@ -9,6 +9,12 @@
         "subject": {
           "requirementId": "requirement:api::idempotent-mutations"
         }
+      },
+      {
+        "kind": "RequirementRatingResult",
+        "subject": {
+          "requirementId": "requirement:api::ledger-entry-signs-match-intent"
+        }
       }
     ]
   },

@@ -1,6 +1,6 @@
 {
   "derivedContext": {
-    "scope": "The composite root: model-wide agent harnessability requirements plus six constituent areas."
+    "scope": "The composite root: model-wide agent harnessability requirements plus seven constituent areas."
   },
   "inputs": {
     "childAreaIds": [
@@ -8,6 +8,7 @@
       "area:service-contract",
       "area:persistence",
       "area:operations",
+      "area:codebase",
       "area:agent-harness",
       "area:quality-md"
     ],

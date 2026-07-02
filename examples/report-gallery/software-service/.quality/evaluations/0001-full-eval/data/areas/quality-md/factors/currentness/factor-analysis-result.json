@@ -1,0 +1,69 @@
+{
+  "factorId": "factor:quality-md::currentness",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The body's unknowns and open questions have not been revisited since the service-contract area was added.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+            }
+          }
+        ]
+      },
+      {
+        "description": "The changelog records the codebase and security expansion and a sensor maturation entry before the evaluation run.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The changelog is current, but body-context drift keeps the model self-check at minimum.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The body's unknowns and open questions have not been revisited since the service-contract area was added.",
+        "effect": "constrains target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:quality-md::the-model-follows-the-authoring-guide-family"
+            }
+          }
+        ]
+      },
+      {
+        "description": "The changelog records the codebase and security expansion and a sensor maturation entry before the evaluation run.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:quality-md::the-quality-changelog-explains-model-growth"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "The changelog is current, but body-context drift keeps the model self-check at minimum.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

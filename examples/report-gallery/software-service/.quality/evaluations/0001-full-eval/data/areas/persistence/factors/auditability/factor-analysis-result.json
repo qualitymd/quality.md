@@ -1,0 +1,69 @@
+{
+  "factorId": "factor:persistence::auditability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The reconciliation job traces every sampled balance delta to one ordered ledger event.",
+        "effect": "supports outstanding",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Reconciliation and audit append tests explain balances through ordered, tamper-evident events.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "high",
+    "ratingDrivers": [
+      {
+        "description": "The reconciliation job traces every sampled balance delta to one ordered ledger event.",
+        "effect": "supports outstanding",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::reconciliation-explains-balance-changes"
+            }
+          }
+        ]
+      },
+      {
+        "description": "Append-path tests prove monotonic sequence numbers, hash chaining, and immutable event writes.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::audit-events-are-ordered-and-tamper-evident"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:target",
+    "rationale": "Reconciliation and audit append tests explain balances through ordered, tamper-evident events.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}

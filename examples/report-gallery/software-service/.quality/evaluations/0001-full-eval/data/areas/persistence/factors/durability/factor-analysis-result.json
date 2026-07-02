@@ -1,0 +1,45 @@
+{
+  "factorId": "factor:persistence::durability",
+  "kind": "FactorAnalysisResult",
+  "localAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Backups restore cleanly, but rollback rehearsal recency still caps durability confidence.",
+    "status": "analyzed"
+  },
+  "localAndDescendantAnalysis": {
+    "confidence": "medium",
+    "ratingDrivers": [
+      {
+        "description": "The latest restore drill replayed current backups and reconciliation matched the pre-drill ledger state.",
+        "effect": "supports target",
+        "inputRefs": [
+          {
+            "kind": "RequirementRatingResult",
+            "subject": {
+              "requirementId": "requirement:persistence::restore-drills-replay-current-backups"
+            }
+          }
+        ]
+      }
+    ],
+    "ratingLevelId": "rating:minimum",
+    "rationale": "Backups restore cleanly, but rollback rehearsal recency still caps durability confidence.",
+    "status": "analyzed"
+  },
+  "schemaVersion": 3
+}
