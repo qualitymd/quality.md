@@ -257,18 +257,60 @@ mode: custom
     </Card>
   </Columns>
 </div>
-{/*
 <div className="px-6 pb-16 max-w-3xl mx-auto">
   <h3 className="text-xl sm:text-md lg:text-lg font-bold tracking-tight text-gray-900 dark:text-zinc-50 text-center">
     FAQ
   </h3>
   <div className="mt-4">
     <AccordionGroup>
-      <Accordion title="Placeholder question?">Placeholder answer.</Accordion>
+      <Accordion title="What is a quality model?">
+        A quality model is an explicit, shared description of what "good" means
+        for something you maintain. In QUALITY.md, that means the areas of a
+        project, the quality factors that matter for each, and concrete
+        requirements with checkable assessments — plus a rating scale for
+        judging results and the context for why any of it matters. Instead of
+        quality living in people's heads and scattered review comments, the
+        model makes it visible enough for teams and agents to evaluate, align
+        on, and improve.
+      </Accordion>
+      <Accordion title="What's covered by the formal QUALITY.md specification?">
+        The [specification](/specification) defines the file format and its
+        meaning: document structure (YAML frontmatter plus a Markdown body), the
+        frontmatter schema for areas, factors, requirements, and the rating
+        scale, naming and reference rules, evaluation semantics (how
+        requirements are assessed, rated, and rolled up), report vocabulary, and
+        conformance classes for files and tools. It's deliberately agent-,
+        tool-, and vendor-agnostic. The [`/quality` skill](/skill) and
+        [`qualitymd` CLI](/cli) are companions — a reference implementation and
+        starter kit, not part of the format itself.
+      </Accordion>
+      <Accordion title="Is QUALITY.md only for modeling software quality?">
+        No. The format is domain agnostic: it applies wherever you want to be
+        deliberate about quality — documentation sets, data products, research
+        reports, service operations, and more. There's no default factor
+        checklist to import; each model earns its factors from the modeled
+        thing's own needs and risks.
+      </Accordion>
+      <Accordion title="Is QUALITY.md open source? How is it licensed?">
+        Yes. The specification, `/quality` agent skill, and `qualitymd` CLI are
+        all developed in the open at
+        [github.com/qualitymd/quality.md](https://github.com/qualitymd/quality.md)
+        and released under the MIT license.
+      </Accordion>
+      <Accordion title="How does QUALITY.md relate to agent skills and rules (e.g. AGENTS.md/CLAUDE.md)?">
+        They're complementary layers. Rules files like AGENTS.md or CLAUDE.md
+        tell an agent _how_ to work in your project, and skills give it
+        procedures for specific tasks — both steer the inner coding loop, action
+        by action. `QUALITY.md` declares _what quality means_: the shared bar
+        the resulting work is judged against. The `/quality` skill connects the
+        two — it reads your `QUALITY.md` to evaluate the project and produces
+        recommendations you can hand off to any agent, teammate, or workflow. In
+        loop terms, rules and skills guide the inner loop; QUALITY.md powers the
+        evaluation and improvement loops above it.
+      </Accordion>
     </AccordionGroup>
   </div>
 </div>
-*/}
 <div role="contentinfo" className="px-6 pb-12 max-w-5xl mx-auto">
   <div className="border-t border-gray-100 dark:border-zinc-800 pt-8 flex items-center justify-center gap-4">
     <a
